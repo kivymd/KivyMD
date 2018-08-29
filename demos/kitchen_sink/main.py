@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
-from kivymd.dialog import MDDialog
+from kivymd.dialog import MDDialog, MDInputDialog
 from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch, BaseListItem
 from kivymd.material_resources import DEVICE_TYPE
@@ -17,6 +20,7 @@ from kivymd.selectioncontrols import MDCheckbox
 from kivymd.snackbar import Snackbar
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
+
 
 main_widget_kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
@@ -246,8 +250,16 @@ NavigationLayout:
                         min:0
                         max:100
                         value: hslider.value
+
+            ###################################################################
+            #
+            #                         DIALOGS
+            #
+            ###################################################################
+
             Screen:
                 name: 'dialog'
+
                 MDRaisedButton:
                     text: "Open dialog"
                     size_hint: None, None
@@ -255,13 +267,23 @@ NavigationLayout:
                     pos_hint: {'center_x': 0.5, 'center_y': 0.7}
                     opposite_colors: True
                     on_release: app.show_example_dialog()
+
                 MDRaisedButton:
                     text: "Open lengthy dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     opposite_colors: True
                     on_release: app.show_example_long_dialog()
+
+                MDRaisedButton:
+                    text: "Open input dialog"
+                    size_hint: None, None
+                    size: 3 * dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                    opposite_colors: True
+                    on_release: app.show_example_input_dialog()
+
             Screen:
                 name: 'grid'
                 ScrollView:
@@ -1006,6 +1028,12 @@ class KitchenSink(App):
         self.dialog.add_action_button("Dismiss",
                                       action=lambda *x: self.dialog.dismiss())
         self.dialog.open()
+
+    def show_example_input_dialog(self):
+        dialog = MDInputDialog(
+            title='Title', hint_text='Hint text', size_hint=(.8, .4),
+            text_button_ok='Yes', events_callback=lambda x: None)
+        dialog.open()
 
     def get_time_picker_data(self, instance, time):
         self.root.ids.time_picker_label.text = str(time)

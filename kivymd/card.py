@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+
 from kivy.lang import Builder
-from kivy.properties import BoundedNumericProperty, ReferenceListProperty, ListProperty,BooleanProperty
+from kivy.properties import BoundedNumericProperty, ReferenceListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 from kivy.metrics import dp
-from kivy.uix.widget import Widget
+
 
 Builder.load_string('''
 <MDCard>
@@ -35,6 +36,7 @@ Builder.load_string('''
 
 class MDSeparator(ThemableBehavior, BoxLayout):
     """ A separator line """
+
     def __init__(self, *args, **kwargs):
         super(MDSeparator, self).__init__(*args, **kwargs)
         self.on_orientation()

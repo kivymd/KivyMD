@@ -175,7 +175,8 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
             self._current_button_color = self.md_bg_color_disabled
         else:
             self._current_button_color = self.md_bg_color
-        super(BaseButton, self).on_disabled(instance, value)
+        # FIXME: AttributeError: 'super' object has no attribute 'on_disabled'
+        # super(BaseButton, self).on_disabled(instance, value)
 
 
 class BasePressedButton(BaseButton):

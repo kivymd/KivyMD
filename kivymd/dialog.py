@@ -1,15 +1,25 @@
 # -*- coding: utf-8 -*-
 
+from kivy.logger import Logger
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, ListProperty
 from kivy.metrics import dp
 from kivy.uix.modalview import ModalView
 from kivy.animation import Animation
+from kivy.uix.popup import PopupException
+
+from kivymd.card import MDCard
 from kivymd.theming import ThemableBehavior
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.button import MDFlatButton
 
+
 Builder.load_string('''
+#:import MDTextField kivymd.textfields.MDTextField
+#:import MDCard kivymd.card.MDCard
+
+
 <MDDialog>:
     canvas:
         Color:
@@ -55,16 +65,43 @@ Builder.load_string('''
                 height: dp(36) if len(root._action_buttons) > 0 else 0
                 width: self.minimum_width
                 spacing: dp(8)
+
+
+<ContentInputDialog>:
+    orientation: 'vertical'
+    padding: dp(15)
+    spacing: dp(10)
+
+    MDLabel:
+        font_style: 'Title'
+        theme_text_color: 'Primary'
+        text: root.title
+        halign: 'left'
+
+    MDTextField:
+        id: text_field
+        size_hint: 1, None
+        height: dp(48)
+        hint_text: root.hint_text
+
+    Widget:
+    Widget:
+
+    AnchorLayout:
+        anchor_x: 'right'
+
+        MDFlatButton:
+            text: root.text_button_ok
+            #theme_text_color: 'Custom'
+            #text_color: app.theme_cls.primary_color
+            on_release: root.events_callback(text_field.text)
 ''')
 
 
 class MDDialog(ThemableBehavior, RectangularElevationBehavior, ModalView):
     title = StringProperty('')
-
     content = ObjectProperty(None)
-
     md_bg_color = ListProperty([0, 0, 0, .2])
-
     _container = ObjectProperty()
     _action_buttons = ListProperty([])
     _action_area = ObjectProperty()
@@ -72,8 +109,9 @@ class MDDialog(ThemableBehavior, RectangularElevationBehavior, ModalView):
     def __init__(self, **kwargs):
         super(MDDialog, self).__init__(**kwargs)
         self.bind(_action_buttons=self._update_action_buttons,
-                  auto_dismiss=lambda *x: setattr(self.shadow, 'on_release',
-                                                  self.shadow.dismiss if self.auto_dismiss else None))
+                  auto_dismiss=lambda *x: setattr(
+                      self.shadow, 'on_release',
+                      self.shadow.dismiss if self.auto_dismiss else None))
 
     def add_action_button(self, text, action=None):
         """Add an :class:`FlatButton` to the right of the action area.
@@ -83,6 +121,7 @@ class MDDialog(ThemableBehavior, RectangularElevationBehavior, ModalView):
         :param action: Function set to trigger when on_release fires
         :type action: function or None
         """
+
         button = MDFlatButton(text=text,
                               size_hint=(None, None),
                               height=dp(36))
@@ -107,6 +146,7 @@ class MDDialog(ThemableBehavior, RectangularElevationBehavior, ModalView):
         window, the view will attach to the global
         :class:`~kivy.core.window.Window`.
         '''
+
         if self._window is not None:
             Logger.warning('ModalView: you can only open once.')
             return self
@@ -174,3 +214,38 @@ class MDDialog(ThemableBehavior, RectangularElevationBehavior, ModalView):
             btn.content.texture_update()
             btn.width = btn.content.texture_size[0] + dp(16)
             self._action_area.add_widget(btn)
+
+
+class MDInputDialog(ModalView):
+    title = StringProperty('Title')
+    hint_text = StringProperty('Write something')
+    text_button_ok = StringProperty('OK')
+    events_callback = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(MDInputDialog, self).__init__(**kwargs)
+        self.set_content_input_dialog()
+
+    def set_content_input_dialog(self, *args):
+        def set_field_focus(interval):
+            content_input_dialog.ids.text_field.focus = True
+
+        def _events_callback(result_press):
+            self.dismiss()
+            if result_press:
+                self.events_callback(
+                    content_input_dialog.ids.text_field.text)
+
+        content_input_dialog = ContentInputDialog(
+            title=self.title, hint_text=self.hint_text,
+            text_button_ok=self.text_button_ok,
+            events_callback=_events_callback)
+        self.add_widget(content_input_dialog)
+        Clock.schedule_once(set_field_focus, .5)
+
+
+class ContentInputDialog(MDCard):
+    text_button_ok = StringProperty()
+    hint_text = StringProperty()
+    title = StringProperty()
+    events_callback = ObjectProperty()

@@ -6,12 +6,14 @@ from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.config import Config
+from kivy.utils import get_hex_from_color
+
 Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
-from kivymd.dialog import MDDialog, MDInputDialog
+from kivymd.dialog import MDDialog, MDInputDialog, MDOkCancelDialog
 from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch, BaseListItem
 from kivymd.material_resources import DEVICE_TYPE
@@ -264,7 +266,7 @@ NavigationLayout:
                     text: "Open dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
                     opposite_colors: True
                     on_release: app.show_example_dialog()
 
@@ -272,7 +274,7 @@ NavigationLayout:
                     text: "Open lengthy dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                     opposite_colors: True
                     on_release: app.show_example_long_dialog()
 
@@ -280,9 +282,17 @@ NavigationLayout:
                     text: "Open input dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                     opposite_colors: True
                     on_release: app.show_example_input_dialog()
+
+                MDRaisedButton:
+                    text: "Open Ok Cancel dialog"
+                    size_hint: None, None
+                    size: 3 * dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+                    opposite_colors: True
+                    on_release: app.show_example_okcancel_dialog()
 
             Screen:
                 name: 'grid'
@@ -972,35 +982,33 @@ class KitchenSink(App):
     def bottom_navigation_remove_mobile(self, widget):
         # Removes some items from bottom-navigation demo when on mobile
         if DEVICE_TYPE == 'mobile':
-            widget.ids.bottom_navigation_demo.remove_widget(widget.ids.bottom_navigation_desktop_2)
+            widget.ids.bottom_navigation_demo.remove_widget(
+                widget.ids.bottom_navigation_desktop_2)
         if DEVICE_TYPE == 'mobile' or DEVICE_TYPE == 'tablet':
-            widget.ids.bottom_navigation_demo.remove_widget(widget.ids.bottom_navigation_desktop_1)
+            widget.ids.bottom_navigation_demo.remove_widget(
+                widget.ids.bottom_navigation_desktop_1)
 
     def show_example_snackbar(self, snack_type):
         if snack_type == 'simple':
             Snackbar(text="This is a snackbar!").show()
         elif snack_type == 'button':
-            Snackbar(text="This is a snackbar", button_text="with a button!", button_callback=lambda *args: 2).show()
+            Snackbar(text="This is a snackbar", button_text="with a button!",
+                     button_callback=lambda *args: 2).show()
         elif snack_type == 'verylong':
-            Snackbar(text="This is a very very very very very very very long snackbar!").show()
+            Snackbar(text="This is a very very very very very very very "
+                          "long snackbar!").show()
 
     def show_example_dialog(self):
-        content = MDLabel(font_style='Body1',
-                          theme_text_color='Secondary',
+        content = MDLabel(font_style='Body1', theme_text_color='Secondary',
                           text="This is a dialog with a title and some text. "
                                "That's pretty awesome right!",
-                          size_hint_y=None,
-                          valign='top')
+                          size_hint_y=None, valign='top')
         content.bind(texture_size=content.setter('size'))
-        self.dialog = MDDialog(title="This is a test dialog",
-                               content=content,
-                               size_hint=(.8, None),
-                               height=dp(200),
-                               auto_dismiss=False)
-
-        self.dialog.add_action_button("Dismiss",
-                                      action=lambda *x: self.dialog.dismiss())
-        self.dialog.open()
+        dialog = MDDialog(title="This is a test dialog",
+                          content=content, size_hint=(.8, None), height=dp(200),
+                          auto_dismiss=False)
+        dialog.add_action_button("Dismiss", action=lambda *x: dialog.dismiss())
+        dialog.open()
 
     def show_example_long_dialog(self):
         content = MDLabel(font_style='Body1',
@@ -1016,23 +1024,26 @@ class KitchenSink(App):
                                "Excepteur sint occaecat cupidatat non "
                                "proident, sunt in culpa qui officia deserunt "
                                "mollit anim id est laborum.",
-                          size_hint_y=None,
-                          valign='top')
+                          size_hint_y=None, valign='top')
         content.bind(texture_size=content.setter('size'))
-        self.dialog = MDDialog(title="This is a long test dialog",
-                               content=content,
-                               size_hint=(.8, None),
-                               height=dp(200),
-                               auto_dismiss=False)
-
-        self.dialog.add_action_button("Dismiss",
-                                      action=lambda *x: self.dialog.dismiss())
-        self.dialog.open()
+        dialog = MDDialog(title="This is a long test dialog", content=content,
+                          size_hint=(.8, None), height=dp(200),
+                          auto_dismiss=False)
+        dialog.add_action_button("Dismiss", action=lambda *x: dialog.dismiss())
+        dialog.open()
 
     def show_example_input_dialog(self):
         dialog = MDInputDialog(
             title='Title', hint_text='Hint text', size_hint=(.8, .4),
             text_button_ok='Yes', events_callback=lambda x: None)
+        dialog.open()
+
+    def show_example_okcancel_dialog(self):
+        dialog = MDOkCancelDialog(
+            title='Title', size_hint=(.8, .3), text_button_ok='Yes',
+            text="Your [color=%s][b]text[/b][/color] dialog" % get_hex_from_color(
+                self.theme_cls.primary_color),
+            text_button_cancel='Cancel', events_callback=lambda x: None)
         dialog.open()
 
     def get_time_picker_data(self, instance, time):

@@ -41,6 +41,10 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
     requirements = kivy==master,git+https://gitlab.com/kivymd/KivyMD.git
 
+#### What's new in version 0.1.3:
+* Added dialog for text input;
+* Added "Yes/No" dialog
+
 License
 =======
 

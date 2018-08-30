@@ -95,6 +95,47 @@ Builder.load_string('''
             #theme_text_color: 'Custom'
             #text_color: app.theme_cls.primary_color
             on_release: root.events_callback(text_field.text)
+
+
+<ContentMDOkCancelDialog>:
+    orientation: 'vertical'
+    padding: dp(15)
+    spacing: dp(10)
+
+    MDLabel:
+        font_style: 'Title'
+        theme_text_color: 'Primary'
+        text: root.title
+        halign: 'center'
+
+    Widget:
+
+    MDLabel:
+        theme_text_color: 'Primary'
+        text: root.text
+        halign: 'center'
+        markup: True
+
+    Widget:
+    Widget:
+
+    BoxLayout:
+
+        AnchorLayout:
+            anchor_x: 'left'
+            MDFlatButton:
+                text: root.text_button_ok
+                theme_text_color: 'Custom'
+                text_color: app.theme_cls.primary_color
+                on_release: root.events_callback(self.text)
+
+        AnchorLayout:
+            anchor_x: 'right'
+            MDFlatButton:
+                text: root.text_button_cancel
+                theme_text_color: 'Custom'
+                text_color: app.theme_cls.primary_color
+                on_release: root.events_callback(self.text)
 ''')
 
 
@@ -224,23 +265,23 @@ class MDInputDialog(ModalView):
 
     def __init__(self, **kwargs):
         super(MDInputDialog, self).__init__(**kwargs)
-        self.set_content_input_dialog()
+        self.set_content()
 
-    def set_content_input_dialog(self, *args):
+    def set_content(self, *args):
         def set_field_focus(interval):
-            content_input_dialog.ids.text_field.focus = True
+            content_dialog.ids.text_field.focus = True
 
         def _events_callback(result_press):
             self.dismiss()
             if result_press:
                 self.events_callback(
-                    content_input_dialog.ids.text_field.text)
+                    content_dialog.ids.text_field.text)
 
-        content_input_dialog = ContentInputDialog(
+        content_dialog = ContentInputDialog(
             title=self.title, hint_text=self.hint_text,
             text_button_ok=self.text_button_ok,
             events_callback=_events_callback)
-        self.add_widget(content_input_dialog)
+        self.add_widget(content_dialog)
         Clock.schedule_once(set_field_focus, .5)
 
 
@@ -248,4 +289,37 @@ class ContentInputDialog(MDCard):
     text_button_ok = StringProperty()
     hint_text = StringProperty()
     title = StringProperty()
+    events_callback = ObjectProperty()
+
+
+class MDOkCancelDialog(ModalView):
+    title = StringProperty('Title')
+    text = StringProperty('Text dialog')
+    text_button_cancel = StringProperty('CANCEL')
+    text_button_ok = StringProperty('OK')
+    events_callback = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(MDOkCancelDialog, self).__init__(**kwargs)
+        self.set_content()
+
+    def set_content(self, *args):
+        def _events_callback(result_press):
+            self.dismiss()
+            if result_press:
+                self.events_callback(result_press)
+
+        content_dialog = ContentMDOkCancelDialog(
+            title=self.title, text=self.text,
+            text_button_ok=self.text_button_ok,
+            text_button_cancel=self.text_button_cancel,
+            events_callback=_events_callback)
+        self.add_widget(content_dialog)
+
+
+class ContentMDOkCancelDialog(MDCard):
+    title = StringProperty()
+    text = StringProperty()
+    text_button_cancel = StringProperty()
+    text_button_ok = StringProperty()
     events_callback = ObjectProperty()

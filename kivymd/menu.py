@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.metrics import dp
 from kivy.properties import NumericProperty, ListProperty, OptionProperty, \
     StringProperty
@@ -14,39 +14,60 @@ from kivy.uix.boxlayout import BoxLayout
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
 
+
 Builder.load_string('''
 #:import STD_INC kivymd.material_resources.STANDARD_INCREMENT
+
+
 <MDMenuItem>
-    size_hint_y: None
+    size_hint: None, None
     height: dp(48)
     padding: dp(16), 0
-    on_release: root.parent.parent.parent.parent.dismiss()  # Horrible, but hey it works
-    MDLabel:
+    # Horrible, but hey it works.
+    on_release:
+        root.parent.parent.parent.parent.dismiss()
+        root.callback(root.text)
+
+    Label:
+        id: item_text
         text: root.text
-        theme_text_color: 'Primary'
+        markup: True
+        font_size: '14sp'
+        size_hint_x: None
+        width: self.texture_size[0]
+        halign: 'left'
+
 
 <MDMenu>
     size_hint: None, None
     width: root.width_mult * STD_INC
     key_viewclass: 'viewclass'
-    #key_size: 'height'
+    key_size: 'height'
+
     RecycleBoxLayout:
         default_size: None, dp(48)
         default_size_hint: 1, None
         orientation: 'vertical'
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
 
 <MDDropdownMenu>
+
     FloatLayout:
         id: fl
+
         MDMenu:
             id: md_menu
             data: root.items
-            width_mult: root.width_mult
+            width_mult: .5#root.width_mult
             size_hint: None, None
-            size: 0,0
+            size: 0, 0
+
             canvas.before:
                 Color:
-                    rgba: root.theme_cls.bg_light
+                    rgba: root.background_color
                 Rectangle:
                     size: self.size
                     pos: self.pos
@@ -84,33 +105,45 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     '''Margin between Window border and menu
     '''
 
-    ver_growth = OptionProperty(None, allownone=True,
-                                options=['up', 'down'])
+    ver_growth = OptionProperty(
+        None, allownone=True, options=['up', 'down'])
     '''Where the menu will grow vertically to when opening
 
     Set to None to let the widget pick for you. Defaults to None.
     '''
 
-    hor_growth = OptionProperty(None, allownone=True,
-                                options=['left', 'right'])
+    hor_growth = OptionProperty(
+        None, allownone=True, options=['left', 'right'])
     '''Where the menu will grow horizontally to when opening
 
     Set to None to let the widget pick for you. Defaults to None.
     '''
 
-    def open(self, *largs):
+    background_color = ListProperty()
+    '''Color of the background of the menu
+    '''
+
+    def __init__(self, **kwargs):
+        super(MDDropdownMenu, self).__init__(**kwargs)
+        if not len(self.background_color):
+            self.background_color = self.theme_cls.primary_color
+
+    def open(self, *args):
         Window.add_widget(self)
-        Clock.schedule_once(lambda x: self.display_menu(largs[0]), -1)
+        Clock.schedule_once(lambda x: self.display_menu(args[0]), -1)
 
     def display_menu(self, caller):
         # We need to pick a starting point, see how big we need to be,
         # and where to grow to.
+        c = caller.to_window(
+            caller.center_x, caller.center_y)  # Starting coords
 
-        c = caller.to_window(caller.center_x,
-                             caller.center_y)  # Starting coords
-
-        # ---ESTABLISH INITIAL TARGET SIZE ESTIMATE---
+        # TODO: ESTABLISH INITIAL TARGET SIZE ESTIMATE
         target_width = self.width_mult * m_res.STANDARD_INCREMENT
+        #md_menu = self.ids.md_menu
+        #opts = md_menu.layout_manager.view_opts
+        #md_item = md_menu.view_adapter.get_view(1, md_menu.data[1], opts[1]['viewclass'])
+
         # If we're wider than the Window...
         if target_width > Window.width:
             # ...reduce our multiplier to max allowed.
@@ -172,15 +205,15 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
             tar_x = c[0]
         else:  # should always be 'left'
             tar_x = c[0] - target_width
-        anim = Animation(x=tar_x, y=tar_y,
-                         width=target_width, height=target_height,
-                         duration=.3, transition='out_quint')
-        menu = self.ids['md_menu']
+        anim = Animation(
+            x=tar_x, y=tar_y, width=target_width, height=target_height,
+            duration=.3, transition='out_quint')
+        menu = self.ids.md_menu
         menu.pos = c
         anim.start(menu)
 
     def on_touch_down(self, touch):
-        if not self.ids['md_menu'].collide_point(*touch.pos):
+        if not self.ids.md_menu.collide_point(*touch.pos):
             self.dismiss()
             return True
         super(MDDropdownMenu, self).on_touch_down(touch)

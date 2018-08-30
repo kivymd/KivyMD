@@ -43,7 +43,8 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
 #### What's new in version 0.1.3:
 * Added dialog for text input;
-* Added "Yes/No" dialog
+* Added "Yes/No" dialog;
+* Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
 
 License
 =======

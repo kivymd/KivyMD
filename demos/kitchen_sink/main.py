@@ -60,10 +60,13 @@ main_widget_kv = '''
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
 
+
 NavigationLayout:
     id: nav_layout
+
     MDNavigationDrawer:
         id: nav_drawer
+
         NavigationDrawerToolbar:
             title: "Navigation Drawer"
         NavigationDrawerIconButton:
@@ -150,8 +153,10 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Toolbars"
             on_release: app.root.ids.scr_mngr.current = 'toolbar'
+
     BoxLayout:
         orientation: 'vertical'
+
         Toolbar:
             id: toolbar
             title: 'KivyMD Kitchen Sink'
@@ -160,10 +165,13 @@ NavigationLayout:
             background_hue: '500'
             left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
             right_action_items: [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
+
         ScreenManager:
             id: scr_mngr
+
             Screen:
                 name: 'bottomsheet'
+
                 MDRaisedButton:
                     text: "Open list bottom sheet"
                     opposite_colors: True
@@ -171,6 +179,7 @@ NavigationLayout:
                     size: 4 * dp(48), dp(48)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                     on_release: app.show_example_bottom_sheet()
+
                 MDRaisedButton:
                     text: "Open grid bottom sheet"
                     opposite_colors: True
@@ -178,42 +187,51 @@ NavigationLayout:
                     size: 4 * dp(48), dp(48)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.3}
                     on_release: app.show_example_grid_bottom_sheet()
+
             Screen:
                 name: 'button'
+
                 BoxLayout:
                     size_hint: None, None
                     size: '88dp', '48dp'
                     padding: '12dp'
                     pos_hint: {'center_x': 0.75, 'center_y': 0.8}
+
                     MDLabel:
                         font_style: 'Body1'
                         theme_text_color: 'Primary'
                         text: "Disable buttons"
                         size_hint_x:None
                         width: '56dp'
+
                     MDCheckbox:
                         id: disable_the_buttons
+
                 MDIconButton:
                     icon: 'sd'
                     pos_hint: {'center_x': 0.25, 'center_y': 0.8}
                     disabled: disable_the_buttons.active
+
                 MDFlatButton:
                     text: 'MDFlatButton'
                     pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                     disabled: disable_the_buttons.active
+
                 MDRaisedButton:
                     text: "MDRaisedButton"
                     elevation_normal: 2
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                     disabled: disable_the_buttons.active
+
                 MDFloatingActionButton:
-                    id:                    float_act_btn
-                    icon:                'plus'
-                    opposite_colors:    True
-                    elevation_normal:    8
-                    pos_hint:            {'center_x': 0.5, 'center_y': 0.2}
+                    id: float_act_btn
+                    icon: 'plus'
+                    opposite_colors: True
+                    elevation_normal: 8
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
                     disabled: disable_the_buttons.active
+
             Screen:
                 name: 'card'
                 MDCard:
@@ -493,43 +511,55 @@ NavigationLayout:
                             AvatarSampleWidget:
                                 source: './assets/avatar.png'
                             IconRightSampleWidget:
+
+            ###################################################################
+            #
+            #                             MENUS
+            #
+            ###################################################################
+
             Screen:
                 name: 'menu'
+
                 MDRaisedButton:
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
                     text: 'Open menu'
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.1, 'center_y': 0.9}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+                    pos_hint: {'center_x': 0.2, 'center_y': 0.9}
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+
                 MDRaisedButton:
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
                     text: 'Open menu'
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.1, 'center_y': 0.1}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+                    pos_hint: {'center_x': 0.2, 'center_y': 0.1}
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+
                 MDRaisedButton:
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
                     text: 'Open menu'
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.9, 'center_y': 0.1}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+                    pos_hint: {'center_x': 0.8, 'center_y': 0.1}
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+
                 MDRaisedButton:
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
                     text: 'Open menu'
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.9, 'center_y': 0.9}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+                    pos_hint: {'center_x': 0.8, 'center_y': 0.9}
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+
                 MDRaisedButton:
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
 
             Screen:
                 name: 'progress'
@@ -952,22 +982,18 @@ class KitchenSink(App):
     previous_date = ObjectProperty()
     title = "KivyMD Kitchen Sink"
 
-    menu_items = [
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-        {'viewclass': 'MDMenuItem',
-         'text': 'Example item'},
-    ]
+    def __init__(self, **kwargs):
+        super(KitchenSink, self).__init__(**kwargs)
+
+        self.menu_items = [
+            {'viewclass': 'MDMenuItem',
+             'text': 'Example item %d' % i,
+             'callback': self.callback_for_menu_items}
+            for i in range(15)
+        ]
+
+    def callback_for_menu_items(self, text_item):
+        print(text_item)
 
     def build(self):
         main_widget = Builder.load_string(main_widget_kv)

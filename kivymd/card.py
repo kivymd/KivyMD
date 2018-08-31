@@ -172,11 +172,13 @@ class CardPost(MDCard):
         MDDropdownMenu(items=self.right_menu, width_mult=2).open(instance)
 
     def _update_likes_stars(self, index_star):
+        i = 0
         for instance_like_star in self._list_instance_likes_stars:
             if int(instance_like_star.id) <= index_star:
                 if instance_like_star.source == './assets/star_out.png':
                     instance_like_star.source = './assets/star_down.png'
                     instance_like_star.reload()
+                    i = 1
                 else:
                     if int(instance_like_star.id) == index_star:
                         instance_like_star.source = './assets/star_out.png'
@@ -185,4 +187,4 @@ class CardPost(MDCard):
                 if instance_like_star.source == './assets/star_down.png':
                     instance_like_star.source = './assets/star_out.png'
                     instance_like_star.reload()
-        self.callback_on_star(index_star)
+        self.callback_on_star(index_star + i)

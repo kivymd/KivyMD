@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from kivy.app import App
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.config import Config
 from kivy.utils import get_hex_from_color
+
+from kivymd.card import CardPost
 
 Config.set('kivy', 'keyboard_mode', 'system')
 
@@ -44,6 +47,7 @@ main_widget_kv = '''
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDCard kivymd.card.MDCard
+#:import CardPost kivymd.card.CardPost
 #:import MDSeparator kivymd.card.MDSeparator
 #:import MDDropdownMenu kivymd.menu.MDDropdownMenu
 #:import get_color_from_hex kivy.utils.get_color_from_hex
@@ -232,30 +236,33 @@ NavigationLayout:
                     pos_hint: {'center_x': 0.5, 'center_y': 0.2}
                     disabled: disable_the_buttons.active
 
+            ###################################################################
+            #
+            #                            CARDS
+            #
+            ###################################################################
+
             Screen:
                 name: 'card'
-                MDCard:
-                    size_hint: None, None
-                    size:     dp(320), dp(180)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
-                MDCard:
-                    size_hint: None, None
-                    size: dp(320), dp(180)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.3}
-                    BoxLayout:
-                        orientation:'vertical'
-                        padding: dp(8)
-                        MDLabel:
-                            text: 'Title'
-                            theme_text_color: 'Secondary'
-                            font_style:"Title"
-                            size_hint_y: None
-                            height: dp(36)
-                        MDSeparator:
-                            height: dp(1)
-                        MDLabel:
-                            text: 'Body'
-                            theme_text_color: 'Primary'
+                on_enter: app.add_cards(grid_card)
+                on_leave: grid_card.clear_widgets()
+
+                ScrollView:
+                    id: scroll
+                    size_hint: 1, 1
+                    do_scroll_x: False
+
+                    GridLayout:
+                        id: grid_card
+                        cols: 1
+                        spacing: dp(5)
+                        padding: dp(5)
+                        size_hint_y: None
+                        height: self.minimum_height
+
+                        # See how to add a card with the menu and others
+                        # in the add_cards function.
+
             Screen:
                 name: 'slider'
                 BoxLayout:
@@ -273,7 +280,7 @@ NavigationLayout:
 
             ###################################################################
             #
-            #                         DIALOGS
+            #                            DIALOGS
             #
             ###################################################################
 
@@ -564,10 +571,10 @@ NavigationLayout:
             Screen:
                 name: 'progress'
                 MDCheckbox:
-                    id:            chkbox
-                    size_hint:    None, None
-                    size:        dp(48), dp(48)
-                    pos_hint:    {'center_x': 0.5, 'center_y': 0.4}
+                    id: chkbox
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                     active: True
                 MDSpinner:
                     id: spinner
@@ -606,22 +613,22 @@ NavigationLayout:
             Screen:
                 name: 'selectioncontrols'
                 MDCheckbox:
-                    id:            grp_chkbox_1
-                    group:        'test'
-                    size_hint:    None, None
-                    size:        dp(48), dp(48)
-                    pos_hint:    {'center_x': 0.25, 'center_y': 0.5}
+                    id: grp_chkbox_1
+                    group: 'test'
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.25, 'center_y': 0.5}
                 MDCheckbox:
-                    id:            grp_chkbox_2
-                    group:        'test'
-                    size_hint:    None, None
-                    size:        dp(48), dp(48)
-                    pos_hint:    {'center_x': 0.5, 'center_y': 0.5}
+                    id: grp_chkbox_2
+                    group: 'test'
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                 MDSwitch:
-                    size_hint:    None, None
-                    size:        dp(36), dp(48)
-                    pos_hint:    {'center_x': 0.75, 'center_y': 0.5}
-                    _active:        False
+                    size_hint: None, None
+                    size: dp(36), dp(48)
+                    pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+                    _active: False
 
             Screen:
                 name: 'snackbar'
@@ -991,9 +998,35 @@ class KitchenSink(App):
              'callback': self.callback_for_menu_items}
             for i in range(15)
         ]
+        self.Window = Window
 
     def callback_for_menu_items(self, text_item):
         print(text_item)
+
+    def add_cards(self, instance_grid_card):
+        def callback_on_star(index_star):
+            """
+            :param index_star: star index; begins from scratch;
+            :type index_star: int;
+
+            """
+
+            print(index_star)
+
+        instance_grid_card.add_widget(CardPost())
+
+        # Card with a button to open the menu MDDropDown.
+        menu_items = [
+            {'viewclass': 'MDMenuItem',
+             'text': 'Example item %d' % i,
+             'callback': self.callback_for_menu_items}
+            for i in range(2)
+        ]
+        instance_grid_card.add_widget(CardPost(right_menu=menu_items))
+
+        # Card with asterisks for voting.
+        instance_grid_card.add_widget(
+            CardPost(likes_stars=True, callback_on_star=callback_on_star))
 
     def build(self):
         main_widget = Builder.load_string(main_widget_kv)

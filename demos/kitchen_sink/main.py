@@ -23,6 +23,7 @@ from kivymd.snackbar import Snackbar
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
 from kivymd.card import CardPost
+from kivymd.toast import toast
 
 
 main_widget_kv = '''
@@ -999,7 +1000,7 @@ class KitchenSink(App):
         self.Window = Window
 
     def callback_for_menu_items(self, text_item):
-        print(text_item)
+        toast(text_item)
 
     def add_cards(self, instance_grid_card):
         def callback_on_star(index_star):
@@ -1009,7 +1010,7 @@ class KitchenSink(App):
 
             """
 
-            print(index_star)
+            toast('Set like in %d stars' % index_star)
 
         instance_grid_card.add_widget(CardPost())
 

@@ -8,9 +8,6 @@ from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.config import Config
 from kivy.utils import get_hex_from_color
-
-from kivymd.card import CardPost
-
 Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
@@ -25,6 +22,7 @@ from kivymd.selectioncontrols import MDCheckbox
 from kivymd.snackbar import Snackbar
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
+from kivymd.card import CardPost
 
 
 main_widget_kv = '''

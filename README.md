@@ -39,7 +39,7 @@ Replace "python" with the Python interpreter you want to install KivyMD on (Pyth
 
 If you want to use KivyMD with buildozer, in your buildozer.spec's requirements line you should add the full git HTTPS address, like this example:
 
-    requirements = kivy==master,git+https://gitlab.com/kivymd/KivyMD.git
+    requirements = kivy==master,git+https://github.com/HeaTTheatR/KivyMD.git
 
 #### What's new in version 0.1.3:
 * Added dialog for text input;

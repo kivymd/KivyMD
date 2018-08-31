@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 '''
 Buttons
 =======
@@ -9,16 +10,16 @@ Buttons
 
 TO-DO: DOCUMENT MODULE
 '''
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 from kivy.properties import StringProperty, BoundedNumericProperty, \
     ListProperty, AliasProperty, BooleanProperty, NumericProperty, \
-    OptionProperty, ReferenceListProperty
+    OptionProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior, \
@@ -26,20 +27,25 @@ from kivymd.ripplebehavior import CircularRippleBehavior, \
 from kivymd.elevationbehavior import CommonElevationBehavior, \
     RectangularElevationBehavior, CircularElevationBehavior
 from kivymd.theming import ThemableBehavior
-from kivymd.color_definitions import colors
+
 
 Builder.load_string('''
 #:import md_icons kivymd.icon_definitions.md_icons
 #:import colors kivymd.color_definitions.colors
 #:import MDLabel kivymd.label.MDLabel
+
+
 <BaseButton>:
     size_hint: (None, None)
     anchor_x: 'center'
     anchor_y: 'center'
 
+
 <BaseFlatButton>:
 
+
 <BaseRaisedButton>:
+
 
 <BaseRoundButton>:
     canvas:
@@ -49,10 +55,12 @@ Builder.load_string('''
         Ellipse:
             size: self.size
             pos: self.pos
+
     size: (dp(48), dp(48))
     content: content
     padding: dp(12)
     theme_text_color: 'Primary'
+
     MDLabel:
         id: content
         font_style: 'Icon'
@@ -64,6 +72,7 @@ Builder.load_string('''
         halign: 'center'
         opposite_colors: root.opposite_colors
 
+
 <BaseRectangularButton>:
     canvas:
         Clear
@@ -73,11 +82,13 @@ Builder.load_string('''
             size: self.size
             pos: self.pos
             radius: (dp(2),)
+
     content: content
     height: dp(36)
     width: content.texture_size[0] + dp(32)
     padding: (dp(8), 0)
     theme_text_color: 'Primary'
+
     MDLabel:
         id: content
         text: root._capitalized_text
@@ -92,10 +103,12 @@ Builder.load_string('''
         halign: 'center'
         opposite_colors: root.opposite_colors
 
+
 <MDRaisedButton>:
     md_bg_color: root.theme_cls.primary_color
     theme_text_color: 'Custom'
     text_color: root.specific_text_color
+
 
 <MDFloatingActionButton>:
     # Defaults to 56-by-56 and a backround of the accent color according to
@@ -103,8 +116,7 @@ Builder.load_string('''
     size: (dp(56), dp(56))
     md_bg_color: root.theme_cls.accent_color
     theme_text_color: 'Custom'
-    text_color: root.specific_text_color
-''')
+    text_color: root.specific_text_color''')
 
 
 class BaseButton(ThemableBehavior, ButtonBehavior,
@@ -114,6 +126,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
     colors (disabled/down colors handled in children classes as those depend on
     type of button) as well as the disabled state.
     '''
+
     _md_bg_color_down = ListProperty(None, allownone=True)
     _md_bg_color_disabled = ListProperty(None, allownone=True)
     _current_button_color = ListProperty([0., 0., 0., 0.])
@@ -184,6 +197,7 @@ class BasePressedButton(BaseButton):
     Abstract base class for those button which fade to a background color on
     press.
     '''
+
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
             return False
@@ -248,6 +262,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
     Implements elevation behavior as well as the recommended down/disabled
     colors for raised buttons.
     '''
+
     def __init__(self, **kwargs):
         if self.elevation_raised == 0 and self.elevation_normal + 6 <= 12:
             self.elevation_raised = self.elevation_normal + 6
@@ -338,6 +353,7 @@ class BaseRoundButton(CircularRippleBehavior, BaseButton):
     Abstract base class for all round buttons, bringing in the appropriate
     on-touch behavior
     '''
+
     pass
 
 
@@ -347,6 +363,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     appropriate on-touch behavior. Also maintains the correct minimum width
     as stated in guidelines.
     '''
+
     width = BoundedNumericProperty(dp(88), min=dp(88), max=None,
                                    errorhandler=lambda x: dp(88))
     text = StringProperty('')

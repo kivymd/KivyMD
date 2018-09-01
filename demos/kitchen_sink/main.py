@@ -3,7 +3,6 @@
 import os
 
 from kivy.app import App
-from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -12,6 +11,9 @@ from kivy.uix.image import Image
 from kivy.config import Config
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
+
+from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+
 Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
@@ -95,6 +97,10 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Buttons"
             on_release: app.root.ids.scr_mngr.current = 'button'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Stack Floating Buttons"
+            on_release: app.root.ids.scr_mngr.current = 'stack buttons'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
             text: "Files Manager"
@@ -206,6 +212,22 @@ NavigationLayout:
                     pos_hint: {'center_x': 0.5, 'center_y': 0.3}
                     on_release: app.show_example_grid_bottom_sheet()
 
+            ###################################################################
+            #
+            #                     STACK FLOATING BUTTONS
+            #
+            ###################################################################
+
+            Screen:
+                name: 'stack buttons'
+                on_enter: app.example_add_stack_floating_buttons()
+
+            ###################################################################
+            #
+            #                            BUTTONS
+            #
+            ###################################################################
+
             Screen:
                 name: 'button'
 
@@ -277,8 +299,15 @@ NavigationLayout:
                         # See how to add a card with the menu and others
                         # in the add_cards function.
 
+            ###################################################################
+            #
+            #                          SLIDEER
+            #
+            ###################################################################
+
             Screen:
                 name: 'slider'
+
                 BoxLayout:
                     MDSlider:
                         id: hslider
@@ -354,10 +383,18 @@ NavigationLayout:
                     opposite_colors: True
                     on_release: app.show_example_okcancel_dialog()
 
+            ###################################################################
+            #
+            #                             GRID
+            #
+            ###################################################################
+
             Screen:
                 name: 'grid'
+
                 ScrollView:
                     do_scroll_x: False
+
                     GridLayout:
                         cols: 3
                         row_default_height: (self.width - self.cols*self.spacing[0])/self.cols
@@ -366,6 +403,7 @@ NavigationLayout:
                         height: self.minimum_height
                         padding: dp(4), dp(4)
                         spacing: dp(4)
+
                         SmartTileWithLabel:
                             mipmap: True
                             source: './assets/african-lion-951778_1280.jpg'
@@ -391,10 +429,19 @@ NavigationLayout:
                         SmartTile:
                             mipmap: True
                             source: './assets/tangerines-1111529_1280.jpg'
+
+            ###################################################################
+            #
+            #                             LABELS
+            #
+            ###################################################################
+
             Screen:
                 name: 'labels'
+
                 ScrollView:
                     do_scroll_x: False
+
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint_y: None
@@ -489,10 +536,18 @@ NavigationLayout:
                             text: "Custom"
                             halign: 'center'
 
+            ###################################################################
+            #
+            #                             LISTS
+            #
+            ###################################################################
+
             Screen:
                 name: 'list'
+
                 ScrollView:
                     do_scroll_x: False
+
                     MDList:
                         id: ml
                         OneLineListItem:
@@ -1056,7 +1111,23 @@ class KitchenSink(App):
         self.manager = False
         self.manager_open = False
         self.file_manager = None
+        self.create_stack_floating_buttons = False
         Window.bind(on_keyboard=self.events)
+
+    def example_add_stack_floating_buttons(self):
+        def set_my_language(instance_button):
+            toast(instance_button.icon)
+
+        screen = self.main_widget.ids.scr_mngr.get_screen('stack buttons')
+        if not self.create_stack_floating_buttons:
+            screen.add_widget(MDStackFloatingButtons(
+                icon='lead-pencil',
+                floating_data={
+                    'Python': 'language-python',
+                    'Php': 'language-php',
+                    'C++': 'language-cpp'},
+                callback=set_my_language))
+            self.create_stack_floating_buttons = True
 
     def set_chevron_back_screen(self):
         '''Sets the return chevron to the previous screen in ToolBar.'''

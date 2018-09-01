@@ -83,6 +83,7 @@ class MDStackFloatingButtons(FloatLayout):
     callback = ObjectProperty(lambda x: None)
     floating_data = DictProperty()
     show = False
+    in_progress = False
 
     def __init__(self, **kwargs):
         super(MDStackFloatingButtons, self).__init__(**kwargs)
@@ -90,11 +91,20 @@ class MDStackFloatingButtons(FloatLayout):
         self.lbl_list = [self.ids.f_lbl_1, self.ids.f_lbl_2, self.ids.f_lbl_3]
         self.btn_list = [self.ids.f_btn_1, self.ids.f_btn_2, self.ids.f_btn_3]
 
+    def set_in_progress(self, instance_anim, instance):
+        if instance is self.ids.f_btn_3:
+            self.in_progress = False
+
     def show_floating_buttons(self):
         step = dp(46)
-        for btn in self.btn_list:
+        if self.in_progress:
+            return
+        self.in_progress = True
+        for i, btn in enumerate(self.btn_list):
             step += dp(56)
-            Animation(y=step, d=.5, t='out_elastic').start(btn)
+            anim = Animation(y=step, d=.5, t='out_elastic')
+            anim.bind(on_complete=self.set_in_progress)
+            anim.start(btn)
 
         self.show = True if not self.show else False
         self.show_floating_labels() if self.show \

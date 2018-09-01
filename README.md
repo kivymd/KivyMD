@@ -46,6 +46,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Added "Yes/No" dialog;
 * Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
 * Added new ready-to-use cards;
+* Added new class MDFileManager for selecting directories and files;
 
 License
 =======

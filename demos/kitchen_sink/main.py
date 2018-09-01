@@ -302,14 +302,16 @@ NavigationLayout:
             Screen:
                 name: 'download file'
 
-                MDRaisedButton:
-                    text: "Download file"
-                    size_hint: None, None
-                    size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
-                    opposite_colors: True
-                    on_release:
-                        Clock.schedule_once(app.show_example_download_file, .1)
+                FloatLayout:
+                    id: box_flt
+
+                    MDRaisedButton:
+                        text: "Download file"
+                        size_hint: None, None
+                        size: 3 * dp(48), dp(48)
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        opposite_colors: True
+                        on_release: Clock.schedule_once(app.show_example_download_file, .1)
 
             ###################################################################
             #
@@ -1065,7 +1067,6 @@ class KitchenSink(App):
     def download_progress_hide(self, instance_progress, value):
         '''Hides progress progress.'''
 
-        instance_progress.dismiss()
         self.main_widget.ids.toolbar.right_action_items = \
             [['download',
                 lambda x: self.download_progress_show(instance_progress)]]
@@ -1083,9 +1084,7 @@ class KitchenSink(App):
             download_complete=self.download_complete,
             download_hide=self.download_progress_hide
         )
-        progress.open()
-        Clock.schedule_once(progress.download_start, .1)
-        progress.animation_progress_from_fade()
+        progress.start(self.main_widget.ids.box_flt)
 
     def download_complete(self):
         self.set_chevron_back_screen()

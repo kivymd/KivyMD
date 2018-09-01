@@ -7,7 +7,11 @@ from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.config import Config
+from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
+
+from kivymd.filemanager import MDFileManager
+
 Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
@@ -26,7 +30,7 @@ from kivymd.card import CardPost
 from kivymd.toast import toast
 
 
-main_widget_kv = '''
+main_widget_kv = """
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
@@ -88,6 +92,10 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Buttons"
             on_release: app.root.ids.scr_mngr.current = 'button'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Files Manager"
+            on_release: app.root.ids.scr_mngr.current = 'files manager'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
             text: "Cards"
@@ -517,6 +525,25 @@ NavigationLayout:
                             AvatarSampleWidget:
                                 source: './assets/avatar.png'
                             IconRightSampleWidget:
+
+            ###################################################################
+            #
+            #                         FILES MANAGER
+            #
+            #       See the help on using the file in the file filemanager.py
+            #
+            ###################################################################
+
+            Screen:
+                name: 'files manager'
+
+                MDRaisedButton:
+                    size_hint: None, None
+                    size: 3 * dp(48), dp(48)
+                    text: 'Open files manager'
+                    opposite_colors: True
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    on_release: app.file_manager_open()
 
             ###################################################################
             #
@@ -964,7 +991,7 @@ NavigationLayout:
                         text: "NavigationDrawerDivider \/"
                     NavigationDrawerDivider:
 
-'''
+"""
 
 
 class HackedDemoNavDrawer(MDNavigationDrawer):
@@ -998,6 +1025,46 @@ class KitchenSink(App):
             for i in range(15)
         ]
         self.Window = Window
+        self.manager = False
+        self.manager_open = False
+        self.file_manager = None
+        Window.bind(on_keyboard=self.events)
+
+    def file_manager_open(self):
+        self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
+        self.file_manager = MDFileManager(
+            exit_manager=self.exit_manager, select_path=self.select_path,
+            floating_button_color=self.theme_cls.primary_color)
+        self.file_manager.show('/')  # output manager to the screen
+        self.manager_open = True
+        self.manager.add_widget(self.file_manager)
+        self.manager.open()
+
+    def select_path(self, path):
+        """It will be called when you click on the file name
+        or the catalog selection button.
+
+        :type path: str;
+        :param path: path to the selected directory or file;
+
+        """
+
+        self.exit_manager()
+        toast(path)
+
+    def exit_manager(self, *args):
+        """Called when the user reaches the root of the directory tree."""
+
+        self.manager.dismiss()
+        self.manager_open = False
+
+    def events(self, instance, keyboard, keycode, text, modifiers):
+        """Called when buttons are pressed on the mobile device.."""
+
+        if keyboard in (1001, 27):
+            if self.manager_open:
+                self.file_manager.back()
+        return True
 
     def callback_for_menu_items(self, text_item):
         toast(text_item)

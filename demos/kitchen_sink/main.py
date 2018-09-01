@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -9,9 +12,6 @@ from kivy.uix.image import Image
 from kivy.config import Config
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
-
-from kivymd.filemanager import MDFileManager
-
 Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
@@ -28,9 +28,12 @@ from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
 from kivymd.card import CardPost
 from kivymd.toast import toast
+from kivymd.filemanager import MDFileManager
+from kivymd.progressloader import MDProgressLoader
 
 
 main_widget_kv = """
+#:import Clock kivy.clock.Clock
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
@@ -96,6 +99,10 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Files Manager"
             on_release: app.root.ids.scr_mngr.current = 'files manager'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Download File"
+            on_release: app.root.ids.scr_mngr.current = 'download file'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
             text: "Cards"
@@ -284,6 +291,25 @@ NavigationLayout:
                         min:0
                         max:100
                         value: hslider.value
+
+
+            ###################################################################
+            #
+            #                        DOWNLOAD FILE
+            #
+            ###################################################################
+
+            Screen:
+                name: 'download file'
+
+                MDRaisedButton:
+                    text: "Download file"
+                    size_hint: None, None
+                    size: 3 * dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+                    opposite_colors: True
+                    on_release:
+                        Clock.schedule_once(app.show_example_download_file, .1)
 
             ###################################################################
             #
@@ -1030,6 +1056,41 @@ class KitchenSink(App):
         self.file_manager = None
         Window.bind(on_keyboard=self.events)
 
+    def set_chevron_back_screen(self):
+        '''Sets the return chevron to the previous screen in ToolBar.'''
+
+        self.main_widget.ids.toolbar.right_action_items = [
+            ['dots-vertical', lambda x: self.root.toggle_nav_drawer()]]
+
+    def download_progress_hide(self, instance_progress, value):
+        '''Hides progress progress.'''
+
+        instance_progress.dismiss()
+        self.main_widget.ids.toolbar.right_action_items = \
+            [['download',
+                lambda x: self.download_progress_show(instance_progress)]]
+
+    def download_progress_show(self, instance_progress):
+        self.set_chevron_back_screen()
+        instance_progress.open()
+        instance_progress.animation_progress_from_fade()
+
+    def show_example_download_file(self, interval):
+        link = 'https://www.python.org/ftp/python/3.5.1/python-3.5.1-embed-win32.zip'
+        progress = MDProgressLoader(
+            url_on_image=link,
+            path_to_file=os.path.join(self.directory, 'python-3.5.1.zip'),
+            download_complete=self.download_complete,
+            download_hide=self.download_progress_hide
+        )
+        progress.open()
+        Clock.schedule_once(progress.download_start, .1)
+        progress.animation_progress_from_fade()
+
+    def download_complete(self):
+        self.set_chevron_back_screen()
+        toast('Done')
+
     def file_manager_open(self):
         self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
         self.file_manager = MDFileManager(
@@ -1095,14 +1156,14 @@ class KitchenSink(App):
             CardPost(likes_stars=True, callback_on_star=callback_on_star))
 
     def build(self):
-        main_widget = Builder.load_string(main_widget_kv)
+        self.main_widget = Builder.load_string(main_widget_kv)
         # self.theme_cls.theme_style = 'Dark'
 
-        main_widget.ids.text_field_error.bind(
+        self.main_widget.ids.text_field_error.bind(
             on_text_validate=self.set_error_message,
             on_focus=self.set_error_message)
-        self.bottom_navigation_remove_mobile(main_widget)
-        return main_widget
+        self.bottom_navigation_remove_mobile(self.main_widget)
+        return self.main_widget
 
     def bottom_navigation_remove_mobile(self, widget):
         # Removes some items from bottom-navigation demo when on mobile

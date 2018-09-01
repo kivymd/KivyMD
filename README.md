@@ -48,6 +48,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Added new ready-to-use cards;
 * Added new class MDFileManager for selecting directories and files;
 * Added new class MDProgressLoader for downloads files from the server;
+* Added new class MDStackFloatingButtons;
 
 License
 =======

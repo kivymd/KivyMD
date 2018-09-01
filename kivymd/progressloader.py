@@ -19,7 +19,6 @@ EXAMPLE:
 import os
 
 from kivy.app import App
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.factory import Factory
 
@@ -45,14 +44,14 @@ Builder.load_string(
         elevation: 10
         md_bg_color: app.theme_cls.primary_color
 
-    AnchorLayout:
-        anchor_x: 'center'
-        anchor_y: 'center'
+    FloatLayout:
+        id: box
 
         MDRaisedButton:
             text: "Download file"
             size_hint: None, None
             size: 3 * dp(48), dp(48)
+            pos_hint: {'center_x': .5, 'center_y': .5}
             opposite_colors: True
             on_release: app.show_example_download_file()
 ''')
@@ -76,7 +75,6 @@ class Test(App):
     def download_progress_hide(self, instance_progress, value):
         '''Hides progress progress.'''
 
-        instance_progress.dismiss()
         self.main_widget.ids.toolbar.right_action_items = \
             [['download',
                 lambda x: self.download_progress_show(instance_progress)]]
@@ -94,9 +92,7 @@ class Test(App):
             download_complete=self.download_complete,
             download_hide=self.download_progress_hide
         )
-        progress.open()
-        Clock.schedule_once(progress.download_start, .1)
-        progress.animation_progress_from_fade()
+        progress.start(self.main_widget.ids.box)
 
     def download_complete(self):
         self.set_chevron_back_screen()
@@ -107,16 +103,14 @@ Test().run()
 
 """
 
-import os
-
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.network.urlrequest import UrlRequest
-from kivy.uix.modalview import ModalView
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
 
+from kivymd.card import MDCard
 
 Builder.load_string('''
 #:import Window kivy.core.window.Window
@@ -126,43 +120,43 @@ Builder.load_string('''
 
 
 <MDProgressLoader>:
-    size_hint: .8, None
+    pos: (Window.width // 2) - (self.width // 2), (Window.height // 2) - (self.height // 2)
+    size_hint_y: None
+    size_hint_x: .8
     height: spinner.height + dp(20)
-    auto_dismiss: False
-    background: 'images/transparent.png'
+    spacing: dp(10)
+    padding: dp(10)
 
-    FloatLayout:
+    canvas:
+        Color:
+            rgba: app.theme_cls.primary_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
 
-        MDCard:
-            id: window_progress
-            pos: (Window.width // 2) - (self.width // 2), (Window.height // 2) - (self.height // 2)
-            size_hint_y: None
-            size_hint_x: .8
-            height: spinner.height + dp(20)
-            spacing: dp(10)
-            padding: dp(10)#, dp(50), dp(10), dp(20)
+    MDSpinner
+        id: spinner
+        size_hint: None, None
+        size: dp(46), dp(46)
+        color: 1, 1, 1, 1
 
-            MDSpinner
-                id: spinner
-                size_hint: None, None
-                size: dp(46), dp(46)
+    MDLabel:
+        id: label_download
+        shorten: True
+        max_lines: 1
+        halign: 'left'
+        valign: 'top'
+        text_size: self.width, None
+        size_hint_y: None
+        height: spinner.height
+        size_hint_x: .8
 
-            MDLabel:
-                id: label_download
-                shorten: True
-                max_lines: 1
-                halign: 'left'
-                valign: 'top'
-                text_size: self.width, None
-                size_hint_y: None
-                height: spinner.height
-
-            Widget:
-                size_hint_x: .1
+    Widget:
+        size_hint_x: .1
 ''')
 
 
-class MDProgressLoader(ModalView):
+class MDProgressLoader(MDCard):
     path_to_file = StringProperty()
     '''The path to which the uploaded file will be saved.'''
 
@@ -183,12 +177,17 @@ class MDProgressLoader(ModalView):
 
     def __init__(self, **kwargs):
         super(MDProgressLoader, self).__init__(**kwargs)
+        self.root_instance = None
 
-    def download_start(self, *args):
+    def start(self, root_instance):
+        self.root_instance = root_instance
         self.download_flag = True
+        self.root_instance.add_widget(self)
         self.retrieve_progress_load(self.url_on_image, self.path_to_file)
-        self.open()
         Clock.schedule_once(self.animation_progress_to_fade, 2.5)
+
+    def open(self):
+        self.animation_progress_from_fade()
 
     def draw_progress(self, percent):
         '''
@@ -209,14 +208,14 @@ class MDProgressLoader(ModalView):
             opacity=0, d=0.2, t='out_quad'
         )
         animation.bind(on_complete=lambda x, y: self.download_hide(self, None))
-        animation.start(self.ids.window_progress)
+        animation.start(self)
 
     def animation_progress_from_fade(self):
         animation = Animation(
             center_y=Window.height // 2, center_x=Window.width // 2,
             opacity=1, d=0.2, t='out_quad'
         )
-        animation.start(self.ids.window_progress)
+        animation.start(self)
         Clock.schedule_once(self.animation_progress_to_fade, 2.5)
 
     def retrieve_progress_load(self, url, path):
@@ -237,6 +236,6 @@ class MDProgressLoader(ModalView):
         self.draw_progress(percent)
 
     def on_success(self, req, result):
-        self.dismiss()
+        self.root_instance.remove_widget(self)
         self.download_complete()
         self.download_flag = False

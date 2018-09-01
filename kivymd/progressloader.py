@@ -158,6 +158,7 @@ Builder.load_string('''
                 height: spinner.height
 
             Widget:
+                size_hint_x: .1
 ''')
 
 

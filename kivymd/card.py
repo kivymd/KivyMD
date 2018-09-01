@@ -162,7 +162,7 @@ class CardPost(MDCard):
                 like_star = Icon(
                     source='./assets/star_out.png', size_hint=(None, None),
                     size=(dp(15), dp(15)), id=str(i),
-                    on_release=lambda *x, i=i: self._update_likes_stars(i))
+                    on_release=lambda x=i: self._update_likes_stars(i))
                 self.box_likes_stars.add_widget(like_star)
                 self._list_instance_likes_stars.append(like_star)
             box_likes_stars_right.add_widget(self.box_likes_stars)

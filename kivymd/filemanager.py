@@ -125,10 +125,12 @@ ACTIVITY_MANAGER = '''
 <MDFileManager>:
 
     canvas:
+        Color:
+            rgba:
+                1, 1, 1, 1
         Rectangle:
             size: self.size
             pos: self.pos
-            source: 'images/transparent.png'
 
     BoxLayout:
         size_hint_y: None
@@ -200,21 +202,10 @@ ACTIVITY_MANAGER = '''
             text: root.text
             font_style: root.font_style
             theme_text_color: root.theme_text_color
-            text_color: root.text_color
             size_hint_y: None
             shorten: True
             max_lines: 1
             height: self.texture_size[1]
-
-        MDLabel:
-            id: _lbl_secondary
-            text: '' if root._num_lines == 1 else root.secondary_text
-            font_style: root.secondary_font_style
-            theme_text_color: root.secondary_theme_text_color
-            text_color: root.secondary_text_color
-            size_hint_y: None
-            height: 0 if root._num_lines == 1 else self.texture_size[1]
-            shorten: True if root._num_lines == 2 else False
 
 <ModifiedOneLineIconListItem>:
     BoxLayout:
@@ -357,7 +348,7 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
     pass
 
 
-class MDFileManager(FloatLayout):
+class MDFileManager(ThemableBehavior, FloatLayout):
     home_path = StringProperty(os.path.split(__file__)[0])
 
     icon = StringProperty('check')
@@ -398,9 +389,15 @@ class MDFileManager(FloatLayout):
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = 'Subhead'
 
+    def check_theme(self):
+        print(self.canvas.children)
+        self.canvas.children[0].rgba = \
+            [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
+
     def show(self, path):
         '''Forms the body of a directory tree.'''
 
+        self.check_theme()
         dirs, files = self.get_content(path)
         self.current_path = path
         manager_list = []

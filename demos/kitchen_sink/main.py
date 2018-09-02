@@ -8,13 +8,8 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
-from kivy.config import Config
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
-
-from kivymd.stackfloatingbuttons import MDStackFloatingButtons
-
-Config.set('kivy', 'keyboard_mode', 'system')
 
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
@@ -23,7 +18,8 @@ from kivymd.dialog import MDDialog, MDInputDialog, MDOkCancelDialog
 from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch, BaseListItem
 from kivymd.material_resources import DEVICE_TYPE
-from kivymd.navigationdrawer import MDNavigationDrawer, NavigationDrawerHeaderBase
+from kivymd.navigationdrawer import MDNavigationDrawer, \
+    NavigationDrawerHeaderBase
 from kivymd.selectioncontrols import MDCheckbox
 from kivymd.snackbar import Snackbar
 from kivymd.theming import ThemeManager
@@ -32,6 +28,7 @@ from kivymd.card import CardPost
 from kivymd.toast import toast
 from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
+from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 
 
 main_widget_kv = """
@@ -55,6 +52,7 @@ main_widget_kv = """
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDCard kivymd.card.MDCard
+#:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
 #:import CardPost kivymd.card.CardPost
 #:import MDSeparator kivymd.card.MDSeparator
 #:import MDDropdownMenu kivymd.menu.MDDropdownMenu
@@ -187,6 +185,7 @@ NavigationLayout:
             md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
             background_hue: '500'
+            elevation: 10
             left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
             right_action_items: [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
 
@@ -249,19 +248,19 @@ NavigationLayout:
 
                 MDIconButton:
                     icon: 'sd'
-                    pos_hint: {'center_x': 0.25, 'center_y': 0.8}
+                    pos_hint: {'center_x': 0.25, 'center_y': 0.9}
                     disabled: disable_the_buttons.active
 
                 MDFlatButton:
                     text: 'MDFlatButton'
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
                     disabled: disable_the_buttons.active
 
                 MDRaisedButton:
                     text: "MDRaisedButton"
                     elevation_normal: 2
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                     disabled: disable_the_buttons.active
 
                 MDFloatingActionButton:
@@ -269,7 +268,18 @@ NavigationLayout:
                     icon: 'plus'
                     opposite_colors: True
                     elevation_normal: 8
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.45}
+                    disabled: disable_the_buttons.active
+
+                MDRectangleFlatButton:
+                    text: "MDRectangleFlatButton"
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+                    disabled: disable_the_buttons.active
+
+                MDRectangleFlatIconButton:
+                    text: "I love Python"
+                    icon: "language-python"
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
                     disabled: disable_the_buttons.active
 
             ###################################################################

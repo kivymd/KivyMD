@@ -390,7 +390,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         toolbar_label.font_style = 'Subhead'
 
     def check_theme(self):
-        print(self.canvas.children)
         self.canvas.children[0].rgba = \
             [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
 

@@ -28,8 +28,8 @@ from kivymd.elevationbehavior import CommonElevationBehavior, \
     RectangularElevationBehavior, CircularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
-
 Builder.load_string('''
+#:import Animation kivy.animation.Animation
 #:import md_icons kivymd.icon_definitions.md_icons
 #:import colors kivymd.color_definitions.colors
 #:import MDLabel kivymd.label.MDLabel
@@ -104,6 +104,49 @@ Builder.load_string('''
         opposite_colors: root.opposite_colors
 
 
+<MDRectangleFlatButton>:
+    canvas.before:
+        Color:
+            rgba: root.theme_cls.primary_color
+        Line:
+            width: 1
+            rectangle: (self.x, self.y, self.width, self.height)
+
+    theme_text_color: 'Custom'
+    text_color: root.theme_cls.primary_color
+
+
+<MDRectangleFlatIconButton>:
+    canvas.before:
+        Color:
+            rgba: app.theme_cls.primary_color
+        Line:
+            width: 1
+            rectangle: (self.x, self.y, self.width, self.height)
+    
+    size_hint_x: None
+    width: dp(150)
+
+    BoxLayout:
+        spacing: dp(10)
+ 
+        MDLabel:
+            id: lbl_ic
+            font_name: '/fonts/materialdesignicons-webfont.ttf'
+            font_style: 'Icon'
+            text: u"{}".format(md_icons[root.icon])
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
+            size_hint_x: None
+            width: self.texture_size[0]
+        MDLabel:
+            id: lbl_txt
+            text: root._text
+            shorten: True
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
+
+
 <MDRaisedButton>:
     md_bg_color: root.theme_cls.primary_color
     theme_text_color: 'Custom'
@@ -166,7 +209,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
         self._md_bg_color_down = value
 
     md_bg_color_down = AliasProperty(_call_get_bg_color_down,
-                                          _set_md_bg_color_down)
+                                     _set_md_bg_color_down)
 
     def _call_get_bg_color_disabled(self):
         return self._get_md_bg_color_disabled()
@@ -181,7 +224,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
         self._md_bg_color_disabled = value
 
     md_bg_color_disabled = AliasProperty(_call_get_bg_color_disabled,
-                                              _set_md_bg_color_disabled)
+                                         _set_md_bg_color_disabled)
 
     def on_disabled(self, instance, value):
         if value:
@@ -209,7 +252,7 @@ class BasePressedButton(BaseButton):
             return False
         else:
             self.fade_bg = Animation(duration=.5,
-                    _current_button_color=self.md_bg_color_down)
+                                     _current_button_color=self.md_bg_color_down)
             self.fade_bg.start(self)
             return super(BaseButton, self).on_touch_down(touch)
 
@@ -308,7 +351,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         else:
             self.elevation = self.elevation_normal
         super(BaseRaisedButton, self).on_disabled(instance, value)
-    
+
     def on_touch_down(self, touch):
         if not self.disabled:
             if touch.is_mouse_scrolling:
@@ -390,3 +433,19 @@ class MDFloatingActionButton(BaseRoundButton, CircularElevationBehavior,
                              BaseRaisedButton):
     icon = StringProperty('android')
     background_palette = StringProperty('Accent')
+
+
+class MDRectangleFlatButton(MDFlatButton):
+    pass
+
+
+class MDRectangleFlatIconButton(MDFlatButton):
+    icon = StringProperty('android')
+    text = StringProperty('')
+    _text = StringProperty('')
+
+    def on_text(self, instance, text):
+        # TODO: Add automatic calculation width button/
+        if self._text == '':
+            self._text = text
+            instance.text = ''

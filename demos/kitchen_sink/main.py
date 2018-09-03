@@ -53,6 +53,9 @@ main_widget_kv = """
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDCard kivymd.card.MDCard
 #:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
+#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
+#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
+#:import MDRectangleFlatIconButton kivymd.button.MDRectangleFlatIconButton
 #:import CardPost kivymd.card.CardPost
 #:import MDSeparator kivymd.card.MDSeparator
 #:import MDDropdownMenu kivymd.menu.MDDropdownMenu
@@ -231,56 +234,63 @@ NavigationLayout:
                 name: 'button'
 
                 BoxLayout:
-                    size_hint: None, None
-                    size: '88dp', '48dp'
-                    padding: '12dp'
-                    pos_hint: {'center_x': 0.75, 'center_y': 0.8}
+                    size_hint_y: None
+                    height: '56'
+                    spacing: '10dp'
+                    pos_hint: {'center_y': .9}
 
-                    MDLabel:
-                        font_style: 'Body1'
-                        theme_text_color: 'Primary'
-                        text: "Disable buttons"
-                        size_hint_x:None
-                        width: '56dp'
+                    Widget:
 
-                    MDCheckbox:
-                        id: disable_the_buttons
+                    MDIconButton:
+                        icon: 'sd'
 
-                MDIconButton:
-                    icon: 'sd'
-                    pos_hint: {'center_x': 0.25, 'center_y': 0.9}
-                    disabled: disable_the_buttons.active
+                    MDFloatingActionButton:
+                        icon: 'plus'
+                        opposite_colors: True
+                        elevation_normal: 8
+
+                    MDFloatingActionButton:
+                        icon: 'check'
+                        opposite_colors: True
+                        elevation_normal: 8
+                        md_bg_color: app.theme_cls.primary_color
+
+                    MDIconButton:
+                        icon: 'sd'
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.primary_color
+
+                    Widget:
 
                 MDFlatButton:
                     text: 'MDFlatButton'
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.7}
-                    disabled: disable_the_buttons.active
+                    pos_hint: {'center_x': 0.5, 'center_y': .75}
 
                 MDRaisedButton:
                     text: "MDRaisedButton"
                     elevation_normal: 2
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
-                    disabled: disable_the_buttons.active
-
-                MDFloatingActionButton:
-                    id: float_act_btn
-                    icon: 'plus'
-                    opposite_colors: True
-                    elevation_normal: 8
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.45}
-                    disabled: disable_the_buttons.active
+                    pos_hint: {'center_x': 0.5, 'center_y': .65}
 
                 MDRectangleFlatButton:
                     text: "MDRectangleFlatButton"
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.25}
-                    disabled: disable_the_buttons.active
+                    pos_hint: {'center_x': 0.5, 'center_y': .55}
 
                 MDRectangleFlatIconButton:
                     text: "I love Python"
                     icon: "language-python"
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.1}
-                    disabled: disable_the_buttons.active
+                    pos_hint: {'center_x': 0.5, 'center_y': .45}
+                    pressed_color: 2, 2, 2, 1
+
+                MDRoundFlatButton:
+                    text: "I love Python"
+                    icon: "language-python"
+                    pos_hint: {'center_x': 0.5, 'center_y': .35}
+
+                MDRoundFlatIconButton:
+                    text: "I love Python"
+                    icon: "language-python"
+                    pos_hint: {'center_x': 0.5, 'center_y': .25}
 
             ###################################################################
             #
@@ -311,7 +321,7 @@ NavigationLayout:
 
             ###################################################################
             #
-            #                          SLIDEER
+            #                          SLIDER
             #
             ###################################################################
 

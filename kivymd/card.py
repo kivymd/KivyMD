@@ -91,7 +91,7 @@ Builder.load_string('''
 
 
 class MDSeparator(ThemableBehavior, BoxLayout):
-    """ A separator line """
+    """A separator line"""
 
     def __init__(self, *args, **kwargs):
         super(MDSeparator, self).__init__(*args, **kwargs)

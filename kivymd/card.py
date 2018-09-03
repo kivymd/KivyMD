@@ -163,7 +163,7 @@ class CardPost(MDCard):
             self.add_widget(box_likes_stars_right)
 
     def open_menu(self, instance):
-        MDDropdownMenu(items=self.right_menu, width_mult=2).open(instance)
+        MDDropdownMenu(items=self.right_menu, width_mult=3).open(instance)
 
     def _update_likes_stars(self, index_star):
         i = 0

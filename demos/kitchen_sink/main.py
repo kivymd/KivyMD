@@ -653,7 +653,7 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.2, 'center_y': 0.9}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -661,7 +661,7 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.2, 'center_y': 0.1}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -669,7 +669,7 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.8, 'center_y': 0.1}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -677,7 +677,7 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.8, 'center_y': 0.9}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -685,7 +685,7 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=2).open(self)
+                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
 
             Screen:
                 name: 'progress'

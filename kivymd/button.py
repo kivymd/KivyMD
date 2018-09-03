@@ -12,6 +12,10 @@ TO-DO: DOCUMENT MODULE
 '''
 
 from kivy.clock import Clock
+from kivy.graphics.context_instructions import Color
+from kivy.graphics.stencil_instructions import StencilPush, StencilUse, \
+    StencilPop, StencilUnUse
+from kivy.graphics.vertex_instructions import Line, Ellipse
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
@@ -104,6 +108,18 @@ Builder.load_string('''
         opposite_colors: root.opposite_colors
 
 
+<MDRoundFlatButton>:
+    canvas.before:
+        Color:
+            rgba: root.theme_cls.primary_color
+        Line:
+            width: 1
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 20, 20, 20, 20, self.height)
+
+    theme_text_color: 'Custom'
+    text_color: root.theme_cls.primary_color
+
+
 <MDRectangleFlatButton>:
     canvas.before:
         Color:
@@ -124,6 +140,30 @@ Builder.load_string('''
             width: 1
             rectangle: (self.x, self.y, self.width, self.height)
     
+    size_hint_x: None
+    width: dp(150)
+
+    BoxLayout:
+        spacing: dp(10)
+ 
+        MDLabel:
+            id: lbl_ic
+            font_name: '/fonts/materialdesignicons-webfont.ttf'
+            font_style: 'Icon'
+            text: u"{}".format(md_icons[root.icon])
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
+            size_hint_x: None
+            width: self.texture_size[0]
+        MDLabel:
+            id: lbl_txt
+            text: root._text
+            shorten: True
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
+
+
+<MDRoundFlatIconButton>:
     size_hint_x: None
     width: dp(150)
 
@@ -424,6 +464,18 @@ class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
     pass
 
 
+class BaseFlatIconButton(MDFlatButton):
+    icon = StringProperty('android')
+    text = StringProperty('')
+    _text = StringProperty('')
+
+    def on_text(self, instance, text):
+        # TODO: Add automatic calculation width button
+        if self._text == '':
+            self._text = text
+            instance.text = ''
+
+
 class MDRaisedButton(BaseRectangularButton, RectangularElevationBehavior,
                      BaseRaisedButton, BasePressedButton):
     pass
@@ -439,13 +491,34 @@ class MDRectangleFlatButton(MDFlatButton):
     pass
 
 
-class MDRectangleFlatIconButton(MDFlatButton):
-    icon = StringProperty('android')
-    text = StringProperty('')
-    _text = StringProperty('')
+class MDRoundFlatButton(MDFlatButton):
+    md_bg_color_down = [0, 0, 0, 0]
+    pressed_color = [0, 0, 0, 1]
 
-    def on_text(self, instance, text):
-        # TODO: Add automatic calculation width button/
-        if self._text == '':
-            self._text = text
-            instance.text = ''
+    def lay_canvas_instructions(self):
+        with self.canvas.after:
+            StencilPush()
+            Line(rounded_rectangle=(
+                self.x, self.y, self.width, self.height,
+                20, 20, 20, 20, self.height))
+            StencilUse()
+
+            self.col_instruction = Color(rgba=self.pressed_color)
+            self.ellipse = \
+                Ellipse(size=(self.ripple_rad, self.ripple_rad),
+                        pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
+                             self.ripple_pos[1] - self.ripple_rad / 2.))
+            StencilUnUse()
+            Line(rounded_rectangle=(
+                self.x, self.y, self.width, self.height,
+                20, 20, 20, 20, self.height))
+            StencilPop()
+        self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+
+
+class MDRectangleFlatIconButton(BaseFlatIconButton):
+    pass
+
+
+class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
+    pass

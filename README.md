@@ -50,6 +50,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Added new class MDProgressLoader for downloads files from the server;
 * Added new class MDStackFloatingButtons;
 * Add new classes MDRectangleFlatIconButton and MDRectangleFlatButton
+* Add new classes MDRoundFlatIconButton and MDRoundFlatButton
 
 License
 =======

@@ -4,7 +4,6 @@ from kivy.lang import Builder
 from kivy.properties import BoundedNumericProperty, ReferenceListProperty, \
     StringProperty, ListProperty, BooleanProperty, ObjectProperty
 from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.metrics import dp
@@ -15,7 +14,6 @@ from kivymd.button import MDIconButton
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.list import ILeftBody
 from kivymd.menu import MDDropdownMenu
-from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
 
@@ -122,10 +120,6 @@ class LeftIcon(ILeftBody, Image):
     pass
 
 
-class Icon(CircularRippleBehavior, ButtonBehavior, Image):
-    pass
-
-
 class CardPost(MDCard):
     name_data = StringProperty('Name Author\nDate and time')
     text_post = StringProperty('Your text post...')
@@ -155,14 +149,14 @@ class CardPost(MDCard):
         # ---------------------------------------------------------------------
         if self.likes_stars:
             box_likes_stars_right = AnchorLayout(
-                anchor_x='right', size_hint_y=None, height=dp(15))
+                anchor_x='right', size_hint_y=None, height=dp(30))
             self.box_likes_stars = BoxLayout(spacing=(dp(5)))
             self.box_likes_stars.add_widget(Widget())
             for i in range(5):  # adding stars
-                like_star = Icon(
-                    source='./assets/star_out.png', size_hint=(None, None),
-                    size=(dp(15), dp(15)), id=str(i),
-                    on_release=lambda x=i: self._update_likes_stars(i))
+                like_star = MDIconButton(
+                    icon='star-outline', size_hint=(None, None),
+                    size=(dp(30), dp(30)), id=str(i),
+                    on_release=lambda x, y=i: self._update_likes_stars(y))
                 self.box_likes_stars.add_widget(like_star)
                 self._list_instance_likes_stars.append(like_star)
             box_likes_stars_right.add_widget(self.box_likes_stars)
@@ -175,16 +169,13 @@ class CardPost(MDCard):
         i = 0
         for instance_like_star in self._list_instance_likes_stars:
             if int(instance_like_star.id) <= index_star:
-                if instance_like_star.source == './assets/star_out.png':
-                    instance_like_star.source = './assets/star_down.png'
-                    instance_like_star.reload()
+                if instance_like_star.icon == 'star-outline':
+                    instance_like_star.icon = 'star'
                     i = 1
                 else:
                     if int(instance_like_star.id) == index_star:
-                        instance_like_star.source = './assets/star_out.png'
-                        instance_like_star.reload()
+                        instance_like_star.icon = 'star-outline'
             elif int(instance_like_star.id) >= index_star:
-                if instance_like_star.source == './assets/star_down.png':
-                    instance_like_star.source = './assets/star_out.png'
-                    instance_like_star.reload()
+                if instance_like_star.icon == 'star':
+                    instance_like_star.icon = 'star-outline'
         self.callback_on_star(index_star + i)

@@ -61,7 +61,7 @@ Builder.load_string('''
         MDMenu:
             id: md_menu
             data: root.items
-            width_mult: .5#root.width_mult
+            width_mult: root.width_mult
             size_hint: None, None
             size: 0, 0
 

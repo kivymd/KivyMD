@@ -3,6 +3,7 @@
 import os
 
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -72,6 +73,7 @@ main_widget_kv = """
 #:import MDThemePicker kivymd.theme_picker.MDThemePicker
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
+#:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
 
 NavigationLayout:
@@ -94,6 +96,10 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Bottom Sheets"
             on_release: app.root.ids.scr_mngr.current = 'bottomsheet'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Update Screen Widget"
+            on_release: app.root.ids.scr_mngr.current = 'update spinner'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
             text: "Buttons"
@@ -194,6 +200,28 @@ NavigationLayout:
 
         ScreenManager:
             id: scr_mngr
+
+            ###################################################################
+            #
+            #                         UPDATE SPINNER
+            #
+            ###################################################################
+
+            Screen:
+                name: 'update spinner'
+
+                MDLabel:
+                    id: upd_lbl
+                    text: "String"
+                    font_style: 'Display3'
+                    theme_text_color: 'Primary'
+                    halign: 'center'
+                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    size_hint_y: None
+                    height: self.texture_size[1] + dp(4)
+                    
+                MDUpdateSpinner:
+                    event_update: lambda x: app.update_screen(self)
 
             Screen:
                 name: 'bottomsheet'
@@ -340,7 +368,6 @@ NavigationLayout:
                         min:0
                         max:100
                         value: hslider.value
-
 
             ###################################################################
             #
@@ -1131,6 +1158,7 @@ class KitchenSink(App):
         self.manager = False
         self.manager_open = False
         self.file_manager = None
+        self.tick = 0
         self.create_stack_floating_buttons = False
         Window.bind(on_keyboard=self.events)
 
@@ -1244,6 +1272,17 @@ class KitchenSink(App):
         # Card with asterisks for voting.
         instance_grid_card.add_widget(
             CardPost(likes_stars=True, callback_on_star=callback_on_star))
+
+    def update_screen(self, instance):
+        def update_screen(interval):
+            self.tick += 1
+            if self.tick > 2:
+                instance.update = True
+                self.tick = 0
+                self.main_widget.ids.upd_lbl.text = "New string"
+                Clock.unschedule(update_screen)
+
+        Clock.schedule_interval(update_screen, 1)
 
     def build(self):
         self.main_widget = Builder.load_string(main_widget_kv)

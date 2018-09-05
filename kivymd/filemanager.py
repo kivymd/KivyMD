@@ -89,7 +89,7 @@ from kivy.metrics import dp
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-from kivy.utils import get_color_from_hex, hex_colormap
+from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
     BooleanProperty, NumericProperty, OptionProperty
 
@@ -97,12 +97,15 @@ import kivymd.material_resources as m_res
 from kivymd.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
-from kivymd.toolbar import Toolbar
-from kivymd.button import MDFloatingActionButton, MDIconButton
-from kivymd.card import MDSeparator
+from kivymd.button import MDIconButton
 
 
 ACTIVITY_MANAGER = '''
+#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
+#:import MDSeparator kivymd.card.MDSeparator
+
+
 <BodyManager@BoxLayout>:
     icon: 'folder'
     path: ''
@@ -143,14 +146,14 @@ ACTIVITY_MANAGER = '''
             title: '%s' % root.current_path
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
             elevation: 10
-            md_bg_color: root.floating_button_color
+            md_bg_color: root.theme_cls.primary_color
 
     RecycleView:
         id: rv
         key_viewclass: 'viewclass'
         key_size: 'height'
         bar_width: dp(4)
-        bar_color: root.floating_button_color
+        bar_color: root.theme_cls.primary_color
         y: -toolbar.height
 
         RecycleBoxLayout:
@@ -174,7 +177,7 @@ ACTIVITY_MANAGER = '''
             opposite_colors: True
             elevation: 8
             on_release: root.select_directory_on_press_button()
-            md_bg_color: root.floating_button_color
+            md_bg_color: root.theme_cls.primary_color
 
 
 <ModifiedBaseListItem>:
@@ -349,8 +352,6 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
 
 
 class MDFileManager(ThemableBehavior, FloatLayout):
-    home_path = StringProperty(os.path.split(__file__)[0])
-
     icon = StringProperty('check')
     '''The icon that will be used on the directory selection button.'''
 
@@ -371,11 +372,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     current_path = StringProperty('/')
     '''Current directory.'''
-
-    floating_button_color = ListProperty(
-        get_color_from_hex(hex_colormap['teal'])
-    )
-    '''Button color.'''
 
     use_access = BooleanProperty(True)
     '''Show accec to files and directories.'''

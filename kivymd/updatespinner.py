@@ -51,10 +51,6 @@ class MDUpdateSpinner(ThemableBehavior, FloatLayout):
     update = BooleanProperty(False)
     event_update = ObjectProperty(lambda x: None)
 
-    def _update_color(self, *args):
-        print(self.color)
-        self.ids.spinner = self.color
-
     def on_touch_move(self, touch):
         if touch.grab_current is self and not self._spinner_work:
             self._step += 8

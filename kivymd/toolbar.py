@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+
 from kivy.clock import Clock
-from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ListProperty, StringProperty, OptionProperty
+from kivy.properties import ListProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.button import MDIconButton
@@ -12,17 +12,21 @@ from kivymd.elevationbehavior import RectangularElevationBehavior
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources
+
+
 <Toolbar>
     size_hint_y: None
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
+
     BoxLayout:
         id: left_actions
         orientation: 'horizontal'
         size_hint_x: None
         padding: [0, (self.height - dp(48))/2]
+
     BoxLayout:
         padding: dp(12), 0
         MDLabel:
@@ -33,6 +37,7 @@ Builder.load_string('''
             text: root.title
             shorten: True
             shorten_from: 'right'
+
     BoxLayout:
         id: right_actions
         orientation: 'horizontal'
@@ -85,11 +90,11 @@ class Toolbar(ThemableBehavior, RectangularElevationBehavior,
         new_width = 0
         for item in action_bar_items:
             new_width += dp(48)
-            action_bar.add_widget(MDIconButton(icon=item[0],
-                                               on_release=item[1],
-                                               opposite_colors=True,
-                                               text_color=self.specific_text_color,
-                                               theme_text_color='Custom'))
+            action_bar.add_widget(
+                MDIconButton(icon=item[0], on_release=item[1],
+                             opposite_colors=True,
+                             text_color=self.specific_text_color,
+                             theme_text_color='Custom'))
         action_bar.width = new_width
 
     def update_action_bar_text_colors(self, instance, value):

@@ -76,6 +76,7 @@ class CommonElevationBehavior(object):
     def _update_shadow(self, *args):
         raise NotImplemented
 
+
 class RectangularElevationBehavior(CommonElevationBehavior):
     def _update_shadow(self, *args):
         if self.elevation > 0:
@@ -99,16 +100,6 @@ class RectangularElevationBehavior(CommonElevationBehavior):
                 self._shadow = App.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.8
                 height = soft_height = self.height * 1.8
-                #                 self._shadow = App.get_running_app().theme_cls.rec_shadow
-                #                 ratio = abs(ratio)
-                #                 if ratio > 5:
-                #                     ratio = ratio * 22
-                #                 else:
-                #                     ratio = ratio * 11.5
-                #
-                #                 width = self.width + dp(ratio)
-                #                 soft_width = self.width + dp(ratio) + dp(self.elevation) * .9
-                #                 height = soft_height = self.height * 1.9
 
             x = self.center_x - width / 2
             soft_x = self.center_x - soft_width / 2

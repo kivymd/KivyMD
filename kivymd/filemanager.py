@@ -89,7 +89,6 @@ from kivy.metrics import dp
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
     BooleanProperty, NumericProperty, OptionProperty
 

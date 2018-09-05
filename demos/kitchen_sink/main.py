@@ -23,6 +23,7 @@ from kivymd.navigationdrawer import MDNavigationDrawer, \
     NavigationDrawerHeaderBase
 from kivymd.selectioncontrols import MDCheckbox
 from kivymd.snackbar import Snackbar
+from kivymd.theme_picker import MDThemePicker
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
 from kivymd.card import CardPost
@@ -70,7 +71,6 @@ main_widget_kv = """
 #:import MDAccordion kivymd.accordion.MDAccordion
 #:import MDAccordionItem kivymd.accordion.MDAccordionItem
 #:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
-#:import MDThemePicker kivymd.theme_picker.MDThemePicker
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
@@ -203,25 +203,9 @@ NavigationLayout:
 
             ###################################################################
             #
-            #                         UPDATE SPINNER
+            #                          BOTTOM SHEET
             #
             ###################################################################
-
-            Screen:
-                name: 'update spinner'
-
-                MDLabel:
-                    id: upd_lbl
-                    text: "String"
-                    font_style: 'Display3'
-                    theme_text_color: 'Primary'
-                    halign: 'center'
-                    pos_hint: {'center_x': .5, 'center_y': .6}
-                    size_hint_y: None
-                    height: self.texture_size[1] + dp(4)
-                    
-                MDUpdateSpinner:
-                    event_update: lambda x: app.update_screen(self)
 
             Screen:
                 name: 'bottomsheet'
@@ -241,6 +225,29 @@ NavigationLayout:
                     size: 4 * dp(48), dp(48)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.3}
                     on_release: app.show_example_grid_bottom_sheet()
+
+            ###################################################################
+            #
+            #                         UPDATE SPINNER
+            #
+            ###################################################################
+
+            Screen:
+                name: 'update spinner'
+                on_enter: upd_lbl.text = "Pull to string update"
+                on_leave: upd_lbl.text = ""
+
+                MDLabel:
+                    id: upd_lbl
+                    font_style: 'Display2'
+                    theme_text_color: 'Primary'
+                    halign: 'center'
+                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    size_hint_y: None
+                    height: self.texture_size[1] + dp(4)
+                    
+                MDUpdateSpinner:
+                    event_update: lambda x: app.update_screen(self)
 
             ###################################################################
             #
@@ -724,8 +731,15 @@ NavigationLayout:
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
 
+            ###################################################################
+            #
+            #                             CHECKBOX
+            #
+            ###################################################################
+
             Screen:
                 name: 'progress'
+
                 MDCheckbox:
                     id: chkbox
                     size_hint: None, None
@@ -738,8 +752,16 @@ NavigationLayout:
                     size: dp(46), dp(46)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     active: True if chkbox.active else False
+
+            ###################################################################
+            #
+            #                          PROGRESS BAR
+            #
+            ###################################################################
+
             Screen:
                 name: 'progressbars'
+
                 BoxLayout:
                     orientation:'vertical'
                     padding: '8dp'
@@ -766,8 +788,15 @@ NavigationLayout:
                             orientation:"vertical"
                             value: progress_slider.value
 
+            ###################################################################
+            #
+            #                      SELECTION CONTROLS
+            #
+            ###################################################################
+
             Screen:
                 name: 'selectioncontrols'
+
                 MDCheckbox:
                     id: grp_chkbox_1
                     group: 'test'
@@ -786,8 +815,15 @@ NavigationLayout:
                     pos_hint: {'center_x': 0.75, 'center_y': 0.5}
                     _active: False
 
+            ###################################################################
+            #
+            #                           SNACKBAR
+            #
+            ###################################################################
+
             Screen:
                 name: 'snackbar'
+
                 MDRaisedButton:
                     text: "Create simple snackbar"
                     size_hint: None, None
@@ -810,15 +846,24 @@ NavigationLayout:
                     opposite_colors: True
                     on_release: app.show_example_snackbar('verylong')
 
+            ###################################################################
+            #
+            #                         TEXTFIELDS
+            #
+            ###################################################################
+
             Screen:
                 name: 'textfields'
+
                 ScrollView:
+
                     BoxLayout:
                         orientation: 'vertical'
                         size_hint_y: None
                         height: self.minimum_height
                         padding: dp(48)
                         spacing: 10
+
                         MDTextField:
                             hint_text: "No helper text"
                         MDTextField:
@@ -859,19 +904,27 @@ NavigationLayout:
                             hint_text: "disabled = True"
                             disabled: True
 
+            ###################################################################
+            #
+            #                          THEMING
+            #
+            ###################################################################
+
             Screen:
                 name: 'theming'
+
                 BoxLayout:
                     orientation: 'vertical'
                     size_hint_y: None
                     height: dp(80)
                     center_y: self.parent.center_y
+
                     MDRaisedButton:
                         size_hint: None, None
                         size: 3 * dp(48), dp(48)
                         center_x: self.parent.center_x
                         text: 'Change theme'
-                        on_release: MDThemePicker().open()
+                        on_release: app.theme_picker_open()
                         opposite_colors: True
                         pos_hint: {'center_x': 0.5}
                     MDLabel:
@@ -880,8 +933,15 @@ NavigationLayout:
                         pos_hint: {'center_x': 0.5}
                         halign: 'center'
 
+            ###################################################################
+            #
+            #                         TOOLBAR
+            #
+            ###################################################################
+
             Screen:
                 name: 'toolbar'
+
                 Toolbar:
                     title: "Simple toolbar"
                     pos_hint: {'center_x': 0.5, 'center_y': 0.75}
@@ -905,8 +965,16 @@ NavigationLayout:
                     right_action_items: [['lock', lambda x: None], \
                         ['camera', lambda x: None], \
                         ['play', lambda x: None]]
+
+            ###################################################################
+            #
+            #                              TABS
+            #
+            ###################################################################
+
             Screen:
                 name: 'tabs'
+
                 MDTabbedPanel:
                     id: tab_panel
                     tab_display_mode:'text'
@@ -935,6 +1003,7 @@ NavigationLayout:
                     size_hint_y:None
                     height: '48dp'
                     padding: '12dp'
+
                     MDLabel:
                         font_style: 'Body1'
                         theme_text_color: 'Primary'
@@ -943,13 +1012,23 @@ NavigationLayout:
                         width: '64dp'
                     MDCheckbox:
                         on_state: tab_panel.tab_display_mode = 'icons' if tab_panel.tab_display_mode=='text' else 'text'
+
+            ###################################################################
+            #
+            #                            ACCORDION
+            #
+            ###################################################################
+
             Screen:
                 name: 'accordion'
+
                 BoxLayout:
+
                     MDAccordion:
                         orientation: 'vertical'
                         size_hint_x: None
                         width: '240dp'
+
                         MDAccordionItem:
                             title:'Item 1'
                             icon: 'home'
@@ -977,19 +1056,30 @@ NavigationLayout:
                                 text: "Subitem 8"
                             MDAccordionSubItem:
                                 text: "Subitem 9"
+
                     MDLabel:
                         text: 'Content'
                         theme_text_color: 'Primary'
+
+            ###################################################################
+            #
+            #                           PICKERS
+            #
+            ###################################################################
+
             Screen:
                 name: 'pickers'
+
                 BoxLayout:
                     spacing: dp(40)
                     orientation: 'vertical'
                     size_hint_x: None
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
                     BoxLayout:
                         orientation: 'vertical'
                         # size_hint: (None, None)
+
                         MDRaisedButton:
                             text: "Open time picker"
                             size_hint: None, None
@@ -1016,8 +1106,10 @@ NavigationLayout:
                                 id: time_picker_use_previous_time
                                 size_hint: None, None
                                 size: dp(48), dp(48)
+
                     BoxLayout:
                         orientation: 'vertical'
+
                         MDRaisedButton:
                             text: "Open date picker"
                             size_hint: None, None
@@ -1044,10 +1136,19 @@ NavigationLayout:
                                 id: date_picker_use_previous_date
                                 size_hint: None, None
                                 size: dp(48), dp(48)
+
+            ###################################################################
+            #
+            #                       BOTTOM NAVIGATION
+            #
+            ###################################################################
+
             Screen:
                 name: 'bottom_navigation'
+
                 MDBottomNavigation:
                     id: bottom_navigation_demo
+
                     MDBottomNavigationItem:
                         name: 'octagon'
                         text: "Warning"
@@ -1057,6 +1158,7 @@ NavigationLayout:
                             theme_text_color: 'Primary'
                             text: "Warning!"
                             halign: 'center'
+
                     MDBottomNavigationItem:
                         name: 'banking'
                         text: "Bank"
@@ -1070,6 +1172,7 @@ NavigationLayout:
                                 hint_text: "You can put any widgets here"
                                 helper_text: "Hello :)"
                                 helper_text_mode: "on_focus"
+
                     MDBottomNavigationItem:
                         name: 'bottom_navigation_desktop_1'
                         text: "Hello"
@@ -1082,6 +1185,7 @@ NavigationLayout:
                             spacing: 10
                             MDTextField:
                                 hint_text: "Hello again"
+
                     MDBottomNavigationItem:
                         name: 'bottom_navigation_desktop_2'
                         text: "Food"
@@ -1092,8 +1196,16 @@ NavigationLayout:
                             theme_text_color: 'Primary'
                             text: "Cheese!"
                             halign: 'center'
+
+            ###################################################################
+            #
+            #                           NAV DRAWER
+            #
+            ###################################################################
+
             Screen:
                 name: 'nav_drawer'
+
                 HackedDemoNavDrawer:
                     # NavigationDrawerToolbar:
                     #     title: "Navigation Drawer Widgets"
@@ -1120,7 +1232,6 @@ NavigationLayout:
                     NavigationDrawerIconButton:
                         text: "NavigationDrawerDivider \/"
                     NavigationDrawerDivider:
-
 """
 
 
@@ -1156,11 +1267,18 @@ class KitchenSink(App):
         ]
         self.Window = Window
         self.manager = False
+        self.md_theme_picker = None
+        self.time_dialog = None
         self.manager_open = False
         self.file_manager = None
         self.tick = 0
         self.create_stack_floating_buttons = False
         Window.bind(on_keyboard=self.events)
+
+    def theme_picker_open(self):
+        if not self.md_theme_picker:
+            self.md_theme_picker = MDThemePicker()
+        self.md_theme_picker.open()
 
     def example_add_stack_floating_buttons(self):
         def set_my_language(instance_button):
@@ -1210,13 +1328,13 @@ class KitchenSink(App):
         toast('Done')
 
     def file_manager_open(self):
-        self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
-        self.file_manager = MDFileManager(
-            exit_manager=self.exit_manager, select_path=self.select_path,
-            floating_button_color=self.theme_cls.primary_color)
-        self.file_manager.show('/')  # output manager to the screen
+        if not self.manager:
+            self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
+            self.file_manager = MDFileManager(
+                exit_manager=self.exit_manager, select_path=self.select_path)
+            self.manager.add_widget(self.file_manager)
+            self.file_manager.show('/')  # output manager to the screen
         self.manager_open = True
-        self.manager.add_widget(self.file_manager)
         self.manager.open()
 
     def select_path(self, path):
@@ -1366,8 +1484,10 @@ class KitchenSink(App):
         self.previous_time = time
 
     def show_example_time_picker(self):
-        self.time_dialog = MDTimePicker()
-        self.time_dialog.bind(time=self.get_time_picker_data)
+        if not self.time_dialog:
+            self.time_dialog = MDTimePicker()
+            self.time_dialog.bind(time=self.get_time_picker_data)
+
         if self.root.ids.time_picker_use_previous_time.active:
             try:
                 self.time_dialog.set_time(self.previous_time)

@@ -88,7 +88,7 @@ Builder.load_string("""
     ModifiedToolbar:
         id: toolbar
         md_bg_color: 0, 0, 0, 0
-        left_action_items: [['arrow-left', lambda x: root.parent.dismiss()]]
+        left_action_items: [['arrow-left', lambda x: root._callback_back()]]
         y: Window.height - self.height
 
     ScrollView:
@@ -115,16 +115,17 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
     user_name = StringProperty()
     path_to_avatar = StringProperty()
     box_content = ObjectProperty()
+    callback = ObjectProperty()
     _anim_bottom = True
 
     def __init__(self, **kwargs):
         super(MDUserAnimationCard, self).__init__(**kwargs)
-
         self._primary_color = self.theme_cls.primary_color
         self._primary_color[3] = 0
         self.user_animation_card = UserAnimationCard(
             user_name=self.user_name,
             path_to_avatar=self.path_to_avatar,
+            _callback_back=self._callback_back,
             _primary_color=self._primary_color)
         self.box_content = self.user_animation_card.ids.box_content
         self.add_widget(self.user_animation_card)
@@ -134,6 +135,11 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         self._obj_toolbar = self.user_animation_card.ids.toolbar
         self._obj_scroll = self.user_animation_card.ids.scroll
         self._set_current_pos_objects()
+
+    def _callback_back(self):
+        self.dismiss()
+        if self.callback:
+            self.callback()
 
     def _set_current_pos_objects(self):
         self._avatar_y = self._obj_avatar.y
@@ -190,6 +196,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
 class UserAnimationCard(ThemableBehavior, FloatLayout):
     user_name = StringProperty()
     path_to_avatar = StringProperty()
+    _callback_back = ObjectProperty()
     _primary_color = ListProperty()
 
 

@@ -1486,10 +1486,11 @@ class KitchenSink(App):
                 widget.ids.bottom_navigation_desktop_1)
 
     def show_user_example_animation_card(self):
-        self.user_animation_card = MDUserAnimationCard(user_name="User Name")
-        self.user_animation_card.box_content.add_widget(
-            Factory.ContentForAnimCard())
-        self.user_animation_card.open()
+        user_animation_card = MDUserAnimationCard(
+            user_name="Lion Lion",
+            path_to_avatar="./assets/african-lion-951778_1280.jpg")
+        user_animation_card.box_content.add_widget(Factory.ContentForAnimCard())
+        user_animation_card.open()
 
     def show_example_snackbar(self, snack_type):
         if snack_type == 'simple':

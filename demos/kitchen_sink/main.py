@@ -5,6 +5,7 @@ import os
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
@@ -31,10 +32,12 @@ from kivymd.toast import toast
 from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+from kivymd.useranimationcard import MDUserAnimationCard
 
 
 main_widget_kv = """
 #:import Clock kivy.clock.Clock
+#:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
@@ -76,6 +79,45 @@ main_widget_kv = """
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
 
+<ContentForAnimCard@BoxLayout>:
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: self.minimum_height
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+
+        Widget:
+        MDRoundFlatButton:
+            text: "Free call"
+        Widget:
+        MDRoundFlatButton:
+            text: "Free message"
+        Widget:
+
+    OneLineIconListItem:
+        text: "Video call"
+        IconLeftSampleWidget:
+            icon: 'camera-front-variant'
+
+    TwoLineIconListItem:
+        text: "Call Viber Out"
+        secondary_text: "[color=%s]Advantageous rates for calls[/color]" % get_hex_from_color(app.theme_cls.primary_color)
+        # FIXME: Don't work "secondary_text_color" parameter
+        # secondary_text_color: app.theme_cls.primary_color
+        IconLeftSampleWidget:
+            icon: 'phone'
+
+    TwoLineIconListItem:
+        text: "Call over mobile network"
+        secondary_text: "[color=%s]Operator's tariffs apply[/color]" % get_hex_from_color(app.theme_cls.primary_color)
+        IconLeftSampleWidget:
+            icon: 'remote'
+
+
 NavigationLayout:
     id: nav_layout
 
@@ -98,24 +140,8 @@ NavigationLayout:
             on_release: app.root.ids.scr_mngr.current = 'bottomsheet'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
-            text: "Update Screen Widget"
-            on_release: app.root.ids.scr_mngr.current = 'update spinner'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
             text: "Buttons"
             on_release: app.root.ids.scr_mngr.current = 'button'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Stack Floating Buttons"
-            on_release: app.root.ids.scr_mngr.current = 'stack buttons'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Files Manager"
-            on_release: app.root.ids.scr_mngr.current = 'files manager'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Download File"
-            on_release: app.root.ids.scr_mngr.current = 'download file'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
             text: "Cards"
@@ -124,6 +150,14 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Dialogs"
             on_release: app.root.ids.scr_mngr.current = 'dialog'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Download File"
+            on_release: app.root.ids.scr_mngr.current = 'download file'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Files Manager"
+            on_release: app.root.ids.scr_mngr.current = 'files manager'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
             text: "Grid lists"
@@ -166,6 +200,10 @@ NavigationLayout:
             on_release: app.root.ids.scr_mngr.current = 'slider'
         NavigationDrawerIconButton:
             icon: 'checkbox-blank-circle'
+            text: "Stack Floating Buttons"
+            on_release: app.root.ids.scr_mngr.current = 'stack buttons'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
             text: "Snackbars"
             on_release: app.root.ids.scr_mngr.current = 'snackbar'
         NavigationDrawerIconButton:
@@ -184,6 +222,14 @@ NavigationLayout:
             icon: 'checkbox-blank-circle'
             text: "Toolbars"
             on_release: app.root.ids.scr_mngr.current = 'toolbar'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "Update Screen Widget"
+            on_release: app.root.ids.scr_mngr.current = 'update spinner'
+        NavigationDrawerIconButton:
+            icon: 'checkbox-blank-circle'
+            text: "User Animation Card"
+            on_release: app.root.ids.scr_mngr.current = 'user animation card'
 
     BoxLayout:
         orientation: 'vertical'
@@ -225,39 +271,6 @@ NavigationLayout:
                     size: 4 * dp(48), dp(48)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.3}
                     on_release: app.show_example_grid_bottom_sheet()
-
-            ###################################################################
-            #
-            #                         UPDATE SPINNER
-            #
-            ###################################################################
-
-            Screen:
-                name: 'update spinner'
-                on_enter: upd_lbl.text = "Pull to string update"
-                on_leave: upd_lbl.text = ""
-
-                MDLabel:
-                    id: upd_lbl
-                    font_style: 'Display2'
-                    theme_text_color: 'Primary'
-                    halign: 'center'
-                    pos_hint: {'center_x': .5, 'center_y': .6}
-                    size_hint_y: None
-                    height: self.texture_size[1] + dp(4)
-                    
-                MDUpdateSpinner:
-                    event_update: lambda x: app.update_screen(self)
-
-            ###################################################################
-            #
-            #                     STACK FLOATING BUTTONS
-            #
-            ###################################################################
-
-            Screen:
-                name: 'stack buttons'
-                on_enter: app.example_add_stack_floating_buttons()
 
             ###################################################################
             #
@@ -353,28 +366,6 @@ NavigationLayout:
 
                         # See how to add a card with the menu and others
                         # in the add_cards function.
-
-            ###################################################################
-            #
-            #                          SLIDER
-            #
-            ###################################################################
-
-            Screen:
-                name: 'slider'
-
-                BoxLayout:
-                    MDSlider:
-                        id: hslider
-                        min:0
-                        max:100
-                        value: 10
-                    MDSlider:
-                        id: vslider
-                        orientation:'vertical'
-                        min:0
-                        max:100
-                        value: hslider.value
 
             ###################################################################
             #
@@ -790,6 +781,78 @@ NavigationLayout:
 
             ###################################################################
             #
+            #                         UPDATE SPINNER
+            #
+            ###################################################################
+
+            Screen:
+                name: 'update spinner'
+                on_enter: upd_lbl.text = "Pull to string update"
+                on_leave: upd_lbl.text = ""
+
+                MDLabel:
+                    id: upd_lbl
+                    font_style: 'Display2'
+                    theme_text_color: 'Primary'
+                    halign: 'center'
+                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    size_hint_y: None
+                    height: self.texture_size[1] + dp(4)
+                    
+                MDUpdateSpinner:
+                    event_update: lambda x: app.update_screen(self)
+
+            ###################################################################
+            #
+            #                     STACK FLOATING BUTTONS
+            #
+            ###################################################################
+
+            Screen:
+                name: 'stack buttons'
+                on_enter: app.example_add_stack_floating_buttons()
+
+            ###################################################################
+            #
+            #                          SLIDER
+            #
+            ###################################################################
+
+            Screen:
+                name: 'slider'
+
+                BoxLayout:
+                    MDSlider:
+                        id: hslider
+                        min:0
+                        max:100
+                        value: 10
+                    MDSlider:
+                        id: vslider
+                        orientation:'vertical'
+                        min:0
+                        max:100
+                        value: hslider.value
+
+            ###################################################################
+            #
+            #                      USER ANIMATION CARD
+            #
+            ###################################################################
+
+            Screen:
+                name: 'user animation card'
+                
+                MDRaisedButton:
+                    size_hint: None, None
+                    size: 3 * dp(48), dp(48)
+                    text: 'Open card'
+                    opposite_colors: True
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    on_release: app.show_user_example_animation_card()
+
+            ###################################################################
+            #
             #                      SELECTION CONTROLS
             #
             ###################################################################
@@ -935,7 +998,7 @@ NavigationLayout:
 
             ###################################################################
             #
-            #                         TOOLBAR
+            #                         TOOLBARS
             #
             ###################################################################
 
@@ -1253,6 +1316,7 @@ class HackedDemoNavDrawer(MDNavigationDrawer):
 
 class KitchenSink(App):
     theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Teal'
     previous_date = ObjectProperty()
     title = "KivyMD Kitchen Sink"
 
@@ -1269,6 +1333,7 @@ class KitchenSink(App):
         self.manager = False
         self.md_theme_picker = None
         self.time_dialog = None
+        self.user_animation_card = None
         self.manager_open = False
         self.file_manager = None
         self.tick = 0
@@ -1420,6 +1485,16 @@ class KitchenSink(App):
         if DEVICE_TYPE == 'mobile' or DEVICE_TYPE == 'tablet':
             widget.ids.bottom_navigation_demo.remove_widget(
                 widget.ids.bottom_navigation_desktop_1)
+
+    def show_user_example_animation_card(self):
+        if not self.user_animation_card:
+            self.user_animation_card = MDUserAnimationCard(
+                user_info_subhead="User Name")
+
+            self.user_animation_card.box_content.add_widget(
+                Factory.ContentForAnimCard())
+
+        self.user_animation_card.open()
 
     def show_example_snackbar(self, snack_type):
         if snack_type == 'simple':

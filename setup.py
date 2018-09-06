@@ -18,7 +18,7 @@ setup(name='kivymd',
                   'Design',
       author='Andrés Rodríguez, author fork - HeaTTheatR',
       author_email='andres.rodriguez@lithersoft.com, email author fork - kivydevelopment@gmail.com',
-      url='https://gitlab.com/kivymd/KivyMD',
+      url='https://github.com/HeaTTheatR/KivyMD',
       packages=['kivymd'],
       package_data={
           'kivymd': ['images/*.png', 'images/*.jpg', 'images/*.atlas',
@@ -26,6 +26,6 @@ setup(name='kivymd',
                      'vendor/*.py', 'vendor/circleLayout/*.py',
                      'vendor/circularTimePicker/*.py',
                      'vendor/navigationdrawer/*.py',
-                     'toast/*.py', 'toast/kivytoast/*.py']},
+                     'toast/*.py', 'toast/kivytoast/*.py', 'stiffscroll/*.py']},
       requires=['kivy']
 )

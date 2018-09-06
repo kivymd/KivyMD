@@ -3,7 +3,7 @@
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.core.window import Window
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -141,6 +141,11 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         if self.callback:
             self.callback()
 
+    def on_open(self):
+        self._primary_color = self.theme_cls.primary_color
+        self._primary_color[3] = 0
+        self.user_animation_card._primary_color = self._primary_color
+
     def _set_current_pos_objects(self):
         self._avatar_y = self._obj_avatar.y
         self._toolbar_y = self._obj_toolbar.y
@@ -169,7 +174,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
             self._obj_scroll)
         Animation(y=self._user_name_y, d=.5, x=dp(15), t='in_out_cubic').start(
             self._obj_user_name)
-        Animation(font_size=36, d=.3, t='in_out_cubic').start(
+        Animation(font_size=sp(36), d=.3, t='in_out_cubic').start(
             self._obj_user_name)
         Animation(y=self._avatar_y, d=.4, t='in_out_cubic').start(
             self._obj_avatar)
@@ -185,7 +190,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
             self.user_animation_card.ids.scroll)
         Animation(y=user_name_y, d=.3, x=user_name_x, t='in_out_cubic').start(
             self._obj_user_name)
-        Animation(font_size=20, d=.3, t='in_out_cubic').start(
+        Animation(font_size=sp(20), d=.3, t='in_out_cubic').start(
             self._obj_user_name)
         Animation(y=self._obj_avatar.y + 30, d=.4, t='in_out_cubic').start(
             self._obj_avatar)

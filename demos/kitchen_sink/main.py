@@ -1486,9 +1486,13 @@ class KitchenSink(App):
                 widget.ids.bottom_navigation_desktop_1)
 
     def show_user_example_animation_card(self):
+        def main_back_callback():
+            toast('Close card')
+
         user_animation_card = MDUserAnimationCard(
             user_name="Lion Lion",
-            path_to_avatar="./assets/african-lion-951778_1280.jpg")
+            path_to_avatar="./assets/african-lion-951778_1280.jpg",
+            callback=main_back_callback)
         user_animation_card.box_content.add_widget(Factory.ContentForAnimCard())
         user_animation_card.open()
 

@@ -58,7 +58,7 @@ Builder.load_string("""
 
     Image:
         id: image
-        source: '/home/kivy/1.jpg'
+        source: root.path_to_avatar
         size_hint: 1, None
         height: Window.height * 40 // 100
         y: Window.height - self.height
@@ -113,6 +113,7 @@ Builder.load_string("""
 
 class MDUserAnimationCard(ThemableBehavior, ModalView):
     user_name = StringProperty()
+    path_to_avatar = StringProperty()
     box_content = ObjectProperty()
     _anim_bottom = True
 
@@ -122,7 +123,9 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         self._primary_color = self.theme_cls.primary_color
         self._primary_color[3] = 0
         self.user_animation_card = UserAnimationCard(
-            user_name=self.user_name, _primary_color=self._primary_color)
+            user_name=self.user_name,
+            path_to_avatar=self.path_to_avatar,
+            _primary_color=self._primary_color)
         self.box_content = self.user_animation_card.ids.box_content
         self.add_widget(self.user_animation_card)
 
@@ -186,6 +189,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
 
 class UserAnimationCard(ThemableBehavior, FloatLayout):
     user_name = StringProperty()
+    path_to_avatar = StringProperty()
     _primary_color = ListProperty()
 
 

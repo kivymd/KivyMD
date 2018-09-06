@@ -1333,6 +1333,7 @@ class KitchenSink(App):
         self.manager = False
         self.md_theme_picker = None
         self.time_dialog = None
+        self.user_animation_card = None
         self.manager_open = False
         self.file_manager = None
         self.tick = 0
@@ -1489,12 +1490,14 @@ class KitchenSink(App):
         def main_back_callback():
             toast('Close card')
 
-        user_animation_card = MDUserAnimationCard(
-            user_name="Lion Lion",
-            path_to_avatar="./assets/african-lion-951778_1280.jpg",
-            callback=main_back_callback)
-        user_animation_card.box_content.add_widget(Factory.ContentForAnimCard())
-        user_animation_card.open()
+        if not self.user_animation_card:
+            self.user_animation_card = MDUserAnimationCard(
+                user_name="Lion Lion",
+                path_to_avatar="./assets/african-lion-951778_1280.jpg",
+                callback=main_back_callback)
+            self.user_animation_card.box_content.add_widget(
+                Factory.ContentForAnimCard())
+        self.user_animation_card.open()
 
     def show_example_snackbar(self, snack_type):
         if snack_type == 'simple':

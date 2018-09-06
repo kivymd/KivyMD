@@ -153,11 +153,14 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources
+
+
 <MDList>
     cols: 1
     size_hint_y: None
     height: self._min_list_height
     padding: 0, self._list_vertical_padding
+
 
 <BaseListItem>
     size_hint_y: None
@@ -170,11 +173,13 @@ Builder.load_string('''
                     (root.x+root._txt_left_pad, root.y,\
                     root.x+self.width-root._txt_left_pad-root._txt_right_pad,\
                     root.y)
+
     BoxLayout:
         id: _text_container
         orientation: 'vertical'
         pos: root.pos
         padding: root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad
+
         MDLabel:
             id: _lbl_primary
             text: root.text
@@ -183,6 +188,8 @@ Builder.load_string('''
             text_color: root.text_color
             size_hint_y: None
             height: self.texture_size[1]
+            markup: True
+
         MDLabel:
             id: _lbl_secondary
             text: '' if root._num_lines == 1 else root.secondary_text
@@ -192,6 +199,8 @@ Builder.load_string('''
             size_hint_y: None
             height: 0 if root._num_lines == 1 else self.texture_size[1]
             shorten: True if root._num_lines == 2 else False
+            markup: True
+
 
 <OneLineAvatarListItem>
     BoxLayout:
@@ -201,6 +210,7 @@ Builder.load_string('''
         y: root.y + root.height/2 - self.height/2
         size: dp(40), dp(40)
 
+
 <ThreeLineAvatarListItem>
     BoxLayout:
         id: _left_container
@@ -208,6 +218,7 @@ Builder.load_string('''
         x: root.x + dp(16)
         y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
         size: dp(40), dp(40)
+
 
 <OneLineIconListItem>
     BoxLayout:
@@ -217,6 +228,7 @@ Builder.load_string('''
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
 
+
 <ThreeLineIconListItem>
     BoxLayout:
         id: _left_container
@@ -224,6 +236,7 @@ Builder.load_string('''
         x: root.x + dp(16)
         y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
         size: dp(48), dp(48)
+
 
 <OneLineRightIconListItem>
     BoxLayout:
@@ -233,6 +246,7 @@ Builder.load_string('''
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
 
+
 <ThreeLineRightIconListItem>
     BoxLayout:
         id: _right_container
@@ -240,6 +254,7 @@ Builder.load_string('''
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
+
 
 <OneLineAvatarIconListItem>
     BoxLayout:
@@ -249,6 +264,7 @@ Builder.load_string('''
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
 
+
 <TwoLineAvatarIconListItem>
     BoxLayout:
         id: _right_container
@@ -256,6 +272,7 @@ Builder.load_string('''
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
+
 
 <ThreeLineAvatarIconListItem>
     BoxLayout:
@@ -274,6 +291,7 @@ class MDList(GridLayout):
     When adding (or removing) a widget, it will resize itself to fit its
     children, plus top and bottom paddings as described by the MD spec.
     '''
+
     selected = ObjectProperty()
     _min_list_height = dp(16)
     _list_vertical_padding = dp(8)
@@ -309,7 +327,7 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
                             'Headline', 'Display1', 'Display2', 'Display3',
                             'Display4', 'Button', 'Icon'])
     
-    theme_text_color = StringProperty('Primary',allownone=True)
+    theme_text_color = StringProperty('Primary', allownone=True)
     ''' Theme text color for primary text '''
 
     secondary_text = StringProperty()
@@ -380,6 +398,7 @@ class ContainerSupport:
     '''Overrides add_widget in a ListItem to include support for I*Body
     widgets when the appropiate containers are present.
     '''
+
     _touchable_widgets = ListProperty()
 
     def add_widget(self, widget, index=0):
@@ -431,9 +450,8 @@ class ContainerSupport:
 
 
 class OneLineListItem(BaseListItem):
-    '''
-    A one line list item
-    '''
+    '''A one line list item'''
+
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
     _num_lines = 1
@@ -444,9 +462,8 @@ class OneLineListItem(BaseListItem):
 
 
 class TwoLineListItem(BaseListItem):
-    '''
-    A two line list item
-    '''
+    '''A two line list item'''
+
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
 
@@ -456,9 +473,8 @@ class TwoLineListItem(BaseListItem):
 
 
 class ThreeLineListItem(BaseListItem):
-    '''
-    A three line list item
-    '''
+    '''A three line list item'''
+
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
     _num_lines = 3

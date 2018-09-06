@@ -1333,7 +1333,6 @@ class KitchenSink(App):
         self.manager = False
         self.md_theme_picker = None
         self.time_dialog = None
-        self.user_animation_card = None
         self.manager_open = False
         self.file_manager = None
         self.tick = 0
@@ -1487,13 +1486,9 @@ class KitchenSink(App):
                 widget.ids.bottom_navigation_desktop_1)
 
     def show_user_example_animation_card(self):
-        if not self.user_animation_card:
-            self.user_animation_card = MDUserAnimationCard(
-                user_info_subhead="User Name")
-
-            self.user_animation_card.box_content.add_widget(
-                Factory.ContentForAnimCard())
-
+        self.user_animation_card = MDUserAnimationCard(user_name="User Name")
+        self.user_animation_card.box_content.add_widget(
+            Factory.ContentForAnimCard())
         self.user_animation_card.open()
 
     def show_example_snackbar(self, snack_type):

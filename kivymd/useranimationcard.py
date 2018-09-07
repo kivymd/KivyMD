@@ -198,6 +198,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
             self._obj_avatar.canvas.children[3])
 
 
+# FIXME: Add color for Black and White theme
 class UserAnimationCard(ThemableBehavior, FloatLayout):
     user_name = StringProperty()
     path_to_avatar = StringProperty()

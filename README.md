@@ -52,7 +52,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Add new classes MDRectangleFlatIconButton and MDRectangleFlatButton;
 * Add new classes MDRoundFlatIconButton and MDRoundFlatButton;
 * Add new class MDUpdateSpinner;
-* Add new class MDUserAnimationCard;
+* [Add new class MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
 
 License
 =======

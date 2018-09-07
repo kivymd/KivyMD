@@ -1,3 +1,75 @@
+# -*- coding: utf-8 -*-
+
+'''
+stackfloatingbuttons.py
+
+A simple manager for selecting directories and files.
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+EXAMPLE:
+
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.factory import Factory
+
+from kivymd.toast import toast
+from kivymd.theming import ThemeManager
+from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+
+
+Builder.load_string("""
+#:import Toolbar kivymd.toolbar.Toolbar
+
+
+<ExampleFloatingButtons@BoxLayout>:
+    orientation: 'vertical'
+
+    Toolbar:
+        title: 'Stack Floating Buttons'
+        md_bg_color: app.theme_cls.primary_color
+        elevation: 10
+        left_action_items: [['menu', lambda x: None]]
+
+""")
+
+
+class Example(App):
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Teal'
+    title = "Example Stack Floating Buttons"
+    create_stack_floating_buttons = False
+    floating_data = {
+        'Python': 'language-python',
+        'Php': 'language-php',
+        'C++': 'language-cpp'}
+
+    def set_my_language(self, instance_button):
+        toast(instance_button.icon)
+
+    def build(self):
+        screen = Factory.ExampleFloatingButtons()
+        # Use this condition otherwise the stack will be created each time.
+        if not self.create_stack_floating_buttons:
+            screen.add_widget(MDStackFloatingButtons(
+                icon='lead-pencil',
+                floating_data={
+                    'Python': 'language-python',
+                    'Php': 'language-php',
+                    'C++': 'language-cpp'},
+                callback=self.set_my_language))
+            self.create_stack_floating_buttons = True
+        return screen
+
+
+Example().run()
+'''
+
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout

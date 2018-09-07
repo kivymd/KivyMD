@@ -349,6 +349,8 @@ class MDCardPost(BoxLayout):
             self.ids.delet_post_button.disabled = False
 
         Animation(x=-90, d=.3, t='in_out_cubic').start(self.ids.root_box)
+        if self.likes_stars:
+            Animation(x=-90, d=.3, t='in_out_cubic').start(self.children[0])
         anim = Animation(opacity=1, d=.3, t='in_out_cubic')
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)
@@ -360,6 +362,8 @@ class MDCardPost(BoxLayout):
             self.ids.delet_post_button.disabled = True
 
         Animation(x=10, d=.10, t='in_out_cubic').start(self.ids.root_box)
+        if self.likes_stars:
+            Animation(x=10, d=.3, t='in_out_cubic').start(self.children[0])
         anim = Animation(opacity=0, d=.10, t='in_out_cubic')
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)

@@ -44,7 +44,7 @@ Builder.load_string('''
             pos: self.pos
 
 
-<CardPost>:
+<MDCardPost>:
     spacing: dp(5)
     padding: dp(5)
     orientation: 'vertical'
@@ -120,7 +120,7 @@ class LeftIcon(ILeftBody, Image):
     pass
 
 
-class CardPost(MDCard):
+class MDCardPost(MDCard):
     name_data = StringProperty('Name Author\nDate and time')
     text_post = StringProperty('Your text post...')
     path_to_avatar = StringProperty('./assets/avatar.png')
@@ -139,7 +139,7 @@ class CardPost(MDCard):
     _list_instance_likes_stars = ListProperty()
 
     def __init__(self, **kwargs):
-        super(CardPost, self).__init__(**kwargs)
+        super(MDCardPost, self).__init__(**kwargs)
         # ---------------------------------------------------------------------
         if len(self.right_menu):
             self.ids.title_box.add_widget(

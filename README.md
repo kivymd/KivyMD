@@ -45,7 +45,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Added dialog for text input;
 * Added "Yes/No" dialog;
 * Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
-* Added new ready-to-use [Cards](https://github.com/HeaTTheatR/KivyMD/wiki/MDCardPost)
+* Added new ready-to-use [MDCardPost](https://github.com/HeaTTheatR/KivyMD/wiki/MDCardPost)
 * Add new class [MDFileManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDFileManager) for selecting directories and files
 * Add new class [MDProgressLoader](https://github.com/HeaTTheatR/KivyMD/wiki/MDProgressLoader) for downloads files from the server
 * Add new class [MDStackFloatingButtons](https://github.com/HeaTTheatR/KivyMD/wiki/MDStackFloatingButtons)

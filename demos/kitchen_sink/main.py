@@ -27,7 +27,7 @@ from kivymd.snackbar import Snackbar
 from kivymd.theme_picker import MDThemePicker
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
-from kivymd.card import CardPost
+from kivymd.card import MDCardPost
 from kivymd.toast import toast
 from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
@@ -61,7 +61,6 @@ main_widget_kv = """
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 #:import MDRectangleFlatIconButton kivymd.button.MDRectangleFlatIconButton
-#:import CardPost kivymd.card.CardPost
 #:import MDSeparator kivymd.card.MDSeparator
 #:import MDDropdownMenu kivymd.menu.MDDropdownMenu
 #:import get_color_from_hex kivy.utils.get_color_from_hex
@@ -1441,7 +1440,7 @@ class KitchenSink(App):
 
             toast('Set like in %d stars' % index_star)
 
-        instance_grid_card.add_widget(CardPost())
+        instance_grid_card.add_widget(MDCardPost())
 
         # Card with a button to open the menu MDDropDown.
         menu_items = [
@@ -1450,11 +1449,11 @@ class KitchenSink(App):
              'callback': self.callback_for_menu_items}
             for i in range(2)
         ]
-        instance_grid_card.add_widget(CardPost(right_menu=menu_items))
+        instance_grid_card.add_widget(MDCardPost(right_menu=menu_items))
 
         # Card with asterisks for voting.
         instance_grid_card.add_widget(
-            CardPost(likes_stars=True, callback_on_star=callback_on_star))
+            MDCardPost(likes_stars=True, callback_on_star=callback_on_star))
 
     def update_screen(self, instance):
         def update_screen(interval):

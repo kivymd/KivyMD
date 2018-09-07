@@ -348,7 +348,6 @@ NavigationLayout:
             Screen:
                 name: 'card'
                 on_enter: app.add_cards(grid_card)
-                on_leave: grid_card.clear_widgets()
 
                 ScrollView:
                     id: scroll
@@ -1334,6 +1333,7 @@ class KitchenSink(App):
         self.time_dialog = None
         self.user_animation_card = None
         self.manager_open = False
+        self.cards_created = False
         self.file_manager = None
         self.tick = 0
         self.create_stack_floating_buttons = False
@@ -1440,20 +1440,26 @@ class KitchenSink(App):
 
             toast('Set like in %d stars' % index_star)
 
-        instance_grid_card.add_widget(MDCardPost())
+        if not self.cards_created:
+            self.cards_created = True
+            menu_items = [
+                {'viewclass': 'MDMenuItem',
+                 'text': 'Example item %d' % i,
+                 'callback': self.callback_for_menu_items}
+                for i in range(2)
+            ]
 
-        # Card with a button to open the menu MDDropDown.
-        menu_items = [
-            {'viewclass': 'MDMenuItem',
-             'text': 'Example item %d' % i,
-             'callback': self.callback_for_menu_items}
-            for i in range(2)
-        ]
-        instance_grid_card.add_widget(MDCardPost(right_menu=menu_items))
-
-        # Card with asterisks for voting.
-        instance_grid_card.add_widget(
-            MDCardPost(likes_stars=True, callback_on_star=callback_on_star))
+            instance_grid_card.add_widget(
+                MDCardPost(text_post='Card with text'))
+            instance_grid_card.add_widget(
+                MDCardPost(
+                    right_menu=menu_items,
+                    text_post='Card with a button to open the menu MDDropDown'))
+            instance_grid_card.add_widget(
+                MDCardPost(
+                    likes_stars=True,
+                    callback_on_star=callback_on_star,
+                    text_post='Cardwith asterisks for voting.'))
 
     def update_screen(self, instance):
         def update_screen(interval):

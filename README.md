@@ -47,7 +47,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
 * Added new ready-to-use cards;
 * Added new class MDFileManager for selecting directories and files;
-* Added new class MDProgressLoader for downloads files from the server;
+* Add new class [MDProgressLoader](https://github.com/HeaTTheatR/KivyMD/wiki/MDProgressLoader) for downloads files from the server
 * Add new class [MDStackFloatingButtons](https://github.com/HeaTTheatR/KivyMD/wiki/MDStackFloatingButtons)
 * Add new classes MDRectangleFlatIconButton and MDRectangleFlatButton;
 * Add new classes MDRoundFlatIconButton and MDRoundFlatButton;

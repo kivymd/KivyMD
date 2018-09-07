@@ -30,7 +30,7 @@ Builder.load_string("""
     orientation: 'vertical'
 
     Toolbar:
-        title: 'Stack Floating Buttons'
+        title: app.title
         md_bg_color: app.theme_cls.primary_color
         elevation: 10
         left_action_items: [['menu', lambda x: None]]

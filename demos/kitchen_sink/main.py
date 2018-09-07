@@ -1431,14 +1431,11 @@ class KitchenSink(App):
         toast(text_item)
 
     def add_cards(self, instance_grid_card):
-        def callback_on_star(index_star):
-            """
-            :param index_star: star index; begins from scratch;
-            :type index_star: int;
-
-            """
-
-            toast('Set like in %d stars' % index_star)
+        def callback(instance, star):
+            if star:
+                toast('Set like in %d stars' % star)
+            else:
+                toast('Delete post %s' % str(instance))
 
         if not self.cards_created:
             self.cards_created = True
@@ -1450,6 +1447,9 @@ class KitchenSink(App):
             ]
 
             instance_grid_card.add_widget(
+                MDCardPost(text_post='Card with right swipe',
+                           swipe=True, callback=callback))
+            instance_grid_card.add_widget(
                 MDCardPost(text_post='Card with text'))
             instance_grid_card.add_widget(
                 MDCardPost(
@@ -1457,9 +1457,8 @@ class KitchenSink(App):
                     text_post='Card with a button to open the menu MDDropDown'))
             instance_grid_card.add_widget(
                 MDCardPost(
-                    likes_stars=True,
-                    callback_on_star=callback_on_star,
-                    text_post='Cardwith asterisks for voting.'))
+                    likes_stars=True, callback=callback,
+                    text_post='Card with asterisks for voting.'))
 
     def update_screen(self, instance):
         def update_screen(interval):

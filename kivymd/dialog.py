@@ -1,5 +1,85 @@
 # -*- coding: utf-8 -*-
 
+'''
+dailog.py
+
+A simple manager for selecting directories and files.
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+EXAMPLE:
+
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.factory import Factory
+from kivy.utils import get_hex_from_color
+
+from kivymd.dialog import MDInputDialog, MDOkCancelDialog
+from kivymd.theming import ThemeManager
+
+
+Builder.load_string("""
+#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
+
+
+<ExampleDialogs@BoxLayout>:
+    orientation: 'vertical'
+    spacing: dp(5)
+
+    Toolbar:
+        id: toolbar
+        title: app.title
+        left_action_items: [['menu', lambda x: None]]
+        elevation: 10
+        md_bg_color: app.theme_cls.primary_color
+
+    FloatLayout:
+        MDRectangleFlatButton:
+            text: "Open input dialog"
+            pos_hint: {'center_x': .5, 'center_y': .7}
+            opposite_colors: True
+            on_release: app.show_example_input_dialog()
+
+        MDRectangleFlatButton:
+            text: "Open Ok Cancel dialog"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            opposite_colors: True
+            on_release: app.show_example_okcancel_dialog()
+""")
+
+
+class Example(App):
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Teal'
+    title = "Dialogs"
+
+    def build(self):
+        return Factory.ExampleDialogs()
+
+    def show_example_input_dialog(self):
+        dialog = MDInputDialog(
+            title='Title', hint_text='Hint text', size_hint=(.8, .4),
+            text_button_ok='Yes', events_callback=lambda x: None)
+        dialog.open()
+
+    def show_example_okcancel_dialog(self):
+        dialog = MDOkCancelDialog(
+            title='Title', size_hint=(.8, .3), text_button_ok='Yes',
+            text="Your [color=%s][b]text[/b][/color] dialog" % get_hex_from_color(
+                self.theme_cls.primary_color),
+            text_button_cancel='Cancel', events_callback=lambda x: None)
+        dialog.open()
+
+
+Example().run()
+'''
+
 from kivy.logger import Logger
 from kivy.clock import Clock
 from kivy.lang import Builder

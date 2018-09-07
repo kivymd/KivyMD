@@ -350,6 +350,7 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
     pass
 
 
+# FIXME: Add color for Black and White theme
 class MDFileManager(ThemableBehavior, FloatLayout):
     icon = StringProperty('check')
     '''The icon that will be used on the directory selection button.'''

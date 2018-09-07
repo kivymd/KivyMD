@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""
+'''
 filemanager.py
 
 A simple manager for selecting directories and files.
@@ -15,64 +15,87 @@ as the Kivy framework.
 EXAMPLE:
 
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
 from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.factory import Factory
+from kivy.uix.modalview import ModalView
 
+from kivymd.filemanager import MDFileManager
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
-from kivymd.filemanager import MDFileManager
 
 
-class Test(App):
+Builder.load_string("""
+#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
+
+<ExampleFileManager@BoxLayout>:
+    orientation: 'vertical'
+    spacing: dp(5)
+
+    Toolbar:
+        id: toolbar
+        title: app.title
+        left_action_items: [['menu', lambda x: None]]
+        elevation: 10
+        md_bg_color: app.theme_cls.primary_color
+
+
+    FloatLayout:
+
+        MDRoundFlatIconButton:
+            text: "Open manager"
+            icon: "folder"
+            pos_hint: {'center_x': .5, 'center_y': .6}
+            on_release: app.file_manager_open()
+""")
+
+
+class Example(App):
     theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'BlueGrey'
+    theme_cls.primary_palette = 'Teal'
+    title = "File Manage"
+
+    def __init__(self, **kwargs):
+        super(Example, self).__init__(**kwargs)
+        Window.bind(on_keyboard=self.events)
+        self.manager_open = False
+        self.manager = None
 
     def build(self):
-        self.manager_open = False
-        Window.bind(on_keyboard=self.events)
-        self.box = BoxLayout()
-        # More infromation about the parameters of the class, see
-        # in the source code of the class MDFileManager.
-        self.file_manager = MDFileManager(
-            exit_manager=self.exit_manager, select_path=self.select_path
-        )
-        self.add_button()
+        return Factory.ExampleFileManager()
 
-        return self.box
-
-    def show(self, *args):
-        self.box.clear_widgets()
-        self.box.add_widget(self.file_manager)
-        self.file_manager.show('/')  # вывод менеджера на экран
+    def file_manager_open(self):
+        if not self.manager:
+            self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
+            self.file_manager = MDFileManager(
+                exit_manager=self.exit_manager, select_path=self.select_path)
+            self.manager.add_widget(self.file_manager)
+            self.file_manager.show('/')  # output manager to the screen
         self.manager_open = True
-
-    def add_button(self):
-        self.box.clear_widgets()
-        self.box.add_widget(
-            Button(text='Press for test...', on_release=self.show))
+        self.manager.open()
 
     def select_path(self, path):
-        '''It will be called when you click on the file name
+        """It will be called when you click on the file name
         or the catalog selection button.
 
         :type path: str;
         :param path: path to the selected directory or file;
 
-        '''
+        """
 
-        self.add_button()
+        self.exit_manager()
         toast(path)
 
     def exit_manager(self, *args):
-        '''Called when the user reaches the root of the directory tree.'''
+        """Called when the user reaches the root of the directory tree."""
 
-        self.add_button()
+        self.manager.dismiss()
         self.manager_open = False
 
     def events(self, instance, keyboard, keycode, text, modifiers):
-        '''Called when buttons are pressed on the mobile device.'''
+        """Called when buttons are pressed on the mobile device.."""
 
         if keyboard in (1001, 27):
             if self.manager_open:
@@ -80,8 +103,8 @@ class Test(App):
         return True
 
 
-Test().run()
-"""
+Example().run()
+'''
 
 import os
 

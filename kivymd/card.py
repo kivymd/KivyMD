@@ -67,14 +67,11 @@ class Example(App):
         def callback_for_menu_items(text_item):
             toast(text_item)
 
-        def callback_on_star(index_star):
-            """
-            :param index_star: star index; begins from scratch;
-            :type index_star: int;
-
-            """
-
-            toast('Set like in %d stars' % index_star)
+        def callback(instance, star):
+            if star:
+                toast('Set like in %d stars' % star)
+            else:
+                toast('Delete post %s' % str(instance))
 
         instance_grid_card = self.screen.ids.grid_card
         path_to_avatar = 'data/logo/kivy-icon-512.png'
@@ -96,7 +93,7 @@ class Example(App):
                 text_post='Card with a button to open the menu MDDropDown.'))
         instance_grid_card.add_widget(
             MDCardPost(
-                likes_stars=True, callback_on_star=callback_on_star,
+                likes_stars=True, callback=callback,
                 path_to_avatar=path_to_avatar,
                 text_post='Card with asterisks for voting.'))
 
@@ -104,6 +101,8 @@ class Example(App):
 Example().run()
 '''
 
+from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import BoundedNumericProperty, ReferenceListProperty, \
     StringProperty, ListProperty, BooleanProperty, ObjectProperty
@@ -122,6 +121,9 @@ from kivymd.theming import ThemableBehavior
 
 
 Builder.load_string('''
+#:import images_path kivymd.images_path
+
+
 <MDCard>
     canvas:
         Color:
@@ -155,42 +157,79 @@ Builder.load_string('''
     size_hint: None, None
     size: root.card_size
 
-    BoxLayout:
-        id: title_box
-        size_hint_y: None
-        height: dp(50)
-        spacing: dp(10)
+    FloatLayout:
 
-        LeftIcon:
-            source: root.path_to_avatar
-            size_hint_x: None
-            width: self.height
-            allow_stretch: True
+        BoxLayout:
+            id: root_box
+            spacing: dp(5)
+            pos_hint: {'top': 1}
+            orientation: 'vertical'
+            x: dp(10)
 
-        MDLabel:
-            markup: True
-            text: root.name_data
-            text_size: self.width, None
-            theme_text_color: 'Primary'
-            bold: True
-            font_size: '12sp'
+            BoxLayout:
+                id: title_box
+                size_hint_y: None
+                height: dp(50)
+                spacing: dp(10)
 
-    MDSeparator:
-        height: dp(1)
+                LeftIcon:
+                    source: root.path_to_avatar
+                    size_hint_x: None
+                    width: self.height
+                    allow_stretch: True
 
-    MDLabel:
-        id: text_post
-        text: root.text_post
-        markup: True
-        font_size: '14sp'
-        size_hint_y: None
-        valign: 'top'
-        height: self.texture_size[1]
-        text_size: self.width - dp(5), None
-        theme_text_color: 'Primary'
+                MDLabel:
+                    markup: True
+                    text: root.name_data
+                    text_size: self.width, None
+                    theme_text_color: 'Primary'
+                    bold: True
+                    font_size: '12sp'
 
-    Widget:
+            MDLabel:
+                id: text_post
+                text: root.text_post
+                markup: True
+                font_size: '14sp'
+                size_hint_y: None
+                valign: 'top'
+                height: self.texture_size[1]
+                text_size: self.width - dp(5), None
+                theme_text_color: 'Primary'
 
+            Widget:
+
+            MDSeparator:
+                id: sep
+                height: dp(1)
+
+        AnchorLayout:
+            id: box_delete_post_button
+            size_hint: None, None
+            size: dp(90), root.height - dp(15)
+            pos_hint: {'top': 1, 'right': 1}
+            anchor_x: 'center'
+            opacity: 0
+
+            canvas.before:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            canvas.after:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                    source: '{}swipe_shadow.png'.format(images_path)
+
+            MDIconButton:
+                id: delet_post_button
+                size_hint: None, None
+                size: dp(56), dp(56)
+                icon: 'delete'
+                disabled: True
+                on_release: root.callback(root, None)
 ''')
 
 
@@ -224,7 +263,7 @@ class LeftIcon(ILeftBody, Image):
     pass
 
 
-class MDCardPost(MDCard):
+class MDCardPost(BoxLayout):
     name_data = StringProperty('Name Author\nDate and time')
     text_post = StringProperty('Your text post...')
     path_to_avatar = StringProperty('./assets/avatar.png')
@@ -238,12 +277,19 @@ class MDCardPost(MDCard):
     '''If True, stars will be added to the card for evaluation
     '''
 
-    callback_on_star = ObjectProperty(lambda x: None)
+    callback = ObjectProperty(lambda *x: None)
+
+    swipe = BooleanProperty(False)
+    '''Whether to apply to the card the function of a swap
+    '''
 
     _list_instance_likes_stars = ListProperty()
+    _card_shifted = False
 
     def __init__(self, **kwargs):
         super(MDCardPost, self).__init__(**kwargs)
+        self.card_shifted = None
+
         # ---------------------------------------------------------------------
         if len(self.right_menu):
             self.ids.title_box.add_widget(
@@ -264,6 +310,7 @@ class MDCardPost(MDCard):
                 self.box_likes_stars.add_widget(like_star)
                 self._list_instance_likes_stars.append(like_star)
             box_likes_stars_right.add_widget(self.box_likes_stars)
+            self.ids.root_box.remove_widget(self.ids.sep)
             self.add_widget(box_likes_stars_right)
 
     def open_menu(self, instance):
@@ -282,4 +329,37 @@ class MDCardPost(MDCard):
             elif int(instance_like_star.id) >= index_star:
                 if instance_like_star.icon == 'star':
                     instance_like_star.icon = 'star-outline'
-        self.callback_on_star(index_star + i)
+        self.callback(self, index_star + i)
+
+    def on_touch_move(self, touch):
+        if self.collide_point(*touch.pos) and self.swipe and not self._card_shifted:
+            if touch.x < Window.width - 10:
+                self.shift_post_left()
+        return super(MDCardPost, self).on_touch_move(touch)
+
+    def on_touch_down(self, touch):
+        if self.swipe and self.card_shifted:
+            Clock.schedule_once(self.shift_post_right, .1)
+        return super(MDCardPost, self).on_touch_down(touch)
+
+    def shift_post_left(self):
+        def on_anim_complete(*args):
+            self._card_shifted = True
+            self.card_shifted = self
+            self.ids.delet_post_button.disabled = False
+
+        Animation(x=-90, d=.3, t='in_out_cubic').start(self.ids.root_box)
+        anim = Animation(opacity=1, d=.3, t='in_out_cubic')
+        anim.bind(on_complete=on_anim_complete)
+        anim.start(self.ids.box_delete_post_button)
+
+    def shift_post_right(self, interval=.1):
+        def on_anim_complete(*args):
+            self._card_shifted = False
+            self.card_shifted = None
+            self.ids.delet_post_button.disabled = True
+
+        Animation(x=10, d=.10, t='in_out_cubic').start(self.ids.root_box)
+        anim = Animation(opacity=0, d=.10, t='in_out_cubic')
+        anim.bind(on_complete=on_anim_complete)
+        anim.start(self.ids.box_delete_post_button)

@@ -30,7 +30,7 @@ from kivymd.toast import toast
 Builder.load_string(
 '''
 #:import Toolbar kivymd.toolbar.Toolbar
-#:import MDRaisedButton kivymd.button.MDRaisedButton
+#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
 <Root@BoxLayout>:
@@ -47,12 +47,10 @@ Builder.load_string(
     FloatLayout:
         id: box
 
-        MDRaisedButton:
+        MDRoundFlatIconButton:
             text: "Download file"
-            size_hint: None, None
-            size: 3 * dp(48), dp(48)
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            opposite_colors: True
+            icon: "download"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
             on_release: app.show_example_download_file()
 ''')
 

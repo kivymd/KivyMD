@@ -1431,9 +1431,13 @@ class KitchenSink(App):
         toast(text_item)
 
     def add_cards(self, instance_grid_card):
-        def callback(instance, star):
-            if star:
-                toast('Set like in %d stars' % star)
+        def callback(instance, value):
+            if value and isinstance(value, int):
+                toast('Set like in %d stars' % value)
+            elif value and isinstance(value, str):
+                toast('Repost with %s ' % value)
+            elif value and isinstance(value, list):
+                toast(value[1])
             else:
                 toast('Delete post %s' % str(instance))
 
@@ -1445,20 +1449,31 @@ class KitchenSink(App):
                  'callback': self.callback_for_menu_items}
                 for i in range(2)
             ]
+            buttons = ['facebook', 'vk', 'twitter']
 
             instance_grid_card.add_widget(
-                MDCardPost(text_post='Card with right swipe',
+                MDCardPost(text_post='Card with text',
                            swipe=True, callback=callback))
             instance_grid_card.add_widget(
-                MDCardPost(text_post='Card with text'))
+                MDCardPost(
+                    right_menu=menu_items, swipe=True,
+                    text_post='Card with a button to open the menu MDDropDown',
+                    callback=callback))
             instance_grid_card.add_widget(
                 MDCardPost(
-                    right_menu=menu_items,
-                    text_post='Card with a button to open the menu MDDropDown'))
-            instance_grid_card.add_widget(
-                MDCardPost(
-                    likes_stars=True, callback=callback,
+                    likes_stars=True, callback=callback, swipe=True,
                     text_post='Card with asterisks for voting.'))
+
+            instance_grid_card.add_widget(
+                MDCardPost(
+                    source="./assets/kitten-1049129_1280.jpg",
+                    tile_text="Little Baby",
+                    tile_font_style="Headline",
+                    text_post="This is my favorite cat. He's only six months "
+                              "old. He loves milk and steals sausages :) "
+                              "And he likes to play in the garden.",
+                    with_image=True, swipe=True, callback=callback,
+                    buttons=buttons))
 
     def update_screen(self, instance):
         def update_screen(interval):

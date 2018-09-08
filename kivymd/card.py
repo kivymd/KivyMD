@@ -58,6 +58,7 @@ class Example(App):
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Teal'
     title = "Card Post"
+    cards_created = False
 
     def build(self):
         self.screen = Factory.ExampleCardPost()
@@ -67,14 +68,18 @@ class Example(App):
         def callback_for_menu_items(text_item):
             toast(text_item)
 
-        def callback(instance, star):
-            if star:
-                toast('Set like in %d stars' % star)
+        def callback(instance, value):
+            if value and isinstance(value, int):
+                toast('Set like in %d stars' % value)
+            elif value and isinstance(value, str):
+                toast('Repost with %s ' % value)
+            elif value and isinstance(value, list):
+                toast(value[1])
             else:
                 toast('Delete post %s' % str(instance))
 
         instance_grid_card = self.screen.ids.grid_card
-        path_to_avatar = 'data/logo/kivy-icon-512.png'
+        buttons = ['facebook', 'vk', 'twitter']
         menu_items = [
             {'viewclass': 'MDMenuItem',
              'text': 'Example item %d' % i,
@@ -82,20 +87,32 @@ class Example(App):
             for i in range(2)
         ]
 
-        instance_grid_card.add_widget(
-            MDCardPost(
-                path_to_avatar=path_to_avatar,
-                text_post='Card with text'))
-        instance_grid_card.add_widget(
-            MDCardPost(
-                right_menu=menu_items,
-                path_to_avatar=path_to_avatar,
-                text_post='Card with a button to open the menu MDDropDown.'))
-        instance_grid_card.add_widget(
-            MDCardPost(
-                likes_stars=True, callback=callback,
-                path_to_avatar=path_to_avatar,
-                text_post='Card with asterisks for voting.'))
+        if not self.cards_created:
+            self.cards_created = True
+
+            instance_grid_card.add_widget(
+                MDCardPost(text_post='Card with text',
+                           swipe=True, callback=callback))
+            instance_grid_card.add_widget(
+                MDCardPost(
+                    right_menu=menu_items, swipe=True,
+                    text_post='Card with a button to open the menu MDDropDown',
+                    callback=callback))
+            instance_grid_card.add_widget(
+                MDCardPost(
+                    likes_stars=True, callback=callback, swipe=True,
+                    text_post='Card with asterisks for voting.'))
+
+            instance_grid_card.add_widget(
+                MDCardPost(
+                    source="./assets/kitten-1049129_1280.jpg",
+                    tile_text="Little Baby",
+                    tile_font_style="Headline",
+                    text_post="This is my favorite cat. He's only six months "
+                              "old. He loves milk and steals sausages :) "
+                              "And he likes to play in the garden.",
+                    with_image=True, swipe=True, callback=callback,
+                    buttons=buttons))
 
 
 Example().run()
@@ -122,6 +139,7 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
 #:import images_path kivymd.images_path
+#:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
 
 
 <MDCard>
@@ -148,6 +166,39 @@ Builder.load_string('''
         Rectangle:
             size: self.size
             pos: self.pos
+
+
+<CardPostImage>:
+    spacing: dp(10)
+    padding: dp(5)
+    orientation: 'vertical'
+    size_hint: None, None
+    size: root.card_size
+
+    SmartTileWithLabel:
+        source: root.source
+        text: ' %s' % root.tile_text
+        color: root.tile_text_color
+        size_hint_y: None
+        font_style: root.tile_font_style
+        height: dp(200)
+        on_release: root.callback(root, [self, self.source])
+
+    MDLabel:
+        text: root.text_post
+        size_hint_y: None
+        halign: 'justify'
+        valign: 'top'
+        height: dp(60)
+        text_size: self.width - 20, dp(60)
+
+    AnchorLayout:
+        anchor_x: 'right'
+        size_hint_y: None
+        height: dp(40)
+
+        BoxLayout:
+            id: box_buttons
 
 
 <MDCardPost>:
@@ -263,35 +314,77 @@ class LeftIcon(ILeftBody, Image):
     pass
 
 
+class CardPostImage(BoxLayout):
+    source = StringProperty()
+    text_post = StringProperty()
+    tile_text = StringProperty("Title")
+    tile_font_style = StringProperty("Headline")
+    tile_text_color = ListProperty([1, 1, 1, 1])
+    callback = ObjectProperty(lambda *x: None)
+    card_size = ListProperty((Window.width - 10, dp(335)))
+
+
 class MDCardPost(BoxLayout):
     name_data = StringProperty('Name Author\nDate and time')
     text_post = StringProperty('Your text post...')
-    path_to_avatar = StringProperty('./assets/avatar.png')
+    path_to_avatar = StringProperty('data/logo/kivy-icon-512.png')
     card_size = ListProperty((Window.width - 10, dp(180)))
+
+    source = StringProperty()
+    tile_text = StringProperty("Title")
+    tile_font_style = StringProperty("Headline")
+    tile_text_color = ListProperty([1, 1, 1, 1])
+
+    buttons = ListProperty()
+    '''A list of icons for buttons that will be used under the text of the post
+    when "with_image" is True
+    '''
 
     right_menu = ListProperty()
     '''If the list is not empty a button will be added to display the menu list
     '''
 
     likes_stars = BooleanProperty(False)
-    '''If True, stars will be added to the card for evaluation
-    '''
+    '''If True, stars will be added to the card for evaluation'''
 
     callback = ObjectProperty(lambda *x: None)
+    '''User function'''
 
     swipe = BooleanProperty(False)
-    '''Whether to apply to the card the function of a swap
-    '''
+    '''Whether to apply to the card the function of a swap'''
+
+    with_image = BooleanProperty(False)
+    '''If True, we use a post with an image'''
 
     _list_instance_likes_stars = ListProperty()
     _card_shifted = False
+    _shift_x = 10
 
     def __init__(self, **kwargs):
         super(MDCardPost, self).__init__(**kwargs)
         self.card_shifted = None
 
         # ---------------------------------------------------------------------
-        if len(self.right_menu):
+        if self.with_image:
+            self.ids.root_box.clear_widgets()
+            self._shift_x = dp(5)
+            self.ids.root_box.x = self._shift_x
+            self.card_size[1] = dp(335)
+            card_post = CardPostImage(
+                source=self.source,
+                text_post=self.text_post,
+                tile_text=self.tile_text,
+                tile_font_style=self.tile_font_style,
+                tile_text_color=self.tile_text_color,
+                callback=self.callback)
+            for name_icon in self.buttons:
+                card_post.ids.box_buttons.add_widget(
+                    MDIconButton(
+                        icon=name_icon,
+                        on_release=lambda x, y=name_icon: self.callback(x, y)))
+            self.ids.root_box.add_widget(card_post)
+        # ---------------------------------------------------------------------
+        if len(self.right_menu) and not self.with_image:
             self.ids.title_box.add_widget(
                 MDIconButton(
                     icon='dots-vertical',
@@ -332,7 +425,8 @@ class MDCardPost(BoxLayout):
         self.callback(self, index_star + i)
 
     def on_touch_move(self, touch):
-        if self.collide_point(*touch.pos) and self.swipe and not self._card_shifted:
+        if self.collide_point(*touch.pos) and self.swipe and \
+                not self._card_shifted:
             if touch.x < Window.width - 10:
                 self.shift_post_left()
         return super(MDCardPost, self).on_touch_move(touch)
@@ -348,10 +442,10 @@ class MDCardPost(BoxLayout):
             self.card_shifted = self
             self.ids.delet_post_button.disabled = False
 
-        Animation(x=-90, d=.3, t='in_out_cubic').start(self.ids.root_box)
+        Animation(x=-95, d=.1, t='in_out_cubic').start(self.ids.root_box)
         if self.likes_stars:
-            Animation(x=-90, d=.3, t='in_out_cubic').start(self.children[0])
-        anim = Animation(opacity=1, d=.3, t='in_out_cubic')
+            Animation(x=-95, d=.1, t='in_out_cubic').start(self.children[0])
+        anim = Animation(opacity=1, d=.5, t='in_out_cubic')
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)
 
@@ -361,9 +455,9 @@ class MDCardPost(BoxLayout):
             self.card_shifted = None
             self.ids.delet_post_button.disabled = True
 
-        Animation(x=10, d=.10, t='in_out_cubic').start(self.ids.root_box)
+        Animation(x=self._shift_x, d=.1, t='in_out_cubic').start(self.ids.root_box)
         if self.likes_stars:
-            Animation(x=10, d=.3, t='in_out_cubic').start(self.children[0])
-        anim = Animation(opacity=0, d=.10, t='in_out_cubic')
+            Animation(x=self._shift_x, d=.3, t='in_out_cubic').start(self.children[0])
+        anim = Animation(opacity=0, d=.05, t='in_out_cubic')
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)

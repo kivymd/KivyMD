@@ -28,7 +28,8 @@ class Toast(ModalView):
         self.size_hint = (None, None)
         self.pos_hint = {'center_x': .5, 'center_y': .1}
         self.background_color = [0, 0, 0, 0]
-        self.background = 'atlas://data/images/defaulttheme/modalview-background'
+        self.background = \
+            'atlas://data/images/defaulttheme/modalview-background'
         self.opacity = 0
         self.auto_dismiss = False
         self.label_toast = Label(size_hint=(None, None), opacity=0)
@@ -41,7 +42,7 @@ class Toast(ModalView):
            instance.text_size = (Window.width - dp(10), None)
            instance.texture_update()
            texture_width, texture_height = instance.texture_size
-        self.size = (texture_width + 15, texture_height + 15)
+        self.size = (texture_width + 25, texture_height + 25)
 
     def toast(self, text_toast):
         self.label_toast.text = text_toast
@@ -52,29 +53,15 @@ class Toast(ModalView):
         Clock.schedule_once(self.fade_out, 2.5)
 
     def fade_in(self):
-        anim_label = Animation(opacity=0, duration=.4)
-        anim_label += Animation(opacity=.1, duration=.4)
-        anim_label += Animation(opacity=1, duration=.4)
-
-        anim_body = Animation(opacity=0, duration=.4)
-        anim_body += Animation(opacity=.1, duration=.4)
-        anim_body += Animation(opacity=1, duration=.4)
-
-        anim_label.start(self.label_toast)
-        anim_body.start(self)
+        Animation(opacity=1, duration=.4).start(self.label_toast)
+        Animation(opacity=1, duration=.4).start(self)
 
     def fade_out(self, interval):
-        anim_label = Animation(opacity=1, duration=.4)
-        anim_label += Animation(opacity=0, duration=.4)
-
-        anim_body = Animation(opacity=1, duration=.4)
-        anim_body += Animation(opacity=0, duration=.4)
+        Animation(opacity=0, duration=.4).start(self.label_toast)
+        anim_body = Animation(opacity=0, duration=.4)
         anim_body.bind(on_complete=lambda *x: self.dismiss())
-
-        anim_label.start(self.label_toast)
         anim_body.start(self)
 
 
 def toast(text, length_long=False):
     Toast().toast(text)
-

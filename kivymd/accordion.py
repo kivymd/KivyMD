@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ListProperty, OptionProperty, ObjectProperty
+from kivy.properties import StringProperty, ListProperty, OptionProperty, \
+    ObjectProperty
 from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
@@ -22,9 +23,9 @@ class MDAccordionSubItem(OneLineListItem):
 
 
 class MDAccordionItem(ThemableBehavior, AccordionItem):
-    title_theme_color = OptionProperty(None, allownone=True,
-                                       options=['Primary', 'Secondary', 'Hint',
-                                                'Error', 'Custom'])
+    title_theme_color = OptionProperty(
+        None, allownone=True, options=['Primary', 'Secondary', 'Hint',
+                                       'Error', 'Custom'])
     ''' Color theme for title text and  icon '''
 
     title_color = ListProperty(None, allownone=True)
@@ -70,8 +71,10 @@ Builder.load_string('''
 #:import MDLabel kivymd.label.MDLabel
 #:import md_icons kivymd.icon_definitions.md_icons
 
+
 <MDAccordion>:
     md_bg_color: self.theme_cls.primary_color
+
 
 <MDAccordionItem>:
     canvas.before:
@@ -90,26 +93,30 @@ Builder.load_string('''
         Rectangle:
             size: (dp(2),self.height) if self.orientation == 'vertical' else (self.width,dp(2))
             pos:self.pos
+
     ScrollView:
         id: sv
         MDList:
             id: ml
 
+
 <MDAccordionSubItem>:
     theme_text_color: 'Custom'
     text_color: self.parent_item.parent.specific_text_color
+
 
 [MDAccordionItemTitle@MDAccordionItemTitleLayout]:
     padding: '12dp'
     spacing: '12dp'
     orientation: 'horizontal' if ctx.item.orientation=='vertical' else 'vertical'
+
     canvas:
         PushMatrix
         Translate:
             xy: (-dp(2),0) if ctx.item.orientation == 'vertical' else (0,-dp(2))
-        
     canvas.after:
         PopMatrix
+
     MDLabel:
         id:_icon
         theme_text_color: 'Custom'
@@ -120,6 +127,7 @@ Builder.load_string('''
         size: ((self.texture_size[0],1) if ctx.item.orientation == 'vertical' else (1,self.texture_size[1])) \
             if ctx.item.icon else (0,0)
         text_size: (self.width, None) if ctx.item.orientation=='vertical' else (None,self.width)
+
         canvas.before:
             PushMatrix
             Rotate:
@@ -127,6 +135,7 @@ Builder.load_string('''
                 origin: self.center
         canvas.after:
             PopMatrix
+
     MDLabel:
         id:_label
         theme_text_color: 'Custom'
@@ -134,6 +143,7 @@ Builder.load_string('''
         text: ctx.item.title
         font_style: ctx.item.font_style
         text_size: (self.width, None) if ctx.item.orientation=='vertical' else (None,self.width)
+
         canvas.before:
             PushMatrix
             Rotate:
@@ -152,6 +162,7 @@ Builder.load_string('''
         text: md_icons[ctx.item.icon_collapsed if ctx.item.collapse else ctx.item.icon_expanded]
         halign: 'right' if ctx.item.orientation=='vertical' else 'center'
         #valign: 'middle' if ctx.item.orientation=='vertical' else 'bottom'
+
         canvas.before:
             PushMatrix
             Rotate:
@@ -159,8 +170,8 @@ Builder.load_string('''
                 origin: self.center
         canvas.after:
             PopMatrix
-    
 ''')
+
 
 if __name__ == '__main__':
     from kivy.app import App
@@ -171,13 +182,17 @@ if __name__ == '__main__':
         theme_cls = ThemeManager()
 
         def build(self):
-            # self.theme_cls.primary_palette = 'Indigo'
+            self.theme_cls.primary_palette = 'Indigo'
             return Builder.load_string("""
 #:import MDLabel kivymd.label.MDLabel
+
+
 BoxLayout:
     spacing: '64dp'
+
     MDAccordion:
         orientation: 'vertical'
+
         MDAccordionItem:
             title: 'Item 1'
             icon: 'home'
@@ -204,8 +219,10 @@ BoxLayout:
                 text: "Subitem 8"
             MDAccordionSubItem:
                 text: "Subitem 9"
+
     MDAccordion:
         orientation: 'horizontal'
+
         MDAccordionItem:
             title:'Item 1'
             icon: 'home'

@@ -183,34 +183,41 @@ Builder.load_string('''
     spacing: dp(10)
 
     MDLabel:
+        text: root.title
         font_style: 'Title'
         theme_text_color: 'Primary'
-        text: root.title
-        halign: 'center'
-
-    Widget:
+        halign: 'left'
+        valign: 'top'
+        size_hint_y: None
+        text_size: self.width, None
+        height: self.texture_size[1]
 
     MDLabel:
         theme_text_color: 'Primary'
         text: root.text
-        halign: 'center'
+        size_hint_y: None
+        height: self.texture_size[1]
+        valign: 'top'
         markup: True
 
     Widget:
-    Widget:
 
-    BoxLayout:
+    AnchorLayout:
+        anchor_x: 'right'
+        size_hint_y: None
+        height: dp(30)
 
-        AnchorLayout:
-            anchor_x: 'left'
-            MDFlatButton:
+        BoxLayout:
+            size_hint_x: None
+            width: self.minimum_width
+            spacing: dp(5)
+
+            MDRaisedButton:
                 text: root.text_button_ok
-                theme_text_color: 'Custom'
-                text_color: app.theme_cls.primary_color
+                #theme_text_color: 'Custom'
+                #text_color: app.theme_cls.primary_color
                 on_release: root.events_callback(self.text)
 
-        AnchorLayout:
-            anchor_x: 'right'
             MDFlatButton:
                 text: root.text_button_cancel
                 theme_text_color: 'Custom'

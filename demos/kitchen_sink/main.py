@@ -339,6 +339,10 @@ NavigationLayout:
                     icon: "language-python"
                     pos_hint: {'center_x': 0.5, 'center_y': .25}
 
+                MDFillRoundFlatButton:
+                    text: "I love Python"
+                    pos_hint: {'center_x': 0.5, 'center_y': .15}
+
             ###################################################################
             #
             #                            CARDS

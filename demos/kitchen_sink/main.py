@@ -1333,7 +1333,6 @@ class KitchenSink(App):
         self.Window = Window
         self.manager = False
         self.md_theme_picker = None
-        self.time_dialog = None
         self.long_dialog = None
         self.input_dialog = None
         self.ok_cancel_dialog = None
@@ -1610,16 +1609,15 @@ class KitchenSink(App):
         self.previous_time = time
 
     def show_example_time_picker(self):
-        if not self.time_dialog:
-            self.time_dialog = MDTimePicker()
-            self.time_dialog.bind(time=self.get_time_picker_data)
+        time_dialog = MDTimePicker()
+        time_dialog.bind(time=self.get_time_picker_data)
 
         if self.root.ids.time_picker_use_previous_time.active:
             try:
-                self.time_dialog.set_time(self.previous_time)
+                time_dialog.set_time(self.previous_time)
             except AttributeError:
                 pass
-        self.time_dialog.open()
+        time_dialog.open()
 
     def set_previous_date(self, date_obj):
         self.previous_date = date_obj

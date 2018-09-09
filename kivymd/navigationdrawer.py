@@ -7,7 +7,7 @@ Navigation Drawer
 API
 ---
 '''
-
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import StringProperty, ObjectProperty, NumericProperty, \
@@ -310,7 +310,8 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
     separator_image = StringProperty(
         '{}'.format(images_path + '/transparent.png'))
     side_panel_positioning = 'left'
-    side_panel_width = NumericProperty(dp(320))
+    side_panel_width = (dp(320) * 80) // 100 \
+        if dp(320) >= Window.width else dp(320)
     max_shadow_opacity = NumericProperty(0.5)
     anim_type = StringProperty('slide_above_simple')
 

@@ -327,7 +327,6 @@ NavigationLayout:
                     text: "I love Python"
                     icon: "language-python"
                     pos_hint: {'center_x': 0.5, 'center_y': .45}
-                    pressed_color: 2, 2, 2, 1
 
                 MDRoundFlatButton:
                     text: "I love Python"

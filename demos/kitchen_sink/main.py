@@ -1331,10 +1331,17 @@ class KitchenSink(App):
         self.manager = False
         self.md_theme_picker = None
         self.time_dialog = None
+        self.long_dialog = None
+        self.input_dialog = None
+        self.ok_cancel_dialog = None
+        self.dialog = None
         self.user_animation_card = None
         self.manager_open = False
         self.cards_created = False
         self.file_manager = None
+        self.bs_menu_1 = None
+        self.bs_menu_2 = None
+
         self.tick = 0
         self.create_stack_floating_buttons = False
         Window.bind(on_keyboard=self.events)
@@ -1348,8 +1355,8 @@ class KitchenSink(App):
         def set_my_language(instance_button):
             toast(instance_button.icon)
 
-        screen = self.main_widget.ids.scr_mngr.get_screen('stack buttons')
         if not self.create_stack_floating_buttons:
+            screen = self.main_widget.ids.scr_mngr.get_screen('stack buttons')
             screen.add_widget(MDStackFloatingButtons(
                 icon='lead-pencil',
                 floating_data={
@@ -1378,14 +1385,28 @@ class KitchenSink(App):
         instance_progress.animation_progress_from_fade()
 
     def show_example_download_file(self, interval):
-        link = 'https://www.python.org/ftp/python/3.5.1/python-3.5.1-embed-win32.zip'
-        progress = MDProgressLoader(
-            url_on_image=link,
-            path_to_file=os.path.join(self.directory, 'python-3.5.1.zip'),
-            download_complete=self.download_complete,
-            download_hide=self.download_progress_hide
-        )
-        progress.start(self.main_widget.ids.box_flt)
+        def get_connect(host="8.8.8.8", port=53, timeout=3):
+            import socket
+            try:
+                socket.setdefaulttimeout(timeout)
+                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(
+                    (host, port))
+                return True
+            except Exception:
+                return False
+
+        if get_connect():
+            link = 'https://www.python.org/ftp/python/3.5.1/' \
+                   'python-3.5.1-embed-win32.zip'
+            progress = MDProgressLoader(
+                url_on_image=link,
+                path_to_file=os.path.join(self.directory, 'python-3.5.1.zip'),
+                download_complete=self.download_complete,
+                download_hide=self.download_progress_hide
+            )
+            progress.start(self.main_widget.ids.box_flt)
+        else:
+            toast('Connect error!')
 
     def download_complete(self):
         self.set_chevron_back_screen()
@@ -1529,52 +1550,57 @@ class KitchenSink(App):
                           "long snackbar!").show()
 
     def show_example_dialog(self):
-        content = MDLabel(font_style='Body1', theme_text_color='Secondary',
-                          text="This is a dialog with a title and some text. "
-                               "That's pretty awesome right!",
-                          size_hint_y=None, valign='top')
-        content.bind(texture_size=content.setter('size'))
-        dialog = MDDialog(title="This is a test dialog",
-                          content=content, size_hint=(.8, None), height=dp(200),
-                          auto_dismiss=False)
-        dialog.add_action_button("Dismiss", action=lambda *x: dialog.dismiss())
-        dialog.open()
+        if not self.dialog:
+            content = MDLabel(
+                font_style='Body1', theme_text_color='Secondary',
+                text="This is a dialog with a title and some text. That's "
+                     "pretty awesome right!", size_hint_y=None, valign='top')
+            content.bind(texture_size=content.setter('size'))
+            self.dialog = MDDialog(
+                title="This is a test dialog", content=content,
+                size_hint=(.8, None), height=dp(200), auto_dismiss=False)
+            self.dialog.add_action_button(
+                "Dismiss", action=lambda *x: self.dialog.dismiss())
+        self.dialog.open()
 
     def show_example_long_dialog(self):
-        content = MDLabel(font_style='Body1',
-                          theme_text_color='Secondary',
-                          text="Lorem ipsum dolor sit amet, consectetur "
-                               "adipiscing elit, sed do eiusmod tempor "
-                               "incididunt ut labore et dolore magna aliqua. "
-                               "Ut enim ad minim veniam, quis nostrud "
-                               "exercitation ullamco laboris nisi ut aliquip "
-                               "ex ea commodo consequat. Duis aute irure "
-                               "dolor in reprehenderit in voluptate velit "
-                               "esse cillum dolore eu fugiat nulla pariatur. "
-                               "Excepteur sint occaecat cupidatat non "
-                               "proident, sunt in culpa qui officia deserunt "
-                               "mollit anim id est laborum.",
-                          size_hint_y=None, valign='top')
-        content.bind(texture_size=content.setter('size'))
-        dialog = MDDialog(title="This is a long test dialog", content=content,
-                          size_hint=(.8, None), height=dp(200),
-                          auto_dismiss=False)
-        dialog.add_action_button("Dismiss", action=lambda *x: dialog.dismiss())
-        dialog.open()
+        if not self.long_dialog:
+            content = MDLabel(
+                font_style='Body1', theme_text_color='Secondary',
+                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
+                     "sed do eiusmod tempor incididunt ut labore et dolore "
+                     "magna aliqua. Ut enim ad minim veniam, quis nostrud "
+                     "exercitation ullamco laboris nisi ut aliquip ex ea "
+                     "commodo consequat. Duis aute irure dolor in "
+                     "reprehenderit in voluptate velit esse cillum dolore eu "
+                     "fugiat nulla pariatur. Excepteur sint occaecat "
+                     "cupidatat non proident, sunt in culpa qui officia "
+                     "deserunt mollit anim id est laborum.",
+                size_hint_y=None, valign='top')
+            content.bind(texture_size=content.setter('size'))
+            self.long_dialog = MDDialog(
+                title="This is a long test dialog", content=content,
+                size_hint=(.8, None), height=dp(300), auto_dismiss=False)
+            self.long_dialog.add_action_button(
+                "Dismiss", action=lambda *x: self.long_dialog.dismiss())
+        self.long_dialog.open()
 
     def show_example_input_dialog(self):
-        dialog = MDInputDialog(
-            title='Title', hint_text='Hint text', size_hint=(.8, .4),
-            text_button_ok='Yes', events_callback=lambda x: None)
-        dialog.open()
+        if not self.input_dialog:
+            self.input_dialog = MDInputDialog(
+                title='Title', hint_text='Hint text', size_hint=(.8, .4),
+                text_button_ok='Yes', events_callback=lambda x: None)
+        self.input_dialog.open()
 
     def show_example_okcancel_dialog(self):
-        dialog = MDOkCancelDialog(
-            title='Title', size_hint=(.8, .3), text_button_ok='Yes',
-            text="Your [color=%s][b]text[/b][/color] dialog" % get_hex_from_color(
-                self.theme_cls.primary_color),
-            text_button_cancel='Cancel', events_callback=lambda x: None)
-        dialog.open()
+        if not self.ok_cancel_dialog:
+            self.ok_cancel_dialog = MDOkCancelDialog(
+                title='Title', size_hint=(.8, .3), text_button_ok='Yes',
+                text="Your [color=%s][b]text[/b][/color] "
+                     "dialog" % get_hex_from_color(
+                    self.theme_cls.primary_color), text_button_cancel='Cancel',
+                events_callback=lambda x: None)
+        self.ok_cancel_dialog.open()
 
     def get_time_picker_data(self, instance, time):
         self.root.ids.time_picker_label.text = str(time)
@@ -1608,26 +1634,30 @@ class KitchenSink(App):
             MDDatePicker(self.set_previous_date).open()
 
     def show_example_bottom_sheet(self):
-        bs = MDListBottomSheet()
-        bs.add_item("Here's an item with text only", lambda x: x)
-        bs.add_item("Here's an item with an icon", lambda x: x,
-                    icon='clipboard-account')
-        bs.add_item("Here's another!", lambda x: x, icon='nfc')
-        bs.open()
+        if not self.bs_menu_1:
+            self.bs_menu_1 = MDListBottomSheet()
+            self.bs_menu_1.add_item(
+                "Here's an item with text only", lambda x: x)
+            self.bs_menu_1.add_item(
+                "Here's an item with an icon", lambda x: x,
+                icon='clipboard-account')
+            self.bs_menu_1.add_item("Here's another!", lambda x: x, icon='nfc')
+        self.bs_menu_1.open()
 
     def show_example_grid_bottom_sheet(self):
-        bs = MDGridBottomSheet()
-        bs.add_item("Facebook", lambda x: x,
+        if not self.bs_menu_2:
+            self.bs_menu_2 = MDGridBottomSheet()
+            self.bs_menu_2.add_item("Facebook", lambda x: x,
                     icon_src='./assets/facebook-box.png')
-        bs.add_item("YouTube", lambda x: x,
+            self.bs_menu_2.add_item("YouTube", lambda x: x,
                     icon_src='./assets/youtube-play.png')
-        bs.add_item("Twitter", lambda x: x,
+            self.bs_menu_2.add_item("Twitter", lambda x: x,
                     icon_src='./assets/twitter.png')
-        bs.add_item("Da Cloud", lambda x: x,
+            self.bs_menu_2.add_item("Da Cloud", lambda x: x,
                     icon_src='./assets/cloud-upload.png')
-        bs.add_item("Camera", lambda x: x,
+            self.bs_menu_2.add_item("Camera", lambda x: x,
                     icon_src='./assets/camera.png')
-        bs.open()
+        self.bs_menu_2.open()
 
     def set_error_message(self, *args):
         if len(self.root.ids.text_field_error.text) == 2:

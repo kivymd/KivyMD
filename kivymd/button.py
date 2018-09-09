@@ -15,7 +15,7 @@ from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.stencil_instructions import StencilPush, StencilUse, \
     StencilPop, StencilUnUse
-from kivy.graphics.vertex_instructions import Line, Ellipse
+from kivy.graphics.vertex_instructions import Line, Ellipse, RoundedRectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
@@ -85,7 +85,7 @@ Builder.load_string('''
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: (dp(2),)
+            radius: (root._radius,)
 
     content: content
     height: dp(36)
@@ -119,6 +119,18 @@ Builder.load_string('''
     theme_text_color: 'Custom'
     text_color: root.theme_cls.primary_color
 
+
+<MDFillRoundFlatButton>:
+    canvas.before:
+        Color:
+            rgba: root.theme_cls.primary_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [20,]
+
+    theme_text_color: 'Custom'
+    text_color: 1, 1, 1, 1
 
 <MDRectangleFlatButton>:
     canvas.before:
@@ -369,9 +381,8 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         self.elevation_release_anim = Animation(elevation=value,
                                                 duration=.2, t='out_quad')
 
-    elevation_normal = AliasProperty(_get_elev_norm, _set_elev_norm,
-                                     bind=('_elev_norm',))
-
+    elevation_normal = AliasProperty(
+        _get_elev_norm, _set_elev_norm, bind=('_elev_norm',))
     _elev_raised = NumericProperty(8)
 
     def _get_elev_raised(self):
@@ -382,8 +393,8 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         self.elevation_press_anim = Animation(elevation=value,
                                               duration=.2, t='out_quad')
 
-    elevation_raised = AliasProperty(_get_elev_raised, _set_elev_raised,
-                                     bind=('_elev_raised',))
+    elevation_raised = AliasProperty(
+        _get_elev_raised, _set_elev_raised, bind=('_elev_raised',))
 
     def on_disabled(self, instance, value):
         if value:
@@ -451,6 +462,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                                    errorhandler=lambda x: dp(88))
     text = StringProperty('')
     _capitalized_text = StringProperty('')
+    _radius = NumericProperty(dp(2))
 
     def on_text(self, instance, value):
         self._capitalized_text = value.upper()
@@ -492,28 +504,27 @@ class MDRectangleFlatButton(MDFlatButton):
 
 
 class MDRoundFlatButton(MDFlatButton):
-    md_bg_color_down = [0, 0, 0, 0]
-    pressed_color = [0, 0, 0, 1]
+    _radius = NumericProperty(dp(20))
 
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            Line(rounded_rectangle=(
-                self.x, self.y, self.width, self.height,
-                20, 20, 20, 20, self.height))
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[20, ])
             StencilUse()
-
-            self.col_instruction = Color(rgba=self.pressed_color)
+            self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = \
                 Ellipse(size=(self.ripple_rad, self.ripple_rad),
                         pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
                              self.ripple_pos[1] - self.ripple_rad / 2.))
             StencilUnUse()
-            Line(rounded_rectangle=(
-                self.x, self.y, self.width, self.height,
-                20, 20, 20, 20, self.height))
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[20, ])
+
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+
+
+class MDFillRoundFlatButton(MDRoundFlatButton):
+    pass
 
 
 class MDRectangleFlatIconButton(BaseFlatIconButton):

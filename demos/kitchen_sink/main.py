@@ -1598,7 +1598,7 @@ class KitchenSink(App):
     def show_example_okcancel_dialog(self):
         if not self.ok_cancel_dialog:
             self.ok_cancel_dialog = MDOkCancelDialog(
-                title='Title', size_hint=(.8, .3), text_button_ok='Yes',
+                title='Title', size_hint=(.8, .4), text_button_ok='Yes',
                 text="Your [color=%s][b]text[/b][/color] "
                      "dialog" % get_hex_from_color(
                     self.theme_cls.primary_color), text_button_cancel='Cancel',

@@ -48,8 +48,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 * Add new class [MDFileManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDFileManager) for selecting directories and files
 * Add new class [MDProgressLoader](https://github.com/HeaTTheatR/KivyMD/wiki/MDProgressLoader) for downloads files from the server
 * Add new class [MDStackFloatingButtons](https://github.com/HeaTTheatR/KivyMD/wiki/MDStackFloatingButtons)
-* Add new classes MDRectangleFlatIconButton and MDRectangleFlatButton;
-* Add new classes MDRoundFlatIconButton, MDRoundFlatButton and MDFillRoundFlatButton;
+* Add new classes [MDRectangleFlatIconButton, MDRectangleFlatButton, MDRoundFlatIconButton, MDRoundFlatButton and MDFillRoundFlatButton](https://github.com/HeaTTheatR/KivyMD/wiki/MDButtons)
 * Add new class [MDUpdateSpinner](https://github.com/HeaTTheatR/KivyMD/wiki/MDUpdateSpinner)
 * Add new class [MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
 

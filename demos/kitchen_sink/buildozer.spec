@@ -13,7 +13,7 @@ package.domain = org.kivymd
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,ttf
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -36,26 +36,26 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy==master, kivymd, hostpython2
+requirements = kivy==master,android,git+https://github.com/HeaTTheatR/KivyMD.git
 
 # (str) The directory in which python-for-android should look for your own build recipes (if any)
-p4a.local_recipes = %(source.dir)s/../../gitlab-ci/p4a-recipes/
+#p4a.local_recipes = %(source.dir)s/../../gitlab-ci/p4a-recipes/
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
-requirements.source.kivymd = ../../
+#requirements.source.kivymd = ../../
 
 # (list) Garden requirements
 # garden_requirements =
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/../../kivymd/images/kivymd_logo.png
+presplash.filename = %(source.dir)s/assets/presplash.png
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/../../kivymd/images/kivymd_logo.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
-orientation = all
+orientation = portrait
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
@@ -78,7 +78,7 @@ fullscreen = 1
 #android.permissions = INTERNET
 
 # (int) Android API to use
-android.api = 19
+#android.api = 19
 
 # (int) Minimum API required
 #android.minapi = 9
@@ -87,7 +87,7 @@ android.api = 19
 #android.sdk = 20
 
 # (str) Android NDK version to use
-android.ndk = 10e
+#android.ndk = 10e
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
@@ -107,11 +107,7 @@ android.ndk = 10e
 
 # (str) Filename to the hook for p4a
 #p4a.hook =
-
-
-p4a.force-build = True
-
-
+#p4a.force-build = True
 # (list) python-for-android whitelist
 #android.p4a_whitelist =
 

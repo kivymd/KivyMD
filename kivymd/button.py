@@ -228,7 +228,7 @@ Builder.load_string('''
             rgba: root.theme_cls.primary_color
         Line:
             width: 1
-            rounded_rectangle: (self.x, self.y, self.width, self.height, 20, 20, 20, 20, self.height)
+            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(18), dp(18), dp(18), dp(18), self.height)
 
     theme_text_color: 'Custom'
     text_color: root.theme_cls.primary_color
@@ -241,7 +241,7 @@ Builder.load_string('''
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [20,]
+            radius: [dp(18),]
 
     theme_text_color: 'Custom'
     text_color: 1, 1, 1, 1
@@ -618,12 +618,12 @@ class MDRectangleFlatButton(MDFlatButton):
 
 
 class MDRoundFlatButton(MDFlatButton):
-    _radius = NumericProperty(dp(20))
+    _radius = NumericProperty(dp(18))
 
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            RoundedRectangle(size=self.size, pos=self.pos, radius=[20, ])
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[dp(18), ])
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = \
@@ -631,7 +631,7 @@ class MDRoundFlatButton(MDFlatButton):
                         pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
                              self.ripple_pos[1] - self.ripple_rad / 2.))
             StencilUnUse()
-            RoundedRectangle(size=self.size, pos=self.pos, radius=[20, ])
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[dp(18), ])
 
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)

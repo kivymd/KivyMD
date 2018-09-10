@@ -7,6 +7,7 @@ Navigation Drawer
 API
 ---
 '''
+
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -27,8 +28,6 @@ from kivymd.vendor.navigationdrawer import NavigationDrawer as \
     VendorNavigationDrawer
 
 Builder.load_string("""
-#:import Toolbar kivymd.toolbar.Toolbar
-#:import MDList kivymd.list.MDList
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import colors kivymd.color_definitions.colors
 #:import get_color_from_hex kivy.utils.get_color_from_hex
@@ -36,7 +35,7 @@ Builder.load_string("""
 #:import Window kivy.core.window.Window
 
 
-<NavigationDrawerToolbar>
+<NavigationDrawerToolbar>:
     elevation: 0
     specific_text_color: root.theme_cls.secondary_text_color
     opposite_colors: False
@@ -53,7 +52,8 @@ Builder.load_string("""
 
 <MDNavigationDrawer>:
     _list: list
-    _header_container: _header_container
+    _drawer_logo: drawer_logo
+    spacing: dp(5)
 
     canvas:
         Color:
@@ -68,15 +68,23 @@ Builder.load_string("""
             size: Window.size
             pos: 0, 0
 
-    BoxLayout:
-        id: _header_container
-        size_hint_y: None
-        height: _header_container.minimum_height
+    Image:
+        id: drawer_logo
+        size_hint_y: .3
+        source: root.drawer_logo
+        allow_stretch: True
+        keep_ratio: False
 
     ScrollView:
-        do_scroll_x: False
-        MDList:
+        id: scroll
+        size_hint_y: .7
+
+        GridLayout:
             id: list
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
 
 <NavigationDrawerIconButton>:
     theme_text_color: 'Primary' if not root._active else 'Custom' if root.use_active else 'Primary'
@@ -125,8 +133,8 @@ class NDBadgeLabel(IRightBody, MDLabel):
 
 class NavigationDrawerHeaderBase:
     '''
-    Tells the :class:`~MDNavigationDrawer` that this should be in the header area (above the
-    :class:`~kivy.uix.scrollview.ScrollView`).
+    Tells the :class:`~MDNavigationDrawer` that this should be
+    in the header area (above the :class:`~kivy.uix.scrollview.ScrollView`).
     '''
 
     pass
@@ -264,13 +272,15 @@ class NavigationDrawerDivider(OneLineListItem):
         self.height = dp(16)
 
 
-class MDNavigationDrawer(BoxLayout, ThemableBehavior, RectangularElevationBehavior):
+class MDNavigationDrawer(BoxLayout, ThemableBehavior,
+                         RectangularElevationBehavior):
     _elevation = NumericProperty(0)
-    _header_container = ObjectProperty()
     _list = ObjectProperty()
+    _drawer_logo = ObjectProperty()
     active_item = ObjectProperty(None)
     orientation = 'vertical'
     panel = ObjectProperty()
+    drawer_logo = StringProperty()
     shadow_color = ListProperty([0, 0, 0, 0])
 
     def __init__(self, **kwargs):
@@ -293,8 +303,6 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior, RectangularElevationBehavi
                 self.active_item = widget
             widget.bind(on_release=lambda x: self.panel.toggle_state())
             widget.bind(on_release=lambda x: x._set_active(True, list=self))
-        elif issubclass(widget.__class__, NavigationDrawerHeaderBase):
-            self._header_container.add_widget(widget)
         else:
             super(MDNavigationDrawer, self).add_widget(widget, index)
 

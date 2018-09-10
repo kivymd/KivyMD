@@ -36,6 +36,7 @@ from kivymd.useranimationcard import MDUserAnimationCard
 main_widget_kv = """
 #:import Clock kivy.clock.Clock
 #:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import images_path kivymd.images_path
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
@@ -242,6 +243,23 @@ NavigationLayout:
 
         ScreenManager:
             id: scr_mngr
+
+            Screen:
+                name: 'previous'
+
+                FloatLayout:
+                    Image:
+                        source: '{}kivymd_logo.png'.format(images_path)
+                        opacity: .3
+                    
+                MDLabel:
+                    text: app.previous_text
+                    size_hint_y: None
+                    font_style: 'Subhead'
+                    theme_text_color: 'Primary'
+                    markup: True
+                    halign: 'center'
+                    pos_hint: {'center_x': .5, 'center_y': .6}
 
             ###################################################################
             #
@@ -1288,10 +1306,23 @@ class KitchenSink(App):
         self.file_manager = None
         self.bs_menu_1 = None
         self.bs_menu_2 = None
-
         self.tick = 0
         self.create_stack_floating_buttons = False
         Window.bind(on_keyboard=self.events)
+        self.previous_text = \
+            "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
+            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
+            "examples, open the menu and select from the list the desired " \
+            "example\n\n" \
+            "" \
+            "" \
+            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
+            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
+            "[/b][/u]\n\n" \
+            "Author this Fork- [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
+            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
+            "[/b][u]".format(COLOR=get_hex_from_color(
+                self.theme_cls.primary_color))
 
     def theme_picker_open(self):
         if not self.md_theme_picker:

@@ -18,10 +18,8 @@ from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
 from kivymd.dialog import MDDialog, MDInputDialog, MDOkCancelDialog
 from kivymd.label import MDLabel
-from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch, BaseListItem
+from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
-from kivymd.navigationdrawer import MDNavigationDrawer, \
-    NavigationDrawerHeaderBase
 from kivymd.selectioncontrols import MDCheckbox
 from kivymd.snackbar import Snackbar
 from kivymd.theme_picker import MDThemePicker
@@ -42,7 +40,6 @@ main_widget_kv = """
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
-#:import NavigationDrawerDivider kivymd.navigationdrawer.NavigationDrawerDivider
 #:import NavigationDrawerToolbar kivymd.navigationdrawer.NavigationDrawerToolbar
 #:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
@@ -117,118 +114,118 @@ main_widget_kv = """
             icon: 'remote'
 
 
+<ContentNavigationDrawer@MDNavigationDrawer>:
+    drawer_logo: './assets/drawer_logo.png'
+
+    NavigationDrawerSubheader:
+        text: "Menu of Examples:"
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Accordion"
+        on_release: app.root.ids.scr_mngr.current = 'accordion'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Bottom Navigation"
+        on_release: app.root.ids.scr_mngr.current = 'bottom_navigation'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Bottom Sheets"
+        on_release: app.root.ids.scr_mngr.current = 'bottomsheet'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Buttons"
+        on_release: app.root.ids.scr_mngr.current = 'button'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Cards"
+        on_release: app.root.ids.scr_mngr.current = 'card'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Dialogs"
+        on_release: app.root.ids.scr_mngr.current = 'dialog'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Download File"
+        on_release: app.root.ids.scr_mngr.current = 'download file'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Files Manager"
+        on_release: app.root.ids.scr_mngr.current = 'files manager'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Grid lists"
+        on_release: app.root.ids.scr_mngr.current = 'grid'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Labels"
+        on_release: app.root.ids.scr_mngr.current = 'labels'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Lists"
+        on_release: app.root.ids.scr_mngr.current = 'list'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Menus"
+        on_release: app.root.ids.scr_mngr.current = 'menu'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Pickers"
+        on_release: app.root.ids.scr_mngr.current = 'pickers'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Progress & activity"
+        on_release: app.root.ids.scr_mngr.current = 'progress'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Progress bars"
+        on_release: app.root.ids.scr_mngr.current = 'progressbars'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Selection controls"
+        on_release: app.root.ids.scr_mngr.current = 'selectioncontrols'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Sliders"
+        on_release: app.root.ids.scr_mngr.current = 'slider'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Stack Floating Buttons"
+        on_release: app.root.ids.scr_mngr.current = 'stack buttons'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Snackbars"
+        on_release: app.root.ids.scr_mngr.current = 'snackbar'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Tabs"
+        on_release: app.root.ids.scr_mngr.current = 'tabs'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Text fields"
+        on_release: app.root.ids.scr_mngr.current = 'textfields'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Themes"
+        on_release: app.root.ids.scr_mngr.current = 'theming'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Toolbars"
+        on_release: app.root.ids.scr_mngr.current = 'toolbar'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Update Screen Widget"
+        on_release: app.root.ids.scr_mngr.current = 'update spinner'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "User Animation Card"
+        on_release: app.root.ids.scr_mngr.current = 'user animation card'
+
+
 NavigationLayout:
     id: nav_layout
 
-    MDNavigationDrawer:
+    ContentNavigationDrawer:
         id: nav_drawer
-
-        NavigationDrawerToolbar:
-            title: "Navigation Drawer"
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Accordion"
-            on_release: app.root.ids.scr_mngr.current = 'accordion'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Bottom Navigation"
-            on_release: app.root.ids.scr_mngr.current = 'bottom_navigation'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Bottom Sheets"
-            on_release: app.root.ids.scr_mngr.current = 'bottomsheet'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Buttons"
-            on_release: app.root.ids.scr_mngr.current = 'button'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Cards"
-            on_release: app.root.ids.scr_mngr.current = 'card'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Dialogs"
-            on_release: app.root.ids.scr_mngr.current = 'dialog'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Download File"
-            on_release: app.root.ids.scr_mngr.current = 'download file'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Files Manager"
-            on_release: app.root.ids.scr_mngr.current = 'files manager'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Grid lists"
-            on_release: app.root.ids.scr_mngr.current = 'grid'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Labels"
-            on_release: app.root.ids.scr_mngr.current = 'labels'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Lists"
-            on_release: app.root.ids.scr_mngr.current = 'list'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Menus"
-            on_release: app.root.ids.scr_mngr.current = 'menu'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Navigation Drawer Widgets"
-            on_release: app.root.ids.scr_mngr.current = 'nav_drawer'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Pickers"
-            on_release: app.root.ids.scr_mngr.current = 'pickers'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Progress & activity"
-            on_release: app.root.ids.scr_mngr.current = 'progress'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Progress bars"
-            on_release: app.root.ids.scr_mngr.current = 'progressbars'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Selection controls"
-            on_release: app.root.ids.scr_mngr.current = 'selectioncontrols'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Sliders"
-            on_release: app.root.ids.scr_mngr.current = 'slider'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Stack Floating Buttons"
-            on_release: app.root.ids.scr_mngr.current = 'stack buttons'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Snackbars"
-            on_release: app.root.ids.scr_mngr.current = 'snackbar'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Tabs"
-            on_release: app.root.ids.scr_mngr.current = 'tabs'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Text fields"
-            on_release: app.root.ids.scr_mngr.current = 'textfields'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Themes"
-            on_release: app.root.ids.scr_mngr.current = 'theming'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Toolbars"
-            on_release: app.root.ids.scr_mngr.current = 'toolbar'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "Update Screen Widget"
-            on_release: app.root.ids.scr_mngr.current = 'update spinner'
-        NavigationDrawerIconButton:
-            icon: 'checkbox-blank-circle'
-            text: "User Animation Card"
-            on_release: app.root.ids.scr_mngr.current = 'user animation card'
 
     BoxLayout:
         orientation: 'vertical'
@@ -1260,64 +1257,12 @@ NavigationLayout:
                             theme_text_color: 'Primary'
                             text: "Cheese!"
                             halign: 'center'
-
-            ###################################################################
-            #
-            #                           NAV DRAWER
-            #
-            ###################################################################
-
-            Screen:
-                name: 'nav_drawer'
-
-                HackedDemoNavDrawer:
-                    # NavigationDrawerToolbar:
-                    #     title: "Navigation Drawer Widgets"
-                    NavigationDrawerIconButton:
-                        icon: 'checkbox-blank-circle'
-                        text: "Badge text ---->"
-                        badge_text: "99+"
-                    NavigationDrawerIconButton:
-                        active_color_type: 'accent'
-                        text: "Accent active color"
-                    NavigationDrawerIconButton:
-                        active_color_type: 'custom'
-                        text: "Custom active color"
-                        active_color: [1, 0, 1, 1]
-                    NavigationDrawerIconButton:
-                        use_active: False
-                        text: "Use active = False"
-                    NavigationDrawerIconButton:
-                        text: "Different icon"
-                        icon: 'alarm'
-                    NavigationDrawerDivider:
-                    NavigationDrawerSubheader:
-                        text: "NavigationDrawerSubheader"
-                    NavigationDrawerIconButton:
-                        text: "NavigationDrawerDivider \/"
-                    NavigationDrawerDivider:
 """
-
-
-class HackedDemoNavDrawer(MDNavigationDrawer):
-    # DO NOT USE
-    def add_widget(self, widget, index=0):
-        if issubclass(widget.__class__, BaseListItem):
-            self._list.add_widget(widget, index)
-            if len(self._list.children) == 1:
-                widget._active = True
-                self.active_item = widget
-            # widget.bind(on_release=lambda x: self.panel.toggle_state())
-            widget.bind(on_release=lambda x: x._set_active(True, list=self))
-        elif issubclass(widget.__class__, NavigationDrawerHeaderBase):
-            self._header_container.add_widget(widget)
-        else:
-            super(MDNavigationDrawer, self).add_widget(widget, index)
 
 
 class KitchenSink(App):
     theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    theme_cls.primary_palette = 'Blue'
     previous_date = ObjectProperty()
     title = "KivyMD Kitchen Sink"
 

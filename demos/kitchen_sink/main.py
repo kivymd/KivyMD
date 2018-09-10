@@ -1583,26 +1583,44 @@ class KitchenSink(App):
         if not self.bs_menu_1:
             self.bs_menu_1 = MDListBottomSheet()
             self.bs_menu_1.add_item(
-                "Here's an item with text only", lambda x: x)
+                "Here's an item with text only",
+                lambda x: self.callback_for_menu_items(
+                    "Here's an item with text only"))
             self.bs_menu_1.add_item(
-                "Here's an item with an icon", lambda x: x,
+                "Here's an item with an icon",
+                lambda x: self.callback_for_menu_items(
+                    "Here's an item with an icon"),
                 icon='clipboard-account')
-            self.bs_menu_1.add_item("Here's another!", lambda x: x, icon='nfc')
+            self.bs_menu_1.add_item(
+                "Here's another!",
+                lambda x: self.callback_for_menu_items(
+                    "Here's another!"),
+                icon='nfc')
         self.bs_menu_1.open()
 
     def show_example_grid_bottom_sheet(self):
         if not self.bs_menu_2:
             self.bs_menu_2 = MDGridBottomSheet()
-            self.bs_menu_2.add_item("Facebook", lambda x: x,
-                    icon_src='./assets/facebook-box.png')
-            self.bs_menu_2.add_item("YouTube", lambda x: x,
-                    icon_src='./assets/youtube-play.png')
-            self.bs_menu_2.add_item("Twitter", lambda x: x,
-                    icon_src='./assets/twitter.png')
-            self.bs_menu_2.add_item("Da Cloud", lambda x: x,
-                    icon_src='./assets/cloud-upload.png')
-            self.bs_menu_2.add_item("Camera", lambda x: x,
-                    icon_src='./assets/camera.png')
+            self.bs_menu_2.add_item(
+                "Facebook",
+                lambda x: self.callback_for_menu_items("Facebook"),
+                icon_src='./assets/facebook-box.png')
+            self.bs_menu_2.add_item(
+                "YouTube",
+                lambda x: self.callback_for_menu_items("YouTube"),
+                icon_src='./assets/youtube-play.png')
+            self.bs_menu_2.add_item(
+                "Twitter",
+                lambda x: self.callback_for_menu_items("Twitter"),
+                icon_src='./assets/twitter.png')
+            self.bs_menu_2.add_item(
+                "Da Cloud",
+                lambda x: self.callback_for_menu_items("Da Cloud"),
+                icon_src='./assets/cloud-upload.png')
+            self.bs_menu_2.add_item(
+                "Camera",
+                lambda x: self.callback_for_menu_items("Camera"),
+                icon_src='./assets/camera.png')
         self.bs_menu_2.open()
 
     def set_error_message(self, *args):

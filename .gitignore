@@ -1,6 +1,5 @@
 *.pyc
 *.swp
-bin
 .buildozer
 .idea
 build

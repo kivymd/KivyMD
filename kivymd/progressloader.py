@@ -5,7 +5,6 @@ progressloader.py
 
 Progressbar downloads files from the server.
 
-A simple manager for selecting directories and files.
 Copyright © 2010-2018 HeaTTheatR
 
 For suggestions and questions:

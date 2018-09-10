@@ -16,7 +16,7 @@ If you wish to become a project developer (permission to create branches on the 
 Documentation
 =============
 
-Some very early documentation can be found at our project's website, other than that we recommend checking the [demos/kitchen_sink/main.py](https://github.com/HeaTTheatR/KivyMD/blob/master/demos/kitchen_sink/main.py) file for examples or [look hehre](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard).
+Some very early documentation can be found at our project's website, other than that we recommend checking the [demos/kitchen_sink/main.py](https://github.com/HeaTTheatR/KivyMD/blob/master/demos/kitchen_sink/main.py) file for examples or [look here](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard).
 
 Installation and use with Buildozer
 ===================================

@@ -259,6 +259,7 @@ NavigationLayout:
                     theme_text_color: 'Primary'
                     markup: True
                     halign: 'center'
+                    text_size: self.width - 20, None
                     pos_hint: {'center_x': .5, 'center_y': .6}
 
             ###################################################################
@@ -1666,6 +1667,8 @@ class KitchenSink(App):
     def on_stop(self):
         pass
 
+    def open_settings(self, *args):
+        return False
 
 class AvatarSampleWidget(ILeftBody, Image):
     pass

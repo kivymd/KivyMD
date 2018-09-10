@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 '''
 Bottom Sheets
 =============
@@ -39,6 +40,7 @@ For :class:`MDListBottomSheet`:
 API
 ---
 '''
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -48,7 +50,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
-from kivy.uix.scrollview import ScrollView
 from kivymd import images_path
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.label import MDLabel
@@ -59,27 +60,26 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string('''
 <MDBottomSheet>
     md_bg_color: 0,0,0,.8
-    sv: sv
     upper_padding: upper_padding
     gl_content: gl_content
-    ScrollView:
-        id: sv
-        do_scroll_x: False
-        BoxLayout:
+
+    BoxLayout:
+        size_hint_y: None
+        orientation: 'vertical'
+        padding: 0,1,0,0
+        height: upper_padding.height + gl_content.height + 1
+
+        BsPadding:
+            id: upper_padding
             size_hint_y: None
-            orientation: 'vertical'
-            padding: 0,1,0,0
-            height: upper_padding.height + gl_content.height + 1  # +1 to allow overscroll
-            BsPadding:
-                id: upper_padding
-                size_hint_y: None
-                height: root.height - min(root.width * 9 / 16, gl_content.height)
-                on_release: root.dismiss()
-            BottomSheetContent:
-                id: gl_content
-                size_hint_y: None
-                md_bg_color: root.theme_cls.bg_normal
-                cols: 1
+            height: root.height - min(root.width * 9 / 16, gl_content.height)
+            on_release: root.dismiss()
+
+        BottomSheetContent:
+            id: gl_content
+            size_hint_y: None
+            md_bg_color: root.theme_cls.bg_normal
+            cols: 1
 ''')
 
 
@@ -93,44 +93,20 @@ class BottomSheetContent(BackgroundColorBehavior, GridLayout):
 
 class MDBottomSheet(ThemableBehavior, ModalView):
     background = "{}transparent.png".format(images_path)
-    sv = ObjectProperty()
     upper_padding = ObjectProperty()
     gl_content = ObjectProperty()
-    dismiss_zone_scroll = 1000  # Arbitrary high number
 
     def open(self, *largs):
         super(MDBottomSheet, self).open(*largs)
-        Clock.schedule_once(self.set_dismiss_zone, 0)
-
-    def set_dismiss_zone(self, *largs):
-        # Scroll to right below overscroll threshold:
-        self.sv.scroll_y = 1 - self.sv.convert_distance_to_scroll(0, 1)[1]
-
-        # This is a line where m (slope) is 1/6 and b (y-intercept) is 80:
-        self.dismiss_zone_scroll = self.sv.convert_distance_to_scroll(
-            0, (self.height - self.upper_padding.height) * (1 / 6.0) + 80)[
-            1]
-        # Uncomment next line if the limit should just be half of
-        # visible content on open (capped by specs to 16 units to width/9:
-        # self.dismiss_zone_scroll = (self.sv.convert_distance_to_scroll(
-        #         0, self.height - self.upper_padding.height)[1] * 0.50)
-
-        # Check if user has overscrolled enough to dismiss bottom sheet:
-        self.sv.bind(on_scroll_stop=self.check_if_scrolled_to_death)
-
-    def check_if_scrolled_to_death(self, *largs):
-        if self.sv.scroll_y >= 1 + self.dismiss_zone_scroll:
-            self.dismiss()
 
     def add_widget(self, widget, index=0):
-        if type(widget) == ScrollView:
-            super(MDBottomSheet, self).add_widget(widget, index)
-        else:
-            self.gl_content.add_widget(widget,index)
+        super(MDBottomSheet, self).add_widget(widget, index)
 
 
 Builder.load_string('''
 #:import md_icons kivymd.icon_definitions.md_icons
+
+
 <ListBSIconLeft>
     font_style: 'Icon'
     text: u"{}".format(md_icons[root.icon])
@@ -173,6 +149,7 @@ Builder.load_string('''
     padding: 0, dp(24), 0, 0
     size_hint_y: None
     size: dp(64), dp(96)
+
     BoxLayout:
         padding: dp(8), 0, dp(8), dp(8)
         size_hint_y: None

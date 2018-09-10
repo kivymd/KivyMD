@@ -22,7 +22,7 @@ Installation and use with Buildozer
 ===================================
 
 #### Dependencies:
-* Kivy 1.9.2-dev0 or Kivy 1.9.2 (When released)
+* Kivy version is not less than 1.9.2
 
 #### How to install
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#
 # Two implementations. The first is based on color brightness obtained from:-
 # https://www.w3.org/TR/AERT#color-contrast
 # The second is based on relative luminance calculation for sRGB obtained from:-
@@ -60,9 +61,11 @@ def get_contrast_text_color(color, use_color_brightness=True):
     else:
         return 0, 0, 0, 1
 
+
 if __name__ == '__main__':
     from kivy.utils import get_color_from_hex
     from kivymd.color_definitions import colors, text_colors
+
     for c in colors.items():
         if c[0] in ['Light', 'Dark']:
             continue
@@ -71,7 +74,10 @@ if __name__ == '__main__':
             if hex_color:
                 col = get_color_from_hex(hex_color)
                 col_bri = get_contrast_text_color(col)
-                con_rat = get_contrast_text_color(col, use_color_brightness=False)
+                con_rat = get_contrast_text_color(
+                    col, use_color_brightness=False)
                 text_color = text_colors[c[0]][name]
-                print("   The {} hue gives {} using color brightness, {} using contrast ratio, and {} from the MD spec"
-                      .format(name, col_bri, con_rat, text_color))
+                print(
+                    "   The {} hue gives {} using color brightness, {} "
+                    "using contrast ratio, and {} from the MD spec".format(
+                        name, col_bri, con_rat, text_color))

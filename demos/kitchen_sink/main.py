@@ -414,18 +414,10 @@ NavigationLayout:
                 name: 'dialog'
 
                 MDRaisedButton:
-                    text: "Open dialog"
-                    size_hint: None, None
-                    size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
-                    opposite_colors: True
-                    on_release: app.show_example_dialog()
-
-                MDRaisedButton:
                     text: "Open lengthy dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
                     opposite_colors: True
                     on_release: app.show_example_long_dialog()
 
@@ -433,7 +425,7 @@ NavigationLayout:
                     text: "Open input dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     opposite_colors: True
                     on_release: app.show_example_input_dialog()
 
@@ -1527,20 +1519,6 @@ class KitchenSink(App):
         elif snack_type == 'verylong':
             Snackbar(text="This is a very very very very very very very "
                           "long snackbar!").show()
-
-    def show_example_dialog(self):
-        if not self.dialog:
-            content = MDLabel(
-                font_style='Body1', theme_text_color='Secondary',
-                text="This is a dialog with a title and some text. That's "
-                     "pretty awesome right!", size_hint_y=None, valign='top')
-            content.bind(texture_size=content.setter('size'))
-            self.dialog = MDDialog(
-                title="This is a test dialog", content=content,
-                size_hint=(.8, None), height=dp(200), auto_dismiss=False)
-            self.dialog.add_action_button(
-                "Dismiss", action=lambda *x: self.dialog.dismiss())
-        self.dialog.open()
 
     def show_example_long_dialog(self):
         if not self.long_dialog:

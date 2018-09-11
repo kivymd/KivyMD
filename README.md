@@ -41,7 +41,8 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
 Running on Android
 ==================
-Install and run the package **demos/kitchen_sink/bin/KivyMDKitchenSink-0.1.3-debug.apk**
+Install and run the package **demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3-debug.apk**
+Or install and run the package **demos/kitchen_sink/bin/python3/kivymdkitchensink-0.1.3-debug.apk**
 
 #### What's new in version 0.1.3:
 * Added dialog for text input and "Yes/No" dialog - [MDInputDialog, MDOkCancelDialog](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs)

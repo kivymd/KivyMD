@@ -147,6 +147,7 @@ Builder.load_string('''
         size_hint_y: None
         height: spinner.height
         size_hint_x: .8
+        text: 'Download...'
 
     Widget:
         size_hint_x: .1

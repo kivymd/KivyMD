@@ -58,7 +58,7 @@ Install and run the package **demos/kitchen_sink/bin/KivyMDKitchenSink-0.1.3-deb
 Video previous
 ==============
 <p align="center">
-    <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/kivymd/KivyMD/master/gallery/prevideo.png"></a>
+    <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png"></a>
 </p>
 
 License

@@ -54,6 +54,13 @@ Install and run the package **demos/kitchen_sink/bin/KivyMDKitchenSink-0.1.3-deb
 * Add new class [MDUpdateSpinner](https://github.com/HeaTTheatR/KivyMD/wiki/MDUpdateSpinner)
 * Add new class [MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
 
+
+Video previous
+==============
+<p align="center">
+    <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/kivymd/KivyMD/master/gallery/prevideo.png"></a>
+</p>
+
 License
 =======
 

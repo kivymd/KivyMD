@@ -63,6 +63,12 @@ Video previous
     <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png"></a>
 </p>
 
+Image previous
+==============
+<p align="center">
+    <img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/previous.png">
+</p>
+
 License
 =======
 

@@ -1504,7 +1504,7 @@ class KitchenSink(App):
         if not self.user_animation_card:
             self.user_animation_card = MDUserAnimationCard(
                 user_name="Lion Lion",
-                path_to_avatar="./assets/african-lion-951778_1280.jpg",
+                path_to_avatar="./assets/guitar-1139397_1280.jpg",
                 callback=main_back_callback)
             self.user_animation_card.box_content.add_widget(
                 Factory.ContentForAnimCard())

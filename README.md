@@ -60,7 +60,7 @@ Or install and run the package **demos/kitchen_sink/bin/python3/kitchen_sink-0_1
 Video previous
 ==============
 <p align="center">
-    <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png width="420" height="314"></a>
+    <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png></a>
 </p>
 
 Image previous

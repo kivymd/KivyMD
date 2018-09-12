@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from kivy import platform
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -6,6 +7,7 @@ from kivymd import fonts_path
 
 # Feel free to override this const if you're designing for a device such as
 # a GNU/Linux tablet.
+DEVICE_IOS = platform == "ios"
 if platform != "android" and platform != "ios":
     DEVICE_TYPE = "desktop"
 elif Window.width >= dp(600) and Window.height >= dp(600):

@@ -132,6 +132,7 @@ from kivy.graphics.stencil_instructions import StencilPush, StencilUse, \
 from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
+from kivy.uix.button import Button
 from kivy.utils import get_color_from_hex
 from kivy.properties import StringProperty, BoundedNumericProperty, \
     ListProperty, AliasProperty, BooleanProperty, NumericProperty, \
@@ -151,6 +152,7 @@ Builder.load_string('''
 #:import md_icons kivymd.icon_definitions.md_icons
 #:import colors kivymd.color_definitions.colors
 #:import MDLabel kivymd.label.MDLabel
+#:import images_path kivymd.images_path
 
 
 <BaseButton>:
@@ -325,7 +327,17 @@ Builder.load_string('''
     size: (dp(56), dp(56))
     md_bg_color: root.theme_cls.accent_color
     theme_text_color: 'Custom'
-    text_color: root.specific_text_color''')
+    text_color: root.specific_text_color
+    
+    
+<MDTextButton>:
+    size_hint: None, None
+    size: self.texture_size
+    color: root.theme_cls.primary_color if not len(root.custom_color) else root.custom_color
+    background_down: '{}transparent.png'.format(images_path)
+    background_normal: '{}transparent.png'.format(images_path)
+    opacity: 1
+''')
 
 
 class BaseButton(ThemableBehavior, ButtonBehavior,
@@ -635,6 +647,23 @@ class MDRoundFlatButton(MDFlatButton):
 
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+
+
+class MDTextButton(ThemableBehavior, Button):
+    custom_color = ListProperty()
+    """Custom user button color"""
+
+    def animation_label(self):
+        def set_default_state_label(*args):
+            Animation(opacity=1, d=.1, t='in_out_cubic').start(self)
+
+        anim = Animation(opacity=.5, d=.2, t='in_out_cubic')
+        anim.bind(on_complete=set_default_state_label)
+        anim.start(self)
+
+    def on_press(self, *args):
+        self.animation_label()
+        return super(MDTextButton, self).on_press(*args)
 
 
 class MDFillRoundFlatButton(MDRoundFlatButton):

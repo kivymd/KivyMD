@@ -16,7 +16,7 @@ from kivy.utils import get_hex_from_color
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
-from kivymd.dialog import MDDialog, MDInputDialog, MDOkCancelDialog
+from kivymd.dialog import MDDialog, MDInputDialog, MDDialog
 from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
@@ -59,6 +59,7 @@ main_widget_kv = """
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 #:import MDRectangleFlatIconButton kivymd.button.MDRectangleFlatIconButton
+#:import MDTextButton kivymd.button.MDTextButton
 #:import MDSeparator kivymd.card.MDSeparator
 #:import MDDropdownMenu kivymd.menu.MDDropdownMenu
 #:import get_color_from_hex kivy.utils.get_color_from_hex
@@ -233,7 +234,7 @@ NavigationLayout:
 
         Toolbar:
             id: toolbar
-            title: 'KivyMD Kitchen Sink'
+            title: app.title
             md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
             background_hue: '500'
@@ -340,23 +341,29 @@ NavigationLayout:
                     pos_hint: {'center_x': 0.5, 'center_y': .55}
 
                 MDRectangleFlatIconButton:
-                    text: "I love Python"
+                    text: "MDRectangleFlatIconButton"
                     icon: "language-python"
                     pos_hint: {'center_x': 0.5, 'center_y': .45}
+                    width: dp(230)
 
                 MDRoundFlatButton:
-                    text: "I love Python"
+                    text: "MDRoundFlatButton"
                     icon: "language-python"
                     pos_hint: {'center_x': 0.5, 'center_y': .35}
 
                 MDRoundFlatIconButton:
-                    text: "I love Python"
+                    text: "MDRoundFlatIconButton"
                     icon: "language-python"
                     pos_hint: {'center_x': 0.5, 'center_y': .25}
+                    width: dp(200)
 
                 MDFillRoundFlatButton:
-                    text: "I love Python"
+                    text: "MDFillRoundFlatButton"
                     pos_hint: {'center_x': 0.5, 'center_y': .15}
+
+                MDTextButton:
+                    text: "MDTextButton"
+                    pos_hint: {'center_x': 0.5, 'center_y': .05}
 
             ###################################################################
             #
@@ -425,17 +432,25 @@ NavigationLayout:
                     text: "Open input dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
                     opposite_colors: True
                     on_release: app.show_example_input_dialog()
 
                 MDRaisedButton:
-                    text: "Open Ok Cancel dialog"
+                    text: "Open Alert Dialog"
+                    size_hint: None, None
+                    size: 3 * dp(48), dp(48)
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+                    opposite_colors: True
+                    on_release: app.show_example_alert_dialog()
+
+                MDRaisedButton:
+                    text: "Open Ok Cancel Dialog"
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.2}
                     opposite_colors: True
-                    on_release: app.show_example_okcancel_dialog()
+                    on_release: app.show_example_ok_cancel_dialog()
 
             ###################################################################
             #
@@ -1275,7 +1290,7 @@ class KitchenSink(App):
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Blue'
     previous_date = ObjectProperty()
-    title = "KivyMD Kitchen Sink"
+    title = "Kitchen Sink"
 
     def __init__(self, **kwargs):
         super(KitchenSink, self).__init__(**kwargs)
@@ -1291,7 +1306,9 @@ class KitchenSink(App):
         self.md_theme_picker = None
         self.long_dialog = None
         self.input_dialog = None
+        self.alert_dialog = None
         self.ok_cancel_dialog = None
+        self.long_dialog = None
         self.dialog = None
         self.user_animation_card = None
         self.manager_open = False
@@ -1520,10 +1537,32 @@ class KitchenSink(App):
             Snackbar(text="This is a very very very very very very very "
                           "long snackbar!").show()
 
+    def show_example_input_dialog(self):
+        if not self.input_dialog:
+            self.input_dialog = MDInputDialog(
+                title='Title', hint_text='Hint text', size_hint=(.8, .4),
+                text_button_ok='Ok', events_callback=lambda x: None)
+        self.input_dialog.open()
+
+    def show_example_alert_dialog(self):
+        if not self.alert_dialog:
+            self.alert_dialog = MDDialog(
+                title='Title', size_hint=(.8, .4), text_button_ok='Ok',
+                text="This is Alert dialog",
+                events_callback=self.callback_for_menu_items)
+        self.alert_dialog.open()
+
+    def show_example_ok_cancel_dialog(self):
+        if not self.ok_cancel_dialog:
+            self.ok_cancel_dialog = MDDialog(
+                title='Title', size_hint=(.8, .4), text_button_ok='Ok',
+                text="This is Ok Cancel dialog", text_button_cancel='Cancel',
+                events_callback=self.callback_for_menu_items)
+        self.ok_cancel_dialog.open()
+
     def show_example_long_dialog(self):
         if not self.long_dialog:
-            content = MDLabel(
-                font_style='Body1', theme_text_color='Secondary',
+            self.long_dialog = MDDialog(
                 text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
                      "sed do eiusmod tempor incididunt ut labore et dolore "
                      "magna aliqua. Ut enim ad minim veniam, quis nostrud "
@@ -1533,31 +1572,9 @@ class KitchenSink(App):
                      "fugiat nulla pariatur. Excepteur sint occaecat "
                      "cupidatat non proident, sunt in culpa qui officia "
                      "deserunt mollit anim id est laborum.",
-                size_hint_y=None, valign='top')
-            content.bind(texture_size=content.setter('size'))
-            self.long_dialog = MDDialog(
-                title="This is a long test dialog", content=content,
-                size_hint=(.8, None), height=dp(300), auto_dismiss=False)
-            self.long_dialog.add_action_button(
-                "Dismiss", action=lambda *x: self.long_dialog.dismiss())
-        self.long_dialog.open()
-
-    def show_example_input_dialog(self):
-        if not self.input_dialog:
-            self.input_dialog = MDInputDialog(
-                title='Title', hint_text='Hint text', size_hint=(.8, .4),
-                text_button_ok='Yes', events_callback=lambda x: None)
-        self.input_dialog.open()
-
-    def show_example_okcancel_dialog(self):
-        if not self.ok_cancel_dialog:
-            self.ok_cancel_dialog = MDOkCancelDialog(
                 title='Title', size_hint=(.8, .4), text_button_ok='Yes',
-                text="Your [color=%s][b]text[/b][/color] "
-                     "dialog" % get_hex_from_color(
-                    self.theme_cls.primary_color), text_button_cancel='Cancel',
-                events_callback=lambda x: None)
-        self.ok_cancel_dialog.open()
+                events_callback=self.callback_for_menu_items)
+        self.long_dialog.open()
 
     def get_time_picker_data(self, instance, time):
         self.root.ids.time_picker_label.text = str(time)
@@ -1647,6 +1664,7 @@ class KitchenSink(App):
 
     def open_settings(self, *args):
         return False
+
 
 class AvatarSampleWidget(ILeftBody, Image):
     pass

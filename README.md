@@ -56,7 +56,7 @@ Or install and run the package **demos/kitchen_sink/bin/python3/kitchen_sink-0_1
 * Add new class [MDUpdateSpinner](https://github.com/HeaTTheatR/KivyMD/wiki/MDUpdateSpinner)
 * Add new class [MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
 * Add new classes [MDTextButton](https://github.com/HeaTTheatR/KivyMD/wiki/MDButtons)
-* Dialog boxes are [adapted for Android and iOS](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs)
+* Dialog boxes are [adapted for Android and iOS](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs) 
 
 Video previous
 ==============

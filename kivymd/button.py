@@ -591,7 +591,8 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     _radius = NumericProperty(dp(2))
 
     def on_text(self, instance, value):
-        self._capitalized_text = value.upper()
+        #self._capitalized_text = value.upper()
+        self._capitalized_text = value
 
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):

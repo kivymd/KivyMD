@@ -260,6 +260,8 @@ class BaseDialog(ThemableBehavior, ModalView):
             box_buttons.add_widget(box)
             instance_content_dialog.ids.box_buttons.add_widget(box_buttons)
             instance_content_dialog.ids.box_buttons.height = button_ok.height
+            instance_content_dialog.remove_widget(
+                instance_content_dialog.ids.sep)
 
 
 class MDInputDialog(BaseDialog):

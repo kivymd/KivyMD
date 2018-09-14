@@ -7,7 +7,6 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
@@ -16,8 +15,7 @@ from kivy.utils import get_hex_from_color
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
-from kivymd.dialog import MDDialog, MDInputDialog, MDDialog
-from kivymd.label import MDLabel
+from kivymd.dialog import MDInputDialog, MDDialog
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.selectioncontrols import MDCheckbox

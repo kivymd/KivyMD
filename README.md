@@ -18,6 +18,14 @@ Documentation
 
 Some very early documentation can be found at our project's website, other than that we recommend checking the [demos/kitchen_sink/main.py](https://github.com/HeaTTheatR/KivyMD/blob/master/demos/kitchen_sink/main.py) file for examples or [look here](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard).
 
+Support
+=======
+If you need assistance, you can ask for help on our mailing list:
+
+    User Group: https://vk.com/kivy_development
+    Email: kivydevelopment@gmail.com
+
+
 Installation and use with Buildozer
 ===================================
 

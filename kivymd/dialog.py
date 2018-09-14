@@ -137,6 +137,7 @@ Builder.load_string('''
     text_button_cancel: ''
 
     MDLabel:
+        id: title
         text: root.title
         font_style: 'Title'
         theme_text_color: 'Primary'
@@ -149,18 +150,25 @@ Builder.load_string('''
     ScrollView:
         id: scroll
         size_hint_y: None
+        height: root.height - (box_buttons.height + title.height + dp(48) + sep.height)
+        
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: '{}dialog_in_fade.png'.format(images_path)
 
         MDLabel:
             theme_text_color: 'Primary'
-            text: root.text
+            text: '\\n' + root.text + '\\n'
             size_hint_y: None
             height: self.texture_size[1]
             valign: 'top'
             halign: 'left' if not root.device_ios else 'center'
             markup: True
 
-    Widget:
     MDSeparator:
+        id: sep
 
     BoxLayout:
         id: box_buttons

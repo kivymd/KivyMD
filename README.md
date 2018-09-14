@@ -22,8 +22,8 @@ Support
 =======
 If you need assistance, you can ask for help on our mailing list:
 
-    User Group: https://vk.com/kivy_development
-    Email: kivydevelopment@gmail.com
+    User Group : https://vk.com/kivy_development
+    Email : kivydevelopment@gmail.com
 
 
 Installation and use with Buildozer

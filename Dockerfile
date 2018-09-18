@@ -41,6 +41,10 @@ RUN useradd --create-home --shell /bin/bash ${USER}
 RUN usermod -append --groups sudo ${USER}
 RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+COPY . .
+
+RUN chown user /home/user/ -Rv
+
 USER ${USER}
 WORKDIR ${WORK_DIR}
 
@@ -57,10 +61,10 @@ RUN sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${
 
 RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
   && cd ~/.buildozer/ \
-  && tar -xvf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz 
+  && tar -xvf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz
 
 #USER root
-COPY . .
+
 
 #RUN chown user /home/user/ -R && chown -R user /home/user/hostcwd
 

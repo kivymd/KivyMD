@@ -55,6 +55,7 @@ Or install and run the package **demos/kitchen_sink/bin/python3/kitchen_sink-0_1
 
 #### What's new in version 0.1.3:
 * Added dialog for text input and "Yes/No" dialog - [MDInputDialog, MDOkCancelDialog](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs)
+* MDTabbedPanel items become scrollable;
 * Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
 * Added new ready-to-use [MDCardPost](https://github.com/HeaTTheatR/KivyMD/wiki/MDCardPost)
 * Add new class [MDFileManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDFileManager) for selecting directories and files

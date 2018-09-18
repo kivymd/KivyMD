@@ -52,7 +52,8 @@ android.sdk = 23
 private = False
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = /home/kivy/Android/crystax-ndk-10.3.2/
+android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
+
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 1
 

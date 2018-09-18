@@ -55,9 +55,9 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
 RUN sed s/'name="java.source" value="1.5"'/'name="java.source" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml
 RUN sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml
 
-#RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
-#  && cd ~/.buildozer/ \
-#  && tar -xvf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz 
+RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
+  && cd ~/.buildozer/ \
+  && tar -xvf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz 
 
 USER root
 COPY . .

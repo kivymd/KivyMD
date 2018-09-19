@@ -43,10 +43,10 @@ osx.python_version = 3
 osx.kivy_version = 1.9.1
 
 # (int) Android API to use
-android.api = 19
+# android.api = 19
 
 # (int) Android SDK version to use
-android.sdk = 23
+# android.sdk = 23
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 private = False

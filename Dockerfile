@@ -62,17 +62,15 @@ RUN sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${
 
 RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
   && cd ~/.buildozer/ \
-  && tar -xvf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz
+  && time tar -xf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz
 
 #USER root
-
-
 #RUN chown user /home/user/ -R && chown -R user /home/user/hostcwd
 
 #USER ${USER}
 
 RUN echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build hello world" \
-    && cp -v /home/user/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py3-KivyMDKitchenSink-0.1.3.apk  ${WORK_DIR}/py3-KivyMDKitchenSink-0.1.3.apk
+    && cp -v /home/user/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py3-KivyMDKitchenSink-0.1.3.apk
 
 RUN echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build hello world" \ 
     && cp -v /home/user/hostcwd/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date

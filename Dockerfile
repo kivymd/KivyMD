@@ -41,12 +41,13 @@ RUN useradd --create-home --shell /bin/bash ${USER}
 RUN usermod -append --groups sudo ${USER}
 RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+WORKDIR ${WORK_DIR}
+
 COPY . .
 
 RUN chown user /home/user/ -Rv
 
 USER ${USER}
-WORKDIR ${WORK_DIR}
 
 # installs buildozer and dependencies
 RUN pip install --user Cython==0.25.2 buildozer

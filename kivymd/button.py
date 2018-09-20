@@ -246,7 +246,7 @@ Builder.load_string('''
 <MDFillRoundFlatButton>:
     canvas.before:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba: root.md_bg_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -661,6 +661,8 @@ class MDTextButton(ThemableBehavior, Button):
     custom_color = ListProperty()
     """Custom user button color"""
 
+    markup = True
+
     def animation_label(self):
         def set_default_state_label(*args):
             Animation(opacity=1, d=.1, t='in_out_cubic').start(self)
@@ -675,7 +677,9 @@ class MDTextButton(ThemableBehavior, Button):
 
 
 class MDFillRoundFlatButton(MDRoundFlatButton):
-    pass
+    def on_md_bg_color(self, instance, value):
+        if value == [0.0, 0.0, 0.0, 0.0]:
+            self.md_bg_color = self.theme_cls.primary_color
 
 
 class MDRectangleFlatIconButton(BaseFlatIconButton):

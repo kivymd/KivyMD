@@ -542,7 +542,7 @@ class TwoLineRightIconListItem(OneLineRightIconListItem):
         self.height = dp(72)
 
 
-class ThreeLineRightIconListitem(ContainerSupport, ThreeLineListItem):
+class ThreeLineRightIconListItem(ContainerSupport, ThreeLineListItem):
     # dp(40) = dp(16) + dp(24):
     _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
 

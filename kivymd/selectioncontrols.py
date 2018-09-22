@@ -22,7 +22,7 @@ Builder.load_string('''
     canvas:
         Clear
         Color:
-            rgba:         self.color
+            rgba:         1, 1, 1, 1
         Rectangle:
             texture:    self.texture
             size:        self.texture_size

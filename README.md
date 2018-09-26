@@ -53,7 +53,16 @@ Install and run the package **demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0
 
 Or install and run the package **demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk**
 
-#### What's new in version 0.1.3:
+Build two apk armv7 (Python2 and Python3) with Docker
+==================
+    $docker build -t kivymd .
+    $docker run -d kivymd
+    $docker exec -it id_docker /bin/bash
+#### And check result apk in the Docker container:
+    $ls *.apk
+
+What's new in version 0.1.3:
+============================
 * Added dialog for text input and "Yes/No" dialog - [MDInputDialog, MDOkCancelDialog](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs)
 * MDTabbedPanel items become scrollable;
 * Added the ability to scroll through the list and set the list background in class MDDropdownMenu;

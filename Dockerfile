@@ -55,7 +55,8 @@ RUN pip install --user Cython==0.25.2 buildozer
 # but it requires a buildozer.spec file
 RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
     && cd ~/.buildozer/android/platform/&& rm -vf android-ndk*.tar* android-sdk*.tgz apache-ant*.tar.gz \
-    && cd - && cd ${WORK_DIR} \ # fixes source and target JDK version, refs https://github.com/kivy/buildozer/issues/625
+    && cd - && cd ${WORK_DIR} \
+    # fixes source and target JDK version, refs https://github.com/kivy/buildozer/issues/625
     && sed s/'name="java.source" value="1.5"'/'name="java.source" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \ 
     && sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \
     && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \

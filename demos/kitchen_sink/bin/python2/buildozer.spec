@@ -27,7 +27,7 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy==master,android,git+https://github.com/HeaTTheatR/KivyMD.git
+requirements = kivy==1.10.1,android,git+https://github.com/HeaTTheatR/KivyMD.git
 
 # (str) Presplash of the application
 presplash.filename = %(source.dir)s/assets/presplash.png

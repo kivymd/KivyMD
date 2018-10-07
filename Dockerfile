@@ -55,25 +55,17 @@ RUN pip install --user Cython==0.25.2 buildozer
 # but it requires a buildozer.spec file
 RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
     && cd ~/.buildozer/android/platform/&& rm -vf android-ndk*.tar* android-sdk*.tgz apache-ant*.tar.gz \
-    && cd -
-# fixes source and target JDK version, refs https://github.com/kivy/buildozer/issues/625
-RUN sed s/'name="java.source" value="1.5"'/'name="java.source" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml
-RUN sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml
-
-RUN wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
-  && cd ~/.buildozer/ \
-  && time tar -xf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz
-
-#USER root
-#RUN chown user /home/user/ -R && chown -R user /home/user/hostcwd
-
-#USER ${USER}
-
-RUN echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk ${WORK_DIR}/py3-kitchen_sink-0_1_3-debug.apk
-
-RUN echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build apk" \ 
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date
+    && cd - && cd ${WORK_DIR} \ # fixes source and target JDK version, refs https://github.com/kivy/buildozer/issues/625
+    && sed s/'name="java.source" value="1.5"'/'name="java.source" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \ 
+    && sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \
+    && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
+    && cd ~/.buildozer/ \
+    && time tar -xf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz && cd ${WORK_DIR} \
+    && echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
+    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk ${WORK_DIR}/py3-kitchen_sink-0_1_3-debug.apk \
+    && echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build apk" \ 
+    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date \
+    && time rm -rf ${HOME_DIR}/.buildorzer/
 
 CMD tail -f /var/log/faillog
 

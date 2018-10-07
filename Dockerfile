@@ -61,10 +61,10 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
     && sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \
     && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
     && cd ~/.buildozer/ \
-    && time tar -xf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz && cd ${WORK_DIR} \
-    && echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
+    && time tar -xf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz \
+    && echo '-----Python 3 ----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
     && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk ${WORK_DIR}/py3-kitchen_sink-0_1_3-debug.apk \
-    && echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build apk" \ 
+    && echo '-----Python 2 -----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build apk" \ 
     && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date \
     && time rm -rf ${HOME_DIR}/.buildorzer/
 

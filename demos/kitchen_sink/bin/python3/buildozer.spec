@@ -62,7 +62,7 @@ android.permissions = INTERNET
 android.arch = armeabi-v7a
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-p4a.source_dir = /home/kivy/Repos/python-for-android/
+#p4a.source_dir = /home/kivy/Repos/python-for-android/
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
 android.arch = armeabi

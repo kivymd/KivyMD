@@ -66,7 +66,7 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
     && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk ${WORK_DIR}/py3-kitchen_sink-0_1_3-debug.apk \
     && echo '-----Python 2 -----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python2/ && time buildozer android debug  || echo "Fix build apk" \ 
     && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date \
-    && time rm -rf ${HOME_DIR}/.buildorzer/
+    && time sudo rm -rf ${HOME_DIR}/.buildorzer
 
 CMD tail -f /var/log/faillog
 

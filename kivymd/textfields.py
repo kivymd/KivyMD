@@ -39,7 +39,7 @@ Builder.load_string('''
             size: self._right_msg_lbl.texture_size
             pos: self.width-self._right_msg_lbl.texture_size[0]+dp(45), self.y
         Color:
-            rgba: (self._current_line_color if self.focus and not self.cursor_blink else (0, 0, 0, 0))
+            rgba: (self._current_line_color if self.focus and not self._cursor_blink else (0, 0, 0, 0))
         Rectangle:
             pos: [int(x) for x in self.cursor_pos]
             size: 1, -self.line_height

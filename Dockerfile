@@ -50,7 +50,7 @@ RUN chown user /home/user/ -Rv
 USER ${USER}
 
 # installs buildozer and dependencies
-RUN pip install --user Cython==0.25.5 buildozer
+RUN pip install --user Cython==0.25.2 buildozer
 # calling buildozer adb command should trigger SDK/NDK first install and update
 # but it requires a buildozer.spec file
 RUN cd /tmp/ && buildozer init && buildozer android adb -- version \

@@ -54,7 +54,7 @@ ARG CRYSTAX_NDK_VERSION=10.3.1
 ARG CRYSTAX_HASH=ebf4f55562bee27301954aac25d8a7ab03514f4aa20867a174950bf77ad2ba06
 
 # installs buildozer and dependencies
-RUN pip install --user Cython==0.25.2 buildozer
+RUN pip install --user Cython==0.27.3 buildozer
 # calling buildozer adb command should trigger SDK/NDK first install and update
 # but it requires a buildozer.spec file
 

@@ -49,19 +49,26 @@ RUN chown user /home/user/ -Rv
 
 USER ${USER}
 
+# Crystax-NDK
+ARG CRYSTAX_NDK_VERSION=10.3.1
+ARG CRYSTAX_HASH=ebf4f55562bee27301954aac25d8a7ab03514f4aa20867a174950bf77ad2ba06
+
 # installs buildozer and dependencies
 RUN pip install --user Cython==0.25.2 buildozer
 # calling buildozer adb command should trigger SDK/NDK first install and update
 # but it requires a buildozer.spec file
+
 RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
     && cd ~/.buildozer/android/platform/&& rm -vf android-ndk*.tar* android-sdk*.tgz apache-ant*.tar.gz \
     && cd - && cd ${WORK_DIR} \
     # fixes source and target JDK version, refs https://github.com/kivy/buildozer/issues/625
     && sed s/'name="java.source" value="1.5"'/'name="java.source" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \ 
     && sed s/'name="java.target" value="1.5"'/'name="java.target" value="7"'/ -i ${HOME_DIR}/.buildozer/android/platform/android-sdk-20/tools/ant/build.xml \
-    && wget https://www.crystax.net/download/crystax-ndk-10.3.1-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax.tar.xz \
-    && cd ~/.buildozer/ \
-    && time tar -xf crystax.tar.xz && rm ~/.buildozer/crystax.tar.xz \
+    && set -ex \
+  && wget https://www.crystax.net/download/crystax-ndk-${CRYSTAX_NDK_VERSION}-linux-x86_64.tar.xz?interactive=true -O ~/.buildozer/crystax-${CRYSTAX_NDK_VERSION}.tar.xz \
+  && cd ~/.buildozer/ \
+  && echo "${CRYSTAX_HASH}  crystax-${CRYSTAX_NDK_VERSION}.tar.xz" | sha256sum -c \
+  && time tar -xf crystax-${CRYSTAX_NDK_VERSION}.tar.xz && rm ~/.buildozer/crystax-${CRYSTAX_NDK_VERSION}.tar.xz \
     && echo '-----Python 3 ----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
     && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-*-debug.apk ${WORK_DIR}/py3-* \
     && echo '-----Python 2 -----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python2/ && time buildozer android debug  || echo "Fix build apk" \ 

@@ -315,8 +315,8 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
 
     def generate_cal_widgets(self):
         cal_list = []
-        for i in calendar.day_abbr:
-            self.cal_layout.add_widget(WeekdayLabel(text=i[0].upper()))
+        for day in self.cal.iterweekdays():
+            self.cal_layout.add_widget(WeekdayLabel(text=calendar.day_abbr[day][0].upper()))
         for i in range(6 * 7):  # 6 weeks, 7 days a week
             db = DayButton(owner=self)
             cal_list.append(db)

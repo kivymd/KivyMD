@@ -417,7 +417,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
                                          _set_md_bg_color_disabled)
 
     def on_disabled(self, instance, value):
-        if value:
+        if self.disabled:
             self._current_button_color = self.md_bg_color_disabled
         else:
             self._current_button_color = self.md_bg_color
@@ -536,7 +536,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         _get_elev_raised, _set_elev_raised, bind=('_elev_raised',))
 
     def on_disabled(self, instance, value):
-        if value:
+        if self.disabled:
             self.elevation = 0
         else:
             self.elevation = self.elevation_normal

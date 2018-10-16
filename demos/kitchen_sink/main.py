@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
+
+sys.path.append(__file__.split('demos')[0])
 
 from kivy.app import App
 from kivy.clock import Clock
@@ -242,6 +245,7 @@ NavigationLayout:
 
         ScreenManager:
             id: scr_mngr
+            on_current: app.set_back_data_on_toolbar()
 
             Screen:
                 name: 'previous'
@@ -407,7 +411,8 @@ NavigationLayout:
                         size: 3 * dp(48), dp(48)
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                         opposite_colors: True
-                        on_release: Clock.schedule_once(app.show_example_download_file, .1)
+                        on_release:
+                            Clock.schedule_once(app.show_example_download_file, .1)
 
             ###################################################################
             #
@@ -464,7 +469,8 @@ NavigationLayout:
 
                     GridLayout:
                         cols: 3
-                        row_default_height: (self.width - self.cols*self.spacing[0])/self.cols
+                        row_default_height:
+                            (self.width - self.cols*self.spacing[0])/self.cols
                         row_force_default: True
                         size_hint_y: None
                         height: self.minimum_height
@@ -1358,6 +1364,10 @@ class KitchenSink(App):
         self.main_widget.ids.toolbar.right_action_items = [
             ['dots-vertical', lambda x: self.root.toggle_nav_drawer()]]
 
+    def set_back_data_on_toolbar(self):
+        self.main_widget.ids.toolbar.left_action_items = \
+            [['chevron-left', lambda x: x]]
+
     def download_progress_hide(self, instance_progress, value):
         '''Hides progress progress.'''
 
@@ -1399,14 +1409,22 @@ class KitchenSink(App):
         toast('Done')
 
     def file_manager_open(self):
-        if not self.manager:
+        def file_manager_open(text_item):
+            previous = False if text_item == 'List' else True
             self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
-            self.file_manager = MDFileManager(
-                exit_manager=self.exit_manager, select_path=self.select_path)
+            self.file_manager = MDFileManager(exit_manager=self.exit_manager,
+                                              select_path=self.select_path,
+                                              previous=previous)
             self.manager.add_widget(self.file_manager)
             self.file_manager.show('/')  # output manager to the screen
-        self.manager_open = True
-        self.manager.open()
+            self.manager_open = True
+            self.manager.open()
+
+        MDDialog(
+            title='Title', size_hint=(.8, .4), text_button_ok='List',
+            text="Open manager with 'list' or 'previous' mode?",
+            text_button_cancel='Previous',
+            events_callback=file_manager_open).open()
 
     def select_path(self, path):
         """It will be called when you click on the file name
@@ -1425,6 +1443,8 @@ class KitchenSink(App):
 
         self.manager.dismiss()
         self.manager_open = False
+        self.main_widget.ids.toolbar.left_action_items = [
+            ['menu', lambda x: self.root.toggle_nav_drawer()]]
 
     def events(self, instance, keyboard, keycode, text, modifiers):
         """Called when buttons are pressed on the mobile device.."""

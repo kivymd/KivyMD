@@ -33,7 +33,7 @@ RUN dpkg --add-architecture i386 && apt update -qq > /dev/null && \
 	apt install -qq --yes --no-install-recommends \
 	build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 \
 	libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 \
-	python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 time
+	python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 python3 python3-dev time
 
 # prepares non root env
 RUN useradd --create-home --shell /bin/bash ${USER}
@@ -54,10 +54,9 @@ ARG CRYSTAX_NDK_VERSION=10.3.1
 ARG CRYSTAX_HASH=ebf4f55562bee27301954aac25d8a7ab03514f4aa20867a174950bf77ad2ba06
 
 # installs buildozer and dependencies
-RUN pip install --user Cython==0.27.3 buildozer
+RUN pip install --user Cython==0.25.2 buildozer
 # calling buildozer adb command should trigger SDK/NDK first install and update
 # but it requires a buildozer.spec file
-
 RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
     && cd ~/.buildozer/android/platform/&& rm -vf android-ndk*.tar* android-sdk*.tgz apache-ant*.tar.gz \
     && cd - && cd ${WORK_DIR} \
@@ -69,11 +68,16 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
   && cd ~/.buildozer/ \
   && echo "${CRYSTAX_HASH}  crystax-${CRYSTAX_NDK_VERSION}.tar.xz" | sha256sum -c \
   && time tar -xf crystax-${CRYSTAX_NDK_VERSION}.tar.xz && rm ~/.buildozer/crystax-${CRYSTAX_NDK_VERSION}.tar.xz \
-    && echo '-----Python 3 ----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-*-debug.apk ${WORK_DIR}/py3-* \
-    && echo '-----Python 2 -----' && cd ${WORK_DIR}/demos/kitchen_sink/bin/python2/ && time buildozer android debug  || echo "Fix build apk" \ 
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-*.apk ${WORK_DIR}/py2-* && date \
-    && sudo rm -rf ${HOME_DIR}/.buildozer && date
+#USER root
+#RUN chown user /home/user/ -R && chown -R user /home/user/hostcwd
+
+#USER ${USER}
+
+RUN echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
+    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk ${WORK_DIR}/py3-kitchen_sink-0_1_3-debug.apk
+
+RUN echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build apk" \ 
+    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date
 
 CMD tail -f /var/log/faillog
 

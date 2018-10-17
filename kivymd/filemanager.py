@@ -120,7 +120,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.image import AsyncImage
-from kivy.factory import Factory
 
 from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
     BooleanProperty, NumericProperty, OptionProperty
@@ -471,7 +470,6 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
 
 class BodyManagerWithPrevious(BoxLayout):
     def get_source(self, app, type, instance_label, paths, index, instance_content):
-
         if type == 'folder' and instance_label.text != '':
             source = '{}folder.png'.format(images_path)
         else:
@@ -485,6 +483,34 @@ class BodyManagerWithPrevious(BoxLayout):
             return source
 
 # FIXME: Add color for Black and White theme
+# FIXME: When you first create the application cache, it crashes after a while with error:
+
+'''
+ Traceback (most recent call last):
+   File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698, in <module>
+     KitchenSink().run()
+   File "/usr/lib/python3/dist-packages/kivy/app.py", line 826, in run
+     runTouchApp()
+   File "/usr/lib/python3/dist-packages/kivy/base.py", line 502, in runTouchApp
+     EventLoop.window.mainloop()
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 727, in mainloop
+     self._mainloop()
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 460, in _mainloop
+     EventLoop.idle()
+   File "/usr/lib/python3/dist-packages/kivy/base.py", line 337, in idle
+     Clock.tick()
+   File "/usr/lib/python3/dist-packages/kivy/clock.py", line 581, in tick
+     self._process_events()
+   File "kivy/_clock.pyx", line 384, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7839)
+   File "kivy/_clock.pyx", line 414, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7597)
+   File "kivy/_clock.pyx", line 412, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7519)
+   File "kivy/_clock.pyx", line 167, in kivy._clock.ClockEvent.tick (kivy/_clock.c:3248)
+   File "/usr/lib/python3/dist-packages/kivy/cache.py", line 212, in _purge_by_timeout
+     lastaccess = Cache._objects[category][key]['lastaccess']
+ KeyError: '/path/to/image'
+'''
+
+
 class MDFileManager(ThemableBehavior, FloatLayout):
     icon = StringProperty('check')
     '''The icon that will be used on the directory selection button.'''
@@ -538,7 +564,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         self.ids.rv.refresh_from_layout()
 
     def split_list(self, l, n):
-
         n = max(1, n)
         if PY2:
             return (l[i:i + n] for i in xrange(0, len(l), n))
@@ -593,7 +618,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
                 })
 
             for list_files in list(split_files):
-                print(list_files)
                 manager_list.append({
                     'viewclass': 'BodyManagerWithPrevious',
                     'path': path,
@@ -687,7 +711,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def select_dir_or_file(self, path):
         '''Called by tap on the name of the directory or file.'''
-        print(path)
 
         if os.path.isfile(path):
             self.history = []

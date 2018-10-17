@@ -191,31 +191,43 @@ ACTIVITY_MANAGER = '''
             orientation: 'vertical'
             IconButton:
                 mipmap: True
-                source: root.get_source(app, root.type, label_box_1, root.paths, 1, self)
-                on_release: root.events_callback(os.path.join(root.path, label_box_1.text))
+                source:
+                    root.get_source(\
+                    app, root.type, label_box_1, root.paths, 1, self)
+                on_release:
+                    root.events_callback(\
+                    os.path.join(root.path, label_box_1.text))
             LabelContent:
                 id: label_box_1
-                text: root.paths[0] if len(root.paths) >= 1 else ''
+                text: os.path.split(root.paths[0])[1].replace('thumb_', '') if len(root.paths) >= 1 else ''
 
         BoxLayout:
             orientation: 'vertical'
             IconButton:
                 mipmap: True
-                source: root.get_source(app, root.type, label_box_2, root.paths, 2, self)
-                on_release: root.events_callback(os.path.join(root.path, label_box_2.text))
+                source:
+                    root.get_source(\
+                    app, root.type, label_box_2, root.paths, 2, self)
+                on_release:
+                    root.events_callback(\
+                    os.path.join(root.path, label_box_2.text))
             LabelContent:
                 id: label_box_2
-                text: root.paths[1] if len(root.paths) >= 2 else ''
+                text: os.path.split(root.paths[1])[1].replace('thumb_', '') if len(root.paths) >= 2 else ''
 
         BoxLayout:
             orientation: 'vertical'
             IconButton:
                 mipmap: True
-                source: root.get_source(app, root.type, label_box_3, root.paths, 3, self)
-                on_release: root.events_callback(os.path.join(root.path, label_box_3.text))
+                source:
+                    root.get_source(\
+                    app, root.type, label_box_3, root.paths, 3, self)
+                on_release:
+                    root.events_callback(\
+                    os.path.join(root.path, label_box_3.text))
             LabelContent:
                 id: label_box_3
-                text: root.paths[2] if len(root.paths) >= 3 else ''
+                text: os.path.split(root.paths[2])[1].replace('thumb_', '') if len(root.paths) >= 3 else ''
 
 
 <FloatButton>:
@@ -245,9 +257,7 @@ ACTIVITY_MANAGER = '''
             pos: self.pos
 
     BoxLayout:
-        size_hint_y: None
-        height: dp(40)
-        y: root.height - toolbar.height
+        orientation: 'vertical'
         spacing: dp(5)
 
         Toolbar:
@@ -258,29 +268,30 @@ ACTIVITY_MANAGER = '''
             elevation: 10
             md_bg_color: root.theme_cls.primary_color
 
-    RecycleView:
-        id: rv
-        key_viewclass: 'viewclass'
-        key_size: 'height'
-        bar_width: dp(4)
-        bar_color: root.theme_cls.primary_color
-        y: -toolbar.height + dp(60)
-        size_hint_y: None
-        height: Window.height - dp(60)
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+            bar_width: dp(4)
+            bar_color: root.theme_cls.primary_color
+            on_scroll_stop: root.update_list_images()
 
-        RecycleBoxLayout:
-            default_size: None, dp(48)
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
+            RecycleBoxLayout:
+                padding: dp(10)
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
 
 
 <ModifiedBaseListItem>:
     size_hint_y: None
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color if root.divider is not None else (0, 0, 0, 0)
+            rgba:
+                self.theme_cls.divider_color if root.divider is not None \
+                else (0, 0, 0, 0)
 
         Line:
             points: (root.x ,root.y, root.x+self.width, root.y)\
@@ -293,7 +304,9 @@ ACTIVITY_MANAGER = '''
         id: _text_container
         orientation: 'vertical'
         pos: root.pos
-        padding: root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad
+        padding:
+            root._txt_left_pad, root._txt_top_pad, \
+            root._txt_right_pad, root._txt_bot_pad
 
         MDLabel:
             id: _lbl_primary
@@ -458,10 +471,11 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
 
 class BodyManagerWithPrevious(BoxLayout):
     def get_source(self, app, type, instance_label, paths, index, instance_content):
+
         if type == 'folder' and instance_label.text != '':
             source = '{}folder.png'.format(images_path)
         else:
-            if len(paths) >= index :
+            if len(paths) >= index:
                 source = paths[index - 1]
             else:
                 source = '{}transparent.png'.format(images_path)
@@ -469,7 +483,6 @@ class BodyManagerWithPrevious(BoxLayout):
             return source.decode('u8')
         else:
             return source
-
 
 # FIXME: Add color for Black and White theme
 class MDFileManager(ThemableBehavior, FloatLayout):
@@ -510,7 +523,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         toolbar_label.font_style = 'Subhead'
 
         if self.previous:
-            self.ext = ['png', 'jpg', 'jpeg']
+            self.ext = ['.png', '.jpg', '.jpeg']
             self.app = App.get_running_app()
             if not os.path.exists('%s/thumb' % self.app.user_data_dir):
                 os.mkdir('%s/thumb' % self.app.user_data_dir)
@@ -525,6 +538,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         self.ids.rv.refresh_from_layout()
 
     def split_list(self, l, n):
+
         n = max(1, n)
         if PY2:
             return (l[i:i + n] for i in xrange(0, len(l), n))
@@ -535,7 +549,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         for image in os.listdir(path):
             _path = os.path.join(path, image)
             if os.path.isfile(_path):
-                if os.path.splitext(_path)[1] in self.ext:
+                if self.count_ext(_path):
                     path_to_thumb = \
                         '%s/thumb/thumb_%s' % (self.app.user_data_dir, image)
                     if not os.path.exists(path_to_thumb):
@@ -545,7 +559,8 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def check_theme(self):
         self.canvas.children[0].rgba = \
-            [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
+            [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' \
+                else [1, 1, 1, 1]
 
     def show(self, path):
         '''Forms the body of a directory tree.'''
@@ -578,6 +593,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
                 })
 
             for list_files in list(split_files):
+                print(list_files)
                 manager_list.append({
                     'viewclass': 'BodyManagerWithPrevious',
                     'path': path,
@@ -617,6 +633,13 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
         self.ids.rv.data = manager_list
 
+    def count_ext(self, path):
+        ext = os.path.splitext(path)[1]
+        if ext != '':
+            if ext.lower() in self.ext or ext.upper() in self.ext:
+                return True
+        return False
+
     def get_access_string(self, path):
         access_string = ''
         if self.use_access:
@@ -647,8 +670,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
                     if self.search == 'all' or self.search == 'files':
                         if len(self.ext) != 0:
                             try:
-                                if content.split('.')[1].lower() in self.ext \
-                                        or content.split('.')[1].upper() in self.ext:
+                                if self.count_ext(content):
                                     if self.previous:
                                         files.append('%s/thumb/thumb_%s' % (
                                             self.app.user_data_dir, content))
@@ -665,16 +687,18 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def select_dir_or_file(self, path):
         '''Called by tap on the name of the directory or file.'''
+        print(path)
 
         if os.path.isfile(path):
             self.history = []
-            if self.previous:
-                self.select_path(
-                    os.path.join(self.current_path,
-                                 os.path.split(path)[1].split('thumb_')[1])
-                )
-            else:
-                self.select_path(path)
+            #if self.previous:
+            #    self.select_path(
+            #        os.path.join(self.current_path,
+            #                     os.path.split(path)[1].split('thumb_')[1])
+            #    )
+            #else:
+            #    self.select_path(path)
+            self.select_path(path)
             return
 
         self.current_path = path

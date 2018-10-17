@@ -43,9 +43,9 @@ RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 WORKDIR ${WORK_DIR}
 
-COPY . .
+#COPY . .
 
-RUN chown user /home/user/ -Rv
+#RUN chown user /home/user/ -Rv
 
 USER ${USER}
 
@@ -68,16 +68,23 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
   && cd ~/.buildozer/ \
   && echo "${CRYSTAX_HASH}  crystax-${CRYSTAX_NDK_VERSION}.tar.xz" | sha256sum -c \
   && time tar -xf crystax-${CRYSTAX_NDK_VERSION}.tar.xz && rm ~/.buildozer/crystax-${CRYSTAX_NDK_VERSION}.tar.xz
+
+
+COPY . .
+
+RUN sudo chown user ${WORK_DIR} -Rv
+
 #USER root
 #RUN chown user /home/user/ -R && chown -R user /home/user/hostcwd
 
 #USER ${USER}
 
-RUN echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ && time buildozer android debug || echo "Fix build apk" \
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk ${WORK_DIR}/py3-kitchen_sink-0_1_3-debug.apk
+RUN echo '-----Python 3 ----' && cd demos/kitchen_sink/bin/python3/ \
+    && cp -f buildozer.spec ../../ && cd .. && cd .. && time buildozer android debug || echo "Fix build apk" \
+    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-*-debug.apk ${WORK_DIR}/py3-kitchen_sink.apk
 
-RUN echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android   || echo "Fix build apk" \ 
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3.apk ${WORK_DIR}/py2-KivyMDKitchenSink-0.1.3.apk && date
+RUN echo '-----Python 2 -----' && cd demos/kitchen_sink/bin/python2/ && time buildozer android debug || echo "Fix build apk" \ 
+    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-*.apk ${WORK_DIR}/py2-kitchen_sink.apk && date
 
 CMD tail -f /var/log/faillog
 

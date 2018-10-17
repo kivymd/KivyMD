@@ -245,7 +245,6 @@ NavigationLayout:
 
         ScreenManager:
             id: scr_mngr
-            on_current: app.set_back_data_on_toolbar()
 
             Screen:
                 name: 'previous'
@@ -1364,10 +1363,6 @@ class KitchenSink(App):
         self.main_widget.ids.toolbar.right_action_items = [
             ['dots-vertical', lambda x: self.root.toggle_nav_drawer()]]
 
-    def set_back_data_on_toolbar(self):
-        self.main_widget.ids.toolbar.left_action_items = \
-            [['chevron-left', lambda x: x]]
-
     def download_progress_hide(self, instance_progress, value):
         '''Hides progress progress.'''
 
@@ -1443,6 +1438,9 @@ class KitchenSink(App):
 
         self.manager.dismiss()
         self.manager_open = False
+        self.set_chevron_menu()
+
+    def set_chevron_menu(self):
         self.main_widget.ids.toolbar.left_action_items = [
             ['menu', lambda x: self.root.toggle_nav_drawer()]]
 

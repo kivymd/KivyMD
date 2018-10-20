@@ -198,7 +198,9 @@ ACTIVITY_MANAGER = '''
                     os.path.join(root.path, label_box_1.text))
             LabelContent:
                 id: label_box_1
-                text: os.path.split(root.paths[0])[1].replace('thumb_', '') if len(root.paths) >= 1 else ''
+                text:
+                    os.path.split(root.paths[0])[1].replace('thumb_', '') \
+                    if len(root.paths) >= 1 else ''
 
         BoxLayout:
             orientation: 'vertical'
@@ -212,7 +214,9 @@ ACTIVITY_MANAGER = '''
                     os.path.join(root.path, label_box_2.text))
             LabelContent:
                 id: label_box_2
-                text: os.path.split(root.paths[1])[1].replace('thumb_', '') if len(root.paths) >= 2 else ''
+                text:
+                    os.path.split(root.paths[1])[1].replace('thumb_', '') \
+                    if len(root.paths) >= 2 else ''
 
         BoxLayout:
             orientation: 'vertical'
@@ -226,7 +230,9 @@ ACTIVITY_MANAGER = '''
                     os.path.join(root.path, label_box_3.text))
             LabelContent:
                 id: label_box_3
-                text: os.path.split(root.paths[2])[1].replace('thumb_', '') if len(root.paths) >= 3 else ''
+                text:
+                    os.path.split(root.paths[2])[1].replace('thumb_', '') \
+                    if len(root.paths) >= 3 else ''
 
 
 <FloatButton>:
@@ -714,13 +720,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
         if os.path.isfile(path):
             self.history = []
-            #if self.previous:
-            #    self.select_path(
-            #        os.path.join(self.current_path,
-            #                     os.path.split(path)[1].split('thumb_')[1])
-            #    )
-            #else:
-            #    self.select_path(path)
             self.select_path(path)
             return
 

@@ -156,7 +156,8 @@ Builder.load_string('''
             Rectangle:
                 pos: self.pos
                 size: self.size
-                source: '{}dialog_in_fade.png'.format(images_path)
+                #source: '{}dialog_in_fade.png'.format(images_path)
+                source: '{}transparent.png'.format(images_path)
 
         MDLabel:
             theme_text_color: 'Primary'

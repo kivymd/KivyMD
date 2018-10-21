@@ -75,6 +75,7 @@ What's new in version 0.1.4:
 * Add new class [MDUpdateSpinner](https://github.com/HeaTTheatR/KivyMD/wiki/MDUpdateSpinner)
 * Add new class [MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
 * Add new classes [MDTextButton](https://github.com/HeaTTheatR/KivyMD/wiki/MDButtons)
+* Add new classes [MDTextFieldClear](https://github.com/HeaTTheatR/KivyMD/wiki/TextFields)
 * Dialog boxes are [adapted for Android and iOS](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs) 
 
 Video previous

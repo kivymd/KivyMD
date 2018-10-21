@@ -2,8 +2,13 @@
 
 import os
 import sys
-
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
+
+from kivy import platform
+if platform in ('linux', 'macosx'):
+    from kivy.config import Config
+    Config.set('graphics', 'width', '400')
+    Config.set('graphics', 'height', '600')
 
 from kivy.app import App
 from kivy.clock import Clock
@@ -1052,7 +1057,9 @@ NavigationLayout:
                         opposite_colors: True
                         pos_hint: {'center_x': 0.5}
                     MDLabel:
-                        text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
+                        text:
+                            "Current: " + app.theme_cls.theme_style + \
+                            ", " + app.theme_cls.primary_palette
                         theme_text_color: 'Primary'
                         pos_hint: {'center_x': 0.5}
                         halign: 'center'

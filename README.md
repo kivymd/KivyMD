@@ -31,6 +31,7 @@ Installation and use with Buildozer
 
 #### Dependencies:
 * Kivy version is not less than 1.9.2
+* PIL
 
 #### How to install
 
@@ -61,7 +62,8 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-#### What's new in version 0.1.3:
+What's new in version 0.1.4:
+============================
 * Added dialog for text input and "Yes/No" dialog - [MDInputDialog, MDOkCancelDialog](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs)
 * MDTabbedPanel items become scrollable;
 * Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
@@ -73,6 +75,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 * Add new class [MDUpdateSpinner](https://github.com/HeaTTheatR/KivyMD/wiki/MDUpdateSpinner)
 * Add new class [MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
 * Add new classes [MDTextButton](https://github.com/HeaTTheatR/KivyMD/wiki/MDButtons)
+* Add new classes [MDTextFieldClear](https://github.com/HeaTTheatR/KivyMD/wiki/TextFields)
 * Dialog boxes are [adapted for Android and iOS](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs) 
 
 Video previous

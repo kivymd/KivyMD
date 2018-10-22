@@ -107,22 +107,35 @@ Example().run()
 '''
 
 import os
+import threading
 
+from PIL import Image
+
+from kivy.app import App
 from kivy.metrics import dp
+from kivy import PY2
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
+from kivy.uix.image import AsyncImage
+
 from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
     BooleanProperty, NumericProperty, OptionProperty
 
 import kivymd.material_resources as m_res
+from kivymd import images_path
 from kivymd.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
-from kivymd.ripplebehavior import RectangularRippleBehavior
+from kivymd.ripplebehavior import RectangularRippleBehavior, \
+    CircularRippleBehavior
 from kivymd.theming import ThemableBehavior
 from kivymd.button import MDIconButton
 
 
 ACTIVITY_MANAGER = '''
+#:import os os
+#:import Window kivy.core.window.Window
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 #:import MDSeparator kivymd.card.MDSeparator
@@ -147,8 +160,99 @@ ACTIVITY_MANAGER = '''
 
     MDSeparator:
 
-<MDFileManager>:
 
+<LabelContent@MDLabel>:
+    size_hint_y: None
+    height: self.texture_size[1]
+    shorten: True
+    shorten_from: 'center'
+    halign: 'center'
+    text_size: self.width, None
+
+
+<BodyManagerWithPrevious>:
+    paths: []
+    path: ''
+    type: 'folder'
+    events_callback: lambda x: None
+
+    GridLayout:
+        id: grid_box
+        cols: 3
+        row_default_height: (self.width - self.cols*self.spacing[0])/self.cols
+        row_force_default: True
+        size_hint_y: None
+        height: self.minimum_height
+        padding: dp(4), dp(4)
+        spacing: dp(4)
+
+        BoxLayout:
+            orientation: 'vertical'
+            IconButton:
+                mipmap: True
+                source:
+                    root.get_source(\
+                    app, root.type, label_box_1, root.paths, 1, self)
+                on_release:
+                    root.events_callback(\
+                    os.path.join(root.path, label_box_1.text))
+            LabelContent:
+                id: label_box_1
+                text:
+                    os.path.split(root.paths[0])[1].replace('thumb_', '') \
+                    if len(root.paths) >= 1 else ''
+
+        BoxLayout:
+            orientation: 'vertical'
+            IconButton:
+                mipmap: True
+                source:
+                    root.get_source(\
+                    app, root.type, label_box_2, root.paths, 2, self)
+                on_release:
+                    root.events_callback(\
+                    os.path.join(root.path, label_box_2.text))
+            LabelContent:
+                id: label_box_2
+                text:
+                    os.path.split(root.paths[1])[1].replace('thumb_', '') \
+                    if len(root.paths) >= 2 else ''
+
+        BoxLayout:
+            orientation: 'vertical'
+            IconButton:
+                mipmap: True
+                source:
+                    root.get_source(\
+                    app, root.type, label_box_3, root.paths, 3, self)
+                on_release:
+                    root.events_callback(\
+                    os.path.join(root.path, label_box_3.text))
+            LabelContent:
+                id: label_box_3
+                text:
+                    os.path.split(root.paths[2])[1].replace('thumb_', '') \
+                    if len(root.paths) >= 3 else ''
+
+
+<FloatButton>:
+    anchor_x: 'right'
+    anchor_y: 'bottom'
+    size_hint_y: None
+    height: dp(56)
+    padding: dp(10)
+
+    MDFloatingActionButton:
+        size_hint: None, None
+        size:dp(56), dp(56)
+        icon: root.icon
+        opposite_colors: True
+        elevation: 8
+        on_release: root.callback()
+        md_bg_color: root.md_bg_color
+
+
+<MDFileManager>:
     canvas:
         Color:
             rgba:
@@ -158,56 +262,41 @@ ACTIVITY_MANAGER = '''
             pos: self.pos
 
     BoxLayout:
-        size_hint_y: None
-        height: dp(40)
-        y: root.height - toolbar.height
+        orientation: 'vertical'
         spacing: dp(5)
 
         Toolbar:
             id: toolbar
             title: '%s' % root.current_path
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
+            left_action_items: [['chevron-left', lambda x: root.back()]]
             elevation: 10
             md_bg_color: root.theme_cls.primary_color
 
-    RecycleView:
-        id: rv
-        key_viewclass: 'viewclass'
-        key_size: 'height'
-        bar_width: dp(4)
-        bar_color: root.theme_cls.primary_color
-        y: -toolbar.height
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+            bar_width: dp(4)
+            bar_color: root.theme_cls.primary_color
+            on_scroll_stop: root.update_list_images()
 
-        RecycleBoxLayout:
-            default_size: None, dp(48)
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
-
-    AnchorLayout:
-        anchor_x: 'right'
-        anchor_y: 'bottom'
-        size_hint_y: None
-        height: dp(56)
-        padding: dp(10)
-
-        MDFloatingActionButton:
-            size_hint: None, None
-            size:dp(56), dp(56)
-            icon: root.icon
-            opposite_colors: True
-            elevation: 8
-            on_release: root.select_directory_on_press_button()
-            md_bg_color: root.theme_cls.primary_color
+            RecycleBoxLayout:
+                padding: dp(10)
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
 
 
 <ModifiedBaseListItem>:
     size_hint_y: None
-
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color if root.divider is not None else (0, 0, 0, 0)
+            rgba:
+                self.theme_cls.divider_color if root.divider is not None \
+                else (0, 0, 0, 0)
 
         Line:
             points: (root.x ,root.y, root.x+self.width, root.y)\
@@ -220,7 +309,9 @@ ACTIVITY_MANAGER = '''
         id: _text_container
         orientation: 'vertical'
         pos: root.pos
-        padding: root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad
+        padding:
+            root._txt_left_pad, root._txt_top_pad, \
+            root._txt_right_pad, root._txt_bot_pad
 
         MDLabel:
             id: _lbl_primary
@@ -240,6 +331,16 @@ ACTIVITY_MANAGER = '''
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
 '''
+
+
+class IconButton(CircularRippleBehavior, ButtonBehavior, AsyncImage):
+    pass
+
+
+class FloatButton(AnchorLayout):
+    callback = ObjectProperty()
+    md_bg_color = ListProperty([1, 1, 1, 1])
+    icon = StringProperty()
 
 
 class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
@@ -373,7 +474,49 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
     pass
 
 
+class BodyManagerWithPrevious(BoxLayout):
+    def get_source(self, app, type, instance_label, paths, index, instance_content):
+        if type == 'folder' and instance_label.text != '':
+            source = '{}folder.png'.format(images_path)
+        else:
+            if len(paths) >= index:
+                source = paths[index - 1]
+            else:
+                source = '{}transparent.png'.format(images_path)
+        if PY2:
+            return source.decode('u8')
+        else:
+            return source
+
 # FIXME: Add color for Black and White theme
+# FIXME: When you first create the application cache, it crashes after a while with error:
+
+'''
+ Traceback (most recent call last):
+   File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698, in <module>
+     KitchenSink().run()
+   File "/usr/lib/python3/dist-packages/kivy/app.py", line 826, in run
+     runTouchApp()
+   File "/usr/lib/python3/dist-packages/kivy/base.py", line 502, in runTouchApp
+     EventLoop.window.mainloop()
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 727, in mainloop
+     self._mainloop()
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 460, in _mainloop
+     EventLoop.idle()
+   File "/usr/lib/python3/dist-packages/kivy/base.py", line 337, in idle
+     Clock.tick()
+   File "/usr/lib/python3/dist-packages/kivy/clock.py", line 581, in tick
+     self._process_events()
+   File "kivy/_clock.pyx", line 384, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7839)
+   File "kivy/_clock.pyx", line 414, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7597)
+   File "kivy/_clock.pyx", line 412, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7519)
+   File "kivy/_clock.pyx", line 167, in kivy._clock.ClockEvent.tick (kivy/_clock.c:3248)
+   File "/usr/lib/python3/dist-packages/kivy/cache.py", line 212, in _purge_by_timeout
+     lastaccess = Cache._objects[category][key]['lastaccess']
+ KeyError: '/path/to/image'
+'''
+
+
 class MDFileManager(ThemableBehavior, FloatLayout):
     icon = StringProperty('check')
     '''The icon that will be used on the directory selection button.'''
@@ -399,6 +542,9 @@ class MDFileManager(ThemableBehavior, FloatLayout):
     use_access = BooleanProperty(True)
     '''Show accec to files and directories.'''
 
+    previous = BooleanProperty(False)
+    '''Shows only image previews.'''
+
     def __init__(self, **kwargs):
         super(MDFileManager, self).__init__(**kwargs)
         self.history = []  # directory navigation history
@@ -408,15 +554,56 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = 'Subhead'
 
+        if self.previous:
+            self.ext = ['.png', '.jpg', '.jpeg']
+            self.app = App.get_running_app()
+            if not os.path.exists('%s/thumb' % self.app.user_data_dir):
+                os.mkdir('%s/thumb' % self.app.user_data_dir)
+        else:
+            action_button = FloatButton(
+                callback=self.select_directory_on_press_button,
+                md_bg_color=self.theme_cls.primary_color,
+                icon=self.icon)
+            self.add_widget(action_button)
+
+    def update_list_images(self):
+        self.ids.rv.refresh_from_layout()
+
+    def split_list(self, l, n):
+        n = max(1, n)
+        if PY2:
+            return (l[i:i + n] for i in xrange(0, len(l), n))
+        else:
+            return (l[i:i + n] for i in range(0, len(l), n))
+
+    def create_previous(self, path):
+        for image in os.listdir(path):
+            _path = os.path.join(path, image)
+            if os.path.isfile(_path):
+                if self.count_ext(_path):
+                    path_to_thumb = \
+                        '%s/thumb/thumb_%s' % (self.app.user_data_dir, image)
+                    if not os.path.exists(path_to_thumb):
+                        im = Image.open(os.path.join(path, image))
+                        im.thumbnail((200, 200))
+                        im.save(path_to_thumb, "PNG")
+
     def check_theme(self):
         self.canvas.children[0].rgba = \
-            [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
+            [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' \
+                else [1, 1, 1, 1]
 
     def show(self, path):
         '''Forms the body of a directory tree.'''
 
         self.check_theme()
         dirs, files = self.get_content(path)
+
+        if self.previous:
+            threading.Thread(target=self.create_previous, args=(path,)).start()
+            split_dirs = self.split_list(dirs, 3)
+            split_files = self.split_list(files, 3)
+
         self.current_path = path
         manager_list = []
 
@@ -425,35 +612,63 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         elif not dirs and not files:  # directory is unavailable
             return
 
-        for name in dirs:
-            _path = path + name if path == '/' else path + '/' + name
-            access_string = self.get_access_string(_path)
-            if 'r' not in access_string:
-                icon = 'folder-lock'
-            else:
-                icon = 'folder'
+        if self.previous:
+            for list_dirs in split_dirs:
+                manager_list.append({
+                    'viewclass': 'BodyManagerWithPrevious',
+                    'path': path,
+                    'paths': list_dirs,
+                    'type': 'folder',
+                    'events_callback': self.select_dir_or_file,
+                    'height': dp(105)
+                })
 
-            manager_list.append({
-                'viewclass': 'BodyManager',
-                'path': _path,
-                'icon': icon,
-                'dir_or_file_name': name,
-                'access_string': access_string,
-                'events_callback': self.select_dir_or_file
-            })
+            for list_files in list(split_files):
+                manager_list.append({
+                    'viewclass': 'BodyManagerWithPrevious',
+                    'path': path,
+                    'paths': list_files,
+                    'type': 'files',
+                    'events_callback': self.select_dir_or_file,
+                    'height': dp(105)
+                })
+        else:
+            for name in dirs:
+                _path = path + name if path == '/' else path + '/' + name
+                access_string = self.get_access_string(_path)
+                if 'r' not in access_string:
+                    icon = 'folder-lock'
+                else:
+                    icon = 'folder'
 
-        for name in files:
-            _path = path + name if path == '/' else path + '/' + name
-            manager_list.append({
-                'viewclass': 'BodyManager',
-                'path': _path,
-                'icon': 'file-outline',
-                'dir_or_file_name': name,
-                'access_string': self.get_access_string(_path),
-                'events_callback': self.select_dir_or_file
-            })
+                manager_list.append({
+                    'viewclass': 'BodyManager',
+                    'path': _path,
+                    'icon': icon,
+                    'dir_or_file_name': name,
+                    'access_string': access_string,
+                    'events_callback': self.select_dir_or_file
+                })
+
+            for name in files:
+                _path = path + name if path == '/' else path + '/' + name
+                manager_list.append({
+                    'viewclass': 'BodyManager',
+                    'path': _path,
+                    'icon': 'file-outline',
+                    'dir_or_file_name': name,
+                    'access_string': self.get_access_string(_path),
+                    'events_callback': self.select_dir_or_file
+                })
 
         self.ids.rv.data = manager_list
+
+    def count_ext(self, path):
+        ext = os.path.splitext(path)[1]
+        if ext != '':
+            if ext.lower() in self.ext or ext.upper() in self.ext:
+                return True
+        return False
 
     def get_access_string(self, path):
         access_string = ''
@@ -485,9 +700,12 @@ class MDFileManager(ThemableBehavior, FloatLayout):
                     if self.search == 'all' or self.search == 'files':
                         if len(self.ext) != 0:
                             try:
-                                if content.split('.')[1].lower() in self.ext \
-                                        or content.split('.')[1].upper() in self.ext:
-                                    files.append(content)
+                                if self.count_ext(content):
+                                    if self.previous:
+                                        files.append('%s/thumb/thumb_%s' % (
+                                            self.app.user_data_dir, content))
+                                    else:
+                                        files.append(content)
                             except IndexError:
                                 pass
                         else:

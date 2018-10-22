@@ -12,21 +12,17 @@ from kivymd.elevationbehavior import RectangularElevationBehavior
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources
-
-
 <Toolbar>
     size_hint_y: None
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
-
     BoxLayout:
         id: left_actions
         orientation: 'horizontal'
         size_hint_x: None
         padding: [0, (self.height - dp(48))/2]
-
     BoxLayout:
         padding: dp(12), 0
         MDLabel:
@@ -37,7 +33,6 @@ Builder.load_string('''
             text: root.title
             shorten: True
             shorten_from: 'right'
-
     BoxLayout:
         id: right_actions
         orientation: 'horizontal'
@@ -50,18 +45,14 @@ class Toolbar(ThemableBehavior, RectangularElevationBehavior,
               SpecificBackgroundColorBehavior, BoxLayout):
     left_action_items = ListProperty()
     """The icons on the left of the Toolbar.
-
     To add one, append a list like the following:
-
         ['icon_name', callback]
-
     where 'icon_name' is a string that corresponds to an icon definition and
      callback is the function called on a touch release event.
     """
 
     right_action_items = ListProperty()
     """The icons on the left of the Toolbar.
-
     Works the same way as :attr:`left_action_items`
     """
 

@@ -211,16 +211,16 @@ Builder.load_string('''
             radius: (root._radius,)
 
     content: content
-    height: dp(36)
-    width: content.texture_size[0] + dp(32)
+    height: dp(36) if not root._height else root._height
+    width: content.texture_size[0] + root.increment_width
     padding: (dp(8), 0)
     theme_text_color: 'Primary'
 
     MDLabel:
         id: content
         text: root._capitalized_text
-        font_style: 'Button'
         size_hint_x: None
+        font_size: '%ssp' % root._font_size
         text_size: (None, root.height)
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
@@ -237,7 +237,10 @@ Builder.load_string('''
             rgba: root.theme_cls.primary_color
         Line:
             width: 1
-            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(18), dp(18), dp(18), dp(18), self.height)
+            rounded_rectangle:
+                (self.x, self.y, self.width, self.height, \
+                root._radius, root._radius, root._radius, root._radius, \
+                self.height)
 
     theme_text_color: 'Custom'
     text_color: root.theme_cls.primary_color
@@ -246,11 +249,11 @@ Builder.load_string('''
 <MDFillRoundFlatButton>:
     canvas.before:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba: root.md_bg_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [dp(18),]
+            radius: [root._radius,]
 
     theme_text_color: 'Custom'
     text_color: 1, 1, 1, 1
@@ -274,13 +277,13 @@ Builder.load_string('''
         Line:
             width: 1
             rectangle: (self.x, self.y, self.width, self.height)
-    
+
     size_hint_x: None
     width: dp(150)
 
     BoxLayout:
         spacing: dp(10)
- 
+
         MDLabel:
             id: lbl_ic
             font_name: '/fonts/materialdesignicons-webfont.ttf'
@@ -304,7 +307,7 @@ Builder.load_string('''
 
     BoxLayout:
         spacing: dp(10)
- 
+
         MDLabel:
             id: lbl_ic
             font_name: '/fonts/materialdesignicons-webfont.ttf'
@@ -335,12 +338,14 @@ Builder.load_string('''
     md_bg_color: root.theme_cls.accent_color
     theme_text_color: 'Custom'
     text_color: root.specific_text_color
-    
-    
+
+
 <MDTextButton>:
     size_hint: None, None
     size: self.texture_size
-    color: root.theme_cls.primary_color if not len(root.custom_color) else root.custom_color
+    color:
+        root.theme_cls.primary_color if not len(root.custom_color) \
+        else root.custom_color
     background_down: '{}transparent.png'.format(images_path)
     background_normal: '{}transparent.png'.format(images_path)
     opacity: 1
@@ -412,7 +417,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
                                          _set_md_bg_color_disabled)
 
     def on_disabled(self, instance, value):
-        if value:
+        if self.disabled:
             self._current_button_color = self.md_bg_color_disabled
         else:
             self._current_button_color = self.md_bg_color
@@ -436,8 +441,9 @@ class BasePressedButton(BaseButton):
         elif self.disabled:
             return False
         else:
-            self.fade_bg = Animation(duration=.5,
-                                     _current_button_color=self.md_bg_color_down)
+            self.fade_bg = \
+                Animation(duration=.5,
+                          _current_button_color=self.md_bg_color_down)
             self.fade_bg.start(self)
             return super(BaseButton, self).on_touch_down(touch)
 
@@ -530,7 +536,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         _get_elev_raised, _set_elev_raised, bind=('_elev_raised',))
 
     def on_disabled(self, instance, value):
-        if value:
+        if self.disabled:
             self.elevation = 0
         else:
             self.elevation = self.elevation_normal
@@ -594,12 +600,15 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     width = BoundedNumericProperty(dp(88), min=dp(88), max=None,
                                    errorhandler=lambda x: dp(88))
     text = StringProperty('')
+    increment_width = NumericProperty(dp(32))
     _capitalized_text = StringProperty('')
     _radius = NumericProperty(dp(2))
+    _height = NumericProperty(dp(0))
+    _font_size = StringProperty('14')
 
     def on_text(self, instance, value):
-        #self._capitalized_text = value.upper()
-        self._capitalized_text = value
+        self._capitalized_text = value.upper()
+        # self._capitalized_text = value
 
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
@@ -643,7 +652,9 @@ class MDRoundFlatButton(MDFlatButton):
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            RoundedRectangle(size=self.size, pos=self.pos, radius=[dp(18), ])
+            RoundedRectangle(size=self.size,
+                             pos=self.pos,
+                             radius=[self._radius, ])
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = \
@@ -651,8 +662,9 @@ class MDRoundFlatButton(MDFlatButton):
                         pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
                              self.ripple_pos[1] - self.ripple_rad / 2.))
             StencilUnUse()
-            RoundedRectangle(size=self.size, pos=self.pos, radius=[dp(18), ])
-
+            RoundedRectangle(size=self.size,
+                             pos=self.pos,
+                             radius=[self._radius, ])
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
 
@@ -675,7 +687,9 @@ class MDTextButton(ThemableBehavior, Button):
 
 
 class MDFillRoundFlatButton(MDRoundFlatButton):
-    pass
+    def on_md_bg_color(self, instance, value):
+        if value == [0.0, 0.0, 0.0, 0.0]:
+            self.md_bg_color = self.theme_cls.primary_color
 
 
 class MDRectangleFlatIconButton(BaseFlatIconButton):

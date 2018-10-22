@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
+sys.path.append(os.path.abspath(__file__).split('demos')[0])
+
+from kivy import platform
+if platform in ('linux', 'macosx'):
+    from kivy.config import Config
+    Config.set('graphics', 'width', '400')
+    Config.set('graphics', 'height', '600')
 
 from kivy.app import App
 from kivy.clock import Clock
@@ -34,6 +42,7 @@ from kivymd.useranimationcard import MDUserAnimationCard
 main_widget_kv = """
 #:import Clock kivy.clock.Clock
 #:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import images_path kivymd.images_path
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
@@ -51,6 +60,7 @@ main_widget_kv = """
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
 #:import MDTextField kivymd.textfields.MDTextField
+#:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDCard kivymd.card.MDCard
 #:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
@@ -60,7 +70,6 @@ main_widget_kv = """
 #:import MDTextButton kivymd.button.MDTextButton
 #:import MDSeparator kivymd.card.MDSeparator
 #:import MDDropdownMenu kivymd.menu.MDDropdownMenu
-#:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import colors kivymd.color_definitions.colors
 #:import SmartTile kivymd.grid.SmartTile
 #:import MDSlider kivymd.slider.MDSlider
@@ -101,7 +110,9 @@ main_widget_kv = """
 
     TwoLineIconListItem:
         text: "Call Viber Out"
-        secondary_text: "[color=%s]Advantageous rates for calls[/color]" % get_hex_from_color(app.theme_cls.primary_color)
+        secondary_text:
+            "[color=%s]Advantageous rates for calls[/color]" \
+            % get_hex_from_color(app.theme_cls.primary_color)
         # FIXME: Don't work "secondary_text_color" parameter
         # secondary_text_color: app.theme_cls.primary_color
         IconLeftSampleWidget:
@@ -109,7 +120,9 @@ main_widget_kv = """
 
     TwoLineIconListItem:
         text: "Call over mobile network"
-        secondary_text: "[color=%s]Operator's tariffs apply[/color]" % get_hex_from_color(app.theme_cls.primary_color)
+        secondary_text:
+            "[color=%s]Operator's tariffs apply[/color]" \
+            % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
@@ -237,8 +250,10 @@ NavigationLayout:
             background_palette: 'Primary'
             background_hue: '500'
             elevation: 10
-            left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
-            right_action_items: [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
+            left_action_items:
+                [['menu', lambda x: app.root.toggle_nav_drawer()]]
+            right_action_items:
+                [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
 
         ScreenManager:
             id: scr_mngr
@@ -407,7 +422,9 @@ NavigationLayout:
                         size: 3 * dp(48), dp(48)
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                         opposite_colors: True
-                        on_release: Clock.schedule_once(app.show_example_download_file, .1)
+                        on_release:
+                            Clock.schedule_once(\
+                            app.show_example_download_file, .1)
 
             ###################################################################
             #
@@ -464,7 +481,8 @@ NavigationLayout:
 
                     GridLayout:
                         cols: 3
-                        row_default_height: (self.width - self.cols*self.spacing[0])/self.cols
+                        row_default_height:
+                            (self.width - self.cols*self.spacing[0])/self.cols
                         row_force_default: True
                         size_hint_y: None
                         height: self.minimum_height
@@ -624,7 +642,9 @@ NavigationLayout:
                             secondary_text: "Secondary text here"
                         ThreeLineListItem:
                             text: "Three-line item"
-                            secondary_text: "This is a multi-line label where you can fit more text than usual"
+                            secondary_text:
+                                "This is a multi-line label where you can " \
+                                "fit more text than usual"
                         OneLineAvatarListItem:
                             text: "Single-line item with avatar"
                             AvatarSampleWidget:
@@ -638,7 +658,8 @@ NavigationLayout:
                         ThreeLineAvatarListItem:
                             type: "three-line"
                             text: "Three-line item..."
-                            secondary_text: "...with avatar..." + '\\n' + "and third line!"
+                            secondary_text:
+                                "...with avatar..." + '\\n' + "and third line!"
                             AvatarSampleWidget:
                                 source: './assets/avatar.png'
                         OneLineIconListItem:
@@ -654,7 +675,9 @@ NavigationLayout:
                                 icon: 'comment-text'
                         ThreeLineIconListItem:
                             text: "Three-line item..."
-                            secondary_text: "...with left icon..." + '\\n' + "and third line!"
+                            secondary_text:
+                                "...with left icon..." + '\\n' + "and " \
+                                "third line!"
                             IconLeftSampleWidget:
                                 id: li_icon_3
                                 icon: 'sd'
@@ -671,7 +694,9 @@ NavigationLayout:
                             IconRightSampleWidget:
                         ThreeLineAvatarIconListItem:
                             text: "Three-line item..."
-                            secondary_text: "...with avatar&icon..." + '\\n' + "and third line!"
+                            secondary_text:
+                                "...with avatar&icon..." + '\\n' + "and " \
+                                "third line!"
                             AvatarSampleWidget:
                                 source: './assets/avatar.png'
                             IconRightSampleWidget:
@@ -710,7 +735,9 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.2, 'center_y': 0.9}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
+                    on_release:
+                        MDDropdownMenu(\
+                        items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -718,7 +745,9 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.2, 'center_y': 0.1}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
+                    on_release:
+                        MDDropdownMenu(\
+                        items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -726,7 +755,9 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.8, 'center_y': 0.1}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
+                    on_release:
+                        MDDropdownMenu(\
+                        items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -734,7 +765,9 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.8, 'center_y': 0.9}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
+                    on_release:
+                        MDDropdownMenu(\
+                        items=app.menu_items, width_mult=3).open(self)
 
                 MDRaisedButton:
                     size_hint: None, None
@@ -742,7 +775,9 @@ NavigationLayout:
                     text: 'Open menu'
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                    on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+                    on_release:
+                        MDDropdownMenu(\
+                        items=app.menu_items, width_mult=4).open(self)
 
             ###################################################################
             #
@@ -953,7 +988,8 @@ NavigationLayout:
                             hint_text: "No helper text"
                         MDTextField:
                             hint_text: "Helper text on focus"
-                            helper_text: "This will disappear when you click off"
+                            helper_text:
+                                "This will disappear when you click off"
                             helper_text_mode: "on_focus"
                         MDTextField:
                             hint_text: "Persistent helper text"
@@ -961,7 +997,9 @@ NavigationLayout:
                             helper_text_mode: "persistent"
                         MDTextField:
                             id: text_field_error
-                            hint_text: "Helper text on error (Hit Enter with two characters here)"
+                            hint_text:
+                                "Helper text on error (Hit Enter with " \
+                                "two characters here)"
                             helper_text: "Two is my least favorite number"
                             helper_text_mode: "on_error"
                         MDTextField:
@@ -983,11 +1021,17 @@ NavigationLayout:
                             hint_text: "color_mode = \'custom\'"
                             color_mode: 'custom'
                             helper_text_mode: "on_focus"
-                            helper_text: "Color is defined by \'line_color_focus\' property"
-                            line_color_focus: self.theme_cls.opposite_bg_normal  # This is the color used by the textfield
+                            helper_text:
+                                "Color is defined by \'line_color_focus\' " \
+                                "property"
+                            line_color_focus:
+                                # This is the color used by the textfield
+                                self.theme_cls.opposite_bg_normal
                         MDTextField:
                             hint_text: "disabled = True"
                             disabled: True
+                        MDTextFieldClear:
+                            hint_text: "Text field with clearing type"
 
             ###################################################################
             #
@@ -1013,7 +1057,9 @@ NavigationLayout:
                         opposite_colors: True
                         pos_hint: {'center_x': 0.5}
                     MDLabel:
-                        text: "Current: " + app.theme_cls.theme_style + ", " + app.theme_cls.primary_palette
+                        text:
+                            "Current: " + app.theme_cls.theme_style + \
+                            ", " + app.theme_cls.primary_palette
                         theme_text_color: 'Primary'
                         pos_hint: {'center_x': 0.5}
                         halign: 'center'
@@ -1399,14 +1445,22 @@ class KitchenSink(App):
         toast('Done')
 
     def file_manager_open(self):
-        if not self.manager:
+        def file_manager_open(text_item):
+            previous = False if text_item == 'List' else True
             self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
-            self.file_manager = MDFileManager(
-                exit_manager=self.exit_manager, select_path=self.select_path)
+            self.file_manager = MDFileManager(exit_manager=self.exit_manager,
+                                              select_path=self.select_path,
+                                              previous=previous)
             self.manager.add_widget(self.file_manager)
             self.file_manager.show('/')  # output manager to the screen
-        self.manager_open = True
-        self.manager.open()
+            self.manager_open = True
+            self.manager.open()
+
+        MDDialog(
+            title='Title', size_hint=(.8, .4), text_button_ok='List',
+            text="Open manager with 'list' or 'previous' mode?",
+            text_button_cancel='Previous',
+            events_callback=file_manager_open).open()
 
     def select_path(self, path):
         """It will be called when you click on the file name
@@ -1425,6 +1479,11 @@ class KitchenSink(App):
 
         self.manager.dismiss()
         self.manager_open = False
+        self.set_chevron_menu()
+
+    def set_chevron_menu(self):
+        self.main_widget.ids.toolbar.left_action_items = [
+            ['menu', lambda x: self.root.toggle_nav_drawer()]]
 
     def events(self, instance, keyboard, keycode, text, modifiers):
         """Called when buttons are pressed on the mobile device.."""

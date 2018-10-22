@@ -79,15 +79,19 @@ Builder.load_string("""
             Rectangle:
                 pos: self.pos
                 size: self.size
+
         id: box
         size_hint_y: None
-        height: dp(68) if root.lines == 2 else dp(48)
+        height: self.minimum_height #dp(68) if root.lines == 2 else dp(48)
         x: root.x
         y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
+
         MDLabel:
             id: boxlabel
             font_style: root.font_style
             #halign: "center"
+            size_hint_y: None
+            height: self.texture_size[1]
             text: root.text
             color: root.tile_text_color
 """)

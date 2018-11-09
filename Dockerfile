@@ -30,10 +30,14 @@ RUN apt install -qq --yes --no-install-recommends \
 
 # https://buildozer.readthedocs.io/en/latest/installation.html#android-on-ubuntu-18-04-64bit
 RUN dpkg --add-architecture i386 && apt update -qq > /dev/null && \
-	apt install -qq --yes --no-install-recommends \
-	build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 \
-	libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 \
-	python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 python3 python3-dev time
+        apt install -qq --yes --no-install-recommends \
+        build-essential ccache git libncurses5:i386 libstdc++6:i386 libgtk2.0-0:i386 \
+        libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 python2.7 \
+        python2.7-dev openjdk-8-jdk unzip zlib1g-dev zlib1g:i386 python3 python3-dev time \
+   &&  apt-get remove python3.6 python3.6-dev --yes \
+   &&  apt-get install software-properties-common --yes \
+   && add-apt-repository ppa:deadsnakes/ppa --yes \
+   && apt-get install python3.5-dev --yes
 
 # prepares non root env
 RUN useradd --create-home --shell /bin/bash ${USER}
@@ -50,11 +54,11 @@ WORKDIR ${WORK_DIR}
 USER ${USER}
 
 # Crystax-NDK
-ARG CRYSTAX_NDK_VERSION=10.3.1
-ARG CRYSTAX_HASH=ebf4f55562bee27301954aac25d8a7ab03514f4aa20867a174950bf77ad2ba06
+ARG CRYSTAX_NDK_VERSION=10.3.2
+ARG CRYSTAX_HASH=7305b59a3cee178a58eeee86fe78ad7bef7060c6d22cdb027e8d68157356c4c0
 
 # installs buildozer and dependencies
-RUN pip install --user Cython==0.25.2 buildozer
+RUN pip install --user Cython==0.25.2 buildozer==0.34
 # calling buildozer adb command should trigger SDK/NDK first install and update
 # but it requires a buildozer.spec file
 RUN cd /tmp/ && buildozer init && buildozer android adb -- version \

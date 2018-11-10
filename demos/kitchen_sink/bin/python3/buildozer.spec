@@ -24,7 +24,7 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy,git+https://github.com/homdx/KivyMD.git,python3crystax==3.6
+requirements = kivy,git+https://github.com/homdx/KivyMD.git,python3crystax==3.5
 
 # (str) Presplash of the application
 presplash.filename = %(source.dir)s/assets/presplash.png
@@ -52,7 +52,7 @@ osx.kivy_version = 1.9.1
 private = False
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
+android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.2
 
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 1

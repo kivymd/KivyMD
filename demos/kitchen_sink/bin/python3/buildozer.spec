@@ -24,7 +24,7 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy==1.10.1,android,git+https://github.com/HeaTTheatR/KivyMD.git,python3crystax
+requirements = kivy==1.10.1,android,git+https://github.com/HeaTTheatR/KivyMD.git,python3crystax==3.5
 
 # (str) Presplash of the application
 presplash.filename = %(source.dir)s/assets/presplash.png
@@ -52,20 +52,19 @@ osx.kivy_version = 1.9.1
 private = False
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.1
+android.ndk_path = /home/user/.buildozer/crystax-ndk-10.3.2
 
 # (bool) Indicate if the application should be fullscreen or not
 fullscreen = 1
 
 # (list) Permissions
 android.permissions = INTERNET
-android.arch = armeabi-v7a
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
-p4a.source_dir = /home/kivy/Repos/python-for-android/
+#p4a.source_dir = /home/kivy/Repos/python-for-android/
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
-android.arch = armeabi
+android.arch = armeabi-v7a
 
 
 [buildozer]

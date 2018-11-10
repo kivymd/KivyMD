@@ -85,10 +85,10 @@ RUN sudo chown user ${WORK_DIR}/app -Rv
 
 RUN echo '-----Python 3 ----' && cd app/demos/kitchen_sink/bin/python3/ \
     && cp -f buildozer.spec ../../ && cd .. && cd .. && time buildozer android debug || echo "Fix build apk" \
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python3/kitchen_sink-*-debug.apk ${WORK_DIR}/py3-kitchen_sink.apk
+    && cp -v ${WORK_DIR}/app/demos/kitchen_sink/bin/python3/kitchen_sink-*-debug.apk ${WORK_DIR}/py3-kitchen_sink.apk
 
 RUN echo '-----Python 2 -----' && cd app/demos/kitchen_sink/bin/python2/ && time buildozer android debug || echo "Fix build apk" \ 
-    && cp -v ${WORK_DIR}/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-*.apk ${WORK_DIR}/py2-kitchen_sink.apk && date
+    && cp -v ${WORK_DIR}/app/demos/kitchen_sink/bin/python2/KivyMDKitchenSink-*.apk ${WORK_DIR}/py2-kitchen_sink.apk && date
 
 CMD tail -f /var/log/faillog
 

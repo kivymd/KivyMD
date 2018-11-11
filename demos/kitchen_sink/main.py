@@ -2,11 +2,14 @@
 
 import os
 import sys
+
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
 from kivy import platform
+
 if platform in ('linux', 'macosx'):
     from kivy.config import Config
+
     Config.set('graphics', 'width', '400')
     Config.set('graphics', 'height', '600')
 
@@ -37,7 +40,6 @@ from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 from kivymd.useranimationcard import MDUserAnimationCard
-
 
 main_widget_kv = """
 #:import Clock kivy.clock.Clock
@@ -265,7 +267,7 @@ NavigationLayout:
                     Image:
                         source: '{}kivymd_logo.png'.format(images_path)
                         opacity: .3
-                    
+
                 MDLabel:
                     text: app.previous_text
                     size_hint_y: None
@@ -855,7 +857,7 @@ NavigationLayout:
                     pos_hint: {'center_x': .5, 'center_y': .6}
                     size_hint_y: None
                     height: self.texture_size[1] + dp(4)
-                    
+
                 MDUpdateSpinner:
                     event_update: lambda x: app.update_screen(self)
 
@@ -899,7 +901,7 @@ NavigationLayout:
 
             Screen:
                 name: 'user animation card'
-                
+
                 MDRaisedButton:
                     size_hint: None, None
                     size: 3 * dp(48), dp(48)
@@ -1409,7 +1411,7 @@ class KitchenSink(App):
 
         self.main_widget.ids.toolbar.right_action_items = \
             [['download',
-                lambda x: self.download_progress_show(instance_progress)]]
+              lambda x: self.download_progress_show(instance_progress)]]
 
     def download_progress_show(self, instance_progress):
         self.set_chevron_back_screen()

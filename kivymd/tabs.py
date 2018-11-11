@@ -26,12 +26,9 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string("""
 #:import sm kivy.uix.screenmanager
-
-
 <MDTabbedPanel>:
     id: panel
     orientation: 'vertical' if panel.tab_orientation in ['top','bottom'] else 'horizontal'
-
     ScrollView:
         id: scroll_view
         size_hint_y: None
@@ -39,32 +36,26 @@ Builder.load_string("""
         height: panel._tab_display_height[panel.tab_display_mode]
         do_scroll_x: True
         do_scroll_y: False
-
         MDTabBar:
             id: tab_bar
             size_hint_y: None
             height: panel._tab_display_height[panel.tab_display_mode]
             md_bg_color: panel.tab_color or panel.theme_cls.primary_color
-
             size_hint_x: None
             width: self.minimum_width
             rows: 1
             spacing: dp(10)
-
             canvas:
                 # Draw bottom border
                 Color:
                     rgba: (panel.tab_border_color or panel.tab_color or panel.theme_cls.primary_dark)
                 Rectangle:
                     size: (self.width,dp(2))
-
     ScreenManager:
         id: tab_manager
         current: root.current
         screens: root.tabs
         transition: sm.SlideTransition()
-
-
 <MDTabHeader>:
     canvas:
         Color:
@@ -72,7 +63,6 @@ Builder.load_string("""
         Rectangle:
             size: self.size
             pos: self.pos
-
         # Draw indicator
         Color:
             rgba: (self.panel.tab_indicator_color or self.panel.theme_cls.accent_color) if self.tab \
@@ -81,7 +71,6 @@ Builder.load_string("""
         Rectangle:
             size: (self.width,dp(2))
             pos: self.pos
-
     size_hint: (None,None) #(1, None)  if self.panel.tab_width_mode=='fixed' else (None,None)
     width: (_label.texture_size[0] + dp(16))
     padding: (dp(12), 0)
@@ -94,7 +83,6 @@ Builder.load_string("""
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
     on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
     on_touch_up: self.tab.dispatch('on_tab_touch_up',*args)
-
     MDLabel:
         id: _label
         text: root.tab.text if root.panel.tab_display_mode == 'text' else u"{}".format(md_icons[root.tab.icon])
@@ -107,24 +95,19 @@ Builder.load_string("""
         valign: 'middle'
         halign: 'center'
         opposite_colors: root.opposite_colors
-
-
 <MDBottomNavigation>:
     id: panel
     orientation: 'vertical'
     height: dp(56)  # Spec
-
     ScreenManager:
         id: tab_manager
         transition: sm.FadeTransition(duration=.2)
         current: root.current
         screens: root.tabs
-
     MDBottomNavigationBar:
         size_hint_y: None
         height: dp(56)  # Spec
         md_bg_color: root.theme_cls.bg_dark
-
         BoxLayout:
             pos_hint: {'center_x': .5, 'center_y': .5}
             id: tab_bar
@@ -132,8 +115,6 @@ Builder.load_string("""
             pos: self.pos
             size_hint_x: None
             size_hint: None, None
-
-
 <MDBottomNavigationHeader>:
     canvas:
         Color:
@@ -141,7 +122,6 @@ Builder.load_string("""
         Rectangle:
             size: self.size
             pos: self.pos
-
     width: root.panel.width / len(root.panel.ids.tab_manager.screens) if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
     padding: (dp(12), dp(12))
     on_press:
@@ -150,7 +130,6 @@ Builder.load_string("""
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
     on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
     on_touch_up: self.tab.dispatch('on_tab_touch_up',*args)
-
     FloatLayout:
         MDLabel:
             id: _label_icon
@@ -167,7 +146,6 @@ Builder.load_string("""
             pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
             pos_hint: {'center_x': .5, 'center_y': .7}
-
         MDLabel:
             id: _label
             text: root.tab.text
@@ -182,8 +160,6 @@ Builder.load_string("""
             opposite_colors: root.opposite_colors
             font_size: root._label_font_size
             pos_hint: {'center_x': .5, 'center_y': 0.6}
-
-
 <MDTab>
     canvas:
         Color:
@@ -545,22 +521,17 @@ if __name__ == '__main__':
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import Snackbar kivymd.snackbar.make
 #:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 BoxLayout:
     orientation:'vertical'
-
     Toolbar:
         id: toolbar
         title: 'Page title'
         md_bg_color: app.theme_cls.primary_color
         left_action_items: [['menu', lambda x: '']]
         right_action_items: [['magnify', lambda x: ''],['dots-vertical',lambda x:'']]
-
     MDTabbedPanel:
         id: tab_mgr
         tab_display_mode:'icons'
-
         MDTab:
             name: 'music'
             text: "Music"
@@ -570,7 +541,6 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "Here is my music list :)"
                 halign: 'center'
-
         MDTab:
             name: 'movies'
             text: 'Movies'
@@ -580,7 +550,6 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "Show movies here :)"
                 halign: 'center'
-
     MDBottomNavigation:
         MDBottomNavigationItem:
             name: 'movies'

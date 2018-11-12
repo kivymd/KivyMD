@@ -71,6 +71,20 @@ Builder.load_string('''
                 Rectangle:
                     size: self.size
                     pos: self.pos
+            
+            canvas.after:
+                Color:
+                    rgba: root.color_rectangle
+                Line:
+                    width: dp(root.width_rectangle)
+                    points:
+                        (
+                        self.x, self.y,
+                        self.right, self.y,
+                        self.right, self.top,
+                        self.x, self.top,
+                        self.x, self.y
+                        )
 ''')
 
 
@@ -123,10 +137,20 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     '''Color of the background of the menu
     '''
 
+    color_rectangle = ListProperty()
+    '''Color of the rectangle of the menu
+    '''
+
+    width_rectangle = NumericProperty(2)
+    '''Width of the rectangle of the menu
+    '''
+
     def __init__(self, **kwargs):
         super(MDDropdownMenu, self).__init__(**kwargs)
         if not len(self.background_color):
             self.background_color = self.theme_cls.primary_color
+        if not len(self.color_rectangle):
+            self.color_rectangle = self.theme_cls.divider_color
 
     def open(self, *args):
         Window.add_widget(self)

@@ -4,7 +4,7 @@ import os
 
 from kivy import Logger
 
-__version_info__ = (0, 1, 4)
+__version_info__ = (0, 1, 5)
 __version__ = '0.1.4'
 
 path = os.path.dirname(__file__)

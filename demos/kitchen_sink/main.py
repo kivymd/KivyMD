@@ -362,8 +362,7 @@ NavigationLayout:
                     width: dp(230)
 
                 MDRoundFlatButton:
-                    text: "MDRoundFlatButton"
-                    icon: "language-python"
+                    text: "MDROUNDFLATBUTTON"
                     pos_hint: {'center_x': 0.5, 'center_y': .35}
 
                 MDRoundFlatIconButton:

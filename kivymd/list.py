@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-'''
+
+"""
 Lists
 =====
 
@@ -29,7 +30,9 @@ Kv Lang:
                 secondary_text: "Secondary text here"
             ThreeLineListItem:
                 text: "Three-line item"
-                secondary_text: "This is a multi-line label where you can fit more text than usual"
+                secondary_text:
+                    "This is a multi-line label where you can " \
+                    "fit more text than usual"
 
 
 Python:
@@ -138,7 +141,7 @@ Python example:
 
 API
 ---
-'''
+"""
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -151,7 +154,7 @@ import kivymd.material_resources as m_res
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string("""
 #:import m_res kivymd.material_resources
 
 
@@ -166,7 +169,9 @@ Builder.load_string('''
     size_hint_y: None
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color if root.divider is not None else (0, 0, 0, 0)
+            rgba:
+                self.theme_cls.divider_color if root.divider is not None \
+                else (0, 0, 0, 0)
         Line:
             points: (root.x ,root.y, root.x+self.width, root.y)\
                     if root.divider == 'Full' else\
@@ -178,7 +183,9 @@ Builder.load_string('''
         id: _text_container
         orientation: 'vertical'
         pos: root.pos
-        padding: root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad
+        padding:
+            root._txt_left_pad, root._txt_top_pad, \
+            root._txt_right_pad, root._txt_bot_pad
 
         MDLabel:
             id: _lbl_primary
@@ -284,16 +291,16 @@ Builder.load_string('''
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
         y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
         size: dp(48), dp(48)
-''')
+""")
 
 
 class MDList(GridLayout):
-    '''ListItem container. Best used in conjunction with a
+    """ListItem container. Best used in conjunction with a
     :class:`kivy.uix.ScrollView`.
 
     When adding (or removing) a widget, it will resize itself to fit its
     children, plus top and bottom paddings as described by the MD spec.
-    '''
+    """
 
     selected = ObjectProperty()
     _min_list_height = dp(16)
@@ -312,18 +319,18 @@ class MDList(GridLayout):
 
 class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
                    ButtonBehavior, FloatLayout):
-    '''Base class to all ListItems. Not supposed to be instantiated on its own.
-    '''
+    """Base class to all ListItems. Not supposed to be instantiated on its own.
+    """
 
     text = StringProperty()
-    '''Text shown in the first line.
+    """Text shown in the first line.
 
     :attr:`text` is a :class:`~kivy.properties.StringProperty` and defaults
     to "".
-    '''
+    """
     
     text_color = ListProperty(None)
-    ''' Text color used if theme_text_color is set to 'Custom' '''
+    """ Text color used if theme_text_color is set to 'Custom' """
 
     font_style = OptionProperty(
         'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
@@ -331,10 +338,10 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
                             'Display4', 'Button', 'Icon'])
     
     theme_text_color = StringProperty('Primary', allownone=True)
-    ''' Theme text color for primary text '''
+    """ Theme text color for primary text """
 
     secondary_text = StringProperty()
-    '''Text shown in the second and potentially third line.
+    """Text shown in the second and potentially third line.
 
     The text will wrap into the third line if the ListItem's type is set to
     \'one-line\'. It can be forced into the third line by adding a \\n
@@ -342,21 +349,22 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
 
     :attr:`secondary_text` is a :class:`~kivy.properties.StringProperty` and
     defaults to "".
-    '''
+    """
     
     secondary_text_color = ListProperty(None)
-    ''' Text color used for secondary text if secondary_theme_text_color 
-    is set to 'Custom' '''
+    """ Text color used for secondary text if secondary_theme_text_color 
+    is set to 'Custom' """
     
-    secondary_theme_text_color = StringProperty('Secondary',allownone=True)
-    ''' Theme text color for secondary primary text '''
+    secondary_theme_text_color = StringProperty('Secondary', allownone=True)
+    """ Theme text color for secondary primary text """
     
     secondary_font_style = OptionProperty(
         'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
                           'Headline', 'Display1', 'Display2', 'Display3',
                           'Display4', 'Button', 'Icon'])
 
-    divider = OptionProperty('Full', options=['Full', 'Inset', None], allownone=True)
+    divider = OptionProperty('Full',
+                             options=['Full', 'Inset', None], allownone=True)
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()
@@ -366,41 +374,41 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
 
 
 class ILeftBody:
-    '''Pseudo-interface for widgets that go in the left container for
+    """Pseudo-interface for widgets that go in the left container for
     ListItems that support it.
 
     Implements nothing and requires no implementation, for annotation only.
-    '''
+    """
     pass
 
 
 class ILeftBodyTouch:
-    '''Same as :class:`~ILeftBody`, but allows the widget to receive touch
+    """Same as :class:`~ILeftBody`, but allows the widget to receive touch
     events instead of triggering the ListItem's ripple effect
-    '''
+    """
     pass
 
 
 class IRightBody:
-    '''Pseudo-interface for widgets that go in the right container for
+    """Pseudo-interface for widgets that go in the right container for
     ListItems that support it.
 
     Implements nothing and requires no implementation, for annotation only.
-    '''
+    """
     pass
 
 
 class IRightBodyTouch:
-    '''Same as :class:`~IRightBody`, but allows the widget to receive touch
+    """Same as :class:`~IRightBody`, but allows the widget to receive touch
     events instead of triggering the ListItem's ripple effect
-    '''
+    """
     pass
 
 
 class ContainerSupport:
-    '''Overrides add_widget in a ListItem to include support for I*Body
+    """Overrides add_widget in a ListItem to include support for I*Body
     widgets when the appropiate containers are present.
-    '''
+    """
 
     _touchable_widgets = ListProperty()
 
@@ -453,7 +461,7 @@ class ContainerSupport:
 
 
 class OneLineListItem(BaseListItem):
-    '''A one line list item'''
+    """A one line list item"""
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
@@ -465,7 +473,7 @@ class OneLineListItem(BaseListItem):
 
 
 class TwoLineListItem(BaseListItem):
-    '''A two line list item'''
+    """A two line list item"""
 
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
@@ -476,7 +484,7 @@ class TwoLineListItem(BaseListItem):
 
 
 class ThreeLineListItem(BaseListItem):
-    '''A three line list item'''
+    """A three line list item"""
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)

@@ -6,6 +6,7 @@ from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, \
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
+
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
@@ -45,7 +46,8 @@ Builder.load_string("""
         size_hint_y: None
         height: dp(68) if root.lines == 2 else dp(48)
         x: root.x
-        y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
+        y: root.y if root.box_position == 'footer' \
+            else root.y + root.height - self.height
 
 <SmartTileWithLabel>
     _img_widget: img
@@ -84,7 +86,8 @@ Builder.load_string("""
         size_hint_y: None
         height: self.minimum_height #dp(68) if root.lines == 2 else dp(48)
         x: root.x
-        y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
+        y: root.y if root.box_position == 'footer' \
+            else root.y + root.height - self.height
 
         MDLabel:
             id: boxlabel
@@ -99,8 +102,8 @@ Builder.load_string("""
 
 class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
            BoxLayout):
-    """A simple tile. It does nothing special, just inherits the right behaviors
-    to work as a building block.
+    """A simple tile. It does nothing special, just inherits the right
+    behaviors to work as a building block.
     """
     pass
 

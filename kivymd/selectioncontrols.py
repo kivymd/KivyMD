@@ -9,6 +9,7 @@ from kivy.properties import AliasProperty, BooleanProperty
 from kivy.metrics import dp, sp
 from kivy.animation import Animation
 from kivy.utils import get_color_from_hex
+
 from kivymd.color_definitions import colors
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
@@ -22,55 +23,65 @@ Builder.load_string('''
     canvas:
         Clear
         Color:
-            rgba:         self.color
+            rgba: self.color
         Rectangle:
-            texture:    self.texture
-            size:        self.texture_size
-            pos:        int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
+            texture: self.texture
+            size: self.texture_size
+            pos:
+                int(self.center_x - self.texture_size[0] / 2.), \
+                int(self.center_y - self.texture_size[1] / 2.)
 
-    text:             self._radio_icon if self.group else self._checkbox_icon
-    font_name:        'Icons'
-    font_size:        sp(24)
-    color:            self.theme_cls.primary_color if self.active else self.theme_cls.secondary_text_color
-    halign:            'center'
-    valign:            'middle'
+    text: self._radio_icon if self.group else self._checkbox_icon
+    font_name: 'Icons'
+    font_size: sp(24)
+    color:
+        self.theme_cls.primary_color if self.active \
+        else self.theme_cls.secondary_text_color
+    halign: 'center'
+    valign: 'middle'
+
 
 <Thumb>:
-    color:        1, 1, 1, 1
+    color: 1, 1, 1, 1
     canvas:
         Color:
-            rgba:        self.color
+            rgba: self.color
         Ellipse:
             size: self.size
-            pos:        self.pos
+            pos: self.pos
+
 
 <MDSwitch>:
     canvas.before:
         Color:
-            rgba: self._track_color_disabled if self.disabled else \
-            (self._track_color_active if self.active else self._track_color_normal)
+            rgba:
+                self._track_color_disabled if self.disabled else \
+                (self._track_color_active if self.active \
+                else self._track_color_normal)
         Ellipse:
-            size:             dp(16), dp(16)
-            pos:            self.x, self.center_y - dp(8)
-            angle_start:    180
-            angle_end:        360
+            size: dp(16), dp(16)
+            pos: self.x, self.center_y - dp(8)
+            angle_start: 180
+            angle_end: 360
         Rectangle:
-            size:            self.width - dp(16), dp(16)
-            pos:            self.x + dp(8), self.center_y - dp(8)
+            size: self.width - dp(16), dp(16)
+            pos: self.x + dp(8), self.center_y - dp(8)
         Ellipse:
-            size:            dp(16), dp(16)
-            pos:            self.right - dp(16), self.center_y - dp(8)
-            angle_start:    0
-            angle_end:        180
+            size: dp(16), dp(16)
+            pos: self.right - dp(16), self.center_y - dp(8)
+            angle_start: 0
+            angle_end: 180
+
     on_release: thumb.trigger_action()
 
     Thumb:
-        id:            thumb
-        size_hint:    None, None
-        size:        dp(24), dp(24)
-        pos:        root._thumb_pos
-        color:        root.thumb_color_disabled if root.disabled else \
-                    (root.thumb_color_down if root.active else root.thumb_color)
+        id: thumb
+        size_hint: None, None
+        size: dp(24), dp(24)
+        pos: root._thumb_pos
+        color:
+            root.thumb_color_disabled if root.disabled else \
+            (root.thumb_color_down if root.active else root.thumb_color)
         elevation:    4 if root.active else 2
         on_release: setattr(root, 'active', not root.active)
 ''')

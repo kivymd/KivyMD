@@ -150,7 +150,9 @@ Builder.load_string('''
     ScrollView:
         id: scroll
         size_hint_y: None
-        height: root.height - (box_buttons.height + title.height + dp(48) + sep.height)
+        height:
+            root.height - (box_buttons.height + title.height + dp(48) + \
+            sep.height)
         
         canvas:
             Rectangle:

@@ -5,7 +5,7 @@ import os
 from kivy import Logger
 
 __version_info__ = (0, 1, 6)
-__version__ = '0.1.4'
+__version__ = '0.1.6'
 
 path = os.path.dirname(__file__)
 fonts_path = os.path.join(path, "fonts/")

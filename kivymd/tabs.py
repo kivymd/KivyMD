@@ -18,17 +18,23 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
-from kivymd.backgroundcolorbehavior import (BackgroundColorBehavior,
-                                            SpecificBackgroundColorBehavior)
+
+from kivymd.backgroundcolorbehavior import BackgroundColorBehavior, \
+    SpecificBackgroundColorBehavior
 from kivymd.button import MDFlatButton, BaseFlatButton, BasePressedButton
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string("""
 #:import sm kivy.uix.screenmanager
+
+
 <MDTabbedPanel>:
     id: panel
-    orientation: 'vertical' if panel.tab_orientation in ['top','bottom'] else 'horizontal'
+    orientation:
+        'vertical' if panel.tab_orientation in ['top','bottom'] \
+        else 'horizontal'
+
     ScrollView:
         id: scroll_view
         size_hint_y: None
@@ -36,6 +42,7 @@ Builder.load_string("""
         height: panel._tab_display_height[panel.tab_display_mode]
         do_scroll_x: True
         do_scroll_y: False
+
         MDTabBar:
             id: tab_bar
             size_hint_y: None
@@ -45,17 +52,23 @@ Builder.load_string("""
             width: self.minimum_width
             rows: 1
             spacing: dp(10)
+
             canvas:
                 # Draw bottom border
                 Color:
-                    rgba: (panel.tab_border_color or panel.tab_color or panel.theme_cls.primary_dark)
+                    rgba: 
+                        (panel.tab_border_color or panel.tab_color or \
+                        panel.theme_cls.primary_dark)
                 Rectangle:
                     size: (self.width,dp(2))
+
     ScreenManager:
         id: tab_manager
         current: root.current
         screens: root.tabs
         transition: sm.SlideTransition()
+
+
 <MDTabHeader>:
     canvas:
         Color:
@@ -71,7 +84,10 @@ Builder.load_string("""
         Rectangle:
             size: (self.width,dp(2))
             pos: self.pos
-    size_hint: (None,None) #(1, None)  if self.panel.tab_width_mode=='fixed' else (None,None)
+
+    size_hint: (None,None)
+    #size_hint:
+    #    (1, None)  if self.panel.tab_width_mode=='fixed' else (None,None)
     width: (_label.texture_size[0] + dp(16))
     padding: (dp(12), 0)
     theme_text_color: 'Custom'
@@ -83,6 +99,7 @@ Builder.load_string("""
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
     on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
     on_touch_up: self.tab.dispatch('on_tab_touch_up',*args)
+
     MDLabel:
         id: _label
         text: root.tab.text if root.panel.tab_display_mode == 'text' else u"{}".format(md_icons[root.tab.icon])
@@ -95,19 +112,24 @@ Builder.load_string("""
         valign: 'middle'
         halign: 'center'
         opposite_colors: root.opposite_colors
+
+
 <MDBottomNavigation>:
     id: panel
     orientation: 'vertical'
     height: dp(56)  # Spec
+
     ScreenManager:
         id: tab_manager
         transition: sm.FadeTransition(duration=.2)
         current: root.current
         screens: root.tabs
+
     MDBottomNavigationBar:
         size_hint_y: None
         height: dp(56)  # Spec
         md_bg_color: root.theme_cls.bg_dark
+
         BoxLayout:
             pos_hint: {'center_x': .5, 'center_y': .5}
             id: tab_bar
@@ -115,6 +137,8 @@ Builder.load_string("""
             pos: self.pos
             size_hint_x: None
             size_hint: None, None
+
+
 <MDBottomNavigationHeader>:
     canvas:
         Color:
@@ -122,6 +146,7 @@ Builder.load_string("""
         Rectangle:
             size: self.size
             pos: self.pos
+
     width: root.panel.width / len(root.panel.ids.tab_manager.screens) if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
     padding: (dp(12), dp(12))
     on_press:
@@ -130,7 +155,9 @@ Builder.load_string("""
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
     on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
     on_touch_up: self.tab.dispatch('on_tab_touch_up',*args)
+
     FloatLayout:
+
         MDLabel:
             id: _label_icon
             text: u"{}".format(md_icons[root.tab.icon])
@@ -146,6 +173,7 @@ Builder.load_string("""
             pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
             pos_hint: {'center_x': .5, 'center_y': .7}
+
         MDLabel:
             id: _label
             text: root.tab.text
@@ -160,6 +188,8 @@ Builder.load_string("""
             opposite_colors: root.opposite_colors
             font_size: root._label_font_size
             pos_hint: {'center_x': .5, 'center_y': 0.6}
+
+
 <MDTab>
     canvas:
         Color:

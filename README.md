@@ -62,21 +62,9 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.1.6:
+What's new in version 0.2.1:
 ============================
-* Added dialog for text input and "Yes/No" dialog - [MDInputDialog, MDOkCancelDialog](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs)
-* MDTabbedPanel items become scrollable;
-* Added the ability to scroll through the list and set the list background in class MDDropdownMenu;
-* Added new ready-to-use [MDCardPost](https://github.com/HeaTTheatR/KivyMD/wiki/MDCardPost)
-* Add new class [MDFileManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDFileManager) for selecting directories and files
-* Add new class [MDProgressLoader](https://github.com/HeaTTheatR/KivyMD/wiki/MDProgressLoader) for downloads files from the server
-* Add new class [MDStackFloatingButtons](https://github.com/HeaTTheatR/KivyMD/wiki/MDStackFloatingButtons)
-* Add new classes [MDRectangleFlatIconButton, MDRectangleFlatButton, MDRoundFlatIconButton, MDRoundFlatButton and MDFillRoundFlatButton](https://github.com/HeaTTheatR/KivyMD/wiki/MDButtons)
-* Add new class [MDUpdateSpinner](https://github.com/HeaTTheatR/KivyMD/wiki/MDUpdateSpinner)
-* Add new class [MDUserAnimationCard](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard)
-* Add new classes [MDTextButton](https://github.com/HeaTTheatR/KivyMD/wiki/MDButtons)
-* Add new classes [MDTextFieldClear](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFields)
-* Dialog boxes are [adapted for Android and iOS](https://github.com/HeaTTheatR/KivyMD/wiki/MDDialogs) 
+* Add new class [MDAnimItem](https://github.com/HeaTTheatR/KivyMD/wiki/MDAnimItem) for generations animation accordion list
 
 Video previous
 ==============

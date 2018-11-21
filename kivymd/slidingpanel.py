@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.properties import OptionProperty, NumericProperty, StringProperty, \
-    BooleanProperty, ListProperty
+    ListProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.relativelayout import RelativeLayout
 
 Builder.load_string("""
 #: import Window kivy.core.window.Window
+
+
 <SlidingPanel>
     orientation: 'vertical'
     size_hint_x: None

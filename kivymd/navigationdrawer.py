@@ -114,11 +114,13 @@ Builder.load_string("""
     opposite_colors: False
     title_theme_color: 'Secondary'
     md_bg_color: root.theme_cls.bg_light
+
     canvas:
         Color:
             rgba: root.theme_cls.divider_color
         Line:
             points: self.x, self.y, self.x+self.width,self.y
+
 
 <NavigationLayout>
 
@@ -160,28 +162,43 @@ Builder.load_string("""
 
 
 <NavigationDrawerIconButton>:
-    theme_text_color: 'Primary' if not root._active else 'Custom' if root.use_active else 'Primary'
-    text_color: root.theme_cls.secondary_text_color if not root._active else root.active_color if \
-        root.active_color_type == "custom" else root._active_color if root.use_active else \
-        root.theme_cls.secondary_text_color
+    theme_text_color:
+        'Primary' if not root._active \
+        else 'Custom' if root.use_active else 'Primary'
+    text_color:
+        root.theme_cls.secondary_text_color \
+        if not root._active else root.active_color if \
+        root.active_color_type == "custom" else root._active_color \
+        if root.use_active else root.theme_cls.secondary_text_color
+
     NDIconLabel:
         id: _icon
         font_style: 'Icon'
-        theme_text_color: 'Secondary' if not root._active else 'Custom' if root.use_active else 'Custom'
-        text_color: root.theme_cls.secondary_text_color if not root._active else root.active_color if \
-            root.active_color_type == "custom" else root._active_color if root.use_active else \
+        theme_text_color:
+            'Secondary' if not root._active \
+            else 'Custom' if root.use_active else 'Custom'
+        text_color:
+            root.theme_cls.secondary_text_color if not root._active \
+            else root.active_color if root.active_color_type == "custom" \
+            else root._active_color if root.use_active else \
             root.theme_cls.secondary_text_color
+
     BoxLayout:
         id: _right_container
         size_hint: None, None
-        x: root.x + root.width - _badge.texture_size[0] - dp(25) #  - m_res.HORIZ_MARGINS
-        y: root.y + root.height/2 - self.height/2
+        x: root.x + root.width - _badge.texture_size[0] - dp(25)
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(70), root.height
+
     NDBadgeLabel:
         id: _badge
-        theme_text_color: 'Secondary' if not root._active else 'Custom' if root.use_active else 'Custom'
-        text_color: root.theme_cls.secondary_text_color if not root._active else root.active_color if \
-            root.active_color_type == "custom" else root._active_color if root.use_active else \
+        theme_text_color:
+            'Secondary' if not root._active else 'Custom' \
+            if root.use_active else 'Custom'
+        text_color:
+            root.theme_cls.secondary_text_color if not root._active \
+            else root.active_color if root.active_color_type == "custom" \
+            else root._active_color if root.use_active else \
             root.theme_cls.secondary_text_color
         text: root.badge_text
         halign: 'right'
@@ -192,7 +209,7 @@ Builder.load_string("""
         Color:
             rgba: self.theme_cls.divider_color
         Line:
-            points: root.x ,root.y+dp(8), root.x+self.width, root.y+dp(8)
+            points: root.x, root.y + dp(8), root.x + self.width, root.y + dp(8)
 """)
 
 
@@ -205,10 +222,10 @@ class NDBadgeLabel(IRightBody, MDLabel):
 
 
 class NavigationDrawerHeaderBase:
-    '''
+    """
     Tells the :class:`~MDNavigationDrawer` that this should be
     in the header area (above the :class:`~kivy.uix.scrollview.ScrollView`).
-    '''
+    """
 
     pass
 
@@ -219,7 +236,7 @@ class NavigationDrawerToolbar(Toolbar, NavigationDrawerHeaderBase):
 
 
 class NavigationDrawerIconButton(OneLineIconListItem):
-    '''An item in the :class:`MDNavigationDrawer`.'''
+    """An item in the :class:`MDNavigationDrawer`."""
 
     _active = BooleanProperty(False)
     _active_color = ListProperty()
@@ -227,16 +244,16 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     divider = None
 
     active_color = ListProperty()
-    '''Custom active color.
+    """Custom active color.
     This option only takes effect when :attr:`active_color_type` = 'custom'.
 
     :attr:`active_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to None.
-    '''
+    """
 
     active_color_type = OptionProperty('primary',
                                        options=['primary', 'accent', 'custom'])
-    '''Decides which color should be used for the active color.
+    """Decides which color should be used for the active color.
     This option only takes effect when :attr:`use_active` = True.
 
     Options:
@@ -248,25 +265,25 @@ class NavigationDrawerIconButton(OneLineIconListItem):
 
     :attr:`active_color_type` is a :class:`~kivy.properties.OptionProperty`
     and defaults to 'primary'.
-    '''
+    """
 
     icon = StringProperty('checkbox-blank-circle')
-    '''Icon that appears to the left of the widget.
+    """Icon that appears to the left of the widget.
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty` and defaults
     to 'checkbox-blank-circle'.
-    '''
+    """
     badge_text = StringProperty('')
-    '''
+    """
     Text that appears on the right side of the item, usually
     for displaying a count of sorts.
 
 
     :attr:`badge_text` is a :class:`~kivy.properties.StringProperty`
     and defaults to ''.
-    '''
+    """
     use_active = BooleanProperty(True)
-    '''If the button should change to the active color when selected.
+    """If the button should change to the active color when selected.
 
     :attr:`use_active` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to True.
@@ -275,7 +292,7 @@ class NavigationDrawerIconButton(OneLineIconListItem):
         :attr:`active_color`
 
         :attr:`active_color_type`
-    '''
+    """
 
     # active_color = get_color_from_hex(colors['Red']['500'])
     # active_color_type = 'custom'
@@ -318,11 +335,11 @@ class NavigationDrawerIconButton(OneLineIconListItem):
 
 
 class NavigationDrawerSubheader(OneLineListItem):
-    '''
+    """
     A subheader for separating content in :class:`MDNavigationDrawer`
 
     Works well alongside :class:`NavigationDrawerDivider`
-    '''
+    """
 
     disabled = True
     divider = None
@@ -330,10 +347,10 @@ class NavigationDrawerSubheader(OneLineListItem):
 
 
 class NavigationDrawerDivider(OneLineListItem):
-    '''
+    """
     A small full-width divider that can be placed
     in the :class:`MDNavigationDrawer`
-    '''
+    """
 
     disabled = True
     divider = None
@@ -360,14 +377,14 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
         super(MDNavigationDrawer, self).__init__(**kwargs)
 
     def add_widget(self, widget, index=0):
-        '''
+        """
         If the widget is a subclass of :class:`~NavigationDrawerHeaderBase`,
         then it will be placed above the
         :class:`~kivy.uix.scrollview.ScrollView`.
             Otherwise, it will be placed in the main
         :class:`~kivy.uix.scrollview.ScrollView`
             content area.
-        '''
+        """
 
         if issubclass(widget.__class__, BaseListItem):
             self._list.add_widget(widget, index)
@@ -381,7 +398,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
 
 
 class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
-    '''The container layout that manages the :class:`MDNavigationDrawer`.'''
+    """The container layout that manages the :class:`MDNavigationDrawer`."""
 
     opening_transition = StringProperty('out_sine')
     closing_transition = StringProperty('out_sine')
@@ -426,13 +443,13 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
             self.state = 'closed'
 
     def add_widget(self, widget, **kwargs):
-        '''
+        """
         First widget added must be the content for the side/sliding panel.
         The next widget must be the main content.
 
         This layout only accepts two widgets, any more than two widgets will
         raise a ValueError
-        '''
+        """
 
         # Internal default BoxLayouts
         if len(self.children) == 0:

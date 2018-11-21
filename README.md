@@ -64,7 +64,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 
 What's new in version 0.2.1:
 ============================
-* Add new class [MDAnimItem](https://github.com/HeaTTheatR/KivyMD/wiki/MDAnimItem) for generations animation accordion list
+* Add new class [MDAccordionListItem](https://github.com/HeaTTheatR/KivyMD/wiki/MDAccordionListItem) for generations animation accordion list
 
 Video previous
 ==============

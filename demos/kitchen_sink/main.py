@@ -5,18 +5,10 @@ import sys
 
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
-from kivy import platform
-
-if platform in ('linux', 'macosx'):
-    from kivy.config import Config
-
-    Config.set('graphics', 'width', '400')
-    Config.set('graphics', 'height', '600')
-
 from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.image import Image
@@ -40,11 +32,13 @@ from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 from kivymd.useranimationcard import MDUserAnimationCard
+from kivymd.accordionlistitem import MDAccordionListItem
 
 main_widget_kv = """
 #:import Clock kivy.clock.Clock
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import get_color_from_hex kivy.utils.get_color_from_hex
+
 #:import images_path kivymd.images_path
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
@@ -86,7 +80,7 @@ main_widget_kv = """
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
 
-<ContentForAnimCard@BoxLayout>:
+<ContentForAnimCard>:
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -100,18 +94,22 @@ main_widget_kv = """
         Widget:
         MDRoundFlatButton:
             text: "Free call"
+            on_press: root.callback(self.text)
         Widget:
         MDRoundFlatButton:
             text: "Free message"
+            on_press: root.callback(self.text)
         Widget:
 
     OneLineIconListItem:
         text: "Video call"
+        on_press: root.callback(self.text)
         IconLeftSampleWidget:
             icon: 'camera-front-variant'
 
     TwoLineIconListItem:
         text: "Call Viber Out"
+        on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Advantageous rates for calls[/color]" \
             % get_hex_from_color(app.theme_cls.primary_color)
@@ -122,6 +120,7 @@ main_widget_kv = """
 
     TwoLineIconListItem:
         text: "Call over mobile network"
+        on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]" \
             % get_hex_from_color(app.theme_cls.primary_color)
@@ -138,6 +137,10 @@ main_widget_kv = """
         icon: 'checkbox-blank-circle'
         text: "Accordion"
         on_release: app.root.ids.scr_mngr.current = 'accordion'
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
+        text: "Accordion List"
+        on_release: app.root.ids.scr_mngr.current = 'accordion list'
     NavigationDrawerIconButton:
         icon: 'checkbox-blank-circle'
         text: "Bottom Navigation"
@@ -704,6 +707,25 @@ NavigationLayout:
 
             ###################################################################
             #
+            #                        ACCORDION LIST
+            #
+            ###################################################################
+
+            Screen:
+                name: 'accordion list'
+                on_enter: app.set_accordion_list()
+                on_leave: anim_list.clear_widgets()
+
+                ScrollView:
+                
+                    GridLayout:
+                        id: anim_list
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+
+            ###################################################################
+            #
             #                         FILES MANAGER
             #
             #       See the help on using the file in the file filemanager.py
@@ -1080,6 +1102,7 @@ NavigationLayout:
                     md_bg_color: get_color_from_hex(colors['Teal']['500'])
                     background_palette: 'Teal'
                     background_hue: '500'
+
                 Toolbar:
                     title: "Toolbar with right buttons"
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
@@ -1087,10 +1110,12 @@ NavigationLayout:
                     background_palette: 'Amber'
                     background_hue: '700'
                     right_action_items: [['content-copy', lambda x: None]]
+    
                 Toolbar:
                     title: "Toolbar with left and right buttons"
                     pos_hint: {'center_x': 0.5, 'center_y': 0.25}
-                    md_bg_color: get_color_from_hex(colors['DeepPurple']['A400'])
+                    md_bg_color:
+                        get_color_from_hex(colors['DeepPurple']['A400'])
                     background_palette: 'DeepPurple'
                     background_hue: 'A400'
                     left_action_items: [['arrow-left', lambda x: None]]
@@ -1143,7 +1168,9 @@ NavigationLayout:
                         size_hint_x:None
                         width: '64dp'
                     MDCheckbox:
-                        on_state: tab_panel.tab_display_mode = 'icons' if tab_panel.tab_display_mode=='text' else 'text'
+                        on_state:
+                            tab_panel.tab_display_mode = 'icons' \
+                            if tab_panel.tab_display_mode=='text' else 'text'
 
             ###################################################################
             #
@@ -1191,6 +1218,7 @@ NavigationLayout:
 
                     MDLabel:
                         text: 'Content'
+                        halign: 'center'
                         theme_text_color: 'Primary'
 
             ###################################################################
@@ -1363,7 +1391,6 @@ class KitchenSink(App):
         self.bs_menu_2 = None
         self.tick = 0
         self.create_stack_floating_buttons = False
-        Window.bind(on_keyboard=self.events)
         self.previous_text = \
             "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
             "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
@@ -1378,6 +1405,12 @@ class KitchenSink(App):
             "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
             "[/b][u]".format(COLOR=get_hex_from_color(
                 self.theme_cls.primary_color))
+        self.names_contacts = (
+            'Alexandr Taylor', 'Yuri Ivanov', 'Robert Patric', 'Bob Marley',
+            'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
+            'Sasha Gray', 'Vladimir Ivanenko'
+        )
+        Window.bind(on_keyboard=self.events)
 
     def theme_picker_open(self):
         if not self.md_theme_picker:
@@ -1399,14 +1432,26 @@ class KitchenSink(App):
                 callback=set_my_language))
             self.create_stack_floating_buttons = True
 
+    def set_accordion_list(self):
+        def callback(text):
+            toast('{} to {}'.format(text, content.name_item))
+
+        content = ContentForAnimCard(callback=callback)
+
+        for name_contact in self.names_contacts:
+            self.main_widget.ids.anim_list.add_widget(
+                MDAccordionListItem(content=content,
+                                    icon='assets/kivymd_logo.png',
+                                    title=name_contact))
+
     def set_chevron_back_screen(self):
-        '''Sets the return chevron to the previous screen in ToolBar.'''
+        """Sets the return chevron to the previous screen in ToolBar."""
 
         self.main_widget.ids.toolbar.right_action_items = [
             ['dots-vertical', lambda x: self.root.toggle_nav_drawer()]]
 
     def download_progress_hide(self, instance_progress, value):
-        '''Hides progress progress.'''
+        """Hides progress progress."""
 
         self.main_widget.ids.toolbar.right_action_items = \
             [['download',
@@ -1582,7 +1627,7 @@ class KitchenSink(App):
                 path_to_avatar="./assets/guitar-1139397_1280.jpg",
                 callback=main_back_callback)
             self.user_animation_card.box_content.add_widget(
-                Factory.ContentForAnimCard())
+                ContentForAnimCard())
         self.user_animation_card.open()
 
     def show_example_snackbar(self, snack_type):
@@ -1621,11 +1666,11 @@ class KitchenSink(App):
     def show_example_long_dialog(self):
         if not self.long_dialog:
             self.long_dialog = MDDialog(
-                text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
-                     "sed do eiusmod tempor incididunt ut labore et dolore "
-                     "magna aliqua. Ut enim ad minim veniam, quis nostrud "
-                     "exercitation ullamco laboris nisi ut aliquip ex ea "
-                     "commodo consequat. Duis aute irure dolor in "
+                text="Lorem ipsum dolor sit amet, consectetur adipiscing "
+                     "elit, sed do eiusmod tempor incididunt ut labore et "
+                     "dolore magna aliqua. Ut enim ad minim veniam, quis "
+                     "nostrud exercitation ullamco laboris nisi ut aliquip "
+                     "ex ea commodo consequat. Duis aute irure dolor in "
                      "reprehenderit in voluptate velit esse cillum dolore eu "
                      "fugiat nulla pariatur. Excepteur sint occaecat "
                      "cupidatat non proident, sunt in culpa qui officia "
@@ -1722,6 +1767,10 @@ class KitchenSink(App):
 
     def open_settings(self, *args):
         return False
+
+
+class ContentForAnimCard(BoxLayout):
+    callback = ObjectProperty(lambda x: None)
 
 
 class AvatarSampleWidget(ILeftBody, Image):

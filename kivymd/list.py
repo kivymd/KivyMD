@@ -414,14 +414,14 @@ class ContainerSupport:
 
     def add_widget(self, widget, index=0):
         if issubclass(widget.__class__, ILeftBody):
-            self.ids['_left_container'].add_widget(widget)
+            self.ids._left_container.add_widget(widget)
         elif issubclass(widget.__class__, ILeftBodyTouch):
-            self.ids['_left_container'].add_widget(widget)
+            self.ids._left_container.add_widget(widget)
             self._touchable_widgets.append(widget)
         elif issubclass(widget.__class__, IRightBody):
-            self.ids['_right_container'].add_widget(widget)
+            self.ids._right_container.add_widget(widget)
         elif issubclass(widget.__class__, IRightBodyTouch):
-            self.ids['_right_container'].add_widget(widget)
+            self.ids._right_container.add_widget(widget)
             self._touchable_widgets.append(widget)
         else:
             return super(BaseListItem, self).add_widget(widget)

@@ -11,6 +11,7 @@ from kivy.properties import NumericProperty, ListProperty, OptionProperty, \
     StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
 

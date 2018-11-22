@@ -21,10 +21,11 @@ difference between the outer and the inner circle's radii. To make the
 widgets bigger you can just decrease inner_radius_hint.
 """
 
-from kivy.uix.layout import Layout
-from kivy.properties import NumericProperty, ReferenceListProperty, OptionProperty, \
-                            BoundedNumericProperty, VariableListProperty, AliasProperty
 from math import sin, cos, pi, radians
+
+from kivy.uix.layout import Layout
+from kivy.properties import NumericProperty, ReferenceListProperty, \
+    OptionProperty, BoundedNumericProperty, VariableListProperty, AliasProperty
 
 __all__ = ('CircularLayout')
 
@@ -39,12 +40,12 @@ except NameError:
 
 
 class CircularLayout(Layout):
-    '''
+    """
     Circular layout class. See module documentation for more information.
-    '''
+    """
 
     padding = VariableListProperty([0, 0, 0, 0])
-    '''Padding between the layout box and it's children: [padding_left,
+    """Padding between the layout box and it's children: [padding_left,
     padding_top, padding_right, padding_bottom].
 
     padding also accepts a two argument form [padding_horizontal,
@@ -55,62 +56,64 @@ class CircularLayout(Layout):
 
     :attr:`padding` is a :class:`~kivy.properties.VariableListProperty` and
     defaults to [0, 0, 0, 0].
-    '''
+    """
 
     start_angle = NumericProperty(0)
-    '''Angle (in degrees) at which the first widget will be placed.
+    """Angle (in degrees) at which the first widget will be placed.
     Start counting angles from the X axis, going counterclockwise.
 
     :attr:`start_angle` is a :class:`~kivy.properties.NumericProperty` and
     defaults to 0 (start from the right).
-    '''
+    """
 
     circle_quota = BoundedNumericProperty(360, min=0, max=360)
-    '''Size (in degrees) of the part of the circumference that will actually
+    """Size (in degrees) of the part of the circumference that will actually
     be used to place widgets.
 
     :attr:`circle_quota` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to 360 (all the circumference).
-    '''
+    """
 
     direction = OptionProperty("ccw", options=("cw", "ccw"))
-    '''Direction of widgets in the circle.
+    """Direction of widgets in the circle.
 
     :attr:`direction` is an :class:`~kivy.properties.OptionProperty` and
     defaults to 'ccw'. Can be 'ccw' (counterclockwise) or 'cw' (clockwise).
-    '''
+    """
 
     outer_radius_hint = NumericProperty(1)
-    '''Sets the size of the outer circle. A number greater than 1 will make the
+    """Sets the size of the outer circle. A number greater than 1 will make the
     widgets larger than the actual widget, a number smaller than 1 will leave
     a gap.
 
-    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty` and
-    defaults to 1.
-    '''
+    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty` 
+    and defaults to 1.
+    """
 
     inner_radius_hint = NumericProperty(.6)
-    '''Sets the size of the inner circle. A number greater than
+    """Sets the size of the inner circle. A number greater than
     :attr:`outer_radius_hint` will cause glitches. The closest it is to
     :attr:`outer_radius_hint`, the smallest will be the widget in the layout.
 
-    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty` and
-    defaults to 1.
-    '''
+    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty` 
+    and defaults to 1.
+    """
 
     radius_hint = ReferenceListProperty(inner_radius_hint, outer_radius_hint)
-    '''Combined :attr:`outer_radius_hint` and :attr:`inner_radius_hint` in a list
-    for convenience. See their documentation for more details.
+    """Combined :attr:`outer_radius_hint` and :attr:`inner_radius_hint` 
+    in a list for convenience. See their documentation for more details.
 
     :attr:`radius_hint` is a :class:`~kivy.properties.ReferenceListProperty`.
-    '''
+    """
 
     def _get_delta_radii(self):
-        radius = min(self.width-self.padding[0]-self.padding[2], self.height-self.padding[1]-self.padding[3]) / 2.
+        radius = min(self.width - self.padding[0] - self.padding[2],
+                     self.height - self.padding[1] - self.padding[3]) / 2.
         outer_r = radius * self.outer_radius_hint
         inner_r = radius * self.inner_radius_hint
         return outer_r - inner_r
-    delta_radii = AliasProperty(_get_delta_radii, None, bind=("radius_hint", "padding", "size"))
+    delta_radii = AliasProperty(_get_delta_radii, None,
+                                bind=("radius_hint", "padding", "size"))
 
     def __init__(self, **kwargs):
         super(CircularLayout, self).__init__(**kwargs)
@@ -151,7 +154,8 @@ class CircularLayout(Layout):
         for w in self.children:
             sha = w.size_hint_x
             if sha is None:
-                raise ValueError("size_hint_x cannot be None in a CircularLayout")
+                raise ValueError(
+                    "size_hint_x cannot be None in a CircularLayout")
             else:
                 stretch_weight_angle += sha
 
@@ -169,7 +173,8 @@ class CircularLayout(Layout):
             angle = angle_offset + (sign * angle_quota / 2)
             angle_offset += sign * angle_quota
 
-            # kived: looking it up, yes. x = cos(angle) * radius + centerx; y = sin(angle) * radius + centery
+            # kived: looking it up, yes. x = cos(angle) * radius + centerx;
+            # y = sin(angle) * radius + centery
             ccx = cos(angle) * middle_r + selfcx + padding_left - padding_right
             ccy = sin(angle) * middle_r + selfcy + padding_bottom - padding_top
 
@@ -180,13 +185,15 @@ class CircularLayout(Layout):
                 c.width = s
                 c.height = s
 
+
 if __name__ == "__main__":
     from kivy.app import App
     from kivy.uix.button import Button
 
     class CircLayoutApp(App):
         def build(self):
-            cly = CircularLayout(direction="cw", start_angle=-75, inner_radius_hint=.7, padding="20dp")
+            cly = CircularLayout(direction="cw", start_angle=-75,
+                                 inner_radius_hint=.7, padding="20dp")
 
             for i in xrange(1, 13):
                 cly.add_widget(Button(text=str(i), font_size="30dp"))

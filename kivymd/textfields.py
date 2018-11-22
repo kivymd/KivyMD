@@ -220,7 +220,68 @@ Builder.load_string('''
             pos_hint: {'right': 1, 'top': .1}
             custom_color: field.line_color_normal
             on_press: root.refresh_field(field, clear_btn)
+
+
+<MDTextFieldRect>:
+    on_focus:
+        root.anim_rect(\
+        root.canvas.children[3].children[2], \
+        root.canvas.children[3].children[0], \
+        [root.x, root.y, root.right, root.y, root.right, root.top, \
+        root.x, root.top, root.x, root.y], 1) if root.focus \
+        else root.anim_rect(\
+        root.canvas.children[3].children[2], \
+        root.canvas.children[3].children[0], \
+        [root.x - dp(60), root.y - dp(60), \
+        root.right + dp(60), root.y - dp(60),
+        root.right + dp(60), root.top + dp(60), \
+        root.x - dp(60), root.top + dp(60), \
+        root.x - dp(60), root.y - dp(60)], 0)
+
+    canvas.after:
+        Color:
+            rgba: root._primary_color
+        Line:
+            width: dp(1.5)
+            points:
+                (
+                self.x - dp(60), self.y - dp(60),
+                self.right + dp(60), self.y - dp(60),
+                self.right + dp(60), self.top + dp(60),
+                self.x - dp(60), self.top + dp(60),
+                self.x - dp(60), self.y - dp(60)
+                )
 ''')
+
+
+class MDTextFieldRect(ThemableBehavior, TextInput):
+    _primary_color = ListProperty([0, 0, 0, 0])
+
+    def __init__(self, **kwargs):
+        super(MDTextFieldRect, self).__init__(**kwargs)
+        self._update_primary_color()
+        self.theme_cls.bind(primary_color=self._update_primary_color)
+
+    def _update_colors(self, color):
+        self._primary_color = color
+        self._primary_color[3] = 0
+
+    def _update_accent_color(self, *args):
+        self._update_colors(self.theme_cls.accent_color)
+
+    def _update_primary_color(self, *args):
+        self._update_colors(self.theme_cls.primary_color)
+
+    def anim_rect(self, instance_line, instance_color, points, alpha):
+        if alpha == 1:
+            d_line = .3
+            d_color = .4
+        else:
+            d_line = .05
+            d_color = .05
+
+        Animation(points=points, d=d_line, t='out_cubic').start(instance_line)
+        Animation(a=alpha, d=d_color).start(instance_color)
 
 
 class MDTextFieldClear(BoxLayout):
@@ -319,8 +380,6 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                                         halign='left',
                                         valign='middle')
         super(MDTextField, self).__init__(**kwargs)
-        from kivy.uix.button import Button
-        self.add_widget(Button())
         self.line_color_normal = self.theme_cls.divider_color
         self.line_color_focus = self.theme_cls.primary_color
         self.error_color = self.theme_cls.error_color

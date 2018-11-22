@@ -139,13 +139,11 @@ class ExampleApp(App):
 __all__ = ('NavigationDrawer',)
 
 from kivy.animation import Animation
-from kivy.uix.widget import Widget
 from kivy.uix.stencilview import StencilView
 from kivy.metrics import dp
 from kivy.clock import Clock
 from kivy.properties import (ObjectProperty, NumericProperty, OptionProperty,
                              BooleanProperty, StringProperty)
-
 from kivy.lang import Builder
 
 Builder.load_string('''
@@ -154,63 +152,67 @@ Builder.load_string('''
     _side_panel: sidepanel
     _main_panel: mainpanel
     _join_image: joinimage
-    # side_panel_width: min(dp(250), 0.5 * self.width) if root.side_panel_positioning in ['left', 'right'] else \
-    #                     min(dp(250), 0.5 * self.height)
-    # side_panel_width: dp(250)
-    _anim_direction: -1 if root.side_panel_positioning in ['top', 'right'] else 1
-    _side_panel_offset_x: root.width - sidepanel.width if root.side_panel_positioning == 'right' else 0
-    _side_panel_offset_y: root.height - sidepanel.height if root.side_panel_positioning == 'top' else 0
+    _anim_direction:
+        -1 if root.side_panel_positioning in ['top', 'right'] else 1
+    _side_panel_offset_x:
+        root.width - sidepanel.width \
+        if root.side_panel_positioning == 'right' else 0
+    _side_panel_offset_y:
+        root.height - sidepanel.height \
+        if root.side_panel_positioning == 'top' else 0
 
     BoxLayout:
         id: sidepanel
-        y: root.y + root._side_panel_offset_y - root._anim_direction * (1-root._anim_progress)* \
-           root.side_panel_init_offset*root.side_panel_width if root.side_panel_positioning in ['bottom', 'top'] \
-           else root.y
+        y: root.y + root._side_panel_offset_y - root._anim_direction * (\
+           1-root._anim_progress) * root.side_panel_init_offset * \
+           root.side_panel_width if root.side_panel_positioning in \
+           ['bottom', 'top'] else root.y
+        x: root.x + root._side_panel_offset_x - root._anim_direction * (\
+           1-root._anim_progress) * root.side_panel_init_offset * \
+           root.side_panel_width  if root.side_panel_positioning in \
+           ['right', 'left'] else root.x
+        opacity: root.side_panel_opacity + \
+                 (1-root.side_panel_opacity)*root._anim_progress
+        height: root.height if root.side_panel_positioning in \
+                ['right', 'left'] else root.side_panel_width
+        width: root.side_panel_width if root.side_panel_positioning in \
+               ['right', 'left'] else root.width
+        opacity: root.side_panel_opacity + \
+                 (1-root.side_panel_opacity)*root._anim_progress
 
-        x: root.x + root._side_panel_offset_x - root._anim_direction * (1-root._anim_progress)* \
-           root.side_panel_init_offset*root.side_panel_width  if root.side_panel_positioning in ['right', 'left'] else \
-           root.x
-        opacity: root.side_panel_opacity + \
-                 (1-root.side_panel_opacity)*root._anim_progress
-        height: root.height if root.side_panel_positioning in ['right', 'left'] else root.side_panel_width
-        width: root.side_panel_width if root.side_panel_positioning in ['right', 'left'] else root.width
-        opacity: root.side_panel_opacity + \
-                 (1-root.side_panel_opacity)*root._anim_progress
         canvas:
             Color:
-                rgba: (0,0,0,1)
+                rgba: (0, 0, 0, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
         canvas.after:
             Color:
-                rgba: (0,0,0,(1-root._anim_progress)*root.side_panel_darkness)
+                rgba: (0, 0, 0, (1 - root._anim_progress) * \
+                      root.side_panel_darkness)
             Rectangle:
                 size: self.size
                 pos: self.pos
+
     BoxLayout:
         id: mainpanel
-        x: root.x + root._anim_direction *\
-        root._anim_progress * \
-        root.side_panel_width * \
-        root.main_panel_final_offset if root.side_panel_positioning in ['right', 'left'] else root.x
+        x: root.x + root._anim_direction * root._anim_progress * \
+           root.side_panel_width * root.main_panel_final_offset \
+           if root.side_panel_positioning in ['right', 'left'] \
+           else root.x
         y: root.y + root._anim_direction * root._anim_progress * \
-           root.side_panel_width *  root.main_panel_final_offset if root.side_panel_positioning in ['bottom', 'top'] \
+           root.side_panel_width * root.main_panel_final_offset \
+           if root.side_panel_positioning in ['bottom', 'top'] \
            else root.y
-
         size: root.size
-        # canvas:
-        #     Color:
-        #         rgba: (0,0,0,1)
-        #     Rectangle:
-        #         pos: self.pos
-        #         size: self.size
+
         canvas.after:
             Color:
-                rgba: (0,0,0,root._anim_progress*root.main_panel_darkness)
+                rgba: (0, 0, 0,root._anim_progress*root.main_panel_darkness)
             Rectangle:
                 size: self.size
                 pos: self.pos
+
     Image:
         id: joinimage
         opacity: min(sidepanel.opacity, 0 if root._anim_progress < 0.00001 \
@@ -220,7 +222,8 @@ Builder.load_string('''
         _w: root.width if root.side_panel_positioning == 'right' else 0
         _h: root.height if root.side_panel_positioning == 'top' else 0
         width: root.separator_image_width
-        height: root._side_panel.height if root.side_panel_positioning in ['left', 'right'] else root._side_panel.width
+        height: root._side_panel.height if root.side_panel_positioning in \
+                ['left', 'right'] else root._side_panel.width
         _left_x: (mainpanel.x - self.width + 1) if root._main_above \
             else (sidepanel.right - 1)
         _right_x: (mainpanel.right - self.width - 1 ) if root._main_above \
@@ -231,12 +234,15 @@ Builder.load_string('''
 
         _bottom_y: (mainpanel.y - self.width / 2.) if root._main_above \
             else (sidepanel.top + self.width / 2.)
-        x: self._left_x if root.side_panel_positioning == 'left' else self._right_x \
-                if root.side_panel_positioning in ['left', 'right'] else root.center_x - self.width / 2.
-        y: self._top_y if root.side_panel_positioning == 'top' else self._bottom_y \
-                if root.side_panel_positioning in ['bottom', 'top'] else root.y
+        x: self._left_x if root.side_panel_positioning == 'left' \
+           else self._right_x if root.side_panel_positioning in \
+           ['left', 'right'] else root.center_x - self.width / 2.
+        y: self._top_y if root.side_panel_positioning == 'top' \
+           else self._bottom_y if root.side_panel_positioning in \
+           ['bottom', 'top'] else root.y
         allow_stretch: True
         keep_ratio: False
+
         canvas.before:
             PushMatrix
             Rotate:
@@ -249,8 +255,9 @@ Builder.load_string('''
                 y: self.width if root.side_panel_positioning == 'right' else 0
             # Translate to compensate for the rotation
             Translate:
-                x: self.height / 2. if root.side_panel_positioning == 'top' else -self.height / 2. \
-                    if root.side_panel_positioning in ['bottom', 'top'] else 0
+                x: self.height / 2. if root.side_panel_positioning == 'top' \
+                else -self.height / 2. if root.side_panel_positioning in \
+                ['bottom', 'top'] else 0
 
         canvas:
             PopMatrix
@@ -298,7 +305,8 @@ class NavigationDrawer(StencilView):
     touch_accept_width = NumericProperty('14dp')
     '''Distance from the left of the NavigationDrawer in which to grab the
     touch and allow revealing of the hidden panel.'''
-    _touch = ObjectProperty(None, allownone=True)  # The currently _active touch
+    # The currently _active touch
+    _touch = ObjectProperty(None, allownone=True)
 
     # Animation properties
     state = OptionProperty('closed', options=('open', 'closed'))
@@ -384,7 +392,8 @@ class NavigationDrawer(StencilView):
         if spp in ['left', 'right', 'top', 'bottom']:
             self.side_panel_positioning = spp
         else:
-            raise AttributeError("Property side_panel_positioning accepts only 'left', 'right', 'top', 'bottom'")
+            raise AttributeError("Property side_panel_positioning accepts "
+                                 "only 'left', 'right', 'top', 'bottom'")
 
     def on_anim_type(self, *args):
         anim_type = self.anim_type
@@ -431,17 +440,6 @@ class NavigationDrawer(StencilView):
             self._main_above = False
 
     def on__main_above(self, *args):
-        # newval = self._main_above
-        # main_panel = self._main_panel
-        # side_panel = self._side_panel
-        # self.canvas.remove(main_panel.canvas)
-        # self.canvas.remove(side_panel.canvas)
-        # if newval:
-        #     self.canvas.insert(0, main_panel.canvas)
-        #     self.canvas.insert(0, side_panel.canvas)
-        # else:
-        #     self.canvas.insert(0, side_panel.canvas)
-        #     self.canvas.insert(0, main_panel.canvas)
         pass
 
     def on_main_panel(self, *args):
@@ -590,9 +588,11 @@ class NavigationDrawer(StencilView):
                 d = -1
         if self._anim_progress < 0.001:  # i.e. closed
             if pan_pos in ['top', 'right']:
-                valid_region = (edge >= pt >= (edge + d * self.touch_accept_width))
+                valid_region = \
+                    (edge >= pt >= (edge + d * self.touch_accept_width))
             else:
-                valid_region = (edge <= pt <= (edge + d * self.touch_accept_width))
+                valid_region = \
+                    (edge <= pt <= (edge + d * self.touch_accept_width))
             if not valid_region:
                 self._main_panel.on_touch_down(touch)
                 return False
@@ -601,9 +601,11 @@ class NavigationDrawer(StencilView):
                 self._side_panel.on_touch_down(touch)
                 return False
             if pan_pos in ['left', 'right']:
-                s = self._main_panel.x, self._main_panel.x + self._main_panel.width
+                s = self._main_panel.x, \
+                    self._main_panel.x + self._main_panel.width
             else:
-                s = self._main_panel.y, self._main_panel.y + self._main_panel.height
+                s = self._main_panel.y, \
+                    self._main_panel.y + self._main_panel.height
 
             valid_region = (s[0] <= pt <= s[1])
             if not valid_region:
@@ -631,7 +633,8 @@ class NavigationDrawer(StencilView):
     def on_touch_move(self, touch):
         if touch is self._touch:
             pan_pos = self.side_panel_positioning
-            di = touch.x - touch.ox if pan_pos in ['left', 'right'] else touch.y - touch.oy
+            di = touch.x - touch.ox if pan_pos in ['left', 'right'] \
+                else touch.y - touch.oy
             if pan_pos in ['right', 'top']:
                 di *= -1
             self._anim_progress = max(0, min(self._anim_init_progress +

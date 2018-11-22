@@ -23,6 +23,7 @@ zacharyspector@gmail.com
 """
 
 from time import time
+
 from kivy.animation import AnimationTransition
 from kivy.effects.kinetic import KineticEffect
 from kivy.properties import ObjectProperty, NumericProperty
@@ -31,59 +32,59 @@ from kivy.uix.widget import Widget
 
 class StiffScrollEffect(KineticEffect):
     drag_threshold = NumericProperty('20sp')
-    '''Minimum distance to travel before the movement is considered as a
-    drag.'''
+    """Minimum distance to travel before the movement is considered as a
+    drag."""
 
     min = NumericProperty(0)
-    '''Minimum boundary to stop the scrolling at.'''
+    """Minimum boundary to stop the scrolling at."""
 
     max = NumericProperty(0)
-    '''Maximum boundary to stop the scrolling at.'''
+    """Maximum boundary to stop the scrolling at."""
 
     max_friction = NumericProperty(1)
-    '''How hard should it be to scroll, at the worst?'''
+    """How hard should it be to scroll, at the worst?"""
 
     body = NumericProperty(0.7)
-    '''Proportion of the range in which you can scroll unimpeded.'''
+    """Proportion of the range in which you can scroll unimpeded."""
 
     scroll = NumericProperty(0.)
-    '''Computed value for scrolling'''
+    """Computed value for scrolling"""
 
     transition_min = ObjectProperty(AnimationTransition.in_cubic)
-    '''The AnimationTransition function to use when adjusting the friction
+    """The AnimationTransition function to use when adjusting the friction
     near the minimum end of the effect.
 
-    '''
+    """
 
     transition_max = ObjectProperty(AnimationTransition.in_cubic)
-    '''The AnimationTransition function to use when adjusting the friction
+    """The AnimationTransition function to use when adjusting the friction
     near the maximum end of the effect.
 
-    '''
+    """
 
     target_widget = ObjectProperty(None, allownone=True, baseclass=Widget)
-    '''The widget to apply the effect to.'''
+    """The widget to apply the effect to."""
 
     displacement = NumericProperty(0)
-    '''The absolute distance moved in either direction.'''
+    """The absolute distance moved in either direction."""
 
     scroll = NumericProperty(0.)
-    '''The distance to be used for scrolling.'''
+    """The distance to be used for scrolling."""
 
     def __init__(self, **kwargs):
-        '''Set ``self.base_friction`` to the value of ``self.friction`` just
+        """Set ``self.base_friction`` to the value of ``self.friction`` just
         after instantiation, so that I can reset to that value later.
 
-        '''
+        """
 
         super(StiffScrollEffect, self).__init__(**kwargs)
         self.base_friction = self.friction
 
     def update_velocity(self, dt):
-        '''Before actually updating my velocity, meddle with ``self.friction``
+        """Before actually updating my velocity, meddle with ``self.friction``
         to make it appropriate to where I'm at, currently.
 
-        '''
+        """
 
         hard_min = self.min
         hard_max = self.max
@@ -118,7 +119,7 @@ class StiffScrollEffect(KineticEffect):
         return super(StiffScrollEffect, self).update_velocity(dt)
 
     def on_value(self, *args):
-        '''Prevent moving beyond my bounds, and update ``self.scroll``'''
+        """Prevent moving beyond my bounds, and update ``self.scroll``"""
 
         if self.value < self.min:
             self.velocity = 0
@@ -130,7 +131,7 @@ class StiffScrollEffect(KineticEffect):
             self.scroll = self.value
 
     def start(self, val, t=None):
-        '''Start movement with ``self.friction`` = ``self.base_friction``'''
+        """Start movement with ``self.friction`` = ``self.base_friction``"""
 
         self.is_manual = True
         t = t or time()
@@ -139,10 +140,10 @@ class StiffScrollEffect(KineticEffect):
         self.history = [(t, val)]
 
     def update(self, val, t=None):
-        '''Reduce the impact of whatever change has been made to me, in
+        """Reduce the impact of whatever change has been made to me, in
         proportion with my current friction.
 
-        '''
+        """
 
         t = t or time()
         hard_min = self.min
@@ -170,7 +171,7 @@ class StiffScrollEffect(KineticEffect):
         self.trigger_velocity_update()
 
     def stop(self, val, t=None):
-        '''Work out whether I've been flung.'''
+        """Work out whether I've been flung."""
 
         self.is_manual = False
         self.displacement += abs(val - self.history[-1][1])

@@ -108,7 +108,6 @@ Builder.load_string('''
 
     MDLabel:
         font_style: 'Title'
-        theme_text_color: 'Primary'
         text: root.title
         halign: 'left' if not root.device_ios else 'center'
 
@@ -140,7 +139,6 @@ Builder.load_string('''
         id: title
         text: root.title
         font_style: 'Title'
-        theme_text_color: 'Primary'
         halign: 'left' if not root.device_ios else 'center'
         valign: 'top'
         size_hint_y: None
@@ -162,7 +160,6 @@ Builder.load_string('''
                 source: '{}transparent.png'.format(images_path)
 
         MDLabel:
-            theme_text_color: 'Primary'
             text: '\\n' + root.text + '\\n'
             size_hint_y: None
             height: self.texture_size[1]

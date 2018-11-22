@@ -56,6 +56,7 @@ main_widget_kv = """
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
 #:import MDTextField kivymd.textfields.MDTextField
+#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDCard kivymd.card.MDCard
@@ -1053,6 +1054,10 @@ NavigationLayout:
                         MDTextField:
                             hint_text: "disabled = True"
                             disabled: True
+                        MDTextFieldRect:
+                            size_hint: None, None
+                            size: app.Window.width - dp(40), dp(30)
+                            pos_hint: {'center_y': .5, 'center_x': .5}
                         MDTextFieldClear:
                             hint_text: "Text field with clearing type"
 

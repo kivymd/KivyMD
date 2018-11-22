@@ -84,6 +84,7 @@ Builder.load_string("""
 
         id: box
         size_hint_y: None
+        padding: dp(5), 0, 0, 0
         height: self.minimum_height #dp(68) if root.lines == 2 else dp(48)
         x: root.x
         y: root.y if root.box_position == 'footer' \

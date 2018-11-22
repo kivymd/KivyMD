@@ -44,22 +44,25 @@ in Kv language:
 ```
 """
 
+import sys
+import datetime
+from math import atan, pi, radians, sin, cos
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivymd.vendor.circleLayout import CircularLayout
 from kivy.graphics import Line, Color, Ellipse
 from kivy.lang import Builder
 from kivy.properties import NumericProperty, BoundedNumericProperty, \
-    ObjectProperty, StringProperty, DictProperty, \
-    ListProperty, OptionProperty, BooleanProperty, \
-    ReferenceListProperty, AliasProperty
+    ObjectProperty, StringProperty, DictProperty, ListProperty, \
+    OptionProperty, BooleanProperty, ReferenceListProperty, AliasProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.metrics import dp
+
 from kivymd.theming import ThemableBehavior
-from math import atan, pi, radians, sin, cos
-import sys
-import datetime
+
+
 if sys.version_info[0] > 2:
     def xrange(first=None, second=None, third=None):
         if third:
@@ -80,23 +83,25 @@ def rgb_to_hex(*color):
 
 
 Builder.load_string("""
-
 <Number>:
     text_size: self.size
     valign: "middle"
     halign: "center"
     font_size: self.height * self.size_factor
 
+
 <CircularNumberPicker>:
     canvas.before:
         PushMatrix
         Scale:
-            origin: self.center_x + self.padding[0] - self.padding[2], self.center_y + self.padding[3] - self.padding[1]
+            origin:
+                self.center_x + self.padding[0] - self.padding[2], \
+                self.center_y + self.padding[3] - self.padding[1]
             x: self.scale
             y: self.scale
-
     canvas.after:
         PopMatrix            
+
 
 <CircularTimePicker>:
     orientation: "vertical"
@@ -213,8 +218,9 @@ class CircularNumberPicker(CircularLayout):
     selector_alpha = BoundedNumericProperty(.3, min=0, max=1)
     """Alpha value for the transparent parts of the selector.
 
-    :attr:`selector_alpha` is a :class:`~kivy.properties.BoundedNumericProperty` and
-    defaults to 0.3 (min=0, max=1).
+    :attr:`selector_alpha`
+    is a :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to 0.3 (min=0, max=1).
     """
 
     selected = NumericProperty(None)
@@ -227,16 +233,17 @@ class CircularNumberPicker(CircularLayout):
     number_size_factor = NumericProperty(.5)
     """Font size scale factor fot the :class:`Number`s.
 
-    :attr:`number_size_factor` is a :class:`~kivy.properties.NumericProperty` and
-    defaults to 0.5.
+    :attr:`number_size_factor`
+    is a :class:`~kivy.properties.NumericProperty` and defaults to 0.5.
     """
 
     number_format_string = StringProperty("{}")
-    """String that will be formatted with the selected number as the first argument.
+    """String that will be formatted with the selected number as the
+    first argument.
     Can be anything supported by :meth:`str.format` (es. "{:02d}").
 
-    :attr:`number_format_string` is a :class:`~kivy.properties.StringProperty` and
-    defaults to "{}".
+    :attr:`number_format_string`
+    is a :class:`~kivy.properties.StringProperty` and defaults to "{}".
     """
 
     scale = NumericProperty(1)
@@ -282,7 +289,8 @@ class CircularNumberPicker(CircularLayout):
         cx = self.center_x + self.padding[0] - self.padding[2]
         cy = self.center_y + self.padding[3] - self.padding[1]
         sx, sy = self.pos_for_number(self.selected)
-        epos = [i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)]
+        epos = [
+            i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)]
         esize = [self.delta_radii * self.number_size_factor * 2] * 2
         dsize = [i * .3 for i in esize]
         dpos = [i + esize[0] / 2. - dsize[0] / 2. for i in epos]
@@ -294,18 +302,22 @@ class CircularNumberPicker(CircularLayout):
         with self.canvas:
             self._selection_color = Color(*(color + [self.selector_alpha]))
             self._selection_circle = Ellipse(pos=epos, size=esize)
-            self._selection_line = Line(points=[cx, cy, sx, sy], width=dp(1.25))
+            self._selection_line = \
+                Line(points=[cx, cy, sx, sy], width=dp(1.25))
             self._selection_dot_color = Color(*(color + [dot_alpha]))
             self._selection_dot = Ellipse(pos=dpos, size=dsize)
             self._center_color = Color(*self.color)
             self._center_dot = Ellipse(pos=cpos, size=csize)
 
-        self.bind(selector_color=lambda ign, u: setattr(self._selection_color, "rgba", u + [self.selector_alpha]))
-        self.bind(selector_color=lambda ign, u: setattr(self._selection_dot_color, "rgb", u))
+        self.bind(selector_color=lambda ign, u: setattr(
+            self._selection_color, "rgba", u + [self.selector_alpha]))
+        self.bind(selector_color=lambda ign, u: setattr(
+            self._selection_dot_color, "rgb", u))
         self.bind(selector_color=lambda ign, u: self.dot_is_none())
         self.bind(color=lambda ign, u: setattr(self._center_color, "rgb", u))
         Clock.schedule_once(self._genitems)
-        Clock.schedule_once(self.on_selected)  # Just to make sure pos/size are set
+        # Just to make sure pos/size are set
+        Clock.schedule_once(self.on_selected)
 
     def dot_is_none(self, *args):
         dot_alpha = 0 if self.selected % self.multiples_of == 0 else 1
@@ -317,7 +329,8 @@ class CircularNumberPicker(CircularLayout):
         for i in xrange(*self.range):
             if i % self.multiples_of != 0:
                 continue
-            n = Number(text=self.number_format_string.format(i), size_factor=self.number_size_factor, color=self.color)
+            n = Number(text=self.number_format_string.format(i),
+                       size_factor=self.number_size_factor, color=self.color)
             self.bind(color=n.setter("color"))
             self.add_widget(n)
 
@@ -345,7 +358,8 @@ class CircularNumberPicker(CircularLayout):
         cx = self.center_x + self.padding[0] - self.padding[2]
         cy = self.center_y + self.padding[3] - self.padding[1]
         sx, sy = self.pos_for_number(self.selected)
-        epos = [i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)]
+        epos = [
+            i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)]
         esize = [self.delta_radii * self.number_size_factor * 2] * 2
         dsize = [i * .3 for i in esize]
         dpos = [i + esize[0] / 2. - dsize[0] / 2. for i in epos]
@@ -392,7 +406,8 @@ class CircularNumberPicker(CircularLayout):
         else:
             angle -= mult_quota / 2
 
-        # kived: looking it up, yes. x = cos(angle) * radius + centerx; y = sin(angle) * radius + centery
+        # kived: looking it up, yes. x = cos(angle) * radius + centerx;
+        # y = sin(angle) * radius + centery
         x = cos(angle) * middle_r + cx
         y = sin(angle) * middle_r + cy
 
@@ -473,7 +488,8 @@ class CircularHourPicker(CircularNumberPicker):
         self.direction = "cw"
         self.bind(shown_items=self._update_start_angle)
         # self.bind(military=lambda v: setattr(self, "max", 25 if v else 13))
-        # self.bind(military=lambda v: setattr(self, "inner_radius_hint", .8 if self.military else .6))
+        # self.bind(military=lambda v: setattr(
+        #     self, "inner_radius_hint", .8 if self.military else .6))
         # Clock.schedule_once(self._genitems)
         Clock.schedule_once(self._update_start_angle)
         Clock.schedule_once(self.on_selected)
@@ -525,13 +541,15 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
     """
 
     ampm_format = StringProperty(
-        "[color={am_color}][ref=am]AM[/ref][/color]\n[color={pm_color}][ref=pm]PM[/ref][/color]")
+        "[color={am_color}][ref=am]AM[/ref][/color]\n"
+        "[color={pm_color}][ref=pm]PM[/ref][/color]")
     """String that will be formatted and shown in the AM/PM label.
     Can be anything supported by :meth:`str.format`. Make sure you don't
     remove the refs. See the default for the arguments passed to format.
 
     :attr:`ampm_format` is a :class:`~kivy.properties.StringProperty` and
-    defaults to "[color={am_color}][ref=am]AM[/ref][/color]\n[color={pm_color}][ref=pm]PM[/ref][/color]".
+    defaults to "[color={am_color}][ref=am]AM[/ref][/color]\n
+                 [color={pm_color}][ref=pm]PM[/ref][/color]".
     """
 
     picker = OptionProperty("hours", options=("minutes", "hours"))
@@ -559,7 +577,8 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
     selector_alpha = BoundedNumericProperty(.3, min=0, max=1)
     """Alpha value for the transparent parts of the selector.
 
-    :attr:`selector_alpha` is a :class:`~kivy.properties.BoundedNumericProperty` and
+    :attr:`selector_alpha`
+    is a :class:`~kivy.properties.BoundedNumericProperty` and
     defaults to 0.3 (min=0, max=1).
     """
 
@@ -595,9 +614,12 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
     _picker = AliasProperty(_get_picker, None)
 
     def _get_time_text(self):
-        hc = rgb_to_hex(0, 0, 0) if self.picker == "hours" else rgb_to_hex(*self.primary_dark)
-        mc = rgb_to_hex(0, 0, 0) if self.picker == "minutes" else rgb_to_hex(*self.primary_dark)
-        h = self.hours == 0 and 12 or self.hours <= 12 and self.hours or self.hours - 12
+        hc = rgb_to_hex(0, 0, 0) if self.picker == "hours" \
+            else rgb_to_hex(*self.primary_dark)
+        mc = rgb_to_hex(0, 0, 0) if self.picker == "minutes" \
+            else rgb_to_hex(*self.primary_dark)
+        h = self.hours == 0 and 12 or self.hours <= 12 and \
+            self.hours or self.hours - 12
         m = self.minutes
         primary_dark = rgb_to_hex(*self.primary_dark)
         return self.time_format.format(hours_color=hc,
@@ -605,23 +627,29 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
                                        hours=h,
                                        minutes=m,
                                        primary_dark=primary_dark)
-    time_text = AliasProperty(_get_time_text, None, bind=("hours", "minutes", "time_format", "picker"))
+    time_text = AliasProperty(
+        _get_time_text, None,
+        bind=("hours", "minutes", "time_format", "picker"))
 
     def _get_ampm_text(self, *args):
-        amc = rgb_to_hex(0, 0, 0) if self._am else rgb_to_hex(*self.primary_dark)
-        pmc = rgb_to_hex(0, 0, 0) if not self._am else rgb_to_hex(*self.primary_dark)
-        return self.ampm_format.format(am_color=amc,
-                                       pm_color=pmc)
+        amc = rgb_to_hex(0, 0, 0) if self._am \
+            else rgb_to_hex(*self.primary_dark)
+        pmc = rgb_to_hex(0, 0, 0) if not self._am \
+            else rgb_to_hex(*self.primary_dark)
+        return self.ampm_format.format(am_color=amc, pm_color=pmc)
 
-    ampm_text = AliasProperty(_get_ampm_text, None, bind=("hours", "ampm_format", "_am"))
+    ampm_text = AliasProperty(_get_ampm_text, None,
+                              bind=("hours", "ampm_format", "_am"))
 
     def __init__(self, **kw):
         super(CircularTimePicker, self).__init__(**kw)
-        self.selector_color = self.theme_cls.primary_color[0], self.theme_cls.primary_color[1], \
-            self.theme_cls.primary_color[2]
+        self.selector_color = self.theme_cls.primary_color[0], \
+                              self.theme_cls.primary_color[1], \
+                              self.theme_cls.primary_color[2]
         self.color = self.theme_cls.text_color
-        self.primary_dark = self.theme_cls.primary_dark[0] / 2, self.theme_cls.primary_dark[1] / 2, \
-            self.theme_cls.primary_dark[2] / 2
+        self.primary_dark = self.theme_cls.primary_dark[0] / 2,\
+                            self.theme_cls.primary_dark[1] / 2, \
+                            self.theme_cls.primary_dark[2] / 2
         self.on_ampm()
         if self.hours >= 12:
             self._am = False
@@ -657,7 +685,8 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
         if not self._picker:
             return
         if self.picker == "hours":
-            hours = self._picker.selected if self._am else self._picker.selected + 12
+            hours = self._picker.selected if self._am \
+                else self._picker.selected + 12
             if hours == 24 and not self._am:
                 hours = 12
             elif hours == 12 and self._am:
@@ -669,7 +698,8 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
     def on_time_list(self, *a):
         if not self._picker:
             return
-        self._h_picker.selected = self.hours == 0 and 12 or self._am and self.hours or self.hours - 12
+        self._h_picker.selected = self.hours == 0 and 12 or self._am and \
+                                  self.hours or self.hours - 12
         self._m_picker.selected = self.minutes
         self.on_selected()
 
@@ -750,15 +780,18 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
         else:
             self.is_animating()
             if prevpicker in container.children:
-                anim = Animation(scale=1.5, d=.5, t="in_back") & Animation(opacity=0, d=.5, t="in_cubic")
+                anim = Animation(scale=1.5, d=.5, t="in_back") & Animation(
+                    opacity=0, d=.5, t="in_cubic")
                 anim.start(prevpicker)
-                Clock.schedule_once(lambda *y: container.remove_widget(prevpicker), .5)  # .31)
+                Clock.schedule_once(lambda *y: container.remove_widget(
+                    prevpicker), .5)  # .31)
             picker.scale = 1.5
             picker.opacity = 0
             if picker.parent:
                 picker.parent.remove_widget(picker)
             container.add_widget(picker)
-            anim = Animation(scale=1, d=.5, t="out_back") & Animation(opacity=1, d=.5, t="out_cubic")
+            anim = Animation(scale=1, d=.5, t="out_back") & Animation(
+                opacity=1, d=.5, t="out_cubic")
             anim.bind(on_complete=self.is_not_animating)
             Clock.schedule_once(lambda *y: anim.start(picker), .3)
 

@@ -474,7 +474,8 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
 
 
 class BodyManagerWithPrevious(BoxLayout):
-    def get_source(self, app, type, instance_label, paths, index, instance_content):
+    def get_source(self, app, type, instance_label, paths, index,
+                   instance_content):
         if type == 'folder' and instance_label.text != '':
             source = '{}folder.png'.format(images_path)
         else:
@@ -488,29 +489,39 @@ class BodyManagerWithPrevious(BoxLayout):
             return source
 
 # FIXME: Add color for Black and White theme
-# FIXME: When you first create the application cache, it crashes after a while with error:
+# FIXME: When you first create the application cache,
+#        it crashes after a while with error:
 
 '''
  Traceback (most recent call last):
-   File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698, in <module>
+   File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698, 
+       in <module>
      KitchenSink().run()
    File "/usr/lib/python3/dist-packages/kivy/app.py", line 826, in run
      runTouchApp()
    File "/usr/lib/python3/dist-packages/kivy/base.py", line 502, in runTouchApp
      EventLoop.window.mainloop()
-   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 727, in mainloop
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", 
+       line 727, in mainloop
      self._mainloop()
-   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", line 460, in _mainloop
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", 
+       line 460, in _mainloop
      EventLoop.idle()
    File "/usr/lib/python3/dist-packages/kivy/base.py", line 337, in idle
      Clock.tick()
    File "/usr/lib/python3/dist-packages/kivy/clock.py", line 581, in tick
      self._process_events()
-   File "kivy/_clock.pyx", line 384, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7839)
-   File "kivy/_clock.pyx", line 414, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7597)
-   File "kivy/_clock.pyx", line 412, in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7519)
-   File "kivy/_clock.pyx", line 167, in kivy._clock.ClockEvent.tick (kivy/_clock.c:3248)
-   File "/usr/lib/python3/dist-packages/kivy/cache.py", line 212, in _purge_by_timeout
+
+   File "kivy/_clock.pyx", line 384,
+       in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7839)
+   File "kivy/_clock.pyx", line 414,
+       in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7597)
+   File "kivy/_clock.pyx", line 412,
+       in kivy._clock.CyClockBase._process_events (kivy/_clock.c:7519)
+   File "kivy/_clock.pyx", line 167,
+       in kivy._clock.ClockEvent.tick (kivy/_clock.c:3248)
+   File "/usr/lib/python3/dist-packages/kivy/cache.py",
+       line 212, in _purge_by_timeout
      lastaccess = Cache._objects[category][key]['lastaccess']
  KeyError: '/path/to/image'
 '''
@@ -547,8 +558,8 @@ class MDFileManager(ThemableBehavior, FloatLayout):
     def __init__(self, **kwargs):
         super(MDFileManager, self).__init__(**kwargs)
         self.history = []  # directory navigation history
-         # If False - do not add a directory to the history -
-         # The user moves down the tree.
+        # If False - do not add a directory to the history -
+        # The user moves down the tree.
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = 'Subhead'

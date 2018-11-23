@@ -119,15 +119,16 @@ Example().run()
 
 import sys
 
-from kivy.animation import Animation
-from kivy.clock import Clock
-from kivy.lang import Builder
-from kivy.metrics import dp
-from kivy.metrics import sp
-from kivy.properties import NumericProperty, StringProperty, BooleanProperty
-from kivy.properties import OptionProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.animation import Animation
+from kivy.graphics.context_instructions import Color
+from kivy.lang import Builder
+from kivy.clock import Clock
+from kivy.properties import NumericProperty, StringProperty, BooleanProperty, \
+    OptionProperty, ListProperty
+from kivy.metrics import dp
+from kivy.metrics import sp
 
 from kivymd.label import MDLabel
 from kivymd.theming import ThemableBehavior
@@ -224,15 +225,9 @@ Builder.load_string('''
 
 <MDTextFieldRect>:
     on_focus:
-        root.anim_rect(\
-        root.canvas.children[3].children[2], \
-        root.canvas.children[3].children[0], \
-        [root.x, root.y, root.right, root.y, root.right, root.top, \
-        root.x, root.top, root.x, root.y], 1) if root.focus \
-        else root.anim_rect(\
-        root.canvas.children[3].children[2], \
-        root.canvas.children[3].children[0], \
-        [root.x - dp(60), root.y - dp(60), \
+        root.anim_rect([root.x, root.y, root.right, root.y, root.right, \
+        root.top, root.x, root.top, root.x, root.y], 1) if root.focus \
+        else root.anim_rect([root.x - dp(60), root.y - dp(60), \
         root.right + dp(60), root.y - dp(60),
         root.right + dp(60), root.top + dp(60), \
         root.x - dp(60), root.top + dp(60), \
@@ -261,18 +256,20 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
         super(MDTextFieldRect, self).__init__(**kwargs)
         self._update_primary_color()
         self.theme_cls.bind(primary_color=self._update_primary_color)
-
-    def _update_colors(self, color):
-        self._primary_color = color
-        self._primary_color[3] = 0
-
-    def _update_accent_color(self, *args):
-        self._update_colors(self.theme_cls.accent_color)
+        self.root_color = Color()
 
     def _update_primary_color(self, *args):
-        self._update_colors(self.theme_cls.primary_color)
+        self._primary_color = self.theme_cls.primary_color
+        self._primary_color[3] = 0
 
-    def anim_rect(self, instance_line, instance_color, points, alpha):
+    def anim_rect(self, points, alpha):
+        root_canvas = self.canvas.children[3]
+        if isinstance(type(root_canvas), type(self.root_color)):
+            instance_line = self.canvas.children[-1].children[-1]
+            instance_color = self.canvas.children[-1].children[0]
+        else:
+            instance_line = root_canvas.children[2]
+            instance_color = root_canvas.children[0]
         if alpha == 1:
             d_line = .3
             d_color = .4
@@ -471,7 +468,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 if self.helper_text_mode == "on_error" and \
                         (self.error or self._text_len_error):
                     Animation(duration=.2,
-                              _current_error_color=self.error_color).\
+                              _current_error_color=self.error_color). \
                         start(self)
                 elif self.helper_text_mode == "on_error" and not self.error \
                         and not self._text_len_error:
@@ -479,27 +476,27 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                               _current_error_color=(0, 0, 0, 0)).start(self)
                 elif self.helper_text_mode == "persistent":
                     Animation(duration=.2,
-                              _current_error_color=disabled_hint_text_color).\
+                              _current_error_color=disabled_hint_text_color). \
                         start(self)
                 elif self.helper_text_mode == "on_focus":
                     Animation(duration=.2,
-                              _current_error_color=disabled_hint_text_color).\
+                              _current_error_color=disabled_hint_text_color). \
                         start(self)
             else:
                 Animation(duration=.2,
                           _current_hint_text_color=self.line_color_focus,
-                          _current_right_lbl_color=disabled_hint_text_color).\
+                          _current_right_lbl_color=disabled_hint_text_color). \
                     start(self)
                 if self.helper_text_mode == "on_error":
                     Animation(duration=.2,
                               _current_error_color=(0, 0, 0, 0)).start(self)
                 if self.helper_text_mode == "persistent":
                     Animation(duration=.2,
-                              _current_error_color=disabled_hint_text_color).\
+                              _current_error_color=disabled_hint_text_color). \
                         start(self)
                 elif self.helper_text_mode == "on_focus":
                     Animation(duration=.2,
-                              _current_error_color=disabled_hint_text_color).\
+                              _current_error_color=disabled_hint_text_color). \
                         start(self)
         else:
             if len(self.text) == 0:
@@ -509,12 +506,12 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             if has_error:
                 Animation(duration=.2, _current_line_color=self.error_color,
                           _current_hint_text_color=self.error_color,
-                          _current_right_lbl_color=self.error_color).\
+                          _current_right_lbl_color=self.error_color). \
                     start(self)
                 if self.helper_text_mode == "on_error" and \
                         (self.error or self._text_len_error):
                     Animation(duration=.2,
-                              _current_error_color=self.error_color).\
+                              _current_error_color=self.error_color). \
                         start(self)
                 elif self.helper_text_mode == "on_error" and \
                         not self.error and not self._text_len_error:
@@ -522,7 +519,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                               _current_error_color=(0, 0, 0, 0)).start(self)
                 elif self.helper_text_mode == "persistent":
                     Animation(duration=.2,
-                              _current_error_color=disabled_hint_text_color).\
+                              _current_error_color=disabled_hint_text_color). \
                         start(self)
                 elif self.helper_text_mode == "on_focus":
                     Animation(duration=.2,
@@ -537,7 +534,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                               _current_error_color=(0, 0, 0, 0)).start(self)
                 elif self.helper_text_mode == "persistent":
                     Animation(duration=.2,
-                              _current_error_color=disabled_hint_text_color).\
+                              _current_error_color=disabled_hint_text_color). \
                         start(self)
                 elif self.helper_text_mode == "on_focus":
                     Animation(duration=.2,
@@ -566,7 +563,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 if self.helper_text_mode == "on_error" and \
                         (self.error or self._text_len_error):
                     Animation(duration=.2,
-                              _current_error_color=self.error_color).\
+                              _current_error_color=self.error_color). \
                         start(self)
                 if self._text_len_error:
                     Animation(
@@ -577,11 +574,11 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 disabled_hint_text_color = \
                     self.theme_cls.disabled_hint_text_color
                 Animation(duration=.2,
-                          _current_right_lbl_color=disabled_hint_text_color).\
+                          _current_right_lbl_color=disabled_hint_text_color). \
                     start(self)
                 Animation(duration=.2,
                           _current_hint_text_color=self.line_color_focus,
-                          _current_line_color=self.line_color_focus).\
+                          _current_line_color=self.line_color_focus). \
                     start(self)
                 if self.helper_text_mode == "on_error":
                     Animation(duration=.2,
@@ -612,7 +609,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         if self.helper_text_mode == "persistent":
             disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
             Animation(duration=.1,
-                      _current_error_color=disabled_hint_text_color).\
+                      _current_error_color=disabled_hint_text_color). \
                 start(self)
 
     def _set_max_text_length(self, instance, length):

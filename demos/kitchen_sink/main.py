@@ -1406,7 +1406,7 @@ class KitchenSink(App):
             "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
             "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
             "[/b][/u]\n\n" \
-            "Author this Fork- [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
+            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
             "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
             "[/b][u]".format(COLOR=get_hex_from_color(
                 self.theme_cls.primary_color))

@@ -62,7 +62,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.3.0:
+What's new in version 0.3.2:
 ============================
 * Add new class [MDTextFieldRect](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFieldRect) with animated rectangle MacOS style
 

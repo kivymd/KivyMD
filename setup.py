@@ -32,5 +32,5 @@ setup(name='kivymd',
                      'toast/*.py', 'toast/kivytoast/*.py',
                      'toast/androidtoast/*.py', 'stiffscroll/*.py',
                      'utils/*.py']},
-      requires=['kivy']
+      requires=['kivy', 'pillow']
 )

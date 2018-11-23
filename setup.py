@@ -30,6 +30,7 @@ setup(name='kivymd',
                      'vendor/circularTimePicker/*.py',
                      'vendor/navigationdrawer/*.py',
                      'toast/*.py', 'toast/kivytoast/*.py',
-                     'toast/androidtoast/*.py', 'stiffscroll/*.py']},
+                     'toast/androidtoast/*.py', 'stiffscroll/*.py',
+                     'utils/*.py']},
       requires=['kivy']
 )

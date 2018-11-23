@@ -24,6 +24,7 @@ Builder.load_string("""
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
+#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 
 
 <ExampleTextFields@BoxLayout>:
@@ -98,6 +99,11 @@ Builder.load_string("""
             MDTextField:
                 hint_text: "disabled = True"
                 disabled: True
+
+            MDTextFieldRect:
+                size_hint: None, None
+                size: root.width - dp(40), dp(30)
+                pos_hint: {'center_x': .5}
 
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"

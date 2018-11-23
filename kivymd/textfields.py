@@ -264,7 +264,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
 
     def anim_rect(self, points, alpha):
         root_canvas = self.canvas.children[3]
-        if isinstance(type(root_canvas), type(self.root_color)):
+        if type(root_canvas) is type(self.root_color):
             instance_line = self.canvas.children[-1].children[-1]
             instance_color = self.canvas.children[-1].children[0]
         else:

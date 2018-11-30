@@ -284,6 +284,8 @@ class NavigationDrawer(StencilView):
     _main_panel = ObjectProperty()
     _join_image = ObjectProperty()
 
+    _panel_disable = BooleanProperty(False)
+
     side_panel = ObjectProperty(None, allownone=True)
     '''Automatically bound to whatever widget is added as the hidden panel.'''
     main_panel = ObjectProperty(None, allownone=True)
@@ -631,6 +633,8 @@ class NavigationDrawer(StencilView):
         return True
 
     def on_touch_move(self, touch):
+        if self._panel_disable:
+            return
         if touch is self._touch:
             pan_pos = self.side_panel_positioning
             di = touch.x - touch.ox if pan_pos in ['left', 'right'] \

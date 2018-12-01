@@ -545,23 +545,25 @@ if __name__ == '__main__':
         def build(self):
             from kivy.core.window import Window
             Window.size = (540, 720)
-            # self.theme_cls.theme_style = 'Dark'
 
             return Builder.load_string("""
 #:import Toolbar kivymd.toolbar.Toolbar
-#:import Snackbar kivymd.snackbar.make
 #:import MDRaisedButton kivymd.button.MDRaisedButton
+
+
 BoxLayout:
     orientation:'vertical'
+
     Toolbar:
         id: toolbar
         title: 'Page title'
         md_bg_color: app.theme_cls.primary_color
         left_action_items: [['menu', lambda x: '']]
-        right_action_items: [['magnify', lambda x: ''],['dots-vertical',lambda x:'']]
+
     MDTabbedPanel:
         id: tab_mgr
         tab_display_mode:'icons'
+
         MDTab:
             name: 'music'
             text: "Music"
@@ -571,6 +573,7 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "Here is my music list :)"
                 halign: 'center'
+
         MDTab:
             name: 'movies'
             text: 'Movies'
@@ -580,7 +583,9 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "Show movies here :)"
                 halign: 'center'
+
     MDBottomNavigation:
+
         MDBottomNavigationItem:
             name: 'movies'
             text: 'Movies'
@@ -590,6 +595,7 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "Show movies here :)"
                 halign: 'center'
+
         MDBottomNavigationItem:
             name: 'files1'
             text: "Files"
@@ -599,6 +605,7 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "all of the files"
                 halign: 'center'
+
         MDBottomNavigationItem:
             name: 'files2'
             text: "Files"
@@ -608,6 +615,7 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "all of the files"
                 halign: 'center'
+
         MDBottomNavigationItem:
             name: 'files3'
             text: "Files"

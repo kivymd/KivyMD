@@ -1,4 +1,4 @@
-KivyMD1111111
+KivyMD
 ======
 
 <img align="left" height="256" src="https://raw.githubusercontent.com/kivymd/KivyMD/master/assets/kivymd_logo.png"/>

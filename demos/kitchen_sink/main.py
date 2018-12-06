@@ -27,12 +27,16 @@ from kivymd.theme_picker import MDThemePicker
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
 from kivymd.card import MDCardPost
-from kivymd.toast import toast
 from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 from kivymd.useranimationcard import MDUserAnimationCard
 from kivymd.accordionlistitem import MDAccordionListItem
+# FIXME: crush with Python3.
+try:
+    from kivymd.toast import toast
+except TypeError:
+    from kivymd.toast.kivytoast import toast
 
 main_widget_kv = """
 #:import Clock kivy.clock.Clock

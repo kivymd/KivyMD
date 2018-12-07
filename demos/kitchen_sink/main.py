@@ -10,11 +10,12 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
 
+from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
@@ -83,6 +84,28 @@ main_widget_kv = """
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
+#:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
+
+
+<BaseFanScreen>:
+    orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Image:
+        source: root.path_to_image
+        size_hint: 1, None
+        height: Window.height * 40 // 100
+        y: Window.height - self.height
+        allow_stretch: True
+        keep_ratio: False
+
+    ContentForAnimCard:
 
 
 <ContentForAnimCard>:
@@ -133,113 +156,94 @@ main_widget_kv = """
             icon: 'remote'
 
 
+<MyNavigationDrawerIconButton@NavigationDrawerIconButton>:
+    icon: 'checkbox-blank-circle'
+
+
 <ContentNavigationDrawer@MDNavigationDrawer>:
     drawer_logo: './assets/drawer_logo.png'
 
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Accordion"
         on_release: app.root.ids.scr_mngr.current = 'accordion'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Accordion List"
         on_release: app.root.ids.scr_mngr.current = 'accordion list'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Bottom Navigation"
         on_release: app.root.ids.scr_mngr.current = 'bottom_navigation'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Bottom Sheets"
         on_release: app.root.ids.scr_mngr.current = 'bottomsheet'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Buttons"
         on_release: app.root.ids.scr_mngr.current = 'button'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Cards"
         on_release: app.root.ids.scr_mngr.current = 'card'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Dialogs"
         on_release: app.root.ids.scr_mngr.current = 'dialog'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Download File"
         on_release: app.root.ids.scr_mngr.current = 'download file'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Files Manager"
         on_release: app.root.ids.scr_mngr.current = 'files manager'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
+        text: "Fan Manager"
+        on_release: app.root.ids.scr_mngr.current = 'fan manager'
+    MyNavigationDrawerIconButton:
         text: "Grid lists"
         on_release: app.root.ids.scr_mngr.current = 'grid'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Labels"
         on_release: app.root.ids.scr_mngr.current = 'labels'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Lists"
         on_release: app.root.ids.scr_mngr.current = 'list'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Menus"
         on_release: app.root.ids.scr_mngr.current = 'menu'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Pickers"
         on_release: app.root.ids.scr_mngr.current = 'pickers'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Progress & activity"
         on_release: app.root.ids.scr_mngr.current = 'progress'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Progress bars"
         on_release: app.root.ids.scr_mngr.current = 'progressbars'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Selection controls"
         on_release: app.root.ids.scr_mngr.current = 'selectioncontrols'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Sliders"
         on_release: app.root.ids.scr_mngr.current = 'slider'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Stack Floating Buttons"
         on_release: app.root.ids.scr_mngr.current = 'stack buttons'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Snackbars"
         on_release: app.root.ids.scr_mngr.current = 'snackbar'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Tabs"
         on_release: app.root.ids.scr_mngr.current = 'tabs'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Text fields"
         on_release: app.root.ids.scr_mngr.current = 'textfields'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Themes"
         on_release: app.root.ids.scr_mngr.current = 'theming'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Toolbars"
         on_release: app.root.ids.scr_mngr.current = 'toolbar'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "Update Screen Widget"
         on_release: app.root.ids.scr_mngr.current = 'update spinner'
-    NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+    MyNavigationDrawerIconButton:
         text: "User Animation Card"
         on_release: app.root.ids.scr_mngr.current = 'user animation card'
 
@@ -828,6 +832,49 @@ NavigationLayout:
                     size: dp(46), dp(46)
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                     active: True if chkbox.active else False
+
+            ###################################################################
+            #
+            #                           FAN MANAGER
+            #
+            ###################################################################
+
+            Screen:
+                name: 'fan manager'
+                on_enter:
+                    toolbar.left_action_items = \
+                    [['menu', lambda x: fan_screen_manager.open_fan()]]
+                on_leave: app.set_chevron_menu()
+
+                MDFanScreenManager:
+                    id: fan_screen_manager
+    
+                    canvas:
+                        Color:
+                            rgba: 0, 0, 0, .2
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+
+                    ScreenOne:
+                        name: 'Screen One'
+                        path_to_image: 'assets/african-lion-951778_1280.jpg'
+                        on_enter: toolbar.title = self.name
+
+                    ScreenTwo:
+                        name: 'Screen Two'
+                        path_to_image: 'assets/beautiful-931152_1280.jpg'
+                        on_enter: toolbar.title = self.name
+
+                    ScreenTree:
+                        name: 'Screen Two'
+                        path_to_image: 'assets/kitten-1049129_1280.jpg'
+                        on_enter: toolbar.title = self.name
+
+                    ScreenFour:
+                        name: 'Screen Two'
+                        path_to_image: 'assets/tangerines-1111529_1280.jpg'
+                        on_enter: toolbar.title = self.name
 
             ###################################################################
             #
@@ -1780,6 +1827,26 @@ class KitchenSink(App):
 
 class ContentForAnimCard(BoxLayout):
     callback = ObjectProperty(lambda x: None)
+
+
+class BaseFanScreen(MDFanScreen):
+    path_to_image = StringProperty()
+
+
+class ScreenOne(BaseFanScreen):
+    pass
+
+
+class ScreenTwo(BaseFanScreen):
+    pass
+
+
+class ScreenTree(BaseFanScreen):
+    pass
+
+
+class ScreenFour(BaseFanScreen):
+    pass
 
 
 class AvatarSampleWidget(ILeftBody, Image):

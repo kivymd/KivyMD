@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 fansceernmanager.py
 
@@ -11,6 +13,9 @@ as the Kivy framework.
 
 Attention! This is an experimental widget.
 Perhaps the wrong positioning of the screens with a large number of them.
+
+Thanks for reply - https://groups.google.com/forum/#!topic/kivy-users/ReAVg8eDrDo
+
 
 EXAMPLE:
 
@@ -81,7 +86,7 @@ Builder.load_string("""
 
 ###############################################################################
 #
-#                         SCREENS WIDGETS
+#                              SCREEN WIDGETS
 #
 ###############################################################################
 

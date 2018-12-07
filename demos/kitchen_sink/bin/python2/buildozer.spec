@@ -27,7 +27,7 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy==1.10.1,android,git+https://github.com/HeaTTheatR/KivyMD.git
+requirements = kivy==1.10.1,pil,android,git+https://github.com/HeaTTheatR/KivyMD.git
 
 # (str) Presplash of the application
 presplash.filename = %(source.dir)s/assets/presplash.png
@@ -44,10 +44,17 @@ fullscreen = 1
 # (list) Permissions
 android.permissions = INTERNET
 
-# (bool) If True, then skip trying to update the Android sdk
-# This can be useful to avoid excess Internet downloads or save time
-# when an update is due and you just want to test/build your package
-android.skip_update = True
+# (int) Android API to use
+android.api = 19
+
+# (int) Minimum API required
+android.minapi = 19
+
+# (int) Android SDK version to use
+android.sdk = 23
+
+# (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
+p4a.branch = master
 
 
 [buildozer]

@@ -867,12 +867,12 @@ NavigationLayout:
                         on_enter: toolbar.title = self.name
 
                     ScreenTree:
-                        name: 'Screen Two'
+                        name: 'Screen Tree'
                         path_to_image: 'assets/kitten-1049129_1280.jpg'
                         on_enter: toolbar.title = self.name
 
                     ScreenFour:
-                        name: 'Screen Two'
+                        name: 'Screen Four'
                         path_to_image: 'assets/tangerines-1111529_1280.jpg'
                         on_enter: toolbar.title = self.name
 

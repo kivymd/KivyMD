@@ -62,7 +62,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.4.1:
+What's new in version 0.4.2:
 ============================
 * Add new class [MDFanScreenManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDFanScreenManager) animated screen manager
 

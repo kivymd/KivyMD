@@ -3,6 +3,9 @@
 import os
 import sys
 
+from kivy.metrics import dp
+from kivy.uix.widget import Widget
+
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
 from kivy.app import App
@@ -16,6 +19,7 @@ from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
 
 from kivymd.fanscreenmanager import MDFanScreen
+from kivymd.popupscreen import MDPopupScreen
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
 from kivymd.date_picker import MDDatePicker
@@ -85,6 +89,27 @@ main_widget_kv = """
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 #:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
+
+
+<ContentPopup@BoxLayout>:
+    orientation: 'vertical'
+    padding: dp(1)
+    spacing: dp(30)
+
+    Image:
+        id: image
+        source: 'assets/guitar-1139397_1280.jpg'
+        size_hint: 1, None
+        height: dp(Window.height * 35 // 100)
+        allow_stretch: True
+        keep_ratio: False
+
+    MDRoundFlatButton:
+        text: 'Open Menu'
+        pos_hint: {'center_x': .5}
+        on_release: root.parent.show()
+
+    Widget:
 
 
 <BaseFanScreen>:
@@ -213,6 +238,9 @@ main_widget_kv = """
     MyNavigationDrawerIconButton:
         text: "Progress & activity"
         on_release: app.root.ids.scr_mngr.current = 'progress'
+    MyNavigationDrawerIconButton:
+        text: "Popup Screen"
+        on_release: app.root.ids.scr_mngr.current = 'popup screen'
     MyNavigationDrawerIconButton:
         text: "Progress bars"
         on_release: app.root.ids.scr_mngr.current = 'progressbars'
@@ -875,6 +903,22 @@ NavigationLayout:
                         name: 'Screen Four'
                         path_to_image: 'assets/tangerines-1111529_1280.jpg'
                         on_enter: toolbar.title = self.name
+
+            ###################################################################
+            #
+            #                          POPUP SCREEN
+            #
+            ###################################################################
+
+            Screen:
+                name: 'popup screen'
+                on_enter: app.set_popup_screen(content_popup)
+
+                PopupScreen:
+                    id: popup_screen
+
+                    ContentPopup:
+                        id: content_popup
 
             ###################################################################
             #
@@ -1664,6 +1708,14 @@ class KitchenSink(App):
         self.bottom_navigation_remove_mobile(self.main_widget)
         return self.main_widget
 
+    def set_popup_screen(self, content_popup):
+        popup_menu = ContentForAnimCard()
+        popup_menu.add_widget(Widget(size_hint_y=None, height=dp(150)))
+        popup_screen = self.main_widget.ids.popup_screen
+        popup_screen.screen = popup_menu
+        popup_screen.background_color = [.3, .3, .3, 1]
+        popup_screen.max_height = content_popup.ids.image.height + dp(5)
+
     def bottom_navigation_remove_mobile(self, widget):
         # Removes some items from bottom-navigation demo when on mobile
         if DEVICE_TYPE == 'mobile':
@@ -1858,6 +1910,10 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
 
 
 class IconRightSampleWidget(IRightBodyTouch, MDCheckbox):
+    pass
+
+
+class PopupScreen(MDPopupScreen):
     pass
 
 

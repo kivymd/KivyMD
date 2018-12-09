@@ -89,6 +89,7 @@ main_widget_kv = """
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 #:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
+#:import MDChip kivymd.chips.MDChip
 
 
 <ContentPopup@BoxLayout>:
@@ -208,6 +209,9 @@ main_widget_kv = """
     MyNavigationDrawerIconButton:
         text: "Cards"
         on_release: app.root.ids.scr_mngr.current = 'card'
+    MyNavigationDrawerIconButton:
+        text: "Chips"
+        on_release: app.root.ids.scr_mngr.current = 'chips'
     MyNavigationDrawerIconButton:
         text: "Dialogs"
         on_release: app.root.ids.scr_mngr.current = 'dialog'
@@ -841,6 +845,62 @@ NavigationLayout:
 
             ###################################################################
             #
+            #                              CHIPS
+            #
+            ###################################################################
+
+            Screen:
+                name: 'chips'
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(10)
+
+                    Image:
+                        source: 'assets/guitar-1139397_1280.jpg'
+                        size_hint: 1, None
+                        height: dp(Window.height * 35 // 100)
+                        allow_stretch: True
+                        keep_ratio: False
+
+                    StackLayout:
+                        padding: dp(5)
+                        spacing: dp(5)
+
+                        MDChip:
+                            label: 'Coffee'
+                            color: .4470588235294118, .19607843137254902, 0, 1
+                            icon: 'coffee'
+                            callback: app.callback_for_menu_items
+
+                        MDChip:
+                            label: 'Duck'
+                            color: .9215686274509803, 0, 0, 1
+                            icon: 'duck'
+                            callback: app.callback_for_menu_items
+
+                        MDChip:
+                            label: 'Earth'
+                            color: .21176470588235294, .09803921568627451, 1, 1
+                            icon: 'earth'
+                            callback: app.callback_for_menu_items
+
+                        MDChip:
+                            label: 'Face'
+                            color: .2039215698, .48235297606, .435764705883, 1
+                            icon: 'face'
+                            callback: app.callback_for_menu_items
+
+                        MDChip:
+                            label: 'Facebook'
+                            color: .56078431374902, .4823529706, .43529483, 1
+                            icon: 'facebook'
+                            callback: app.callback_for_menu_items
+
+                    Widget:
+
+            ###################################################################
+            #
             #                             CHECKBOX
             #
             ###################################################################
@@ -1101,7 +1161,7 @@ NavigationLayout:
                         size_hint_y: None
                         height: self.minimum_height
                         padding: dp(48)
-                        spacing: 10
+                        spacing: dp(10)
 
                         MDTextField:
                             hint_text: "No helper text"

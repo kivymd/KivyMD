@@ -201,7 +201,6 @@ class MDPopupScreen(FloatLayout):
     def __init__(self, **kwargs):
         super(MDPopupScreen, self).__init__(**kwargs)
         self.root_screen = RootScreen()
-        self.root_screen.background_color = self.background_color
         self.root_screen.y = -Window.height
 
     def show(self):
@@ -209,6 +208,7 @@ class MDPopupScreen(FloatLayout):
             self.root_screen.add_widget(self.screen)
             self.add_widget(self.root_screen)
             self.added_screen = True
+            self.root_screen.background_color = self.background_color
         self.open_menu = True
         Animation(y=-self.max_height, d=.2, t='in_out_bounce').start(
             self.root_screen)

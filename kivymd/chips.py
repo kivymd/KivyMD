@@ -17,7 +17,6 @@ from kivy.app import App
 from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
-from kivymd.toast import toast
 
 kv = """
 #:import Toolbar kivymd.toolbar.Toolbar
@@ -90,6 +89,12 @@ BoxLayout:
                 check: True
                 callback: app.callback
 
+            MDChip:
+                label: 'Check with icon'
+                icon: 'city'
+                check: True
+                callback: app.callback
+
         Widget:
 """
 
@@ -99,7 +104,7 @@ class MyApp(App):
     theme_cls.primary_palette = 'Red'
 
     def callback(self, name_chip):
-        toast(name_chip)
+        pass
 
     def build(self):
         return Builder.load_string(kv)

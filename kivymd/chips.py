@@ -96,10 +96,13 @@ class MyApp(App):
 
 MyApp().run()
 '''
-
-from kivy.properties import StringProperty, ListProperty, ObjectProperty
+from kivy.metrics import dp
+from kivy.properties import StringProperty, ListProperty, ObjectProperty, \
+    BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
+
+from kivymd.button import MDIconButton
 
 Builder.load_string("""
 #:import MDIconButton kivymd.button.MDIconButton
@@ -108,7 +111,9 @@ Builder.load_string("""
 <MDChip>:
     size_hint: None,  None
     height: dp(26)
-    width: label.texture_size[0] + icon.width + dp(10)
+    width:
+        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle' \
+        else self.minimum_width
 
     canvas:
         Color:
@@ -118,9 +123,22 @@ Builder.load_string("""
             size: self.size
             radius: [15,]
 
-    Label:
-        id: label
-        text: '     {}'.format(root.label)
+    BoxLayout:
+        id: box_check
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {'center_y': .5}
+
+    BoxLayout:
+        size_hint_x: None
+        width: self.minimum_width
+        padding: dp(10)
+
+        Label:
+            id: label
+            text: '{}'.format(root.label)
+            size_hint_x: None
+            width: self.texture_size[0]
     
     MDIconButton:
         id: icon
@@ -128,7 +146,6 @@ Builder.load_string("""
         size_hint_y: None
         height: dp(26)
         disabled: True
-
 """)
 
 
@@ -136,8 +153,23 @@ class MDChip(BoxLayout):
     label = StringProperty()
     icon = StringProperty('checkbox-blank-circle')
     color = ListProperty([.4, .4, .4, 1])
+    check = BooleanProperty(False)
     callback = ObjectProperty(lambda x: None)
+
+    def on_icon(self, instance, value):
+        if value == '':
+            self.icon = 'checkbox-blank-circle'
+            self.remove_widget(self.ids.icon)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.callback(self.label)
+            if self.check:
+                if not len(self.ids.box_check.children):
+                    self.ids.box_check.add_widget(
+                        MDIconButton(icon='check', size_hint_y=None,
+                                     height=dp(26),
+                                     disabled=True))
+                else:
+                    check = self.ids.box_check.children[0]
+                    self.ids.box_check.remove_widget(check)

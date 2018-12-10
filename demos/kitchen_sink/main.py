@@ -908,6 +908,12 @@ NavigationLayout:
                             check: True
                             callback: app.callback
 
+                        MDChip:
+                            label: 'Check with icon'
+                            icon: 'city'
+                            check: True
+                            callback: app.callback
+
                     Widget:
 
             ###################################################################

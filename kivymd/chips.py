@@ -79,6 +79,17 @@ BoxLayout:
                 icon: 'facebook'
                 callback: app.callback
 
+            MDChip:
+                label: 'Without icon'
+                icon: ''
+                callback: app.callback
+
+            MDChip:
+                label: 'Check'
+                icon: ''
+                check: True
+                callback: app.callback
+
         Widget:
 """
 
@@ -96,6 +107,7 @@ class MyApp(App):
 
 MyApp().run()
 '''
+
 from kivy.metrics import dp
 from kivy.properties import StringProperty, ListProperty, ObjectProperty, \
     BooleanProperty

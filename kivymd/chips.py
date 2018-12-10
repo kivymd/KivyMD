@@ -107,7 +107,7 @@ Builder.load_string("""
 
 <MDChip>:
     size_hint: None,  None
-    height: dp(36)
+    height: dp(26)
     width: label.texture_size[0] + icon.width + dp(10)
 
     canvas:
@@ -116,7 +116,8 @@ Builder.load_string("""
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [20,]
+            radius: [15,]
+
     Label:
         id: label
         text: '     {}'.format(root.label)
@@ -125,7 +126,7 @@ Builder.load_string("""
         id: icon
         icon: root.icon
         size_hint_y: None
-        height: dp(36)
+        height: dp(26)
         disabled: True
 
 """)

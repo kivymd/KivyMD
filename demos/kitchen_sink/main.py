@@ -900,19 +900,19 @@ NavigationLayout:
                         MDChip:
                             label: 'Without icon'
                             icon: ''
-                            callback: app.callback
+                            callback: app.callback_for_menu_items
 
                         MDChip:
                             label: 'Check'
                             icon: ''
                             check: True
-                            callback: app.callback
+                            callback: app.callback_for_menu_items
 
                         MDChip:
                             label: 'Check with icon'
                             icon: 'city'
                             check: True
-                            callback: app.callback
+                            callback: app.callback_for_menu_items
 
                     Widget:
 

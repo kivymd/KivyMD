@@ -32,6 +32,13 @@ requirements = kivy==1.10.1,pil,android,git+https://github.com/HeaTTheatR/KivyMD
 # (str) Presplash of the application
 presplash.filename = %(source.dir)s/assets/presplash.png
 
+# (string) Presplash background color (for new android toolchain)
+# Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
+# red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
+# darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
+# olive, purple, silver, teal.
+android.presplash_color = #FFFFFF
+
 # (str) Icon of the application
 icon.filename = %(source.dir)s/../../kivymd/images/kivymd_logo.png
 
@@ -52,6 +59,18 @@ android.minapi = 19
 
 # (int) Android SDK version to use
 android.sdk = 23
+
+# (str) Android NDK version to use
+android.ndk = 16b
+
+# (bool) Use --private data storage (True) or --dir public storage (False)
+#android.private_storage = False
+
+# (str) Android NDK directory (if empty, it will be automatically downloaded.)
+android.ndk_path = /home/kivy/Android/android-ndk-r16b
+
+# (str) Android SDK directory (if empty, it will be automatically downloaded.)
+android.sdk_path = /home/kivy/.buildozer/android/platform/android-sdk-23
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
 p4a.branch = master

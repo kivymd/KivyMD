@@ -20,8 +20,20 @@ from kivy.animation import Animation
 from kivy.uix.modalview import ModalView
 from kivy.clock import Clock
 from kivy.metrics import dp
+from kivy.lang import Builder
 
 from kivymd import images_path
+
+Builder.load_string("""
+<Toast>:
+    canvas:
+        Color:
+            rgba: .2, .2, .2, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+""")
 
 
 class Toast(ModalView):
@@ -30,12 +42,9 @@ class Toast(ModalView):
         self.size_hint = (None, None)
         self.pos_hint = {'center_x': .5, 'center_y': .1}
         self.background_color = [0, 0, 0, 0]
-        self.background = \
-            'atlas://data/images/defaulttheme/modalview-background'
-        #self.background = \
-        #    '{}ios_bg_mod_for_toast.png'.format(images_path)
+        self.background = '{}transparent.png'.format(images_path)
         self.opacity = 0
-        self.auto_dismiss = False
+        self.auto_dismiss = True
         self.label_toast = Label(size_hint=(None, None), opacity=0)
         self.label_toast.bind(texture_size=self.label_check_texture_size)
         self.add_widget(self.label_toast)

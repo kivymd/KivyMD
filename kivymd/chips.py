@@ -20,12 +20,15 @@ from kivymd.theming import ThemeManager
 
 kv = """
 #:import Toolbar kivymd.toolbar.Toolbar
-#:import Window kivy.core.window.Window
 #:import MDChip kivymd.chips.MDChip
+#:import MDChooseChip kivymd.chips.MDChooseChip
+#:import MDSeparator kivymd.card.MDSeparator
+#:import MDLabel kivymd.label.MDLabel
 
 
 BoxLayout:
     orientation: 'vertical'
+    spacing: dp(10)
 
     Toolbar:
         title: 'Example Chips'
@@ -33,69 +36,124 @@ BoxLayout:
         left_action_items: [['menu', lambda x: x]]
         background_palette: 'Primary'
 
-    BoxLayout:
-        orientation: 'vertical'
-        spacing: dp(10)
+    ScrollView:
 
-        Image:
-            source: 'demos/kitchen_sink/assets/tangerines-1111529_1280.jpg'
-            size_hint: 1, None
-            height: dp(Window.height * 35 // 100)
-            allow_stretch: True
-            keep_ratio: False
+        GridLayout:
+            padding: dp(10)
+            spacing: dp(10)
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
 
-        StackLayout:
-            padding: dp(5)
-            spacing: dp(5)
+            MDLabel:
+                text: 'Chips with color:'
 
-            MDChip:
-                label: 'Coffee'
-                color: .4470588235294118, .19607843137254902, 0, 1
-                icon: 'coffee'
-                callback: app.callback
+            MDSeparator:
 
-            MDChip:
-                label: 'Duck'
-                color: .9215686274509803, 0, 0, 1
-                icon: 'duck'
-                callback: app.callback
+            StackLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(5)
 
-            MDChip:
-                label: 'Earth'
-                color: .21176470588235294, .09803921568627451, 1, 1
-                icon: 'earth'
-                callback: app.callback
+                MDChip:
+                    label: 'Coffee'
+                    color: .4470588235294118, .19607843137254902, 0, 1
+                    icon: 'coffee'
+                    callback: app.callback
 
-            MDChip:
-                label: 'Face'
-                color: .20392156865098, .48235294117606, .43529411764705883, 1
-                icon: 'face'
-                callback: app.callback
+                MDChip:
+                    label: 'Duck'
+                    color: .9215686274509803, 0, 0, 1
+                    icon: 'duck'
+                    callback: app.callback
 
-            MDChip:
-                label: 'Facebook'
-                color: .5607843137254902, .48235294164706, .435294117705883, 1
-                icon: 'facebook'
-                callback: app.callback
+                MDChip:
+                    label: 'Earth'
+                    color: .21176470588235294, .09803921568627451, 1, 1
+                    icon: 'earth'
+                    callback: app.callback
 
-            MDChip:
-                label: 'Without icon'
-                icon: ''
-                callback: app.callback
+                MDChip:
+                    label: 'Face'
+                    color: .20392156865098, .48235294117606, .43529411764705883, 1
+                    icon: 'face'
+                    callback: app.callback
 
-            MDChip:
-                label: 'Check'
-                icon: ''
-                check: True
-                callback: app.callback
+                MDChip:
+                    label: 'Facebook'
+                    color: .5607843137254902, .48235294164706, .435294117705883, 1
+                    icon: 'facebook'
+                    callback: app.callback
 
-            MDChip:
-                label: 'Check with icon'
-                icon: 'city'
-                check: True
-                callback: app.callback
+            Widget:
+                size_hint_y: None
+                height: dp(5)
 
-        Widget:
+            MDLabel:
+                text: 'Chip without icon:'
+
+            MDSeparator:
+
+            StackLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(5)
+
+                MDChip:
+                    label: 'Without icon'
+                    icon: ''
+                    callback: app.callback
+
+            Widget:
+                size_hint_y: None
+                height: dp(5)
+
+            MDLabel:
+                text: 'Chips with check:'
+
+            MDSeparator:
+
+            StackLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: dp(5)
+
+                MDChip:
+                    label: 'Check'
+                    icon: ''
+                    check: True
+                    callback: app.callback
+
+                MDChip:
+                    label: 'Check with icon'
+                    icon: 'city'
+                    check: True
+                    callback: app.callback
+            Widget:
+                size_hint_y: None
+                height: dp(5)
+
+            MDLabel:
+                text: 'Choose chip:'
+
+            MDSeparator:
+
+            MDChooseChip:
+
+                MDChip:
+                    label: 'Earth'
+                    icon: 'earth'
+                    callback: app.callback
+
+                MDChip:
+                    label: 'Face'
+                    icon: 'face'
+                    callback: app.callback
+
+                MDChip:
+                    label: 'Facebook'
+                    icon: 'facebook'
+                    callback: app.callback
 """
 
 

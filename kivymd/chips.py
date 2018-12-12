@@ -118,11 +118,19 @@ from kivy.properties import StringProperty, ListProperty, ObjectProperty, \
     BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
+from kivy.uix.stacklayout import StackLayout
 
 from kivymd.button import MDIconButton
+from kivymd.theming import ThemableBehavior
 
 Builder.load_string("""
 #:import MDIconButton kivymd.button.MDIconButton
+
+
+<MDChooseChip>:
+    size_hint_y: None
+    height: self.minimum_height
+    spacing: dp(5)
 
 
 <MDChip>:
@@ -166,7 +174,7 @@ Builder.load_string("""
 """)
 
 
-class MDChip(BoxLayout):
+class MDChip(BoxLayout, ThemableBehavior):
     label = StringProperty()
     icon = StringProperty('checkbox-blank-circle')
     color = ListProperty([.4, .4, .4, 1])
@@ -181,6 +189,14 @@ class MDChip(BoxLayout):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self.callback(self.label)
+            md_choose_chip = self.parent
+            if md_choose_chip.__class__ is MDChooseChip:
+                if md_choose_chip.selected_chip:
+                    md_choose_chip.selected_chip.color = \
+                        md_choose_chip.selected_chip_color
+                md_choose_chip.selected_chip = self
+                md_choose_chip.selected_chip_color = self.color
+                self.color = self.theme_cls.primary_color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
@@ -190,3 +206,8 @@ class MDChip(BoxLayout):
                 else:
                     check = self.ids.box_check.children[0]
                     self.ids.box_check.remove_widget(check)
+
+
+class MDChooseChip(StackLayout):
+    selected_chip = None
+    selected_chip_color = None

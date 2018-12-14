@@ -198,7 +198,7 @@ main_widget_kv = """
         text: "Accordion"
         on_release: app.root.ids.scr_mngr.current = 'accordion'
     MyNavigationDrawerIconButton:
-        text: "App Bar"
+        text: "Bottom App Bar"
         on_release: app.root.ids.scr_mngr.current = 'app bar'
     MyNavigationDrawerIconButton:
         text: "Accordion List"
@@ -330,7 +330,7 @@ NavigationLayout:
 
             ###################################################################
             #
-            #                            APP BAR
+            #                         BOTTOM APP BAR
             #
             ###################################################################
 

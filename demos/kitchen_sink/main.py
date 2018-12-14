@@ -6,6 +6,8 @@ import sys
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
 
+from kivymd.toolbar import MDBottomAppBar
+
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
 from kivy.app import App
@@ -196,6 +198,9 @@ main_widget_kv = """
         text: "Accordion"
         on_release: app.root.ids.scr_mngr.current = 'accordion'
     MyNavigationDrawerIconButton:
+        text: "App Bar"
+        on_release: app.root.ids.scr_mngr.current = 'app bar'
+    MyNavigationDrawerIconButton:
         text: "Accordion List"
         on_release: app.root.ids.scr_mngr.current = 'accordion list'
     MyNavigationDrawerIconButton:
@@ -322,6 +327,30 @@ NavigationLayout:
                     halign: 'center'
                     text_size: self.width - 20, None
                     pos_hint: {'center_x': .5, 'center_y': .6}
+
+            ###################################################################
+            #
+            #                            APP BAR
+            #
+            ###################################################################
+
+            Screen:
+                name: 'app bar'
+                on_enter: app.show_example_appbar(self)
+
+                MDRaisedButton:
+                    text: 'Anchor center'
+                    pos_hint: {'center_y': .7, 'center_x': .5}
+                    on_release:
+                        app.md_app_bar.set_pos_action_button('center')
+                        app.move_item_menu('center')
+
+                MDRaisedButton:
+                    text: 'Anchor right'
+                    pos_hint: {'center_y': .5, 'center_x': .5}
+                    on_release:
+                        app.md_app_bar.set_pos_action_button('right')
+                        app.move_item_menu('right')
 
             ###################################################################
             #
@@ -1617,6 +1646,7 @@ class KitchenSink(App):
         self.ok_cancel_dialog = None
         self.long_dialog = None
         self.dialog = None
+        self.md_app_bar = None
         self.user_animation_card = None
         self.manager_open = False
         self.cards_created = False
@@ -1994,6 +2024,33 @@ class KitchenSink(App):
                 lambda x: self.callback_for_menu_items("Camera"),
                 icon_src='./assets/camera.png')
         self.bs_menu_2.open()
+
+    def show_example_appbar(self, instance_screen):
+        def press_button(inctance):
+            toast('Press Button')
+
+        if not self.md_app_bar:
+            self.md_app_bar = MDBottomAppBar(
+                md_bg_color=self.theme_cls.primary_color,
+                left_action_items=[
+                    ['menu', lambda x: x],
+                    ['clock', lambda x: x],
+                    ['dots-vertical', lambda x: x]],
+                anchor='right', callback=press_button)
+            instance_screen.add_widget(self.md_app_bar)
+
+    def move_item_menu(self, anchor):
+        md_app_bar = self.md_app_bar
+        if md_app_bar.anchor != anchor:
+            if len(md_app_bar.right_action_items):
+                md_app_bar.left_action_items.append(
+                    md_app_bar.right_action_items[0])
+                md_app_bar.right_action_items = []
+            else:
+                left_action_items = md_app_bar.left_action_items
+                action_items = left_action_items[0:2]
+                md_app_bar.right_action_items = [left_action_items[-1]]
+                md_app_bar.left_action_items = action_items
 
     def set_error_message(self, *args):
         if len(self.root.ids.text_field_error.text) == 2:

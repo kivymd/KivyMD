@@ -229,7 +229,6 @@ class MDBottomAppBar(FloatLayout):
                                x=x, opacity=1, size=(dp(56), dp(56)),
                                on_release=self.callback,
                                action_button_color=self.action_button_color)
-        print(self.action_button_color)
         self.add_widget(self.action_button)
 
     def set_pos_action_button(self, anchor):

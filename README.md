@@ -62,9 +62,9 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.6.7:
+What's new in version 0.7.0:
 ============================
-* Add new class [MDChip, MDChooseChip](https://github.com/HeaTTheatR/KivyMD/wiki/MDChip)
+* Add new class [MDAppBar](https://github.com/HeaTTheatR/KivyMD/wiki/MDAppBar)
 
 Video previous
 ==============

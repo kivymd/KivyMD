@@ -69,7 +69,7 @@ What's new in version 0.7.1:
 Video previous
 ==============
 <p align="center">
-    <a href="https://youtu.be/WuPzrlCO7oE"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png"></a>
+    <a href="https://youtu.be/Jbi20FGZ8KM"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png"></a>
 </p>
 
 Image previous

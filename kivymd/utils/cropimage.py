@@ -1,35 +1,23 @@
 # -*- coding: utf-8 -*-
 
 
-def crop_image(size_screen, path_to_image, path_to_save_crop_image,
-               corner=0):
+def crop_image(size_screen, path_to_image, path_to_save_crop_image):
     im = _crop_image(size_screen, path_to_image, path_to_save_crop_image)
-    if corner:
-        im = add_corners(im, corner)
+    im = add_corners(im, 25)
     im.save(path_to_save_crop_image)
 
 
 def _crop_image(size_screen, path_to_image, path_to_save_crop_image):
-    """Обрезает фоновое изображение под размеры карточки."""
+    from PIL import Image, ImageOps
 
-    from PIL import Image
+    image = Image.open(path_to_image)
+    image = ImageOps.fit(image, size_screen)
+    image.save(path_to_save_crop_image)
 
-    im = Image.open(path_to_image)
-    width, height = im.size
-    width_screen,  height_screen = size_screen
-    left = (width - width_screen) / 2
-    top = (height - height_screen) / 2
-    right = (width + width_screen) / 2
-    bottom = (height + height_screen) / 2
-    im.crop((left, top, right, bottom)).save(path_to_save_crop_image)
-    im = Image.open(path_to_save_crop_image)
-
-    return im
+    return image
 
 
 def add_corners(im, rad):
-    """Добавлет сглаженые углы изображению."""
-
     from PIL import Image, ImageDraw
 
     circle = Image.new('L', (rad * 2, rad * 2), 0)

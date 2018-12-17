@@ -20,6 +20,7 @@ from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
 
+from kivymd.utils.cropimage import crop_image
 from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.popupscreen import MDPopupScreen
 from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
@@ -102,7 +103,7 @@ main_widget_kv = """
 
     Image:
         id: image
-        source: 'assets/guitar-1139397_1280.jpg'
+        source: 'assets/guitar-1139397_1280_crop.jpg'
         size_hint: 1, None
         height: dp(Window.height * 35 // 100)
         allow_stretch: True
@@ -550,12 +551,20 @@ NavigationLayout:
 
             Screen:
                 name: 'grid'
+                on_enter:
+                    app.crop_image_for_tile(tile_1, tile_1.size, 'assets/beautiful-931152_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_2, tile_2.size, 'assets/african-lion-951778_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_3, tile_3.size, 'assets/guitar-1139397_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_4, tile_4.size, 'assets/robin-944887_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_5, tile_5.size, 'assets/kitten-1049129_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_6, tile_6.size, 'assets/light-bulb-1042480_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_7, tile_7.size, 'assets/tangerines-1111529_1280_tile_crop.jpg')
 
                 ScrollView:
                     do_scroll_x: False
 
                     GridLayout:
-                        cols: 3
+                        cols: 2
                         row_default_height:
                             (self.width - self.cols*self.spacing[0])/self.cols
                         row_force_default: True
@@ -565,30 +574,29 @@ NavigationLayout:
                         spacing: dp(4)
 
                         SmartTileWithLabel:
+                            id: tile_1
                             mipmap: True
-                            source: './assets/african-lion-951778_1280.jpg'
-                            text: "African Lion"
+                            text: "Beautiful\\n"
+                            font_style: 'Subhead'
+                        SmartTileWithStar:
+                            id: tile_2
+                            mipmap: True
+                            stars: 3
                         SmartTile:
+                            id: tile_3
                             mipmap: True
-                            source: './assets/beautiful-931152_1280.jpg'
                         SmartTile:
+                            id: tile_4
                             mipmap: True
-                            source: './assets/african-lion-951778_1280.jpg'
                         SmartTile:
+                            id: tile_5
                             mipmap: True
-                            source: './assets/guitar-1139397_1280.jpg'
                         SmartTile:
+                            id: tile_6
                             mipmap: True
-                            source: './assets/robin-944887_1280.jpg'
                         SmartTile:
+                            id: tile_7
                             mipmap: True
-                            source: './assets/kitten-1049129_1280.jpg'
-                        SmartTile:
-                            mipmap: True
-                            source: './assets/light-bulb-1042480_1280.jpg'
-                        SmartTile:
-                            mipmap: True
-                            source: './assets/tangerines-1111529_1280.jpg'
 
             ###################################################################
             #
@@ -1675,6 +1683,22 @@ class KitchenSink(App):
             'Sasha Gray', 'Vladimir Ivanenko'
         )
         Window.bind(on_keyboard=self.events)
+        import time
+        t = time.time()
+        crop_image((Window.width, int(dp(Window.height * 35 // 100))),
+                   '{}/assets/guitar-1139397_1280.jpg'.format(
+                       self.directory),
+                   '{}/assets/guitar-1139397_1280_crop.jpg'.format(
+                       self.directory))
+        print(time.time() - t)
+
+    def crop_image_for_tile(self, instance, size, path_to_crop_image):
+        if not os.path.exists(
+                os.path.join(self.directory, path_to_crop_image)):
+            size = (int(size[0]), int(size[1]))
+            path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
+            crop_image(size, path_to_origin_image, path_to_crop_image)
+        instance.source = path_to_crop_image
 
     def theme_picker_open(self):
         if not self.md_theme_picker:

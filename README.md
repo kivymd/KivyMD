@@ -62,7 +62,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.8.2:
+What's new in version 0.8.3:
 ============================
 * Add new class [SmartTileWithStar](https://github.com/HeaTTheatR/KivyMD/wiki/SmartTileWithStar)
 

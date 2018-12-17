@@ -146,6 +146,7 @@ Builder.load_string('''
             text: root.title
             shorten: True
             shorten_from: 'right'
+            halign: root.anchor_title
 
     BoxLayout:
         id: right_actions
@@ -174,6 +175,8 @@ class Toolbar(ThemableBehavior, RectangularElevationBehavior,
     """The text displayed on the Toolbar."""
 
     md_bg_color = ListProperty([0, 0, 0, 1])
+
+    anchor_title = StringProperty('left')
 
     def __init__(self, **kwargs):
         super(Toolbar, self).__init__(**kwargs)

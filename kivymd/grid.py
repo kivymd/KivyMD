@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from kivy.lang import Builder
 from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, \
@@ -7,11 +7,12 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
+from kivymd.button import MDIconButton
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string("""
-<SmartTile>
+<SmartTile>:
     _img_widget: img
     _img_overlay: img_overlay
     _box_overlay: box
@@ -49,7 +50,7 @@ Builder.load_string("""
         y: root.y if root.box_position == 'footer' \
             else root.y + root.height - self.height
 
-<SmartTileWithLabel>
+<SmartTileWithLabel>:
     _img_widget: img
     _img_overlay: img_overlay
     _box_overlay: box
@@ -169,6 +170,21 @@ class SmartTileWithLabel(SmartTile):
     tile_text_color = ListProperty([1, 1, 1, 1])
     text = StringProperty("")
     """Determines the text for the box footer/header"""
+
+
+class Star(MDIconButton):
+    def on_touch_down(self, touch):
+        return True
+
+
+class SmartTileWithStar(SmartTileWithLabel):
+    stars = NumericProperty(1)
+
+    def on_stars(self, *args):
+        for star in range(self.stars):
+            self.ids.box.add_widget(
+                Star(icon='star-outline', theme_text_color='Custom',
+                     text_color=[1, 1, 1, 1]))
 
 
 class IBoxOverlay():

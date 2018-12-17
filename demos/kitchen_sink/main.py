@@ -103,7 +103,7 @@ main_widget_kv = """
 
     Image:
         id: image
-        source: 'assets/guitar-1139397_1280_crop.jpg'
+        source: 'assets/guitar-1139397_1280_crop.png'
         size_hint: 1, None
         height: dp(Window.height * 35 // 100)
         allow_stretch: True
@@ -552,13 +552,13 @@ NavigationLayout:
             Screen:
                 name: 'grid'
                 on_enter:
-                    app.crop_image_for_tile(tile_1, tile_1.size, 'assets/beautiful-931152_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_2, tile_2.size, 'assets/african-lion-951778_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_3, tile_3.size, 'assets/guitar-1139397_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_4, tile_4.size, 'assets/robin-944887_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_5, tile_5.size, 'assets/kitten-1049129_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_6, tile_6.size, 'assets/light-bulb-1042480_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_7, tile_7.size, 'assets/tangerines-1111529_1280_tile_crop.jpg')
+                    app.crop_image_for_tile(tile_1, tile_1.size, 'assets/beautiful-931152_1280_tile_crop.png')
+                    app.crop_image_for_tile(tile_2, tile_2.size, 'assets/african-lion-951778_1280_tile_crop.png')
+                    app.crop_image_for_tile(tile_3, tile_3.size, 'assets/guitar-1139397_1280_tile_crop.png')
+                    app.crop_image_for_tile(tile_4, tile_4.size, 'assets/robin-944887_1280_tile_crop.png')
+                    app.crop_image_for_tile(tile_5, tile_5.size, 'assets/kitten-1049129_1280_tile_crop.png')
+                    app.crop_image_for_tile(tile_6, tile_6.size, 'assets/light-bulb-1042480_1280_tile_crop.png')
+                    app.crop_image_for_tile(tile_7, tile_7.size, 'assets/tangerines-1111529_1280_tile_crop.png')
 
                 ScrollView:
                     do_scroll_x: False
@@ -584,27 +584,27 @@ NavigationLayout:
                         SmartTileWithLabel:
                             id: tile_1
                             mipmap: True
-                            text: "Beautiful\\n[size=12]beautiful-931152_1280.jpg[/size]"
+                            text: "Beautiful\\n[size=12]beautiful-931152_1280.png[/size]"
                             font_style: 'Subhead'
                         SmartTileWithLabel:
                             id: tile_4
                             mipmap: True
-                            text: "Robin\\n[size=12]robin-944887_1280.jpg[/size]"
+                            text: "Robin\\n[size=12]robin-944887_1280.png[/size]"
                             font_style: 'Subhead'
                         SmartTileWithLabel:
                             id: tile_5
                             mipmap: True
-                            text: "Kitten\\n[size=12]kitten-1049129_1280.jpg[/size]"
+                            text: "Kitten\\n[size=12]kitten-1049129_1280.png[/size]"
                             font_style: 'Subhead'
                         SmartTileWithLabel:
                             id: tile_6
                             mipmap: True
-                            text: "Light-Bulb\\n[size=12]light-bulb-1042480_1280.jpg[/size]"
+                            text: "Light-Bulb\\n[size=12]light-bulb-1042480_1280.png[/size]"
                             font_style: 'Subhead'
                         SmartTileWithLabel:
                             id: tile_7
                             mipmap: True
-                            text: "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
+                            text: "Tangerines\\n[size=12]tangerines-1111529_1280.png[/size]"
                             font_style: 'Subhead'
 
             ###################################################################
@@ -1066,22 +1066,22 @@ NavigationLayout:
 
                     ScreenOne:
                         name: 'Screen One'
-                        path_to_image: 'assets/african-lion-951778_1280.jpg'
+                        path_to_image: 'assets/african-lion-951778_1280.png'
                         on_enter: toolbar.title = self.name
 
                     ScreenTwo:
                         name: 'Screen Two'
-                        path_to_image: 'assets/beautiful-931152_1280.jpg'
+                        path_to_image: 'assets/beautiful-931152_1280.png'
                         on_enter: toolbar.title = self.name
 
                     ScreenTree:
                         name: 'Screen Tree'
-                        path_to_image: 'assets/kitten-1049129_1280.jpg'
+                        path_to_image: 'assets/kitten-1049129_1280.png'
                         on_enter: toolbar.title = self.name
 
                     ScreenFour:
                         name: 'Screen Four'
-                        path_to_image: 'assets/tangerines-1111529_1280.jpg'
+                        path_to_image: 'assets/tangerines-1111529_1280.png'
                         on_enter: toolbar.title = self.name
 
             ###################################################################
@@ -1695,9 +1695,9 @@ class KitchenSink(App):
         import time
         t = time.time()
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
-                   '{}/assets/guitar-1139397_1280.jpg'.format(
+                   '{}/assets/guitar-1139397_1280.png'.format(
                        self.directory),
-                   '{}/assets/guitar-1139397_1280_crop.jpg'.format(
+                   '{}/assets/guitar-1139397_1280_crop.png'.format(
                        self.directory))
         print(time.time() - t)
 
@@ -1875,7 +1875,7 @@ class KitchenSink(App):
 
             instance_grid_card.add_widget(
                 MDCardPost(
-                    source="./assets/kitten-1049129_1280.jpg",
+                    source="./assets/kitten-1049129_1280.png",
                     tile_text="Little Baby",
                     tile_font_style="Headline",
                     text_post="This is my favorite cat. He's only six months "
@@ -1929,7 +1929,7 @@ class KitchenSink(App):
         if not self.user_animation_card:
             self.user_animation_card = MDUserAnimationCard(
                 user_name="Lion Lion",
-                path_to_avatar="./assets/guitar-1139397_1280.jpg",
+                path_to_avatar="./assets/guitar-1139397_1280.png",
                 callback=main_back_callback)
             self.user_animation_card.box_content.add_widget(
                 ContentForAnimCard())

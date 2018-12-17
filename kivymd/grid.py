@@ -99,6 +99,7 @@ Builder.load_string("""
             height: self.texture_size[1]
             text: root.text
             color: root.tile_text_color
+            markup: True
 """)
 
 

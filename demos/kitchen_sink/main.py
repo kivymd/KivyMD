@@ -573,30 +573,39 @@ NavigationLayout:
                         padding: dp(4), dp(4)
                         spacing: dp(4)
 
-                        SmartTileWithLabel:
-                            id: tile_1
-                            mipmap: True
-                            text: "Beautiful\\n"
-                            font_style: 'Subhead'
                         SmartTileWithStar:
                             id: tile_2
                             mipmap: True
                             stars: 3
-                        SmartTile:
+                        SmartTileWithStar:
                             id: tile_3
                             mipmap: True
-                        SmartTile:
+                            stars: 3
+                        SmartTileWithLabel:
+                            id: tile_1
+                            mipmap: True
+                            text: "Beautiful\\n[size=12]beautiful-931152_1280.jpg[/size]"
+                            font_style: 'Subhead'
+                        SmartTileWithLabel:
                             id: tile_4
                             mipmap: True
-                        SmartTile:
+                            text: "Robin\\n[size=12]robin-944887_1280.jpg[/size]"
+                            font_style: 'Subhead'
+                        SmartTileWithLabel:
                             id: tile_5
                             mipmap: True
-                        SmartTile:
+                            text: "Kitten\\n[size=12]kitten-1049129_1280.jpg[/size]"
+                            font_style: 'Subhead'
+                        SmartTileWithLabel:
                             id: tile_6
                             mipmap: True
-                        SmartTile:
+                            text: "Light-Bulb\\n[size=12]light-bulb-1042480_1280.jpg[/size]"
+                            font_style: 'Subhead'
+                        SmartTileWithLabel:
                             id: tile_7
                             mipmap: True
+                            text: "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
+                            font_style: 'Subhead'
 
             ###################################################################
             #

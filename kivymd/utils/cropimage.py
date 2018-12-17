@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
 
-def crop_image(size_screen, path_to_image, path_to_save_crop_image):
+def crop_image(size_screen, path_to_image, path_to_save_crop_image,
+               corner=False):
     im = _crop_image(size_screen, path_to_image, path_to_save_crop_image)
-    im = add_corners(im, 25)
-    im.save(path_to_save_crop_image)
+    if corner:
+        im = add_corners(im, 25)
+    try:
+        im.save(path_to_save_crop_image)
+    except IOError:
+        im.save(path_to_save_crop_image, 'JPEG')
 
 
 def _crop_image(size_screen, path_to_image, path_to_save_crop_image):

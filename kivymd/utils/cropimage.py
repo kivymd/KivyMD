@@ -37,13 +37,3 @@ def add_corners(im, rad):
     im.putalpha(alpha)
 
     return im
-
-
-def resize_image(path):
-    from PIL import Image
-
-    im = Image.open(path)
-    w, h = im.size
-    im.thumbnail((int(w // 1.5), int(h // 1.5)), Image.ANTIALIAS)
-
-    return im

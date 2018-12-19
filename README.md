@@ -50,9 +50,9 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
 Running on Android
 ==================
-Install and run the package [kitchen_sink-0.6.7-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python2/kitchen_sink-0.6.7-debug.apk)
+Install and run the package [kitchen_sink-0.6.7-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python2)
 
-Or install and run the package [kitchen_sink-0.4.2-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3/kitchen_sink-0.4.2-debug.apk)
+Or install and run the package [kitchen_sink-0.4.2-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3)
 
 Build two apk armv7 (Python2 and Python3) with Docker
 ==================

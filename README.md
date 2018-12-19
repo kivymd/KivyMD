@@ -50,9 +50,9 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
 Running on Android
 ==================
-Install and run the package **demos/kitchen_sink/bin/python2/KivyMDKitchenSink-0.1.3-debug.apk**
+Install and run the package **https://github.com/HeaTTheatR/KivyMD-data/bin/python2/kitchen_sink.apk**
 
-Or install and run the package **demos/kitchen_sink/bin/python3/kitchen_sink-0_1_3-debug.apk**
+Or install and run the package **https://github.com/HeaTTheatR/KivyMD-data/bin/python3/kitchen_sink.apk**
 
 Build two apk armv7 (Python2 and Python3) with Docker
 ==================
@@ -62,20 +62,20 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.8.4:
+What's new in version 0.8.5:
 ============================
 * Add new class [SmartTileWithStar](https://github.com/HeaTTheatR/KivyMD/wiki/SmartTileWithStar)
 
 Video previous
 ==============
 <p align="center">
-    <a href="https://youtu.be/Jbi20FGZ8KM"><img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/prevideo.png"></a>
+    <a href="https://youtu.be/Jbi20FGZ8KM"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/prevideo.png"></a>
 </p>
 
 Image previous
 ==============
 <p align="center">
-    <img src="https://raw.githubusercontent.com/HeaTTheatR/KivyMD/master/gallery/previous.png">
+    <img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/previous.png">
 </p>
 
 License

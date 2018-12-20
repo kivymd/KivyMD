@@ -48,7 +48,7 @@ Builder.load_string("""
             size_hint_y: None
             height: panel._tab_display_height[panel.tab_display_mode]
             md_bg_color: panel.tab_color or panel.theme_cls.primary_color
-            size_hint_x: None
+            size_hint_x: 1
             width: self.minimum_width
             rows: 1
             spacing: dp(10)
@@ -78,22 +78,27 @@ Builder.load_string("""
             pos: self.pos
         # Draw indicator
         Color:
-            rgba: (self.panel.tab_indicator_color or self.panel.theme_cls.accent_color) if self.tab \
-                and self.tab.manager and self.tab.manager.current==self.tab.name else (self.panel.tab_border_color  \
+            rgba:
+                (self.panel.tab_indicator_color \
+                or self.panel.theme_cls.accent_color) \
+                if self.tab and self.tab.manager \
+                and self.tab.manager.current == self.tab.name \
+                else (self.panel.tab_border_color  \
                 or self.panel.tab_color or self.panel.theme_cls.primary_dark)
         Rectangle:
             size: (self.width,dp(2))
             pos: self.pos
 
-    size_hint: (None,None)
-    #size_hint:
-    #    (1, None)  if self.panel.tab_width_mode=='fixed' else (None,None)
+    size_hint: None, 1
     width: (_label.texture_size[0] + dp(16))
     padding: (dp(12), 0)
     theme_text_color: 'Custom'
-    text_color: (self.panel.tab_text_color_active or self.panel.specific_text_color) if self.tab and self.tab.manager \
-            and self.tab.manager.current==self.tab.name else (self.panel.tab_text_color or \
-            self.panel.specific_secondary_text_color)
+    text_color:
+        (self.panel.tab_text_color_active or self.panel.specific_text_color) \
+        if self.tab and self.tab.manager \
+        and self.tab.manager.current == self.tab.name \
+        else (self.panel.tab_text_color \
+        or self.panel.specific_secondary_text_color)
     on_press: self.tab.dispatch('on_tab_press')
     on_release: self.tab.dispatch('on_tab_release')
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
@@ -102,10 +107,13 @@ Builder.load_string("""
 
     MDLabel:
         id: _label
-        text: root.tab.text if root.panel.tab_display_mode == 'text' else u"{}".format(md_icons[root.tab.icon])
-        font_style: 'Button' if root.panel.tab_display_mode == 'text' else 'Icon'
-        size_hint_x: None# if root.panel.tab_width_mode=='fixed' else 1
-        text_size: (None, root.height)
+        text:
+            root.tab.text if root.panel.tab_display_mode == 'text' \
+            else u"{}".format(md_icons[root.tab.icon])
+        font_style:
+            'Button' if root.panel.tab_display_mode == 'text' else 'Icon'
+        size_hint_x: 1 # if root.panel.tab_width_mode=='fixed' else 1
+        #text_size: (None, root.height)
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
         text_color: root.text_color
@@ -211,8 +219,8 @@ class MDBottomNavigationBar(ThemableBehavior, BackgroundColorBehavior,
 class MDTabHeader(MDFlatButton):
     """ Internal widget for headers based on MDFlatButton"""
 
-    width = BoundedNumericProperty(dp(0), min=dp(72), max=dp(264),
-                                   errorhandler=lambda x: dp(72))
+    #width = BoundedNumericProperty(dp(0), min=dp(72), max=dp(264),
+    #                               errorhandler=lambda x: dp(72))
     tab = ObjectProperty(None)
     panel = ObjectProperty(None)
 

@@ -27,6 +27,7 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string("""
 #:import sm kivy.uix.screenmanager
+#:import Window kivy.core.window.Window
 
 
 <MDTabbedPanel>:
@@ -48,8 +49,8 @@ Builder.load_string("""
             size_hint_y: None
             height: panel._tab_display_height[panel.tab_display_mode]
             md_bg_color: panel.tab_color or panel.theme_cls.primary_color
-            size_hint_x: 1
-            width: self.minimum_width
+            size_hint_x: 1 if root.tab_width_mode =='stacked' else None
+            width: Window.width
             rows: 1
             spacing: dp(10)
 
@@ -89,8 +90,7 @@ Builder.load_string("""
             size: (self.width,dp(2))
             pos: self.pos
 
-    size_hint: None, 1
-    width: (_label.texture_size[0] + dp(16))
+    size_hint: None if root._tab_width_mode != 'stacked' else 1, 1
     padding: (dp(12), 0)
     theme_text_color: 'Custom'
     text_color:
@@ -113,13 +113,14 @@ Builder.load_string("""
         font_style:
             'Button' if root.panel.tab_display_mode == 'text' else 'Icon'
         size_hint_x: 1 # if root.panel.tab_width_mode=='fixed' else 1
-        #text_size: (None, root.height)
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
         text_color: root.text_color
         valign: 'middle'
         halign: 'center'
         opposite_colors: root.opposite_colors
+        shorten: True
+        shorten_from: 'right'
 
 
 <MDBottomNavigation>:
@@ -155,7 +156,9 @@ Builder.load_string("""
             size: self.size
             pos: self.pos
 
-    width: root.panel.width / len(root.panel.ids.tab_manager.screens) if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
+    width:
+        root.panel.width / len(root.panel.ids.tab_manager.screens) \
+        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
     padding: (dp(12), dp(12))
     on_press:
         self.tab.dispatch('on_tab_press')
@@ -219,10 +222,9 @@ class MDBottomNavigationBar(ThemableBehavior, BackgroundColorBehavior,
 class MDTabHeader(MDFlatButton):
     """ Internal widget for headers based on MDFlatButton"""
 
-    #width = BoundedNumericProperty(dp(0), min=dp(72), max=dp(264),
-    #                               errorhandler=lambda x: dp(72))
     tab = ObjectProperty(None)
     panel = ObjectProperty(None)
+    _tab_width_mode = OptionProperty('stacked', options=['stacked', 'fixed'])
 
 
 class MDBottomNavigationErrorCache:
@@ -432,7 +434,8 @@ class MDTabbedPanel(TabbedPanelBase):
         for tab in tab_manager.screens:
             tab_header = MDTabHeader(tab=tab,
                                      panel=self,
-                                     height=tab_bar.height)
+                                     height=tab_bar.height,
+                                     _tab_width_mode=self.tab_width_mode)
             tab_bar.add_widget(tab_header)
 
     def add_widget(self, widget, **kwargs):

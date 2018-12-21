@@ -250,17 +250,20 @@ tabs = """
 
     MDTabbedPanel:
         id: tab_panel
-        tab_display_mode:'text'
+        tab_display_mode: 'text'
+        tab_width_mode: 'stacked'
 
         MDTab:
             name: 'music'
-            text: "Music" # Why are these not set!!!
+            text: "Music"
             icon: "playlist-play"
+
             MDLabel:
                 font_style: 'Body1'
                 theme_text_color: 'Primary'
                 text: "Here is my music list :)"
                 halign: 'center'
+
         MDTab:
             name: 'movies'
             text: 'Movies'
@@ -270,6 +273,39 @@ tabs = """
                 font_style: 'Body1'
                 theme_text_color: 'Primary'
                 text: "Show movies here :)"
+                halign: 'center'
+
+        MDTab:
+            name: 'python'
+            text: 'Python'
+            icon: "language-python"
+
+            MDLabel:
+                font_style: 'Body1'
+                theme_text_color: 'Primary'
+                text: "I love Python language"
+                halign: 'center'
+
+        MDTab:
+            name: 'cpp'
+            text: 'C++'
+            icon: "language-cpp"
+
+            MDLabel:
+                font_style: 'Body1'
+                theme_text_color: 'Primary'
+                text: "I love C++ language"
+                halign: 'center'
+
+        MDTab:
+            name: 'php'
+            text: 'PHP'
+            icon: "language-php"
+
+            MDLabel:
+                font_style: 'Body1'
+                theme_text_color: 'Primary'
+                text: "I love PHP language"
                 halign: 'center'
 
     BoxLayout:
@@ -283,10 +319,23 @@ tabs = """
             text: "Use icons"
             size_hint_x:None
             width: dp(64)
+
         MDCheckbox:
             on_state:
                 tab_panel.tab_display_mode = 'icons' \
                 if tab_panel.tab_display_mode=='text' else 'text'
+
+        MDLabel:
+            font_style: 'Body1'
+            theme_text_color: 'Primary'
+            text: "Use fixed"
+            size_hint_x:None
+            width: dp(64)
+
+        MDCheckbox:
+            on_state:
+                tab_panel.tab_width_mode = 'fixed' \
+                if tab_panel.tab_width_mode =='stacked' else 'stacked'
 """
 
 pickers = """

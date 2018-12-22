@@ -309,8 +309,8 @@ tabs = """
                 halign: 'center'
 
     BoxLayout:
-        size_hint_y:None
-        height: dp(48)
+        size_hint_y: None
+        height: dp(72)
         padding: dp(12)
 
         MDLabel:
@@ -336,6 +336,8 @@ tabs = """
             on_state:
                 tab_panel.tab_width_mode = 'fixed' \
                 if tab_panel.tab_width_mode =='stacked' else 'stacked'
+                
+        Widget:
 """
 
 pickers = """

@@ -41,6 +41,7 @@ Builder.load_string("""
     size_hint: (None, None)
     size: dp(284), dp(120)+dp(290)
     pos_hint: {'center_x': .5, 'center_y': .5}
+
     canvas:
         Color:
             rgb: app.theme_cls.primary_color
@@ -53,10 +54,12 @@ Builder.load_string("""
             size: self.width, dp(290)
             pos: root.pos[0], root.pos[1] + root.height-(dp(120)+dp(290))
 
+
     MDFlatButton:
         pos: root.pos[0]+root.size[0]-self.width-dp(10), root.pos[1] + dp(10)
         text: "Close"
         on_release: root.dismiss()
+
     MDLabel:
         font_style: "Headline"
         text: "Change theme"
@@ -65,16 +68,18 @@ Builder.load_string("""
         pos_hint: {'center_x': 0.5, 'center_y': 0.9}
         theme_text_color: 'Custom'
         text_color: root.specific_text_color
+
     MDTabbedPanel:
         size_hint: (None, None)
         size: root.width, root.height-dp(135)
         pos_hint: {'center_x': 0.5, 'center_y': 0.475}
         id: tab_panel
-        tab_display_mode:'text'
+        tab_display_mode: 'text'
+        tab_width_mode: 'fixed'
 
         MDTab:
             name: 'color'
-            text: "Theme Color"
+            text: "Theme"
 
             BoxLayout:
                 spacing: dp(4)
@@ -103,6 +108,7 @@ Builder.load_string("""
                     BoxLayout:
                         PrimaryColorSelector:
                             color_name: 'DeepPurple'
+
                 BoxLayout:
                     size_hint: (None, None)
                     pos_hint: {'center_x': .5, 'center_y': 0.5}
@@ -199,7 +205,7 @@ Builder.load_string("""
 
         MDTab:
             name: 'accent_color'
-            text: "Accent Color"
+            text: "Accent"
 
             BoxLayout:
                 spacing: dp(4)
@@ -325,7 +331,7 @@ Builder.load_string("""
 
         MDTab:
             name: 'style'
-            text: "Theme Style"
+            text: "Style"
 
             FloatLayout:
                 size: self.size

@@ -295,7 +295,7 @@ Builder.load_string('''
             width: self.texture_size[0]
         MDLabel:
             id: lbl_txt
-            text: root._text
+            text: root.text
             shorten: True
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
@@ -319,7 +319,7 @@ Builder.load_string('''
             width: self.texture_size[0]
         MDLabel:
             id: lbl_txt
-            text: root._text
+            text: root.text
             shorten: True
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
@@ -622,13 +622,9 @@ class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
 class BaseFlatIconButton(MDFlatButton):
     icon = StringProperty('android')
     text = StringProperty('')
-    _text = StringProperty('')
 
     def on_text(self, instance, text):
-        # TODO: Add automatic calculation width button
-        if self._text == '':
-            self._text = text
-            instance.text = ''
+        pass
 
 
 class MDRaisedButton(BaseRectangularButton, RectangularElevationBehavior,

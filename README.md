@@ -62,7 +62,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.8.7:
+What's new in version 0.8.8:
 ============================
 * Add new class [SmartTileWithStar](https://github.com/HeaTTheatR/KivyMD/wiki/SmartTileWithStar)
 
@@ -77,6 +77,11 @@ Image previous
 <p align="center">
     <img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/previous.png">
 </p>
+
+Sister project:
+==============
+
+[Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
 
 License
 =======

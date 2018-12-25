@@ -30,7 +30,7 @@ Installation and use with Buildozer
 ===================================
 
 #### Dependencies:
-* Kivy version is not less than 1.9.2
+* Kivy version is not less than 1.10.1
 * PIL
 
 #### How to install

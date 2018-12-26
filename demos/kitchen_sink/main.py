@@ -431,7 +431,7 @@ class KitchenSink(App, Screens):
                                               select_path=self.select_path,
                                               previous=previous)
             self.manager.add_widget(self.file_manager)
-            self.file_manager.show('/')  # output manager to the screen
+            self.file_manager.show(self.user_data_dir)
             self.manager_open = True
             self.manager.open()
 

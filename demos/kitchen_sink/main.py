@@ -35,7 +35,7 @@ from kivymd.toolbar import MDBottomAppBar
 from kivymd.theme_picker import MDThemePicker
 from kivymd.theming import ThemeManager
 from kivymd.time_picker import MDTimePicker
-from kivymd.card import MDCardPost
+from kivymd.card import MDCardPost, MDCard
 from kivymd.filemanager import MDFileManager
 from kivymd.progressloader import MDProgressLoader
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
@@ -219,6 +219,9 @@ main_widget_kv = """
     MyNavigationDrawerIconButton:
         text: "Tabs"
         on_release: app.show_tabs()
+    MyNavigationDrawerIconButton:
+        text: "Manager Swiper"
+        on_release: app.show_manager_swiper()
     MyNavigationDrawerIconButton:
         text: "Text fields"
         on_release: app.show_textfields()
@@ -770,6 +773,10 @@ class IconRightSampleWidget(IRightBodyTouch, MDCheckbox):
 
 class PopupScreen(MDPopupScreen):
     pass
+
+
+class MyCard(MDCard):
+    text = StringProperty('')
 
 
 if __name__ == '__main__':

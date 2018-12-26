@@ -1,5 +1,11 @@
+import os
+
 from kivy.factory import Factory
 from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.core.window import Window
+
+from kivymd.utils.cropimage import crop_image
 
 bottom_app_bar = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
@@ -1369,7 +1375,6 @@ fan_manager = """
 popup_screen = """
 <PopupScreenWidget@Screen>:
     name: 'popup screen'
-
     on_enter: app.set_popup_screen(content_popup)
 
     PopupScreen:
@@ -1379,8 +1384,114 @@ popup_screen = """
             id: content_popup
 """
 
+manager_swiper = """
+#:import images_path kivymd.images_path
+#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDLabel kivymd.label.MDLabel
+#:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
+
+
+<MyCard>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(300)
+    pos_hint: {'top': 1}
+
+    Image:
+        source:
+            '{}/assets/guitar-1139397_1280_swiper_crop.png'.format(app.directory)
+        size_hint: None, None
+        size: root.width, dp(250)
+        pos_hint: {'top': 1}
+
+    MDLabel:
+        theme_text_color: 'Custom'
+        bold: True
+        text_color: app.theme_cls.primary_color
+        text: root.text
+        size_hint_y: None
+        height: dp(60)
+        halign: 'center'
+
+
+<MySwiperManager@Screen>:
+    name: 'manager swiper'
+
+    BoxLayout:
+        orientation: 'vertical'
+    
+        canvas:
+            Color:
+                rgba: 0, 0, 0, .2
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            id: box
+            padding: dp(10)
+            orientation: 'vertical'
+
+            MDSwiperManager:
+                id: swiper_manager
+        
+                Screen:
+                    name: 'screen one'
+                    MyCard:
+                        text: 'Swipe to switch to screen one'.upper()
+        
+                Screen:
+                    name: 'screen two'
+                    MyCard:
+                        text: 'Swipe to switch to screen two'.upper()
+        
+                Screen:
+                    name: 'screen three'
+                    MyCard:
+                        text: 'Swipe to switch to screen three'.upper()
+        
+                Screen:
+                    name: 'screen four'
+                    MyCard:
+                        text: 'Swipe to switch to screen four'.upper()
+        
+                Screen:
+                    name: 'screen five'
+                    MyCard:
+                        text: 'Swipe to switch to screen five'.upper()
+"""
+
 
 class Screens(object):
+    manager_swiper = None
+
+    def show_manager_swiper(self):
+        from kivymd.managerswiper import MDSwiperPagination
+
+        if not self.manager_swiper:
+            path_to_crop_image = \
+                '{}/assets/' \
+                'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
+            if not os.path.exists(path_to_crop_image):
+                crop_image(
+                    (int(Window.width - dp(10)), int(dp(250))),
+                    '{}/assets/guitar-1139397_1280.png'.format(
+                        self.directory), path_to_crop_image)
+
+            Builder.load_string(manager_swiper)
+            self.manager_swiper = Factory.MySwiperManager()
+            self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
+
+            print(self.manager_swiper)
+
+            paginator = MDSwiperPagination()
+            paginator.screens = self.manager_swiper.ids.swiper_manager.screen_names
+            paginator.manager = self.manager_swiper.ids.swiper_manager
+            self.manager_swiper.ids.swiper_manager.paginator = paginator
+            self.manager_swiper.ids.box.add_widget(paginator)
+
+        self.main_widget.ids.scr_mngr.current = 'manager swiper'
+
     bottom_navigation = None
 
     def show_bottom_navigation(self):

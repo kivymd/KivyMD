@@ -62,9 +62,9 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.8.9:
+What's new in version 0.9.0:
 ============================
-* Add new class [SmartTileWithStar](https://github.com/HeaTTheatR/KivyMD/wiki/SmartTileWithStar)
+* Add new class [MDSwiperManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDSwiperManager)
 
 Video previous
 ==============

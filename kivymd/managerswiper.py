@@ -283,6 +283,7 @@ class MDSwiperManager(ScreenManager):
         if self.index_screen >= len(self.screen_names) and \
                 direction != 'right':
             self.index_screen = 0
+        self.transition.direction = direction
         self.current = self.screen_names[self.index_screen]
 
     def on_touch_move(self, touch):
@@ -292,9 +293,9 @@ class MDSwiperManager(ScreenManager):
                     direction = 'left'
                 else:
                     direction = 'right'
-                self.transition.direction = direction
                 self.swipe = True
                 self.swith_screen(direction)
+                self._x = 0
         return super(MDSwiperManager, self).on_touch_move(touch)
 
     def on_touch_down(self, touch):

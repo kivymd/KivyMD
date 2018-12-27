@@ -52,8 +52,6 @@ Running on Android
 ==================
 Install and run the package [kitchen_sink-0.9.1-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python2)
 
-Or install and run the package [kitchen_sink-0.4.2-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3)
-
 Build two apk armv7 (Python2 and Python3) with Docker
 ==================
     $docker build -t kivymd .

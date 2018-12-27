@@ -1481,11 +1481,9 @@ class Screens(object):
             Builder.load_string(manager_swiper)
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
-
-            print(self.manager_swiper)
-
             paginator = MDSwiperPagination()
-            paginator.screens = self.manager_swiper.ids.swiper_manager.screen_names
+            paginator.screens = \
+                self.manager_swiper.ids.swiper_manager.screen_names
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)

@@ -23,29 +23,21 @@ from screens import Screens
 from kivymd.utils.cropimage import crop_image
 from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.popupscreen import MDPopupScreen
-from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MDIconButton
-from kivymd.date_picker import MDDatePicker
-from kivymd.dialog import MDInputDialog, MDDialog
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.selectioncontrols import MDCheckbox
-from kivymd.snackbar import Snackbar
-from kivymd.toolbar import MDBottomAppBar
-from kivymd.theme_picker import MDThemePicker
 from kivymd.theming import ThemeManager
-from kivymd.time_picker import MDTimePicker
-from kivymd.card import MDCardPost, MDCard
-from kivymd.filemanager import MDFileManager
-from kivymd.progressloader import MDProgressLoader
-from kivymd.stackfloatingbuttons import MDStackFloatingButtons
-from kivymd.useranimationcard import MDUserAnimationCard
-from kivymd.accordionlistitem import MDAccordionListItem
-# FIXME: crush with Python3.
-try:
-    from kivymd.toast import toast
-except TypeError:
-    from kivymd.toast.kivytoast import toast
+from kivymd.card import MDCard
+
+
+def toast(text):
+    # FIXME: crush with Python3.
+    try:
+        from kivymd.toast import toast
+    except TypeError:
+        from kivymd.toast.kivytoast import toast
+    toast(text)
 
 
 main_widget_kv = """
@@ -189,6 +181,9 @@ main_widget_kv = """
     MyNavigationDrawerIconButton:
         text: "Lists"
         on_release: app.show_lists()
+    MyNavigationDrawerIconButton:
+        text: "MD Icons"
+        on_release: app.show_md_icons()
     MyNavigationDrawerIconButton:
         text: "Menus"
         on_release: app.show_menu()
@@ -350,10 +345,13 @@ class KitchenSink(App, Screens):
 
     def theme_picker_open(self):
         if not self.md_theme_picker:
+            from kivymd.theme_picker import MDThemePicker
             self.md_theme_picker = MDThemePicker()
         self.md_theme_picker.open()
 
     def example_add_stack_floating_buttons(self):
+        from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+
         def set_my_language(instance_button):
             toast(instance_button.icon)
 
@@ -369,6 +367,8 @@ class KitchenSink(App, Screens):
             self.create_stack_floating_buttons = True
 
     def set_accordion_list(self):
+        from kivymd.accordionlistitem import MDAccordionListItem
+
         def callback(text):
             toast('{} to {}'.format(text, content.name_item))
 
@@ -399,6 +399,8 @@ class KitchenSink(App, Screens):
         instance_progress.animation_progress_from_fade()
 
     def show_example_download_file(self, interval):
+        from kivymd.progressloader import MDProgressLoader
+
         def get_connect(host="8.8.8.8", port=53, timeout=3):
             import socket
             try:
@@ -427,6 +429,9 @@ class KitchenSink(App, Screens):
         toast('Done')
 
     def file_manager_open(self):
+        from kivymd.filemanager import MDFileManager
+        from kivymd.dialog import MDDialog
+
         def file_manager_open(text_item):
             previous = False if text_item == 'List' else True
             self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
@@ -479,6 +484,8 @@ class KitchenSink(App, Screens):
         toast(text_item)
 
     def add_cards(self, instance_grid_card):
+        from kivymd.card import MDCardPost
+
         def callback(instance, value):
             if value and isinstance(value, int):
                 toast('Set like in %d stars' % value)
@@ -559,6 +566,8 @@ class KitchenSink(App, Screens):
                 widget.ids.bottom_navigation_desktop_1)
 
     def show_user_example_animation_card(self):
+        from kivymd.useranimationcard import MDUserAnimationCard
+
         def main_back_callback():
             toast('Close card')
 
@@ -572,6 +581,8 @@ class KitchenSink(App, Screens):
         self.user_card.open()
 
     def show_example_snackbar(self, snack_type):
+        from kivymd.snackbar import Snackbar
+
         if snack_type == 'simple':
             Snackbar(text="This is a snackbar!").show()
         elif snack_type == 'button':
@@ -583,6 +594,8 @@ class KitchenSink(App, Screens):
 
     def show_example_input_dialog(self):
         if not self.input_dialog:
+            from kivymd.dialog import MDInputDialog
+
             self.input_dialog = MDInputDialog(
                 title='Title', hint_text='Hint text', size_hint=(.8, .4),
                 text_button_ok='Ok', events_callback=lambda x: None)
@@ -590,6 +603,8 @@ class KitchenSink(App, Screens):
 
     def show_example_alert_dialog(self):
         if not self.alert_dialog:
+            from kivymd.dialog import MDDialog
+
             self.alert_dialog = MDDialog(
                 title='Title', size_hint=(.8, .4), text_button_ok='Ok',
                 text="This is Alert dialog",
@@ -598,6 +613,8 @@ class KitchenSink(App, Screens):
 
     def show_example_ok_cancel_dialog(self):
         if not self.ok_cancel_dialog:
+            from kivymd.dialog import MDDialog
+
             self.ok_cancel_dialog = MDDialog(
                 title='Title', size_hint=(.8, .4), text_button_ok='Ok',
                 text="This is Ok Cancel dialog", text_button_cancel='Cancel',
@@ -606,6 +623,8 @@ class KitchenSink(App, Screens):
 
     def show_example_long_dialog(self):
         if not self.long_dialog:
+            from kivymd.dialog import MDDialog
+
             self.long_dialog = MDDialog(
                 text="Lorem ipsum dolor sit amet, consectetur adipiscing "
                      "elit, sed do eiusmod tempor incididunt ut labore et "
@@ -625,6 +644,8 @@ class KitchenSink(App, Screens):
         self.previous_time = time
 
     def show_example_time_picker(self):
+        from kivymd.time_picker import MDTimePicker
+
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_data)
 
@@ -640,6 +661,8 @@ class KitchenSink(App, Screens):
         self.pickers.ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
+        from kivymd.date_picker import MDDatePicker
+
         if self.pickers.ids.date_picker_use_previous_date.active:
             pd = self.previous_date
             try:
@@ -651,6 +674,8 @@ class KitchenSink(App, Screens):
             MDDatePicker(self.set_previous_date).open()
 
     def show_example_bottom_sheet(self):
+        from kivymd.bottomsheet import MDListBottomSheet
+
         if not self.bs_menu_1:
             self.bs_menu_1 = MDListBottomSheet()
             self.bs_menu_1.add_item(
@@ -671,6 +696,8 @@ class KitchenSink(App, Screens):
 
     def show_example_grid_bottom_sheet(self):
         if not self.bs_menu_2:
+            from kivymd.bottomsheet import MDGridBottomSheet
+
             self.bs_menu_2 = MDGridBottomSheet()
             self.bs_menu_2.add_item(
                 "Facebook",
@@ -695,6 +722,8 @@ class KitchenSink(App, Screens):
         self.bs_menu_2.open()
 
     def set_appbar(self):
+        from kivymd.toolbar import MDBottomAppBar
+
         def press_button(inctance):
             toast('Press Button')
 

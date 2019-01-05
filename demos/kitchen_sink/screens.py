@@ -196,16 +196,6 @@ bottom_navigation = """
         id: bottom_navigation_demo
 
         MDBottomNavigationItem:
-            name: 'octagon'
-            text: "Warning"
-            icon: "alert-octagon"
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "Warning!"
-                halign: 'center'
-
-        MDBottomNavigationItem:
             name: 'banking'
             text: "Bank"
             icon: 'bank'
@@ -1461,6 +1451,35 @@ manager_swiper = """
                         text: 'Swipe to switch to screen five'.upper()
 """
 
+md_icon_item = """
+#:import OneLineIconListItem kivymd.list.OneLineIconListItem
+
+
+<MDIconItem@OneLineIconListItem>:
+    icon: 'android'
+
+    IconLeftSampleWidget:
+        icon: root.icon
+"""
+
+md_icons = """
+<MDIcons@Screen>:
+    name: 'md icons'
+
+    RecycleView:
+        id: rv
+        key_viewclass: 'viewclass'
+        key_size: 'height'
+
+        RecycleBoxLayout:
+            padding: dp(10)
+            default_size: None, dp(48)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+"""
+
 
 class Screens(object):
     manager_swiper = None
@@ -1498,6 +1517,29 @@ class Screens(object):
             self.bottom_navigation = Factory.BottomNavigation()
             self.main_widget.ids.scr_mngr.add_widget(self.bottom_navigation)
         self.main_widget.ids.scr_mngr.current = 'bottom navigation'
+
+    md_icons = None
+
+    def show_md_icons(self):
+        def set_list_md_icons():
+            from kivymd.icon_definitions import md_icons
+
+            Builder.load_string(md_icon_item)
+            for icon in md_icons.keys():
+                self.md_icons.ids.rv.data.append(
+                    {
+                        'viewclass': 'MDIconItem',
+                        'icon': icon,
+                        'text': icon
+                    }
+                )
+
+        if not self.md_icons:
+            Builder.load_string(md_icons)
+            self.md_icons = Factory.MDIcons()
+            self.main_widget.ids.scr_mngr.add_widget(self.md_icons)
+            set_list_md_icons()
+        self.main_widget.ids.scr_mngr.current = 'md icons'
 
     bottom_sheet = None
 

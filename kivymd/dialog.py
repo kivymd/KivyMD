@@ -189,7 +189,7 @@ class BaseDialog(ThemableBehavior, ModalView):
         def _events_callback(result_press):
             self.dismiss()
             if result_press:
-                self.events_callback(result_press)
+                self.events_callback(result_press, self)
 
         if self.device_ios:  # create buttons for iOS
             self.background = self._background

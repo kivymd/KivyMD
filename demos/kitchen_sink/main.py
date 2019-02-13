@@ -482,8 +482,8 @@ class KitchenSink(App, Screens):
                 self.file_manager.back()
         return True
 
-    def callback_for_menu_items(self, text_item, instance):
-        toast(text_item)
+    def callback_for_menu_items(self, *args):
+        toast(args[0])
 
     def add_cards(self, instance_grid_card):
         from kivymd.card import MDCardPost

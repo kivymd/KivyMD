@@ -283,6 +283,8 @@ class KitchenSink(App, Screens):
     theme_cls.primary_palette = 'Blue'
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
+    theme_cls.primary_palette = 'Blue'
+    #theme_cls.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
         super(KitchenSink, self).__init__(**kwargs)
@@ -480,7 +482,7 @@ class KitchenSink(App, Screens):
                 self.file_manager.back()
         return True
 
-    def callback_for_menu_items(self, text_item):
+    def callback_for_menu_items(self, text_item, instance):
         toast(text_item)
 
     def add_cards(self, instance_grid_card):
@@ -593,12 +595,15 @@ class KitchenSink(App, Screens):
                           "long snackbar!").show()
 
     def show_example_input_dialog(self):
+        def result(text_button, instance):
+            toast(instance.text_field.text)
+
         if not self.input_dialog:
             from kivymd.dialog import MDInputDialog
 
             self.input_dialog = MDInputDialog(
                 title='Title', hint_text='Hint text', size_hint=(.8, .4),
-                text_button_ok='Ok', events_callback=lambda x: None)
+                text_button_ok='Ok', events_callback=result)
         self.input_dialog.open()
 
     def show_example_alert_dialog(self):

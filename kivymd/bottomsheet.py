@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Bottom Sheets
 =============
 
-`Material Design spec Bottom Sheets page <http://www.google.com/design/spec/components/bottom-sheets.html>`_
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`
 
 In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
 
-Examples
---------
+Example
+-------
 
 .. note::
 
@@ -36,10 +44,7 @@ For :class:`MDListBottomSheet`:
     bs.add_item("Da Cloud", lambda x: x, icon_src='./assets/cloud-upload.png')
     bs.add_item("Camera", lambda x: x, icon_src='./assets/camera.png')
     bs.open()
-
-API
----
-'''
+"""
 
 from kivy.clock import Clock
 from kivy.lang import Builder

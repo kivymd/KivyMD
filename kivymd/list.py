@@ -4,17 +4,22 @@
 Lists
 =====
 
-`Material Design spec, Lists page <https://www.google.com/design/spec/components/lists.html>`_
+Copyright © 2010-2018 HeaTTheatR
 
-`Material Design spec, Lists: Controls page <https://www.google.com/design/spec/components/lists-controls.html>`_
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Lists <https://material.io/design/components/lists.html>`
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
 it, working nicely with Kivy's :class:`~kivy.uix.scrollview.ScrollView`.
 
-
-Simple examples
----------------
+Example
+-------
 
 Kv Lang:
 

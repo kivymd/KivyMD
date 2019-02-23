@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+Color Definitions
+=====
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`
+"""
+
 colors = {
     'Red': {
         '200': 'ef9a9a',

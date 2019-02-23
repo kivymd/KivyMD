@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 
-'''
-toolbar.py
+"""
+Toolbar
+=======
 
 Copyright © 2010-2018 HeaTTheatR
 
 For suggestions and questions:
 <kivydevelopment@gmail.com>
 
-EXAMPLE:
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, App bars: top <https://material.io/design/components/app-bars-top.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -17,7 +24,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 from kivymd.toolbar import MDBottomAppBar
 
-kv = """
+kv = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDLabel kivymd.label.MDLabel
 
@@ -47,7 +54,7 @@ BoxLayout:
                 on_release:
                     app.md_app_bar.set_pos_action_button('right')
                     app.move_item_menu('right')
-"""
+'''
 
 
 class MyApp(App):
@@ -86,7 +93,7 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.clock import Clock
 from kivy.lang import Builder

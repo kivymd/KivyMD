@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+Elevation Behavior
+==================
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import (ListProperty, ObjectProperty, NumericProperty)

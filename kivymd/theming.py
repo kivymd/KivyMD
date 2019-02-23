@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
 
+"""
+Theming
+=======
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Material theming <https://material.io/design/material-theming>`
+"""
+
 from kivy.app import App
 from kivy.core.text import LabelBase
 from kivy.core.window import Window

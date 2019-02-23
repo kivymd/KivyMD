@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
-Snackbar
-========
+Snackbars
+=========
 
-`Material Design spec page <https://material.io/guidelines/components/snackbars-toasts.html>`_
+Copyright © 2010-2018 HeaTTheatR
 
-API
----
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Snackbars <https://material.io/design/components/snackbars.html>`
 """
 
 from collections import deque

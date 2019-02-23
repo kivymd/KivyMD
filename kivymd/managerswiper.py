@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-managerswiper.py
+Manager Swiper
+==============
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Example
+-------
 
 import os
 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-'''
-textfields.py
+"""
+Text Fields
+===========
 
-A simple manager for selecting directories and files.
 Copyright © 2010-2018 HeaTTheatR
 
 For suggestions and questions:
@@ -12,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Text fields <https://material.io/design/components/text-fields.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -20,7 +23,7 @@ from kivy.factory import Factory
 
 from kivymd.theming import ThemeManager
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
@@ -107,7 +110,7 @@ Builder.load_string("""
 
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"
-""")
+''')
 
 
 class Example(App):
@@ -121,7 +124,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 import sys
 

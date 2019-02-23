@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-card.py
+"""
+Cards
+=====
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Cards <https://material.io/design/components/cards.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -22,7 +26,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 
 
@@ -50,7 +54,7 @@ Builder.load_string("""
             padding: dp(5)
             size_hint_y: None
             height: self.minimum_height
-""")
+''')
 
 
 class Example(App):
@@ -115,7 +119,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.animation import Animation
 from kivy.clock import Clock

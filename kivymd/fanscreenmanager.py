@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-fansceernmanager.py
+"""
+Fan Screen Manager
+==================
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -16,8 +17,8 @@ Perhaps the wrong positioning of the screens with a large number of them.
 
 Thanks for reply - https://groups.google.com/forum/#!topic/kivy-users/ReAVg8eDrDo
 
-
-EXAMPLE:
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -29,7 +30,7 @@ from kivymd.list import ILeftBodyTouch
 from kivymd.theming import ThemeManager
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
@@ -188,7 +189,7 @@ Builder.load_string("""
             icon: 'remote'
 
     Widget:
-""")
+''')
 
 
 class TestFanScreenManager(BoxLayout):
@@ -220,7 +221,7 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout

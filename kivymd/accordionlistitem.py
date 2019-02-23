@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-accordionlistitem.py
+"""
+Accordion List Item
+===================
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -25,7 +27,7 @@ from kivymd.theming import ThemeManager
 from kivymd.accordionlistitem import MDAccordionListItem
 from kivymd.toast import toast
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import TwoLineIconListItem kivymd.list.TwoLineIconListItem
@@ -99,7 +101,7 @@ Builder.load_string("""
                 cols: 1
                 size_hint_y: None
                 height: self.minimum_height
-""")
+''')
 
 
 class ContentForAnimCard(BoxLayout):
@@ -138,7 +140,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.lang import Builder
 from kivy.animation import Animation

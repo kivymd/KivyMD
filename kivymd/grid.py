@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-grid.py
+"""
+Grid
+====
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Image lists <https://material.io/design/components/image-lists.html>`
+
+Example
+-------
 
 import os
 
@@ -21,7 +25,7 @@ from kivy.lang import Builder
 from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
-kv = """
+kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
 #:import SmartTileWithStar kivymd.grid.SmartTileWithStar
@@ -111,7 +115,7 @@ BoxLayout:
                         id: tile_7
                         text:
                             "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
-"""
+'''
 
 
 class MyApp(App):
@@ -134,7 +138,7 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.lang import Builder
 from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, \

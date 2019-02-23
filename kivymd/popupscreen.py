@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 
-'''
-popupscreen.py
+"""
+Popup Screen
+============
 
 Copyright © 2010-2018 HeaTTheatR
 
 For suggestions and questions:
 <kivydevelopment@gmail.com>
 
-EXAMPLE:
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -20,7 +25,7 @@ from kivymd.list import ILeftBodyTouch
 from kivymd.popupscreen import MDPopupScreen
 from kivymd.theming import ThemeManager
 
-Builder.load_string("""
+Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
@@ -125,7 +130,7 @@ Builder.load_string("""
             icon: 'remote'
 
     Widget:
-""")
+''')
 
 
 class PopupScreen(MDPopupScreen):
@@ -158,7 +163,7 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.clock import Clock
 from kivy.metrics import dp

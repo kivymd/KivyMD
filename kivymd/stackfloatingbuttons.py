@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-stackfloatingbuttons.py
+"""
+Stack Floating Buttons
+======================
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -22,7 +24,7 @@ from kivymd.theming import ThemeManager
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 
 
@@ -35,7 +37,7 @@ Builder.load_string("""
         elevation: 10
         left_action_items: [['menu', lambda x: None]]
 
-""")
+''')
 
 
 class Example(App):
@@ -67,7 +69,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.animation import Animation
 from kivy.core.window import Window

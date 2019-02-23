@@ -1,9 +1,19 @@
-# Created on Jul 8, 2016
-#
-# The default kivy tab implementation seems like a stupid design to me. The
-# ScreenManager is much better.
-#
-# @author: jrm
+# -*- coding: utf-8 -*-
+
+"""
+Tabs
+====
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`
+"""
 
 from kivy.animation import Animation
 from kivy.clock import Clock

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Navigation Drawer
 =================
 
@@ -12,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -21,7 +24,7 @@ from kivymd.navigationdrawer import NavigationDrawerIconButton
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
-main_kv = """
+main_kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
@@ -54,7 +57,7 @@ NavigationLayout:
                 [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
 
         Widget:
-"""
+'''
 
 
 class Example(App):
@@ -79,7 +82,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.core.window import Window
 from kivy.lang import Builder

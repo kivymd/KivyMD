@@ -1,16 +1,29 @@
 # -*- coding: utf-8 -*-
-#
-# Two implementations. The first is based on color brightness obtained from:-
-# https://www.w3.org/TR/AERT#color-contrast
-# The second is based on relative luminance calculation for sRGB obtained from:-
-# https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-# and contrast ratio calculation obtained from:-
-# https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
-#
-# Preliminary testing suggests color brightness more closely matches the
-# Material Design spec suggested text colors, but the alternative implementation
-# is both newer and the current 'correct' recommendation, so is included here
-# as an option.
+
+"""
+Bottom Sheets
+=============
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+Two implementations. The first is based on color brightness obtained from:-
+https://www.w3.org/TR/AERT#color-contrast
+The second is based on relative luminance calculation for sRGB obtained from:-
+https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+and contrast ratio calculation obtained from:-
+https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+
+Preliminary testing suggests color brightness more closely matches the
+Material Design spec suggested text colors, but the alternative implementation
+is both newer and the current 'correct' recommendation, so is included here
+as an option.
+"""
 
 
 def _color_brightness(color):

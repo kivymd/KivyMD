@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-'''
-filemanager.py
+"""
+File Manager
+============
 
-A simple manager for selecting directories and files.
 Copyright © 2010-2018 HeaTTheatR
 
 For suggestions and questions:
@@ -12,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+A simple manager for selecting directories and files.
+
+Example
+-------
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -25,7 +28,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
@@ -49,7 +52,7 @@ Builder.load_string("""
             icon: "folder"
             pos_hint: {'center_x': .5, 'center_y': .6}
             on_release: app.file_manager_open()
-""")
+''')
 
 
 class Example(App):
@@ -104,7 +107,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 import os
 import threading

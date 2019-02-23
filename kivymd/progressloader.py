@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-progressloader.py
-
-Progressbar downloads files from the server.
+Progress Loader
+===============
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -13,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Progressbar downloads files from the server.
+
+Example
+-------
 
 import os
 
@@ -26,8 +28,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
-Builder.load_string(
-'''
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
@@ -97,7 +98,6 @@ class Test(App):
 
 
 Test().run()
-
 """
 
 from kivy.clock import Clock

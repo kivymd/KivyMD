@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-updatespinner.py
+"""
+Update Spinner
+==============
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -20,7 +22,7 @@ from kivy.clock import Clock
 
 from kivymd.theming import ThemeManager
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
@@ -48,7 +50,7 @@ Builder.load_string("""
 
         MDUpdateSpinner:
             event_update: lambda x: app.update_screen(self)
-""")
+''')
 
 
 class Example(App):
@@ -75,7 +77,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.animation import Animation
 from kivy.clock import Clock

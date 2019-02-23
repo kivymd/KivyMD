@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
 
+"""
+Sliders
+=======
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Sliders <https://material.io/design/components/sliders.html>`
+"""
+
 from kivy.lang import Builder
 from kivy.properties import ListProperty, AliasProperty, BooleanProperty
 from kivy.utils import get_color_from_hex

@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Buttons
 =======
-
-`Material Design spec, Buttons page <https://www.google.com/design/spec/components/buttons.html>`_
-
-`Material Design spec, Buttons: Floating Action Button page <https://www.google.com/design/spec/components/buttons-floating-action-button.html>`_
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -16,7 +12,12 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Buttons <https://material.io/design/components/buttons.html>`
+
+`Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -24,7 +25,7 @@ from kivy.factory import Factory
 
 from kivymd.theming import ThemeManager
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDIconButton kivymd.button.MDIconButton
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
@@ -116,7 +117,7 @@ Builder.load_string("""
         MDTextButton:
             text: "MDTextButton"
             pos_hint: {'center_x': 0.5, 'center_y': .05}
-""")
+''')
 
 
 class Example(App):
@@ -130,7 +131,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color

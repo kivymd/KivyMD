@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-chips.py
+"""
+Chips
+=====
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,14 +12,17 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Chips <https://material.io/design/components/chips.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
 
-kv = """
+kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
@@ -154,7 +158,7 @@ BoxLayout:
                     label: 'Facebook'
                     icon: 'facebook'
                     callback: app.callback
-"""
+'''
 
 
 class MyApp(App):
@@ -169,7 +173,7 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.metrics import dp
 from kivy.properties import StringProperty, ListProperty, ObjectProperty, \

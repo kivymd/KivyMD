@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+Background Color Behavior
+=========================
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
+
 from kivy.lang import Builder
 from kivy.properties import BoundedNumericProperty, ReferenceListProperty
 from kivy.properties import OptionProperty, ListProperty

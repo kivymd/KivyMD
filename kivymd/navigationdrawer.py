@@ -392,7 +392,11 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
                 widget._active = True
                 self.active_item = widget
             widget.bind(on_release=lambda x: self.panel.toggle_state())
-            widget.bind(on_release=lambda x: x._set_active(True, list=self))
+            try:
+                widget.bind(
+                    on_release=lambda x: x._set_active(True, list=self))
+            except AttributeError:
+                pass
         else:
             super(MDNavigationDrawer, self).add_widget(widget, index)
 

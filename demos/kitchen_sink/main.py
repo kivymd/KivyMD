@@ -28,7 +28,7 @@ from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.selectioncontrols import MDCheckbox
 from kivymd.theming import ThemeManager
-from kivymd.card import MDCard
+from kivymd.cards import MDCard
 
 
 def toast(text):
@@ -485,7 +485,7 @@ class KitchenSink(App, Screens):
         toast(args[0])
 
     def add_cards(self, instance_grid_card):
-        from kivymd.card import MDCardPost
+        from kivymd.cards import MDCardPost
 
         def callback(instance, value):
             if value and isinstance(value, int):
@@ -582,7 +582,7 @@ class KitchenSink(App, Screens):
         self.user_card.open()
 
     def show_example_snackbar(self, snack_type):
-        from kivymd.snackbar import Snackbar
+        from kivymd.snackbars import Snackbar
 
         if snack_type == 'simple':
             Snackbar(text="This is a snackbar!").show()

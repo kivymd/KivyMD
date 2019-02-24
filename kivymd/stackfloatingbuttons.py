@@ -78,7 +78,7 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty, DictProperty, ObjectProperty
 from kivy.metrics import dp
 
-from kivymd.card import MDCard
+from kivymd.cards import MDCard
 
 
 Builder.load_string('''

@@ -24,7 +24,7 @@ from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.card import MDCard
+from kivymd.cards import MDCard
 from kivymd.managerswiper import MDSwiperPagination
 from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image

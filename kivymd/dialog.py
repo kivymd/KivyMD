@@ -92,7 +92,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
-from kivymd.card import MDCard
+from kivymd.cards import MDCard
 from kivymd.textfields import MDTextField
 from kivymd.theming import ThemableBehavior
 from kivymd.button import MDFlatButton, MDRaisedButton, MDTextButton
@@ -102,7 +102,7 @@ from kivymd.material_resources import DEVICE_IOS
 
 Builder.load_string('''
 #:import images_path kivymd.images_path
-#;import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 
 
 <ContentInputDialog>

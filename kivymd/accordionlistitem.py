@@ -35,7 +35,7 @@ Builder.load_string('''
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
 
 
-<ContentForAnimCard>:
+<ContentForAnimCard>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -66,7 +66,7 @@ Builder.load_string('''
         text: "Call Viber Out"
         on_press: root.callback(self.text)
         secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]" \
+            "[color=%s]Advantageous rates for calls[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
@@ -75,13 +75,13 @@ Builder.load_string('''
         text: "Call over mobile network"
         on_press: root.callback(self.text)
         secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]" \
+            "[color=%s]Operator's tariffs apply[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
 
-<ExampleAccordionList@BoxLayout>:
+<ExampleAccordionList@BoxLayout>
     orientation: 'vertical'
 
     Toolbar:
@@ -152,8 +152,8 @@ from kivy.uix.image import Image
 from kivymd.button import MDIconButton
 from kivymd.list import IRightBodyTouch, OneLineAvatarIconListItem, ILeftBody
 
-Builder.load_string("""
-<AccordionListItem>:
+Builder.load_string('''
+<AccordionListItem>
     text: root.title
 
     AvatarLeft:
@@ -173,7 +173,7 @@ Builder.load_string("""
             PopMatrix
 
 
-<MDAccordionListItem>:
+<MDAccordionListItem>
     size_hint_y: None
     height: dp(68)
 
@@ -182,13 +182,13 @@ Builder.load_string("""
         size_hint_y: None
         height: root.height
         orientation: 'vertical'
-                
+
         AccordionListItem:
             id: item_anim
             title: root.title
             icon: root.icon
             on_press: root.check_open_box(self)
-""")
+''')
 
 
 class AvatarLeft(ILeftBody, Image):

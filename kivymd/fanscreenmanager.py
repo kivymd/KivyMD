@@ -39,7 +39,7 @@ Builder.load_string('''
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 
 
-<TestFanScreenManager>:
+<TestFanScreenManager>
     orientation: 'vertical'
 
     Toolbar:
@@ -91,7 +91,7 @@ Builder.load_string('''
 #
 ###############################################################################
 
-<ScreenTwo>:
+<ScreenTwo>
     orientation: 'vertical'
     spacing: dp(10)
 
@@ -146,7 +146,7 @@ Builder.load_string('''
             pos_hint: {'center_x': .5}
 
 
-<ScreenOne>:
+<ScreenOne>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -175,7 +175,7 @@ Builder.load_string('''
     TwoLineIconListItem:
         text: "Call Viber Out"
         secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]" \
+            "[color=%s]Advantageous rates for calls[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
@@ -183,7 +183,7 @@ Builder.load_string('''
     TwoLineIconListItem:
         text: "Call over mobile network"
         secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]" \
+            "[color=%s]Operator's tariffs apply[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'

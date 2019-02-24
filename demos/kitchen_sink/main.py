@@ -3,10 +3,10 @@
 import os
 import sys
 
+sys.path.append(os.path.abspath(__file__).split('demos')[0])
+
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
-
-sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -40,10 +40,9 @@ def toast(text):
     toast(text)
 
 
-main_widget_kv = """
+main_widget_kv = '''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-
 #:import images_path kivymd.images_path
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
@@ -58,7 +57,7 @@ main_widget_kv = """
 #:import MDLabel kivymd.label.MDLabel
 
 
-<ContentPopup@BoxLayout>:
+<ContentPopup@BoxLayout>
     orientation: 'vertical'
     padding: dp(1)
     spacing: dp(30)
@@ -79,7 +78,7 @@ main_widget_kv = """
     Widget:
 
 
-<ContentForAnimCard>:
+<ContentForAnimCard>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -110,7 +109,7 @@ main_widget_kv = """
         text: "Call Viber Out"
         on_press: root.callback(self.text)
         secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]" \
+            "[color=%s]Advantageous rates for calls[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         # FIXME: Don't work "secondary_text_color" parameter
         # secondary_text_color: app.theme_cls.primary_color
@@ -121,17 +120,17 @@ main_widget_kv = """
         text: "Call over mobile network"
         on_press: root.callback(self.text)
         secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]" \
+            "[color=%s]Operator's tariffs apply[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
 
-<MyNavigationDrawerIconButton@NavigationDrawerIconButton>:
+<MyNavigationDrawerIconButton@NavigationDrawerIconButton>
     icon: 'checkbox-blank-circle'
 
 
-<ContentNavigationDrawer@MDNavigationDrawer>:
+<ContentNavigationDrawer@MDNavigationDrawer>
     drawer_logo: './assets/drawer_logo.png'
 
     NavigationDrawerSubheader:
@@ -275,7 +274,7 @@ NavigationLayout:
                     halign: 'center'
                     text_size: self.width - 20, None
                     pos_hint: {'center_x': .5, 'center_y': .6}
-"""
+'''
 
 
 class KitchenSink(App, Screens):
@@ -284,7 +283,7 @@ class KitchenSink(App, Screens):
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
     theme_cls.primary_palette = 'Blue'
-    #theme_cls.theme_style = 'Dark'
+    # theme_cls.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
         super(KitchenSink, self).__init__(**kwargs)
@@ -296,7 +295,7 @@ class KitchenSink(App, Screens):
             for i in range(15)
         ]
         self.Window = Window
-        self.manager = False
+        self.manager = None
         self.md_theme_picker = None
         self.long_dialog = None
         self.input_dialog = None
@@ -311,18 +310,18 @@ class KitchenSink(App, Screens):
         self.bs_menu_2 = None
         self.tick = 0
         self.create_stack_floating_buttons = False
-        self.previous_text = \
-            "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
-            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
-            "examples, open the menu and select from the list the desired " \
-            "example\n\n" \
-            "" \
-            "" \
-            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
-            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
-            "[/b][/u]\n\n" \
-            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
-            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
+        self.previous_text =\
+            "Welcome to the application [b][color={COLOR}]Kitchen Sink"\
+            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] "\
+            "examples, open the menu and select from the list the desired "\
+            "example\n\n"\
+            ""\
+            ""\
+            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n"\
+            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]"\
+            "[/b][/u]\n\n"\
+            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n"\
+            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]"\
             "[/b][u]".format(COLOR=get_hex_from_color(
                 self.theme_cls.primary_color))
         self.names_contacts = (
@@ -391,7 +390,7 @@ class KitchenSink(App, Screens):
     def download_progress_hide(self, instance_progress, value):
         """Hides progress progress."""
 
-        self.main_widget.ids.toolbar.right_action_items = \
+        self.main_widget.ids.toolbar.right_action_items =\
             [['download',
               lambda x: self.download_progress_show(instance_progress)]]
 
@@ -410,11 +409,11 @@ class KitchenSink(App, Screens):
                 socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(
                     (host, port))
                 return True
-            except Exception:
+            except (TimeoutError, ConnectionError, OSError):
                 return False
 
         if get_connect():
-            link = 'https://www.python.org/ftp/python/3.5.1/' \
+            link = 'https://www.python.org/ftp/python/3.5.1/'\
                    'python-3.5.1-embed-win32.zip'
             progress = MDProgressLoader(
                 url_on_image=link,
@@ -547,7 +546,7 @@ class KitchenSink(App, Screens):
 
     def build(self):
         self.main_widget = Builder.load_string(main_widget_kv)
-        #self.bottom_navigation_remove_mobile(self.main_widget)
+        # self.bottom_navigation_remove_mobile(self.main_widget)
         return self.main_widget
 
     def set_popup_screen(self, content_popup):

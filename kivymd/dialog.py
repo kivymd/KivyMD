@@ -31,7 +31,7 @@ Builder.load_string('''
 #:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
 
 
-<ExampleDialogs@BoxLayout>:
+<ExampleDialogs@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
@@ -105,7 +105,7 @@ Builder.load_string('''
 #;import MDSeparator kivymd.card.MDSeparator
 
 
-<ContentInputDialog>:
+<ContentInputDialog>
     orientation: 'vertical'
     padding: dp(15)
     spacing: dp(10)
@@ -131,7 +131,7 @@ Builder.load_string('''
         padding: dp(20), 0, dp(20), 0
 
 
-<ContentMDDialog>:
+<ContentMDDialog>
     orientation: 'vertical'
     padding: dp(15)
     spacing: dp(10)
@@ -153,9 +153,9 @@ Builder.load_string('''
         id: scroll
         size_hint_y: None
         height:
-            root.height - (box_buttons.height + title.height + dp(48) + \
-            sep.height)
-        
+            root.height - (box_buttons.height + title.height + dp(48)\
+            + sep.height)
+
         canvas:
             Rectangle:
                 pos: self.pos
@@ -189,6 +189,7 @@ else:
 
 # FIXME: Not work themes for iOS.
 class BaseDialog(ThemableBehavior, ModalView):
+
     def set_content(self, instance_content_dialog):
         def _events_callback(result_press):
             self.dismiss()

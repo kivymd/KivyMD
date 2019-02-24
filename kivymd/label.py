@@ -50,9 +50,10 @@ class MDLabel(ThemableBehavior, Label):
                                  'Icon': ['Icons', False, 24, None]})
 
     theme_text_color = OptionProperty(None, allownone=True,
-            options=['Primary', 'Secondary', 'Hint', 'Error', 'Custom',
-                     'ContrastParentBackground']
-            )
+                                      options=['Primary', 'Secondary', 'Hint',
+                                               'Error', 'Custom',
+                                               'ContrastParentBackground']
+                                      )
 
     text_color = ListProperty(None, allownone=True)
 
@@ -80,14 +81,14 @@ class MDLabel(ThemableBehavior, Label):
         op = self.opposite_colors
         setter = self.setter('color')
         t.unbind(**self._currently_bound_property)
-        attr_name = {'Primary': 'text_color' if not op else
-                                'opposite_text_color',
-                     'Secondary': 'secondary_text_color' if not op else
-                                  'opposite_secondary_text_color',
-                     'Hint': 'disabled_hint_text_color' if not op else
-                             'opposite_disabled_hint_text_color',
-                     'Error': 'error_color',
-                    }.get(value, None)
+        attr_name = {
+            'Primary': 'text_color' if not op else 'opposite_text_color',
+            'Secondary': 'secondary_text_color' if not op else
+            'opposite_secondary_text_color',
+            'Hint': 'disabled_hint_text_color' if not op else
+            'opposite_disabled_hint_text_color',
+            'Error': 'error_color',
+        }.get(value, None)
         if attr_name:
             c = {attr_name: setter}
             t.bind(**c)

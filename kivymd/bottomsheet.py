@@ -58,7 +58,7 @@ from kivy.uix.modalview import ModalView
 from kivymd import images_path
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.label import MDLabel
-from kivymd.list import MDList, OneLineListItem, ILeftBody, \
+from kivymd.list import MDList, OneLineListItem, ILeftBody,\
     OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 
@@ -104,8 +104,8 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     def open(self, *largs):
         super(MDBottomSheet, self).open(*largs)
 
-    def add_widget(self, widget, index=0):
-        super(MDBottomSheet, self).add_widget(widget, index)
+    def add_widget(self, widget, index=0, canvas=None):
+        super(MDBottomSheet, self).add_widget(widget, index, canvas)
 
 
 Builder.load_string('''
@@ -114,7 +114,7 @@ Builder.load_string('''
 
 <ListBSIconLeft>
     font_style: 'Icon'
-    text: u"{}".format(md_icons[root.icon])
+    text: u'{}'.format(md_icons[root.icon])
     halign: 'center'
     theme_text_color: 'Primary'
     valign: 'middle'

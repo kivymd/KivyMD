@@ -27,7 +27,8 @@ Builder.load_string('''
 #:import MDLabel kivymd.label.MDLabel
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
-<ExampleUpdateSpinner@BoxLayout>:
+
+<ExampleUpdateSpinner@BoxLayout>
     orientation: 'vertical'
 
     Toolbar:
@@ -83,19 +84,19 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import ListProperty, BooleanProperty, \
+from kivy.properties import ListProperty, BooleanProperty,\
     ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import MDSpinner kivymd.spinner.MDSpinner
 
 
-<MDUpdateSpinner>:
+<MDUpdateSpinner>
 
     AnchorLayout:
         id: body_spinner
@@ -119,7 +120,7 @@ Builder.load_string("""
             size_hint: None, None
             size: dp(30), dp(30)
             color: root.color
-""")
+''')
 
 
 class MDUpdateSpinner(ThemableBehavior, FloatLayout):

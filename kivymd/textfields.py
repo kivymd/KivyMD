@@ -30,7 +30,7 @@ Builder.load_string('''
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 
 
-<ExampleTextFields@BoxLayout>:
+<ExampleTextFields@BoxLayout>
     orientation: 'vertical'
 
     Toolbar:
@@ -146,7 +146,7 @@ Builder.load_string('''
 #:import MDTextButton kivymd.button.MDTextButton
 
 
-<MDTextField>:
+<MDTextField>
     canvas.before:
         Clear
         Color:
@@ -176,7 +176,7 @@ Builder.load_string('''
             pos: self.width-self._right_msg_lbl.texture_size[0]+dp(45), self.y
         Color:
             rgba:
-                (self._current_line_color if self.focus and not \
+                (self._current_line_color if self.focus and not\
                 self._cursor_blink else (0, 0, 0, 0))
         Rectangle:
             pos: [int(x) for x in self.cursor_pos]
@@ -189,8 +189,8 @@ Builder.load_string('''
             pos: self.x, self.y + self.height - self._hint_y
         Color:
             rgba:
-                self.disabled_foreground_color if self.disabled else \
-                (self.hint_text_color if not self.text and not \
+                self.disabled_foreground_color if self.disabled else\
+                (self.hint_text_color if not self.text and not\
                 self.focus else self.foreground_color)
 
     font_name: 'Roboto'
@@ -208,7 +208,7 @@ Builder.load_string('''
     text_size: (self.width, None)
 
 
-<MDTextFieldClear>:
+<MDTextFieldClear>
     size_hint_y: None
     height: self.minimum_height
 
@@ -220,8 +220,8 @@ Builder.load_string('''
             padding_x: 0, clear_btn.width + dp(15)
             hint_text: root.hint_text
             on_focus:
-                clear_btn.custom_color = self.line_color_focus \
-                if clear_btn.custom_color != self.line_color_focus \
+                clear_btn.custom_color = self.line_color_focus\
+                if clear_btn.custom_color != self.line_color_focus\
                 else self.line_color_normal
 
         MDTextButton:
@@ -232,14 +232,14 @@ Builder.load_string('''
             on_press: root.refresh_field(field, clear_btn)
 
 
-<MDTextFieldRect>:
+<MDTextFieldRect>
     on_focus:
-        root.anim_rect([root.x, root.y, root.right, root.y, root.right, \
-        root.top, root.x, root.top, root.x, root.y], 1) if root.focus \
-        else root.anim_rect([root.x - dp(60), root.y - dp(60), \
+        root.anim_rect([root.x, root.y, root.right, root.y, root.right,\
+        root.top, root.x, root.top, root.x, root.y], 1) if root.focus\
+        else root.anim_rect([root.x - dp(60), root.y - dp(60),\
         root.right + dp(60), root.y - dp(60),
-        root.right + dp(60), root.top + dp(60), \
-        root.x - dp(60), root.top + dp(60), \
+        root.right + dp(60), root.top + dp(60),\
+        root.x - dp(60), root.top + dp(60),\
         root.x - dp(60), root.y - dp(60)], 0)
 
     canvas.after:
@@ -273,7 +273,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
 
     def anim_rect(self, points, alpha):
         root_canvas = self.canvas.children[3]
-        if type(root_canvas) is type(self.root_color):
+        if isinstance(root_canvas, type(self.root_color)):
             instance_line = self.canvas.children[-1].children[-1]
             instance_color = self.canvas.children[-1].children[0]
         else:
@@ -366,10 +366,10 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     _hint_lbl_font_size = NumericProperty(sp(16))
     _hint_y = NumericProperty(dp(38))
     _line_width = NumericProperty(0)
-    _current_line_color = ListProperty([0.0, 0.0, 0.0, 0.0])
-    _current_error_color = ListProperty([0.0, 0.0, 0.0, 0.0])
-    _current_hint_text_color = ListProperty([0.0, 0.0, 0.0, 0.0])
-    _current_right_lbl_color = ListProperty([0.0, 0.0, 0.0, 0.0])
+    _current_line_color = ListProperty([.0, .0, .0, .0])
+    _current_error_color = ListProperty([.0, .0, .0, .0])
+    _current_hint_text_color = ListProperty([.0, .0, .0, .0])
+    _current_right_lbl_color = ListProperty([.0, .0, .0, .0])
 
     def __init__(self, **kwargs):
         self._msg_lbl = TextfieldLabel(font_style='Caption',

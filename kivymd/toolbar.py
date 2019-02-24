@@ -114,14 +114,14 @@ Builder.load_string('''
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 
 
-<AppBarActionButton>:
+<AppBarActionButton>
     size: 0, 0
     opacity: 0
     md_bg_color: root.action_button_color
 
 
-<MDBottomAppBar>:
- 
+<MDBottomAppBar>
+
     Toolbar:
         id: toolbar
         left_action_items: root.left_action_items
@@ -129,7 +129,7 @@ Builder.load_string('''
         md_bg_color: root.md_bg_color
 
 
-<Toolbar>:
+<Toolbar>
     size_hint_y: None
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
@@ -223,7 +223,7 @@ class MDBottomAppBar(FloatLayout):
     left_action_items = ListProperty()
     right_action_items = ListProperty()
     md_bg_color = ListProperty([0, 0, 0, 1])
-    action_button_color = \
+    action_button_color =\
         ListProperty([1, .7568627450980392, .027450980392156862, 1])
     anchor = StringProperty('right')
     callback = ObjectProperty(lambda x: None)
@@ -231,10 +231,10 @@ class MDBottomAppBar(FloatLayout):
     def __init__(self, **kwargs):
         super(MDBottomAppBar, self).__init__(**kwargs)
         # Default action Button.
-        x = Window.width - dp(56) - dp(20) if self.anchor == 'right' \
-            else Window.width // 2 - dp(56) // 2 if self.anchor == 'center' \
+        x = Window.width - dp(56) - dp(20) if self.anchor == 'right'\
+            else Window.width // 2 - dp(56) // 2 if self.anchor == 'center'\
             else dp(20)
-        self.action_button = \
+        self.action_button =\
             AppBarActionButton(y=self.ids.toolbar.height // 2,
                                x=x, opacity=1, size=(dp(56), dp(56)),
                                on_release=self.callback,
@@ -251,7 +251,7 @@ class MDBottomAppBar(FloatLayout):
                 return
 
             self.remove_widget(self.action_button)
-            self.action_button = \
+            self.action_button =\
                 AppBarActionButton(y=self.ids.toolbar.height // 2,
                                    x=x, on_release=self.callback,
                                    action_button_color=self.action_button_color)
@@ -267,5 +267,5 @@ class MDBottomAppBar(FloatLayout):
 
 
 class AppBarActionButton(MDFloatingActionButton):
-    action_button_color = \
+    action_button_color =\
         ListProperty([1, .7568627450980392, .027450980392156862, 1])

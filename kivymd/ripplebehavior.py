@@ -13,10 +13,10 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 """
 
-from kivy.properties import ListProperty, NumericProperty, StringProperty, \
+from kivy.properties import ListProperty, NumericProperty, StringProperty,\
     BooleanProperty
 from kivy.animation import Animation
-from kivy.graphics import Color, Ellipse, StencilPush, StencilPop, \
+from kivy.graphics import Color, Ellipse, StencilPush, StencilPop,\
     StencilUse, StencilUnUse, Rectangle
 
 
@@ -52,14 +52,14 @@ class CommonRipple(object):
             self.ripple_rad = self.ripple_rad_default
             self.ripple_pos = (touch.x, touch.y)
 
-            if self.ripple_color != []:
+            if self.ripple_color:
                 pass
             elif hasattr(self, 'theme_cls'):
                 self.ripple_color = self.theme_cls.ripple_color
             else:
                 # If no theme, set Grey 300
-                self.ripple_color = [0.8784313725490196, 0.8784313725490196,
-                                     0.8784313725490196, self.ripple_alpha]
+                self.ripple_color = [.8784313725490196, .8784313725490196,
+                                     .8784313725490196, self.ripple_alpha]
             self.ripple_color[3] = self.ripple_alpha
 
             self.lay_canvas_instructions()
@@ -113,7 +113,7 @@ class CommonRipple(object):
         rc = self.ripple_color
         if not self.fading_out:
             Animation.cancel_all(self, 'ripple_color')
-            anim = Animation(ripple_color=[rc[0], rc[1], rc[2], 0.],
+            anim = Animation(ripple_color=[rc[0], rc[1], rc[2], .0],
                              t=self.ripple_func_out,
                              duration=self.ripple_duration_out)
             anim.bind(on_complete=self.anim_complete)
@@ -136,7 +136,7 @@ class RectangularRippleBehavior(CommonRipple):
             Rectangle(pos=self.pos, size=self.size)
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
-            self.ellipse = \
+            self.ellipse =\
                 Ellipse(size=(self.ripple_rad, self.ripple_rad),
                         pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
                              self.ripple_pos[1] - self.ripple_rad / 2.))

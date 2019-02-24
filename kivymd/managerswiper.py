@@ -36,7 +36,7 @@ activity = '''
 #:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 
 
-<MyCard>:
+<MyCard>
     orientation: 'vertical'
     size_hint_y: None
     height: dp(300)
@@ -44,7 +44,7 @@ activity = '''
 
     Image:
         source:
-            '{}/demos/kitchen_sink/assets/' \
+            '{}/demos/kitchen_sink/assets/'\
             'guitar-1139397_1280_swiper_crop.png'.format(app.directory)
         size_hint: None, None
         size: root.width, dp(250)
@@ -60,37 +60,37 @@ activity = '''
         halign: 'center'
 
 
-<ScreenOne@Screen>:
+<ScreenOne@Screen>
     name: 'screen one'
     MyCard:
         text: 'Swipe to switch to screen one'.upper()
 
 
-<ScreenTwo@Screen>:
+<ScreenTwo@Screen>
     name: 'screen two'
     MyCard:
         text: 'Swipe to switch to screen two'.upper()
 
 
-<ScreenThree@Screen>:
+<ScreenThree@Screen>
     name: 'screen three'
     MyCard:
         text: 'Swipe to switch to screen three'.upper()
 
 
-<ScreenFour@Screen>:
+<ScreenFour@Screen>
     name: 'screen four'
     MyCard:
         text: 'Swipe to switch to screen four'.upper()
 
 
-<ScreenFive@Screen>:
+<ScreenFive@Screen>
     name: 'screen five'
     MyCard:
         text: 'Swipe to switch to screen five'.upper()
 
 
-<MySwiperManager>:
+<MySwiperManager>
     orientation: 'vertical'
 
     canvas:
@@ -154,8 +154,8 @@ class Test(App):
         return start_screen
 
     def crop_image_for_card(self):
-        path_to_crop_image = \
-            '{}/demos/kitchen_sink/assets/' \
+        path_to_crop_image =\
+            '{}/demos/kitchen_sink/assets/'\
             'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
         if not os.path.exists(path_to_crop_image):
             crop_image(
@@ -178,11 +178,11 @@ from kivy.animation import Animation
 
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import MDIconButton kivymd.button.MDIconButton
 
 
-<ItemPagination>:
+<ItemPagination>
     size_hint: None, None
     size: dp(15), dp(15)
     pos_hint: {'center_y': .5}
@@ -190,26 +190,26 @@ Builder.load_string("""
     canvas:
         Color:
             rgba:
-                self.theme_cls.primary_color \
+                self.theme_cls.primary_color\
                 if root.current_index == 0 else root.color_round_not_active
         RoundedRectangle:
             pos: self.pos
             size: self.size
 
 
-<MDSwiperPagination>:
+<MDSwiperPagination>
     padding: dp(5)
     size_hint: None, None
     width: self.minimum_width
     pos_hint: {'center_x': .5}
     height: dp(56)
-    
+
     MDIconButton:
         icon: 'chevron-left'
         theme_text_color: 'Custom'
         text_color: app.theme_cls.primary_color
         on_release: root.manager.swith_screen('right')
-    
+
     BoxLayout:
         id: box
         spacing: dp(5)
@@ -221,7 +221,7 @@ Builder.load_string("""
         text_color: app.theme_cls.primary_color
         icon: 'chevron-right'
         on_release: root.manager.swith_screen('left')
-""")
+''')
 
 
 class ItemPagination(ThemableBehavior, Widget):
@@ -241,7 +241,7 @@ class MDSwiperPagination(ThemableBehavior, BoxLayout):
             self.items_round_paginator.append(item_paginator)
 
     def set_current_screen_round(self, index_screen):
-        old_color = \
+        old_color =\
             self.items_round_paginator[index_screen].color_round_not_active
         for i, screen in enumerate(self.items_round_paginator):
             if i == index_screen:
@@ -282,7 +282,7 @@ class MDSwiperManager(ScreenManager):
                 self.index_screen -= 1
         else:
             self.index_screen += 1
-        if self.index_screen >= len(self.screen_names) and \
+        if self.index_screen >= len(self.screen_names) and\
                 direction != 'right':
             self.index_screen = 0
         self.transition.direction = direction

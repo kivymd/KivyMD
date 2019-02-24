@@ -25,12 +25,12 @@ from kivymd.color_definitions import colors
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
 #:import MDTab kivymd.tabs.MDTab
 
 
-<ColorSelector>:
+<ColorSelector>
     size: dp(40), dp(40)
     pos: self.pos
     size_hint: (None, None)
@@ -42,15 +42,15 @@ Builder.load_string("""
             pos: self.pos
 
 
-<AccentColorSelector@ColorSelector>:
+<AccentColorSelector@ColorSelector>
     on_release: app.theme_cls.accent_palette = root.color_name
 
 
-<PrimaryColorSelector@ColorSelector>:
+<PrimaryColorSelector@ColorSelector>
     on_release: app.theme_cls.primary_palette = root.color_name
 
 
-<MDThemePicker>:
+<MDThemePicker>
     size_hint: (None, None)
     size: dp(284), dp(120)+dp(290)
     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -78,14 +78,14 @@ Builder.load_string("""
         text: "Change theme"
         size_hint: (None, None)
         size: dp(160), dp(50)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.9}
+        pos_hint: {'center_x': .5, 'center_y': .9}
         theme_text_color: 'Custom'
         text_color: root.specific_text_color
 
     MDTabbedPanel:
         size_hint: (None, None)
         size: root.width, root.height-dp(135)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.475}
+        pos_hint: {'center_x': .5, 'center_y': .475}
         id: tab_panel
         tab_display_mode: 'text'
         tab_width_mode: 'fixed'
@@ -98,12 +98,12 @@ Builder.load_string("""
                 spacing: dp(4)
                 size_hint: (None, None)
                 size: dp(270), root.height  # -dp(120)
-                pos_hint: {'center_x': 0.532, 'center_y': 0.89}
+                pos_hint: {'center_x': .532, 'center_y': .89}
                 orientation: 'vertical'
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     halign: 'center'
@@ -124,7 +124,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     halign: 'center'
@@ -145,7 +145,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     halign: 'center'
@@ -167,7 +167,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     orientation: 'horizontal'
@@ -189,7 +189,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     #pos: self.pos
                     orientation: 'horizontal'
@@ -224,12 +224,12 @@ Builder.load_string("""
                 spacing: dp(4)
                 size_hint: (None, None)
                 size: dp(270), root.height  # -dp(120)
-                pos_hint: {'center_x': 0.532, 'center_y': 0.89}
+                pos_hint: {'center_x': .532, 'center_y': .89}
                 orientation: 'vertical'
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     halign: 'center'
@@ -250,7 +250,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     halign: 'center'
@@ -271,7 +271,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     halign: 'center'
@@ -293,7 +293,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     pos: self.pos
                     orientation: 'horizontal'
@@ -315,7 +315,7 @@ Builder.load_string("""
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': 0.5}
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     size: dp(230), dp(40)
                     #pos: self.pos
                     orientation: 'horizontal'
@@ -385,7 +385,7 @@ Builder.load_string("""
                                 size: self.size
                                 pos: self.pos
                         on_release: app.theme_cls.theme_style = 'Dark'
-""")
+''')
 
 
 class ColorSelector(MDIconButton):
@@ -415,7 +415,7 @@ if __name__ == "__main__":
         theme_cls = ThemeManager()
 
         def build(self):
-            main_widget = Builder.load_string("""
+            main_widget = Builder.load_string('''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDThemePicker kivymd.theme_picker.MDThemePicker
 
@@ -429,7 +429,7 @@ FloatLayout:
         text: 'Open theme picker'
         on_release: MDThemePicker().open()
         opposite_colors: True
-""")
+''')
             return main_widget
 
     ThemePickerApp().run()

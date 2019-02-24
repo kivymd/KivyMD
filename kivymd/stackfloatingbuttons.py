@@ -28,7 +28,7 @@ Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 
 
-<ExampleFloatingButtons@BoxLayout>:
+<ExampleFloatingButtons@BoxLayout>
     orientation: 'vertical'
 
     Toolbar:
@@ -81,13 +81,12 @@ from kivy.metrics import dp
 from kivymd.card import MDCard
 
 
-Builder.load_string(
-"""
-#: import Window kivy.core.window.Window
-#: import MDFloatingActionButton kivymd.button.MDFloatingActionButton
+Builder.load_string('''
+#:import Window kivy.core.window.Window
+#:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 
 
-<FloatingButton@MDFloatingActionButton>:
+<FloatingButton@MDFloatingActionButton>
     x: Window.width - (self.width + dp(21))
     y: dp(25)
     size_hint: None, None
@@ -95,9 +94,9 @@ Builder.load_string(
     elevation: 5
     md_bg_color: app.theme_cls.primary_color
     on_release: self.parent.callback(self)
- 
 
-<MDFloatingLabel>:
+
+<MDFloatingLabel>
     size_hint: None, None
     height: dp(20)
     width: label.texture_size[0]
@@ -113,7 +112,7 @@ Builder.load_string(
         text: '  %s  ' % root.text
 
 
-<MDStackFloatingButtons>:
+<MDStackFloatingButtons>
     FloatingButton:
         id: f_btn_1
         icon: list(root.floating_data.values())[0]
@@ -144,7 +143,7 @@ Builder.load_string(
         md_bg_color: app.theme_cls.primary_color
         y: dp(15)
         on_release: root.show_floating_buttons()
-""")
+''')
 
 
 class MDFloatingLabel(MDCard):
@@ -180,7 +179,7 @@ class MDStackFloatingButtons(FloatLayout):
             anim.start(btn)
 
         self.show = True if not self.show else False
-        self.show_floating_labels() if self.show \
+        self.show_floating_labels() if self.show\
             else self.hide_floating_labels()
 
     def show_floating_labels(self):

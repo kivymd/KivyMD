@@ -38,7 +38,7 @@ Builder.load_string('''
 #:import MDTextButton kivymd.button.MDTextButton
 
 
-<ExampleButtons@BoxLayout>:
+<ExampleButtons@BoxLayout>
     orientation: 'vertical'
 
     Toolbar:
@@ -81,42 +81,42 @@ Builder.load_string('''
 
         MDFlatButton:
             text: 'MDFlatButton'
-            pos_hint: {'center_x': 0.5, 'center_y': .75}
+            pos_hint: {'center_x': .5, 'center_y': .75}
 
         MDRaisedButton:
             text: "MDRaisedButton"
             elevation_normal: 2
             opposite_colors: True
-            pos_hint: {'center_x': 0.5, 'center_y': .65}
+            pos_hint: {'center_x': .5, 'center_y': .65}
 
         MDRectangleFlatButton:
             text: "MDRectangleFlatButton"
-            pos_hint: {'center_x': 0.5, 'center_y': .55}
+            pos_hint: {'center_x': .5, 'center_y': .55}
 
         MDRectangleFlatIconButton:
             text: "MDRectangleFlatIconButton"
             icon: "language-python"
-            pos_hint: {'center_x': 0.5, 'center_y': .45}
+            pos_hint: {'center_x': .5, 'center_y': .45}
             width: dp(230)
 
         MDRoundFlatButton:
             text: "MDRoundFlatButton"
             icon: "language-python"
-            pos_hint: {'center_x': 0.5, 'center_y': .35}
+            pos_hint: {'center_x': .5, 'center_y': .35}
 
         MDRoundFlatIconButton:
             text: "MDRoundFlatIconButton"
             icon: "language-python"
-            pos_hint: {'center_x': 0.5, 'center_y': .25}
+            pos_hint: {'center_x': .5, 'center_y': .25}
              width: dp(200)
 
         MDFillRoundFlatButton:
             text: "MDFillRoundFlatButton"
-            pos_hint: {'center_x': 0.5, 'center_y': .15}
+            pos_hint: {'center_x': .5, 'center_y': .15}
 
         MDTextButton:
             text: "MDTextButton"
-            pos_hint: {'center_x': 0.5, 'center_y': .05}
+            pos_hint: {'center_x': .5, 'center_y': .05}
 ''')
 
 
@@ -135,24 +135,24 @@ Example().run()
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
-from kivy.graphics.stencil_instructions import StencilPush, StencilUse, \
+from kivy.graphics.stencil_instructions import StencilPush, StencilUse,\
     StencilPop, StencilUnUse
 from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.utils import get_color_from_hex
-from kivy.properties import StringProperty, BoundedNumericProperty, \
-    ListProperty, AliasProperty, BooleanProperty, NumericProperty, \
+from kivy.properties import StringProperty, BoundedNumericProperty,\
+    ListProperty, AliasProperty, BooleanProperty, NumericProperty,\
     OptionProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.ripplebehavior import CircularRippleBehavior, \
+from kivymd.ripplebehavior import CircularRippleBehavior,\
     RectangularRippleBehavior
-from kivymd.elevationbehavior import CommonElevationBehavior, \
+from kivymd.elevationbehavior import CommonElevationBehavior,\
     RectangularElevationBehavior, CircularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
@@ -164,19 +164,19 @@ Builder.load_string('''
 #:import images_path kivymd.images_path
 
 
-<BaseButton>:
+<BaseButton>
     size_hint: (None, None)
     anchor_x: 'center'
     anchor_y: 'center'
 
 
-<BaseFlatButton>:
+<BaseFlatButton>
 
 
-<BaseRaisedButton>:
+<BaseRaisedButton>
 
 
-<BaseRoundButton>:
+<BaseRoundButton>
     canvas:
         Clear
         Color:
@@ -193,7 +193,7 @@ Builder.load_string('''
     MDLabel:
         id: content
         font_style: 'Icon'
-        text: u"{}".format(md_icons[root.icon])
+        text: u'{}'.format(md_icons[root.icon])
         theme_text_color: root.theme_text_color
         text_color: root.text_color
         disabled: root.disabled
@@ -202,7 +202,7 @@ Builder.load_string('''
         opposite_colors: root.opposite_colors
 
 
-<BaseRectangularButton>:
+<BaseRectangularButton>
     canvas:
         Clear
         Color:
@@ -210,7 +210,7 @@ Builder.load_string('''
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: (root._radius,)
+            radius: (root._radius, )
 
     content: content
     height: dp(36) if not root._height else root._height
@@ -233,33 +233,34 @@ Builder.load_string('''
         opposite_colors: root.opposite_colors
 
 
-<MDRoundFlatButton>:
+<MDRoundFlatButton>
     canvas.before:
         Color:
             rgba: root.theme_cls.primary_color
         Line:
             width: 1
             rounded_rectangle:
-                (self.x, self.y, self.width, self.height, \
-                root._radius, root._radius, root._radius, root._radius, \
+                (self.x, self.y, self.width, self.height,\
+                root._radius, root._radius, root._radius, root._radius,\
                 self.height)
 
     theme_text_color: 'Custom'
     text_color: root.theme_cls.primary_color
 
 
-<MDFillRoundFlatButton>:
+<MDFillRoundFlatButton>
     canvas.before:
         Color:
             rgba: root.theme_cls.primary_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [root._radius,]
+            radius: [root._radius, ]
 
     text_color: root.specific_text_color
 
-<MDRectangleFlatButton>:
+
+<MDRectangleFlatButton>
     canvas.before:
         Color:
             rgba: root.theme_cls.primary_color
@@ -271,7 +272,7 @@ Builder.load_string('''
     text_color: root.theme_cls.primary_color
 
 
-<MDRectangleFlatIconButton>:
+<MDRectangleFlatIconButton>
     canvas.before:
         Color:
             rgba: app.theme_cls.primary_color
@@ -289,7 +290,7 @@ Builder.load_string('''
             id: lbl_ic
             font_name: '/fonts/materialdesignicons-webfont.ttf'
             font_style: 'Icon'
-            text: u"{}".format(md_icons[root.icon])
+            text: u'{}'.format(md_icons[root.icon])
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
             size_hint_x: None
@@ -302,7 +303,7 @@ Builder.load_string('''
             text_color: root.theme_cls.primary_color
 
 
-<MDRoundFlatIconButton>:
+<MDRoundFlatIconButton>
     size_hint_x: None
     width: dp(150)
 
@@ -313,7 +314,7 @@ Builder.load_string('''
             id: lbl_ic
             font_name: '/fonts/materialdesignicons-webfont.ttf'
             font_style: 'Icon'
-            text: u"{}".format(md_icons[root.icon])
+            text: u'{}'.format(md_icons[root.icon])
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
             size_hint_x: None
@@ -326,13 +327,13 @@ Builder.load_string('''
             text_color: root.theme_cls.primary_color
 
 
-<MDRaisedButton>:
+<MDRaisedButton>
     md_bg_color: root.theme_cls.primary_color
     theme_text_color: 'Custom'
     text_color: root.specific_text_color
 
 
-<MDFloatingActionButton>:
+<MDFloatingActionButton>
     # Defaults to 56-by-56 and a backround of the accent color according to
     # guidelines
     size: (dp(56), dp(56))
@@ -341,11 +342,11 @@ Builder.load_string('''
     text_color: root.specific_text_color
 
 
-<MDTextButton>:
+<MDTextButton>
     size_hint: None, None
     size: self.texture_size
     color:
-        root.theme_cls.primary_color if not len(root.custom_color) \
+        root.theme_cls.primary_color if not len(root.custom_color)\
         else root.custom_color
     background_down: '{}transparent.png'.format(images_path)
     background_normal: '{}transparent.png'.format(images_path)
@@ -355,15 +356,15 @@ Builder.load_string('''
 
 class BaseButton(ThemableBehavior, ButtonBehavior,
                  SpecificBackgroundColorBehavior, AnchorLayout):
-    '''
+    """
     Abstract base class for all MD buttons. This class handles the button's
     colors (disabled/down colors handled in children classes as those depend on
     type of button) as well as the disabled state.
-    '''
+    """
 
     _md_bg_color_down = ListProperty(None, allownone=True)
     _md_bg_color_disabled = ListProperty(None, allownone=True)
-    _current_button_color = ListProperty([0., 0., 0., 0.])
+    _current_button_color = ListProperty([.0, .0, .0, .0])
     theme_text_color = OptionProperty(None, allownone=True,
                                       options=['Primary', 'Secondary', 'Hint',
                                                'Error', 'Custom',
@@ -427,10 +428,10 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
 
 
 class BasePressedButton(BaseButton):
-    '''
+    """
     Abstract base class for those button which fade to a background color on
     press.
-    '''
+    """
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
@@ -442,7 +443,7 @@ class BasePressedButton(BaseButton):
         elif self.disabled:
             return False
         else:
-            self.fade_bg = \
+            self.fade_bg =\
                 Animation(duration=.5,
                           _current_button_color=self.md_bg_color_down)
             self.fade_bg.start(self)
@@ -457,23 +458,23 @@ class BasePressedButton(BaseButton):
 
 
 class BaseFlatButton(BaseButton):
-    '''
+    """
     Abstract base class for flat buttons which do not elevate from material.
 
     Enforces the recommended down/disabled colors for flat buttons
-    '''
+    """
 
     def __init__(self, **kwargs):
         super(BaseFlatButton, self).__init__(**kwargs)
-        self.md_bg_color = (0., 0., 0., 0.)
+        self.md_bg_color = (.0, .0, .0, .0)
 
     def _get_md_bg_color_down(self):
         if self.theme_cls.theme_style == 'Dark':
             c = get_color_from_hex('cccccc')
-            c[3] = 0.25
+            c[3] = .25
         else:
             c = get_color_from_hex('999999')
-            c[3] = 0.4
+            c[3] = .4
         return c
 
     def _get_md_bg_color_disabled(self):
@@ -482,21 +483,21 @@ class BaseFlatButton(BaseButton):
             c = bg_c
         else:
             if self.theme_cls.theme_style == 'Dark':
-                c = (1., 1., 1., 0.12)
+                c = (1., 1., 1., .12)
             else:
-                c = (0., 0., 0., 0.12)
+                c = (.0, .0, .0, .12)
         return c
 
 
 class BaseRaisedButton(CommonElevationBehavior, BaseButton):
-    '''
+    """
     Abstract base class for raised buttons which elevate from material.
     Raised buttons are to be used sparingly to emphasise primary/important
     actions.
 
     Implements elevation behavior as well as the recommended down/disabled
     colors for raised buttons.
-    '''
+    """
 
     def __init__(self, **kwargs):
         if self.elevation_raised == 0 and self.elevation_normal + 6 <= 12:
@@ -576,27 +577,27 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 
     def _get_md_bg_color_disabled(self):
         if self.theme_cls.theme_style == 'Dark':
-            c = (1., 1., 1., 0.12)
+            c = (1., 1., 1., .12)
         else:
-            c = (0., 0., 0., 0.12)
+            c = (.0, .0, .0, .12)
         return c
 
 
 class BaseRoundButton(CircularRippleBehavior, BaseButton):
-    '''
+    """
     Abstract base class for all round buttons, bringing in the appropriate
     on-touch behavior
-    '''
+    """
 
     pass
 
 
 class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
-    '''
+    """
     Abstract base class for all rectangular buttons, bringing in the
     appropriate on-touch behavior. Also maintains the correct minimum width
     as stated in guidelines.
-    '''
+    """
 
     width = BoundedNumericProperty(dp(88), min=dp(88), max=None,
                                    errorhandler=lambda x: dp(88))
@@ -654,7 +655,7 @@ class MDRoundFlatButton(MDFlatButton):
                              radius=[self._radius, ])
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
-            self.ellipse = \
+            self.ellipse =\
                 Ellipse(size=(self.ripple_rad, self.ripple_rad),
                         pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
                              self.ripple_pos[1] - self.ripple_rad / 2.))

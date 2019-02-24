@@ -31,7 +31,7 @@ kv = '''
 #:import SmartTileWithStar kivymd.grid.SmartTileWithStar
 
 
-<MySmartTileWithLabel@SmartTileWithLabel>:
+<MySmartTileWithLabel@SmartTileWithLabel>
     mipmap: True
     font_style: 'Subhead'
 
@@ -59,19 +59,19 @@ BoxLayout:
         Screen:
             name: 'two'
             on_enter:
-                app.crop_image_for_tile(tile_1, tile_1.size, \
+                app.crop_image_for_tile(tile_1, tile_1.size,\
                 'demos/kitchen_sink/assets/beautiful-931152_1280_tile_crop.jpg')
-                app.crop_image_for_tile(tile_2, tile_2.size, \
+                app.crop_image_for_tile(tile_2, tile_2.size,\
                 'demos/kitchen_sink/assets/african-lion-951778_1280_tile_crop.jpg')
-                app.crop_image_for_tile(tile_3, tile_3.size, \
+                app.crop_image_for_tile(tile_3, tile_3.size,\
                 'demos/kitchen_sink/assets/guitar-1139397_1280_tile_crop.jpg')
-                app.crop_image_for_tile(tile_4, tile_4.size, \
+                app.crop_image_for_tile(tile_4, tile_4.size,\
                 'demos/kitchen_sink/assets/robin-944887_1280_tile_crop.jpg')
-                app.crop_image_for_tile(tile_5, tile_5.size, \
+                app.crop_image_for_tile(tile_5, tile_5.size,\
                 'demos/kitchen_sink/assets/kitten-1049129_1280_tile_crop.jpg')
-                app.crop_image_for_tile(tile_6, tile_6.size, \
+                app.crop_image_for_tile(tile_6, tile_6.size,\
                 'demos/kitchen_sink/assets/light-bulb-1042480_1280_tile_crop.jpg')
-                app.crop_image_for_tile(tile_7, tile_7.size, \
+                app.crop_image_for_tile(tile_7, tile_7.size,\
                 'demos/kitchen_sink/assets/tangerines-1111529_1280_tile_crop.jpg')
 
             ScrollView:
@@ -141,7 +141,7 @@ MyApp().run()
 """
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, \
+from kivy.properties import StringProperty, BooleanProperty, ObjectProperty,\
     NumericProperty, ListProperty, OptionProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -151,8 +151,8 @@ from kivymd.button import MDIconButton
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
-<SmartTile>:
+Builder.load_string('''
+<SmartTile>
     _img_widget: img
     _img_overlay: img_overlay
     _box_overlay: box
@@ -187,10 +187,11 @@ Builder.load_string("""
         size_hint_y: None
         height: dp(68) if root.lines == 2 else dp(48)
         x: root.x
-        y: root.y if root.box_position == 'footer' \
+        y: root.y if root.box_position == 'footer'\
             else root.y + root.height - self.height
 
-<SmartTileWithLabel>:
+
+<SmartTileWithLabel>
     _img_widget: img
     _img_overlay: img_overlay
     _box_overlay: box
@@ -228,7 +229,7 @@ Builder.load_string("""
         padding: dp(5), 0, 0, 0
         height: self.minimum_height #dp(68) if root.lines == 2 else dp(48)
         x: root.x
-        y: root.y if root.box_position == 'footer' \
+        y: root.y if root.box_position == 'footer'\
             else root.y + root.height - self.height
 
         MDLabel:
@@ -240,7 +241,7 @@ Builder.load_string("""
             text: root.text
             color: root.tile_text_color
             markup: True
-""")
+''')
 
 
 class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
@@ -259,7 +260,7 @@ class SmartTile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
     as a header or a footer, as described in the Material Design specs.
     """
 
-    box_color = ListProperty([0, 0, 0, 0.5])
+    box_color = ListProperty([0, 0, 0, .5])
     """Sets the color and opacity for the information box."""
 
     box_position = OptionProperty('footer', options=['footer', 'header'])
@@ -278,7 +279,7 @@ class SmartTile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
 
     # Img properties
     allow_stretch = BooleanProperty(True)
-    anim_delay = NumericProperty(0.25)
+    anim_delay = NumericProperty(.25)
     anim_loop = NumericProperty(0)
     img_color = ListProperty([1, 1, 1, 1])
     keep_ratio = BooleanProperty(False)
@@ -293,13 +294,13 @@ class SmartTile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
     def reload(self):
         self._img_widget.reload()
 
-    def add_widget(self, widget, index=0):
+    def add_widget(self, widget, index=0, canvas=None):
         if issubclass(widget.__class__, IOverlay):
-            self._img_overlay.add_widget(widget, index)
+            self._img_overlay.add_widget(widget, index, canvas)
         elif issubclass(widget.__class__, IBoxOverlay):
-            self._box_overlay.add_widget(widget, index)
+            self._box_overlay.add_widget(widget, index, canvas)
         else:
-            super(SmartTile, self).add_widget(widget, index)
+            super(SmartTile, self).add_widget(widget, index, canvas)
 
 
 class SmartTileWithLabel(SmartTile):
@@ -328,7 +329,7 @@ class SmartTileWithStar(SmartTileWithLabel):
                      text_color=[1, 1, 1, 1]))
 
 
-class IBoxOverlay():
+class IBoxOverlay:
     """An interface to specify widgets that belong to to the image overlay
     in the :class:`SmartTile` widget when added as a child.
     """
@@ -336,7 +337,7 @@ class IBoxOverlay():
     pass
 
 
-class IOverlay():
+class IOverlay:
     """An interface to specify widgets that belong to to the image overlay
     in the :class:`SmartTile` widget when added as a child.
     """

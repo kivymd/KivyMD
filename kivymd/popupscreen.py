@@ -39,7 +39,7 @@ Builder.load_string('''
 #
 ###############################################################################
 
-<PopupScreen>:
+<PopupScreen>
 
     BoxLayout:
         orientation: 'vertical'
@@ -67,7 +67,7 @@ Builder.load_string('''
 #
 ###############################################################################
 
-<StartScreen>:
+<StartScreen>
     orientation: 'vertical'
     padding: dp(1)
     spacing: dp(30)
@@ -93,7 +93,7 @@ Builder.load_string('''
 #
 ###############################################################################
 
-<MyPopupScreen>:
+<MyPopupScreen>
     orientation: 'vertical'
 
     BoxLayout:
@@ -116,7 +116,7 @@ Builder.load_string('''
     TwoLineIconListItem:
         text: "Call Viber Out"
         secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]" \
+            "[color=%s]Advantageous rates for calls[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
@@ -124,7 +124,7 @@ Builder.load_string('''
     TwoLineIconListItem:
         text: "Call over mobile network"
         secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]" \
+            "[color=%s]Operator's tariffs apply[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
@@ -157,8 +157,8 @@ class MyApp(App):
         popup_screen = MyPopupScreen()
         root = PopupScreen(screen=popup_screen,
                            background_color=[.3, .3, .3, 1])
-        root.max_height = root.ids.start_screen.ids.image.height + \
-            root.ids.toolbar.height + dp(5)
+        root.max_height = root.ids.start_screen.ids.image.height\
+            + root.ids.toolbar.height + dp(5)
         return root
 
 
@@ -176,20 +176,20 @@ from kivy.properties import ObjectProperty, ListProperty
 
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
-<RootScreen>:
+Builder.load_string('''
+<RootScreen>
     padding: dp(15)
 
     canvas:
         Color:
             rgba:
-                self.theme_cls.bg_light if not len(root.background_color) \
+                self.theme_cls.bg_light if not len(root.background_color)\
                 else root.background_color
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [15,]
-""")
+            radius: [15, ]
+''')
 
 
 class RootScreen(BoxLayout, ThemableBehavior):

@@ -33,7 +33,7 @@ Builder.load_string('''
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
 
 
-<TestAnimationCard@BoxLayout>:
+<TestAnimationCard@BoxLayout>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -116,7 +116,7 @@ from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import StiffScrollEffect kivymd.stiffscroll.StiffScrollEffect
 
@@ -150,7 +150,7 @@ Builder.load_string("""
         padding: [0, (self.height - dp(48))/2]
 
 
-<UserAnimationCard>:
+<UserAnimationCard>
     canvas:
         Color:
             rgba: 1, 1, 1, 1
@@ -198,7 +198,7 @@ Builder.load_string("""
         y: -image.height
         effect_cls: StiffScrollEffect
         scroll_distance: 100
-    
+
         GridLayout:
             id: box_content
             size_hint_y: None
@@ -210,7 +210,7 @@ Builder.load_string("""
                 Rectangle:
                     size: self.size
                     pos: self.pos
-""")
+''')
 
 
 class MDUserAnimationCard(ThemableBehavior, ModalView):

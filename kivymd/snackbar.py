@@ -27,7 +27,7 @@ from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd.material_resources import DEVICE_TYPE
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MDFlatButton kivymd.button.MDFlatButton
@@ -45,23 +45,23 @@ Builder.load_string("""
     size_hint_y: None
     size_hint_x: 1 if DEVICE_TYPE == 'mobile' else None
     height: dp(48) if _label.texture_size[1] < dp(30) else dp(80)
-    width: dp(24) + _label.width + _spacer.width + root.padding_right \
-        if root.button_text == '' else dp(24) + \
-        _label.width + _spacer.width + _button.width + root.padding_right
+    width: dp(24) + _label.width + _spacer.width + root.padding_right\
+        if root.button_text == '' else dp(24)\
+        + _label.width + _spacer.width + _button.width + root.padding_right
     top: 0
     x: 0 if DEVICE_TYPE == 'mobile' else Window.width/2 - self.width/2
 
     BoxLayout:
         width:
-            Window.width - root.padding_right - _spacer.width - dp(24) \
-            if DEVICE_TYPE == 'mobile' and root.button_text == '' \
-            else Window.width - root.padding_right - _button.width - \
-            _spacer.width - dp(24) \
-            if DEVICE_TYPE == 'mobile' else _label.texture_size[0] \
-            if (dp(568) - root.padding_right - _button.width - \
-            _spacer.width - _label.texture_size[0] - dp(24)) >= 0 \
-            else (dp(568) - root.padding_right - _button.width - \
-            _spacer.width - dp(24))
+            Window.width - root.padding_right - _spacer.width - dp(24)\
+            if DEVICE_TYPE == 'mobile' and root.button_text == ''\
+            else Window.width - root.padding_right - _button.width\
+            - _spacer.width - dp(24)\
+            if DEVICE_TYPE == 'mobile' else _label.texture_size[0]\
+            if (dp(568) - root.padding_right - _button.width\
+            - _spacer.width - _label.texture_size[0] - dp(24)) >= 0\
+            else (dp(568) - root.padding_right - _button.width\
+            - _spacer.width - dp(24))
         size_hint_x: None
         x: dp(24)
 
@@ -87,7 +87,7 @@ Builder.load_string("""
         x: _spacer.right if root.button_text != '' else root.right
         center_y: root.height/2
         on_release: root.button_callback()
-""")
+''')
 
 
 class SnackbarManager:
@@ -150,11 +150,13 @@ class Snackbar(EventDispatcher):
     and defaults to 3.
     """
 
-    def __init__(self, text, button_text=None, button_callback=None, duration=None):
+    def __init__(self, text, button_text=None, button_callback=None,
+                 duration=None):
         self.text = text
         self.button_text = button_text
         self.button_callback = button_callback
         self.duration = duration or self.duration
+        super(Snackbar, self).__init__()
 
     def show(self):
         """Show the Snackbar"""
@@ -184,7 +186,7 @@ class _SnackbarWidget(RelativeLayout):
         if self.button_text == '':
             self.remove_widget(self.ids['_button'])
         else:
-            self.ids._spacer.width = \
+            self.ids._spacer.width =\
                 dp(16) if DEVICE_TYPE == "mobile" else dp(40)
             self.padding_right = dp(16)
         Window.add_widget(self)

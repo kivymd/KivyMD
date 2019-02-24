@@ -20,7 +20,7 @@ from kivy.animation import Animation
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
-<MDSpinner>:
+<MDSpinner>
     canvas.before:
         PushMatrix
         Rotate:
@@ -31,7 +31,7 @@ Builder.load_string('''
             rgba: self.color
             a: self._alpha
         SmoothLine:
-            circle: self.center_x, self.center_y, self.width / 2, \
+            circle: self.center_x, self.center_y, self.width / 2,\
             self._angle_start, self._angle_end
             cap: 'square'
             width: dp(2.25)
@@ -106,8 +106,8 @@ class MDSpinner(ThemableBehavior, Widget):
         _angle_start_anim = Animation(_angle_end=360,
                                       duration=self.determinate_time,
                                       t='in_out_quad')
-        _angle_start_anim.bind(on_complete=lambda *x: \
-            self._alpha_anim_out.start(self))
+        _angle_start_anim.bind(
+            on_complete=lambda *x: self._alpha_anim_out.start(self))
 
         _angle_start_anim.start(self)
 

@@ -379,7 +379,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
     def __init__(self, **kwargs):
         super(MDNavigationDrawer, self).__init__(**kwargs)
 
-    def add_widget(self, widget, index=0, canvas=None):
+    def add_widget(self, widget, **kwargs):
         """
         If the widget is a subclass of :class:`~NavigationDrawerHeaderBase`,
         then it will be placed above the
@@ -390,18 +390,17 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
         """
 
         if issubclass(widget.__class__, BaseListItem):
-            self._list.add_widget(widget, index)
+            self._list.add_widget(widget, **kwargs)
             if len(self._list.children) == 1:
                 widget._active = True
                 self.active_item = widget
             widget.bind(on_release=lambda x: self.panel.toggle_state())
             try:
-                widget.bind(
-                    on_release=lambda x: x._set_active(True, list=self))
+                widget.bind(on_release=lambda x: x._set_active(True, self))
             except AttributeError:
                 pass
         else:
-            super(MDNavigationDrawer, self).add_widget(widget, index, canvas)
+            super(MDNavigationDrawer, self).add_widget(widget, **kwargs)
 
 
 class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
@@ -460,13 +459,13 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
 
         # Internal default BoxLayouts
         if len(self.children) == 0:
-            super(NavigationLayout, self).add_widget(widget)
+            super(NavigationLayout, self).add_widget(widget, **kwargs)
             self._side_panel = widget
         elif len(self.children) == 1:
-            super(NavigationLayout, self).add_widget(widget)
+            super(NavigationLayout, self).add_widget(widget, **kwargs)
             self._main_panel = widget
         elif len(self.children) == 2:
-            super(NavigationLayout, self).add_widget(widget)
+            super(NavigationLayout, self).add_widget(widget, **kwargs)
             self._join_image = widget
 
         # Adding of user widgets

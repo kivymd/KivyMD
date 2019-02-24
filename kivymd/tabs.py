@@ -1,9 +1,19 @@
-# Created on Jul 8, 2016
-#
-# The default kivy tab implementation seems like a stupid design to me. The
-# ScreenManager is much better.
-#
-# @author: jrm
+# -*- coding: utf-8 -*-
+
+"""
+Tabs
+====
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`
+"""
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -11,29 +21,29 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.metrics import dp, sp
-from kivy.properties import StringProperty, DictProperty, ListProperty, \
-    ObjectProperty, OptionProperty, BoundedNumericProperty, NumericProperty, \
+from kivy.properties import StringProperty, DictProperty, ListProperty,\
+    ObjectProperty, OptionProperty, BoundedNumericProperty, NumericProperty,\
     BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen
 
-from kivymd.backgroundcolorbehavior import BackgroundColorBehavior, \
+from kivymd.backgroundcolorbehavior import BackgroundColorBehavior,\
     SpecificBackgroundColorBehavior
 from kivymd.button import MDFlatButton, BaseFlatButton, BasePressedButton
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import sm kivy.uix.screenmanager
 #:import Window kivy.core.window.Window
 
 
-<MDTabbedPanel>:
+<MDTabbedPanel>
     id: panel
     orientation:
-        'vertical' if panel.tab_orientation in ['top','bottom'] \
+        'vertical' if panel.tab_orientation in ['top','bottom']\
         else 'horizontal'
 
     ScrollView:
@@ -58,7 +68,7 @@ Builder.load_string("""
                 # Draw bottom border
                 Color:
                     rgba: 
-                        (panel.tab_border_color or panel.tab_color or \
+                        (panel.tab_border_color or panel.tab_color or\
                         panel.theme_cls.primary_dark)
                 Rectangle:
                     size: (self.width,dp(2))
@@ -70,7 +80,7 @@ Builder.load_string("""
         transition: sm.SlideTransition()
 
 
-<MDTabHeader>:
+<MDTabHeader>
     canvas:
         Color:
             rgba: self.panel.tab_color or self.panel.theme_cls.primary_color
@@ -80,11 +90,11 @@ Builder.load_string("""
         # Draw indicator
         Color:
             rgba:
-                (self.panel.tab_indicator_color \
-                or self.panel.theme_cls.accent_color) \
-                if self.tab and self.tab.manager \
-                and self.tab.manager.current == self.tab.name \
-                else (self.panel.tab_border_color  \
+                (self.panel.tab_indicator_color\
+                or self.panel.theme_cls.accent_color)\
+                if self.tab and self.tab.manager\
+                and self.tab.manager.current == self.tab.name\
+                else (self.panel.tab_border_color\
                 or self.panel.tab_color or self.panel.theme_cls.primary_dark)
         Rectangle:
             size: (self.width,dp(2))
@@ -94,10 +104,10 @@ Builder.load_string("""
     padding: (dp(12), 0)
     theme_text_color: 'Custom'
     text_color:
-        (self.panel.tab_text_color_active or self.panel.specific_text_color) \
-        if self.tab and self.tab.manager \
-        and self.tab.manager.current == self.tab.name \
-        else (self.panel.tab_text_color \
+        (self.panel.tab_text_color_active or self.panel.specific_text_color)\
+        if self.tab and self.tab.manager\
+        and self.tab.manager.current == self.tab.name\
+        else (self.panel.tab_text_color\
         or self.panel.specific_secondary_text_color)
     on_press: self.tab.dispatch('on_tab_press')
     on_release: self.tab.dispatch('on_tab_release')
@@ -108,8 +118,8 @@ Builder.load_string("""
     MDLabel:
         id: _label
         text:
-            root.tab.text if root.panel.tab_display_mode == 'text' \
-            else u"{}".format(md_icons[root.tab.icon])
+            root.tab.text if root.panel.tab_display_mode == 'text'\
+            else u'{}'.format(md_icons[root.tab.icon])
         font_style:
             'Button' if root.panel.tab_display_mode == 'text' else 'Icon'
         size_hint_x: 1 # if root.panel.tab_width_mode=='fixed' else 1
@@ -123,7 +133,7 @@ Builder.load_string("""
         shorten_from: 'right'
 
 
-<MDBottomNavigation>:
+<MDBottomNavigation>
     id: panel
     orientation: 'vertical'
     height: dp(56)  # Spec
@@ -148,7 +158,7 @@ Builder.load_string("""
             size_hint: None, None
 
 
-<MDBottomNavigationHeader>:
+<MDBottomNavigationHeader>
     canvas:
         Color:
             rgba: self.panel.theme_cls.bg_dark
@@ -157,7 +167,7 @@ Builder.load_string("""
             pos: self.pos
 
     width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens) \
+        root.panel.width / len(root.panel.ids.tab_manager.screens)\
         if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
     padding: (dp(12), dp(12))
     on_press:
@@ -171,7 +181,7 @@ Builder.load_string("""
 
         MDLabel:
             id: _label_icon
-            text: u"{}".format(md_icons[root.tab.icon])
+            text: u'{}'.format(md_icons[root.tab.icon])
             font_style: 'Icon'
             size_hint_x: None
             text_size: (None, root.height)
@@ -198,7 +208,7 @@ Builder.load_string("""
             halign: 'center'
             opposite_colors: root.opposite_colors
             font_size: root._label_font_size
-            pos_hint: {'center_x': .5, 'center_y': 0.6}
+            pos_hint: {'center_x': .5, 'center_y': .6}
 
 
 <MDTab>
@@ -207,7 +217,7 @@ Builder.load_string("""
             rgba: root.theme_cls.bg_normal
         Rectangle:
             size: root.size
-""")
+''')
 
 
 class MDTabBar(ThemableBehavior, BackgroundColorBehavior, GridLayout):
@@ -253,7 +263,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     panel = ObjectProperty(None)
     _label = ObjectProperty()
     _label_font_size = NumericProperty(sp(12))
-    _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
+    _current_color = ListProperty([.0, .0, .0, .0])
     text = StringProperty('')
     _capitalized_text = StringProperty('')
     active = BooleanProperty(False)
@@ -274,8 +284,8 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
         self.active = False
 
     def on_press(self):
-        Animation(_label_font_size=sp(14), d=0.1).start(self)
-        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(
+        Animation(_label_font_size=sp(14), d=.1).start(self)
+        Animation(_current_color=self.theme_cls.primary_color, d=.1).start(
             self)
 
     def _update_theme_color(self, instance, color):
@@ -350,11 +360,11 @@ class MDBottomNavigationItem(MDTab):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=0.1).start(
+            Animation(_label_font_size=sp(12), d=.1).start(
                 par.previous_tab.header)
             Animation(
                 _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
-                d=0.1).start(
+                d=.1).start(
                 par.previous_tab.header)
             par.previous_tab.header.active = False
             self.header.active = True
@@ -505,7 +515,7 @@ class MDBottomNavigation(TabbedPanelBase):
             full_width += tab.header.width
         self.ids.tab_bar.width = full_width
         if do_again:
-            Clock.schedule_once(lambda x: self.on_resize(do_again=False), 0.01)
+            Clock.schedule_once(lambda x: self.on_resize(do_again=False), .01)
 
     def add_widget(self, widget, **kwargs):
         """ Add tabs to the screen or the layout.
@@ -557,7 +567,7 @@ if __name__ == '__main__':
             from kivy.core.window import Window
             Window.size = (540, 720)
 
-            return Builder.load_string("""
+            return Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
@@ -635,7 +645,7 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: "all of the files"
                 halign: 'center'
-""")
+''')
 
 
     TabsApp().run()

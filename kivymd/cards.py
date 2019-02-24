@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-card.py
+"""
+Cards
+=====
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,22 +12,25 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Cards <https://material.io/design/components/cards.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.factory import Factory
 
-from kivymd.card import MDCardPost
+from kivymd.cards import MDCardPost
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 
 
-<ExampleCardPost@BoxLayout>:
+<ExampleCardPost@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
@@ -50,7 +54,7 @@ Builder.load_string("""
             padding: dp(5)
             size_hint_y: None
             height: self.minimum_height
-""")
+''')
 
 
 class Example(App):
@@ -115,12 +119,12 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import BoundedNumericProperty, ReferenceListProperty, \
+from kivy.properties import BoundedNumericProperty, ReferenceListProperty,\
     StringProperty, ListProperty, BooleanProperty, ObjectProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -132,7 +136,7 @@ from kivy.uix.widget import Widget
 from kivymd.button import MDIconButton
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.list import ILeftBody
-from kivymd.menu import MDDropdownMenu
+from kivymd.menus import MDDropdownMenu
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
@@ -154,7 +158,7 @@ Builder.load_string('''
             a: self.border_color_a
         Line:
             rounded_rectangle:
-                (self.pos[0], self.pos[1], self.size[0], self.size[1], \
+                (self.pos[0], self.pos[1], self.size[0], self.size[1],\
                 self.border_radius) 
     md_bg_color: self.theme_cls.bg_light
 
@@ -168,7 +172,7 @@ Builder.load_string('''
             pos: self.pos
 
 
-<CardPostImage>:
+<CardPostImage>
     spacing: dp(10)
     padding: dp(5)
     orientation: 'vertical'
@@ -201,7 +205,7 @@ Builder.load_string('''
             id: box_buttons
 
 
-<MDCardPost>:
+<MDCardPost>
     spacing: dp(5)
     padding: dp(5)
     orientation: 'vertical'
@@ -287,12 +291,12 @@ Builder.load_string('''
 class MDSeparator(ThemableBehavior, BoxLayout):
     """A separator line"""
 
-    def __init__(self, *args, **kwargs):
-        super(MDSeparator, self).__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super(MDSeparator, self).__init__(**kwargs)
         self.on_orientation()
 
     def on_orientation(self, *args):
-        self.size_hint = (1, None) if self.orientation == 'horizontal' \
+        self.size_hint = (1, None) if self.orientation == 'horizontal'\
             else (None, 1)
         if self.orientation == 'horizontal':
             self.height = dp(1)
@@ -301,13 +305,13 @@ class MDSeparator(ThemableBehavior, BoxLayout):
 
 
 class MDCard(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
-    r = BoundedNumericProperty(1., min=0., max=1.)
-    g = BoundedNumericProperty(1., min=0., max=1.)
-    b = BoundedNumericProperty(1., min=0., max=1.)
-    a = BoundedNumericProperty(0., min=0., max=1.)
+    r = BoundedNumericProperty(1., min=.0, max=1.)
+    g = BoundedNumericProperty(1., min=.0, max=1.)
+    b = BoundedNumericProperty(1., min=.0, max=1.)
+    a = BoundedNumericProperty(.0, min=.0, max=1.)
 
     border_radius = BoundedNumericProperty(dp(3), min=0)
-    border_color_a = BoundedNumericProperty(0, min=0., max=1.)
+    border_color_a = BoundedNumericProperty(0, min=.0, max=1.)
     md_bg_color = ReferenceListProperty(r, g, b, a)
     background = StringProperty()
 
@@ -427,7 +431,7 @@ class MDCardPost(BoxLayout):
         self.callback(self, index_star + i)
 
     def on_touch_move(self, touch):
-        if self.collide_point(*touch.pos) and self.swipe and \
+        if self.collide_point(*touch.pos) and self.swipe and\
                 not self._card_shifted:
             if touch.x < Window.width - 10:
                 self.shift_post_left()

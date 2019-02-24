@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-'''
-filemanager.py
+"""
+File Manager
+============
 
-A simple manager for selecting directories and files.
 Copyright © 2010-2018 HeaTTheatR
 
 For suggestions and questions:
@@ -12,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+A simple manager for selecting directories and files.
+
+Example
+-------
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -25,12 +28,12 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
-<ExampleFileManager@BoxLayout>:
+<ExampleFileManager@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
@@ -49,7 +52,7 @@ Builder.load_string("""
             icon: "folder"
             pos_hint: {'center_x': .5, 'center_y': .6}
             on_release: app.file_manager_open()
-""")
+''')
 
 
 class Example(App):
@@ -77,25 +80,24 @@ class Example(App):
         self.manager.open()
 
     def select_path(self, path):
-        """It will be called when you click on the file name
+        '''It will be called when you click on the file name
         or the catalog selection button.
 
         :type path: str;
         :param path: path to the selected directory or file;
-
-        """
+        '''
 
         self.exit_manager()
         toast(path)
 
     def exit_manager(self, *args):
-        """Called when the user reaches the root of the directory tree."""
+        '''Called when the user reaches the root of the directory tree.'''
 
         self.manager.dismiss()
         self.manager_open = False
 
     def events(self, instance, keyboard, keycode, text, modifiers):
-        """Called when buttons are pressed on the mobile device.."""
+        '''Called when buttons are pressed on the mobile device..'''
 
         if keyboard in (1001, 27):
             if self.manager_open:
@@ -104,7 +106,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 import os
 import threading
@@ -131,16 +133,15 @@ from kivymd.ripplebehavior import RectangularRippleBehavior, \
 from kivymd.theming import ThemableBehavior
 from kivymd.button import MDIconButton
 
-
 ACTIVITY_MANAGER = '''
 #:import os os
 #:import Window kivy.core.window.Window
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
-#:import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 
 
-<BodyManager@BoxLayout>:
+<BodyManager@BoxLayout>
     icon: 'folder'
     path: ''
     background_normal: ''
@@ -160,7 +161,7 @@ ACTIVITY_MANAGER = '''
     MDSeparator:
 
 
-<LabelContent@MDLabel>:
+<LabelContent@MDLabel>
     size_hint_y: None
     height: self.texture_size[1]
     shorten: True
@@ -169,7 +170,7 @@ ACTIVITY_MANAGER = '''
     text_size: self.width, None
 
 
-<BodyManagerWithPrevious>:
+<BodyManagerWithPrevious>
     paths: []
     path: ''
     type: 'folder'
@@ -198,7 +199,7 @@ ACTIVITY_MANAGER = '''
             LabelContent:
                 id: label_box_1
                 text:
-                    os.path.split(root.paths[0])[1].replace('thumb_', '') \
+                    os.path.split(root.paths[0])[1].replace('thumb_', '')\
                     if len(root.paths) >= 1 else ''
 
         BoxLayout:
@@ -214,7 +215,7 @@ ACTIVITY_MANAGER = '''
             LabelContent:
                 id: label_box_2
                 text:
-                    os.path.split(root.paths[1])[1].replace('thumb_', '') \
+                    os.path.split(root.paths[1])[1].replace('thumb_', '')\
                     if len(root.paths) >= 2 else ''
 
         BoxLayout:
@@ -230,11 +231,11 @@ ACTIVITY_MANAGER = '''
             LabelContent:
                 id: label_box_3
                 text:
-                    os.path.split(root.paths[2])[1].replace('thumb_', '') \
+                    os.path.split(root.paths[2])[1].replace('thumb_', '')\
                     if len(root.paths) >= 3 else ''
 
 
-<FloatButton>:
+<FloatButton>
     anchor_x: 'right'
     anchor_y: 'bottom'
     size_hint_y: None
@@ -251,7 +252,7 @@ ACTIVITY_MANAGER = '''
         md_bg_color: root.md_bg_color
 
 
-<MDFileManager>:
+<MDFileManager>
     canvas:
         Color:
             rgba:
@@ -289,12 +290,12 @@ ACTIVITY_MANAGER = '''
                 orientation: 'vertical'
 
 
-<ModifiedBaseListItem>:
+<ModifiedBaseListItem>
     size_hint_y: None
     canvas:
         Color:
             rgba:
-                self.theme_cls.divider_color if root.divider is not None \
+                self.theme_cls.divider_color if root.divider is not None\
                 else (0, 0, 0, 0)
 
         Line:
@@ -309,7 +310,7 @@ ACTIVITY_MANAGER = '''
         orientation: 'vertical'
         pos: root.pos
         padding:
-            root._txt_left_pad, root._txt_top_pad, \
+            root._txt_left_pad, root._txt_top_pad,\
             root._txt_right_pad, root._txt_bot_pad
 
         MDLabel:
@@ -322,7 +323,8 @@ ACTIVITY_MANAGER = '''
             max_lines: 1
             height: self.texture_size[1]
 
-<ModifiedOneLineIconListItem>:
+
+<ModifiedOneLineIconListItem>
     BoxLayout:
         id: _left_container
         size_hint: None, None
@@ -344,18 +346,18 @@ class FloatButton(AnchorLayout):
 
 class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
                            ButtonBehavior, FloatLayout):
-    '''Base class to all ListItems. Not supposed to be instantiated on its own.
-    '''
+    """Base class to all ListItems. Not supposed to be instantiated on its own.
+    """
 
     text = StringProperty()
-    '''Text shown in the first line.
+    """Text shown in the first line.
 
     :attr:`text` is a :class:`~kivy.properties.StringProperty` and defaults
     to "".
-    '''
+    """
 
     text_color = ListProperty(None)
-    ''' Text color used if theme_text_color is set to 'Custom' '''
+    """Text color used if theme_text_color is set to 'Custom'"""
 
     font_style = OptionProperty(
         'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
@@ -363,10 +365,10 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
                             'Display4', 'Button', 'Icon'])
 
     theme_text_color = StringProperty('Primary', allownone=True)
-    ''' Theme text color for primary text '''
+    """Theme text color for primary text"""
 
     secondary_text = StringProperty()
-    '''Text shown in the second and potentially third line.
+    """Text shown in the second and potentially third line.
 
     The text will wrap into the third line if the ListItem's type is set to
     \'one-line\'. It can be forced into the third line by adding a \\n
@@ -374,14 +376,14 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
 
     :attr:`secondary_text` is a :class:`~kivy.properties.StringProperty` and
     defaults to "".
-    '''
+    """
 
     secondary_text_color = ListProperty(None)
-    ''' Text color used for secondary text if secondary_theme_text_color 
-    is set to 'Custom' '''
+    """Text color used for secondary text if secondary_theme_text_color 
+    is set to 'Custom'"""
 
     secondary_theme_text_color = StringProperty('Secondary', allownone=True)
-    ''' Theme text color for secondary primary text '''
+    """Theme text color for secondary primary text"""
 
     secondary_font_style = OptionProperty(
         'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
@@ -399,7 +401,7 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
 
 
 class ModifiedOneLineListItem(ModifiedBaseListItem):
-    ''' A one line list item'''
+    """A one line list item"""
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
@@ -411,9 +413,9 @@ class ModifiedOneLineListItem(ModifiedBaseListItem):
 
 
 class ContainerSupport:
-    '''Overrides add_widget in a ListItem to include support for I*Body
+    """Overrides add_widget in a ListItem to include support for I*Body
     widgets when the appropiate containers are present.
-    '''
+    """
 
     _touchable_widgets = ListProperty()
 
@@ -474,9 +476,10 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
 
 
 class BodyManagerWithPrevious(BoxLayout):
-    def get_source(self, app, type, instance_label, paths, index,
+
+    def get_source(self, app, source_type, instance_label, paths, index,
                    instance_content):
-        if type == 'folder' and instance_label.text != '':
+        if source_type == 'folder' and instance_label.text != '':
             source = '{}folder.png'.format(images_path)
         else:
             if len(paths) >= index:
@@ -485,8 +488,8 @@ class BodyManagerWithPrevious(BoxLayout):
                 source = '{}transparent.png'.format(images_path)
         if PY2:
             return source.decode('u8')
-        else:
-            return source
+        return source
+
 
 # FIXME: Add color for Black and White theme
 # FIXME: When you first create the application cache,
@@ -599,12 +602,11 @@ class MDFileManager(ThemableBehavior, FloatLayout):
                         im.save(path_to_thumb, "PNG")
 
     def check_theme(self):
-        self.canvas.children[0].rgba = \
-            [0, 0, 0, 1] if self.theme_cls.theme_style == 'Dark' \
-                else [1, 1, 1, 1]
+        self.canvas.children[0].rgba = [0, 0, 0, 1]\
+            if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
 
     def show(self, path):
-        '''Forms the body of a directory tree.'''
+        """Forms the body of a directory tree."""
 
         self.check_theme()
         dirs, files = self.get_content(path)
@@ -691,7 +693,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         return access_string
 
     def get_content(self, path):
-        '''Returns a list of the type [[Folder List], [file list]].'''
+        """Returns a list of the type [[Folder List], [file list]]."""
 
         try:
             files = []
@@ -726,7 +728,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
             return None, None
 
     def select_dir_or_file(self, path):
-        '''Called by tap on the name of the directory or file.'''
+        """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(path):
             self.history = []
@@ -737,7 +739,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         self.show(path)
 
     def back(self):
-        '''Returning to the branch down in the directory tree.'''
+        """Returning to the branch down in the directory tree."""
 
         if len(self.history) == 1:
             path, end = os.path.split(self.history[0])

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-useranimationcard.py
+"""
+User Animation Card
+===================
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -24,14 +26,14 @@ from kivymd.button import MDIconButton
 from kivymd.list import ILeftBodyTouch
 
 # Your content for a contact card.
-Builder.load_string("""
+Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import TwoLineIconListItem kivymd.list.TwoLineIconListItem
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
 
 
-<TestAnimationCard@BoxLayout>:
+<TestAnimationCard@BoxLayout>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -66,7 +68,7 @@ Builder.load_string("""
         secondary_text: "[color=%s]Operator's tariffs apply[/color]" % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
-""")
+''')
 
 
 class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
@@ -97,7 +99,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 
 from kivy.clock import Clock
@@ -114,7 +116,7 @@ from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import StiffScrollEffect kivymd.stiffscroll.StiffScrollEffect
 
@@ -148,7 +150,7 @@ Builder.load_string("""
         padding: [0, (self.height - dp(48))/2]
 
 
-<UserAnimationCard>:
+<UserAnimationCard>
     canvas:
         Color:
             rgba: 1, 1, 1, 1
@@ -196,7 +198,7 @@ Builder.load_string("""
         y: -image.height
         effect_cls: StiffScrollEffect
         scroll_distance: 100
-    
+
         GridLayout:
             id: box_content
             size_hint_y: None
@@ -208,7 +210,7 @@ Builder.load_string("""
                 Rectangle:
                     size: self.size
                     pos: self.pos
-""")
+''')
 
 
 class MDUserAnimationCard(ThemableBehavior, ModalView):

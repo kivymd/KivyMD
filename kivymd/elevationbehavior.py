@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+Elevation Behavior
+==================
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import (ListProperty, ObjectProperty, NumericProperty)
@@ -23,6 +36,7 @@ Builder.load_string('''
             pos: self._hard_shadow_pos
         Color:
             a: 1
+
 
 <CircularElevationBehavior>
     canvas.before:
@@ -52,11 +66,11 @@ class CommonElevationBehavior(object):
     def _set_elevation(self, elevation):
         try:
             self._elevation = elevation
-        except:
+        except KeyError:
             self._elevation = 1
 
     elevation = AliasProperty(_get_elevation, _set_elevation,
-                              bind=('_elevation',))
+                              bind=('_elevation', ))
 
     _soft_shadow_texture = ObjectProperty()
     _soft_shadow_size = ListProperty([0, 0])
@@ -81,7 +95,7 @@ class RectangularElevationBehavior(CommonElevationBehavior):
     def _update_shadow(self, *args):
         if self.elevation > 0:
             ratio = self.width / (self.height if self.height != 0 else 1)
-            if ratio > -2 and ratio < 2:
+            if -2 < ratio < 2:
                 self._shadow = App.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.9
                 height = soft_height = self.height * 1.9
@@ -109,7 +123,7 @@ class RectangularElevationBehavior(CommonElevationBehavior):
             y = self.center_y - soft_height / 2 - dp(
                 .1 * 1.5 ** self.elevation)
             self._soft_shadow_pos = (soft_x, y)
-            self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
+            self._soft_shadow_a = .1 * 1.1 ** self.elevation
             self._soft_shadow_texture = self._shadow.textures[
                 str(int(round(self.elevation - 1)))]
 
@@ -141,7 +155,7 @@ class CircularElevationBehavior(CommonElevationBehavior):
 
             y = self.center_y - height / 2 - dp(.1 * 1.5 ** self.elevation)
             self._soft_shadow_pos = (x, y)
-            self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
+            self._soft_shadow_a = .1 * 1.1 ** self.elevation
             self._soft_shadow_texture = self._shadow.textures[
                 str(int(round(self.elevation)))]
 

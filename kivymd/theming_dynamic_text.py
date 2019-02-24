@@ -1,16 +1,29 @@
 # -*- coding: utf-8 -*-
-#
-# Two implementations. The first is based on color brightness obtained from:-
-# https://www.w3.org/TR/AERT#color-contrast
-# The second is based on relative luminance calculation for sRGB obtained from:-
-# https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-# and contrast ratio calculation obtained from:-
-# https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
-#
-# Preliminary testing suggests color brightness more closely matches the
-# Material Design spec suggested text colors, but the alternative implementation
-# is both newer and the current 'correct' recommendation, so is included here
-# as an option.
+
+"""
+Bottom Sheets
+=============
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+Two implementations. The first is based on color brightness obtained from:-
+https://www.w3.org/TR/AERT#color-contrast
+The second is based on relative luminance calculation for sRGB obtained from:-
+https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+and contrast ratio calculation obtained from:-
+https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
+
+Preliminary testing suggests color brightness more closely matches the
+Material Design spec suggested text colors, but the alternative implementation
+is both newer and the current 'correct' recommendation, so is included here
+as an option.
+"""
 
 
 def _color_brightness(color):
@@ -29,25 +42,25 @@ def _black_or_white_by_color_brightness(color):
 
 def _normalized_channel(color):
     # Implementation of contrast ratio and relative luminance method
-    if color <= 0.03928:
+    if color <= .03928:
         return color / 12.92
     else:
-        return ((color + 0.055) / 1.055) ** 2.4
+        return ((color + .055) / 1.055) ** 2.4
 
 
 def _luminance(color):
     rg = _normalized_channel(color[0])
     gg = _normalized_channel(color[1])
     bg = _normalized_channel(color[2])
-    return 0.2126*rg + 0.7152*gg + 0.0722*bg
+    return .2126*rg + .7152*gg + .0722*bg
 
 
 def _black_or_white_by_contrast_ratio(color):
     l_color = _luminance(color)
-    l_black = 0.0
+    l_black = .0
     l_white = 1.0
-    b_contrast = (l_color + 0.05) / (l_black + 0.05)
-    w_contrast = (l_white + 0.05) / (l_color + 0.05)
+    b_contrast = (l_color + .05) / (l_black + .05)
+    w_contrast = (l_white + .05) / (l_color + .05)
     return 'white' if w_contrast >= b_contrast else 'black'
 
 

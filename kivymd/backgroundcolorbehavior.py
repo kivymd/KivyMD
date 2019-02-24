@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+Background Color Behavior
+=========================
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
+
 from kivy.lang import Builder
 from kivy.properties import BoundedNumericProperty, ReferenceListProperty
 from kivy.properties import OptionProperty, ListProperty
@@ -19,10 +32,10 @@ Builder.load_string('''
 
 
 class BackgroundColorBehavior(Widget):
-    r = BoundedNumericProperty(1., min=0., max=1.)
-    g = BoundedNumericProperty(1., min=0., max=1.)
-    b = BoundedNumericProperty(1., min=0., max=1.)
-    a = BoundedNumericProperty(0., min=0., max=1.)
+    r = BoundedNumericProperty(1., min=.0, max=1.)
+    g = BoundedNumericProperty(1., min=.0, max=1.)
+    b = BoundedNumericProperty(1., min=.0, max=1.)
+    a = BoundedNumericProperty(.0, min=.0, max=1.)
 
     md_bg_color = ReferenceListProperty(r, g, b, a)
 
@@ -41,8 +54,8 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
             options=['50', '100', '200', '300', '400', '500', '600', '700',
                      '800', '900', 'A100', 'A200', 'A400', 'A700'])
 
-    specific_text_color = ListProperty([0, 0, 0, 0.87])
-    specific_secondary_text_color = ListProperty([0, 0, 0, 0.87])
+    specific_text_color = ListProperty([0, 0, 0, .87])
+    specific_secondary_text_color = ListProperty([0, 0, 0, .87])
 
     def _update_specific_text_color(self, instance, value):
         if hasattr(self, 'theme_cls'):
@@ -64,10 +77,10 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
         secondary_color = color[:]
         # Check for black text (need to adjust opacity)
         if (color[0] + color[1] + color[2]) == 0:
-            color[3] = 0.87
-            secondary_color[3] = 0.54
+            color[3] = .87
+            secondary_color[3] = .54
         else:
-            secondary_color[3] = 0.7
+            secondary_color[3] = .7
         self.specific_text_color = color
         self.specific_secondary_text_color = secondary_color
 

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-chips.py
+"""
+Chips
+=====
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,18 +12,21 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Chips <https://material.io/design/components/chips.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
 
-kv = """
+kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
-#:import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 #:import MDLabel kivymd.label.MDLabel
 
 
@@ -154,7 +158,7 @@ BoxLayout:
                     label: 'Facebook'
                     icon: 'facebook'
                     callback: app.callback
-"""
+'''
 
 
 class MyApp(App):
@@ -169,10 +173,10 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ListProperty, ObjectProperty, \
+from kivy.properties import StringProperty, ListProperty, ObjectProperty,\
     BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
@@ -181,21 +185,21 @@ from kivy.uix.stacklayout import StackLayout
 from kivymd.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string('''
 #:import MDIconButton kivymd.button.MDIconButton
 
 
-<MDChooseChip>:
+<MDChooseChip>
     size_hint_y: None
     height: self.minimum_height
     spacing: dp(5)
 
 
-<MDChip>:
+<MDChip>
     size_hint: None,  None
     height: dp(26)
     width:
-        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle' \
+        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle'\
         else self.minimum_width
 
     canvas:
@@ -204,7 +208,7 @@ Builder.load_string("""
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [15,]
+            radius: [15, ]
 
     BoxLayout:
         id: box_check
@@ -222,14 +226,14 @@ Builder.load_string("""
             text: '{}'.format(root.label)
             size_hint_x: None
             width: self.texture_size[0]
-    
+
     MDIconButton:
         id: icon
         icon: root.icon
         size_hint_y: None
         height: dp(26)
         disabled: True
-""")
+''')
 
 
 class MDChip(BoxLayout, ThemableBehavior):
@@ -250,7 +254,7 @@ class MDChip(BoxLayout, ThemableBehavior):
             md_choose_chip = self.parent
             if md_choose_chip.__class__ is MDChooseChip:
                 if md_choose_chip.selected_chip:
-                    md_choose_chip.selected_chip.color = \
+                    md_choose_chip.selected_chip.color =\
                         md_choose_chip.selected_chip_color
                 md_choose_chip.selected_chip = self
                 md_choose_chip.selected_chip_color = self.color

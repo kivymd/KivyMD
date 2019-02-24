@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-progressloader.py
-
-Progressbar downloads files from the server.
+Progress Loader
+===============
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -13,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+Progressbar downloads files from the server.
+
+Example
+-------
 
 import os
 
@@ -26,13 +28,12 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
-Builder.load_string(
-'''
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
-<Root@BoxLayout>:
+<Root@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
@@ -49,7 +50,7 @@ Builder.load_string(
         MDRoundFlatIconButton:
             text: "Download file"
             icon: "download"
-            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            pos_hint: {'center_x': .5, 'center_y': .6}
             on_release: app.show_example_download_file()
 ''')
 
@@ -72,7 +73,7 @@ class Test(App):
     def download_progress_hide(self, instance_progress, value):
         '''Hides progress progress.'''
 
-        self.main_widget.ids.toolbar.right_action_items = \
+        self.main_widget.ids.toolbar.right_action_items =\
             [['download',
                 lambda x: self.download_progress_show(instance_progress)]]
 
@@ -97,7 +98,6 @@ class Test(App):
 
 
 Test().run()
-
 """
 
 from kivy.clock import Clock
@@ -107,7 +107,7 @@ from kivy.network.urlrequest import UrlRequest
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
 
-from kivymd.card import MDCard
+from kivymd.cards import MDCard
 
 Builder.load_string('''
 #:import Window kivy.core.window.Window
@@ -116,7 +116,7 @@ Builder.load_string('''
 #:import MDCard kivymd.card.MDCard
 
 
-<MDProgressLoader>:
+<MDProgressLoader>
     pos: (Window.width // 2) - (self.width // 2), (Window.height // 2) - (self.height // 2)
     size_hint_y: None
     size_hint_x: .8
@@ -188,14 +188,14 @@ class MDProgressLoader(MDCard):
         self.animation_progress_from_fade()
 
     def draw_progress(self, percent):
-        '''
+        """
         :type percent: int;
         :param percent: loading percentage;
 
-        '''
+        """
 
-        self.ids.label_download.text = '%s: %d %%' % (
-        self.label_download, percent)
+        self.ids.label_download.text = '%s: %d %%'\
+                                       % (self.label_download, percent)
 
     def animation_progress_to_fade(self, interval):
         if not self.download_flag:
@@ -203,7 +203,7 @@ class MDProgressLoader(MDCard):
 
         animation = Animation(
             center_y=Window.height, center_x=Window.width,
-            opacity=0, d=0.2, t='out_quad'
+            opacity=0, d=.2, t='out_quad'
         )
         animation.bind(on_complete=lambda x, y: self.download_hide(self, None))
         animation.start(self)
@@ -211,19 +211,19 @@ class MDProgressLoader(MDCard):
     def animation_progress_from_fade(self):
         animation = Animation(
             center_y=Window.height // 2, center_x=Window.width // 2,
-            opacity=1, d=0.2, t='out_quad'
+            opacity=1, d=.2, t='out_quad'
         )
         animation.start(self)
         Clock.schedule_once(self.animation_progress_to_fade, 2.5)
 
     def retrieve_progress_load(self, url, path):
-        '''
+        """
         :type url: str;
         :param url: link to content;
 
         :type path: str;
         :param path: path to save content;
-        '''
+        """
 
         req = UrlRequest(
             url, on_progress=self.update_progress, chunk_size=1024,

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-dailog.py
+"""
+Dialog
+======
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -11,7 +12,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-EXAMPLE:
+`Material Design spec, Dialogs <https://material.io/design/components/dialogs.html>`
+
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -22,12 +26,12 @@ from kivymd.dialog import MDInputDialog, MDDialog
 from kivymd.theming import ThemeManager
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
 
 
-<ExampleDialogs@BoxLayout>:
+<ExampleDialogs@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
@@ -50,7 +54,7 @@ Builder.load_string("""
             pos_hint: {'center_x': .5, 'center_y': .5}
             opposite_colors: True
             on_release: app.show_example_okcancel_dialog()
-""")
+''')
 
 
 class Example(App):
@@ -77,7 +81,7 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -88,7 +92,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
-from kivymd.card import MDCard
+from kivymd.cards import MDCard
 from kivymd.textfields import MDTextField
 from kivymd.theming import ThemableBehavior
 from kivymd.button import MDFlatButton, MDRaisedButton, MDTextButton
@@ -98,10 +102,10 @@ from kivymd.material_resources import DEVICE_IOS
 
 Builder.load_string('''
 #:import images_path kivymd.images_path
-#;import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 
 
-<ContentInputDialog>:
+<ContentInputDialog>
     orientation: 'vertical'
     padding: dp(15)
     spacing: dp(10)
@@ -127,7 +131,7 @@ Builder.load_string('''
         padding: dp(20), 0, dp(20), 0
 
 
-<ContentMDDialog>:
+<ContentMDDialog>
     orientation: 'vertical'
     padding: dp(15)
     spacing: dp(10)
@@ -149,9 +153,9 @@ Builder.load_string('''
         id: scroll
         size_hint_y: None
         height:
-            root.height - (box_buttons.height + title.height + dp(48) + \
-            sep.height)
-        
+            root.height - (box_buttons.height + title.height + dp(48)\
+            + sep.height)
+
         canvas:
             Rectangle:
                 pos: self.pos
@@ -185,6 +189,7 @@ else:
 
 # FIXME: Not work themes for iOS.
 class BaseDialog(ThemableBehavior, ModalView):
+
     def set_content(self, instance_content_dialog):
         def _events_callback(result_press):
             self.dismiss()

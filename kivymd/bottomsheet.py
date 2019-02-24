@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Bottom Sheets
 =============
 
-`Material Design spec Bottom Sheets page <http://www.google.com/design/spec/components/bottom-sheets.html>`_
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`
 
 In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
 
-Examples
---------
+Example
+-------
 
 .. note::
 
@@ -36,10 +44,7 @@ For :class:`MDListBottomSheet`:
     bs.add_item("Da Cloud", lambda x: x, icon_src='./assets/cloud-upload.png')
     bs.add_item("Camera", lambda x: x, icon_src='./assets/camera.png')
     bs.open()
-
-API
----
-'''
+"""
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -53,7 +58,7 @@ from kivy.uix.modalview import ModalView
 from kivymd import images_path
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.label import MDLabel
-from kivymd.list import MDList, OneLineListItem, ILeftBody, \
+from kivymd.list import MDList, OneLineListItem, ILeftBody,\
     OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 
@@ -99,8 +104,8 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     def open(self, *largs):
         super(MDBottomSheet, self).open(*largs)
 
-    def add_widget(self, widget, index=0):
-        super(MDBottomSheet, self).add_widget(widget, index)
+    def add_widget(self, widget, index=0, canvas=None):
+        super(MDBottomSheet, self).add_widget(widget, index, canvas)
 
 
 Builder.load_string('''
@@ -109,7 +114,7 @@ Builder.load_string('''
 
 <ListBSIconLeft>
     font_style: 'Icon'
-    text: u"{}".format(md_icons[root.icon])
+    text: u'{}'.format(md_icons[root.icon])
     halign: 'center'
     theme_text_color: 'Primary'
     valign: 'middle'

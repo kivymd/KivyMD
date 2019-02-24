@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-'''
-fansceernmanager.py
+"""
+Fan Screen Manager
+==================
 
 Copyright © 2010-2018 HeaTTheatR
 
@@ -16,8 +17,8 @@ Perhaps the wrong positioning of the screens with a large number of them.
 
 Thanks for reply - https://groups.google.com/forum/#!topic/kivy-users/ReAVg8eDrDo
 
-
-EXAMPLE:
+Example
+-------
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -29,7 +30,7 @@ from kivymd.list import ILeftBodyTouch
 from kivymd.theming import ThemeManager
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
@@ -38,7 +39,7 @@ Builder.load_string("""
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 
 
-<TestFanScreenManager>:
+<TestFanScreenManager>
     orientation: 'vertical'
 
     Toolbar:
@@ -90,7 +91,7 @@ Builder.load_string("""
 #
 ###############################################################################
 
-<ScreenTwo>:
+<ScreenTwo>
     orientation: 'vertical'
     spacing: dp(10)
 
@@ -145,7 +146,7 @@ Builder.load_string("""
             pos_hint: {'center_x': .5}
 
 
-<ScreenOne>:
+<ScreenOne>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -174,7 +175,7 @@ Builder.load_string("""
     TwoLineIconListItem:
         text: "Call Viber Out"
         secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]" \
+            "[color=%s]Advantageous rates for calls[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
@@ -182,13 +183,13 @@ Builder.load_string("""
     TwoLineIconListItem:
         text: "Call over mobile network"
         secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]" \
+            "[color=%s]Operator's tariffs apply[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
     Widget:
-""")
+''')
 
 
 class TestFanScreenManager(BoxLayout):
@@ -220,7 +221,7 @@ class MyApp(App):
 
 
 MyApp().run()
-'''
+"""
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout

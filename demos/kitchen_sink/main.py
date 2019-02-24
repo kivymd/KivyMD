@@ -433,7 +433,7 @@ class KitchenSink(App, Screens):
         from kivymd.filemanager import MDFileManager
         from kivymd.dialog import MDDialog
 
-        def file_manager_open(text_item):
+        def open_file_manager(text_item, dialog):
             previous = False if text_item == 'List' else True
             self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
             self.file_manager = MDFileManager(exit_manager=self.exit_manager,
@@ -448,7 +448,7 @@ class KitchenSink(App, Screens):
             title='Title', size_hint=(.8, .4), text_button_ok='List',
             text="Open manager with 'list' or 'previous' mode?",
             text_button_cancel='Previous',
-            events_callback=file_manager_open).open()
+            events_callback=open_file_manager).open()
 
     def select_path(self, path):
         """It will be called when you click on the file name

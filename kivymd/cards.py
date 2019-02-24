@@ -21,7 +21,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.factory import Factory
 
-from kivymd.card import MDCardPost
+from kivymd.cards import MDCardPost
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
@@ -136,7 +136,7 @@ from kivy.uix.widget import Widget
 from kivymd.button import MDIconButton
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.list import ILeftBody
-from kivymd.menu import MDDropdownMenu
+from kivymd.menus import MDDropdownMenu
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''

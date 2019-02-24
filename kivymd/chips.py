@@ -26,7 +26,7 @@ kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
-#:import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 #:import MDLabel kivymd.label.MDLabel
 
 

@@ -1094,7 +1094,7 @@ labels = '''
 
 menu = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDDropdownMenu kivymd.menu.MDDropdownMenu
+#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
 
 
 <Menu@Screen>
@@ -1147,7 +1147,7 @@ menu = '''
 '''
 
 chips = '''
-#:import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
 

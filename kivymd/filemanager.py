@@ -138,7 +138,7 @@ ACTIVITY_MANAGER = '''
 #:import Window kivy.core.window.Window
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
-#:import MDSeparator kivymd.card.MDSeparator
+#:import MDSeparator kivymd.cards.MDSeparator
 
 
 <BodyManager@BoxLayout>

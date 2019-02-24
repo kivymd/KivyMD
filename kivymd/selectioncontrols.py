@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
 
+"""
+Selection Controls
+==================
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`
+"""
+
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
@@ -19,7 +34,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 
 Builder.load_string('''
-<MDCheckbox>:
+<MDCheckbox>
     canvas:
         Clear
         Color:
@@ -28,20 +43,20 @@ Builder.load_string('''
             texture: self.texture
             size: self.texture_size
             pos:
-                int(self.center_x - self.texture_size[0] / 2.), \
+                int(self.center_x - self.texture_size[0] / 2.),\
                 int(self.center_y - self.texture_size[1] / 2.)
 
     text: self._radio_icon if self.group else self._checkbox_icon
     font_name: 'Icons'
     font_size: sp(24)
     color:
-        self.theme_cls.primary_color if self.active \
+        self.theme_cls.primary_color if self.active\
         else self.theme_cls.secondary_text_color
     halign: 'center'
     valign: 'middle'
 
 
-<Thumb>:
+<Thumb>
     color: 1, 1, 1, 1
     canvas:
         Color:
@@ -51,12 +66,12 @@ Builder.load_string('''
             pos: self.pos
 
 
-<MDSwitch>:
+<MDSwitch>
     canvas.before:
         Color:
             rgba:
-                self._track_color_disabled if self.disabled else \
-                (self._track_color_active if self.active \
+                self._track_color_disabled if self.disabled else\
+                (self._track_color_active if self.active\
                 else self._track_color_normal)
         Ellipse:
             size: dp(16), dp(16)
@@ -80,7 +95,7 @@ Builder.load_string('''
         size: dp(24), dp(24)
         pos: root._thumb_pos
         color:
-            root.thumb_color_disabled if root.disabled else \
+            root.thumb_color_disabled if root.disabled else\
             (root.thumb_color_down if root.active else root.thumb_color)
         elevation:    4 if root.active else 2
         on_release: setattr(root, 'active', not root.active)
@@ -92,10 +107,10 @@ class MDCheckbox(ThemableBehavior, CircularRippleBehavior,
     active = BooleanProperty(False)
 
     _checkbox_icon = StringProperty(
-        u"{}".format(md_icons['checkbox-blank-outline']))
-    _radio_icon = StringProperty(u"{}".format(
+        u'{}'.format(md_icons['checkbox-blank-outline']))
+    _radio_icon = StringProperty(u'{}'.format(
         md_icons['checkbox-blank-circle-outline']))
-    _icon_active = StringProperty(u"{}".format(md_icons['checkbox-marked']))
+    _icon_active = StringProperty(u'{}'.format(md_icons['checkbox-marked']))
 
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(font_size=0, duration=.1, t='out_quad')
@@ -110,17 +125,17 @@ class MDCheckbox(ThemableBehavior, CircularRippleBehavior,
         if self.state == 'down':
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
-            self._radio_icon = u"{}".format(
+            self._radio_icon = u'{}'.format(
                 md_icons['checkbox-marked-circle-outline'])
-            self._checkbox_icon = u"{}".format(
+            self._checkbox_icon = u'{}'.format(
                 md_icons['checkbox-marked-outline'])
             self.active = True
         else:
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
-            self._radio_icon = u"{}".format(
+            self._radio_icon = u'{}'.format(
                 md_icons['checkbox-blank-circle-outline'])
-            self._checkbox_icon = u"{}".format(
+            self._checkbox_icon = u'{}'.format(
                 md_icons['checkbox-blank-outline'])
             self.active = False
 

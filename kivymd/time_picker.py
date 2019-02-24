@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+Time Picker
+===========
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
+
 from kivy.lang import Builder
 from kivy.uix.modalview import ModalView
 from kivy.uix.floatlayout import FloatLayout
@@ -8,13 +21,13 @@ from kivymd.theming import ThemableBehavior
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivy.properties import ObjectProperty
 
-Builder.load_string("""
+Builder.load_string('''
 #:import MDFlatButton kivymd.button.MDFlatButton
 #:import CircularTimePicker kivymd.vendor.circularTimePicker.CircularTimePicker
 #:import dp kivy.metrics.dp
 
 
-<MDTimePicker>:
+<MDTimePicker>
     size_hint: (None, None)
     size: [dp(270), dp(335) + dp(95)]
     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -35,20 +48,20 @@ Builder.load_string("""
         Ellipse:
             size: [dp(220), dp(220)]
             pos:
-                root.pos[0] + dp(270) / 2 - dp(220) / 2, root.pos[1] + \
-                root.height - (dp(335) / 2 + dp(95)) - dp(220) / 2 + dp(35)
+                root.pos[0] + dp(270) / 2 - dp(220) / 2, root.pos[1]\
+                + root.height - (dp(335) / 2 + dp(95)) - dp(220) / 2 + dp(35)
 
     CircularTimePicker:
         id: time_picker
         pos: (dp(270) / 2) - (self.width / 2), root.height - self.height
         size_hint: [.8, .8]
-        pos_hint: {'center_x': 0.5, 'center_y': 0.585}
-    
+        pos_hint: {'center_x': .5, 'center_y': .585}
+
     MDFlatButton:
         width: dp(32)
         id: ok_button
         pos:
-            root.pos[0] + root.size[0] - self.width - dp(10), \
+            root.pos[0] + root.size[0] - self.width - dp(10),\
             root.pos[1] + dp(10)
         text: "OK"
         on_release: root.close_ok()
@@ -56,11 +69,11 @@ Builder.load_string("""
     MDFlatButton:
         id: cancel_button
         pos:
-            root.pos[0] + root.size[0] - self.width - ok_button.width - \
-            dp(10), root.pos[1] + dp(10)
+            root.pos[0] + root.size[0] - self.width - ok_button.width\
+            - dp(10), root.pos[1] + dp(10)
         text: "Cancel"
         on_release: root.close_cancel()
-""")
+''')
 
 
 class MDTimePicker(ThemableBehavior, FloatLayout, ModalView,

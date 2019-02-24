@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+KivyMD
+======
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
+
 import os
 
 from kivy import Logger

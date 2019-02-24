@@ -1,5 +1,20 @@
 # -*- coding: utf-8 -*-
 
+"""
+Menus
+=====
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Menus <https://material.io/design/components/menus.html>`
+"""
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -7,7 +22,7 @@ from kivy.lang import Builder
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.metrics import dp
-from kivy.properties import NumericProperty, ListProperty, OptionProperty, \
+from kivy.properties import NumericProperty, ListProperty, OptionProperty,\
     StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -72,7 +87,7 @@ Builder.load_string('''
                 Rectangle:
                     size: self.size
                     pos: self.pos
-            
+
             canvas.after:
                 Color:
                     rgba: root.color_rectangle
@@ -165,9 +180,10 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
 
         # TODO: ESTABLISH INITIAL TARGET SIZE ESTIMATE
         target_width = self.width_mult * m_res.STANDARD_INCREMENT
-        #md_menu = self.ids.md_menu
-        #opts = md_menu.layout_manager.view_opts
-        #md_item = md_menu.view_adapter.get_view(1, md_menu.data[1], opts[1]['viewclass'])
+        # md_menu = self.ids.md_menu
+        # opts = md_menu.layout_manager.view_opts
+        # md_item = md_menu.view_adapter.get_view(1, md_menu.data[1],
+        #                                         opts[1]['viewclass'])
 
         # If we're wider than the Window...
         if target_width > Window.width:

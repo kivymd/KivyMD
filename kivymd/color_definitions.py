@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+Color Definitions
+=====
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`
+"""
+
 colors = {
     'Red': {
         '200': 'ef9a9a',
@@ -315,7 +332,7 @@ light_colors = {
     'Purple': ['50', '100', '200', 'A100'],
     'DeepPurple': ['50', '100', '200', 'A100'],
     'Indigo': ['50', '100', '200', 'A100'],
-    'Blue': ['50','100', '200', '300', '400', 'A100'],
+    'Blue': ['50', '100', '200', '300', '400', 'A100'],
     'LightBlue': ['50', '100', '200', '300', '400', '500', 'A100', 'A200',
                   'A400'],
     'Cyan': ['50', '100', '200', '300', '400', '500', '600', 'A100', 'A200',

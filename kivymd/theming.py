@@ -1,11 +1,26 @@
 # -*- coding: utf-8 -*-
 
+"""
+Theming
+=======
+
+Copyright © 2010-2018 HeaTTheatR
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Material theming <https://material.io/design/material-theming>`
+"""
+
 from kivy.app import App
 from kivy.core.text import LabelBase
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.metrics import dp
-from kivy.properties import OptionProperty, AliasProperty, ObjectProperty, \
+from kivy.properties import OptionProperty, AliasProperty, ObjectProperty,\
     StringProperty, ListProperty, BooleanProperty
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
@@ -275,7 +290,6 @@ class ThemeManager(Widget):
 
     error_color = AliasProperty(_get_error_color)
 
-
     def _get_ripple_color(self):
         return self._ripple_color
 
@@ -316,7 +330,7 @@ class ThemeManager(Widget):
     horizontal_margins = AliasProperty(_get_horizontal_margins)
 
     def on_theme_style(self, instance, value):
-        if hasattr(App.get_running_app(), 'theme_cls') and \
+        if hasattr(App.get_running_app(), 'theme_cls') and\
                         App.get_running_app().theme_cls == self:
             self.set_clearcolor_by_theme_style(value)
 

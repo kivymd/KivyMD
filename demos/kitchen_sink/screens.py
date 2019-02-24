@@ -7,11 +7,11 @@ from kivy.core.window import Window
 
 from kivymd.utils.cropimage import crop_image
 
-bottom_app_bar = """
+bottom_app_bar = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<BottomAppBar@Screen>:
+<BottomAppBar@Screen>
     name: 'bottom app bar'
 
     MDRaisedButton:
@@ -27,10 +27,10 @@ bottom_app_bar = """
         on_release:
             app.md_app_bar.set_pos_action_button('right')
             app.move_item_menu('right')
-"""
+'''
 
-accordion_list = """
-<AccordionList@Screen>:
+accordion_list = '''
+<AccordionList@Screen>
     name: 'accordion list'
     on_enter: app.set_accordion_list()
     on_leave: anim_list.clear_widgets()
@@ -42,13 +42,13 @@ accordion_list = """
             cols: 1
             size_hint_y: None
             height: self.minimum_height
-"""
+'''
 
-bottom_sheet = """
+bottom_sheet = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<BottomSheet@Screen>:
+<BottomSheet@Screen>
     name: 'bottom sheet'
 
     MDRaisedButton:
@@ -56,7 +56,7 @@ bottom_sheet = """
         opposite_colors: True
         size_hint: None, None
         size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        pos_hint: {'center_x': .5, 'center_y': .6}
         on_release: app.show_example_bottom_sheet()
 
     MDRaisedButton:
@@ -64,17 +64,17 @@ bottom_sheet = """
         opposite_colors: True
         size_hint: None, None
         size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        pos_hint: {'center_x': .5, 'center_y': .3}
         on_release: app.show_example_grid_bottom_sheet()
-"""
+'''
 
-accordion = """
+accordion = '''
 #:import MDAccordion kivymd.accordion.MDAccordion
 #:import MDAccordionItem kivymd.accordion.MDAccordionItem
 #:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
 
 
-<Accord@Screen>:
+<Accord@Screen>
     name: 'accordion'
 
     BoxLayout:
@@ -116,14 +116,14 @@ accordion = """
             text: 'Content'
             halign: 'center'
             theme_text_color: 'Primary'
-"""
+'''
 
-grid = """
+grid = '''
 #:import SmartTileWithStar kivymd.grid.SmartTileWithStar
 #:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
 
 
-<Grid@Screen>:
+<Grid@Screen>
     name: 'grid'
 
     on_enter:
@@ -180,16 +180,16 @@ grid = """
                 mipmap: True
                 text: "Tangerines\\n[size=12]tangerines-1111529_1280.png[/size]"
                 font_style: 'Subhead'
-"""
+'''
 
-bottom_navigation = """
+bottom_navigation = '''
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDLabel kivymd.label.MDLabel
 
 
-<BottomNavigation@Screen>:
+<BottomNavigation@Screen>
     name: 'bottom navigation'
 
     MDBottomNavigation:
@@ -232,16 +232,16 @@ bottom_navigation = """
                 theme_text_color: 'Primary'
                 text: "Cheese!"
                 halign: 'center'
-"""
+'''
 
-tabs = """
+tabs = '''
 #:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
 #:import MDTab kivymd.tabs.MDTab
 #:import MDLabel kivymd.label.MDLabel
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 
 
-<Tabs@Screen>:
+<Tabs@Screen>
     name: 'tabs'
 
     MDTabbedPanel:
@@ -318,7 +318,7 @@ tabs = """
 
         MDCheckbox:
             on_state:
-                tab_panel.tab_display_mode = 'icons' \
+                tab_panel.tab_display_mode = 'icons'\
                 if tab_panel.tab_display_mode=='text' else 'text'
 
         MDLabel:
@@ -330,26 +330,26 @@ tabs = """
 
         MDCheckbox:
             on_state:
-                tab_panel.tab_width_mode = 'fixed' \
+                tab_panel.tab_width_mode = 'fixed'\
                 if tab_panel.tab_width_mode =='stacked' else 'stacked'
-                
-        Widget:
-"""
 
-pickers = """
+        Widget:
+'''
+
+pickers = '''
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDLabel kivymd.label.MDLabel
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<Pickers@Screen>:
+<Pickers@Screen>
     name: 'pickers'
 
     BoxLayout:
         spacing: dp(40)
         orientation: 'vertical'
         size_hint_x: None
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
 
         BoxLayout:
             orientation: 'vertical'
@@ -359,7 +359,7 @@ pickers = """
                 text: "Open time picker"
                 size_hint: None, None
                 size: 3 * dp(48), dp(48)
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                pos_hint: {'center_x': .5, 'center_y': .5}
                 opposite_colors: True
                 on_release: app.show_example_time_picker()
             MDLabel:
@@ -367,11 +367,11 @@ pickers = """
                 theme_text_color: 'Primary'
                 size_hint: None, None
                 size: dp(48)*3, dp(48)
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                pos_hint: {'center_x': .5, 'center_y': .5}
             BoxLayout:
                 size: dp(48)*3, dp(48)
                 size_hint: (None, None)
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                pos_hint: {'center_x': .5, 'center_y': .5}
                 MDLabel:
                     theme_text_color: 'Primary'
                     text: "Start on previous time"
@@ -389,7 +389,7 @@ pickers = """
                 text: "Open date picker"
                 size_hint: None, None
                 size: 3 * dp(48), dp(48)
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                pos_hint: {'center_x': .5, 'center_y': .5}
                 opposite_colors: True
                 on_release: app.show_example_date_picker()
             MDLabel:
@@ -397,11 +397,11 @@ pickers = """
                 theme_text_color: 'Primary'
                 size_hint: None, None
                 size: dp(48)*3, dp(48)
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                pos_hint: {'center_x': .5, 'center_y': .5}
             BoxLayout:
                 size: dp(48)*3, dp(48)
                 size_hint: (None, None)
-                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                pos_hint: {'center_x': .5, 'center_y': .5}
                 MDLabel:
                     theme_text_color: 'Primary'
                     text: "Start on previous date"
@@ -411,9 +411,9 @@ pickers = """
                     id: date_picker_use_previous_date
                     size_hint: None, None
                     size: dp(48), dp(48)
-"""
+'''
 
-buttons = """
+buttons = '''
 #:import MDIconButton kivymd.button.MDIconButton
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 #:import MDFlatButton kivymd.button.MDFlatButton
@@ -426,7 +426,7 @@ buttons = """
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
-<Buttons@Screen>:
+<Buttons@Screen>
     name: 'buttons'
 
     BoxLayout:
@@ -460,45 +460,45 @@ buttons = """
 
     MDFlatButton:
         text: 'MDFlatButton'
-        pos_hint: {'center_x': 0.5, 'center_y': .75}
+        pos_hint: {'center_x': .5, 'center_y': .75}
 
     MDRaisedButton:
         text: "MDRaisedButton"
         elevation_normal: 2
         opposite_colors: True
-        pos_hint: {'center_x': 0.5, 'center_y': .65}
+        pos_hint: {'center_x': .5, 'center_y': .65}
 
     MDRectangleFlatButton:
         text: "MDRectangleFlatButton"
-        pos_hint: {'center_x': 0.5, 'center_y': .55}
+        pos_hint: {'center_x': .5, 'center_y': .55}
 
     MDRectangleFlatIconButton:
         text: "MDRectangleFlatIconButton"
         icon: "language-python"
-        pos_hint: {'center_x': 0.5, 'center_y': .45}
+        pos_hint: {'center_x': .5, 'center_y': .45}
         width: dp(230)
 
     MDRoundFlatButton:
         text: "MDROUNDFLATBUTTON"
-        pos_hint: {'center_x': 0.5, 'center_y': .35}
+        pos_hint: {'center_x': .5, 'center_y': .35}
 
     MDRoundFlatIconButton:
         text: "MDRoundFlatIconButton"
         icon: "language-python"
-        pos_hint: {'center_x': 0.5, 'center_y': .25}
+        pos_hint: {'center_x': .5, 'center_y': .25}
         width: dp(200)
 
     MDFillRoundFlatButton:
         text: "MDFillRoundFlatButton"
-        pos_hint: {'center_x': 0.5, 'center_y': .15}
+        pos_hint: {'center_x': .5, 'center_y': .15}
 
     MDTextButton:
         text: "MDTextButton"
-        pos_hint: {'center_x': 0.5, 'center_y': .05}
-"""
+        pos_hint: {'center_x': .5, 'center_y': .05}
+'''
 
-cards = """
-<Cards@Screen>:
+cards = '''
+<Cards@Screen>
     name: 'cards'
     on_enter: app.add_cards(grid_card)
 
@@ -514,24 +514,24 @@ cards = """
             padding: dp(5)
             size_hint_y: None
             height: self.minimum_height
-"""
-toolbars = """
+'''
+toolbars = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 
 
-<Toolbars@Screen>:
+<Toolbars@Screen>
     name: 'toolbars'
 
     Toolbar:
         title: "Simple toolbar"
-        pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+        pos_hint: {'center_x': .5, 'center_y': .75}
         md_bg_color: get_color_from_hex(colors['Teal']['500'])
         background_palette: 'Teal'
         background_hue: '500'
 
     Toolbar:
         title: "Toolbar with right buttons"
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
         md_bg_color: get_color_from_hex(colors['Amber']['700'])
         background_palette: 'Amber'
         background_hue: '700'
@@ -539,28 +539,28 @@ toolbars = """
 
     Toolbar:
         title: "Toolbar with left and right buttons"
-        pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+        pos_hint: {'center_x': .5, 'center_y': .25}
         md_bg_color: get_color_from_hex(colors['DeepPurple']['A400'])
         background_palette: 'DeepPurple'
         background_hue: 'A400'
         left_action_items: [['arrow-left', lambda x: None]]
-        right_action_items: [['lock', lambda x: None], \
-            ['camera', lambda x: None], \
+        right_action_items: [['lock', lambda x: None],\
+            ['camera', lambda x: None],\
             ['play', lambda x: None]]
-"""
+'''
 
-dialogs = """
+dialogs = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<Dialogs@Screen>:
+<Dialogs@Screen>
     name: 'dialogs'
 
     MDRaisedButton:
         text: "Open lengthy dialog"
         size_hint: None, None
         size: 3 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.8}
+        pos_hint: {'center_x': .5, 'center_y': .8}
         opposite_colors: True
         on_release: app.show_example_long_dialog()
 
@@ -568,7 +568,7 @@ dialogs = """
         text: "Open input dialog"
         size_hint: None, None
         size: 3 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        pos_hint: {'center_x': .5, 'center_y': .6}
         opposite_colors: True
         on_release: app.show_example_input_dialog()
 
@@ -576,7 +576,7 @@ dialogs = """
         text: "Open Alert Dialog"
         size_hint: None, None
         size: 3 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+        pos_hint: {'center_x': .5, 'center_y': .4}
         opposite_colors: True
         on_release: app.show_example_alert_dialog()
 
@@ -584,17 +584,17 @@ dialogs = """
         text: "Open Ok Cancel Dialog"
         size_hint: None, None
         size: 3 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.2}
+        pos_hint: {'center_x': .5, 'center_y': .2}
         opposite_colors: True
         on_release: app.show_example_ok_cancel_dialog()
-"""
+'''
 
-theming = """
+theming = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDLabel kivymd.label.MDLabel
 
 
-<Theming@Screen>:
+<Theming@Screen>
     name: 'theming'
 
     BoxLayout:
@@ -610,23 +610,23 @@ theming = """
             text: 'Change theme'
             on_release: app.theme_picker_open()
             opposite_colors: True
-            pos_hint: {'center_x': 0.5}
+            pos_hint: {'center_x': .5}
         MDLabel:
             text:
-                "Current: " + app.theme_cls.theme_style + \
-                ", " + app.theme_cls.primary_palette
+                "Current: " + app.theme_cls.theme_style\
+                + ", " + app.theme_cls.primary_palette
             theme_text_color: 'Primary'
-            pos_hint: {'center_x': 0.5}
+            pos_hint: {'center_x': .5}
             halign: 'center'
-"""
+'''
 
-textfields = """
+textfields = '''
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDTextField kivymd.textfields.MDTextField
 
 
-<TextFields@Screen>:
+<TextFields@Screen>
     name: 'textfields'
 
     ScrollView:
@@ -683,13 +683,13 @@ textfields = """
                 pos_hint: {'center_y': .5, 'center_x': .5}
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"
-"""
+'''
 
-file_manager = """
+file_manager = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<FileManager@Screen>:
+<FileManager@Screen>
     name: 'file manager'
 
     MDRaisedButton:
@@ -697,11 +697,11 @@ file_manager = """
         size: 3 * dp(48), dp(48)
         text: 'Open files manager'
         opposite_colors: True
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
         on_release: app.file_manager_open()
-"""
+'''
 
-lists = """
+lists = '''
 #:import MDList kivymd.list.MDList
 #:import OneLineListItem kivymd.list.OneLineListItem
 #:import TwoLineListItem kivymd.list.TwoLineListItem
@@ -711,7 +711,7 @@ lists = """
 #:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
 
 
-<Lists@Screen>:
+<Lists@Screen>
     name: 'lists'
 
     ScrollView:
@@ -727,7 +727,7 @@ lists = """
             ThreeLineListItem:
                 text: "Three-line item"
                 secondary_text:
-                    "This is a multi-line label where you can " \
+                    "This is a multi-line label where you can "\
                     "fit more text than usual"
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
@@ -782,44 +782,44 @@ lists = """
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
-"""
+'''
 
-snackbar = """
+snackbar = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<SnackBar@Screen>:
+<SnackBar@Screen>
     name: 'snackbar'
 
     MDRaisedButton:
         text: "Create simple snackbar"
         size_hint: None, None
         size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+        pos_hint: {'center_x': .5, 'center_y': .75}
         opposite_colors: True
         on_release: app.show_example_snackbar('simple')
     MDRaisedButton:
         text: "Create snackbar with button"
         size_hint: None, None
         size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
         opposite_colors: True
         on_release: app.show_example_snackbar('button')
     MDRaisedButton:
         text: "Create snackbar with a lot of text"
         size_hint: None, None
         size: 5 * dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+        pos_hint: {'center_x': .5, 'center_y': .25}
         opposite_colors: True
         on_release: app.show_example_snackbar('verylong')
-"""
+'''
 
-download_file = """
+download_file = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import Clock kivy.clock.Clock
 
 
-<DownloadFile@Screen>:
+<DownloadFile@Screen>
     name: 'download file'
 
     FloatLayout:
@@ -829,17 +829,17 @@ download_file = """
             text: "Download file"
             size_hint: None, None
             size: 3 * dp(48), dp(48)
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            pos_hint: {'center_x': .5, 'center_y': .5}
             opposite_colors: True
             on_release:
                 Clock.schedule_once(app.show_example_download_file, .1)
-"""
+'''
 
-user_animation_card = """
+user_animation_card = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
-<UserCard@Screen>:
+<UserCard@Screen>
     name: 'user animation card'
 
     MDRaisedButton:
@@ -847,16 +847,16 @@ user_animation_card = """
         size: 3 * dp(48), dp(48)
         text: 'Open card'
         opposite_colors: True
-        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        pos_hint: {'center_x': .5, 'center_y': .6}
         on_release: app.show_user_example_animation_card()
-"""
+'''
 
-selection_controls = """
+selection_controls = '''
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDSwitch kivymd.selectioncontrols.MDSwitch
 
 
-<SelectionControls@Screen>:
+<SelectionControls@Screen>
     name: 'selection controls'
 
     MDCheckbox:
@@ -864,27 +864,27 @@ selection_controls = """
         group: 'test'
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': 0.25, 'center_y': 0.5}
+        pos_hint: {'center_x': .25, 'center_y': .5}
 
     MDCheckbox:
         id: grp_chkbox_2
         group: 'test'
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
 
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': 0.75, 'center_y': 0.5}
+        pos_hint: {'center_x': .75, 'center_y': .5}
         _active: False
-"""
+'''
 
-sliders = """
+sliders = '''
 #:import MDSlider kivymd.slider.MDSlider
 
 
-<Sliders@Screen>:
+<Sliders@Screen>
     name: 'sliders'
 
     BoxLayout:
@@ -901,20 +901,20 @@ sliders = """
             min: 0
             max: 100
             value: hslider.value
-"""
+'''
 
-stack_buttons = """
-<StackButtons@Screen>:
+stack_buttons = '''
+<StackButtons@Screen>
     name: 'stack buttons'
     on_enter: app.example_add_stack_floating_buttons()
-"""
+'''
 
-update_spinner = """
+update_spinner = '''
 #:import MDLabel kivymd.label.MDLabel
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
 
-<UpdateSpinner@Screen>:
+<UpdateSpinner@Screen>
     name: 'update spinner'
     on_enter: upd_lbl.text = "Pull to string update"
     on_leave: upd_lbl.text = ""
@@ -930,14 +930,14 @@ update_spinner = """
 
     MDUpdateSpinner:
         event_update: lambda x: app.update_screen(self)
-"""
+'''
 
-progress_bar = """
+progress_bar = '''
 #:import MDSlider kivymd.slider.MDSlider
 #:import MDProgressBar kivymd.progressbar.MDProgressBar
 
 
-<ProgressBars@Screen>:
+<ProgressBars@Screen>
     name: 'progress bar'
 
     BoxLayout:
@@ -965,13 +965,13 @@ progress_bar = """
             MDProgressBar:
                 orientation: "vertical"
                 value: progress_slider.value
-"""
+'''
 
-labels = """
+labels = '''
 #:import MDLabel kivymd.label.MDLabel
 
 
-<Labels@Screen>:
+<Labels@Screen>
     name: 'labels'
 
     ScrollView:
@@ -1090,14 +1090,14 @@ labels = """
                 text_color: (0,1,0,.4)
                 text: "Custom"
                 halign: 'center'
-"""
+'''
 
-menu = """
+menu = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDDropdownMenu kivymd.menu.MDDropdownMenu
+#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
 
 
-<Menu@Screen>:
+<Menu@Screen>
     name: 'menu'
 
     MDRaisedButton:
@@ -1105,7 +1105,7 @@ menu = """
         size: 3 * dp(48), dp(48)
         text: 'Open menu'
         opposite_colors: True
-        pos_hint: {'center_x': 0.2, 'center_y': 0.9}
+        pos_hint: {'center_x': .2, 'center_y': .9}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
@@ -1114,7 +1114,7 @@ menu = """
         size: 3 * dp(48), dp(48)
         text: 'Open menu'
         opposite_colors: True
-        pos_hint: {'center_x': 0.2, 'center_y': 0.1}
+        pos_hint: {'center_x': .2, 'center_y': .1}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
@@ -1123,7 +1123,7 @@ menu = """
         size: 3 * dp(48), dp(48)
         text: 'Open menu'
         opposite_colors: True
-        pos_hint: {'center_x': 0.8, 'center_y': 0.1}
+        pos_hint: {'center_x': .8, 'center_y': .1}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
@@ -1132,7 +1132,7 @@ menu = """
         size: 3 * dp(48), dp(48)
         text: 'Open menu'
         opposite_colors: True
-        pos_hint: {'center_x': 0.8, 'center_y': 0.9}
+        pos_hint: {'center_x': .8, 'center_y': .9}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
 
@@ -1141,18 +1141,18 @@ menu = """
         size: 3 * dp(48), dp(48)
         text: 'Open menu'
         opposite_colors: True
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
-"""
+'''
 
-chips = """
-#:import MDSeparator kivymd.card.MDSeparator
+chips = '''
+#:import MDSeparator kivymd.cards.MDSeparator
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
 
 
-<Chips@Screen>:
+<Chips@Screen>
     name: 'chips'
 
     ScrollView:
@@ -1210,7 +1210,7 @@ chips = """
 
             MDLabel:
                 text: 'Chip without icon:'
-                
+
             MDSeparator:
 
             StackLayout:
@@ -1274,36 +1274,36 @@ chips = """
                     label: 'Facebook'
                     icon: 'facebook'
                     callback: app.callback_for_menu_items
-"""
+'''
 
-progress = """
+progress = '''
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDSpinner kivymd.spinner.MDSpinner
 
 
-<Progress@Screen>:
+<Progress@Screen>
     name: 'progress'
 
     MDCheckbox:
         id: chkbox
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+        pos_hint: {'center_x': .5, 'center_y': .4}
         active: True
 
     MDSpinner:
         id: spinner
         size_hint: None, None
         size: dp(46), dp(46)
-        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        pos_hint: {'center_x': .5, 'center_y': .5}
         active: True if chkbox.active else False
-"""
+'''
 
-fan_manager = """
+fan_manager = '''
 #:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
 
 
-<FanManager@Screen>:
+<FanManager@Screen>
     name: 'fan manager'
 
     on_enter:
@@ -1312,7 +1312,7 @@ fan_manager = """
 
     MDFanScreenManager:
         id: fan_screen_manager
-    
+
         canvas:
             Color:
                 rgba: 0, 0, 0, .2
@@ -1341,7 +1341,7 @@ fan_manager = """
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
 
-<BaseFanScreen>:
+<BaseFanScreen>
     orientation: 'vertical'
 
     canvas.before:
@@ -1360,10 +1360,10 @@ fan_manager = """
         keep_ratio: False
 
     ContentForAnimCard:
-"""
+'''
 
-popup_screen = """
-<PopupScreenWidget@Screen>:
+popup_screen = '''
+<PopupScreenWidget@Screen>
     name: 'popup screen'
     on_enter: app.set_popup_screen(content_popup)
 
@@ -1372,16 +1372,16 @@ popup_screen = """
 
         ContentPopup:
             id: content_popup
-"""
+'''
 
-manager_swiper = """
+manager_swiper = '''
 #:import images_path kivymd.images_path
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 
 
-<MyCard>:
+<MyCard>
     orientation: 'vertical'
     size_hint_y: None
     height: dp(300)
@@ -1404,12 +1404,12 @@ manager_swiper = """
         halign: 'center'
 
 
-<MySwiperManager@Screen>:
+<MySwiperManager@Screen>
     name: 'manager swiper'
 
     BoxLayout:
         orientation: 'vertical'
-    
+
         canvas:
             Color:
                 rgba: 0, 0, 0, .2
@@ -1424,46 +1424,46 @@ manager_swiper = """
 
             MDSwiperManager:
                 id: swiper_manager
-        
+
                 Screen:
                     name: 'screen one'
                     MyCard:
                         text: 'Swipe to switch to screen one'.upper()
-        
+
                 Screen:
                     name: 'screen two'
                     MyCard:
                         text: 'Swipe to switch to screen two'.upper()
-        
+
                 Screen:
                     name: 'screen three'
                     MyCard:
                         text: 'Swipe to switch to screen three'.upper()
-        
+
                 Screen:
                     name: 'screen four'
                     MyCard:
                         text: 'Swipe to switch to screen four'.upper()
-        
+
                 Screen:
                     name: 'screen five'
                     MyCard:
                         text: 'Swipe to switch to screen five'.upper()
-"""
+'''
 
-md_icon_item = """
+md_icon_item = '''
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 
 
-<MDIconItem@OneLineIconListItem>:
+<MDIconItem@OneLineIconListItem>
     icon: 'android'
 
     IconLeftSampleWidget:
         icon: root.icon
-"""
+'''
 
-md_icons = """
-<MDIcons@Screen>:
+md_icons = '''
+<MDIcons@Screen>
     name: 'md icons'
 
     RecycleView:
@@ -1478,18 +1478,20 @@ md_icons = """
             size_hint_y: None
             height: self.minimum_height
             orientation: 'vertical'
-"""
+'''
 
 
 class Screens(object):
     manager_swiper = None
+    main_widget = None
+    directory = None
 
     def show_manager_swiper(self):
         from kivymd.managerswiper import MDSwiperPagination
 
         if not self.manager_swiper:
-            path_to_crop_image = \
-                '{}/assets/' \
+            path_to_crop_image =\
+                '{}/assets/'\
                 'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
             if not os.path.exists(path_to_crop_image):
                 crop_image(
@@ -1501,7 +1503,7 @@ class Screens(object):
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
-            paginator.screens = \
+            paginator.screens =\
                 self.manager_swiper.ids.swiper_manager.screen_names
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator

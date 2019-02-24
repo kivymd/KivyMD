@@ -488,14 +488,14 @@ class KitchenSink(App, Screens):
         from kivymd.cards import MDCardPost
 
         def callback(instance, value):
-            if value and isinstance(value, int):
-                toast('Set like in %d stars' % value)
-            elif value and isinstance(value, str):
-                toast('Repost with %s ' % value)
-            elif value and isinstance(value, list):
-                toast(value[1])
-            else:
+            if value is None:
                 toast('Delete post %s' % str(instance))
+            elif isinstance(value, int):
+                toast('Set like in %d stars' % value)
+            elif isinstance(value, str):
+                toast('Repost with %s ' % value)
+            elif isinstance(value, list):
+                toast(value[1])
 
         if not self.cards_created:
             self.cards_created = True

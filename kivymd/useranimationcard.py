@@ -153,7 +153,10 @@ Builder.load_string('''
 <UserAnimationCard>
     canvas:
         Color:
-            rgba: 1, 1, 1, 1
+            rgba:
+                root.theme_cls.bg_dark \
+                if root.theme_cls.theme_style == 'Dark' \
+                else root.theme_cls.bg_light
         Rectangle:
             size: self.size
             pos: self.pos
@@ -206,7 +209,10 @@ Builder.load_string('''
             cols: 1
             canvas:
                 Color:
-                    rgba: 1, 1, 1, 1
+                    rgba:
+                        root.theme_cls.bg_dark \
+                        if root.theme_cls.theme_style == 'Dark' \
+                        else root.theme_cls.bg_light
                 Rectangle:
                     size: self.size
                     pos: self.pos
@@ -300,7 +306,6 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
             self._obj_avatar.canvas.children[3])
 
 
-# FIXME: Add color for Black and White theme
 class UserAnimationCard(ThemableBehavior, FloatLayout):
     user_name = StringProperty()
     path_to_avatar = StringProperty()

@@ -17,7 +17,7 @@ import os
 
 from kivy import Logger
 
-__version_info__ = (0, 92, 2)
+__version_info__ = (0, 92, 3)
 __version__ = '0.92.1'
 
 path = os.path.dirname(__file__)

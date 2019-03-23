@@ -113,7 +113,7 @@ Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDLabel kivymd.label.MDLabel
-#:import MDCard kivymd.card.MDCard
+#:import MDCard kivymd.cards.MDCard
 
 
 <MDProgressLoader>

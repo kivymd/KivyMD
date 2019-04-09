@@ -1164,6 +1164,10 @@ chips = '''
             size_hint_y: None
             height: self.minimum_height
 
+            Widget:
+                size_hint_y: None
+                height: dp(5)
+
             MDLabel:
                 text: 'Chips with color:'
 

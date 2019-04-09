@@ -29,6 +29,7 @@ from kivymd.material_resources import DEVICE_TYPE
 from kivymd.selectioncontrols import MDCheckbox
 from kivymd.theming import ThemeManager
 from kivymd.cards import MDCard
+from kivymd.icon_definitions import md_icons
 
 
 def toast(text):
@@ -182,7 +183,7 @@ main_widget_kv = '''
         on_release: app.show_lists()
     MyNavigationDrawerIconButton:
         text: "MD Icons"
-        on_release: app.show_md_icons()
+        on_release: app.show_md_icons(app)
     MyNavigationDrawerIconButton:
         text: "Menus"
         on_release: app.show_menu()
@@ -757,6 +758,25 @@ class KitchenSink(App, Screens):
             self.root.ids.text_field_error.error = True
         else:
             self.root.ids.text_field_error.error = False
+
+    def add_icon_item(self, name_icon):
+        self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data.append(
+            {
+                'viewclass': 'MDIconItemForMdIconsList',
+                'icon': name_icon,
+                'text': name_icon,
+                'callback': self.callback_for_menu_items
+            }
+        )
+
+    def set_list_md_icons(self, text='', search=False):
+        self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data = []
+        for name_icon in md_icons.keys():
+            if search:
+                if text in name_icon:
+                    self.add_icon_item(name_icon)
+            else:
+                self.add_icon_item(name_icon)
 
     def on_pause(self):
         return True

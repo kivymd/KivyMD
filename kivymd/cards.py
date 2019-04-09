@@ -137,6 +137,7 @@ from kivymd.button import MDIconButton
 from kivymd.elevationbehavior import RectangularElevationBehavior
 from kivymd.list import ILeftBody
 from kivymd.menus import MDDropdownMenu
+from kivymd.navigationdrawer import NavigationLayout
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
@@ -434,6 +435,13 @@ class MDCardPost(BoxLayout):
         if self.collide_point(*touch.pos) and self.swipe and\
                 not self._card_shifted:
             if touch.x < Window.width - 10:
+                # When the Navigation panel is open and
+                # the list of its menu is scrolled,
+                # the event is also processed on the cards
+                for widget in Window.children:
+                    if widget.__class__ is NavigationLayout:
+                        if widget.state == 'open':
+                            return
                 self.shift_post_left()
         return super(MDCardPost, self).on_touch_move(touch)
 

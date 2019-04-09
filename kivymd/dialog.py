@@ -93,7 +93,7 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.textinput import TextInput
 
 from kivymd.cards import MDCard
-from kivymd.textfields import MDTextField
+from kivymd.textfields import MDTextField, MDTextFieldRect
 from kivymd.theming import ThemableBehavior
 from kivymd.button import MDFlatButton, MDRaisedButton, MDTextButton
 from kivymd import images_path
@@ -121,6 +121,7 @@ Builder.load_string('''
 
     Widget:
     Widget:
+
     MDSeparator:
         id: sep
 
@@ -200,12 +201,11 @@ class BaseDialog(ThemableBehavior, ModalView):
             self.background = self._background
 
             if instance_content_dialog.__class__ is ContentInputDialog:
-                self.text_field = TextInput(
+                self.text_field = MDTextFieldRect(
+                    pos_hint={'center_x': .5},
                     size_hint=(1, None), multiline=False, height=dp(33),
                     cursor_color=self.theme_cls.primary_color,
-                    hint_text=instance_content_dialog.hint_text,
-                    background_normal='{}ios_entr_ti.png'.format(images_path),
-                    background_active='{}ios_entr_ti.png'.format(images_path))
+                    hint_text=instance_content_dialog.hint_text)
                 instance_content_dialog.ids.box_input.height = dp(33)
                 instance_content_dialog.ids.box_input.add_widget(
                     self.text_field)

@@ -1463,21 +1463,46 @@ md_icon_item = '''
 '''
 
 md_icons = '''
+#:import OneLineIconListItem kivymd.list.OneLineIconListItem
+#:import images_path kivymd.images_path
+#:import MDTextFieldRect kivymd.textfields.MDTextField
+#:import MDIconButton kivymd.button.MDIconButton
+
+
+<MDIconItemForMdIconsList@OneLineIconListItem>:
+    icon: 'android'
+    on_release: root.callback(root.icon)
+
+    IconLeftSampleWidget:
+        icon: root.icon
+
+
 <MDIcons@Screen>
     name: 'md icons'
+    on_enter: app.set_list_md_icons()
 
-    RecycleView:
-        id: rv
-        key_viewclass: 'viewclass'
-        key_size: 'height'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(20)
 
-        RecycleBoxLayout:
-            padding: dp(10)
-            default_size: None, dp(48)
-            default_size_hint: 1, None
-            size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
+        MDTextField:
+            id: search_field
+            hint_text: 'Search icon'
+            on_text: app.set_list_md_icons(self.text, True)
+
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+
+            RecycleBoxLayout:
+                padding: dp(10)
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
 '''
 
 
@@ -1522,25 +1547,14 @@ class Screens(object):
 
     md_icons = None
 
-    def show_md_icons(self):
-        def set_list_md_icons():
-            from kivymd.icon_definitions import md_icons
-
-            Builder.load_string(md_icon_item)
-            for icon in md_icons.keys():
-                self.md_icons.ids.rv.data.append(
-                    {
-                        'viewclass': 'MDIconItem',
-                        'icon': icon,
-                        'text': icon
-                    }
-                )
+    def show_md_icons(self, app):
+        Builder.load_string(md_icon_item)
 
         if not self.md_icons:
             Builder.load_string(md_icons)
             self.md_icons = Factory.MDIcons()
             self.main_widget.ids.scr_mngr.add_widget(self.md_icons)
-            set_list_md_icons()
+            app.set_list_md_icons()
         self.main_widget.ids.scr_mngr.current = 'md icons'
 
     bottom_sheet = None

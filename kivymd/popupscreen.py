@@ -224,6 +224,8 @@ class MDPopupScreen(FloatLayout):
         self.open_menu = False
 
     def on_touch_down(self, touch):
+        if touch.button == 'scrollup' or touch.button == 'scrolldown':
+            return
         if self.open_menu:
             Clock.schedule_once(self.hide, .3)
         return super(MDPopupScreen, self).on_touch_down(touch)

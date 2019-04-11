@@ -1490,10 +1490,17 @@ md_icons = '''
         spacing: dp(10)
         padding: dp(20)
 
-        MDTextField:
-            id: search_field
-            hint_text: 'Search icon'
-            on_text: app.set_list_md_icons(self.text, True)
+        BoxLayout:
+            size_hint_y: None
+            height: self.minimum_height
+
+            MDIconButton:
+                icon: 'magnify'
+
+            MDTextField:
+                id: search_field
+                hint_text: 'Search icon'
+                on_text: app.set_list_md_icons(self.text, True)
 
         RecycleView:
             id: rv

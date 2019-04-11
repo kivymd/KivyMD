@@ -176,6 +176,7 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.animation import Animation
 
+from kivymd.navigationdrawer import NavigationLayout
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
@@ -290,6 +291,13 @@ class MDSwiperManager(ScreenManager):
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos) and not self.swipe:
+            # When the Navigation panel is open and
+            # the list of its menu is scrolled,
+            # the event is also processed on the cards
+            for widget in Window.children:
+                if widget.__class__ is NavigationLayout:
+                    if widget.state == 'open':
+                        return
             if touch.x < Window.width - 10:
                 if self._x > touch.x:
                     direction = 'left'

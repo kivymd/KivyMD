@@ -179,7 +179,7 @@ class MDStackFloatingButtons(FloatLayout):
             anim.start(btn)
 
         self.show = True if not self.show else False
-        self.show_floating_labels() if self.show\
+        self.show_floating_labels() if self.show \
             else self.hide_floating_labels()
 
     def show_floating_labels(self):
@@ -199,10 +199,3 @@ class MDStackFloatingButtons(FloatLayout):
             i -= .3
             Animation(x=-lbl.width, d=i, t='out_elastic').start(lbl)
         self.hide_floating_buttons()
-
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos) and self.show:
-            self.hide_floating_buttons()
-            self.hide_floating_labels()
-            self.show = False
-        return super(MDStackFloatingButtons, self).on_touch_down(touch)

@@ -134,6 +134,7 @@ main_widget_kv = '''
 
 <ContentNavigationDrawer@MDNavigationDrawer>
     drawer_logo: './assets/drawer_logo.png'
+    use_logo: 'logo'
 
     NavigationDrawerSubheader:
         text: "Menu of Examples:"

@@ -400,6 +400,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
             self.remove_widget(self.ids.drawer_logo)
         elif value == 'logo':
             self.remove_widget(self.ids.drawer_title)
+            self.remove_widget(self.ids.sep)
 
     def add_widget(self, widget, **kwargs):
         """
@@ -410,7 +411,6 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
         :class:`~kivy.uix.scrollview.ScrollView`
             content area.
         """
-        #print(self.ids)
 
         if issubclass(widget.__class__, BaseListItem):
             self._list.add_widget(widget, **kwargs)

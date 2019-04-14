@@ -105,6 +105,7 @@ from kivymd.vendor.navigationdrawer import NavigationDrawer as\
 
 Builder.load_string('''
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
+#:import MDLabel kivymd.label.MDLabel
 #:import colors kivymd.color_definitions.colors
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import ScrollView kivy.uix.scrollview.ScrollView
@@ -131,6 +132,7 @@ Builder.load_string('''
 <MDNavigationDrawer>
     _list: list
     _drawer_logo: drawer_logo
+    _drawer_title: drawer_title
     spacing: dp(5)
 
     canvas:
@@ -152,6 +154,17 @@ Builder.load_string('''
         source: root.drawer_logo
         allow_stretch: True
         keep_ratio: False
+
+    MDLabel:
+        id: drawer_title
+        text: '    {}'.format(root.drawer_title)
+        font_style: 'Title'
+        size_hint_y: None
+        height: self.texture_size[1]
+        markup: True
+
+    MDSeparator:
+        id: sep
 
     ScrollView:
         id: scroll
@@ -370,14 +383,23 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
     _elevation = NumericProperty(0)
     _list = ObjectProperty()
     _drawer_logo = ObjectProperty()
+    _drawer_title = ObjectProperty()
     active_item = ObjectProperty(None)
     orientation = 'vertical'
     panel = ObjectProperty()
     drawer_logo = StringProperty()
+    drawer_title = StringProperty()
     shadow_color = ListProperty([0, 0, 0, 0])
+    use_logo = OptionProperty('all', options=['logo', 'label', 'all'])
 
     def __init__(self, **kwargs):
         super(MDNavigationDrawer, self).__init__(**kwargs)
+
+    def on_use_logo(self, instance, value):
+        if value == 'label':
+            self.remove_widget(self.ids.drawer_logo)
+        elif value == 'logo':
+            self.remove_widget(self.ids.drawer_title)
 
     def add_widget(self, widget, **kwargs):
         """
@@ -388,6 +410,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
         :class:`~kivy.uix.scrollview.ScrollView`
             content area.
         """
+        #print(self.ids)
 
         if issubclass(widget.__class__, BaseListItem):
             self._list.add_widget(widget, **kwargs)

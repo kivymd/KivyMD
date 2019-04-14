@@ -22,7 +22,7 @@ Support
 =======
 If you need assistance, you can ask for help on our mailing list:
 
-* User Groups: [vk group](https://vk.com/kivy_development), [google group](https://groups.google.com/forum/#!categories/kivymd-users-support)
+* User Groups: [vk group](https://vk.com/kivy_development), [google group](https://groups.google.com/forum/#!categories/kivymd-users-support), [Discord Channel](https://discord.gg/TegSJDD)
 * Email: kivydevelopment@gmail.com
 
 

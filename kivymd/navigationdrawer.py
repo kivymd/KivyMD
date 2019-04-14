@@ -162,6 +162,7 @@ Builder.load_string('''
         size_hint_y: None
         height: self.texture_size[1]
         markup: True
+        theme_text_color: 'Primary'
 
     MDSeparator:
         id: sep

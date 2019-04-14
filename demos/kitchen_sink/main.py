@@ -12,6 +12,7 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.image import Image
@@ -309,6 +310,8 @@ class KitchenSink(App, Screens):
         self.user_card = None
         self.bs_menu_1 = None
         self.bs_menu_2 = None
+        self.my_snackbar = None
+        self._interval = 0
         self.tick = 0
         self.create_stack_floating_buttons = False
         self.previous_text =\
@@ -583,16 +586,38 @@ class KitchenSink(App, Screens):
         self.user_card.open()
 
     def show_example_snackbar(self, snack_type):
+        def callback(instance):
+            toast(instance.text)
+
+        def wait_interval(interval):
+            self._interval += interval
+            if self._interval > self.my_snackbar.duration:
+                anim = Animation(y=dp(10), d=.2)
+                anim.start(self.snackbar.ids.button)
+                Clock.unschedule(wait_interval)
+                self._interval = 0
+                self.my_snackbar = None
+
         from kivymd.snackbars import Snackbar
 
         if snack_type == 'simple':
             Snackbar(text="This is a snackbar!").show()
         elif snack_type == 'button':
             Snackbar(text="This is a snackbar", button_text="with a button!",
-                     button_callback=lambda *args: 2).show()
+                     button_callback=callback).show()
         elif snack_type == 'verylong':
             Snackbar(text="This is a very very very very very very very "
                           "long snackbar!").show()
+        elif snack_type == 'float':
+            if not self.my_snackbar:
+                self.my_snackbar = Snackbar(
+                    text="This is a snackbar!", button_text='Button',
+                    duration=3, button_callback=callback)
+                self.my_snackbar.show()
+                anim = Animation(y=dp(72), d=.2)
+                anim.bind(on_complete=lambda *args: Clock.schedule_interval(
+                    wait_interval, 0))
+                anim.start(self.snackbar.ids.button)
 
     def show_example_input_dialog(self):
         def result(text_button, instance):

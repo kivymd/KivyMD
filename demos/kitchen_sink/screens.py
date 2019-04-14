@@ -786,32 +786,49 @@ lists = '''
 
 snackbar = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
+#:import MDSeparator kivymd.cards.MDSeparator
+#:import MDLabel kivymd.label.MDLabel
 
 
-<SnackBar@Screen>
+<MySnackBar@Screen>
     name: 'snackbar'
 
-    MDRaisedButton:
-        text: "Create simple snackbar"
-        size_hint: None, None
-        size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .75}
-        opposite_colors: True
-        on_release: app.show_example_snackbar('simple')
-    MDRaisedButton:
-        text: "Create snackbar with button"
-        size_hint: None, None
-        size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .5}
-        opposite_colors: True
-        on_release: app.show_example_snackbar('button')
-    MDRaisedButton:
-        text: "Create snackbar with a lot of text"
-        size_hint: None, None
-        size: 5 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .25}
-        opposite_colors: True
-        on_release: app.show_example_snackbar('verylong')
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(10)
+
+        Widget:
+
+        MDRaisedButton:
+            text: "Create simple snackbar"
+            pos_hint: {'center_x': .5}
+            on_release: app.show_example_snackbar('simple')
+
+        MDRaisedButton:
+            text: "Create snackbar with button"
+            pos_hint: {'center_x': .5}
+            on_release: app.show_example_snackbar('button')
+
+        MDRaisedButton:
+            text: "Create snackbar with a lot of text"
+            pos_hint: {'center_x': .5}
+            on_release: app.show_example_snackbar('verylong')
+
+        MDSeparator:
+
+        MDLabel:
+            text: 'Click the MDFloatingActionButton to show the following example...'
+            halign: 'center'
+
+        Widget:
+
+    MDFloatingActionButton:
+        id: button
+        md_bg_color: app.theme_cls.primary_color
+        x: Window.width - self.width - dp(10)
+        y: dp(10)
+        on_release: app.show_example_snackbar('float')
 '''
 
 download_file = '''
@@ -1794,7 +1811,7 @@ class Screens(object):
     def show_snackbar(self):
         if not self.snackbar:
             Builder.load_string(snackbar)
-            self.snackbar = Factory.SnackBar()
+            self.snackbar = Factory.MySnackBar()
             self.main_widget.ids.scr_mngr.add_widget(self.snackbar)
         self.main_widget.ids.scr_mngr.current = 'snackbar'
 

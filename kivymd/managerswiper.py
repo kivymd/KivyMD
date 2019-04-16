@@ -53,7 +53,7 @@ activity = '''
     MDLabel:
         theme_text_color: 'Custom'
         bold: True
-        text_color: app.theme_cls.primary_color
+        text_color: app.tm.primary_color
         text: root.text
         size_hint_y: None
         height: dp(60)
@@ -103,7 +103,7 @@ activity = '''
     MDToolbar:
         id: toolbar
         title: 'Swiper Manager'
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         background_palette: 'Primary'
         elevation: 10
         left_action_items: [['menu', lambda x: x]]
@@ -136,8 +136,8 @@ class MyCard(MDCard):
 
 
 class Test(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Indigo'
+    tm = ThemeManager()
+    tm.primary_palette = 'Indigo'
     swiper_manager = None
 
     def build(self):
@@ -191,7 +191,7 @@ Builder.load_string('''
     canvas:
         Color:
             rgba:
-                self.theme_cls.primary_color\
+                self.tm.primary_color\
                 if root.current_index == 0 else root.color_round_not_active
         RoundedRectangle:
             pos: self.pos
@@ -208,7 +208,7 @@ Builder.load_string('''
     MDIconButton:
         icon: 'chevron-left'
         theme_text_color: 'Custom'
-        text_color: app.theme_cls.primary_color
+        text_color: app.tm.primary_color
         on_release: root.manager.swith_screen('right')
 
     BoxLayout:
@@ -219,7 +219,7 @@ Builder.load_string('''
 
     MDIconButton:
         theme_text_color: 'Custom'
-        text_color: app.theme_cls.primary_color
+        text_color: app.tm.primary_color
         icon: 'chevron-right'
         on_release: root.manager.swith_screen('left')
 ''')
@@ -247,7 +247,7 @@ class MDSwiperPagination(ThemableBehavior, BoxLayout):
         for i, screen in enumerate(self.items_round_paginator):
             if i == index_screen:
                 self.animation_set_not_active_round(
-                    screen.canvas.children[0], self.theme_cls.primary_color)
+                    screen.canvas.children[0], self.tm.primary_color)
             else:
                 self.animation_set_not_active_round(
                     screen.canvas.children[0], old_color)

@@ -40,7 +40,7 @@ Builder.load_string('''
         title: app.title
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
 
     FloatLayout:
         MDRectangleFlatButton:
@@ -58,8 +58,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    tm = ThemeManager()
+    tm.primary_palette = 'Teal'
     title = "Dialogs"
 
     def build(self):
@@ -75,7 +75,7 @@ class Example(App):
         dialog = MDDialog(
             title='Title', size_hint=(.8, .3), text_button_ok='Yes',
             text="Your [color=%s][b]text[/b][/color] dialog" % get_hex_from_color(
-                self.theme_cls.primary_color),
+                self.tm.primary_color),
             text_button_cancel='Cancel', events_callback=lambda x: None)
         dialog.open()
 
@@ -204,7 +204,7 @@ class BaseDialog(ThemableBehavior, ModalView):
                 self.text_field = MDTextFieldRect(
                     pos_hint={'center_x': .5},
                     size_hint=(1, None), multiline=False, height=dp(33),
-                    cursor_color=self.theme_cls.primary_color,
+                    cursor_color=self.tm.primary_color,
                     hint_text=instance_content_dialog.hint_text)
                 instance_content_dialog.ids.box_input.height = dp(33)
                 instance_content_dialog.ids.box_input.add_widget(
@@ -257,7 +257,7 @@ class BaseDialog(ThemableBehavior, ModalView):
                 button_cancel = MDFlatButton(
                     text=self.text_button_cancel,
                     theme_text_color='Custom',
-                    text_color=self.theme_cls.primary_color,
+                    text_color=self.tm.primary_color,
                     on_release=lambda x: _events_callback(
                         self.text_button_cancel))
                 box.add_widget(button_cancel)

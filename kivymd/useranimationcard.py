@@ -59,13 +59,13 @@ Builder.load_string('''
 
     TwoLineIconListItem:
         text: "Call Viber Out"
-        secondary_text: "[color=%s]Advantageous rates for calls[/color]" % get_hex_from_color(app.theme_cls.primary_color)
+        secondary_text: "[color=%s]Advantageous rates for calls[/color]" % get_hex_from_color(app.tm.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
 
     TwoLineIconListItem:
         text: "Call over mobile network"
-        secondary_text: "[color=%s]Operator's tariffs apply[/color]" % get_hex_from_color(app.theme_cls.primary_color)
+        secondary_text: "[color=%s]Operator's tariffs apply[/color]" % get_hex_from_color(app.tm.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 ''')
@@ -76,8 +76,8 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    tm = ThemeManager()
+    tm.primary_palette = 'Teal'
     title = "Example Animation Card"
 
     def __init__(self, **kwargs):
@@ -123,8 +123,8 @@ Builder.load_string('''
 
 <ModifiedToolbar>
     size_hint_y: None
-    height: root.theme_cls.standard_increment
-    padding: [root.theme_cls.horizontal_margins - dp(12), 0]
+    height: root.tm.standard_increment
+    padding: [root.tm.horizontal_margins - dp(12), 0]
 
     BoxLayout:
         id: left_actions
@@ -154,9 +154,9 @@ Builder.load_string('''
     canvas:
         Color:
             rgba:
-                root.theme_cls.bg_dark \
-                if root.theme_cls.theme_style == 'Dark' \
-                else root.theme_cls.bg_light
+                root.tm.bg_dark \
+                if root.tm.theme_style == 'Dark' \
+                else root.tm.bg_light
         Rectangle:
             size: self.size
             pos: self.pos
@@ -210,9 +210,9 @@ Builder.load_string('''
             canvas:
                 Color:
                     rgba:
-                        root.theme_cls.bg_dark \
-                        if root.theme_cls.theme_style == 'Dark' \
-                        else root.theme_cls.bg_light
+                        root.tm.bg_dark \
+                        if root.tm.theme_style == 'Dark' \
+                        else root.tm.bg_light
                 Rectangle:
                     size: self.size
                     pos: self.pos
@@ -228,7 +228,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
 
     def __init__(self, **kwargs):
         super(MDUserAnimationCard, self).__init__(**kwargs)
-        self._primary_color = self.theme_cls.primary_color
+        self._primary_color = self.tm.primary_color
         self._primary_color[3] = 0
         self.user_animation_card = UserAnimationCard(
             user_name=self.user_name,
@@ -250,7 +250,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
             self.callback()
 
     def on_open(self):
-        self._primary_color = self.theme_cls.primary_color
+        self._primary_color = self.tm.primary_color
         self._primary_color[3] = 0
         self.user_animation_card._primary_color = self._primary_color
 
@@ -291,8 +291,8 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
 
     def animation_to_top(self):
         user_name_y = Window.height - self._obj_toolbar.height + (
-                self.theme_cls.standard_increment // 2 - dp(12))
-        user_name_x = self.theme_cls.horizontal_margins + dp(12) * 5
+                self.tm.standard_increment // 2 - dp(12))
+        user_name_x = self.tm.horizontal_margins + dp(12) * 5
 
         Animation(y=-self._obj_toolbar.height, d=.4, t='in_out_cubic').start(
             self.user_animation_card.ids.scroll)

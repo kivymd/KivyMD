@@ -112,9 +112,9 @@ main_widget_kv = '''
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Advantageous rates for calls[/color]"\
-            % get_hex_from_color(app.theme_cls.primary_color)
+            % get_hex_from_color(app.tm.primary_color)
         # FIXME: Don't work "secondary_text_color" parameter
-        # secondary_text_color: app.theme_cls.primary_color
+        # secondary_text_color: app.tm.primary_color
         IconLeftSampleWidget:
             icon: 'phone'
 
@@ -123,7 +123,7 @@ main_widget_kv = '''
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]"\
-            % get_hex_from_color(app.theme_cls.primary_color)
+            % get_hex_from_color(app.tm.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
@@ -248,7 +248,7 @@ NavigationLayout:
         MDToolbar:
             id: toolbar
             title: app.title
-            md_bg_color: app.theme_cls.primary_color
+            md_bg_color: app.tm.primary_color
             background_palette: 'Primary'
             background_hue: '500'
             elevation: 10
@@ -281,12 +281,12 @@ NavigationLayout:
 
 
 class KitchenSink(App, Screens):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
-    theme_cls.primary_palette = 'Blue'
-    # theme_cls.theme_style = 'Dark'
+    tm.primary_palette = 'Blue'
+    # tm.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
         super(KitchenSink, self).__init__(**kwargs)
@@ -328,7 +328,7 @@ class KitchenSink(App, Screens):
             "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n"\
             "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]"\
             "[/b][u]".format(COLOR=get_hex_from_color(
-                self.theme_cls.primary_color))
+                self.tm.primary_color))
         self.names_contacts = (
             'Alexandr Taylor', 'Yuri Ivanov', 'Robert Patric', 'Bob Marley',
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
@@ -759,7 +759,7 @@ class KitchenSink(App, Screens):
             toast('Press Button')
 
         self.md_app_bar = MDBottomAppBar(
-            md_bg_color=self.theme_cls.primary_color,
+            md_bg_color=self.tm.primary_color,
             left_action_items=[
                 ['menu', lambda x: x],
                 ['clock', lambda x: x],

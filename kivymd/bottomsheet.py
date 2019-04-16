@@ -83,7 +83,7 @@ Builder.load_string('''
         BottomSheetContent:
             id: gl_content
             size_hint_y: None
-            md_bg_color: root.theme_cls.bg_normal
+            md_bg_color: root.tm.bg_normal
             cols: 1
 ''')
 

@@ -164,9 +164,9 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     def __init__(self, **kwargs):
         super(MDDropdownMenu, self).__init__(**kwargs)
         if not len(self.background_color):
-            self.background_color = self.theme_cls.primary_color
+            self.background_color = self.tm.primary_color
         if not len(self.color_rectangle):
-            self.color_rectangle = self.theme_cls.divider_color
+            self.color_rectangle = self.tm.divider_color
 
     def open(self, *args):
         Window.add_widget(self)

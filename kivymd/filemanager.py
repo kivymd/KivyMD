@@ -42,7 +42,7 @@ Builder.load_string('''
         title: app.title
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
 
 
     FloatLayout:
@@ -56,8 +56,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    tm = ThemeManager()
+    tm.primary_palette = 'Teal'
     title = "File Manage"
 
     def __init__(self, **kwargs):
@@ -272,14 +272,14 @@ ACTIVITY_MANAGER = '''
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
             left_action_items: [['chevron-left', lambda x: root.back()]]
             elevation: 10
-            md_bg_color: root.theme_cls.primary_color
+            md_bg_color: root.tm.primary_color
 
         RecycleView:
             id: rv
             key_viewclass: 'viewclass'
             key_size: 'height'
             bar_width: dp(4)
-            bar_color: root.theme_cls.primary_color
+            bar_color: root.tm.primary_color
             on_scroll_stop: root.update_list_images()
 
             RecycleBoxLayout:
@@ -296,7 +296,7 @@ ACTIVITY_MANAGER = '''
     canvas:
         Color:
             rgba:
-                self.theme_cls.divider_color if root.divider is not None\
+                self.tm.divider_color if root.divider is not None\
                 else (0, 0, 0, 0)
 
         Line:
@@ -570,7 +570,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         else:
             action_button = FloatButton(
                 callback=self.select_directory_on_press_button,
-                md_bg_color=self.theme_cls.primary_color,
+                md_bg_color=self.tm.primary_color,
                 icon=self.icon)
             self.add_widget(action_button)
 
@@ -598,7 +598,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def check_theme(self):
         self.canvas.children[0].rgba = [0, 0, 0, 1]\
-            if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
+            if self.tm.theme_style == 'Dark' else [1, 1, 1, 1]
 
     def show(self, path):
         """Forms the body of a directory tree."""

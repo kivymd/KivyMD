@@ -36,7 +36,7 @@ BoxLayout:
 
     MDToolbar:
         title: 'Example Chips'
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         left_action_items: [['menu', lambda x: x]]
         background_palette: 'Primary'
 
@@ -162,8 +162,8 @@ BoxLayout:
 
 
 class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Red'
+    tm = ThemeManager()
+    tm.primary_palette = 'Red'
 
     def callback(self, name_chip):
         pass
@@ -258,7 +258,7 @@ class MDChip(BoxLayout, ThemableBehavior):
                         md_choose_chip.selected_chip_color
                 md_choose_chip.selected_chip = self
                 md_choose_chip.selected_chip_color = self.color
-                self.color = self.theme_cls.primary_color
+                self.color = self.tm.primary_color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(

@@ -1562,6 +1562,29 @@ screen_shop_window = '''
 #:import MDIconButton kivymd.button.MDIconButton
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
 #:import MDTextFieldRect kivymd.textfields.MDTextField
+#:import images_path kivymd.images_path
+
+
+<BaseDialog>:
+    background: '{}/transparent.png'.format(images_path)
+
+    canvas.before:
+        Color:
+            rgba: root.canvas_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+
+
+<PreviousDialog>:
+    size_hint: 0, 0
+
+    BoxLayout:
+        padding: dp(10)
+
+        Image:
+            source: root.icon
 
 
 <MyRecycleView@RecycleView>:
@@ -1647,6 +1670,7 @@ screen_shop_window = '''
         size_hint: None, None
         height: self.width
         pos_hint: {'center_x': .5}
+        on_release: app.ddd(root.icon)
 
     MDLabel:
         font_style: 'Subtitle1'

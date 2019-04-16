@@ -49,9 +49,9 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
     specific_secondary_text_color = ListProperty([0, 0, 0, .87])
 
     def _update_specific_text_color(self, instance, value):
-        if hasattr(self, 'tm'):
-            palette = {'Primary': self.tm.primary_palette,
-                       'Accent': self.tm.accent_palette
+        if hasattr(self, 'theme_cls'):
+            palette = {'Primary': self.theme_cls.primary_palette,
+                       'Accent': self.theme_cls.accent_palette
                        }.get(self.background_palette, self.background_palette)
         else:
             palette = {'Primary': 'Blue',
@@ -70,10 +70,10 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
 
     def __init__(self, **kwargs):
         super(SpecificBackgroundColorBehavior, self).__init__(**kwargs)
-        if hasattr(self, 'tm'):
-            self.tm.bind(primary_palette=self._update_specific_text_color)
-            self.tm.bind(accent_palette=self._update_specific_text_color)
-            self.tm.bind(theme_style=self._update_specific_text_color)
+        if hasattr(self, 'theme_cls'):
+            self.theme_cls.bind(primary_palette=self._update_specific_text_color)
+            self.theme_cls.bind(accent_palette=self._update_specific_text_color)
+            self.theme_cls.bind(theme_style=self._update_specific_text_color)
         self.bind(background_hue=self._update_specific_text_color)
         self.bind(background_palette=self._update_specific_text_color)
         self._update_specific_text_color(None, None)

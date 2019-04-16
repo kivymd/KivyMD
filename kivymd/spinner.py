@@ -71,7 +71,7 @@ class MDSpinner(ThemableBehavior, Widget):
 
     color = ListProperty([])
     """:attr:`color` is a :class:`~kivy.properties.ListProperty` and
-    defaults to 'self.tm.primary_color'
+    defaults to 'self.theme_cls.primary_color'
     """
 
     _alpha = NumericProperty(0)
@@ -81,11 +81,11 @@ class MDSpinner(ThemableBehavior, Widget):
 
     def __init__(self, **kwargs):
         super(MDSpinner, self).__init__(**kwargs)
-        self.color = self.tm.primary_color
+        self.color = self.theme_cls.primary_color
         self._alpha_anim_in = Animation(_alpha=1, duration=.8, t='out_quad')
         self._alpha_anim_out = Animation(_alpha=0, duration=.3, t='out_quad')
         self._alpha_anim_out.bind(on_complete=self._reset)
-        self.tm.bind(primary_color=self._update_color)
+        self.theme_cls.bind(primary_color=self._update_color)
 
         if self.determinate:
             self._start_determinate()
@@ -93,7 +93,7 @@ class MDSpinner(ThemableBehavior, Widget):
             self._start_loop()
 
     def _update_color(self, *args):
-        self.color = self.tm.primary_color
+        self.color = self.theme_cls.primary_color
 
     def _start_determinate(self, *args):
         self._alpha_anim_in.start(self)

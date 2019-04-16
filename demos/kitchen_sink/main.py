@@ -51,7 +51,7 @@ main_widget_kv = '''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import images_path kivymd.images_path
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
@@ -65,10 +65,12 @@ main_widget_kv = '''
 #:import MDLabel kivymd.label.MDLabel
 #:import MDDropdownMenu kivymd.menus.MDDropdownMenu
 
+
 <ContentPopup@BoxLayout>
     orientation: 'vertical'
     padding: dp(1)
     spacing: dp(30)
+
     Image:
         id: image
         source: 'assets/guitar-1139397_1280_crop.png'
@@ -76,34 +78,47 @@ main_widget_kv = '''
         height: dp(Window.height * 35 // 100)
         allow_stretch: True
         keep_ratio: False
+
     MDRoundFlatButton:
         text: 'Open Menu'
         pos_hint: {'center_x': .5}
         on_release: root.parent.show()
+
     Widget:
+
+
 <ContentForAnimCard>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
     size_hint_y: None
     height: self.minimum_height
+
     BoxLayout:
         size_hint_y: None
         height: self.minimum_height
+
         Widget:
+
         MDRoundFlatButton:
             text: "Free call"
             on_press: root.callback(self.text)
+
         Widget:
+
         MDRoundFlatButton:
             text: "Free message"
             on_press: root.callback(self.text)
+
         Widget:
+
     OneLineIconListItem:
         text: "Video call"
         on_press: root.callback(self.text)
+
         IconLeftSampleWidget:
             icon: 'camera-front-variant'
+
     TwoLineIconListItem:
         text: "Call Viber Out"
         on_press: root.callback(self.text)
@@ -112,178 +127,218 @@ main_widget_kv = '''
             % get_hex_from_color(app.theme_cls.primary_color)
         # FIXME: Don't work "secondary_text_color" parameter
         # secondary_text_color: app.theme_cls.primary_color
+
         IconLeftSampleWidget:
             icon: 'phone'
+
     TwoLineIconListItem:
         text: "Call over mobile network"
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]"\
             % get_hex_from_color(app.theme_cls.primary_color)
+
         IconLeftSampleWidget:
             icon: 'remote'
+
+
 <MyNavigationDrawerIconButton@NavigationDrawerIconButton>
     icon: 'checkbox-blank-circle'
+
+
 <ContentNavigationDrawer@MDNavigationDrawer>
     drawer_logo: './assets/drawer_logo.png'
     use_logo: 'logo'
+
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
+
     MyNavigationDrawerIconButton:
         text: "Accordion"
         on_release:
             app.show_accordion()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Bottom App Bar"
         on_release:
             app.show_app_bar()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Accordion List"
         on_release:
             app.show_accordion_list()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Bottom Navigation"
         on_release:
             app.show_bottom_navigation()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Bottom Sheets"
         on_release:
             app.show_bottom_sheet()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Buttons"
         on_release:
             app.show_buttons()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Cards"
         on_release:
             app.show_cards()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Chips"
         on_release:
             app.show_chips()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Dialogs"
         on_release: 
             app.show_dialogs()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Download File"
         on_release:
             app.show_download_file()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Files Manager"
         on_release:
             app.show_file_manager()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Fan Manager"
         on_release:
             app.show_fan_manager()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Grid lists"
         on_release:
             app.show_grid()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Labels"
         on_release:
             app.show_labels()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Lists"
         on_release:
             app.show_lists()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "MD Icons"
         on_release:
             app.show_md_icons(app)
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Menus"
         on_release:
             app.show_menu()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Pickers"
         on_release:
             app.show_pickers()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Progress & activity"
         on_release:
             app.show_progress()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Popup Screen"
         on_release:
             app.show_popup_screen()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Progress bars"
         on_release:
             app.show_progress_bar()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Selection controls"
         on_release:
             app.show_selection_controls()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Sliders"
         on_release:
             app.show_sliders()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Stack Floating Buttons"
         on_release:
             app.show_stack_buttons()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Snackbars"
         on_release:
             app.show_snackbar()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Tabs"
         on_release:
             app.show_tabs()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Manager Swiper"
         on_release:
             app.show_manager_swiper()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Text fields"
         on_release:
             app.show_textfields()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Themes"
         on_release:
             app.show_theming()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
-        text: "Toolbars"
+        text: "MDToolbars"
         on_release:
             app.show_toolbars()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "Update Screen Widget"
         on_release:
             app.show_update_spinner()
             app.set_title_toolbar(self.text)
+
     MyNavigationDrawerIconButton:
         text: "User Animation Card"
         on_release:
@@ -292,11 +347,14 @@ main_widget_kv = '''
 
 NavigationLayout:
     id: nav_layout
+
     ContentNavigationDrawer:
         id: nav_drawer
+
     BoxLayout:
         orientation: 'vertical'
-        Toolbar:
+
+        MDToolbar:
             id: toolbar
             title: app.title
             md_bg_color: app.theme_cls.primary_color
@@ -307,11 +365,15 @@ NavigationLayout:
                 [['menu', lambda x: app.root.toggle_nav_drawer()]]
             right_action_items:
                 [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
+
         ScreenManager:
             id: scr_mngr
+
             Screen:
                 name: 'previous'
+
                 FloatLayout:
+
                     Image:
                         source: '{}kivymd_logo.png'.format(images_path)
                         opacity: .3
@@ -327,7 +389,7 @@ NavigationLayout:
                             text: app.previous_text
                             size_hint_y: None
                             height: self.texture_size[1]
-                            font_style: 'Subhead'
+                            font_style: 'Subtitle1'
                             theme_text_color: 'Primary'
                             markup: True
                             halign: 'center'
@@ -345,7 +407,7 @@ NavigationLayout:
                             text: app.previous_text_end
                             size_hint_y: None
                             height: self.texture_size[1]
-                            font_style: 'Subhead'
+                            font_style: 'Subtitle1'
                             theme_text_color: 'Primary'
                             markup: True
                             halign: 'center'
@@ -358,7 +420,6 @@ class KitchenSink(App, Screens):
     theme_cls.primary_palette = 'Blue'
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
-    theme_cls.primary_palette = 'Blue'
     # theme_cls.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
@@ -428,7 +489,7 @@ class KitchenSink(App, Screens):
 
     def theme_picker_open(self):
         if not self.md_theme_picker:
-            from kivymd.theme_picker import MDThemePicker
+            from kivymd.pickers import MDThemePicker
             self.md_theme_picker = MDThemePicker()
         self.md_theme_picker.open()
 
@@ -604,7 +665,7 @@ class KitchenSink(App, Screens):
                 MDCardPost(
                     source="./assets/kitten-1049129_1280.png",
                     tile_text="Little Baby",
-                    tile_font_style="Headline",
+                    tile_font_style="H5",
                     text_post="This is my favorite cat. He's only six months "
                               "old. He loves milk and steals sausages :) "
                               "And he likes to play in the garden.",
@@ -750,7 +811,7 @@ class KitchenSink(App, Screens):
         self.previous_time = time
 
     def show_example_time_picker(self):
-        from kivymd.time_picker import MDTimePicker
+        from kivymd.pickers import MDTimePicker
 
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_data)
@@ -767,7 +828,7 @@ class KitchenSink(App, Screens):
         self.pickers.ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
-        from kivymd.date_picker import MDDatePicker
+        from kivymd.pickers import MDDatePicker
 
         if self.pickers.ids.date_picker_use_previous_date.active:
             pd = self.previous_date

@@ -45,7 +45,7 @@ Builder.load_string('''
     MDToolbar:
         id: toolbar
         title: 'Screen Tree'
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         left_action_items: [['menu', lambda x: fan_screen_manager.open_fan()]]
         background_palette: 'Primary'
 
@@ -176,7 +176,7 @@ Builder.load_string('''
         text: "Call Viber Out"
         secondary_text:
             "[color=%s]Advantageous rates for calls[/color]"\
-            % get_hex_from_color(app.tm.primary_color)
+            % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
 
@@ -184,7 +184,7 @@ Builder.load_string('''
         text: "Call over mobile network"
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]"\
-            % get_hex_from_color(app.tm.primary_color)
+            % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
@@ -213,8 +213,8 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
 
 
 class MyApp(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Red'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Red'
 
     def build(self):
         return TestFanScreenManager()

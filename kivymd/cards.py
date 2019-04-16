@@ -39,7 +39,7 @@ Builder.load_string('''
         title: app.title
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
 
 
     ScrollView:
@@ -58,8 +58,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Teal'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Teal'
     title = "Card Post"
     cards_created = False
 
@@ -155,19 +155,19 @@ Builder.load_string('''
             radius: [self.border_radius]
             source: root.background
         Color:
-            rgba: self.tm.divider_color
+            rgba: self.theme_cls.divider_color
             a: self.border_color_a
         Line:
             rounded_rectangle:
                 (self.pos[0], self.pos[1], self.size[0], self.size[1],\
                 self.border_radius) 
-    md_bg_color: self.tm.bg_light
+    md_bg_color: self.theme_cls.bg_light
 
 
 <MDSeparator>
     canvas:
         Color:
-            rgba: self.tm.divider_color
+            rgba: self.theme_cls.divider_color
         Rectangle:
             size: self.size
             pos: self.pos
@@ -269,7 +269,7 @@ Builder.load_string('''
 
             canvas.before:
                 Color:
-                    rgba: app.tm.primary_color
+                    rgba: app.theme_cls.primary_color
                 Rectangle:
                     pos: self.pos
                     size: self.size

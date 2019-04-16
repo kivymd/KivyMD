@@ -50,8 +50,8 @@ Builder.load_string('''
     font_name: 'Icons'
     font_size: sp(24)
     color:
-        self.tm.primary_color if self.active\
-        else self.tm.secondary_text_color
+        self.theme_cls.primary_color if self.active\
+        else self.theme_cls.secondary_text_color
     halign: 'center'
     valign: 'middle'
 
@@ -223,29 +223,29 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
 
     def __init__(self, **kwargs):
         super(MDSwitch, self).__init__(**kwargs)
-        self.tm.bind(theme_style=self._set_colors,
+        self.theme_cls.bind(theme_style=self._set_colors,
                      primary_color=self._set_colors,
                      primary_palette=self._set_colors)
         self._set_colors()
 
     def _set_colors(self, *args):
-        self._track_color_normal = self.tm.disabled_hint_text_color
-        if self.tm.theme_style == 'Dark':
-            self._track_color_active = self.tm.primary_color
+        self._track_color_normal = self.theme_cls.disabled_hint_text_color
+        if self.theme_cls.theme_style == 'Dark':
+            self._track_color_active = self.theme_cls.primary_color
             self._track_color_active[3] = .5
             self._track_color_disabled = get_color_from_hex('FFFFFF')
             self._track_color_disabled[3] = .1
             self.thumb_color = get_color_from_hex(colors['Gray']['400'])
             self.thumb_color_down = get_color_from_hex(
-                colors[self.tm.primary_palette]['200'])
+                colors[self.theme_cls.primary_palette]['200'])
             self.thumb_color_disabled = get_color_from_hex(
                 colors['Gray']['800'])
         else:
             self._track_color_active = get_color_from_hex(
-                colors[self.tm.primary_palette]['200'])
+                colors[self.theme_cls.primary_palette]['200'])
             self._track_color_active[3] = .5
-            self._track_color_disabled = self.tm.disabled_hint_text_color
-            self.thumb_color_down = self.tm.primary_color
+            self._track_color_disabled = self.theme_cls.disabled_hint_text_color
+            self.thumb_color_down = self.theme_cls.primary_color
 
     def on_pos(self, *args):
         if self.active:

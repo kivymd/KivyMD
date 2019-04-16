@@ -47,7 +47,7 @@ Builder.load_string('''
         MDToolbar:
             id: toolbar
             title: 'Example Popup Screen'
-            md_bg_color: app.tm.primary_color
+            md_bg_color: app.theme_cls.primary_color
             left_action_items: [['menu', lambda x: x]]
             background_palette: 'Primary'
 
@@ -117,7 +117,7 @@ Builder.load_string('''
         text: "Call Viber Out"
         secondary_text:
             "[color=%s]Advantageous rates for calls[/color]"\
-            % get_hex_from_color(app.tm.primary_color)
+            % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
 
@@ -125,7 +125,7 @@ Builder.load_string('''
         text: "Call over mobile network"
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]"\
-            % get_hex_from_color(app.tm.primary_color)
+            % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
@@ -150,8 +150,8 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
 
 
 class MyApp(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Red'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Red'
 
     def build(self):
         popup_screen = MyPopupScreen()
@@ -183,7 +183,7 @@ Builder.load_string('''
     canvas:
         Color:
             rgba:
-                self.tm.bg_light if not len(root.background_color)\
+                self.theme_cls.bg_light if not len(root.background_color)\
                 else root.background_color
         RoundedRectangle:
             pos: self.pos

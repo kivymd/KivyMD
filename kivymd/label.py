@@ -26,7 +26,7 @@ from kivymd.theming_dynamic_text import get_contrast_text_color
 
 Builder.load_string('''
 <MDLabel>
-    disabled_color: self.tm.disabled_hint_text_color
+    disabled_color: self.theme_cls.disabled_hint_text_color
     text_size: (self.width, None)
 ''')
 
@@ -69,7 +69,7 @@ class MDLabel(ThemableBehavior, Label):
         self.on_opposite_colors(None, self.opposite_colors)
 
     def update_font_style(self, *args):
-        font_info = self.tm.font_styles[self.font_style]
+        font_info = self.theme_cls.font_styles[self.font_style]
         self.font_name = font_info[0]
         self.font_size = sp(font_info[1])
         if font_info[2] and self.can_capitalize:
@@ -80,7 +80,7 @@ class MDLabel(ThemableBehavior, Label):
         # self.letter_spacing = font_info[3]
 
     def on_theme_text_color(self, instance, value):
-        t = self.tm
+        t = self.theme_cls
         op = self.opposite_colors
         setter = self.setter('color')
         t.unbind(**self._currently_bound_property)

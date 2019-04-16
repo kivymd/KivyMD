@@ -47,32 +47,32 @@ Builder.load_string('''
     cal_layout: cal_layout
     size_hint: (None, None)
     size: 
-        [dp(328), dp(484)] if self.tm.device_orientation == 'portrait'\
+        [dp(328), dp(484)] if self.theme_cls.device_orientation == 'portrait'\
         else [dp(512), dp(304)]
     pos_hint: {'center_x': .5, 'center_y': .5}
 
     canvas:
         Color:
-            rgb: app.tm.primary_color
+            rgb: app.theme_cls.primary_color
         Rectangle:
             size:
                 [dp(328), dp(96)]\
-                if self.tm.device_orientation == 'portrait'\
+                if self.theme_cls.device_orientation == 'portrait'\
                 else [dp(168), dp(304)]
             pos:
                 [root.pos[0], root.pos[1] + root.height - dp(96)]\
-                if self.tm.device_orientation == 'portrait'\
+                if self.theme_cls.device_orientation == 'portrait'\
                 else [root.pos[0], root.pos[1] + root.height - dp(304)]
         Color:
-            rgb: app.tm.bg_normal
+            rgb: app.theme_cls.bg_normal
         Rectangle:
             size:
                 [dp(328), dp(484)-dp(96)]\
-                if self.tm.device_orientation == 'portrait'\
+                if self.theme_cls.device_orientation == 'portrait'\
                 else [dp(344), dp(304)]
             pos:
                 [root.pos[0], root.pos[1] + root.height - dp(96) - (dp(484) - dp(96))]\
-                if self.tm.device_orientation == 'portrait'\
+                if self.theme_cls.device_orientation == 'portrait'\
                 else [root.pos[0] + dp(168), root.pos[1]]
 
     MDLabel:
@@ -83,22 +83,22 @@ Builder.load_string('''
         size_hint: (None, None)
         size:
             [root.width, dp(30)]\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else [dp(168), dp(30)]
         pos:
             [root.pos[0] + dp(23), root.pos[1] + root.height - dp(74)]\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else [root.pos[0] + dp(3), root.pos[1] + dp(214)]
         line_height: .84
         valign: 'middle'
         text_size:
             [root.width, None]\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else [dp(149), None]
         bold: True
         text:
             root.fmt_lbl_date(root.sel_year, root.sel_month, root.sel_day,\
-            root.tm.device_orientation)
+            root.theme_cls.device_orientation)
 
     MDLabel:
         id: label_year
@@ -109,7 +109,7 @@ Builder.load_string('''
         size: root.width, dp(30)
         pos:
             (root.pos[0] + dp(23), root.pos[1] + root.height-dp(40))\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else (root.pos[0]+dp(16), root.pos[1]+root.height-dp(41))
         valign: 'middle'
         text: str(root.sel_year)
@@ -119,21 +119,21 @@ Builder.load_string('''
         cols: 7
         size:
             (dp(44 * 7), dp(40 * 7))\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else (dp(46 * 7), dp(32 * 7))
         col_default_width:
-            dp(42) if root.tm.device_orientation == 'portrait'\
+            dp(42) if root.theme_cls.device_orientation == 'portrait'\
             else dp(39)
         size_hint: (None, None)
         padding:
-            (dp(2), 0) if root.tm.device_orientation == 'portrait'\
+            (dp(2), 0) if root.theme_cls.device_orientation == 'portrait'\
             else (dp(7), 0)
         spacing:
-            (dp(2), 0) if root.tm.device_orientation == 'portrait'\
+            (dp(2), 0) if root.theme_cls.device_orientation == 'portrait'\
             else (dp(7), 0)
         pos:
             (root.pos[0] + dp(10), root.pos[1] + dp(60))\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else (root.pos[0] + dp(168) + dp(8), root.pos[1] + dp(48))
 
     MDLabel:
@@ -147,7 +147,7 @@ Builder.load_string('''
         theme_text_color: 'Primary'
         pos_hint:
             {'center_x': .5, 'center_y': .75}\
-            if self.tm.device_orientation == 'portrait'\
+            if self.theme_cls.device_orientation == 'portrait'\
             else {'center_x': .67, 'center_y': .915}
         valign: "middle"
         halign: "center"
@@ -157,7 +157,7 @@ Builder.load_string('''
         theme_text_color: 'Secondary'
         pos_hint:
             {'center_x': .08, 'center_y': .745}\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else {'center_x': .39, 'center_y': .925}
         on_release: root.change_month('prev')
 
@@ -166,7 +166,7 @@ Builder.load_string('''
         theme_text_color: 'Secondary'
         pos_hint:
             {'center_x': .92, 'center_y': .745}\
-            if root.tm.device_orientation == 'portrait'\
+            if root.theme_cls.device_orientation == 'portrait'\
             else {'center_x': .94, 'center_y': .925}
         on_release: root.change_month('next')
 
@@ -188,14 +188,14 @@ Builder.load_string('''
 <DayButton>
     size_hint: None, None
     size:
-        (dp(40), dp(40)) if root.tm.device_orientation == 'portrait'\
+        (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
         else (dp(32), dp(32))
 
     MDLabel:
         font_style: 'Caption'
         theme_text_color:
             'Custom' if root.is_today and not root.is_selected else 'Primary'
-        text_color: root.tm.primary_color
+        text_color: root.theme_cls.primary_color
         opposite_colors:
             root.is_selected if root.owner.sel_month == root.owner.month\
             and root.owner.sel_year == root.owner.year\
@@ -209,32 +209,32 @@ Builder.load_string('''
 <WeekdayLabel>
     font_style: 'Caption'
     theme_text_color: 'Secondary'
-    size: (dp(40), dp(40)) if root.tm.device_orientation == 'portrait'\
+    size: (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
         else (dp(32), dp(32))
     size_hint: None, None
     text_size: self.size
     valign:
-        'middle' if root.tm.device_orientation == 'portrait'\
+        'middle' if root.theme_cls.device_orientation == 'portrait'\
         else 'bottom'
     halign: 'center'
 
 
 <DaySelector>
     size:
-        (dp(40), dp(40)) if root.tm.device_orientation == 'portrait'\
+        (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
                 else (dp(32), dp(32))
     size_hint: (None, None)
 
     canvas:
         Color:
-            rgba: self.tm.primary_color if self.shown else [0, 0, 0, 0]
+            rgba: self.theme_cls.primary_color if self.shown else [0, 0, 0, 0]
         Ellipse:
             size:
                 (dp(40), dp(40))\
-                if root.tm.device_orientation == 'portrait'\
+                if root.theme_cls.device_orientation == 'portrait'\
                 else (dp(32), dp(32))
             pos:
-                self.pos if root.tm.device_orientation == 'portrait'\
+                self.pos if root.theme_cls.device_orientation == 'portrait'\
                 else [self.pos[0], self.pos[1]]
 ''')
 
@@ -427,17 +427,17 @@ Builder.load_string('''
 
     canvas:
         Color:
-            rgba: self.tm.bg_light
+            rgba: self.theme_cls.bg_light
         Rectangle:
             size: [dp(270), dp(335)]
             pos: [root.pos[0], root.pos[1] + root.height - dp(335) - dp(95)]
         Color:
-            rgba: self.tm.primary_color
+            rgba: self.theme_cls.primary_color
         Rectangle:
             size: [dp(270), dp(95)]
             pos: [root.pos[0], root.pos[1] + root.height - dp(95)]
         Color:
-            rgba: self.tm.bg_dark
+            rgba: self.theme_cls.bg_dark
         Ellipse:
             size: [dp(220), dp(220)]
             pos:
@@ -512,11 +512,11 @@ Builder.load_string('''
 
 
 <AccentColorSelector@ColorSelector>
-    on_release: app.tm.accent_palette = root.color_name
+    on_release: app.theme_cls.accent_palette = root.color_name
 
 
 <PrimaryColorSelector@ColorSelector>
-    on_release: app.tm.primary_palette = root.color_name
+    on_release: app.theme_cls.primary_palette = root.color_name
 
 
 <MDThemePicker>
@@ -526,12 +526,12 @@ Builder.load_string('''
 
     canvas:
         Color:
-            rgb: app.tm.primary_color
+            rgb: app.theme_cls.primary_color
         Rectangle:
             size: self.width, dp(120)
             pos: root.pos[0], root.pos[1] + root.height-dp(120)
         Color:
-            rgb: app.tm.bg_normal
+            rgb: app.theme_cls.bg_normal
         Rectangle:
             size: self.width, dp(290)
             pos: root.pos[0], root.pos[1] + root.height-(dp(120)+dp(290))
@@ -679,7 +679,7 @@ Builder.load_string('''
                             size_hint: (None, None)
                             canvas:
                                 Color:
-                                    rgba: app.tm.bg_normal
+                                    rgba: app.theme_cls.bg_normal
                                 Ellipse:
                                     size: self.size
                                     pos: self.pos
@@ -805,7 +805,7 @@ Builder.load_string('''
                             size_hint: (None, None)
                             canvas:
                                 Color:
-                                    rgba: app.tm.bg_normal
+                                    rgba: app.theme_cls.bg_normal
                                 Ellipse:
                                     size: self.size
                                     pos: self.pos
@@ -842,7 +842,7 @@ Builder.load_string('''
                             Line:
                                 width: 1.
                                 circle: (self.center_x, self.center_y, dp(50))
-                        on_release: app.tm.theme_style = 'Light'
+                        on_release: app.theme_cls.theme_style = 'Light'
                     MDIconButton:
                         size: dp(100), dp(100)
                         pos: self.pos
@@ -853,7 +853,7 @@ Builder.load_string('''
                             Ellipse:
                                 size: self.size
                                 pos: self.pos
-                        on_release: app.tm.theme_style = 'Dark'
+                        on_release: app.theme_cls.theme_style = 'Dark'
 ''')
 
 
@@ -861,7 +861,7 @@ class ColorSelector(MDIconButton):
     color_name = OptionProperty('Indigo', options=palette)
 
     def rgb_hex(self, col):
-        return get_color_from_hex(colors[col][self.tm.accent_hue])
+        return get_color_from_hex(colors[col][self.theme_cls.accent_hue])
 
 
 class MDThemePicker(ThemableBehavior, FloatLayout, ModalView,
@@ -876,7 +876,7 @@ if __name__ == "__main__":
 
 
     class ThemePickerApp(App):
-        tm = ThemeManager()
+        theme_cls = ThemeManager()
 
         def build(self):
             main_widget = Builder.load_string('''

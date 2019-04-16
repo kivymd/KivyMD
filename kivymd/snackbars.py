@@ -44,7 +44,7 @@ Screen:
 
         MDToolbar:
             title: 'Example Snackbar'
-            md_bg_color: app.tm.primary_color
+            md_bg_color: app.theme_cls.primary_color
             left_action_items: [['menu', lambda x: x]]
             background_palette: 'Primary'
 
@@ -80,7 +80,7 @@ Screen:
 
     MDFloatingActionButton:
         id: button
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
@@ -88,7 +88,7 @@ Screen:
 
 
 class ExampleSnackBar(App):
-    tm = ThemeManager()
+    theme_cls = ThemeManager()
     _interval = 0
     my_snackbar = None
     screen = None

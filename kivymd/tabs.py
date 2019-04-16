@@ -58,7 +58,7 @@ Builder.load_string('''
             id: tab_bar
             size_hint_y: None
             height: panel._tab_display_height[panel.tab_display_mode]
-            md_bg_color: panel.tab_color or panel.tm.primary_color
+            md_bg_color: panel.tab_color or panel.theme_cls.primary_color
             size_hint_x: 1 if root.tab_width_mode =='stacked' else None
             width: Window.width
             rows: 1
@@ -69,7 +69,7 @@ Builder.load_string('''
                 Color:
                     rgba: 
                         (panel.tab_border_color or panel.tab_color or\
-                        panel.tm.primary_dark)
+                        panel.theme_cls.primary_dark)
                 Rectangle:
                     size: (self.width,dp(2))
 
@@ -83,7 +83,7 @@ Builder.load_string('''
 <MDTabHeader>
     canvas:
         Color:
-            rgba: self.panel.tab_color or self.panel.tm.primary_color
+            rgba: self.panel.tab_color or self.panel.theme_cls.primary_color
         Rectangle:
             size: self.size
             pos: self.pos
@@ -91,11 +91,11 @@ Builder.load_string('''
         Color:
             rgba:
                 (self.panel.tab_indicator_color\
-                or self.panel.tm.accent_color)\
+                or self.panel.theme_cls.accent_color)\
                 if self.tab and self.tab.manager\
                 and self.tab.manager.current == self.tab.name\
                 else (self.panel.tab_border_color\
-                or self.panel.tab_color or self.panel.tm.primary_dark)
+                or self.panel.tab_color or self.panel.theme_cls.primary_dark)
         Rectangle:
             size: (self.width,dp(2))
             pos: self.pos
@@ -147,7 +147,7 @@ Builder.load_string('''
     MDBottomNavigationBar:
         size_hint_y: None
         height: dp(56)  # Spec
-        md_bg_color: root.tm.bg_dark
+        md_bg_color: root.theme_cls.bg_dark
 
         BoxLayout:
             pos_hint: {'center_x': .5, 'center_y': .5}
@@ -161,7 +161,7 @@ Builder.load_string('''
 <MDBottomNavigationHeader>
     canvas:
         Color:
-            rgba: self.panel.tm.bg_dark
+            rgba: self.panel.theme_cls.bg_dark
         Rectangle:
             size: self.size
             pos: self.pos
@@ -214,7 +214,7 @@ Builder.load_string('''
 <MDTab>
     canvas:
         Color:
-            rgba: root.tm.bg_normal
+            rgba: root.theme_cls.bg_normal
         Rectangle:
             size: root.size
 ''')
@@ -276,25 +276,25 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
         self.height = height
         self.tab = tab
         super(MDBottomNavigationHeader, self).__init__()
-        self._current_color = self.tm.disabled_hint_text_color
+        self._current_color = self.theme_cls.disabled_hint_text_color
         self._label = self.ids._label
         self._label_font_size = sp(12)
-        self.tm.bind(primary_color=self._update_theme_color,
+        self.theme_cls.bind(primary_color=self._update_theme_color,
                      disabled_hint_text_color=self._update_theme_style)
         self.active = False
 
     def on_press(self):
         Animation(_label_font_size=sp(14), d=.1).start(self)
-        Animation(_current_color=self.tm.primary_color, d=.1).start(
+        Animation(_current_color=self.theme_cls.primary_color, d=.1).start(
             self)
 
     def _update_theme_color(self, instance, color):
         if self.active:
-            self._current_color = self.tm.primary_color
+            self._current_color = self.theme_cls.primary_color
 
     def _update_theme_style(self, instance, color):
         if not self.active:
-            self._current_color = self.tm.disabled_hint_text_color
+            self._current_color = self.theme_cls.disabled_hint_text_color
 
 
 class MDTab(Screen, ThemableBehavior):
@@ -363,7 +363,7 @@ class MDBottomNavigationItem(MDTab):
             Animation(_label_font_size=sp(12), d=.1).start(
                 par.previous_tab.header)
             Animation(
-                _current_color=par.previous_tab.header.tm.disabled_hint_text_color,
+                _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
                 d=.1).start(
                 par.previous_tab.header)
             par.previous_tab.header.active = False
@@ -502,7 +502,7 @@ class MDBottomNavigation(TabbedPanelBase):
             tab.header = tab_header
             tab_bar.add_widget(tab_header)
             if tab is self.first_widget:
-                tab_header._current_color = self.tm.primary_color
+                tab_header._current_color = self.theme_cls.primary_color
                 tab_header._label_font_size = sp(14)
                 tab_header.active = True
             else:
@@ -533,7 +533,7 @@ class MDBottomNavigation(TabbedPanelBase):
             self.ids.tab_manager.add_widget(widget)
             if self.widget_index == 1:
                 self.previous_tab = widget
-                tab_header._current_color = self.tm.primary_color
+                tab_header._current_color = self.theme_cls.primary_color
                 tab_header._label_font_size = sp(14)
                 tab_header.active = True
                 self.first_widget = widget
@@ -561,7 +561,7 @@ if __name__ == '__main__':
 
 
     class TabsApp(App):
-        tm = ThemeManager()
+        theme_cls = ThemeManager()
 
         def build(self):
             from kivy.core.window import Window
@@ -578,7 +578,7 @@ BoxLayout:
     MDToolbar:
         id: toolbar
         title: 'Page title'
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         left_action_items: [['menu', lambda x: '']]
 
     MDTabbedPanel:

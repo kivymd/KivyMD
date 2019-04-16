@@ -451,12 +451,12 @@ buttons = '''
             icon: 'check'
             opposite_colors: True
             elevation_normal: 8
-            md_bg_color: app.tm.primary_color
+            md_bg_color: app.theme_cls.primary_color
 
         MDIconButton:
             icon: 'sd'
             theme_text_color: 'Custom'
-            text_color: app.tm.primary_color
+            text_color: app.theme_cls.primary_color
 
         Widget:
 
@@ -615,8 +615,8 @@ theming = '''
             pos_hint: {'center_x': .5}
         MDLabel:
             text:
-                "Current: " + app.tm.theme_style\
-                + ", " + app.tm.primary_palette
+                "Current: " + app.theme_cls.theme_style\
+                + ", " + app.theme_cls.primary_palette
             theme_text_color: 'Primary'
             pos_hint: {'center_x': .5}
             halign: 'center'
@@ -675,7 +675,7 @@ textfields = '''
                 color_mode: 'custom'
                 helper_text_mode: "on_focus"
                 helper_text: "Color is defined by \'line_color_focus\' property"
-                line_color_focus: self.tm.opposite_bg_normal
+                line_color_focus: self.theme_cls.opposite_bg_normal
             MDTextField:
                 hint_text: "disabled = True"
                 disabled: True
@@ -827,7 +827,7 @@ snackbar = '''
 
     MDFloatingActionButton:
         id: button
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
@@ -1437,7 +1437,7 @@ manager_swiper = '''
     MDLabel:
         theme_text_color: 'Custom'
         bold: True
-        text_color: app.tm.primary_color
+        text_color: app.theme_cls.primary_color
         text: root.text
         size_hint_y: None
         height: dp(60)
@@ -1597,7 +1597,7 @@ screen_shop_window = '''
 
             MDLabel:
                 theme_text_color: 'Primary'
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
                 text: '\\n' + 'Casio CVD-12L'
                 height: self.texture_size[1]
                 size_hint_y: None
@@ -1613,7 +1613,7 @@ screen_shop_window = '''
 
             MDLabel:
                 theme_text_color: 'Primary'
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
                 text: 'Price - 850 $'
                 height: self.texture_size[1]
                 size_hint_y: None
@@ -1649,7 +1649,7 @@ screen_shop_window = '''
         pos_hint: {'center_x': .5}
 
     MDLabel:
-        font_style: 'Subhead'
+        font_style: 'Subtitle1'
         theme_text_color: 'Primary'
         text: 'Casio' + '\\n' + 'CVD-12L' + '\\n\\n' + '12 543 $'
         height: self.texture_size[1]
@@ -1704,7 +1704,7 @@ screen_shop_window = '''
                     
         MDLabel:
             theme_text_color: 'Primary'
-            font_style: 'Subhead'
+            font_style: 'Subtitle1'
             text: '1850 $'
             height: self.texture_size[1]
             size_hint_y: None
@@ -1737,7 +1737,7 @@ screen_shop_window = '''
                 icon: 'key-variant'
 
             MDLabel:
-                font_style: 'Title'
+                font_style: 'H6'
                 theme_text_color: 'Primary'
                 halign: 'left'
                 text: 'Registration'

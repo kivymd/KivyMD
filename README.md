@@ -93,7 +93,7 @@ API Breaking changes:
 | Body1    | Body1     |
 | -        | Subtitle2 |
 | Subhead  | Subtitle1 |
-| -        | H6        |
+| Title    | H6        |
 | Headline | H5        |
 | Display1 | H4        |
 | Display2 | H3        |

@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Cards <https://material.io/design/components/cards.html>`
+`Material Design spec, Cards <https://material.io/design/components/cards.html>`_
 
 Example
 -------
@@ -27,19 +27,19 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 
 
 <ExampleCardPost@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
 
 
     ScrollView:
@@ -58,8 +58,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    tm = ThemeManager()
+    tm.primary_palette = 'Teal'
     title = "Card Post"
     cards_created = False
 
@@ -110,7 +110,7 @@ class Example(App):
                 MDCardPost(
                     source="./assets/kitten-1049129_1280.jpg",
                     tile_text="Little Baby",
-                    tile_font_style="Headline",
+                    tile_font_style="H5",
                     text_post="This is my favorite cat. He's only six months "
                               "old. He loves milk and steals sausages :) "
                               "And he likes to play in the garden.",
@@ -134,7 +134,7 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
 from kivymd.button import MDIconButton
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 from kivymd.list import ILeftBody
 from kivymd.menus import MDDropdownMenu
 from kivymd.navigationdrawer import NavigationLayout
@@ -142,7 +142,7 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
 #:import images_path kivymd.images_path
-#:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
+#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 
 
 <MDCard>
@@ -155,19 +155,19 @@ Builder.load_string('''
             radius: [self.border_radius]
             source: root.background
         Color:
-            rgba: self.theme_cls.divider_color
+            rgba: self.tm.divider_color
             a: self.border_color_a
         Line:
             rounded_rectangle:
                 (self.pos[0], self.pos[1], self.size[0], self.size[1],\
                 self.border_radius) 
-    md_bg_color: self.theme_cls.bg_light
+    md_bg_color: self.tm.bg_light
 
 
 <MDSeparator>
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color
+            rgba: self.tm.divider_color
         Rectangle:
             size: self.size
             pos: self.pos
@@ -269,7 +269,7 @@ Builder.load_string('''
 
             canvas.before:
                 Color:
-                    rgba: app.theme_cls.primary_color
+                    rgba: app.tm.primary_color
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -324,8 +324,8 @@ class LeftIcon(ILeftBody, Image):
 class CardPostImage(BoxLayout):
     source = StringProperty()
     text_post = StringProperty()
-    tile_text = StringProperty("Title")
-    tile_font_style = StringProperty("Headline")
+    tile_text = StringProperty('Title')
+    tile_font_style = StringProperty('H5')
     tile_text_color = ListProperty([1, 1, 1, 1])
     callback = ObjectProperty(lambda *x: None)
     card_size = ListProperty((Window.width - 10, dp(335)))
@@ -338,8 +338,8 @@ class MDCardPost(BoxLayout):
     card_size = ListProperty((Window.width - 10, dp(180)))
 
     source = StringProperty()
-    tile_text = StringProperty("Title")
-    tile_font_style = StringProperty("Headline")
+    tile_text = StringProperty('Title')
+    tile_font_style = StringProperty('H5')
     tile_text_color = ListProperty([1, 1, 1, 1])
 
     buttons = ListProperty()

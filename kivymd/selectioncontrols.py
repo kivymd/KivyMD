@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`
+`Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`_
 """
 
 from kivy.lang import Builder
@@ -28,7 +28,7 @@ from kivy.utils import get_color_from_hex
 from kivymd.color_definitions import colors
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
-from kivymd.elevationbehavior import CircularElevationBehavior
+from kivymd.elevation import CircularElevationBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
@@ -50,8 +50,8 @@ Builder.load_string('''
     font_name: 'Icons'
     font_size: sp(24)
     color:
-        self.theme_cls.primary_color if self.active\
-        else self.theme_cls.secondary_text_color
+        self.tm.primary_color if self.active\
+        else self.tm.secondary_text_color
     halign: 'center'
     valign: 'middle'
 
@@ -161,7 +161,7 @@ class Thumb(CircularElevationBehavior, CircularRippleBehavior, ButtonBehavior,
 class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     active = BooleanProperty(False)
 
-    _thumb_color = ListProperty(get_color_from_hex(colors['Grey']['50']))
+    _thumb_color = ListProperty(get_color_from_hex(colors['Gray']['50']))
 
     def _get_thumb_color(self):
         return self._thumb_color
@@ -198,7 +198,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
                                      bind=['_thumb_color_down'])
 
     _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors['Grey']['400']))
+        get_color_from_hex(colors['Gray']['400']))
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
@@ -223,29 +223,29 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
 
     def __init__(self, **kwargs):
         super(MDSwitch, self).__init__(**kwargs)
-        self.theme_cls.bind(theme_style=self._set_colors,
-                            primary_color=self._set_colors,
-                            primary_palette=self._set_colors)
+        self.tm.bind(theme_style=self._set_colors,
+                     primary_color=self._set_colors,
+                     primary_palette=self._set_colors)
         self._set_colors()
 
     def _set_colors(self, *args):
-        self._track_color_normal = self.theme_cls.disabled_hint_text_color
-        if self.theme_cls.theme_style == 'Dark':
-            self._track_color_active = self.theme_cls.primary_color
+        self._track_color_normal = self.tm.disabled_hint_text_color
+        if self.tm.theme_style == 'Dark':
+            self._track_color_active = self.tm.primary_color
             self._track_color_active[3] = .5
             self._track_color_disabled = get_color_from_hex('FFFFFF')
             self._track_color_disabled[3] = .1
-            self.thumb_color = get_color_from_hex(colors['Grey']['400'])
+            self.thumb_color = get_color_from_hex(colors['Gray']['400'])
             self.thumb_color_down = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]['200'])
+                colors[self.tm.primary_palette]['200'])
             self.thumb_color_disabled = get_color_from_hex(
-                colors['Grey']['800'])
+                colors['Gray']['800'])
         else:
             self._track_color_active = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]['200'])
+                colors[self.tm.primary_palette]['200'])
             self._track_color_active[3] = .5
-            self._track_color_disabled = self.theme_cls.disabled_hint_text_color
-            self.thumb_color_down = self.theme_cls.primary_color
+            self._track_color_disabled = self.tm.disabled_hint_text_color
+            self.thumb_color_down = self.tm.primary_color
 
     def on_pos(self, *args):
         if self.active:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Toolbar
+MDToolbar
 =======
 
 Copyright © 2010-2018 HeaTTheatR
@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, App bars: top <https://material.io/design/components/app-bars-top.html>`
+`Material Design spec, App bars: top <https://material.io/design/components/app-bars-top.html>`_
 
 Example
 -------
@@ -58,14 +58,14 @@ BoxLayout:
 
 
 class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     md_app_bar = None
 
     def build(self):
         root = Builder.load_string(kv)
         self.md_app_bar = MDBottomAppBar(
-            md_bg_color=self.theme_cls.primary_color,
+            md_bg_color=self.tm.primary_color,
             left_action_items=[
                 ['menu', lambda x: x],
                 ['clock', lambda x: x],
@@ -107,7 +107,7 @@ from kivy.core.window import Window
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.button import MDIconButton, MDFloatingActionButton
 from kivymd.theming import ThemableBehavior
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources
@@ -122,17 +122,17 @@ Builder.load_string('''
 
 <MDBottomAppBar>
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         left_action_items: root.left_action_items
         right_action_items: root.right_action_items
         md_bg_color: root.md_bg_color
 
 
-<Toolbar>
+<MDToolbar>
     size_hint_y: None
-    height: root.theme_cls.standard_increment
-    padding: [root.theme_cls.horizontal_margins - dp(12), 0]
+    height: root.tm.standard_increment
+    padding: [root.tm.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
 
@@ -146,7 +146,7 @@ Builder.load_string('''
         padding: dp(12), 0
 
         MDLabel:
-            font_style: 'Title'
+            font_style: 'H6'
             opposite_colors: root.opposite_colors
             theme_text_color: 'Custom'
             text_color: root.specific_text_color
@@ -163,10 +163,10 @@ Builder.load_string('''
 ''')
 
 
-class Toolbar(ThemableBehavior, RectangularElevationBehavior,
-              SpecificBackgroundColorBehavior, BoxLayout):
+class MDToolbar(ThemableBehavior, RectangularElevationBehavior,
+                SpecificBackgroundColorBehavior, BoxLayout):
     left_action_items = ListProperty()
-    """The icons on the left of the Toolbar.
+    """The icons on the left of the MDToolbar.
     To add one, append a list like the following:
         ['icon_name', callback]
     where 'icon_name' is a string that corresponds to an icon definition and
@@ -174,19 +174,19 @@ class Toolbar(ThemableBehavior, RectangularElevationBehavior,
     """
 
     right_action_items = ListProperty()
-    """The icons on the left of the Toolbar.
+    """The icons on the left of the MDToolbar.
     Works the same way as :attr:`left_action_items`
     """
 
     title = StringProperty()
-    """The text displayed on the Toolbar."""
+    """The text displayed on the MDToolbar."""
 
     md_bg_color = ListProperty([0, 0, 0, 1])
 
     anchor_title = StringProperty('left')
 
     def __init__(self, **kwargs):
-        super(Toolbar, self).__init__(**kwargs)
+        super(MDToolbar, self).__init__(**kwargs)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items))

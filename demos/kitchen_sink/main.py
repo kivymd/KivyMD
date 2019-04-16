@@ -65,12 +65,10 @@ main_widget_kv = '''
 #:import MDLabel kivymd.label.MDLabel
 #:import MDDropdownMenu kivymd.menus.MDDropdownMenu
 
-
 <ContentPopup@BoxLayout>
     orientation: 'vertical'
     padding: dp(1)
     spacing: dp(30)
-
     Image:
         id: image
         source: 'assets/guitar-1139397_1280_crop.png'
@@ -78,26 +76,20 @@ main_widget_kv = '''
         height: dp(Window.height * 35 // 100)
         allow_stretch: True
         keep_ratio: False
-
     MDRoundFlatButton:
         text: 'Open Menu'
         pos_hint: {'center_x': .5}
         on_release: root.parent.show()
-
     Widget:
-
-
 <ContentForAnimCard>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
     size_hint_y: None
     height: self.minimum_height
-
     BoxLayout:
         size_hint_y: None
         height: self.minimum_height
-
         Widget:
         MDRoundFlatButton:
             text: "Free call"
@@ -107,13 +99,11 @@ main_widget_kv = '''
             text: "Free message"
             on_press: root.callback(self.text)
         Widget:
-
     OneLineIconListItem:
         text: "Video call"
         on_press: root.callback(self.text)
         IconLeftSampleWidget:
             icon: 'camera-front-variant'
-
     TwoLineIconListItem:
         text: "Call Viber Out"
         on_press: root.callback(self.text)
@@ -124,7 +114,6 @@ main_widget_kv = '''
         # secondary_text_color: app.theme_cls.primary_color
         IconLeftSampleWidget:
             icon: 'phone'
-
     TwoLineIconListItem:
         text: "Call over mobile network"
         on_press: root.callback(self.text)
@@ -133,16 +122,11 @@ main_widget_kv = '''
             % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
-
-
 <MyNavigationDrawerIconButton@NavigationDrawerIconButton>
     icon: 'checkbox-blank-circle'
-
-
 <ContentNavigationDrawer@MDNavigationDrawer>
     drawer_logo: './assets/drawer_logo.png'
     use_logo: 'logo'
-
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
     MyNavigationDrawerIconButton:
@@ -306,16 +290,12 @@ main_widget_kv = '''
             app.show_user_animation_card()
             app.set_title_toolbar(self.text)
 
-
 NavigationLayout:
     id: nav_layout
-
     ContentNavigationDrawer:
         id: nav_drawer
-
     BoxLayout:
         orientation: 'vertical'
-
         Toolbar:
             id: toolbar
             title: app.title
@@ -327,13 +307,10 @@ NavigationLayout:
                 [['menu', lambda x: app.root.toggle_nav_drawer()]]
             right_action_items:
                 [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
-
         ScreenManager:
             id: scr_mngr
-
             Screen:
                 name: 'previous'
-
                 FloatLayout:
                     Image:
                         source: '{}kivymd_logo.png'.format(images_path)
@@ -558,10 +535,8 @@ class KitchenSink(App, Screens):
     def select_path(self, path):
         """It will be called when you click on the file name
         or the catalog selection button.
-
         :type path: str;
         :param path: path to the selected directory or file;
-
         """
 
         self.exit_manager()

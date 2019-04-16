@@ -29,7 +29,7 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
@@ -37,12 +37,12 @@ Builder.load_string('''
     orientation: 'vertical'
     spacing: dp(5)
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
 
 
     FloatLayout:
@@ -56,8 +56,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    tm = ThemeManager()
+    tm.primary_palette = 'Teal'
     title = "File Manage"
 
     def __init__(self, **kwargs):
@@ -128,6 +128,7 @@ from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
 import kivymd.material_resources as m_res
 from kivymd import images_path
 from kivymd.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
+from kivymd.font_definitions import theme_font_styles
 from kivymd.ripplebehavior import RectangularRippleBehavior, \
     CircularRippleBehavior
 from kivymd.theming import ThemableBehavior
@@ -136,7 +137,7 @@ from kivymd.button import MDIconButton
 ACTIVITY_MANAGER = '''
 #:import os os
 #:import Window kivy.core.window.Window
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 #:import MDSeparator kivymd.cards.MDSeparator
 
@@ -265,20 +266,20 @@ ACTIVITY_MANAGER = '''
         orientation: 'vertical'
         spacing: dp(5)
 
-        Toolbar:
+        MDToolbar:
             id: toolbar
             title: '%s' % root.current_path
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
             left_action_items: [['chevron-left', lambda x: root.back()]]
             elevation: 10
-            md_bg_color: root.theme_cls.primary_color
+            md_bg_color: root.tm.primary_color
 
         RecycleView:
             id: rv
             key_viewclass: 'viewclass'
             key_size: 'height'
             bar_width: dp(4)
-            bar_color: root.theme_cls.primary_color
+            bar_color: root.tm.primary_color
             on_scroll_stop: root.update_list_images()
 
             RecycleBoxLayout:
@@ -295,7 +296,7 @@ ACTIVITY_MANAGER = '''
     canvas:
         Color:
             rgba:
-                self.theme_cls.divider_color if root.divider is not None\
+                self.tm.divider_color if root.divider is not None\
                 else (0, 0, 0, 0)
 
         Line:
@@ -359,10 +360,7 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
     text_color = ListProperty(None)
     """Text color used if theme_text_color is set to 'Custom'"""
 
-    font_style = OptionProperty(
-        'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                            'Headline', 'Display1', 'Display2', 'Display3',
-                            'Display4', 'Button', 'Icon'])
+    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
 
     theme_text_color = StringProperty('Primary', allownone=True)
     """Theme text color for primary text"""
@@ -385,10 +383,7 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
     secondary_theme_text_color = StringProperty('Secondary', allownone=True)
     """Theme text color for secondary primary text"""
 
-    secondary_font_style = OptionProperty(
-        'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                          'Headline', 'Display1', 'Display2', 'Display3',
-                          'Display4', 'Button', 'Icon'])
+    secondary_font_style = OptionProperty('Body1', options=theme_font_styles)
 
     divider = OptionProperty('Full', options=['Full', 'Inset', None],
                              allownone=True)
@@ -565,7 +560,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         # The user moves down the tree.
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
-        toolbar_label.font_style = 'Subhead'
+        toolbar_label.font_style = 'Subtitle1'
 
         if self.previous:
             self.ext = ['.png', '.jpg', '.jpeg']
@@ -575,7 +570,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         else:
             action_button = FloatButton(
                 callback=self.select_directory_on_press_button,
-                md_bg_color=self.theme_cls.primary_color,
+                md_bg_color=self.tm.primary_color,
                 icon=self.icon)
             self.add_widget(action_button)
 
@@ -603,7 +598,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def check_theme(self):
         self.canvas.children[0].rgba = [0, 0, 0, 1]\
-            if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
+            if self.tm.theme_style == 'Dark' else [1, 1, 1, 1]
 
     def show(self, path):
         """Forms the body of a directory tree."""

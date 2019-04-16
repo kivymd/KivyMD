@@ -54,10 +54,10 @@ class CommonRipple(object):
 
             if self.ripple_color:
                 pass
-            elif hasattr(self, 'theme_cls'):
-                self.ripple_color = self.theme_cls.ripple_color
+            elif hasattr(self, 'tm'):
+                self.ripple_color = self.tm.ripple_color
             else:
-                # If no theme, set Grey 300
+                # If no theme, set Gray 300
                 self.ripple_color = [.8784313725490196, .8784313725490196,
                                      .8784313725490196, self.ripple_alpha]
             self.ripple_color[3] = self.ripple_alpha

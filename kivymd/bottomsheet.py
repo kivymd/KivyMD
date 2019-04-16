@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`
+`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`_
 
 In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
 
@@ -83,7 +83,7 @@ Builder.load_string('''
         BottomSheetContent:
             id: gl_content
             size_hint_y: None
-            md_bg_color: root.theme_cls.bg_normal
+            md_bg_color: root.tm.bg_normal
             cols: 1
 ''')
 

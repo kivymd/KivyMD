@@ -28,7 +28,7 @@ from kivymd.accordionlistitem import MDAccordionListItem
 from kivymd.toast import toast
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import TwoLineIconListItem kivymd.list.TwoLineIconListItem
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
@@ -67,7 +67,7 @@ Builder.load_string('''
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Advantageous rates for calls[/color]"\
-            % get_hex_from_color(app.theme_cls.primary_color)
+            % get_hex_from_color(app.tm.primary_color)
         IconLeftSampleWidget:
             icon: 'phone'
 
@@ -76,7 +76,7 @@ Builder.load_string('''
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]"\
-            % get_hex_from_color(app.theme_cls.primary_color)
+            % get_hex_from_color(app.tm.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
 
@@ -84,10 +84,10 @@ Builder.load_string('''
 <ExampleAccordionList@BoxLayout>
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         background_palette: 'Primary'
         elevation: 10
         left_action_items: [['dots-vertical', lambda x: None]]
@@ -113,8 +113,8 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     title = "Example Accordion List"
     main_widget = None
 

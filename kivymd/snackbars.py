@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Snackbars <https://material.io/design/components/snackbars.html>`
+`Material Design spec, Snackbars <https://material.io/design/components/snackbars.html>`_
 
 Example
 =======
@@ -29,7 +29,7 @@ from kivymd.toast import toast
 
 KV = '''
 #:import Window kivy.core.window.Window
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDSeparator kivymd.cards.MDSeparator
 #:import MDLabel kivymd.label.MDLabel
@@ -42,9 +42,9 @@ Screen:
         orientation: 'vertical'
         spacing: dp(10)
 
-        Toolbar:
+        MDToolbar:
             title: 'Example Snackbar'
-            md_bg_color: app.theme_cls.primary_color
+            md_bg_color: app.tm.primary_color
             left_action_items: [['menu', lambda x: x]]
             background_palette: 'Primary'
 
@@ -80,7 +80,7 @@ Screen:
 
     MDFloatingActionButton:
         id: button
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
@@ -88,7 +88,7 @@ Screen:
 
 
 class ExampleSnackBar(App):
-    theme_cls = ThemeManager()
+    tm = ThemeManager()
     _interval = 0
     my_snackbar = None
     screen = None

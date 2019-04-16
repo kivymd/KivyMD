@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Sliders <https://material.io/design/components/sliders.html>`
+`Material Design spec, Sliders <https://material.io/design/components/sliders.html>`_
 """
 
 from kivy.lang import Builder
@@ -111,7 +111,7 @@ class MDSlider(ThemableBehavior, Slider):
     # Internal adjustment to reposition sliders for ring
     _offset = ListProperty((0, 0))
 
-    _thumb_color = ListProperty(get_color_from_hex(colors['Grey']['50']))
+    _thumb_color = ListProperty(get_color_from_hex(colors['Gray']['50']))
 
     def _get_thumb_color(self):
         return self._thumb_color
@@ -148,7 +148,7 @@ class MDSlider(ThemableBehavior, Slider):
                                      bind=['_thumb_color_down'])
 
     _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors['Grey']['400']))
+        get_color_from_hex(colors['Gray']['400']))
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
@@ -173,20 +173,20 @@ class MDSlider(ThemableBehavior, Slider):
 
     def __init__(self, **kwargs):
         super(MDSlider, self).__init__(**kwargs)
-        self.theme_cls.bind(theme_style=self._set_colors,
-                            primary_color=self._set_colors,
-                            primary_palette=self._set_colors)
+        self.tm.bind(theme_style=self._set_colors,
+                     primary_color=self._set_colors,
+                     primary_palette=self._set_colors)
         self._set_colors()
 
     def _set_colors(self, *args):
-        if self.theme_cls.theme_style == 'Dark':
+        if self.tm.theme_style == 'Dark':
             self._track_color_normal = get_color_from_hex('FFFFFF')
             self._track_color_normal[3] = .3
             self._track_color_active = self._track_color_normal
             self._track_color_disabled = self._track_color_normal
-            self.thumb_color = get_color_from_hex(colors['Grey']['400'])
-            self.thumb_color_down = get_color_from_hex(colors[self.theme_cls.primary_palette]['200'])
-            self.thumb_color_disabled = get_color_from_hex(colors['Grey']['800'])
+            self.thumb_color = get_color_from_hex(colors['Gray']['400'])
+            self.thumb_color_down = get_color_from_hex(colors[self.tm.primary_palette]['200'])
+            self.thumb_color_disabled = get_color_from_hex(colors['Gray']['800'])
         else:
             self._track_color_normal = get_color_from_hex('000000')
             self._track_color_normal[3] = .26
@@ -194,7 +194,7 @@ class MDSlider(ThemableBehavior, Slider):
             self._track_color_active[3] = .38 
             self._track_color_disabled = get_color_from_hex('000000')
             self._track_color_disabled[3] = .26
-            self.thumb_color_down = self.theme_cls.primary_color
+            self.thumb_color_down = self.tm.primary_color
 
     def on_value_normalized(self, *args):
         """ When the value == min set it to "off" state and make slider a ring """
@@ -237,7 +237,7 @@ if __name__ == '__main__':
     from kivymd.theming import ThemeManager
 
     class SliderApp(App):
-        theme_cls = ThemeManager()
+        tm = ThemeManager()
 
         def build(self):
             return Builder.load_string('''

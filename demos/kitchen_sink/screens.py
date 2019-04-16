@@ -119,8 +119,8 @@ accordion = '''
 '''
 
 grid = '''
-#:import SmartTileWithStar kivymd.grid.SmartTileWithStar
-#:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
+#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
+#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 
 
 <Grid@Screen>

@@ -27,8 +27,8 @@ from kivymd.utils.cropimage import crop_image
 
 kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
-#:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
-#:import SmartTileWithStar kivymd.grid.SmartTileWithStar
+#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
+#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 
 
 <MySmartTileWithLabel@SmartTileWithLabel>

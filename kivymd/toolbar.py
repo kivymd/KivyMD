@@ -58,14 +58,14 @@ BoxLayout:
 
 
 class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     md_app_bar = None
 
     def build(self):
         root = Builder.load_string(kv)
         self.md_app_bar = MDBottomAppBar(
-            md_bg_color=self.theme_cls.primary_color,
+            md_bg_color=self.tm.primary_color,
             left_action_items=[
                 ['menu', lambda x: x],
                 ['clock', lambda x: x],
@@ -131,8 +131,8 @@ Builder.load_string('''
 
 <MDToolbar>
     size_hint_y: None
-    height: root.theme_cls.standard_increment
-    padding: [root.theme_cls.horizontal_margins - dp(12), 0]
+    height: root.tm.standard_increment
+    padding: [root.tm.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
 

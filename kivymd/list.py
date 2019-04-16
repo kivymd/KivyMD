@@ -177,7 +177,7 @@ Builder.load_string('''
     canvas:
         Color:
             rgba:
-                self.theme_cls.divider_color if root.divider is not None\
+                self.tm.divider_color if root.divider is not None\
                 else (0, 0, 0, 0)
         Line:
             points: (root.x ,root.y, root.x+self.width, root.y)\

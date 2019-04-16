@@ -449,12 +449,12 @@ buttons = '''
             icon: 'check'
             opposite_colors: True
             elevation_normal: 8
-            md_bg_color: app.theme_cls.primary_color
+            md_bg_color: app.tm.primary_color
 
         MDIconButton:
             icon: 'sd'
             theme_text_color: 'Custom'
-            text_color: app.theme_cls.primary_color
+            text_color: app.tm.primary_color
 
         Widget:
 
@@ -613,8 +613,8 @@ theming = '''
             pos_hint: {'center_x': .5}
         MDLabel:
             text:
-                "Current: " + app.theme_cls.theme_style\
-                + ", " + app.theme_cls.primary_palette
+                "Current: " + app.tm.theme_style\
+                + ", " + app.tm.primary_palette
             theme_text_color: 'Primary'
             pos_hint: {'center_x': .5}
             halign: 'center'
@@ -673,7 +673,7 @@ textfields = '''
                 color_mode: 'custom'
                 helper_text_mode: "on_focus"
                 helper_text: "Color is defined by \'line_color_focus\' property"
-                line_color_focus: self.theme_cls.opposite_bg_normal
+                line_color_focus: self.tm.opposite_bg_normal
             MDTextField:
                 hint_text: "disabled = True"
                 disabled: True
@@ -825,7 +825,7 @@ snackbar = '''
 
     MDFloatingActionButton:
         id: button
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
@@ -1435,7 +1435,7 @@ manager_swiper = '''
     MDLabel:
         theme_text_color: 'Custom'
         bold: True
-        text_color: app.theme_cls.primary_color
+        text_color: app.tm.primary_color
         text: root.text
         size_hint_y: None
         height: dp(60)

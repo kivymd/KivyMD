@@ -285,8 +285,8 @@ class ThemeManager(Widget):
     horizontal_margins = AliasProperty(_get_horizontal_margins)
 
     def on_theme_style(self, instance, value):
-        if hasattr(App.get_running_app(), 'theme_cls') and\
-                        App.get_running_app().theme_cls == self:
+        if hasattr(App.get_running_app(), 'tm') and\
+                App.get_running_app().tm == self:
             self.set_clearcolor_by_theme_style(value)
 
     def set_clearcolor_by_theme_style(self, theme_style):
@@ -325,15 +325,15 @@ class ThemeManager(Widget):
 
 
 class ThemableBehavior(object):
-    theme_cls = ObjectProperty(None)
+    tm = ObjectProperty(None)
     opposite_colors = BooleanProperty(False)
     device_ios = DEVICE_IOS
 
     def __init__(self, **kwargs):
-        if self.theme_cls is not None:
+        if self.tm is not None:
             pass
-        elif hasattr(App.get_running_app(), 'theme_cls'):
-            self.theme_cls = App.get_running_app().theme_cls
+        elif hasattr(App.get_running_app(), 'tm'):
+            self.tm = App.get_running_app().tm
         else:
-            self.theme_cls = ThemeManager()
+            self.tm = ThemeManager()
         super(ThemableBehavior, self).__init__(**kwargs)

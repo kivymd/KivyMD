@@ -84,7 +84,7 @@ Builder.load_string('''
 
 
 <MDAccordion>
-    md_bg_color: self.theme_cls.primary_color
+    md_bg_color: self.tm.primary_color
 
 
 <MDAccordionItem>
@@ -95,7 +95,7 @@ Builder.load_string('''
     canvas.after:
         # PopMatrix
         Color:
-            rgba: self.divider_color or self.theme_cls.divider_color
+            rgba: self.divider_color or self.tm.divider_color
         Rectangle:
             size:
                 (dp(1), self.height) if self.orientation == 'horizontal'\
@@ -104,7 +104,7 @@ Builder.load_string('''
         Color:
             rgba:
                 [0, 0, 0, 0] if self.collapse\
-                else (self.indicator_color or self.theme_cls.accent_color)
+                else (self.indicator_color or self.tm.accent_color)
         Rectangle:
             size:
                 (dp(2),self.height)\
@@ -209,10 +209,10 @@ if __name__ == '__main__':
 
 
     class AccordionApp(App):
-        theme_cls = ThemeManager()
+        tm = ThemeManager()
 
         def build(self):
-            self.theme_cls.primary_palette = 'Indigo'
+            self.tm.primary_palette = 'Indigo'
             return Builder.load_string('''
 #:import MDLabel kivymd.label.MDLabel
 

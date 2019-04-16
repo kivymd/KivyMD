@@ -669,10 +669,10 @@ Builder.load_string('''
                             color_name: 'Brown'
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Grey'
+                            color_name: 'Gray'
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'BlueGrey'
+                            color_name: 'BlueGray'
                     BoxLayout:
                         MDIconButton:
                             size: dp(40), dp(40)
@@ -795,10 +795,10 @@ Builder.load_string('''
                             color_name: 'Brown'
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Grey'
+                            color_name: 'Gray'
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'BlueGrey'
+                            color_name: 'BlueGray'
                     BoxLayout:
                         MDIconButton:
                             size: dp(40), dp(40)
@@ -863,7 +863,7 @@ class ColorSelector(MDIconButton):
             options=['Red', 'Pink', 'Purple', 'DeepPurple', 'Indigo', 'Blue',
                      'LightBlue', 'Cyan', 'Teal', 'Green', 'LightGreen',
                      'Lime', 'Yellow', 'Amber', 'Orange', 'DeepOrange',
-                     'Brown', 'Grey', 'BlueGrey'])
+                     'Brown', 'Gray', 'BlueGray'])
 
     def rgb_hex(self, col):
         return get_color_from_hex(colors[col][self.theme_cls.accent_hue])

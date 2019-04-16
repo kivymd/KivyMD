@@ -27,14 +27,14 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 
 
 <ExampleCardPost@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
         left_action_items: [['menu', lambda x: None]]

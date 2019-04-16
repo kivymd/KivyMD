@@ -46,7 +46,7 @@ main_widget_kv = '''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import images_path kivymd.images_path
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
@@ -245,7 +245,7 @@ NavigationLayout:
     BoxLayout:
         orientation: 'vertical'
 
-        Toolbar:
+        MDToolbar:
             id: toolbar
             title: app.title
             md_bg_color: app.theme_cls.primary_color

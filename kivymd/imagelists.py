@@ -26,7 +26,7 @@ from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
 kv = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 #:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 
@@ -39,7 +39,7 @@ kv = '''
 BoxLayout:
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         title: app.title
         elevation: 10
         left_action_items: [['menu', lambda x: x]]

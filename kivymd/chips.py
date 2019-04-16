@@ -23,7 +23,7 @@ from kivy.lang import Builder
 from kivymd.theming import ThemeManager
 
 kv = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
 #:import MDSeparator kivymd.cards.MDSeparator
@@ -34,7 +34,7 @@ BoxLayout:
     orientation: 'vertical'
     spacing: dp(10)
 
-    Toolbar:
+    MDToolbar:
         title: 'Example Chips'
         md_bg_color: app.theme_cls.primary_color
         left_action_items: [['menu', lambda x: x]]

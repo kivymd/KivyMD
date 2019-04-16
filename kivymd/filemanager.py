@@ -29,7 +29,7 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
@@ -37,7 +37,7 @@ Builder.load_string('''
     orientation: 'vertical'
     spacing: dp(5)
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
         left_action_items: [['menu', lambda x: None]]
@@ -137,7 +137,7 @@ from kivymd.button import MDIconButton
 ACTIVITY_MANAGER = '''
 #:import os os
 #:import Window kivy.core.window.Window
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 #:import MDSeparator kivymd.cards.MDSeparator
 
@@ -266,7 +266,7 @@ ACTIVITY_MANAGER = '''
         orientation: 'vertical'
         spacing: dp(5)
 
-        Toolbar:
+        MDToolbar:
             id: toolbar
             title: '%s' % root.current_path
             right_action_items: [['close-box', lambda x: root.exit_manager(1)]]

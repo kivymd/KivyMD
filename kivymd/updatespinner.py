@@ -23,7 +23,7 @@ from kivy.clock import Clock
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
@@ -31,7 +31,7 @@ Builder.load_string('''
 <ExampleUpdateSpinner@BoxLayout>
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         title: app.title
         md_bg_color: app.theme_cls.primary_color
         elevation: 10

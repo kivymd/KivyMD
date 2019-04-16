@@ -25,7 +25,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 main_kv = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
 
@@ -46,7 +46,7 @@ NavigationLayout:
     BoxLayout:
         orientation: 'vertical'
 
-        Toolbar:
+        MDToolbar:
             id: toolbar
             title: 'KivyMD Kitchen Sink'
             md_bg_color: app.theme_cls.primary_color
@@ -99,7 +99,7 @@ from kivymd.label import MDLabel
 from kivymd.list import BaseListItem, ILeftBody, OneLineListItem,\
     OneLineIconListItem, IRightBody
 from kivymd.theming import ThemableBehavior
-from kivymd.toolbar import Toolbar
+from kivymd.toolbar import MDToolbar
 from kivymd.vendor.navigationdrawer import NavigationDrawer as\
     VendorNavigationDrawer
 
@@ -247,7 +247,7 @@ class NavigationDrawerHeaderBase:
     pass
 
 
-class NavigationDrawerToolbar(Toolbar, NavigationDrawerHeaderBase):
+class NavigationDrawerToolbar(MDToolbar, NavigationDrawerHeaderBase):
     def _update_specific_text_color(self, instance, value):
         pass
 

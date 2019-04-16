@@ -568,14 +568,14 @@ if __name__ == '__main__':
             Window.size = (540, 720)
 
             return Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
 BoxLayout:
     orientation:'vertical'
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: 'Page title'
         md_bg_color: app.theme_cls.primary_color

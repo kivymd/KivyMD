@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Image lists <https://material.io/design/components/image-lists.html>`
+`Material Design spec, Image lists <https://material.io/design/components/image-lists.html>`_
 
 Example
 -------

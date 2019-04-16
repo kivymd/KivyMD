@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`
+`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`_
 
 Example
 -------

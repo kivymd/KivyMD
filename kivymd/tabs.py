@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`
+`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
 """
 
 from kivy.animation import Animation

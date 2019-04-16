@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`
+`Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`_
 """
 
 from kivy.lang import Builder

@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`
+`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`_
 """
 
 colors = {

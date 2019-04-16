@@ -382,7 +382,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                                              valign='middle',
                                              text="")
 
-        self._hint_lbl = TextfieldLabel(font_style='Subhead',
+        self._hint_lbl = TextfieldLabel(font_style='Subtitle1',
                                         halign='left',
                                         valign='middle')
         super(MDTextField, self).__init__(**kwargs)

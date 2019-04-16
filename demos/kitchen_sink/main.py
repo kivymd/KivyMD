@@ -271,7 +271,7 @@ NavigationLayout:
                 MDLabel:
                     text: app.previous_text
                     size_hint_y: None
-                    font_style: 'Subhead'
+                    font_style: 'Subtitle1'
                     theme_text_color: 'Primary'
                     markup: True
                     halign: 'center'
@@ -529,7 +529,7 @@ class KitchenSink(App, Screens):
                 MDCardPost(
                     source="./assets/kitten-1049129_1280.png",
                     tile_text="Little Baby",
-                    tile_font_style="Headline",
+                    tile_font_style="H5",
                     text_post="This is my favorite cat. He's only six months "
                               "old. He loves milk and steals sausages :) "
                               "And he likes to play in the garden.",

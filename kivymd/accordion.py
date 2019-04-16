@@ -20,6 +20,7 @@ from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.font_definitions import theme_font_styles
 from kivymd.list import OneLineListItem
 from kivymd.theming import ThemableBehavior
 
@@ -54,10 +55,7 @@ class MDAccordionItem(ThemableBehavior, AccordionItem):
     '''Color for the indicator on the side of the active item in rgba format 
     To remove the indicator set a color with an alpha of . '''
 
-    font_style = OptionProperty(
-        'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                            'Headline', 'Display1', 'Display2', 'Display3',
-                            'Display4', 'Button', 'Icon'])
+    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
     '''Font style to use for the title text'''
 
     title_template = StringProperty('MDAccordionItemTitle')

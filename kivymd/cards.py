@@ -110,7 +110,7 @@ class Example(App):
                 MDCardPost(
                     source="./assets/kitten-1049129_1280.jpg",
                     tile_text="Little Baby",
-                    tile_font_style="Headline",
+                    tile_font_style="H5",
                     text_post="This is my favorite cat. He's only six months "
                               "old. He loves milk and steals sausages :) "
                               "And he likes to play in the garden.",
@@ -324,8 +324,8 @@ class LeftIcon(ILeftBody, Image):
 class CardPostImage(BoxLayout):
     source = StringProperty()
     text_post = StringProperty()
-    tile_text = StringProperty("Title")
-    tile_font_style = StringProperty("Headline")
+    tile_text = StringProperty('Title')
+    tile_font_style = StringProperty('H5')
     tile_text_color = ListProperty([1, 1, 1, 1])
     callback = ObjectProperty(lambda *x: None)
     card_size = ListProperty((Window.width - 10, dp(335)))
@@ -338,8 +338,8 @@ class MDCardPost(BoxLayout):
     card_size = ListProperty((Window.width - 10, dp(180)))
 
     source = StringProperty()
-    tile_text = StringProperty("Title")
-    tile_font_style = StringProperty("Headline")
+    tile_text = StringProperty('Title')
+    tile_font_style = StringProperty('H5')
     tile_text_color = ListProperty([1, 1, 1, 1])
 
     buttons = ListProperty()

@@ -77,7 +77,7 @@ Builder.load_string('''
 
     MDLabel:
         id: label_full_date
-        font_style: 'Display1'
+        font_style: 'H4'
         text_color: root.specific_text_color
         theme_text_color: 'Custom'
         size_hint: (None, None)
@@ -102,7 +102,7 @@ Builder.load_string('''
 
     MDLabel:
         id: label_year
-        font_style: 'Subhead'
+        font_style: 'Subtitle1'
         text_color: root.specific_text_color
         theme_text_color: 'Custom'
         size_hint: (None, None)
@@ -543,7 +543,7 @@ Builder.load_string('''
         on_release: root.dismiss()
 
     MDLabel:
-        font_style: "Headline"
+        font_style: "H5"
         text: "Change theme"
         size_hint: (None, None)
         size: dp(160), dp(50)

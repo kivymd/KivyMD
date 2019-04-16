@@ -20,7 +20,7 @@ from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.properties import OptionProperty, AliasProperty, ObjectProperty,\
-    StringProperty, ListProperty, BooleanProperty
+    StringProperty, ListProperty, BooleanProperty, DictProperty
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 from kivy.atlas import Atlas
@@ -296,6 +296,22 @@ class ThemeManager(Widget):
         elif theme_style == 'Dark':
             Window.clearcolor = get_color_from_hex(
                 colors['Dark']['Background'])
+
+    # font name, size (sp), always caps, letter spacing (sp)
+    font_styles = DictProperty({'H1': ['RobotoLight', 96, False, -1.5],
+                                'H2': ['RobotoLight', 60, False, -0.5],
+                                'H3': ['Roboto', 48, False, 0],
+                                'H4': ['Roboto', 34, False, 0.25],
+                                'H5': ['Roboto', 24, False, 0],
+                                'H6': ['RobotoMedium', 20, False, 0.15],
+                                'Subtitle1': ['Roboto', 16, False, 0.15],
+                                'Subtitle2': ['RobotoMedium', 14, False, 0.1],
+                                'Body1': ['Roboto', 16, False, 0.5],
+                                'Body2': ['Roboto', 14, False, 0.25],
+                                'Button': ['RobotoMedium', 14, True, 1.25],
+                                'Caption': ['Roboto', 12, False, 0.4],
+                                'Overline': ['Roboto', 10, True, 1.5],
+                                'Icon': ['Icons', 24, False, 0]})
 
     def __init__(self, **kwargs):
         super(ThemeManager, self).__init__(**kwargs)

@@ -680,3 +680,7 @@ text_colors = {
         'A700': 'FFFFFF'
     }
 }
+
+theme_colors = ['Primary', 'Secondary', 'Background', 'Surface', 'Error',
+                'On_Primary', 'On_Secondary', 'On_Background', 'On_Surface',
+                'On_Error']

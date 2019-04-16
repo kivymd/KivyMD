@@ -5,32 +5,31 @@ import sys
 
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
-from kivy.metrics import dp
-from kivy.uix.widget import Widget
-
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
+from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.animation import Animation
-from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
+from kivy.animation import Animation
+from kivy.utils import get_hex_from_color
+from kivy.metrics import dp
 from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
-from kivy.utils import get_hex_from_color
-
-from screens import Screens
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
 
 from kivymd.utils.cropimage import crop_image
+from kivymd.theming import ThemeManager
 from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.popupscreen import MDPopupScreen
 from kivymd.button import MDIconButton
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
-from kivymd.selectioncontrols import MDCheckbox
-from kivymd.theming import ThemeManager
-from kivymd.cards import MDCard
 from kivymd.icon_definitions import md_icons
+from kivymd.selectioncontrols import MDCheckbox
+from kivymd.cards import MDCard
+
+from screens import Screens
 
 
 def toast(text):

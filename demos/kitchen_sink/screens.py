@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 from kivy.factory import Factory
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.core.window import Window
+from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 

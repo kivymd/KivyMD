@@ -41,7 +41,7 @@ Builder.load_string('''
 
         MDLabel:
             id: upd_lbl
-            font_style: 'Display2'
+            font_style: 'H3'
             theme_text_color: 'Primary'
             halign: 'center'
             pos_hint: {'center_x': .5, 'center_y': .6}

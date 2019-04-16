@@ -135,7 +135,7 @@ Builder.load_string('''
     BoxLayout:
         padding: dp(12), 0
         MDLabel:
-            font_style: 'Title'
+            font_style: 'H6'
             opposite_colors: root.opposite_colors
             theme_text_color: 'Custom'
             text_color: root.specific_text_color
@@ -179,7 +179,7 @@ Builder.load_string('''
 
     MDLabel:
         id: user_name
-        font_style: 'Display1'
+        font_style: 'H4'
         theme_text_color: 'Custom'
         color: 1, 1, 1, 1
         shorten: True

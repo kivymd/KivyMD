@@ -33,7 +33,7 @@ kv = '''
 
 <MySmartTileWithLabel@SmartTileWithLabel>
     mipmap: True
-    font_style: 'Subhead'
+    font_style: 'Subtitle1'
 
 
 BoxLayout:

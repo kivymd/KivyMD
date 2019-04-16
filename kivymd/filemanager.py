@@ -128,6 +128,7 @@ from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
 import kivymd.material_resources as m_res
 from kivymd import images_path
 from kivymd.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
+from kivymd.font_definitions import theme_font_styles
 from kivymd.ripplebehavior import RectangularRippleBehavior, \
     CircularRippleBehavior
 from kivymd.theming import ThemableBehavior
@@ -359,10 +360,7 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
     text_color = ListProperty(None)
     """Text color used if theme_text_color is set to 'Custom'"""
 
-    font_style = OptionProperty(
-        'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                            'Headline', 'Display1', 'Display2', 'Display3',
-                            'Display4', 'Button', 'Icon'])
+    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
 
     theme_text_color = StringProperty('Primary', allownone=True)
     """Theme text color for primary text"""
@@ -385,10 +383,7 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
     secondary_theme_text_color = StringProperty('Secondary', allownone=True)
     """Theme text color for secondary primary text"""
 
-    secondary_font_style = OptionProperty(
-        'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                          'Headline', 'Display1', 'Display2', 'Display3',
-                          'Display4', 'Button', 'Icon'])
+    secondary_font_style = OptionProperty('Body1', options=theme_font_styles)
 
     divider = OptionProperty('Full', options=['Full', 'Inset', None],
                              allownone=True)
@@ -565,7 +560,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         # The user moves down the tree.
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
-        toolbar_label.font_style = 'Subhead'
+        toolbar_label.font_style = 'Subtitle1'
 
         if self.previous:
             self.ext = ['.png', '.jpg', '.jpeg']

@@ -158,7 +158,7 @@ Builder.load_string('''
     MDLabel:
         id: drawer_title
         text: '    {}'.format(root.drawer_title)
-        font_style: 'Title'
+        font_style: 'H6'
         size_hint_y: None
         height: self.texture_size[1]
         markup: True

@@ -111,7 +111,7 @@ Builder.load_string('''
     spacing: dp(10)
 
     MDLabel:
-        font_style: 'Title'
+        font_style: 'H6'
         text: root.title
         halign: 'left' if not root.device_ios else 'center'
 
@@ -143,7 +143,7 @@ Builder.load_string('''
     MDLabel:
         id: title
         text: root.title
-        font_style: 'Title'
+        font_style: 'H6'
         halign: 'left' if not root.device_ios else 'center'
         valign: 'top'
         size_hint_y: None

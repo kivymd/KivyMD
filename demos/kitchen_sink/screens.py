@@ -159,27 +159,27 @@ grid = '''
                 id: tile_1
                 mipmap: True
                 text: "Beautiful\\n[size=12]beautiful-931152_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_4
                 mipmap: True
                 text: "Robin\\n[size=12]robin-944887_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_5
                 mipmap: True
                 text: "Kitten\\n[size=12]kitten-1049129_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_6
                 mipmap: True
                 text: "Light-Bulb\\n[size=12]light-bulb-1042480_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_7
                 mipmap: True
                 text: "Tangerines\\n[size=12]tangerines-1111529_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
 '''
 
 bottom_navigation = '''
@@ -479,7 +479,7 @@ buttons = '''
         width: dp(230)
 
     MDRoundFlatButton:
-        text: "MDROUNDFLATBUTTON"
+        text: "MDRoundFlatButton"
         pos_hint: {'center_x': .5, 'center_y': .35}
 
     MDRoundFlatIconButton:
@@ -938,7 +938,7 @@ update_spinner = '''
 
     MDLabel:
         id: upd_lbl
-        font_style: 'Display2'
+        font_style: 'H3'
         theme_text_color: 'Primary'
         halign: 'center'
         pos_hint: {'center_x': .5, 'center_y': .6}
@@ -997,7 +997,27 @@ labels = '''
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: None
-            height: dp(1000)
+            height: dp(800)
+
+            BoxLayout:
+
+                MDLabel:
+                    font_style: 'Overline'
+                    theme_text_color: 'Primary'
+                    text: "Overline label"
+                    halign: 'center'
+
+                MDLabel:
+                    font_style: 'Caption'
+                    theme_text_color: 'Primary'
+                    text: "Caption label"
+                    halign: 'center'
+
+                MDLabel:
+                    font_style: 'Button'
+                    theme_text_color: 'Primary'
+                    text: "Button label"
+                    halign: 'center'
 
             BoxLayout:
 
@@ -1006,7 +1026,6 @@ labels = '''
                     theme_text_color: 'Primary'
                     text: "Body1 label"
                     halign: 'center'
-
 
                 MDLabel:
                     font_style: 'Body2'
@@ -1017,62 +1036,60 @@ labels = '''
             BoxLayout:
 
                 MDLabel:
-                    font_style: 'Caption'
+                    font_style: 'Subtitle1'
                     theme_text_color: 'Primary'
-                    text: "Caption label"
+                    text: "Subtitle1 label"
                     halign: 'center'
 
                 MDLabel:
-                    font_style: 'Subhead'
+                    font_style: 'Subtitle2'
                     theme_text_color: 'Primary'
-                    text: "Subhead label"
+                    text: "Subtitle2 label"
+                    halign: 'center'
+
+            MDLabel:
+                font_style: 'H1'
+                theme_text_color: 'Primary'
+                text: "H1 label"
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(4)
+
+            MDLabel:
+                font_style: 'H2'
+                theme_text_color: 'Primary'
+                text: "H2 label"
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(4)
+
+            BoxLayout:
+
+                MDLabel:
+                    font_style: 'H3'
+                    theme_text_color: 'Primary'
+                    text: "H3 label"
+                    halign: 'center'
+
+                MDLabel:
+                    font_style: 'H4'
+                    theme_text_color: 'Primary'
+                    text: "H4 label"
                     halign: 'center'
 
             BoxLayout:
 
                 MDLabel:
-                    font_style: 'Title'
+                    font_style: 'H5'
                     theme_text_color: 'Primary'
-                    text: "Title label"
+                    text: "H5 label"
                     halign: 'center'
 
                 MDLabel:
-                    font_style: 'Headline'
+                    font_style: 'H6'
                     theme_text_color: 'Primary'
-                    text: "Headline label"
+                    text: "H6 label"
                     halign: 'center'
-
-            MDLabel:
-                font_style: 'Display1'
-                theme_text_color: 'Primary'
-                text: "Display1 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
-
-            MDLabel:
-                font_style: 'Display2'
-                theme_text_color: 'Primary'
-                text: "Display2 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
-
-            MDLabel:
-                font_style: 'Display3'
-                theme_text_color: 'Primary'
-                text: "Display3 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
-
-            MDLabel:
-                font_style: 'Display4'
-                theme_text_color: 'Primary'
-                text: "Display4 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
 
             BoxLayout:
 

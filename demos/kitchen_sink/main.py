@@ -64,6 +64,7 @@ main_widget_kv = '''
 #:import ThreeLineListItem kivymd.list.ThreeLineListItem
 #:import MDLabel kivymd.label.MDLabel
 #:import MDDropdownMenu kivymd.menus.MDDropdownMenu
+
 <ContentPopup@BoxLayout>
     orientation: 'vertical'
     padding: dp(1)
@@ -288,6 +289,7 @@ main_widget_kv = '''
         on_release:
             app.show_user_animation_card()
             app.set_title_toolbar(self.text)
+
 NavigationLayout:
     id: nav_layout
     ContentNavigationDrawer:
@@ -313,12 +315,14 @@ NavigationLayout:
                     Image:
                         source: '{}kivymd_logo.png'.format(images_path)
                         opacity: .3
+
                     BoxLayout:
                         orientation: 'vertical'
                         spacing: dp(10)
                         size_hint_y: None
                         height: self.minimum_height
                         pos_hint: {'center_x': .5, 'center_y': .5}
+
                         MDLabel:
                             text: app.previous_text
                             size_hint_y: None
@@ -328,6 +332,7 @@ NavigationLayout:
                             markup: True
                             halign: 'center'
                             text_size: self.width - 20, None
+
                         MDRaisedButton:
                             text: 'Click Me'
                             pos_hint: {'center_x': .5}
@@ -335,6 +340,7 @@ NavigationLayout:
                                 app.set_menu_for_demo_apps()
                                 app.instance_menu_demo_apps = MDDropdownMenu(items=app.menu_for_demo_apps, max_height=dp(260), width_mult=4)
                                 app.instance_menu_demo_apps.open(self)
+
                         MDLabel:
                             text: app.previous_text_end
                             size_hint_y: None

@@ -42,7 +42,7 @@ Builder.load_string('''
         title: 'MD Progress Loader'
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
 
     FloatLayout:
         id: box
@@ -56,7 +56,7 @@ Builder.load_string('''
 
 
 class Test(App):
-    tm = ThemeManager()
+    theme_cls = ThemeManager()
 
     def __init__(self, **kwargs):
         super(Test, self).__init__(**kwargs)
@@ -126,7 +126,7 @@ Builder.load_string('''
 
     canvas:
         Color:
-            rgba: app.tm.primary_color
+            rgba: app.theme_cls.primary_color
         Rectangle:
             size: self.size
             pos: self.pos

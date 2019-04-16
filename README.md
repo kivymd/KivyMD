@@ -60,7 +60,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.94.0:
+What's new in version 0.96.0:
 ============================
 * Add new class [MDSwiperManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDSwiperManager)
 * Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0)

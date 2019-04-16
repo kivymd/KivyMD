@@ -96,11 +96,11 @@ class RectangularElevationBehavior(CommonElevationBehavior):
         if self.elevation > 0:
             ratio = self.width / (self.height if self.height != 0 else 1)
             if -2 < ratio < 2:
-                self._shadow = App.get_running_app().tm.quad_shadow
+                self._shadow = App.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.9
                 height = soft_height = self.height * 1.9
             elif ratio <= -2:
-                self._shadow = App.get_running_app().tm.rec_st_shadow
+                self._shadow = App.get_running_app().theme_cls.rec_st_shadow
                 ratio = abs(ratio)
                 if ratio > 5:
                     ratio = ratio * 22
@@ -111,7 +111,7 @@ class RectangularElevationBehavior(CommonElevationBehavior):
                 height = self.height + dp(ratio)
                 soft_height = self.height + dp(ratio) + dp(self.elevation) * .5
             else:
-                self._shadow = App.get_running_app().tm.quad_shadow
+                self._shadow = App.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.8
                 height = soft_height = self.height * 1.8
 
@@ -141,7 +141,7 @@ class RectangularElevationBehavior(CommonElevationBehavior):
 class CircularElevationBehavior(CommonElevationBehavior):
     def __init__(self, **kwargs):
         super(CircularElevationBehavior, self).__init__(**kwargs)
-        self._shadow = App.get_running_app().tm.round_shadow
+        self._shadow = App.get_running_app().theme_cls.round_shadow
 
     def _update_shadow(self, *args):
         if self.elevation > 0:

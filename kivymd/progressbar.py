@@ -24,7 +24,7 @@ Builder.load_string('''
     canvas:
         Clear
         Color:
-            rgba: self.tm.divider_color
+            rgba: self.theme_cls.divider_color
         Rectangle:
             size:
                 (self.width , dp(4)) if self.orientation == 'horizontal'\
@@ -34,7 +34,7 @@ Builder.load_string('''
                 if self.orientation == 'horizontal'\
                 else (self.center_x - dp(4),self.y)
         Color:
-            rgba: self.tm.primary_color
+            rgba: self.theme_cls.primary_color
         Rectangle:
             size:
                 (self.width * self.value_normalized, sp(4))\
@@ -64,7 +64,7 @@ if __name__ == '__main__':
     from kivymd.theming import ThemeManager
 
     class ProgressBarApp(App):
-        tm = ThemeManager()
+        theme_cls = ThemeManager()
 
         def build(self):
             return Builder.load_string('''

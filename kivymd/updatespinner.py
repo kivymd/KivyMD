@@ -33,7 +33,7 @@ Builder.load_string('''
 
     MDToolbar:
         title: app.title
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         elevation: 10
         left_action_items: [['menu', lambda x: None]]
 
@@ -55,8 +55,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Teal'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Teal'
     title = "Update Spinner"
     tick = 0
     screen_update_spinner = None
@@ -110,7 +110,7 @@ Builder.load_string('''
         canvas:
             Clear
             Color:
-                rgba: root.tm.primary_color
+                rgba: root.theme_cls.primary_color
             Ellipse:
                 pos: self.pos
                 size: self.size

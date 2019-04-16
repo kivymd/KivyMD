@@ -44,7 +44,7 @@ Builder.load_string('''
     MDToolbar:
         id: toolbar
         title: app.title
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         background_palette: 'Primary'
         elevation: 10
         left_action_items: [['dots-vertical', lambda x: None]]
@@ -70,12 +70,12 @@ Builder.load_string('''
                 icon: 'check'
                 opposite_colors: True
                 elevation_normal: 8
-                md_bg_color: app.tm.primary_color
+                md_bg_color: app.theme_cls.primary_color
 
             MDIconButton:
                 icon: 'sd'
                 theme_text_color: 'Custom'
-                text_color: app.tm.primary_color
+                text_color: app.theme_cls.primary_color
 
             Widget:
 
@@ -121,8 +121,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Blue'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Blue'
     title = "Example Buttons"
     main_widget = None
 
@@ -237,7 +237,7 @@ Builder.load_string('''
 <MDRoundFlatButton>
     canvas.before:
         Color:
-            rgba: root.tm.primary_color
+            rgba: root.theme_cls.primary_color
         Line:
             width: 1
             rounded_rectangle:
@@ -246,13 +246,13 @@ Builder.load_string('''
                 self.height)
 
     theme_text_color: 'Custom'
-    text_color: root.tm.primary_color
+    text_color: root.theme_cls.primary_color
 
 
 <MDFillRoundFlatButton>
     canvas.before:
         Color:
-            rgba: root.tm.primary_color
+            rgba: root.theme_cls.primary_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -264,19 +264,19 @@ Builder.load_string('''
 <MDRectangleFlatButton>
     canvas.before:
         Color:
-            rgba: root.tm.primary_color
+            rgba: root.theme_cls.primary_color
         Line:
             width: 1
             rectangle: (self.x, self.y, self.width, self.height)
 
     theme_text_color: 'Custom'
-    text_color: root.tm.primary_color
+    text_color: root.theme_cls.primary_color
 
 
 <MDRectangleFlatIconButton>
     canvas.before:
         Color:
-            rgba: app.tm.primary_color
+            rgba: app.theme_cls.primary_color
         Line:
             width: 1
             rectangle: (self.x, self.y, self.width, self.height)
@@ -284,7 +284,7 @@ Builder.load_string('''
     size_hint_x: None
     width: dp(150)
     theme_text_color: 'Custom'
-    text_color: root.tm.primary_color
+    text_color: root.theme_cls.primary_color
 
     BoxLayout:
         spacing: dp(10)
@@ -314,7 +314,7 @@ Builder.load_string('''
     size_hint_x: None
     width: dp(150)
     theme_text_color: 'Custom'
-    text_color: root.tm.primary_color
+    text_color: root.theme_cls.primary_color
 
     BoxLayout:
         spacing: dp(10)
@@ -341,7 +341,7 @@ Builder.load_string('''
 
 
 <MDRaisedButton>
-    md_bg_color: root.tm.primary_color
+    md_bg_color: root.theme_cls.primary_color
     theme_text_color: 'Custom'
     text_color: root.specific_text_color
 
@@ -350,7 +350,7 @@ Builder.load_string('''
     # Defaults to 56-by-56 and a backround of the accent color according to
     # guidelines
     size: (dp(56), dp(56))
-    md_bg_color: root.tm.accent_color
+    md_bg_color: root.theme_cls.accent_color
     theme_text_color: 'Custom'
     text_color: root.specific_text_color
 
@@ -359,7 +359,7 @@ Builder.load_string('''
     size_hint: None, None
     size: self.texture_size
     color:
-        root.tm.primary_color if not len(root.custom_color)\
+        root.theme_cls.primary_color if not len(root.custom_color)\
         else root.custom_color
     background_down: '{}transparent.png'.format(images_path)
     background_normal: '{}transparent.png'.format(images_path)
@@ -480,7 +480,7 @@ class BaseFlatButton(BaseButton):
         self.md_bg_color = (.0, .0, .0, .0)
 
     def _get_md_bg_color_down(self):
-        if self.tm.theme_style == 'Dark':
+        if self.theme_cls.theme_style == 'Dark':
             c = get_color_from_hex('cccccc')
             c[3] = .25
         else:
@@ -493,7 +493,7 @@ class BaseFlatButton(BaseButton):
         if bg_c[3] == 0:  # transparent background
             c = bg_c
         else:
-            if self.tm.theme_style == 'Dark':
+            if self.theme_cls.theme_style == 'Dark':
                 c = (1., 1., 1., .12)
             else:
                 c = (.0, .0, .0, .12)
@@ -576,7 +576,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         return super(BaseRaisedButton, self).on_touch_up(touch)
 
     def _get_md_bg_color_down(self):
-        t = self.tm
+        t = self.theme_cls
         c = self.md_bg_color  # Default to no change on touch
         # Material design specifies using darker hue when on Dark theme
         if t.theme_style == 'Dark':
@@ -587,7 +587,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         return c
 
     def _get_md_bg_color_disabled(self):
-        if self.tm.theme_style == 'Dark':
+        if self.theme_cls.theme_style == 'Dark':
             c = (1., 1., 1., .12)
         else:
             c = (.0, .0, .0, .12)

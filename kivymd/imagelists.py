@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Image lists <https://material.io/design/components/image-lists.html>`_
+`Material Design spec, Image lists <https://material.io/design/components/image-lists.htheme_clsl>`_
 
 Example
 -------
@@ -43,7 +43,7 @@ BoxLayout:
         title: app.title
         elevation: 10
         left_action_items: [['menu', lambda x: x]]
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
 
     ScreenManager:
         id: manager
@@ -119,8 +119,8 @@ BoxLayout:
 
 
 class MyApp(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Blue'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Blue'
     title = 'Example Smart Tile'
     md_app_bar = None
 

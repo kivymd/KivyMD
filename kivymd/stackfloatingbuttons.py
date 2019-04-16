@@ -33,7 +33,7 @@ Builder.load_string('''
 
     MDToolbar:
         title: 'Stack Floating Buttons'
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         elevation: 10
         left_action_items: [['menu', lambda x: None]]
 
@@ -41,8 +41,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    tm = ThemeManager()
-    tm.primary_palette = 'Teal'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Teal'
     title = "Example Stack Floating Buttons"
     create_stack_floating_buttons = False
     floating_data = {
@@ -92,7 +92,7 @@ Builder.load_string('''
     size_hint: None, None
     size: dp(46), dp(46)
     elevation: 5
-    md_bg_color: app.tm.primary_color
+    md_bg_color: app.theme_cls.primary_color
     on_release: self.parent.callback(self)
 
 
@@ -101,7 +101,7 @@ Builder.load_string('''
     height: dp(20)
     width: label.texture_size[0]
     border_color_a: .5
-    md_bg_color: app.tm.primary_color
+    md_bg_color: app.theme_cls.primary_color
     x: -self.width
 
     Label:
@@ -140,7 +140,7 @@ Builder.load_string('''
         icon: root.icon
         size: dp(56), dp(56)
         x: Window.width - (self.width + dp(15))
-        md_bg_color: app.tm.primary_color
+        md_bg_color: app.theme_cls.primary_color
         y: dp(15)
         on_release: root.show_floating_buttons()
 ''')

@@ -86,6 +86,8 @@ License
 
 MIT, same as Kivy.
 
+Roboto font is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
 [Material Design Iconic Font](https://github.com/zavoloklom/material-design-iconic-font) by [Sergey Kupletsky](https://twitter.com/zavoloklom) covered by the licenses described at https://zavoloklom.github.io/material-design-iconic-font/license.html.
 
 Icons by the materialdesignicons.com community covered by SIL OFL 1.1

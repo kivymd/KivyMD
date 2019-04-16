@@ -36,7 +36,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.elevation import RectangularElevationBehavior
-from kivymd.color_definitions import colors
+from kivymd.color_definitions import colors, palette
 
 Builder.load_string('''
 #:import calendar calendar
@@ -858,12 +858,7 @@ Builder.load_string('''
 
 
 class ColorSelector(MDIconButton):
-    color_name = OptionProperty(
-            'Indigo',
-            options=['Red', 'Pink', 'Purple', 'DeepPurple', 'Indigo', 'Blue',
-                     'LightBlue', 'Cyan', 'Teal', 'Green', 'LightGreen',
-                     'Lime', 'Yellow', 'Amber', 'Orange', 'DeepOrange',
-                     'Brown', 'Gray', 'BlueGray'])
+    color_name = OptionProperty('Indigo', options=palette)
 
     def rgb_hex(self, col):
         return get_color_from_hex(colors[col][self.theme_cls.accent_hue])

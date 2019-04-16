@@ -16,7 +16,6 @@ as the Kivy framework.
 """
 
 from kivy.app import App
-from kivy.core.text import LabelBase
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.metrics import dp
@@ -27,11 +26,9 @@ from kivy.utils import get_color_from_hex
 from kivy.atlas import Atlas
 
 from kivymd.color_definitions import colors, palette, hue
-from kivymd.material_resources import FONTS, DEVICE_TYPE, DEVICE_IOS
+from kivymd.font_definitions import theme_font_styles  # Fonts will be loaded
+from kivymd.material_resources import DEVICE_TYPE, DEVICE_IOS
 from kivymd import images_path
-
-for font in FONTS:
-    LabelBase.register(**font)
 
 
 class ThemeManager(Widget):

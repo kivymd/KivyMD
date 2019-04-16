@@ -26,7 +26,7 @@ from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 from kivy.atlas import Atlas
 
-from kivymd.color_definitions import colors
+from kivymd.color_definitions import colors, palette, hue
 from kivymd.material_resources import FONTS, DEVICE_TYPE, DEVICE_IOS
 from kivymd import images_path
 
@@ -35,31 +35,10 @@ for font in FONTS:
 
 
 class ThemeManager(Widget):
-    primary_palette = OptionProperty(
-        'Blue',
-        options=['Pink', 'Blue', 'Indigo', 'BlueGray', 'Brown',
-                 'LightBlue',
-                 'Purple', 'Gray', 'Yellow', 'LightGreen', 'DeepOrange',
-                 'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
-                 'DeepPurple', 'Lime'])
-
-    primary_hue = OptionProperty(
-        '500',
-        options=['50', '100', '200', '300', '400', '500', '600', '700',
-                 '800',
-                 '900', 'A100', 'A200', 'A400', 'A700'])
-
-    primary_light_hue = OptionProperty(
-        '200',
-        options=['50', '100', '200', '300', '400', '500', '600', '700',
-                 '800',
-                 '900', 'A100', 'A200', 'A400', 'A700'])
-
-    primary_dark_hue = OptionProperty(
-        '700',
-        options=['50', '100', '200', '300', '400', '500', '600', '700',
-                 '800',
-                 '900', 'A100', 'A200', 'A400', 'A700'])
+    primary_palette = OptionProperty('Blue', options=palette)
+    primary_hue = OptionProperty('500', options=hue)
+    primary_light_hue = OptionProperty('200', options=hue)
+    primary_dark_hue = OptionProperty('700', options=hue)
 
     def _get_primary_color(self):
         return get_color_from_hex(
@@ -82,31 +61,10 @@ class ThemeManager(Widget):
     primary_dark = AliasProperty(_get_primary_dark,
                                  bind=('primary_palette', 'primary_dark_hue'))
 
-    accent_palette = OptionProperty(
-        'Amber',
-        options=['Pink', 'Blue', 'Indigo', 'BlueGray', 'Brown',
-                 'LightBlue',
-                 'Purple', 'Gray', 'Yellow', 'LightGreen', 'DeepOrange',
-                 'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
-                 'DeepPurple', 'Lime'])
-
-    accent_hue = OptionProperty(
-        '500',
-        options=['50', '100', '200', '300', '400', '500', '600', '700',
-                 '800',
-                 '900', 'A100', 'A200', 'A400', 'A700'])
-
-    accent_light_hue = OptionProperty(
-        '200',
-        options=['50', '100', '200', '300', '400', '500', '600', '700',
-                 '800',
-                 '900', 'A100', 'A200', 'A400', 'A700'])
-
-    accent_dark_hue = OptionProperty(
-        '700',
-        options=['50', '100', '200', '300', '400', '500', '600', '700',
-                 '800',
-                 '900', 'A100', 'A200', 'A400', 'A700'])
+    accent_palette = OptionProperty('Amber', options=palette)
+    accent_hue = OptionProperty('500', options=hue)
+    accent_light_hue = OptionProperty('200', options=hue)
+    accent_dark_hue = OptionProperty('700', options=hue)
 
     def _get_accent_color(self):
         return get_color_from_hex(

@@ -324,6 +324,13 @@ colors = {
     }
 }
 
+palette = ['Red', 'Pink', 'Purple', 'DeepPurple', 'Indigo', 'Blue', 'LightBlue',
+           'Cyan', 'Teal', 'Green', 'LightGreen', 'Lime', 'Yellow', 'Amber',
+           'Orange', 'DeepOrange', 'Brown', 'Gray', 'BlueGray']
+hue = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900',
+       'A100', 'A200', 'A400', 'A700']
+
+
 light_colors = {
     'Red': ['50', '100', '200', '300', 'A100'],
     'Pink': ['50', '100', '200', 'A100'],

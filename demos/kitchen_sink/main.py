@@ -351,7 +351,7 @@ class KitchenSink(App, Screens):
 
     def theme_picker_open(self):
         if not self.md_theme_picker:
-            from kivymd.theme_picker import MDThemePicker
+            from kivymd.pickers import MDThemePicker
             self.md_theme_picker = MDThemePicker()
         self.md_theme_picker.open()
 
@@ -675,7 +675,7 @@ class KitchenSink(App, Screens):
         self.previous_time = time
 
     def show_example_time_picker(self):
-        from kivymd.time_picker import MDTimePicker
+        from kivymd.pickers import MDTimePicker
 
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_data)
@@ -692,7 +692,7 @@ class KitchenSink(App, Screens):
         self.pickers.ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
-        from kivymd.date_picker import MDDatePicker
+        from kivymd.pickers import MDDatePicker
 
         if self.pickers.ids.date_picker_use_previous_date.active:
             pd = self.previous_date

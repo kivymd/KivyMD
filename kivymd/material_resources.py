@@ -17,8 +17,6 @@ from kivy import platform
 from kivy.core.window import Window
 from kivy.metrics import dp
 
-from kivymd import fonts_path
-
 # Feel free to override this const if you're designing for a device such as
 # a GNU/Linux tablet.
 DEVICE_IOS = platform == "ios" or platform == "macosx"
@@ -43,24 +41,3 @@ else:
     LANDSCAPE_TOOLBAR_HEIGHT = STANDARD_INCREMENT
 
 TOUCH_TARGET_HEIGHT = dp(48)
-
-FONTS = [
-    {
-        "name": "Roboto",
-        "fn_regular": fonts_path + 'Roboto-Regular.ttf',
-        "fn_bold": fonts_path + 'Roboto-Medium.ttf',
-        "fn_italic": fonts_path + 'Roboto-Italic.ttf',
-        "fn_bolditalic": fonts_path + 'Roboto-MediumItalic.ttf'
-    },
-    {
-        "name": "RobotoLight",
-        "fn_regular": fonts_path + 'Roboto-Thin.ttf',
-        "fn_bold": fonts_path + 'Roboto-Light.ttf',
-        "fn_italic": fonts_path + 'Roboto-ThinItalic.ttf',
-        "fn_bolditalic": fonts_path + 'Roboto-LightItalic.ttf'
-    },
-    {
-        "name": "Icons",
-        "fn_regular": fonts_path + 'materialdesignicons-webfont.ttf'
-    }
-]

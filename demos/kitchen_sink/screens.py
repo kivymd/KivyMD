@@ -1670,7 +1670,7 @@ screen_shop_window = '''
         size_hint: None, None
         height: self.width
         pos_hint: {'center_x': .5}
-        on_release: app.ddd(root.icon)
+        on_release: app.show_dialog_for_demo_apps(root.icon)
 
     MDLabel:
         font_style: 'Subtitle1'

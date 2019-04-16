@@ -79,7 +79,6 @@ API Breaking changes:
 | `kivymd.menu`                                        | `kivymd.menus`                      |
 | `kivymd.snackbar`                                    | `kivymd.snackbars`                  |
 | `Toolbar` (from `kivymd.toolbar`)                    | `MDToolbar` (from `kivymd.toolbar`) |
-| `theme_cls` (used by all `ThemableBehavior` widgets) | `tm`                                |
 
 * Changed font styles:
 

@@ -152,7 +152,7 @@ from kivy.animation import Animation
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior,\
     RectangularRippleBehavior
-from kivymd.elevationbehavior import CommonElevationBehavior,\
+from kivymd.elevation import CommonElevationBehavior,\
     RectangularElevationBehavior, CircularElevationBehavior
 from kivymd.theming import ThemableBehavior
 

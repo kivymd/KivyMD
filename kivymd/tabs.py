@@ -32,7 +32,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior,\
     SpecificBackgroundColorBehavior
 from kivymd.button import MDFlatButton, BaseFlatButton, BasePressedButton
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''

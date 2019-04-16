@@ -18,7 +18,7 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.theming import ThemableBehavior
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 from kivy.properties import ObjectProperty
 
 Builder.load_string('''

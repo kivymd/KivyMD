@@ -3,33 +3,39 @@
 import os
 import sys
 
+from kivy.uix.behaviors import ButtonBehavior
+
+from kivymd.ripplebehavior import CircularRippleBehavior
+
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
-from kivy.app import App
-from kivy.lang import Builder
-from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.properties import ObjectProperty, StringProperty
-from kivy.animation import Animation
-from kivy.utils import get_hex_from_color
 from kivy.metrics import dp
-from kivy.uix.image import Image
-from kivy.uix.modalview import ModalView
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.animation import Animation
+from kivy.lang import Builder
+from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.image import Image
+from kivy.uix.modalview import ModalView
+from kivy.utils import get_hex_from_color
+
+from screens import Screens
+
 from kivymd.utils.cropimage import crop_image
-from kivymd.theming import ThemeManager
 from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.popupscreen import MDPopupScreen
 from kivymd.button import MDIconButton
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
-from kivymd.icon_definitions import md_icons
 from kivymd.selectioncontrols import MDCheckbox
+from kivymd.theming import ThemeManager
 from kivymd.cards import MDCard
-
-from screens import Screens
+from kivymd.list import OneLineListItem
+from kivymd.icon_definitions import md_icons
 
 
 def toast(text):
@@ -45,24 +51,23 @@ main_widget_kv = '''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
 #:import NavigationDrawerToolbar kivymd.navigationdrawer.NavigationDrawerToolbar
 #:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
+#:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import OneLineListItem kivymd.list.OneLineListItem
 #:import TwoLineListItem kivymd.list.TwoLineListItem
 #:import ThreeLineListItem kivymd.list.ThreeLineListItem
 #:import MDLabel kivymd.label.MDLabel
-
-
+#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
 <ContentPopup@BoxLayout>
     orientation: 'vertical'
     padding: dp(1)
     spacing: dp(30)
-
     Image:
         id: image
         source: 'assets/guitar-1139397_1280_crop.png'
@@ -70,26 +75,20 @@ main_widget_kv = '''
         height: dp(Window.height * 35 // 100)
         allow_stretch: True
         keep_ratio: False
-
     MDRoundFlatButton:
         text: 'Open Menu'
         pos_hint: {'center_x': .5}
         on_release: root.parent.show()
-
     Widget:
-
-
 <ContentForAnimCard>
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
     size_hint_y: None
     height: self.minimum_height
-
     BoxLayout:
         size_hint_y: None
         height: self.minimum_height
-
         Widget:
         MDRoundFlatButton:
             text: "Free call"
@@ -99,155 +98,206 @@ main_widget_kv = '''
             text: "Free message"
             on_press: root.callback(self.text)
         Widget:
-
     OneLineIconListItem:
         text: "Video call"
         on_press: root.callback(self.text)
         IconLeftSampleWidget:
             icon: 'camera-front-variant'
-
     TwoLineIconListItem:
         text: "Call Viber Out"
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Advantageous rates for calls[/color]"\
-            % get_hex_from_color(app.tm.primary_color)
+            % get_hex_from_color(app.theme_cls.primary_color)
         # FIXME: Don't work "secondary_text_color" parameter
-        # secondary_text_color: app.tm.primary_color
+        # secondary_text_color: app.theme_cls.primary_color
         IconLeftSampleWidget:
             icon: 'phone'
-
     TwoLineIconListItem:
         text: "Call over mobile network"
         on_press: root.callback(self.text)
         secondary_text:
             "[color=%s]Operator's tariffs apply[/color]"\
-            % get_hex_from_color(app.tm.primary_color)
+            % get_hex_from_color(app.theme_cls.primary_color)
         IconLeftSampleWidget:
             icon: 'remote'
-
-
 <MyNavigationDrawerIconButton@NavigationDrawerIconButton>
     icon: 'checkbox-blank-circle'
-
-
 <ContentNavigationDrawer@MDNavigationDrawer>
     drawer_logo: './assets/drawer_logo.png'
     use_logo: 'logo'
-
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
     MyNavigationDrawerIconButton:
         text: "Accordion"
-        on_release: app.show_accordion()
+        on_release:
+            app.show_accordion()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Bottom App Bar"
-        on_release: app.show_app_bar()
+        on_release:
+            app.show_app_bar()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Accordion List"
-        on_release: app.show_accordion_list()
+        on_release:
+            app.show_accordion_list()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Bottom Navigation"
-        on_release: app.show_bottom_navigation()
+        on_release:
+            app.show_bottom_navigation()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Bottom Sheets"
-        on_release: app.show_bottom_sheet()
+        on_release:
+            app.show_bottom_sheet()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Buttons"
-        on_release: app.show_buttons()
+        on_release:
+            app.show_buttons()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Cards"
-        on_release: app.show_cards()
+        on_release:
+            app.show_cards()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Chips"
-        on_release: app.show_chips()
+        on_release:
+            app.show_chips()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Dialogs"
-        on_release: app.show_dialogs()
+        on_release: 
+            app.show_dialogs()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Download File"
-        on_release: app.show_download_file()
+        on_release:
+            app.show_download_file()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Files Manager"
-        on_release: app.show_file_manager()
+        on_release:
+            app.show_file_manager()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Fan Manager"
-        on_release: app.show_fan_manager()
+        on_release:
+            app.show_fan_manager()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Grid lists"
-        on_release: app.show_grid()
+        on_release:
+            app.show_grid()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Labels"
-        on_release: app.show_labels()
+        on_release:
+            app.show_labels()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Lists"
-        on_release: app.show_lists()
+        on_release:
+            app.show_lists()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "MD Icons"
-        on_release: app.show_md_icons(app)
+        on_release:
+            app.show_md_icons(app)
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Menus"
-        on_release: app.show_menu()
+        on_release:
+            app.show_menu()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Pickers"
-        on_release: app.show_pickers()
+        on_release:
+            app.show_pickers()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Progress & activity"
-        on_release: app.show_progress()
+        on_release:
+            app.show_progress()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Popup Screen"
-        on_release: app.show_popup_screen()
+        on_release:
+            app.show_popup_screen()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Progress bars"
-        on_release: app.show_progress_bar()
+        on_release:
+            app.show_progress_bar()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Selection controls"
-        on_release: app.show_selection_controls()
+        on_release:
+            app.show_selection_controls()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Sliders"
-        on_release: app.show_sliders()
+        on_release:
+            app.show_sliders()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Stack Floating Buttons"
-        on_release: app.show_stack_buttons()
+        on_release:
+            app.show_stack_buttons()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Snackbars"
-        on_release: app.show_snackbar()
+        on_release:
+            app.show_snackbar()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Tabs"
-        on_release: app.show_tabs()
+        on_release:
+            app.show_tabs()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Manager Swiper"
-        on_release: app.show_manager_swiper()
+        on_release:
+            app.show_manager_swiper()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Text fields"
-        on_release: app.show_textfields()
+        on_release:
+            app.show_textfields()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Themes"
-        on_release: app.show_theming()
+        on_release:
+            app.show_theming()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Toolbars"
-        on_release: app.show_toolbars()
+        on_release:
+            app.show_toolbars()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "Update Screen Widget"
-        on_release: app.show_update_spinner()
+        on_release:
+            app.show_update_spinner()
+            app.set_title_toolbar(self.text)
     MyNavigationDrawerIconButton:
         text: "User Animation Card"
-        on_release: app.show_user_animation_card()
-
-
+        on_release:
+            app.show_user_animation_card()
+            app.set_title_toolbar(self.text)
 NavigationLayout:
     id: nav_layout
-
     ContentNavigationDrawer:
         id: nav_drawer
-
     BoxLayout:
         orientation: 'vertical'
-
-        MDToolbar:
+        Toolbar:
             id: toolbar
             title: app.title
-            md_bg_color: app.tm.primary_color
+            md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
             background_hue: '500'
             elevation: 10
@@ -255,39 +305,57 @@ NavigationLayout:
                 [['menu', lambda x: app.root.toggle_nav_drawer()]]
             right_action_items:
                 [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
-
         ScreenManager:
             id: scr_mngr
-
             Screen:
                 name: 'previous'
-
                 FloatLayout:
                     Image:
                         source: '{}kivymd_logo.png'.format(images_path)
                         opacity: .3
-
-                MDLabel:
-                    text: app.previous_text
-                    size_hint_y: None
-                    font_style: 'Subtitle1'
-                    theme_text_color: 'Primary'
-                    markup: True
-                    halign: 'center'
-                    text_size: self.width - 20, None
-                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    BoxLayout:
+                        orientation: 'vertical'
+                        spacing: dp(10)
+                        size_hint_y: None
+                        height: self.minimum_height
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        MDLabel:
+                            text: app.previous_text
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            font_style: 'Subhead'
+                            theme_text_color: 'Primary'
+                            markup: True
+                            halign: 'center'
+                            text_size: self.width - 20, None
+                        MDRaisedButton:
+                            text: 'Click Me'
+                            pos_hint: {'center_x': .5}
+                            on_release:
+                                app.set_menu_for_demo_apps()
+                                app.instance_menu_demo_apps = MDDropdownMenu(items=app.menu_for_demo_apps, max_height=dp(260), width_mult=4)
+                                app.instance_menu_demo_apps.open(self)
+                        MDLabel:
+                            text: app.previous_text_end
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                            font_style: 'Subhead'
+                            theme_text_color: 'Primary'
+                            markup: True
+                            halign: 'center'
+                            text_size: self.width - 20, None
 '''
 
 
 class KitchenSink(App, Screens):
-    tm = ThemeManager()
-    tm.primary_palette = 'Blue'
+    theme_cls = ThemeManager()
+    theme_cls.primary_palette = 'Blue'
     previous_date = ObjectProperty()
-    tm.primary_palette = 'Blue'
-    # tm.theme_style = 'Dark'
+    title = "Kitchen Sink"
+    theme_cls.primary_palette = 'Blue'
+    # theme_cls.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
-        self.title = 'Kitchen Sink'
         super(KitchenSink, self).__init__(**kwargs)
 
         self.menu_items = [
@@ -298,6 +366,7 @@ class KitchenSink(App, Screens):
         ]
         self.Window = Window
         self.manager = None
+        self.instance_menu_demo_apps = None
         self.md_theme_picker = None
         self.long_dialog = None
         self.input_dialog = None
@@ -314,25 +383,28 @@ class KitchenSink(App, Screens):
         self._interval = 0
         self.tick = 0
         self.create_stack_floating_buttons = False
-        self.previous_text =\
+        self.previous_text = \
             "Welcome to the application [b][color={COLOR}]Kitchen Sink"\
             "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] "\
             "examples, open the menu and select from the list the desired "\
-            "example\n\n"\
-            ""\
-            ""\
+            "example or".format(COLOR=get_hex_from_color(
+                self.theme_cls.primary_color))
+        self.previous_text_end = \
+            "for show example apps\n\n"\
             "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n"\
             "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]"\
             "[/b][/u]\n\n"\
             "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n"\
             "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]"\
             "[/b][u]".format(COLOR=get_hex_from_color(
-                self.tm.primary_color))
+                self.theme_cls.primary_color))
         self.names_contacts = (
             'Alexandr Taylor', 'Yuri Ivanov', 'Robert Patric', 'Bob Marley',
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko'
         )
+        self.demo_apps_list = ['Shop Window']
+        self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
                    '{}/assets/guitar-1139397_1280.png'.format(
@@ -350,7 +422,7 @@ class KitchenSink(App, Screens):
 
     def theme_picker_open(self):
         if not self.md_theme_picker:
-            from kivymd.pickers import MDThemePicker
+            from kivymd.theme_picker import MDThemePicker
             self.md_theme_picker = MDThemePicker()
         self.md_theme_picker.open()
 
@@ -457,10 +529,8 @@ class KitchenSink(App, Screens):
     def select_path(self, path):
         """It will be called when you click on the file name
         or the catalog selection button.
-
         :type path: str;
         :param path: path to the selected directory or file;
-
         """
 
         self.exit_manager()
@@ -528,7 +598,7 @@ class KitchenSink(App, Screens):
                 MDCardPost(
                     source="./assets/kitten-1049129_1280.png",
                     tile_text="Little Baby",
-                    tile_font_style="H5",
+                    tile_font_style="Headline",
                     text_post="This is my favorite cat. He's only six months "
                               "old. He loves milk and steals sausages :) "
                               "And he likes to play in the garden.",
@@ -674,7 +744,7 @@ class KitchenSink(App, Screens):
         self.previous_time = time
 
     def show_example_time_picker(self):
-        from kivymd.pickers import MDTimePicker
+        from kivymd.time_picker import MDTimePicker
 
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_data)
@@ -691,7 +761,7 @@ class KitchenSink(App, Screens):
         self.pickers.ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
-        from kivymd.pickers import MDDatePicker
+        from kivymd.date_picker import MDDatePicker
 
         if self.pickers.ids.date_picker_use_previous_date.active:
             pd = self.previous_date
@@ -751,6 +821,9 @@ class KitchenSink(App, Screens):
                 icon_src='./assets/camera.png')
         self.bs_menu_2.open()
 
+    def set_title_toolbar(self, title):
+        self.main_widget.ids.toolbar.title = title
+
     def set_appbar(self):
         from kivymd.toolbar import MDBottomAppBar
 
@@ -758,7 +831,7 @@ class KitchenSink(App, Screens):
             toast('Press Button')
 
         self.md_app_bar = MDBottomAppBar(
-            md_bg_color=self.tm.primary_color,
+            md_bg_color=self.theme_cls.primary_color,
             left_action_items=[
                 ['menu', lambda x: x],
                 ['clock', lambda x: x],
@@ -793,6 +866,42 @@ class KitchenSink(App, Screens):
                 'callback': self.callback_for_menu_items
             }
         )
+
+    def set_list_shop(self):
+        increment_left = -2
+        for i in range(5):
+            increment_left += 2
+            self.main_widget.ids.scr_mngr.get_screen('shop window').ids.rv_main.data.append(
+                {
+                    'viewclass': 'CardsBoxForShopWindow',
+                    'height': dp(300),
+                    'product_image': './assets/clock-%d.png' % increment_left,
+                    'product_image2': './assets/clock-%d.png' % (increment_left + 1),
+                }
+            )
+
+    def set_menu_for_demo_apps(self):
+        if not len(self.menu_for_demo_apps):
+            for name_item in self.demo_apps_list:
+                self.menu_for_demo_apps.append(
+                    {'viewclass': 'OneLineListItem',
+                     'text': name_item,
+                     'on_release': lambda x=name_item: self.show_demo_apps(name_item)})
+
+    def set_list_cart(self):
+        for i in range(11):
+            self.main_widget.ids.scr_mngr.get_screen(
+                'shop window').ids.cart_screen.ids.rv_cart.data.append(
+                    {
+                        'viewclass': 'CardItemForCart',
+                        'height': dp(150),
+                        'product_image': './assets/clock-%d.png' % i
+                    }
+                )
+
+    def show_demo_apps(self, name_item):
+        {'Shop Window': self.show_shop_window()}[name_item]
+        self.instance_menu_demo_apps.dismiss()
 
     def set_list_md_icons(self, text='', search=False):
         self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data = []
@@ -850,6 +959,10 @@ class IconRightSampleWidget(IRightBodyTouch, MDCheckbox):
 
 
 class PopupScreen(MDPopupScreen):
+    pass
+
+
+class ImageTouch(CircularRippleBehavior, ButtonBehavior, Image):
     pass
 
 

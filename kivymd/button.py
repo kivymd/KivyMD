@@ -12,9 +12,9 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Buttons <https://material.io/design/components/buttons.html>`_
+`Material Design spec, Buttons <https://material.io/design/components/buttons.html>`
 
-`Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`_
+`Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`
 
 Example
 -------
@@ -26,7 +26,7 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import Toolbar kivymd.toolbar.Toolbar
 #:import MDIconButton kivymd.button.MDIconButton
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 #:import MDFlatButton kivymd.button.MDFlatButton
@@ -41,7 +41,7 @@ Builder.load_string('''
 <ExampleButtons@BoxLayout>
     orientation: 'vertical'
 
-    MDToolbar:
+    Toolbar:
         id: toolbar
         title: app.title
         md_bg_color: app.theme_cls.primary_color
@@ -220,10 +220,9 @@ Builder.load_string('''
 
     MDLabel:
         id: content
-        text: root.text
+        text: root._capitalized_text
         size_hint_x: None
-        font_style: 'Button'
-        can_capitalize: True
+        font_size: '%ssp' % root._font_size
         text_size: (None, root.height)
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
@@ -283,61 +282,49 @@ Builder.load_string('''
 
     size_hint_x: None
     width: dp(150)
-    theme_text_color: 'Custom'
-    text_color: root.theme_cls.primary_color
 
     BoxLayout:
         spacing: dp(10)
 
         MDLabel:
             id: lbl_ic
-            text: u'{}'.format(md_icons[root.icon])
+            font_name: '/fonts/materialdesignicons-webfont.ttf'
             font_style: 'Icon'
-            theme_text_color: root.theme_text_color
-            text_color: root.text_color
-            disabled: root.disabled
+            text: u'{}'.format(md_icons[root.icon])
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
             size_hint_x: None
             width: self.texture_size[0]
-
         MDLabel:
             id: lbl_txt
             text: root.text
-            font_style: 'Button'
-            can_capitalize: True
-            theme_text_color: root.theme_text_color
-            text_color: root.text_color
-            opposite_colors: root.opposite_colors
-            disabled: root.disabled
+            shorten: True
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
 
 
 <MDRoundFlatIconButton>
     size_hint_x: None
     width: dp(150)
-    theme_text_color: 'Custom'
-    text_color: root.theme_cls.primary_color
 
     BoxLayout:
         spacing: dp(10)
 
         MDLabel:
             id: lbl_ic
-            text: u'{}'.format(md_icons[root.icon])
+            font_name: '/fonts/materialdesignicons-webfont.ttf'
             font_style: 'Icon'
-            theme_text_color: root.theme_text_color
-            text_color: root.text_color
-            disabled: root.disabled
+            text: u'{}'.format(md_icons[root.icon])
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
             size_hint_x: None
             width: self.texture_size[0]
-
         MDLabel:
             id: lbl_txt
             text: root.text
-            font_style: 'Button'
-            can_capitalize: True
-            theme_text_color: root.theme_text_color
-            text_color: root.text_color
-            opposite_colors: root.opposite_colors
-            disabled: root.disabled
+            shorten: True
+            theme_text_color: 'Custom'
+            text_color: root.theme_cls.primary_color
 
 
 <MDRaisedButton>
@@ -614,9 +601,14 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                                    errorhandler=lambda x: dp(88))
     text = StringProperty('')
     increment_width = NumericProperty(dp(32))
+    _capitalized_text = StringProperty('')
     _radius = NumericProperty(dp(2))
     _height = NumericProperty(dp(0))
     _font_size = StringProperty('14')
+
+    def on_text(self, instance, value):
+        self._capitalized_text = value.upper()
+        # self._capitalized_text = value
 
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
@@ -631,8 +623,8 @@ class BaseFlatIconButton(MDFlatButton):
     icon = StringProperty('android')
     text = StringProperty('')
 
-    def on_ids(self, *args):
-        self.remove_widget(self.ids.content)
+    def on_text(self, instance, text):
+        pass
 
 
 class MDRaisedButton(BaseRectangularButton, RectangularElevationBehavior,

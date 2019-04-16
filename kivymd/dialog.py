@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Dialogs <https://material.io/design/components/dialogs.html>`
+`Material Design spec, Dialogs <https://material.io/design/components/dialogs.html>`_
 
 Example
 -------

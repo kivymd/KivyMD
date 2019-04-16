@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Material theming <https://material.io/design/material-theming>`
+`Material Design spec, Material theming <https://material.io/design/material-theming>`_
 """
 
 from kivy.app import App

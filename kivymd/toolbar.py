@@ -107,7 +107,7 @@ from kivy.core.window import Window
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.button import MDIconButton, MDFloatingActionButton
 from kivymd.theming import ThemableBehavior
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources

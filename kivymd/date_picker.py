@@ -31,7 +31,7 @@ from kivymd.label import MDLabel
 from kivymd.theming import ThemableBehavior
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 
 Builder.load_string('''
 #:import calendar calendar

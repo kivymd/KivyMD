@@ -134,7 +134,7 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
 from kivymd.button import MDIconButton
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 from kivymd.list import ILeftBody
 from kivymd.menus import MDDropdownMenu
 from kivymd.navigationdrawer import NavigationLayout

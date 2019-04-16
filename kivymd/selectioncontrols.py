@@ -28,7 +28,7 @@ from kivy.utils import get_color_from_hex
 from kivymd.color_definitions import colors
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
-from kivymd.elevationbehavior import CircularElevationBehavior
+from kivymd.elevation import CircularElevationBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget

@@ -93,7 +93,7 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd import images_path
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd.label import MDLabel
 from kivymd.list import BaseListItem, ILeftBody, OneLineListItem,\

@@ -23,7 +23,7 @@ from kivy.clock import Clock
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
@@ -31,9 +31,9 @@ Builder.load_string('''
 <ExampleUpdateSpinner@BoxLayout>
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         title: app.title
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         elevation: 10
         left_action_items: [['menu', lambda x: None]]
 
@@ -41,7 +41,7 @@ Builder.load_string('''
 
         MDLabel:
             id: upd_lbl
-            font_style: 'Display2'
+            font_style: 'H3'
             theme_text_color: 'Primary'
             halign: 'center'
             pos_hint: {'center_x': .5, 'center_y': .6}
@@ -55,8 +55,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+    tm = ThemeManager()
+    tm.primary_palette = 'Teal'
     title = "Update Spinner"
     tick = 0
     screen_update_spinner = None
@@ -110,7 +110,7 @@ Builder.load_string('''
         canvas:
             Clear
             Color:
-                rgba: root.theme_cls.primary_color
+                rgba: root.tm.primary_color
             Ellipse:
                 pos: self.pos
                 size: self.size

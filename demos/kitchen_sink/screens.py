@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 from kivy.factory import Factory
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.core.window import Window
+from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
@@ -119,8 +121,8 @@ accordion = '''
 '''
 
 grid = '''
-#:import SmartTileWithStar kivymd.grid.SmartTileWithStar
-#:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
+#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
+#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 
 
 <Grid@Screen>
@@ -159,27 +161,27 @@ grid = '''
                 id: tile_1
                 mipmap: True
                 text: "Beautiful\\n[size=12]beautiful-931152_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_4
                 mipmap: True
                 text: "Robin\\n[size=12]robin-944887_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_5
                 mipmap: True
                 text: "Kitten\\n[size=12]kitten-1049129_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_6
                 mipmap: True
                 text: "Light-Bulb\\n[size=12]light-bulb-1042480_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
             SmartTileWithLabel:
                 id: tile_7
                 mipmap: True
                 text: "Tangerines\\n[size=12]tangerines-1111529_1280.png[/size]"
-                font_style: 'Subhead'
+                font_style: 'Subtitle1'
 '''
 
 bottom_navigation = '''
@@ -449,12 +451,12 @@ buttons = '''
             icon: 'check'
             opposite_colors: True
             elevation_normal: 8
-            md_bg_color: app.theme_cls.primary_color
+            md_bg_color: app.tm.primary_color
 
         MDIconButton:
             icon: 'sd'
             theme_text_color: 'Custom'
-            text_color: app.theme_cls.primary_color
+            text_color: app.tm.primary_color
 
         Widget:
 
@@ -479,7 +481,7 @@ buttons = '''
         width: dp(230)
 
     MDRoundFlatButton:
-        text: "MDROUNDFLATBUTTON"
+        text: "MDRoundFlatButton"
         pos_hint: {'center_x': .5, 'center_y': .35}
 
     MDRoundFlatIconButton:
@@ -516,29 +518,29 @@ cards = '''
             height: self.minimum_height
 '''
 toolbars = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 
 
 <Toolbars@Screen>
     name: 'toolbars'
 
-    Toolbar:
+    MDToolbar:
         title: "Simple toolbar"
         pos_hint: {'center_x': .5, 'center_y': .75}
         md_bg_color: get_color_from_hex(colors['Teal']['500'])
         background_palette: 'Teal'
         background_hue: '500'
 
-    Toolbar:
-        title: "Toolbar with right buttons"
+    MDToolbar:
+        title: "MDToolbar with right buttons"
         pos_hint: {'center_x': .5, 'center_y': .5}
         md_bg_color: get_color_from_hex(colors['Amber']['700'])
         background_palette: 'Amber'
         background_hue: '700'
         right_action_items: [['content-copy', lambda x: None]]
 
-    Toolbar:
-        title: "Toolbar with left and right buttons"
+    MDToolbar:
+        title: "MDToolbar with left and right buttons"
         pos_hint: {'center_x': .5, 'center_y': .25}
         md_bg_color: get_color_from_hex(colors['DeepPurple']['A400'])
         background_palette: 'DeepPurple'
@@ -613,8 +615,8 @@ theming = '''
             pos_hint: {'center_x': .5}
         MDLabel:
             text:
-                "Current: " + app.theme_cls.theme_style\
-                + ", " + app.theme_cls.primary_palette
+                "Current: " + app.tm.theme_style\
+                + ", " + app.tm.primary_palette
             theme_text_color: 'Primary'
             pos_hint: {'center_x': .5}
             halign: 'center'
@@ -673,7 +675,7 @@ textfields = '''
                 color_mode: 'custom'
                 helper_text_mode: "on_focus"
                 helper_text: "Color is defined by \'line_color_focus\' property"
-                line_color_focus: self.theme_cls.opposite_bg_normal
+                line_color_focus: self.tm.opposite_bg_normal
             MDTextField:
                 hint_text: "disabled = True"
                 disabled: True
@@ -825,7 +827,7 @@ snackbar = '''
 
     MDFloatingActionButton:
         id: button
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
@@ -938,7 +940,7 @@ update_spinner = '''
 
     MDLabel:
         id: upd_lbl
-        font_style: 'Display2'
+        font_style: 'H3'
         theme_text_color: 'Primary'
         halign: 'center'
         pos_hint: {'center_x': .5, 'center_y': .6}
@@ -997,7 +999,27 @@ labels = '''
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: None
-            height: dp(1000)
+            height: dp(800)
+
+            BoxLayout:
+
+                MDLabel:
+                    font_style: 'Overline'
+                    theme_text_color: 'Primary'
+                    text: "Overline label"
+                    halign: 'center'
+
+                MDLabel:
+                    font_style: 'Caption'
+                    theme_text_color: 'Primary'
+                    text: "Caption label"
+                    halign: 'center'
+
+                MDLabel:
+                    font_style: 'Button'
+                    theme_text_color: 'Primary'
+                    text: "Button label"
+                    halign: 'center'
 
             BoxLayout:
 
@@ -1006,7 +1028,6 @@ labels = '''
                     theme_text_color: 'Primary'
                     text: "Body1 label"
                     halign: 'center'
-
 
                 MDLabel:
                     font_style: 'Body2'
@@ -1017,62 +1038,60 @@ labels = '''
             BoxLayout:
 
                 MDLabel:
-                    font_style: 'Caption'
+                    font_style: 'Subtitle1'
                     theme_text_color: 'Primary'
-                    text: "Caption label"
+                    text: "Subtitle1 label"
                     halign: 'center'
 
                 MDLabel:
-                    font_style: 'Subhead'
+                    font_style: 'Subtitle2'
                     theme_text_color: 'Primary'
-                    text: "Subhead label"
+                    text: "Subtitle2 label"
+                    halign: 'center'
+
+            MDLabel:
+                font_style: 'H1'
+                theme_text_color: 'Primary'
+                text: "H1 label"
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(4)
+
+            MDLabel:
+                font_style: 'H2'
+                theme_text_color: 'Primary'
+                text: "H2 label"
+                halign: 'center'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(4)
+
+            BoxLayout:
+
+                MDLabel:
+                    font_style: 'H3'
+                    theme_text_color: 'Primary'
+                    text: "H3 label"
+                    halign: 'center'
+
+                MDLabel:
+                    font_style: 'H4'
+                    theme_text_color: 'Primary'
+                    text: "H4 label"
                     halign: 'center'
 
             BoxLayout:
 
                 MDLabel:
-                    font_style: 'Title'
+                    font_style: 'H5'
                     theme_text_color: 'Primary'
-                    text: "Title label"
+                    text: "H5 label"
                     halign: 'center'
 
                 MDLabel:
-                    font_style: 'Headline'
+                    font_style: 'H6'
                     theme_text_color: 'Primary'
-                    text: "Headline label"
+                    text: "H6 label"
                     halign: 'center'
-
-            MDLabel:
-                font_style: 'Display1'
-                theme_text_color: 'Primary'
-                text: "Display1 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
-
-            MDLabel:
-                font_style: 'Display2'
-                theme_text_color: 'Primary'
-                text: "Display2 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
-
-            MDLabel:
-                font_style: 'Display3'
-                theme_text_color: 'Primary'
-                text: "Display3 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
-
-            MDLabel:
-                font_style: 'Display4'
-                theme_text_color: 'Primary'
-                text: "Display4 label"
-                halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
 
             BoxLayout:
 
@@ -1397,7 +1416,7 @@ popup_screen = '''
 
 manager_swiper = '''
 #:import images_path kivymd.images_path
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 
@@ -1418,7 +1437,7 @@ manager_swiper = '''
     MDLabel:
         theme_text_color: 'Custom'
         bold: True
-        text_color: app.theme_cls.primary_color
+        text_color: app.tm.primary_color
         text: root.text
         size_hint_y: None
         height: dp(60)

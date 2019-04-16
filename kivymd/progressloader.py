@@ -29,7 +29,7 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
@@ -37,12 +37,12 @@ Builder.load_string('''
     orientation: 'vertical'
     spacing: dp(5)
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: 'MD Progress Loader'
         left_action_items: [['menu', lambda x: None]]
         elevation: 10
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
 
     FloatLayout:
         id: box
@@ -56,7 +56,7 @@ Builder.load_string('''
 
 
 class Test(App):
-    theme_cls = ThemeManager()
+    tm = ThemeManager()
 
     def __init__(self, **kwargs):
         super(Test, self).__init__(**kwargs)
@@ -126,7 +126,7 @@ Builder.load_string('''
 
     canvas:
         Color:
-            rgba: app.theme_cls.primary_color
+            rgba: app.tm.primary_color
         Rectangle:
             size: self.size
             pos: self.pos

@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Image lists <https://material.io/design/components/image-lists.html>`
+`Material Design spec, Image lists <https://material.io/design/components/image-lists.html>`_
 
 Example
 -------
@@ -26,24 +26,24 @@ from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
 kv = '''
-#:import Toolbar kivymd.toolbar.Toolbar
-#:import SmartTileWithLabel kivymd.grid.SmartTileWithLabel
-#:import SmartTileWithStar kivymd.grid.SmartTileWithStar
+#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
+#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 
 
 <MySmartTileWithLabel@SmartTileWithLabel>
     mipmap: True
-    font_style: 'Subhead'
+    font_style: 'Subtitle1'
 
 
 BoxLayout:
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         title: app.title
         elevation: 10
         left_action_items: [['menu', lambda x: x]]
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
 
     ScreenManager:
         id: manager
@@ -119,8 +119,8 @@ BoxLayout:
 
 
 class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     title = 'Example Smart Tile'
     md_app_bar = None
 

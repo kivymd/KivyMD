@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Chips <https://material.io/design/components/chips.html>`
+`Material Design spec, Chips <https://material.io/design/components/chips.html>`_
 
 Example
 -------
@@ -23,7 +23,7 @@ from kivy.lang import Builder
 from kivymd.theming import ThemeManager
 
 kv = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
 #:import MDSeparator kivymd.cards.MDSeparator
@@ -34,9 +34,9 @@ BoxLayout:
     orientation: 'vertical'
     spacing: dp(10)
 
-    Toolbar:
+    MDToolbar:
         title: 'Example Chips'
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         left_action_items: [['menu', lambda x: x]]
         background_palette: 'Primary'
 
@@ -162,8 +162,8 @@ BoxLayout:
 
 
 class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Red'
+    tm = ThemeManager()
+    tm.primary_palette = 'Red'
 
     def callback(self, name_chip):
         pass
@@ -258,7 +258,7 @@ class MDChip(BoxLayout, ThemableBehavior):
                         md_choose_chip.selected_chip_color
                 md_choose_chip.selected_chip = self
                 md_choose_chip.selected_chip_color = self.color
-                self.color = self.theme_cls.primary_color
+                self.color = self.tm.primary_color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(

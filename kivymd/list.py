@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Lists <https://material.io/design/components/lists.html>`
+`Material Design spec, Lists <https://material.io/design/components/lists.html>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -155,9 +155,11 @@ from kivy.properties import ObjectProperty, StringProperty, NumericProperty,\
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
+
 import kivymd.material_resources as m_res
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
+from kivymd.font_definitions import theme_font_styles
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources
@@ -175,7 +177,7 @@ Builder.load_string('''
     canvas:
         Color:
             rgba:
-                self.theme_cls.divider_color if root.divider is not None\
+                self.tm.divider_color if root.divider is not None\
                 else (0, 0, 0, 0)
         Line:
             points: (root.x ,root.y, root.x+self.width, root.y)\
@@ -337,10 +339,7 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
     text_color = ListProperty(None)
     """ Text color used if theme_text_color is set to 'Custom' """
 
-    font_style = OptionProperty(
-        'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                            'Headline', 'Display1', 'Display2', 'Display3',
-                            'Display4', 'Button', 'Icon'])
+    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
 
     theme_text_color = StringProperty('Primary', allownone=True)
     """ Theme text color for primary text """
@@ -363,10 +362,7 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
     secondary_theme_text_color = StringProperty('Secondary', allownone=True)
     """ Theme text color for secondary primary text """
 
-    secondary_font_style = OptionProperty(
-        'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                          'Headline', 'Display1', 'Display2', 'Display3',
-                          'Display4', 'Button', 'Icon'])
+    secondary_font_style = OptionProperty('Body1', options=theme_font_styles)
 
     divider = OptionProperty('Full',
                              options=['Full', 'Inset', None], allownone=True)

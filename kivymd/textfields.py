@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Text fields <https://material.io/design/components/text-fields.html>`
+`Material Design spec, Text fields <https://material.io/design/components/text-fields.html>`_
 
 Example
 -------
@@ -24,7 +24,7 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
@@ -33,10 +33,10 @@ Builder.load_string('''
 <ExampleTextFields@BoxLayout>
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.tm.primary_color
         background_palette: 'Primary'
         elevation: 10
         left_action_items: [['dots-vertical', lambda x: None]]
@@ -97,7 +97,7 @@ Builder.load_string('''
                     "Color is defined by \'line_color_focus\' property"
                 line_color_focus:
                     # This is the color used by the textfield
-                    self.theme_cls.opposite_bg_normal
+                    self.tm.opposite_bg_normal
 
             MDTextField:
                 hint_text: "disabled = True"
@@ -114,8 +114,8 @@ Builder.load_string('''
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     title = "Example Text Fields"
     main_widget = None
 
@@ -194,7 +194,7 @@ Builder.load_string('''
                 self.focus else self.foreground_color)
 
     font_name: 'Roboto'
-    foreground_color: app.theme_cls.text_color
+    foreground_color: app.tm.text_color
     font_size: sp(16)
     bold: False
     padding: 0, dp(16), 0, dp(10)
@@ -204,7 +204,7 @@ Builder.load_string('''
 
 
 <TextfieldLabel>
-    disabled_color: self.theme_cls.disabled_hint_text_color
+    disabled_color: self.tm.disabled_hint_text_color
     text_size: (self.width, None)
 
 
@@ -264,11 +264,11 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
     def __init__(self, **kwargs):
         super(MDTextFieldRect, self).__init__(**kwargs)
         self._update_primary_color()
-        self.theme_cls.bind(primary_color=self._update_primary_color)
+        self.tm.bind(primary_color=self._update_primary_color)
         self.root_color = Color()
 
     def _update_primary_color(self, *args):
-        self._primary_color = self.theme_cls.primary_color
+        self._primary_color = self.tm.primary_color
         self._primary_color[3] = 0
 
     def anim_rect(self, points, alpha):
@@ -315,7 +315,7 @@ class FixedHintTextInput(TextInput):
 
 class TextfieldLabel(MDLabel):
     def on_theme_text_color(self, instance, value):
-        t = self.theme_cls
+        t = self.tm
         op = self.opposite_colors
         setter = self.setter('color')
         t.unbind(**self._currently_bound_property)
@@ -382,16 +382,16 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                                              valign='middle',
                                              text="")
 
-        self._hint_lbl = TextfieldLabel(font_style='Subhead',
+        self._hint_lbl = TextfieldLabel(font_style='Subtitle1',
                                         halign='left',
                                         valign='middle')
         super(MDTextField, self).__init__(**kwargs)
-        self.line_color_normal = self.theme_cls.divider_color
-        self.line_color_focus = self.theme_cls.primary_color
-        self.error_color = self.theme_cls.error_color
+        self.line_color_normal = self.tm.divider_color
+        self.line_color_focus = self.tm.primary_color
+        self.error_color = self.tm.error_color
 
-        self._current_hint_text_color = self.theme_cls.disabled_hint_text_color
-        self._current_line_color = self.theme_cls.primary_color
+        self._current_hint_text_color = self.tm.disabled_hint_text_color
+        self._current_line_color = self.tm.primary_color
 
         self.bind(helper_text=self._set_msg,
                   hint_text=self._set_hint,
@@ -399,9 +399,9 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                   helper_text_mode=self._set_message_mode,
                   max_text_length=self._set_max_text_length,
                   text=self.on_text)
-        self.theme_cls.bind(primary_color=self._update_primary_color,
-                            theme_style=self._update_theme_style,
-                            accent_color=self._update_accent_color)
+        self.tm.bind(primary_color=self._update_primary_color,
+                     theme_style=self._update_theme_style,
+                     accent_color=self._update_accent_color)
         self.has_had_text = False
 
     def _update_colors(self, color):
@@ -413,23 +413,23 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
     def _update_accent_color(self, *args):
         if self.color_mode == "accent":
-            self._update_colors(self.theme_cls.accent_color)
+            self._update_colors(self.tm.accent_color)
 
     def _update_primary_color(self, *args):
         if self.color_mode == "primary":
-            self._update_colors(self.theme_cls.primary_color)
+            self._update_colors(self.tm.primary_color)
 
     def _update_theme_style(self, *args):
-        self.line_color_normal = self.theme_cls.divider_color
+        self.line_color_normal = self.tm.divider_color
         if not any([self.error, self._text_len_error]):
             if not self.focus:
                 self._current_hint_text_color = \
-                    self.theme_cls.disabled_hint_text_color
+                    self.tm.disabled_hint_text_color
                 self._current_right_lbl_color = \
-                    self.theme_cls.disabled_hint_text_color
+                    self.tm.disabled_hint_text_color
                 if self.helper_text_mode == "persistent":
                     self._current_error_color = \
-                        self.theme_cls.disabled_hint_text_color
+                        self.tm.disabled_hint_text_color
 
     def on_width(self, instance, width):
         if any([self.focus, self.error, self._text_len_error]) and \
@@ -440,7 +440,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         self._hint_lbl.width = self.width
 
     def on_focus(self, *args):
-        disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
+        disabled_hint_text_color = self.tm.disabled_hint_text_color
         Animation.cancel_all(self, '_line_width', '_hint_y',
                              '_hint_lbl_font_size')
         if self.max_text_length is None:
@@ -581,7 +581,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         else:
             if self.focus:
                 disabled_hint_text_color = \
-                    self.theme_cls.disabled_hint_text_color
+                    self.tm.disabled_hint_text_color
                 Animation(duration=.2,
                           _current_right_lbl_color=disabled_hint_text_color). \
                     start(self)
@@ -616,7 +616,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     def _set_message_mode(self, instance, text):
         self.helper_text_mode = text
         if self.helper_text_mode == "persistent":
-            disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
+            disabled_hint_text_color = self.tm.disabled_hint_text_color
             Animation(duration=.1,
                       _current_error_color=disabled_hint_text_color). \
                 start(self)

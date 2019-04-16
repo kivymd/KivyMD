@@ -12,7 +12,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`
+`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`_
 
 Example
 -------
@@ -25,7 +25,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 main_kv = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
 
@@ -46,10 +46,10 @@ NavigationLayout:
     BoxLayout:
         orientation: 'vertical'
 
-        Toolbar:
+        MDToolbar:
             id: toolbar
             title: 'KivyMD Kitchen Sink'
-            md_bg_color: app.theme_cls.primary_color
+            md_bg_color: app.tm.primary_color
             background_palette: 'Primary'
             background_hue: '500'
             elevation: 10
@@ -61,8 +61,8 @@ NavigationLayout:
 
 
 class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    tm = ThemeManager()
+    tm.primary_palette = 'Blue'
     title = "Navigation Drawer"
     main_widget = None
 
@@ -93,13 +93,13 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd import images_path
-from kivymd.elevationbehavior import RectangularElevationBehavior
+from kivymd.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd.label import MDLabel
 from kivymd.list import BaseListItem, ILeftBody, OneLineListItem,\
     OneLineIconListItem, IRightBody
 from kivymd.theming import ThemableBehavior
-from kivymd.toolbar import Toolbar
+from kivymd.toolbar import MDToolbar
 from kivymd.vendor.navigationdrawer import NavigationDrawer as\
     VendorNavigationDrawer
 
@@ -114,14 +114,14 @@ Builder.load_string('''
 
 <NavigationDrawerToolbar>
     elevation: 0
-    specific_text_color: root.theme_cls.secondary_text_color
+    specific_text_color: root.tm.secondary_text_color
     opposite_colors: False
     title_theme_color: 'Secondary'
-    md_bg_color: root.theme_cls.bg_light
+    md_bg_color: root.tm.bg_light
 
     canvas:
         Color:
-            rgba: root.theme_cls.divider_color
+            rgba: root.tm.divider_color
         Line:
             points: self.x, self.y, self.x+self.width,self.y
 
@@ -137,7 +137,7 @@ Builder.load_string('''
 
     canvas:
         Color:
-            rgba: root.theme_cls.bg_light
+            rgba: root.tm.bg_light
         Rectangle:
             size: root.size
             pos: root.pos
@@ -158,7 +158,7 @@ Builder.load_string('''
     MDLabel:
         id: drawer_title
         text: '    {}'.format(root.drawer_title)
-        font_style: 'Title'
+        font_style: 'H6'
         size_hint_y: None
         height: self.texture_size[1]
         markup: True
@@ -183,10 +183,10 @@ Builder.load_string('''
         'Primary' if not root._active\
         else 'Custom' if root.use_active else 'Primary'
     text_color:
-        root.theme_cls.secondary_text_color\
+        root.tm.secondary_text_color\
         if not root._active else root.active_color if\
         root.active_color_type == "custom" else root._active_color\
-        if root.use_active else root.theme_cls.secondary_text_color
+        if root.use_active else root.tm.secondary_text_color
 
     NDIconLabel:
         id: _icon
@@ -195,10 +195,10 @@ Builder.load_string('''
             'Secondary' if not root._active\
             else 'Custom' if root.use_active else 'Custom'
         text_color:
-            root.theme_cls.secondary_text_color if not root._active\
+            root.tm.secondary_text_color if not root._active\
             else root.active_color if root.active_color_type == "custom"\
             else root._active_color if root.use_active else\
-            root.theme_cls.secondary_text_color
+            root.tm.secondary_text_color
 
     BoxLayout:
         id: _right_container
@@ -213,10 +213,10 @@ Builder.load_string('''
             'Secondary' if not root._active else 'Custom'\
             if root.use_active else 'Custom'
         text_color:
-            root.theme_cls.secondary_text_color if not root._active\
+            root.tm.secondary_text_color if not root._active\
             else root.active_color if root.active_color_type == "custom"\
             else root._active_color if root.use_active else\
-            root.theme_cls.secondary_text_color
+            root.tm.secondary_text_color
         text: root.badge_text
         halign: 'right'
 
@@ -224,7 +224,7 @@ Builder.load_string('''
 <NavigationDrawerDivider>
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color
+            rgba: self.tm.divider_color
         Line:
             points: root.x, root.y + dp(8), root.x + self.width, root.y + dp(8)
 ''')
@@ -247,7 +247,7 @@ class NavigationDrawerHeaderBase:
     pass
 
 
-class NavigationDrawerToolbar(Toolbar, NavigationDrawerHeaderBase):
+class NavigationDrawerToolbar(MDToolbar, NavigationDrawerHeaderBase):
     def _update_specific_text_color(self, instance, value):
         pass
 
@@ -317,8 +317,8 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     def __init__(self, **kwargs):
         super(NavigationDrawerIconButton, self).__init__(**kwargs)
         self._set_active_color()
-        self.theme_cls.bind(primary_color=self._set_active_color_primary,
-                            accent_color=self._set_active_color_accent)
+        self.tm.bind(primary_color=self._set_active_color_primary,
+                     accent_color=self._set_active_color_accent)
         Clock.schedule_once(lambda x: self.on_icon(self, self.icon))
 
     def _set_active(self, active, nav_drawer):
@@ -338,11 +338,11 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     # Note to future developers/myself: These must be separate functions
     def _set_active_color_primary(self, *args):
         if self.active_color_type == 'primary':
-            self._active_color = self.theme_cls.primary_color
+            self._active_color = self.tm.primary_color
 
     def _set_active_color_accent(self, *args):
         if self.active_color_type == 'accent':
-            self._active_color = self.theme_cls.accent_color
+            self._active_color = self.tm.accent_color
 
     def on_icon(self, instance, value):
         self.ids['_icon'].text = u'{}'.format(md_icons[value])

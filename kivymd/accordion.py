@@ -20,6 +20,7 @@ from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.font_definitions import theme_font_styles
 from kivymd.list import OneLineListItem
 from kivymd.theming import ThemableBehavior
 
@@ -54,10 +55,7 @@ class MDAccordionItem(ThemableBehavior, AccordionItem):
     '''Color for the indicator on the side of the active item in rgba format 
     To remove the indicator set a color with an alpha of . '''
 
-    font_style = OptionProperty(
-        'Subhead', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-                            'Headline', 'Display1', 'Display2', 'Display3',
-                            'Display4', 'Button', 'Icon'])
+    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
     '''Font style to use for the title text'''
 
     title_template = StringProperty('MDAccordionItemTitle')
@@ -86,7 +84,7 @@ Builder.load_string('''
 
 
 <MDAccordion>
-    md_bg_color: self.theme_cls.primary_color
+    md_bg_color: self.tm.primary_color
 
 
 <MDAccordionItem>
@@ -97,7 +95,7 @@ Builder.load_string('''
     canvas.after:
         # PopMatrix
         Color:
-            rgba: self.divider_color or self.theme_cls.divider_color
+            rgba: self.divider_color or self.tm.divider_color
         Rectangle:
             size:
                 (dp(1), self.height) if self.orientation == 'horizontal'\
@@ -106,7 +104,7 @@ Builder.load_string('''
         Color:
             rgba:
                 [0, 0, 0, 0] if self.collapse\
-                else (self.indicator_color or self.theme_cls.accent_color)
+                else (self.indicator_color or self.tm.accent_color)
         Rectangle:
             size:
                 (dp(2),self.height)\
@@ -211,10 +209,10 @@ if __name__ == '__main__':
 
 
     class AccordionApp(App):
-        theme_cls = ThemeManager()
+        tm = ThemeManager()
 
         def build(self):
-            self.theme_cls.primary_palette = 'Indigo'
+            self.tm.primary_palette = 'Indigo'
             return Builder.load_string('''
 #:import MDLabel kivymd.label.MDLabel
 

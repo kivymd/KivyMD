@@ -64,6 +64,45 @@ What's new in version 0.93.1:
 ============================
 * Add new class [MDSwiperManager](https://github.com/HeaTTheatR/KivyMD/wiki/MDSwiperManager)
 
+API Breaking changes:
+=====================
+* Renamed files, classes and variables:
+
+| Old                                                  | New                                 |
+|------------------------------------------------------|-------------------------------------|
+| `kivymd.elevationbehavior`                           | `kivymd.elevation`                  |
+| `kivymd.grid`                                        | `kivymd.imagelists`                 |
+| `kivymd.date_picker`                                 | `kivymd.pickers`                    |
+| `kivymd.time_picker`                                 | `kivymd.pickers`                    |
+| `kivymd.time_picker`                                 | `kivymd.pickers`                    |
+| `kivymd.card`                                        | `kivymd.cards`                      |
+| `kivymd.menu`                                        | `kivymd.menus`                      |
+| `kivymd.snackbar`                                    | `kivymd.snackbars`                  |
+| `Toolbar` (from `kivymd.toolbar`)                    | `MDToolbar` (from `kivymd.toolbar`) |
+| `theme_cls` (used by all `ThemableBehavior` widgets) | `tm`                                |
+
+* Changed font styles:
+
+| Old      | New       |
+|----------|-----------|
+| Icon     | Icon      |
+| -        | Overline  |
+| Caption  | Caption   |
+| Button   | Button    |
+| Body2    | Body2     |
+| Body1    | Body1     |
+| -        | Subtitle2 |
+| Subhead  | Subtitle1 |
+| -        | H6        |
+| Headline | H5        |
+| Display1 | H4        |
+| Display2 | H3        |
+| Display3 | H2        |
+| Display4 | H1        |
+
+* Colors `BlueGrey` and `Grey` renamed to `BlueGray` and `Gray` (for better fit MD spec)
+
+
 Video previous
 ==============
 <p align="center">

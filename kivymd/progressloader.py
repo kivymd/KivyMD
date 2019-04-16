@@ -29,7 +29,7 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
 
 
@@ -37,7 +37,7 @@ Builder.load_string('''
     orientation: 'vertical'
     spacing: dp(5)
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: 'MD Progress Loader'
         left_action_items: [['menu', lambda x: None]]

@@ -31,7 +31,7 @@ from kivymd.utils.cropimage import crop_image
 
 activity = '''
 #:import images_path kivymd.images_path
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 
@@ -100,7 +100,7 @@ activity = '''
             pos: self.pos
             size: self.size
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: 'Swiper Manager'
         md_bg_color: app.theme_cls.primary_color

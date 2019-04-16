@@ -27,7 +27,7 @@ from kivymd.theming import ThemeManager
 
 Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
 #:import Window kivy.core.window.Window
@@ -44,7 +44,7 @@ Builder.load_string('''
     BoxLayout:
         orientation: 'vertical'
 
-        Toolbar:
+        MDToolbar:
             id: toolbar
             title: 'Example Popup Screen'
             md_bg_color: app.theme_cls.primary_color

@@ -29,7 +29,7 @@ from kivymd.toast import toast
 
 KV = '''
 #:import Window kivy.core.window.Window
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDSeparator kivymd.cards.MDSeparator
 #:import MDLabel kivymd.label.MDLabel
@@ -42,7 +42,7 @@ Screen:
         orientation: 'vertical'
         spacing: dp(10)
 
-        Toolbar:
+        MDToolbar:
             title: 'Example Snackbar'
             md_bg_color: app.theme_cls.primary_color
             left_action_items: [['menu', lambda x: x]]

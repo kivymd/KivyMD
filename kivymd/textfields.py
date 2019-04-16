@@ -24,7 +24,7 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
@@ -33,7 +33,7 @@ Builder.load_string('''
 <ExampleTextFields@BoxLayout>
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         id: toolbar
         title: app.title
         md_bg_color: app.theme_cls.primary_color

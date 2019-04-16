@@ -516,29 +516,29 @@ cards = '''
             height: self.minimum_height
 '''
 toolbars = '''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 
 
 <Toolbars@Screen>
     name: 'toolbars'
 
-    Toolbar:
+    MDToolbar:
         title: "Simple toolbar"
         pos_hint: {'center_x': .5, 'center_y': .75}
         md_bg_color: get_color_from_hex(colors['Teal']['500'])
         background_palette: 'Teal'
         background_hue: '500'
 
-    Toolbar:
-        title: "Toolbar with right buttons"
+    MDToolbar:
+        title: "MDToolbar with right buttons"
         pos_hint: {'center_x': .5, 'center_y': .5}
         md_bg_color: get_color_from_hex(colors['Amber']['700'])
         background_palette: 'Amber'
         background_hue: '700'
         right_action_items: [['content-copy', lambda x: None]]
 
-    Toolbar:
-        title: "Toolbar with left and right buttons"
+    MDToolbar:
+        title: "MDToolbar with left and right buttons"
         pos_hint: {'center_x': .5, 'center_y': .25}
         md_bg_color: get_color_from_hex(colors['DeepPurple']['A400'])
         background_palette: 'DeepPurple'
@@ -1414,7 +1414,7 @@ popup_screen = '''
 
 manager_swiper = '''
 #:import images_path kivymd.images_path
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDLabel kivymd.label.MDLabel
 #:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 

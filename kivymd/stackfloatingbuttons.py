@@ -25,13 +25,13 @@ from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 
 
 Builder.load_string('''
-#:import Toolbar kivymd.toolbar.Toolbar
+#:import MDToolbar kivymd.toolbar.MDToolbar
 
 
 <ExampleFloatingButtons@BoxLayout>
     orientation: 'vertical'
 
-    Toolbar:
+    MDToolbar:
         title: 'Stack Floating Buttons'
         md_bg_color: app.theme_cls.primary_color
         elevation: 10

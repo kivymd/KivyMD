@@ -284,11 +284,11 @@ class KitchenSink(App, Screens):
     tm = ThemeManager()
     tm.primary_palette = 'Blue'
     previous_date = ObjectProperty()
-    title = "Kitchen Sink"
     tm.primary_palette = 'Blue'
     # tm.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
+        self.title = 'Kitchen Sink'
         super(KitchenSink, self).__init__(**kwargs)
 
         self.menu_items = [

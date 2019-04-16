@@ -37,9 +37,9 @@ for font in FONTS:
 class ThemeManager(Widget):
     primary_palette = OptionProperty(
         'Blue',
-        options=['Pink', 'Blue', 'Indigo', 'BlueGrey', 'Brown',
+        options=['Pink', 'Blue', 'Indigo', 'BlueGray', 'Brown',
                  'LightBlue',
-                 'Purple', 'Grey', 'Yellow', 'LightGreen', 'DeepOrange',
+                 'Purple', 'Gray', 'Yellow', 'LightGreen', 'DeepOrange',
                  'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
                  'DeepPurple', 'Lime'])
 
@@ -84,9 +84,9 @@ class ThemeManager(Widget):
 
     accent_palette = OptionProperty(
         'Amber',
-        options=['Pink', 'Blue', 'Indigo', 'BlueGrey', 'Brown',
+        options=['Pink', 'Blue', 'Indigo', 'BlueGray', 'Brown',
                  'LightBlue',
-                 'Purple', 'Grey', 'Yellow', 'LightGreen', 'DeepOrange',
+                 'Purple', 'Gray', 'Yellow', 'LightGreen', 'DeepOrange',
                  'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
                  'DeepPurple', 'Lime'])
 
@@ -296,7 +296,7 @@ class ThemeManager(Widget):
     def _set_ripple_color(self, value):
         self._ripple_color = value
 
-    _ripple_color = ListProperty(get_color_from_hex(colors['Grey']['400']))
+    _ripple_color = ListProperty(get_color_from_hex(colors['Gray']['400']))
     ripple_color = AliasProperty(_get_ripple_color,
                                  _set_ripple_color,
                                  bind=['_ripple_color'])

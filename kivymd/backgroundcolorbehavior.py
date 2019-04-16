@@ -47,7 +47,7 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
                      'Red', 'Pink', 'Purple', 'DeepPurple', 'Indigo', 'Blue',
                      'LightBlue', 'Cyan', 'Teal', 'Green', 'LightGreen',
                      'Lime', 'Yellow', 'Amber', 'Orange', 'DeepOrange',
-                     'Brown', 'Grey', 'BlueGrey'])
+                     'Brown', 'Gray', 'BlueGray'])
 
     background_hue = OptionProperty(
             '500',

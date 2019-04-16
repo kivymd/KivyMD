@@ -161,7 +161,7 @@ class Thumb(CircularElevationBehavior, CircularRippleBehavior, ButtonBehavior,
 class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     active = BooleanProperty(False)
 
-    _thumb_color = ListProperty(get_color_from_hex(colors['Grey']['50']))
+    _thumb_color = ListProperty(get_color_from_hex(colors['Gray']['50']))
 
     def _get_thumb_color(self):
         return self._thumb_color
@@ -198,7 +198,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
                                      bind=['_thumb_color_down'])
 
     _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors['Grey']['400']))
+        get_color_from_hex(colors['Gray']['400']))
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
@@ -235,11 +235,11 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             self._track_color_active[3] = .5
             self._track_color_disabled = get_color_from_hex('FFFFFF')
             self._track_color_disabled[3] = .1
-            self.thumb_color = get_color_from_hex(colors['Grey']['400'])
+            self.thumb_color = get_color_from_hex(colors['Gray']['400'])
             self.thumb_color_down = get_color_from_hex(
                 colors[self.theme_cls.primary_palette]['200'])
             self.thumb_color_disabled = get_color_from_hex(
-                colors['Grey']['800'])
+                colors['Gray']['800'])
         else:
             self._track_color_active = get_color_from_hex(
                 colors[self.theme_cls.primary_palette]['200'])

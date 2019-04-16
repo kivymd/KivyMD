@@ -970,10 +970,9 @@ class KitchenSink(App, Screens):
         {'Shop Window': self.show_shop_window()}[name_item]
         self.instance_menu_demo_apps.dismiss()
 
-    def ddd(self, path_to_icon):
-        from kivy.factory import Factory
-        d = PreviousDialog(icon=path_to_icon)
-        d.open()
+    def show_dialog_for_demo_apps(self, path_to_icon):
+        dialog = PreviousDialog(icon=path_to_icon)
+        dialog.open()
 
     def set_list_md_icons(self, text='', search=False):
         self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data = []

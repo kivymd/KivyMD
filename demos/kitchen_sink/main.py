@@ -18,7 +18,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
@@ -32,7 +32,7 @@ from kivymd.button import MDIconButton
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.selectioncontrols import MDCheckbox
-from kivymd.theming import ThemeManager
+from kivymd.theming import ThemeManager, ThemableBehavior
 from kivymd.cards import MDCard
 from kivymd.list import OneLineListItem
 from kivymd.icon_definitions import md_icons
@@ -970,6 +970,11 @@ class KitchenSink(App, Screens):
         {'Shop Window': self.show_shop_window()}[name_item]
         self.instance_menu_demo_apps.dismiss()
 
+    def ddd(self, path_to_icon):
+        from kivy.factory import Factory
+        d = PreviousDialog(icon=path_to_icon)
+        d.open()
+
     def set_list_md_icons(self, text='', search=False):
         self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data = []
         for name_icon in md_icons.keys():
@@ -1036,6 +1041,22 @@ class ImageTouch(CircularRippleBehavior, ButtonBehavior, Image):
 class MyCard(MDCard):
     text = StringProperty('')
 
+
+class BaseDialog(ThemableBehavior, ModalView):
+    canvas_color = ListProperty()
+    callback = ObjectProperty(lambda x: None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.canvas_color = self.theme_cls.primary_color
+        self.canvas_color[3] = .75
+
+
+class PreviousDialog(BaseDialog):
+    icon = StringProperty()
+
+    def on_open(self):
+        Animation(size_hint=(.7, .7), d=.2, t='in_out_elastic').start(self)
 
 if __name__ == '__main__':
     KitchenSink().run()

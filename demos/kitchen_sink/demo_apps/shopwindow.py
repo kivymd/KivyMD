@@ -372,7 +372,6 @@ class PreviousDialog(BaseDialog):
     icon = StringProperty()
 
     def on_open(self):
-        print(111)
         Animation(size_hint=(.7, .7), d=.2, t='in_out_elastic').start(self)
 
 

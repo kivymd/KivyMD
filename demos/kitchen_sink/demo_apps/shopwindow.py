@@ -334,14 +334,6 @@ class ShopWindow(Screen):
                 }
             )
 
-    def set_menu_for_demo_apps(self):
-        if not len(self.app.menu_for_demo_apps):
-            for name_item in self.app.demo_apps_list:
-                self.app.menu_for_demo_apps.append(
-                    {'viewclass': 'OneLineListItem',
-                     'text': name_item,
-                     'on_release': lambda x=name_item: self.show_demo_apps(name_item)})
-
     def set_list_cart(self):
         for i in range(11):
             self.app.main_widget.ids.scr_mngr.get_screen(
@@ -352,10 +344,6 @@ class ShopWindow(Screen):
                         'product_image': './assets/clock-%d.png' % i
                     }
                 )
-
-    def show_demo_apps(self, name_item):
-        self.app.main_widget.ids.scr_mngr.current = name_item.lower()
-        self.app.instance_menu_demo_apps.dismiss()
 
 
 class BaseDialog(ThemableBehavior, ModalView):

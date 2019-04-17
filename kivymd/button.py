@@ -186,12 +186,12 @@ Builder.load_string('''
             pos: self.pos
 
     size: (dp(48), dp(48))
-    content: content
+    lbl_txt: lbl_txt
     padding: dp(12)
     theme_text_color: 'Primary'
 
     MDLabel:
-        id: content
+        id: lbl_txt
         font_style: 'Icon'
         text: u'{}'.format(md_icons[root.icon])
         theme_text_color: root.theme_text_color
@@ -212,14 +212,14 @@ Builder.load_string('''
             pos: self.pos
             radius: (root._radius, )
 
-    content: content
+    lbl_txt: lbl_txt
     height: dp(36) if not root._height else root._height
-    width: content.texture_size[0] + root.increment_width
+    width: lbl_txt.texture_size[0] + root.increment_width
     padding: (dp(8), 0)
     theme_text_color: 'Primary'
 
     MDLabel:
-        id: content
+        id: lbl_txt
         text: root._capitalized_text
         size_hint_x: None
         font_size: '%ssp' % root._font_size
@@ -371,6 +371,10 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
                                                'ContrastParentBackground'])
     text_color = ListProperty(None, allownone=True)
     opposite_colors = BooleanProperty(False)
+    font_name = StringProperty()
+
+    def on_font_name(self, instance, value):
+        instance.ids.lbl_txt.font_name = value
 
     def __init__(self, **kwargs):
         super(BaseButton, self).__init__(**kwargs)

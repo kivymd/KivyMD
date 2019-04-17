@@ -2,23 +2,18 @@
 
 import os
 import sys
-
-from kivy.uix.behaviors import ButtonBehavior
-
-from kivymd.ripplebehavior import CircularRippleBehavior
-
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
-
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, StringProperty, ListProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
@@ -32,7 +27,8 @@ from kivymd.button import MDIconButton
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.selectioncontrols import MDCheckbox
-from kivymd.theming import ThemeManager, ThemableBehavior
+from kivymd.theming import ThemeManager
+from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.cards import MDCard
 from kivymd.list import OneLineListItem
 from kivymd.icon_definitions import md_icons
@@ -399,7 +395,7 @@ NavigationLayout:
                             text: 'Click Me'
                             pos_hint: {'center_x': .5}
                             on_release:
-                                app.set_menu_for_demo_apps()
+                                app.show_shop_window()
                                 app.instance_menu_demo_apps = MDDropdownMenu(items=app.menu_for_demo_apps, max_height=dp(260), width_mult=4)
                                 app.instance_menu_demo_apps.open(self)
 
@@ -433,6 +429,7 @@ class KitchenSink(App, Screens):
         ]
         self.Window = Window
         self.manager = None
+        self.md_app_bar = None
         self.instance_menu_demo_apps = None
         self.md_theme_picker = None
         self.long_dialog = None
@@ -806,15 +803,19 @@ class KitchenSink(App, Screens):
                 events_callback=self.callback_for_menu_items)
         self.long_dialog.open()
 
-    def get_time_picker_data(self, instance, time):
+    def get_time_picker_date(self, instance, time):
+        """Get date for MDTimePicker from the screen Pickers."""
+
         self.pickers.ids.time_picker_label.text = str(time)
         self.previous_time = time
 
     def show_example_time_picker(self):
+        """Show MDTimePicker from the screen Pickers."""
+
         from kivymd.pickers import MDTimePicker
 
         time_dialog = MDTimePicker()
-        time_dialog.bind(time=self.get_time_picker_data)
+        time_dialog.bind(time=self.get_time_picker_date)
 
         if self.pickers.ids.time_picker_use_previous_time.active:
             try:
@@ -824,10 +825,14 @@ class KitchenSink(App, Screens):
         time_dialog.open()
 
     def set_previous_date(self, date_obj):
+        """Set previous date for MDDatePicker from the screen Pickers."""
+
         self.previous_date = date_obj
         self.pickers.ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
+        """Show MDDatePicker from the screen Pickers."""
+
         from kivymd.pickers import MDDatePicker
 
         if self.pickers.ids.date_picker_use_previous_date.active:
@@ -841,6 +846,8 @@ class KitchenSink(App, Screens):
             MDDatePicker(self.set_previous_date).open()
 
     def show_example_bottom_sheet(self):
+        """Show menu from the screen BottomSheet."""
+
         from kivymd.bottomsheet import MDListBottomSheet
 
         if not self.bs_menu_1:
@@ -862,6 +869,8 @@ class KitchenSink(App, Screens):
         self.bs_menu_1.open()
 
     def show_example_grid_bottom_sheet(self):
+        """Show menu from the screen BottomSheet."""
+
         if not self.bs_menu_2:
             from kivymd.bottomsheet import MDGridBottomSheet
 
@@ -889,9 +898,13 @@ class KitchenSink(App, Screens):
         self.bs_menu_2.open()
 
     def set_title_toolbar(self, title):
+        """Set string title in MDToolbar for the whole application."""
+
         self.main_widget.ids.toolbar.title = title
 
     def set_appbar(self):
+        """Create MDBottomAppBar for the screen BottomAppBar."""
+
         from kivymd.toolbar import MDBottomAppBar
 
         def press_button(inctance):
@@ -906,6 +919,8 @@ class KitchenSink(App, Screens):
             anchor='right', callback=press_button)
 
     def move_item_menu(self, anchor):
+        """Sets icons in MDBottomAppBar for the screen BottomAppBar."""
+
         md_app_bar = self.md_app_bar
         if md_app_bar.anchor != anchor:
             if len(md_app_bar.right_action_items):
@@ -919,69 +934,43 @@ class KitchenSink(App, Screens):
                 md_app_bar.left_action_items = action_items
 
     def set_error_message(self, *args):
+        """Checks text of TextField with type "on_error"
+        for the screen TextFields."""
+
         if len(self.root.ids.text_field_error.text) == 2:
             self.root.ids.text_field_error.error = True
         else:
             self.root.ids.text_field_error.error = False
 
-    def add_icon_item(self, name_icon):
-        self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data.append(
-            {
-                'viewclass': 'MDIconItemForMdIconsList',
-                'icon': name_icon,
-                'text': name_icon,
-                'callback': self.callback_for_menu_items
-            }
-        )
+    def set_list_md_icons(self, text='', search=False):
+        """Builds a list of icons for the screen MDIcons."""
 
-    def set_list_shop(self):
-        increment_left = -2
-        for i in range(5):
-            increment_left += 2
-            self.main_widget.ids.scr_mngr.get_screen('shop window').ids.rv_main.data.append(
+        def add_icon_item(name_icon):
+            self.main_widget.ids.scr_mngr.get_screen(
+                'md icons').ids.rv.data.append(
                 {
-                    'viewclass': 'CardsBoxForShopWindow',
-                    'height': dp(300),
-                    'product_image': './assets/clock-%d.png' % increment_left,
-                    'product_image2': './assets/clock-%d.png' % (increment_left + 1),
+                    'viewclass': 'MDIconItemForMdIconsList',
+                    'icon': name_icon,
+                    'text': name_icon,
+                    'callback': self.callback_for_menu_items
                 }
             )
 
-    def set_menu_for_demo_apps(self):
-        if not len(self.menu_for_demo_apps):
-            for name_item in self.demo_apps_list:
-                self.menu_for_demo_apps.append(
-                    {'viewclass': 'OneLineListItem',
-                     'text': name_item,
-                     'on_release': lambda x=name_item: self.show_demo_apps(name_item)})
-
-    def set_list_cart(self):
-        for i in range(11):
-            self.main_widget.ids.scr_mngr.get_screen(
-                'shop window').ids.cart_screen.ids.rv_cart.data.append(
-                    {
-                        'viewclass': 'CardItemForCart',
-                        'height': dp(150),
-                        'product_image': './assets/clock-%d.png' % i
-                    }
-                )
-
-    def show_demo_apps(self, name_item):
-        {'Shop Window': self.show_shop_window()}[name_item]
-        self.instance_menu_demo_apps.dismiss()
-
-    def show_dialog_for_demo_apps(self, path_to_icon):
-        dialog = PreviousDialog(icon=path_to_icon)
-        dialog.open()
-
-    def set_list_md_icons(self, text='', search=False):
         self.main_widget.ids.scr_mngr.get_screen('md icons').ids.rv.data = []
         for name_icon in md_icons.keys():
             if search:
                 if text in name_icon:
-                    self.add_icon_item(name_icon)
+                    add_icon_item(name_icon)
             else:
-                self.add_icon_item(name_icon)
+                add_icon_item(name_icon)
+
+    def set_menu_for_demo_apps1(self):
+        if not len(self.app.menu_for_demo_apps):
+            for name_item in self.app.demo_apps_list:
+                self.app.menu_for_demo_apps.append(
+                    {'viewclass': 'OneLineListItem',
+                     'text': name_item,
+                     'on_release': lambda x=name_item: self.show_demo_apps(name_item)})
 
     def on_pause(self):
         return True
@@ -1040,22 +1029,6 @@ class ImageTouch(CircularRippleBehavior, ButtonBehavior, Image):
 class MyCard(MDCard):
     text = StringProperty('')
 
-
-class BaseDialog(ThemableBehavior, ModalView):
-    canvas_color = ListProperty()
-    callback = ObjectProperty(lambda x: None)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.canvas_color = self.theme_cls.primary_color
-        self.canvas_color[3] = .75
-
-
-class PreviousDialog(BaseDialog):
-    icon = StringProperty()
-
-    def on_open(self):
-        Animation(size_hint=(.7, .7), d=.2, t='in_out_elastic').start(self)
 
 if __name__ == '__main__':
     KitchenSink().run()

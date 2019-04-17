@@ -55,8 +55,7 @@ def toast(text):
 
 
 main_widget_kv = '''
-#:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import ThemeManager kivymd.theming.ThemeManager
@@ -359,6 +358,7 @@ NavigationLayout:
         id: nav_drawer
 
     BoxLayout:
+        id: box_for_manager
         orientation: 'vertical'
 
         MDToolbar:
@@ -375,6 +375,7 @@ NavigationLayout:
 
         ScreenManager:
             id: scr_mngr
+            transition: NoTransition()
 
             Screen:
                 name: 'previous'
@@ -406,7 +407,7 @@ NavigationLayout:
                             text: 'Click Me'
                             pos_hint: {'center_x': .5}
                             on_release:
-                                app.show_shop_window()
+                                app.set_menu_for_demo_apps()
                                 app.instance_menu_demo_apps = MDDropdownMenu(items=app.menu_for_demo_apps, max_height=dp(260), width_mult=4)
                                 app.instance_menu_demo_apps.open(self)
 
@@ -478,7 +479,7 @@ class KitchenSink(App, Screens):
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko'
         )
-        self.demo_apps_list = ['Shop Window']
+        self.demo_apps_list = ['Shop Window', 'Coffee Menu']
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
@@ -975,13 +976,21 @@ class KitchenSink(App, Screens):
             else:
                 add_icon_item(name_icon)
 
-    def set_menu_for_demo_apps1(self):
-        if not len(self.app.menu_for_demo_apps):
-            for name_item in self.app.demo_apps_list:
-                self.app.menu_for_demo_apps.append(
+    def set_menu_for_demo_apps(self):
+        if not len(self.menu_for_demo_apps):
+            for name_item in self.demo_apps_list:
+                self.menu_for_demo_apps.append(
                     {'viewclass': 'OneLineListItem',
                      'text': name_item,
-                     'on_release': lambda x=name_item: self.show_demo_apps(name_item)})
+                     'on_release': lambda x=name_item: self.show_demo_apps(x)})
+
+    def show_demo_apps(self, name_item):
+        name_item = name_item.lower()
+        {
+            'coffee menu': self.show_coffee_menu,
+            'shop window': self.show_shop_window}[name_item]()
+        self.main_widget.ids.scr_mngr.current = name_item
+        self.instance_menu_demo_apps.dismiss()
 
     def on_pause(self):
         return True

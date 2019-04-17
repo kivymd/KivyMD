@@ -1602,9 +1602,18 @@ class Screens(object):
         if not self.screen_shop_window:
             Builder.load_string(screen_shop_window)
             self.screen_shop_window = ShopWindow()
-            self.screen_shop_window.set_menu_for_demo_apps()
             self.main_widget.ids.scr_mngr.add_widget(self.screen_shop_window)
-        #self.main_widget.ids.scr_mngr.current = 'shop window'
+
+    screen_coffee_menu = None
+
+    def show_coffee_menu(self):
+        from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
+
+        self.main_widget.ids.toolbar.height = 0
+        if not self.screen_coffee_menu:
+            Builder.load_string(screen_coffee_menu)
+            self.screen_coffee_menu = CoffeeMenu()
+            self.main_widget.ids.scr_mngr.add_widget(self.screen_coffee_menu)
 
     bottom_navigation = None
 

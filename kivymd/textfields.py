@@ -314,6 +314,7 @@ class FixedHintTextInput(TextInput):
 
 
 class TextfieldLabel(MDLabel):
+    
     def on_theme_text_color(self, instance, value):
         t = self.theme_cls
         op = self.opposite_colors
@@ -359,6 +360,20 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     line_color_normal = ListProperty()
     line_color_focus = ListProperty()
     error_color = ListProperty()
+
+    font_name = StringProperty()
+    font_size = NumericProperty()
+    
+    def on_font_name(self, instance, value):
+        instance._msg_lbl.font_name = value
+        instance._right_msg_lbl.font_name = value
+        instance._hint_lbl.font_name = value
+
+    def on_font_size(self, instance, value):
+        instance._msg_lbl.font_size = value
+        instance._right_msg_lbl.font_size = value
+        instance._hint_lbl.font_size = value
+        instance._hint_lbl_font_size = value
 
     error = BooleanProperty(False)
     _text_len_error = BooleanProperty(False)

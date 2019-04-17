@@ -372,7 +372,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
     text_color = ListProperty(None, allownone=True)
     opposite_colors = BooleanProperty(False)
     font_name = StringProperty()
-    font_size = StringProperty()
+    font_size = NumericProperty()
 
     def __init__(self, **kwargs):
         super(BaseButton, self).__init__(**kwargs)

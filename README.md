@@ -62,8 +62,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 
 What's new in version 0.96.4:
 ============================
-* Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0)
-* Added functionality for viewing demo applications [Coffee Menu](https://www.youtube.com/watch?v=73CP-k1SNdE)
+* Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=73CP-k1SNdE)
 
 API Breaking changes:
 =====================

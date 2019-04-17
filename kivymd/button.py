@@ -372,9 +372,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
     text_color = ListProperty(None, allownone=True)
     opposite_colors = BooleanProperty(False)
     font_name = StringProperty()
-
-    def on_font_name(self, instance, value):
-        instance.ids.lbl_txt.font_name = value
+    font_size = StringProperty()
 
     def __init__(self, **kwargs):
         super(BaseButton, self).__init__(**kwargs)
@@ -382,6 +380,12 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
 
     def _finish_init(self, dt):
         self._update_color()
+
+    def on_font_name(self, instance, value):
+        instance.ids.lbl_txt.font_name = value
+
+    def on_font_size(self, instance, value):
+        instance.ids.lbl_txt.font_size = value
 
     def on_md_bg_color(self, instance, value):
         self._update_color()

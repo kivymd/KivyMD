@@ -4,7 +4,7 @@
 Fan Screen Manager
 ==================
 
-Copyright © 2010-2018 HeaTTheatR
+Copyright (c) 2019 Ivanov Yuri
 
 For suggestions and questions:
 <kivydevelopment@gmail.com>

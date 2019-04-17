@@ -1,3 +1,14 @@
+"""
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+"""
+
 from kivy.app import App
 from kivy.metrics import dp
 from kivy.properties import ListProperty, ObjectProperty, StringProperty
@@ -352,7 +363,7 @@ class BaseDialog(ThemableBehavior, ModalView):
     callback = ObjectProperty(lambda x: None)
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(BaseDialog, self).__init__(**kwargs)
         self.canvas_color = self.theme_cls.primary_color
         self.canvas_color[3] = .75
 

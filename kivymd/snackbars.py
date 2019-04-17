@@ -4,7 +4,7 @@
 Snackbars
 =========
 
-Copyright © 2010-2018 HeaTTheatR
+Copyright (c) 2019 Ivanov Yuri
 
 For suggestions and questions:
 <kivydevelopment@gmail.com>
@@ -218,7 +218,7 @@ class Snackbar(FloatLayout):
     _interval = 0
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(Snackbar, self).__init__(**kwargs)
         if self.button_text != '':
             button = MDFlatButton(text=self.button_text)
             self.ids.box.add_widget(button)

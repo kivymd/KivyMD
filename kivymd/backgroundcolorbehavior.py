@@ -4,7 +4,10 @@
 Background Color Behavior
 =========================
 
-Copyright © 2010-2018 HeaTTheatR
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
 For suggestions and questions:
 <kivydevelopment@gmail.com>

@@ -32,7 +32,63 @@ if not os.path.exists('./assets/coffee_crop.jpg'):
         './assets/coffee_crop.jpg')
 
 screen_coffee_menu = '''
-#:set coffee_color [0.33725490196078434, 0.16862745098039217, 0.0392156862745098, .7]
+#:import MDSeparator kivymd.cards.MDSeparator
+#:import MDLabel kivymd.label.MDLabel
+
+#:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
+#:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
+
+
+<MenuDialog>
+    orientation: 'vertical'
+    size_hint: None, None
+    size: app.Window.width - dp(45), app.Window.height - dp(85)
+    spacing: dp(5)
+    padding: dp(5)
+    pos_hint: {'center_x': .5}
+
+    canvas.before:
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: './assets/texture-menu.png'
+            radius: [10,]
+
+    MDLabel:
+        font_name: './assets/Pollywog.ttf'
+        text: 'Coffee Menu'
+        color: item_color
+        font_size: '20sp'
+        halign: 'center'
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    Image:
+        source: './assets/sep.png'
+        size_hint_y: None
+        height: dp(40)
+
+    RecycleView:
+        id: rv
+        key_viewclass: 'viewclass'
+        key_size: 'height'
+
+        RecycleBoxLayout:
+            padding: dp(10)
+            spacing: dp(10)
+            default_size: None, dp(48)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+
+
+<ItemCoffeeMenu@OneLineAvatarListItem>
+    theme_text_color: 'Custom'
+    text_color: item_color
+
+    AvatarSampleWidget:
+        source: './assets/coffee-icon-brown.png'
 
 
 <CustomToolbar@BoxLayout>
@@ -120,6 +176,7 @@ screen_coffee_menu = '''
             ItemMenu:
                 icon_item: './assets/menu.png'
                 name_item: 'Menu'
+                on_release: root.show_menu_list_animation()
 
             ItemMenu:
                 icon_item: './assets/about-us.png'
@@ -148,16 +205,45 @@ screen_coffee_menu = '''
             ItemMenu:
                 icon_item: './assets/back.png'
                 name_item: 'Back'
-                on_release: root.hide_menu_animation()
+                on_release:
+                    root.hide_menu_animation()
+                    root.hide_toolbar_animation()
+
+        MenuDialog:
+            id: menu_dialog
+            y: root.app.Window.height
 '''
 
 
 class CoffeeMenu(Screen):
     app = App.get_running_app()
+    coffees_list = [
+        'Americano', 'Affogato', 'Bicherin', 'Vietnamese ice coffee',
+        'Gallon (drink)', 'Glace', 'Ipoh White Coffee', 'Cappuccino',
+        'Carahillo', 'Cortado', 'Irish Coffee', 'Coffee Liège',
+        'Turkish coffee', 'Coffee with liqueur', 'Coffee with milk',
+        'Coffee Tuba', 'Coffee frappe', 'Coffee cocktail', 'Cuban coffee',
+        'Latte', 'Latte Macchiato', 'Long black', 'Lungo', 'Macchiato',
+        'Melange (coffee)', 'Mokkachino', 'Mocha', 'Postum (drink)',
+        'Raf-coffee', 'Ristretto', 'Red ah', 'Pharisee (drink)', 'Flat white',
+        'Frappe (cocktail)', 'Frappuccino', 'Cold coffee', 'Uh', 'Espresso',
+        'Espresso martini']
+    menu_open = False
+
+    def __init__(self, **kw):
+        super(CoffeeMenu, self).__init__(**kw)
+        Window.bind(on_keyboard=self.events_program)
 
     def on_enter(self, *args):
         self.add_custom_toolbar()
         self.show_menu_animation()
+        self.set_items_menu()
+
+    def set_items_menu(self):
+        self.ids.menu_dialog.ids.rv.data = []
+        for name_item in self.coffees_list:
+            self.ids.menu_dialog.ids.rv.data.append(
+                {'viewclass': 'ItemCoffeeMenu', 'text': str(name_item)})
 
     def add_custom_toolbar(self):
         toolbar = self.ids.toolbar
@@ -168,18 +254,37 @@ class CoffeeMenu(Screen):
         Animation(x=Window.width - self.ids.bottom_menu.width, d=.2).start(
             self.ids.bottom_menu)
 
+    def show_menu_list_animation(self):
+        Animation(y=dp(60), d=.6, t='out_elastic').start(self.ids.menu_dialog)
+        self.menu_open = True
+
+    def hide_menu_list_animation(self):
+        Animation(y=Window.height, d=.6, t='in_elastic').start(self.ids.menu_dialog)
+        self.menu_open = False
+
     def hide_menu_animation(self):
         Animation(x=Window.width, d=.2).start(self.ids.top_menu)
-        Animation(y=Window.height, d=.2).start(self.ids.toolbar)
         anim = Animation(x=-Window.width, d=.2)
         anim.bind(on_complete=self.back_to_previous_screen)
         anim.start(self.ids.bottom_menu)
+
+    def hide_toolbar_animation(self):
+        Animation(y=Window.height, d=.2).start(self.ids.toolbar)
 
     def back_to_previous_screen(self, *args):
         self.app.main_widget.ids.scr_mngr.current = 'previous'
         self.app.main_widget.ids.toolbar.height = dp(56)
 
+    def events_program(self, instance, keyboard, keycode, text, modifiers):
+        if keyboard in (1001, 27):
+            if self.menu_open:
+                self.hide_menu_list_animation()
+
 
 class ItemMenu(CircularRippleBehavior, ButtonBehavior, BoxLayout):
     name_item = StringProperty()
     icon_item = StringProperty()
+
+
+class MenuDialog(BoxLayout):
+    background = StringProperty()

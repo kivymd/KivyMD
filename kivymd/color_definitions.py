@@ -662,7 +662,7 @@ text_colors = {
         'A400': 'FFFFFF',
         'A700': 'FFFFFF'
     },
-    'Grey': {
+    'Gray': {
         '50': 'FFFFFF',
         '100': '000000',
         '200': '000000',
@@ -678,7 +678,7 @@ text_colors = {
         'A400': 'FFFFFF',
         'A700': 'FFFFFF'
     },
-    'BlueGrey': {
+    'BlueGray': {
         '50': '000000',
         '100': '000000',
         '200': '000000',

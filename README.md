@@ -62,7 +62,8 @@ Build two apk armv7 (Python2 and Python3) with Docker
 
 What's new in version 0.96.5:
 ============================
-* Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=uvJvBBZ57ac)
+* Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=6U59VsRGRNE)
+* The source code of the demo applications are in the directory **demos/kitchen_sink/demo_apps**
 
 API Breaking changes:
 =====================

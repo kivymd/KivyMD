@@ -47,7 +47,6 @@ screen_coffee_menu = '''
     size: dp(280), dp(420)
 
     BoxLayout:
-        #padding: dp(10)
         spacing: dp(10)
         orientation: 'vertical'
 
@@ -56,13 +55,6 @@ screen_coffee_menu = '''
             size_hint: None, None
             size: dp(280), dp(222)
             source: './assets/Latte-crop.jpg'
-            
-            #canvas:
-            #    RoundedRectangle:
-            #        size: self.size
-            #        pos: self.pos
-            #        radius: [15,]
-            #        source: './assets/Latte-crop.jpg'
 
         BoxLayout:
             padding: dp(10)
@@ -76,13 +68,15 @@ screen_coffee_menu = '''
                 height: self.texture_size[1]
                 color: 1, 1, 1, 1
 
-        Widget:
+        BoxLayout:
 
-        MDFlatButton:
-            text: 'Ok'
-            pos_hint: {'right': 1}
-            theme_text_color: 'Custom'
-            text_color: [1, 1, 1, 1]
+            Widget:
+
+            MDFlatButton:
+                text: 'Ok'
+                theme_text_color: 'Custom'
+                text_color: [1, 1, 1, 1]
+                on_release: root.dismiss()
 
 
 <MenuDialog>

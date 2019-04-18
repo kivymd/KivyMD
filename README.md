@@ -60,7 +60,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.96.4:
+What's new in version 0.96.5:
 ============================
 * Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=uvJvBBZ57ac)
 

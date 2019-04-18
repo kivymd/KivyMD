@@ -24,6 +24,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.utils.cropimage import crop_image
 from kivymd.ripplebehavior import CircularRippleBehavior
 
+from . basedialog import BaseDialog
 
 if not os.path.exists('./assets/coffee_crop.jpg'):
     crop_image(
@@ -34,9 +35,54 @@ if not os.path.exists('./assets/coffee_crop.jpg'):
 screen_coffee_menu = '''
 #:import MDSeparator kivymd.cards.MDSeparator
 #:import MDLabel kivymd.label.MDLabel
+#:import MDCard kivymd.cards.MDCard
+#:import MDFlatButton kivymd.button.MDFlatButton
 
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
+
+
+<PreviousDialog>
+    size_hint: None, None
+    size: dp(280), dp(420)
+
+    BoxLayout:
+        #padding: dp(10)
+        spacing: dp(10)
+        orientation: 'vertical'
+
+        Image:
+            id: previous_image
+            size_hint: None, None
+            size: dp(280), dp(222)
+            source: './assets/Latte-crop.jpg'
+            
+            #canvas:
+            #    RoundedRectangle:
+            #        size: self.size
+            #        pos: self.pos
+            #        radius: [15,]
+            #        source: './assets/Latte-crop.jpg'
+
+        BoxLayout:
+            padding: dp(10)
+
+            MDLabel:
+                text:
+                    "[b]Latte[/b] - is a coffee drink originally from Italy, " \
+                    "consisting of milk and espresso coffee."
+                markup: True
+                size_hint_y: None
+                height: self.texture_size[1]
+                color: 1, 1, 1, 1
+
+        Widget:
+
+        MDFlatButton:
+            text: 'Ok'
+            pos_hint: {'right': 1}
+            theme_text_color: 'Custom'
+            text_color: [1, 1, 1, 1]
 
 
 <MenuDialog>
@@ -72,6 +118,7 @@ screen_coffee_menu = '''
         id: rv
         key_viewclass: 'viewclass'
         key_size: 'height'
+        bar_color: coffee_color
 
         RecycleBoxLayout:
             padding: dp(10)
@@ -84,8 +131,10 @@ screen_coffee_menu = '''
 
 
 <ItemCoffeeMenu@OneLineAvatarListItem>
+    callback: None
     theme_text_color: 'Custom'
     text_color: item_color
+    on_release: root.callback()
 
     AvatarSampleWidget:
         source: './assets/coffee-icon-brown.png'
@@ -238,12 +287,15 @@ class CoffeeMenu(Screen):
         self.add_custom_toolbar()
         self.show_menu_animation()
         self.set_items_menu()
+        self.app.theme_cls.primary_palette = 'Gray'
 
     def set_items_menu(self):
         self.ids.menu_dialog.ids.rv.data = []
         for name_item in self.coffees_list:
             self.ids.menu_dialog.ids.rv.data.append(
-                {'viewclass': 'ItemCoffeeMenu', 'text': str(name_item)})
+                {'viewclass': 'ItemCoffeeMenu',
+                 'text': str(name_item),
+                 'callback': self.open_previous_coffee_info})
 
     def add_custom_toolbar(self):
         toolbar = self.ids.toolbar
@@ -272,8 +324,15 @@ class CoffeeMenu(Screen):
         Animation(y=Window.height, d=.2).start(self.ids.toolbar)
 
     def back_to_previous_screen(self, *args):
+        if self.menu_open:
+            self.menu_open = False
+            self.hide_menu_list_animation()
+        self.app.theme_cls.primary_palette = 'Blue'
         self.app.main_widget.ids.scr_mngr.current = 'previous'
         self.app.main_widget.ids.toolbar.height = dp(56)
+
+    def open_previous_coffee_info(self):
+        PreviousDialog().open()
 
     def events_program(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
@@ -288,3 +347,15 @@ class ItemMenu(CircularRippleBehavior, ButtonBehavior, BoxLayout):
 
 class MenuDialog(BoxLayout):
     background = StringProperty()
+
+
+class PreviousDialog(BaseDialog):
+    icon = StringProperty()
+
+    def on_open(self):
+        if not os.path.exists('./assets/Latte-crop.jpg'):
+            crop_image(
+                (int(dp(280)), int(dp(222))),
+                './assets/Latte.jpg',
+                './assets/Latte-crop.jpg')
+            self.ids.previous_image.reload()

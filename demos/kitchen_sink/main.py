@@ -479,7 +479,7 @@ class KitchenSink(App, Screens):
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko'
         )
-        self.demo_apps_list = ['Shop Window', 'Coffee Menu']
+        self.demo_apps_list = ['Shop Window', 'Coffee Menu', 'Fitness Club']
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
@@ -988,7 +988,8 @@ class KitchenSink(App, Screens):
         name_item = name_item.lower()
         {
             'coffee menu': self.show_coffee_menu,
-            'shop window': self.show_shop_window}[name_item]()
+            'shop window': self.show_shop_window,
+            'fitness club': self.show_fitness_club}[name_item]()
         self.main_widget.ids.scr_mngr.current = name_item
         self.instance_menu_demo_apps.dismiss()
 

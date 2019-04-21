@@ -489,6 +489,8 @@ class KitchenSink(App, Screens):
                        self.directory))
 
     def crop_image_for_tile(self, instance, size, path_to_crop_image):
+        """Crop images for Grid screen."""
+
         if not os.path.exists(
                 os.path.join(self.directory, path_to_crop_image)):
             size = (int(size[0]), int(size[1]))
@@ -635,6 +637,9 @@ class KitchenSink(App, Screens):
         toast(args[0])
 
     def add_cards(self, instance_grid_card):
+        """Adds MDCardPost objects to the screen Cards
+        when the screen is open."""
+
         from kivymd.cards import MDCardPost
 
         def callback(instance, value):
@@ -682,6 +687,8 @@ class KitchenSink(App, Screens):
                     buttons=buttons))
 
     def update_screen(self, instance):
+        """Set new label on the screen UpdateSpinner."""
+
         def update_screen(interval):
             self.tick += 1
             if self.tick > 2:
@@ -696,7 +703,6 @@ class KitchenSink(App, Screens):
 
     def build(self):
         self.main_widget = Builder.load_string(main_widget_kv)
-        # self.bottom_navigation_remove_mobile(self.main_widget)
         return self.main_widget
 
     def set_popup_screen(self, content_popup):
@@ -707,16 +713,10 @@ class KitchenSink(App, Screens):
         popup_screen.background_color = [.3, .3, .3, 1]
         popup_screen.max_height = content_popup.ids.image.height + dp(5)
 
-    def bottom_navigation_remove_mobile(self, widget):
-        # Removes some items from bottom-navigation demo when on mobile
-        if DEVICE_TYPE == 'mobile':
-            widget.ids.bottom_navigation_demo.remove_widget(
-                widget.ids.bottom_navigation_desktop_2)
-        if DEVICE_TYPE == 'mobile' or DEVICE_TYPE == 'tablet':
-            widget.ids.bottom_navigation_demo.remove_widget(
-                widget.ids.bottom_navigation_desktop_1)
-
     def show_user_example_animation_card(self):
+        """Create and open instance MDUserAnimationCard
+        for the screen UserCard."""
+
         from kivymd.useranimationcard import MDUserAnimationCard
 
         def main_back_callback():
@@ -732,6 +732,8 @@ class KitchenSink(App, Screens):
         self.user_card.open()
 
     def show_example_snackbar(self, snack_type):
+        """Create and show instance Snackbar for the screen MySnackBar."""
+
         def callback(instance):
             toast(instance.text)
 
@@ -766,6 +768,9 @@ class KitchenSink(App, Screens):
                 anim.start(self.snackbar.ids.button)
 
     def show_example_input_dialog(self):
+        """Creates an instance of the dialog box and displays it
+        on the screen for the screen Dialogs."""
+
         def result(text_button, instance):
             toast(instance.text_field.text)
 

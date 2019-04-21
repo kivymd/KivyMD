@@ -1615,6 +1615,19 @@ class Screens(object):
             self.screen_coffee_menu = CoffeeMenu()
             self.main_widget.ids.scr_mngr.add_widget(self.screen_coffee_menu)
 
+    screen_fitness_club = None
+
+    def show_fitness_club(self):
+        from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+
+        self.main_widget.ids.toolbar.height = 0
+        self.theme_cls.theme_style = 'Dark'
+        self.theme_cls.primary_palette = 'Gray'
+        if not self.screen_fitness_club:
+            Builder.load_string(screen_fitness_club)
+            self.screen_fitness_club = FitnessClub()
+            self.main_widget.ids.scr_mngr.add_widget(self.screen_fitness_club)
+
     bottom_navigation = None
 
     def show_bottom_navigation(self):

@@ -124,7 +124,7 @@ screen_fitness_club = '''
                 height: dp(100)
 
 
-<CustomToolbar@BoxLayout>
+<CustomToolbarForFitness@BoxLayout>
     size_hint_y: None
     height: dp(56)
     spacing: dp(20)
@@ -237,7 +237,7 @@ screen_fitness_club = '''
 
             MainScreen:
 
-                ItemMenu:
+                ItemMenuForFitness:
                     id: facebook
                     source: './assets/facebook-round.png'
                     size_hint: None, None
@@ -245,7 +245,7 @@ screen_fitness_club = '''
                     x: -60
                     y: 50
 
-                ItemMenu:
+                ItemMenuForFitness:
                     id: twitter
                     source: './assets/twitter-round.png'
                     size_hint: None, None
@@ -253,7 +253,7 @@ screen_fitness_club = '''
                     x: app.Window.width
                     y: 50
 
-                CustomToolbar:
+                CustomToolbarForFitness:
                     id: toolbar
                     pos_hint: {'top': 1}
                 
@@ -358,5 +358,5 @@ class FitnessClub(Screen):
         self.app.main_widget.ids.toolbar.height = dp(56)
 
 
-class ItemMenu(CircularRippleBehavior, ButtonBehavior, Image):
+class ItemMenuForFitness(CircularRippleBehavior, ButtonBehavior, Image):
     pass

@@ -42,7 +42,7 @@ screen_coffee_menu = '''
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
 
 
-<PreviousDialog>
+<PreviousDialogCoffee>
     size_hint: None, None
     size: dp(280), dp(420)
 
@@ -326,7 +326,7 @@ class CoffeeMenu(Screen):
         self.app.main_widget.ids.toolbar.height = dp(56)
 
     def open_previous_coffee_info(self):
-        PreviousDialog().open()
+        PreviousDialogCoffee().open()
 
     def events_program(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
@@ -343,7 +343,7 @@ class MenuDialog(BoxLayout):
     background = StringProperty()
 
 
-class PreviousDialog(BaseDialog):
+class PreviousDialogCoffee(BaseDialog):
     icon = StringProperty()
 
     def on_open(self):

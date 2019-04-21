@@ -626,7 +626,7 @@ class KitchenSink(App, Screens):
             ['menu', lambda x: self.root.toggle_nav_drawer()]]
 
     def events(self, instance, keyboard, keycode, text, modifiers):
-        """Called when buttons are pressed on the mobile device.."""
+        """Called when buttons are pressed on the mobile device."""
 
         if keyboard in (1001, 27):
             if self.manager_open:

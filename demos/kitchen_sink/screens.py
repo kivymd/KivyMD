@@ -1031,137 +1031,146 @@ labels = '''
 #:import MDLabel kivymd.label.MDLabel
 
 
+<MyMDLabel@MDLabel>
+    size_hint_y: None
+    height: self.texture_size[1]
+
+
+<MyBoxLayout@BoxLayout>
+    size_hint_y: None
+    height: self.minimum_height
+
+
 <Labels@Screen>
     name: 'labels'
 
     ScrollView:
-        do_scroll_x: False
 
-        BoxLayout:
-            orientation: 'vertical'
+        GridLayout:
+            cols: 1
             size_hint_y: None
-            height: dp(800)
+            height: self.minimum_height
+            spacing: dp(10)
+            padding: dp(10)
 
-            BoxLayout:
+            MyBoxLayout:
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Overline'
                     theme_text_color: 'Primary'
                     text: "Overline label"
                     halign: 'center'
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Caption'
                     theme_text_color: 'Primary'
                     text: "Caption label"
                     halign: 'center'
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Button'
                     theme_text_color: 'Primary'
                     text: "Button label"
                     halign: 'center'
 
-            BoxLayout:
+            MyBoxLayout:
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Body1'
                     theme_text_color: 'Primary'
                     text: "Body1 label"
                     halign: 'center'
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Body2'
                     theme_text_color: 'Primary'
                     text: "Body2 label"
                     halign: 'center'
 
-            BoxLayout:
+            MyBoxLayout:
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Subtitle1'
                     theme_text_color: 'Primary'
                     text: "Subtitle1 label"
                     halign: 'center'
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Subtitle2'
                     theme_text_color: 'Primary'
                     text: "Subtitle2 label"
                     halign: 'center'
 
-            MDLabel:
+            MyMDLabel:
                 font_style: 'H1'
                 theme_text_color: 'Primary'
                 text: "H1 label"
                 halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
+                #size_hint_y: None
+                #height: self.texture_size[1] + dp(4)
 
-            MDLabel:
+            MyMDLabel:
                 font_style: 'H2'
                 theme_text_color: 'Primary'
                 text: "H2 label"
                 halign: 'center'
-                size_hint_y: None
-                height: self.texture_size[1] + dp(4)
+                #size_hint_y: None
+                #height: self.texture_size[1] + dp(4)
 
-            BoxLayout:
+            MyMDLabel:
+                font_style: 'H3'
+                theme_text_color: 'Primary'
+                text: "H3 label"
+                halign: 'center'
 
-                MDLabel:
-                    font_style: 'H3'
-                    theme_text_color: 'Primary'
-                    text: "H3 label"
-                    halign: 'center'
+            MyMDLabel:
+                font_style: 'H4'
+                theme_text_color: 'Primary'
+                text: "H4 label"
+                halign: 'center'
 
-                MDLabel:
-                    font_style: 'H4'
-                    theme_text_color: 'Primary'
-                    text: "H4 label"
-                    halign: 'center'
+            MyBoxLayout:
 
-            BoxLayout:
-
-                MDLabel:
+                MyMDLabel:
                     font_style: 'H5'
                     theme_text_color: 'Primary'
                     text: "H5 label"
                     halign: 'center'
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'H6'
                     theme_text_color: 'Primary'
                     text: "H6 label"
                     halign: 'center'
 
-            BoxLayout:
+            MyBoxLayout:
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Body1'
                     theme_text_color: 'Primary'
                     text: "Primary color"
                     halign: 'center'
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Body1'
                     theme_text_color: 'Secondary'
                     text: "Secondary color"
                     halign: 'center'
 
-            BoxLayout:
+            MyBoxLayout:
 
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Body1'
                     theme_text_color: 'Hint'
                     text: "Hint color"
                     halign: 'center'
-                MDLabel:
+                MyMDLabel:
                     font_style: 'Body1'
                     theme_text_color: 'Error'
                     text: "Error color"
                     halign: 'center'
 
-            MDLabel:
+            MyMDLabel:
                 font_style: 'Body1'
                 theme_text_color: 'Custom'
                 text_color: (0,1,0,.4)

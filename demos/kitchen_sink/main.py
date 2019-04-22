@@ -129,7 +129,7 @@ main_widget_kv = '''
         text: "Call Viber Out"
         on_press: root.callback(self.text)
         secondary_text:
-            "[color=%s]Advantageous rates for calls[/color]"\
+            "[color=%s]Advantageous rates for calls[/color]" \
             % get_hex_from_color(app.theme_cls.primary_color)
         # FIXME: Don't work "secondary_text_color" parameter
         # secondary_text_color: app.theme_cls.primary_color
@@ -141,7 +141,7 @@ main_widget_kv = '''
         text: "Call over mobile network"
         on_press: root.callback(self.text)
         secondary_text:
-            "[color=%s]Operator's tariffs apply[/color]"\
+            "[color=%s]Operator's tariffs apply[/color]" \
             % get_hex_from_color(app.theme_cls.primary_color)
 
         IconLeftSampleWidget:
@@ -460,26 +460,26 @@ class KitchenSink(App, Screens):
         self.tick = 0
         self.create_stack_floating_buttons = False
         self.previous_text = \
-            "Welcome to the application [b][color={COLOR}]Kitchen Sink"\
-            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] "\
-            "examples, open the menu and select from the list the desired "\
+            "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
+            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
+            "examples, open the menu and select from the list the desired " \
             "example or".format(COLOR=get_hex_from_color(
                 self.theme_cls.primary_color))
         self.previous_text_end = \
-            "for show example apps\n\n"\
-            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n"\
-            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]"\
-            "[/b][/u]\n\n"\
-            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n"\
-            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]"\
+            "for show example apps\n\n" \
+            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
+            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
+            "[/b][/u]\n\n" \
+            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
+            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
             "[/b][u]".format(COLOR=get_hex_from_color(
                 self.theme_cls.primary_color))
         self.names_contacts = (
             'Alexandr Taylor', 'Yuri Ivanov', 'Robert Patric', 'Bob Marley',
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
-            'Sasha Gray', 'Vladimir Ivanenko'
-        )
-        self.demo_apps_list = ['Shop Window', 'Coffee Menu', 'Fitness Club']
+            'Sasha Gray', 'Vladimir Ivanenko')
+        self.demo_apps_list = [
+            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
@@ -994,6 +994,7 @@ class KitchenSink(App, Screens):
         {
             'coffee menu': self.show_coffee_menu,
             'shop window': self.show_shop_window,
+            'registration': self.show_registration_form_one,
             'fitness club': self.show_fitness_club}[name_item]()
         self.main_widget.ids.scr_mngr.current = name_item
         self.instance_menu_demo_apps.dismiss()

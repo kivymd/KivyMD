@@ -1594,6 +1594,18 @@ class Screens(object):
 
         self.main_widget.ids.scr_mngr.current = 'manager swiper'
 
+    registration_form_one = None
+
+    def show_registration_form_one(self):
+        from demo_apps.formone import registration_form_one, FormOne
+
+        self.main_widget.ids.toolbar.height = 0
+        self.theme_cls.primary_palette = 'Amber'
+        if not self.registration_form_one:
+            Builder.load_string(registration_form_one)
+            self.registration_form_one = FormOne()
+            self.main_widget.ids.scr_mngr.add_widget(self.registration_form_one)
+
     screen_shop_window = None
 
     def show_shop_window(self):

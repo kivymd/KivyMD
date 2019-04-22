@@ -51,7 +51,13 @@ Builder.load_string('''
             size_hint_y: None
             height: self.minimum_height
             padding: dp(48)
-            spacing: 10
+            spacing: dp(15)
+
+            MDTextFieldRound:
+                hint_text: 'Password'
+                icon: 'lock-outline'
+                active_color: [0, 0, 0, .2]
+                normal_color: [0, 0, 0, .5]
 
             MDTextField:
                 hint_text: "No helper text"
@@ -66,10 +72,13 @@ Builder.load_string('''
                 helper_text: "Text is always here"
                 helper_text_mode: "persistent"
 
+            Widget:
+                size_hint_y: None
+                height: dp(5)
+
             MDTextField:
                 id: text_field_error
-                hint_text:
-                    "Helper text on error (Hit Enter with two characters here)"
+                hint_text: "Helper text on error (Hit Enter with  two characters here)"
                 helper_text: "Two is my least favorite number"
                 helper_text_mode: "on_error"
 
@@ -96,11 +105,8 @@ Builder.load_string('''
                 hint_text: "color_mode = \'custom\'"
                 color_mode: 'custom'
                 helper_text_mode: "on_focus"
-                helper_text:
-                    "Color is defined by \'line_color_focus\' property"
-                line_color_focus:
-                    # This is the color used by the textfield
-                    self.theme_cls.opposite_bg_normal
+                helper_text: "Color is defined by \'line_color_focus\' property"
+                line_color_focus: self.theme_cls.opposite_bg_normal
 
             MDTextField:
                 hint_text: "disabled = True"
@@ -108,8 +114,12 @@ Builder.load_string('''
 
             MDTextFieldRect:
                 size_hint: None, None
-                size: root.width - dp(40), dp(30)
-                pos_hint: {'center_x': .5}
+                size: app.Window.width - dp(40), dp(30)
+                pos_hint: {'center_y': .5, 'center_x': .5}
+
+            Widget:
+                size_hint_y: None
+                height: dp(5)
 
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"
@@ -137,8 +147,9 @@ from kivy.animation import Animation
 from kivy.graphics.context_instructions import Color
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty, \
-    OptionProperty, ListProperty
+    OptionProperty, ListProperty, ObjectProperty
 from kivy.metrics import dp
 from kivy.metrics import sp
 
@@ -258,6 +269,42 @@ Builder.load_string('''
                 self.x - dp(60), self.top + dp(60),
                 self.x - dp(60), self.y - dp(60)
                 )
+
+<MDTextFieldRound>
+    size_hint: None, None
+    height: dp(48)
+    pos_hint: {'center_x': .5}
+    _instance_icon: icon
+
+    canvas:
+        Color:
+            rgba: root._current_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [25,]
+
+    TextInput:
+        background_active: '{}transparent.png'.format(images_path)
+        background_normal: '{}transparent.png'.format(images_path)
+        multiline: False
+        padding_y: dp(15)
+        padding_x: dp(25)
+        cursor_color: root.cursor_color
+        foreground_color: root.foreground_color
+        hint_text: root.hint_text
+        selection_color: root.selection_color
+        hint_text_color: root.hint_text_color
+        on_focus:
+            root._current_color = root.active_color \
+            if self.focus else root.normal_color
+                
+    MDIconButton:
+        id: icon
+        icon: root.icon
+        disabled: True
+        theme_text_color: 'Custom'
+        text_color: root.icon_color
 ''')
 
 
@@ -639,3 +686,27 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     def on_line_color_focus(self, *args):
         if self.color_mode == "custom":
             self._update_colors(self.line_color_focus)
+
+
+class MDTextFieldRound(ThemableBehavior, BoxLayout):
+    width = NumericProperty(Window.width - dp(100))
+    icon = StringProperty('email-outline')
+    hint_text = StringProperty()
+    icon_color = StringProperty([1, 1, 1, 1])
+    active_color = ListProperty([1, 1, 1, .2])
+    normal_color = ListProperty([1, 1, 1, .5])
+    foreground_color = ListProperty([1, 1, 1, 1])
+    hint_text_color = ListProperty([0.5, 0.5, 0.5, 1.0])
+    cursor_color = ListProperty()
+    selection_color = ListProperty()
+    _current_color = ListProperty()
+    _instance_icon = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(MDTextFieldRound, self).__init__(**kwargs)
+        if not(len(self.cursor_color)):
+            self.cursor_color = self.theme_cls.primary_color
+        if not(len(self.selection_color)):
+            self.selection_color = self.theme_cls.primary_color
+            self.selection_color[3] = .75
+        self._current_color = self.normal_color

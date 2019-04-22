@@ -31,48 +31,12 @@ registration_form_one = '''
 #:import images_path kivymd.images_path
 #:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
 #:import MDLabel kivymd.label.MDLabel
+#:import MDTextFieldRound kivymd.textfields.MDTextFieldRound
 
 
 <ButtonRound@ButtonRoundForForm>
     size_hint: None, None
     size: dp(50), dp(50)
-
-
-<TextFieldRound@BoxLayout>
-    size_hint: None, None
-    height: dp(48)
-    width: app.Window.width - dp(100)
-    pos_hint: {'center_x': .5}
-    icon: 'email-outline'
-    hint_text: ''
-    _active_color: [1, 1, 1, .5]
-
-    canvas:
-        Color:
-            rgba: root._active_color
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius: [25,]
-
-    TextInput:
-        background_active: '{}transparent.png'.format(images_path)
-        background_normal: '{}transparent.png'.format(images_path)
-        multiline: False
-        padding_y: dp(15)
-        padding_x: dp(25)
-        cursor_color: app.theme_cls.primary_color
-        foreground_color: 1, 1, 1, 1
-        hint_text: root.hint_text
-        selection_color: 1, .7568627450980392, .027450980392156862, .3
-        on_focus:
-            root._active_color = [1, 1, 1, .2] if self.focus else [1, 1, 1, .5]
-                
-    MDIconButton:
-        icon: root.icon
-        disabled: True
-        theme_text_color: 'Custom'
-        text_color: 1, 1, 1, 1
 
 
 <CircleWidget@Widget>
@@ -151,10 +115,10 @@ registration_form_one = '''
             pos_hint: {'center_x': .5}
             y: box_top.height - dp(50)
 
-            TextFieldRound:
+            MDTextFieldRound:
                 id: field_mail
                 hint_text: 'Emai'
-            TextFieldRound:
+            MDTextFieldRound:
                 id: field_password
                 hint_text: 'Password'
                 icon: 'lock-outline'

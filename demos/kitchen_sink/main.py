@@ -954,10 +954,11 @@ class KitchenSink(App, Screens):
         """Checks text of TextField with type "on_error"
         for the screen TextFields."""
 
-        if len(self.root.ids.text_field_error.text) == 2:
-            self.root.ids.text_field_error.error = True
+        text_field_error = args[0]
+        if len(text_field_error.text) == 2:
+            text_field_error.error = True
         else:
-            self.root.ids.text_field_error.error = False
+            text_field_error.error = False
 
     def set_list_md_icons(self, text='', search=False):
         """Builds a list of icons for the screen MDIcons."""

@@ -642,6 +642,13 @@ textfields = '''
 <TextFields@Screen>
     name: 'textfields'
 
+    canvas:
+        Color:
+            rgba: 0, 0, 0, .2
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     ScrollView:
 
         BoxLayout:
@@ -654,8 +661,6 @@ textfields = '''
             MDTextFieldRound:
                 hint_text: 'Password'
                 icon: 'lock-outline'
-                active_color: [0, 0, 0, .2]
-                normal_color: [0, 0, 0, .5]
 
             MDTextField:
                 hint_text: "No helper text"

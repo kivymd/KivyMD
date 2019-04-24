@@ -274,7 +274,7 @@ class CoffeeMenu(Screen):
     menu_open = False
 
     def __init__(self, **kw):
-        super(CoffeeMenu, self).__init__(**kw)
+        super().__init__(**kw)
         Window.bind(on_keyboard=self.events_program)
 
     def on_enter(self, *args):

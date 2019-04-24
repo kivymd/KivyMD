@@ -352,8 +352,7 @@ class FitnessClub(Screen):
         Clock.schedule_once(lambda x: anim_item(self.ids.about), .25)
 
     def back_to_previous_screen(self):
-        self.app.theme_cls.primary_palette = 'Blue'
-        self.app.theme_cls.theme_style = 'Light'
+        self.app.theme_cls.primary_palette = 'BlueGray'
         self.app.main_widget.ids.scr_mngr.current = 'previous'
         self.app.main_widget.ids.toolbar.height = dp(56)
 

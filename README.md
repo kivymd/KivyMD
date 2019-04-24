@@ -32,6 +32,7 @@ Installation and use with Buildozer
 #### Dependencies:
 * Kivy version is not less than 1.10.1
 * PIL
+* Python 3 (Python 2 not supported)
 
 #### How to install
 
@@ -60,7 +61,7 @@ Build two apk armv7 (Python2 and Python3) with Docker
 #### And check result apk in the Docker container:
     $ls *.apk
 
-What's new in version 0.97.3:
+What's new in version 0.98.0:
 ============================
 * Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=6U59VsRGRNE), [Fitness Club](https://www.youtube.com/watch?v=x7Tn5vu-5FY), [Registration Form](https://www.youtube.com/watch?v=h4ntfEkvpxU)
 * Added new class [MDTextFieldRound](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFieldRound)

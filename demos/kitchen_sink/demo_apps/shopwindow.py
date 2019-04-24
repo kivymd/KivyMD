@@ -203,7 +203,7 @@ screen_shop_window = '''
         canvas.before:
             Color:
                 rgba:
-                    1, 1, 1, 1
+                    app.theme_cls.bg_light
             Rectangle:
                 pos: self.pos
                 size: self.size

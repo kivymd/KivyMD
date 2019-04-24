@@ -55,6 +55,7 @@ def toast(text):
 
 
 main_widget_kv = '''
+#:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
 #:import MDToolbar kivymd.toolbar.MDToolbar
@@ -383,7 +384,7 @@ NavigationLayout:
                 FloatLayout:
 
                     Image:
-                        source: '{}kivymd_logo.png'.format(images_path)
+                        source: '/Users/macbookair/Projects/KivyMD/kivy-logo-white-512.png'#'{}kivymd_logo.png'.format(images_path)
                         opacity: .3
 
                     BoxLayout:
@@ -425,10 +426,11 @@ NavigationLayout:
 
 class KitchenSink(App, Screens):
     theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    theme_cls.primary_palette = 'BlueGray'
+    theme_cls.accent_palette = 'Gray'
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
-    # theme_cls.theme_style = 'Dark'
+    theme_cls.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
         super(KitchenSink, self).__init__(**kwargs)
@@ -479,7 +481,8 @@ class KitchenSink(App, Screens):
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko')
         self.demo_apps_list = [
-            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
+            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration',
+            'Swipe Cards']
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
@@ -994,6 +997,7 @@ class KitchenSink(App, Screens):
         name_item = name_item.lower()
         {
             'coffee menu': self.show_coffee_menu,
+            'swipe cards': self.show_swipe_cards,
             'shop window': self.show_shop_window,
             'registration': self.show_registration_form_one,
             'fitness club': self.show_fitness_club}[name_item]()

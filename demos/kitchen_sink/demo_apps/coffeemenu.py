@@ -321,7 +321,7 @@ class CoffeeMenu(Screen):
         if self.menu_open:
             self.menu_open = False
             self.hide_menu_list_animation()
-        self.app.theme_cls.primary_palette = 'Blue'
+        self.app.theme_cls.primary_palette = 'BlueGray'
         self.app.main_widget.ids.scr_mngr.current = 'previous'
         self.app.main_widget.ids.toolbar.height = dp(56)
 

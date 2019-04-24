@@ -1,5 +1,13 @@
-# -*- coding: utf-8 -*-
+"""
+Copyright (c) 2019 Ivanov Yuri
 
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+"""
 
 def crop_image(size_screen, path_to_image, path_to_save_crop_image,
                corner=False):

@@ -1,18 +1,15 @@
-# -*- coding: utf-8 -*-
+"""
+KivyToast
+=========
 
-''' 
-Разработано специально для проекта VKGroups -
-https://github.com/HeaTTheatR/VKGroups
+Copyright (c) 2019 Ivanov Yuri
 
-Copyright © 2010-2018 HeaTTheatR
-
-Для предложений и вопросов:
+For suggestions and questions:
 <kivydevelopment@gmail.com>
 
-Данный файл распространяется по услолвиям той же лицензии,
-что и фреймворк Kivy.
-
-'''
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
 from kivy.core.window import Window
 from kivy.uix.label import Label
@@ -38,7 +35,7 @@ Builder.load_string("""
 
 class Toast(ModalView):
     def __init__(self, **kwargs):
-        super(Toast, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.size_hint = (None, None)
         self.pos_hint = {'center_x': .5, 'center_y': .1}
         self.background_color = [0, 0, 0, 0]

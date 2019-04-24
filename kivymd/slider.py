@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Sliders
 =======
@@ -175,7 +173,7 @@ class MDSlider(ThemableBehavior, Slider):
     _thumb_pos = ListProperty([0, 0])
 
     def __init__(self, **kwargs):
-        super(MDSlider, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.theme_cls.bind(theme_style=self._set_colors,
                      primary_color=self._set_colors,
                      primary_palette=self._set_colors)
@@ -223,11 +221,11 @@ class MDSlider(ThemableBehavior, Slider):
         self._offset = (dp(11+d), dp(11+d)) if self._is_off else (0, 0)
 
     def on_touch_down(self, touch):
-        if super(MDSlider, self).on_touch_down(touch):
+        if super().on_touch_down(touch):
             self.active = True
 
     def on_touch_up(self, touch):
-        if super(MDSlider, self).on_touch_up(touch):
+        if super().on_touch_up(touch):
             self.active = False
 #             thumb = self.ids['thumb']
 #             if thumb.collide_point(*touch.pos):

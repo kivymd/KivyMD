@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 MDToolbar
 =======
@@ -189,7 +187,7 @@ class MDToolbar(ThemableBehavior, RectangularElevationBehavior,
     anchor_title = StringProperty('left')
 
     def __init__(self, **kwargs):
-        super(MDToolbar, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items))
@@ -232,7 +230,7 @@ class MDBottomAppBar(FloatLayout):
     callback = ObjectProperty(lambda x: None)
 
     def __init__(self, **kwargs):
-        super(MDBottomAppBar, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         # Default action Button.
         x = Window.width - dp(56) - dp(20) if self.anchor == 'right'\
             else Window.width // 2 - dp(56) // 2 if self.anchor == 'center'\

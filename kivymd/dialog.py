@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Dialog
 ======
@@ -281,7 +279,7 @@ class MDInputDialog(BaseDialog):
     _background = StringProperty('{}ios_bg_mod.png'.format(images_path))
 
     def __init__(self, **kwargs):
-        super(MDInputDialog, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.content_dialog = ContentInputDialog(
             title=self.title,
@@ -306,7 +304,7 @@ class MDDialog(BaseDialog):
     _background = StringProperty('{}ios_bg_mod.png'.format(images_path))
 
     def __init__(self, **kwargs):
-        super(MDDialog, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         content_dialog = ContentMDDialog(
             title=self.title, text=self.text,
             text_button_ok=self.text_button_ok,

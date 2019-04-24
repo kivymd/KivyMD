@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Spinner
 =======
@@ -83,7 +81,7 @@ class MDSpinner(ThemableBehavior, Widget):
     _angle_end = NumericProperty(8)
 
     def __init__(self, **kwargs):
-        super(MDSpinner, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.color = self.theme_cls.primary_color
         self._alpha_anim_in = Animation(_alpha=1, duration=.8, t='out_quad')
         self._alpha_anim_out = Animation(_alpha=0, duration=.3, t='out_quad')

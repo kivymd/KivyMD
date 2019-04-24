@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 File Manager
 ============
@@ -61,7 +59,7 @@ class Example(App):
     title = "File Manage"
 
     def __init__(self, **kwargs):
-        super(Example, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         Window.bind(on_keyboard=self.events)
         self.manager_open = False
         self.manager = None
@@ -403,7 +401,7 @@ class ModifiedOneLineListItem(ModifiedBaseListItem):
     _num_lines = 1
 
     def __init__(self, **kwargs):
-        super(ModifiedOneLineListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(48)
 
 
@@ -426,27 +424,27 @@ class ContainerSupport:
             self.ids['_right_container'].add_widget(widget)
             self._touchable_widgets.append(widget)
         else:
-            return super(ModifiedBaseListItem, self).add_widget(widget)
+            return super().add_widget(widget)
 
     def remove_widget(self, widget):
-        super(ModifiedBaseListItem, self).remove_widget(widget)
+        super().remove_widget(widget)
         if widget in self._touchable_widgets:
             self._touchable_widgets.remove(widget)
 
     def on_touch_down(self, touch):
         if self.propagate_touch_to_touchable_widgets(touch, 'down'):
             return
-        super(ModifiedBaseListItem, self).on_touch_down(touch)
+        super().on_touch_down(touch)
 
     def on_touch_move(self, touch, *args):
         if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
             return
-        super(ModifiedBaseListItem, self).on_touch_move(touch, *args)
+        super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
         if self.propagate_touch_to_touchable_widgets(touch, 'up'):
             return
-        super(ModifiedBaseListItem, self).on_touch_up(touch)
+        super().on_touch_up(touch)
 
     def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
         triggered = False
@@ -554,7 +552,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
     '''Shows only image previews.'''
 
     def __init__(self, **kwargs):
-        super(MDFileManager, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.history = []  # directory navigation history
         # If False - do not add a directory to the history -
         # The user moves down the tree.

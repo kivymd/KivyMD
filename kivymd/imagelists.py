@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Grid
 ====
@@ -303,7 +301,7 @@ class SmartTile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
         elif issubclass(widget.__class__, IBoxOverlay):
             self._box_overlay.add_widget(widget, index, canvas)
         else:
-            super(SmartTile, self).add_widget(widget, index, canvas)
+            super().add_widget(widget, index, canvas)
 
 
 class SmartTileWithLabel(SmartTile):

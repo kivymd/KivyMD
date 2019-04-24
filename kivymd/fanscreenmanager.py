@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Fan Screen Manager
 ==================
@@ -285,7 +283,7 @@ class MDFanScreen(BoxLayout):
     name = StringProperty('')
 
     def __init__(self, **kwargs):
-        super(MDFanScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.register_event_type('on_enter')
 
     def on_enter(self, *args):
@@ -298,4 +296,4 @@ class MDFanScreen(BoxLayout):
                 self.dispatch('on_enter')
                 return True
             else:
-                return super(MDFanScreen, self).on_touch_down(touch)
+                return super().on_touch_down(touch)

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Stack Floating Buttons
 ======================
@@ -158,7 +156,7 @@ class MDStackFloatingButtons(FloatLayout):
     in_progress = False
 
     def __init__(self, **kwargs):
-        super(MDStackFloatingButtons, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.lbl_list = [self.ids.f_lbl_1, self.ids.f_lbl_2, self.ids.f_lbl_3]
         self.btn_list = [self.ids.f_btn_1, self.ids.f_btn_2, self.ids.f_btn_3]

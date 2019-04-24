@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Snackbars
 =========
@@ -218,7 +216,7 @@ class Snackbar(FloatLayout):
     _interval = 0
 
     def __init__(self, **kwargs):
-        super(Snackbar, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if self.button_text != '':
             button = MDFlatButton(text=self.button_text)
             self.ids.box.add_widget(button)

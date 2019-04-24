@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
+"""
+Toast
+=====
 
-''' 
-Разработано специально для проекта VKGroups -
-https://github.com/HeaTTheatR/VKGroups
+Copyright (c) 2013 Brian Knapp - androidtoast module
+Copyright (c) 2019 Ivanov Yuri - kivytoast module
 
-Copyright © 2010-2018 HeaTTheatR
-
-Для предложений и вопросов:
+For suggestions and questions:
 <kivydevelopment@gmail.com>
 
-Данный файл распространяется по услолвиям той же лицензии,
-что и фреймворк Kivy.
-
-'''
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
 from kivy import platform
 

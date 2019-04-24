@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Bottom Sheets
 =============
@@ -105,10 +103,10 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     gl_content = ObjectProperty()
 
     def open(self, *largs):
-        super(MDBottomSheet, self).open(*largs)
+        super().open(*largs)
 
     def add_widget(self, widget, index=0, canvas=None):
-        super(MDBottomSheet, self).add_widget(widget, index, canvas)
+        super().add_widget(widget, index, canvas)
 
 
 Builder.load_string('''
@@ -132,7 +130,7 @@ class MDListBottomSheet(MDBottomSheet):
     mlist = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(MDListBottomSheet, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.mlist = MDList()
         self.gl_content.add_widget(self.mlist)
         Clock.schedule_once(self.resize_content_layout, 0)
@@ -180,7 +178,7 @@ class GridBSItem(ButtonBehavior, BoxLayout):
 
 class MDGridBottomSheet(MDBottomSheet):
     def __init__(self, **kwargs):
-        super(MDGridBottomSheet, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.gl_content.padding = (dp(16), 0, dp(16), dp(24))
         self.gl_content.height = dp(24)
         self.gl_content.cols = 3

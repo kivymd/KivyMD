@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Elevation Behavior
 ==================
@@ -85,7 +83,7 @@ class CommonElevationBehavior(object):
     _hard_shadow_a = NumericProperty(0)
 
     def __init__(self, **kwargs):
-        super(CommonElevationBehavior, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.bind(elevation=self._update_shadow,
                   pos=self._update_shadow,
                   size=self._update_shadow)
@@ -143,7 +141,7 @@ class RectangularElevationBehavior(CommonElevationBehavior):
 
 class CircularElevationBehavior(CommonElevationBehavior):
     def __init__(self, **kwargs):
-        super(CircularElevationBehavior, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._shadow = App.get_running_app().theme_cls.round_shadow
 
     def _update_shadow(self, *args):

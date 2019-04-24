@@ -384,7 +384,7 @@ class NavigationDrawer(StencilView):
     '''
 
     def __init__(self, **kwargs):
-        super(NavigationDrawer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         Clock.schedule_once(self.on__main_above, 0)
 
     def on_side_panel_positioning(self, *args):
@@ -465,13 +465,13 @@ class NavigationDrawer(StencilView):
 
     def add_widget(self, widget, **kwargs):
         if len(self.children) == 0:
-            super(NavigationDrawer, self).add_widget(widget)
+            super().add_widget(widget)
             self._side_panel = widget
         elif len(self.children) == 1:
-            super(NavigationDrawer, self).add_widget(widget)
+            super().add_widget(widget)
             self._main_panel = widget
         elif len(self.children) == 2:
-            super(NavigationDrawer, self).add_widget(widget)
+            super().add_widget(widget)
             self._join_image = widget
         elif self.side_panel is None:
             self._side_panel.add_widget(widget)
@@ -646,7 +646,7 @@ class NavigationDrawer(StencilView):
             if self._anim_progress < 0.975:
                 touch.ud['panels_jiggled'] = True
         else:
-            super(NavigationDrawer, self).on_touch_move(touch)
+            super().on_touch_move(touch)
             return
 
     def on_touch_up(self, touch):
@@ -665,7 +665,7 @@ class NavigationDrawer(StencilView):
         elif self._side_panel.collide_point(*touch.pos):
             return
         else:
-            super(NavigationDrawer, self).on_touch_up(touch)
+            super().on_touch_up(touch)
             return
 
     def _anim_relax(self):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Circular Date & Time Picker for Kivy
 ====================================
@@ -280,7 +278,7 @@ class CircularNumberPicker(CircularLayout):
         self.bind(min=self._trigger_genitems,
                   max=self._trigger_genitems,
                   multiples_of=self._trigger_genitems)
-        super(CircularNumberPicker, self).__init__(**kw)
+        super().__init__(**kw)
         self.selected = self.min
         self.bind(selected=self.on_selected,
                   pos=self.on_selected,
@@ -344,14 +342,14 @@ class CircularNumberPicker(CircularLayout):
 
     def on_touch_move(self, touch):
         if touch.grab_current is not self:
-            return super(CircularNumberPicker, self).on_touch_move(touch)
+            return super().on_touch_move(touch)
         self.selected = self.number_at_pos(*touch.pos)
         if self.selected == 60:
             self.selected = 0
 
     def on_touch_up(self, touch):
         if touch.grab_current is not self:
-            return super(CircularNumberPicker, self).on_touch_up(touch)
+            return super().on_touch_up(touch)
         touch.ungrab(self)
 
     def on_selected(self, *a):
@@ -457,7 +455,7 @@ class CircularMinutePicker(CircularNumberPicker):
     """
 
     def __init__(self, **kw):
-        super(CircularMinutePicker, self).__init__(**kw)
+        super().__init__(**kw)
         self.min = 0
         self.max = 60
         self.multiples_of = 5
@@ -478,7 +476,7 @@ class CircularHourPicker(CircularNumberPicker):
     # military = BooleanProperty(False)
 
     def __init__(self, **kw):
-        super(CircularHourPicker, self).__init__(**kw)
+        super().__init__(**kw)
         self.min = 1
         self.max = 13
         # 25 if self.military else 13
@@ -642,7 +640,7 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
                               bind=("hours", "ampm_format", "_am"))
 
     def __init__(self, **kw):
-        super(CircularTimePicker, self).__init__(**kw)
+        super().__init__(**kw)
         self.selector_color = self.theme_cls.primary_color[0], \
                               self.theme_cls.primary_color[1], \
                               self.theme_cls.primary_color[2]
@@ -720,7 +718,7 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
             self.h_picker_touch = False
         else:
             self.h_picker_touch = True
-        super(CircularTimePicker, self).on_touch_down(touch)
+        super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
         try:
@@ -732,7 +730,7 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
                         self.picker = "minutes"
         except AttributeError:
             pass
-        super(CircularTimePicker, self).on_touch_up(touch)
+        super().on_touch_up(touch)
 
     def _switch_picker(self, *a, **kw):
         noanim = "noanim" in kw

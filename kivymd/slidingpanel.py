@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Sliding Panel
 =============
@@ -58,7 +56,7 @@ class SlidingPanel(BoxLayout):
     _open = False
 
     def __init__(self, **kwargs):
-        super(SlidingPanel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.shadow = PanelShadow()
         Clock.schedule_once(lambda x: Window.add_widget(self.shadow, 89), 0)
         Clock.schedule_once(lambda x: Window.add_widget(self, 90), 0)
@@ -99,12 +97,12 @@ class SlidingPanel(BoxLayout):
 
     def on_touch_down(self, touch):
         # Prevents touch events from propagating to anything below the widget.
-        super(SlidingPanel, self).on_touch_down(touch)
+        super().on_touch_down(touch)
         if self.collide_point(*touch.pos) or self._open:
             return True
 
     def on_touch_up(self, touch):
-        super(SlidingPanel, self).on_touch_up(touch)
+        super().on_touch_up(touch)
         if not self.collide_point(touch.x, touch.y) and self._open:
             self.toggle()
         return True

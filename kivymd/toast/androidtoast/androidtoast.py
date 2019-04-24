@@ -1,17 +1,15 @@
-# -*- coding: utf-8 -*-
+"""
+AndroidToast
+============
 
-'''
-VKGroups
+Copyright (c) 2013 Brian Knapp
 
-Copyright © 2010-2018 HeaTTheatR
-
-Для предложений и вопросов:
+For suggestions and questions:
 <kivydevelopment@gmail.com>
 
-Данный файл распространяется по услолвиям той же лицензии,
-что и фреймворк Kivy.
-
-'''
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
 from kivy.logger import Logger
 from jnius import autoclass, PythonJavaClass, java_method, cast

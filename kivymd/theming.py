@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Theming
 =======
@@ -317,7 +315,7 @@ class ThemeManager(Widget):
                                 'Icon': ['Icons', 24, False, 0]})
 
     def __init__(self, **kwargs):
-        super(ThemeManager, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.rec_shadow = Atlas('{}rec_shadow.atlas'.format(images_path))
         self.rec_st_shadow = Atlas('{}rec_st_shadow.atlas'.format(images_path))
         self.quad_shadow = Atlas('{}quad_shadow.atlas'.format(images_path))
@@ -339,4 +337,4 @@ class ThemableBehavior(object):
             self.theme_cls = App.get_running_app().theme_cls
         else:
             self.theme_cls = ThemeManager()
-        super(ThemableBehavior, self).__init__(**kwargs)
+        super().__init__(**kwargs)

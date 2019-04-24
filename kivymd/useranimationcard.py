@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 User Animation Card
 ===================
@@ -81,7 +79,7 @@ class Example(App):
     title = "Example Animation Card"
 
     def __init__(self, **kwargs):
-        super(Example, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.user_animation_card = None
 
     def build(self):
@@ -227,7 +225,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
     _anim_bottom = True
 
     def __init__(self, **kwargs):
-        super(MDUserAnimationCard, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._primary_color = self.theme_cls.primary_color
         self._primary_color[3] = 0
         self.user_animation_card = UserAnimationCard(
@@ -272,7 +270,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
 
     def on_touch_down(self, touch):
         touch.ud['swipe_begin'] = touch.y
-        return super(MDUserAnimationCard, self).on_touch_down(touch)
+        return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
         touch.ud['swipe_begin'] = 0
@@ -319,7 +317,7 @@ class ModifiedToolbar(ThemableBehavior, SpecificBackgroundColorBehavior,
     title = StringProperty()
 
     def __init__(self, **kwargs):
-        super(ModifiedToolbar, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items))

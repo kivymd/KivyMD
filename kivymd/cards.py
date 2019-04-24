@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Cards
 =====
@@ -296,7 +294,7 @@ class MDSeparator(ThemableBehavior, BoxLayout):
     """A separator line"""
 
     def __init__(self, **kwargs):
-        super(MDSeparator, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.on_orientation()
 
     def on_orientation(self, *args):
@@ -371,7 +369,7 @@ class MDCardPost(BoxLayout):
     _shift_x = 10
 
     def __init__(self, **kwargs):
-        super(MDCardPost, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.card_shifted = None
 
         # ---------------------------------------------------------------------
@@ -446,12 +444,12 @@ class MDCardPost(BoxLayout):
                         if widget.state == 'open':
                             return
                 self.shift_post_left()
-        return super(MDCardPost, self).on_touch_move(touch)
+        return super().on_touch_move(touch)
 
     def on_touch_down(self, touch):
         if self.swipe and self.card_shifted:
             Clock.schedule_once(self.shift_post_right, .1)
-        return super(MDCardPost, self).on_touch_down(touch)
+        return super().on_touch_down(touch)
 
     def shift_post_left(self):
         def on_anim_complete(*args):

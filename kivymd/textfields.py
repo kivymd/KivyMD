@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Text Fields
 ===========
@@ -312,7 +310,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
     _primary_color = ListProperty([0, 0, 0, 0])
 
     def __init__(self, **kwargs):
-        super(MDTextFieldRect, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._update_primary_color()
         self.theme_cls.bind(primary_color=self._update_primary_color)
         self.root_color = Color()
@@ -435,7 +433,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         self._hint_lbl = TextfieldLabel(font_style='Subtitle1',
                                         halign='left',
                                         valign='middle')
-        super(MDTextField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.line_color_normal = self.theme_cls.divider_color
         self.line_color_focus = self.theme_cls.primary_color
         self.error_color = self.theme_cls.error_color
@@ -703,7 +701,7 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     _instance_icon = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(MDTextFieldRound, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if not(len(self.cursor_color)):
             self.cursor_color = self.theme_cls.primary_color
         if not(len(self.selection_color)):

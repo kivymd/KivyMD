@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Progress Loader
 ===============
@@ -59,7 +57,7 @@ class Test(App):
     theme_cls = ThemeManager()
 
     def __init__(self, **kwargs):
-        super(Test, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def build(self):
         self.main_widget = Factory.Root()
@@ -174,7 +172,7 @@ class MDProgressLoader(MDCard):
     '''If True - the download process is in progress.'''
 
     def __init__(self, **kwargs):
-        super(MDProgressLoader, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.root_instance = None
 
     def start(self, root_instance):

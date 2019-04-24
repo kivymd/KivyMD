@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Ripple Behavior
 ===============
@@ -68,7 +66,7 @@ class CommonRipple(object):
             self.lay_canvas_instructions()
             self.finish_rad = max(self.width, self.height) * self.ripple_scale
             self.start_ripple()
-        return super(CommonRipple, self).on_touch_down(touch)
+        return super().on_touch_down(touch)
 
     def lay_canvas_instructions(self):
         raise NotImplementedError
@@ -77,12 +75,12 @@ class CommonRipple(object):
         if not self.collide_point(touch.x, touch.y):
             if not self.finishing_ripple and self.doing_ripple:
                 self.finish_ripple()
-        return super(CommonRipple, self).on_touch_move(touch, *args)
+        return super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
         if self.collide_point(touch.x, touch.y) and self.doing_ripple:
             self.finish_ripple()
-        return super(CommonRipple, self).on_touch_up(touch)
+        return super().on_touch_up(touch)
 
     def start_ripple(self):
         if not self.doing_ripple:
@@ -150,7 +148,7 @@ class RectangularRippleBehavior(CommonRipple):
                   ripple_rad=self._set_ellipse)
 
     def _set_ellipse(self, instance, value):
-        super(RectangularRippleBehavior, self)._set_ellipse(instance, value)
+        super()._set_ellipse(instance, value)
         self.ellipse.pos = (self.ripple_pos[0] - self.ripple_rad / 2.,
                             self.ripple_pos[1] - self.ripple_rad / 2.)
 
@@ -179,7 +177,7 @@ class CircularRippleBehavior(CommonRipple):
                       ripple_rad=self._set_ellipse)
 
     def _set_ellipse(self, instance, value):
-        super(CircularRippleBehavior, self)._set_ellipse(instance, value)
+        super()._set_ellipse(instance, value)
         if self.ellipse.size[0] > self.width * .6 and not self.fading_out:
             self.fade_out()
         self.ellipse.pos = (self.center_x - self.ripple_rad / 2.,

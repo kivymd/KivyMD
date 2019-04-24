@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Background Color Behavior
 =========================
@@ -44,8 +42,8 @@ class BackgroundColorBehavior(Widget):
 
 
 class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
-    background_palette = OptionProperty('Primary',
-                                        options=['Primary', 'Accent', *palette])
+    background_palette = OptionProperty(
+        'Primary', options=['Primary', 'Accent', *palette])
     background_hue = OptionProperty('500', options=hue)
 
     specific_text_color = ListProperty([0, 0, 0, .87])
@@ -72,7 +70,7 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
         self.specific_secondary_text_color = secondary_color
 
     def __init__(self, **kwargs):
-        super(SpecificBackgroundColorBehavior, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if hasattr(self, 'theme_cls'):
             self.theme_cls.bind(primary_palette=self._update_specific_text_color)
             self.theme_cls.bind(accent_palette=self._update_specific_text_color)

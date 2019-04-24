@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Buttons
 =======
@@ -380,7 +378,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
         instance.ids.lbl_txt.font_name = value
 
     def __init__(self, **kwargs):
-        super(BaseButton, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         Clock.schedule_once(self._finish_init)
 
     def _finish_init(self, dt):
@@ -452,14 +450,14 @@ class BasePressedButton(BaseButton):
                 Animation(duration=.5,
                           _current_button_color=self.md_bg_color_down)
             self.fade_bg.start(self)
-            return super(BaseButton, self).on_touch_down(touch)
+            return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
         if touch.grab_current is self:
             self.fade_bg.stop_property(self, '_current_button_color')
             Animation(duration=.05,
                       _current_button_color=self.md_bg_color).start(self)
-        return super(BaseButton, self).on_touch_up(touch)
+        return super().on_touch_up(touch)
 
 
 class BaseFlatButton(BaseButton):
@@ -470,7 +468,7 @@ class BaseFlatButton(BaseButton):
     """
 
     def __init__(self, **kwargs):
-        super(BaseFlatButton, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.md_bg_color = (.0, .0, .0, .0)
 
     def _get_md_bg_color_down(self):
@@ -509,7 +507,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
             self.elevation_raised = self.elevation_normal + 6
         elif self.elevation_raised == 0:
             self.elevation_raised = 12
-        super(BaseRaisedButton, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.elevation_press_anim = Animation(elevation=self.elevation_raised,
                                               duration=.2, t='out_quad')
         self.elevation_release_anim = Animation(
@@ -547,7 +545,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
             self.elevation = 0
         else:
             self.elevation = self.elevation_normal
-        super(BaseRaisedButton, self).on_disabled(instance, value)
+        super().on_disabled(instance, value)
 
     def on_touch_down(self, touch):
         if not self.disabled:
@@ -559,15 +557,15 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
                 return False
             self.elevation_press_anim.stop(self)
             self.elevation_press_anim.start(self)
-        return super(BaseRaisedButton, self).on_touch_down(touch)
+        return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
         if not self.disabled:
             if touch.grab_current is not self:
-                return super(ButtonBehavior, self).on_touch_up(touch)
+                return super().on_touch_up(touch)
             self.elevation_release_anim.stop(self)
             self.elevation_release_anim.start(self)
-        return super(BaseRaisedButton, self).on_touch_up(touch)
+        return super().on_touch_up(touch)
 
     def _get_md_bg_color_down(self):
         t = self.theme_cls
@@ -686,7 +684,7 @@ class MDTextButton(ThemableBehavior, Button):
 
     def on_press(self, *args):
         self.animation_label()
-        return super(MDTextButton, self).on_press(*args)
+        return super().on_press(*args)
 
 
 class MDFillRoundFlatButton(MDRoundFlatButton):

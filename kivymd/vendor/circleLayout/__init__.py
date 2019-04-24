@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 CircularLayout
 ==============
@@ -116,7 +113,7 @@ class CircularLayout(Layout):
                                 bind=("radius_hint", "padding", "size"))
 
     def __init__(self, **kwargs):
-        super(CircularLayout, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.bind(
             start_angle=self._trigger_layout,

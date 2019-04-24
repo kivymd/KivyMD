@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Tabs
 ====
@@ -278,7 +276,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
         self.panel = panel
         self.height = height
         self.tab = tab
-        super(MDBottomNavigationHeader, self).__init__()
+        super().__init__()
         self._current_color = self.theme_cls.disabled_hint_text_color
         self._label = self.ids._label
         self._label_font_size = sp(12)
@@ -321,7 +319,7 @@ class MDTab(Screen, ThemableBehavior):
     menu = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-        super(MDTab, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.index = 0
         self.parent_widget = None
         self.register_event_type('on_tab_touch_down')
@@ -426,7 +424,7 @@ class MDTabbedPanel(TabbedPanelBase):
     tab_border_color = ListProperty([])
 
     def __init__(self, **kwargs):
-        super(MDTabbedPanel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.index = 0
         self._refresh_tabs()
 
@@ -464,7 +462,7 @@ class MDTabbedPanel(TabbedPanelBase):
             self.ids.tab_manager.add_widget(widget)
             self._refresh_tabs()
         else:
-            super(MDTabbedPanel, self).add_widget(widget)
+            super().add_widget(widget)
 
     def remove_widget(self, widget):
         """ Remove tabs from the screen or the layout.
@@ -475,7 +473,7 @@ class MDTabbedPanel(TabbedPanelBase):
             self.ids.tab_manager.remove_widget(widget)
             self._refresh_tabs()
         else:
-            super(MDTabbedPanel, self).remove_widget(widget)
+            super().remove_widget(widget)
 
 
 class MDBottomNavigation(TabbedPanelBase):
@@ -485,7 +483,7 @@ class MDBottomNavigation(TabbedPanelBase):
     first_widget = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(MDBottomNavigation, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.previous_tab = None
         self.widget_index = 0
         self._refresh_tabs()
@@ -545,7 +543,7 @@ class MDBottomNavigation(TabbedPanelBase):
 
             self._refresh_tabs()
         else:
-            super(MDBottomNavigation, self).add_widget(widget)
+            super().add_widget(widget)
 
     def remove_widget(self, widget):
         """ Remove tabs from the screen or the layout.
@@ -555,7 +553,7 @@ class MDBottomNavigation(TabbedPanelBase):
             self.ids.tab_manager.remove_widget(widget)
             self._refresh_tabs()
         else:
-            super(MDBottomNavigation, self).remove_widget(widget)
+            super().remove_widget(widget)
 
 
 if __name__ == '__main__':

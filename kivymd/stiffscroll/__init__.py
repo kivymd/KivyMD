@@ -77,7 +77,7 @@ class StiffScrollEffect(KineticEffect):
 
         """
 
-        super(StiffScrollEffect, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.base_friction = self.friction
 
     def update_velocity(self, dt):
@@ -116,7 +116,7 @@ class StiffScrollEffect(KineticEffect):
         else:
             self.friction = self.base_friction
 
-        return super(StiffScrollEffect, self).update_velocity(dt)
+        return super().update_velocity(dt)
 
     def on_value(self, *args):
         """Prevent moving beyond my bounds, and update ``self.scroll``"""
@@ -178,4 +178,4 @@ class StiffScrollEffect(KineticEffect):
         if self.displacement <= self.drag_threshold:
             self.velocity = 0
 
-        return super(StiffScrollEffect, self).stop(val, t)
+        return super().stop(val, t)

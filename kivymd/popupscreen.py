@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Popup Screen
 ============
@@ -204,7 +202,7 @@ class MDPopupScreen(FloatLayout):
     open_menu = False
 
     def __init__(self, **kwargs):
-        super(MDPopupScreen, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.root_screen = RootScreen()
         self.root_screen.y = -Window.height
 
@@ -228,4 +226,4 @@ class MDPopupScreen(FloatLayout):
             return
         if self.open_menu:
             Clock.schedule_once(self.hide, .3)
-        return super(MDPopupScreen, self).on_touch_down(touch)
+        return super().on_touch_down(touch)

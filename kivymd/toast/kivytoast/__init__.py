@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
+"""
+KivyToast
+=========
 
-''' 
-Разработано специально для проекта VKGroups -
-http://github.com/HeaTTheatR/VKGroups
+Copyright (c) 2019 Ivanov Yuri
 
-Copyright © 2010-2018 HeaTTheatR
-
-Для предложений и вопросов:
+For suggestions and questions:
 <kivydevelopment@gmail.com>
 
-Данный файл распространяется по услолвиям той же лицензии,
-что и фреймворк Kivy.
-
-'''
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
 from . kivytoast import toast

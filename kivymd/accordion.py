@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Accordion
 =========
@@ -78,7 +76,7 @@ class MDAccordionItem(ThemableBehavior, AccordionItem):
             widget.parent_item = self
             self.ids.ml.add_widget(widget)
         else:
-            super(MDAccordionItem, self).add_widget(widget)
+            super().add_widget(widget)
 
 
 Builder.load_string('''

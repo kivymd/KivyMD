@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Menus
 =====
@@ -165,7 +163,7 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     '''
 
     def __init__(self, **kwargs):
-        super(MDDropdownMenu, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         if not len(self.background_color):
             self.background_color = self.theme_cls.primary_color
         if not len(self.color_rectangle):
@@ -260,15 +258,15 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
         if not self.ids.md_menu.collide_point(*touch.pos):
             self.dismiss()
             return True
-        super(MDDropdownMenu, self).on_touch_down(touch)
+        super().on_touch_down(touch)
         return True
 
     def on_touch_move(self, touch):
-        super(MDDropdownMenu, self).on_touch_move(touch)
+        super().on_touch_move(touch)
         return True
 
     def on_touch_up(self, touch):
-        super(MDDropdownMenu, self).on_touch_up(touch)
+        super().on_touch_up(touch)
         return True
 
     def dismiss(self):

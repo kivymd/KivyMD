@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Navigation Drawer
 =================
@@ -318,7 +316,7 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     # active_color_type = 'custom'
 
     def __init__(self, **kwargs):
-        super(NavigationDrawerIconButton, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self._set_active_color()
         self.theme_cls.bind(primary_color=self._set_active_color_primary,
                      accent_color=self._set_active_color_accent)
@@ -378,7 +376,7 @@ class NavigationDrawerDivider(OneLineListItem):
     _txt_bot_pad = NumericProperty(dp(8))
 
     def __init__(self, **kwargs):
-        super(OneLineListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(16)
 
 
@@ -397,7 +395,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
     use_logo = OptionProperty('all', options=['logo', 'label', 'all'])
 
     def __init__(self, **kwargs):
-        super(MDNavigationDrawer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def on_use_logo(self, instance, value):
         if value == 'label':
@@ -427,7 +425,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
             except AttributeError:
                 pass
         else:
-            super(MDNavigationDrawer, self).add_widget(widget, **kwargs)
+            super().add_widget(widget, **kwargs)
 
 
 class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
@@ -447,7 +445,7 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
     anim_type = StringProperty('slide_above_simple')
 
     def __init__(self, **kwargs):
-        super(NavigationLayout, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.on_anim_type()
 
     def _anim_relax(self):
@@ -486,13 +484,13 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
 
         # Internal default BoxLayouts
         if len(self.children) == 0:
-            super(NavigationLayout, self).add_widget(widget, **kwargs)
+            super().add_widget(widget, **kwargs)
             self._side_panel = widget
         elif len(self.children) == 1:
-            super(NavigationLayout, self).add_widget(widget, **kwargs)
+            super().add_widget(widget, **kwargs)
             self._main_panel = widget
         elif len(self.children) == 2:
-            super(NavigationLayout, self).add_widget(widget, **kwargs)
+            super().add_widget(widget, **kwargs)
             self._join_image = widget
 
         # Adding of user widgets

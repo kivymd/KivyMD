@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Manager Swiper
 ==============
@@ -263,7 +261,7 @@ class MDSwiperManager(ScreenManager):
     _x = 0
 
     def __init__(self, **kwargs):
-        super(MDSwiperManager, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.transition = SlideTransition()
         self.transition.on_complete = self.on_complete
 
@@ -306,7 +304,7 @@ class MDSwiperManager(ScreenManager):
                 self.swipe = True
                 self.swith_screen(direction)
                 self._x = 0
-        return super(MDSwiperManager, self).on_touch_move(touch)
+        return super().on_touch_move(touch)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Pickers
 =======
@@ -246,7 +244,7 @@ class DaySelector(ThemableBehavior, AnchorLayout):
     shown = BooleanProperty(False)
 
     def __init__(self, parent):
-        super(DaySelector, self).__init__()
+        super().__init__()
         self.parent_class = parent
         self.parent_class.add_widget(self, index=7)
         self.selected_widget = None
@@ -315,7 +313,7 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
         self.month = self.sel_month
         self.year = self.sel_year
         self.day = self.sel_day
-        super(MDDatePicker, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.selector = DaySelector(parent=self)
         self.generate_cal_widgets()
         self.update_cal_matrix(self.sel_year, self.sel_month)
@@ -477,7 +475,7 @@ class MDTimePicker(ThemableBehavior, FloatLayout, ModalView,
     time = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(MDTimePicker, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.current_time = self.ids.time_picker.time
 
     def set_time(self, time):

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Label
 =====
@@ -64,7 +62,7 @@ class MDLabel(ThemableBehavior, Label):
     _currently_bound_property = {}
 
     def __init__(self, **kwargs):
-        super(MDLabel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.bind(font_style=self.update_font_style,
                   can_capitalize=self.update_font_style)
         self.on_theme_text_color(None, self.theme_text_color)

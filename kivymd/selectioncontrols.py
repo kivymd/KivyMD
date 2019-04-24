@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Selection Controls
 ==================
@@ -119,7 +117,7 @@ class MDCheckbox(ThemableBehavior, CircularRippleBehavior,
         self.check_anim_out = Animation(font_size=0, duration=.1, t='out_quad')
         self.check_anim_in = Animation(font_size=sp(24), duration=.1,
                                        t='out_quad')
-        super(MDCheckbox, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.register_event_type('on_active')
         self.check_anim_out.bind(
             on_complete=lambda *x: self.check_anim_in.start(self))
@@ -225,7 +223,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     _thumb_pos = ListProperty([0, 0])
 
     def __init__(self, **kwargs):
-        super(MDSwitch, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.theme_cls.bind(theme_style=self._set_colors,
                      primary_color=self._set_colors,
                      primary_palette=self._set_colors)

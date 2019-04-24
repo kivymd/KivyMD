@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Lists
 =====
@@ -319,11 +317,11 @@ class MDList(GridLayout):
     icon = StringProperty()
 
     def add_widget(self, widget, index=0, canvas=None):
-        super(MDList, self).add_widget(widget, index, canvas)
+        super().add_widget(widget, index, canvas)
         self.height += widget.height
 
     def remove_widget(self, widget):
-        super(MDList, self).remove_widget(widget)
+        super().remove_widget(widget)
         self.height -= widget.height
 
 
@@ -428,27 +426,27 @@ class ContainerSupport:
             self.ids._right_container.add_widget(widget)
             self._touchable_widgets.append(widget)
         else:
-            return super(BaseListItem, self).add_widget(widget)
+            return super().add_widget(widget)
 
     def remove_widget(self, widget):
-        super(BaseListItem, self).remove_widget(widget)
+        super().remove_widget(widget)
         if widget in self._touchable_widgets:
             self._touchable_widgets.remove(widget)
 
     def on_touch_down(self, touch):
         if self.propagate_touch_to_touchable_widgets(touch, 'down'):
             return
-        super(BaseListItem, self).on_touch_down(touch)
+        super().on_touch_down(touch)
 
     def on_touch_move(self, touch, *args):
         if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
             return
-        super(BaseListItem, self).on_touch_move(touch, *args)
+        super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
         if self.propagate_touch_to_touchable_widgets(touch, 'up'):
             return
-        super(BaseListItem, self).on_touch_up(touch)
+        super().on_touch_up(touch)
 
     def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
         triggered = False
@@ -472,7 +470,7 @@ class OneLineListItem(BaseListItem):
     _num_lines = 1
 
     def __init__(self, **kwargs):
-        super(OneLineListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(48)
 
 
@@ -483,7 +481,7 @@ class TwoLineListItem(BaseListItem):
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
 
     def __init__(self, **kwargs):
-        super(TwoLineListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(72)
 
 
@@ -495,7 +493,7 @@ class ThreeLineListItem(BaseListItem):
     _num_lines = 3
 
     def __init__(self, **kwargs):
-        super(ThreeLineListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(88)
 
 
@@ -506,7 +504,7 @@ class OneLineAvatarListItem(ContainerSupport, BaseListItem):
     _num_lines = 1
 
     def __init__(self, **kwargs):
-        super(OneLineAvatarListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(56)
 
 
@@ -516,7 +514,7 @@ class TwoLineAvatarListItem(OneLineAvatarListItem):
     _num_lines = 2
 
     def __init__(self, **kwargs):
-        super(BaseListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(72)
 
 
@@ -534,7 +532,7 @@ class TwoLineIconListItem(OneLineIconListItem):
     _num_lines = 2
 
     def __init__(self, **kwargs):
-        super(BaseListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(72)
 
 
@@ -553,7 +551,7 @@ class TwoLineRightIconListItem(OneLineRightIconListItem):
     _num_lines = 2
 
     def __init__(self, **kwargs):
-        super(BaseListItem, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.height = dp(72)
 
 

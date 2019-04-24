@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Copyright (c) 2019 Ivanov Yuri
 
@@ -384,7 +382,7 @@ NavigationLayout:
                 FloatLayout:
 
                     Image:
-                        source: '{}kivymd_logo.png'.format(images_path)
+                        source: '{}kivy-logo-white-512.png'.format(images_path)
                         opacity: .3
 
                     BoxLayout:
@@ -426,13 +424,14 @@ NavigationLayout:
 
 class KitchenSink(App, Screens):
     theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    theme_cls.primary_palette = 'BlueGray'
+    theme_cls.accent_palette = 'Gray'
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
-    # theme_cls.theme_style = 'Dark'
+    theme_cls.theme_style = 'Dark'
 
     def __init__(self, **kwargs):
-        super(KitchenSink, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         self.menu_items = [
             {'viewclass': 'MDMenuItem',

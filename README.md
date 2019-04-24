@@ -1,7 +1,7 @@
 KivyMD
 ======
 
-<img align="left" height="256" src="https://raw.githubusercontent.com/kivymd/KivyMD/master/assets/kivy-logo-white-512.png"/>
+<img align="left" height="256" src="https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/images/kivy-logo-white-512.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 

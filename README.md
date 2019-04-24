@@ -53,14 +53,6 @@ Running on Android
 ==================
 Install and run the package [kitchen_sink-0.9.1-debug.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python2)
 
-Build two apk armv7 (Python2 and Python3) with Docker
-==================
-    $docker build -t kivymd .
-    $docker run -d kivymd
-    $docker exec -it id_docker /bin/bash
-#### And check result apk in the Docker container:
-    $ls *.apk
-
 What's new in version 0.98.0:
 ============================
 * Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=6U59VsRGRNE), [Fitness Club](https://www.youtube.com/watch?v=x7Tn5vu-5FY), [Registration Form](https://www.youtube.com/watch?v=h4ntfEkvpxU)

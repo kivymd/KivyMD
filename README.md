@@ -36,7 +36,7 @@ Installation and use with Buildozer
 
 #### How to install
 
-To install KivyMD, clone the project and run the setup.py script. The following line works on Linux, other OSes not tested:
+To install KivyMD, clone the project and run the setup.py script. The following line works on Linux and Mac OS, other OSes not tested:
 
     sudo python ./setup.py install
 

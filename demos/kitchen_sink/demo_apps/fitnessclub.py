@@ -24,11 +24,11 @@ from kivy.uix.image import Image
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
 
-if not os.path.exists('./assets/crossfit-crop.jpg'):
+if not os.path.exists('./assets/crossfit-crop.png'):
     crop_image(
         (Window.width, Window.height),
-        './assets/crossfit.jpg',
-        './assets/crossfit-crop.jpg')
+        './assets/crossfit.png',
+        './assets/crossfit-crop.png')
 
 screen_fitness_club = '''
 #:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
@@ -152,7 +152,7 @@ screen_fitness_club = '''
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: './assets/crossfit-crop.jpg'
+                source: './assets/crossfit-crop.png'
 
 
 <Toolbar@FloatLayout>

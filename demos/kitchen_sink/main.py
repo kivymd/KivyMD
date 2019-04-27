@@ -44,11 +44,7 @@ from kivymd.icon_definitions import md_icons
 
 
 def toast(text):
-    # FIXME: crush with Python3.
-    try:
-        from kivymd.toast import toast
-    except TypeError:
-        from kivymd.toast.kivytoast import toast
+    from kivymd.toast.kivytoast import toast
     toast(text)
 
 

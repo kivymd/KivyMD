@@ -167,6 +167,7 @@ Builder.load_string('''
             size_hint_y: None
             height: self.texture_size[1]
             text: root.text
+            font_size: root.font_size
             theme_text_color: 'Custom'
             text_color: get_color_from_hex('ffffff')
             shorten: True
@@ -183,6 +184,13 @@ class Snackbar(FloatLayout):
 
     :attr:`text` is a :class:`~kivy.properties.StringProperty` 
     and defaults to ''.
+    """
+    
+    font_size = NumericProperty('15sp')
+    """The font size of the text that will appear in the Snackbar.
+    
+    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty` and
+    defaults to 15sp.
     """
 
     button_text = StringProperty()

@@ -122,6 +122,7 @@ screen_fitness_club = '''
             InputField:
                 multiline: True
                 height: dp(100)
+            Widget:
 
 
 <CustomToolbarForFitness@BoxLayout>

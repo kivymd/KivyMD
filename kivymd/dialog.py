@@ -66,10 +66,15 @@ class Example(App):
     def build(self):
         return Factory.ExampleDialogs()
 
+    def callback_for_menu_items(self, *args):
+        from kivymd.toast.kivytoast import toast
+        toast(args[0])
+
     def show_example_input_dialog(self):
         dialog = MDInputDialog(
             title='Title', hint_text='Hint text', size_hint=(.8, .4),
-            text_button_ok='Yes', events_callback=lambda x: None)
+            text_button_ok='Yes',
+            events_callback=self.callback_for_menu_items)
         dialog.open()
 
     def show_example_okcancel_dialog(self):
@@ -77,7 +82,8 @@ class Example(App):
             title='Title', size_hint=(.8, .3), text_button_ok='Yes',
             text="Your [color=%s][b]text[/b][/color] dialog" % get_hex_from_color(
                 self.theme_cls.primary_color),
-            text_button_cancel='Cancel', events_callback=lambda x: None)
+            text_button_cancel='Cancel',
+            events_callback=self.callback_for_menu_items)
         dialog.open()
 
 

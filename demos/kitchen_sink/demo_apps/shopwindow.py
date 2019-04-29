@@ -15,7 +15,7 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 from kivy.animation import Animation
 
-from . basedialog import BaseDialog
+from . basedialog import BaseDialogForDemo
 
 screen_shop_window = '''
 #:import MDCard kivymd.cards.MDCard
@@ -331,7 +331,7 @@ class ShopWindow(Screen):
                 )
 
 
-class PreviousDialog(BaseDialog):
+class PreviousDialog(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):

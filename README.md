@@ -51,7 +51,21 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
 Running on Android
 ==================
-Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3/armeabi-v7a)
+Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a)
+
+Packages for Android are built according to the following instructions:
+=======================================================================
+
+Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
+
+<p align="center">
+    <a href="https://xubuntu.org/release/18-04/"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/XUBUNTU.png"></a>
+</p>
+
+* Create a new virtual machine based on the downloaded image of XUbuntu
+* Start the XUbuntu virtual machine, open the browser and download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh):
+* Run the script - it will install all the necessary libraries and tools for creating packages for Android
+* Done! Now you have a virtual machine for building Kivy application packages!
 
 What's new in version 0.98.7:
 ============================

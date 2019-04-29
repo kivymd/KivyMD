@@ -53,7 +53,7 @@ Running on Android
 ==================
 Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3/armeabi-v7a)
 
-What's new in version 0.98.5:
+What's new in version 0.98.6:
 ============================
 * Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=6U59VsRGRNE), [Fitness Club](https://www.youtube.com/watch?v=x7Tn5vu-5FY), [Registration Form](https://www.youtube.com/watch?v=h4ntfEkvpxU)
 * Added new class [MDTextFieldRound](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFieldRound)

@@ -53,7 +53,7 @@ Running on Android
 ==================
 Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a)
 
-Packages for Android are built according to the following instructions:
+<a id=“anchor”>Packages for Android are built according to the following instructions:</a>
 =======================================================================
 
 Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):

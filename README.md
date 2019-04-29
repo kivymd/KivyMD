@@ -100,7 +100,7 @@ API Breaking changes:
 Video previous
 ==============
 <p align="center">
-    <a href="https://youtu.be/Jbi20FGZ8KM"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/prevideo.png"></a>
+    <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw&t=4s"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/prevideo.png"></a>
 </p>
 
 Image previous

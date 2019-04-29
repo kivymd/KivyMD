@@ -270,8 +270,7 @@ screen_shop_window = '''
         root.set_list_cart()
         app.main_widget.ids.toolbar.title = 'Shop window'
         app.main_widget.ids.toolbar.right_action_items = []
-    on_leave:
-        root.set_chevron_back_screen()
+    on_leave: app.set_chevron_back_screen()
 
     MDBottomNavigation:
 

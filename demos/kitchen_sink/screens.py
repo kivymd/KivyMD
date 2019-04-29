@@ -1434,7 +1434,7 @@ fan_manager = '''
 
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: app.theme_cls.bg_light
         Rectangle:
             pos: self.pos
             size: self.size

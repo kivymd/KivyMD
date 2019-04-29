@@ -22,7 +22,7 @@ from kivymd.theming import ThemeManager
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 
 
-Builder.load_string("""
+Builder.load_string('''
 #:import MDToolbar kivymd.toolbar.MDToolbar
 
 
@@ -35,7 +35,7 @@ Builder.load_string("""
         elevation: 10
         left_action_items: [['menu', lambda x: None]]
 
-""")
+''')
 
 
 class Example(App):

@@ -1,4 +1,4 @@
-"""
+'''
 Navigation Drawer
 =================
 
@@ -25,13 +25,14 @@ from kivymd.navigationdrawer import NavigationDrawerIconButton
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
-main_kv = '''
+main_kv = """
+#:import MDSeparator kivymd.cards.MDSeparator
 #:import MDToolbar kivymd.toolbar.MDToolbar
+##:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
 #:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
 #:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
 
-
-<ContentNavigationDrawer@MDNavigationDrawer>
+<ContentNavigationDrawer@MDNavigationDrawer>:
     drawer_logo: 'demos/kitchen_sink/assets/drawer_logo.png'
 
     NavigationDrawerSubheader:
@@ -58,12 +59,12 @@ NavigationLayout:
                 [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
 
         Widget:
-'''
+"""
 
 
 class Example(App):
     theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+    theme_cls.primary_palette = 'Teal'
     title = "Navigation Drawer"
     main_widget = None
 
@@ -83,7 +84,7 @@ class Example(App):
 
 
 Example().run()
-"""
+'''
 
 from kivy.core.window import Window
 from kivy.lang import Builder

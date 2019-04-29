@@ -24,7 +24,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.utils.cropimage import crop_image
 from kivymd.ripplebehavior import CircularRippleBehavior
 
-from . basedialog import BaseDialog
+from . basedialog import BaseDialogForDemo
 
 if not os.path.exists('./assets/coffee_crop.jpg'):
     crop_image(
@@ -343,7 +343,7 @@ class MenuDialog(BoxLayout):
     background = StringProperty()
 
 
-class PreviousDialogCoffee(BaseDialog):
+class PreviousDialogCoffee(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):

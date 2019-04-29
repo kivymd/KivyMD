@@ -64,6 +64,17 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 
 * Create a new virtual machine based on the downloaded image of XUbuntu
 * Start the XUbuntu virtual machine, open the browser and download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh):
+
+    Add execution permissions:
+    ```bash
+    chmod +x install-kivy-buildozer-dependencies.sh
+    ```
+    ...and run script:
+
+    ```bash
+    ./install-kivy-buildozer-dependencies.sh
+    ```
+
 * Run the script - it will install all the necessary libraries and tools for creating packages for Android
 * Done! Now you have a virtual machine for building Kivy application packages!
 

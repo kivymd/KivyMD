@@ -16,7 +16,7 @@ If you wish to become a project developer (permission to create branches on the 
 Documentation
 =============
 
-Some very early documentation can be found at our project's website, other than that we recommend checking the [demos/kitchen_sink/main.py](https://github.com/HeaTTheatR/KivyMD/blob/master/demos/kitchen_sink/main.py) file for examples or [look here](https://github.com/HeaTTheatR/KivyMD/wiki/MDUserAnimationCard).
+Full documentation yet. Some examples of using KivyMD widgets can be found in our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) and in the code of the [demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps)
 
 Support
 =======
@@ -71,7 +71,6 @@ What's new in version 0.98.7:
 ============================
 * Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=6U59VsRGRNE), [Fitness Club](https://www.youtube.com/watch?v=x7Tn5vu-5FY), [Registration Form](https://www.youtube.com/watch?v=h4ntfEkvpxU)
 * Added new class [MDTextFieldRound](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFieldRound)
-* [The source code of the demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps)
 
 API Breaking changes:
 =====================

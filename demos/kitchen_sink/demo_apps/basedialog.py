@@ -19,7 +19,7 @@ Builder.load_string("""
 #:import images_path kivymd.images_path
 
 
-<BaseDialog>
+<BaseDialogForDemo>
     background: '{}/transparent.png'.format(images_path)
 
     canvas.before:
@@ -32,7 +32,7 @@ Builder.load_string("""
 """)
 
 
-class BaseDialog(ThemableBehavior, ModalView):
+class BaseDialogForDemo(ThemableBehavior, ModalView):
     canvas_color = ListProperty()
     callback = ObjectProperty(lambda x: None)
 

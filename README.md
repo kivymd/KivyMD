@@ -51,7 +51,7 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
 
 Running on Android
 ==================
-Install and run the package [kitchen_sink-0.98.4.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3) (supports Android 6.0 and higher)
+Install and run the package [kitchen_sink-0.98.4.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/python3) Supports Android 6.0 and higher. Testing Android x86 in Genymotion emulator.
 
 What's new in version 0.98.4:
 ============================

@@ -22,11 +22,11 @@ from kivymd.theming import ThemeManager
 from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 
 
-Builder.load_string('''
+Builder.load_string("""
 #:import MDToolbar kivymd.toolbar.MDToolbar
 
 
-<ExampleFloatingButtons@BoxLayout>
+<ExampleFloatingButtons@BoxLayout>:
     orientation: 'vertical'
 
     MDToolbar:
@@ -35,7 +35,7 @@ Builder.load_string('''
         elevation: 10
         left_action_items: [['menu', lambda x: None]]
 
-''')
+""")
 
 
 class Example(App):
@@ -57,10 +57,7 @@ class Example(App):
         if not self.create_stack_floating_buttons:
             screen.add_widget(MDStackFloatingButtons(
                 icon='lead-pencil',
-                floating_data={
-                    'Python': 'language-python',
-                    'Php': 'language-php',
-                    'C++': 'language-cpp'},
+                floating_data=self.floating_data,
                 callback=self.set_my_language))
             self.create_stack_floating_buttons = True
         return screen

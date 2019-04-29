@@ -25,8 +25,7 @@ Builder.load_string('''
 #:import MDLabel kivymd.label.MDLabel
 #:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
 
-
-<ExampleUpdateSpinner@BoxLayout>
+<ExampleUpdateSpinner@BoxLayout>:
     orientation: 'vertical'
 
     MDToolbar:

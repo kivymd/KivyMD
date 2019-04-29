@@ -18,8 +18,8 @@ import os
 
 from kivy import Logger
 
-__version_info__ = (0, 98.6)
-__version__ = '0.98.6'
+__version_info__ = (0, 98.7)
+__version__ = '0.98.7'
 
 path = os.path.dirname(__file__)
 fonts_path = os.path.join(path, "fonts/")

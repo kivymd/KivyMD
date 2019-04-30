@@ -9,15 +9,26 @@ as the Kivy framework.
 
 """
 
+
 def crop_image(size_screen, path_to_image, path_to_save_crop_image,
-               corner=False):
+               corner=False, blur=None):
     im = _crop_image(size_screen, path_to_image, path_to_save_crop_image)
     if corner:
         im = add_corners(im, 25)
+    if blur:
+        im = add_blur(im, blur)
     try:
         im.save(path_to_save_crop_image)
     except IOError:
         im.save(path_to_save_crop_image, 'JPEG')
+
+
+def add_blur(im, mode):
+    from PIL import ImageFilter
+
+    im = im.filter(ImageFilter.GaussianBlur(mode))
+
+    return im
 
 
 def _crop_image(size_screen, path_to_image, path_to_save_crop_image):

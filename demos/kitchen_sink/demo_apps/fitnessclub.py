@@ -291,7 +291,7 @@ screen_fitness_club = '''
                 root.set_image(\
                 './assets/about-us-girl', \
                 (int(app.Window.width - dp(20)), int(dp(200))), \
-                True, \
+                20, \
                 'png')
 
             AboutUs:

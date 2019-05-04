@@ -918,24 +918,80 @@ selection_controls = '''
     name: 'selection controls'
 
     MDCheckbox:
-        id: grp_chkbox_1
-        group: 'test'
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': .25, 'center_y': .5}
+        pos_hint: {'center_x': .4, 'center_y': .8}
 
     MDCheckbox:
-        id: grp_chkbox_2
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .8}
+        disabled: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .7}
+        active: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .7}
+        active: True
+        disabled: True
+
+    MDCheckbox:
         group: 'test'
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .5}
+        pos_hint: {'center_x': .4, 'center_y': .6}
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .6}
+        disabled: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .5}
+        active: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .5}
+        active: True
+        disabled: True
 
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': .75, 'center_y': .5}
-        _active: False
+        pos_hint: {'center_x': .4, 'center_y': .4}
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .4}
+        disabled: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .3}
+        active: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .3}
+        active: True
+        disabled: True
 '''
 
 sliders = '''

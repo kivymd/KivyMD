@@ -170,6 +170,8 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
             self.color_rectangle = self.theme_cls.divider_color
 
     def open(self, *args):
+        if self.parent:
+            self.parent.remove_widget(self)
         Window.add_widget(self)
         Clock.schedule_once(lambda x: self.display_menu(args[0]), -1)
 

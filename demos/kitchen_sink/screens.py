@@ -210,11 +210,13 @@ bottom_navigation = '''
             name: 'banking'
             text: "Bank"
             icon: 'bank'
+
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: None
                 padding: dp(48)
                 spacing: dp(10)
+
                 MDTextField:
                     hint_text: "You can put any widgets here"
                     helper_text: "Hello :)"
@@ -225,19 +227,22 @@ bottom_navigation = '''
             text: "Hello"
             icon: 'alert'
             id: bottom_navigation_desktop_1
+
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: None
                 padding: dp(48)
                 spacing: dp(10)
+
                 MDTextField:
                     hint_text: "Hello again"
 
-            MDBottomNavigationItem:
-                name: 'bottom_navigation_desktop_2'
-                text: "Food"
-                icon: 'food'
-                id: bottom_navigation_desktop_2
+        MDBottomNavigationItem:
+            name: 'bottom_navigation_desktop_2'
+            text: "Food"
+            icon: 'food'
+            id: bottom_navigation_desktop_2
+
             MDLabel:
                 font_style: 'Body1'
                 theme_text_color: 'Primary'

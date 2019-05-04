@@ -118,7 +118,6 @@ class MDCheckbox(ThemableBehavior, CircularRippleBehavior,
         self.check_anim_in = Animation(font_size=sp(24), duration=.1,
                                        t='out_quad')
         super().__init__(**kwargs)
-        self.register_event_type('on_active')
         self.check_anim_out.bind(
             on_complete=lambda *x: self.check_anim_in.start(self))
 

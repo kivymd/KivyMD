@@ -97,7 +97,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd import images_path
 from kivymd.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
-from kivymd.label import MDLabel
+from kivymd.label import MDLabel, MDIcon
 from kivymd.list import BaseListItem, ILeftBody, OneLineListItem,\
     OneLineIconListItem, IRightBody
 from kivymd.theming import ThemableBehavior

@@ -58,7 +58,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 from kivymd import images_path
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
-from kivymd.label import MDLabel
+from kivymd.label import MDLabel, MDIcon
 from kivymd.list import MDList, OneLineListItem, ILeftBody,\
     OneLineIconListItem
 from kivymd.theming import ThemableBehavior
@@ -114,16 +114,14 @@ Builder.load_string('''
 
 
 <ListBSIconLeft>
-    font_style: 'Icon'
-    text: u'{}'.format(md_icons[root.icon])
     halign: 'center'
     theme_text_color: 'Primary'
     valign: 'middle'
 ''')
 
 
-class ListBSIconLeft(ILeftBody, MDLabel):
-    icon = StringProperty()
+class ListBSIconLeft(ILeftBody, MDIcon):
+    pass
 
 
 class MDListBottomSheet(MDBottomSheet):

@@ -31,7 +31,7 @@ from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.elevation import CircularElevationBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior
-from kivymd.label import MDLabel
+from kivymd.label import MDLabel, MDIcon
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 
@@ -48,9 +48,7 @@ Builder.load_string('''
                 int(self.center_x - self.texture_size[0] / 2.),\
                 int(self.center_y - self.texture_size[1] / 2.)
 
-    text: self._current_icon
     color: self._current_color
-    font_style: 'Icon'
     halign: 'center'
     valign: 'middle'
 
@@ -101,18 +99,13 @@ Builder.load_string('''
 ''')
 
 
-class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDLabel):
+class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     active = BooleanProperty(False)
 
-    checkbox_icon_normal = StringProperty(
-        u'{}'.format(md_icons['checkbox-blank-outline']))
-    checkbox_icon_down = StringProperty(
-        u'{}'.format(md_icons['checkbox-marked-outline']))
-    radio_icon_normal = StringProperty(u'{}'.format(
-        md_icons['checkbox-blank-circle-outline']))
-    radio_icon_down = StringProperty(u'{}'.format(
-        md_icons['checkbox-marked-circle-outline']))
-    _current_icon = StringProperty()
+    checkbox_icon_normal = StringProperty('checkbox-blank-outline')
+    checkbox_icon_down = StringProperty('checkbox-marked-outline')
+    radio_icon_normal = StringProperty('checkbox-blank-circle-outline')
+    radio_icon_down = StringProperty('checkbox-marked-circle-outline')
 
     selected_color = ListProperty()
     unselected_color = ListProperty()
@@ -145,10 +138,10 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDLabel):
 
     def update_icon(self, *args):
         if self.state == 'down':
-            self._current_icon = self.radio_icon_down if self.group else\
+            self.icon = self.radio_icon_down if self.group else\
                 self.checkbox_icon_down
         else:
-            self._current_icon = self.radio_icon_normal if self.group else\
+            self.icon = self.radio_icon_normal if self.group else\
                 self.checkbox_icon_normal
 
     def update_color(self, *args):

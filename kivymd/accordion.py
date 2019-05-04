@@ -138,12 +138,11 @@ Builder.load_string('''
     canvas.after:
         PopMatrix
 
-    MDLabel:
+    MDIcon:
         id:_icon
+        icon: ctx.item.icon if ctx.item.icon else 'menu'
         theme_text_color: 'Custom'
         text_color: ctx.item.parent.specific_text_color
-        text: md_icons[ctx.item.icon if ctx.item.icon else 'menu']
-        font_style: 'Icon'
         size_hint:
             (None, 1) if ctx.item.orientation == 'vertical' else (1, None)
         size:

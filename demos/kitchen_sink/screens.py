@@ -210,11 +210,13 @@ bottom_navigation = '''
             name: 'banking'
             text: "Bank"
             icon: 'bank'
+
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: None
                 padding: dp(48)
                 spacing: dp(10)
+
                 MDTextField:
                     hint_text: "You can put any widgets here"
                     helper_text: "Hello :)"
@@ -225,19 +227,22 @@ bottom_navigation = '''
             text: "Hello"
             icon: 'alert'
             id: bottom_navigation_desktop_1
+
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: None
                 padding: dp(48)
                 spacing: dp(10)
+
                 MDTextField:
                     hint_text: "Hello again"
 
-            MDBottomNavigationItem:
-                name: 'bottom_navigation_desktop_2'
-                text: "Food"
-                icon: 'food'
-                id: bottom_navigation_desktop_2
+        MDBottomNavigationItem:
+            name: 'bottom_navigation_desktop_2'
+            text: "Food"
+            icon: 'food'
+            id: bottom_navigation_desktop_2
+
             MDLabel:
                 font_style: 'Body1'
                 theme_text_color: 'Primary'
@@ -918,24 +923,80 @@ selection_controls = '''
     name: 'selection controls'
 
     MDCheckbox:
-        id: grp_chkbox_1
-        group: 'test'
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': .25, 'center_y': .5}
+        pos_hint: {'center_x': .4, 'center_y': .8}
 
     MDCheckbox:
-        id: grp_chkbox_2
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .8}
+        disabled: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .7}
+        active: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .7}
+        active: True
+        disabled: True
+
+    MDCheckbox:
         group: 'test'
         size_hint: None, None
         size: dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .5}
+        pos_hint: {'center_x': .4, 'center_y': .6}
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .6}
+        disabled: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .5}
+        active: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .5}
+        active: True
+        disabled: True
 
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': .75, 'center_y': .5}
-        _active: False
+        pos_hint: {'center_x': .4, 'center_y': .4}
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .4}
+        disabled: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .3}
+        active: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .3}
+        active: True
+        disabled: True
 '''
 
 sliders = '''

@@ -31,6 +31,7 @@ from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.elevation import CircularElevationBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior
+from kivymd.label import MDLabel, MDIcon
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 
@@ -47,12 +48,7 @@ Builder.load_string('''
                 int(self.center_x - self.texture_size[0] / 2.),\
                 int(self.center_y - self.texture_size[1] / 2.)
 
-    text: self._radio_icon if self.group else self._checkbox_icon
-    font_name: 'Icons'
-    font_size: sp(24)
-    color:
-        self.theme_cls.primary_color if self.active\
-        else self.theme_cls.secondary_text_color
+    color: self._current_color
     halign: 'center'
     valign: 'middle'
 
@@ -103,45 +99,73 @@ Builder.load_string('''
 ''')
 
 
-class MDCheckbox(ThemableBehavior, CircularRippleBehavior,
-                 ToggleButtonBehavior, Label):
+class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     active = BooleanProperty(False)
 
-    _checkbox_icon = StringProperty(
-        u'{}'.format(md_icons['checkbox-blank-outline']))
-    _radio_icon = StringProperty(u'{}'.format(
-        md_icons['checkbox-blank-circle-outline']))
-    _icon_active = StringProperty(u'{}'.format(md_icons['checkbox-marked']))
+    checkbox_icon_normal = StringProperty('checkbox-blank-outline')
+    checkbox_icon_down = StringProperty('checkbox-marked-outline')
+    radio_icon_normal = StringProperty('checkbox-blank-circle-outline')
+    radio_icon_down = StringProperty('checkbox-marked-circle-outline')
+
+    selected_color = ListProperty()
+    unselected_color = ListProperty()
+    disabled_color = ListProperty()
+    _current_color = ListProperty([.0, .0, .0, .0])
 
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(font_size=0, duration=.1, t='out_quad')
         self.check_anim_in = Animation(font_size=sp(24), duration=.1,
                                        t='out_quad')
         super().__init__(**kwargs)
-        self.register_event_type('on_active')
+        self.selected_color = self.theme_cls.primary_color
+        self.unselected_color = self.theme_cls.secondary_text_color
+        self.disabled_color = self.theme_cls.divider_color
+        self._current_color = self.unselected_color
         self.check_anim_out.bind(
             on_complete=lambda *x: self.check_anim_in.start(self))
+        self.bind(checkbox_icon_normal=self.update_icon,
+                  checkbox_icon_down=self.update_icon,
+                  radio_icon_normal=self.update_icon,
+                  radio_icon_down=self.update_icon,
+                  group=self.update_icon,
+                  selected_color=self.update_color,
+                  unselected_color=self.update_color,
+                  disabled_color=self.update_color,
+                  disabled=self.update_color,
+                  state=self.update_color)
+        self.update_icon()
+        self.update_color()
+
+    def update_icon(self, *args):
+        if self.state == 'down':
+            self.icon = self.radio_icon_down if self.group else\
+                self.checkbox_icon_down
+        else:
+            self.icon = self.radio_icon_normal if self.group else\
+                self.checkbox_icon_normal
+
+    def update_color(self, *args):
+        if self.disabled:
+            self._current_color = self.disabled_color
+        elif self.state == 'down':
+            self._current_color = self.selected_color
+        else:
+            self._current_color = self.unselected_color
 
     def on_state(self, *args):
         if self.state == 'down':
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
-            self._radio_icon = u'{}'.format(
-                md_icons['checkbox-marked-circle-outline'])
-            self._checkbox_icon = u'{}'.format(
-                md_icons['checkbox-marked-outline'])
+            self.update_icon()
             self.active = True
         else:
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
-            self._radio_icon = u'{}'.format(
-                md_icons['checkbox-blank-circle-outline'])
-            self._checkbox_icon = u'{}'.format(
-                md_icons['checkbox-blank-outline'])
+            self.update_icon()
             self.active = False
 
-    def on_active(self, instance, value):
-        self.state = 'down' if value else 'normal'
+    def on_active(self, *args):
+        self.state = 'down' if self.active else 'normal'
 
 
 class Thumb(CircularElevationBehavior, CircularRippleBehavior, ButtonBehavior,

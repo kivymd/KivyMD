@@ -72,6 +72,14 @@ class Toast(ModalView):
         anim_body.bind(on_complete=lambda *x: self.dismiss())
         anim_body.start(self)
 
+    def on_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            if self.auto_dismiss:
+                self.dismiss()
+                return False
+        super(ModalView, self).on_touch_down(touch)
+        return True
+
 
 def toast(text, length_long=False):
     Toast().toast(text)

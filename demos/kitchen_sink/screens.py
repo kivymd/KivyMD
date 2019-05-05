@@ -1664,6 +1664,17 @@ class Screens(object):
             self.screen_coffee_menu = CoffeeMenu()
             self.main_widget.ids.scr_mngr.add_widget(self.screen_coffee_menu)
 
+    screen_swipe_cards = None
+
+    def show_swipe_cards(self):
+        from demo_apps.swipecards import screen_swipe_cards, SwipeCards
+
+        self.main_widget.ids.toolbar.height = 0
+        if not self.screen_swipe_cards:
+            Builder.load_string(screen_swipe_cards)
+            self.screen_swipe_cards = SwipeCards()
+            self.main_widget.ids.scr_mngr.add_widget(self.screen_swipe_cards)
+
     screen_fitness_club = None
 
     def show_fitness_club(self):

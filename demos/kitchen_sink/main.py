@@ -475,7 +475,8 @@ class KitchenSink(App, Screens):
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko')
         self.demo_apps_list = [
-            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
+            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration',
+            'Swipe cards']
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
@@ -528,7 +529,7 @@ class KitchenSink(App, Screens):
         for name_contact in self.names_contacts:
             self.accordion_list.ids.anim_list.add_widget(
                 MDAccordionListItem(content=content,
-                                    icon='assets/kivymd_logo.png',
+                                    icon='assets/kivy-logo-white-512.png',
                                     title=name_contact))
 
     def set_chevron_back_screen(self):
@@ -991,6 +992,7 @@ class KitchenSink(App, Screens):
         {
             'coffee menu': self.show_coffee_menu,
             'shop window': self.show_shop_window,
+            'swipe cards': self.show_swipe_cards,
             'registration': self.show_registration_form_one,
             'fitness club': self.show_fitness_club}[name_item]()
         self.main_widget.ids.scr_mngr.current = name_item

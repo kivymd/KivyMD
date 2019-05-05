@@ -26,9 +26,17 @@ from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 
 Builder.load_string('''
+#:import md_icons kivymd.icon_definitions.md_icons
+
+
 <MDLabel>
     disabled_color: self.theme_cls.disabled_hint_text_color
     text_size: (self.width, None)
+
+
+<MDIcon>
+    font_style: 'Icon'
+    text: u'{}'.format(md_icons[self.icon])
 ''')
 
 
@@ -114,3 +122,7 @@ class MDLabel(ThemableBehavior, Label):
 
     def on_opposite_colors(self, instance, value):
         self.on_theme_text_color(self, self.theme_text_color)
+
+
+class MDIcon(MDLabel):
+    icon = StringProperty('android')

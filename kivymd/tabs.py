@@ -180,10 +180,9 @@ Builder.load_string('''
 
     FloatLayout:
 
-        MDLabel:
+        MDIcon:
             id: _label_icon
-            text: u'{}'.format(md_icons[root.tab.icon])
-            font_style: 'Icon'
+            icon: root.tab.icon
             size_hint_x: None
             text_size: (None, root.height)
             height: self.texture_size[1]

@@ -139,7 +139,7 @@ Builder.load_string('''
         PopMatrix
 
     MDIcon:
-        id:_icon
+        id: _icon
         icon: ctx.item.icon if ctx.item.icon else 'menu'
         theme_text_color: 'Custom'
         text_color: ctx.item.parent.specific_text_color

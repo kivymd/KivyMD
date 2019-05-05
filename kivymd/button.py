@@ -222,7 +222,7 @@ Builder.load_string('''
     MDLabel:
         id: lbl_txt
         text: root.text if root.button_label else ''
-        font_style: 'Button'
+        font_size: sp(root.font_size)
         can_capitalize: root.can_capitalize
         size_hint_x: None
         text_size: (None, root.height)
@@ -299,7 +299,7 @@ Builder.load_string('''
         MDLabel:
             id: lbl_txt
             text: root.text
-            font_style: 'Button'
+            font_size: sp(root.font_size)
             can_capitalize: root.can_capitalize
             shorten: True
             theme_text_color: 'Custom'
@@ -324,7 +324,7 @@ Builder.load_string('''
         MDLabel:
             id: lbl_txt
             text: root.text
-            font_style: 'Button'
+            font_size: sp(root.font_size)
             can_capitalize: root.can_capitalize
             shorten: True
             theme_text_color: 'Custom'
@@ -338,7 +338,7 @@ Builder.load_string('''
 
 
 <MDFloatingActionButton>
-    # Defaults to 56-by-56 and a backround of the accent color according to
+    # Defaults to 56-by-56 and a background of the accent color according to
     # guidelines
     size: (dp(56), dp(56))
     md_bg_color: root.theme_cls.accent_color
@@ -376,6 +376,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
     text_color = ListProperty(None, allownone=True)
     opposite_colors = BooleanProperty(False)
     font_name = StringProperty()
+    font_size = NumericProperty(14)
 
     def on_font_name(self, instance, value):
         instance.ids.lbl_txt.font_name = value

@@ -56,23 +56,24 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
+
 from kivymd import images_path
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
-from kivymd.label import MDLabel, MDIcon
+from kivymd.label import MDIcon
 from kivymd.list import MDList, OneLineListItem, ILeftBody,\
     OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
 <MDBottomSheet>
-    md_bg_color: 0,0,0,.8
+    md_bg_color: 0, 0, 0, .8
     upper_padding: upper_padding
     gl_content: gl_content
 
     BoxLayout:
         size_hint_y: None
         orientation: 'vertical'
-        padding: 0,1,0,0
+        padding: 0, 1, 0, 0
         height: upper_padding.height + gl_content.height + 1
 
         BsPadding:
@@ -142,12 +143,14 @@ class MDListBottomSheet(MDBottomSheet):
             item.add_widget(ListBSIconLeft(icon=icon))
         else:
             item = OneLineListItem(text=text, on_release=callback)
-
         item.bind(on_release=lambda x: self.dismiss())
         self.mlist.add_widget(item)
 
 
 Builder.load_string('''
+#:import MDLabel kivymd.label.MDLabel
+
+
 <GridBSItem>
     orientation: 'vertical'
     padding: 0, dp(24), 0, 0
@@ -158,8 +161,10 @@ Builder.load_string('''
         padding: dp(8), 0, dp(8), dp(8)
         size_hint_y: None
         height: dp(48)
+
         Image:
             source: root.source
+
     MDLabel:
         font_style: 'Caption'
         theme_text_color: 'Secondary'
@@ -170,7 +175,6 @@ Builder.load_string('''
 
 class GridBSItem(ButtonBehavior, BoxLayout):
     source = StringProperty()
-
     caption = StringProperty()
 
 
@@ -182,11 +186,7 @@ class MDGridBottomSheet(MDBottomSheet):
         self.gl_content.cols = 3
 
     def add_item(self, text, callback, icon_src):
-        item = GridBSItem(
-            caption=text,
-            on_release=callback,
-            source=icon_src
-        )
+        item = GridBSItem(caption=text, on_release=callback, source=icon_src)
         item.bind(on_release=lambda x: self.dismiss())
         if len(self.gl_content.children) % 3 == 0:
             self.gl_content.height += dp(96)

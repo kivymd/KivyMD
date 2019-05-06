@@ -977,24 +977,24 @@ selection_controls = '''
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': .4, 'center_y': .4}
+        pos_hint: {'center_x': .3, 'center_y': .4}
 
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': .6, 'center_y': .4}
+        pos_hint: {'center_x': .7, 'center_y': .4}
         disabled: True
 
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': .4, 'center_y': .3}
+        pos_hint: {'center_x': .3, 'center_y': .3}
         active: True
 
     MDSwitch:
         size_hint: None, None
         size: dp(36), dp(48)
-        pos_hint: {'center_x': .6, 'center_y': .3}
+        pos_hint: {'center_x': .7, 'center_y': .3}
         active: True
         disabled: True
 '''

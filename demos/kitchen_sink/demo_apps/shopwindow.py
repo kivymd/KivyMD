@@ -303,13 +303,12 @@ screen_shop_window = '''
 
 
 class ShopWindow(Screen):
-    app = App.get_running_app()
-
     def set_list_shop(self):
         increment_left = -2
         for i in range(5):
             increment_left += 2
-            self.app.main_widget.ids.scr_mngr.get_screen('shop window').ids.rv_main.data.append(
+            App.get_running_app().main_widget.ids.scr_mngr.get_screen(
+                'shop window').ids.rv_main.data.append(
                 {
                     'viewclass': 'CardsBoxForShopWindow',
                     'height': dp(300),
@@ -321,7 +320,7 @@ class ShopWindow(Screen):
 
     def set_list_cart(self):
         for i in range(11):
-            self.app.main_widget.ids.scr_mngr.get_screen(
+            App.get_running_app().main_widget.ids.scr_mngr.get_screen(
                 'shop window').ids.cart_screen.ids.rv_cart.data.append(
                     {
                         'viewclass': 'CardItemForCart',

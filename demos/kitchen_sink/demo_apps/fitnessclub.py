@@ -310,7 +310,6 @@ screen_fitness_club = '''
 
 
 class FitnessClub(Screen):
-    app = App.get_running_app()
     about_text = \
         "Gym and Fitness was founded in 2002 as a family owned and operated " \
         "business. The Gym and Fitness founders didn’t want it to be just " \
@@ -336,15 +335,15 @@ class FitnessClub(Screen):
             self.ids.about_us.ids.about_girl.reload()
 
     def set_item_reg(self):
-        Animation(x=(self.app.Window.width // 2) - dp(60),
+        Animation(x=(App.get_running_app().Window.width // 2) - dp(60),
                   d=.15, t='in_out_bounce').start(self.ids.facebook)
-        Animation(x=self.app.Window.width // 2,
+        Animation(x=App.get_running_app().Window.width // 2,
                   d=.15, t='in_out_bounce').start(self.ids.twitter)
 
     def set_item_menu(self):
         def anim_item(*args):
             instance_item = args[0]
-            Animation(x=(self.app.Window.width // 2) - dp(30),
+            Animation(x=(App.get_running_app().Window.width // 2) - dp(30),
                       d=.15, t='in_out_bounce').start(instance_item)
 
         Clock.schedule_once(lambda x: anim_item(self.ids.exercises), .1)
@@ -353,9 +352,8 @@ class FitnessClub(Screen):
         Clock.schedule_once(lambda x: anim_item(self.ids.about), .25)
 
     def back_to_previous_screen(self):
-        self.app.theme_cls.primary_palette = 'BlueGray'
-        self.app.main_widget.ids.scr_mngr.current = 'previous'
-        self.app.main_widget.ids.toolbar.height = dp(56)
+        App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+        App.get_running_app().main_widget.ids.toolbar.height = dp(56)
 
 
 class ItemMenuForFitness(CircularRippleBehavior, ButtonBehavior, Image):

@@ -205,7 +205,7 @@ screen_coffee_menu = '''
 
         CustomToolbar:
             id: toolbar
-            y: root.app.Window.height
+            y: app.Window.height
 
         BoxLayout:
             id: top_menu
@@ -254,12 +254,11 @@ screen_coffee_menu = '''
 
         MenuDialog:
             id: menu_dialog
-            y: root.app.Window.height
+            y: app.Window.height
 '''
 
 
 class CoffeeMenu(Screen):
-    app = App.get_running_app()
     coffees_list = [
         'Americano', 'Affogato', 'Bicherin', 'Vietnamese ice coffee',
         'Gallon (drink)', 'Glace', 'Ipoh White Coffee', 'Cappuccino',
@@ -281,7 +280,6 @@ class CoffeeMenu(Screen):
         self.add_custom_toolbar()
         self.show_menu_animation()
         self.set_items_menu()
-        self.app.theme_cls.primary_palette = 'Gray'
 
     def set_items_menu(self):
         self.ids.menu_dialog.ids.rv.data = []
@@ -321,9 +319,8 @@ class CoffeeMenu(Screen):
         if self.menu_open:
             self.menu_open = False
             self.hide_menu_list_animation()
-        self.app.theme_cls.primary_palette = 'BlueGray'
-        self.app.main_widget.ids.scr_mngr.current = 'previous'
-        self.app.main_widget.ids.toolbar.height = dp(56)
+        App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+        App.get_running_app().main_widget.ids.toolbar.height = dp(56)
 
     def open_previous_coffee_info(self):
         PreviousDialogCoffee().open()

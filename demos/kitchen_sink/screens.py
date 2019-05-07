@@ -18,6 +18,12 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
+from demo_apps.formone import registration_form_one, FormOne
+from demo_apps.shopwindow import screen_shop_window, ShopWindow
+from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
+from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+from demo_apps.swipecards import screen_swipe_cards, SwipeCards
+
 bottom_app_bar = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
@@ -1661,18 +1667,247 @@ md_icons = '''
                 orientation: 'vertical'
 '''
 
+Builder.load_string(md_icon_item)
+
 
 class Screens(object):
     manager_swiper = None
     main_widget = None
     directory = None
 
+    data = {
+        'Themes':
+            {'kv_string': theming,
+             'Factory': 'Factory.Theming()',
+             'name_screen': 'theming',
+             'object': None},
+
+        'Bottom Navigation':
+            {'kv_string': bottom_navigation,
+             'Factory': 'Factory.BottomNavigation()',
+             'name_screen': 'bottom navigation',
+             'object': None},
+
+        'Bottom Sheets':
+            {'kv_string': bottom_sheet,
+             'Factory': 'Factory.BottomSheet()',
+             'name_screen': 'bottom sheet',
+             'object': None},
+
+        'Popup Screen':
+            {'kv_string': popup_screen,
+             'Factory': 'Factory.PopupScreenWidget()',
+             'name_screen': 'popup screen',
+             'object': None},
+
+        'Fan Manager':
+            {'kv_string': fan_manager,
+             'Factory': 'Factory.FanManager()',
+             'name_screen': 'fan manager',
+             'object': None},
+
+        'Progress bars':
+            {'kv_string': progress_bar,
+             'Factory': 'Factory.ProgressBars()',
+             'name_screen': 'progress bar',
+             'object': None},
+
+        'Progress & activity':
+            {'kv_string': progress,
+             'Factory': 'Factory.Progress()',
+             'name_screen': 'progress',
+             'object': None},
+
+        'Update Screen Widget':
+            {'kv_string': update_spinner,
+             'Factory': 'Factory.UpdateSpinner()',
+             'name_screen': 'update spinner',
+             'object': None},
+
+        'Sliders':
+            {'kv_string': sliders,
+             'Factory': 'Factory.Sliders()',
+             'name_screen': 'sliders',
+             'object': None},
+
+        'Stack Floating Buttons':
+            {'kv_string': stack_buttons,
+             'Factory': 'Factory.StackButtons()',
+             'name_screen': 'stack buttons',
+             'object': None},
+
+        'Snackbars':
+            {'kv_string': snackbar,
+             'Factory': 'Factory.MySnackBar()',
+             'name_screen': 'snackbar',
+             'object': None},
+
+        'Download File':
+            {'kv_string': download_file,
+             'Factory': 'Factory.DownloadFile()',
+             'name_screen': 'download file',
+             'object': None},
+
+        'User Animation Card':
+            {'kv_string': user_animation_card,
+             'Factory': 'Factory.UserCard()',
+             'name_screen': 'user animation card',
+             'object': None},
+
+        'Pickers':
+            {'kv_string': pickers,
+             'Factory': 'Factory.Pickers()',
+             'name_screen': 'pickers',
+             'object': None},
+
+        'Cards':
+            {'kv_string': cards,
+             'Factory': 'Factory.Cards()',
+             'name_screen': 'cards',
+             'object': None},
+
+        'Dialogs':
+            {'kv_string': dialogs,
+             'Factory': 'Factory.Dialogs()',
+             'name_screen': 'dialogs',
+             'object': None},
+
+        'MDToolbars':
+            {'kv_string': toolbars,
+             'Factory': 'Factory.Toolbars()',
+             'name_screen': 'toolbars',
+             'object': None},
+
+        'Buttons':
+            {'kv_string': buttons,
+             'Factory': 'Factory.Buttons()',
+             'name_screen': 'buttons',
+             'object': None},
+
+        'Files Manager':
+            {'kv_string': file_manager,
+             'Factory': 'Factory.FileManager()',
+             'name_screen': 'file manager',
+             'object': None},
+
+        'Tabs':
+            {'kv_string': tabs,
+             'Factory': 'Factory.Tabs()',
+             'name_screen': 'tabs',
+             'object': None},
+
+        'Labels':
+            {'kv_string': labels,
+             'Factory': 'Factory.Labels()',
+             'name_screen': 'labels',
+             'object': None},
+
+        'Chips':
+            {'kv_string': chips,
+             'Factory': 'Factory.Chips()',
+             'name_screen': 'chips',
+             'object': None},
+
+        'Lists':
+            {'kv_string': lists,
+             'Factory': 'Factory.Lists()',
+             'name_screen': 'lists',
+             'object': None},
+
+        'Accordion List':
+            {'kv_string': accordion_list,
+             'Factory': 'Factory.AccordionList()',
+             'name_screen': 'accordion list',
+             'object': None},
+
+        'Grid lists':
+            {'kv_string': grid,
+             'Factory': 'Factory.Grid()',
+             'name_screen': 'grid',
+             'object': None},
+
+        'Accordion':
+            {'kv_string': accordion,
+             'Factory': 'Factory.Accord()',
+             'name_screen': 'accordion',
+             'object': None},
+
+        'Selection controls':
+            {'kv_string': selection_controls,
+             'Factory': 'Factory.SelectionControls()',
+             'name_screen': 'selection controls',
+             'object': None},
+
+        'Menus':
+            {'kv_string': menu,
+             'Factory': 'Factory.Menu()',
+             'name_screen': 'menu',
+             'object': None},
+
+        'MD Icons':
+            {'kv_string': md_icons,
+             'Factory': 'Factory.MDIcons()',
+             'name_screen': 'md icons',
+             'object': None},
+
+        'Bottom App Bar':
+            {'kv_string': bottom_app_bar,
+             'Factory': 'Factory.BottomAppBar()',
+             'name_screen': 'bottom app bar',
+             'object': None},
+
+        'Text fields':
+            {'kv_string': textfields,
+             'Factory': 'Factory.TextFields()',
+             'name_screen': 'textfields',
+             'object': None}
+    }
+
+    data_for_demo = {
+        'Shop Window':
+            {'kv_string': screen_shop_window,
+             'class': 'ShopWindow()',
+             'object': None},
+
+        'Fitness Club':
+            {'kv_string': screen_fitness_club,
+             'class': 'FitnessClub()',
+             'object': None},
+
+        'Coffee Menu':
+            {'kv_string': screen_coffee_menu,
+             'class': 'CoffeeMenu()',
+             'object': None},
+
+        'Swipe cards':
+            {'kv_string': screen_swipe_cards,
+             'class': 'SwipeCards()',
+             'object': None},
+
+        'Registration':
+            {'kv_string': registration_form_one,
+             'class': 'FormOne()',
+             'object': None}
+    }
+
+    def show_screens_demo(self, name_screen):
+        if name_screen == 'Registration':
+            self.theme_cls.primary_palette = 'Amber'
+        if name_screen != 'Shop Window':
+            self.main_widget.ids.toolbar.height = 0
+        if not self.data_for_demo[name_screen]['object']:
+            Builder.load_string(self.data_for_demo[name_screen]['kv_string'])
+            self.data_for_demo[name_screen]['object'] = eval(
+                self.data_for_demo[name_screen]['class'])
+            self.main_widget.ids.scr_mngr.add_widget(
+                self.data_for_demo[name_screen]['object'])
+
     def show_manager_swiper(self):
         from kivymd.managerswiper import MDSwiperPagination
 
         if not self.manager_swiper:
-            path_to_crop_image =\
-                '{}/assets/'\
+            path_to_crop_image = \
+                '{}/assets/' \
                 'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
             if not os.path.exists(path_to_crop_image):
                 crop_image(
@@ -1692,346 +1927,21 @@ class Screens(object):
 
         self.main_widget.ids.scr_mngr.current = 'manager swiper'
 
-    registration_form_one = None
-
-    def show_registration_form_one(self):
-        from demo_apps.formone import registration_form_one, FormOne
-
-        self.main_widget.ids.toolbar.height = 0
-        self.theme_cls.primary_palette = 'Amber'
-        if not self.registration_form_one:
-            Builder.load_string(registration_form_one)
-            self.registration_form_one = FormOne()
-            self.main_widget.ids.scr_mngr.add_widget(self.registration_form_one)
-
-    screen_shop_window = None
-
-    def show_shop_window(self):
-        from demo_apps.shopwindow import screen_shop_window, ShopWindow
-
-        if not self.screen_shop_window:
-            Builder.load_string(screen_shop_window)
-            self.screen_shop_window = ShopWindow()
-            self.main_widget.ids.scr_mngr.add_widget(self.screen_shop_window)
-
-    screen_coffee_menu = None
-
-    def show_coffee_menu(self):
-        from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
-
-        self.main_widget.ids.toolbar.height = 0
-        if not self.screen_coffee_menu:
-            Builder.load_string(screen_coffee_menu)
-            self.screen_coffee_menu = CoffeeMenu()
-            self.main_widget.ids.scr_mngr.add_widget(self.screen_coffee_menu)
-
-    screen_swipe_cards = None
-
-    def show_swipe_cards(self):
-        from demo_apps.swipecards import screen_swipe_cards, SwipeCards
-
-        self.main_widget.ids.toolbar.height = 0
-        if not self.screen_swipe_cards:
-            Builder.load_string(screen_swipe_cards)
-            self.screen_swipe_cards = SwipeCards()
-            self.main_widget.ids.scr_mngr.add_widget(self.screen_swipe_cards)
-
-    screen_fitness_club = None
-
-    def show_fitness_club(self):
-        from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
-
-        self.main_widget.ids.toolbar.height = 0
-        self.theme_cls.theme_style = 'Dark'
-        self.theme_cls.primary_palette = 'Gray'
-        if not self.screen_fitness_club:
-            Builder.load_string(screen_fitness_club)
-            self.screen_fitness_club = FitnessClub()
-            self.main_widget.ids.scr_mngr.add_widget(self.screen_fitness_club)
-
-    bottom_navigation = None
-
-    def show_bottom_navigation(self):
-        if not self.bottom_navigation:
-            Builder.load_string(bottom_navigation)
-            self.bottom_navigation = Factory.BottomNavigation()
-            self.main_widget.ids.scr_mngr.add_widget(self.bottom_navigation)
-        self.main_widget.ids.scr_mngr.current = 'bottom navigation'
-
-    md_icons = None
-
-    def show_md_icons(self, app):
-        Builder.load_string(md_icon_item)
-
-        if not self.md_icons:
-            Builder.load_string(md_icons)
-            self.md_icons = Factory.MDIcons()
-            self.main_widget.ids.scr_mngr.add_widget(self.md_icons)
-            app.set_list_md_icons()
-        self.main_widget.ids.scr_mngr.current = 'md icons'
-
-    bottom_sheet = None
-
-    def show_bottom_sheet(self):
-        if not self.bottom_sheet:
-            Builder.load_string(bottom_sheet)
-            self.bottom_sheet = Factory.BottomSheet()
-            self.main_widget.ids.scr_mngr.add_widget(self.bottom_sheet)
-        self.main_widget.ids.scr_mngr.current = 'bottom sheet'
-
-    popup_screen = None
-
-    def show_popup_screen(self):
-        if not self.popup_screen:
-            Builder.load_string(popup_screen)
-            self.popup_screen = Factory.PopupScreenWidget()
-            self.main_widget.ids.scr_mngr.add_widget(self.popup_screen)
-        self.main_widget.ids.scr_mngr.current = 'popup screen'
-
-    fan_manager = None
-
-    def show_fan_manager(self):
-        if not self.fan_manager:
-            Builder.load_string(fan_manager)
-            self.fan_manager = Factory.FanManager()
-            self.main_widget.ids.scr_mngr.add_widget(self.fan_manager)
-        self.main_widget.ids.scr_mngr.current = 'fan manager'
-
-    progress_bar = None
-
-    def show_progress_bar(self):
-        if not self.progress_bar:
-            Builder.load_string(progress_bar)
-            self.progress_bar = Factory.ProgressBars()
-            self.main_widget.ids.scr_mngr.add_widget(self.progress_bar)
-        self.main_widget.ids.scr_mngr.current = 'progress bar'
-
-    progress = None
-
-    def show_progress(self):
-        if not self.progress:
-            Builder.load_string(progress)
-            self.progress = Factory.Progress()
-            self.main_widget.ids.scr_mngr.add_widget(self.progress)
-        self.main_widget.ids.scr_mngr.current = 'progress'
-
-    update_spinner = None
-
-    def show_update_spinner(self):
-        if not self.update_spinner:
-            Builder.load_string(update_spinner)
-            self.update_spinner = Factory.UpdateSpinner()
-            self.main_widget.ids.scr_mngr.add_widget(self.update_spinner)
-        self.main_widget.ids.scr_mngr.current = 'update spinner'
-
-    theming = None
-
-    def show_theming(self):
-        if not self.theming:
-            Builder.load_string(theming)
-            self.theming = Factory.Theming()
-            self.main_widget.ids.scr_mngr.add_widget(self.theming)
-        self.main_widget.ids.scr_mngr.current = 'theming'
-
-    selection_controls = None
-
-    def show_selection_controls(self):
-        if not self.selection_controls:
-            Builder.load_string(selection_controls)
-            self.selection_controls = Factory.SelectionControls()
-            self.main_widget.ids.scr_mngr.add_widget(self.selection_controls)
-        self.main_widget.ids.scr_mngr.current = 'selection controls'
-
-    menu = None
-
-    def show_menu(self):
-        if not self.menu:
-            Builder.load_string(menu)
-            self.menu = Factory.Menu()
-            self.main_widget.ids.scr_mngr.add_widget(self.menu)
-        self.main_widget.ids.scr_mngr.current = 'menu'
-
-    bottom_app_bar = None
-
-    def show_app_bar(self):
-        if not self.bottom_app_bar:
-            Builder.load_string(bottom_app_bar)
-            self.set_appbar()
-            self.bottom_app_bar = Factory.BottomAppBar()
-            self.bottom_app_bar.add_widget(self.md_app_bar)
-            self.main_widget.ids.scr_mngr.add_widget(self.bottom_app_bar)
-        self.main_widget.ids.scr_mngr.current = 'bottom app bar'
-
-    accordion_list = None
-
-    def show_accordion_list(self):
-        if not self.accordion_list:
-            Builder.load_string(accordion_list)
-            self.accordion_list = Factory.AccordionList()
-            self.main_widget.ids.scr_mngr.add_widget(self.accordion_list)
-        self.main_widget.ids.scr_mngr.current = 'accordion list'
-
-    grid = None
-
-    def show_grid(self):
-        if not self.grid:
-            Builder.load_string(grid)
-            self.grid = Factory.Grid()
-            self.main_widget.ids.scr_mngr.add_widget(self.grid)
-        self.main_widget.ids.scr_mngr.current = 'grid'
-
-    accordion = None
-
-    def show_accordion(self):
-        if not self.accordion:
-            Builder.load_string(accordion)
-            self.accordion = Factory.Accord()
-            self.main_widget.ids.scr_mngr.add_widget(self.accordion)
-        self.main_widget.ids.scr_mngr.current = 'accordion'
-
-    labels = None
-
-    def show_labels(self):
-        if not self.labels:
-            Builder.load_string(labels)
-            self.labels = Factory.Labels()
-            self.main_widget.ids.scr_mngr.add_widget(self.labels)
-        self.main_widget.ids.scr_mngr.current = 'labels'
-
-    chips = None
-
-    def show_chips(self):
-        if not self.chips:
-            Builder.load_string(chips)
-            self.chips = Factory.Chips()
-            self.main_widget.ids.scr_mngr.add_widget(self.chips)
-        self.main_widget.ids.scr_mngr.current = 'chips'
-
-    lists = None
-
-    def show_lists(self):
-        if not self.lists:
-            Builder.load_string(lists)
-            self.lists = Factory.Lists()
-            self.main_widget.ids.scr_mngr.add_widget(self.lists)
-        self.main_widget.ids.scr_mngr.current = 'lists'
-
-    buttons = None
-
-    def show_buttons(self):
-        if not self.buttons:
-            Builder.load_string(buttons)
-            self.buttons = Factory.Buttons()
-            self.main_widget.ids.scr_mngr.add_widget(self.buttons)
-        self.main_widget.ids.scr_mngr.current = 'buttons'
-
-    file_manager = None
-
-    def show_file_manager(self):
-        if not self.file_manager:
-            Builder.load_string(file_manager)
-            self.file_manager = Factory.FileManager()
-            self.main_widget.ids.scr_mngr.add_widget(self.file_manager)
-        self.main_widget.ids.scr_mngr.current = 'file manager'
-
-    tabs = None
-
-    def show_tabs(self):
-        if not self.tabs:
-            Builder.load_string(tabs)
-            self.tabs = Factory.Tabs()
-            self.main_widget.ids.scr_mngr.add_widget(self.tabs)
-        self.main_widget.ids.scr_mngr.current = 'tabs'
-
-    textfields = None
-
-    def show_textfields(self):
-        if not self.textfields:
-            Builder.load_string(textfields)
-            self.textfields = Factory.TextFields()
-            self.main_widget.ids.scr_mngr.add_widget(self.textfields)
-            self.textfields.ids.text_field_error.bind(
-                on_text_validate=self.set_error_message,
-                on_focus=self.set_error_message)
-        self.main_widget.ids.scr_mngr.current = 'textfields'
-
-    pickers = None
-
-    def show_pickers(self):
-        if not self.pickers:
-            Builder.load_string(pickers)
-            self.pickers = Factory.Pickers()
-            self.main_widget.ids.scr_mngr.add_widget(self.pickers)
-        self.main_widget.ids.scr_mngr.current = 'pickers'
-
-    cards = None
-
-    def show_cards(self):
-        if not self.cards:
-            Builder.load_string(cards)
-            self.cards = Factory.Cards()
-            self.main_widget.ids.scr_mngr.add_widget(self.cards)
-        self.main_widget.ids.scr_mngr.current = 'cards'
-
-    dialogs = None
-
-    def show_dialogs(self):
-        if not self.dialogs:
-            Builder.load_string(dialogs)
-            self.dialogs = Factory.Dialogs()
-            self.main_widget.ids.scr_mngr.add_widget(self.dialogs)
-        self.main_widget.ids.scr_mngr.current = 'dialogs'
-
-    toolbars = None
-
-    def show_toolbars(self):
-        if not self.toolbars:
-            Builder.load_string(toolbars)
-            self.toolbars = Factory.Toolbars()
-            self.main_widget.ids.scr_mngr.add_widget(self.toolbars)
-        self.main_widget.ids.scr_mngr.current = 'toolbars'
-
-    snackbar = None
-
-    def show_snackbar(self):
-        if not self.snackbar:
-            Builder.load_string(snackbar)
-            self.snackbar = Factory.MySnackBar()
-            self.main_widget.ids.scr_mngr.add_widget(self.snackbar)
-        self.main_widget.ids.scr_mngr.current = 'snackbar'
-
-    download_file = None
-
-    def show_download_file(self):
-        if not self.download_file:
-            Builder.load_string(download_file)
-            self.download_file = Factory.DownloadFile()
-            self.main_widget.ids.scr_mngr.add_widget(self.download_file)
-        self.main_widget.ids.scr_mngr.current = 'download file'
-
-    user_animation_card = None
-
-    def show_user_animation_card(self):
-        if not self.user_animation_card:
-            Builder.load_string(user_animation_card)
-            self.user_animation_card = Factory.UserCard()
-            self.main_widget.ids.scr_mngr.add_widget(self.user_animation_card)
-        self.main_widget.ids.scr_mngr.current = 'user animation card'
-
-    sliders = None
-
-    def show_sliders(self):
-        if not self.sliders:
-            Builder.load_string(sliders)
-            self.sliders = Factory.Sliders()
-            self.main_widget.ids.scr_mngr.add_widget(self.sliders)
-        self.main_widget.ids.scr_mngr.current = 'sliders'
-
-    stack_buttons = None
-
-    def show_stack_buttons(self):
-        if not self.stack_buttons:
-            Builder.load_string(stack_buttons)
-            self.stack_buttons = Factory.StackButtons()
-            self.main_widget.ids.scr_mngr.add_widget(self.stack_buttons)
-        self.main_widget.ids.scr_mngr.current = 'stack buttons'
+    def show_screen(self, name_screen):
+        if not self.data[name_screen]['object']:
+            Builder.load_string(self.data[name_screen]['kv_string'])
+            self.data[name_screen]['object'] = \
+                eval(self.data[name_screen]['Factory'])
+            if name_screen == 'Bottom App Bar':
+                self.set_appbar()
+                self.data[name_screen]['object'].add_widget(self.md_app_bar)
+            self.main_widget.ids.scr_mngr.add_widget(
+                self.data[name_screen]['object'])
+            if name_screen == 'Text fields':
+                self.data[name_screen]['object'].ids.text_field_error.bind(
+                    on_text_validate=self.set_error_message,
+                    on_focus=self.set_error_message)
+            elif name_screen == 'MD Icons':
+                self.set_list_md_icons()
+        self.main_widget.ids.scr_mngr.current = \
+            self.data[name_screen]['name_screen']

@@ -1883,16 +1883,20 @@ class Screens(object):
     }
 
     def show_screens_demo(self, name_screen):
-        if name_screen == 'Registration':
+        if name_screen == 'Registration' and \
+                not self.data_for_demo[name_screen]['object']:
             from demo_apps.formone import registration_form_one, FormOne
             self.data_for_demo[name_screen]['kv_string'] = registration_form_one
-        elif name_screen == 'Shop Window':
+        elif name_screen == 'Shop Window' and \
+                not self.data_for_demo[name_screen]['object']:
             from demo_apps.shopwindow import screen_shop_window, ShopWindow
             self.data_for_demo[name_screen]['kv_string'] = screen_shop_window
-        elif name_screen == 'Coffee Menu':
+        elif name_screen == 'Coffee Menu' and \
+                not self.data_for_demo[name_screen]['object']:
             from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
             self.data_for_demo[name_screen]['kv_string'] = screen_coffee_menu
-        elif name_screen == 'Fitness Club':
+        elif name_screen == 'Fitness Club' and \
+                not self.data_for_demo[name_screen]['object']:
             from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
             self.data_for_demo[name_screen]['kv_string'] = screen_fitness_club
 

@@ -191,12 +191,10 @@ registration_form_one = '''
 
 
 class FormOne(Screen):
-    app = App.get_running_app()
-
     def back_to_previous_screen(self):
-        self.app.theme_cls.primary_palette = 'BlueGray'
-        self.app.main_widget.ids.scr_mngr.current = 'previous'
-        self.app.main_widget.ids.toolbar.height = dp(56)
+        App.get_running_app().theme_cls.primary_palette = 'BlueGray'
+        App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+        App.get_running_app().main_widget.ids.toolbar.height = dp(56)
 
 
 class ButtonRoundForForm(CircularRippleBehavior, ButtonBehavior, Image):

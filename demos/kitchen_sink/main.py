@@ -389,8 +389,7 @@ class KitchenSink(App, Screens):
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko')
         self.demo_apps_list = [
-            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration',
-            'Swipe cards']
+            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),

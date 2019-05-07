@@ -18,10 +18,7 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
-from demo_apps.formone import registration_form_one, FormOne
-from demo_apps.shopwindow import screen_shop_window, ShopWindow
-from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
-from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+
 from demo_apps.swipecards import screen_swipe_cards, SwipeCards
 
 bottom_app_bar = '''
@@ -1865,32 +1862,40 @@ class Screens(object):
 
     data_for_demo = {
         'Shop Window':
-            {'kv_string': screen_shop_window,
-             'class': 'ShopWindow()',
+            {'class': 'ShopWindow()',
              'object': None},
 
         'Fitness Club':
-            {'kv_string': screen_fitness_club,
-             'class': 'FitnessClub()',
+            {'class': 'FitnessClub()',
              'object': None},
 
         'Coffee Menu':
-            {'kv_string': screen_coffee_menu,
-             'class': 'CoffeeMenu()',
+            {'class': 'CoffeeMenu()',
              'object': None},
 
         'Swipe cards':
-            {'kv_string': screen_swipe_cards,
-             'class': 'SwipeCards()',
+            {'class': 'SwipeCards()',
              'object': None},
 
         'Registration':
-            {'kv_string': registration_form_one,
-             'class': 'FormOne()',
+            {'class': 'FormOne()',
              'object': None}
     }
 
     def show_screens_demo(self, name_screen):
+        if name_screen == 'Registration':
+            from demo_apps.formone import registration_form_one, FormOne
+            self.data_for_demo[name_screen]['kv_string'] = registration_form_one
+        elif name_screen == 'Shop Window':
+            from demo_apps.shopwindow import screen_shop_window, ShopWindow
+            self.data_for_demo[name_screen]['kv_string'] = screen_shop_window
+        elif name_screen == 'Coffee Menu':
+            from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
+            self.data_for_demo[name_screen]['kv_string'] = screen_coffee_menu
+        elif name_screen == 'Fitness Club':
+            from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+            self.data_for_demo[name_screen]['kv_string'] = screen_fitness_club
+
         if name_screen == 'Registration':
             self.theme_cls.primary_palette = 'Amber'
         if name_screen != 'Shop Window':

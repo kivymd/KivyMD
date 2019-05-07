@@ -145,6 +145,9 @@ main_widget_kv = '''
 
 <MyNavigationDrawerIconButton@NavigationDrawerIconButton>
     icon: 'checkbox-blank-circle'
+    on_release:
+        app.show_screen(root.text)
+        app.set_title_toolbar(root.text)
 
 
 <ContentNavigationDrawer@MDNavigationDrawer>
@@ -156,195 +159,104 @@ main_widget_kv = '''
 
     MyNavigationDrawerIconButton:
         text: "Accordion"
-        on_release:
-            app.show_accordion()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Bottom App Bar"
-        on_release:
-            app.show_app_bar()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Accordion List"
-        on_release:
-            app.show_accordion_list()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Bottom Navigation"
-        on_release:
-            app.show_bottom_navigation()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Bottom Sheets"
-        on_release:
-            app.show_bottom_sheet()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Buttons"
-        on_release:
-            app.show_buttons()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Cards"
-        on_release:
-            app.show_cards()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Chips"
-        on_release:
-            app.show_chips()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Dialogs"
-        on_release: 
-            app.show_dialogs()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Download File"
-        on_release:
-            app.show_download_file()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Files Manager"
-        on_release:
-            app.show_file_manager()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Fan Manager"
-        on_release:
-            app.show_fan_manager()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Grid lists"
-        on_release:
-            app.show_grid()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Labels"
-        on_release:
-            app.show_labels()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Lists"
-        on_release:
-            app.show_lists()
-            app.set_title_toolbar(self.text)
 
-    MyNavigationDrawerIconButton:
-        text: "MD Icons"
-        on_release:
-            app.show_md_icons(app)
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Menus"
-        on_release:
-            app.show_menu()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Pickers"
-        on_release:
-            app.show_pickers()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Progress & activity"
-        on_release:
-            app.show_progress()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Popup Screen"
-        on_release:
-            app.show_popup_screen()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Progress bars"
-        on_release:
-            app.show_progress_bar()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Selection controls"
-        on_release:
-            app.show_selection_controls()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Sliders"
-        on_release:
-            app.show_sliders()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Stack Floating Buttons"
-        on_release:
-            app.show_stack_buttons()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Snackbars"
-        on_release:
-            app.show_snackbar()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
-        text: "Tabs"
-        on_release:
-            app.show_tabs()
-            app.set_title_toolbar(self.text)
-
-    MyNavigationDrawerIconButton:
+    NavigationDrawerIconButton:
+        icon: 'checkbox-blank-circle'
         text: "Manager Swiper"
         on_release:
             app.show_manager_swiper()
             app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
+        text: "MD Icons"
+
+    MyNavigationDrawerIconButton:
+        text: "Menus"
+
+    MyNavigationDrawerIconButton:
+        text: "Pickers"
+
+    MyNavigationDrawerIconButton:
+        text: "Progress & activity"
+
+    MyNavigationDrawerIconButton:
+        text: "Popup Screen"
+
+    MyNavigationDrawerIconButton:
+        text: "Progress bars"
+
+    MyNavigationDrawerIconButton:
+        text: "Selection controls"
+
+    MyNavigationDrawerIconButton:
+        text: "Sliders"
+
+    MyNavigationDrawerIconButton:
+        text: "Stack Floating Buttons"
+
+    MyNavigationDrawerIconButton:
+        text: "Snackbars"
+
+    MyNavigationDrawerIconButton:
+        text: "Tabs"
+
+    MyNavigationDrawerIconButton:
         text: "Text fields"
-        on_release:
-            app.show_textfields()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "Themes"
-        on_release:
-            app.show_theming()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
-        text: "MDToolbars"
-        on_release:
-            app.show_toolbars()
-            app.set_title_toolbar(self.text)
+        text: "Toolbars"
 
     MyNavigationDrawerIconButton:
         text: "Update Screen Widget"
-        on_release:
-            app.show_update_spinner()
-            app.set_title_toolbar(self.text)
 
     MyNavigationDrawerIconButton:
         text: "User Animation Card"
-        on_release:
-            app.show_user_animation_card()
-            app.set_title_toolbar(self.text)
+
 
 NavigationLayout:
     id: nav_layout
@@ -403,7 +315,9 @@ NavigationLayout:
                             pos_hint: {'center_x': .5}
                             on_release:
                                 app.set_menu_for_demo_apps()
-                                app.instance_menu_demo_apps = MDDropdownMenu(items=app.menu_for_demo_apps, max_height=dp(260), width_mult=4)
+                                app.instance_menu_demo_apps = MDDropdownMenu(\
+                                items=app.menu_for_demo_apps, \
+                                max_height=dp(260), width_mult=4)
                                 app.instance_menu_demo_apps.open(self)
 
                         MDLabel:
@@ -527,7 +441,7 @@ class KitchenSink(App, Screens):
         content = ContentForAnimCard(callback=callback)
 
         for name_contact in self.names_contacts:
-            self.accordion_list.ids.anim_list.add_widget(
+            self.data['Accordion List']['object'].ids.anim_list.add_widget(
                 MDAccordionListItem(content=content,
                                     icon='assets/kivy-logo-white-512.png',
                                     title=name_contact))
@@ -572,7 +486,7 @@ class KitchenSink(App, Screens):
                 download_complete=self.download_complete,
                 download_hide=self.download_progress_hide
             )
-            progress.start(self.download_file.ids.box_flt)
+            progress.start(self.data['Download File']['object'].ids.box_flt)
         else:
             toast('Connect error!')
 
@@ -691,7 +605,8 @@ class KitchenSink(App, Screens):
             if self.tick > 2:
                 instance.update = True
                 self.tick = 0
-                self.update_spinner.ids.upd_lbl.text = "New string"
+                self.data['Update Screen Widget']['object'].\
+                    ids.upd_lbl.text = "New string"
                 Clock.unschedule(update_screen)
 
         Clock.schedule_interval(update_screen, 1)
@@ -705,7 +620,7 @@ class KitchenSink(App, Screens):
     def set_popup_screen(self, content_popup):
         popup_menu = ContentForAnimCard()
         popup_menu.add_widget(Widget(size_hint_y=None, height=dp(150)))
-        popup_screen = self.popup_screen.ids.popup_screen
+        popup_screen = self.data['Popup Screen']['object'].ids.popup_screen
         popup_screen.screen = popup_menu
         popup_screen.background_color = [.3, .3, .3, 1]
         popup_screen.max_height = content_popup.ids.image.height + dp(5)
@@ -738,7 +653,7 @@ class KitchenSink(App, Screens):
             self._interval += interval
             if self._interval > self.my_snackbar.duration:
                 anim = Animation(y=dp(10), d=.2)
-                anim.start(self.snackbar.ids.button)
+                anim.start(self.data['Snackbars']['object'].ids.button)
                 Clock.unschedule(wait_interval)
                 self._interval = 0
                 self.my_snackbar = None
@@ -762,7 +677,7 @@ class KitchenSink(App, Screens):
                 anim = Animation(y=dp(72), d=.2)
                 anim.bind(on_complete=lambda *args: Clock.schedule_interval(
                     wait_interval, 0))
-                anim.start(self.snackbar.ids.button)
+                anim.start(self.data['Snackbars']['object'].ids.button)
 
     def show_example_input_dialog(self):
         """Creates an instance of the dialog box and displays it
@@ -820,7 +735,7 @@ class KitchenSink(App, Screens):
     def get_time_picker_date(self, instance, time):
         """Get date for MDTimePicker from the screen Pickers."""
 
-        self.pickers.ids.time_picker_label.text = str(time)
+        self.data['Pickers']['object'].ids.time_picker_label.text = str(time)
         self.previous_time = time
 
     def show_example_time_picker(self):
@@ -831,7 +746,8 @@ class KitchenSink(App, Screens):
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_date)
 
-        if self.pickers.ids.time_picker_use_previous_time.active:
+        if self.data['Pickers']['object'].\
+                ids.time_picker_use_previous_time.active:
             try:
                 time_dialog.set_time(self.previous_time)
             except AttributeError:
@@ -842,14 +758,16 @@ class KitchenSink(App, Screens):
         """Set previous date for MDDatePicker from the screen Pickers."""
 
         self.previous_date = date_obj
-        self.pickers.ids.date_picker_label.text = str(date_obj)
+        self.data['Pickers']['object'].\
+            ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
         """Show MDDatePicker from the screen Pickers."""
 
         from kivymd.pickers import MDDatePicker
 
-        if self.pickers.ids.date_picker_use_previous_date.active:
+        if self.data['Pickers']['object'].\
+                ids.date_picker_use_previous_date.active:
             pd = self.previous_date
             try:
                 MDDatePicker(self.set_previous_date,
@@ -988,14 +906,8 @@ class KitchenSink(App, Screens):
                      'on_release': lambda x=name_item: self.show_demo_apps(x)})
 
     def show_demo_apps(self, name_item):
-        name_item = name_item.lower()
-        {
-            'coffee menu': self.show_coffee_menu,
-            'shop window': self.show_shop_window,
-            'swipe cards': self.show_swipe_cards,
-            'registration': self.show_registration_form_one,
-            'fitness club': self.show_fitness_club}[name_item]()
-        self.main_widget.ids.scr_mngr.current = name_item
+        self.show_screens_demo(name_item)
+        self.main_widget.ids.scr_mngr.current = name_item.lower()
         self.instance_menu_demo_apps.dismiss()
 
     def on_pause(self):

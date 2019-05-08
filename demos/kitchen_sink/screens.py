@@ -1664,8 +1664,6 @@ md_icons = '''
                 orientation: 'vertical'
 '''
 
-Builder.load_string(md_icon_item)
-
 
 class Screens(object):
     manager_swiper = None

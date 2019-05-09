@@ -18,9 +18,6 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
-
-from demo_apps.swipecards import screen_swipe_cards, SwipeCards
-
 bottom_app_bar = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 

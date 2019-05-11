@@ -228,6 +228,9 @@ Builder.load_string('''
 
         MDTextField:
             id: field
+            text: root.text
+            password: root.password
+            password_mask: root.password_mask
             pos_hint: {'center_x': .5}
             padding_x: 0, clear_btn.width + dp(15)
             hint_text: root.hint_text
@@ -235,6 +238,8 @@ Builder.load_string('''
                 clear_btn.custom_color = self.line_color_focus\
                 if clear_btn.custom_color != self.line_color_focus\
                 else self.line_color_normal
+            on_text:
+                root.text = self.text
 
         MDTextButton:
             id: clear_btn
@@ -283,6 +288,9 @@ Builder.load_string('''
             radius: [25,]
 
     TextInput:
+        text: root.text
+        password: root.password
+        password_mask: root.password_mask
         background_active: '{}transparent.png'.format(images_path)
         background_normal: '{}transparent.png'.format(images_path)
         multiline: False
@@ -296,7 +304,9 @@ Builder.load_string('''
         on_focus:
             root._current_color = root.active_color \
             if self.focus else root.normal_color
-                
+        on_text:
+            root.text = self.text
+
     MDIconButton:
         id: icon
         icon: root.icon
@@ -308,7 +318,7 @@ Builder.load_string('''
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
     _primary_color = ListProperty([0, 0, 0, 0])
-
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._update_primary_color()
@@ -335,6 +345,9 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
 
 class MDTextFieldClear(BoxLayout):
     hint_text = StringProperty()
+    text =  StringProperty()
+    password = BooleanProperty(False)
+    password_mask = StringProperty('*')
 
     def refresh_field(self, instance_field, instance_clear_button):
         def refresh_field(interval):
@@ -694,6 +707,9 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     selection_color = ListProperty()
     _current_color = ListProperty()
     _instance_icon = ObjectProperty()
+    text =  StringProperty()
+    password = BooleanProperty(False)
+    password_mask = StringProperty('*')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

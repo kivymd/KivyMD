@@ -685,7 +685,7 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     width = NumericProperty(Window.width - dp(100))
     icon = StringProperty('email-outline')
     hint_text = StringProperty()
-    icon_color = StringProperty([1, 1, 1, 1])
+    icon_color = ListProperty([1, 1, 1, 1])
     active_color = ListProperty([1, 1, 1, .2])
     normal_color = ListProperty([1, 1, 1, .5])
     foreground_color = ListProperty([1, 1, 1, 1])

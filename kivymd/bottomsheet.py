@@ -99,7 +99,7 @@ class BottomSheetContent(BackgroundColorBehavior, GridLayout):
 
 
 class MDBottomSheet(ThemableBehavior, ModalView):
-    background = "{}transparent.png".format(images_path)
+    background = f'{images_path}transparent.png'
     upper_padding = ObjectProperty()
     gl_content = ObjectProperty()
 

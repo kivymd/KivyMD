@@ -83,7 +83,8 @@ if __name__ == '__main__':
     for c in colors.items():
         if c[0] in ['Light', 'Dark']:
             continue
-        print("For the {} color palette:".format(c[0]))
+        color = c[0]
+        print(f"For the {color} color palette:")
         for name, hex_color in c[1].items():
             if hex_color:
                 col = get_color_from_hex(hex_color)
@@ -92,6 +93,6 @@ if __name__ == '__main__':
                     col, use_color_brightness=False)
                 text_color = text_colors[c[0]][name]
                 print(
-                    "   The {} hue gives {} using color brightness, {} "
-                    "using contrast ratio, and {} from the MD spec".format(
-                        name, col_bri, con_rat, text_color))
+                    f"   The {name} hue gives {col_bri} using color "
+                    f"brightness, {con_rat} using contrast ratio, and "
+                    f"{text_color} from the MD spec")

@@ -291,8 +291,8 @@ Builder.load_string('''
         text: root.text
         password: root.password
         password_mask: root.password_mask
-        background_active: '{}transparent.png'.format(images_path)
-        background_normal: '{}transparent.png'.format(images_path)
+        background_active: f'{images_path}transparent.png'
+        background_normal: f'{images_path}transparent.png'
         multiline: False
         padding_y: dp(15)
         padding_x: dp(25)
@@ -610,8 +610,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         if len(text) > 0:
             self.has_had_text = True
         if self.max_text_length is not None:
-            self._right_msg_lbl.text = \
-                "{}/{}".format(len(text), self.max_text_length)
+            self._right_msg_lbl.text = f'{len(text)}/{self.max_text_length}'
             max_text_length = self.max_text_length
         else:
             max_text_length = sys.maxsize
@@ -679,7 +678,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
     def _set_max_text_length(self, instance, length):
         self.max_text_length = length
-        self._right_msg_lbl.text = "{}/{}".format(len(self.text), length)
+        self._right_msg_lbl.text = f'{len(self.text)}/{length}'
 
     def on_color_mode(self, instance, mode):
         if mode == "primary":

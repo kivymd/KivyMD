@@ -125,7 +125,7 @@ class Example(App):
 
     def on_start(self):
         def callback(text):
-            toast('{} to {}'.format(text, content.name_item))
+            toast(f'{text} to {content.name_item}')
 
         content = ContentForAnimCard(callback=callback)
         names_contacts = (

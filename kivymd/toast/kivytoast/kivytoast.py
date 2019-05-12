@@ -39,7 +39,7 @@ class Toast(ModalView):
         self.size_hint = (None, None)
         self.pos_hint = {'center_x': .5, 'center_y': .1}
         self.background_color = [0, 0, 0, 0]
-        self.background = '{}transparent.png'.format(images_path)
+        self.background = f'{images_path}transparent.png'
         self.opacity = 0
         self.auto_dismiss = True
         self.label_toast = Label(size_hint=(None, None), opacity=0)

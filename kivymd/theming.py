@@ -316,10 +316,10 @@ class ThemeManager(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.rec_shadow = Atlas('{}rec_shadow.atlas'.format(images_path))
-        self.rec_st_shadow = Atlas('{}rec_st_shadow.atlas'.format(images_path))
-        self.quad_shadow = Atlas('{}quad_shadow.atlas'.format(images_path))
-        self.round_shadow = Atlas('{}round_shadow.atlas'.format(images_path))
+        self.rec_shadow = Atlas(f'{images_path}rec_shadow.atlas')
+        self.rec_st_shadow = Atlas(f'{images_path}rec_st_shadow.atlas')
+        self.quad_shadow = Atlas(f'{images_path}quad_shadow.atlas')
+        self.round_shadow = Atlas(f'{images_path}round_shadow.atlas')
         Clock.schedule_once(lambda x: self.on_theme_style(0, self.theme_style))
         self._determine_device_orientation(None, Window.size)
         Window.bind(size=self._determine_device_orientation)

@@ -168,8 +168,8 @@ Builder.load_string('''
             Rectangle:
                 pos: self.pos
                 size: self.size
-                #source: '{}dialog_in_fade.png'.format(images_path)
-                source: '{}transparent.png'.format(images_path)
+                #source: f'{images_path}dialog_in_fade.png'
+                source: f'{images_path}transparent.png'
 
         MDLabel:
             text: '\\n' + root.text + '\\n'
@@ -282,7 +282,7 @@ class MDInputDialog(BaseDialog):
     text_button_ok = StringProperty('Ok')
     text_button_cancel = StringProperty()
     events_callback = ObjectProperty()
-    _background = StringProperty('{}ios_bg_mod.png'.format(images_path))
+    _background = StringProperty(f'{images_path}ios_bg_mod.png')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -307,7 +307,7 @@ class MDDialog(BaseDialog):
     text_button_cancel = StringProperty()
     text_button_ok = StringProperty('Ok')
     events_callback = ObjectProperty()
-    _background = StringProperty('{}ios_bg_mod.png'.format(images_path))
+    _background = StringProperty(f'{images_path}ios_bg_mod.png')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

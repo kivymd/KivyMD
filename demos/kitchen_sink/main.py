@@ -290,7 +290,7 @@ NavigationLayout:
                 FloatLayout:
 
                     Image:
-                        source: '{}kivy-logo-white-512.png'.format(images_path)
+                        source: f'{images_path}kivy-logo-white-512.png'
                         opacity: .3
 
                     BoxLayout:
@@ -369,21 +369,24 @@ class KitchenSink(App, Screens):
         self._interval = 0
         self.tick = 0
         self.create_stack_floating_buttons = False
+        self.hex_primary_color = get_hex_from_color(
+                self.theme_cls.primary_color)
         self.previous_text = \
-            "Welcome to the application [b][color={COLOR}]Kitchen Sink" \
-            "[/color][/b].\nTo see [b][color={COLOR}]KivyMD[/color][/b] " \
-            "examples, open the menu and select from the list the desired " \
-            "example or".format(COLOR=get_hex_from_color(
-                self.theme_cls.primary_color))
+            f"Welcome to the application [b][color={self.hex_primary_color}]" \
+            f"Kitchen Sink[/color][/b].\nTo see [b]" \
+            f"[color={self.hex_primary_color}]KivyMD[/color][/b] " \
+            f"examples, open the menu and select from the list the desired " \
+            f"example or"
         self.previous_text_end = \
-            "for show example apps\n\n" \
-            "Author - [b][color={COLOR}]Andrés Rodríguez[/color][/b]\n" \
-            "[u][b][color={COLOR}]andres.rodriguez@lithersoft.com[/color]" \
-            "[/b][/u]\n\n" \
-            "Author this Fork - [b][color={COLOR}]Ivanov Yuri[/color][/b]\n" \
-            "[u][b][color={COLOR}]kivydevelopment@gmail.com[/color]" \
-            "[/b][u]".format(COLOR=get_hex_from_color(
-                self.theme_cls.primary_color))
+            f"for show example apps\n\n" \
+            f"Author - [b][color={self.hex_primary_color}]" \
+            f"Andrés Rodríguez[/color][/b]\n" \
+            f"[u][b][color={self.hex_primary_color}]" \
+            f"andres.rodriguez@lithersoft.com[/color][/b][/u]\n\n" \
+            f"Author this Fork - [b][color={self.hex_primary_color}]" \
+            f"Ivanov Yuri[/color][/b]\n" \
+            f"[u][b][color={self.hex_primary_color}]" \
+            f"kivydevelopment@gmail.com[/color][/b][u]"
         self.names_contacts = (
             'Alexandr Taylor', 'Yuri Ivanov', 'Robert Patric', 'Bob Marley',
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
@@ -393,10 +396,8 @@ class KitchenSink(App, Screens):
         self.menu_for_demo_apps = []
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
-                   '{}/assets/guitar-1139397_1280.png'.format(
-                       self.directory),
-                   '{}/assets/guitar-1139397_1280_crop.png'.format(
-                       self.directory))
+                   f'{self.directory}/assets/guitar-1139397_1280.png',
+                   f'{self.directory}/assets/guitar-1139397_1280_crop.png')
 
     def crop_image_for_tile(self, instance, size, path_to_crop_image):
         """Crop images for Grid screen."""
@@ -435,7 +436,7 @@ class KitchenSink(App, Screens):
         from kivymd.accordionlistitem import MDAccordionListItem
 
         def callback(text):
-            toast('{} to {}'.format(text, content.name_item))
+            toast(f'{text} to {content.name_item}')
 
         content = ContentForAnimCard(callback=callback)
 

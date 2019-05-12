@@ -278,7 +278,7 @@ Builder.load_string('''
                 Rectangle:
                     pos: self.pos
                     size: self.size
-                    source: '{}swipe_shadow.png'.format(images_path)
+                    source: f'{images_path}swipe_shadow.png'
 
             MDIconButton:
                 id: delet_post_button

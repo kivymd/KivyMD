@@ -159,7 +159,7 @@ Builder.load_string('''
 
     MDLabel:
         id: drawer_title
-        text: '    {}'.format(root.drawer_title)
+        text: f'    {root.drawer_title}'
         font_style: 'H6'
         size_hint_y: None
         height: self.texture_size[1]
@@ -347,7 +347,7 @@ class NavigationDrawerIconButton(OneLineIconListItem):
             self._active_color = self.theme_cls.accent_color
 
     def on_icon(self, instance, value):
-        self.ids['_icon'].text = u'{}'.format(md_icons[value])
+        self.ids._icon.text = u'{}'.format(md_icons[value])
 
     def on_active_color_type(self, *args):
         self._set_active_color(args)

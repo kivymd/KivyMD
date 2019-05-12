@@ -221,7 +221,7 @@ Builder.load_string('''
 
         Label:
             id: label
-            text: '{}'.format(root.label)
+            text: root.label
             size_hint_x: None
             width: self.texture_size[0]
 

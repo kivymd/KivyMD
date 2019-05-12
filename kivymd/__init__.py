@@ -30,4 +30,4 @@ path = os.path.dirname(__file__)
 fonts_path = os.path.join(path, "fonts/")
 images_path = os.path.join(path, 'images/')
 
-Logger.info("KivyMD: KivyMD version: {}".format(__version__))
+Logger.info(f"KivyMD: KivyMD version: {__version__}")

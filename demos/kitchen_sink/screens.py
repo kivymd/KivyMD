@@ -1538,7 +1538,7 @@ manager_swiper = '''
 
     Image:
         source:
-            '{}/assets/guitar-1139397_1280_swiper_crop.png'.format(app.directory)
+            f'{app.directory}/assets/guitar-1139397_1280_swiper_crop.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -1911,13 +1911,12 @@ class Screens(object):
 
         if not self.manager_swiper:
             path_to_crop_image = \
-                '{}/assets/' \
-                'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
+                f'{self.directory}/assets/guitar-1139397_1280_swiper_crop.png'
             if not os.path.exists(path_to_crop_image):
                 crop_image(
                     (int(Window.width - dp(10)), int(dp(250))),
-                    '{}/assets/guitar-1139397_1280.png'.format(
-                        self.directory), path_to_crop_image)
+                    f'{self.directory}/assets/guitar-1139397_1280.png',
+                    path_to_crop_image)
 
             Builder.load_string(manager_swiper)
             self.manager_swiper = Factory.MySwiperManager()

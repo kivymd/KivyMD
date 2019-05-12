@@ -352,8 +352,8 @@ Builder.load_string('''
     color:
         root.theme_cls.primary_color if not len(root.custom_color)\
         else root.custom_color
-    background_down: '{}transparent.png'.format(images_path)
-    background_normal: '{}transparent.png'.format(images_path)
+    background_down: f'{images_path}transparent.png'
+    background_normal: f'{images_path}transparent.png'
     opacity: 1
 ''')
 

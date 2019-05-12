@@ -1295,6 +1295,11 @@ chips = '''
 #:import MDSeparator kivymd.cards.MDSeparator
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
+#:import MDLabel kivymd.label.MDLabel
+
+
+<LabelForChips@MDLabel>
+    theme_text_color: 'Primary'
 
 
 <Chips@Screen>
@@ -1313,7 +1318,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Chips with color:'
 
             MDSeparator:
@@ -1357,7 +1362,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Chip without icon:'
 
             MDSeparator:
@@ -1376,7 +1381,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Chips with check:'
 
             MDSeparator:
@@ -1402,7 +1407,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Choose chip:'
 
             MDSeparator:

@@ -473,12 +473,12 @@ class BodyManagerWithPrevious(BoxLayout):
     def get_source(self, app, source_type, instance_label, paths, index,
                    instance_content):
         if source_type == 'folder' and instance_label.text != '':
-            source = '{}folder.png'.format(images_path)
+            source = f'{images_path}folder.png'
         else:
             if len(paths) >= index:
                 source = paths[index - 1]
             else:
-                source = '{}transparent.png'.format(images_path)
+                source = f'{images_path}transparent.png'
         if PY2:
             return source.decode('u8')
         return source

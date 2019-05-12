@@ -42,8 +42,8 @@ activity = '''
 
     Image:
         source:
-            '{}/demos/kitchen_sink/assets/'\
-            'guitar-1139397_1280_swiper_crop.png'.format(app.directory)
+            f'{app.directory}/demos/kitchen_sink/assets/'\
+            f'guitar-1139397_1280_swiper_crop.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -153,13 +153,13 @@ class Test(App):
 
     def crop_image_for_card(self):
         path_to_crop_image =\
-            '{}/demos/kitchen_sink/assets/'\
-            'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
+            f'{self.directory}/demos/kitchen_sink/assets/'\
+            f'guitar-1139397_1280_swiper_crop.png'
         if not os.path.exists(path_to_crop_image):
             crop_image(
                 (int(Window.width - dp(10)), int(dp(250))),
-                '{}/demos/kitchen_sink/assets/guitar-1139397_1280.png'.format(
-                    self.directory), path_to_crop_image)
+                f'{self.directory}/demos/kitchen_sink/assets/guitar-1139397_1280.png',
+                path_to_crop_image)
 
 
 if __name__ == '__main__':

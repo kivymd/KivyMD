@@ -20,7 +20,7 @@ Builder.load_string("""
 
 
 <BaseDialogForDemo>
-    background: '{}/transparent.png'.format(images_path)
+    background: f'{images_path}/transparent.png'
 
     canvas.before:
         Color:

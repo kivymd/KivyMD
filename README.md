@@ -81,7 +81,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 
 What's new in version 0.99.4:
 ============================
-* Modified API for [MDTabs](hhttps://github.com/HeaTTheatR/KivyMD/wiki/MDTabs) module
+* Modified API for [MDTabs](https://github.com/HeaTTheatR/KivyMD/wiki/MDTabs) module
 
 API Breaking changes:
 =====================

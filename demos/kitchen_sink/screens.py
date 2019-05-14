@@ -194,8 +194,8 @@ grid = '''
 '''
 
 bottom_navigation = '''
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
-#:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
+#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
+#:import MDBottomNavigationItem kivymd.bottomnavigation.MDBottomNavigationItem
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDLabel kivymd.label.MDLabel
 
@@ -251,105 +251,49 @@ bottom_navigation = '''
 '''
 
 tabs = '''
-#:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
-#:import MDTab kivymd.tabs.MDTab
 #:import MDLabel kivymd.label.MDLabel
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
+#:import MDTabsBase kivymd.tabs.MDTabsBase
+#:import MDTabs kivymd.tabs.MDTabs
 
 
 <Tabs@Screen>
     name: 'tabs'
 
-    MDTabbedPanel:
-        id: tab_panel
-        tab_display_mode: 'text'
-        tab_width_mode: 'stacked'
-
-        MDTab:
-            name: 'music'
-            text: "Music"
-            icon: "playlist-play"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "Here is my music list :)"
-                halign: 'center'
-
-        MDTab:
-            name: 'movies'
-            text: 'Movies'
-            icon: "movie"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "Show movies here :)"
-                halign: 'center'
-
-        MDTab:
-            name: 'python'
-            text: 'Python'
-            icon: "language-python"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "I love Python language"
-                halign: 'center'
-
-        MDTab:
-            name: 'cpp'
-            text: 'C++'
-            icon: "language-cpp"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "I love C++ language"
-                halign: 'center'
-
-        MDTab:
-            name: 'php'
-            text: 'PHP'
-            icon: "language-php"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "I love PHP language"
-                halign: 'center'
-
     BoxLayout:
-        size_hint_y: None
-        height: dp(72)
-        padding: dp(12)
+        orientation: 'vertical'
+
+        MDTabs:
+            id: android_tabs
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(58)
+            spacing: dp(5)
+            padding: dp(5)
+
+            MDCheckbox:
+                size_hint: None, None
+                size: dp(48), dp(48)
+                on_state:
+                    app.switch_tabs_to_text(android_tabs) if self.state == 'down' \
+                    else app.switch_tabs_to_icon(android_tabs)
+            MDLabel:
+                theme_text_color: 'Primary'
+                text: 'Use text tabs'
+
+            Widget:
+
+
+<MyTab@BoxLayout+MDTabsBase>
+
+    FloatLayout:
 
         MDLabel:
-            font_style: 'Body1'
+            text: 'Content'
+            halign: 'center'
             theme_text_color: 'Primary'
-            text: "Use icons"
-            size_hint_x:None
-            width: dp(64)
-
-        MDCheckbox:
-            on_state:
-                tab_panel.tab_display_mode = 'icons'\
-                if tab_panel.tab_display_mode=='text' else 'text'
-
-        MDLabel:
-            font_style: 'Body1'
-            theme_text_color: 'Primary'
-            text: "Use fixed"
-            size_hint_x:None
-            width: dp(64)
-
-        MDCheckbox:
-            on_state:
-                tab_panel.tab_width_mode = 'fixed'\
-                if tab_panel.tab_width_mode =='stacked' else 'stacked'
-
-        Widget:
+            font_style: 'H6'
 '''
 
 pickers = '''
@@ -1951,5 +1895,7 @@ class Screens(object):
                     on_focus=self.set_error_message)
             elif name_screen == 'MD Icons':
                 self.set_list_md_icons()
+            elif name_screen == 'Tabs':
+                self.build_tabs()
         self.main_widget.ids.scr_mngr.current = \
             self.data[name_screen]['name_screen']

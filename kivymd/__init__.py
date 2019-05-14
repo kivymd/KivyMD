@@ -27,7 +27,7 @@ __version_info__ = (0, 99, 3)
 __version__ = '0.99.3'
 
 path = os.path.dirname(__file__)
-fonts_path = os.path.join(path, "fonts/")
-images_path = os.path.join(path, 'images/')
+fonts_path = os.path.join(path, f'fonts{os.sep}')
+images_path = os.path.join(path, f'images{os.sep}')
 
-Logger.info(f"KivyMD: KivyMD version: {__version__}")
+Logger.info(f'KivyMD: KivyMD version: {__version__}')

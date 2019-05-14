@@ -81,8 +81,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 
 What's new in version 0.99.4:
 ============================
-* Added functionality for viewing demo applications [Shop Window](https://www.youtube.com/watch?v=ZGd2Lvikki0), [Coffee Menu](https://www.youtube.com/watch?v=6U59VsRGRNE), [Fitness Club](https://www.youtube.com/watch?v=x7Tn5vu-5FY), [Registration Form](https://www.youtube.com/watch?v=h4ntfEkvpxU)
-* Added new class [MDTextFieldRound](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFieldRound)
+* Modified API for [MDTabs](hhttps://github.com/HeaTTheatR/KivyMD/wiki/MDTabs) module
 
 API Breaking changes:
 =====================

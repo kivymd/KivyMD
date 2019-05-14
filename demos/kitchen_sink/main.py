@@ -11,6 +11,9 @@ as the Kivy framework.
 
 import os
 import sys
+
+from kivy.factory import Factory
+
 sys.path.append(os.path.abspath(__file__).split('demos')[0])
 
 from kivy.metrics import dp
@@ -394,10 +397,35 @@ class KitchenSink(App, Screens):
         self.demo_apps_list = [
             'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
         self.menu_for_demo_apps = []
+        self.list_name_icons = list(md_icons.keys())[0:15]
         Window.bind(on_keyboard=self.events)
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
                    f'{self.directory}/assets/guitar-1139397_1280.png',
                    f'{self.directory}/assets/guitar-1139397_1280_crop.png')
+
+    def build_tabs(self):
+        for name_tab in self.list_name_icons:
+            tab = Factory.MyTab(text=name_tab)
+            self.data['Tabs']['object'].ids.android_tabs.add_widget(tab)
+
+    def switch_tabs_to_icon(self, istance_android_tabs):
+        for i, instance_tab in enumerate(
+                istance_android_tabs.ids.scrollview.children[0].children):
+            istance_android_tabs.ids.scrollview.children[0].remove_widget(
+                instance_tab)
+            istance_android_tabs.add_widget(
+                Factory.MyTab(text=self.list_name_icons[i]))
+
+    def switch_tabs_to_text(self, istance_android_tabs):
+        for instance_tab in istance_android_tabs.ids.scrollview.children[
+                0].children:
+            for k, v in md_icons.items():
+                if v == instance_tab.text:
+                    istance_android_tabs.ids.scrollview.children[
+                        0].remove_widget(instance_tab)
+                    istance_android_tabs.add_widget(
+                        Factory.MyTab(text=' '.join(k.split('-')).capitalize()))
+                    break
 
     def crop_image_for_tile(self, instance, size, path_to_crop_image):
         """Crop images for Grid screen."""

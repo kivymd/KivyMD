@@ -1731,7 +1731,7 @@ class Screens(object):
              'name_screen': 'dialogs',
              'object': None},
 
-        'MDToolbars':
+        'Toolbars':
             {'kv_string': toolbars,
              'Factory': 'Factory.Toolbars()',
              'name_screen': 'toolbars',

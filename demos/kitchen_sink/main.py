@@ -254,7 +254,7 @@ main_widget_kv = '''
         text: "Themes"
 
     MyNavigationDrawerIconButton:
-        text: "Toolbars"
+        text: "MDToolbars"
 
     MyNavigationDrawerIconButton:
         text: "User Animation Card"

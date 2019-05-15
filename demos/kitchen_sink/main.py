@@ -36,13 +36,12 @@ from kivymd.utils.cropimage import crop_image
 from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.popupscreen import MDPopupScreen
 from kivymd.button import MDIconButton
-from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
-from kivymd.material_resources import DEVICE_TYPE
+from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch, \
+    OneLineIconListItem, OneLineListItem
 from kivymd.selectioncontrols import MDCheckbox
 from kivymd.theming import ThemeManager
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.cards import MDCard
-from kivymd.list import OneLineListItem
 from kivymd.icon_definitions import md_icons
 
 
@@ -191,6 +190,9 @@ main_widget_kv = '''
         text: "Download File"
 
     MyNavigationDrawerIconButton:
+        text: "Floating Buttons"
+
+    MyNavigationDrawerIconButton:
         text: "Files Manager"
 
     MyNavigationDrawerIconButton:
@@ -231,13 +233,13 @@ main_widget_kv = '''
         text: "Progress bars"
 
     MyNavigationDrawerIconButton:
+        text: "Refresh Layout"
+
+    MyNavigationDrawerIconButton:
         text: "Selection controls"
 
     MyNavigationDrawerIconButton:
         text: "Sliders"
-
-    MyNavigationDrawerIconButton:
-        text: "Stack Floating Buttons"
 
     MyNavigationDrawerIconButton:
         text: "Snackbars"
@@ -255,9 +257,6 @@ main_widget_kv = '''
         text: "Toolbars"
 
     MyNavigationDrawerIconButton:
-        text: "Update Screen Widget"
-
-    MyNavigationDrawerIconButton:
         text: "User Animation Card"
 
 
@@ -267,71 +266,74 @@ NavigationLayout:
     ContentNavigationDrawer:
         id: nav_drawer
 
-    BoxLayout:
-        id: box_for_manager
-        orientation: 'vertical'
+    FloatLayout:
+        id: float_box
 
-        MDToolbar:
-            id: toolbar
-            title: app.title
-            md_bg_color: app.theme_cls.primary_color
-            background_palette: 'Primary'
-            background_hue: '500'
-            elevation: 10
-            left_action_items:
-                [['menu', lambda x: app.root.toggle_nav_drawer()]]
-            right_action_items:
-                [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
+        BoxLayout:
+            id: box_for_manager
+            orientation: 'vertical'
 
-        ScreenManager:
-            id: scr_mngr
-            transition: NoTransition()
+            MDToolbar:
+                id: toolbar
+                title: app.title
+                md_bg_color: app.theme_cls.primary_color
+                background_palette: 'Primary'
+                background_hue: '500'
+                elevation: 10
+                left_action_items:
+                    [['menu', lambda x: app.root.toggle_nav_drawer()]]
+                right_action_items:
+                    [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
 
-            Screen:
-                name: 'previous'
+            ScreenManager:
+                id: scr_mngr
+                transition: NoTransition()
 
-                FloatLayout:
+                Screen:
+                    name: 'previous'
 
-                    Image:
-                        source: f'{images_path}kivy-logo-white-512.png'
-                        opacity: .3
+                    FloatLayout:
 
-                    BoxLayout:
-                        orientation: 'vertical'
-                        spacing: dp(10)
-                        size_hint_y: None
-                        height: self.minimum_height
-                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        Image:
+                            source: f'{images_path}kivy-logo-white-512.png'
+                            opacity: .3
 
-                        MDLabel:
-                            text: app.previous_text
+                        BoxLayout:
+                            orientation: 'vertical'
+                            spacing: dp(10)
                             size_hint_y: None
-                            height: self.texture_size[1]
-                            font_style: 'Subtitle1'
-                            theme_text_color: 'Primary'
-                            markup: True
-                            halign: 'center'
-                            text_size: self.width - 20, None
+                            height: self.minimum_height
+                            pos_hint: {'center_x': .5, 'center_y': .5}
 
-                        MDRaisedButton:
-                            text: 'Click Me'
-                            pos_hint: {'center_x': .5}
-                            on_release:
-                                app.set_menu_for_demo_apps()
-                                app.instance_menu_demo_apps = MDDropdownMenu(\
-                                items=app.menu_for_demo_apps, \
-                                max_height=dp(260), width_mult=4)
-                                app.instance_menu_demo_apps.open(self)
+                            MDLabel:
+                                text: app.previous_text
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                font_style: 'Subtitle1'
+                                theme_text_color: 'Primary'
+                                markup: True
+                                halign: 'center'
+                                text_size: self.width - 20, None
 
-                        MDLabel:
-                            text: app.previous_text_end
-                            size_hint_y: None
-                            height: self.texture_size[1]
-                            font_style: 'Subtitle1'
-                            theme_text_color: 'Primary'
-                            markup: True
-                            halign: 'center'
-                            text_size: self.width - 20, None
+                            MDRaisedButton:
+                                text: 'Click Me'
+                                pos_hint: {'center_x': .5}
+                                on_release:
+                                    app.set_menu_for_demo_apps()
+                                    app.instance_menu_demo_apps = MDDropdownMenu(\
+                                    items=app.menu_for_demo_apps, \
+                                    max_height=dp(260), width_mult=4)
+                                    app.instance_menu_demo_apps.open(self)
+
+                            MDLabel:
+                                text: app.previous_text_end
+                                size_hint_y: None
+                                height: self.texture_size[1]
+                                font_style: 'Subtitle1'
+                                theme_text_color: 'Primary'
+                                markup: True
+                                halign: 'center'
+                                text_size: self.width - 20, None
 '''
 
 
@@ -371,6 +373,8 @@ class KitchenSink(App, Screens):
         self.my_snackbar = None
         self._interval = 0
         self.tick = 0
+        self.x = 0
+        self.y = 15
         self.create_stack_floating_buttons = False
         self.hex_primary_color = get_hex_from_color(
                 self.theme_cls.primary_color)
@@ -402,6 +406,31 @@ class KitchenSink(App, Screens):
         crop_image((Window.width, int(dp(Window.height * 35 // 100))),
                    f'{self.directory}/assets/guitar-1139397_1280.png',
                    f'{self.directory}/assets/guitar-1139397_1280_crop.png')
+
+    def set_list_for_refresh_layout(self):
+        names_icons_list = list(md_icons.keys())[self.x:self.y]
+        for name_icon in names_icons_list:
+            self.data['Refresh Layout']['object'].\
+                ids.box.add_widget(ItemForListRefreshLayout(
+                    icon=name_icon, text=name_icon))
+
+    def refresh_callback(self, *args):
+        """A method that updates the state of your application
+        while the spinner remains on the screen."""
+
+        def refresh_callback(interval):
+            self.data['Refresh Layout']['object'].\
+                ids.box.clear_widgets()
+            if self.x == 0:
+                self.x, self.y = 15, 30
+            else:
+                self.x, self.y = 0, 15
+            self.set_list_for_refresh_layout()
+            self.data['Refresh Layout']['object'].\
+                ids.refresh_layout.refresh_done()
+            self.tick = 0
+
+        Clock.schedule_once(refresh_callback, 1)
 
     def build_tabs(self):
         for name_tab in self.list_name_icons:
@@ -990,6 +1019,10 @@ class PopupScreen(MDPopupScreen):
 
 class ImageTouch(CircularRippleBehavior, ButtonBehavior, Image):
     pass
+
+
+class ItemForListRefreshLayout(OneLineIconListItem):
+    icon = StringProperty()
 
 
 class MyCard(MDCard):

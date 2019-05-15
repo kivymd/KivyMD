@@ -496,8 +496,11 @@ class MDTimePicker(ThemableBehavior, FloatLayout, ModalView,
 
 
 Builder.load_string('''
-#:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
-#:import MDTab kivymd.tabs.MDTab
+#:import MDTabsBase kivymd.tabs.MDTabsBase
+#:import MDTab kivymd.tabs.MDTabs
+
+
+<Tab@BoxLayout+MDTabsBase>
 
 
 <ColorSelector>
@@ -552,16 +555,13 @@ Builder.load_string('''
         theme_text_color: 'Custom'
         text_color: root.specific_text_color
 
-    MDTabbedPanel:
+    MDTabs:
         size_hint: (None, None)
         size: root.width, root.height-dp(135)
         pos_hint: {'center_x': .5, 'center_y': .475}
         id: tab_panel
-        tab_display_mode: 'text'
-        tab_width_mode: 'fixed'
 
-        MDTab:
-            name: 'color'
+        Tab:
             text: "Theme"
 
             BoxLayout:
@@ -686,8 +686,7 @@ Builder.load_string('''
                                     pos: self.pos
                             disabled: True
 
-        MDTab:
-            name: 'accent_color'
+        Tab:
             text: "Accent"
 
             BoxLayout:
@@ -812,8 +811,7 @@ Builder.load_string('''
                                     pos: self.pos
                             disabled: True
 
-        MDTab:
-            name: 'style'
+        Tab:
             text: "Style"
 
             FloatLayout:

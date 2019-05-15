@@ -25,7 +25,7 @@ screen_shop_window = '''
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
 #:import MDIconButton kivymd.button.MDIconButton
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
+#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
 #:import MDTextFieldRect kivymd.textfields.MDTextField
 
 

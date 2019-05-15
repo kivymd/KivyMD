@@ -31,7 +31,7 @@ if not os.path.exists('./assets/crossfit-crop.png'):
         './assets/crossfit-crop.png')
 
 screen_fitness_club = '''
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
+#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 #:import MDLabel kivymd.label.MDLabel
 #:import MDIconButton kivymd.button.MDIconButton

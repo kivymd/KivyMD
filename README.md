@@ -93,6 +93,7 @@ API Breaking changes:
 | Old                                                  | New                                                |
 |------------------------------------------------------|----------------------------------------------------|
 | `kivymd.tabs.MDBottomNavigation`                     | `kivymd.bottomnavigation.MDBottomNavigation`       |
+| `kivymd.updatespinner`                               | `kivymd.refreshlayout`                             |
 
 * Renamed files, classes and variables:
 

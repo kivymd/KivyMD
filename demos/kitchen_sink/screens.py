@@ -1689,7 +1689,7 @@ class Screens(object):
              'name_screen': 'sliders',
              'object': None},
 
-        'Stack Floating Buttons':
+        'Floating Buttons':
             {'kv_string': stack_buttons,
              'Factory': 'Factory.StackButtons()',
              'name_screen': 'stack buttons',

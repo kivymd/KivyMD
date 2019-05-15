@@ -709,26 +709,32 @@ lists = '''
 
         MDList:
             id: ml
+
             OneLineListItem:
                 text: "One-line item"
+
             TwoLineListItem:
                 text: "Two-line item"
                 secondary_text: "Secondary text here"
+
             ThreeLineListItem:
                 text: "Three-line item"
                 secondary_text:
                     "This is a multi-line label where you can "\
                     "fit more text than usual"
+
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
+
             TwoLineAvatarListItem:
                 type: "two-line"
                 text: "Two-line item..."
                 secondary_text: "with avatar"
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
+
             ThreeLineAvatarListItem:
                 type: "three-line"
                 text: "Three-line item..."
@@ -736,17 +742,20 @@ lists = '''
                     "...with avatar..." + '\\n' + "and third line!"
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
+
             OneLineIconListItem:
                 text: "Single-line item with left icon"
                 IconLeftSampleWidget:
                     id: li_icon_1
                     icon: 'star-circle'
+
             TwoLineIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with left icon"
                 IconLeftSampleWidget:
                     id: li_icon_2
                     icon: 'comment-text'
+
             ThreeLineIconListItem:
                 text: "Three-line item..."
                 secondary_text:
@@ -754,17 +763,20 @@ lists = '''
                 IconLeftSampleWidget:
                     id: li_icon_3
                     icon: 'sd'
+
             OneLineAvatarIconListItem:
                 text: "Single-line + avatar&icon"
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
+
             TwoLineAvatarIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with avatar&icon"
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
+
             ThreeLineAvatarIconListItem:
                 text: "Three-line item..."
                 secondary_text:
@@ -972,27 +984,33 @@ stack_buttons = '''
     on_enter: app.example_add_stack_floating_buttons()
 '''
 
-update_spinner = '''
-#:import MDLabel kivymd.label.MDLabel
-#:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
+refresh_layout = '''
+#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import MDScrollViewRefreshLayout kivymd.refreshlayout.MDScrollViewRefreshLayout
 
 
-<UpdateSpinner@Screen>
-    name: 'update spinner'
-    on_enter: upd_lbl.text = "Pull to string update"
-    on_leave: upd_lbl.text = ""
+<ItemForListRefreshLayout>
+    text: root.text
 
-    MDLabel:
-        id: upd_lbl
-        font_style: 'H3'
-        theme_text_color: 'Primary'
-        halign: 'center'
-        pos_hint: {'center_x': .5, 'center_y': .6}
-        size_hint_y: None
-        height: self.texture_size[1] + dp(4)
+    IconLeftSampleWidget:
+        icon: root.icon
 
-    MDUpdateSpinner:
-        event_update: lambda x: app.update_screen(self)
+
+<RefreshLayout@Screen>
+    name: 'refresh layout'
+
+    FloatLayout:
+
+        MDScrollViewRefreshLayout:
+            id: refresh_layout
+            refresh_callback: app.refresh_callback
+            root_layout: app.main_widget.ids.float_box
+
+            GridLayout:
+                id: box
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
 '''
 
 progress_bar = '''
@@ -1659,10 +1677,10 @@ class Screens(object):
              'name_screen': 'progress',
              'object': None},
 
-        'Update Screen Widget':
-            {'kv_string': update_spinner,
-             'Factory': 'Factory.UpdateSpinner()',
-             'name_screen': 'update spinner',
+        'Refresh Layout':
+            {'kv_string': refresh_layout,
+             'Factory': 'Factory.RefreshLayout()',
+             'name_screen': 'refresh layout',
              'object': None},
 
         'Sliders':
@@ -1897,5 +1915,7 @@ class Screens(object):
                 self.set_list_md_icons()
             elif name_screen == 'Tabs':
                 self.build_tabs()
+            elif name_screen == 'Refresh Layout':
+                self.set_list_for_refresh_layout()
         self.main_widget.ids.scr_mngr.current = \
             self.data[name_screen]['name_screen']

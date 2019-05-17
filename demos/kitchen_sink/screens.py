@@ -584,6 +584,15 @@ textfields = '''
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDTextField kivymd.textfields.MDTextField
+#:import MDTextFieldRound kivymd.textfields.MDTextFieldRound
+
+#:set color_shadow [0, 0, 0, .2980392156862745]
+
+
+<MyMDTextFieldRound@MDTextFieldRound>
+    size_hint_x: None
+    normal_color: color_shadow
+    active_color: color_shadow
 
 
 <TextFields@Screen>
@@ -605,9 +614,17 @@ textfields = '''
             padding: dp(48)
             spacing: dp(15)
 
-            MDTextFieldRound:
-                hint_text: 'Password'
-                icon: 'lock-outline'
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_type: 'left'
+
+            MyMDTextFieldRound:
+                icon_type: 'all'
+                icon_left: 'key-variant'
+                icon_right: 'eye-off'
+                icon_right_dasabled: False
+                icon_callback: app.show_password
+                password: True
 
             MDTextField:
                 hint_text: "No helper text"

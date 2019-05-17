@@ -414,6 +414,7 @@ class KitchenSink(App, Screens):
                 ids.box.add_widget(ItemForListRefreshLayout(
                     icon=name_icon, text=name_icon))
 
+    # FIXME: Refresh spinner is frozen for the duration of the user function.
     def refresh_callback(self, *args):
         """A method that updates the state of your application
         while the spinner remains on the screen."""

@@ -923,6 +923,22 @@ class KitchenSink(App, Screens):
                 md_app_bar.right_action_items = [left_action_items[-1]]
                 md_app_bar.left_action_items = action_items
 
+    def show_password(self, field, button):
+        """
+        Called when you press the right button in the password field
+        for the screen TextFields.
+
+        instance_field: kivy.uix.textinput.TextInput;
+        instance_button: kivymd.button.MDIconButton;
+
+        """
+
+        # Show or hide text of password, set focus field
+        # and set icon of right button.
+        field.password = not field.password
+        field.focus = True
+        button.icon = 'eye' if button.icon == 'eye-off' else 'eye-off'
+
     def set_error_message(self, *args):
         """Checks text of TextField with type "on_error"
         for the screen TextFields."""

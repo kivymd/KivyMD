@@ -150,6 +150,7 @@ from kivy.properties import NumericProperty, StringProperty, BooleanProperty, \
     OptionProperty, ListProperty, ObjectProperty
 from kivy.metrics import dp
 from kivy.metrics import sp
+from kivy.uix.widget import Widget
 
 from kivymd.label import MDLabel
 from kivymd.theming import ThemableBehavior
@@ -277,7 +278,8 @@ Builder.load_string('''
     size_hint: None, None
     height: dp(48)
     pos_hint: {'center_x': .5}
-    _instance_icon: icon
+    _instance_icon_left: icon_left
+    _instance_icon_right: icon_right
 
     canvas:
         Color:
@@ -286,8 +288,26 @@ Builder.load_string('''
             size: self.size
             pos: self.pos
             radius: [25,]
+    canvas.after:
+        Color:
+            rgba: [0, 0, 0, 0] if not root.focus else root.theme_cls.primary_color
+        Line:
+            width: 1.1
+            rounded_rectangle:
+                (self.x, self.y, self.width, self.height,\
+                25, 25, 25, 25,\
+                self.height)
+
+    MDIconButton:
+        id: icon_left
+        icon: root.icon_left
+        disabled: True
+        theme_text_color: 'Custom'
+        text_color: root.icon_color
+        on_release: if root.icon_callback: root.icon_callback(field, self)
 
     TextInput:
+        id: field
         text: root.text
         password: root.password
         password_mask: root.password_mask
@@ -304,21 +324,24 @@ Builder.load_string('''
         on_focus:
             root._current_color = root.active_color \
             if self.focus else root.normal_color
+            root.focus = self.focus
+            icon_left.text_color = root.theme_cls.primary_color if self.focus else root.icon_color
         on_text:
             root.text = self.text
 
     MDIconButton:
-        id: icon
-        icon: root.icon
-        disabled: True
+        id: icon_right
+        icon: root.icon_right
+        disabled: True if root.icon_right_dasabled else False
         theme_text_color: 'Custom'
         text_color: root.icon_color
+        on_release: if root.icon_callback: root.icon_callback(field, self)
 ''')
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
     _primary_color = ListProperty([0, 0, 0, 0])
-    
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._update_primary_color()
@@ -695,20 +718,67 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
 class MDTextFieldRound(ThemableBehavior, BoxLayout):
     width = NumericProperty(Window.width - dp(100))
-    icon = StringProperty('email-outline')
+    '''Text field width.'''
+
+    icon_left = StringProperty('email-outline')
+    '''Left icon.'''
+
+    icon_right = StringProperty('email-outline')
+    '''Right icon.'''
+
+    icon_type = OptionProperty('none', options=['right', 'left', 'all'])
+    '''Use one (left) or two (left and right) icons in the text field.'''
+
     hint_text = StringProperty()
+    '''Hint text in the text field.'''
+
     icon_color = ListProperty([1, 1, 1, 1])
+    '''Color of icons.'''
+
     active_color = ListProperty([1, 1, 1, .2])
+    '''The color of the text field when it is in focus.'''
+
     normal_color = ListProperty([1, 1, 1, .5])
+    '''The color of the text field when it not in focus.'''
+
     foreground_color = ListProperty([1, 1, 1, 1])
+    '''Text color.'''
+
     hint_text_color = ListProperty([0.5, 0.5, 0.5, 1.0])
+    '''Text field hint color.'''
+
     cursor_color = ListProperty()
+    '''Color of cursor'''
+
     selection_color = ListProperty()
-    _current_color = ListProperty()
-    _instance_icon = ObjectProperty()
-    text =  StringProperty()
+    '''Text selection color.'''
+
+    icon_callback = ObjectProperty()
+    ''''''
+
+    text = StringProperty()
+    '''Text of field.'''
+
+    icon_left_dasabled = BooleanProperty(False)
+    '''Disable the left icon.'''
+
+    icon_right_dasabled = BooleanProperty(False)
+    '''Disable the right icon.'''
+
     password = BooleanProperty(False)
+    '''Hide text or notю'''
+
     password_mask = StringProperty('*')
+    '''Characters on which the text will be replaced
+    if the `password` is True.'''
+
+    focus = BooleanProperty(False)
+
+    _current_color = ListProperty()
+
+    _instance_icon_right = ObjectProperty()
+
+    _instance_icon_left = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -718,3 +788,13 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
             self.selection_color = self.theme_cls.primary_color
             self.selection_color[3] = .75
         self._current_color = self.normal_color
+
+    def on_icon_type(self, instance, value):
+        if value == 'left':
+            self.remove_widget(self.ids.icon_right)
+            self.add_widget(Widget(size_hint_x=None, width=dp(48)))
+        elif value == 'right':
+            self.remove_widget(self.ids.icon_left)
+
+    def on_normal_color(self, instance, value):
+        self._current_color = value

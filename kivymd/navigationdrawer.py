@@ -97,7 +97,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd import images_path
 from kivymd.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
-from kivymd.label import MDLabel, MDIcon
+from kivymd.label import MDLabel
 from kivymd.list import BaseListItem, ILeftBody, OneLineListItem,\
     OneLineIconListItem, IRightBody
 from kivymd.theming import ThemableBehavior
@@ -319,8 +319,9 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._set_active_color()
-        self.theme_cls.bind(primary_color=self._set_active_color_primary,
-                     accent_color=self._set_active_color_accent)
+        self.theme_cls.bind(
+            primary_color=self._set_active_color_primary,
+            accent_color=self._set_active_color_accent)
         Clock.schedule_once(lambda x: self.on_icon(self, self.icon))
 
     def _set_active(self, active, nav_drawer):
@@ -347,6 +348,7 @@ class NavigationDrawerIconButton(OneLineIconListItem):
             self._active_color = self.theme_cls.accent_color
 
     def on_icon(self, instance, value):
+        super().__init__()
         self.ids._icon.text = u'{}'.format(md_icons[value])
 
     def on_active_color_type(self, *args):

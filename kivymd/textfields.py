@@ -275,67 +275,89 @@ Builder.load_string('''
                 )
 
 <MDTextFieldRound>
+    orientation: 'vertical'
     size_hint: None, None
-    height: dp(48)
-    pos_hint: {'center_x': .5}
+    height: self.minimum_height
     _instance_icon_left: icon_left
     _instance_icon_right: icon_right
 
-    canvas:
-        Color:
-            rgba: root._current_color
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius: [25,]
-    canvas.after:
-        Color:
-            rgba: [0, 0, 0, 0] if not root.focus else root.theme_cls.primary_color
-        Line:
-            width: 1.1
-            rounded_rectangle:
-                (self.x, self.y, self.width, self.height,\
-                25, 25, 25, 25,\
-                self.height)
+    BoxLayout:
+        id: box
+        size_hint_y: None
+        height: dp(48)
+        pos_hint: {'center_x': .5}
 
-    MDIconButton:
-        id: icon_left
-        icon: root.icon_left
-        disabled: True
-        theme_text_color: 'Custom'
-        text_color: root.icon_color
-        on_release: if root.icon_callback: root.icon_callback(field, self)
+        canvas:
+            Color:
+                rgba: root._current_color
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [25,]
+        canvas.after:
+            Color:
+                rgba: root._outline_color
+            Line:
+                width: 1.1
+                rounded_rectangle:
+                    (self.x, self.y, self.width, self.height,\
+                    25, 25, 25, 25,\
+                    self.height)
 
-    TextInput:
-        id: field
-        text: root.text
-        password: root.password
-        password_mask: root.password_mask
-        background_active: f'{images_path}transparent.png'
-        background_normal: f'{images_path}transparent.png'
-        multiline: False
-        padding_y: dp(15)
-        padding_x: dp(25)
-        cursor_color: root.cursor_color
-        foreground_color: root.foreground_color
-        hint_text: root.hint_text
-        selection_color: root.selection_color
-        hint_text_color: root.hint_text_color
-        on_focus:
-            root._current_color = root.active_color \
-            if self.focus else root.normal_color
-            root.focus = self.focus
-            icon_left.text_color = root.theme_cls.primary_color if self.focus else root.icon_color
-        on_text:
-            root.text = self.text
+        MDIconButton:
+            id: icon_left
+            icon: root.icon_left
+            disabled: True
+            theme_text_color: 'Custom'
+            text_color: root.icon_color
+            on_release: if root.icon_callback: root.icon_callback(field, self)
 
-    MDIconButton:
-        id: icon_right
-        icon: root.icon_right
-        disabled: True if root.icon_right_dasabled else False
-        theme_text_color: 'Custom'
-        text_color: root.icon_color
-        on_release: if root.icon_callback: root.icon_callback(field, self)
+        TextInput:
+            id: field
+            text: root.text
+            password: root.password
+            password_mask: root.password_mask
+            background_active: f'{images_path}transparent.png'
+            background_normal: f'{images_path}transparent.png'
+            multiline: False
+            hint_text_color: root.hint_text_color
+            padding_y: dp(15)
+            padding_x: dp(25)
+            cursor_color: root.cursor_color
+            foreground_color: root.foreground_color
+            hint_text: root.hint_text
+            selection_color: root.selection_color
+            hint_text_color: root.hint_text_color
+            on_focus:
+                root._current_color = root.active_color \
+                if self.focus else root.normal_color
+                icon_left.text_color = root.theme_cls.primary_color \
+                if self.focus else root.icon_color
+                root.get_color_line(self, self.text, self.focus)
+                root.hide_require_error(self.focus)
+                if root.event_focus: root.event_focus(root, self, self.focus)
+            on_text: root.text = self.text
+
+        MDIconButton:
+            id: icon_right
+            icon: root.icon_right
+            disabled: True if root.icon_right_dasabled else False
+            theme_text_color: 'Custom'
+            text_color: root.icon_color
+            on_release: if root.icon_callback: root.icon_callback(field, self)
+
+    Widget:
+        id: spacer
+        size_hint_y: None
+        height: 0
+
+    Label:
+        id: label_error_require
+        size_hint: None, None
+        size: self.texture_size
+        color: root.error_color
+        pos_hint: {'center_x': .5}
+        halign: 'center'
 ''')
 
 
@@ -726,11 +748,15 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     icon_right = StringProperty('email-outline')
     '''Right icon.'''
 
-    icon_type = OptionProperty('none', options=['right', 'left', 'all'])
+    icon_type = OptionProperty(
+        'none', options=['right', 'left', 'all', 'without'])
     '''Use one (left) or two (left and right) icons in the text field.'''
 
     hint_text = StringProperty()
     '''Hint text in the text field.'''
+
+    hint_text_color = ListProperty()
+    '''Color of hint text in the text field.'''
 
     icon_color = ListProperty([1, 1, 1, 1])
     '''Color of icons.'''
@@ -754,7 +780,8 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     '''Text selection color.'''
 
     icon_callback = ObjectProperty()
-    ''''''
+    '''The function that is called when you click on the icon 
+    in the text field.'''
 
     text = StringProperty()
     '''Text of field.'''
@@ -772,16 +799,32 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     '''Characters on which the text will be replaced
     if the `password` is True.'''
 
-    focus = BooleanProperty(False)
+    require_text_error = StringProperty()
+    '''Error text if the text field requires mandatory text.'''
+
+    require_error_callback = ObjectProperty()
+    '''The function that will be called when the unfocus.
+    if `require_text_error` != ''
+    '''
+
+    event_focus = ObjectProperty()
+    '''The function is called at the moment of focus/unfocus of the text field.
+    '''
+
+    error_color = ListProperty(
+        [.7607843137254902, .2235294117647059, .2549019607843137, 1])
 
     _current_color = ListProperty()
 
-    _instance_icon_right = ObjectProperty()
+    _outline_color = ListProperty([0, 0, 0, 0])
 
     _instance_icon_left = ObjectProperty()
 
+    _instance_icon_right = ObjectProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Window.bind(on_resize=self.set_width_field)
         if not(len(self.cursor_color)):
             self.cursor_color = self.theme_cls.primary_color
         if not(len(self.selection_color)):
@@ -789,12 +832,45 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
             self.selection_color[3] = .75
         self._current_color = self.normal_color
 
+    def set_width_field(self, instance, width, height):
+        self.width = width - dp(100)
+
     def on_icon_type(self, instance, value):
-        if value == 'left':
-            self.remove_widget(self.ids.icon_right)
+        def remove_icon_right():
+            self.ids.box.remove_widget(self.ids.icon_right)
             self.add_widget(Widget(size_hint_x=None, width=dp(48)))
+
+        if value == 'left':
+            remove_icon_right()
         elif value == 'right':
-            self.remove_widget(self.ids.icon_left)
+            self.ids.box.remove_widget(self.ids.icon_left)
+        elif value == 'without':
+            remove_icon_right()
+            self.ids.box.remove_widget(self.ids.icon_left)
+            self.add_widget(Widget(size_hint_x=None, width=dp(48)), index=0)
 
     def on_normal_color(self, instance, value):
         self._current_color = value
+
+    def get_color_line(self, field_inastance, field_text, field_focus):
+        if not field_focus:
+            if self.require_text_error and field_text == '':
+                self._outline_color = self.error_color
+                self._instance_icon_left.text_color = self._outline_color
+                if self.require_text_error != '':
+                    self.show_require_error()
+            else:
+                self._outline_color = [0, 0, 0, 0]
+        else:
+            self._outline_color = self.theme_cls.primary_color
+
+    def show_require_error(self):
+        self.ids.label_error_require.text = self.require_text_error
+        self.ids.spacer.height = '10dp'
+        if self.require_error_callback:
+            self.require_error_callback(self)
+
+    def hide_require_error(self, focus):
+        if focus:
+            self.ids.label_error_require.text = ''
+            self.ids.spacer.height = 0

@@ -615,8 +615,29 @@ textfields = '''
             spacing: dp(15)
 
             MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field with `normal_color`'
+                normal_color: [.432, .124, .8654, .1]
+
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field without icon'
+
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field with `require_text_error`'
+                require_text_error: 'Field must be not empty!'
+
+            MyMDTextFieldRound:
                 icon_left: 'email'
                 icon_type: 'left'
+                hint_text: 'Field with left icon'
+            
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_right: 'account-box'
+                icon_right_dasabled: True
+                hint_text: 'Field with left and right disabled icons'
 
             MyMDTextFieldRound:
                 icon_type: 'all'
@@ -625,6 +646,7 @@ textfields = '''
                 icon_right_dasabled: False
                 icon_callback: app.show_password
                 password: True
+                hint_text: 'Field width type `password = True`'
 
             MDTextField:
                 hint_text: "No helper text"

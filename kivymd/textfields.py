@@ -824,16 +824,12 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Window.bind(on_resize=self.set_width_field)
         if not(len(self.cursor_color)):
             self.cursor_color = self.theme_cls.primary_color
         if not(len(self.selection_color)):
             self.selection_color = self.theme_cls.primary_color
             self.selection_color[3] = .75
         self._current_color = self.normal_color
-
-    def set_width_field(self, instance, width, height):
-        self.width = width - dp(100)
 
     def on_icon_type(self, instance, value):
         def remove_icon_right():

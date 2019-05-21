@@ -81,7 +81,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 * Done! Now you have a virtual machine for building Kivy application packages!
 * Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer)
 
-What's new in version 0.99.9:
+What's new in version 0.99.92:
 ============================
 * Modified API for [MDTabs](https://github.com/HeaTTheatR/KivyMD/wiki/MDTabs) module
 * Added new [MDScrollViewRefreshLayout](https://github.com/HeaTTheatR/KivyMD/wiki/MDScrollViewRefreshLayout) class

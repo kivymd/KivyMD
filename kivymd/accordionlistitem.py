@@ -188,6 +188,7 @@ Builder.load_string('''
             id: item_anim
             title: root.title
             icon: root.icon
+            _no_ripple_effect: True
             on_press: root.check_open_box(self)
 ''')
 

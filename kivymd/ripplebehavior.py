@@ -38,6 +38,7 @@ class CommonRipple(object):
     doing_ripple = BooleanProperty(False)
     finishing_ripple = BooleanProperty(False)
     fading_out = BooleanProperty(False)
+    _no_ripple_effect = BooleanProperty(False)
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
@@ -132,6 +133,8 @@ class RectangularRippleBehavior(CommonRipple):
     ripple_scale = NumericProperty(2.75)
 
     def lay_canvas_instructions(self):
+        if self._no_ripple_effect:
+            return
         with self.canvas.after:
             StencilPush()
             Rectangle(pos=self.pos, size=self.size)

@@ -151,8 +151,8 @@ API
 
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty,\
-    ListProperty, OptionProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty, \
+    ListProperty, OptionProperty, BooleanProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
@@ -373,6 +373,7 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
     _txt_bot_pad = NumericProperty()
     _txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
     _num_lines = 2
+    _no_ripple_effect = BooleanProperty(False)
 
 
 class ILeftBody:

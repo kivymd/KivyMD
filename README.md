@@ -83,9 +83,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 
 What's new in version 0.99.94:
 ============================
-* Modified API for [MDTabs](https://github.com/HeaTTheatR/KivyMD/wiki/MDTabs) module
-* Added new [MDScrollViewRefreshLayout](https://github.com/HeaTTheatR/KivyMD/wiki/MDScrollViewRefreshLayout) class
-* Added new properties to [MDTextFieldRound](https://github.com/HeaTTheatR/KivyMD/wiki/MDTextFieldRound) class
+[CHANGELOG.md](https://github.com/HeaTTheatR/KivyMD/blob/master/CHANGELOG.md)
 
 API Breaking changes:
 =====================

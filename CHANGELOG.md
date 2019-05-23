@@ -8,3 +8,9 @@
 ## [0.99.93]
 
   - Updated `materialdesignicons-webfont.ttf` and `icon_definitions.py` files
+
+## [0.99.94]
+
+  - Added property `_no_ripple_effect` to BaseListItem class
+  - Banned use `ripple effect` in MDAccordionListItem class
+  - Added check to use `ripple effect` in RectangularRippleBehavior class

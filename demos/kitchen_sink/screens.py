@@ -1880,6 +1880,10 @@ class Screens(object):
 
         'Registration':
             {'class': 'FormOne()',
+             'object': None},
+
+        'Account Page':
+            {'class': 'AccountPage()',
              'object': None}
     }
 
@@ -1900,6 +1904,10 @@ class Screens(object):
                 not self.data_for_demo[name_screen]['object']:
             from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
             self.data_for_demo[name_screen]['kv_string'] = screen_fitness_club
+        elif name_screen == 'Account Page' and \
+                not self.data_for_demo[name_screen]['object']:
+            from demo_apps.accountpage import screen_account_page, AccountPage
+            self.data_for_demo[name_screen]['kv_string'] = screen_account_page
 
         if name_screen == 'Registration':
             self.theme_cls.primary_palette = 'Amber'

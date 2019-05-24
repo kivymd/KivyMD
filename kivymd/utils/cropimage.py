@@ -84,3 +84,32 @@ def add_corners(im, corner, corner_mode):
     im.putalpha(alpha)
 
     return im
+
+
+def prepare_mask(size, antialias=2):
+    from PIL import Image, ImageDraw
+
+    mask = Image.new('L', (size[0] * antialias, size[1] * antialias), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0) + mask.size, fill=255)
+    return mask.resize(size, Image.ANTIALIAS)
+
+
+def _crop_round_image(im, s):
+    from PIL import Image
+
+    w, h = im.size
+    k = w // s[0] - h // s[1]
+    if k > 0:
+        im = im.crop(((w - h) // 2, 0, (w + h) // 2, h))
+    elif k < 0:
+        im = im.crop((0, (h - w) // 2, w, (h + w) // 2))
+    return im.resize(s, Image.ANTIALIAS)
+
+
+def crop_round_image(cutting_size, path_to_image, path_to_new_image):
+    from PIL import Image
+
+    im = Image.open(path_to_image)
+    im = _crop_round_image(im, cutting_size)
+    im.putalpha(prepare_mask(cutting_size, 4))
+    im.save(path_to_new_image)

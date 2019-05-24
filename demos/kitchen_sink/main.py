@@ -399,7 +399,8 @@ class KitchenSink(App, Screens):
             'Magnus Carlsen', 'Jon Romero', 'Anna Bell', 'Maxim Kramerer',
             'Sasha Gray', 'Vladimir Ivanenko')
         self.demo_apps_list = [
-            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration']
+            'Shop Window', 'Coffee Menu', 'Fitness Club', 'Registration',
+            'Account Page']
         self.menu_for_demo_apps = []
         self.list_name_icons = list(md_icons.keys())[0:15]
         Window.bind(on_keyboard=self.events)

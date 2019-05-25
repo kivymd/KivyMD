@@ -33,6 +33,7 @@ from kivy.utils import get_hex_from_color
 from screens import Screens
 
 from kivymd.utils.cropimage import crop_image
+from kivymd.utils import asynckivy
 from kivymd.fanscreenmanager import MDFanScreen
 from kivymd.popupscreen import MDPopupScreen
 from kivymd.button import MDIconButton
@@ -374,7 +375,7 @@ class KitchenSink(App, Screens):
         self._interval = 0
         self.tick = 0
         self.x = 0
-        self.y = 15
+        self.y = 50
         self.create_stack_floating_buttons = False
         self.hex_primary_color = get_hex_from_color(
                 self.theme_cls.primary_color)
@@ -409,13 +410,16 @@ class KitchenSink(App, Screens):
                    f'{self.directory}/assets/guitar-1139397_1280_crop.png')
 
     def set_list_for_refresh_layout(self):
-        names_icons_list = list(md_icons.keys())[self.x:self.y]
-        for name_icon in names_icons_list:
-            self.data['Refresh Layout']['object'].\
-                ids.box.add_widget(ItemForListRefreshLayout(
-                    icon=name_icon, text=name_icon))
+        async def set_list_for_refresh_layout():
+            names_icons_list = list(md_icons.keys())[self.x:self.y]
+            for name_icon in names_icons_list:
+                await asynckivy.sleep(0)
+                self.data['Refresh Layout']['object'].\
+                    ids.box.add_widget(ItemForListRefreshLayout(
+                        icon=name_icon, text=name_icon))
 
-    # FIXME: Refresh spinner is frozen for the duration of the user function.
+        asynckivy.start(set_list_for_refresh_layout())
+
     def refresh_callback(self, *args):
         """A method that updates the state of your application
         while the spinner remains on the screen."""
@@ -424,9 +428,9 @@ class KitchenSink(App, Screens):
             self.data['Refresh Layout']['object'].\
                 ids.box.clear_widgets()
             if self.x == 0:
-                self.x, self.y = 15, 30
+                self.x, self.y = 50, 100
             else:
-                self.x, self.y = 0, 15
+                self.x, self.y = 0, 50
             self.set_list_for_refresh_layout()
             self.data['Refresh Layout']['object'].\
                 ids.refresh_layout.refresh_done()

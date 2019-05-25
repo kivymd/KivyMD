@@ -20,3 +20,7 @@
   - Added function to create a round image in `kivymd/utils/cropimage.py` module
   - Added new `MDCustomRoundIconButton` class in `kivymd/button.py` module
   - Added demo application [Account Page](https://www.youtube.com/watch?v=dfUOwqtYoYg)
+
+## [0.99.96]
+  - Added asynchronous call to list update method in RefreshLayout example in main.py file
+  - Added asynckivy.py module for using asynchronous function calls in Kivy

@@ -263,6 +263,21 @@ Builder.load_string('''
     text_color: root.specific_text_color
 
 
+<MDFillRoundFlatIconButton>
+
+    #text_color: root.specific_text_color
+    BoxLayout:
+        spacing: dp(10)
+
+        MDIcon:
+            id: lbl_ic
+            icon: root.icon
+            theme_text_color: 'Custom'
+            text_color: 1, 1, 1, 1
+            size_hint_x: None
+            #width: self.texture_size[0]
+
+
 <MDRectangleFlatButton>
     canvas.before:
         Color:
@@ -700,3 +715,8 @@ class MDRectangleFlatIconButton(BaseFlatIconButton):
 
 class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
     pass
+
+
+class MDFillRoundFlatIconButton(MDFillRoundFlatButton):
+    icon = StringProperty('android')
+    increment_width = dp(80)

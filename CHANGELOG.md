@@ -24,3 +24,6 @@
 ## [0.99.96]
   - Added asynchronous call to list update method in RefreshLayout example in main.py file
   - Added asynckivy.py module for using asynchronous function calls in Kivy
+
+## [0.99.97]
+  - Fixed: spinner closes after updating the screen.

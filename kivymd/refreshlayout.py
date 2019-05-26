@@ -199,7 +199,8 @@ class MDScrollViewRefreshLayout(ScrollView):
         return super().on_touch_up(*args)
 
     def refresh_done(self):
-        self.refresh_spinner.hide_anim_spinner()
+        if self.refresh_spinner:
+            self.refresh_spinner.hide_anim_spinner()
 
 
 class RefreshSpinner(ThemableBehavior, FloatLayout):

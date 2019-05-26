@@ -23,6 +23,7 @@ from kivymd.button import MDIconButton
 from kivymd.icon_definitions import md_icons
 from kivymd.list import ILeftBodyTouch, OneLineIconListItem
 from kivymd.theming import ThemeManager
+from kivymd.utils import asynckivy
 
 Builder.load_string('''
 #:import MDToolbar kivymd.toolbar.MDToolbar
@@ -83,10 +84,13 @@ class Example(App):
         return self.screen
 
     def set_list(self):
-        names_icons_list = list(md_icons.keys())[self.x:self.y]
-        for name_icon in names_icons_list:
-            self.screen.ids.box.add_widget(
-                ItemForList(icon=name_icon, text=name_icon))
+        async def set_list():
+            names_icons_list = list(md_icons.keys())[self.x:self.y]
+            for name_icon in names_icons_list:
+                await asynckivy.sleep(0)
+                self.screen.ids.box.add_widget(
+                    ItemForList(icon=name_icon, text=name_icon))
+        asynckivy.start(set_list())
 
     def refresh_callback(self, *args):
         '''A method that updates the state of your application

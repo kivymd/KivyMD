@@ -81,7 +81,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 * Done! Now you have a virtual machine for building Kivy application packages!
 * Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer)
 
-What's new in version 0.99.95:
+What's new in version 0.99.96:
 ============================
 [CHANGELOG.md](https://github.com/HeaTTheatR/KivyMD/blob/master/CHANGELOG.md)
 

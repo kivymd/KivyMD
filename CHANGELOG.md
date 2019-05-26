@@ -27,3 +27,6 @@
 
 ## [0.99.97]
   - Fixed: spinner closes after updating the screen.
+
+## [0.99.98]
+  - Added new MDFillRoundFlatIconButton class

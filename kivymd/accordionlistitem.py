@@ -178,11 +178,11 @@ Builder.load_string('''
     size_hint_y: None
     height: dp(68)
 
-    BoxLayout:
+    StackLayout:
         id: box_item
         size_hint_y: None
         height: root.height
-        orientation: 'vertical'
+        orientation: 'lr-tb'
 
         AccordionListItem:
             id: item_anim

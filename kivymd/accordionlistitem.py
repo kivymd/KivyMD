@@ -210,6 +210,7 @@ class MDAccordionListItem(BoxLayout):
     content = ObjectProperty()
     icon = StringProperty()
     title = StringProperty()
+    canAnim = True
 
     def check_open_box(self, instance):
         press_current_item = False
@@ -241,12 +242,15 @@ class MDAccordionListItem(BoxLayout):
         Animation(height=dp(68), d=.1, t='in_cubic').start(box)
 
     def anim_resize_open_item(self, *args):
-        self.content.name_item = self.title
-        anim = Animation(height=self.content.height + dp(70),
-                         d=.2, t='in_cubic')
-        anim.bind(on_complete=self.add_content)
-        anim.start(self)
+        if self.canAnim:
+            self.canAnim = False
+            self.content.name_item = self.title
+            anim = Animation(height=self.content.height + dp(70),
+                             d=.2, t='in_cubic')
+            anim.bind(on_complete=self.add_content)
+            anim.start(self)
 
     def add_content(self, *args):
+        self.canAnim = True
         if self.content:
             self.ids.box_item.add_widget(self.content)

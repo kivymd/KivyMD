@@ -182,24 +182,25 @@ Builder.load_string('''
 
 <NavigationDrawerIconButton>
     theme_text_color:
-        'Primary' if not root._active\
+        'Primary' if not root._active \
         else 'Custom' if root.use_active else 'Primary'
     text_color:
-        root.theme_cls.secondary_text_color\
-        if not root._active else root.active_color if\
-        root.active_color_type == "custom" else root._active_color\
+        root.theme_cls.secondary_text_color \
+        if not root._active else root.active_color if \
+        root.active_color_type == "custom" else root._active_color \
         if root.use_active else root.theme_cls.secondary_text_color
 
     NDIconLabel:
         id: _icon
         font_style: 'Icon'
         theme_text_color:
-            'Secondary' if not root._active\
+            'Secondary' if not root._active \
             else 'Custom' if root.use_active else 'Custom'
         text_color:
-            root.theme_cls.secondary_text_color if not root._active\
-            else root.active_color if root.active_color_type == "custom"\
-            else root._active_color if root.use_active else\
+            root.icon_color if root.icon_color else \
+            root.theme_cls.secondary_text_color if not root._active \
+            else root.active_color if root.active_color_type == "custom" \
+            else root._active_color if root.use_active else \
             root.theme_cls.secondary_text_color
 
     BoxLayout:
@@ -212,12 +213,12 @@ Builder.load_string('''
     NDBadgeLabel:
         id: _badge
         theme_text_color:
-            'Secondary' if not root._active else 'Custom'\
+            'Secondary' if not root._active else 'Custom' \
             if root.use_active else 'Custom'
         text_color:
-            root.theme_cls.secondary_text_color if not root._active\
-            else root.active_color if root.active_color_type == "custom"\
-            else root._active_color if root.use_active else\
+            root.theme_cls.secondary_text_color if not root._active \
+            else root.active_color if root.active_color_type == "custom" \
+            else root._active_color if root.use_active else \
             root.theme_cls.secondary_text_color
         text: root.badge_text
         halign: 'right'
@@ -261,6 +262,13 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     _active_color = ListProperty()
     _icon = ObjectProperty()
     divider = None
+
+    icon_color = ListProperty()
+    """Custom icon color.
+
+    :attr:`icon_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to [].
+    """
 
     active_color = ListProperty()
     """Custom active color.

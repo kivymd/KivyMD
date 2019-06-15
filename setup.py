@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import re
 from distutils.core import setup
 

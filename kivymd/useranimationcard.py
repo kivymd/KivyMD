@@ -159,7 +159,7 @@ Builder.load_string('''
             size: self.size
             pos: self.pos
 
-    Image:
+    AsyncImage:
         id: image
         source: root.path_to_avatar
         size_hint: 1, None

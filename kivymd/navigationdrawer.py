@@ -159,7 +159,6 @@ Builder.load_string('''
 
     MDLabel:
         id: drawer_title
-        text: f'    {root.drawer_title}'
         font_style: 'H6'
         size_hint_y: None
         height: self.texture_size[1]
@@ -403,7 +402,7 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
     drawer_logo = StringProperty()
     drawer_title = StringProperty()
     shadow_color = ListProperty([0, 0, 0, 0])
-    use_logo = OptionProperty('all', options=['logo', 'label', 'all'])
+    use_logo = OptionProperty('none', options=['logo', 'label', 'all'])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -414,6 +413,9 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
         elif value == 'logo':
             self.remove_widget(self.ids.drawer_title)
             self.remove_widget(self.ids.sep)
+
+    def on_drawer_title(self, instance, value):
+        self.ids.drawer_title.text = f'    {value}'
 
     def add_widget(self, widget, **kwargs):
         """

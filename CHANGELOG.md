@@ -31,5 +31,5 @@
 ## [0.99.98]
   - Added new MDFillRoundFlatIconButton class
 
-## [0.99.99.r01]
+## [0.100.0]
   - Fix "In MDNavigationDrawer I used use_logo='all' it's showing image only not the drawer_title text!"

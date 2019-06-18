@@ -70,7 +70,7 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-from kivy.properties import StringProperty, DictProperty, ObjectProperty
+from kivy.properties import StringProperty, DictProperty, ObjectProperty, ListProperty
 from kivy.metrics import dp
 
 from kivymd.cards import MDCard
@@ -88,6 +88,7 @@ Builder.load_string('''
     size: dp(46), dp(46)
     elevation: 5
     md_bg_color: app.theme_cls.primary_color
+    text_color: root.parent.text_color
     on_release: self.parent.callback(self)
 
 
@@ -101,7 +102,7 @@ Builder.load_string('''
 
     Label:
         id: label
-        color: 0, 0, 0, 1
+        color: root.parent.text_color
         bold: True
         markup: True
         text: '  %s  ' % root.text
@@ -136,6 +137,7 @@ Builder.load_string('''
         size: dp(56), dp(56)
         x: Window.width - (self.width + dp(15))
         md_bg_color: app.theme_cls.primary_color
+        text_color: root.text_color
         y: dp(15)
         on_release: root.show_floating_buttons()
 ''')
@@ -143,11 +145,12 @@ Builder.load_string('''
 
 class MDFloatingLabel(MDCard):
     text = StringProperty()
-
+    text_color = ListProperty([0, 0, 0, 1])
 
 class MDStackFloatingButtons(FloatLayout):
     icon = StringProperty('checkbox-blank-circle')
     callback = ObjectProperty(lambda x: None)
+    text_color = ListProperty([0, 0, 0, 1])
     floating_data = DictProperty()
     show = False
     in_progress = False

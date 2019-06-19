@@ -232,10 +232,12 @@ class MDSwiperPagination(ThemableBehavior, BoxLayout):
     screens = ListProperty()
     items_round_paginator = []
     manager = ObjectProperty()
+    color_round_not_active = ListProperty([1, 1, 1, 1])
 
     def on_screens(self, instance, screen_names):
         for i, screen_name in enumerate(screen_names):
             item_paginator = ItemPagination(current_index=i)
+            item_paginator.color_round_not_active = self.color_round_not_active
             self.ids.box.add_widget(item_paginator)
             self.items_round_paginator.append(item_paginator)
 

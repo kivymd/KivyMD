@@ -36,3 +36,6 @@
 
 ## [0.100.1]
   - Fixed "Fixed: due to the use of AsyncImage, the Toolbar did not accept the color of the installed color theme"
+
+## [0.100.2]
+  - The code is formatted using the "black" utility

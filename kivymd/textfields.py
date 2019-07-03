@@ -189,7 +189,7 @@ Builder.load_string('''
             pos: self.width-self._right_msg_lbl.texture_size[0]+dp(45), self.y
         Color:
             rgba:
-                (self._current_line_color if self.focus and not\
+                (self._current_line_color if self.focus and not \
                 self._cursor_blink else (0, 0, 0, 0))
         Rectangle:
             pos: [int(x) for x in self.cursor_pos]
@@ -448,15 +448,14 @@ class TextfieldLabel(MDLabel):
 
 class MDTextField(ThemableBehavior, FixedHintTextInput):
     helper_text = StringProperty("This field is required")
-    helper_text_mode = OptionProperty('none', options=['none', 'on_error',
-                                                       'persistent',
-                                                       'on_focus'])
+    helper_text_mode = OptionProperty(
+        'none', options=['none', 'on_error', 'persistent', 'on_focus'])
 
     max_text_length = NumericProperty(None)
     required = BooleanProperty(False)
 
-    color_mode = OptionProperty('primary', options=['primary', 'accent',
-                                                    'custom'])
+    color_mode = OptionProperty(
+        'primary', options=['primary', 'accent', 'custom'])
     line_color_normal = ListProperty()
     line_color_focus = ListProperty()
     error_color = ListProperty()
@@ -564,7 +563,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             self.has_had_text = True
             Animation.cancel_all(self, '_line_width', '_hint_y',
                                  '_hint_lbl_font_size')
-            if len(self.text) == 0:
+            if not self.text:
                 Animation(_hint_y=dp(14),
                           _hint_lbl_font_size=sp(12), duration=.2,
                           t='out_quad').start(self)
@@ -609,7 +608,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                               _current_error_color=disabled_hint_text_color). \
                         start(self)
         else:
-            if len(self.text) == 0:
+            if not self.text:
                 Animation(_hint_y=dp(38),
                           _hint_lbl_font_size=sp(16), duration=.2,
                           t='out_quad').start(self)

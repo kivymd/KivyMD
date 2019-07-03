@@ -23,8 +23,14 @@ from datetime import date
 from kivy.lang import Builder
 from kivy.uix.modalview import ModalView
 from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import StringProperty, NumericProperty, ObjectProperty,\
-    BooleanProperty, ListProperty, OptionProperty
+from kivy.properties import (
+    StringProperty,
+    NumericProperty,
+    ObjectProperty,
+    BooleanProperty,
+    ListProperty,
+    OptionProperty,
+)
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.clock import Clock
@@ -39,7 +45,8 @@ from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.elevation import RectangularElevationBehavior
 from kivymd.color_definitions import colors, palette
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import calendar calendar
 #:import platform platform
 
@@ -237,7 +244,8 @@ Builder.load_string('''
             pos:
                 self.pos if root.theme_cls.device_orientation == 'portrait'\
                 else [self.pos[0], self.pos[1]]
-''')
+"""
+)
 
 
 class DaySelector(ThemableBehavior, AnchorLayout):
@@ -266,12 +274,10 @@ class DaySelector(ThemableBehavior, AnchorLayout):
     def move_resize(self, window=None, width=None, height=None, do_again=True):
         self.pos = self.selected_widget.pos
         if do_again:
-            Clock.schedule_once(
-                lambda x: self.move_resize(do_again=False), .01)
+            Clock.schedule_once(lambda x: self.move_resize(do_again=False), 0.01)
 
 
-class DayButton(ThemableBehavior, CircularRippleBehavior, ButtonBehavior,
-                AnchorLayout):
+class DayButton(ThemableBehavior, CircularRippleBehavior, ButtonBehavior, AnchorLayout):
     text = StringProperty()
     owner = ObjectProperty()
     is_today = BooleanProperty(False)
@@ -285,8 +291,13 @@ class WeekdayLabel(MDLabel):
     pass
 
 
-class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
-                   SpecificBackgroundColorBehavior, ModalView):
+class MDDatePicker(
+    FloatLayout,
+    ThemableBehavior,
+    RectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+    ModalView,
+):
     _sel_day_widget = ObjectProperty()
     cal_list = None
     cal_layout = ObjectProperty()
@@ -298,13 +309,14 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
     year = NumericProperty()
     today = date.today()
     callback = ObjectProperty()
-    background_color = ListProperty([0, 0, 0, .7])
+    background_color = ListProperty([0, 0, 0, 0.7])
 
     class SetDateError(Exception):
         pass
 
-    def __init__(self, callback, year=None, month=None, day=None,
-                 firstweekday=0, **kwargs):
+    def __init__(
+        self, callback, year=None, month=None, day=None, firstweekday=0, **kwargs
+    ):
         self.callback = callback
         self.cal = calendar.Calendar(firstweekday)
         self.sel_year = year if year else self.today.year
@@ -326,9 +338,14 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
 
     def fmt_lbl_date(self, year, month, day, orientation):
         d = datetime.date(int(year), int(month), int(day))
-        separator = '\n' if orientation == 'landscape' else ' '
-        return d.strftime('%a,').capitalize() + separator + d.strftime(
-            '%b').capitalize() + ' ' + str(day).lstrip('0')
+        separator = "\n" if orientation == "landscape" else " "
+        return (
+            d.strftime("%a,").capitalize()
+            + separator
+            + d.strftime("%b").capitalize()
+            + " "
+            + str(day).lstrip("0")
+        )
 
     def set_date(self, year, month, day):
         try:
@@ -337,14 +354,17 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
             print(e)
             if str(e) == "day is out of range for month":
                 raise self.SetDateError(
-                    " Day %s day is out of range for month %s" % (day, month))
+                    " Day %s day is out of range for month %s" % (day, month)
+                )
             elif str(e) == "month must be in 1..12":
                 raise self.SetDateError(
-                    "Month must be between 1 and 12, got %s" % month)
+                    "Month must be between 1 and 12, got %s" % month
+                )
             elif str(e) == "year is out of range":
                 raise self.SetDateError(
-                    "Year must be between %s and %s, got %s" % (
-                        datetime.MINYEAR, datetime.MAXYEAR, year))
+                    "Year must be between %s and %s, got %s"
+                    % (datetime.MINYEAR, datetime.MAXYEAR, year)
+                )
         else:
             self.sel_year = year
             self.sel_month = month
@@ -389,7 +409,7 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
             for idx in range(len(self.cal_list)):
                 if idx >= len(dates) or dates[idx].month != month:
                     self.cal_list[idx].disabled = True
-                    self.cal_list[idx].text = ''
+                    self.cal_list[idx].text = ""
                 else:
                     self.cal_list[idx].disabled = False
                     self.cal_list[idx].text = str(dates[idx].day)
@@ -400,7 +420,8 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
         cal_list = []
         for day in self.cal.iterweekdays():
             self.cal_layout.add_widget(
-                WeekdayLabel(text=calendar.day_abbr[day][0].upper()))
+                WeekdayLabel(text=calendar.day_abbr[day][0].upper())
+            )
         for i in range(6 * 7):  # 6 weeks, 7 days a week
             db = DayButton(owner=self)
             cal_list.append(db)
@@ -408,14 +429,15 @@ class MDDatePicker(FloatLayout, ThemableBehavior, RectangularElevationBehavior,
         self.cal_list = cal_list
 
     def change_month(self, operation):
-        op = 1 if operation is 'next' else -1
+        op = 1 if operation is "next" else -1
         sl, sy = self.month, self.year
         m = 12 if sl + op == 0 else 1 if sl + op == 13 else sl + op
         y = sy - 1 if sl + op == 0 else sy + 1 if sl + op == 13 else sy
         self.update_cal_matrix(y, m)
 
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import MDFlatButton kivymd.button.MDFlatButton
 #:import CircularTimePicker kivymd.vendor.circularTimePicker.CircularTimePicker
 #:import dp kivy.metrics.dp
@@ -467,11 +489,13 @@ Builder.load_string('''
             - dp(10), root.pos[1] + dp(10)
         text: "Cancel"
         on_release: root.close_cancel()
-''')
+"""
+)
 
 
-class MDTimePicker(ThemableBehavior, FloatLayout, ModalView,
-                   RectangularElevationBehavior):
+class MDTimePicker(
+    ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
+):
     time = ObjectProperty()
 
     def __init__(self, **kwargs):
@@ -484,7 +508,8 @@ class MDTimePicker(ThemableBehavior, FloatLayout, ModalView,
         except AttributeError:
             raise TypeError(
                 "MDTimePicker._set_time must receive a datetime object, "
-                "not a \"" + type(time).__name__ + "\"")
+                'not a "' + type(time).__name__ + '"'
+            )
 
     def close_cancel(self):
         self.dismiss()
@@ -495,7 +520,8 @@ class MDTimePicker(ThemableBehavior, FloatLayout, ModalView,
         self.dismiss()
 
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import MDTabsBase kivymd.tabs.MDTabsBase
 #:import MDTab kivymd.tabs.MDTabs
 
@@ -853,19 +879,24 @@ Builder.load_string('''
                                 size: self.size
                                 pos: self.pos
                         on_release: app.theme_cls.theme_style = 'Dark'
-''')
+"""
+)
 
 
 class ColorSelector(MDIconButton):
-    color_name = OptionProperty('Indigo', options=palette)
+    color_name = OptionProperty("Indigo", options=palette)
 
     def rgb_hex(self, col):
         return get_color_from_hex(colors[col][self.theme_cls.accent_hue])
 
 
-class MDThemePicker(ThemableBehavior, FloatLayout, ModalView,
-                    SpecificBackgroundColorBehavior,
-                    RectangularElevationBehavior):
+class MDThemePicker(
+    ThemableBehavior,
+    FloatLayout,
+    ModalView,
+    SpecificBackgroundColorBehavior,
+    RectangularElevationBehavior,
+):
     pass
 
 
@@ -873,12 +904,12 @@ if __name__ == "__main__":
     from kivy.app import App
     from kivymd.theming import ThemeManager
 
-
     class ThemePickerApp(App):
         theme_cls = ThemeManager()
 
         def build(self):
-            main_widget = Builder.load_string('''
+            main_widget = Builder.load_string(
+                """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDThemePicker kivymd.pickers.MDThemePicker
 
@@ -892,7 +923,8 @@ FloatLayout:
         text: 'Open theme picker'
         on_release: MDThemePicker().open()
         opposite_colors: True
-''')
+"""
+            )
             return main_widget
 
     ThemePickerApp().run()

@@ -110,7 +110,8 @@ from kivymd.button import MDIconButton, MDFloatingActionButton
 from kivymd.theming import ThemableBehavior
 from kivymd.elevation import RectangularElevationBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import m_res kivymd.material_resources
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 
@@ -161,11 +162,16 @@ Builder.load_string('''
         orientation: 'horizontal'
         size_hint_x: None
         padding: [0, (self.height - dp(48))/2]
-''')
+"""
+)
 
 
-class MDToolbar(ThemableBehavior, RectangularElevationBehavior,
-                SpecificBackgroundColorBehavior, BoxLayout):
+class MDToolbar(
+    ThemableBehavior,
+    RectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+    BoxLayout,
+):
     left_action_items = ListProperty()
     """The icons on the left of the MDToolbar.
     To add one, append a list like the following:
@@ -184,22 +190,23 @@ class MDToolbar(ThemableBehavior, RectangularElevationBehavior,
 
     md_bg_color = ListProperty([0, 0, 0, 1])
 
-    anchor_title = StringProperty('left')
+    anchor_title = StringProperty("left")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(
-            lambda x: self.on_left_action_items(0, self.left_action_items))
+            lambda x: self.on_left_action_items(0, self.left_action_items)
+        )
         Clock.schedule_once(
-            lambda x: self.on_right_action_items(0,
-                                                 self.right_action_items))
+            lambda x: self.on_right_action_items(0, self.right_action_items)
+        )
 
     def on_left_action_items(self, instance, value):
-        self.update_action_bar(self.ids['left_actions'], value)
+        self.update_action_bar(self.ids["left_actions"], value)
 
     def on_right_action_items(self, instance, value):
-        self.update_action_bar(self.ids['right_actions'], value)
+        self.update_action_bar(self.ids["right_actions"], value)
 
     def update_action_bar(self, action_bar, action_bar_items):
         action_bar.clear_widgets()
@@ -207,16 +214,20 @@ class MDToolbar(ThemableBehavior, RectangularElevationBehavior,
         for item in action_bar_items:
             new_width += dp(48)
             action_bar.add_widget(
-                MDIconButton(icon=item[0], on_release=item[1],
-                             opposite_colors=True,
-                             text_color=self.specific_text_color,
-                             theme_text_color='Custom'))
+                MDIconButton(
+                    icon=item[0],
+                    on_release=item[1],
+                    opposite_colors=True,
+                    text_color=self.specific_text_color,
+                    theme_text_color="Custom",
+                )
+            )
         action_bar.width = new_width
 
     def update_action_bar_text_colors(self, instance, value):
-        for child in self.ids['left_actions'].children:
+        for child in self.ids["left_actions"].children:
             child.text_color = self.specific_text_color
-        for child in self.ids['right_actions'].children:
+        for child in self.ids["right_actions"].children:
             child.text_color = self.specific_text_color
 
 
@@ -224,49 +235,55 @@ class MDBottomAppBar(FloatLayout):
     left_action_items = ListProperty()
     right_action_items = ListProperty()
     md_bg_color = ListProperty([0, 0, 0, 1])
-    action_button_color =\
-        ListProperty([1, .7568627450980392, .027450980392156862, 1])
-    anchor = StringProperty('right')
+    action_button_color = ListProperty([1, 0.7568627450980392, 0.027450980392156862, 1])
+    anchor = StringProperty("right")
     callback = ObjectProperty(lambda x: None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Default action Button.
-        x = Window.width - dp(56) - dp(20) if self.anchor == 'right'\
-            else Window.width // 2 - dp(56) // 2 if self.anchor == 'center'\
+        x = (
+            Window.width - dp(56) - dp(20)
+            if self.anchor == "right"
+            else Window.width // 2 - dp(56) // 2
+            if self.anchor == "center"
             else dp(20)
-        self.action_button =\
-            AppBarActionButton(y=self.ids.toolbar.height // 2,
-                               x=x, opacity=1, size=(dp(56), dp(56)),
-                               on_release=self.callback,
-                               action_button_color=self.action_button_color)
+        )
+        self.action_button = AppBarActionButton(
+            y=self.ids.toolbar.height // 2,
+            x=x,
+            opacity=1,
+            size=(dp(56), dp(56)),
+            on_release=self.callback,
+            action_button_color=self.action_button_color,
+        )
         self.add_widget(self.action_button)
 
     def set_pos_action_button(self, anchor):
         def _set_pos_action_button(*args):
-            if anchor == 'center':
+            if anchor == "center":
                 x = self.width // 2 - dp(56) // 2
-            elif anchor == 'right':
+            elif anchor == "right":
                 x = self.width - dp(56) - dp(20)
             else:
                 return
 
             self.remove_widget(self.action_button)
-            self.action_button =\
-                AppBarActionButton(y=self.ids.toolbar.height // 2,
-                                   x=x, on_release=self.callback,
-                                   action_button_color=self.action_button_color)
+            self.action_button = AppBarActionButton(
+                y=self.ids.toolbar.height // 2,
+                x=x,
+                on_release=self.callback,
+                action_button_color=self.action_button_color,
+            )
             self.add_widget(self.action_button)
-            Animation(size=(dp(56), dp(56)), opacity=1, d=.2).start(
-                self.action_button)
+            Animation(size=(dp(56), dp(56)), opacity=1, d=0.2).start(self.action_button)
             self.anchor = anchor
 
         if self.anchor != anchor:
-            anim = Animation(size=(0, 0), opacity=0, d=.2)
+            anim = Animation(size=(0, 0), opacity=0, d=0.2)
             anim.bind(on_complete=_set_pos_action_button)
             anim.start(self.action_button)
 
 
 class AppBarActionButton(MDFloatingActionButton):
-    action_button_color =\
-        ListProperty([1, .7568627450980392, .027450980392156862, 1])
+    action_button_color = ListProperty([1, 0.7568627450980392, 0.027450980392156862, 1])

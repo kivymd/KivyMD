@@ -60,11 +60,11 @@ from kivy.uix.modalview import ModalView
 from kivymd import images_path
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.label import MDIcon
-from kivymd.list import MDList, OneLineListItem, ILeftBody,\
-    OneLineIconListItem
+from kivymd.list import MDList, OneLineListItem, ILeftBody, OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <MDBottomSheet>
     md_bg_color: 0, 0, 0, .8
     upper_padding: upper_padding
@@ -87,7 +87,8 @@ Builder.load_string('''
             size_hint_y: None
             md_bg_color: root.theme_cls.bg_normal
             cols: 1
-''')
+"""
+)
 
 
 class BsPadding(ButtonBehavior, FloatLayout):
@@ -99,7 +100,7 @@ class BottomSheetContent(BackgroundColorBehavior, GridLayout):
 
 
 class MDBottomSheet(ThemableBehavior, ModalView):
-    background = f'{images_path}transparent.png'
+    background = f"{images_path}transparent.png"
     upper_padding = ObjectProperty()
     gl_content = ObjectProperty()
 
@@ -110,7 +111,8 @@ class MDBottomSheet(ThemableBehavior, ModalView):
         super().add_widget(widget, index, canvas)
 
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import md_icons kivymd.icon_definitions.md_icons
 
 
@@ -118,7 +120,8 @@ Builder.load_string('''
     halign: 'center'
     theme_text_color: 'Primary'
     valign: 'middle'
-''')
+"""
+)
 
 
 class ListBSIconLeft(ILeftBody, MDIcon):
@@ -147,7 +150,8 @@ class MDListBottomSheet(MDBottomSheet):
         self.mlist.add_widget(item)
 
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import MDLabel kivymd.label.MDLabel
 
 
@@ -170,7 +174,8 @@ Builder.load_string('''
         theme_text_color: 'Secondary'
         text: root.caption
         halign: 'center'
-''')
+"""
+)
 
 
 class GridBSItem(ButtonBehavior, BoxLayout):

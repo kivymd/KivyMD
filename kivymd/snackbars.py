@@ -140,7 +140,8 @@ from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.button import MDFlatButton
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MDLabel kivymd.label.MDLabel
 
@@ -173,7 +174,8 @@ Builder.load_string('''
             shorten: True
             shorten_from: 'right'
             pos_hint: {'center_y': .5}
-''')
+"""
+)
 
 
 class Snackbar(FloatLayout):
@@ -185,8 +187,8 @@ class Snackbar(FloatLayout):
     :attr:`text` is a :class:`~kivy.properties.StringProperty` 
     and defaults to ''.
     """
-    
-    font_size = NumericProperty('15sp')
+
+    font_size = NumericProperty("15sp")
     """The font size of the text that will appear in the Snackbar.
     
     :attr:`font_size` is a :class:`~kivy.properties.NumericProperty` and
@@ -225,7 +227,7 @@ class Snackbar(FloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if self.button_text != '':
+        if self.button_text != "":
             button = MDFlatButton(text=self.button_text)
             self.ids.box.add_widget(button)
             if self.button_callback:
@@ -237,13 +239,13 @@ class Snackbar(FloatLayout):
         def wait_interval(interval):
             self._interval += interval
             if self._interval > self.duration:
-                anim = Animation(y=-self.ids.box.height, d=.2)
+                anim = Animation(y=-self.ids.box.height, d=0.2)
                 anim.bind(on_complete=lambda *args: Window.parent.remove_widget(self))
                 anim.start(self.ids.box)
                 Clock.unschedule(wait_interval)
                 self._interval = 0
 
         Window.parent.add_widget(self)
-        anim = Animation(y=0, d=.2)
+        anim = Animation(y=0, d=0.2)
         anim.bind(on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0))
         anim.start(self.ids.box)

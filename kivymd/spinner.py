@@ -20,7 +20,8 @@ from kivy.properties import NumericProperty, ListProperty, BooleanProperty
 from kivy.animation import Animation
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <MDSpinner>
     canvas.before:
         PushMatrix
@@ -39,7 +40,8 @@ Builder.load_string('''
     canvas.after:
         PopMatrix
 
-''')
+"""
+)
 
 
 class MDSpinner(ThemableBehavior, Widget):
@@ -83,8 +85,8 @@ class MDSpinner(ThemableBehavior, Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.color = self.theme_cls.primary_color
-        self._alpha_anim_in = Animation(_alpha=1, duration=.8, t='out_quad')
-        self._alpha_anim_out = Animation(_alpha=0, duration=.3, t='out_quad')
+        self._alpha_anim_in = Animation(_alpha=1, duration=0.8, t="out_quad")
+        self._alpha_anim_out = Animation(_alpha=0, duration=0.3, t="out_quad")
         self._alpha_anim_out.bind(on_complete=self._reset)
         self.theme_cls.bind(primary_color=self._update_color)
 
@@ -99,38 +101,35 @@ class MDSpinner(ThemableBehavior, Widget):
     def _start_determinate(self, *args):
         self._alpha_anim_in.start(self)
 
-        _rot_anim = Animation(_rotation_angle=0,
-                              duration=self.determinate_time * .7,
-                              t='out_quad')
+        _rot_anim = Animation(
+            _rotation_angle=0, duration=self.determinate_time * 0.7, t="out_quad"
+        )
         _rot_anim.start(self)
 
-        _angle_start_anim = Animation(_angle_end=360,
-                                      duration=self.determinate_time,
-                                      t='in_out_quad')
-        _angle_start_anim.bind(
-            on_complete=lambda *x: self._alpha_anim_out.start(self))
+        _angle_start_anim = Animation(
+            _angle_end=360, duration=self.determinate_time, t="in_out_quad"
+        )
+        _angle_start_anim.bind(on_complete=lambda *x: self._alpha_anim_out.start(self))
 
         _angle_start_anim.start(self)
 
     def _start_loop(self, *args):
         if self._alpha == 0:
-            _rot_anim = Animation(_rotation_angle=0,
-                                  duration=2,
-                                  t='linear')
+            _rot_anim = Animation(_rotation_angle=0, duration=2, t="linear")
             _rot_anim.start(self)
 
         self._alpha = 1
         self._alpha_anim_in.start(self)
-        _angle_start_anim = Animation(_angle_end=self._angle_end + 270,
-                                      duration=.6,
-                                      t='in_out_cubic')
+        _angle_start_anim = Animation(
+            _angle_end=self._angle_end + 270, duration=0.6, t="in_out_cubic"
+        )
         _angle_start_anim.bind(on_complete=self._anim_back)
         _angle_start_anim.start(self)
 
     def _anim_back(self, *args):
-        _angle_back_anim = Animation(_angle_start=self._angle_end - 8,
-                                     duration=.6,
-                                     t='in_out_cubic')
+        _angle_back_anim = Animation(
+            _angle_start=self._angle_end - 8, duration=0.6, t="in_out_cubic"
+        )
         _angle_back_anim.bind(on_complete=self._start_loop)
 
         _angle_back_anim.start(self)
@@ -139,13 +138,13 @@ class MDSpinner(ThemableBehavior, Widget):
         if self._rotation_angle == 0:
             self._rotation_angle = 360
             if not self.determinate:
-                _rot_anim = Animation(_rotation_angle=0,
-                                      duration=2)
+                _rot_anim = Animation(_rotation_angle=0, duration=2)
                 _rot_anim.start(self)
 
     def _reset(self, *args):
-        Animation.cancel_all(self, '_angle_start', '_rotation_angle',
-                             '_angle_end', '_alpha')
+        Animation.cancel_all(
+            self, "_angle_start", "_rotation_angle", "_angle_end", "_alpha"
+        )
         self._angle_start = 0
         self._angle_end = 8
         self._rotation_angle = 360

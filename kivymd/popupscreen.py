@@ -174,7 +174,8 @@ from kivy.properties import ObjectProperty, ListProperty
 
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <RootScreen>
     padding: dp(15)
 
@@ -187,7 +188,8 @@ Builder.load_string('''
             pos: self.pos
             size: self.size
             radius: [15, ]
-''')
+"""
+)
 
 
 class RootScreen(BoxLayout, ThemableBehavior):
@@ -213,17 +215,15 @@ class MDPopupScreen(FloatLayout):
             self.added_screen = True
             self.root_screen.background_color = self.background_color
         self.open_menu = True
-        Animation(y=-self.max_height, d=.2, t='in_out_bounce').start(
-            self.root_screen)
+        Animation(y=-self.max_height, d=0.2, t="in_out_bounce").start(self.root_screen)
 
     def hide(self, interval):
-        Animation(y=-Window.height, d=.2, t='in_out_bounce').start(
-            self.root_screen)
+        Animation(y=-Window.height, d=0.2, t="in_out_bounce").start(self.root_screen)
         self.open_menu = False
 
     def on_touch_down(self, touch):
-        if touch.button == 'scrollup' or touch.button == 'scrolldown':
+        if touch.button == "scrollup" or touch.button == "scrolldown":
             return
         if self.open_menu:
-            Clock.schedule_once(self.hide, .3)
+            Clock.schedule_once(self.hide, 0.3)
         return super().on_touch_down(touch)

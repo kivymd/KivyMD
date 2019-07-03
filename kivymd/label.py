@@ -16,8 +16,13 @@ as the Kivy framework.
 
 from kivy.lang import Builder
 from kivy.metrics import sp
-from kivy.properties import OptionProperty, ListProperty, BooleanProperty,\
-    StringProperty, AliasProperty
+from kivy.properties import (
+    OptionProperty,
+    ListProperty,
+    BooleanProperty,
+    StringProperty,
+    AliasProperty,
+)
 from kivy.uix.label import Label
 
 from kivymd.font_definitions import theme_font_styles
@@ -25,7 +30,8 @@ from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import md_icons kivymd.icon_definitions.md_icons
 
 
@@ -37,11 +43,12 @@ Builder.load_string('''
 <MDIcon>
     font_style: 'Icon'
     text: u'{}'.format(md_icons[self.icon])
-''')
+"""
+)
 
 
 class MDLabel(ThemableBehavior, Label):
-    font_style = OptionProperty('Body1', options=theme_font_styles)
+    font_style = OptionProperty("Body1", options=theme_font_styles)
 
     can_capitalize = BooleanProperty(True)
     _capitalizing = BooleanProperty(False)
@@ -55,13 +62,20 @@ class MDLabel(ThemableBehavior, Label):
         self._text = value
 
     _text = StringProperty()
-    text = AliasProperty(_get_text, _set_text, bind=['_text', '_capitalizing'])
+    text = AliasProperty(_get_text, _set_text, bind=["_text", "_capitalizing"])
 
-    theme_text_color = OptionProperty(None, allownone=True,
-                                      options=['Primary', 'Secondary', 'Hint',
-                                               'Error', 'Custom',
-                                               'ContrastParentBackground']
-                                      )
+    theme_text_color = OptionProperty(
+        None,
+        allownone=True,
+        options=[
+            "Primary",
+            "Secondary",
+            "Hint",
+            "Error",
+            "Custom",
+            "ContrastParentBackground",
+        ],
+    )
 
     text_color = ListProperty(None, allownone=True)
 
@@ -71,8 +85,9 @@ class MDLabel(ThemableBehavior, Label):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(font_style=self.update_font_style,
-                  can_capitalize=self.update_font_style)
+        self.bind(
+            font_style=self.update_font_style, can_capitalize=self.update_font_style
+        )
         self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style()
         self.on_opposite_colors(None, self.opposite_colors)
@@ -91,15 +106,17 @@ class MDLabel(ThemableBehavior, Label):
     def on_theme_text_color(self, instance, value):
         t = self.theme_cls
         op = self.opposite_colors
-        setter = self.setter('color')
+        setter = self.setter("color")
         t.unbind(**self._currently_bound_property)
         attr_name = {
-            'Primary': 'text_color' if not op else 'opposite_text_color',
-            'Secondary': 'secondary_text_color' if not op else
-            'opposite_secondary_text_color',
-            'Hint': 'disabled_hint_text_color' if not op else
-            'opposite_disabled_hint_text_color',
-            'Error': 'error_color',
+            "Primary": "text_color" if not op else "opposite_text_color",
+            "Secondary": "secondary_text_color"
+            if not op
+            else "opposite_secondary_text_color",
+            "Hint": "disabled_hint_text_color"
+            if not op
+            else "opposite_disabled_hint_text_color",
+            "Error": "error_color",
         }.get(value, None)
         if attr_name:
             c = {attr_name: setter}
@@ -109,15 +126,15 @@ class MDLabel(ThemableBehavior, Label):
         else:
             # 'Custom' and 'ContrastParentBackground' lead here, as well as the
             # generic None value it's not yet been set
-            if value == 'Custom' and self.text_color:
+            if value == "Custom" and self.text_color:
                 self.color = self.text_color
-            elif value == 'ContrastParentBackground' and self.parent_background:
+            elif value == "ContrastParentBackground" and self.parent_background:
                 self.color = get_contrast_text_color(self.parent_background)
             else:
                 self.color = [0, 0, 0, 1]
 
     def on_text_color(self, *args):
-        if self.theme_text_color == 'Custom':
+        if self.theme_text_color == "Custom":
             self.color = self.text_color
 
     def on_opposite_colors(self, instance, value):
@@ -125,4 +142,4 @@ class MDLabel(ThemableBehavior, Label):
 
 
 class MDIcon(MDLabel):
-    icon = StringProperty('android')
+    icon = StringProperty("android")

@@ -151,8 +151,14 @@ API
 
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty, \
-    ListProperty, OptionProperty, BooleanProperty
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty,
+    NumericProperty,
+    ListProperty,
+    OptionProperty,
+    BooleanProperty,
+)
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
@@ -162,7 +168,8 @@ from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 from kivymd.font_definitions import theme_font_styles
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import m_res kivymd.material_resources
 
 
@@ -299,7 +306,8 @@ Builder.load_string('''
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
         y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
         size: dp(48), dp(48)
-''')
+"""
+)
 
 
 class MDList(GridLayout):
@@ -325,8 +333,9 @@ class MDList(GridLayout):
         self.height -= widget.height
 
 
-class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
-                   ButtonBehavior, FloatLayout):
+class BaseListItem(
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, FloatLayout
+):
     """Base class to all ListItems. Not supposed to be instantiated on its own.
     """
 
@@ -340,9 +349,9 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
     text_color = ListProperty(None)
     """ Text color used if theme_text_color is set to 'Custom' """
 
-    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
+    font_style = OptionProperty("Subtitle1", options=theme_font_styles)
 
-    theme_text_color = StringProperty('Primary', allownone=True)
+    theme_text_color = StringProperty("Primary", allownone=True)
     """ Theme text color for primary text """
 
     secondary_text = StringProperty()
@@ -360,13 +369,12 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
     """ Text color used for secondary text if secondary_theme_text_color 
     is set to 'Custom' """
 
-    secondary_theme_text_color = StringProperty('Secondary', allownone=True)
+    secondary_theme_text_color = StringProperty("Secondary", allownone=True)
     """ Theme text color for secondary primary text """
 
-    secondary_font_style = OptionProperty('Body1', options=theme_font_styles)
+    secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty('Full',
-                             options=['Full', 'Inset', None], allownone=True)
+    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()
@@ -382,6 +390,7 @@ class ILeftBody:
 
     Implements nothing and requires no implementation, for annotation only.
     """
+
     pass
 
 
@@ -389,6 +398,7 @@ class ILeftBodyTouch:
     """Same as :class:`~ILeftBody`, but allows the widget to receive touch
     events instead of triggering the ListItem's ripple effect
     """
+
     pass
 
 
@@ -398,6 +408,7 @@ class IRightBody:
 
     Implements nothing and requires no implementation, for annotation only.
     """
+
     pass
 
 
@@ -405,6 +416,7 @@ class IRightBodyTouch:
     """Same as :class:`~IRightBody`, but allows the widget to receive touch
     events instead of triggering the ListItem's ripple effect
     """
+
     pass
 
 
@@ -435,17 +447,17 @@ class ContainerSupport:
             self._touchable_widgets.remove(widget)
 
     def on_touch_down(self, touch):
-        if self.propagate_touch_to_touchable_widgets(touch, 'down'):
+        if self.propagate_touch_to_touchable_widgets(touch, "down"):
             return
         super().on_touch_down(touch)
 
     def on_touch_move(self, touch, *args):
-        if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
+        if self.propagate_touch_to_touchable_widgets(touch, "move", *args):
             return
         super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
-        if self.propagate_touch_to_touchable_widgets(touch, 'up'):
+        if self.propagate_touch_to_touchable_widgets(touch, "up"):
             return
         super().on_touch_up(touch)
 
@@ -454,11 +466,11 @@ class ContainerSupport:
         for i in self._touchable_widgets:
             if i.collide_point(touch.x, touch.y):
                 triggered = True
-                if touch_event == 'down':
+                if touch_event == "down":
                     i.on_touch_down(touch)
-                elif touch_event == 'move':
+                elif touch_event == "move":
                     i.on_touch_move(touch, *args)
-                elif touch_event == 'up':
+                elif touch_event == "up":
                     i.on_touch_up(touch)
         return triggered
 

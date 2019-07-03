@@ -21,13 +21,12 @@ from kivy.uix.image import Image
 from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
 
-if not os.path.exists('./assets/market-crop.jpg'):
+if not os.path.exists("./assets/market-crop.jpg"):
     crop_image(
-        (Window.width, Window.height),
-        './assets/market.jpg',
-        './assets/market-crop.jpg')
+        (Window.width, Window.height), "./assets/market.jpg", "./assets/market-crop.jpg"
+    )
 
-registration_form_one = '''
+registration_form_one = """
 #:import images_path kivymd.images_path
 #:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
 #:import MDLabel kivymd.label.MDLabel
@@ -187,13 +186,13 @@ registration_form_one = '''
                 color: 1, 1, 1, 1
                 halign: 'center'
                 font_style: 'Caption'
-'''
+"""
 
 
 class FormOne(Screen):
     def back_to_previous_screen(self):
-        App.get_running_app().theme_cls.primary_palette = 'BlueGray'
-        App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+        App.get_running_app().theme_cls.primary_palette = "BlueGray"
+        App.get_running_app().main_widget.ids.scr_mngr.current = "previous"
         App.get_running_app().main_widget.ids.toolbar.height = dp(56)
 
 

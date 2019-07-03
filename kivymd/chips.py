@@ -174,8 +174,12 @@ MyApp().run()
 """
 
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ListProperty, ObjectProperty,\
-    BooleanProperty
+from kivy.properties import (
+    StringProperty,
+    ListProperty,
+    ObjectProperty,
+    BooleanProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.stacklayout import StackLayout
@@ -183,7 +187,8 @@ from kivy.uix.stacklayout import StackLayout
 from kivymd.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import MDIconButton kivymd.button.MDIconButton
 
 
@@ -231,19 +236,20 @@ Builder.load_string('''
         size_hint_y: None
         height: dp(26)
         disabled: True
-''')
+"""
+)
 
 
 class MDChip(BoxLayout, ThemableBehavior):
     label = StringProperty()
-    icon = StringProperty('checkbox-blank-circle')
-    color = ListProperty([.4, .4, .4, 1])
+    icon = StringProperty("checkbox-blank-circle")
+    color = ListProperty([0.4, 0.4, 0.4, 1])
     check = BooleanProperty(False)
     callback = ObjectProperty(lambda x: None)
 
     def on_icon(self, instance, value):
-        if value == '':
-            self.icon = 'checkbox-blank-circle'
+        if value == "":
+            self.icon = "checkbox-blank-circle"
             self.remove_widget(self.ids.icon)
 
     def on_touch_down(self, touch):
@@ -252,17 +258,19 @@ class MDChip(BoxLayout, ThemableBehavior):
             md_choose_chip = self.parent
             if md_choose_chip.__class__ is MDChooseChip:
                 if md_choose_chip.selected_chip:
-                    md_choose_chip.selected_chip.color =\
+                    md_choose_chip.selected_chip.color = (
                         md_choose_chip.selected_chip_color
+                    )
                 md_choose_chip.selected_chip = self
                 md_choose_chip.selected_chip_color = self.color
                 self.color = self.theme_cls.primary_color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
-                        MDIconButton(icon='check', size_hint_y=None,
-                                     height=dp(26),
-                                     disabled=True))
+                        MDIconButton(
+                            icon="check", size_hint_y=None, height=dp(26), disabled=True
+                        )
+                    )
                 else:
                     check = self.ids.box_check.children[0]
                     self.ids.box_check.remove_widget(check)

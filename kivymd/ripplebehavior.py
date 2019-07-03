@@ -14,11 +14,22 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 """
 
-from kivy.properties import ListProperty, NumericProperty, StringProperty,\
-    BooleanProperty
+from kivy.properties import (
+    ListProperty,
+    NumericProperty,
+    StringProperty,
+    BooleanProperty,
+)
 from kivy.animation import Animation
-from kivy.graphics import Color, Ellipse, StencilPush, StencilPop,\
-    StencilUse, StencilUnUse, Rectangle
+from kivy.graphics import (
+    Color,
+    Ellipse,
+    StencilPush,
+    StencilPop,
+    StencilUse,
+    StencilUnUse,
+    Rectangle,
+)
 
 
 class CommonRipple(object):
@@ -26,14 +37,14 @@ class CommonRipple(object):
     ripple_rad_default = NumericProperty(1)
     ripple_post = ListProperty()
     ripple_color = ListProperty()
-    ripple_alpha = NumericProperty(.5)
+    ripple_alpha = NumericProperty(0.5)
     ripple_scale = NumericProperty(None)
-    ripple_duration_in_fast = NumericProperty(.3)
+    ripple_duration_in_fast = NumericProperty(0.3)
     # FIXME: These speeds should be calculated based on widget size in dp
     ripple_duration_in_slow = NumericProperty(2)
-    ripple_duration_out = NumericProperty(.3)
-    ripple_func_in = StringProperty('out_quad')
-    ripple_func_out = StringProperty('out_quad')
+    ripple_duration_out = NumericProperty(0.3)
+    ripple_func_in = StringProperty("out_quad")
+    ripple_func_out = StringProperty("out_quad")
 
     doing_ripple = BooleanProperty(False)
     finishing_ripple = BooleanProperty(False)
@@ -48,20 +59,23 @@ class CommonRipple(object):
 
         if not self.disabled:
             if self.doing_ripple:
-                Animation.cancel_all(self, 'ripple_rad', 'ripple_color',
-                                     'rect_color')
+                Animation.cancel_all(self, "ripple_rad", "ripple_color", "rect_color")
                 self.anim_complete()
             self.ripple_rad = self.ripple_rad_default
             self.ripple_pos = (touch.x, touch.y)
 
             if self.ripple_color:
                 pass
-            elif hasattr(self, 'theme_cls'):
+            elif hasattr(self, "theme_cls"):
                 self.ripple_color = self.theme_cls.ripple_color
             else:
                 # If no theme, set Gray 300
-                self.ripple_color = [.8784313725490196, .8784313725490196,
-                                     .8784313725490196, self.ripple_alpha]
+                self.ripple_color = [
+                    0.8784313725490196,
+                    0.8784313725490196,
+                    0.8784313725490196,
+                    self.ripple_alpha,
+                ]
             self.ripple_color[3] = self.ripple_alpha
 
             self.lay_canvas_instructions()
@@ -87,8 +101,9 @@ class CommonRipple(object):
         if not self.doing_ripple:
             anim = Animation(
                 ripple_rad=self.finish_rad,
-                t='linear',
-                duration=self.ripple_duration_in_slow)
+                t="linear",
+                duration=self.ripple_duration_in_slow,
+            )
             anim.bind(on_complete=self.fade_out)
             self.doing_ripple = True
             anim.start(self)
@@ -103,10 +118,12 @@ class CommonRipple(object):
 
     def finish_ripple(self):
         if self.doing_ripple and not self.finishing_ripple:
-            Animation.cancel_all(self, 'ripple_rad')
-            anim = Animation(ripple_rad=self.finish_rad,
-                             t=self.ripple_func_in,
-                             duration=self.ripple_duration_in_fast)
+            Animation.cancel_all(self, "ripple_rad")
+            anim = Animation(
+                ripple_rad=self.finish_rad,
+                t=self.ripple_func_in,
+                duration=self.ripple_duration_in_fast,
+            )
             anim.bind(on_complete=self.fade_out)
             self.finishing_ripple = True
             anim.start(self)
@@ -114,10 +131,12 @@ class CommonRipple(object):
     def fade_out(self, *args):
         rc = self.ripple_color
         if not self.fading_out:
-            Animation.cancel_all(self, 'ripple_color')
-            anim = Animation(ripple_color=[rc[0], rc[1], rc[2], .0],
-                             t=self.ripple_func_out,
-                             duration=self.ripple_duration_out)
+            Animation.cancel_all(self, "ripple_color")
+            anim = Animation(
+                ripple_color=[rc[0], rc[1], rc[2], 0.0],
+                t=self.ripple_func_out,
+                duration=self.ripple_duration_out,
+            )
             anim.bind(on_complete=self.anim_complete)
             self.fading_out = True
             anim.start(self)
@@ -140,20 +159,24 @@ class RectangularRippleBehavior(CommonRipple):
             Rectangle(pos=self.pos, size=self.size)
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
-            self.ellipse =\
-                Ellipse(size=(self.ripple_rad, self.ripple_rad),
-                        pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
-                             self.ripple_pos[1] - self.ripple_rad / 2.))
+            self.ellipse = Ellipse(
+                size=(self.ripple_rad, self.ripple_rad),
+                pos=(
+                    self.ripple_pos[0] - self.ripple_rad / 2.0,
+                    self.ripple_pos[1] - self.ripple_rad / 2.0,
+                ),
+            )
             StencilUnUse()
             Rectangle(pos=self.pos, size=self.size)
             StencilPop()
-        self.bind(ripple_color=self._set_color,
-                  ripple_rad=self._set_ellipse)
+        self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
-        self.ellipse.pos = (self.ripple_pos[0] - self.ripple_rad / 2.,
-                            self.ripple_pos[1] - self.ripple_rad / 2.)
+        self.ellipse.pos = (
+            self.ripple_pos[0] - self.ripple_rad / 2.0,
+            self.ripple_pos[1] - self.ripple_rad / 2.0,
+        )
 
 
 class CircularRippleBehavior(CommonRipple):
@@ -162,26 +185,32 @@ class CircularRippleBehavior(CommonRipple):
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            self.stencil = Ellipse(size=(self.width * self.ripple_scale,
-                                         self.height * self.ripple_scale),
-                                   pos=(self.center_x - (
-                                       self.width * self.ripple_scale) / 2,
-                                        self.center_y - (
-                                            self.height * self.ripple_scale) / 2))
+            self.stencil = Ellipse(
+                size=(self.width * self.ripple_scale, self.height * self.ripple_scale),
+                pos=(
+                    self.center_x - (self.width * self.ripple_scale) / 2,
+                    self.center_y - (self.height * self.ripple_scale) / 2,
+                ),
+            )
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
-            self.ellipse = Ellipse(size=(self.ripple_rad, self.ripple_rad),
-                                   pos=(self.center_x - self.ripple_rad / 2.,
-                                        self.center_y - self.ripple_rad / 2.))
+            self.ellipse = Ellipse(
+                size=(self.ripple_rad, self.ripple_rad),
+                pos=(
+                    self.center_x - self.ripple_rad / 2.0,
+                    self.center_y - self.ripple_rad / 2.0,
+                ),
+            )
             StencilUnUse()
             Ellipse(pos=self.pos, size=self.size)
             StencilPop()
-            self.bind(ripple_color=self._set_color,
-                      ripple_rad=self._set_ellipse)
+            self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
-        if self.ellipse.size[0] > self.width * .6 and not self.fading_out:
+        if self.ellipse.size[0] > self.width * 0.6 and not self.fading_out:
             self.fade_out()
-        self.ellipse.pos = (self.center_x - self.ripple_rad / 2.,
-                            self.center_y - self.ripple_rad / 2.)
+        self.ellipse.pos = (
+            self.center_x - self.ripple_rad / 2.0,
+            self.center_y - self.ripple_rad / 2.0,
+        )

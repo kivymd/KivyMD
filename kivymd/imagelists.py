@@ -142,8 +142,14 @@ MyApp().run()
 """
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BooleanProperty, ObjectProperty,\
-    NumericProperty, ListProperty, OptionProperty
+from kivy.properties import (
+    StringProperty,
+    BooleanProperty,
+    ObjectProperty,
+    NumericProperty,
+    ListProperty,
+    OptionProperty,
+)
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -152,7 +158,8 @@ from kivymd.button import MDIconButton
 from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <SmartTile>
     _img_widget: img
     _img_overlay: img_overlay
@@ -242,29 +249,31 @@ Builder.load_string('''
             text: root.text
             color: root.tile_text_color
             markup: True
-''')
+"""
+)
 
 
-class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
-           BoxLayout):
+class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout):
     """A simple tile. It does nothing special, just inherits the right
     behaviors to work as a building block.
     """
+
     pass
 
 
-class SmartTile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
-                FloatLayout):
+class SmartTile(
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, FloatLayout
+):
     """A tile for more complex needs.
 
     Includes an image, a container to place overlays and a box that can act
     as a header or a footer, as described in the Material Design specs.
     """
 
-    box_color = ListProperty([0, 0, 0, .5])
+    box_color = ListProperty([0, 0, 0, 0.5])
     """Sets the color and opacity for the information box."""
 
-    box_position = OptionProperty('footer', options=['footer', 'header'])
+    box_position = OptionProperty("footer", options=["footer", "header"])
     """Determines wether the information box acts as a header or footer to the
     image.
     """
@@ -280,7 +289,7 @@ class SmartTile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior,
 
     # Img properties
     allow_stretch = BooleanProperty(True)
-    anim_delay = NumericProperty(.25)
+    anim_delay = NumericProperty(0.25)
     anim_loop = NumericProperty(0)
     img_color = ListProperty([1, 1, 1, 1])
     keep_ratio = BooleanProperty(False)
@@ -326,8 +335,12 @@ class SmartTileWithStar(SmartTileWithLabel):
     def on_stars(self, *args):
         for star in range(self.stars):
             self.ids.box.add_widget(
-                Star(icon='star-outline', theme_text_color='Custom',
-                     text_color=[1, 1, 1, 1]))
+                Star(
+                    icon="star-outline",
+                    theme_text_color="Custom",
+                    text_color=[1, 1, 1, 1],
+                )
+            )
 
 
 class IBoxOverlay:

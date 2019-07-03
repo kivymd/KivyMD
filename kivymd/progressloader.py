@@ -107,7 +107,8 @@ from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
 
 from kivymd.cards import MDCard
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import Window kivy.core.window.Window
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDLabel kivymd.label.MDLabel
@@ -149,27 +150,28 @@ Builder.load_string('''
 
     Widget:
         size_hint_x: .1
-''')
+"""
+)
 
 
 class MDProgressLoader(MDCard):
     path_to_file = StringProperty()
-    '''The path to which the uploaded file will be saved.'''
+    """The path to which the uploaded file will be saved."""
 
     url_on_image = StringProperty()
-    '''Link to uploaded file.'''
+    """Link to uploaded file."""
 
-    label_download = StringProperty('Download')
-    '''Signature of the downloaded file.'''
+    label_download = StringProperty("Download")
+    """Signature of the downloaded file."""
 
     download_complete = ObjectProperty()
-    '''Function, called after a successful file upload.'''
+    """Function, called after a successful file upload."""
 
     download_hide = ObjectProperty(lambda x: None)
-    '''Function that is called when the download window is closed.'''
+    """Function that is called when the download window is closed."""
 
     download_flag = BooleanProperty(False)
-    '''If True - the download process is in progress.'''
+    """If True - the download process is in progress."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -192,24 +194,29 @@ class MDProgressLoader(MDCard):
 
         """
 
-        self.ids.label_download.text = '%s: %d %%'\
-                                       % (self.label_download, percent)
+        self.ids.label_download.text = "%s: %d %%" % (self.label_download, percent)
 
     def animation_progress_to_fade(self, interval):
         if not self.download_flag:
             return
 
         animation = Animation(
-            center_y=Window.height, center_x=Window.width,
-            opacity=0, d=.2, t='out_quad'
+            center_y=Window.height,
+            center_x=Window.width,
+            opacity=0,
+            d=0.2,
+            t="out_quad",
         )
         animation.bind(on_complete=lambda x, y: self.download_hide(self, None))
         animation.start(self)
 
     def animation_progress_from_fade(self):
         animation = Animation(
-            center_y=Window.height // 2, center_x=Window.width // 2,
-            opacity=1, d=.2, t='out_quad'
+            center_y=Window.height // 2,
+            center_x=Window.width // 2,
+            opacity=1,
+            d=0.2,
+            t="out_quad",
         )
         animation.start(self)
         Clock.schedule_once(self.animation_progress_to_fade, 2.5)
@@ -224,8 +231,12 @@ class MDProgressLoader(MDCard):
         """
 
         req = UrlRequest(
-            url, on_progress=self.update_progress, chunk_size=1024,
-            on_success=self.on_success, file_path=path)
+            url,
+            on_progress=self.update_progress,
+            chunk_size=1024,
+            on_success=self.on_success,
+            file_path=path,
+        )
 
     def update_progress(self, request, current_size, total_size):
         percent = current_size * 100 // total_size

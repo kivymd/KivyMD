@@ -125,8 +125,14 @@ Example().run()
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import BoundedNumericProperty, ReferenceListProperty,\
-    StringProperty, ListProperty, BooleanProperty, ObjectProperty
+from kivy.properties import (
+    BoundedNumericProperty,
+    ReferenceListProperty,
+    StringProperty,
+    ListProperty,
+    BooleanProperty,
+    ObjectProperty,
+)
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
@@ -141,7 +147,8 @@ from kivymd.menus import MDDropdownMenu
 from kivymd.navigationdrawer import NavigationLayout
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import images_path kivymd.images_path
 #:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 
@@ -287,7 +294,8 @@ Builder.load_string('''
                 icon: 'delete'
                 disabled: True
                 on_release: root.callback(root, None)
-''')
+"""
+)
 
 
 class MDSeparator(ThemableBehavior, BoxLayout):
@@ -298,22 +306,21 @@ class MDSeparator(ThemableBehavior, BoxLayout):
         self.on_orientation()
 
     def on_orientation(self, *args):
-        self.size_hint = (1, None) if self.orientation == 'horizontal'\
-            else (None, 1)
-        if self.orientation == 'horizontal':
+        self.size_hint = (1, None) if self.orientation == "horizontal" else (None, 1)
+        if self.orientation == "horizontal":
             self.height = dp(1)
         else:
             self.width = dp(1)
 
 
 class MDCard(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
-    r = BoundedNumericProperty(1., min=.0, max=1.)
-    g = BoundedNumericProperty(1., min=.0, max=1.)
-    b = BoundedNumericProperty(1., min=.0, max=1.)
-    a = BoundedNumericProperty(.0, min=.0, max=1.)
+    r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
+    g = BoundedNumericProperty(1.0, min=0.0, max=1.0)
+    b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
+    a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
 
     border_radius = BoundedNumericProperty(dp(3), min=0)
-    border_color_a = BoundedNumericProperty(0, min=.0, max=1.)
+    border_color_a = BoundedNumericProperty(0, min=0.0, max=1.0)
     md_bg_color = ReferenceListProperty(r, g, b, a)
     background = StringProperty()
 
@@ -325,44 +332,44 @@ class LeftIcon(ILeftBody, Image):
 class CardPostImage(BoxLayout):
     source = StringProperty()
     text_post = StringProperty()
-    tile_text = StringProperty('Title')
-    tile_font_style = StringProperty('H5')
+    tile_text = StringProperty("Title")
+    tile_font_style = StringProperty("H5")
     tile_text_color = ListProperty([1, 1, 1, 1])
     callback = ObjectProperty(lambda *x: None)
     card_size = ListProperty((Window.width - 10, dp(335)))
 
 
 class MDCardPost(BoxLayout):
-    name_data = StringProperty('Name Author\nDate and time')
-    text_post = StringProperty('Your text post...')
-    path_to_avatar = StringProperty('data/logo/kivy-icon-512.png')
+    name_data = StringProperty("Name Author\nDate and time")
+    text_post = StringProperty("Your text post...")
+    path_to_avatar = StringProperty("data/logo/kivy-icon-512.png")
     card_size = ListProperty((Window.width - 10, dp(180)))
 
     source = StringProperty()
-    tile_text = StringProperty('Title')
-    tile_font_style = StringProperty('H5')
+    tile_text = StringProperty("Title")
+    tile_font_style = StringProperty("H5")
     tile_text_color = ListProperty([1, 1, 1, 1])
 
     buttons = ListProperty()
-    '''A list of icons for buttons that will be used under the text of the post
+    """A list of icons for buttons that will be used under the text of the post
     when "with_image" is True
-    '''
+    """
 
     right_menu = ListProperty()
-    '''If the list is not empty a button will be added to display the menu list
-    '''
+    """If the list is not empty a button will be added to display the menu list
+    """
 
     likes_stars = BooleanProperty(False)
-    '''If True, stars will be added to the card for evaluation'''
+    """If True, stars will be added to the card for evaluation"""
 
     callback = ObjectProperty(lambda *x: None)
-    '''User function'''
+    """User function"""
 
     swipe = BooleanProperty(False)
-    '''Whether to apply to the card the function of a swap'''
+    """Whether to apply to the card the function of a swap"""
 
     with_image = BooleanProperty(False)
-    '''If True, we use a post with an image'''
+    """If True, we use a post with an image"""
 
     _list_instance_likes_stars = ListProperty()
     _card_shifted = False
@@ -384,30 +391,36 @@ class MDCardPost(BoxLayout):
                 tile_text=self.tile_text,
                 tile_font_style=self.tile_font_style,
                 tile_text_color=self.tile_text_color,
-                callback=self.callback)
+                callback=self.callback,
+            )
             for name_icon in self.buttons:
                 card_post.ids.box_buttons.add_widget(
                     MDIconButton(
                         icon=name_icon,
-                        on_release=lambda x, y=name_icon: self.callback(x, y)))
+                        on_release=lambda x, y=name_icon: self.callback(x, y),
+                    )
+                )
             self.ids.root_box.add_widget(card_post)
         # ---------------------------------------------------------------------
         if len(self.right_menu) and not self.with_image:
             self.ids.title_box.add_widget(
-                MDIconButton(
-                    icon='dots-vertical',
-                    on_release=self.open_menu))
+                MDIconButton(icon="dots-vertical", on_release=self.open_menu)
+            )
         # ---------------------------------------------------------------------
         if self.likes_stars:
             box_likes_stars_right = AnchorLayout(
-                anchor_x='right', size_hint_y=None, height=dp(30))
+                anchor_x="right", size_hint_y=None, height=dp(30)
+            )
             self.box_likes_stars = BoxLayout(spacing=(dp(5)))
             self.box_likes_stars.add_widget(Widget())
             for i in range(5):  # adding stars
                 like_star = MDIconButton(
-                    icon='star-outline', size_hint=(None, None),
-                    size=(dp(30), dp(30)), id=str(i),
-                    on_release=lambda x, y=i: self._update_likes_stars(y))
+                    icon="star-outline",
+                    size_hint=(None, None),
+                    size=(dp(30), dp(30)),
+                    id=str(i),
+                    on_release=lambda x, y=i: self._update_likes_stars(y),
+                )
                 self.box_likes_stars.add_widget(like_star)
                 self._list_instance_likes_stars.append(like_star)
             box_likes_stars_right.add_widget(self.box_likes_stars)
@@ -421,34 +434,33 @@ class MDCardPost(BoxLayout):
         i = 0
         for instance_like_star in self._list_instance_likes_stars:
             if int(instance_like_star.id) <= index_star:
-                if instance_like_star.icon == 'star-outline':
-                    instance_like_star.icon = 'star'
+                if instance_like_star.icon == "star-outline":
+                    instance_like_star.icon = "star"
                     i = 1
                 else:
                     if int(instance_like_star.id) == index_star:
-                        instance_like_star.icon = 'star-outline'
+                        instance_like_star.icon = "star-outline"
             elif int(instance_like_star.id) >= index_star:
-                if instance_like_star.icon == 'star':
-                    instance_like_star.icon = 'star-outline'
+                if instance_like_star.icon == "star":
+                    instance_like_star.icon = "star-outline"
         self.callback(self, index_star + i)
 
     def on_touch_move(self, touch):
-        if self.collide_point(*touch.pos) and self.swipe and\
-                not self._card_shifted:
+        if self.collide_point(*touch.pos) and self.swipe and not self._card_shifted:
             if touch.x < Window.width - 10:
                 # When the Navigation panel is open and
                 # the list of its menu is scrolled,
                 # the event is also processed on the cards
                 for widget in Window.children:
                     if widget.__class__ is NavigationLayout:
-                        if widget.state == 'open':
+                        if widget.state == "open":
                             return
                 self.shift_post_left()
         return super().on_touch_move(touch)
 
     def on_touch_down(self, touch):
         if self.swipe and self.card_shifted:
-            Clock.schedule_once(self.shift_post_right, .1)
+            Clock.schedule_once(self.shift_post_right, 0.1)
         return super().on_touch_down(touch)
 
     def shift_post_left(self):
@@ -457,24 +469,22 @@ class MDCardPost(BoxLayout):
             self.card_shifted = self
             self.ids.delet_post_button.disabled = False
 
-        Animation(x=-dp(90), d=.1, t='in_out_cubic').start(self.ids.root_box)
+        Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(self.ids.root_box)
         if self.likes_stars:
-            Animation(x=-dp(90), d=.1, t='in_out_cubic').start(self.children[0])
-        anim = Animation(opacity=1, d=.5, t='in_out_cubic')
+            Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(self.children[0])
+        anim = Animation(opacity=1, d=0.5, t="in_out_cubic")
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)
 
-    def shift_post_right(self, interval=.1):
+    def shift_post_right(self, interval=0.1):
         def on_anim_complete(*args):
             self._card_shifted = False
             self.card_shifted = None
             self.ids.delet_post_button.disabled = True
 
-        Animation(x=self._shift_x, d=.1, t='in_out_cubic').start(
-            self.ids.root_box)
+        Animation(x=self._shift_x, d=0.1, t="in_out_cubic").start(self.ids.root_box)
         if self.likes_stars:
-            Animation(x=self._shift_x, d=.3, t='in_out_cubic').start(
-                self.children[0])
-        anim = Animation(opacity=0, d=.05, t='in_out_cubic')
+            Animation(x=self._shift_x, d=0.3, t="in_out_cubic").start(self.children[0])
+        anim = Animation(opacity=0, d=0.05, t="in_out_cubic")
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)

@@ -120,19 +120,24 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.image import AsyncImage
-from kivy.properties import ObjectProperty, StringProperty, ListProperty, \
-    BooleanProperty, NumericProperty, OptionProperty
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty,
+    ListProperty,
+    BooleanProperty,
+    NumericProperty,
+    OptionProperty,
+)
 
 import kivymd.material_resources as m_res
 from kivymd import images_path
 from kivymd.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
 from kivymd.font_definitions import theme_font_styles
-from kivymd.ripplebehavior import RectangularRippleBehavior, \
-    CircularRippleBehavior
+from kivymd.ripplebehavior import RectangularRippleBehavior, CircularRippleBehavior
 from kivymd.theming import ThemableBehavior
 from kivymd.button import MDIconButton
 
-ACTIVITY_MANAGER = '''
+ACTIVITY_MANAGER = """
 #:import os os
 #:import Window kivy.core.window.Window
 #:import MDToolbar kivymd.toolbar.MDToolbar
@@ -330,7 +335,7 @@ ACTIVITY_MANAGER = '''
         x: root.x + dp(16)
         y: root.y + root.height/2 - self.height/2
         size: dp(48), dp(48)
-'''
+"""
 
 
 class IconButton(CircularRippleBehavior, ButtonBehavior, AsyncImage):
@@ -343,8 +348,9 @@ class FloatButton(AnchorLayout):
     icon = StringProperty()
 
 
-class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
-                           ButtonBehavior, FloatLayout):
+class ModifiedBaseListItem(
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, FloatLayout
+):
     """Base class to all ListItems. Not supposed to be instantiated on its own.
     """
 
@@ -358,9 +364,9 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
     text_color = ListProperty(None)
     """Text color used if theme_text_color is set to 'Custom'"""
 
-    font_style = OptionProperty('Subtitle1', options=theme_font_styles)
+    font_style = OptionProperty("Subtitle1", options=theme_font_styles)
 
-    theme_text_color = StringProperty('Primary', allownone=True)
+    theme_text_color = StringProperty("Primary", allownone=True)
     """Theme text color for primary text"""
 
     secondary_text = StringProperty()
@@ -378,13 +384,12 @@ class ModifiedBaseListItem(ThemableBehavior, RectangularRippleBehavior,
     """Text color used for secondary text if secondary_theme_text_color 
     is set to 'Custom'"""
 
-    secondary_theme_text_color = StringProperty('Secondary', allownone=True)
+    secondary_theme_text_color = StringProperty("Secondary", allownone=True)
     """Theme text color for secondary primary text"""
 
-    secondary_font_style = OptionProperty('Body1', options=theme_font_styles)
+    secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty('Full', options=['Full', 'Inset', None],
-                             allownone=True)
+    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()
@@ -414,14 +419,14 @@ class ContainerSupport:
 
     def add_widget(self, widget, index=0):
         if issubclass(widget.__class__, ILeftBody):
-            self.ids['_left_container'].add_widget(widget)
+            self.ids["_left_container"].add_widget(widget)
         elif issubclass(widget.__class__, ILeftBodyTouch):
-            self.ids['_left_container'].add_widget(widget)
+            self.ids["_left_container"].add_widget(widget)
             self._touchable_widgets.append(widget)
         elif issubclass(widget.__class__, IRightBody):
-            self.ids['_right_container'].add_widget(widget)
+            self.ids["_right_container"].add_widget(widget)
         elif issubclass(widget.__class__, IRightBodyTouch):
-            self.ids['_right_container'].add_widget(widget)
+            self.ids["_right_container"].add_widget(widget)
             self._touchable_widgets.append(widget)
         else:
             return super().add_widget(widget)
@@ -432,17 +437,17 @@ class ContainerSupport:
             self._touchable_widgets.remove(widget)
 
     def on_touch_down(self, touch):
-        if self.propagate_touch_to_touchable_widgets(touch, 'down'):
+        if self.propagate_touch_to_touchable_widgets(touch, "down"):
             return
         super().on_touch_down(touch)
 
     def on_touch_move(self, touch, *args):
-        if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
+        if self.propagate_touch_to_touchable_widgets(touch, "move", *args):
             return
         super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
-        if self.propagate_touch_to_touchable_widgets(touch, 'up'):
+        if self.propagate_touch_to_touchable_widgets(touch, "up"):
             return
         super().on_touch_up(touch)
 
@@ -451,11 +456,11 @@ class ContainerSupport:
         for i in self._touchable_widgets:
             if i.collide_point(touch.x, touch.y):
                 triggered = True
-                if touch_event == 'down':
+                if touch_event == "down":
                     i.on_touch_down(touch)
-                elif touch_event == 'move':
+                elif touch_event == "move":
                     i.on_touch_move(touch, *args)
-                elif touch_event == 'up':
+                elif touch_event == "up":
                     i.on_touch_up(touch)
         return triggered
 
@@ -469,18 +474,18 @@ class IconFolder(ILeftBodyTouch, MDIconButton):
 
 
 class BodyManagerWithPrevious(BoxLayout):
-
-    def get_source(self, app, source_type, instance_label, paths, index,
-                   instance_content):
-        if source_type == 'folder' and instance_label.text != '':
-            source = f'{images_path}folder.png'
+    def get_source(
+        self, app, source_type, instance_label, paths, index, instance_content
+    ):
+        if source_type == "folder" and instance_label.text != "":
+            source = f"{images_path}folder.png"
         else:
             if len(paths) >= index:
                 source = paths[index - 1]
             else:
-                source = f'{images_path}transparent.png'
+                source = f"{images_path}transparent.png"
         if PY2:
-            return source.decode('u8')
+            return source.decode("u8")
         return source
 
 
@@ -488,7 +493,7 @@ class BodyManagerWithPrevious(BoxLayout):
 # FIXME: When you first create the application cache,
 #        it crashes after a while with error:
 
-'''
+"""
  Traceback (most recent call last):
    File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698, 
        in <module>
@@ -520,36 +525,36 @@ class BodyManagerWithPrevious(BoxLayout):
        line 212, in _purge_by_timeout
      lastaccess = Cache._objects[category][key]['lastaccess']
  KeyError: '/path/to/image'
-'''
+"""
 
 
 class MDFileManager(ThemableBehavior, FloatLayout):
-    icon = StringProperty('check')
-    '''The icon that will be used on the directory selection button.'''
+    icon = StringProperty("check")
+    """The icon that will be used on the directory selection button."""
 
     exit_manager = ObjectProperty(lambda x: None)
-    '''Function called when the user reaches directory tree root.'''
+    """Function called when the user reaches directory tree root."""
 
     select_path = ObjectProperty(lambda x: None)
-    '''Function, called when selecting a file/directory.'''
+    """Function, called when selecting a file/directory."""
 
     ext = ListProperty()
-    '''List of file extensions to be displayed
+    """List of file extensions to be displayed
      in the manager. For example, ['py', 'kv'] - will filter out all files,
-     except python scripts and Kv Language.'''
+     except python scripts and Kv Language."""
 
-    search = StringProperty('all')
-    '''It can take the values 'dirs' 'files' - display only directories
-    or only files. By default, it displays and folders, and files.'''
+    search = StringProperty("all")
+    """It can take the values 'dirs' 'files' - display only directories
+    or only files. By default, it displays and folders, and files."""
 
-    current_path = StringProperty('/')
-    '''Current directory.'''
+    current_path = StringProperty("/")
+    """Current directory."""
 
     use_access = BooleanProperty(True)
-    '''Show accec to files and directories.'''
+    """Show accec to files and directories."""
 
     previous = BooleanProperty(False)
-    '''Shows only image previews.'''
+    """Shows only image previews."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -558,18 +563,19 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         # The user moves down the tree.
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
-        toolbar_label.font_style = 'Subtitle1'
+        toolbar_label.font_style = "Subtitle1"
 
         if self.previous:
-            self.ext = ['.png', '.jpg', '.jpeg']
+            self.ext = [".png", ".jpg", ".jpeg"]
             self.app = App.get_running_app()
-            if not os.path.exists('%s/thumb' % self.app.user_data_dir):
-                os.mkdir('%s/thumb' % self.app.user_data_dir)
+            if not os.path.exists("%s/thumb" % self.app.user_data_dir):
+                os.mkdir("%s/thumb" % self.app.user_data_dir)
         else:
             action_button = FloatButton(
                 callback=self.select_directory_on_press_button,
                 md_bg_color=self.theme_cls.primary_color,
-                icon=self.icon)
+                icon=self.icon,
+            )
             self.add_widget(action_button)
 
     def update_list_images(self):
@@ -578,25 +584,28 @@ class MDFileManager(ThemableBehavior, FloatLayout):
     def split_list(self, l, n):
         n = max(1, n)
         if PY2:
-            return (l[i:i + n] for i in xrange(0, len(l), n))
+            return (l[i : i + n] for i in xrange(0, len(l), n))
         else:
-            return (l[i:i + n] for i in range(0, len(l), n))
+            return (l[i : i + n] for i in range(0, len(l), n))
 
     def create_previous(self, path):
         for image in os.listdir(path):
             _path = os.path.join(path, image)
             if os.path.isfile(_path):
                 if self.count_ext(_path):
-                    path_to_thumb = \
-                        '%s/thumb/thumb_%s' % (self.app.user_data_dir, image)
+                    path_to_thumb = "%s/thumb/thumb_%s" % (
+                        self.app.user_data_dir,
+                        image,
+                    )
                     if not os.path.exists(path_to_thumb):
                         im = Image.open(os.path.join(path, image))
                         im.thumbnail((200, 200))
                         im.save(path_to_thumb, "PNG")
 
     def check_theme(self):
-        self.canvas.children[0].rgba = [0, 0, 0, 1]\
-            if self.theme_cls.theme_style == 'Dark' else [1, 1, 1, 1]
+        self.canvas.children[0].rgba = (
+            [0, 0, 0, 1] if self.theme_cls.theme_style == "Dark" else [1, 1, 1, 1]
+        )
 
     def show(self, path):
         """Forms the body of a directory tree."""
@@ -619,69 +628,76 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
         if self.previous:
             for list_dirs in split_dirs:
-                manager_list.append({
-                    'viewclass': 'BodyManagerWithPrevious',
-                    'path': path,
-                    'paths': list_dirs,
-                    'type': 'folder',
-                    'events_callback': self.select_dir_or_file,
-                    'height': dp(105)
-                })
+                manager_list.append(
+                    {
+                        "viewclass": "BodyManagerWithPrevious",
+                        "path": path,
+                        "paths": list_dirs,
+                        "type": "folder",
+                        "events_callback": self.select_dir_or_file,
+                        "height": dp(105),
+                    }
+                )
 
             for list_files in list(split_files):
-                manager_list.append({
-                    'viewclass': 'BodyManagerWithPrevious',
-                    'path': path,
-                    'paths': list_files,
-                    'type': 'files',
-                    'events_callback': self.select_dir_or_file,
-                    'height': dp(105)
-                })
+                manager_list.append(
+                    {
+                        "viewclass": "BodyManagerWithPrevious",
+                        "path": path,
+                        "paths": list_files,
+                        "type": "files",
+                        "events_callback": self.select_dir_or_file,
+                        "height": dp(105),
+                    }
+                )
         else:
             for name in dirs:
-                _path = path + name if path == '/' else path + '/' + name
+                _path = path + name if path == "/" else path + "/" + name
                 access_string = self.get_access_string(_path)
-                if 'r' not in access_string:
-                    icon = 'folder-lock'
+                if "r" not in access_string:
+                    icon = "folder-lock"
                 else:
-                    icon = 'folder'
+                    icon = "folder"
 
-                manager_list.append({
-                    'viewclass': 'BodyManager',
-                    'path': _path,
-                    'icon': icon,
-                    'dir_or_file_name': name,
-                    'access_string': access_string,
-                    'events_callback': self.select_dir_or_file
-                })
+                manager_list.append(
+                    {
+                        "viewclass": "BodyManager",
+                        "path": _path,
+                        "icon": icon,
+                        "dir_or_file_name": name,
+                        "access_string": access_string,
+                        "events_callback": self.select_dir_or_file,
+                    }
+                )
 
             for name in files:
-                _path = path + name if path == '/' else path + '/' + name
-                manager_list.append({
-                    'viewclass': 'BodyManager',
-                    'path': _path,
-                    'icon': 'file-outline',
-                    'dir_or_file_name': name,
-                    'access_string': self.get_access_string(_path),
-                    'events_callback': self.select_dir_or_file
-                })
+                _path = path + name if path == "/" else path + "/" + name
+                manager_list.append(
+                    {
+                        "viewclass": "BodyManager",
+                        "path": _path,
+                        "icon": "file-outline",
+                        "dir_or_file_name": name,
+                        "access_string": self.get_access_string(_path),
+                        "events_callback": self.select_dir_or_file,
+                    }
+                )
 
         self.ids.rv.data = manager_list
 
     def count_ext(self, path):
         ext = os.path.splitext(path)[1]
-        if ext != '':
+        if ext != "":
             if ext.lower() in self.ext or ext.upper() in self.ext:
                 return True
         return False
 
     def get_access_string(self, path):
-        access_string = ''
+        access_string = ""
         if self.use_access:
-            access_data = {'r': os.R_OK, 'w': os.W_OK, 'x': os.X_OK}
+            access_data = {"r": os.R_OK, "w": os.W_OK, "x": os.X_OK}
             for access in access_data.keys():
-                access_string += access if os.access(path, access_data[
-                    access]) else '-'
+                access_string += access if os.access(path, access_data[access]) else "-"
 
         return access_string
 
@@ -698,17 +714,19 @@ class MDFileManager(ThemableBehavior, FloatLayout):
                 self.history_flag = True
 
             for content in os.listdir(path):
-                if os.path.isdir('%s/%s' % (path, content)):
-                    if self.search == 'all' or self.search == 'dirs':
+                if os.path.isdir("%s/%s" % (path, content)):
+                    if self.search == "all" or self.search == "dirs":
                         dirs.append(content)
                 else:
-                    if self.search == 'all' or self.search == 'files':
+                    if self.search == "all" or self.search == "files":
                         if len(self.ext) != 0:
                             try:
                                 if self.count_ext(content):
                                     if self.previous:
-                                        files.append('%s/thumb/thumb_%s' % (
-                                            self.app.user_data_dir, content))
+                                        files.append(
+                                            "%s/thumb/thumb_%s"
+                                            % (self.app.user_data_dir, content)
+                                        )
                                     else:
                                         files.append(content)
                             except IndexError:
@@ -736,7 +754,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
         if len(self.history) == 1:
             path, end = os.path.split(self.history[0])
-            if end == '':
+            if end == "":
                 self.exit_manager(1)
                 return
             self.history[0] = path

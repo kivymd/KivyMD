@@ -89,8 +89,14 @@ Example().run()
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ObjectProperty, NumericProperty,\
-    ListProperty, BooleanProperty, OptionProperty
+from kivy.properties import (
+    StringProperty,
+    ObjectProperty,
+    NumericProperty,
+    ListProperty,
+    BooleanProperty,
+    OptionProperty,
+)
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 
@@ -98,14 +104,19 @@ from kivymd import images_path
 from kivymd.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd.label import MDLabel
-from kivymd.list import BaseListItem, ILeftBody, OneLineListItem,\
-    OneLineIconListItem, IRightBody
+from kivymd.list import (
+    BaseListItem,
+    ILeftBody,
+    OneLineListItem,
+    OneLineIconListItem,
+    IRightBody,
+)
 from kivymd.theming import ThemableBehavior
 from kivymd.toolbar import MDToolbar
-from kivymd.vendor.navigationdrawer import NavigationDrawer as\
-    VendorNavigationDrawer
+from kivymd.vendor.navigationdrawer import NavigationDrawer as VendorNavigationDrawer
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import MDLabel kivymd.label.MDLabel
 #:import colors kivymd.color_definitions.colors
@@ -229,7 +240,8 @@ Builder.load_string('''
             rgba: self.theme_cls.divider_color
         Line:
             points: root.x, root.y + dp(8), root.x + self.width, root.y + dp(8)
-''')
+"""
+)
 
 
 class NDIconLabel(ILeftBody, MDLabel):
@@ -277,8 +289,9 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     and defaults to None.
     """
 
-    active_color_type = OptionProperty('primary',
-                                       options=['primary', 'accent', 'custom'])
+    active_color_type = OptionProperty(
+        "primary", options=["primary", "accent", "custom"]
+    )
     """Decides which color should be used for the active color.
     This option only takes effect when :attr:`use_active` = True.
 
@@ -293,13 +306,13 @@ class NavigationDrawerIconButton(OneLineIconListItem):
     and defaults to 'primary'.
     """
 
-    icon = StringProperty('checkbox-blank-circle')
+    icon = StringProperty("checkbox-blank-circle")
     """Icon that appears to the left of the widget.
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty` and defaults
     to 'checkbox-blank-circle'.
     """
-    badge_text = StringProperty('')
+    badge_text = StringProperty("")
     """
     Text that appears on the right side of the item, usually
     for displaying a count of sorts.
@@ -328,7 +341,8 @@ class NavigationDrawerIconButton(OneLineIconListItem):
         self._set_active_color()
         self.theme_cls.bind(
             primary_color=self._set_active_color_primary,
-            accent_color=self._set_active_color_accent)
+            accent_color=self._set_active_color_accent,
+        )
         Clock.schedule_once(lambda x: self.on_icon(self, self.icon))
 
     def _set_active(self, active, nav_drawer):
@@ -340,23 +354,23 @@ class NavigationDrawerIconButton(OneLineIconListItem):
             nav_drawer.active_item = self
 
     def _set_active_color(self, *args):
-        if self.active_color_type == 'primary':
+        if self.active_color_type == "primary":
             self._set_active_color_primary()
-        elif self.active_color_type == 'accent':
+        elif self.active_color_type == "accent":
             self._set_active_color_accent()
 
     # Note to future developers/myself: These must be separate functions
     def _set_active_color_primary(self, *args):
-        if self.active_color_type == 'primary':
+        if self.active_color_type == "primary":
             self._active_color = self.theme_cls.primary_color
 
     def _set_active_color_accent(self, *args):
-        if self.active_color_type == 'accent':
+        if self.active_color_type == "accent":
             self._active_color = self.theme_cls.accent_color
 
     def on_icon(self, instance, value):
         super().__init__()
-        self.ids._icon.text = u'{}'.format(md_icons[value])
+        self.ids._icon.text = "{}".format(md_icons[value])
 
     def on_active_color_type(self, *args):
         self._set_active_color(args)
@@ -371,7 +385,7 @@ class NavigationDrawerSubheader(OneLineListItem):
 
     disabled = True
     divider = None
-    theme_text_color = 'Secondary'
+    theme_text_color = "Secondary"
 
 
 class NavigationDrawerDivider(OneLineListItem):
@@ -390,32 +404,31 @@ class NavigationDrawerDivider(OneLineListItem):
         self.height = dp(16)
 
 
-class MDNavigationDrawer(BoxLayout, ThemableBehavior,
-                         RectangularElevationBehavior):
+class MDNavigationDrawer(BoxLayout, ThemableBehavior, RectangularElevationBehavior):
     _elevation = NumericProperty(0)
     _list = ObjectProperty()
     _drawer_logo = ObjectProperty()
     _drawer_title = ObjectProperty()
     active_item = ObjectProperty(None)
-    orientation = 'vertical'
+    orientation = "vertical"
     panel = ObjectProperty()
     drawer_logo = StringProperty()
     drawer_title = StringProperty()
     shadow_color = ListProperty([0, 0, 0, 0])
-    use_logo = OptionProperty('none', options=['logo', 'label', 'all'])
+    use_logo = OptionProperty("none", options=["logo", "label", "all"])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def on_use_logo(self, instance, value):
-        if value == 'label':
+        if value == "label":
             self.remove_widget(self.ids.drawer_logo)
-        elif value == 'logo':
+        elif value == "logo":
             self.remove_widget(self.ids.drawer_title)
             self.remove_widget(self.ids.sep)
 
     def on_drawer_title(self, instance, value):
-        self.ids.drawer_title.text = f'    {value}'
+        self.ids.drawer_title.text = f"    {value}"
 
     def add_widget(self, widget, **kwargs):
         """
@@ -444,47 +457,49 @@ class MDNavigationDrawer(BoxLayout, ThemableBehavior,
 class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
     """The container layout that manages the :class:`MDNavigationDrawer`."""
 
-    opening_transition = StringProperty('out_sine')
-    closing_transition = StringProperty('out_sine')
-    min_dist_to_open = NumericProperty(.2)
-    min_dist_to_close = NumericProperty(.8)
-    anim_time = NumericProperty(.2)
-    separator_image = StringProperty(
-        '{}'.format(images_path + '/transparent.png'))
-    side_panel_positioning = 'left'
-    side_panel_width = (dp(320) * 80) // 100\
-        if dp(320) >= Window.width else dp(320)
-    max_shadow_opacity = NumericProperty(.5)
-    anim_type = StringProperty('slide_above_simple')
+    opening_transition = StringProperty("out_sine")
+    closing_transition = StringProperty("out_sine")
+    min_dist_to_open = NumericProperty(0.2)
+    min_dist_to_close = NumericProperty(0.8)
+    anim_time = NumericProperty(0.2)
+    separator_image = StringProperty("{}".format(images_path + "/transparent.png"))
+    side_panel_positioning = "left"
+    side_panel_width = (dp(320) * 80) // 100 if dp(320) >= Window.width else dp(320)
+    max_shadow_opacity = NumericProperty(0.5)
+    anim_type = StringProperty("slide_above_simple")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.on_anim_type()
 
     def _anim_relax(self):
-        if self.state == 'open':
+        if self.state == "open":
             if self._anim_progress < self.min_dist_to_close:
-                self.anim_to_state('closed')
+                self.anim_to_state("closed")
             else:
-                self.anim_to_state('open')
+                self.anim_to_state("open")
         else:
             if self._anim_progress > self.min_dist_to_open:
-                self.anim_to_state('open')
+                self.anim_to_state("open")
             else:
-                self.anim_to_state('closed')
+                self.anim_to_state("closed")
 
     def on__anim_progress(self, *args):
         self.side_panel.shadow_color = [
-            0, 0, 0, self.max_shadow_opacity*self._anim_progress]
+            0,
+            0,
+            0,
+            self.max_shadow_opacity * self._anim_progress,
+        ]
         self.side_panel.elevation = 1 * self._anim_progress
         if self._anim_progress > 1:
             self._anim_progress = 1
         elif self._anim_progress < 0:
             self._anim_progress = 0
         if self._anim_progress >= 1:
-            self.state = 'open'
+            self.state = "open"
         elif self._anim_progress <= 0:
-            self.state = 'closed'
+            self.state = "closed"
 
     def add_widget(self, widget, **kwargs):
         """
@@ -514,7 +529,8 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
             self.set_main_panel(widget)
         else:
             raise ValueError(
-                'Can\'t add more than two widgets directly to NavigationLayout')
+                "Can't add more than two widgets directly to NavigationLayout"
+            )
 
     def toggle_nav_drawer(self):
         self.toggle_state(True)

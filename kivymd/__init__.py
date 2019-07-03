@@ -24,10 +24,10 @@ import os
 from kivy import Logger
 
 __version_info__ = (0, 100, 1)
-__version__ = '0.100.1'
+__version__ = "0.100.1"
 
 path = os.path.dirname(__file__)
-fonts_path = os.path.join(path, f'fonts{os.sep}')
-images_path = os.path.join(path, f'images{os.sep}')
+fonts_path = os.path.join(path, f"fonts{os.sep}")
+images_path = os.path.join(path, f"images{os.sep}")
 
-Logger.info(f'KivyMD: KivyMD version: {__version__}')
+Logger.info(f"KivyMD: KivyMD version: {__version__}")

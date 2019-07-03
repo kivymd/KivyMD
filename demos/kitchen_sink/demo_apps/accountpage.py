@@ -19,18 +19,20 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image, crop_round_image
 
-if not os.path.exists('./assets/sasha-round.png'):
+if not os.path.exists("./assets/sasha-round.png"):
     crop_round_image(
         (int(dp(Window.width * 30 / 100)), int(dp(Window.width * 30 / 100))),
-        './assets/sasha-grey.jpg',
-        './assets/sasha-round.png')
-if not os.path.exists('./assets/account-background-crop.png'):
+        "./assets/sasha-grey.jpg",
+        "./assets/sasha-round.png",
+    )
+if not os.path.exists("./assets/account-background-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        './assets/account-background.jpeg',
-        './assets/account-background-crop.png')
+        "./assets/account-background.jpeg",
+        "./assets/account-background-crop.png",
+    )
 
-screen_account_page = '''
+screen_account_page = """
 #:import Window kivy.core.window.Window
 #:import MDLabel kivymd.label.MDLabel
 #:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
@@ -188,7 +190,7 @@ screen_account_page = '''
                                 RoundedRectangle:
                                     size: self.size
                                     pos: self.pos
-'''
+"""
 
 
 class AccountPage(Screen):
@@ -198,13 +200,13 @@ class AccountPage(Screen):
 
     def on_enter(self, *args):
         Clock.schedule_interval(self.set_button_width, 0)
-        self.l = iter(list('Former porn actress'))
+        self.l = iter(list("Former porn actress"))
         Clock.schedule_interval(self.set_label_info, 0)
-        Animation(opacity=1, d=.5).start(self.ids.status)
-        Animation(opacity=1, d=.5).start(self.ids.box)
+        Animation(opacity=1, d=0.5).start(self.ids.status)
+        Animation(opacity=1, d=0.5).start(self.ids.box)
 
     def on_leave(self, *args):
-        self.ids.info.text = ''
+        self.ids.info.text = ""
 
     def set_label_info(self, interval):
         try:
@@ -213,12 +215,11 @@ class AccountPage(Screen):
             Clock.unschedule(self.set_label_info)
 
     def set_button_width(self, interval):
-        self.ids.button.width = \
-            Window.width - (dp(50) + self.ids.button.height)
+        self.ids.button.width = Window.width - (dp(50) + self.ids.button.height)
 
     def events_program(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
             from kivy.app import App
 
-            App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+            App.get_running_app().main_widget.ids.scr_mngr.current = "previous"
             App.get_running_app().main_widget.ids.toolbar.height = dp(56)

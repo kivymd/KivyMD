@@ -136,29 +136,42 @@ Example().run()
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
-from kivy.graphics.stencil_instructions import StencilPush, StencilUse,\
-    StencilPop, StencilUnUse
+from kivy.graphics.stencil_instructions import (
+    StencilPush,
+    StencilUse,
+    StencilPop,
+    StencilUnUse,
+)
 from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.utils import get_color_from_hex
-from kivy.properties import StringProperty, BoundedNumericProperty,\
-    ListProperty, AliasProperty, BooleanProperty, NumericProperty,\
-    OptionProperty
+from kivy.properties import (
+    StringProperty,
+    BoundedNumericProperty,
+    ListProperty,
+    AliasProperty,
+    BooleanProperty,
+    NumericProperty,
+    OptionProperty,
+)
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 
 from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.ripplebehavior import CircularRippleBehavior,\
-    RectangularRippleBehavior
-from kivymd.elevation import CommonElevationBehavior,\
-    RectangularElevationBehavior, CircularElevationBehavior
+from kivymd.ripplebehavior import CircularRippleBehavior, RectangularRippleBehavior
+from kivymd.elevation import (
+    CommonElevationBehavior,
+    RectangularElevationBehavior,
+    CircularElevationBehavior,
+)
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import Animation kivy.animation.Animation
 #:import md_icons kivymd.icon_definitions.md_icons
 #:import colors kivymd.color_definitions.colors
@@ -371,11 +384,13 @@ Builder.load_string('''
     background_down: f'{images_path}transparent.png'
     background_normal: f'{images_path}transparent.png'
     opacity: 1
-''')
+"""
+)
 
 
-class BaseButton(ThemableBehavior, ButtonBehavior,
-                 SpecificBackgroundColorBehavior, AnchorLayout):
+class BaseButton(
+    ThemableBehavior, ButtonBehavior, SpecificBackgroundColorBehavior, AnchorLayout
+):
     """
     Abstract base class for all MD buttons. This class handles the button's
     colors (disabled/down colors handled in children classes as those depend on
@@ -384,11 +399,19 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
 
     _md_bg_color_down = ListProperty(None, allownone=True)
     _md_bg_color_disabled = ListProperty(None, allownone=True)
-    _current_button_color = ListProperty([.0, .0, .0, .0])
-    theme_text_color = OptionProperty(None, allownone=True,
-                                      options=['Primary', 'Secondary', 'Hint',
-                                               'Error', 'Custom',
-                                               'ContrastParentBackground'])
+    _current_button_color = ListProperty([0.0, 0.0, 0.0, 0.0])
+    theme_text_color = OptionProperty(
+        None,
+        allownone=True,
+        options=[
+            "Primary",
+            "Secondary",
+            "Hint",
+            "Error",
+            "Custom",
+            "ContrastParentBackground",
+        ],
+    )
     text_color = ListProperty(None, allownone=True)
     opposite_colors = BooleanProperty(False)
     font_name = StringProperty()
@@ -425,8 +448,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
     def _set_md_bg_color_down(self, value):
         self._md_bg_color_down = value
 
-    md_bg_color_down = AliasProperty(_call_get_bg_color_down,
-                                     _set_md_bg_color_down)
+    md_bg_color_down = AliasProperty(_call_get_bg_color_down, _set_md_bg_color_down)
 
     def _call_get_bg_color_disabled(self):
         return self._get_md_bg_color_disabled()
@@ -440,8 +462,9 @@ class BaseButton(ThemableBehavior, ButtonBehavior,
     def _set_md_bg_color_disabled(self, value):
         self._md_bg_color_disabled = value
 
-    md_bg_color_disabled = AliasProperty(_call_get_bg_color_disabled,
-                                         _set_md_bg_color_disabled)
+    md_bg_color_disabled = AliasProperty(
+        _call_get_bg_color_disabled, _set_md_bg_color_disabled
+    )
 
     def on_disabled(self, instance, value):
         if self.disabled:
@@ -466,17 +489,16 @@ class BasePressedButton(BaseButton):
         elif self.disabled:
             return False
         else:
-            self.fade_bg =\
-                Animation(duration=.5,
-                          _current_button_color=self.md_bg_color_down)
+            self.fade_bg = Animation(
+                duration=0.5, _current_button_color=self.md_bg_color_down
+            )
             self.fade_bg.start(self)
             return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
         if touch.grab_current is self:
-            self.fade_bg.stop_property(self, '_current_button_color')
-            Animation(duration=.05,
-                      _current_button_color=self.md_bg_color).start(self)
+            self.fade_bg.stop_property(self, "_current_button_color")
+            Animation(duration=0.05, _current_button_color=self.md_bg_color).start(self)
         return super().on_touch_up(touch)
 
 
@@ -489,15 +511,15 @@ class BaseFlatButton(BaseButton):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.md_bg_color = (.0, .0, .0, .0)
+        self.md_bg_color = (0.0, 0.0, 0.0, 0.0)
 
     def _get_md_bg_color_down(self):
-        if self.theme_cls.theme_style == 'Dark':
-            c = get_color_from_hex('cccccc')
-            c[3] = .25
+        if self.theme_cls.theme_style == "Dark":
+            c = get_color_from_hex("cccccc")
+            c[3] = 0.25
         else:
-            c = get_color_from_hex('999999')
-            c[3] = .4
+            c = get_color_from_hex("999999")
+            c[3] = 0.4
         return c
 
     def _get_md_bg_color_disabled(self):
@@ -505,10 +527,10 @@ class BaseFlatButton(BaseButton):
         if bg_c[3] == 0:  # transparent background
             c = bg_c
         else:
-            if self.theme_cls.theme_style == 'Dark':
-                c = (1., 1., 1., .12)
+            if self.theme_cls.theme_style == "Dark":
+                c = (1.0, 1.0, 1.0, 0.12)
             else:
-                c = (.0, .0, .0, .12)
+                c = (0.0, 0.0, 0.0, 0.12)
         return c
 
 
@@ -528,10 +550,12 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         elif self.elevation_raised == 0:
             self.elevation_raised = 12
         super().__init__(**kwargs)
-        self.elevation_press_anim = Animation(elevation=self.elevation_raised,
-                                              duration=.2, t='out_quad')
+        self.elevation_press_anim = Animation(
+            elevation=self.elevation_raised, duration=0.2, t="out_quad"
+        )
         self.elevation_release_anim = Animation(
-            elevation=self.elevation_normal, duration=.2, t='out_quad')
+            elevation=self.elevation_normal, duration=0.2, t="out_quad"
+        )
 
     _elev_norm = NumericProperty(2)
 
@@ -542,11 +566,13 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         self._elev_norm = value if value <= 12 else 12
         self._elev_raised = (value + 6) if value + 6 <= 12 else 12
         self.elevation = self._elev_norm
-        self.elevation_release_anim = Animation(elevation=value,
-                                                duration=.2, t='out_quad')
+        self.elevation_release_anim = Animation(
+            elevation=value, duration=0.2, t="out_quad"
+        )
 
     elevation_normal = AliasProperty(
-        _get_elev_norm, _set_elev_norm, bind=('_elev_norm',))
+        _get_elev_norm, _set_elev_norm, bind=("_elev_norm",)
+    )
     _elev_raised = NumericProperty(8)
 
     def _get_elev_raised(self):
@@ -554,11 +580,13 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 
     def _set_elev_raised(self, value):
         self._elev_raised = value if value + self._elev_norm <= 12 else 12
-        self.elevation_press_anim = Animation(elevation=value,
-                                              duration=.2, t='out_quad')
+        self.elevation_press_anim = Animation(
+            elevation=value, duration=0.2, t="out_quad"
+        )
 
     elevation_raised = AliasProperty(
-        _get_elev_raised, _set_elev_raised, bind=('_elev_raised',))
+        _get_elev_raised, _set_elev_raised, bind=("_elev_raised",)
+    )
 
     def on_disabled(self, instance, value):
         if self.disabled:
@@ -591,7 +619,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         t = self.theme_cls
         c = self.md_bg_color  # Default to no change on touch
         # Material design specifies using darker hue when on Dark theme
-        if t.theme_style == 'Dark':
+        if t.theme_style == "Dark":
             if self.md_bg_color == t.primary_color:
                 c = t.primary_dark
             elif self.md_bg_color == t.accent_color:
@@ -599,10 +627,10 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         return c
 
     def _get_md_bg_color_disabled(self):
-        if self.theme_cls.theme_style == 'Dark':
-            c = (1., 1., 1., .12)
+        if self.theme_cls.theme_style == "Dark":
+            c = (1.0, 1.0, 1.0, 0.12)
         else:
-            c = (.0, .0, .0, .12)
+            c = (0.0, 0.0, 0.0, 0.12)
         return c
 
 
@@ -622,9 +650,10 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     as stated in guidelines.
     """
 
-    width = BoundedNumericProperty(dp(88), min=dp(88), max=None,
-                                   errorhandler=lambda x: dp(88))
-    text = StringProperty('')
+    width = BoundedNumericProperty(
+        dp(88), min=dp(88), max=None, errorhandler=lambda x: dp(88)
+    )
+    text = StringProperty("")
     increment_width = NumericProperty(dp(32))
     _radius = NumericProperty(dp(2))
     _height = NumericProperty(dp(0))
@@ -633,7 +662,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
 
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
-    icon = StringProperty('checkbox-blank-circle')
+    icon = StringProperty("checkbox-blank-circle")
 
 
 class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
@@ -641,20 +670,25 @@ class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
 
 
 class BaseFlatIconButton(MDFlatButton):
-    icon = StringProperty('android')
-    text = StringProperty('')
+    icon = StringProperty("android")
+    text = StringProperty("")
     button_label = BooleanProperty(False)
 
 
-class MDRaisedButton(BaseRectangularButton, RectangularElevationBehavior,
-                     BaseRaisedButton, BasePressedButton):
+class MDRaisedButton(
+    BaseRectangularButton,
+    RectangularElevationBehavior,
+    BaseRaisedButton,
+    BasePressedButton,
+):
     pass
 
 
-class MDFloatingActionButton(BaseRoundButton, CircularElevationBehavior,
-                             BaseRaisedButton):
-    icon = StringProperty('android')
-    background_palette = StringProperty('Accent')
+class MDFloatingActionButton(
+    BaseRoundButton, CircularElevationBehavior, BaseRaisedButton
+):
+    icon = StringProperty("android")
+    background_palette = StringProperty("Accent")
 
 
 class MDRectangleFlatButton(MDFlatButton):
@@ -667,19 +701,18 @@ class MDRoundFlatButton(MDFlatButton):
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            RoundedRectangle(size=self.size,
-                             pos=self.pos,
-                             radius=[self._radius, ])
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[self._radius])
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
-            self.ellipse =\
-                Ellipse(size=(self.ripple_rad, self.ripple_rad),
-                        pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
-                             self.ripple_pos[1] - self.ripple_rad / 2.))
+            self.ellipse = Ellipse(
+                size=(self.ripple_rad, self.ripple_rad),
+                pos=(
+                    self.ripple_pos[0] - self.ripple_rad / 2.0,
+                    self.ripple_pos[1] - self.ripple_rad / 2.0,
+                ),
+            )
             StencilUnUse()
-            RoundedRectangle(size=self.size,
-                             pos=self.pos,
-                             radius=[self._radius, ])
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[self._radius])
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
 
@@ -690,9 +723,9 @@ class MDTextButton(ThemableBehavior, Button):
 
     def animation_label(self):
         def set_default_state_label(*args):
-            Animation(opacity=1, d=.1, t='in_out_cubic').start(self)
+            Animation(opacity=1, d=0.1, t="in_out_cubic").start(self)
 
-        anim = Animation(opacity=.5, d=.2, t='in_out_cubic')
+        anim = Animation(opacity=0.5, d=0.2, t="in_out_cubic")
         anim.bind(on_complete=set_default_state_label)
         anim.start(self)
 
@@ -718,5 +751,5 @@ class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
 
 
 class MDFillRoundFlatIconButton(MDFillRoundFlatButton):
-    icon = StringProperty('android')
+    icon = StringProperty("android")
     increment_width = dp(80)

@@ -153,7 +153,8 @@ from kivy.uix.image import Image
 from kivymd.button import MDIconButton
 from kivymd.list import IRightBodyTouch, OneLineAvatarIconListItem, ILeftBody
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <AccordionListItem>
     text: root.title
 
@@ -190,7 +191,8 @@ Builder.load_string('''
             icon: root.icon
             _no_ripple_effect: True
             on_press: root.check_open_box(self)
-''')
+"""
+)
 
 
 class AvatarLeft(ILeftBody, Image):
@@ -230,20 +232,19 @@ class MDAccordionListItem(BoxLayout):
     def anim_chevron_down(self):
         chevron = self.ids.item_anim.children[0].children[0]
         angle = -90
-        Animation(angle=angle, d=.2).start(chevron)
+        Animation(angle=angle, d=0.2).start(chevron)
         self.anim_resize_open_item()
 
     def anim_chevron_up(self, inctance):
         angle = 0
-        Animation(angle=angle, d=.2).start(inctance)
+        Animation(angle=angle, d=0.2).start(inctance)
 
     def anim_resize_close(self, box):
-        Animation(height=dp(68), d=.1, t='in_cubic').start(box)
+        Animation(height=dp(68), d=0.1, t="in_cubic").start(box)
 
     def anim_resize_open_item(self, *args):
         self.content.name_item = self.title
-        anim = Animation(height=self.content.height + dp(70),
-                         d=.2, t='in_cubic')
+        anim = Animation(height=self.content.height + dp(70), d=0.2, t="in_cubic")
         anim.bind(on_complete=self.add_content)
         anim.start(self)
 

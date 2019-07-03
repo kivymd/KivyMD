@@ -21,7 +21,8 @@ from kivy.lang import Builder
 
 from kivymd import images_path
 
-Builder.load_string("""
+Builder.load_string(
+    """
 <Toast>:
     canvas:
         Color:
@@ -30,16 +31,17 @@ Builder.load_string("""
             pos: self.pos
             size: self.size
             radius: [15,]
-""")
+"""
+)
 
 
 class Toast(ModalView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (None, None)
-        self.pos_hint = {'center_x': .5, 'center_y': .1}
+        self.pos_hint = {"center_x": 0.5, "center_y": 0.1}
         self.background_color = [0, 0, 0, 0]
-        self.background = f'{images_path}transparent.png'
+        self.background = f"{images_path}transparent.png"
         self.opacity = 0
         self.auto_dismiss = True
         self.label_toast = Label(size_hint=(None, None), opacity=0)
@@ -49,9 +51,9 @@ class Toast(ModalView):
     def label_check_texture_size(self, instance, texture_size):
         texture_width, texture_height = texture_size
         if texture_width > Window.width:
-           instance.text_size = (Window.width - dp(10), None)
-           instance.texture_update()
-           texture_width, texture_height = instance.texture_size
+            instance.text_size = (Window.width - dp(10), None)
+            instance.texture_update()
+            texture_width, texture_height = instance.texture_size
         self.size = (texture_width + 25, texture_height + 25)
 
     def toast(self, text_toast):
@@ -63,12 +65,12 @@ class Toast(ModalView):
         Clock.schedule_once(self.fade_out, 2.5)
 
     def fade_in(self):
-        Animation(opacity=1, duration=.4).start(self.label_toast)
-        Animation(opacity=1, duration=.4).start(self)
+        Animation(opacity=1, duration=0.4).start(self.label_toast)
+        Animation(opacity=1, duration=0.4).start(self)
 
     def fade_out(self, interval):
-        Animation(opacity=0, duration=.4).start(self.label_toast)
-        anim_body = Animation(opacity=0, duration=.4)
+        Animation(opacity=0, duration=0.4).start(self.label_toast)
+        anim_body = Animation(opacity=0, duration=0.4)
         anim_body.bind(on_complete=lambda *x: self.dismiss())
         anim_body.start(self)
 

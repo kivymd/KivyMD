@@ -177,7 +177,8 @@ from kivy.animation import Animation
 from kivymd.navigationdrawer import NavigationLayout
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import MDIconButton kivymd.button.MDIconButton
 
 
@@ -220,7 +221,8 @@ Builder.load_string('''
         text_color: app.theme_cls.primary_color
         icon: 'chevron-right'
         on_release: root.manager.swith_screen('left')
-''')
+"""
+)
 
 
 class ItemPagination(ThemableBehavior, Widget):
@@ -240,18 +242,19 @@ class MDSwiperPagination(ThemableBehavior, BoxLayout):
             self.items_round_paginator.append(item_paginator)
 
     def set_current_screen_round(self, index_screen):
-        old_color =\
-            self.items_round_paginator[index_screen].color_round_not_active
+        old_color = self.items_round_paginator[index_screen].color_round_not_active
         for i, screen in enumerate(self.items_round_paginator):
             if i == index_screen:
                 self.animation_set_not_active_round(
-                    screen.canvas.children[0], self.theme_cls.primary_color)
+                    screen.canvas.children[0], self.theme_cls.primary_color
+                )
             else:
                 self.animation_set_not_active_round(
-                    screen.canvas.children[0], old_color)
+                    screen.canvas.children[0], old_color
+                )
 
     def animation_set_not_active_round(self, instance, color):
-        Animation(rgba=color, d=.3).start(instance)
+        Animation(rgba=color, d=0.3).start(instance)
 
 
 class MDSwiperManager(ScreenManager):
@@ -274,15 +277,14 @@ class MDSwiperManager(ScreenManager):
             self.paginator.set_current_screen_round(self.index_screen)
 
     def swith_screen(self, direction):
-        if direction == 'right':
+        if direction == "right":
             if self.index_screen == 0:
                 self.index_screen = len(self.screen_names) - 1
             else:
                 self.index_screen -= 1
         else:
             self.index_screen += 1
-        if self.index_screen >= len(self.screen_names) and\
-                direction != 'right':
+        if self.index_screen >= len(self.screen_names) and direction != "right":
             self.index_screen = 0
         self.transition.direction = direction
         self.current = self.screen_names[self.index_screen]
@@ -294,13 +296,13 @@ class MDSwiperManager(ScreenManager):
             # the event is also processed on the cards
             for widget in Window.children:
                 if widget.__class__ is NavigationLayout:
-                    if widget.state == 'open':
+                    if widget.state == "open":
                         return
             if touch.x < Window.width - 10:
                 if self._x > touch.x:
-                    direction = 'left'
+                    direction = "left"
                 else:
-                    direction = 'right'
+                    direction = "right"
                 self.swipe = True
                 self.swith_screen(direction)
                 self._x = 0

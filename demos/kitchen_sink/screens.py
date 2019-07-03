@@ -18,7 +18,7 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
-bottom_app_bar = '''
+bottom_app_bar = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
@@ -38,9 +38,9 @@ bottom_app_bar = '''
         on_release:
             app.md_app_bar.set_pos_action_button('right')
             app.move_item_menu('right')
-'''
+"""
 
-accordion_list = '''
+accordion_list = """
 <AccordionList@Screen>
     name: 'accordion list'
     on_enter: app.set_accordion_list()
@@ -53,9 +53,9 @@ accordion_list = '''
             cols: 1
             size_hint_y: None
             height: self.minimum_height
-'''
+"""
 
-bottom_sheet = '''
+bottom_sheet = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
@@ -77,9 +77,9 @@ bottom_sheet = '''
         size: 4 * dp(48), dp(48)
         pos_hint: {'center_x': .5, 'center_y': .3}
         on_release: app.show_example_grid_bottom_sheet()
-'''
+"""
 
-accordion = '''
+accordion = """
 #:import MDAccordion kivymd.accordion.MDAccordion
 #:import MDAccordionItem kivymd.accordion.MDAccordionItem
 #:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
@@ -127,9 +127,9 @@ accordion = '''
             text: 'Content'
             halign: 'center'
             theme_text_color: 'Primary'
-'''
+"""
 
-grid = '''
+grid = """
 #:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
 #:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
 
@@ -191,9 +191,9 @@ grid = '''
                 mipmap: True
                 text: "Tangerines\\n[size=12]tangerines-1111529_1280.png[/size]"
                 font_style: 'Subtitle1'
-'''
+"""
 
-bottom_navigation = '''
+bottom_navigation = """
 #:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
 #:import MDBottomNavigationItem kivymd.bottomnavigation.MDBottomNavigationItem
 #:import MDTextField kivymd.textfields.MDTextField
@@ -248,9 +248,9 @@ bottom_navigation = '''
                 theme_text_color: 'Primary'
                 text: "Cheese!"
                 halign: 'center'
-'''
+"""
 
-tabs = '''
+tabs = """
 #:import MDLabel kivymd.label.MDLabel
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDTabsBase kivymd.tabs.MDTabsBase
@@ -294,9 +294,9 @@ tabs = '''
             halign: 'center'
             theme_text_color: 'Primary'
             font_style: 'H6'
-'''
+"""
 
-pickers = '''
+pickers = """
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDLabel kivymd.label.MDLabel
 #:import MDRaisedButton kivymd.button.MDRaisedButton
@@ -371,9 +371,9 @@ pickers = '''
                     id: date_picker_use_previous_date
                     size_hint: None, None
                     size: dp(48), dp(48)
-'''
+"""
 
-buttons = '''
+buttons = """
 #:import MDIconButton kivymd.button.MDIconButton
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 #:import MDFlatButton kivymd.button.MDFlatButton
@@ -478,9 +478,9 @@ buttons = '''
             MDTextButton:
                 text: "MDTextButton"
                 pos_hint: {'center_x': .5}
-'''
+"""
 
-cards = '''
+cards = """
 <Cards@Screen>
     name: 'cards'
     on_enter: app.add_cards(grid_card)
@@ -497,8 +497,8 @@ cards = '''
             padding: dp(5)
             size_hint_y: None
             height: self.minimum_height
-'''
-toolbars = '''
+"""
+toolbars = """
 #:import MDToolbar kivymd.toolbar.MDToolbar
 
 
@@ -530,9 +530,9 @@ toolbars = '''
         right_action_items: [['lock', lambda x: None],\
             ['camera', lambda x: None],\
             ['play', lambda x: None]]
-'''
+"""
 
-dialogs = '''
+dialogs = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
@@ -570,9 +570,9 @@ dialogs = '''
         pos_hint: {'center_x': .5, 'center_y': .2}
         opposite_colors: True
         on_release: app.show_example_ok_cancel_dialog()
-'''
+"""
 
-theming = '''
+theming = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDLabel kivymd.label.MDLabel
 
@@ -601,9 +601,9 @@ theming = '''
             theme_text_color: 'Primary'
             pos_hint: {'center_x': .5}
             halign: 'center'
-'''
+"""
 
-textfields = '''
+textfields = """
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDTextField kivymd.textfields.MDTextField
@@ -735,9 +735,9 @@ textfields = '''
 
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"
-'''
+"""
 
-file_manager = '''
+file_manager = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
@@ -751,9 +751,9 @@ file_manager = '''
         opposite_colors: True
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release: app.file_manager_open()
-'''
+"""
 
-lists = '''
+lists = """
 #:import MDList kivymd.list.MDList
 #:import OneLineListItem kivymd.list.OneLineListItem
 #:import TwoLineListItem kivymd.list.TwoLineListItem
@@ -846,9 +846,9 @@ lists = '''
                 AvatarSampleWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
-'''
+"""
 
-snackbar = '''
+snackbar = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDSeparator kivymd.cards.MDSeparator
 #:import MDLabel kivymd.label.MDLabel
@@ -893,9 +893,9 @@ snackbar = '''
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
-'''
+"""
 
-download_file = '''
+download_file = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import Clock kivy.clock.Clock
 
@@ -914,9 +914,9 @@ download_file = '''
             opposite_colors: True
             on_release:
                 Clock.schedule_once(app.show_example_download_file, .1)
-'''
+"""
 
-user_animation_card = '''
+user_animation_card = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
 
@@ -930,9 +930,9 @@ user_animation_card = '''
         opposite_colors: True
         pos_hint: {'center_x': .5, 'center_y': .6}
         on_release: app.show_user_example_animation_card()
-'''
+"""
 
-selection_controls = '''
+selection_controls = """
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDSwitch kivymd.selectioncontrols.MDSwitch
 
@@ -1015,9 +1015,9 @@ selection_controls = '''
         pos_hint: {'center_x': .7, 'center_y': .3}
         active: True
         disabled: True
-'''
+"""
 
-sliders = '''
+sliders = """
 #:import MDSlider kivymd.slider.MDSlider
 
 
@@ -1038,15 +1038,15 @@ sliders = '''
             min: 0
             max: 100
             value: hslider.value
-'''
+"""
 
-stack_buttons = '''
+stack_buttons = """
 <StackButtons@Screen>
     name: 'stack buttons'
     on_enter: app.example_add_stack_floating_buttons()
-'''
+"""
 
-refresh_layout = '''
+refresh_layout = """
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDScrollViewRefreshLayout kivymd.refreshlayout.MDScrollViewRefreshLayout
 
@@ -1073,9 +1073,9 @@ refresh_layout = '''
                 size_hint_y: None
                 height: self.minimum_height
                 cols: 1
-'''
+"""
 
-progress_bar = '''
+progress_bar = """
 #:import MDSlider kivymd.slider.MDSlider
 #:import MDProgressBar kivymd.progressbar.MDProgressBar
 
@@ -1108,9 +1108,9 @@ progress_bar = '''
             MDProgressBar:
                 orientation: "vertical"
                 value: progress_slider.value
-'''
+"""
 
-labels = '''
+labels = """
 #:import MDLabel kivymd.label.MDLabel
 
 
@@ -1259,9 +1259,9 @@ labels = '''
                 text_color: (0,1,0,.4)
                 text: "Custom"
                 halign: 'center'
-'''
+"""
 
-menu = '''
+menu = """
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import MDDropdownMenu kivymd.menus.MDDropdownMenu
 
@@ -1313,9 +1313,9 @@ menu = '''
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
-'''
+"""
 
-chips = '''
+chips = """
 #:import MDSeparator kivymd.cards.MDSeparator
 #:import MDChip kivymd.chips.MDChip
 #:import MDChooseChip kivymd.chips.MDChooseChip
@@ -1452,9 +1452,9 @@ chips = '''
                     label: 'Facebook'
                     icon: 'facebook'
                     callback: app.callback_for_menu_items
-'''
+"""
 
-progress = '''
+progress = """
 #:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
 #:import MDSpinner kivymd.spinner.MDSpinner
 
@@ -1475,9 +1475,9 @@ progress = '''
         size: dp(46), dp(46)
         pos_hint: {'center_x': .5, 'center_y': .5}
         active: True if chkbox.active else False
-'''
+"""
 
-fan_manager = '''
+fan_manager = """
 #:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
 
 
@@ -1538,9 +1538,9 @@ fan_manager = '''
         keep_ratio: False
 
     ContentForAnimCard:
-'''
+"""
 
-popup_screen = '''
+popup_screen = """
 <PopupScreenWidget@Screen>
     name: 'popup screen'
     on_enter: app.set_popup_screen(content_popup)
@@ -1550,9 +1550,9 @@ popup_screen = '''
 
         ContentPopup:
             id: content_popup
-'''
+"""
 
-manager_swiper = '''
+manager_swiper = """
 #:import images_path kivymd.images_path
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDLabel kivymd.label.MDLabel
@@ -1627,9 +1627,9 @@ manager_swiper = '''
                     name: 'screen five'
                     MyCard:
                         text: 'Swipe to switch to screen five'.upper()
-'''
+"""
 
-md_icon_item = '''
+md_icon_item = """
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 
 
@@ -1638,9 +1638,9 @@ md_icon_item = '''
 
     IconLeftSampleWidget:
         icon: root.icon
-'''
+"""
 
-md_icons = '''
+md_icons = """
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import images_path kivymd.images_path
 #:import MDTextFieldRect kivymd.textfields.MDTextField
@@ -1688,7 +1688,7 @@ md_icons = '''
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: 'vertical'
-'''
+"""
 
 
 class Screens(object):
@@ -1697,295 +1697,295 @@ class Screens(object):
     directory = None
 
     data = {
-        'Themes':
-            {'kv_string': theming,
-             'Factory': 'Factory.Theming()',
-             'name_screen': 'theming',
-             'object': None},
-
-        'Bottom Navigation':
-            {'kv_string': bottom_navigation,
-             'Factory': 'Factory.BottomNavigation()',
-             'name_screen': 'bottom navigation',
-             'object': None},
-
-        'Bottom Sheets':
-            {'kv_string': bottom_sheet,
-             'Factory': 'Factory.BottomSheet()',
-             'name_screen': 'bottom sheet',
-             'object': None},
-
-        'Popup Screen':
-            {'kv_string': popup_screen,
-             'Factory': 'Factory.PopupScreenWidget()',
-             'name_screen': 'popup screen',
-             'object': None},
-
-        'Fan Manager':
-            {'kv_string': fan_manager,
-             'Factory': 'Factory.FanManager()',
-             'name_screen': 'fan manager',
-             'object': None},
-
-        'Progress bars':
-            {'kv_string': progress_bar,
-             'Factory': 'Factory.ProgressBars()',
-             'name_screen': 'progress bar',
-             'object': None},
-
-        'Progress & activity':
-            {'kv_string': progress,
-             'Factory': 'Factory.Progress()',
-             'name_screen': 'progress',
-             'object': None},
-
-        'Refresh Layout':
-            {'kv_string': refresh_layout,
-             'Factory': 'Factory.RefreshLayout()',
-             'name_screen': 'refresh layout',
-             'object': None},
-
-        'Sliders':
-            {'kv_string': sliders,
-             'Factory': 'Factory.Sliders()',
-             'name_screen': 'sliders',
-             'object': None},
-
-        'Floating Buttons':
-            {'kv_string': stack_buttons,
-             'Factory': 'Factory.StackButtons()',
-             'name_screen': 'stack buttons',
-             'object': None},
-
-        'Snackbars':
-            {'kv_string': snackbar,
-             'Factory': 'Factory.MySnackBar()',
-             'name_screen': 'snackbar',
-             'object': None},
-
-        'Download File':
-            {'kv_string': download_file,
-             'Factory': 'Factory.DownloadFile()',
-             'name_screen': 'download file',
-             'object': None},
-
-        'User Animation Card':
-            {'kv_string': user_animation_card,
-             'Factory': 'Factory.UserCard()',
-             'name_screen': 'user animation card',
-             'object': None},
-
-        'Pickers':
-            {'kv_string': pickers,
-             'Factory': 'Factory.Pickers()',
-             'name_screen': 'pickers',
-             'object': None},
-
-        'Cards':
-            {'kv_string': cards,
-             'Factory': 'Factory.Cards()',
-             'name_screen': 'cards',
-             'object': None},
-
-        'Dialogs':
-            {'kv_string': dialogs,
-             'Factory': 'Factory.Dialogs()',
-             'name_screen': 'dialogs',
-             'object': None},
-
-        'Toolbars':
-            {'kv_string': toolbars,
-             'Factory': 'Factory.Toolbars()',
-             'name_screen': 'toolbars',
-             'object': None},
-
-        'Buttons':
-            {'kv_string': buttons,
-             'Factory': 'Factory.Buttons()',
-             'name_screen': 'buttons',
-             'object': None},
-
-        'Files Manager':
-            {'kv_string': file_manager,
-             'Factory': 'Factory.FileManager()',
-             'name_screen': 'file manager',
-             'object': None},
-
-        'Tabs':
-            {'kv_string': tabs,
-             'Factory': 'Factory.Tabs()',
-             'name_screen': 'tabs',
-             'object': None},
-
-        'Labels':
-            {'kv_string': labels,
-             'Factory': 'Factory.Labels()',
-             'name_screen': 'labels',
-             'object': None},
-
-        'Chips':
-            {'kv_string': chips,
-             'Factory': 'Factory.Chips()',
-             'name_screen': 'chips',
-             'object': None},
-
-        'Lists':
-            {'kv_string': lists,
-             'Factory': 'Factory.Lists()',
-             'name_screen': 'lists',
-             'object': None},
-
-        'Accordion List':
-            {'kv_string': accordion_list,
-             'Factory': 'Factory.AccordionList()',
-             'name_screen': 'accordion list',
-             'object': None},
-
-        'Grid lists':
-            {'kv_string': grid,
-             'Factory': 'Factory.Grid()',
-             'name_screen': 'grid',
-             'object': None},
-
-        'Accordion':
-            {'kv_string': accordion,
-             'Factory': 'Factory.Accord()',
-             'name_screen': 'accordion',
-             'object': None},
-
-        'Selection controls':
-            {'kv_string': selection_controls,
-             'Factory': 'Factory.SelectionControls()',
-             'name_screen': 'selection controls',
-             'object': None},
-
-        'Menus':
-            {'kv_string': menu,
-             'Factory': 'Factory.Menu()',
-             'name_screen': 'menu',
-             'object': None},
-
-        'MD Icons':
-            {'kv_string': md_icons,
-             'Factory': 'Factory.MDIcons()',
-             'name_screen': 'md icons',
-             'object': None},
-
-        'Bottom App Bar':
-            {'kv_string': bottom_app_bar,
-             'Factory': 'Factory.BottomAppBar()',
-             'name_screen': 'bottom app bar',
-             'object': None},
-
-        'Text fields':
-            {'kv_string': textfields,
-             'Factory': 'Factory.TextFields()',
-             'name_screen': 'textfields',
-             'object': None}
+        "Themes": {
+            "kv_string": theming,
+            "Factory": "Factory.Theming()",
+            "name_screen": "theming",
+            "object": None,
+        },
+        "Bottom Navigation": {
+            "kv_string": bottom_navigation,
+            "Factory": "Factory.BottomNavigation()",
+            "name_screen": "bottom navigation",
+            "object": None,
+        },
+        "Bottom Sheets": {
+            "kv_string": bottom_sheet,
+            "Factory": "Factory.BottomSheet()",
+            "name_screen": "bottom sheet",
+            "object": None,
+        },
+        "Popup Screen": {
+            "kv_string": popup_screen,
+            "Factory": "Factory.PopupScreenWidget()",
+            "name_screen": "popup screen",
+            "object": None,
+        },
+        "Fan Manager": {
+            "kv_string": fan_manager,
+            "Factory": "Factory.FanManager()",
+            "name_screen": "fan manager",
+            "object": None,
+        },
+        "Progress bars": {
+            "kv_string": progress_bar,
+            "Factory": "Factory.ProgressBars()",
+            "name_screen": "progress bar",
+            "object": None,
+        },
+        "Progress & activity": {
+            "kv_string": progress,
+            "Factory": "Factory.Progress()",
+            "name_screen": "progress",
+            "object": None,
+        },
+        "Refresh Layout": {
+            "kv_string": refresh_layout,
+            "Factory": "Factory.RefreshLayout()",
+            "name_screen": "refresh layout",
+            "object": None,
+        },
+        "Sliders": {
+            "kv_string": sliders,
+            "Factory": "Factory.Sliders()",
+            "name_screen": "sliders",
+            "object": None,
+        },
+        "Floating Buttons": {
+            "kv_string": stack_buttons,
+            "Factory": "Factory.StackButtons()",
+            "name_screen": "stack buttons",
+            "object": None,
+        },
+        "Snackbars": {
+            "kv_string": snackbar,
+            "Factory": "Factory.MySnackBar()",
+            "name_screen": "snackbar",
+            "object": None,
+        },
+        "Download File": {
+            "kv_string": download_file,
+            "Factory": "Factory.DownloadFile()",
+            "name_screen": "download file",
+            "object": None,
+        },
+        "User Animation Card": {
+            "kv_string": user_animation_card,
+            "Factory": "Factory.UserCard()",
+            "name_screen": "user animation card",
+            "object": None,
+        },
+        "Pickers": {
+            "kv_string": pickers,
+            "Factory": "Factory.Pickers()",
+            "name_screen": "pickers",
+            "object": None,
+        },
+        "Cards": {
+            "kv_string": cards,
+            "Factory": "Factory.Cards()",
+            "name_screen": "cards",
+            "object": None,
+        },
+        "Dialogs": {
+            "kv_string": dialogs,
+            "Factory": "Factory.Dialogs()",
+            "name_screen": "dialogs",
+            "object": None,
+        },
+        "Toolbars": {
+            "kv_string": toolbars,
+            "Factory": "Factory.Toolbars()",
+            "name_screen": "toolbars",
+            "object": None,
+        },
+        "Buttons": {
+            "kv_string": buttons,
+            "Factory": "Factory.Buttons()",
+            "name_screen": "buttons",
+            "object": None,
+        },
+        "Files Manager": {
+            "kv_string": file_manager,
+            "Factory": "Factory.FileManager()",
+            "name_screen": "file manager",
+            "object": None,
+        },
+        "Tabs": {
+            "kv_string": tabs,
+            "Factory": "Factory.Tabs()",
+            "name_screen": "tabs",
+            "object": None,
+        },
+        "Labels": {
+            "kv_string": labels,
+            "Factory": "Factory.Labels()",
+            "name_screen": "labels",
+            "object": None,
+        },
+        "Chips": {
+            "kv_string": chips,
+            "Factory": "Factory.Chips()",
+            "name_screen": "chips",
+            "object": None,
+        },
+        "Lists": {
+            "kv_string": lists,
+            "Factory": "Factory.Lists()",
+            "name_screen": "lists",
+            "object": None,
+        },
+        "Accordion List": {
+            "kv_string": accordion_list,
+            "Factory": "Factory.AccordionList()",
+            "name_screen": "accordion list",
+            "object": None,
+        },
+        "Grid lists": {
+            "kv_string": grid,
+            "Factory": "Factory.Grid()",
+            "name_screen": "grid",
+            "object": None,
+        },
+        "Accordion": {
+            "kv_string": accordion,
+            "Factory": "Factory.Accord()",
+            "name_screen": "accordion",
+            "object": None,
+        },
+        "Selection controls": {
+            "kv_string": selection_controls,
+            "Factory": "Factory.SelectionControls()",
+            "name_screen": "selection controls",
+            "object": None,
+        },
+        "Menus": {
+            "kv_string": menu,
+            "Factory": "Factory.Menu()",
+            "name_screen": "menu",
+            "object": None,
+        },
+        "MD Icons": {
+            "kv_string": md_icons,
+            "Factory": "Factory.MDIcons()",
+            "name_screen": "md icons",
+            "object": None,
+        },
+        "Bottom App Bar": {
+            "kv_string": bottom_app_bar,
+            "Factory": "Factory.BottomAppBar()",
+            "name_screen": "bottom app bar",
+            "object": None,
+        },
+        "Text fields": {
+            "kv_string": textfields,
+            "Factory": "Factory.TextFields()",
+            "name_screen": "textfields",
+            "object": None,
+        },
     }
 
     data_for_demo = {
-        'Shop Window':
-            {'class': 'ShopWindow()',
-             'object': None},
-
-        'Fitness Club':
-            {'class': 'FitnessClub()',
-             'object': None},
-
-        'Coffee Menu':
-            {'class': 'CoffeeMenu()',
-             'object': None},
-
-        'Swipe cards':
-            {'class': 'SwipeCards()',
-             'object': None},
-
-        'Registration':
-            {'class': 'FormOne()',
-             'object': None},
-
-        'Account Page':
-            {'class': 'AccountPage()',
-             'object': None}
+        "Shop Window": {"class": "ShopWindow()", "object": None},
+        "Fitness Club": {"class": "FitnessClub()", "object": None},
+        "Coffee Menu": {"class": "CoffeeMenu()", "object": None},
+        "Swipe cards": {"class": "SwipeCards()", "object": None},
+        "Registration": {"class": "FormOne()", "object": None},
+        "Account Page": {"class": "AccountPage()", "object": None},
     }
 
     def show_screens_demo(self, name_screen):
-        if name_screen == 'Registration' and \
-                not self.data_for_demo[name_screen]['object']:
+        if (
+            name_screen == "Registration"
+            and not self.data_for_demo[name_screen]["object"]
+        ):
             from demo_apps.formone import registration_form_one, FormOne
-            self.data_for_demo[name_screen]['kv_string'] = registration_form_one
-        elif name_screen == 'Shop Window' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.shopwindow import screen_shop_window, ShopWindow
-            self.data_for_demo[name_screen]['kv_string'] = screen_shop_window
-        elif name_screen == 'Coffee Menu' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
-            self.data_for_demo[name_screen]['kv_string'] = screen_coffee_menu
-        elif name_screen == 'Fitness Club' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
-            self.data_for_demo[name_screen]['kv_string'] = screen_fitness_club
-        elif name_screen == 'Account Page' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.accountpage import screen_account_page, AccountPage
-            self.data_for_demo[name_screen]['kv_string'] = screen_account_page
 
-        if name_screen == 'Registration':
-            self.theme_cls.primary_palette = 'Amber'
-        if name_screen != 'Shop Window':
+            self.data_for_demo[name_screen]["kv_string"] = registration_form_one
+        elif (
+            name_screen == "Shop Window"
+            and not self.data_for_demo[name_screen]["object"]
+        ):
+            from demo_apps.shopwindow import screen_shop_window, ShopWindow
+
+            self.data_for_demo[name_screen]["kv_string"] = screen_shop_window
+        elif (
+            name_screen == "Coffee Menu"
+            and not self.data_for_demo[name_screen]["object"]
+        ):
+            from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
+
+            self.data_for_demo[name_screen]["kv_string"] = screen_coffee_menu
+        elif (
+            name_screen == "Fitness Club"
+            and not self.data_for_demo[name_screen]["object"]
+        ):
+            from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+
+            self.data_for_demo[name_screen]["kv_string"] = screen_fitness_club
+        elif (
+            name_screen == "Account Page"
+            and not self.data_for_demo[name_screen]["object"]
+        ):
+            from demo_apps.accountpage import screen_account_page, AccountPage
+
+            self.data_for_demo[name_screen]["kv_string"] = screen_account_page
+
+        if name_screen == "Registration":
+            self.theme_cls.primary_palette = "Amber"
+        if name_screen != "Shop Window":
             self.main_widget.ids.toolbar.height = 0
-        if not self.data_for_demo[name_screen]['object']:
-            Builder.load_string(self.data_for_demo[name_screen]['kv_string'])
-            self.data_for_demo[name_screen]['object'] = eval(
-                self.data_for_demo[name_screen]['class'])
+        if not self.data_for_demo[name_screen]["object"]:
+            Builder.load_string(self.data_for_demo[name_screen]["kv_string"])
+            self.data_for_demo[name_screen]["object"] = eval(
+                self.data_for_demo[name_screen]["class"]
+            )
             self.main_widget.ids.scr_mngr.add_widget(
-                self.data_for_demo[name_screen]['object'])
+                self.data_for_demo[name_screen]["object"]
+            )
 
     def show_manager_swiper(self):
         from kivymd.managerswiper import MDSwiperPagination
 
         if not self.manager_swiper:
-            path_to_crop_image = \
-                f'{self.directory}/assets/guitar-1139397_1280_swiper_crop.png'
+            path_to_crop_image = (
+                f"{self.directory}/assets/guitar-1139397_1280_swiper_crop.png"
+            )
             if not os.path.exists(path_to_crop_image):
                 crop_image(
                     (int(Window.width - dp(10)), int(dp(250))),
-                    f'{self.directory}/assets/guitar-1139397_1280.png',
-                    path_to_crop_image)
+                    f"{self.directory}/assets/guitar-1139397_1280.png",
+                    path_to_crop_image,
+                )
 
             Builder.load_string(manager_swiper)
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
-            paginator.screens =\
-                self.manager_swiper.ids.swiper_manager.screen_names
+            paginator.screens = self.manager_swiper.ids.swiper_manager.screen_names
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)
 
-        self.main_widget.ids.scr_mngr.current = 'manager swiper'
+        self.main_widget.ids.scr_mngr.current = "manager swiper"
 
     def show_screen(self, name_screen):
-        if not self.data[name_screen]['object']:
-            Builder.load_string(self.data[name_screen]['kv_string'])
-            self.data[name_screen]['object'] = \
-                eval(self.data[name_screen]['Factory'])
-            if name_screen == 'Bottom App Bar':
+        if not self.data[name_screen]["object"]:
+            Builder.load_string(self.data[name_screen]["kv_string"])
+            self.data[name_screen]["object"] = eval(self.data[name_screen]["Factory"])
+            if name_screen == "Bottom App Bar":
                 self.set_appbar()
-                self.data[name_screen]['object'].add_widget(self.md_app_bar)
-            self.main_widget.ids.scr_mngr.add_widget(
-                self.data[name_screen]['object'])
-            if name_screen == 'Text fields':
-                self.data[name_screen]['object'].ids.text_field_error.bind(
+                self.data[name_screen]["object"].add_widget(self.md_app_bar)
+            self.main_widget.ids.scr_mngr.add_widget(self.data[name_screen]["object"])
+            if name_screen == "Text fields":
+                self.data[name_screen]["object"].ids.text_field_error.bind(
                     on_text_validate=self.set_error_message,
-                    on_focus=self.set_error_message)
-            elif name_screen == 'MD Icons':
+                    on_focus=self.set_error_message,
+                )
+            elif name_screen == "MD Icons":
                 self.set_list_md_icons()
-            elif name_screen == 'Tabs':
+            elif name_screen == "Tabs":
                 self.build_tabs()
-            elif name_screen == 'Refresh Layout':
+            elif name_screen == "Refresh Layout":
                 self.set_list_for_refresh_layout()
-        self.main_widget.ids.scr_mngr.current = \
-            self.data[name_screen]['name_screen']
+        self.main_widget.ids.scr_mngr.current = self.data[name_screen]["name_screen"]

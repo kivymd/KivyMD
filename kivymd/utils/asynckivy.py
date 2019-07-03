@@ -11,14 +11,14 @@ GitHub Gist -
 
 """
 
-__all__ = ('start', 'sleep', 'event', )
+__all__ = ("start", "sleep", "event")
 
 import types
 from functools import partial
 from collections import namedtuple
 from kivy.clock import Clock
 
-CallbackParameter = namedtuple('CallbackParameter', ('args', 'kwargs', ))
+CallbackParameter = namedtuple("CallbackParameter", ("args", "kwargs"))
 
 
 def start(coro):
@@ -38,8 +38,7 @@ def start(coro):
 def sleep(duration):
     # The partial() here looks meaningless. But this is needed in order
     # to avoid weak reference.
-    param = yield lambda step_coro: Clock.schedule_once(
-        partial(step_coro), duration)
+    param = yield lambda step_coro: Clock.schedule_once(partial(step_coro), duration)
     return param.args[0]
 
 
@@ -51,7 +50,7 @@ class event:
 
     def bind(self, step_coro):
         self.bind_id = bind_id = self.ed.fbind(self.name, self.callback)
-        assert bind_id > 0   # check if binding succeeded
+        assert bind_id > 0  # check if binding succeeded
         self.step_coro = step_coro
 
     def callback(self, *args, **kwargs):

@@ -10,8 +10,14 @@ as the Kivy framework.
 """
 
 
-def crop_image(cutting_size, path_to_image, path_to_save_crop_image,
-               corner=0, blur=0, corner_mode='all'):
+def crop_image(
+    cutting_size,
+    path_to_image,
+    path_to_save_crop_image,
+    corner=0,
+    blur=0,
+    corner_mode="all",
+):
     """Call functions of cropping/blurring/rounding image.
 
     cutting_size:            size to which the image will be cropped;
@@ -31,7 +37,7 @@ def crop_image(cutting_size, path_to_image, path_to_save_crop_image,
     try:
         im.save(path_to_save_crop_image)
     except IOError:
-        im.save(path_to_save_crop_image, 'JPEG')
+        im.save(path_to_save_crop_image, "JPEG")
 
 
 def add_blur(im, mode):
@@ -55,31 +61,31 @@ def _crop_image(cutting_size, path_to_image, path_to_save_crop_image):
 def add_corners(im, corner, corner_mode):
     def add_top_corners():
         alpha.paste(circle.crop((0, 0, corner, corner)), (0, 0))
-        alpha.paste(circle.crop(
-            (corner, 0, corner * 2, corner)), (w - corner, 0))
+        alpha.paste(circle.crop((corner, 0, corner * 2, corner)), (w - corner, 0))
         print(corner)
 
     def add_bottom_corners():
-        alpha.paste(circle.crop(
-            (0, corner, corner, corner * 2)), (0, h - corner))
+        alpha.paste(circle.crop((0, corner, corner, corner * 2)), (0, h - corner))
         alpha.paste(
-            circle.crop((corner, corner, corner * 2, corner * 2)), (w - corner, h - corner))
+            circle.crop((corner, corner, corner * 2, corner * 2)),
+            (w - corner, h - corner),
+        )
         print(corner)
 
     from PIL import Image, ImageDraw
 
-    circle = Image.new('L', (corner * 2, corner * 2), 0)
+    circle = Image.new("L", (corner * 2, corner * 2), 0)
     draw = ImageDraw.Draw(circle)
     draw.ellipse((0, 0, corner * 2, corner * 2), fill=255)
-    alpha = Image.new('L', im.size, 255)
+    alpha = Image.new("L", im.size, 255)
     w, h = im.size
 
-    if corner_mode == 'all':
+    if corner_mode == "all":
         add_top_corners()
         add_bottom_corners()
-    elif corner_mode == 'top':
+    elif corner_mode == "top":
         add_top_corners()
-    if corner_mode == 'bottom':
+    if corner_mode == "bottom":
         add_bottom_corners()
     im.putalpha(alpha)
 
@@ -89,7 +95,7 @@ def add_corners(im, corner, corner_mode):
 def prepare_mask(size, antialias=2):
     from PIL import Image, ImageDraw
 
-    mask = Image.new('L', (size[0] * antialias, size[1] * antialias), 0)
+    mask = Image.new("L", (size[0] * antialias, size[1] * antialias), 0)
     ImageDraw.Draw(mask).ellipse((0, 0) + mask.size, fill=255)
     return mask.resize(size, Image.ANTIALIAS)
 

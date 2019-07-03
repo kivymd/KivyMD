@@ -26,7 +26,8 @@ from kivymd.theming import ThemableBehavior
 from kivy.uix.slider import Slider
 
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import Thumb kivymd.selectioncontrols.Thumb
 
 
@@ -96,7 +97,8 @@ Builder.load_string('''
         elevation:
             0 if slider._is_off else (4 if root.active else 2)
 
-''')
+"""
+)
 
 
 class MDSlider(ThemableBehavior, Slider):
@@ -112,7 +114,7 @@ class MDSlider(ThemableBehavior, Slider):
     # Internal adjustment to reposition sliders for ring
     _offset = ListProperty((0, 0))
 
-    _thumb_color = ListProperty(get_color_from_hex(colors['Gray']['50']))
+    _thumb_color = ListProperty(get_color_from_hex(colors["Gray"]["50"]))
 
     def _get_thumb_color(self):
         return self._thumb_color
@@ -125,8 +127,9 @@ class MDSlider(ThemableBehavior, Slider):
         elif len(color) == 4:
             self._thumb_color = color
 
-    thumb_color = AliasProperty(_get_thumb_color, _set_thumb_color,
-                                bind=['_thumb_color'])
+    thumb_color = AliasProperty(
+        _get_thumb_color, _set_thumb_color, bind=["_thumb_color"]
+    )
 
     _thumb_color_down = ListProperty([1, 1, 1, 1])
 
@@ -135,8 +138,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     def _set_thumb_color_down(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_down = get_color_from_hex(
-                colors[color[0]][color[1]])
+            self._thumb_color_down = get_color_from_hex(colors[color[0]][color[1]])
             if alpha:
                 self._thumb_color_down[3] = alpha
             else:
@@ -144,28 +146,28 @@ class MDSlider(ThemableBehavior, Slider):
         elif len(color) == 4:
             self._thumb_color_down = color
 
-    thumb_color_down = AliasProperty(_get_thumb_color_down,
-                                     _set_thumb_color_down,
-                                     bind=['_thumb_color_down'])
+    thumb_color_down = AliasProperty(
+        _get_thumb_color_down, _set_thumb_color_down, bind=["_thumb_color_down"]
+    )
 
-    _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors['Gray']['400']))
+    _thumb_color_disabled = ListProperty(get_color_from_hex(colors["Gray"]["400"]))
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
 
     def _set_thumb_color_disabled(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_disabled = get_color_from_hex(
-                colors[color[0]][color[1]])
+            self._thumb_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
             if alpha:
                 self._thumb_color_disabled[3] = alpha
         elif len(color) == 4:
             self._thumb_color_disabled = color
 
-    thumb_color_down = AliasProperty(_get_thumb_color_disabled,
-                                     _set_thumb_color_disabled,
-                                     bind=['_thumb_color_disabled'])
+    thumb_color_down = AliasProperty(
+        _get_thumb_color_disabled,
+        _set_thumb_color_disabled,
+        bind=["_thumb_color_disabled"],
+    )
 
     _track_color_active = ListProperty()
     _track_color_normal = ListProperty()
@@ -174,27 +176,31 @@ class MDSlider(ThemableBehavior, Slider):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.theme_cls.bind(theme_style=self._set_colors,
-                     primary_color=self._set_colors,
-                     primary_palette=self._set_colors)
+        self.theme_cls.bind(
+            theme_style=self._set_colors,
+            primary_color=self._set_colors,
+            primary_palette=self._set_colors,
+        )
         self._set_colors()
 
     def _set_colors(self, *args):
-        if self.theme_cls.theme_style == 'Dark':
-            self._track_color_normal = get_color_from_hex('FFFFFF')
-            self._track_color_normal[3] = .3
+        if self.theme_cls.theme_style == "Dark":
+            self._track_color_normal = get_color_from_hex("FFFFFF")
+            self._track_color_normal[3] = 0.3
             self._track_color_active = self._track_color_normal
             self._track_color_disabled = self._track_color_normal
-            self.thumb_color = get_color_from_hex(colors['Gray']['400'])
-            self.thumb_color_down = get_color_from_hex(colors[self.theme_cls.primary_palette]['200'])
-            self.thumb_color_disabled = get_color_from_hex(colors['Gray']['800'])
+            self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
+            self.thumb_color_down = get_color_from_hex(
+                colors[self.theme_cls.primary_palette]["200"]
+            )
+            self.thumb_color_disabled = get_color_from_hex(colors["Gray"]["800"])
         else:
-            self._track_color_normal = get_color_from_hex('000000')
-            self._track_color_normal[3] = .26
-            self._track_color_active = get_color_from_hex('000000')
-            self._track_color_active[3] = .38 
-            self._track_color_disabled = get_color_from_hex('000000')
-            self._track_color_disabled[3] = .26
+            self._track_color_normal = get_color_from_hex("000000")
+            self._track_color_normal[3] = 0.26
+            self._track_color_active = get_color_from_hex("000000")
+            self._track_color_active[3] = 0.38
+            self._track_color_disabled = get_color_from_hex("000000")
+            self._track_color_disabled[3] = 0.26
             self.thumb_color_down = self.theme_cls.primary_color
 
     def on_value_normalized(self, *args):
@@ -218,7 +224,7 @@ class MDSlider(ThemableBehavior, Slider):
             shows through the off circle.
         """
         d = 2 if self.active else 0
-        self._offset = (dp(11+d), dp(11+d)) if self._is_off else (0, 0)
+        self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
 
     def on_touch_down(self, touch):
         if super().on_touch_down(touch):
@@ -227,13 +233,15 @@ class MDSlider(ThemableBehavior, Slider):
     def on_touch_up(self, touch):
         if super().on_touch_up(touch):
             self.active = False
+
+
 #             thumb = self.ids['thumb']
 #             if thumb.collide_point(*touch.pos):
 #                 thumb.on_touch_down(touch)
 #                 thumb.on_touch_up(touch)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from kivy.app import App
     from kivymd.theming import ThemeManager
 
@@ -241,7 +249,8 @@ if __name__ == '__main__':
         theme_cls = ThemeManager()
 
         def build(self):
-            return Builder.load_string('''
+            return Builder.load_string(
+                """
 BoxLayout:
     orientation:'vertical'
     BoxLayout:
@@ -282,7 +291,7 @@ BoxLayout:
         max:100
         value: 40
 
-''')
-
+"""
+            )
 
     SliderApp().run()

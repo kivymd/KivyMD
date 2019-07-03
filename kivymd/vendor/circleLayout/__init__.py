@@ -21,14 +21,21 @@ widgets bigger you can just decrease inner_radius_hint.
 from math import sin, cos, pi, radians
 
 from kivy.uix.layout import Layout
-from kivy.properties import NumericProperty, ReferenceListProperty, \
-    OptionProperty, BoundedNumericProperty, VariableListProperty, AliasProperty
+from kivy.properties import (
+    NumericProperty,
+    ReferenceListProperty,
+    OptionProperty,
+    BoundedNumericProperty,
+    VariableListProperty,
+    AliasProperty,
+)
 
-__all__ = ('CircularLayout')
+__all__ = "CircularLayout"
 
 try:
     xrange(1, 2)
 except NameError:
+
     def xrange(first, second, third=None):
         if third:
             return range(first, second, third)
@@ -87,7 +94,7 @@ class CircularLayout(Layout):
     and defaults to 1.
     """
 
-    inner_radius_hint = NumericProperty(.6)
+    inner_radius_hint = NumericProperty(0.6)
     """Sets the size of the inner circle. A number greater than
     :attr:`outer_radius_hint` will cause glitches. The closest it is to
     :attr:`outer_radius_hint`, the smallest will be the widget in the layout.
@@ -104,13 +111,20 @@ class CircularLayout(Layout):
     """
 
     def _get_delta_radii(self):
-        radius = min(self.width - self.padding[0] - self.padding[2],
-                     self.height - self.padding[1] - self.padding[3]) / 2.
+        radius = (
+            min(
+                self.width - self.padding[0] - self.padding[2],
+                self.height - self.padding[1] - self.padding[3],
+            )
+            / 2.0
+        )
         outer_r = radius * self.outer_radius_hint
         inner_r = radius * self.inner_radius_hint
         return outer_r - inner_r
-    delta_radii = AliasProperty(_get_delta_radii, None,
-                                bind=("radius_hint", "padding", "size"))
+
+    delta_radii = AliasProperty(
+        _get_delta_radii, None, bind=("radius_hint", "padding", "size")
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -122,7 +136,8 @@ class CircularLayout(Layout):
             children=self._trigger_layout,
             size=self._trigger_layout,
             radius_hint=self._trigger_layout,
-            pos=self._trigger_layout)
+            pos=self._trigger_layout,
+        )
 
     def do_layout(self, *largs):
         # optimize layout by preventing looking at the same attribute in a loop
@@ -141,26 +156,25 @@ class CircularLayout(Layout):
         padding_x = padding_left + padding_right
         padding_y = padding_top + padding_bottom
 
-        radius = min(self.width-padding_x, self.height-padding_y) / 2.
+        radius = min(self.width - padding_x, self.height - padding_y) / 2.0
         outer_r = radius * self.outer_radius_hint
         inner_r = radius * self.inner_radius_hint
-        middle_r = radius * sum(self.radius_hint) / 2.
+        middle_r = radius * sum(self.radius_hint) / 2.0
         delta_r = outer_r - inner_r
 
-        stretch_weight_angle = 0.
+        stretch_weight_angle = 0.0
         for w in self.children:
             sha = w.size_hint_x
             if sha is None:
-                raise ValueError(
-                    "size_hint_x cannot be None in a CircularLayout")
+                raise ValueError("size_hint_x cannot be None in a CircularLayout")
             else:
                 stretch_weight_angle += sha
 
-        sign = +1.
+        sign = +1.0
         angle_offset = start_angle_r
-        if direction == 'cw':
+        if direction == "cw":
             angle_offset = 2 * pi - start_angle_r
-            sign = -1.
+            sign = -1.0
 
         for c in reversed(self.children):
             sha = c.size_hint_x
@@ -189,8 +203,9 @@ if __name__ == "__main__":
 
     class CircLayoutApp(App):
         def build(self):
-            cly = CircularLayout(direction="cw", start_angle=-75,
-                                 inner_radius_hint=.7, padding="20dp")
+            cly = CircularLayout(
+                direction="cw", start_angle=-75, inner_radius_hint=0.7, padding="20dp"
+            )
 
             for i in xrange(1, 13):
                 cly.add_widget(Button(text=str(i), font_size="30dp"))

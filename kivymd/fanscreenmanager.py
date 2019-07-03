@@ -233,32 +233,33 @@ class MDFanScreenManager(FloatLayout):
     shift_y = 0
     count_screens = 0
     selected_screen = None
-    fan = 'close'
+    fan = "close"
 
     def open_fan(self):
         list_screens = self.children
         self.shift_x = len(list_screens) * 20 + 20
         self.shift_y = len(list_screens) * 30 + 40
 
-        if self.fan == 'open':
+        if self.fan == "open":
             self.close_fan(list_screens[0])
             return
 
         for screen in list_screens:
             self.shift_x -= 20
             self.shift_y -= 40
-            Animation(x=dp(self.shift_x), y=-dp(self.shift_y),
-                      d=.3, t='out_elastic').start(screen)
-        self.fan = 'open'
+            Animation(
+                x=dp(self.shift_x), y=-dp(self.shift_y), d=0.3, t="out_elastic"
+            ).start(screen)
+        self.fan = "open"
 
     def close_fan(self, instance_selected_screen):
         self.selected_screen = instance_selected_screen
         for screen in self.children:
             if screen is not instance_selected_screen:
-                anim = Animation(x=self.width, y=0, d=.5, t='in_elastic')
+                anim = Animation(x=self.width, y=0, d=0.5, t="in_elastic")
                 anim.bind(on_complete=self.check_screens_closed)
                 anim.start(screen)
-        self.fan = 'close'
+        self.fan = "close"
 
     def check_screens_closed(self, animation_instance, screen_instnce):
         self.count_screens += 1
@@ -267,7 +268,7 @@ class MDFanScreenManager(FloatLayout):
             self.set_selected_screen()
 
     def set_selected_screen(self):
-        anim = Animation(x=0, y=0, d=.1)
+        anim = Animation(x=0, y=0, d=0.1)
         anim.bind(on_complete=self.set_default_screens_position)
         anim.start(self.selected_screen)
 
@@ -280,20 +281,20 @@ class MDFanScreenManager(FloatLayout):
 
 
 class MDFanScreen(BoxLayout):
-    name = StringProperty('')
+    name = StringProperty("")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type('on_enter')
+        self.register_event_type("on_enter")
 
     def on_enter(self, *args):
         pass
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            if self.parent.fan == 'open':
+            if self.parent.fan == "open":
                 self.parent.close_fan(self)
-                self.dispatch('on_enter')
+                self.dispatch("on_enter")
                 return True
             else:
                 return super().on_touch_down(touch)

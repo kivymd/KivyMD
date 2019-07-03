@@ -31,7 +31,7 @@ from kivy.uix.widget import Widget
 
 
 class StiffScrollEffect(KineticEffect):
-    drag_threshold = NumericProperty('20sp')
+    drag_threshold = NumericProperty("20sp")
     """Minimum distance to travel before the movement is considered as a
     drag."""
 
@@ -47,7 +47,7 @@ class StiffScrollEffect(KineticEffect):
     body = NumericProperty(0.7)
     """Proportion of the range in which you can scroll unimpeded."""
 
-    scroll = NumericProperty(0.)
+    scroll = NumericProperty(0.0)
     """Computed value for scrolling"""
 
     transition_min = ObjectProperty(AnimationTransition.in_cubic)
@@ -68,7 +68,7 @@ class StiffScrollEffect(KineticEffect):
     displacement = NumericProperty(0)
     """The absolute distance moved in either direction."""
 
-    scroll = NumericProperty(0.)
+    scroll = NumericProperty(0.0)
     """The distance to be used for scrolling."""
 
     def __init__(self, **kwargs):
@@ -91,7 +91,7 @@ class StiffScrollEffect(KineticEffect):
         if hard_min > hard_max:
             hard_min, hard_max = hard_max, hard_min
 
-        margin = (1. - self.body) * (hard_max - hard_min)
+        margin = (1.0 - self.body) * (hard_max - hard_min)
         soft_min = hard_min + margin
         soft_max = hard_max - margin
 
@@ -100,7 +100,7 @@ class StiffScrollEffect(KineticEffect):
                 prop = (soft_min - self.value) / (soft_min - hard_min)
                 self.friction = self.base_friction + abs(
                     self.max_friction - self.base_friction
-                    ) * self.transition_min(prop)
+                ) * self.transition_min(prop)
             except ZeroDivisionError:
                 pass
         elif self.value > soft_max:
@@ -110,7 +110,7 @@ class StiffScrollEffect(KineticEffect):
                 prop = (self.value - soft_max) / (hard_max - soft_max)
                 self.friction = self.base_friction + abs(
                     self.max_friction - self.base_friction
-                    ) * self.transition_min(prop)
+                ) * self.transition_min(prop)
             except ZeroDivisionError:
                 pass
         else:
@@ -152,15 +152,13 @@ class StiffScrollEffect(KineticEffect):
             hard_min, hard_max = hard_max, hard_min
 
         gamut = hard_max - hard_min
-        margin = (1. - self.body) * gamut
+        margin = (1.0 - self.body) * gamut
         soft_min = hard_min + margin
         soft_max = hard_max - margin
         distance = val - self.history[-1][1]
         reach = distance + self.value
 
-        if (
-            distance < 0 and reach < soft_min) or (
-                distance > 0 and soft_max < reach):
+        if (distance < 0 and reach < soft_min) or (distance > 0 and soft_max < reach):
             distance -= distance * self.friction
         self.apply_distance(distance)
         self.history.append((t, val))

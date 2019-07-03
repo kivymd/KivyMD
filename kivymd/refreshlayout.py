@@ -124,7 +124,8 @@ from kivy.core.window import Window
 
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import Window kivy.core.window.Window
 #:import MDSpinner kivymd.spinner.MDSpinner
 
@@ -153,7 +154,8 @@ Builder.load_string("""
             size_hint: None, None
             size: dp(30), dp(30)
             color: 1, 1, 1, 1
-""")
+"""
+)
 
 
 class _RefreshScrollEffect(DampedScrollEffect):
@@ -162,7 +164,7 @@ class _RefreshScrollEffect(DampedScrollEffect):
     """
 
     min_scroll_to_reload = NumericProperty(-dp(100))
-    '''Minimum overscroll value to reload.'''
+    """Minimum overscroll value to reload."""
 
     def on_overscroll(self, scrollview, overscroll):
         if overscroll < self.min_scroll_to_reload:
@@ -175,7 +177,7 @@ class _RefreshScrollEffect(DampedScrollEffect):
 
 class MDScrollViewRefreshLayout(ScrollView):
     root_layout = ObjectProperty()
-    '''The spinner will be attached to this layout.'''
+    """The spinner will be attached to this layout."""
 
     def __init__(self, **kargs):
         super().__init__(**kargs)
@@ -207,15 +209,15 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
     spinner_color = ListProperty([1, 1, 1, 1])
 
     _refresh_layout = ObjectProperty()
-    '''kivymd.refreshlayout.MDScrollViewRefreshLayout object.'''
+    """kivymd.refreshlayout.MDScrollViewRefreshLayout object."""
 
     def start_anim_spinner(self):
         spinner = self.ids.body_spinner
-        Animation(y=spinner.y - dp(76), d=.8, t='out_elastic').start(spinner)
+        Animation(y=spinner.y - dp(76), d=0.8, t="out_elastic").start(spinner)
 
     def hide_anim_spinner(self):
         spinner = self.ids.body_spinner
-        anim = Animation(y=Window.height, d=.8, t='out_elastic')
+        anim = Animation(y=Window.height, d=0.8, t="out_elastic")
         anim.bind(on_complete=self.set_spinner)
         anim.start(spinner)
 

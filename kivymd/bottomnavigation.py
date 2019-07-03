@@ -22,20 +22,28 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.metrics import dp, sp
-from kivy.properties import StringProperty, ListProperty,\
-    ObjectProperty, BoundedNumericProperty, NumericProperty,\
-    BooleanProperty
+from kivy.properties import (
+    StringProperty,
+    ListProperty,
+    ObjectProperty,
+    BoundedNumericProperty,
+    NumericProperty,
+    BooleanProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
 
-from kivymd.backgroundcolorbehavior import BackgroundColorBehavior,\
-    SpecificBackgroundColorBehavior
+from kivymd.backgroundcolorbehavior import (
+    BackgroundColorBehavior,
+    SpecificBackgroundColorBehavior,
+)
 from kivymd.button import BaseFlatButton, BasePressedButton
 from kivymd.elevation import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import sm kivy.uix.screenmanager
 #:import Window kivy.core.window.Window
 
@@ -123,11 +131,13 @@ Builder.load_string('''
             rgba: root.theme_cls.bg_normal
         Rectangle:
             size: root.size
-''')
+"""
+)
 
 
-class MDBottomNavigationBar(ThemableBehavior, BackgroundColorBehavior,
-                            FloatLayout, RectangularElevationBehavior):
+class MDBottomNavigationBar(
+    ThemableBehavior, BackgroundColorBehavior, FloatLayout, RectangularElevationBehavior
+):
     pass
 
 
@@ -140,9 +150,10 @@ def small_error_warn(x):
         if MDBottomNavigationErrorCache.last_size_warning != x:
             MDBottomNavigationErrorCache.last_size_warning = x
             Logger.warning(
-                f'MDBottomNavigation: {x}dp is less than the minimum size '
-                f'of 80dp for a MDBottomNavigationItem. '
-                f'We must now expand to 168dp.')
+                f"MDBottomNavigation: {x}dp is less than the minimum size "
+                f"of 80dp for a MDBottomNavigationItem. "
+                f"We must now expand to 168dp."
+            )
             # Did you come here to find out what the bug is?
             # The bug is that on startup, this function returning dp(80)
             # breaks the way it displays until you resize
@@ -151,15 +162,16 @@ def small_error_warn(x):
 
 
 class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
-    width = BoundedNumericProperty(dp(0), min=dp(80), max=dp(168),
-                                   errorhandler=lambda x: small_error_warn(x))
+    width = BoundedNumericProperty(
+        dp(0), min=dp(80), max=dp(168), errorhandler=lambda x: small_error_warn(x)
+    )
     tab = ObjectProperty(None)
     panel = ObjectProperty(None)
     _label = ObjectProperty()
     _label_font_size = NumericProperty(sp(12))
-    _current_color = ListProperty([.0, .0, .0, .0])
-    text = StringProperty('')
-    _capitalized_text = StringProperty('')
+    _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
+    text = StringProperty("")
+    _capitalized_text = StringProperty("")
     active = BooleanProperty(False)
 
     def on_text(self, instance, value):
@@ -173,14 +185,15 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
         self._current_color = self.theme_cls.disabled_hint_text_color
         self._label = self.ids._label
         self._label_font_size = sp(12)
-        self.theme_cls.bind(primary_color=self._update_theme_color,
-                     disabled_hint_text_color=self._update_theme_style)
+        self.theme_cls.bind(
+            primary_color=self._update_theme_color,
+            disabled_hint_text_color=self._update_theme_style,
+        )
         self.active = False
 
     def on_press(self):
-        Animation(_label_font_size=sp(14), d=.1).start(self)
-        Animation(_current_color=self.theme_cls.primary_color, d=.1).start(
-            self)
+        Animation(_label_font_size=sp(14), d=0.1).start(self)
+        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(self)
 
     def _update_theme_color(self, instance, color):
         if self.active:
@@ -196,14 +209,19 @@ class MDTab(Screen, ThemableBehavior):
         that defines the content that goes in the tab header.
     """
 
-    __events__ = ('on_tab_touch_down', 'on_tab_touch_move',
-                  'on_tab_touch_up', 'on_tab_press', 'on_tab_release')
+    __events__ = (
+        "on_tab_touch_down",
+        "on_tab_touch_move",
+        "on_tab_touch_up",
+        "on_tab_press",
+        "on_tab_release",
+    )
 
     # Tab header text
     text = StringProperty()
 
     # Tab header icon
-    icon = StringProperty('checkbox-blank-circle')
+    icon = StringProperty("checkbox-blank-circle")
 
     # Tab dropdown menu items
     menu_items = ListProperty()
@@ -215,11 +233,11 @@ class MDTab(Screen, ThemableBehavior):
         super().__init__(**kwargs)
         self.index = 0
         self.parent_widget = None
-        self.register_event_type('on_tab_touch_down')
-        self.register_event_type('on_tab_touch_move')
-        self.register_event_type('on_tab_touch_up')
-        self.register_event_type('on_tab_press')
-        self.register_event_type('on_tab_release')
+        self.register_event_type("on_tab_touch_down")
+        self.register_event_type("on_tab_touch_move")
+        self.register_event_type("on_tab_touch_up")
+        self.register_event_type("on_tab_press")
+        self.register_event_type("on_tab_release")
 
     def on_tab_touch_down(self, *args):
         pass
@@ -234,9 +252,9 @@ class MDTab(Screen, ThemableBehavior):
         par = self.parent_widget
         if par.previous_tab is not self:
             if par.previous_tab.index > self.index:
-                par.ids.tab_manager.transition.direction = 'right'
+                par.ids.tab_manager.transition.direction = "right"
             elif par.previous_tab.index < self.index:
-                par.ids.tab_manager.transition.direction = 'left'
+                par.ids.tab_manager.transition.direction = "left"
             par.ids.tab_manager.current = self.name
             par.previous_tab = self
 
@@ -254,12 +272,11 @@ class MDBottomNavigationItem(MDTab):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=.1).start(
-                par.previous_tab.header)
+            Animation(_label_font_size=sp(12), d=0.1).start(par.previous_tab.header)
             Animation(
                 _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
-                d=.1).start(
-                par.previous_tab.header)
+                d=0.1,
+            ).start(par.previous_tab.header)
             par.previous_tab.header.active = False
             self.header.active = True
         par.previous_tab = self
@@ -268,8 +285,7 @@ class MDBottomNavigationItem(MDTab):
         pass
 
 
-class TabbedPanelBase(ThemableBehavior, SpecificBackgroundColorBehavior,
-                      BoxLayout):
+class TabbedPanelBase(ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout):
     """
     A class that contains all variables a TabPannel must have
     It is here so I (zingballyhoo) don't get mad about
@@ -308,7 +324,8 @@ class MDBottomNavigation(TabbedPanelBase):
         tab_manager = self.ids.tab_manager
         for tab in tab_manager.screens:
             tab_header = MDBottomNavigationHeader(
-                tab=tab, panel=self, height=tab_bar.height)
+                tab=tab, panel=self, height=tab_bar.height
+            )
             tab.header = tab_header
             tab_bar.add_widget(tab_header)
             if tab is self.first_widget:
@@ -325,7 +342,7 @@ class MDBottomNavigation(TabbedPanelBase):
             full_width += tab.header.width
         self.ids.tab_bar.width = full_width
         if do_again:
-            Clock.schedule_once(lambda x: self.on_resize(do_again=False), .01)
+            Clock.schedule_once(lambda x: self.on_resize(do_again=False), 0.01)
 
     def add_widget(self, widget, **kwargs):
         """ Add tabs to the screen or the layout.
@@ -336,9 +353,9 @@ class MDBottomNavigation(TabbedPanelBase):
             self.widget_index += 1
             widget.index = self.widget_index
             widget.parent_widget = self
-            tab_header = MDBottomNavigationHeader(tab=widget,
-                                                  panel=self,
-                                                  height=widget.height)
+            tab_header = MDBottomNavigationHeader(
+                tab=widget, panel=self, height=widget.height
+            )
             self.ids.tab_bar.add_widget(tab_header)
             widget.header = tab_header
             self.ids.tab_manager.add_widget(widget)
@@ -367,19 +384,20 @@ class MDBottomNavigation(TabbedPanelBase):
             super().remove_widget(widget)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from kivy.app import App
     from kivymd.theming import ThemeManager
-
 
     class TabsApp(App):
         theme_cls = ThemeManager()
 
         def build(self):
             from kivy.core.window import Window
+
             Window.size = (540, 720)
 
-            return Builder.load_string('''
+            return Builder.load_string(
+                """
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDRaisedButton kivymd.button.MDRaisedButton
 
@@ -424,7 +442,7 @@ BoxLayout:
                 theme_text_color: 'Primary'
                 text: 'Oh god JS again'
                 halign: 'center'
-''')
-
+"""
+            )
 
     TabsApp().run()

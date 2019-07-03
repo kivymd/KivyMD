@@ -76,7 +76,8 @@ from kivy.metrics import dp
 from kivymd.cards import MDCard
 
 
-Builder.load_string('''
+Builder.load_string(
+    """
 #:import Window kivy.core.window.Window
 #:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
 
@@ -140,15 +141,17 @@ Builder.load_string('''
         text_color: root.text_color
         y: dp(15)
         on_release: root.show_floating_buttons()
-''')
+"""
+)
 
 
 class MDFloatingLabel(MDCard):
     text = StringProperty()
     text_color = ListProperty([0, 0, 0, 1])
 
+
 class MDStackFloatingButtons(FloatLayout):
-    icon = StringProperty('checkbox-blank-circle')
+    icon = StringProperty("checkbox-blank-circle")
     callback = ObjectProperty(lambda x: None)
     text_color = ListProperty([0, 0, 0, 1])
     floating_data = DictProperty()
@@ -172,28 +175,27 @@ class MDStackFloatingButtons(FloatLayout):
         self.in_progress = True
         for i, btn in enumerate(self.btn_list):
             step += dp(56)
-            anim = Animation(y=step, d=.5, t='out_elastic')
+            anim = Animation(y=step, d=0.5, t="out_elastic")
             anim.bind(on_complete=self.set_in_progress)
             anim.start(btn)
 
         self.show = True if not self.show else False
-        self.show_floating_labels() if self.show \
-            else self.hide_floating_labels()
+        self.show_floating_labels() if self.show else self.hide_floating_labels()
 
     def show_floating_labels(self):
         i = 0
         for lbl in self.lbl_list:
-            i += .3
+            i += 0.3
             pos_x = Window.width - (lbl.width + dp(46 + 21 * 1.5))
-            Animation(x=pos_x, d=i, t='out_elastic').start(lbl)
+            Animation(x=pos_x, d=i, t="out_elastic").start(lbl)
 
     def hide_floating_buttons(self):
         for btn in self.btn_list:
-            Animation(y=25, d=.5, t='in_elastic').start(btn)
+            Animation(y=25, d=0.5, t="in_elastic").start(btn)
 
     def hide_floating_labels(self):
         i = 1
         for lbl in self.lbl_list:
-            i -= .3
-            Animation(x=-lbl.width, d=i, t='out_elastic').start(lbl)
+            i -= 0.3
+            Animation(x=-lbl.width, d=i, t="out_elastic").start(lbl)
         self.hide_floating_buttons()

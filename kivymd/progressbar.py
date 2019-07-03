@@ -20,7 +20,8 @@ from kivy.properties import OptionProperty, BooleanProperty
 from kivymd.theming import ThemableBehavior
 from kivy.uix.progressbar import ProgressBar
 
-Builder.load_string('''
+Builder.load_string(
+    """
 <MDProgressBar>
     canvas:
         Clear
@@ -48,19 +49,19 @@ Builder.load_string('''
                 else (self.center_x - dp(4),self.height\
                 * (1 - self.value_normalized) + self.y if self.reversed\
                 else self.y)
-''')
+"""
+)
 
 
 class MDProgressBar(ThemableBehavior, ProgressBar):
     reversed = BooleanProperty(False)
-    ''' Reverse the direction the progressbar moves. '''
+    """ Reverse the direction the progressbar moves. """
 
-    orientation = OptionProperty('horizontal',
-                                 options=['horizontal', 'vertical'])
-    ''' Orientation of progressbar'''
+    orientation = OptionProperty("horizontal", options=["horizontal", "vertical"])
+    """ Orientation of progressbar"""
 
-    
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     from kivy.app import App
     from kivymd.theming import ThemeManager
 
@@ -68,7 +69,8 @@ if __name__ == '__main__':
         theme_cls = ThemeManager()
 
         def build(self):
-            return Builder.load_string('''
+            return Builder.load_string(
+                """
 #:import MDSlider kivymd.slider.MDSlider
 
 
@@ -95,7 +97,7 @@ BoxLayout:
         MDProgressBar:
             orientation:"vertical"
             value: slider.value
-''')
-
+"""
+            )
 
     ProgressBarApp().run()

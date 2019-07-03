@@ -132,6 +132,7 @@ Builder.load_string('''
 
     BoxLayout:
         padding: dp(12), 0
+
         MDLabel:
             font_style: 'H6'
             opposite_colors: root.opposite_colors
@@ -159,7 +160,7 @@ Builder.load_string('''
             size: self.size
             pos: self.pos
 
-    AsyncImage:
+    Image:
         id: image
         source: root.path_to_avatar
         size_hint: 1, None
@@ -205,6 +206,7 @@ Builder.load_string('''
             size_hint_y: None
             height: self.minimum_height
             cols: 1
+
             canvas:
                 Color:
                     rgba:

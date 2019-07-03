@@ -32,4 +32,7 @@
   - Added new MDFillRoundFlatIconButton class
 
 ## [0.100.0]
-  - Fix "In MDNavigationDrawer I used use_logo='all' it's showing image only not the drawer_title text!"
+  - Fixed "In MDNavigationDrawer I used use_logo='all' it's showing image only not the drawer_title text!"
+
+## [0.100.1]
+  - Fixed "Fixed: due to the use of AsyncImage, the Toolbar did not accept the color of the installed color theme"

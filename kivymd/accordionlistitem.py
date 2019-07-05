@@ -235,9 +235,9 @@ class MDAccordionListItem(BoxLayout):
         Animation(angle=angle, d=0.2).start(chevron)
         self.anim_resize_open_item()
 
-    def anim_chevron_up(self, inctance):
+    def anim_chevron_up(self, instance):
         angle = 0
-        Animation(angle=angle, d=0.2).start(inctance)
+        Animation(angle=angle, d=0.2).start(instance)
 
     def anim_resize_close(self, box):
         Animation(height=dp(68), d=0.1, t="in_cubic").start(box)

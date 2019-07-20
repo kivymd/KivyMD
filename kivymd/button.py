@@ -232,6 +232,7 @@ Builder.load_string(
     width: lbl_txt.texture_size[0] + root.increment_width
     padding: (dp(8), 0)
     theme_text_color: 'Primary'
+    markup: False
 
     MDLabel:
         id: lbl_txt
@@ -243,6 +244,7 @@ Builder.load_string(
         height: self.texture_size[1]
         theme_text_color: root.theme_text_color
         text_color: root.text_color
+        markup: root.markup
         disabled: root.disabled
         valign: 'middle'
         halign: 'center'
@@ -313,6 +315,7 @@ Builder.load_string(
 
     size_hint_x: None
     width: dp(150)
+    markup: False
 
     BoxLayout:
         spacing: dp(10)
@@ -333,11 +336,13 @@ Builder.load_string(
             shorten: True
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
+            markup: root.markup
 
 
 <MDRoundFlatIconButton>
     size_hint_x: None
     width: dp(150)
+    markup: False
 
     BoxLayout:
         spacing: dp(10)
@@ -358,6 +363,7 @@ Builder.load_string(
             shorten: True
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
+            markup: root.markup
 
 
 <MDRaisedButton>

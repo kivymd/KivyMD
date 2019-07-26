@@ -1,39 +1,28 @@
 """
 Text Fields
 ===========
-
 Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
     KivyMD library up to version 0.1.2
 Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
     KivyMD library version 0.1.3 and higher
-
 For suggestions and questions:
 <kivydevelopment@gmail.com>
-
 This file is distributed under the terms of the same license,
 as the Kivy framework.
-
 `Material Design spec, Text fields <https://material.io/design/components/text-fields.html>`_
-
 Example
 -------
-
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.factory import Factory
-
 from kivymd.theming import ThemeManager
-
 Builder.load_string('''
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import MDTextField kivymd.textfields.MDTextField
 #:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
 #:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
-
-
 <ExampleTextFields@BoxLayout>
     orientation: 'vertical'
-
     MDToolbar:
         id: toolbar
         title: app.title
@@ -41,99 +30,77 @@ Builder.load_string('''
         background_palette: 'Primary'
         elevation: 10
         left_action_items: [['dots-vertical', lambda x: None]]
-
     ScrollView:
-
         BoxLayout:
             orientation: 'vertical'
             size_hint_y: None
             height: self.minimum_height
             padding: dp(48)
             spacing: dp(15)
-
             MDTextFieldRound:
                 hint_text: 'Password'
                 icon: 'lock-outline'
                 active_color: [0, 0, 0, .2]
                 normal_color: [0, 0, 0, .5]
-
             MDTextField:
                 hint_text: "No helper text"
-
             MDTextField:
                 hint_text: "Helper text on focus"
                 helper_text: "This will disappear when you click off"
                 helper_text_mode: "on_focus"
-
             MDTextField:
                 hint_text: "Persistent helper text"
                 helper_text: "Text is always here"
                 helper_text_mode: "persistent"
-
             Widget:
                 size_hint_y: None
                 height: dp(5)
-
             MDTextField:
                 id: text_field_error
                 hint_text: "Helper text on error (Hit Enter with  two characters here)"
                 helper_text: "Two is my least favorite number"
                 helper_text_mode: "on_error"
-
             MDTextField:
                 hint_text: "Max text length = 10"
                 max_text_length: 10
-
             MDTextField:
                 hint_text: "required = True"
                 required: True
                 helper_text_mode: "on_error"
-
             MDTextField:
                 multiline: True
                 hint_text: "Multi-line text"
                 helper_text: "Messages are also supported here"
                 helper_text_mode: "persistent"
-
             MDTextField:
                 hint_text: "color_mode = \'accent\'"
                 color_mode: 'accent'
-
             MDTextField:
                 hint_text: "color_mode = \'custom\'"
                 color_mode: 'custom'
                 helper_text_mode: "on_focus"
                 helper_text: "Color is defined by \'line_color_focus\' property"
                 line_color_focus: self.theme_cls.opposite_bg_normal
-
             MDTextField:
                 hint_text: "disabled = True"
                 disabled: True
-
             MDTextFieldRect:
                 size_hint: None, None
                 size: app.Window.width - dp(40), dp(30)
                 pos_hint: {'center_y': .5, 'center_x': .5}
-
             Widget:
                 size_hint_y: None
                 height: dp(5)
-
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"
 ''')
-
-
 class Example(App):
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Blue'
     title = "Example Text Fields"
     main_widget = None
-
     def build(self):
         return Factory.ExampleTextFields()
-
-
 Example().run()
 """
 
@@ -164,8 +131,6 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import MDTextButton kivymd.button.MDTextButton
-
-
 <MDTextField>
     canvas.before:
         Clear
@@ -212,7 +177,6 @@ Builder.load_string(
                 self.disabled_foreground_color if self.disabled else\
                 (self.hint_text_color if not self.text and not\
                 self.focus else self.foreground_color)
-
     font_name: 'Roboto'
     foreground_color: app.theme_cls.text_color
     font_size: sp(16)
@@ -221,19 +185,13 @@ Builder.load_string(
     multiline: False
     size_hint_y: None
     height: self.minimum_height + dp(8)
-
-
 <TextfieldLabel>
     disabled_color: self.theme_cls.disabled_hint_text_color
     text_size: (self.width, None)
-
-
 <MDTextFieldClear>
     size_hint_y: None
     height: self.minimum_height
-
     FloatLayout:
-
         MDTextField:
             id: field
             text: root.text
@@ -248,15 +206,12 @@ Builder.load_string(
                 else self.line_color_normal
             on_text:
                 root.text = self.text
-
         MDTextButton:
             id: clear_btn
             text: 'X'
             pos_hint: {'right': 1, 'top': .1}
             custom_color: field.line_color_normal
             on_press: root.refresh_field(field, clear_btn)
-
-
 <MDTextFieldRect>
     on_focus:
         root.anim_rect([root.x, root.y, root.right, root.y, root.right,\
@@ -266,7 +221,6 @@ Builder.load_string(
         root.right + dp(60), root.top + dp(60),\
         root.x - dp(60), root.top + dp(60),\
         root.x - dp(60), root.y - dp(60)], 0)
-
     canvas.after:
         Color:
             rgba: root._primary_color
@@ -280,20 +234,17 @@ Builder.load_string(
                 self.x - dp(60), self.top + dp(60),
                 self.x - dp(60), self.y - dp(60)
                 )
-
 <MDTextFieldRound>
     orientation: 'vertical'
     size_hint: None, None
     height: self.minimum_height
     _instance_icon_left: icon_left
     _instance_icon_right: icon_right
-
     BoxLayout:
         id: box
         size_hint_y: None
         height: dp(48)
         pos_hint: {'center_x': .5}
-
         canvas:
             Color:
                 rgba: root._current_color
@@ -310,7 +261,6 @@ Builder.load_string(
                     (self.x, self.y, self.width, self.height,\
                     25, 25, 25, 25,\
                     self.height)
-
         MDIconButton:
             id: icon_left
             icon: root.icon_left
@@ -318,7 +268,6 @@ Builder.load_string(
             theme_text_color: 'Custom'
             text_color: root.icon_color
             on_release: if root.icon_callback: root.icon_callback(field, self)
-
         TextInput:
             id: field
             text: root.text
@@ -335,7 +284,20 @@ Builder.load_string(
             hint_text: root.hint_text
             selection_color: root.selection_color
             hint_text_color: root.hint_text_color
+
+            write_tab: root.write_tab
+            input_filter: root.input_filter
+            readonly: root.readonly
+            tab_width:root.tab_width
+            text_language: root.text_language
+            font_context: root.font_context
+            font_name: root.font_name
+            font_family: root.font_family
+            font_size: sp(root.font_size)
+            allow_copy: root.allow_copy
+
             on_focus:
+                root.dispatch("on_focus")
                 root._current_color = root.active_color \
                 if self.focus else root.normal_color
                 icon_left.text_color = root.theme_cls.primary_color \
@@ -343,8 +305,18 @@ Builder.load_string(
                 root.get_color_line(self, self.text, self.focus)
                 root.hide_require_error(self.focus)
                 if root.event_focus: root.event_focus(root, self, self.focus)
-            on_text: root.text = self.text
-
+            on_text:
+                root.dispatch("on_text")
+                root.text = self.text
+            on_text_validate:
+                root.dispatch("on_text_validate")
+            on_touch_down:
+                root.dispatch("on_touch_down")
+            on_touch_up:
+                root.dispatch("on_touch_up")
+            on_touch_move:
+                root.dispatch("on_touch_move")
+                
         MDIconButton:
             id: icon_right
             icon: root.icon_right
@@ -352,12 +324,10 @@ Builder.load_string(
             theme_text_color: 'Custom'
             text_color: root.icon_color
             on_release: if root.icon_callback: root.icon_callback(field, self)
-
     Widget:
         id: spacer
         size_hint_y: None
         height: 0
-
     Label:
         id: label_error_require
         size_hint: None, None
@@ -785,6 +755,38 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
 
 class MDTextFieldRound(ThemableBehavior, BoxLayout):
+
+    __events__= ("on_text_validate", "on_text", "on_focus", "on_touch_down", "on_touch_up",
+                "on_touch_move")
+
+    write_tab= BooleanProperty(False)
+    '''write_tab property of TextInput'''
+
+    input_filter= ObjectProperty(None)
+    '''input_filter from TextInput'''
+
+    readonly= BooleanProperty(False)
+    '''readonly property from TextInput'''
+
+    tab_width= NumericProperty(4)
+    '''tab_width property from TextInput'''
+
+    text_language= StringProperty()
+    '''text_language property from TextInput'''
+
+    '''font related properties from TextInput'''
+    font_context= StringProperty()
+
+    font_family= StringProperty()
+
+    font_name= StringProperty("Roboto")
+
+    font_size= NumericProperty(15)
+
+    allow_copy= BooleanProperty(True)
+    '''whether copying text from the field is allowed or not'''
+
+
     width = NumericProperty(Window.width - dp(100))
     """Text field width."""
 
@@ -849,7 +851,7 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
 
     require_error_callback = ObjectProperty()
     """The function that will be called when the unfocus.
-    if `require_text_error` != ''
+    if `require_text_error` != ''
     """
 
     event_focus = ObjectProperty()
@@ -916,3 +918,24 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
         if focus:
             self.ids.label_error_require.text = ""
             self.ids.spacer.height = 0
+
+
+    """ TextInput Events"""
+
+    def on_text_validate(self):
+        pass
+
+    def on_text(self, *args):
+        pass
+
+    def on_focus(self, *args):
+        pass
+
+    def on_touch_down(self, touch):
+        self.ids.field.on_touch_down(touch)
+
+    def on_touch_move(self, *args):
+        pass
+
+    def on_touch_up(self, *args):
+        pass

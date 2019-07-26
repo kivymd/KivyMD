@@ -335,7 +335,18 @@ Builder.load_string(
             hint_text: root.hint_text
             selection_color: root.selection_color
             hint_text_color: root.hint_text_color
+            write_tab: root.write_tab
+            input_filter: root.input_filter
+            readonly: root.readonly
+            tab_width:root.tab_width
+            text_language: root.text_language
+            font_context: root.font_context
+            font_name: root.font_name
+            font_family: root.font_family
+            font_size: sp(root.font_size)
+            allow_copy: root.allow_copy
             on_focus:
+                root.dispatch("on_focus")
                 root._current_color = root.active_color \
                 if self.focus else root.normal_color
                 icon_left.text_color = root.theme_cls.primary_color \
@@ -343,7 +354,17 @@ Builder.load_string(
                 root.get_color_line(self, self.text, self.focus)
                 root.hide_require_error(self.focus)
                 if root.event_focus: root.event_focus(root, self, self.focus)
-            on_text: root.text = self.text
+            on_text:
+                root.dispatch("on_text")
+                root.text = self.text
+            on_text_validate:
+                root.dispatch("on_text_validate")
+            on_touch_down:
+                root.dispatch("on_touch_down")
+            on_touch_up:
+                root.dispatch("on_touch_up")
+            on_touch_move:
+                root.dispatch("on_touch_move")
 
         MDIconButton:
             id: icon_right
@@ -785,6 +806,37 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
 
 class MDTextFieldRound(ThemableBehavior, BoxLayout):
+    
+    __events__= ("on_text_validate", "on_text", "on_focus", "on_touch_down", "on_touch_up",
+                "on_touch_move")
+
+    write_tab= BooleanProperty(False)
+    '''write_tab property of TextInput'''
+
+    input_filter= ObjectProperty(None)
+    '''input_filter from TextInput'''
+
+    readonly= BooleanProperty(False)
+    '''readonly property from TextInput'''
+
+    tab_width= NumericProperty(4)
+    '''tab_width property from TextInput'''
+
+    text_language= StringProperty()
+    '''text_language property from TextInput'''
+
+    '''font related properties from TextInput'''
+    font_context= StringProperty()
+
+    font_family= StringProperty()
+
+    font_name= StringProperty("Roboto")
+
+    font_size= NumericProperty(15)
+
+    allow_copy= BooleanProperty(True)
+    '''whether copying text from the field is allowed or not'''
+    
     width = NumericProperty(Window.width - dp(100))
     """Text field width."""
 
@@ -916,3 +968,23 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
         if focus:
             self.ids.label_error_require.text = ""
             self.ids.spacer.height = 0
+            
+    """ TextInput Events"""
+
+    def on_text_validate(self):
+        pass
+
+    def on_text(self, *args):
+        pass
+
+    def on_focus(self, *args):
+        pass
+
+    def on_touch_down(self, touch):
+        self.ids.field.on_touch_down(touch)
+
+    def on_touch_move(self, *args):
+        pass
+
+    def on_touch_up(self, *args):
+        pass

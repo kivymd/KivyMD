@@ -355,8 +355,8 @@ Builder.load_string(
                 root.hide_require_error(self.focus)
                 if root.event_focus: root.event_focus(root, self, self.focus)
             on_text:
-                root.dispatch("on_text")
                 root.text = self.text
+                root.dispatch("on_text")
             on_text_validate:
                 root.dispatch("on_text_validate")
             on_touch_down:

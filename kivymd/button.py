@@ -109,7 +109,7 @@ Builder.load_string('''
             text: "MDRoundFlatIconButton"
             icon: "language-python"
             pos_hint: {'center_x': .5, 'center_y': .25}
-             width: dp(200)
+            width: dp(200)
 
         MDFillRoundFlatButton:
             text: "MDFillRoundFlatButton"
@@ -201,7 +201,7 @@ Builder.load_string(
             size: self.size
             pos: self.pos
 
-    size: (dp(48), dp(48))
+    size: (dp(self.icon_size)+30, dp(self.icon_size)+30)
     lbl_txt: lbl_txt
     padding: dp(12)
     theme_text_color: 'Primary'
@@ -215,6 +215,7 @@ Builder.load_string(
         valign: 'middle'
         halign: 'center'
         opposite_colors: root.opposite_colors
+        font_size: sp(root.icon_size)
 
 
 <BaseRectangularButton>
@@ -669,6 +670,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     icon = StringProperty("checkbox-blank-circle")
+    icon_size= NumericProperty(15)
 
 
 class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):

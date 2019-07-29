@@ -314,7 +314,7 @@ Builder.load_string(
         MDIconButton:
             id: icon_left
             icon: root.icon_left
-            disabled: True
+            disabled: True if root.icon_left_disabled else False
             theme_text_color: 'Custom'
             text_color: root.icon_color
             on_release: if root.icon_callback: root.icon_callback(field, self)
@@ -327,7 +327,6 @@ Builder.load_string(
             background_active: f'{images_path}transparent.png'
             background_normal: f'{images_path}transparent.png'
             multiline: False
-            hint_text_color: root.hint_text_color
             padding_y: dp(15)
             padding_x: dp(25)
             cursor_color: root.cursor_color
@@ -346,7 +345,6 @@ Builder.load_string(
             font_size: sp(root.font_size)
             allow_copy: root.allow_copy
             on_focus:
-                root.dispatch("on_focus")
                 root._current_color = root.active_color \
                 if self.focus else root.normal_color
                 icon_left.text_color = root.theme_cls.primary_color \
@@ -354,22 +352,18 @@ Builder.load_string(
                 root.get_color_line(self, self.text, self.focus)
                 root.hide_require_error(self.focus)
                 if root.event_focus: root.event_focus(root, self, self.focus)
+                root.focus= self.focus
+                root.dispatch("on_focus")
             on_text:
                 root.text = self.text
                 root.dispatch("on_text")
             on_text_validate:
                 root.dispatch("on_text_validate")
-            on_touch_down:
-                root.dispatch("on_touch_down")
-            on_touch_up:
-                root.dispatch("on_touch_up")
-            on_touch_move:
-                root.dispatch("on_touch_move")
 
         MDIconButton:
             id: icon_right
             icon: root.icon_right
-            disabled: True if root.icon_right_dasabled else False
+            disabled: True if root.icon_right_disabled else False
             theme_text_color: 'Custom'
             text_color: root.icon_color
             on_release: if root.icon_callback: root.icon_callback(field, self)
@@ -807,8 +801,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
 class MDTextFieldRound(ThemableBehavior, BoxLayout):
     
-    __events__= ("on_text_validate", "on_text", "on_focus", "on_touch_down", "on_touch_up",
-                "on_touch_move")
+    __events__= ("on_text_validate", "on_text", "on_focus")
 
     write_tab= BooleanProperty(False)
     '''write_tab property of TextInput'''
@@ -835,7 +828,7 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     font_size= NumericProperty(15)
 
     allow_copy= BooleanProperty(True)
-    '''whether copying text from the field is allowed or not'''
+    '''Whether copying text from the field is allowed or not'''
     
     width = NumericProperty(Window.width - dp(100))
     """Text field width."""
@@ -851,9 +844,6 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
 
     hint_text = StringProperty()
     """Hint text in the text field."""
-
-    hint_text_color = ListProperty()
-    """Color of hint text in the text field."""
 
     icon_color = ListProperty([1, 1, 1, 1])
     """Color of icons."""
@@ -883,10 +873,10 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     text = StringProperty()
     """Text of field."""
 
-    icon_left_dasabled = BooleanProperty(False)
+    icon_left_disabled = BooleanProperty(True)
     """Disable the left icon."""
 
-    icon_right_dasabled = BooleanProperty(False)
+    icon_right_disabled = BooleanProperty(False)
     """Disable the right icon."""
 
     password = BooleanProperty(False)
@@ -907,6 +897,9 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     event_focus = ObjectProperty()
     """The function is called at the moment of focus/unfocus of the text field.
     """
+    
+    focus= BooleanProperty()
+    """Whether or not the widget is focused"""
 
     error_color = ListProperty(
         [0.7607843137254902, 0.2235294117647059, 0.2549019607843137, 1]
@@ -978,13 +971,4 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
         pass
 
     def on_focus(self, *args):
-        pass
-
-    def on_touch_down(self, touch):
-        self.ids.field.on_touch_down(touch)
-
-    def on_touch_move(self, *args):
-        pass
-
-    def on_touch_up(self, *args):
         pass

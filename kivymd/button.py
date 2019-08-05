@@ -109,7 +109,7 @@ Builder.load_string('''
             text: "MDRoundFlatIconButton"
             icon: "language-python"
             pos_hint: {'center_x': .5, 'center_y': .25}
-             width: dp(200)
+            width: dp(200)
 
         MDFillRoundFlatButton:
             text: "MDFillRoundFlatButton"
@@ -317,6 +317,9 @@ Builder.load_string(
     width: dp(150)
     markup: False
 
+    theme_text_color: 'Custom'
+    text_color: root.theme_cls.primary_color
+
     BoxLayout:
         spacing: dp(10)
 
@@ -334,8 +337,8 @@ Builder.load_string(
             font_size: sp(root.font_size)
             can_capitalize: root.can_capitalize
             shorten: True
-            theme_text_color: 'Custom'
-            text_color: root.theme_cls.primary_color
+            theme_text_color: root.theme_text_color
+            text_color: root.text_color
             markup: root.markup
 
 
@@ -344,6 +347,9 @@ Builder.load_string(
     width: dp(150)
     markup: False
 
+    theme_text_color: 'Custom'
+    text_color: root.theme_cls.primary_color
+
     BoxLayout:
         spacing: dp(10)
 
@@ -361,8 +367,8 @@ Builder.load_string(
             font_size: sp(root.font_size)
             can_capitalize: root.can_capitalize
             shorten: True
-            theme_text_color: 'Custom'
-            text_color: root.theme_cls.primary_color
+            theme_text_color: root.theme_text_color
+            text_color: root.text_color
             markup: root.markup
 
 

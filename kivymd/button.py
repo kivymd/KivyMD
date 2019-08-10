@@ -196,6 +196,7 @@ Builder.load_string('''
     MDIcon:
         id: lbl_txt
         icon: root.icon
+        font_size: sp(root.font_size)
         theme_text_color: root.theme_text_color
         text_color: root.text_color
         disabled: root.disabled
@@ -272,6 +273,7 @@ Builder.load_string('''
         MDIcon:
             id: lbl_ic
             icon: root.icon
+            font_size: sp(root.font_size)
             theme_text_color: 'Custom'
             text_color: 1, 1, 1, 1
             size_hint_x: None
@@ -307,6 +309,7 @@ Builder.load_string('''
         MDIcon:
             id: lbl_ic
             icon: root.icon
+            font_size: sp(root.font_size)
             theme_text_color: 'Custom'
             text_color: root.theme_cls.primary_color
             size_hint_x: None

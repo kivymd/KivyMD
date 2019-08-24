@@ -14,7 +14,7 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 
 `Material Design spec, Text fields
-<https://material.io/design/components/text-fields.html>`_
+<https://material.io/components/text-fields/>`_
 
 Example
 -------

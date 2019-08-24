@@ -10,8 +10,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Snackbars
-<https://material.io/design/components/snackbars.html>`_
+`Material Design spec, Snackbars <https://material.io/components/snackbars/>`_
 
 Example
 =======

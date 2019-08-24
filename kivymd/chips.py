@@ -10,8 +10,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Chips
-<https://material.io/design/components/chips.html>`_
+`Material Design spec, Chips <https://material.io/components/chips/>`_
 
 Example
 -------

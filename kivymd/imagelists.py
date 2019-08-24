@@ -14,7 +14,7 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 
 `Material Design spec, Image lists
-<https://material.io/design/components/image-lists.html>`_
+<https://material.io/components/image-lists/>`_
 
 Example
 -------

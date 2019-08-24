@@ -13,11 +13,10 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Buttons
-<https://material.io/design/components/buttons.html>`_
+`Material Design spec, Buttons <https://material.io/components/buttons/>`_
 
 `Material Design spec, Buttons: floating action button
-<https://material.io/design/components/buttons-floating-action-button.html>`_
+<https://material.io/components/buttons-floating-action-button/>`_
 
 Example
 -------

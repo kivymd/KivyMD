@@ -13,8 +13,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Lists
-<https://material.io/design/components/lists.html>`_
+`Material Design spec, Lists <https://material.io/components/lists/>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to

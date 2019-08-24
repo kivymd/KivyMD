@@ -13,8 +13,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Sliders
-<https://material.io/design/components/sliders.html>`_
+`Material Design spec, Sliders <https://material.io/components/sliders/>`_
 """
 
 from kivy.lang import Builder

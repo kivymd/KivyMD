@@ -14,7 +14,7 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 
 `Material Design spec, Selection controls
-<https://material.io/design/components/selection-controls.html>`_
+<https://material.io/components/selection-controls/>`_
 """
 
 from kivy.lang import Builder

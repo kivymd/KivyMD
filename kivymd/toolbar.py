@@ -14,7 +14,7 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 
 `Material Design spec, App bars: top
-<https://material.io/design/components/app-bars-top.html>`_
+<https://material.io/components/app-bars-top/>`_
 
 Example
 -------

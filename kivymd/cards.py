@@ -13,8 +13,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Cards
-<https://material.io/design/components/cards.html>`_
+`Material Design spec, Cards <https://material.io/components/cards/>`_
 
 Example
 -------

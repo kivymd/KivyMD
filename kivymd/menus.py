@@ -13,8 +13,7 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Menus
-<https://material.io/design/components/menus.html>`_
+`Material Design spec, Menus <https://material.io/components/menus/>`_
 """
 
 from kivy.animation import Animation

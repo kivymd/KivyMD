@@ -14,7 +14,7 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 
 `Material Design spec, Navigation drawer
-<https://material.io/design/components/navigation-drawer.html>`_
+<https://material.io/components/navigation-drawer/>`_
 
 Example
 -------

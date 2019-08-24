@@ -13,7 +13,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`_
+`Material Design spec, The color system
+<https://material.io/design/color/the-color-system.html>`_
 """
 
 colors = {
@@ -382,7 +383,17 @@ light_colors = {
     "DeepPurple": ["50", "100", "200", "A100"],
     "Indigo": ["50", "100", "200", "A100"],
     "Blue": ["50", "100", "200", "300", "400", "A100"],
-    "LightBlue": ["50", "100", "200", "300", "400", "500", "A100", "A200", "A400"],
+    "LightBlue": [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "A100",
+        "A200",
+        "A400",
+    ],
     "Cyan": [
         "50",
         "100",
@@ -397,7 +408,18 @@ light_colors = {
         "A700",
     ],
     "Teal": ["50", "100", "200", "300", "400", "A100", "A200", "A400", "A700"],
-    "Green": ["50", "100", "200", "300", "400", "500", "A100", "A200", "A400", "A700"],
+    "Green": [
+        "50",
+        "100",
+        "200",
+        "300",
+        "400",
+        "500",
+        "A100",
+        "A200",
+        "A400",
+        "A700",
+    ],
     "LightGreen": [
         "50",
         "100",

@@ -314,7 +314,8 @@ class ShopWindow(Screen):
                     "viewclass": "CardsBoxForShopWindow",
                     "height": dp(300),
                     "product_image": "./assets/clock-%d.png" % increment_left,
-                    "product_image2": "./assets/clock-%d.png" % (increment_left + 1),
+                    "product_image2": "./assets/clock-%d.png"
+                    % (increment_left + 1),
                     "previous_dialog": dialog,
                 }
             )

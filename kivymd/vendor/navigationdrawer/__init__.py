@@ -562,12 +562,16 @@ class NavigationDrawer(StencilView):
         """
         if state == "open":
             anim = Animation(
-                _anim_progress=1, duration=self.anim_time, t=self.closing_transition
+                _anim_progress=1,
+                duration=self.anim_time,
+                t=self.closing_transition,
             )
             anim.start(self)
         elif state == "closed":
             anim = Animation(
-                _anim_progress=0, duration=self.anim_time, t=self.opening_transition
+                _anim_progress=0,
+                duration=self.anim_time,
+                t=self.opening_transition,
             )
             anim.start(self)
         else:
@@ -609,9 +613,13 @@ class NavigationDrawer(StencilView):
                 d = -1
         if self._anim_progress < 0.001:  # i.e. closed
             if pan_pos in ["top", "right"]:
-                valid_region = edge >= pt >= (edge + d * self.touch_accept_width)
+                valid_region = (
+                    edge >= pt >= (edge + d * self.touch_accept_width)
+                )
             else:
-                valid_region = edge <= pt <= (edge + d * self.touch_accept_width)
+                valid_region = (
+                    edge <= pt <= (edge + d * self.touch_accept_width)
+                )
             if not valid_region:
                 self._main_panel.on_touch_down(touch)
                 return False
@@ -620,9 +628,15 @@ class NavigationDrawer(StencilView):
                 self._side_panel.on_touch_down(touch)
                 return False
             if pan_pos in ["left", "right"]:
-                s = self._main_panel.x, self._main_panel.x + self._main_panel.width
+                s = (
+                    self._main_panel.x,
+                    self._main_panel.x + self._main_panel.width,
+                )
             else:
-                s = self._main_panel.y, self._main_panel.y + self._main_panel.height
+                s = (
+                    self._main_panel.y,
+                    self._main_panel.y + self._main_panel.height,
+                )
 
             valid_region = s[0] <= pt <= s[1]
             if not valid_region:
@@ -660,7 +674,8 @@ class NavigationDrawer(StencilView):
             if pan_pos in ["right", "top"]:
                 di *= -1
             self._anim_progress = max(
-                0, min(self._anim_init_progress + (di / self.side_panel_width), 1)
+                0,
+                min(self._anim_init_progress + (di / self.side_panel_width), 1),
             )
             if self._anim_progress < 0.975:
                 touch.ud["panels_jiggled"] = True

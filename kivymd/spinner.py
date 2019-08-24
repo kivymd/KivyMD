@@ -102,14 +102,18 @@ class MDSpinner(ThemableBehavior, Widget):
         self._alpha_anim_in.start(self)
 
         _rot_anim = Animation(
-            _rotation_angle=0, duration=self.determinate_time * 0.7, t="out_quad"
+            _rotation_angle=0,
+            duration=self.determinate_time * 0.7,
+            t="out_quad",
         )
         _rot_anim.start(self)
 
         _angle_start_anim = Animation(
             _angle_end=360, duration=self.determinate_time, t="in_out_quad"
         )
-        _angle_start_anim.bind(on_complete=lambda *x: self._alpha_anim_out.start(self))
+        _angle_start_anim.bind(
+            on_complete=lambda *x: self._alpha_anim_out.start(self)
+        )
 
         _angle_start_anim.start(self)
 

@@ -15,7 +15,12 @@ as the Kivy framework.
 """
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ListProperty, OptionProperty, ObjectProperty
+from kivy.properties import (
+    StringProperty,
+    ListProperty,
+    OptionProperty,
+    ObjectProperty,
+)
 from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.boxlayout import BoxLayout
 

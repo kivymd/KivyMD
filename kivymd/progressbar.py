@@ -57,7 +57,9 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     reversed = BooleanProperty(False)
     """ Reverse the direction the progressbar moves. """
 
-    orientation = OptionProperty("horizontal", options=["horizontal", "vertical"])
+    orientation = OptionProperty(
+        "horizontal", options=["horizontal", "vertical"]
+    )
     """ Orientation of progressbar"""
 
 

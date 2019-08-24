@@ -274,10 +274,14 @@ class DaySelector(ThemableBehavior, AnchorLayout):
     def move_resize(self, window=None, width=None, height=None, do_again=True):
         self.pos = self.selected_widget.pos
         if do_again:
-            Clock.schedule_once(lambda x: self.move_resize(do_again=False), 0.01)
+            Clock.schedule_once(
+                lambda x: self.move_resize(do_again=False), 0.01
+            )
 
 
-class DayButton(ThemableBehavior, CircularRippleBehavior, ButtonBehavior, AnchorLayout):
+class DayButton(
+    ThemableBehavior, CircularRippleBehavior, ButtonBehavior, AnchorLayout
+):
     text = StringProperty()
     owner = ObjectProperty()
     is_today = BooleanProperty(False)
@@ -315,7 +319,13 @@ class MDDatePicker(
         pass
 
     def __init__(
-        self, callback, year=None, month=None, day=None, firstweekday=0, **kwargs
+        self,
+        callback,
+        year=None,
+        month=None,
+        day=None,
+        firstweekday=0,
+        **kwargs
     ):
         self.callback = callback
         self.cal = calendar.Calendar(firstweekday)

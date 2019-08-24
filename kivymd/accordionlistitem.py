@@ -244,7 +244,9 @@ class MDAccordionListItem(BoxLayout):
 
     def anim_resize_open_item(self, *args):
         self.content.name_item = self.title
-        anim = Animation(height=self.content.height + dp(70), d=0.2, t="in_cubic")
+        anim = Animation(
+            height=self.content.height + dp(70), d=0.2, t="in_cubic"
+        )
         anim.bind(on_complete=self.add_content)
         anim.start(self)
 

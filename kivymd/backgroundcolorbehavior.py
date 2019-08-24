@@ -76,7 +76,9 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if hasattr(self, "theme_cls"):
-            self.theme_cls.bind(primary_palette=self._update_specific_text_color)
+            self.theme_cls.bind(
+                primary_palette=self._update_specific_text_color
+            )
             self.theme_cls.bind(accent_palette=self._update_specific_text_color)
             self.theme_cls.bind(theme_style=self._update_specific_text_color)
         self.bind(background_hue=self._update_specific_text_color)

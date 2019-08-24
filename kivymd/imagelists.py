@@ -13,7 +13,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Image lists <https://material.io/design/components/image-lists.htheme_clsl>`_
+`Material Design spec, Image lists
+<https://material.io/design/components/image-lists.html>`_
 
 Example
 -------
@@ -253,7 +254,9 @@ Builder.load_string(
 )
 
 
-class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout):
+class Tile(
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout
+):
     """A simple tile. It does nothing special, just inherits the right
     behaviors to work as a building block.
     """

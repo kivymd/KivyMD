@@ -158,7 +158,8 @@ class Test(App):
         if not os.path.exists(path_to_crop_image):
             crop_image(
                 (int(Window.width - dp(10)), int(dp(250))),
-                f'{self.directory}/demos/kitchen_sink/assets/guitar-1139397_1280.png',
+                f'{self.directory}/demos/kitchen_sink/assets/'
+                'guitar-1139397_1280.png',
                 path_to_crop_image)
 
 
@@ -242,7 +243,9 @@ class MDSwiperPagination(ThemableBehavior, BoxLayout):
             self.items_round_paginator.append(item_paginator)
 
     def set_current_screen_round(self, index_screen):
-        old_color = self.items_round_paginator[index_screen].color_round_not_active
+        old_color = self.items_round_paginator[
+            index_screen
+        ].color_round_not_active
         for i, screen in enumerate(self.items_round_paginator):
             if i == index_screen:
                 self.animation_set_not_active_round(

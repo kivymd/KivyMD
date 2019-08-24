@@ -23,7 +23,9 @@ from kivymd.utils.cropimage import crop_image
 
 if not os.path.exists("./assets/market-crop.jpg"):
     crop_image(
-        (Window.width, Window.height), "./assets/market.jpg", "./assets/market-crop.jpg"
+        (Window.width, Window.height),
+        "./assets/market.jpg",
+        "./assets/market-crop.jpg",
     )
 
 registration_form_one = """

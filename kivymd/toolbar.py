@@ -13,7 +13,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, App bars: top <https://material.io/design/components/app-bars-top.html>`_
+`Material Design spec, App bars: top
+<https://material.io/design/components/app-bars-top.html>`_
 
 Example
 -------
@@ -235,7 +236,9 @@ class MDBottomAppBar(FloatLayout):
     left_action_items = ListProperty()
     right_action_items = ListProperty()
     md_bg_color = ListProperty([0, 0, 0, 1])
-    action_button_color = ListProperty([1, 0.7568627450980392, 0.027450980392156862, 1])
+    action_button_color = ListProperty(
+        [1, 0.7568627450980392, 0.027450980392156862, 1]
+    )
     anchor = StringProperty("right")
     callback = ObjectProperty(lambda x: None)
 
@@ -276,7 +279,9 @@ class MDBottomAppBar(FloatLayout):
                 action_button_color=self.action_button_color,
             )
             self.add_widget(self.action_button)
-            Animation(size=(dp(56), dp(56)), opacity=1, d=0.2).start(self.action_button)
+            Animation(size=(dp(56), dp(56)), opacity=1, d=0.2).start(
+                self.action_button
+            )
             self.anchor = anchor
 
         if self.anchor != anchor:
@@ -286,4 +291,6 @@ class MDBottomAppBar(FloatLayout):
 
 
 class AppBarActionButton(MDFloatingActionButton):
-    action_button_color = ListProperty([1, 0.7568627450980392, 0.027450980392156862, 1])
+    action_button_color = ListProperty(
+        [1, 0.7568627450980392, 0.027450980392156862, 1]
+    )

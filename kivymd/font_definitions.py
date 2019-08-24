@@ -13,7 +13,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, The type system <https://material.io/design/typography/the-type-system.html>`_
+`Material Design spec, The type system
+<https://material.io/design/typography/the-type-system.html>`_
 """
 
 from kivy.core.text import LabelBase
@@ -47,7 +48,10 @@ fonts = [
         "fn_regular": fonts_path + "Roboto-Black.ttf",
         "fn_italic": fonts_path + "Roboto-BlackItalic.ttf",
     },
-    {"name": "Icons", "fn_regular": fonts_path + "materialdesignicons-webfont.ttf"},
+    {
+        "name": "Icons",
+        "fn_regular": fonts_path + "materialdesignicons-webfont.ttf",
+    },
 ]
 
 for font in fonts:

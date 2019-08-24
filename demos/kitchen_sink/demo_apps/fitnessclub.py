@@ -331,7 +331,9 @@ class FitnessClub(Screen):
         prefix = "crop"
         path_to_crop = f"{path_to_image}-{prefix}.{ext}"
         if not os.path.exists(path_to_crop):
-            crop_image(size, f"{path_to_image}.{ext}", path_to_crop, corner=corner)
+            crop_image(
+                size, f"{path_to_image}.{ext}", path_to_crop, corner=corner
+            )
             self.ids.about_us.ids.about_girl.source = path_to_crop
             self.ids.about_us.ids.about_girl.reload()
 

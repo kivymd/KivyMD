@@ -13,7 +13,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Lists <https://material.io/design/components/lists.html>`_
+`Material Design spec, Lists
+<https://material.io/design/components/lists.html>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -374,7 +375,9 @@ class BaseListItem(
 
     secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
+    divider = OptionProperty(
+        "Full", options=["Full", "Inset", None], allownone=True
+    )
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()

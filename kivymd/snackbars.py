@@ -10,7 +10,8 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Snackbars <https://material.io/design/components/snackbars.html>`_
+`Material Design spec, Snackbars
+<https://material.io/design/components/snackbars.html>`_
 
 Example
 =======
@@ -240,12 +241,16 @@ class Snackbar(FloatLayout):
             self._interval += interval
             if self._interval > self.duration:
                 anim = Animation(y=-self.ids.box.height, d=0.2)
-                anim.bind(on_complete=lambda *args: Window.parent.remove_widget(self))
+                anim.bind(
+                    on_complete=lambda *args: Window.parent.remove_widget(self)
+                )
                 anim.start(self.ids.box)
                 Clock.unschedule(wait_interval)
                 self._interval = 0
 
         Window.parent.add_widget(self)
         anim = Animation(y=0, d=0.2)
-        anim.bind(on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0))
+        anim.bind(
+            on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0)
+        )
         anim.start(self.ids.box)

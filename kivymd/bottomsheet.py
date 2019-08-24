@@ -13,9 +13,13 @@ For suggestions and questions:
 This file is distributed under the terms of the same license,
 as the Kivy framework.
 
-`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`_
+`Material Design spec, Sheets: bottom
+<https://material.io/design/components/sheets-bottom.html>`_
 
-In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
+In this module there's the :class:`MDBottomSheet` class which will let you
+implement your own Material Design Bottom Sheets, and there are two classes
+called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing
+the ones mentioned in the spec.
 
 Example
 -------

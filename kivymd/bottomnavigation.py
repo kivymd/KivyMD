@@ -136,7 +136,10 @@ Builder.load_string(
 
 
 class MDBottomNavigationBar(
-    ThemableBehavior, BackgroundColorBehavior, FloatLayout, RectangularElevationBehavior
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    FloatLayout,
+    RectangularElevationBehavior,
 ):
     pass
 
@@ -163,7 +166,10 @@ def small_error_warn(x):
 
 class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     width = BoundedNumericProperty(
-        dp(0), min=dp(80), max=dp(168), errorhandler=lambda x: small_error_warn(x)
+        dp(0),
+        min=dp(80),
+        max=dp(168),
+        errorhandler=lambda x: small_error_warn(x),
     )
     tab = ObjectProperty(None)
     panel = ObjectProperty(None)
@@ -193,7 +199,9 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
 
     def on_press(self):
         Animation(_label_font_size=sp(14), d=0.1).start(self)
-        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(self)
+        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(
+            self
+        )
 
     def _update_theme_color(self, instance, color):
         if self.active:
@@ -272,7 +280,9 @@ class MDBottomNavigationItem(MDTab):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=0.1).start(par.previous_tab.header)
+            Animation(_label_font_size=sp(12), d=0.1).start(
+                par.previous_tab.header
+            )
             Animation(
                 _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
                 d=0.1,
@@ -285,7 +295,9 @@ class MDBottomNavigationItem(MDTab):
         pass
 
 
-class TabbedPanelBase(ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout):
+class TabbedPanelBase(
+    ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
+):
     """
     A class that contains all variables a TabPannel must have
     It is here so I (zingballyhoo) don't get mad about

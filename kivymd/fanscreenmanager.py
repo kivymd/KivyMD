@@ -13,7 +13,8 @@ as the Kivy framework.
 Attention! This is an experimental widget.
 Perhaps the wrong positioning of the screens with a large number of them.
 
-Thanks for reply - https://groups.google.com/forum/#!topic/kivy-users/ReAVg8eDrDo
+Thanks for reply -
+https://groups.google.com/forum/#!topic/kivy-users/ReAVg8eDrDo
 
 Example
 -------

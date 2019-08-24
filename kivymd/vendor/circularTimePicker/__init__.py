@@ -295,13 +295,17 @@ class CircularNumberPicker(CircularLayout):
         super().__init__(**kw)
         self.selected = self.min
         self.bind(
-            selected=self.on_selected, pos=self.on_selected, size=self.on_selected
+            selected=self.on_selected,
+            pos=self.on_selected,
+            size=self.on_selected,
         )
 
         cx = self.center_x + self.padding[0] - self.padding[2]
         cy = self.center_y + self.padding[3] - self.padding[1]
         sx, sy = self.pos_for_number(self.selected)
-        epos = [i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)]
+        epos = [
+            i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)
+        ]
         esize = [self.delta_radii * self.number_size_factor * 2] * 2
         dsize = [i * 0.3 for i in esize]
         dpos = [i + esize[0] / 2.0 - dsize[0] / 2.0 for i in epos]
@@ -325,7 +329,9 @@ class CircularNumberPicker(CircularLayout):
             )
         )
         self.bind(
-            selector_color=lambda ign, u: setattr(self._selection_dot_color, "rgb", u)
+            selector_color=lambda ign, u: setattr(
+                self._selection_dot_color, "rgb", u
+            )
         )
         self.bind(selector_color=lambda ign, u: self.dot_is_none())
         self.bind(color=lambda ign, u: setattr(self._center_color, "rgb", u))
@@ -375,7 +381,9 @@ class CircularNumberPicker(CircularLayout):
         cx = self.center_x + self.padding[0] - self.padding[2]
         cy = self.center_y + self.padding[3] - self.padding[1]
         sx, sy = self.pos_for_number(self.selected)
-        epos = [i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)]
+        epos = [
+            i - (self.delta_radii * self.number_size_factor) for i in (sx, sy)
+        ]
         esize = [self.delta_radii * self.number_size_factor * 2] * 2
         dsize = [i * 0.3 for i in esize]
         dpos = [i + esize[0] / 2.0 - dsize[0] / 2.0 for i in epos]
@@ -647,7 +655,13 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
             if self.picker == "minutes"
             else rgb_to_hex(*self.primary_dark)
         )
-        h = self.hours == 0 and 12 or self.hours <= 12 and self.hours or self.hours - 12
+        h = (
+            self.hours == 0
+            and 12
+            or self.hours <= 12
+            and self.hours
+            or self.hours - 12
+        )
         m = self.minutes
         primary_dark = rgb_to_hex(*self.primary_dark)
         return self.time_format.format(
@@ -663,8 +677,14 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
     )
 
     def _get_ampm_text(self, *args):
-        amc = rgb_to_hex(0, 0, 0) if self._am else rgb_to_hex(*self.primary_dark)
-        pmc = rgb_to_hex(0, 0, 0) if not self._am else rgb_to_hex(*self.primary_dark)
+        amc = (
+            rgb_to_hex(0, 0, 0) if self._am else rgb_to_hex(*self.primary_dark)
+        )
+        pmc = (
+            rgb_to_hex(0, 0, 0)
+            if not self._am
+            else rgb_to_hex(*self.primary_dark)
+        )
         return self.ampm_format.format(am_color=amc, pm_color=pmc)
 
     ampm_text = AliasProperty(
@@ -721,7 +741,11 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
         if not self._picker:
             return
         if self.picker == "hours":
-            hours = self._picker.selected if self._am else self._picker.selected + 12
+            hours = (
+                self._picker.selected
+                if self._am
+                else self._picker.selected + 12
+            )
             if hours == 24 and not self._am:
                 hours = 12
             elif hours == 12 and self._am:
@@ -800,7 +824,10 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
 
         if len(container._bound) > 0:
             container.unbind(**container._bound)
-        container._bound = {"size": picker.setter("size"), "pos": picker.setter("pos")}
+        container._bound = {
+            "size": picker.setter("size"),
+            "pos": picker.setter("pos"),
+        }
         container.bind(**container._bound)
 
         picker.pos = container.pos

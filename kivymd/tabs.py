@@ -1,17 +1,17 @@
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     modified this module
+# Copyright (c) 2015 Kivy Garden
+#     https://github.com/kivy-garden/garden.androidtabs
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Tabs
 ====
-
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    modified this module
-Copyright (c) 2015 Kivy Garden
-    https://github.com/kivy-garden/garden.androidtabs
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
 
 `Material Design spec, Tabs <https://material.io/components/tabs/>`_
 """

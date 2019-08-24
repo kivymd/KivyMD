@@ -1,14 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Progress Loader
 ===============
-
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
 
 Progressbar downloads files from the server.
 
@@ -194,7 +194,10 @@ class MDProgressLoader(MDCard):
 
         """
 
-        self.ids.label_download.text = "%s: %d %%" % (self.label_download, percent)
+        self.ids.label_download.text = "%s: %d %%" % (
+            self.label_download,
+            percent,
+        )
 
     def animation_progress_to_fade(self, interval):
         if not self.download_flag:

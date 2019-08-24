@@ -1,12 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
+Demo app: Coffee Menu
+=====================
 """
 
 import os
@@ -28,7 +30,9 @@ from .basedialog import BaseDialogForDemo
 
 if not os.path.exists("./assets/coffee_crop.jpg"):
     crop_image(
-        (Window.width, Window.height), "./assets/coffee.jpg", "./assets/coffee_crop.jpg"
+        (Window.width, Window.height),
+        "./assets/coffee.jpg",
+        "./assets/coffee_crop.jpg",
     )
 
 screen_coffee_menu = """
@@ -336,7 +340,9 @@ class CoffeeMenu(Screen):
         self.menu_open = True
 
     def hide_menu_list_animation(self):
-        Animation(y=Window.height, d=0.6, t="in_elastic").start(self.ids.menu_dialog)
+        Animation(y=Window.height, d=0.6, t="in_elastic").start(
+            self.ids.menu_dialog
+        )
         self.menu_open = False
 
     def hide_menu_animation(self):

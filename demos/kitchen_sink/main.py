@@ -1,12 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
+Demo app: Kitchen Sink
+======================
 """
 
 import os
@@ -384,7 +386,9 @@ class KitchenSink(App, Screens):
         self.x = 0
         self.y = 25
         self.create_stack_floating_buttons = False
-        self.hex_primary_color = get_hex_from_color(self.theme_cls.primary_color)
+        self.hex_primary_color = get_hex_from_color(
+            self.theme_cls.primary_color
+        )
         self.previous_text = (
             f"Welcome to the application [b][color={self.hex_primary_color}]"
             f"Kitchen Sink[/color][/b].\nTo see [b]"
@@ -439,7 +443,9 @@ class KitchenSink(App, Screens):
                 self.data["Refresh Layout"]["object"].ids.box.add_widget(
                     ItemForListRefreshLayout(icon=name_icon, text=name_icon)
                 )
-            self.data["Refresh Layout"]["object"].ids.refresh_layout.refresh_done()
+            self.data["Refresh Layout"][
+                "object"
+            ].ids.refresh_layout.refresh_done()
 
         asynckivy.start(set_list_for_refresh_layout())
 
@@ -467,16 +473,22 @@ class KitchenSink(App, Screens):
         for i, instance_tab in enumerate(
             istance_android_tabs.ids.scrollview.children[0].children
         ):
-            istance_android_tabs.ids.scrollview.children[0].remove_widget(instance_tab)
-            istance_android_tabs.add_widget(Factory.MyTab(text=self.list_name_icons[i]))
+            istance_android_tabs.ids.scrollview.children[0].remove_widget(
+                instance_tab
+            )
+            istance_android_tabs.add_widget(
+                Factory.MyTab(text=self.list_name_icons[i])
+            )
 
     def switch_tabs_to_text(self, istance_android_tabs):
-        for instance_tab in istance_android_tabs.ids.scrollview.children[0].children:
+        for instance_tab in istance_android_tabs.ids.scrollview.children[
+            0
+        ].children:
             for k, v in md_icons.items():
                 if v == instance_tab.text:
-                    istance_android_tabs.ids.scrollview.children[0].remove_widget(
-                        instance_tab
-                    )
+                    istance_android_tabs.ids.scrollview.children[
+                        0
+                    ].remove_widget(instance_tab)
                     istance_android_tabs.add_widget(
                         Factory.MyTab(text=" ".join(k.split("-")).capitalize())
                     )
@@ -547,7 +559,10 @@ class KitchenSink(App, Screens):
         """Hides progress progress."""
 
         self.main_widget.ids.toolbar.right_action_items = [
-            ["download", lambda x: self.download_progress_show(instance_progress)]
+            [
+                "download",
+                lambda x: self.download_progress_show(instance_progress),
+            ]
         ]
 
     def download_progress_show(self, instance_progress):
@@ -563,7 +578,9 @@ class KitchenSink(App, Screens):
 
             try:
                 socket.setdefaulttimeout(timeout)
-                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(
+                    (host, port)
+                )
                 return True
             except (TimeoutError, ConnectionError, OSError):
                 return False
@@ -675,7 +692,9 @@ class KitchenSink(App, Screens):
             buttons = ["facebook", "vk", "twitter"]
 
             instance_grid_card.add_widget(
-                MDCardPost(text_post="Card with text", swipe=True, callback=callback)
+                MDCardPost(
+                    text_post="Card with text", swipe=True, callback=callback
+                )
             )
             instance_grid_card.add_widget(
                 MDCardPost(
@@ -783,7 +802,8 @@ class KitchenSink(App, Screens):
             ).show()
         elif snack_type == "verylong":
             Snackbar(
-                text="This is a very very very very very very very " "long snackbar!"
+                text="This is a very very very very very very very "
+                "long snackbar!"
             ).show()
         elif snack_type == "float":
             if not self.my_snackbar:
@@ -796,7 +816,9 @@ class KitchenSink(App, Screens):
                 self.my_snackbar.show()
                 anim = Animation(y=dp(72), d=0.2)
                 anim.bind(
-                    on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0)
+                    on_complete=lambda *args: Clock.schedule_interval(
+                        wait_interval, 0
+                    )
                 )
                 anim.start(self.data["Snackbars"]["object"].ids.button)
 
@@ -881,7 +903,9 @@ class KitchenSink(App, Screens):
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_date)
 
-        if self.data["Pickers"]["object"].ids.time_picker_use_previous_time.active:
+        if self.data["Pickers"][
+            "object"
+        ].ids.time_picker_use_previous_time.active:
             try:
                 time_dialog.set_time(self.previous_time)
             except AttributeError:
@@ -892,17 +916,23 @@ class KitchenSink(App, Screens):
         """Set previous date for MDDatePicker from the screen Pickers."""
 
         self.previous_date = date_obj
-        self.data["Pickers"]["object"].ids.date_picker_label.text = str(date_obj)
+        self.data["Pickers"]["object"].ids.date_picker_label.text = str(
+            date_obj
+        )
 
     def show_example_date_picker(self):
         """Show MDDatePicker from the screen Pickers."""
 
         from kivymd.pickers import MDDatePicker
 
-        if self.data["Pickers"]["object"].ids.date_picker_use_previous_date.active:
+        if self.data["Pickers"][
+            "object"
+        ].ids.date_picker_use_previous_date.active:
             pd = self.previous_date
             try:
-                MDDatePicker(self.set_previous_date, pd.year, pd.month, pd.day).open()
+                MDDatePicker(
+                    self.set_previous_date, pd.year, pd.month, pd.day
+                ).open()
             except AttributeError:
                 MDDatePicker(self.set_previous_date).open()
         else:
@@ -917,11 +947,15 @@ class KitchenSink(App, Screens):
             self.bs_menu_1 = MDListBottomSheet()
             self.bs_menu_1.add_item(
                 "Here's an item with text only",
-                lambda x: self.callback_for_menu_items("Here's an item with text only"),
+                lambda x: self.callback_for_menu_items(
+                    "Here's an item with text only"
+                ),
             )
             self.bs_menu_1.add_item(
                 "Here's an item with an icon",
-                lambda x: self.callback_for_menu_items("Here's an item with an icon"),
+                lambda x: self.callback_for_menu_items(
+                    "Here's an item with an icon"
+                ),
                 icon="clipboard-account",
             )
             self.bs_menu_1.add_item(
@@ -995,7 +1029,9 @@ class KitchenSink(App, Screens):
         md_app_bar = self.md_app_bar
         if md_app_bar.anchor != anchor:
             if len(md_app_bar.right_action_items):
-                md_app_bar.left_action_items.append(md_app_bar.right_action_items[0])
+                md_app_bar.left_action_items.append(
+                    md_app_bar.right_action_items[0]
+                )
                 md_app_bar.right_action_items = []
             else:
                 left_action_items = md_app_bar.left_action_items
@@ -1033,7 +1069,9 @@ class KitchenSink(App, Screens):
         """Builds a list of icons for the screen MDIcons."""
 
         def add_icon_item(name_icon):
-            self.main_widget.ids.scr_mngr.get_screen("md icons").ids.rv.data.append(
+            self.main_widget.ids.scr_mngr.get_screen(
+                "md icons"
+            ).ids.rv.data.append(
                 {
                     "viewclass": "MDIconItemForMdIconsList",
                     "icon": name_icon,
@@ -1057,7 +1095,9 @@ class KitchenSink(App, Screens):
                     {
                         "viewclass": "OneLineListItem",
                         "text": name_item,
-                        "on_release": lambda x=name_item: self.show_demo_apps(x),
+                        "on_release": lambda x=name_item: self.show_demo_apps(
+                            x
+                        ),
                     }
                 )
 

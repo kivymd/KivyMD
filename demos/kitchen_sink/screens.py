@@ -1,12 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
+Demo app: Kitchen Sink
+======================
 """
 
 import os
@@ -1962,7 +1964,9 @@ class Screens(object):
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
-            paginator.screens = self.manager_swiper.ids.swiper_manager.screen_names
+            paginator.screens = (
+                self.manager_swiper.ids.swiper_manager.screen_names
+            )
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)
@@ -1972,11 +1976,15 @@ class Screens(object):
     def show_screen(self, name_screen):
         if not self.data[name_screen]["object"]:
             Builder.load_string(self.data[name_screen]["kv_string"])
-            self.data[name_screen]["object"] = eval(self.data[name_screen]["Factory"])
+            self.data[name_screen]["object"] = eval(
+                self.data[name_screen]["Factory"]
+            )
             if name_screen == "Bottom App Bar":
                 self.set_appbar()
                 self.data[name_screen]["object"].add_widget(self.md_app_bar)
-            self.main_widget.ids.scr_mngr.add_widget(self.data[name_screen]["object"])
+            self.main_widget.ids.scr_mngr.add_widget(
+                self.data[name_screen]["object"]
+            )
             if name_screen == "Text fields":
                 self.data[name_screen]["object"].ids.text_field_error.bind(
                     on_text_validate=self.set_error_message,
@@ -1988,4 +1996,6 @@ class Screens(object):
                 self.build_tabs()
             elif name_screen == "Refresh Layout":
                 self.set_list_for_refresh_layout()
-        self.main_widget.ids.scr_mngr.current = self.data[name_screen]["name_screen"]
+        self.main_widget.ids.scr_mngr.current = self.data[name_screen][
+            "name_screen"
+        ]

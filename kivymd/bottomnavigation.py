@@ -1,19 +1,20 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 BottomNavigation
 ================
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
+`Material Design spec, Bottom navigation
+<https://material.io/components/bottom-navigation/>`_
 """
 
 from kivy.animation import Animation
@@ -136,7 +137,10 @@ Builder.load_string(
 
 
 class MDBottomNavigationBar(
-    ThemableBehavior, BackgroundColorBehavior, FloatLayout, RectangularElevationBehavior
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    FloatLayout,
+    RectangularElevationBehavior,
 ):
     pass
 
@@ -163,7 +167,10 @@ def small_error_warn(x):
 
 class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     width = BoundedNumericProperty(
-        dp(0), min=dp(80), max=dp(168), errorhandler=lambda x: small_error_warn(x)
+        dp(0),
+        min=dp(80),
+        max=dp(168),
+        errorhandler=lambda x: small_error_warn(x),
     )
     tab = ObjectProperty(None)
     panel = ObjectProperty(None)
@@ -193,7 +200,9 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
 
     def on_press(self):
         Animation(_label_font_size=sp(14), d=0.1).start(self)
-        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(self)
+        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(
+            self
+        )
 
     def _update_theme_color(self, instance, color):
         if self.active:
@@ -272,7 +281,9 @@ class MDBottomNavigationItem(MDTab):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=0.1).start(par.previous_tab.header)
+            Animation(_label_font_size=sp(12), d=0.1).start(
+                par.previous_tab.header
+            )
             Animation(
                 _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
                 d=0.1,
@@ -285,7 +296,9 @@ class MDBottomNavigationItem(MDTab):
         pass
 
 
-class TabbedPanelBase(ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout):
+class TabbedPanelBase(
+    ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
+):
     """
     A class that contains all variables a TabPannel must have
     It is here so I (zingballyhoo) don't get mad about

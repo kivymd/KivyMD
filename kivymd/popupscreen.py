@@ -1,14 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Popup Screen
 ============
-
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
 
 Example
 -------
@@ -215,10 +215,14 @@ class MDPopupScreen(FloatLayout):
             self.added_screen = True
             self.root_screen.background_color = self.background_color
         self.open_menu = True
-        Animation(y=-self.max_height, d=0.2, t="in_out_bounce").start(self.root_screen)
+        Animation(y=-self.max_height, d=0.2, t="in_out_bounce").start(
+            self.root_screen
+        )
 
     def hide(self, interval):
-        Animation(y=-Window.height, d=0.2, t="in_out_bounce").start(self.root_screen)
+        Animation(y=-Window.height, d=0.2, t="in_out_bounce").start(
+            self.root_screen
+        )
         self.open_menu = False
 
     def on_touch_down(self, touch):

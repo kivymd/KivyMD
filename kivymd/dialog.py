@@ -1,19 +1,19 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Dialog
 ======
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Dialogs <https://material.io/design/components/dialogs.html>`_
+`Material Design spec, Dialogs <https://material.io/components/dialogs/>`_
 
 Example
 -------
@@ -218,7 +218,9 @@ class BaseDialog(ThemableBehavior, ModalView):
                     hint_text=instance_content_dialog.hint_text,
                 )
                 instance_content_dialog.ids.box_input.height = dp(33)
-                instance_content_dialog.ids.box_input.add_widget(self.text_field)
+                instance_content_dialog.ids.box_input.add_widget(
+                    self.text_field
+                )
 
             if self.text_button_cancel != "":
                 anchor = "left"
@@ -241,10 +243,14 @@ class BaseDialog(ThemableBehavior, ModalView):
                     MDTextButton(
                         text=self.text_button_cancel,
                         font_size="18sp",
-                        on_release=lambda x: _events_callback(self.text_button_cancel),
+                        on_release=lambda x: _events_callback(
+                            self.text_button_cancel
+                        ),
                     )
                 )
-                instance_content_dialog.ids.box_buttons.add_widget(box_button_cancel)
+                instance_content_dialog.ids.box_buttons.add_widget(
+                    box_button_cancel
+                )
 
         else:  # create buttons for Android
             if instance_content_dialog.__class__ is ContentInputDialog:
@@ -254,7 +260,9 @@ class BaseDialog(ThemableBehavior, ModalView):
                     hint_text=instance_content_dialog.hint_text,
                 )
                 instance_content_dialog.ids.box_input.height = dp(48)
-                instance_content_dialog.ids.box_input.add_widget(self.text_field)
+                instance_content_dialog.ids.box_input.add_widget(
+                    self.text_field
+                )
                 instance_content_dialog.ids.box_buttons.remove_widget(
                     instance_content_dialog.ids.sep
                 )
@@ -275,14 +283,18 @@ class BaseDialog(ThemableBehavior, ModalView):
                     text=self.text_button_cancel,
                     theme_text_color="Custom",
                     text_color=self.theme_cls.primary_color,
-                    on_release=lambda x: _events_callback(self.text_button_cancel),
+                    on_release=lambda x: _events_callback(
+                        self.text_button_cancel
+                    ),
                 )
                 box.add_widget(button_cancel)
 
             box_buttons.add_widget(box)
             instance_content_dialog.ids.box_buttons.add_widget(box_buttons)
             instance_content_dialog.ids.box_buttons.height = button_ok.height
-            instance_content_dialog.remove_widget(instance_content_dialog.ids.sep)
+            instance_content_dialog.remove_widget(
+                instance_content_dialog.ids.sep
+            )
 
 
 class MDInputDialog(BaseDialog):

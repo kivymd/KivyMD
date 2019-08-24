@@ -1,21 +1,25 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Bottom Sheets
 =============
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
+`Material Design spec, Sheets: bottom
+<https://material.io/components/sheets-bottom/>`_
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`_
-
-In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
+In this module there's the :class:`MDBottomSheet` class which will let you
+implement your own Material Design Bottom Sheets, and there are two classes
+called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing
+the ones mentioned in the spec.
 
 Example
 -------

@@ -158,7 +158,9 @@ class StiffScrollEffect(KineticEffect):
         distance = val - self.history[-1][1]
         reach = distance + self.value
 
-        if (distance < 0 and reach < soft_min) or (distance > 0 and soft_max < reach):
+        if (distance < 0 and reach < soft_min) or (
+            distance > 0 and soft_max < reach
+        ):
             distance -= distance * self.friction
         self.apply_distance(distance)
         self.history.append((t, val))

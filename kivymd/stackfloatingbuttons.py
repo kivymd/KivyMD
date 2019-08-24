@@ -1,14 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Stack Floating Buttons
 ======================
-
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
 
 Example
 -------
@@ -70,7 +70,12 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-from kivy.properties import StringProperty, DictProperty, ObjectProperty, ListProperty
+from kivy.properties import (
+    StringProperty,
+    DictProperty,
+    ObjectProperty,
+    ListProperty,
+)
 from kivy.metrics import dp
 
 from kivymd.cards import MDCard

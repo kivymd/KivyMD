@@ -8,7 +8,6 @@ GitHub -
     https://github.com/gottadiveintopython
 GitHub Gist -
     https://gist.github.com/gottadiveintopython/5f4a775849f9277081c396de65dc57c1
-
 """
 
 __all__ = ("start", "sleep", "event")
@@ -38,7 +37,9 @@ def start(coro):
 def sleep(duration):
     # The partial() here looks meaningless. But this is needed in order
     # to avoid weak reference.
-    param = yield lambda step_coro: Clock.schedule_once(partial(step_coro), duration)
+    param = yield lambda step_coro: Clock.schedule_once(
+        partial(step_coro), duration
+    )
     return param.args[0]
 
 

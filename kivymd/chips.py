@@ -1,16 +1,16 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Chips
 =====
 
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Chips <https://material.io/design/components/chips.html>`_
+`Material Design spec, Chips <https://material.io/components/chips/>`_
 
 Example
 -------
@@ -268,7 +268,10 @@ class MDChip(BoxLayout, ThemableBehavior):
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
                         MDIconButton(
-                            icon="check", size_hint_y=None, height=dp(26), disabled=True
+                            icon="check",
+                            size_hint_y=None,
+                            height=dp(26),
+                            disabled=True,
                         )
                     )
                 else:

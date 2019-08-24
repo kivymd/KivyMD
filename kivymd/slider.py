@@ -1,19 +1,19 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Sliders
 =======
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Sliders <https://material.io/design/components/sliders.html>`_
+`Material Design spec, Sliders <https://material.io/components/sliders/>`_
 """
 
 from kivy.lang import Builder
@@ -138,7 +138,9 @@ class MDSlider(ThemableBehavior, Slider):
 
     def _set_thumb_color_down(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_down = get_color_from_hex(colors[color[0]][color[1]])
+            self._thumb_color_down = get_color_from_hex(
+                colors[color[0]][color[1]]
+            )
             if alpha:
                 self._thumb_color_down[3] = alpha
             else:
@@ -150,14 +152,18 @@ class MDSlider(ThemableBehavior, Slider):
         _get_thumb_color_down, _set_thumb_color_down, bind=["_thumb_color_down"]
     )
 
-    _thumb_color_disabled = ListProperty(get_color_from_hex(colors["Gray"]["400"]))
+    _thumb_color_disabled = ListProperty(
+        get_color_from_hex(colors["Gray"]["400"])
+    )
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
 
     def _set_thumb_color_disabled(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
+            self._thumb_color_disabled = get_color_from_hex(
+                colors[color[0]][color[1]]
+            )
             if alpha:
                 self._thumb_color_disabled[3] = alpha
         elif len(color) == 4:
@@ -193,7 +199,9 @@ class MDSlider(ThemableBehavior, Slider):
             self.thumb_color_down = get_color_from_hex(
                 colors[self.theme_cls.primary_palette]["200"]
             )
-            self.thumb_color_disabled = get_color_from_hex(colors["Gray"]["800"])
+            self.thumb_color_disabled = get_color_from_hex(
+                colors["Gray"]["800"]
+            )
         else:
             self._track_color_normal = get_color_from_hex("000000")
             self._track_color_normal[3] = 0.26

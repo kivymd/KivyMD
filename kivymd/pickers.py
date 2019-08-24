@@ -1,17 +1,17 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Pickers
 =======
-
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
 
 Includes date, time and color picker
 """
@@ -274,10 +274,14 @@ class DaySelector(ThemableBehavior, AnchorLayout):
     def move_resize(self, window=None, width=None, height=None, do_again=True):
         self.pos = self.selected_widget.pos
         if do_again:
-            Clock.schedule_once(lambda x: self.move_resize(do_again=False), 0.01)
+            Clock.schedule_once(
+                lambda x: self.move_resize(do_again=False), 0.01
+            )
 
 
-class DayButton(ThemableBehavior, CircularRippleBehavior, ButtonBehavior, AnchorLayout):
+class DayButton(
+    ThemableBehavior, CircularRippleBehavior, ButtonBehavior, AnchorLayout
+):
     text = StringProperty()
     owner = ObjectProperty()
     is_today = BooleanProperty(False)
@@ -315,7 +319,13 @@ class MDDatePicker(
         pass
 
     def __init__(
-        self, callback, year=None, month=None, day=None, firstweekday=0, **kwargs
+        self,
+        callback,
+        year=None,
+        month=None,
+        day=None,
+        firstweekday=0,
+        **kwargs
     ):
         self.callback = callback
         self.cal = calendar.Calendar(firstweekday)

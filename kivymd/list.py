@@ -1,19 +1,19 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Lists
 =====
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Lists <https://material.io/design/components/lists.html>`_
+`Material Design spec, Lists <https://material.io/components/lists/>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -374,7 +374,9 @@ class BaseListItem(
 
     secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
+    divider = OptionProperty(
+        "Full", options=["Full", "Inset", None], allownone=True
+    )
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()

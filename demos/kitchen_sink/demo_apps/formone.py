@@ -1,12 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
+Demo app: Registration
+======================
 """
 
 import os
@@ -23,7 +25,9 @@ from kivymd.utils.cropimage import crop_image
 
 if not os.path.exists("./assets/market-crop.jpg"):
     crop_image(
-        (Window.width, Window.height), "./assets/market.jpg", "./assets/market-crop.jpg"
+        (Window.width, Window.height),
+        "./assets/market.jpg",
+        "./assets/market-crop.jpg",
     )
 
 registration_form_one = """

@@ -1,12 +1,14 @@
+# Copyright (c) 2019 Ivanov Yuri
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
-Copyright (c) 2019 Ivanov Yuri
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
+Demo app: Shop Window
+=====================
 """
 
 from kivy.app import App
@@ -314,7 +316,8 @@ class ShopWindow(Screen):
                     "viewclass": "CardsBoxForShopWindow",
                     "height": dp(300),
                     "product_image": "./assets/clock-%d.png" % increment_left,
-                    "product_image2": "./assets/clock-%d.png" % (increment_left + 1),
+                    "product_image2": "./assets/clock-%d.png"
+                    % (increment_left + 1),
                     "previous_dialog": dialog,
                 }
             )

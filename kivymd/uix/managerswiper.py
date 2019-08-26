@@ -29,9 +29,6 @@ from kivymd.utils.cropimage import crop_image
 
 activity = '''
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDSwiperManager kivymd.uix.managerswiper.MDSwiperManager
 
 
 <MyCard>
@@ -182,9 +179,6 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDIconButton kivymd.uix.button.MDIconButton
-
-
 <ItemPagination>
     size_hint: None, None
     size: dp(15), dp(15)

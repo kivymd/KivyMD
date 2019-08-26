@@ -34,12 +34,6 @@ if not os.path.exists("./assets/crossfit-crop.png"):
     )
 
 screen_fitness_club = """
-#:import MDBottomNavigation kivymd.uix.bottomnavigation.MDBottomNavigation
-#:import MDTextFieldRect kivymd.uix.textfield.MDTextFieldRect
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDIconButton kivymd.uix.button.MDIconButton
-
-
 <InputField@MDTextFieldRect>:
     size_hint: None, None
     multiline: False

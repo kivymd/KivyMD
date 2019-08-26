@@ -28,9 +28,6 @@ from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
 kv = '''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import SmartTileWithLabel kivymd.uix.imagelist.SmartTileWithLabel
-#:import SmartTileWithStar kivymd.uix.imagelist.SmartTileWithStar
 
 
 <MySmartTileWithLabel@SmartTileWithLabel>

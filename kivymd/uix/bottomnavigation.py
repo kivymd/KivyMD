@@ -421,10 +421,6 @@ if __name__ == "__main__":
 
             return Builder.load_string(
                 """
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 BoxLayout:
     orientation:'vertical'
 

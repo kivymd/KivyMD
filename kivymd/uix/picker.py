@@ -458,7 +458,6 @@ class MDDatePicker(
 
 Builder.load_string(
     """
-#:import MDFlatButton kivymd.uix.button.MDFlatButton
 #:import CircularTimePicker kivymd.vendor.circularTimePicker.CircularTimePicker
 #:import dp kivy.metrics.dp
 
@@ -542,10 +541,6 @@ class MDTimePicker(
 
 Builder.load_string(
     """
-#:import MDTabsBase kivymd.uix.tab.MDTabsBase
-#:import MDTab kivymd.uix.tab.MDTabs
-
-
 <Tab@BoxLayout+MDTabsBase>
 
 
@@ -930,10 +925,6 @@ if __name__ == "__main__":
         def build(self):
             main_widget = Builder.load_string(
                 """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDThemePicker kivymd.uix.picker.MDThemePicker
-
-
 FloatLayout:
     MDRaisedButton:
         size_hint: None, None

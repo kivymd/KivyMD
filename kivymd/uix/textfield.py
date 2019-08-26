@@ -26,10 +26,6 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDTextField kivymd.uix.textfield.MDTextField
-#:import MDTextFieldClear kivymd.uix.textfield.MDTextFieldClear
-#:import MDTextFieldRect kivymd.uix.textfield.MDTextFieldRect
 
 
 <ExampleTextFields@BoxLayout>
@@ -173,9 +169,6 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDTextButton kivymd.uix.button.MDTextButton
-
-
 <MDTextField>
     canvas.before:
         Clear

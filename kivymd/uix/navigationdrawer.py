@@ -27,11 +27,7 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 main_kv = '''
-#:import MDSeparator kivymd.uix.card.MDSeparator
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 ##:import NavigationLayout kivymd.uix.navigationdrawer.NavigationLayout
-#:import MDNavigationDrawer kivymd.uix.navigationdrawer.MDNavigationDrawer
-#:import NavigationDrawerSubheader kivymd.uix.navigationdrawer.NavigationDrawerSubheader
 
 <ContentNavigationDrawer@MDNavigationDrawer>:
     drawer_logo: 'demos/kitchen_sink/assets/drawer_logo.png'
@@ -132,8 +128,6 @@ from kivymd.vendor.navigationdrawer import (
 
 Builder.load_string(
     """
-#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
-#:import MDLabel kivymd.uix.label.MDLabel
 #:import colors kivymd.color_definitions.colors
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import ScrollView kivy.uix.scrollview.ScrollView

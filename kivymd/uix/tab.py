@@ -469,11 +469,6 @@ if __name__ == "__main__":
     from kivymd.uix.button import MDIconButton
 
     demo = """
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
-
-
 <Example@BoxLayout>
     orientation: 'vertical'
 

@@ -21,9 +21,6 @@ from kivy.metrics import dp
 from kivymd.utils.cropimage import crop_image
 
 bottom_app_bar = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 <BottomAppBar@Screen>
     name: 'bottom app bar'
 
@@ -58,9 +55,6 @@ accordion_list = """
 """
 
 bottom_sheet = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 <BottomSheet@Screen>
     name: 'bottom sheet'
 
@@ -82,11 +76,6 @@ bottom_sheet = """
 """
 
 accordion = """
-#:import MDAccordion kivymd.uix.accordion.MDAccordion
-#:import MDAccordionItem kivymd.uix.accordion.MDAccordionItem
-#:import MDAccordionSubItem kivymd.uix.accordion.MDAccordionSubItem
-
-
 <Accord@Screen>
     name: 'accordion'
 
@@ -132,10 +121,6 @@ accordion = """
 """
 
 grid = """
-#:import SmartTileWithStar kivymd.uix.imagelist.SmartTileWithStar
-#:import SmartTileWithLabel kivymd.uix.imagelist.SmartTileWithLabel
-
-
 <Grid@Screen>
     name: 'grid'
 
@@ -196,12 +181,6 @@ grid = """
 """
 
 bottom_navigation = """
-#:import MDBottomNavigation kivymd.uix.bottomnavigation.MDBottomNavigation
-#:import MDBottomNavigationItem kivymd.uix.bottomnavigation.MDBottomNavigationItem
-#:import MDTextField kivymd.uix.textfield.MDTextField
-#:import MDLabel kivymd.uix.label.MDLabel
-
-
 <BottomNavigation@Screen>
     name: 'bottom navigation'
 
@@ -253,12 +232,6 @@ bottom_navigation = """
 """
 
 tabs = """
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
-#:import MDTabsBase kivymd.uix.tab.MDTabsBase
-#:import MDTabs kivymd.uix.tab.MDTabs
-
-
 <Tabs@Screen>
     name: 'tabs'
 
@@ -299,11 +272,6 @@ tabs = """
 """
 
 pickers = """
-#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 <Pickers@Screen>
     name: 'pickers'
 
@@ -376,19 +344,6 @@ pickers = """
 """
 
 buttons = """
-#:import MDIconButton kivymd.uix.button.MDIconButton
-#:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
-#:import MDFlatButton kivymd.uix.button.MDFlatButton
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDRectangleFlatButton kivymd.uix.button.MDRectangleFlatButton
-#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
-#:import MDRectangleFlatIconButton kivymd.uix.button.MDRectangleFlatIconButton
-#:import MDTextButton kivymd.uix.button.MDTextButton
-#:import MDFillRoundFlatButton kivymd.uix.button.MDFillRoundFlatButton
-#:import MDFillRoundFlatIconButton kivymd.uix.button.MDFillRoundFlatIconButton
-#:import MDRoundFlatIconButton kivymd.uix.button.MDRoundFlatIconButton
-
-
 <Buttons@Screen>
     name: 'buttons'
 
@@ -501,9 +456,6 @@ cards = """
             height: self.minimum_height
 """
 toolbars = """
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-
-
 <Toolbars@Screen>
     name: 'toolbars'
 
@@ -535,9 +487,6 @@ toolbars = """
 """
 
 dialogs = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 <Dialogs@Screen>
     name: 'dialogs'
 
@@ -575,10 +524,6 @@ dialogs = """
 """
 
 theming = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDLabel kivymd.uix.label.MDLabel
-
-
 <Theming@Screen>
     name: 'theming'
 
@@ -606,11 +551,6 @@ theming = """
 """
 
 textfields = """
-#:import MDTextFieldRect kivymd.uix.textfield.MDTextFieldRect
-#:import MDTextFieldClear kivymd.uix.textfield.MDTextFieldClear
-#:import MDTextField kivymd.uix.textfield.MDTextField
-#:import MDTextFieldRound kivymd.uix.textfield.MDTextFieldRound
-
 #:set color_shadow [0, 0, 0, .2980392156862745]
 
 
@@ -740,9 +680,6 @@ textfields = """
 """
 
 file_manager = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 <FileManager@Screen>
     name: 'file manager'
 
@@ -756,15 +693,6 @@ file_manager = """
 """
 
 lists = """
-#:import MDList kivymd.uix.list.MDList
-#:import OneLineListItem kivymd.uix.list.OneLineListItem
-#:import TwoLineListItem kivymd.uix.list.TwoLineListItem
-#:import ThreeLineListItem kivymd.uix.list.ThreeLineListItem
-#:import OneLineAvatarListItem kivymd.uix.list.OneLineAvatarListItem
-#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
-#:import OneLineAvatarIconListItem kivymd.uix.list.OneLineAvatarIconListItem
-
-
 <Lists@Screen>
     name: 'lists'
 
@@ -851,11 +779,6 @@ lists = """
 """
 
 snackbar = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDSeparator kivymd.uix.card.MDSeparator
-#:import MDLabel kivymd.uix.label.MDLabel
-
-
 <MySnackBar@Screen>
     name: 'snackbar'
 
@@ -898,7 +821,6 @@ snackbar = """
 """
 
 download_file = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 #:import Clock kivy.clock.Clock
 
 
@@ -919,9 +841,6 @@ download_file = """
 """
 
 user_animation_card = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-
-
 <UserCard@Screen>
     name: 'user animation card'
 
@@ -935,10 +854,6 @@ user_animation_card = """
 """
 
 selection_controls = """
-#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
-#:import MDSwitch kivymd.uix.selectioncontrol.MDSwitch
-
-
 <SelectionControls@Screen>
     name: 'selection controls'
 
@@ -1020,9 +935,6 @@ selection_controls = """
 """
 
 sliders = """
-#:import MDSlider kivymd.uix.slider.MDSlider
-
-
 <Sliders@Screen>
     name: 'sliders'
 
@@ -1049,10 +961,6 @@ stack_buttons = """
 """
 
 refresh_layout = """
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDScrollViewRefreshLayout kivymd.uix.refreshlayout.MDScrollViewRefreshLayout
-
-
 <ItemForListRefreshLayout>
     text: root.text
 
@@ -1078,10 +986,6 @@ refresh_layout = """
 """
 
 progress_bar = """
-#:import MDSlider kivymd.uix.slider.MDSlider
-#:import MDProgressBar kivymd.uix.progressbar.MDProgressBar
-
-
 <ProgressBars@Screen>
     name: 'progress bar'
 
@@ -1113,9 +1017,6 @@ progress_bar = """
 """
 
 labels = """
-#:import MDLabel kivymd.uix.label.MDLabel
-
-
 <MyMDLabel@MDLabel>
     size_hint_y: None
     height: self.texture_size[1]
@@ -1264,7 +1165,6 @@ labels = """
 """
 
 menu = """
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 #:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
 
 
@@ -1318,12 +1218,6 @@ menu = """
 """
 
 chips = """
-#:import MDSeparator kivymd.uix.card.MDSeparator
-#:import MDChip kivymd.uix.chip.MDChip
-#:import MDChooseChip kivymd.uix.chip.MDChooseChip
-#:import MDLabel kivymd.uix.label.MDLabel
-
-
 <LabelForChips@MDLabel>
     theme_text_color: 'Primary'
 
@@ -1457,10 +1351,6 @@ chips = """
 """
 
 progress = """
-#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
-#:import MDSpinner kivymd.uix.spinner.MDSpinner
-
-
 <Progress@Screen>
     name: 'progress'
 
@@ -1480,9 +1370,6 @@ progress = """
 """
 
 fan_manager = """
-#:import MDFanScreenManager kivymd.uix.fanscreenmanager.MDFanScreenManager
-
-
 <FanManager@Screen>
     name: 'fan manager'
 
@@ -1556,9 +1443,6 @@ popup_screen = """
 
 manager_swiper = """
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDSwiperManager kivymd.uix.managerswiper.MDSwiperManager
 
 
 <MyCard>
@@ -1632,9 +1516,6 @@ manager_swiper = """
 """
 
 md_icon_item = """
-#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
-
-
 <MDIconItem@OneLineIconListItem>
     icon: 'android'
 
@@ -1643,10 +1524,7 @@ md_icon_item = """
 """
 
 md_icons = """
-#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
 #:import images_path kivymd.images_path
-#:import MDTextFieldRect kivymd.uix.textfield.MDTextField
-#:import MDIconButton kivymd.uix.button.MDIconButton
 
 
 <MDIconItemForMdIconsList@OneLineIconListItem>:

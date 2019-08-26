@@ -36,11 +36,6 @@ if not os.path.exists("./assets/coffee_crop.jpg"):
     )
 
 screen_coffee_menu = """
-#:import MDSeparator kivymd.uix.card.MDSeparator
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDCard kivymd.uix.card.MDCard
-#:import MDFlatButton kivymd.uix.button.MDFlatButton
-
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
 

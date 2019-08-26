@@ -28,8 +28,6 @@ from kivymd.theming import ThemeManager
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDRectangleFlatButton kivymd.uix.button.MDRectangleFlatButton
 
 
 <ExampleDialogs@BoxLayout>
@@ -117,7 +115,6 @@ from kivymd.material_resources import DEVICE_IOS
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
-#:import MDSeparator kivymd.uix.card.MDSeparator
 
 
 <ContentInputDialog>

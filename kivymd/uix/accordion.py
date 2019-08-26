@@ -93,7 +93,6 @@ class MDAccordionItem(ThemableBehavior, AccordionItem):
 
 Builder.load_string(
     """
-#:import MDLabel kivymd.uix.label.MDLabel
 #:import md_icons kivymd.icon_definitions.md_icons
 
 
@@ -228,9 +227,6 @@ if __name__ == "__main__":
             self.theme_cls.primary_palette = "Indigo"
             return Builder.load_string(
                 """
-#:import MDLabel kivymd.uix.label.MDLabel
-
-
 BoxLayout:
     spacing: '64dp'
 

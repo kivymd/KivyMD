@@ -23,7 +23,6 @@ from kivymd.stackfloatingbuttons import MDStackFloatingButtons
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 
 
 <ExampleFloatingButtons@BoxLayout>:
@@ -86,7 +85,6 @@ from kivymd.uix.card import MDCard
 Builder.load_string(
     """
 #:import Window kivy.core.window.Window
-#:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
 
 
 <FloatingButton@MDFloatingActionButton>

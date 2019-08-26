@@ -31,3 +31,5 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
 
 Logger.info(f"KivyMD: KivyMD version: {__version__}")
+
+import kivymd.factory_registers  # NOQA

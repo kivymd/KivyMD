@@ -32,9 +32,6 @@ if not os.path.exists("./assets/market-crop.jpg"):
 
 registration_form_one = """
 #:import images_path kivymd.images_path
-#:import MDFillRoundFlatButton kivymd.uix.button.MDFillRoundFlatButton
-#:import MDLabel kivymd.uix.label.MDLabel
-#:import MDTextFieldRound kivymd.uix.textfield.MDTextFieldRound
 
 
 <ButtonRound@ButtonRoundForForm>

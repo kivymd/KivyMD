@@ -27,10 +27,6 @@ from kivymd.toast import toast
 
 KV = '''
 #:import Window kivy.core.window.Window
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDSeparator kivymd.uix.card.MDSeparator
-#:import MDLabel kivymd.uix.label.MDLabel
 
 
 Screen:
@@ -131,7 +127,7 @@ class ExampleSnackBar(App):
 ExampleSnackBar().run()
 """
 
-__all__ = ('Snackbar', )
+__all__ = ("Snackbar",)
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -145,7 +141,6 @@ from kivymd.uix.button import MDFlatButton
 Builder.load_string(
     """
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import MDLabel kivymd.uix.label.MDLabel
 
 
 <Snackbar>:

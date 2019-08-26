@@ -27,8 +27,6 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDRoundFlatIconButton kivymd.uix.button.MDRoundFlatIconButton
 
 
 <ExampleFileManager@BoxLayout>
@@ -160,9 +158,6 @@ from kivymd.uix.button import MDIconButton
 ACTIVITY_MANAGER = """
 #:import os os
 #:import Window kivy.core.window.Window
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
-#:import MDSeparator kivymd.uix.card.MDSeparator
 
 
 <BodyManager@BoxLayout>

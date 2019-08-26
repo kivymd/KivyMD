@@ -28,7 +28,6 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 
 
 <ExampleCardPost@BoxLayout>
@@ -152,7 +151,6 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
-#:import SmartTileWithLabel kivymd.uix.imagelist.SmartTileWithLabel
 
 
 <MDCard>

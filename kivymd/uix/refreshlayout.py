@@ -26,8 +26,6 @@ from kivymd.theming import ThemeManager
 from kivymd.utils import asynckivy
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDScrollViewRefreshLayout kivymd.uix.refreshlayout.MDScrollViewRefreshLayout
 
 
 <ItemForList>
@@ -133,7 +131,6 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import Window kivy.core.window.Window
-#:import MDSpinner kivymd.uix.spinner.MDSpinner
 
 
 <RefreshSpinner>

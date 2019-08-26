@@ -30,9 +30,6 @@ from kivy.uix.slider import Slider
 
 Builder.load_string(
     """
-#:import Thumb kivymd.uix.selectioncontrol.Thumb
-
-
 <MDSlider>
     id: slider
     canvas:

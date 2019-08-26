@@ -29,11 +29,7 @@ from kivymd.uix.accordionlistitem import MDAccordionListItem
 from kivymd.toast import toast
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import TwoLineIconListItem kivymd.uix.list.TwoLineIconListItem
-#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
-#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
 
 
 <ContentForAnimCard>

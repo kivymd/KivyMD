@@ -26,9 +26,6 @@ from kivymd.uix.list import ILeftBodyTouch
 # Your content for a contact card.
 Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import TwoLineIconListItem kivymd.uix.list.TwoLineIconListItem
-#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
-#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
 
 
 <TestAnimationCard@BoxLayout>

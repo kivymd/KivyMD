@@ -28,16 +28,6 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDIconButton kivymd.uix.button.MDIconButton
-#:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
-#:import MDFlatButton kivymd.uix.button.MDFlatButton
-#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
-#:import MDRectangleFlatButton kivymd.uix.button.MDRectangleFlatButton
-#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
-#:import MDRoundFlatIconButton kivymd.uix.button.MDRoundFlatIconButton
-#:import MDFillRoundFlatButton kivymd.uix.button.MDFillRoundFlatButton
-#:import MDTextButton kivymd.uix.button.MDTextButton
 
 
 <ExampleButtons@BoxLayout>
@@ -201,8 +191,6 @@ Builder.load_string(
 #:import Animation kivy.animation.Animation
 #:import md_icons kivymd.icon_definitions.md_icons
 #:import colors kivymd.color_definitions.colors
-#:import MDIcon kivymd.uix.label.MDIcon
-#:import MDLabel kivymd.uix.label.MDLabel
 #:import images_path kivymd.images_path
 
 

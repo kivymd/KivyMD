@@ -21,11 +21,6 @@ from kivy.lang import Builder
 from kivymd.theming import ThemeManager
 
 kv = '''
-#:import MDToolbar kivymd.uix.toolbar.MDToolbar
-#:import MDChip kivymd.uix.chip.MDChip
-#:import MDChooseChip kivymd.uix.chip.MDChooseChip
-#:import MDSeparator kivymd.uix.card.MDSeparator
-#:import MDLabel kivymd.uix.label.MDLabel
 
 
 BoxLayout:
@@ -191,9 +186,6 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDIconButton kivymd.uix.button.MDIconButton
-
-
 <MDChooseChip>
     size_hint_y: None
     height: self.minimum_height

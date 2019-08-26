@@ -19,6 +19,8 @@ These expanded material design icons are maintained by Austin Andrews
 LAST UPDATED: Version 4.1.95
 """
 
+__all__ = ("md_icons",)
+
 md_icons = {
     "ab-testing": "\U000F001C",
     "access-point": "\uF002",

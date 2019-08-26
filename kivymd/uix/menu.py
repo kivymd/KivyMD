@@ -16,6 +16,8 @@ Menus
 `Material Design spec, Menus <https://material.io/components/menus/>`_
 """
 
+__all__ = ("MDMenu", "MDDropdownMenu", "MDMenuItem")
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window

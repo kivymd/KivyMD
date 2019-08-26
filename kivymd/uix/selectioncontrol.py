@@ -17,6 +17,8 @@ Selection Controls
 <https://material.io/components/selection-controls/>`_
 """
 
+__all__ = ("MDCheckbox", "MDSwitch", "Thumb")
+
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.uix.behaviors import ToggleButtonBehavior

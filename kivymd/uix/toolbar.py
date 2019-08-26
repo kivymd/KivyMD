@@ -97,6 +97,8 @@ class MyApp(App):
 MyApp().run()
 """
 
+__all__ = ("MDToolbar", "MDBottomAppBar", "AppBarActionButton")
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp

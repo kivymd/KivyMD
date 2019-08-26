@@ -173,6 +173,8 @@ class MyApp(App):
 MyApp().run()
 """
 
+__all__ = ("MDChip", "MDChooseChip")
+
 from kivy.metrics import dp
 from kivy.properties import (
     StringProperty,

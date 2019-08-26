@@ -222,6 +222,8 @@ class MyApp(App):
 MyApp().run()
 """
 
+__all__ = ("MDFanScreenManager", "MDFanScreen")
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation

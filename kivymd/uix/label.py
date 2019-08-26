@@ -14,6 +14,8 @@ Label
 =====
 """
 
+__all__ = ("MDLabel", "MDIcon")
+
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (

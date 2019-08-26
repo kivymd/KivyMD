@@ -14,6 +14,8 @@ Sliding Panel
 =============
 """
 
+__all__ = ("SlidingPanel", "PanelShadow")
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window

@@ -66,6 +66,8 @@ class Example(App):
 Example().run()
 """
 
+__all__ = ("MDStackFloatingButtons", "MDFloatingLabel")
+
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout

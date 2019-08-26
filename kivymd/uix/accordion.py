@@ -14,6 +14,13 @@ Accordion
 =========
 """
 
+__all__ = (
+    "MDAccordion",
+    "MDAccordionItem",
+    "MDAccordionSubItem",
+    "MDAccordionItemTitleLayout",
+)
+
 from kivy.lang import Builder
 from kivy.properties import (
     StringProperty,

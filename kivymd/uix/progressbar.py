@@ -14,6 +14,8 @@ Progress Bar
 ============
 """
 
+__all__ = ("MDProgressBar",)
+
 from kivy.lang import Builder
 from kivy.properties import OptionProperty, BooleanProperty
 

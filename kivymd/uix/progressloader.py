@@ -98,6 +98,8 @@ class Test(App):
 Test().run()
 """
 
+__all__ = ("MDProgressLoader",)
+
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.animation import Animation

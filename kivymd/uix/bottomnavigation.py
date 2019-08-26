@@ -17,6 +17,16 @@ BottomNavigation
 <https://material.io/components/bottom-navigation/>`_
 """
 
+__all__ = (
+    "MDTab",
+    "MDBottomNavigation",
+    "MDBottomNavigationItem",
+    "MDBottomNavigationHeader",
+    "MDBottomNavigationBar",
+    "TabbedPanelBase",
+    "MDBottomNavigationErrorCache",
+)
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window

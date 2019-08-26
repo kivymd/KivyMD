@@ -138,6 +138,15 @@ class Example(App):
 Example().run()
 """
 
+__all__ = (
+    "MDTextField",
+    "MDTextFieldRound",
+    "MDTextFieldRect",
+    "MDTextFieldClear",
+    "FixedHintTextInput",
+    "TextfieldLabel",
+)
+
 import sys
 
 from kivy.uix.boxlayout import BoxLayout

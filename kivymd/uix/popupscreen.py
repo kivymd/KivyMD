@@ -163,6 +163,8 @@ class MyApp(App):
 MyApp().run()
 """
 
+__all__ = ('MDPopupScreen', 'RootScreen')
+
 from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout

@@ -143,6 +143,13 @@ class Example(App):
 Example().run()
 """
 
+__all__ = (
+    "MDAccordionListItem",
+    "AccordionListItem",
+    "ChevronRight",
+    "AvatarLeft",
+)
+
 from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.metrics import dp

@@ -99,6 +99,7 @@ class Example(App):
 Example().run()
 """
 
+__all__ = ("MDUserAnimationCard", "UserAnimationCard", "ModifiedToolbar")
 
 from kivy.clock import Clock
 from kivy.animation import Animation

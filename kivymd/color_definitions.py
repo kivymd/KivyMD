@@ -17,6 +17,15 @@ Color Definitions
 <https://material.io/design/color/the-color-system.html>`_
 """
 
+__all__ = (
+    "colors",
+    "palette",
+    "hue",
+    "light_colors",
+    "text_colors",
+    "theme_colors",
+)
+
 colors = {
     "Red": {
         "50": "FFEBEE",

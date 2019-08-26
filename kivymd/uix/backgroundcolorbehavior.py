@@ -14,6 +14,8 @@ Background Color Behavior
 =========================
 """
 
+__all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
+
 from kivy.lang import Builder
 from kivy.properties import BoundedNumericProperty, ReferenceListProperty
 from kivy.properties import OptionProperty, ListProperty

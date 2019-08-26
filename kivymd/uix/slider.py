@@ -16,6 +16,8 @@ Sliders
 `Material Design spec, Sliders <https://material.io/components/sliders/>`_
 """
 
+__all__ = ("MDSlider",)
+
 from kivy.lang import Builder
 from kivy.properties import ListProperty, AliasProperty, BooleanProperty
 from kivy.utils import get_color_from_hex

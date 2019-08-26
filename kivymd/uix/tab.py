@@ -16,6 +16,17 @@ Tabs
 `Material Design spec, Tabs <https://material.io/components/tabs/>`_
 """
 
+__all__ = (
+    "MDTabsException",
+    "MDTabsLabel",
+    "MDTabsBase",
+    "MDTabsMain",
+    "MDTabsCarousel",
+    "MDTabsScrollView",
+    "MDTabsBar",
+    "MDTabs",
+)
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
@@ -452,7 +463,12 @@ Builder.load_string(
 """
 )
 
-demo = """
+if __name__ == "__main__":
+    from kivy.factory import Factory
+    from kivymd.uix.list import ILeftBodyTouch
+    from kivymd.uix.button import MDIconButton
+
+    demo = """
 #:import MDToolbar kivymd.uix.toolbar.MDToolbar
 #:import MDLabel kivymd.uix.label.MDLabel
 #:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
@@ -499,14 +515,7 @@ demo = """
             halign: 'center'
             theme_text_color: 'Primary'
             font_style: 'H6'
-
-
-"""
-
-if __name__ == "__main__":
-    from kivy.factory import Factory
-    from kivymd.uix.list import ILeftBodyTouch
-    from kivymd.uix.button import MDIconButton
+    """
 
     class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
         pass

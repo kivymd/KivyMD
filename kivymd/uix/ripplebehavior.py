@@ -14,6 +14,12 @@ Ripple Behavior
 ===============
 """
 
+__all__ = (
+    "CommonRipple",
+    "RectangularRippleBehavior",
+    "CircularRippleBehavior",
+)
+
 from kivy.properties import (
     ListProperty,
     NumericProperty,

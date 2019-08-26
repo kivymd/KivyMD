@@ -17,6 +17,8 @@ Font Definitions
 <https://material.io/design/typography/the-type-system.html>`_
 """
 
+__all__ = ("fonts", "theme_font_styles")
+
 from kivy.core.text import LabelBase
 from kivymd import fonts_path
 

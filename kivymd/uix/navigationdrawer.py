@@ -9,7 +9,7 @@
 # This file is distributed under the terms of the same license,
 # as the Kivy framework.
 
-'''
+"""
 Navigation Drawer
 =================
 
@@ -26,7 +26,7 @@ from kivymd.uix.navigationdrawer import NavigationDrawerIconButton
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
-main_kv = """
+main_kv = '''
 #:import MDSeparator kivymd.uix.card.MDSeparator
 #:import MDToolbar kivymd.uix.toolbar.MDToolbar
 ##:import NavigationLayout kivymd.uix.navigationdrawer.NavigationLayout
@@ -60,7 +60,7 @@ NavigationLayout:
                 [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
 
         Widget:
-"""
+'''
 
 
 class Example(App):
@@ -85,7 +85,19 @@ class Example(App):
 
 
 Example().run()
-'''
+"""
+
+__all__ = (
+    "MDNavigationDrawer",
+    "NavigationLayout",
+    "NavigationDrawerHeaderBase",
+    "NavigationDrawerToolbar",
+    "NavigationDrawerIconButton",
+    "NavigationDrawerSubheader",
+    "NavigationDrawerDivider",
+    "NDIconLabel",
+    "NDBadgeLabel",
+)
 
 from kivy.core.window import Window
 from kivy.lang import Builder

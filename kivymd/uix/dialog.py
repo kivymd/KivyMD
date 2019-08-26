@@ -90,6 +90,14 @@ class Example(App):
 Example().run()
 """
 
+__all__ = (
+    "BaseDialog",
+    "MDDialog",
+    "ContentMDDialog",
+    "MDInputDialog",
+    "ContentInputDialog",
+)
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, BooleanProperty

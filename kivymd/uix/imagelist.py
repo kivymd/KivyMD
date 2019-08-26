@@ -142,6 +142,16 @@ class MyApp(App):
 MyApp().run()
 """
 
+__all__ = (
+    "Tile",
+    "SmartTile",
+    "SmartTileWithLabel",
+    "Star",
+    "SmartTileWithStar",
+    "IBoxOverlay",
+    "IOverlay",
+)
+
 from kivy.lang import Builder
 from kivy.properties import (
     StringProperty,

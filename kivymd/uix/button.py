@@ -135,6 +135,28 @@ class Example(App):
 Example().run()
 """
 
+__all__ = (
+    "BaseButton",
+    "BasePressedButton",
+    "BaseFlatButton",
+    "BaseRaisedButton",
+    "BaseRoundButton",
+    "BaseRectangularButton",
+    "MDIconButton",
+    "MDFlatButton",
+    "BaseFlatIconButton",
+    "MDRaisedButton",
+    "MDFloatingActionButton",
+    "MDRectangleFlatButton",
+    "MDRoundFlatButton",
+    "MDTextButton",
+    "MDCustomRoundIconButton",
+    "MDFillRoundFlatButton",
+    "MDRectangleFlatIconButton",
+    "MDRoundFlatIconButton",
+    "MDFillRoundFlatIconButton",
+)
+
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.stencil_instructions import (

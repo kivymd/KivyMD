@@ -167,6 +167,8 @@ if __name__ == '__main__':
     Test().run()
 """
 
+__all__ = ("MDSwiperManager", "MDSwiperPagination", "ItemPagination")
+
 from kivy.properties import NumericProperty, ObjectProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, SlideTransition

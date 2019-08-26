@@ -22,13 +22,13 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.factory import Factory
 
-from kivymd.cards import MDCardPost
+from kivymd.uix.card import MDCardPost
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 
 
 <ExampleCardPost@BoxLayout>
@@ -140,17 +140,17 @@ from kivy.metrics import dp
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
-from kivymd.button import MDIconButton
-from kivymd.elevation import RectangularElevationBehavior
-from kivymd.list import ILeftBody
-from kivymd.menus import MDDropdownMenu
-from kivymd.navigationdrawer import NavigationLayout
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.elevation import RectangularElevationBehavior
+from kivymd.uix.list import ILeftBody
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.navigationdrawer import NavigationLayout
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
-#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
+#:import SmartTileWithLabel kivymd.uix.imagelist.SmartTileWithLabel
 
 
 <MDCard>

@@ -21,11 +21,11 @@ from kivy.lang import Builder
 from kivymd.theming import ThemeManager
 
 kv = '''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDChip kivymd.chips.MDChip
-#:import MDChooseChip kivymd.chips.MDChooseChip
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDChip kivymd.uix.chip.MDChip
+#:import MDChooseChip kivymd.uix.chip.MDChooseChip
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 BoxLayout:
@@ -184,12 +184,12 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.stacklayout import StackLayout
 
-from kivymd.button import MDIconButton
+from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDIconButton kivymd.button.MDIconButton
+#:import MDIconButton kivymd.uix.button.MDIconButton
 
 
 <MDChooseChip>

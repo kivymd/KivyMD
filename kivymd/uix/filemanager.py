@@ -21,14 +21,14 @@ from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.uix.modalview import ModalView
 
-from kivymd.filemanager import MDFileManager
+from kivymd.uix.filemanager import MDFileManager
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDRoundFlatIconButton kivymd.uix.button.MDRoundFlatIconButton
 
 
 <ExampleFileManager@BoxLayout>
@@ -131,14 +131,19 @@ from kivy.properties import (
 
 import kivymd.material_resources as m_res
 from kivymd import images_path
-from kivymd.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
+from kivymd.uix.list import (
+    ILeftBodyTouch,
+    ILeftBody,
+    IRightBody,
+    IRightBodyTouch,
+)
 from kivymd.font_definitions import theme_font_styles
-from kivymd.ripplebehavior import (
+from kivymd.uix.ripplebehavior import (
     RectangularRippleBehavior,
     CircularRippleBehavior,
 )
 from kivymd.theming import ThemableBehavior
-from kivymd.button import MDIconButton
+from kivymd.uix.button import MDIconButton
 
 ACTIVITY_MANAGER = """
 #:import os os

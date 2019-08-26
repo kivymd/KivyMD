@@ -453,9 +453,9 @@ Builder.load_string(
 )
 
 demo = """
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
 
 
 <Example@BoxLayout>
@@ -505,8 +505,8 @@ demo = """
 
 if __name__ == "__main__":
     from kivy.factory import Factory
-    from kivymd.list import ILeftBodyTouch
-    from kivymd.button import MDIconButton
+    from kivymd.uix.list import ILeftBodyTouch
+    from kivymd.uix.button import MDIconButton
 
     class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
         pass

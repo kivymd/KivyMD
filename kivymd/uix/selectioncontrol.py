@@ -20,7 +20,6 @@ Selection Controls
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ListProperty, NumericProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import AliasProperty, BooleanProperty
 from kivy.metrics import dp, sp
@@ -28,11 +27,10 @@ from kivy.animation import Animation
 from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import colors
-from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
-from kivymd.elevation import CircularElevationBehavior
-from kivymd.ripplebehavior import CircularRippleBehavior
-from kivymd.label import MDLabel, MDIcon
+from kivymd.uix.elevation import CircularElevationBehavior
+from kivymd.uix.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.label import MDIcon
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 

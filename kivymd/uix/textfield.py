@@ -26,10 +26,10 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDTextField kivymd.uix.textfield.MDTextField
+#:import MDTextFieldClear kivymd.uix.textfield.MDTextFieldClear
+#:import MDTextFieldRect kivymd.uix.textfield.MDTextFieldRect
 
 
 <ExampleTextFields@BoxLayout>
@@ -159,12 +159,12 @@ from kivy.metrics import dp
 from kivy.metrics import sp
 from kivy.uix.widget import Widget
 
-from kivymd.label import MDLabel
+from kivymd.uix.label import MDLabel
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDTextButton kivymd.button.MDTextButton
+#:import MDTextButton kivymd.uix.button.MDTextButton
 
 
 <MDTextField>

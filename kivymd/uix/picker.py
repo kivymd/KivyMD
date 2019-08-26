@@ -37,12 +37,12 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.utils import get_color_from_hex
 
-from kivymd.label import MDLabel
-from kivymd.button import MDIconButton
+from kivymd.uix.label import MDLabel
+from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
-from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.ripplebehavior import CircularRippleBehavior
-from kivymd.elevation import RectangularElevationBehavior
+from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.uix.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.elevation import RectangularElevationBehavior
 from kivymd.color_definitions import colors, palette
 
 Builder.load_string(
@@ -325,7 +325,7 @@ class MDDatePicker(
         month=None,
         day=None,
         firstweekday=0,
-        **kwargs
+        **kwargs,
     ):
         self.callback = callback
         self.cal = calendar.Calendar(firstweekday)
@@ -448,7 +448,7 @@ class MDDatePicker(
 
 Builder.load_string(
     """
-#:import MDFlatButton kivymd.button.MDFlatButton
+#:import MDFlatButton kivymd.uix.button.MDFlatButton
 #:import CircularTimePicker kivymd.vendor.circularTimePicker.CircularTimePicker
 #:import dp kivy.metrics.dp
 
@@ -532,8 +532,8 @@ class MDTimePicker(
 
 Builder.load_string(
     """
-#:import MDTabsBase kivymd.tabs.MDTabsBase
-#:import MDTab kivymd.tabs.MDTabs
+#:import MDTabsBase kivymd.uix.tab.MDTabsBase
+#:import MDTab kivymd.uix.tab.MDTabs
 
 
 <Tab@BoxLayout+MDTabsBase>
@@ -920,8 +920,8 @@ if __name__ == "__main__":
         def build(self):
             main_widget = Builder.load_string(
                 """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDThemePicker kivymd.pickers.MDThemePicker
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDThemePicker kivymd.uix.picker.MDThemePicker
 
 
 FloatLayout:

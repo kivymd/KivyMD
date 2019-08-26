@@ -28,9 +28,9 @@ from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
 kv = '''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
-#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import SmartTileWithLabel kivymd.uix.imagelist.SmartTileWithLabel
+#:import SmartTileWithStar kivymd.uix.imagelist.SmartTileWithStar
 
 
 <MySmartTileWithLabel@SmartTileWithLabel>
@@ -155,8 +155,8 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
-from kivymd.button import MDIconButton
-from kivymd.ripplebehavior import RectangularRippleBehavior
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(

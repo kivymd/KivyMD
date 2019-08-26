@@ -23,13 +23,13 @@ from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.utils import get_hex_from_color
 
-from kivymd.dialog import MDInputDialog, MDDialog
+from kivymd.uix.dialog import MDInputDialog, MDDialog
 from kivymd.theming import ThemeManager
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDRectangleFlatButton kivymd.uix.button.MDRectangleFlatButton
 
 
 <ExampleDialogs@BoxLayout>
@@ -97,12 +97,11 @@ from kivy.metrics import dp
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
-from kivy.uix.textinput import TextInput
 
 from kivymd.uix.card import MDCard
 from kivymd.uix.textfield import MDTextField, MDTextFieldRect
 from kivymd.theming import ThemableBehavior
-from kivymd.button import MDFlatButton, MDRaisedButton, MDTextButton
+from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDTextButton
 from kivymd import images_path
 from kivymd.material_resources import DEVICE_IOS
 

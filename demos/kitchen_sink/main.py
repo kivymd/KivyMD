@@ -36,15 +36,14 @@ from screens import Screens
 
 from kivymd.utils.cropimage import crop_image
 from kivymd.utils import asynckivy
-from kivymd.fanscreenmanager import MDFanScreen
-from kivymd.popupscreen import MDPopupScreen
-from kivymd.button import MDIconButton
-from kivymd.list import (
+from kivymd.uix.fanscreenmanager import MDFanScreen
+from kivymd.uix.popupscreen import MDPopupScreen
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.list import (
     ILeftBody,
     ILeftBodyTouch,
     IRightBodyTouch,
     OneLineIconListItem,
-    OneLineListItem,
 )
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.theming import ThemeManager
@@ -63,7 +62,7 @@ main_widget_kv = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MDNavigationDrawer kivymd.uix.navigationdrawer.MDNavigationDrawer
 #:import NavigationLayout kivymd.uix.navigationdrawer.NavigationLayout
@@ -532,7 +531,7 @@ class KitchenSink(App, Screens):
             self.create_stack_floating_buttons = True
 
     def set_accordion_list(self):
-        from kivymd.accordionlistitem import MDAccordionListItem
+        from kivymd.uix.accordionlistitem import MDAccordionListItem
 
         def callback(text):
             toast(f"{text} to {content.name_item}")
@@ -571,7 +570,7 @@ class KitchenSink(App, Screens):
         instance_progress.animation_progress_from_fade()
 
     def show_example_download_file(self, interval):
-        from kivymd.progressloader import MDProgressLoader
+        from kivymd.uix.progressloader import MDProgressLoader
 
         def get_connect(host="8.8.8.8", port=53, timeout=3):
             import socket
@@ -605,8 +604,8 @@ class KitchenSink(App, Screens):
         toast("Done")
 
     def file_manager_open(self):
-        from kivymd.filemanager import MDFileManager
-        from kivymd.dialog import MDDialog
+        from kivymd.uix.filemanager import MDFileManager
+        from kivymd.uix.dialog import MDDialog
 
         def open_file_manager(text_item, dialog):
             previous = False if text_item == "List" else True
@@ -761,7 +760,7 @@ class KitchenSink(App, Screens):
         """Create and open instance MDUserAnimationCard
         for the screen UserCard."""
 
-        from kivymd.useranimationcard import MDUserAnimationCard
+        from kivymd.uix.useranimationcard import MDUserAnimationCard
 
         def main_back_callback():
             toast("Close card")
@@ -830,7 +829,7 @@ class KitchenSink(App, Screens):
             toast(instance.text_field.text)
 
         if not self.input_dialog:
-            from kivymd.dialog import MDInputDialog
+            from kivymd.uix.dialog import MDInputDialog
 
             self.input_dialog = MDInputDialog(
                 title="Title",
@@ -843,7 +842,7 @@ class KitchenSink(App, Screens):
 
     def show_example_alert_dialog(self):
         if not self.alert_dialog:
-            from kivymd.dialog import MDDialog
+            from kivymd.uix.dialog import MDDialog
 
             self.alert_dialog = MDDialog(
                 title="Title",
@@ -856,7 +855,7 @@ class KitchenSink(App, Screens):
 
     def show_example_ok_cancel_dialog(self):
         if not self.ok_cancel_dialog:
-            from kivymd.dialog import MDDialog
+            from kivymd.uix.dialog import MDDialog
 
             self.ok_cancel_dialog = MDDialog(
                 title="Title",
@@ -870,7 +869,7 @@ class KitchenSink(App, Screens):
 
     def show_example_long_dialog(self):
         if not self.long_dialog:
-            from kivymd.dialog import MDDialog
+            from kivymd.uix.dialog import MDDialog
 
             self.long_dialog = MDDialog(
                 text="Lorem ipsum dolor sit amet, consectetur adipiscing "
@@ -941,7 +940,7 @@ class KitchenSink(App, Screens):
     def show_example_bottom_sheet(self):
         """Show menu from the screen BottomSheet."""
 
-        from kivymd.bottomsheet import MDListBottomSheet
+        from kivymd.uix.bottomsheet import MDListBottomSheet
 
         if not self.bs_menu_1:
             self.bs_menu_1 = MDListBottomSheet()
@@ -969,7 +968,7 @@ class KitchenSink(App, Screens):
         """Show menu from the screen BottomSheet."""
 
         if not self.bs_menu_2:
-            from kivymd.bottomsheet import MDGridBottomSheet
+            from kivymd.uix.bottomsheet import MDGridBottomSheet
 
             self.bs_menu_2 = MDGridBottomSheet()
             self.bs_menu_2.add_item(
@@ -1007,7 +1006,7 @@ class KitchenSink(App, Screens):
     def set_appbar(self):
         """Create MDBottomAppBar for the screen BottomAppBar."""
 
-        from kivymd.toolbar import MDBottomAppBar
+        from kivymd.uix.toolbar import MDBottomAppBar
 
         def press_button(inctance):
             toast("Press Button")

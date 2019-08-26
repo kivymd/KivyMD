@@ -21,16 +21,16 @@ from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.lang import Builder
 
-from kivymd.snackbars import Snackbar
+from kivymd.uix.snackbar import Snackbar
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 KV = '''
 #:import Window kivy.core.window.Window
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 Screen:
@@ -138,12 +138,12 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.uix.floatlayout import FloatLayout
 
-from kivymd.button import MDFlatButton
+from kivymd.uix.button import MDFlatButton
 
 Builder.load_string(
     """
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import MDLabel kivymd.label.MDLabel
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 <Snackbar>:

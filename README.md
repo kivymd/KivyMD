@@ -24,9 +24,11 @@ Full documentation yet. Some examples of using KivyMD widgets can be found in ou
 
 Support
 =======
-If you need assistance, you can ask for help on our mailing list:
+If you need assistance or you have a question, you can ask for help on our mailing list:
 
-* User Groups: [vk group](https://vk.com/kivy_development), [google group](https://groups.google.com/forum/#!categories/kivymd-users-support), [Discord Channel](https://discord.gg/TegSJDD)
+* **Discord server (priority):** https://discord.gg/TegSJDD (English #support)
+* VK group: https://vk.com/kivy_development (Russian)
+* Google group: https://groups.google.com/forum/#!categories/kivymd-users-support (English)
 * Email: kivydevelopment@gmail.com
 
 

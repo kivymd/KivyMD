@@ -18,16 +18,16 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.button import MDIconButton
-from kivymd.list import ILeftBodyTouch
-from kivymd.popupscreen import MDPopupScreen
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.list import ILeftBodyTouch
+from kivymd.uix.popupscreen import MDPopupScreen
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
+#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
 #:import Window kivy.core.window.Window
 
 

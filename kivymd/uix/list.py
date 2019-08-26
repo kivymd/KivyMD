@@ -164,7 +164,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 
 import kivymd.material_resources as m_res
-from kivymd.ripplebehavior import RectangularRippleBehavior
+from kivymd.uix.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 from kivymd.font_definitions import theme_font_styles
 

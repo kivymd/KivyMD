@@ -19,15 +19,15 @@ from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.properties import StringProperty
 
-from kivymd.button import MDIconButton
+from kivymd.uix.button import MDIconButton
 from kivymd.icon_definitions import md_icons
-from kivymd.list import ILeftBodyTouch, OneLineIconListItem
+from kivymd.uix.list import ILeftBodyTouch, OneLineIconListItem
 from kivymd.theming import ThemeManager
 from kivymd.utils import asynckivy
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDScrollViewRefreshLayout kivymd.refreshlayout.MDScrollViewRefreshLayout
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDScrollViewRefreshLayout kivymd.uix.refreshlayout.MDScrollViewRefreshLayout
 
 
 <ItemForList>
@@ -127,7 +127,7 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import Window kivy.core.window.Window
-#:import MDSpinner kivymd.spinner.MDSpinner
+#:import MDSpinner kivymd.uix.spinner.MDSpinner
 
 
 <RefreshSpinner>

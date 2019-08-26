@@ -27,8 +27,8 @@ from kivymd.toast import toast
 from kivymd.toolbar import MDBottomAppBar
 
 kv = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDLabel kivymd.label.MDLabel
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 BoxLayout:
@@ -106,15 +106,15 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation
 from kivy.core.window import Window
 
-from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.button import MDIconButton, MDFloatingActionButton
+from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.uix.button import MDIconButton, MDFloatingActionButton
 from kivymd.theming import ThemableBehavior
-from kivymd.elevation import RectangularElevationBehavior
+from kivymd.uix.elevation import RectangularElevationBehavior
 
 Builder.load_string(
     """
 #:import m_res kivymd.material_resources
-#:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
+#:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
 
 
 <AppBarActionButton>

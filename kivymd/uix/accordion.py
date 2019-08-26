@@ -24,9 +24,9 @@ from kivy.properties import (
 from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.font_definitions import theme_font_styles
-from kivymd.list import OneLineListItem
+from kivymd.uix.list import OneLineListItem
 from kivymd.theming import ThemableBehavior
 
 
@@ -86,7 +86,7 @@ class MDAccordionItem(ThemableBehavior, AccordionItem):
 
 Builder.load_string(
     """
-#:import MDLabel kivymd.label.MDLabel
+#:import MDLabel kivymd.uix.label.MDLabel
 #:import md_icons kivymd.icon_definitions.md_icons
 
 
@@ -221,7 +221,7 @@ if __name__ == "__main__":
             self.theme_cls.primary_palette = "Indigo"
             return Builder.load_string(
                 """
-#:import MDLabel kivymd.label.MDLabel
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 BoxLayout:

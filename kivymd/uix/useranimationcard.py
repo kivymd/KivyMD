@@ -19,16 +19,16 @@ from kivy.factory import Factory
 
 from kivymd.toast import toast
 from kivymd.theming import ThemeManager
-from kivymd.useranimationcard import MDUserAnimationCard
-from kivymd.button import MDIconButton
-from kivymd.list import ILeftBodyTouch
+from kivymd.uix.useranimationcard import MDUserAnimationCard
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.list import ILeftBodyTouch
 
 # Your content for a contact card.
 Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import TwoLineIconListItem kivymd.list.TwoLineIconListItem
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
+#:import TwoLineIconListItem kivymd.uix.list.TwoLineIconListItem
+#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
+#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
 
 
 <TestAnimationCard@BoxLayout>
@@ -110,8 +110,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.modalview import ModalView
 
-from kivymd.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.button import MDIconButton
+from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(

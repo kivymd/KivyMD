@@ -62,9 +62,14 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 
 from kivymd import images_path
-from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
-from kivymd.label import MDIcon
-from kivymd.list import MDList, OneLineListItem, ILeftBody, OneLineIconListItem
+from kivymd.uix.backgroundcolorbehavior import BackgroundColorBehavior
+from kivymd.uix.label import MDIcon
+from kivymd.uix.list import (
+    MDList,
+    OneLineListItem,
+    ILeftBody,
+    OneLineIconListItem,
+)
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
@@ -156,7 +161,7 @@ class MDListBottomSheet(MDBottomSheet):
 
 Builder.load_string(
     """
-#:import MDLabel kivymd.label.MDLabel
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 <GridBSItem>

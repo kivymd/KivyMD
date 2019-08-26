@@ -22,16 +22,16 @@ Example
 from kivy.app import App
 from kivy.lang import Builder
 
-from kivymd.navigationdrawer import NavigationDrawerIconButton
+from kivymd.uix.navigationdrawer import NavigationDrawerIconButton
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 main_kv = """
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDToolbar kivymd.toolbar.MDToolbar
-##:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
-#:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
-#:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+##:import NavigationLayout kivymd.uix.navigationdrawer.NavigationLayout
+#:import MDNavigationDrawer kivymd.uix.navigationdrawer.MDNavigationDrawer
+#:import NavigationDrawerSubheader kivymd.uix.navigationdrawer.NavigationDrawerSubheader
 
 <ContentNavigationDrawer@MDNavigationDrawer>:
     drawer_logo: 'demos/kitchen_sink/assets/drawer_logo.png'
@@ -102,10 +102,10 @@ from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd import images_path
-from kivymd.elevation import RectangularElevationBehavior
+from kivymd.uix.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
-from kivymd.label import MDLabel
-from kivymd.list import (
+from kivymd.uix.label import MDLabel
+from kivymd.uix.list import (
     BaseListItem,
     ILeftBody,
     OneLineListItem,
@@ -113,15 +113,15 @@ from kivymd.list import (
     IRightBody,
 )
 from kivymd.theming import ThemableBehavior
-from kivymd.toolbar import MDToolbar
+from kivymd.uix.toolbar import MDToolbar
 from kivymd.vendor.navigationdrawer import (
     NavigationDrawer as VendorNavigationDrawer,
 )
 
 Builder.load_string(
     """
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import MDLabel kivymd.label.MDLabel
+#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
+#:import MDLabel kivymd.uix.label.MDLabel
 #:import colors kivymd.color_definitions.colors
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import ScrollView kivy.uix.scrollview.ScrollView

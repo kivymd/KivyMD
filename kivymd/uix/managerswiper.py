@@ -22,16 +22,16 @@ from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.cards import MDCard
-from kivymd.managerswiper import MDSwiperPagination
+from kivymd.uix.card import MDCard
+from kivymd.uix.managerswiper import MDSwiperPagination
 from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
 activity = '''
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDLabel kivymd.label.MDLabel
-#:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDSwiperManager kivymd.uix.managerswiper.MDSwiperManager
 
 
 <MyCard>
@@ -175,12 +175,12 @@ from kivy.lang import Builder
 from kivy.uix.widget import Widget
 from kivy.animation import Animation
 
-from kivymd.navigationdrawer import NavigationLayout
+from kivymd.uix.navigationdrawer import NavigationLayout
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDIconButton kivymd.button.MDIconButton
+#:import MDIconButton kivymd.uix.button.MDIconButton
 
 
 <ItemPagination>

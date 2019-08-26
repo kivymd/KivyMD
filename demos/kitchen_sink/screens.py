@@ -132,8 +132,8 @@ accordion = """
 """
 
 grid = """
-#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
-#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
+#:import SmartTileWithStar kivymd.uix.imagelist.SmartTileWithStar
+#:import SmartTileWithLabel kivymd.uix.imagelist.SmartTileWithLabel
 
 
 <Grid@Screen>
@@ -196,10 +196,10 @@ grid = """
 """
 
 bottom_navigation = """
-#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
-#:import MDBottomNavigationItem kivymd.bottomnavigation.MDBottomNavigationItem
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDLabel kivymd.label.MDLabel
+#:import MDBottomNavigation kivymd.uix.bottomnavigation.MDBottomNavigation
+#:import MDBottomNavigationItem kivymd.uix.bottomnavigation.MDBottomNavigationItem
+#:import MDTextField kivymd.uix.textfield.MDTextField
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 <BottomNavigation@Screen>
@@ -253,10 +253,10 @@ bottom_navigation = """
 """
 
 tabs = """
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDTabsBase kivymd.tabs.MDTabsBase
-#:import MDTabs kivymd.tabs.MDTabs
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
+#:import MDTabsBase kivymd.uix.tab.MDTabsBase
+#:import MDTabs kivymd.uix.tab.MDTabs
 
 
 <Tabs@Screen>
@@ -299,9 +299,9 @@ tabs = """
 """
 
 pickers = """
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDLabel kivymd.label.MDLabel
-#:import MDRaisedButton kivymd.button.MDRaisedButton
+#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
 
 
 <Pickers@Screen>
@@ -606,10 +606,10 @@ theming = """
 """
 
 textfields = """
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
-#:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDTextFieldRound kivymd.textfields.MDTextFieldRound
+#:import MDTextFieldRect kivymd.uix.textfield.MDTextFieldRect
+#:import MDTextFieldClear kivymd.uix.textfield.MDTextFieldClear
+#:import MDTextField kivymd.uix.textfield.MDTextField
+#:import MDTextFieldRound kivymd.uix.textfield.MDTextFieldRound
 
 #:set color_shadow [0, 0, 0, .2980392156862745]
 
@@ -851,9 +851,9 @@ lists = """
 """
 
 snackbar = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 <MySnackBar@Screen>
@@ -935,8 +935,8 @@ user_animation_card = """
 """
 
 selection_controls = """
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDSwitch kivymd.selectioncontrols.MDSwitch
+#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
+#:import MDSwitch kivymd.uix.selectioncontrol.MDSwitch
 
 
 <SelectionControls@Screen>
@@ -1264,8 +1264,8 @@ labels = """
 """
 
 menu = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
 
 
 <Menu@Screen>
@@ -1318,10 +1318,10 @@ menu = """
 """
 
 chips = """
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDChip kivymd.chips.MDChip
-#:import MDChooseChip kivymd.chips.MDChooseChip
-#:import MDLabel kivymd.label.MDLabel
+#:import MDSeparator kivymd.uix.card.MDSeparator
+#:import MDChip kivymd.uix.chip.MDChip
+#:import MDChooseChip kivymd.uix.chip.MDChooseChip
+#:import MDLabel kivymd.uix.label.MDLabel
 
 
 <LabelForChips@MDLabel>
@@ -1457,8 +1457,8 @@ chips = """
 """
 
 progress = """
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDSpinner kivymd.spinner.MDSpinner
+#:import MDCheckbox kivymd.uix.selectioncontrol.MDCheckbox
+#:import MDSpinner kivymd.uix.spinner.MDSpinner
 
 
 <Progress@Screen>
@@ -1645,8 +1645,8 @@ md_icon_item = """
 md_icons = """
 #:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import images_path kivymd.images_path
-#:import MDTextFieldRect kivymd.textfields.MDTextField
-#:import MDIconButton kivymd.button.MDIconButton
+#:import MDTextFieldRect kivymd.uix.textfield.MDTextField
+#:import MDIconButton kivymd.uix.button.MDIconButton
 
 
 <MDIconItemForMdIconsList@OneLineIconListItem>:

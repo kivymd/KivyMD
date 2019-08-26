@@ -46,10 +46,10 @@ from kivymd.list import (
     OneLineIconListItem,
     OneLineListItem,
 )
-from kivymd.selectioncontrols import MDCheckbox
+from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.theming import ThemeManager
-from kivymd.ripplebehavior import CircularRippleBehavior
-from kivymd.cards import MDCard
+from kivymd.uix.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.card import MDCard
 from kivymd.icon_definitions import md_icons
 
 
@@ -65,17 +65,17 @@ main_widget_kv = """
 #:import images_path kivymd.images_path
 #:import MDToolbar kivymd.toolbar.MDToolbar
 #:import ThemeManager kivymd.theming.ThemeManager
-#:import MDNavigationDrawer kivymd.navigationdrawer.MDNavigationDrawer
-#:import NavigationLayout kivymd.navigationdrawer.NavigationLayout
-#:import NavigationDrawerToolbar kivymd.navigationdrawer.NavigationDrawerToolbar
-#:import NavigationDrawerSubheader kivymd.navigationdrawer.NavigationDrawerSubheader
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import OneLineListItem kivymd.list.OneLineListItem
-#:import TwoLineListItem kivymd.list.TwoLineListItem
-#:import ThreeLineListItem kivymd.list.ThreeLineListItem
-#:import MDLabel kivymd.label.MDLabel
-#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
+#:import MDNavigationDrawer kivymd.uix.navigationdrawer.MDNavigationDrawer
+#:import NavigationLayout kivymd.uix.navigationdrawer.NavigationLayout
+#:import NavigationDrawerToolbar kivymd.uix.navigationdrawer.NavigationDrawerToolbar
+#:import NavigationDrawerSubheader kivymd.uix.navigationdrawer.NavigationDrawerSubheader
+#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+#:import OneLineListItem kivymd.uix.list.OneLineListItem
+#:import TwoLineListItem kivymd.uix.list.TwoLineListItem
+#:import ThreeLineListItem kivymd.uix.list.ThreeLineListItem
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
 
 
 <ContentPopup@BoxLayout>
@@ -505,13 +505,13 @@ class KitchenSink(App, Screens):
 
     def theme_picker_open(self):
         if not self.md_theme_picker:
-            from kivymd.pickers import MDThemePicker
+            from kivymd.uix.picker import MDThemePicker
 
             self.md_theme_picker = MDThemePicker()
         self.md_theme_picker.open()
 
     def example_add_stack_floating_buttons(self):
-        from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+        from kivymd.uix.stackfloatingbutton import MDStackFloatingButtons
 
         def set_my_language(instance_button):
             toast(instance_button.icon)
@@ -667,7 +667,7 @@ class KitchenSink(App, Screens):
         """Adds MDCardPost objects to the screen Cards
         when the screen is open."""
 
-        from kivymd.cards import MDCardPost
+        from kivymd.uix.card import MDCardPost
 
         def callback(instance, value):
             if value is None:
@@ -790,7 +790,7 @@ class KitchenSink(App, Screens):
                 self._interval = 0
                 self.my_snackbar = None
 
-        from kivymd.snackbars import Snackbar
+        from kivymd.uix.snackbar import Snackbar
 
         if snack_type == "simple":
             Snackbar(text="This is a snackbar!").show()
@@ -898,7 +898,7 @@ class KitchenSink(App, Screens):
     def show_example_time_picker(self):
         """Show MDTimePicker from the screen Pickers."""
 
-        from kivymd.pickers import MDTimePicker
+        from kivymd.uix.picker import MDTimePicker
 
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_date)
@@ -923,7 +923,7 @@ class KitchenSink(App, Screens):
     def show_example_date_picker(self):
         """Show MDDatePicker from the screen Pickers."""
 
-        from kivymd.pickers import MDDatePicker
+        from kivymd.uix.picker import MDDatePicker
 
         if self.data["Pickers"][
             "object"

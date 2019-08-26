@@ -73,7 +73,7 @@ if __name__ == "__main__":
         def build(self):
             return Builder.load_string(
                 """
-#:import MDSlider kivymd.slider.MDSlider
+#:import MDSlider kivymd.uix.slider.MDSlider
 
 
 BoxLayout:

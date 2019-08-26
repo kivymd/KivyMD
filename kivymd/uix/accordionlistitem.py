@@ -22,18 +22,18 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.button import MDIconButton
-from kivymd.list import ILeftBodyTouch
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.list import ILeftBodyTouch
 from kivymd.theming import ThemeManager
-from kivymd.accordionlistitem import MDAccordionListItem
+from kivymd.uix.accordionlistitem import MDAccordionListItem
 from kivymd.toast import toast
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import TwoLineIconListItem kivymd.list.TwoLineIconListItem
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
+#:import TwoLineIconListItem kivymd.uix.list.TwoLineIconListItem
+#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
+#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
 
 
 <ContentForAnimCard>
@@ -150,8 +150,12 @@ from kivy.properties import ObjectProperty, NumericProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 
-from kivymd.button import MDIconButton
-from kivymd.list import IRightBodyTouch, OneLineAvatarIconListItem, ILeftBody
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.list import (
+    IRightBodyTouch,
+    OneLineAvatarIconListItem,
+    ILeftBody,
+)
 
 Builder.load_string(
     """

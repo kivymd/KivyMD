@@ -31,11 +31,11 @@ from kivymd.theming import ThemeManager
 
 Builder.load_string('''
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDFanScreenManager kivymd.uix.fanscreenmanager.MDFanScreenManager
+#:import OneLineIconListItem kivymd.uix.list.OneLineIconListItem
+#:import MDRoundFlatButton kivymd.uix.button.MDRoundFlatButton
+#:import MDTextFieldRect kivymd.uix.textfield.MDTextFieldRect
 
 
 <TestFanScreenManager>

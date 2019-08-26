@@ -143,9 +143,9 @@ from kivymd.button import MDIconButton
 ACTIVITY_MANAGER = """
 #:import os os
 #:import Window kivy.core.window.Window
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
-#:import MDSeparator kivymd.cards.MDSeparator
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDFloatingActionButton kivymd.uix.button.MDFloatingActionButton
+#:import MDSeparator kivymd.uix.card.MDSeparator
 
 
 <BodyManager@BoxLayout>

@@ -21,14 +21,14 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.factory import Factory
 
-from kivymd.progressloader import MDProgressLoader
+from kivymd.uix.progressloader import MDProgressLoader
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
+#:import MDToolbar kivymd.uix.toolbar.MDToolbar
+#:import MDRoundFlatIconButton kivymd.uix.button.MDRoundFlatIconButton
 
 
 <Root@BoxLayout>
@@ -105,14 +105,14 @@ from kivy.network.urlrequest import UrlRequest
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
 
-from kivymd.cards import MDCard
+from kivymd.uix.card import MDCard
 
 Builder.load_string(
     """
 #:import Window kivy.core.window.Window
-#:import MDSpinner kivymd.spinner.MDSpinner
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCard kivymd.cards.MDCard
+#:import MDSpinner kivymd.uix.spinner.MDSpinner
+#:import MDLabel kivymd.uix.label.MDLabel
+#:import MDCard kivymd.uix.card.MDCard
 
 
 <MDProgressLoader>

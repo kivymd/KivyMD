@@ -91,26 +91,11 @@ What's new in version 0.100.2:
 
 API Breaking changes:
 =====================
-* Moving classes to new modules:
 
-| Old                                                  | New                                                |
-|------------------------------------------------------|----------------------------------------------------|
-| `kivymd.tabs.MDBottomNavigation`                     | `kivymd.bottomnavigation.MDBottomNavigation`       |
-| `kivymd.updatespinner`                               | `kivymd.refreshlayout`                             |
+* All uix modules moved to kivymd.uix module.
 
-* Renamed files, classes and variables:
-
-| Old                                                  | New                                 |
-|------------------------------------------------------|-------------------------------------|
-| `kivymd.elevationbehavior`                           | `kivymd.elevation`                  |
-| `kivymd.grid`                                        | `kivymd.imagelists`                 |
-| `kivymd.date_picker`                                 | `kivymd.pickers`                    |
-| `kivymd.time_picker`                                 | `kivymd.pickers`                    |
-| `kivymd.time_picker`                                 | `kivymd.pickers`                    |
-| `kivymd.card`                                        | `kivymd.cards`                      |
-| `kivymd.menu`                                        | `kivymd.menus`                      |
-| `kivymd.snackbar`                                    | `kivymd.snackbars`                  |
-| `Toolbar` (from `kivymd.toolbar`)                    | `MDToolbar` (from `kivymd.toolbar`) |
+* All widgets that usually used in kv-lang are automatically added to Factory.
+You don't need to #:import them. Remove all your imports.
 
 * Changed font styles:
 

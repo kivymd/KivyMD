@@ -1,7 +1,7 @@
 KivyMD
 ======
 
-<img align="left" height="256" src="https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/images/kivy-logo-white-512.png"/>
+<img align="left" height="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
@@ -85,7 +85,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 
 What's new in version 0.100.2:
 ============================
-[CHANGELOG.md](https://github.com/HeaTTheatR/KivyMD/blob/master/CHANGELOG.md)
+[CHANGELOG.md](CHANGELOG.md)
 
 API Breaking changes:
 =====================

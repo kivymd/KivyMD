@@ -1901,35 +1901,47 @@ class Screens(object):
             name_screen == "Registration"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.formone import registration_form_one, FormOne
+            from demo_apps.formone import registration_form_one, FormOne  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = registration_form_one
         elif (
             name_screen == "Shop Window"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.shopwindow import screen_shop_window, ShopWindow
+            from demo_apps.shopwindow import (
+                screen_shop_window,
+                ShopWindow,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_shop_window
         elif (
             name_screen == "Coffee Menu"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
+            from demo_apps.coffeemenu import (
+                screen_coffee_menu,
+                CoffeeMenu,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_coffee_menu
         elif (
             name_screen == "Fitness Club"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+            from demo_apps.fitnessclub import (
+                screen_fitness_club,
+                FitnessClub,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_fitness_club
         elif (
             name_screen == "Account Page"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.accountpage import screen_account_page, AccountPage
+            from demo_apps.accountpage import (
+                screen_account_page,
+                AccountPage,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_account_page
 

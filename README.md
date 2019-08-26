@@ -1,7 +1,7 @@
 KivyMD
 ======
 
-<img align="left" height="256" src="https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/images/kivy-logo-white-512.png"/>
+<img align="left" height="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
@@ -15,6 +15,8 @@ Join the project! Just fork the project, branch out and submit a pull request wh
 
 If you wish to become a project developer (permission to create branches on the project without forking for easier collaboration), have at least one PR approved and ask for it. If you contribute regularly to the project the role may be offered to you without asking too.
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Documentation
 =============
 
@@ -22,9 +24,11 @@ Full documentation yet. Some examples of using KivyMD widgets can be found in ou
 
 Support
 =======
-If you need assistance, you can ask for help on our mailing list:
+If you need assistance or you have a question, you can ask for help on our mailing list:
 
-* User Groups: [vk group](https://vk.com/kivy_development), [google group](https://groups.google.com/forum/#!categories/kivymd-users-support), [Discord Channel](https://discord.gg/TegSJDD)
+* **Discord server (priority):** https://discord.gg/TegSJDD (English #support)
+* VK group: https://vk.com/kivy_development (Russian)
+* Google group: https://groups.google.com/forum/#!categories/kivymd-users-support (English)
 * Email: kivydevelopment@gmail.com
 
 
@@ -83,7 +87,7 @@ Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
 
 What's new in version 0.100.2:
 ============================
-[CHANGELOG.md](https://github.com/HeaTTheatR/KivyMD/blob/master/CHANGELOG.md)
+[CHANGELOG.md](CHANGELOG.md)
 
 API Breaking changes:
 =====================

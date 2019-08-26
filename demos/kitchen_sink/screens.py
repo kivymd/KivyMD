@@ -21,9 +21,6 @@ from kivy.metrics import dp
 from kivymd.utils.cropimage import crop_image
 
 bottom_app_bar = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 <BottomAppBar@Screen>
     name: 'bottom app bar'
 
@@ -58,9 +55,6 @@ accordion_list = """
 """
 
 bottom_sheet = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 <BottomSheet@Screen>
     name: 'bottom sheet'
 
@@ -82,11 +76,6 @@ bottom_sheet = """
 """
 
 accordion = """
-#:import MDAccordion kivymd.accordion.MDAccordion
-#:import MDAccordionItem kivymd.accordion.MDAccordionItem
-#:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
-
-
 <Accord@Screen>
     name: 'accordion'
 
@@ -132,10 +121,6 @@ accordion = """
 """
 
 grid = """
-#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
-#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
-
-
 <Grid@Screen>
     name: 'grid'
 
@@ -196,12 +181,6 @@ grid = """
 """
 
 bottom_navigation = """
-#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
-#:import MDBottomNavigationItem kivymd.bottomnavigation.MDBottomNavigationItem
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDLabel kivymd.label.MDLabel
-
-
 <BottomNavigation@Screen>
     name: 'bottom navigation'
 
@@ -253,12 +232,6 @@ bottom_navigation = """
 """
 
 tabs = """
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDTabsBase kivymd.tabs.MDTabsBase
-#:import MDTabs kivymd.tabs.MDTabs
-
-
 <Tabs@Screen>
     name: 'tabs'
 
@@ -299,11 +272,6 @@ tabs = """
 """
 
 pickers = """
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDLabel kivymd.label.MDLabel
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 <Pickers@Screen>
     name: 'pickers'
 
@@ -376,19 +344,6 @@ pickers = """
 """
 
 buttons = """
-#:import MDIconButton kivymd.button.MDIconButton
-#:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
-#:import MDFlatButton kivymd.button.MDFlatButton
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
-#:import MDRectangleFlatIconButton kivymd.button.MDRectangleFlatIconButton
-#:import MDTextButton kivymd.button.MDTextButton
-#:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
-#:import MDFillRoundFlatIconButton kivymd.button.MDFillRoundFlatIconButton
-#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
-
-
 <Buttons@Screen>
     name: 'buttons'
 
@@ -501,9 +456,6 @@ cards = """
             height: self.minimum_height
 """
 toolbars = """
-#:import MDToolbar kivymd.toolbar.MDToolbar
-
-
 <Toolbars@Screen>
     name: 'toolbars'
 
@@ -535,9 +487,6 @@ toolbars = """
 """
 
 dialogs = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 <Dialogs@Screen>
     name: 'dialogs'
 
@@ -575,10 +524,6 @@ dialogs = """
 """
 
 theming = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDLabel kivymd.label.MDLabel
-
-
 <Theming@Screen>
     name: 'theming'
 
@@ -606,11 +551,6 @@ theming = """
 """
 
 textfields = """
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
-#:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDTextFieldRound kivymd.textfields.MDTextFieldRound
-
 #:set color_shadow [0, 0, 0, .2980392156862745]
 
 
@@ -740,9 +680,6 @@ textfields = """
 """
 
 file_manager = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 <FileManager@Screen>
     name: 'file manager'
 
@@ -756,15 +693,6 @@ file_manager = """
 """
 
 lists = """
-#:import MDList kivymd.list.MDList
-#:import OneLineListItem kivymd.list.OneLineListItem
-#:import TwoLineListItem kivymd.list.TwoLineListItem
-#:import ThreeLineListItem kivymd.list.ThreeLineListItem
-#:import OneLineAvatarListItem kivymd.list.OneLineAvatarListItem
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
-
-
 <Lists@Screen>
     name: 'lists'
 
@@ -851,11 +779,6 @@ lists = """
 """
 
 snackbar = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
-
-
 <MySnackBar@Screen>
     name: 'snackbar'
 
@@ -898,7 +821,6 @@ snackbar = """
 """
 
 download_file = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
 #:import Clock kivy.clock.Clock
 
 
@@ -919,9 +841,6 @@ download_file = """
 """
 
 user_animation_card = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
 <UserCard@Screen>
     name: 'user animation card'
 
@@ -935,10 +854,6 @@ user_animation_card = """
 """
 
 selection_controls = """
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDSwitch kivymd.selectioncontrols.MDSwitch
-
-
 <SelectionControls@Screen>
     name: 'selection controls'
 
@@ -1020,9 +935,6 @@ selection_controls = """
 """
 
 sliders = """
-#:import MDSlider kivymd.slider.MDSlider
-
-
 <Sliders@Screen>
     name: 'sliders'
 
@@ -1049,10 +961,6 @@ stack_buttons = """
 """
 
 refresh_layout = """
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDScrollViewRefreshLayout kivymd.refreshlayout.MDScrollViewRefreshLayout
-
-
 <ItemForListRefreshLayout>
     text: root.text
 
@@ -1078,10 +986,6 @@ refresh_layout = """
 """
 
 progress_bar = """
-#:import MDSlider kivymd.slider.MDSlider
-#:import MDProgressBar kivymd.progressbar.MDProgressBar
-
-
 <ProgressBars@Screen>
     name: 'progress bar'
 
@@ -1113,9 +1017,6 @@ progress_bar = """
 """
 
 labels = """
-#:import MDLabel kivymd.label.MDLabel
-
-
 <MyMDLabel@MDLabel>
     size_hint_y: None
     height: self.texture_size[1]
@@ -1264,8 +1165,7 @@ labels = """
 """
 
 menu = """
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
 
 
 <Menu@Screen>
@@ -1318,12 +1218,6 @@ menu = """
 """
 
 chips = """
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDChip kivymd.chips.MDChip
-#:import MDChooseChip kivymd.chips.MDChooseChip
-#:import MDLabel kivymd.label.MDLabel
-
-
 <LabelForChips@MDLabel>
     theme_text_color: 'Primary'
 
@@ -1457,10 +1351,6 @@ chips = """
 """
 
 progress = """
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDSpinner kivymd.spinner.MDSpinner
-
-
 <Progress@Screen>
     name: 'progress'
 
@@ -1480,9 +1370,6 @@ progress = """
 """
 
 fan_manager = """
-#:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
-
-
 <FanManager@Screen>
     name: 'fan manager'
 
@@ -1556,9 +1443,6 @@ popup_screen = """
 
 manager_swiper = """
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDLabel kivymd.label.MDLabel
-#:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 
 
 <MyCard>
@@ -1632,9 +1516,6 @@ manager_swiper = """
 """
 
 md_icon_item = """
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-
-
 <MDIconItem@OneLineIconListItem>
     icon: 'android'
 
@@ -1643,10 +1524,7 @@ md_icon_item = """
 """
 
 md_icons = """
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
 #:import images_path kivymd.images_path
-#:import MDTextFieldRect kivymd.textfields.MDTextField
-#:import MDIconButton kivymd.button.MDIconButton
 
 
 <MDIconItemForMdIconsList@OneLineIconListItem>:
@@ -1901,35 +1779,47 @@ class Screens(object):
             name_screen == "Registration"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.formone import registration_form_one, FormOne
+            from demo_apps.formone import registration_form_one, FormOne  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = registration_form_one
         elif (
             name_screen == "Shop Window"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.shopwindow import screen_shop_window, ShopWindow
+            from demo_apps.shopwindow import (
+                screen_shop_window,
+                ShopWindow,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_shop_window
         elif (
             name_screen == "Coffee Menu"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
+            from demo_apps.coffeemenu import (
+                screen_coffee_menu,
+                CoffeeMenu,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_coffee_menu
         elif (
             name_screen == "Fitness Club"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
+            from demo_apps.fitnessclub import (
+                screen_fitness_club,
+                FitnessClub,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_fitness_club
         elif (
             name_screen == "Account Page"
             and not self.data_for_demo[name_screen]["object"]
         ):
-            from demo_apps.accountpage import screen_account_page, AccountPage
+            from demo_apps.accountpage import (
+                screen_account_page,
+                AccountPage,
+            )  # NOQA
 
             self.data_for_demo[name_screen]["kv_string"] = screen_account_page
 
@@ -1947,7 +1837,7 @@ class Screens(object):
             )
 
     def show_manager_swiper(self):
-        from kivymd.managerswiper import MDSwiperPagination
+        from kivymd.uix.managerswiper import MDSwiperPagination
 
         if not self.manager_swiper:
             path_to_crop_image = (

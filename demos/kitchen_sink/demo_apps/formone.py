@@ -20,7 +20,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import Screen
 from kivy.uix.image import Image
 
-from kivymd.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
 
 if not os.path.exists("./assets/market-crop.jpg"):
@@ -32,9 +32,6 @@ if not os.path.exists("./assets/market-crop.jpg"):
 
 registration_form_one = """
 #:import images_path kivymd.images_path
-#:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
-#:import MDLabel kivymd.label.MDLabel
-#:import MDTextFieldRound kivymd.textfields.MDTextFieldRound
 
 
 <ButtonRound@ButtonRoundForForm>

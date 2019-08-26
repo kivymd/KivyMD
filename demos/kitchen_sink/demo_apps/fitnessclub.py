@@ -23,7 +23,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import Screen
 from kivy.uix.image import Image
 
-from kivymd.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
 
 if not os.path.exists("./assets/crossfit-crop.png"):
@@ -34,12 +34,6 @@ if not os.path.exists("./assets/crossfit-crop.png"):
     )
 
 screen_fitness_club = """
-#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
-#:import MDLabel kivymd.label.MDLabel
-#:import MDIconButton kivymd.button.MDIconButton
-
-
 <InputField@MDTextFieldRect>:
     size_hint: None, None
     multiline: False

@@ -36,9 +36,6 @@ if not os.path.exists("./assets/account-background-crop.png"):
 
 screen_account_page = """
 #:import Window kivy.core.window.Window
-#:import MDLabel kivymd.label.MDLabel
-#:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
-#:import MDCustomRoundIconButton kivymd.button.MDCustomRoundIconButton
 
 
 <LabelAccountPage@Label>

@@ -17,6 +17,8 @@ Theming
 <https://material.io/design/material-theming/>`_
 """
 
+__all__ = ("ThemeManager", "ThemableBehavior")
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock

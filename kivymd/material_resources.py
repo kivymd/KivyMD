@@ -14,6 +14,17 @@ Material Resources
 ==================
 """
 
+__all__ = (
+    "DEVICE_IOS",
+    "DEVICE_TYPE",
+    "MAX_NAV_DRAWER_WIDTH",
+    "HORIZ_MARGINS",
+    "STANDARD_INCREMENT",
+    "PORTRAIT_TOOLBAR_HEIGHT",
+    "LANDSCAPE_TOOLBAR_HEIGHT",
+    "TOUCH_TARGET_HEIGHT",
+)
+
 from kivy import platform
 from kivy.core.window import Window
 from kivy.metrics import dp

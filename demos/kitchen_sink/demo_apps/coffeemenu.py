@@ -24,7 +24,7 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
-from kivymd.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.ripplebehavior import CircularRippleBehavior
 
 from .basedialog import BaseDialogForDemo
 
@@ -36,11 +36,6 @@ if not os.path.exists("./assets/coffee_crop.jpg"):
     )
 
 screen_coffee_menu = """
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCard kivymd.cards.MDCard
-#:import MDFlatButton kivymd.button.MDFlatButton
-
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
 

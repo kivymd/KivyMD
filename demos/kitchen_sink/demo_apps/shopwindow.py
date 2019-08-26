@@ -20,17 +20,6 @@ from kivy.animation import Animation
 from .basedialog import BaseDialogForDemo
 
 screen_shop_window = """
-#:import MDCard kivymd.cards.MDCard
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
-#:import MDFlatButton kivymd.button.MDFlatButton
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
-#:import MDIconButton kivymd.button.MDIconButton
-#:import MDBottomNavigation kivymd.bottomnavigation.MDBottomNavigation
-#:import MDTextFieldRect kivymd.textfields.MDTextField
-
-
 <PreviousDialog>
     size_hint: 0, 0
 

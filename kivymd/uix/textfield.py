@@ -241,7 +241,7 @@ Builder.load_string(
             password: root.password
             password_mask: root.password_mask
             pos_hint: {'center_x': .5}
-            padding_x: 0, clear_btn.width + dp(15)
+            padding: 0, dp(16), clear_btn.width + dp(15), dp(10)
             hint_text: root.hint_text
             on_focus:
                 clear_btn.custom_color = self.line_color_focus\
@@ -328,8 +328,7 @@ Builder.load_string(
             background_active: f'{images_path}transparent.png'
             background_normal: f'{images_path}transparent.png'
             multiline: False
-            padding_y: dp(15)
-            padding_x: dp(25)
+            padding: dp(25), dp(15)
             cursor_color: root.cursor_color
             foreground_color: root.foreground_color
             hint_text: root.hint_text

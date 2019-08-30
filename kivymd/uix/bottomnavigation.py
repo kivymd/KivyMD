@@ -55,49 +55,41 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import sm kivy.uix.screenmanager
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
 #:import Window kivy.core.window.Window
 
 
 <MDBottomNavigation>
     id: panel
     orientation: 'vertical'
-    height: dp(56)  # Spec
+    bar_height: dp(56)  # Spec
 
     ScreenManager:
         id: tab_manager
-        transition: sm.FadeTransition(duration=.2)
+        transition: FadeTransition(duration=.2)
         current: root.current
         screens: root.tabs
 
     MDBottomNavigationBar:
         size_hint_y: None
-        height: dp(56)  # Spec
+        height: root.bar_height
         md_bg_color: root.theme_cls.bg_dark
 
         BoxLayout:
-            pos_hint: {'center_x': .5, 'center_y': .5}
             id: tab_bar
-            height: dp(56)
+            pos_hint: {'center_x': .5, 'center_y': .5}
             pos: self.pos
-            size_hint_x: None
             size_hint: None, None
+            height: root.bar_height
 
 
 <MDBottomNavigationHeader>
-    canvas:
-        Color:
-            rgba: self.panel.theme_cls.bg_dark
-        Rectangle:
-            size: self.size
-            pos: self.pos
-
     width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens)\
-        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
-    padding: (dp(12), dp(12))
-    on_press:
-        self.tab.dispatch('on_tab_press')
+        self.panel.width / len(self.panel.ids.tab_manager.screens)\
+        if len(self.panel.ids.tab_manager.screens) != 0 else self.panel.width
+    padding: dp(12)
+
+    on_press: self.tab.dispatch('on_tab_press')
     on_release: self.tab.dispatch('on_tab_release')
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
     on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
@@ -108,32 +100,30 @@ Builder.load_string(
         MDIcon:
             id: _label_icon
             icon: root.tab.icon
-            size_hint_x: None
-            text_size: (None, root.height)
-            height: self.texture_size[1]
             theme_text_color: 'Custom'
             text_color: root._current_color
+            opposite_colors: root.opposite_colors
             valign: 'middle'
             halign: 'center'
-            opposite_colors: root.opposite_colors
-            pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
+            text_size: (None, root.height)
             pos_hint: {'center_x': .5, 'center_y': .7}
+            pos: [self.pos[0], self.pos[1]]
+            size_hint_x: None
 
         MDLabel:
             id: _label
             text: root.tab.text
             font_style: 'Button'
-            size_hint_x: None
-            text_size: (None, root.height)
-            height: self.texture_size[1]
             theme_text_color: 'Custom'
             text_color: root._current_color
+            opposite_colors: root.opposite_colors
             valign: 'bottom'
             halign: 'center'
-            opposite_colors: root.opposite_colors
             font_size: root._label_font_size
+            text_size: (None, root.height)
             pos_hint: {'center_x': .5, 'center_y': .6}
+            size_hint_x: None
 
 
 <MDTab>
@@ -185,7 +175,11 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     tab = ObjectProperty(None)
     panel = ObjectProperty(None)
     _label = ObjectProperty()
-    _label_font_size = NumericProperty(sp(12))
+    active_font_size = NumericProperty(0)
+    inactive_font_size = NumericProperty(0)
+    _label_font_size = NumericProperty(0)
+    active_color = ListProperty([0.0, 0.0, 0.0, 0.0])
+    inactive_color = ListProperty([0.0, 0.0, 0.0, 0.0])
     _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
     text = StringProperty("")
     _capitalized_text = StringProperty("")
@@ -199,28 +193,75 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
         self.height = height
         self.tab = tab
         super().__init__()
-        self._current_color = self.theme_cls.disabled_hint_text_color
         self._label = self.ids._label
-        self._label_font_size = sp(12)
         self.theme_cls.bind(
-            primary_color=self._update_theme_color,
-            disabled_hint_text_color=self._update_theme_style,
+            primary_color=self.update_theme,
+            disabled_hint_text_color=self.update_theme,
         )
-        self.active = False
-
-    def on_press(self):
-        Animation(_label_font_size=sp(14), d=0.1).start(self)
-        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(
-            self
+        self.tab.bind(
+            active_font_size=self.update_theme,
+            inactive_font_size=self.update_theme,
+            active_color=self.update_theme,
+            inactive_color=self.update_theme,
         )
+        self.panel.bind(
+            active_font_size=self.update_theme,
+            inactive_font_size=self.update_theme,
+            active_color=self.update_theme,
+            inactive_color=self.update_theme,
+        )
+        self.bind(
+            active_font_size=self.on_active,
+            inactive_font_size=self.on_active,
+            active_color=self.on_active,
+            inactive_color=self.on_active,
+        )
+        self.update_theme()
+        self.on_active(anim=False)
 
-    def _update_theme_color(self, instance, color):
+    def on_active(self, *args, anim=True):
         if self.active:
-            self._current_color = self.theme_cls.primary_color
+            if anim:
+                Animation(_label_font_size=self.active_font_size, d=0.1).start(
+                    self
+                )
+                Animation(_current_color=self.active_color, d=0.1).start(self)
+            else:
+                self._label_font_size = self.active_font_size
+                self._current_color = self.active_color
+        elif not self.active:
+            if anim:
+                Animation(
+                    _label_font_size=self.inactive_font_size, d=0.1
+                ).start(self)
+                Animation(_current_color=self.inactive_color, d=0.1).start(self)
+            else:
+                self._label_font_size = self.inactive_font_size
+                self._current_color = self.inactive_color
 
-    def _update_theme_style(self, instance, color):
-        if not self.active:
-            self._current_color = self.theme_cls.disabled_hint_text_color
+    def update_theme(self, *args):
+        self.active_color = (
+            self.tab.active_color
+            or self.panel.active_color
+            or self.theme_cls.primary_color
+        )
+        self.inactive_color = (
+            self.tab.inactive_color
+            or self.panel.inactive_color
+            or self.theme_cls.disabled_hint_text_color
+        )
+        self.active_font_size = (
+            self.tab.active_font_size or self.panel.active_font_size or sp(14)
+        )
+        self.inactive_font_size = (
+            self.tab.inactive_font_size
+            or self.panel.inactive_font_size
+            or sp(12)
+        )
+        # on_active called automatically
+
+    def on_release(self):
+        self.active = True
 
 
 class MDTab(Screen, ThemableBehavior):
@@ -248,6 +289,11 @@ class MDTab(Screen, ThemableBehavior):
     # Tab dropdown menu (if you want to customize it)
     menu = ObjectProperty(None)
 
+    active_font_size = NumericProperty(None)
+    inactive_font_size = NumericProperty(None)
+    active_color = ListProperty(None)
+    inactive_color = ListProperty(None)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.index = 0
@@ -268,6 +314,9 @@ class MDTab(Screen, ThemableBehavior):
         pass
 
     def on_tab_press(self, *args):
+        pass
+
+    def on_tab_release(self, *args):
         par = self.parent_widget
         if par.previous_tab is not self:
             if par.previous_tab.index > self.index:
@@ -277,9 +326,6 @@ class MDTab(Screen, ThemableBehavior):
             par.ids.tab_manager.current = self.name
             par.previous_tab = self
 
-    def on_tab_release(self, *args):
-        pass
-
     def __repr__(self):
         return f"<MDTab name='{self.name}', text='{self.text}'>"
 
@@ -287,20 +333,13 @@ class MDTab(Screen, ThemableBehavior):
 class MDBottomNavigationItem(MDTab):
     header = ObjectProperty()
 
-    def on_tab_press(self, *args):
+    def on_tab_release(self, *args):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=0.1).start(
-                par.previous_tab.header
-            )
-            Animation(
-                _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
-                d=0.1,
-            ).start(par.previous_tab.header)
             par.previous_tab.header.active = False
             self.header.active = True
-        par.previous_tab = self
+            par.previous_tab = self
 
     def on_leave(self, *args):
         pass
@@ -329,6 +368,11 @@ class MDBottomNavigation(TabbedPanelBase):
 
     first_widget = ObjectProperty()
 
+    active_font_size = NumericProperty(None)
+    inactive_font_size = NumericProperty(None)
+    active_color = ListProperty(None)
+    inactive_color = ListProperty(None)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.previous_tab = None
@@ -342,21 +386,19 @@ class MDBottomNavigation(TabbedPanelBase):
 
         if not self.ids:
             return
-        tab_bar = self.ids.tab_bar
-        tab_bar.clear_widgets()
-        tab_manager = self.ids.tab_manager
-        for tab in tab_manager.screens:
-            tab_header = MDBottomNavigationHeader(
-                tab=tab, panel=self, height=tab_bar.height
-            )
-            tab.header = tab_header
-            tab_bar.add_widget(tab_header)
-            if tab is self.first_widget:
-                tab_header._current_color = self.theme_cls.primary_color
-                tab_header._label_font_size = sp(14)
-                tab_header.active = True
+        self.ids.tab_bar.clear_widgets()
+        for tab in self.ids.tab_manager.screens:
+            if not tab.header:
+                tab.header = MDBottomNavigationHeader(
+                    tab=tab, panel=self, height=self.ids.tab_bar.height
+                )
             else:
-                tab_header._label_font_size = sp(12)
+                tab.header.tab = tab
+                tab.header.panel = self
+                tab.header.height = self.ids.tab_bar.height
+            self.ids.tab_bar.add_widget(tab.header)
+            if tab is self.first_widget:
+                tab.header.active = True
         self.on_resize()
 
     def on_resize(self, instance=None, width=None, do_again=True):
@@ -376,21 +418,15 @@ class MDBottomNavigation(TabbedPanelBase):
             self.widget_index += 1
             widget.index = self.widget_index
             widget.parent_widget = self
-            tab_header = MDBottomNavigationHeader(
+            widget.header = MDBottomNavigationHeader(
                 tab=widget, panel=self, height=widget.height
             )
-            self.ids.tab_bar.add_widget(tab_header)
-            widget.header = tab_header
+            self.ids.tab_bar.add_widget(widget.header)
             self.ids.tab_manager.add_widget(widget)
             if self.widget_index == 1:
                 self.previous_tab = widget
-                tab_header._current_color = self.theme_cls.primary_color
-                tab_header._label_font_size = sp(14)
-                tab_header.active = True
+                widget.header.active = True
                 self.first_widget = widget
-            else:
-                tab_header._label_font_size = sp(12)
-
             self._refresh_tabs()
         else:
             super().add_widget(widget)

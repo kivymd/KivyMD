@@ -42,7 +42,7 @@ Remove this section if no images here
 
 ### Versions
 
- * OS: 
- * Python: 
- * Kivy: 
- * KivyMD: 
+* OS: 
+* Python: 
+* Kivy: 
+* KivyMD: 

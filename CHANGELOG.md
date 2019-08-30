@@ -1,41 +1,56 @@
 # Change Log
 
 
-## [0.99.92]
+## [v0.100.2](https://github.com/HeaTTheatR/KivyMD/tree/1fa2e59) - *Alpha*
 
-  - Removed automatic change of text field length in the `MDTextFieldRound` class
+* Formatted code using [Black](https://github.com/psf/black) utility
 
-## [0.99.93]
 
-  - Updated `materialdesignicons-webfont.ttf` and `icon_definitions.py` files
+## [v0.100.1]() - *Alpha*
 
-## [0.99.94]
+* Fixed "Due to the use of AsyncImage, the Toolbar did not accept the color of the installed color theme"
 
-  - Added property `_no_ripple_effect` to BaseListItem class
-  - [Banned](https://www.youtube.com/watch?v=P_9oSx0Pz_U) use `ripple effect` in MDAccordionListItem class
-  - Added check to use `ripple effect` in RectangularRippleBehavior class
 
-## [0.99.95]
+## [v0.100.0]() - *Alpha*
 
-  - Added function to create a round image in `kivymd/utils/cropimage.py` module
-  - Added new `MDCustomRoundIconButton` class in `kivymd/button.py` module
-  - Added demo application [Account Page](https://www.youtube.com/watch?v=dfUOwqtYoYg)
+* Fixed "In MDNavigationDrawer I used use_logo='all' it's showing image only not the drawer_title text"
 
-## [0.99.96]
-  - Added asynchronous call to list update method in RefreshLayout example in main.py file
-  - Added asynckivy.py module for using asynchronous function calls in Kivy
 
-## [0.99.97]
-  - Fixed: spinner closes after updating the screen.
+## [v0.99.98]() - *Alpha*
 
-## [0.99.98]
-  - Added new MDFillRoundFlatIconButton class
+* Added new MDFillRoundFlatIconButton class
 
-## [0.100.0]
-  - Fixed "In MDNavigationDrawer I used use_logo='all' it's showing image only not the drawer_title text!"
 
-## [0.100.1]
-  - Fixed "Fixed: due to the use of AsyncImage, the Toolbar did not accept the color of the installed color theme"
+## [v0.99.97]() - *Alpha*
 
-## [0.100.2]
-  - The code is formatted using the "black" utility
+* Fixed "Spinner closes after updating the screen"
+
+
+## [v0.99.96]() - *Alpha*
+
+* Added asynchronous call to list update method in RefreshLayout example in main.py file
+* Added asynckivy.py module for using asynchronous function calls in Kivy
+
+
+## [v0.99.95]() - *Alpha*
+
+* Added function to create a round image in `kivymd/utils/cropimage.py` module
+* Added new `MDCustomRoundIconButton` class in `kivymd/button.py` module
+* Added demo application [Account Page](https://www.youtube.com/watch?v=dfUOwqtYoYg)
+
+
+## [v0.99.94]() - *Alpha*
+
+* Added property `_no_ripple_effect` to BaseListItem class
+* [Banned](https://www.youtube.com/watch?v=P_9oSx0Pz_U) use `ripple effect` in MDAccordionListItem class
+* Added check to use `ripple effect` in RectangularRippleBehavior class
+
+
+## [v0.99.93]() - *Alpha*
+
+* Updated Material Design Iconic font (v3.6.95)
+
+
+## [v0.99.92]() - *Alpha*
+
+* Removed automatic change of text field length in the `MDTextFieldRound` class

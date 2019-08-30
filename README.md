@@ -17,13 +17,16 @@ If you wish to become a project developer (permission to create branches on the 
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+
 Documentation
 =============
 
 Full documentation yet. Some examples of using KivyMD widgets can be found in our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) and in the code of the [demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps)
 
+
 Support
 =======
+
 If you need assistance or you have a question, you can ask for help on our mailing list:
 
 * **Discord server (priority):** https://discord.gg/TegSJDD (English #support)
@@ -32,71 +35,76 @@ If you need assistance or you have a question, you can ask for help on our maili
 * Email: kivydevelopment@gmail.com
 
 
-Installation and use with Buildozer
-===================================
+Installation
+============
 
 #### Dependencies:
-* Kivy version is not less than 1.10.1
+
+* Kivy >= 1.10.1
 * PIL
-* Python 3 (Python 2 not supported)
+* Python 3 *(Python 2 not supported)*
 
 #### How to install
 
 To install KivyMD, clone the project and run the setup.py script. The following line works on Linux and Mac OS, other OSes not tested:
-
-    sudo python ./setup.py install
-
-Replace "python" with the Python interpreter you want to install KivyMD on (Python 3 is supported)
-
+  ```bash
+  sudo python ./setup.py install
+  ```
+Replace `python` with the Python interpreter you want to install KivyMD on
 
 #### How to use with Buildozer
 
 If you want to use KivyMD with buildozer, in your buildozer.spec's requirements line you should add the full git HTTPS address, like this example:
+  ```text
+  requirements = kivy==master,git+https://github.com/HeaTTheatR/KivyMD.git
+  ```
 
-    requirements = kivy==master,git+https://github.com/HeaTTheatR/KivyMD.git
 
 Running on Android
 ==================
+
 Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a)
 
-<a id=“anchor”>Packages for Android are built according to the following instructions:</a>
-=======================================================================
 
-Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/):
+Building
+========
 
-<p align="center">
-    <a href="https://xubuntu.org/release/18-04/"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/XUBUNTU.png"></a>
-</p>
+<a href="https://xubuntu.org/release/18-04/">
+  <img align="left" height="140" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/XUBUNTU.png">
+</a>
 
+Packages for Android are built according to the following instructions:
+* Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/)
 * Create a new virtual machine based on the downloaded image of XUbuntu
 * Start the XUbuntu virtual machine, open the browser and download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh):
 
-    Add execution permissions:
-    ```bash
-    chmod +x install-kivy-buildozer-dependencies.sh
-    ```
-    ...and run script:
-
-    ```bash
-    ./install-kivy-buildozer-dependencies.sh
-    ```
+  Add execution permissions:
+  ```bash
+  chmod +x install-kivy-buildozer-dependencies.sh
+  ```
+  ...and run script:
+  ```bash
+  ./install-kivy-buildozer-dependencies.sh
+  ```
 
 * Run the script - it will install all the necessary libraries and tools for creating packages for Android
 * Done! Now you have a virtual machine for building Kivy application packages!
-* Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer)
+
+Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
+
 
 What's new in version 0.100.2:
 ============================
+
 [CHANGELOG.md](CHANGELOG.md)
+
 
 API Breaking changes:
 =====================
 
 * All uix modules moved to kivymd.uix module.
-
 * All widgets that usually used in kv-lang are automatically added to Factory.
 You don't need to #:import them. Remove all your imports.
-
 * Changed font styles:
 
 | Old      | New       |
@@ -121,26 +129,33 @@ You don't need to #:import them. Remove all your imports.
 
 Video previous
 ==============
+
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw&t=4s"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/prevideo.png"></a>
+  <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
+    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png">
+  </a>
 </p>
+
 
 Image previous
 ==============
+
 <p align="center">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/previous.png">
+  <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png">
 </p>
+
 
 Sister project:
 ==============
 
 [Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
 
+
 License
 =======
 
-MIT, same as Kivy.
+[MIT License](LICENSE), same as Kivy.
 
 Roboto font is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Icons by the materialdesignicons.com community covered by SIL OFL 1.1
+Icons by the [Material Design Icons](https://materialdesignicons.com/) community covered by [SIL Open Font License 1.1](http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)

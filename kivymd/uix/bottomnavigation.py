@@ -55,49 +55,41 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import sm kivy.uix.screenmanager
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
 #:import Window kivy.core.window.Window
 
 
 <MDBottomNavigation>
     id: panel
     orientation: 'vertical'
-    height: dp(56)  # Spec
+    bar_height: dp(56)  # Spec
 
     ScreenManager:
         id: tab_manager
-        transition: sm.FadeTransition(duration=.2)
+        transition: FadeTransition(duration=.2)
         current: root.current
         screens: root.tabs
 
     MDBottomNavigationBar:
         size_hint_y: None
-        height: dp(56)  # Spec
+        height: root.bar_height
         md_bg_color: root.theme_cls.bg_dark
 
         BoxLayout:
-            pos_hint: {'center_x': .5, 'center_y': .5}
             id: tab_bar
-            height: dp(56)
+            pos_hint: {'center_x': .5, 'center_y': .5}
             pos: self.pos
-            size_hint_x: None
             size_hint: None, None
+            height: root.bar_height
 
 
 <MDBottomNavigationHeader>
-    canvas:
-        Color:
-            rgba: self.panel.theme_cls.bg_dark
-        Rectangle:
-            size: self.size
-            pos: self.pos
-
     width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens)\
-        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
-    padding: (dp(12), dp(12))
-    on_press:
-        self.tab.dispatch('on_tab_press')
+        self.panel.width / len(self.panel.ids.tab_manager.screens)\
+        if len(self.panel.ids.tab_manager.screens) != 0 else self.panel.width
+    padding: dp(12)
+
+    on_press: self.tab.dispatch('on_tab_press')
     on_release: self.tab.dispatch('on_tab_release')
     on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
     on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
@@ -108,32 +100,30 @@ Builder.load_string(
         MDIcon:
             id: _label_icon
             icon: root.tab.icon
-            size_hint_x: None
-            text_size: (None, root.height)
-            height: self.texture_size[1]
             theme_text_color: 'Custom'
             text_color: root._current_color
+            opposite_colors: root.opposite_colors
             valign: 'middle'
             halign: 'center'
-            opposite_colors: root.opposite_colors
-            pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
+            text_size: (None, root.height)
             pos_hint: {'center_x': .5, 'center_y': .7}
+            pos: [self.pos[0], self.pos[1]]
+            size_hint_x: None
 
         MDLabel:
             id: _label
             text: root.tab.text
             font_style: 'Button'
-            size_hint_x: None
-            text_size: (None, root.height)
-            height: self.texture_size[1]
             theme_text_color: 'Custom'
             text_color: root._current_color
+            opposite_colors: root.opposite_colors
             valign: 'bottom'
             halign: 'center'
-            opposite_colors: root.opposite_colors
             font_size: root._label_font_size
+            text_size: (None, root.height)
             pos_hint: {'center_x': .5, 'center_y': .6}
+            size_hint_x: None
 
 
 <MDTab>

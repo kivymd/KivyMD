@@ -360,7 +360,7 @@ class MDTabs(ThemableBehavior, AnchorLayout):
             current_tab_label.x, current_tab_label.width
         )
 
-    def add_widget(self, widget):
+    def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             if not issubclass(widget.__class__, MDTabsBase):
@@ -371,7 +371,7 @@ class MDTabs(ThemableBehavior, AnchorLayout):
             self.tab_bar.layout.add_widget(widget.tab_label)
             self.carousel.add_widget(widget)
             return
-        return super().add_widget(widget)
+        return super().add_widget(widget, index, canvas)
 
     def remove_widget(self, widget):
         # You can remove only subclass of MDTabsBase.

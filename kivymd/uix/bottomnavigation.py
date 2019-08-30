@@ -208,7 +208,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
         )
         self.active = False
 
-    def on_press(self):
+    def on_release(self):
         Animation(_label_font_size=sp(14), d=0.1).start(self)
         Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(
             self
@@ -268,6 +268,9 @@ class MDTab(Screen, ThemableBehavior):
         pass
 
     def on_tab_press(self, *args):
+        pass
+
+    def on_tab_release(self, *args):
         par = self.parent_widget
         if par.previous_tab is not self:
             if par.previous_tab.index > self.index:
@@ -277,9 +280,6 @@ class MDTab(Screen, ThemableBehavior):
             par.ids.tab_manager.current = self.name
             par.previous_tab = self
 
-    def on_tab_release(self, *args):
-        pass
-
     def __repr__(self):
         return f"<MDTab name='{self.name}', text='{self.text}'>"
 
@@ -287,7 +287,7 @@ class MDTab(Screen, ThemableBehavior):
 class MDBottomNavigationItem(MDTab):
     header = ObjectProperty()
 
-    def on_tab_press(self, *args):
+    def on_tab_release(self, *args):
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:

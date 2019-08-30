@@ -122,13 +122,13 @@ You don't need to #:import them. Remove all your imports.
 Video previous
 ==============
 <p align="center">
-    <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw&t=4s"><img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/prevideo.png"></a>
+    <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png"></a>
 </p>
 
 Image previous
 ==============
 <p align="center">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/blob/master/gallery/previous.png">
+    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png">
 </p>
 
 Sister project:

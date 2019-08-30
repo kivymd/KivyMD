@@ -35,14 +35,14 @@ If you need assistance or you have a question, you can ask for help on our maili
 * Email: kivydevelopment@gmail.com
 
 
-Installation and use with Buildozer
-===================================
+Installation
+============
 
 #### Dependencies:
 
-* Kivy version is not less than 1.10.1
+* Kivy >= 1.10.1
 * PIL
-* Python 3 (Python 2 not supported)
+* Python 3 *(Python 2 not supported)*
 
 #### How to install
 
@@ -50,7 +50,7 @@ To install KivyMD, clone the project and run the setup.py script. The following 
   ```bash
   sudo python ./setup.py install
   ```
-Replace `python` with the Python interpreter you want to install KivyMD on (Python 3 is supported)
+Replace `python` with the Python interpreter you want to install KivyMD on
 
 #### How to use with Buildozer
 
@@ -66,13 +66,14 @@ Running on Android
 Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a)
 
 
-Packages for Android are built according to the following instructions:
-=======================================================================
+Building
+========
 
 <a href="https://xubuntu.org/release/18-04/">
   <img align="left" height="140" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/XUBUNTU.png">
 </a>
 
+Packages for Android are built according to the following instructions:
 * Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/)
 * Create a new virtual machine based on the downloaded image of XUbuntu
 * Start the XUbuntu virtual machine, open the browser and download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh):
@@ -89,7 +90,7 @@ Packages for Android are built according to the following instructions:
 * Run the script - it will install all the necessary libraries and tools for creating packages for Android
 * Done! Now you have a virtual machine for building Kivy application packages!
 
-Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer)
+Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
 
 
 What's new in version 0.100.2:
@@ -153,8 +154,8 @@ Sister project:
 License
 =======
 
-MIT, same as Kivy.
+[MIT License](LICENSE), same as Kivy.
 
 Roboto font is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Icons by the materialdesignicons.com community covered by SIL OFL 1.1
+Icons by the [Material Design Icons](https://materialdesignicons.com/) community covered by [SIL Open Font License 1.1](http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)

@@ -354,8 +354,6 @@ Builder.load_string(
                 root.get_color_line(self, self.text, self.focus)
                 root.hide_require_error(self.focus)
                 if root.event_focus: root.event_focus(root, self, self.focus)
-                root.focus= self.focus
-                root.dispatch("on_focus")
             on_text:
                 root.text = self.text
                 root.dispatch("on_text")
@@ -839,7 +837,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
 class MDTextFieldRound(ThemableBehavior, BoxLayout):
 
-    __events__ = ("on_text_validate", "on_text", "on_focus")
+    __events__ = ("on_text_validate", "on_text")
 
     write_tab = BooleanProperty(False)
     """write_tab property of TextInput"""
@@ -1008,7 +1006,4 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
         pass
 
     def on_text(self, *args):
-        pass
-
-    def on_focus(self, *args):
         pass

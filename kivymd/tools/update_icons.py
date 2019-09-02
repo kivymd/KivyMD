@@ -71,9 +71,9 @@ def make_icon_definitions(icons):
         if len(i["hex"]) != 4:
             # Some icons has 5-digit unicode
             i["hex"] = "0" * (8 - len(i["hex"])) + i["hex"]
-            icon_definitions += f'"{i["name"]}": u"\\U{i["hex"].upper()}",\n'
+            icon_definitions += f'"{i["name"]}": "\\U{i["hex"].upper()}",\n'
         else:
-            icon_definitions += f'"{i["name"]}": u"\\u{i["hex"].upper()}",\n'
+            icon_definitions += f'"{i["name"]}": "\\u{i["hex"].upper()}",\n'
     icon_definitions += "}"
     return icon_definitions
 

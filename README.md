@@ -29,7 +29,7 @@ Support
 
 If you need assistance or you have a question, you can ask for help on our mailing list:
 
-* **Discord server (priority):** https://discord.gg/TegSJDD (English #support)
+* **Discord server (priority):** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
 * VK group: https://vk.com/kivy_development (Russian)
 * Google group: https://groups.google.com/forum/#!categories/kivymd-users-support (English)
 * Email: kivydevelopment@gmail.com

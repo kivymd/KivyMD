@@ -114,7 +114,9 @@ def main():
         export_icon_definitions(icon_definitions, version)
         print("File icon_definitions.py updated")
         shutil.rmtree(temp_path, ignore_errors=True)
-        print("\nSuccessful")
+        print(
+            f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
+        )
 
 
 if __name__ == "__main__":

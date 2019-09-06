@@ -10,3 +10,4 @@ demos/kitchen_sink/bin
 # Editors
 .idea
 *.swp
+.vscode/settings.json

@@ -156,7 +156,9 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     Set to None to let the widget pick for you. Defaults to None.
     """
 
-    starting_coords = OptionProperty(None, allownone=True, options=["bottom", "center"])
+    starting_coords = OptionProperty(
+        None, allownone=True, options=["bottom", "center"]
+    )
     """Where the menu will start from on generation
 
     Set to None to default to Center.
@@ -194,7 +196,7 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
         if self.starting_coords is None or self.starting_coords == "center":
             c = caller.to_window(caller.center_x, caller.center_y)
         elif self.starting_coords == "bottom":
-            c = caller.to_window(caller.x, caller.y)  
+            c = caller.to_window(caller.x, caller.y)
         # Starting coords
 
         # TODO: ESTABLISH INITIAL TARGET SIZE ESTIMATE

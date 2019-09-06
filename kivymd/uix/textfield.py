@@ -578,9 +578,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                     )
 
     def on_width(self, instance, width):
-        if (
-            self.focus or self.error or self._text_len_error
-        ):
+        if self.focus or self.error or self._text_len_error:
             self.on_focus()
         self._msg_lbl.width = self.width
         self._right_msg_lbl.width = self.width

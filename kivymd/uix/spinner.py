@@ -74,7 +74,7 @@ class MDSpinner(ThemableBehavior, Widget):
     defaults to True
     """
 
-    color = ListProperty([])
+    color = ListProperty([0, 0, 0, 0])
     """:attr:`color` is a :class:`~kivy.properties.ListProperty` and
     defaults to 'self.theme_cls.primary_color'
     """

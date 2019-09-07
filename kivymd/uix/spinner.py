@@ -21,6 +21,7 @@ from kivy.uix.widget import Widget
 from kivy.properties import NumericProperty, ListProperty, BooleanProperty
 from kivy.animation import Animation
 from kivymd.theming import ThemableBehavior
+from kivymd.theming import ThemeManager
 
 Builder.load_string(
     """
@@ -74,7 +75,7 @@ class MDSpinner(ThemableBehavior, Widget):
     defaults to True
     """
 
-    color = ListProperty([])
+    color = ListProperty(ThemeManager().primary_color)
     """:attr:`color` is a :class:`~kivy.properties.ListProperty` and
     defaults to 'self.theme_cls.primary_color'
     """

@@ -123,7 +123,6 @@ from PIL import Image
 
 from kivy.app import App
 from kivy.metrics import dp
-from kivy import PY2
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -501,8 +500,6 @@ class BodyManagerWithPrevious(BoxLayout):
                 source = paths[index - 1]
             else:
                 source = f"{images_path}transparent.png"
-        if PY2:
-            return source.decode("u8")
         return source
 
 
@@ -600,10 +597,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def split_list(self, l, n):
         n = max(1, n)
-        if PY2:
-            return (l[i : i + n] for i in xrange(0, len(l), n))
-        else:
-            return (l[i : i + n] for i in range(0, len(l), n))
+        return (l[i: i + n] for i in range(0, len(l), n))
 
     def create_previous(self, path):
         for image in os.listdir(path):

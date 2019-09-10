@@ -51,8 +51,10 @@ To install KivyMD, clone the project and run the setup.py script. The following 
   ```bash
   sudo python ./setup.py install
   ```
-Replace `python` with the Python interpreter you want to install KivyMD on
-
+  or
+    ```bash
+  sudo pip3 install kivymd
+  ```
 #### How to use with Buildozer
 
 If you want to use KivyMD with buildozer, in your buildozer.spec's requirements line you should add the full git HTTPS address, like this example:

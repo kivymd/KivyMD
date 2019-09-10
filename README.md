@@ -52,7 +52,7 @@ To install KivyMD, clone the project and run the setup.py script. The following 
   sudo python ./setup.py install
   ```
   or
-    ```bash
+  ```bash
   sudo pip3 install kivymd
   ```
 #### How to use with Buildozer

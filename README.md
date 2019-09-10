@@ -16,6 +16,7 @@ Join the project! Just fork the project, branch out and submit a pull request wh
 If you wish to become a project developer (permission to create branches on the project without forking for easier collaboration), have at least one PR approved and ask for it. If you contribute regularly to the project the role may be offered to you without asking too.
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![PyPI version](https://badge.fury.io/py/kivymd.svg)](https://badge.fury.io/py/kivymd)
 
 
 Documentation

@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+# Copyright (c) 2015 Andres Rodriguez and KivyMD contributors -
 #     KivyMD library up to version 0.1.2
 # Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
 #     KivyMD library version 0.1.3 and higher

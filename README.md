@@ -25,6 +25,11 @@ Documentation
 Full documentation yet. Some examples of using KivyMD widgets can be found in our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) and in the code of the [demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps)
 
 
+KivyMD Tutorials
+================
+https://www.youtube.com/watch?v=o-viUXzkbhU&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=6
+
+
 Support
 =======
 

@@ -27,7 +27,7 @@ Full documentation yet. Some examples of using KivyMD widgets can be found in ou
 
 KivyMD Tutorials
 ================
-[Tutorials](https://www.youtube.com/watch?v=o-viUXzkbhU&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=6)
+[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1)
 
 
 Support

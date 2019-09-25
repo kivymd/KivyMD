@@ -395,8 +395,10 @@ Builder.load_string(
     padding: '12dp', 0
     group: 'tabs'
     allow_no_selection: False
-    text_color_normal: 1, 1, 1, .6
-    text_color_active: 1, 1, 1, 1
+    text_color_normal: (0, 0, 0, .5) if app.theme_cls.theme_style is 'Dark' \
+                                       else (1, 1, 1, .6)
+    text_color_active: (0, 0, 0, .75) if app.theme_cls.theme_style is 'Dark' \
+                                       else (1, 1, 1, 1)
     color: self.text_color_active if self.state is 'down' \
                                 else self.text_color_normal
     on_x: self._trigger_update_tab_indicator()

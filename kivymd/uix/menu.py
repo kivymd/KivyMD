@@ -45,8 +45,9 @@ Builder.load_string(
 
 <MDMenuItem>
     size_hint: None, None
-    height: dp(48)
-    padding: dp(16), 0
+    height: dp(48)  # Spec
+    spacing: dp(20) if root.icon else 0  # Spec
+    padding: dp(16), 0  # Spec
     # Horrible, but hey it works.
     on_release:
         root.parent.parent.parent.parent.dismiss()
@@ -56,17 +57,14 @@ Builder.load_string(
         id: item_icon
         icon: root.icon if root.icon else 'null-icon'
         size_hint_x: None
-        # width: (self.texture_size[0] ) if root.icon else 0
-        width: self.font_size * 1.5 if root.icon else 0
-        halign: 'left'
-        
+        width: self.texture_size[0] if root.icon else 0
+        valign: 'middle'
+        halign: 'center'
+
     MDLabel:
         id: item_text
         text: root.text
         markup: True
-        font_size: '14sp'
-        size_hint_x: 1
-        size_hint_y: 1
         halign: 'left'
 
 <MDMenu>
@@ -122,7 +120,7 @@ Builder.load_string(
 
 class MDMenuItem(RecycleDataViewBehavior, ButtonBehavior, BoxLayout):
     text = StringProperty()
-    icon = StringProperty('')
+    icon = StringProperty("")
 
 
 class MDMenu(RecycleView):

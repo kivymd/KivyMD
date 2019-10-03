@@ -56,7 +56,8 @@ Builder.load_string(
         id: item_icon
         icon: root.icon if root.icon else 'null-icon'
         size_hint_x: None
-        width: self.texture_size[0] if root.icon else 0
+        # width: (self.texture_size[0] ) if root.icon else 0
+        width: self.font_size * 1.5 if root.icon else 0
         halign: 'left'
         
     MDLabel:

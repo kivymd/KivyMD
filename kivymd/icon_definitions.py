@@ -22,6 +22,7 @@ LAST UPDATED: Version 4.3.95
 __all__ = ("md_icons",)
 
 md_icons = {
+    "null-icon": "",
     "ab-testing": "\U000F001C",
     "access-point": "\uF002",
     "access-point-network": "\uF003",

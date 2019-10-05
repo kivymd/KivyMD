@@ -55,27 +55,27 @@ class MDAccordionItem(ThemableBehavior, AccordionItem):
         allownone=True,
         options=["Primary", "Secondary", "Hint", "Error", "Custom"],
     )
-    """Color theme for title text and  icon"""
+    """Color theme for title text and icon"""
 
     title_color = ListProperty(None, allownone=True)
     """Color for title text and icon if `title_theme_color` is Custom"""
 
     divider_color = ListProperty(None, allownone=True)
     """Color for dividers between different titles in rgba format 
-    To remove the divider set a color with an alpha of ."""
+    To remove the divider set a color with an alpha value of .0"""
 
     indicator_color = ListProperty(None, allownone=True)
     """Color for the indicator on the side of the active item in rgba format 
-    To remove the indicator set a color with an alpha of . """
+    To remove the indicator set a color with an alpha value of .0"""
 
     font_style = OptionProperty("Subtitle1", options=theme_font_styles)
     """Font style to use for the title text"""
 
     title_template = StringProperty("MDAccordionItemTitle")
-    """ Template to use for the title """
+    """Template to use for the title"""
 
     icon = StringProperty("android", allownone=True)
-    """Icon name to use when this item is expanded"""
+    """Icon name to use for the accordion item"""
 
     icon_expanded = StringProperty("chevron-up")
     """Icon name to use when this item is expanded"""

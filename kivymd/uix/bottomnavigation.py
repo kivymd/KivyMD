@@ -327,7 +327,7 @@ class MDTab(Screen, ThemableBehavior):
             par.previous_tab = self
 
     def __repr__(self):
-        return f"<MDTab name='{self.name}', text='{self.text}'>"
+        return f"<self.__class__.__name__ name='{self.name}', text='{self.text}'>"
 
 
 class MDBottomNavigationItem(MDTab):
@@ -349,9 +349,9 @@ class TabbedPanelBase(
     ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
 ):
     """
-    A class that contains all variables a TabPannel must have
-    It is here so I (zingballyhoo) don't get mad about
-    the TabbedPannels not being DRY
+    A class that contains all variables that a TabPanel must have
+    It is here so I(zingballyhoo) don't get mad about
+    the TabbedPanels not being DRY
     """
 
     tabs = ListProperty([])

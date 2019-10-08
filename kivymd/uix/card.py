@@ -1,19 +1,19 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Cards
 =====
 
-`Material Design spec, Cards <https://material.io/components/cards/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Cards <https://material.io/design/components/cards.html>`_
 
 Example
 -------
@@ -28,8 +28,6 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-
-
 <ExampleCardPost@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
@@ -121,8 +119,6 @@ class Example(App):
 Example().run()
 """
 
-__all__ = ("MDCard", "MDSeparator", "MDCardPost", "CardPostImage", "LeftIcon")
-
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -142,10 +138,10 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.elevation import RectangularElevationBehavior
-from kivymd.uix.list import ILeftBody
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.navigationdrawer import NavigationLayout
+from kivymd.behaviors.elevation import RectangularElevationBehavior
+from kivymd.uix.list import ILeftBody
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
@@ -175,7 +171,7 @@ Builder.load_string(
 <MDSeparator>
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color
+            rgba: self.theme_cls.divider_color if not root.color else root.color
         Rectangle:
             size: self.size
             pos: self.pos
@@ -301,14 +297,15 @@ Builder.load_string(
 class MDSeparator(ThemableBehavior, BoxLayout):
     """A separator line"""
 
+    color = ListProperty()
+    """Separator color."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.on_orientation()
 
     def on_orientation(self, *args):
-        self.size_hint = (
-            (1, None) if self.orientation == "horizontal" else (None, 1)
-        )
+        self.size_hint = (1, None) if self.orientation == "horizontal" else (None, 1)
         if self.orientation == "horizontal":
             self.height = dp(1)
         else:
@@ -325,6 +322,7 @@ class MDCard(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
     border_color_a = BoundedNumericProperty(0, min=0.0, max=1.0)
     md_bg_color = ReferenceListProperty(r, g, b, a)
     background = StringProperty()
+    """Background image path."""
 
 
 class LeftIcon(ILeftBody, Image):
@@ -448,11 +446,7 @@ class MDCardPost(BoxLayout):
         self.callback(self, index_star + i)
 
     def on_touch_move(self, touch):
-        if (
-            self.collide_point(*touch.pos)
-            and self.swipe
-            and not self._card_shifted
-        ):
+        if self.collide_point(*touch.pos) and self.swipe and not self._card_shifted:
             if touch.x < Window.width - 10:
                 # When the Navigation panel is open and
                 # the list of its menu is scrolled,
@@ -477,9 +471,7 @@ class MDCardPost(BoxLayout):
 
         Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(self.ids.root_box)
         if self.likes_stars:
-            Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(
-                self.children[0]
-            )
+            Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(self.children[0])
         anim = Animation(opacity=1, d=0.5, t="in_out_cubic")
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)
@@ -490,13 +482,9 @@ class MDCardPost(BoxLayout):
             self.card_shifted = None
             self.ids.delet_post_button.disabled = True
 
-        Animation(x=self._shift_x, d=0.1, t="in_out_cubic").start(
-            self.ids.root_box
-        )
+        Animation(x=self._shift_x, d=0.1, t="in_out_cubic").start(self.ids.root_box)
         if self.likes_stars:
-            Animation(x=self._shift_x, d=0.3, t="in_out_cubic").start(
-                self.children[0]
-            )
+            Animation(x=self._shift_x, d=0.3, t="in_out_cubic").start(self.children[0])
         anim = Animation(opacity=0, d=0.05, t="in_out_cubic")
         anim.bind(on_complete=on_anim_complete)
         anim.start(self.ids.box_delete_post_button)

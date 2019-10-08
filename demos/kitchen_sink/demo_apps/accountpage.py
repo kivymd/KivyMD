@@ -1,14 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Account Page
-======================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 import os
@@ -19,19 +17,20 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.screenmanager import Screen
 
+from kivymd import demos_assets_path
 from kivymd.utils.cropimage import crop_image, crop_round_image
 
-if not os.path.exists("./assets/sasha-round.png"):
+if not os.path.exists(f"{demos_assets_path}sasha-round.png"):
     crop_round_image(
         (int(dp(Window.width * 30 / 100)), int(dp(Window.width * 30 / 100))),
-        "./assets/sasha-grey.jpg",
-        "./assets/sasha-round.png",
+        f"{demos_assets_path}sasha-grey.jpg",
+        f"{demos_assets_path}sasha-round.png",
     )
-if not os.path.exists("./assets/account-background-crop.png"):
+if not os.path.exists(f"{demos_assets_path}account-background-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        "./assets/account-background.jpeg",
-        "./assets/account-background-crop.png",
+        f"{demos_assets_path}account-background.jpeg",
+        f"{demos_assets_path}account-background-crop.png",
     )
 
 screen_account_page = """

@@ -9,9 +9,47 @@ For suggestions and questions:
 
 This file is distributed under the terms of the same license,
 as the Kivy framework.
+
+Example:
+
+from kivy.app import App
+from kivymd.theming import ThemeManager
+from kivymd.toast.kivytoast.kivytoast import toast
+
+
+class Test(App):
+    theme_cls = ThemeManager()
+
+    def show_toast(self):
+        toast('Test Kivy Toast')
+
+    def build(self):
+        return Builder.load_string(
+            '''
+BoxLayout:
+    orientation:'vertical'
+
+    MDToolbar:
+        id: toolbar
+        title: 'Test Toast'
+        md_bg_color: app.theme_cls.primary_color
+        left_action_items: [['menu', lambda x: '']]
+
+    FloatLayout:
+
+        MDRaisedButton:
+            text: 'TEST KIVY TOAST'
+            on_release: app.show_toast()
+            pos_hint: {'center_x': .5, 'center_y': .5}
+
+'''
+        )
+
+Test().run()
 """
 
 from kivy.core.window import Window
+from kivy.properties import NumericProperty
 from kivy.uix.label import Label
 from kivy.animation import Animation
 from kivy.uix.modalview import ModalView
@@ -36,6 +74,8 @@ Builder.load_string(
 
 
 class Toast(ModalView):
+    duration = NumericProperty(2.5)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (None, None)
@@ -62,7 +102,7 @@ class Toast(ModalView):
 
     def on_open(self):
         self.fade_in()
-        Clock.schedule_once(self.fade_out, 2.5)
+        Clock.schedule_once(self.fade_out, self.duration)
 
     def fade_in(self):
         Animation(opacity=1, duration=0.4).start(self.label_toast)
@@ -83,5 +123,5 @@ class Toast(ModalView):
         return True
 
 
-def toast(text, length_long=False):
-    Toast().toast(text)
+def toast(text, duration=2.5):
+    Toast(duration=duration).toast(text)

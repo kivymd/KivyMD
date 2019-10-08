@@ -1,14 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Registration
-======================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 import os
@@ -16,25 +14,23 @@ import os
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import Screen
-from kivy.uix.image import Image
 
-from kivymd.uix.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
+from kivymd import demos_assets_path
 
-if not os.path.exists("./assets/market-crop.jpg"):
+if not os.path.exists(f"{demos_assets_path}market-crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        "./assets/market.jpg",
-        "./assets/market-crop.jpg",
+        f"{demos_assets_path}market.jpg",
+        f"{demos_assets_path}market-crop.jpg",
     )
 
 registration_form_one = """
 #:import images_path kivymd.images_path
 
 
-<ButtonRound@ButtonRoundForForm>
+<ButtonRound@MDCustomRoundIconButton>
     size_hint: None, None
     size: dp(50), dp(50)
 
@@ -118,10 +114,12 @@ registration_form_one = """
             MDTextFieldRound:
                 id: field_mail
                 hint_text: 'Emai'
+                icon_type: 'left'
             MDTextFieldRound:
                 id: field_password
                 hint_text: 'Password'
-                icon: 'lock-outline'
+                icon_left: 'lock-outline'
+                icon_type: 'left'
 
             MDLabel:
                 text: 'Forgot your Password?'
@@ -195,7 +193,3 @@ class FormOne(Screen):
         App.get_running_app().theme_cls.primary_palette = "BlueGray"
         App.get_running_app().main_widget.ids.scr_mngr.current = "previous"
         App.get_running_app().main_widget.ids.toolbar.height = dp(56)
-
-
-class ButtonRoundForForm(CircularRippleBehavior, ButtonBehavior, Image):
-    pass

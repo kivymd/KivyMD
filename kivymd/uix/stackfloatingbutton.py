@@ -1,14 +1,14 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Stack Floating Buttons
 ======================
+
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
 
 Example
 -------
@@ -19,12 +19,10 @@ from kivy.factory import Factory
 
 from kivymd.toast import toast
 from kivymd.theming import ThemeManager
-from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+from kivymd.uix.stackfloatingbuttons import MDStackFloatingButtons
 
 
 Builder.load_string('''
-
-
 <ExampleFloatingButtons@BoxLayout>:
     orientation: 'vertical'
 
@@ -65,18 +63,11 @@ class Example(App):
 Example().run()
 """
 
-__all__ = ("MDStackFloatingButtons", "MDFloatingLabel")
-
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-from kivy.properties import (
-    StringProperty,
-    DictProperty,
-    ObjectProperty,
-    ListProperty,
-)
+from kivy.properties import StringProperty, DictProperty, ObjectProperty, ListProperty
 from kivy.metrics import dp
 
 from kivymd.uix.card import MDCard

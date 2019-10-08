@@ -1,25 +1,21 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Bottom Sheets
 =============
 
-`Material Design spec, Sheets: bottom
-<https://material.io/components/sheets-bottom/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-In this module there's the :class:`MDBottomSheet` class which will let you
-implement your own Material Design Bottom Sheets, and there are two classes
-called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing
-the ones mentioned in the spec.
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`_
+
+In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
 
 Example
 -------
@@ -51,16 +47,6 @@ For :class:`MDListBottomSheet`:
     bs.open()
 """
 
-__all__ = (
-    "MDBottomSheet",
-    "BottomSheetContent",
-    "BsPadding",
-    "MDListBottomSheet",
-    "ListBSIconLeft",
-    "MDGridBottomSheet",
-    "GridBSItem",
-)
-
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -72,14 +58,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 
 from kivymd import images_path
-from kivymd.uix.backgroundcolorbehavior import BackgroundColorBehavior
+from kivymd.behaviors.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.uix.label import MDIcon
-from kivymd.uix.list import (
-    MDList,
-    OneLineListItem,
-    ILeftBody,
-    OneLineIconListItem,
-)
+from kivymd.uix.list import MDList, OneLineListItem, ILeftBody, OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
@@ -171,6 +152,9 @@ class MDListBottomSheet(MDBottomSheet):
 
 Builder.load_string(
     """
+#:import MDLabel kivymd.label.MDLabel
+
+
 <GridBSItem>
     orientation: 'vertical'
     padding: 0, dp(24), 0, 0

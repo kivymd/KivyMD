@@ -1,14 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Coffee Menu
-=====================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 import os
@@ -24,15 +22,16 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
-from kivymd.uix.ripplebehavior import CircularRippleBehavior
+from kivymd.behaviors.ripplebehavior import CircularRippleBehavior
+from kivymd import demos_assets_path
 
 from .basedialog import BaseDialogForDemo
 
-if not os.path.exists("./assets/coffee_crop.jpg"):
+if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        "./assets/coffee.jpg",
-        "./assets/coffee_crop.jpg",
+        f"{demos_assets_path}coffee.jpg",
+        f"{demos_assets_path}coffee_crop.jpg",
     )
 
 screen_coffee_menu = """
@@ -128,7 +127,7 @@ screen_coffee_menu = """
     text_color: item_color
     on_release: root.callback()
 
-    AvatarSampleWidget:
+    ImageLeftWidget:
         source: './assets/coffee-icon-brown.png'
 
 
@@ -335,9 +334,7 @@ class CoffeeMenu(Screen):
         self.menu_open = True
 
     def hide_menu_list_animation(self):
-        Animation(y=Window.height, d=0.6, t="in_elastic").start(
-            self.ids.menu_dialog
-        )
+        Animation(y=Window.height, d=0.6, t="in_elastic").start(self.ids.menu_dialog)
         self.menu_open = False
 
     def hide_menu_animation(self):

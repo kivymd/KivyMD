@@ -1,14 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Fitness Club
-======================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 import os
@@ -19,18 +17,16 @@ from kivy.metrics import dp
 
 from kivy.animation import Animation
 from kivy.core.window import Window
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import Screen
-from kivy.uix.image import Image
 
-from kivymd.uix.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
+from kivymd import demos_assets_path
 
-if not os.path.exists("./assets/crossfit-crop.png"):
+if not os.path.exists(f"{demos_assets_path}crossfit-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        "./assets/crossfit.png",
-        "./assets/crossfit-crop.png",
+        f"{demos_assets_path}crossfit.png",
+        f"{demos_assets_path}crossfit-crop.png",
     )
 
 screen_fitness_club = """
@@ -55,7 +51,7 @@ screen_fitness_club = """
             size: self.size
             pos: self.pos
 
-    AvatarSampleWidget:
+    ImageLeftWidget:
         source: './assets/arrow-right.png'
 
 <ItemLabel@MDLabel>
@@ -144,7 +140,7 @@ screen_fitness_club = """
         halign: 'center'
 
 
-<MainScreen@FloatLayout>
+<RootMainScreen@FloatLayout>
     Button:
         canvas:
             Rectangle:
@@ -233,9 +229,9 @@ screen_fitness_club = """
             text: 'Main'
             icon: 'home-variant'
 
-            MainScreen:
+            RootMainScreen:
 
-                ItemMenuForFitness:
+                MDCustomRoundIconButton:
                     id: facebook
                     source: './assets/facebook-round.png'
                     size_hint: None, None
@@ -243,7 +239,7 @@ screen_fitness_club = """
                     x: -60
                     y: 50
 
-                ItemMenuForFitness:
+                MDCustomRoundIconButton:
                     id: twitter
                     source: './assets/twitter-round.png'
                     size_hint: None, None
@@ -327,9 +323,7 @@ class FitnessClub(Screen):
         prefix = "crop"
         path_to_crop = f"{path_to_image}-{prefix}.{ext}"
         if not os.path.exists(path_to_crop):
-            crop_image(
-                size, f"{path_to_image}.{ext}", path_to_crop, corner=corner
-            )
+            crop_image(size, f"{path_to_image}.{ext}", path_to_crop, corner=corner)
             self.ids.about_us.ids.about_girl.source = path_to_crop
             self.ids.about_us.ids.about_girl.reload()
 
@@ -360,7 +354,3 @@ class FitnessClub(Screen):
     def back_to_previous_screen(self):
         App.get_running_app().main_widget.ids.scr_mngr.current = "previous"
         App.get_running_app().main_widget.ids.toolbar.height = dp(56)
-
-
-class ItemMenuForFitness(CircularRippleBehavior, ButtonBehavior, Image):
-    pass

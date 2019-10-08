@@ -1,20 +1,19 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 MDToolbar
 =======
 
-`Material Design spec, App bars: top
-<https://material.io/components/app-bars-top/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, App bars: top <https://material.io/design/components/app-bars-top.html>`_
 
 Example
 -------
@@ -24,11 +23,9 @@ from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
 from kivymd.toast import toast
-from kivymd.toolbar import MDBottomAppBar
+from kivymd.uix.toolbar import MDBottomAppBar
 
 kv = '''
-
-
 BoxLayout:
     spacing: dp(10)
     orientation: 'vertical'
@@ -95,8 +92,6 @@ class MyApp(App):
 MyApp().run()
 """
 
-__all__ = ("MDToolbar", "MDBottomAppBar", "AppBarActionButton")
-
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -106,10 +101,10 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.animation import Animation
 from kivy.core.window import Window
 
-from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
 from kivymd.uix.button import MDIconButton, MDFloatingActionButton
+from kivymd.behaviors.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.behaviors.elevation import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.elevation import RectangularElevationBehavior
 
 Builder.load_string(
     """
@@ -235,9 +230,7 @@ class MDBottomAppBar(FloatLayout):
     left_action_items = ListProperty()
     right_action_items = ListProperty()
     md_bg_color = ListProperty([0, 0, 0, 1])
-    action_button_color = ListProperty(
-        [1, 0.7568627450980392, 0.027450980392156862, 1]
-    )
+    action_button_color = ListProperty([1, 0.7568627450980392, 0.027450980392156862, 1])
     anchor = StringProperty("right")
     callback = ObjectProperty(lambda x: None)
 
@@ -278,9 +271,7 @@ class MDBottomAppBar(FloatLayout):
                 action_button_color=self.action_button_color,
             )
             self.add_widget(self.action_button)
-            Animation(size=(dp(56), dp(56)), opacity=1, d=0.2).start(
-                self.action_button
-            )
+            Animation(size=(dp(56), dp(56)), opacity=1, d=0.2).start(self.action_button)
             self.anchor = anchor
 
         if self.anchor != anchor:
@@ -290,6 +281,4 @@ class MDBottomAppBar(FloatLayout):
 
 
 class AppBarActionButton(MDFloatingActionButton):
-    action_button_color = ListProperty(
-        [1, 0.7568627450980392, 0.027450980392156862, 1]
-    )
+    action_button_color = ListProperty([1, 0.7568627450980392, 0.027450980392156862, 1])

@@ -1,20 +1,19 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Grid
 ====
 
-`Material Design spec, Image lists
-<https://material.io/components/image-lists/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Image lists <https://material.io/design/components/image-lists.htheme_clsl>`_
 
 Example
 -------
@@ -28,8 +27,6 @@ from kivymd.theming import ThemeManager
 from kivymd.utils.cropimage import crop_image
 
 kv = '''
-
-
 <MySmartTileWithLabel@SmartTileWithLabel>
     mipmap: True
     font_style: 'Subtitle1'
@@ -139,16 +136,6 @@ class MyApp(App):
 MyApp().run()
 """
 
-__all__ = (
-    "Tile",
-    "SmartTile",
-    "SmartTileWithLabel",
-    "Star",
-    "SmartTileWithStar",
-    "IBoxOverlay",
-    "IOverlay",
-)
-
 from kivy.lang import Builder
 from kivy.properties import (
     StringProperty,
@@ -163,7 +150,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.ripplebehavior import RectangularRippleBehavior
+from kivymd.behaviors.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
@@ -261,9 +248,7 @@ Builder.load_string(
 )
 
 
-class Tile(
-    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout
-):
+class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout):
     """A simple tile. It does nothing special, just inherits the right
     behaviors to work as a building block.
     """

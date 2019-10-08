@@ -1,14 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Shop Window
-=====================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 from kivy.app import App
@@ -16,6 +14,8 @@ from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 from kivy.animation import Animation
+
+from kivymd import demos_assets_path
 
 from .basedialog import BaseDialogForDemo
 
@@ -109,7 +109,7 @@ screen_shop_window = """
             on_press:
                 self.icon = 'heart' if self.icon == 'heart-outline' else 'heart-outline'
 
-    ImageTouch:
+    MDCustomRoundIconButton:
         source: root.icon
         size_hint: None, None
         height: self.width
@@ -304,9 +304,8 @@ class ShopWindow(Screen):
                 {
                     "viewclass": "CardsBoxForShopWindow",
                     "height": dp(300),
-                    "product_image": "./assets/clock-%d.png" % increment_left,
-                    "product_image2": "./assets/clock-%d.png"
-                    % (increment_left + 1),
+                    "product_image": f"{demos_assets_path}clock-%d.png" % increment_left,
+                    "product_image2": f"{demos_assets_path}clock-%d.png" % (increment_left + 1),
                     "previous_dialog": dialog,
                 }
             )
@@ -319,7 +318,7 @@ class ShopWindow(Screen):
                 {
                     "viewclass": "CardItemForCart",
                     "height": dp(150),
-                    "product_image": "./assets/clock-%d.png" % i,
+                    "product_image": f"{demos_assets_path}clock-%d.png" % i,
                 }
             )
 

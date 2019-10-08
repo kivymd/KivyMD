@@ -1,22 +1,21 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Buttons
 =======
 
-`Material Design spec, Buttons <https://material.io/components/buttons/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-`Material Design spec, Buttons: floating action button
-<https://material.io/components/buttons-floating-action-button/>`_
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Buttons <https://material.io/design/components/buttons.html>`
+
+`Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`
 
 Example
 -------
@@ -28,8 +27,6 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-
-
 <ExampleButtons@BoxLayout>
     orientation: 'vertical'
 
@@ -42,73 +39,220 @@ Builder.load_string('''
         left_action_items: [['dots-vertical', lambda x: None]]
 
     Screen:
-        BoxLayout:
-            size_hint_y: None
-            height: '56'
-            spacing: '10dp'
-            pos_hint: {'center_y': .9}
+        ScrollView:
+            size_hint_x: None
+            width: box.width
+            pos_hint: {'center_x': .5}
+            bar_width: 0
 
-            Widget:
+            BoxLayout:
+                id: box
+                padding: dp(10)
+                size_hint: None, None
+                size: self.minimum_size
+                spacing: dp(10)
+                orientation: 'vertical'
+                pos_hint: {'center_x': .5}
 
-            MDIconButton:
-                icon: 'sd'
+                BoxLayout:
+                    size_hint: None, None
+                    width: self.minimum_width
+                    height: dp(56)
+                    spacing: '10dp'
 
-            MDFloatingActionButton:
-                icon: 'plus'
-                opposite_colors: True
-                elevation_normal: 8
+                    MDIconButton:
+                        icon: 'sd'
 
-            MDFloatingActionButton:
-                icon: 'check'
-                opposite_colors: True
-                elevation_normal: 8
-                md_bg_color: app.theme_cls.primary_color
+                    MDFloatingActionButton:
+                        icon: 'plus'
+                        opposite_colors: True
+                        elevation_normal: 8
 
-            MDIconButton:
-                icon: 'sd'
-                theme_text_color: 'Custom'
-                text_color: app.theme_cls.primary_color
+                    MDFloatingActionButton:
+                        icon: 'check'
+                        opposite_colors: True
+                        elevation_normal: 8
+                        md_bg_color: app.theme_cls.primary_color
 
-            Widget:
+                    MDIconButton:
+                        icon: 'sd'
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.primary_color
 
-        MDFlatButton:
-            text: 'MDFlatButton'
-            pos_hint: {'center_x': .5, 'center_y': .75}
+                MDFlatButton:
+                    text: 'MDFlatButton'
+                    pos_hint: {'center_x': .5}
 
-        MDRaisedButton:
-            text: "MDRaisedButton"
-            elevation_normal: 2
-            opposite_colors: True
-            pos_hint: {'center_x': .5, 'center_y': .65}
+                MDRaisedButton:
+                    text: "MDRaisedButton"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {'center_x': .5}
 
-        MDRectangleFlatButton:
-            text: "MDRectangleFlatButton"
-            pos_hint: {'center_x': .5, 'center_y': .55}
+                MDRectangleFlatButton:
+                    text: "MDRectangleFlatButton"
+                    pos_hint: {'center_x': .5}
 
-        MDRectangleFlatIconButton:
-            text: "MDRectangleFlatIconButton"
-            icon: "language-python"
-            pos_hint: {'center_x': .5, 'center_y': .45}
-            width: dp(230)
+                MDRectangleFlatIconButton:
+                    text: "MDRectangleFlatIconButton"
+                    icon: "language-python"
+                    width: dp(230)
+                    pos_hint: {'center_x': .5}
 
-        MDRoundFlatButton:
-            text: "MDRoundFlatButton"
-            icon: "language-python"
-            pos_hint: {'center_x': .5, 'center_y': .35}
+                MDRoundFlatButton:
+                    text: "MDRoundFlatButton"
+                    pos_hint: {'center_x': .5}
 
-        MDRoundFlatIconButton:
-            text: "MDRoundFlatIconButton"
-            icon: "language-python"
-            pos_hint: {'center_x': .5, 'center_y': .25}
-             width: dp(200)
+                MDRoundFlatIconButton:
+                    text: "MDRoundFlatIconButton"
+                    icon: "language-python"
+                    width: dp(200)
+                    pos_hint: {'center_x': .5}
 
-        MDFillRoundFlatButton:
-            text: "MDFillRoundFlatButton"
-            pos_hint: {'center_x': .5, 'center_y': .15}
+                MDFillRoundFlatButton:
+                    text: "MDFillRoundFlatButton"
+                    pos_hint: {'center_x': .5}
 
-        MDTextButton:
-            text: "MDTextButton"
-            pos_hint: {'center_x': .5, 'center_y': .05}
+                MDFillRoundFlatIconButton:
+                    text: "MDFillRoundFlatIconButton"
+                    icon: "language-python"
+                    pos_hint: {'center_x': .5}
+
+                MDTextButton:
+                    text: "MDTextButton"
+                    pos_hint: {'center_x': .5}
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '10dp'
+                    size_hint: None, None
+                    size: self.minimum_size
+                    pos_hint: {'center_x': .5}
+
+                    MDSeparator:
+
+                    Label:
+                        text: 'Button customization'
+                        color: app.theme_cls.text_color
+                        font_size: '20sp'
+                        size_hint: None, None
+                        size: self.texture_size
+
+                    MDSeparator:
+
+                ########################################
+                #         CUSTOMIZATION BUTTONS
+                ########################################
+
+                MDRaisedButton:
+                    text: "MDRaisedButton"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 0, 0, 1
+
+                MDRaisedButton:
+                    text: "MDRaisedButton"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {'center_x': .5}
+                    md_bg_color: 1, 0, 0, 1
+
+                MDRectangleFlatButton:
+                    text: "MDRectangleFlatButton"
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 1, 0, 1
+
+                MDRectangleFlatButton:
+                    text: "MDRectangleFlatButton"
+                    pos_hint: {'center_x': .5}
+                    md_bg_color: 1, 0, 0, 1
+                    text_color: 1, 1, 0, 1
+
+                MDRoundFlatButton:
+                    text: "MDRoundFlatButton"
+                    pos_hint: {'center_x': .5}
+                    md_bg_color: 1, 0, 0, 1
+
+                MDRoundFlatButton:
+                    text: "MDRoundFlatButton"
+                    pos_hint: {'center_x': .5}
+                    md_bg_color: 1, 0, 0, 1
+
+                MDRoundFlatButton:
+                    text: "MDRoundFlatButton"
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 1, 0, 1
+                    md_bg_color: 1, 0, 0, 1
+
+                MDRoundFlatIconButton:
+                    text: "MDRoundFlatIconButton"
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 1, 0, 1
+                    width: dp(210)
+
+                MDRoundFlatIconButton:
+                    text: "MDRoundFlatIconButton"
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 1, 0, 1
+                    md_bg_color: 1, 0, 0, 1
+                    width: dp(210)
+
+                MDFillRoundFlatIconButton:
+                    text: "MDFillRoundFlatIconButton"
+                    icon: "language-python"
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 1, 0, 1
+
+                MDFillRoundFlatIconButton:
+                    text: "MDFillRoundFlatIconButton"
+                    icon: "language-python"
+                    pos_hint: {'center_x': .5}
+                    text_color: 1, 1, 0, 1
+                    md_bg_color: 1, 0, 0, 1
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: '10dp'
+                    size_hint: None, None
+                    size: self.minimum_size
+                    pos_hint: {'center_x': .5}
+
+                    MDSeparator:
+
+                    Label:
+                        text: 'MDIconButton customization'
+                        color: app.theme_cls.text_color
+                        font_size: '20sp'
+                        size_hint: None, None
+                        size: self.texture_size
+
+                    MDSeparator:
+
+                    BoxLayout:
+                        size_hint: None, None
+                        size: self.minimum_size
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDIconButton:
+                            icon: "language-python"
+                            user_font_size: "15sp"
+
+                        MDIconButton:
+                            icon: "language-python"
+                            user_font_size: "20sp"
+
+                        MDIconButton:
+                            icon: "language-python"
+                            user_font_size: "24sp"
+
+                        MDIconButton:
+                            icon: "language-python"
+                            user_font_size: "36sp"
+
+                        MDIconButton:
+                            icon: "language-python"
+                            user_font_size: "48sp"
 ''')
 
 
@@ -124,28 +268,6 @@ class Example(App):
 
 Example().run()
 """
-
-__all__ = (
-    "BaseButton",
-    "BasePressedButton",
-    "BaseFlatButton",
-    "BaseRaisedButton",
-    "BaseRoundButton",
-    "BaseRectangularButton",
-    "MDIconButton",
-    "MDFlatButton",
-    "BaseFlatIconButton",
-    "MDRaisedButton",
-    "MDFloatingActionButton",
-    "MDRectangleFlatButton",
-    "MDRoundFlatButton",
-    "MDTextButton",
-    "MDCustomRoundIconButton",
-    "MDFillRoundFlatButton",
-    "MDRectangleFlatIconButton",
-    "MDRoundFlatIconButton",
-    "MDFillRoundFlatIconButton",
-)
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
@@ -174,12 +296,12 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 
-from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.uix.ripplebehavior import (
+from kivymd.behaviors.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.behaviors.ripplebehavior import (
     CircularRippleBehavior,
     RectangularRippleBehavior,
 )
-from kivymd.uix.elevation import (
+from kivymd.behaviors.elevation import (
     CommonElevationBehavior,
     RectangularElevationBehavior,
     CircularElevationBehavior,
@@ -215,7 +337,10 @@ Builder.load_string(
             size: self.size
             pos: self.pos
 
-    size: (dp(48), dp(48))
+    size:
+        (dp(48), dp(48)) \
+        if not root.user_font_size \
+        else (dp(root.user_font_size + 23), dp(root.user_font_size + 23))
     lbl_txt: lbl_txt
     padding: dp(12)
     theme_text_color: 'Primary'
@@ -223,6 +348,10 @@ Builder.load_string(
     MDIcon:
         id: lbl_txt
         icon: root.icon
+        font_size:
+            root.user_font_size \
+            if root.user_font_size \
+            else self.font_size
         theme_text_color: root.theme_text_color
         text_color: root.text_color
         disabled: root.disabled
@@ -245,7 +374,7 @@ Builder.load_string(
     height: dp(36) if not root._height else root._height
     width: lbl_txt.texture_size[0] + root.increment_width
     padding: (dp(8), 0)
-    theme_text_color: 'Primary'
+    theme_text_color: 'Primary' if not root.text_color else 'Custom'
     markup: False
 
     MDLabel:
@@ -268,7 +397,10 @@ Builder.load_string(
 <MDRoundFlatButton>
     canvas.before:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba:
+                root.theme_cls.primary_color \
+                if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root.md_bg_color
         Line:
             width: 1
             rounded_rectangle:
@@ -277,13 +409,18 @@ Builder.load_string(
                 self.height)
 
     theme_text_color: 'Custom'
-    text_color: root.theme_cls.primary_color
+    text_color:
+        root.theme_cls.primary_color \
+        if not root.text_color else root.text_color
 
 
 <MDFillRoundFlatButton>
     canvas.before:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba:
+                root.theme_cls.primary_color \
+                if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root.md_bg_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -293,8 +430,8 @@ Builder.load_string(
 
 
 <MDFillRoundFlatIconButton>
+    text_color: root.specific_text_color
 
-    #text_color: root.specific_text_color
     BoxLayout:
         spacing: dp(10)
 
@@ -302,7 +439,10 @@ Builder.load_string(
             id: lbl_ic
             icon: root.icon
             theme_text_color: 'Custom'
-            text_color: 1, 1, 1, 1
+            text_color:
+                root.specific_text_color \
+                if root.text_color == root.theme_cls.primary_color \
+                else root.text_color
             size_hint_x: None
             #width: self.texture_size[0]
 
@@ -310,19 +450,25 @@ Builder.load_string(
 <MDRectangleFlatButton>
     canvas.before:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba:
+                root.theme_cls.primary_color \
+                if not root.text_color else root.text_color
         Line:
             width: 1
             rectangle: (self.x, self.y, self.width, self.height)
 
     theme_text_color: 'Custom'
-    text_color: root.theme_cls.primary_color
+    text_color:
+        root.theme_cls.primary_color \
+        if not root.text_color else root.text_color
 
 
 <MDRectangleFlatIconButton>
     canvas.before:
         Color:
-            rgba: app.theme_cls.primary_color
+            rgba:
+                root.theme_cls.primary_color \
+                if not root.text_color else root.text_color
         Line:
             width: 1
             rectangle: (self.x, self.y, self.width, self.height)
@@ -338,18 +484,23 @@ Builder.load_string(
             id: lbl_ic
             icon: root.icon
             theme_text_color: 'Custom'
-            text_color: root.theme_cls.primary_color
+            text_color:
+                root.theme_cls.primary_color \
+                if not root.text_color else root.text_color
             size_hint_x: None
             width: self.texture_size[0]
 
         MDLabel:
             id: lbl_txt
             text: root.text
+            on_text: print(root.text_color)
             font_size: sp(root.font_size)
             can_capitalize: root.can_capitalize
             shorten: True
             theme_text_color: 'Custom'
-            text_color: root.theme_cls.primary_color
+            text_color:
+                root.theme_cls.primary_color \
+                if not root.text_color else root.text_color
             markup: root.markup
 
 
@@ -365,7 +516,9 @@ Builder.load_string(
             id: lbl_ic
             icon: root.icon
             theme_text_color: 'Custom'
-            text_color: root.theme_cls.primary_color
+            text_color:
+                root.theme_cls.primary_color \
+                if not root.text_color else root.text_color
             size_hint_x: None
             width: self.texture_size[0]
 
@@ -376,7 +529,9 @@ Builder.load_string(
             can_capitalize: root.can_capitalize
             shorten: True
             theme_text_color: 'Custom'
-            text_color: root.theme_cls.primary_color
+            text_color:
+                root.theme_cls.primary_color \
+                if not root.text_color else root.text_color
             markup: root.markup
 
 
@@ -399,8 +554,8 @@ Builder.load_string(
     size_hint: None, None
     size: self.texture_size
     color:
-        root.theme_cls.primary_color if not len(root.custom_color)\
-        else root.custom_color
+        root.theme_cls.primary_color \
+        if not len(root.custom_color) else root.custom_color
     background_down: f'{images_path}transparent.png'
     background_normal: f'{images_path}transparent.png'
     opacity: 1
@@ -409,10 +564,7 @@ Builder.load_string(
 
 
 class BaseButton(
-    ThemableBehavior,
-    ButtonBehavior,
-    SpecificBackgroundColorBehavior,
-    AnchorLayout,
+    ThemableBehavior, ButtonBehavior, SpecificBackgroundColorBehavior, AnchorLayout
 ):
     """
     Abstract base class for all MD buttons. This class handles the button's
@@ -439,6 +591,8 @@ class BaseButton(
     opposite_colors = BooleanProperty(False)
     font_name = StringProperty()
     font_size = NumericProperty(14)
+    user_font_size = NumericProperty()
+    """Custom font size."""
 
     def on_font_name(self, instance, value):
         instance.ids.lbl_txt.font_name = value
@@ -471,9 +625,7 @@ class BaseButton(
     def _set_md_bg_color_down(self, value):
         self._md_bg_color_down = value
 
-    md_bg_color_down = AliasProperty(
-        _call_get_bg_color_down, _set_md_bg_color_down
-    )
+    md_bg_color_down = AliasProperty(_call_get_bg_color_down, _set_md_bg_color_down)
 
     def _call_get_bg_color_disabled(self):
         return self._get_md_bg_color_disabled()
@@ -523,9 +675,7 @@ class BasePressedButton(BaseButton):
     def on_touch_up(self, touch):
         if touch.grab_current is self:
             self.fade_bg.stop_property(self, "_current_button_color")
-            Animation(
-                duration=0.05, _current_button_color=self.md_bg_color
-            ).start(self)
+            Animation(duration=0.05, _current_button_color=self.md_bg_color).start(self)
         return super().on_touch_up(touch)
 
 
@@ -690,6 +840,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     icon = StringProperty("checkbox-blank-circle")
+    """Button icon."""
 
 
 class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
@@ -728,9 +879,7 @@ class MDRoundFlatButton(MDFlatButton):
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            RoundedRectangle(
-                size=self.size, pos=self.pos, radius=[self._radius]
-            )
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[self._radius])
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
@@ -741,9 +890,7 @@ class MDRoundFlatButton(MDFlatButton):
                 ),
             )
             StencilUnUse()
-            RoundedRectangle(
-                size=self.size, pos=self.pos, radius=[self._radius]
-            )
+            RoundedRectangle(size=self.size, pos=self.pos, radius=[self._radius])
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
 

@@ -1,30 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Color Definitions
 =====
 
-`Material Design spec, The color system
-<https://material.io/design/color/the-color-system.html>`_
-"""
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-__all__ = (
-    "colors",
-    "palette",
-    "hue",
-    "light_colors",
-    "text_colors",
-    "theme_colors",
-)
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`_
+"""
 
 colors = {
     "Red": {
@@ -392,17 +382,7 @@ light_colors = {
     "DeepPurple": ["50", "100", "200", "A100"],
     "Indigo": ["50", "100", "200", "A100"],
     "Blue": ["50", "100", "200", "300", "400", "A100"],
-    "LightBlue": [
-        "50",
-        "100",
-        "200",
-        "300",
-        "400",
-        "500",
-        "A100",
-        "A200",
-        "A400",
-    ],
+    "LightBlue": ["50", "100", "200", "300", "400", "500", "A100", "A200", "A400"],
     "Cyan": [
         "50",
         "100",
@@ -417,18 +397,7 @@ light_colors = {
         "A700",
     ],
     "Teal": ["50", "100", "200", "300", "400", "A100", "A200", "A400", "A700"],
-    "Green": [
-        "50",
-        "100",
-        "200",
-        "300",
-        "400",
-        "500",
-        "A100",
-        "A200",
-        "A400",
-        "A700",
-    ],
+    "Green": ["50", "100", "200", "300", "400", "500", "A100", "A200", "A400", "A700"],
     "LightGreen": [
         "50",
         "100",

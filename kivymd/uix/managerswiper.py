@@ -1,14 +1,14 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Manager Swiper
 ==============
+
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
 
 Example
 -------
@@ -155,16 +155,13 @@ class Test(App):
         if not os.path.exists(path_to_crop_image):
             crop_image(
                 (int(Window.width - dp(10)), int(dp(250))),
-                f'{self.directory}/demos/kitchen_sink/assets/'
-                'guitar-1139397_1280.png',
+                f'{self.directory}/demos/kitchen_sink/assets/guitar-1139397_1280.png',
                 path_to_crop_image)
 
 
 if __name__ == '__main__':
     Test().run()
 """
-
-__all__ = ("MDSwiperManager", "MDSwiperPagination", "ItemPagination")
 
 from kivy.properties import NumericProperty, ObjectProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -239,9 +236,7 @@ class MDSwiperPagination(ThemableBehavior, BoxLayout):
             self.items_round_paginator.append(item_paginator)
 
     def set_current_screen_round(self, index_screen):
-        old_color = self.items_round_paginator[
-            index_screen
-        ].color_round_not_active
+        old_color = self.items_round_paginator[index_screen].color_round_not_active
         for i, screen in enumerate(self.items_round_paginator):
             if i == index_screen:
                 self.animation_set_not_active_round(
@@ -310,3 +305,4 @@ class MDSwiperManager(ScreenManager):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self._x = touch.x
+        return super().on_touch_down(touch)

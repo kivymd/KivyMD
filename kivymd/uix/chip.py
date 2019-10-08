@@ -1,16 +1,16 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Chips
 =====
 
-`Material Design spec, Chips <https://material.io/components/chips/>`_
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Chips <https://material.io/design/components/chips.html>`_
 
 Example
 -------
@@ -21,8 +21,6 @@ from kivy.lang import Builder
 from kivymd.theming import ThemeManager
 
 kv = '''
-
-
 BoxLayout:
     orientation: 'vertical'
     spacing: dp(10)
@@ -168,15 +166,13 @@ class MyApp(App):
 MyApp().run()
 """
 
-__all__ = ("MDChip", "MDChooseChip")
-
 from kivy.metrics import dp
 from kivy.properties import (
     StringProperty,
     ListProperty,
     ObjectProperty,
     BooleanProperty,
-)
+    NumericProperty)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.stacklayout import StackLayout
@@ -189,14 +185,15 @@ Builder.load_string(
 <MDChooseChip>
     size_hint_y: None
     height: self.minimum_height
-    spacing: dp(5)
+    spacing: "5dp"
 
 
 <MDChip>
     size_hint: None,  None
-    height: dp(26)
+    height: "26dp"
+    padding: 0, 0, "5dp", 0
     width:
-        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle'\
+        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle' \
         else self.minimum_width
 
     canvas:
@@ -205,7 +202,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [15, ]
+            radius: [root.radius]
 
     BoxLayout:
         id: box_check
@@ -228,7 +225,9 @@ Builder.load_string(
         id: icon
         icon: root.icon
         size_hint_y: None
-        height: dp(26)
+        height: "20dp"
+        pos_hint: {"center_y": .5}
+        user_font_size: "20dp"
         disabled: True
 """
 )
@@ -236,10 +235,22 @@ Builder.load_string(
 
 class MDChip(BoxLayout, ThemableBehavior):
     label = StringProperty()
+    """`MDChip` text."""
+
     icon = StringProperty("checkbox-blank-circle")
+    """`MDChip` icon."""
+
     color = ListProperty([0.4, 0.4, 0.4, 1])
+    """`MDChip` color."""
+
     check = BooleanProperty(False)
+    """If True, a checkmark is added to the left when touch to the chip."""
+
     callback = ObjectProperty(lambda x: None)
+    """Custom method."""
+
+    radius = NumericProperty(dp(15))
+    """Corner radius values."""
 
     def on_icon(self, instance, value):
         if value == "":
@@ -262,10 +273,11 @@ class MDChip(BoxLayout, ThemableBehavior):
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
                         MDIconButton(
-                            icon="check",
-                            size_hint_y=None,
-                            height=dp(26),
+                            icon="check", size_hint_y=None,
+                            height=dp(20),
                             disabled=True,
+                            user_font_size=dp(20),
+                            pos_hint={"center_y": .5},
                         )
                     )
                 else:
@@ -275,4 +287,7 @@ class MDChip(BoxLayout, ThemableBehavior):
 
 class MDChooseChip(StackLayout):
     selected_chip = None
+    """The `MDChi`p object that is currently selected."""
+
     selected_chip_color = None
+    """The color of the chip that is currently selected."""

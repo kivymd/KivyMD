@@ -25,22 +25,26 @@ from kivy.factory import Factory
 from kivymd.theming import ThemeManager
 
 Builder.load_string('''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
+#:import Window kivy.core.window.Window
+
+#:set color_shadow [0, 0, 0, .2980392156862745]
 
 
-<ExampleTextFields@BoxLayout>
-    orientation: 'vertical'
+<MyMDTextFieldRound@MDTextFieldRound>
+    size_hint_x: None
+    normal_color: color_shadow
+    active_color: color_shadow
 
-    MDToolbar:
-        id: toolbar
-        title: app.title
-        md_bg_color: app.theme_cls.primary_color
-        background_palette: 'Primary'
-        elevation: 10
-        left_action_items: [['dots-vertical', lambda x: None]]
+
+<TextFields@Screen>
+    name: 'textfields'
+
+    canvas:
+        Color:
+            rgba: 0, 0, 0, .2
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     ScrollView:
 
@@ -51,11 +55,52 @@ Builder.load_string('''
             padding: dp(48)
             spacing: dp(15)
 
-            MDTextFieldRound:
-                hint_text: 'Password'
-                icon: 'lock-outline'
-                active_color: [0, 0, 0, .2]
-                normal_color: [0, 0, 0, .5]
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field with `normal_color`'
+                normal_color: [.432, .124, .8654, .1]
+
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field without icon'
+
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field with `require_text_error`'
+                require_text_error: 'Field must be not empty!'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_type: 'left'
+                hint_text: 'Field with left icon'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_right: 'account-box'
+                icon_right_dasabled: True
+                hint_text: 'Field with left and right disabled icons'
+
+            MyMDTextFieldRound:
+                icon_type: 'all'
+                icon_left: 'key-variant'
+                icon_right: 'eye-off'
+                icon_right_dasabled: False
+                icon_callback: app.show_password
+                password: True
+                hint_text: 'Field width type `password = True`'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_right: 'account-box'
+                icon_right_dasabled: True
+                field_height: dp(30)
+                hint_text: 'Field with custom size icon'
+                icon_size: "18sp"
+                radius: dp(9)
+
+            MDTextField:
+                input_filter: "int"
+                hint_text: "Numeric field"
 
             MDTextField:
                 hint_text: "No helper text"
@@ -112,7 +157,7 @@ Builder.load_string('''
 
             MDTextFieldRect:
                 size_hint: None, None
-                size: app.Window.width - dp(40), dp(30)
+                size: Window.width - dp(40), dp(30)
                 pos_hint: {'center_y': .5, 'center_x': .5}
 
             Widget:
@@ -127,11 +172,28 @@ Builder.load_string('''
 class Example(App):
     theme_cls = ThemeManager()
     theme_cls.primary_palette = 'Blue'
+    theme_cls.theme_style = "Dark"
     title = "Example Text Fields"
     main_widget = None
 
     def build(self):
-        return Factory.ExampleTextFields()
+        return Factory.TextFields()
+
+    def show_password(self, field, button):
+        '''
+        Called when you press the right button in the password field
+        for the screen TextFields.
+
+        instance_field: kivy.uix.textinput.TextInput;
+        instance_button: kivymd.button.MDIconButton;
+
+        '''
+
+        # Show or hide text of password, set focus field
+        # and set icon of right button.
+        field.password = not field.password
+        field.focus = True
+        button.icon = "eye" if button.icon == "eye-off" else "eye-off"
 
 
 Example().run()
@@ -158,14 +220,11 @@ from kivy.metrics import dp
 from kivy.metrics import sp
 from kivy.uix.widget import Widget
 
-from kivymd.label import MDLabel
+from kivymd.uix.label import MDLabel
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import MDTextButton kivymd.button.MDTextButton
-
-
 <MDTextField>
     canvas.before:
         Clear
@@ -316,7 +375,7 @@ Builder.load_string(
             icon: root.icon_left
             disabled: True if root.icon_left_disabled else False
             theme_text_color: 'Custom'
-            text_color: root.icon_color
+            text_color: root.icon_left_color
             on_release: if root.icon_callback: root.icon_callback(field, self)
             user_font_size: root.icon_size
             pos_hint: {"center_y": .5}
@@ -345,20 +404,7 @@ Builder.load_string(
             font_family: root.font_family
             font_size: sp(root.font_size)
             allow_copy: root.allow_copy
-            on_focus:
-                root._current_color = root.active_color \
-                if self.focus \
-                else root.normal_color
-
-                icon_left.text_color = root.theme_cls.primary_color \
-                if self.focus \
-                else root.icon_color
-
-                root.get_color_line(self, self.text, self.focus)
-                root.hide_require_error(self.focus)
-                if root.event_focus: root.event_focus(root, self, self.focus)
-                root.focus= self.focus
-                root.dispatch("on_focus")
+            on_focus: root._on_focus(self)
             on_text:
                 root.text = self.text
                 root.dispatch("on_text")
@@ -370,7 +416,7 @@ Builder.load_string(
             icon: root.icon_right
             disabled: True if root.icon_right_disabled else False
             theme_text_color: 'Custom'
-            text_color: root.icon_color
+            text_color: root.icon_right_color
             on_release: if root.icon_callback: root.icon_callback(field, self)
             user_font_size: root.icon_size
             pos_hint: {"center_y": .5}
@@ -852,8 +898,11 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     hint_text = StringProperty()
     """Hint text in the text field."""
 
-    icon_color = ListProperty([1, 1, 1, 1])
-    """Color of icons."""
+    icon_left_color = ListProperty([1, 1, 1, 1])
+    """Color of left icon."""
+
+    icon_right_color = ListProperty([1, 1, 1, 1])
+    """Color of right icon."""
 
     icon_size = NumericProperty(dp(24))
     """Size of icons."""
@@ -937,6 +986,24 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
             self.selection_color = self.theme_cls.primary_color
             self.selection_color[3] = 0.75
         self._current_color = self.normal_color
+
+    def _on_focus(self, field):
+        self._current_color = self.active_color if field.focus else self.normal_color
+        self.get_color_line(field, field.text, field.focus)
+        self.hide_require_error(field.focus)
+        if self.event_focus:
+            self.event_focus(self, field, field.focus)
+        self.focus = field.focus
+        self.dispatch("on_focus")
+        try:
+            if self._instance_icon_left:
+                self._instance_icon_left.text_color = (
+                    self.theme_cls.primary_color
+                    if field.focus
+                    else self.icon_left_color
+                )
+        except ReferenceError:
+            pass
 
     def on_icon_type(self, instance, value):
         def remove_icon_right():

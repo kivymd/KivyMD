@@ -1,19 +1,19 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Lists
 =====
 
-`Material Design spec, Lists <https://material.io/components/lists/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Lists <https://material.io/design/components/lists.html>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -149,31 +149,6 @@ API
 ---
 """
 
-__all__ = (
-    "MDList",
-    "BaseListItem",
-    "ILeftBody",
-    "ILeftBodyTouch",
-    "IRightBody",
-    "IRightBodyTouch",
-    "ContainerSupport",
-    "OneLineListItem",
-    "TwoLineListItem",
-    "ThreeLineListItem",
-    "OneLineAvatarListItem",
-    "TwoLineAvatarListItem",
-    "ThreeLineAvatarListItem",
-    "OneLineIconListItem",
-    "TwoLineIconListItem",
-    "ThreeLineIconListItem",
-    "OneLineRightIconListItem",
-    "TwoLineRightIconListItem",
-    "ThreeLineRightIconListItem",
-    "OneLineAvatarIconListItem",
-    "TwoLineAvatarIconListItem",
-    "ThreeLineAvatarIconListItem",
-)
-
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -187,9 +162,11 @@ from kivy.properties import (
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
-from kivymd.uix.ripplebehavior import RectangularRippleBehavior
+from kivymd.behaviors.ripplebehavior import RectangularRippleBehavior
+from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 from kivymd.font_definitions import theme_font_styles
 
@@ -399,9 +376,7 @@ class BaseListItem(
 
     secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty(
-        "Full", options=["Full", "Inset", None], allownone=True
-    )
+    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()
@@ -613,3 +588,19 @@ class TwoLineAvatarIconListItem(TwoLineAvatarListItem):
 class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
     # dp(40) = dp(16) + dp(24):
     _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+
+
+class ImageLeftWidget(ILeftBody, Image):
+    pass
+
+
+class ImageRightWidget(IRightBodyTouch, Image):
+    pass
+
+
+class IconRightWidget(IRightBodyTouch, MDIconButton):
+    pass
+
+
+class IconLeftWidget(ILeftBodyTouch, MDIconButton):
+    pass

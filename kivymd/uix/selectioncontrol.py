@@ -1,23 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Selection Controls
 ==================
 
-`Material Design spec, Selection controls
-<https://material.io/components/selection-controls/>`_
-"""
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-__all__ = ("MDCheckbox", "MDSwitch", "Thumb")
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`_
+"""
 
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ListProperty, NumericProperty
@@ -27,14 +24,14 @@ from kivy.properties import AliasProperty, BooleanProperty
 from kivy.metrics import dp, sp
 from kivy.animation import Animation
 from kivy.utils import get_color_from_hex
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.widget import Widget
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.elevation import CircularElevationBehavior
-from kivymd.uix.ripplebehavior import CircularRippleBehavior
+from kivymd.behaviors.elevation import CircularElevationBehavior
+from kivymd.behaviors.ripplebehavior import CircularRippleBehavior
 from kivymd.uix.label import MDIcon
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.widget import Widget
 
 Builder.load_string(
     """
@@ -117,17 +114,13 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(font_size=0, duration=0.1, t="out_quad")
-        self.check_anim_in = Animation(
-            font_size=sp(24), duration=0.1, t="out_quad"
-        )
+        self.check_anim_in = Animation(font_size=sp(24), duration=0.1, t="out_quad")
         super().__init__(**kwargs)
         self.selected_color = self.theme_cls.primary_color
         self.unselected_color = self.theme_cls.secondary_text_color
         self.disabled_color = self.theme_cls.divider_color
         self._current_color = self.unselected_color
-        self.check_anim_out.bind(
-            on_complete=lambda *x: self.check_anim_in.start(self)
-        )
+        self.check_anim_out.bind(on_complete=lambda *x: self.check_anim_in.start(self))
         self.bind(
             checkbox_icon_normal=self.update_icon,
             checkbox_icon_down=self.update_icon,
@@ -145,14 +138,10 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     def update_icon(self, *args):
         if self.state == "down":
-            self.icon = (
-                self.radio_icon_down if self.group else self.checkbox_icon_down
-            )
+            self.icon = self.radio_icon_down if self.group else self.checkbox_icon_down
         else:
             self.icon = (
-                self.radio_icon_normal
-                if self.group
-                else self.checkbox_icon_normal
+                self.radio_icon_normal if self.group else self.checkbox_icon_normal
             )
 
     def update_color(self, *args):
@@ -179,9 +168,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
         self.state = "down" if self.active else "normal"
 
 
-class Thumb(
-    CircularElevationBehavior, CircularRippleBehavior, ButtonBehavior, Widget
-):
+class Thumb(CircularElevationBehavior, CircularRippleBehavior, ButtonBehavior, Widget):
     ripple_scale = NumericProperty(2)
 
     def _set_ellipse(self, instance, value):
@@ -225,9 +212,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
 
     def _set_thumb_color_down(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_down = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
+            self._thumb_color_down = get_color_from_hex(colors[color[0]][color[1]])
             if alpha:
                 self._thumb_color_down[3] = alpha
             else:
@@ -239,9 +224,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         _get_thumb_color_down, _set_thumb_color_down, bind=["_thumb_color_down"]
     )
 
-    _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors["Gray"]["400"])
-    )
+    _thumb_color_disabled = ListProperty(get_color_from_hex(colors["Gray"]["400"]))
 
     thumb_color_disabled = get_color_from_hex(colors["Gray"]["800"])
 
@@ -250,9 +233,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
 
     def _set_thumb_color_disabled(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_disabled = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
+            self._thumb_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
             if alpha:
                 self._thumb_color_disabled[3] = alpha
         elif len(color) == 4:

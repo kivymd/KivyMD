@@ -1,23 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Theming
 =======
 
-`Material Design spec, Material theming
-<https://material.io/design/material-theming/>`_
-"""
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-__all__ = ("ThemeManager", "ThemableBehavior")
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Material theming <https://material.io/design/material-theming>`_
+"""
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -49,27 +46,21 @@ class ThemeManager(Widget):
     primary_dark_hue = OptionProperty("700", options=hue)
 
     def _get_primary_color(self):
-        return get_color_from_hex(
-            colors[self.primary_palette][self.primary_hue]
-        )
+        return get_color_from_hex(colors[self.primary_palette][self.primary_hue])
 
     primary_color = AliasProperty(
         _get_primary_color, bind=("primary_palette", "primary_hue")
     )
 
     def _get_primary_light(self):
-        return get_color_from_hex(
-            colors[self.primary_palette][self.primary_light_hue]
-        )
+        return get_color_from_hex(colors[self.primary_palette][self.primary_light_hue])
 
     primary_light = AliasProperty(
         _get_primary_light, bind=("primary_palette", "primary_light_hue")
     )
 
     def _get_primary_dark(self):
-        return get_color_from_hex(
-            colors[self.primary_palette][self.primary_dark_hue]
-        )
+        return get_color_from_hex(colors[self.primary_palette][self.primary_dark_hue])
 
     primary_dark = AliasProperty(
         _get_primary_dark, bind=("primary_palette", "primary_dark_hue")
@@ -88,18 +79,14 @@ class ThemeManager(Widget):
     )
 
     def _get_accent_light(self):
-        return get_color_from_hex(
-            colors[self.accent_palette][self.accent_light_hue]
-        )
+        return get_color_from_hex(colors[self.accent_palette][self.accent_light_hue])
 
     accent_light = AliasProperty(
         _get_accent_light, bind=["accent_palette", "accent_light_hue"]
     )
 
     def _get_accent_dark(self):
-        return get_color_from_hex(
-            colors[self.accent_palette][self.accent_dark_hue]
-        )
+        return get_color_from_hex(colors[self.accent_palette][self.accent_dark_hue])
 
     accent_dark = AliasProperty(
         _get_accent_dark, bind=["accent_palette", "accent_dark_hue"]
@@ -125,9 +112,7 @@ class ThemeManager(Widget):
     def _get_op_bg_darkest(self):
         return self._get_bg_darkest(True)
 
-    opposite_bg_darkest = AliasProperty(
-        _get_op_bg_darkest, bind=["theme_style"]
-    )
+    opposite_bg_darkest = AliasProperty(_get_op_bg_darkest, bind=["theme_style"])
 
     def _get_bg_dark(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
@@ -185,9 +170,7 @@ class ThemeManager(Widget):
     def _get_op_divider_color(self):
         return self._get_divider_color(True)
 
-    opposite_divider_color = AliasProperty(
-        _get_op_divider_color, bind=["theme_style"]
-    )
+    opposite_divider_color = AliasProperty(_get_op_divider_color, bind=["theme_style"])
 
     def _get_text_color(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
@@ -203,9 +186,7 @@ class ThemeManager(Widget):
     def _get_op_text_color(self):
         return self._get_text_color(True)
 
-    opposite_text_color = AliasProperty(
-        _get_op_text_color, bind=["theme_style"]
-    )
+    opposite_text_color = AliasProperty(_get_op_text_color, bind=["theme_style"])
 
     def _get_secondary_text_color(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
@@ -242,9 +223,7 @@ class ThemeManager(Widget):
     def _get_op_icon_color(self):
         return self._get_icon_color(True)
 
-    opposite_icon_color = AliasProperty(
-        _get_op_icon_color, bind=["theme_style"]
-    )
+    opposite_icon_color = AliasProperty(_get_op_icon_color, bind=["theme_style"])
 
     def _get_disabled_hint_text_color(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
@@ -322,9 +301,7 @@ class ThemeManager(Widget):
 
     def set_clearcolor_by_theme_style(self, theme_style):
         if theme_style == "Light":
-            Window.clearcolor = get_color_from_hex(
-                colors["Light"]["Background"]
-            )
+            Window.clearcolor = get_color_from_hex(colors["Light"]["Background"])
         elif theme_style == "Dark":
             Window.clearcolor = get_color_from_hex(colors["Dark"]["Background"])
 

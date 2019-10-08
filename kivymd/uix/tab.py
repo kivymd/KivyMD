@@ -1,31 +1,20 @@
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     modified this module
-# Copyright (c) 2015 Kivy Garden
-#     https://github.com/kivy-garden/garden.androidtabs
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Tabs
 ====
 
-`Material Design spec, Tabs <https://material.io/components/tabs/>`_
-"""
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    modified this module
+Copyright (c) 2015 Kivy Garden
+    https://github.com/kivy-garden/garden.androidtabs
 
-__all__ = (
-    "MDTabsException",
-    "MDTabsLabel",
-    "MDTabsBase",
-    "MDTabsMain",
-    "MDTabsCarousel",
-    "MDTabsScrollView",
-    "MDTabsBar",
-    "MDTabs",
-)
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
+"""
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -98,10 +87,8 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
 class MDTabsBase(Widget):
     """
     MDTabsBase allow you to create a tab.
-    You must create a new class that inherits
-    from MDTabsBase.
-    In this way you have total control over the
-    views of your tabbed panel.
+    You must create a new class that inherits from MDTabsBase.
+    In this way you have total control over the views of your tabbed panel.
     """
 
     text = StringProperty()
@@ -120,9 +107,7 @@ class MDTabsBase(Widget):
     def on_text(self, widget, text):
         # Set the icon
         if text in md_icons:
-            self.tab_label.font_name = (
-                fonts_path + "materialdesignicons-webfont.ttf"
-            )
+            self.tab_label.font_name = fonts_path + "materialdesignicons-webfont.ttf"
             self.tab_label.text = md_icons[self.text]
             self.tab_label.font_size = "24sp"
         # Set the label text
@@ -190,17 +175,13 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
     def get_last_scroll_x(self):
         return self.scrollview.scroll_x
 
-    last_scroll_x = AliasProperty(
-        get_last_scroll_x, bind=("target",), cache=True
-    )
+    last_scroll_x = AliasProperty(get_last_scroll_x, bind=("target",), cache=True)
     """Is the carousel reference of the next tab/slide.
     When you go from "Tab A" to "Tab B", "Tab B" will be the
     target tab/slide of the carousel."""
 
     def __init__(self, **kwargs):
-        self._trigger_update_tab_bar = Clock.schedule_once(
-            self._update_tab_bar, 0
-        )
+        self._trigger_update_tab_bar = Clock.schedule_once(self._update_tab_bar, 0)
         super().__init__(**kwargs)
 
     def _update_tab_bar(self, *args):
@@ -273,9 +254,7 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
                 if carousel._skip_slide is not None
                 else None
             )
-            next_slide = (
-                carousel.next_slide if forward else carousel.previous_slide
-            )
+            next_slide = carousel.next_slide if forward else carousel.previous_slide
             self.target = skip_slide if skip_slide else next_slide
 
             if not self.target:
@@ -307,16 +286,10 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
                 else:
                     x_step = a.x - abs((a.x - b.x)) * threshold
                     x_step = x_step - abs(x_step - b.x) * break_step
-                    ind_width = (
-                        (a.x + a.width) - x_step if threshold else a.width
-                    )
+                    ind_width = (a.x + a.width) - x_step if threshold else a.width
                     gap_w = ind_width - b.width
                     w_step = ind_width - (gap_w * break_step)
-                    w_step = (
-                        w_step
-                        if w_step + x_step <= a.x + a.width
-                        else ind_width
-                    )
+                    w_step = w_step if w_step + x_step <= a.x + a.width else ind_width
             self.update_indicator(x_step, w_step)
 
 
@@ -356,29 +329,28 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         current_tab_label = carousel.current_slide.tab_label
         if current_tab_label.state == "normal":
             current_tab_label._do_press()
-        self.tab_bar.update_indicator(
-            current_tab_label.x, current_tab_label.width
-        )
+        self.tab_bar.update_indicator(current_tab_label.x, current_tab_label.width)
 
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
-            if not issubclass(widget.__class__, MDTabsBase):
-                raise MDTabsException(
-                    "MDTabs accept only subclass of MDTabsBase"
-                )
-            widget.tab_label.tab_bar = self.tab_bar
-            self.tab_bar.layout.add_widget(widget.tab_label)
-            self.carousel.add_widget(widget)
-            return
-        return super().add_widget(widget, index, canvas)
+            # FIXME: the condition always works!
+            #if not issubclass(widget.__class__, MDTabsBase):
+            #    print(widget, widget.__class__)
+            #    raise MDTabsException("MDTabs accept only subclass of MDTabsBase")
+            try:
+                widget.tab_label.tab_bar = self.tab_bar
+                self.tab_bar.layout.add_widget(widget.tab_label)
+                self.carousel.add_widget(widget)
+                return
+            except AttributeError:
+                pass
+        return super().add_widget(widget)
 
     def remove_widget(self, widget):
         # You can remove only subclass of MDTabsBase.
         if not issubclass(widget.__class__, MDTabsBase):
-            raise MDTabsException(
-                "MDTabs can remove only subclass of MDTabBase"
-            )
+            raise MDTabsException("MDTabs can remove only subclass of MDTabBase")
         if widget.parent.parent == self.carousel:
             self.tab_bar.layout.remove_widget(widget.tab_label)
             self.carousel.remove_widget(widget)
@@ -395,12 +367,15 @@ Builder.load_string(
     padding: '12dp', 0
     group: 'tabs'
     allow_no_selection: False
-    text_color_normal: (0, 0, 0, .5) if app.theme_cls.theme_style is 'Dark' \
-                                       else (1, 1, 1, .6)
-    text_color_active: (0, 0, 0, .75) if app.theme_cls.theme_style is 'Dark' \
-                                       else (1, 1, 1, 1)
-    color: self.text_color_active if self.state is 'down' \
-                                else self.text_color_normal
+    text_color_normal:
+        (0, 0, 0, .5) if app.theme_cls.theme_style is 'Dark' \
+        else (1, 1, 1, .6)
+    text_color_active:
+        (0, 0, 0, .75) if app.theme_cls.theme_style is 'Dark' \
+        else (1, 1, 1, 1)
+    color:
+        self.text_color_active if self.state is 'down' \
+        else self.text_color_normal
     on_x: self._trigger_update_tab_indicator()
     on_width: self._trigger_update_tab_indicator()
 
@@ -465,12 +440,7 @@ Builder.load_string(
 """
 )
 
-if __name__ == "__main__":
-    from kivy.factory import Factory
-    from kivymd.uix.list import ILeftBodyTouch
-    from kivymd.uix.button import MDIconButton
-
-    demo = """
+demo = """
 <Example@BoxLayout>
     orientation: 'vertical'
 
@@ -512,10 +482,11 @@ if __name__ == "__main__":
             halign: 'center'
             theme_text_color: 'Primary'
             font_style: 'H6'
-    """
+"""
 
-    class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
-        pass
+if __name__ == "__main__":
+    from kivy.factory import Factory
+
 
     class MyTab(BoxLayout, MDTabsBase):
         pass
@@ -535,9 +506,7 @@ if __name__ == "__main__":
                 istance_android_tabs.ids.scrollview.children[0].remove_widget(
                     instance_tab
                 )
-                istance_android_tabs.add_widget(
-                    MyTab(text=self.list_name_icons[i])
-                )
+                istance_android_tabs.add_widget(MyTab(text=self.list_name_icons[i]))
 
         def switch_tabs_to_text(self, istance_android_tabs):
             for instance_tab in istance_android_tabs.ids.scrollview.children[
@@ -545,9 +514,9 @@ if __name__ == "__main__":
             ].children:
                 for k, v in md_icons.items():
                     if v == instance_tab.text:
-                        istance_android_tabs.ids.scrollview.children[
-                            0
-                        ].remove_widget(instance_tab)
+                        istance_android_tabs.ids.scrollview.children[0].remove_widget(
+                            instance_tab
+                        )
                         istance_android_tabs.add_widget(
                             MyTab(text=" ".join(k.split("-")).capitalize())
                         )

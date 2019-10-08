@@ -1,14 +1,14 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 ScrollView Refresh Layout
 =========================
+
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
 
 Example
 -------
@@ -26,8 +26,6 @@ from kivymd.theming import ThemeManager
 from kivymd.utils import asynckivy
 
 Builder.load_string('''
-
-
 <ItemForList>
     text: root.text
 
@@ -110,12 +108,6 @@ class Example(App):
 Example().run()
 
 """
-
-__all__ = (
-    "MDScrollViewRefreshLayout",
-    "RefreshSpinner",
-    "_RefreshScrollEffect",
-)
 
 from kivy.animation import Animation
 from kivy.effects.dampedscroll import DampedScrollEffect

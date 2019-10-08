@@ -1,20 +1,19 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Navigation Drawer
 =================
 
-`Material Design spec, Navigation drawer
-<https://material.io/components/navigation-drawer/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`_
 
 Example
 -------
@@ -27,8 +26,6 @@ from kivymd.theming import ThemeManager
 from kivymd.toast import toast
 
 main_kv = '''
-##:import NavigationLayout kivymd.uix.navigationdrawer.NavigationLayout
-
 <ContentNavigationDrawer@MDNavigationDrawer>:
     drawer_logo: 'demos/kitchen_sink/assets/drawer_logo.png'
 
@@ -83,18 +80,6 @@ class Example(App):
 Example().run()
 """
 
-__all__ = (
-    "MDNavigationDrawer",
-    "NavigationLayout",
-    "NavigationDrawerHeaderBase",
-    "NavigationDrawerToolbar",
-    "NavigationDrawerIconButton",
-    "NavigationDrawerSubheader",
-    "NavigationDrawerDivider",
-    "NDIconLabel",
-    "NDBadgeLabel",
-)
-
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -109,9 +94,6 @@ from kivy.properties import (
 from kivy.clock import Clock
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd import images_path
-from kivymd.uix.elevation import RectangularElevationBehavior
-from kivymd.icon_definitions import md_icons
 from kivymd.uix.label import MDLabel
 from kivymd.uix.list import (
     BaseListItem,
@@ -120,17 +102,17 @@ from kivymd.uix.list import (
     OneLineIconListItem,
     IRightBody,
 )
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.toolbar import MDToolbar
-from kivymd.vendor.navigationdrawer import (
-    NavigationDrawer as VendorNavigationDrawer,
-)
+from kivymd.theming import ThemableBehavior
+from kivymd.vendor.navigationdrawer import NavigationDrawer as VendorNavigationDrawer
+from kivymd import images_path
+from kivymd.behaviors.elevation import RectangularElevationBehavior
+from kivymd.icon_definitions import md_icons
 
 Builder.load_string(
     """
 #:import colors kivymd.color_definitions.colors
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import ScrollView kivy.uix.scrollview.ScrollView
 #:import Window kivy.core.window.Window
 
 
@@ -413,9 +395,7 @@ class NavigationDrawerDivider(OneLineListItem):
         self.height = dp(16)
 
 
-class MDNavigationDrawer(
-    BoxLayout, ThemableBehavior, RectangularElevationBehavior
-):
+class MDNavigationDrawer(BoxLayout, ThemableBehavior, RectangularElevationBehavior):
     _elevation = NumericProperty(0)
     _list = ObjectProperty()
     _drawer_logo = ObjectProperty()
@@ -473,13 +453,9 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
     min_dist_to_open = NumericProperty(0.2)
     min_dist_to_close = NumericProperty(0.8)
     anim_time = NumericProperty(0.2)
-    separator_image = StringProperty(
-        "{}".format(images_path + "/transparent.png")
-    )
+    separator_image = StringProperty("{}".format(images_path + "/transparent.png"))
     side_panel_positioning = "left"
-    side_panel_width = (
-        (dp(320) * 80) // 100 if dp(320) >= Window.width else dp(320)
-    )
+    side_panel_width = (dp(320) * 80) // 100 if dp(320) >= Window.width else dp(320)
     max_shadow_opacity = NumericProperty(0.5)
     anim_type = StringProperty("slide_above_simple")
 

@@ -1,22 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Sliders
 =======
 
-`Material Design spec, Sliders <https://material.io/components/sliders/>`_
-"""
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-__all__ = ("MDSlider",)
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Sliders <https://material.io/design/components/sliders.html>`_
+"""
 
 from kivy.lang import Builder
 from kivy.properties import ListProperty, AliasProperty, BooleanProperty
@@ -30,9 +28,6 @@ from kivy.uix.slider import Slider
 
 Builder.load_string(
     """
-#:import Thumb kivymd.uix.selectioncontrol.Thumb
-
-
 <MDSlider>
     id: slider
     canvas:
@@ -140,9 +135,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     def _set_thumb_color_down(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_down = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
+            self._thumb_color_down = get_color_from_hex(colors[color[0]][color[1]])
             if alpha:
                 self._thumb_color_down[3] = alpha
             else:
@@ -154,18 +147,14 @@ class MDSlider(ThemableBehavior, Slider):
         _get_thumb_color_down, _set_thumb_color_down, bind=["_thumb_color_down"]
     )
 
-    _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors["Gray"]["400"])
-    )
+    _thumb_color_disabled = ListProperty(get_color_from_hex(colors["Gray"]["400"]))
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
 
     def _set_thumb_color_disabled(self, color, alpha=None):
         if len(color) == 2:
-            self._thumb_color_disabled = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
+            self._thumb_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
             if alpha:
                 self._thumb_color_disabled[3] = alpha
         elif len(color) == 4:
@@ -201,9 +190,7 @@ class MDSlider(ThemableBehavior, Slider):
             self.thumb_color_down = get_color_from_hex(
                 colors[self.theme_cls.primary_palette]["200"]
             )
-            self.thumb_color_disabled = get_color_from_hex(
-                colors["Gray"]["800"]
-            )
+            self.thumb_color_disabled = get_color_from_hex(colors["Gray"]["800"])
         else:
             self._track_color_normal = get_color_from_hex("000000")
             self._track_color_normal[3] = 0.26
@@ -262,43 +249,43 @@ if __name__ == "__main__":
             return Builder.load_string(
                 """
 BoxLayout:
-    orientation:'vertical'
+    orientation: 'vertical'
     BoxLayout:
-        size_hint_y:None
+        size_hint_y: None
         height: '48dp'
         Label:
-            text:"Toggle disabled"
-            color: [0,0,0,1]
+            text: "Toggle disabled"
+            color: [0, 0, 0, 1]
         CheckBox:
             on_press: slider.disabled = not slider.disabled
     BoxLayout:
-        size_hint_y:None
+        size_hint_y: None
         height: '48dp'
         Label:
-            text:"Toggle active"
-            color: [0,0,0,1]
+            text: "Toggle active"
+            color: [0, 0, 0, 1]
         CheckBox:
             on_press: slider.active = not slider.active
     BoxLayout:
-        size_hint_y:None
+        size_hint_y: None
         height: '48dp'
         Label:
-            text:"Toggle show off"
-            color: [0,0,0,1]
+            text: "Toggle show off"
+            color: [0, 0, 0, 1]
         CheckBox:
             on_press: slider.show_off = not slider.show_off
 
     MDSlider:
-        id:slider
-        min:0
-        max:100
+        id: slider
+        min: 0
+        max: 100
         value: 40
 
     MDSlider:
-        id:slider2
-        orientation:"vertical"
-        min:0
-        max:100
+        id: slider2
+        orientation: "vertical"
+        min: 0
+        max: 100
         value: 40
 
 """

@@ -360,6 +360,7 @@ class KitchenSink(App, Screens):
         self.cards_created = False
         self.user_card = None
         self.bs_menu_1 = None
+        self.bs_menu_2 = None
         self.popup_screen = None
         self.my_snackbar = None
         self.dialog_load_kv_files = None

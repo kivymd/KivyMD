@@ -502,11 +502,11 @@ buttons = """
                     pos_hint: {"center_x": .5, "center_y": .5}
 
                     MDIconButton:
-                        icon: "android"
+                        icon: "language-python"
                         user_font_size: "15sp"
 
                     MDIconButton:
-                        icon: "file"
+                        icon: "language-python"
                         user_font_size: "20sp"
 
                     MDIconButton:

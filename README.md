@@ -64,7 +64,7 @@ To install KivyMD, clone the project and run the setup.py script. The following 
 
 If you want to use KivyMD with buildozer, in your buildozer.spec's requirements line you should add the full git HTTPS address, like this example:
   ```text
-  requirements = kivy==master,git+https://github.com/HeaTTheatR/KivyMD.git
+  requirements = kivy==master, kivymd
   ```
 
 

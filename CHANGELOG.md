@@ -1,6 +1,15 @@
 # Change Log
 
 
+## [v0.101.4]() - *Alpha*
+
+#### demos/kitchen_sink/main.py:
+* Fixed `ModuleNotFoundError: No module named 'kivymd.dialog'`
+
+#### kivymd/uix/dropdownitem.py:
+* Text color fixed - previously the text was white on a white background
+
+
 ## [v0.101.3]() - *Alpha*
 
 #### kivymd/uix/bottomnavigation.py:

@@ -1,6 +1,13 @@
 # Change Log
 
 
+## [v0.101.1]() - *Alpha*
+
+#### kivymd/uix/bottomnavigation.py:
+* Fixed  `ModuleNotFoundError: No module named 'kivymd.uix.elevation'`
+* Fixed `ModuleNotFoundError: No module named 'kivymd.uix.backgroundcolorbehavior'`
+
+
 ## [v0.101.0]() - *Alpha*
 
 #### kivymd/textfields.py:
@@ -65,6 +72,7 @@
 #### kivymd/toast/kivytoast/kivytoast.py:
 * Added doc-string
 * Added `duration` value for to control the timing of the toast
+
 
 
 * Removed `accordion.py`, `accordionlistitem.py` modules - see `expansionpanel.py` module

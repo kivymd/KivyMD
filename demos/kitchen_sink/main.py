@@ -811,7 +811,7 @@ class KitchenSink(App, Screens):
             toast(instance.text_field.text)
 
         if not self.input_dialog:
-            from kivymd.dialog import MDInputDialog
+            from kivymd.uix.dialog import MDInputDialog
 
             self.input_dialog = MDInputDialog(
                 title="Title",

@@ -1,6 +1,72 @@
 # Change Log
 
 
+## [v0.101.0]() - *Alpha*
+
+#### kivymd/textfields.py:
+* Added ability to resize text field in `MDTextFieldRound` class
+* Added values `icon_left_color` and `icon_right_color` in `MDTextFieldRound` class
+* Fixed `ReferenceError` in `MDTextFieldRound` class
+
+#### kivymd/cards.py:
+* Added doc string to MDCard class
+* Added color property to MDSeparator class
+
+#### kivymd/button.py:
+* Added new doc in buttons
+* Fixed: the text color in the button did not change
+* Added the ability to change the font size in the MDIconButton
+
+#### demos/kitchen_sink/screens.py:
+* Methods for loading KV files moved to the `main.py` file
+* Added new example for `bottom navigation` screen
+* Added new example for `popup screen` screen
+* Added new example with `MDTextField`
+* Added new example with `MDDropDownItem`
+* Removed `Accordion List` screen
+* Updated example for `buttons` screen
+* Updated `BottomNavigation` example
+* Deleted imports inside kv-files
+* Edited imports
+
+#### demos/kitchen_sink/main.py:
+* Added dialog for preloading KV files in the `Kitchen Sink` application
+* Edited method `show_popup_screen` for new example `popup screen` screen
+* Added new example with `MDDropDownItem`
+* Removed `Accordion List` screen
+* Corrected image proportions in the `MDCard` example
+* Corrected image proportions in the `MDUserAnimationCard` example
+
+#### kivymd/bottomnavigation.py:
+* Added new doc
+* Added the ability to set the color of the `MDBottomNavigation` panel
+
+#### kivymd/popupscreen.py:
+* Fixed the behavior of MDPopupScreen, which was closed when own events
+* Added the ability to close `MDPopupScreen` with swipe down
+* Added the ability to set the color and background image for `MDPopupScreen`
+* Added new example in doc string
+
+#### kivymd/managerswiper.py:
+* Added `return super().on_touch_down(touch)` to `on_touch_down` method
+
+#### setup.py
+* Added `requests` to requires section
+
+#### kivymd/menus.py:
+* Added `on_dismiss` method - same behavior as ModalView
+
+####kivymd/behaviors/hover_behavior.py:
+* Added Hoverable Behaviour (changing when the mouse is on the widget by O. Poyen
+
+#### kivymd/context_menu.py:
+* Added new module context_menu.py
+
+#### kivymd/toast/kivytoast/kivytoast.py:
+* Added doc-string
+* Added `duration` value for to control the timing of the toast
+
+
 ## [v0.100.2](https://github.com/HeaTTheatR/KivyMD/tree/1fa2e59) - *Alpha*
 
 * Formatted code using [Black](https://github.com/psf/black) utility

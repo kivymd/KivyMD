@@ -1,6 +1,15 @@
 # Change Log
 
 
+## [v0.101.2]() - *Alpha*
+
+#### demos/kitchen_sink/main.py:
+* Fixed `AttributeError: 'KitchenSink' object has no attribute 'bs_menu_2'`
+
+#### kivymd/uix/bottomsheet.py:
+* Fixed Fixed `Unable to import package 'kivymd.label.MDLabel'`
+
+
 ## [v0.101.1]() - *Alpha*
 
 #### kivymd/uix/bottomnavigation.py:

@@ -12,7 +12,7 @@ Builder.load_string(
 #:import images_path kivymd.images_path
 
 
-<BaseDialog>:
+<BaseDialogForLoadKvFiles>:
     background: '{}/transparent.png'.format(images_path)
 
     canvas.before:
@@ -55,7 +55,7 @@ Builder.load_string(
 )
 
 
-class BaseDialog(ThemableBehavior, ModalView):
+class BaseDialogForLoadKvFiles(ThemableBehavior, ModalView):
     canvas_color = ListProperty()
     callback = ObjectProperty(lambda x: None)
 
@@ -65,7 +65,7 @@ class BaseDialog(ThemableBehavior, ModalView):
         self.canvas_color[3] = 0.75
 
 
-class DialogLoadKvFiles(BaseDialog):
+class DialogLoadKvFiles(BaseDialogForLoadKvFiles):
     """Dialogue to wait for the completion of some action."""
 
     name_kv_file = StringProperty()

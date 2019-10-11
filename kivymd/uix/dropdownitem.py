@@ -153,6 +153,8 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
                 {
                     "viewclass": "OneLineListItem",
                     "text": name_item,
+                    "text_color": [0, 0, 0, 1],
+                    "theme_text_color": "Custom",
                     "on_release": lambda x=name_item: self.set_item(x),
                 }
             )

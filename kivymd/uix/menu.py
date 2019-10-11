@@ -1,20 +1,22 @@
+# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+#     KivyMD library up to version 0.1.2
+# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+#     KivyMD library version 0.1.3 and higher
+#
+# For suggestions and questions:
+# <kivydevelopment@gmail.com>
+#
+# This file is distributed under the terms of the same license,
+# as the Kivy framework.
+
 """
 Menus
 =====
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
-
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Menus <https://material.io/design/components/menus.html>`_
+`Material Design spec, Menus <https://material.io/components/menus/>`_
 """
+
+__all__ = ("MDMenu", "MDDropdownMenu", "MDMenuItem")
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -28,7 +30,6 @@ from kivy.properties import (
     ListProperty,
     OptionProperty,
     StringProperty,
-    BooleanProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -48,14 +49,14 @@ Builder.load_string(
     padding: dp(16), 0
     # Horrible, but hey it works.
     on_release:
-        root.parent.parent.parent.parent.dispatch("on_dismiss")
+        root.parent.parent.parent.parent.dismiss()
         root.callback(root.text)
 
     Label:
         id: item_text
         text: root.text
         markup: True
-        #font_size: '14sp'
+        font_size: '14sp'
         size_hint_x: None
         width: self.texture_size[0]
         halign: 'left'
@@ -155,6 +156,14 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     Set to None to let the widget pick for you. Defaults to None.
     """
 
+    starting_coords = OptionProperty(
+        None, allownone=True, options=["bottom", "center"]
+    )
+    """Where the menu will start from on generation
+
+    Set to None to default to Center.
+    """
+
     background_color = ListProperty()
     """Color of the background of the menu
     """
@@ -167,12 +176,8 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     """Width of the rectangle of the menu
     """
 
-    _center = BooleanProperty(False)
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_dismiss")
-
         if not len(self.background_color):
             self.background_color = self.theme_cls.primary_color
         if not len(self.color_rectangle):
@@ -187,7 +192,12 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     def display_menu(self, caller):
         # We need to pick a starting point, see how big we need to be,
         # and where to grow to.
-        c = caller.to_window(caller.center_x, caller.center_y)  # Starting coords
+        c = None
+        if self.starting_coords is None or self.starting_coords == "center":
+            c = caller.to_window(caller.center_x, caller.center_y)
+        elif self.starting_coords == "bottom":
+            c = caller.to_window(caller.x, caller.y)
+        # Starting coords
 
         # TODO: ESTABLISH INITIAL TARGET SIZE ESTIMATE
         target_width = self.width_mult * m_res.STANDARD_INCREMENT
@@ -200,7 +210,8 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
         if target_width > Window.width:
             # ...reduce our multiplier to max allowed.
             target_width = (
-                int(Window.width / m_res.STANDARD_INCREMENT) * m_res.STANDARD_INCREMENT
+                int(Window.width / m_res.STANDARD_INCREMENT)
+                * m_res.STANDARD_INCREMENT
             )
 
         target_height = sum([dp(48) for i in self.items])
@@ -258,41 +269,21 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
             tar_x = c[0]
         else:  # should always be 'left'
             tar_x = c[0] - target_width
-
+        anim = Animation(
+            x=tar_x,
+            y=tar_y,
+            width=target_width,
+            height=target_height,
+            duration=0.3,
+            transition="out_quint",
+        )
         menu = self.ids.md_menu
-        if not self._center:
-            anim = Animation(
-                x=tar_x,
-                y=tar_y,
-                width=target_width,
-                height=target_height,
-                duration=0.3,
-                transition="out_quint",
-            )
-            menu.pos = c
-            anim.start(menu)
-        else:
-            menu.width = target_width
-            menu.height = target_height
-            menu.x = caller.x - dp(15)
-            menu.y = caller.y - menu.height / 2
-
-            # TODO: Add the ability to set the list to the current user selection.
-            """
-            for data in menu.data:
-                if data["text"] == caller.ids.label_item.text:
-                    opts = menu.layout_manager.view_opts
-                    item = menu.view_adapter.get_view(1, data, opts[1]["viewclass"])
-                    # AttributeError: 'function' object has no attribute 'is_triggered'
-                    # https://github.com/kivy/kivy/issues/5014
-                    # Attempt to fix - https://github.com/Bakterija/log_fruit/blob/dev/src/app_modules/widgets/app_recycleview/recycleview.py#L25-L34
-                    menu.scroll_to(item)
-                    break
-            """
+        menu.pos = c
+        anim.start(menu)
 
     def on_touch_down(self, touch):
         if not self.ids.md_menu.collide_point(*touch.pos):
-            self.dispatch("on_dismiss")
+            self.dismiss()
             return True
         super().on_touch_down(touch)
         return True
@@ -305,8 +296,5 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
         super().on_touch_up(touch)
         return True
 
-    def on_dismiss(self):
-        Window.remove_widget(self)
-
     def dismiss(self):
-        self.on_dismiss()
+        Window.remove_widget(self)

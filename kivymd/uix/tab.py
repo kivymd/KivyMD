@@ -305,8 +305,8 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     tab_bar_height = NumericProperty("48dp")
     """Height of the tab bar."""
 
-    tab_indicator_anim = BooleanProperty(False)
-    """Tab indicator animation. Default to True.
+    tab_indicator_anim = BooleanProperty(True)
+    """Tab indicator animation. Defaults to True.
     If you do not want animation set it to False.
     """
 

@@ -1,6 +1,18 @@
 # Change Log
 
 
+## [v0.101.3]() - *Alpha*
+
+#### kivymd/uix/bottomnavigation.py:
+* Code updated to changes in version 0.101.0
+
+### demos/kitchen_sink/screens.py:
+Changed the icons to `language-python` in the `Buttons` example
+
+### demos/kitchen_sink/dialogs.py:
+Renamed `BaseDialog` to `BaseDialogForLoadKvFiles` class (Fixed AttributeError: `'MDDialog' object has no attribute 'canvas_color'`)
+
+
 ## [v0.101.2]() - *Alpha*
 
 #### demos/kitchen_sink/main.py:

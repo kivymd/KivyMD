@@ -110,6 +110,7 @@ What's new in version 0.101.0:
 API Breaking changes:
 =====================
 
+* All classes with the `Behavior` prefix are now placed in the `kivymd/behaviors` directory
 * All uix modules moved to kivymd.uix module.
 * All widgets that usually used in kv-lang are automatically added to Factory.
 You don't need to #:import them. Remove all your imports.

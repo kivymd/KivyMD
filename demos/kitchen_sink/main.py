@@ -1,26 +1,22 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Kitchen Sink
-======================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 import os
 import sys
 
-from kivy.factory import Factory
-
 sys.path.append(os.path.abspath(__file__).split("demos")[0])
 
+from kivy.factory import Factory
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -28,28 +24,22 @@ from kivy.core.window import Window
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
-from kivy.uix.image import Image
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
 
 from screens import Screens
 
-from kivymd.utils.cropimage import crop_image
-from kivymd.utils import asynckivy
 from kivymd.uix.fanscreenmanager import MDFanScreen
 from kivymd.uix.popupscreen import MDPopupScreen
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.list import (
-    ILeftBody,
-    ILeftBodyTouch,
-    IRightBodyTouch,
-    OneLineIconListItem,
-)
+from kivymd.uix.list import IRightBodyTouch, OneLineIconListItem
 from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.theming import ThemeManager
-from kivymd.uix.ripplebehavior import CircularRippleBehavior
 from kivymd.uix.card import MDCard
+from kivymd.utils.cropimage import crop_image
+from kivymd.utils import asynckivy
+from kivymd.theming import ThemeManager
+from demos.kitchen_sink.dialogs import DialogLoadKvFiles
 from kivymd.icon_definitions import md_icons
+from kivymd import demos_assets_path
 
 
 def toast(text):
@@ -62,7 +52,10 @@ main_widget_kv = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
-#:import ThemeManager kivymd.theming.ThemeManager
+
+# FIXME: if you remove the import of this class,
+#        an error is returned when using the `MDMenu` example
+#        NameError: name 'MDDropdownMenu' is not defined
 #:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
 
 
@@ -116,7 +109,7 @@ main_widget_kv = """
         text: "Video call"
         on_press: root.callback(self.text)
 
-        IconLeftSampleWidget:
+        IconLeftWidget:
             icon: 'camera-front-variant'
 
     TwoLineIconListItem:
@@ -128,7 +121,7 @@ main_widget_kv = """
         # FIXME: Don't work "secondary_text_color" parameter
         # secondary_text_color: app.theme_cls.primary_color
 
-        IconLeftSampleWidget:
+        IconLeftWidget:
             icon: 'phone'
 
     TwoLineIconListItem:
@@ -138,7 +131,7 @@ main_widget_kv = """
             "[color=%s]Operator's tariffs apply[/color]" \
             % get_hex_from_color(app.theme_cls.primary_color)
 
-        IconLeftSampleWidget:
+        IconLeftWidget:
             icon: 'remote'
 
 
@@ -156,13 +149,7 @@ main_widget_kv = """
         text: "Menu of Examples:"
 
     MyNavigationDrawerIconButton:
-        text: "Accordion"
-
-    MyNavigationDrawerIconButton:
         text: "Bottom App Bar"
-
-    MyNavigationDrawerIconButton:
-        text: "Accordion List"
 
     MyNavigationDrawerIconButton:
         text: "Bottom Navigation"
@@ -184,6 +171,12 @@ main_widget_kv = """
 
     MyNavigationDrawerIconButton:
         text: "Download File"
+
+    MyNavigationDrawerIconButton:
+        text: "Dropdown Item"
+
+    MyNavigationDrawerIconButton:
+        text: "Expansion Panel"
 
     MyNavigationDrawerIconButton:
         text: "Floating Buttons"
@@ -367,16 +360,15 @@ class KitchenSink(App, Screens):
         self.cards_created = False
         self.user_card = None
         self.bs_menu_1 = None
-        self.bs_menu_2 = None
+        self.popup_screen = None
         self.my_snackbar = None
+        self.dialog_load_kv_files = None
         self._interval = 0
         self.tick = 0
         self.x = 0
         self.y = 25
         self.create_stack_floating_buttons = False
-        self.hex_primary_color = get_hex_from_color(
-            self.theme_cls.primary_color
-        )
+        self.hex_primary_color = get_hex_from_color(self.theme_cls.primary_color)
         self.previous_text = (
             f"Welcome to the application [b][color={self.hex_primary_color}]"
             f"Kitchen Sink[/color][/b].\nTo see [b]"
@@ -419,8 +411,8 @@ class KitchenSink(App, Screens):
         Window.bind(on_keyboard=self.events)
         crop_image(
             (Window.width, int(dp(Window.height * 35 // 100))),
-            f"{self.directory}/assets/guitar-1139397_1280.png",
-            f"{self.directory}/assets/guitar-1139397_1280_crop.png",
+            f"{demos_assets_path}guitar-1139397_1280.png",
+            f"{demos_assets_path}guitar-1139397_1280_crop.png",
         )
 
     def set_list_for_refresh_layout(self):
@@ -431,9 +423,7 @@ class KitchenSink(App, Screens):
                 self.data["Refresh Layout"]["object"].ids.box.add_widget(
                     ItemForListRefreshLayout(icon=name_icon, text=name_icon)
                 )
-            self.data["Refresh Layout"][
-                "object"
-            ].ids.refresh_layout.refresh_done()
+            self.data["Refresh Layout"]["object"].ids.refresh_layout.refresh_done()
 
         asynckivy.start(set_list_for_refresh_layout())
 
@@ -461,22 +451,16 @@ class KitchenSink(App, Screens):
         for i, instance_tab in enumerate(
             istance_android_tabs.ids.scrollview.children[0].children
         ):
-            istance_android_tabs.ids.scrollview.children[0].remove_widget(
-                instance_tab
-            )
-            istance_android_tabs.add_widget(
-                Factory.MyTab(text=self.list_name_icons[i])
-            )
+            istance_android_tabs.ids.scrollview.children[0].remove_widget(instance_tab)
+            istance_android_tabs.add_widget(Factory.MyTab(text=self.list_name_icons[i]))
 
     def switch_tabs_to_text(self, istance_android_tabs):
-        for instance_tab in istance_android_tabs.ids.scrollview.children[
-            0
-        ].children:
+        for instance_tab in istance_android_tabs.ids.scrollview.children[0].children:
             for k, v in md_icons.items():
                 if v == instance_tab.text:
-                    istance_android_tabs.ids.scrollview.children[
-                        0
-                    ].remove_widget(instance_tab)
+                    istance_android_tabs.ids.scrollview.children[0].remove_widget(
+                        instance_tab
+                    )
                     istance_android_tabs.add_widget(
                         Factory.MyTab(text=" ".join(k.split("-")).capitalize())
                     )
@@ -519,8 +503,8 @@ class KitchenSink(App, Screens):
             )
             self.create_stack_floating_buttons = True
 
-    def set_accordion_list(self):
-        from kivymd.uix.accordionlistitem import MDAccordionListItem
+    def set_expansion_panel(self):
+        from kivymd.uix.expansionpanel import MDExpansionPanel
 
         def callback(text):
             toast(f"{text} to {content.name_item}")
@@ -528,8 +512,8 @@ class KitchenSink(App, Screens):
         content = ContentForAnimCard(callback=callback)
 
         for name_contact in self.names_contacts:
-            self.data["Accordion List"]["object"].ids.anim_list.add_widget(
-                MDAccordionListItem(
+            self.data["Expansion Panel"]["object"].ids.anim_list.add_widget(
+                MDExpansionPanel(
                     content=content,
                     icon="assets/kivy-logo-white-512.png",
                     title=name_contact,
@@ -547,10 +531,7 @@ class KitchenSink(App, Screens):
         """Hides progress progress."""
 
         self.main_widget.ids.toolbar.right_action_items = [
-            [
-                "download",
-                lambda x: self.download_progress_show(instance_progress),
-            ]
+            ["download", lambda x: self.download_progress_show(instance_progress)]
         ]
 
     def download_progress_show(self, instance_progress):
@@ -566,9 +547,7 @@ class KitchenSink(App, Screens):
 
             try:
                 socket.setdefaulttimeout(timeout)
-                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(
-                    (host, port)
-                )
+                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
                 return True
             except (TimeoutError, ConnectionError, OSError):
                 return False
@@ -680,9 +659,7 @@ class KitchenSink(App, Screens):
             buttons = ["facebook", "vk", "twitter"]
 
             instance_grid_card.add_widget(
-                MDCardPost(
-                    text_post="Card with text", swipe=True, callback=callback
-                )
+                MDCardPost(text_post="Card with text", swipe=True, callback=callback)
             )
             instance_grid_card.add_widget(
                 MDCardPost(
@@ -701,9 +678,16 @@ class KitchenSink(App, Screens):
                 )
             )
 
+            image_for_card = f"{demos_assets_path}kitten-for_card-1049129_1280-crop.png"
+            if not os.path.exists(image_for_card):
+                crop_image(
+                    (int(Window.width), int(dp(200))),
+                    f"{demos_assets_path}kitten-1049129_1280.png",
+                    image_for_card,
+                )
             instance_grid_card.add_widget(
                 MDCardPost(
-                    source="./assets/kitten-1049129_1280.png",
+                    source=image_for_card,
                     tile_text="Little Baby",
                     tile_font_style="H5",
                     text_post="This is my favorite cat. He's only six months "
@@ -737,13 +721,14 @@ class KitchenSink(App, Screens):
         self.main_widget = Builder.load_string(main_widget_kv)
         return self.main_widget
 
-    def set_popup_screen(self, content_popup):
-        popup_menu = ContentForAnimCard()
-        popup_menu.add_widget(Widget(size_hint_y=None, height=dp(150)))
-        popup_screen = self.data["Popup Screen"]["object"].ids.popup_screen
-        popup_screen.screen = popup_menu
-        popup_screen.background_color = [0.3, 0.3, 0.3, 1]
-        popup_screen.max_height = content_popup.ids.image.height + dp(5)
+    def show_popup_screen(self):
+        if not self.popup_screen:
+            self.popup_screen = self.data["Popup Screen"]["object"].ids.popup
+            content_screen = ContentForPopupScreen()
+            self.popup_screen.screen = content_screen
+            self.popup_screen.padding = dp(10)
+            self.popup_screen.background_color = self.theme_cls.primary_color
+        self.popup_screen.show()
 
     def show_user_example_animation_card(self):
         """Create and open instance MDUserAnimationCard
@@ -755,9 +740,19 @@ class KitchenSink(App, Screens):
             toast("Close card")
 
         if not self.user_card:
+            image_for_user_card = (
+                f"{demos_assets_path}guitar-for-user-card1139397_1280-crop.png"
+            )
+            if not os.path.exists(image_for_user_card):
+                crop_image(
+                    (int(Window.width), int(dp(Window.height * 40 // 100))),
+                    f"{demos_assets_path}guitar-1139397_1280.png",
+                    image_for_user_card,
+                )
+
             self.user_card = MDUserAnimationCard(
                 user_name="Lion Lion",
-                path_to_avatar="./assets/guitar-1139397_1280.png",
+                path_to_avatar=image_for_user_card,
                 callback=main_back_callback,
             )
             self.user_card.box_content.add_widget(ContentForAnimCard())
@@ -785,13 +780,12 @@ class KitchenSink(App, Screens):
         elif snack_type == "button":
             Snackbar(
                 text="This is a snackbar",
-                button_text="with a button!",
+                button_text="WITH A BUTTON",
                 button_callback=callback,
             ).show()
         elif snack_type == "verylong":
             Snackbar(
-                text="This is a very very very very very very very "
-                "long snackbar!"
+                text="This is a very very very very very very very " "long snackbar!"
             ).show()
         elif snack_type == "float":
             if not self.my_snackbar:
@@ -804,9 +798,7 @@ class KitchenSink(App, Screens):
                 self.my_snackbar.show()
                 anim = Animation(y=dp(72), d=0.2)
                 anim.bind(
-                    on_complete=lambda *args: Clock.schedule_interval(
-                        wait_interval, 0
-                    )
+                    on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0)
                 )
                 anim.start(self.data["Snackbars"]["object"].ids.button)
 
@@ -818,7 +810,7 @@ class KitchenSink(App, Screens):
             toast(instance.text_field.text)
 
         if not self.input_dialog:
-            from kivymd.uix.dialog import MDInputDialog
+            from kivymd.dialog import MDInputDialog
 
             self.input_dialog = MDInputDialog(
                 title="Title",
@@ -891,9 +883,7 @@ class KitchenSink(App, Screens):
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_date)
 
-        if self.data["Pickers"][
-            "object"
-        ].ids.time_picker_use_previous_time.active:
+        if self.data["Pickers"]["object"].ids.time_picker_use_previous_time.active:
             try:
                 time_dialog.set_time(self.previous_time)
             except AttributeError:
@@ -904,23 +894,17 @@ class KitchenSink(App, Screens):
         """Set previous date for MDDatePicker from the screen Pickers."""
 
         self.previous_date = date_obj
-        self.data["Pickers"]["object"].ids.date_picker_label.text = str(
-            date_obj
-        )
+        self.data["Pickers"]["object"].ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
         """Show MDDatePicker from the screen Pickers."""
 
         from kivymd.uix.picker import MDDatePicker
 
-        if self.data["Pickers"][
-            "object"
-        ].ids.date_picker_use_previous_date.active:
+        if self.data["Pickers"]["object"].ids.date_picker_use_previous_date.active:
             pd = self.previous_date
             try:
-                MDDatePicker(
-                    self.set_previous_date, pd.year, pd.month, pd.day
-                ).open()
+                MDDatePicker(self.set_previous_date, pd.year, pd.month, pd.day).open()
             except AttributeError:
                 MDDatePicker(self.set_previous_date).open()
         else:
@@ -935,15 +919,11 @@ class KitchenSink(App, Screens):
             self.bs_menu_1 = MDListBottomSheet()
             self.bs_menu_1.add_item(
                 "Here's an item with text only",
-                lambda x: self.callback_for_menu_items(
-                    "Here's an item with text only"
-                ),
+                lambda x: self.callback_for_menu_items("Here's an item with text only"),
             )
             self.bs_menu_1.add_item(
                 "Here's an item with an icon",
-                lambda x: self.callback_for_menu_items(
-                    "Here's an item with an icon"
-                ),
+                lambda x: self.callback_for_menu_items("Here's an item with an icon"),
                 icon="clipboard-account",
             )
             self.bs_menu_1.add_item(
@@ -1017,9 +997,7 @@ class KitchenSink(App, Screens):
         md_app_bar = self.md_app_bar
         if md_app_bar.anchor != anchor:
             if len(md_app_bar.right_action_items):
-                md_app_bar.left_action_items.append(
-                    md_app_bar.right_action_items[0]
-                )
+                md_app_bar.left_action_items.append(md_app_bar.right_action_items[0])
                 md_app_bar.right_action_items = []
             else:
                 left_action_items = md_app_bar.left_action_items
@@ -1057,9 +1035,7 @@ class KitchenSink(App, Screens):
         """Builds a list of icons for the screen MDIcons."""
 
         def add_icon_item(name_icon):
-            self.main_widget.ids.scr_mngr.get_screen(
-                "md icons"
-            ).ids.rv.data.append(
+            self.main_widget.ids.scr_mngr.get_screen("md icons").ids.rv.data.append(
                 {
                     "viewclass": "MDIconItemForMdIconsList",
                     "icon": name_icon,
@@ -1083,9 +1059,7 @@ class KitchenSink(App, Screens):
                     {
                         "viewclass": "OneLineListItem",
                         "text": name_item,
-                        "on_release": lambda x=name_item: self.show_demo_apps(
-                            x
-                        ),
+                        "on_release": lambda x=name_item: self.show_demo_apps(x),
                     }
                 )
 
@@ -1096,6 +1070,74 @@ class KitchenSink(App, Screens):
 
     def on_pause(self):
         return True
+
+    def on_start(self):
+        def _load_kv_for_demo(name_screen):
+            from demo_apps.formone import FormOne
+            from demo_apps.shopwindow import ShopWindow
+            from demo_apps.coffeemenu import CoffeeMenu
+            from demo_apps.fitnessclub import FitnessClub
+            from demo_apps.accountpage import AccountPage
+
+            Builder.load_string(self.data_for_demo[name_screen]["kv_string"])
+            self.data_for_demo[name_screen]["object"] = eval(
+                self.data_for_demo[name_screen]["class"]
+            )
+            self.main_widget.ids.scr_mngr.add_widget(
+                self.data_for_demo[name_screen]["object"]
+            )
+
+        async def load_all_kv_files():
+            for name_screen in self.data.keys():
+                await asynckivy.sleep(0)
+                self.dialog_load_kv_files.name_kv_file = name_screen
+                Builder.load_string(self.data[name_screen]["kv_string"])
+                self.data[name_screen]["object"] = eval(
+                    self.data[name_screen]["Factory"]
+                )
+                if name_screen == "Bottom App Bar":
+                    self.set_appbar()
+                    self.data[name_screen]["object"].add_widget(self.md_app_bar)
+                self.main_widget.ids.scr_mngr.add_widget(
+                    self.data[name_screen]["object"]
+                )
+                if name_screen == "Text fields":
+                    self.data[name_screen]["object"].ids.text_field_error.bind(
+                        on_text_validate=self.set_error_message,
+                        on_focus=self.set_error_message,
+                    )
+                elif name_screen == "MD Icons":
+                    self.set_list_md_icons()
+                elif name_screen == "Tabs":
+                    self.build_tabs()
+                elif name_screen == "Refresh Layout":
+                    self.set_list_for_refresh_layout()
+
+            from demo_apps.formone import registration_form_one
+            from demo_apps.shopwindow import screen_shop_window
+            from demo_apps.coffeemenu import screen_coffee_menu
+            from demo_apps.fitnessclub import screen_fitness_club
+            from demo_apps.accountpage import screen_account_page
+
+            data = {
+                "Registration": registration_form_one,
+                "Shop Window": screen_shop_window,
+                "Coffee Menu": screen_coffee_menu,
+                "Fitness Club": screen_fitness_club,
+                "Account Page": screen_account_page,
+            }
+
+            for name_screen in data.keys():
+                await asynckivy.sleep(0)
+                self.dialog_load_kv_files.name_kv_file = name_screen
+                self.data_for_demo[name_screen]["kv_string"] = data[name_screen]
+                _load_kv_for_demo(name_screen)
+
+            self.dialog_load_kv_files.dismiss()
+
+        self.dialog_load_kv_files = DialogLoadKvFiles()
+        self.dialog_load_kv_files.open()
+        asynckivy.start(load_all_kv_files())
 
     def on_stop(self):
         pass
@@ -1128,14 +1170,6 @@ class ScreenFour(BaseFanScreen):
     pass
 
 
-class AvatarSampleWidget(ILeftBody, Image):
-    pass
-
-
-class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
-    pass
-
-
 class IconRightSampleWidget(IRightBodyTouch, MDCheckbox):
     pass
 
@@ -1144,7 +1178,7 @@ class PopupScreen(MDPopupScreen):
     pass
 
 
-class ImageTouch(CircularRippleBehavior, ButtonBehavior, Image):
+class ContentForPopupScreen(BoxLayout):
     pass
 
 

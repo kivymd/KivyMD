@@ -1,6 +1,14 @@
 # Change Log
 
 
+## [v0.101.5]() - *Alpha*
+
+#### demos/kitchen_sink/main.py:
+* Added names of authors of this fork in the description on the start screen
+* Description text on the start screen has been added to ScrollView
+* Changed the theme of the application to white style
+
+
 ## [v0.101.4]() - *Alpha*
 
 #### demos/kitchen_sink/main.py:

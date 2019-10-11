@@ -1,14 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-Demo app: Kitchen Sink
-======================
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 import os
@@ -39,10 +37,10 @@ bottom_app_bar = """
             app.move_item_menu('right')
 """
 
-accordion_list = """
-<AccordionList@Screen>
-    name: 'accordion list'
-    on_enter: app.set_accordion_list()
+expansion_panel = """
+<MyExpansionPanel@Screen>
+    name: 'expansion panel'
+    on_enter: app.set_expansion_panel()
     on_leave: anim_list.clear_widgets()
 
     ScrollView:
@@ -73,51 +71,6 @@ bottom_sheet = """
         size: 4 * dp(48), dp(48)
         pos_hint: {'center_x': .5, 'center_y': .3}
         on_release: app.show_example_grid_bottom_sheet()
-"""
-
-accordion = """
-<Accord@Screen>
-    name: 'accordion'
-
-    BoxLayout:
-
-        MDAccordion:
-            orientation: 'vertical'
-            size_hint_x: None
-            width: '240dp'
-
-            MDAccordionItem:
-                title:'Item 1'
-                icon: 'home'
-                MDAccordionSubItem:
-                    text: "Subitem 1"
-                MDAccordionSubItem:
-                    text: "Subitem 2"
-                MDAccordionSubItem:
-                    text: "Subitem 3"
-            MDAccordionItem:
-                title:'Item 2'
-                icon: 'earth'
-                MDAccordionSubItem:
-                    text: "Subitem 4"
-                MDAccordionSubItem:
-                    text: "Subitem 5"
-                MDAccordionSubItem:
-                    text: "Subitem 6"
-            MDAccordionItem:
-                title:'Item 3'
-                icon: 'account'
-                MDAccordionSubItem:
-                    text: "Subitem 7"
-                MDAccordionSubItem:
-                    text: "Subitem 8"
-                MDAccordionSubItem:
-                    text: "Subitem 9"
-
-        MDLabel:
-            text: 'Content'
-            halign: 'center'
-            theme_text_color: 'Primary'
 """
 
 grid = """
@@ -185,49 +138,55 @@ bottom_navigation = """
     name: 'bottom navigation'
 
     MDBottomNavigation:
-        id: bottom_navigation_demo
+        id: panel
 
         MDBottomNavigationItem:
-            name: 'banking'
-            text: "Bank"
-            icon: 'bank'
+            name: 'files1'
+            text: 'Python'
+            icon: 'language-python'
 
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: None
-                padding: dp(48)
+                height: self.minimum_height
                 spacing: dp(10)
+                pos_hint: {'center_x': .5, 'center_y': .5}
 
-                MDTextField:
-                    hint_text: "You can put any widgets here"
-                    helper_text: "Hello :)"
-                    helper_text_mode: "on_focus"
+                MDLabel:
+                    font_style: 'Body1'
+                    theme_text_color: 'Primary'
+                    text: 'Toggle to set custom panel color'
+                    halign: 'center'
+            
+                MDSwitch:
+                    size_hint: None, None
+                    size: dp(36), dp(48)
+                    pos_hint: {'center_x': .5}
+                    on_active:
+                        panel.panel_color = \
+                        [0.2980392156862745, 0.2823529411764706, 0.32941176470588235, 1] \
+                        if self.active else app.theme_cls.bg_dark
 
         MDBottomNavigationItem:
-            name: 'bottom_navigation_desktop_1'
-            text: "Hello"
-            icon: 'alert'
-            id: bottom_navigation_desktop_1
-
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint_y: None
-                padding: dp(48)
-                spacing: dp(10)
-
-                MDTextField:
-                    hint_text: "Hello again"
-
-        MDBottomNavigationItem:
-            name: 'bottom_navigation_desktop_2'
-            text: "Food"
-            icon: 'food'
-            id: bottom_navigation_desktop_2
+            name: 'files2'
+            text: 'C++'
+            icon: 'language-cpp'
 
             MDLabel:
                 font_style: 'Body1'
                 theme_text_color: 'Primary'
-                text: "Cheese!"
+                text: 'I programming of C++'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'files3'
+            text: 'JS'
+            icon: 'language-javascript'
+
+            MDLabel:
+                font_style: 'Body1'
+                theme_text_color: 'Primary'
+                text: 'Oh god JS again'
                 halign: 'center'
 """
 
@@ -421,12 +380,6 @@ buttons = """
                 text: "MDFillRoundFlatButton"
                 pos_hint: {'center_x': .5}
 
-            MDRoundFlatIconButton:
-                text: "MDRoundFlatIconButton"
-                icon: "language-python"
-                width: dp(200)
-                pos_hint: {'center_x': .5}
-
             MDFillRoundFlatIconButton:
                 text: "MDFillRoundFlatIconButton"
                 icon: "language-python"
@@ -435,6 +388,138 @@ buttons = """
             MDTextButton:
                 text: "MDTextButton"
                 pos_hint: {'center_x': .5}
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: '10dp'
+                size_hint: None, None
+                size: self.minimum_size
+                pos_hint: {'center_x': .5}
+
+                MDSeparator:
+
+                Label:
+                    text: 'Button customization'
+                    color: app.theme_cls.text_color
+                    font_size: '20sp'
+                    size_hint: None, None
+                    size: self.texture_size
+                    
+                MDSeparator:
+
+            ########################################
+            #         CUSTOMIZATION BUTTONS
+            ########################################
+
+            MDRaisedButton:
+                text: "MDRaisedButton"
+                elevation_normal: 2
+                opposite_colors: True
+                pos_hint: {'center_x': .5}
+                text_color: 1, 0, 0, 1
+
+            MDRaisedButton:
+                text: "MDRaisedButton"
+                elevation_normal: 2
+                opposite_colors: True
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+
+            MDRectangleFlatButton:
+                text: "MDRectangleFlatButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+
+            MDRectangleFlatButton:
+                text: "MDRectangleFlatButton"
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+                text_color: 1, 1, 0, 1
+
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                md_bg_color: 1, 0, 0, 1
+
+            MDRoundFlatIconButton:
+                text: "MDRoundFlatIconButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                width: dp(210)
+
+            MDRoundFlatIconButton:
+                text: "MDRoundFlatIconButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                md_bg_color: 1, 0, 0, 1
+                width: dp(210)
+
+            MDFillRoundFlatIconButton:
+                text: "MDFillRoundFlatIconButton"
+                icon: "language-python"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+
+            MDFillRoundFlatIconButton:
+                text: "MDFillRoundFlatIconButton"
+                icon: "language-python"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                md_bg_color: 1, 0, 0, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: '10dp'
+                size_hint: None, None
+                size: self.minimum_size
+                pos_hint: {'center_x': .5}
+
+                MDSeparator:
+
+                Label:
+                    text: 'MDIconButton customization'
+                    color: app.theme_cls.text_color
+                    font_size: '20sp'
+                    size_hint: None, None
+                    size: self.texture_size
+                    
+                MDSeparator:
+
+                BoxLayout:
+                    size_hint: None, None
+                    size: self.minimum_size
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDIconButton:
+                        icon: "android"
+                        user_font_size: "15sp"
+
+                    MDIconButton:
+                        icon: "file"
+                        user_font_size: "20sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "24sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "36sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "48sp"
 """
 
 cards = """
@@ -597,7 +682,7 @@ textfields = """
                 icon_left: 'email'
                 icon_type: 'left'
                 hint_text: 'Field with left icon'
-            
+
             MyMDTextFieldRound:
                 icon_left: 'email'
                 icon_right: 'account-box'
@@ -612,6 +697,19 @@ textfields = """
                 icon_callback: app.show_password
                 password: True
                 hint_text: 'Field width type `password = True`'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_right: 'account-box'
+                icon_right_dasabled: True
+                field_height: dp(30)
+                hint_text: 'Field with custom size icon'
+                icon_size: "18sp"
+                radius: dp(9)
+
+            MDTextField:
+                input_filter: "int"
+                hint_text: "Numeric field"
 
             MDTextField:
                 hint_text: "No helper text"
@@ -668,7 +766,7 @@ textfields = """
 
             MDTextFieldRect:
                 size_hint: None, None
-                size: app.Window.width - dp(40), dp(30)
+                size: Window.width - dp(40), dp(30)
                 pos_hint: {'center_y': .5, 'center_x': .5}
 
             Widget:
@@ -717,14 +815,14 @@ lists = """
 
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
 
             TwoLineAvatarListItem:
                 type: "two-line"
                 text: "Two-line item..."
                 secondary_text: "with avatar"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
 
             ThreeLineAvatarListItem:
@@ -732,19 +830,19 @@ lists = """
                 text: "Three-line item..."
                 secondary_text:
                     "...with avatar..." + '\\n' + "and third line!"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
 
             OneLineIconListItem:
                 text: "Single-line item with left icon"
-                IconLeftSampleWidget:
+                IconLeftWidget:
                     id: li_icon_1
                     icon: 'star-circle'
 
             TwoLineIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with left icon"
-                IconLeftSampleWidget:
+                IconLeftWidget:
                     id: li_icon_2
                     icon: 'comment-text'
 
@@ -752,20 +850,20 @@ lists = """
                 text: "Three-line item..."
                 secondary_text:
                     "...with left icon..." + '\\n' + "and third line!"
-                IconLeftSampleWidget:
+                IconLeftWidget:
                     id: li_icon_3
                     icon: 'sd'
 
             OneLineAvatarIconListItem:
                 text: "Single-line + avatar&icon"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
 
             TwoLineAvatarIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with avatar&icon"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
 
@@ -773,7 +871,7 @@ lists = """
                 text: "Three-line item..."
                 secondary_text:
                     "...with avatar&icon..." + '\\n' + "and third line!"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
 """
@@ -809,6 +907,7 @@ snackbar = """
         MDLabel:
             text: 'Click the MDFloatingActionButton to show the following example...'
             halign: 'center'
+            theme_text_color: 'Primary'
 
         Widget:
 
@@ -964,7 +1063,7 @@ refresh_layout = """
 <ItemForListRefreshLayout>
     text: root.text
 
-    IconLeftSampleWidget:
+    IconLeftWidget:
         icon: root.icon
 
 
@@ -1165,9 +1264,6 @@ labels = """
 """
 
 menu = """
-#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
-
-
 <Menu@Screen>
     name: 'menu'
 
@@ -1430,15 +1526,138 @@ fan_manager = """
 """
 
 popup_screen = """
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import demos_assets_path kivymd.demos_assets_path
+#:import images_path kivymd.images_path
+#:import Window kivy.core.window.Window
+
+
 <PopupScreenWidget@Screen>
     name: 'popup screen'
-    on_enter: app.set_popup_screen(content_popup)
 
     PopupScreen:
-        id: popup_screen
+        id: popup
 
-        ContentPopup:
-            id: content_popup
+
+<PopupScreen>
+
+    BoxLayout:
+
+        UserScreen:
+            id: start_screen
+
+            canvas.before:
+                Color:
+                    rgba: app.theme_cls.bg_dark
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+
+<UserScreen@FloatLayout>
+
+    MDRoundFlatButton:
+        text: 'Open Menu'
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        on_release: app.show_popup_screen()
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: dp(10)
+        padding: dp(20)
+        pos_hint: {'bottom': .2}
+
+        MDLabel:
+            font_style: 'Body1'
+            theme_text_color: 'Primary'
+            text: 'Toggle to set custom MDPopupScreen image'
+            halign: 'center'
+            shorten: True
+
+        MDSwitch:
+            size_hint: None, None
+            size: dp(36), dp(48)
+            pos_hint: {'center_x': .5}
+            on_active:
+                app.popup_screen.background_image = f'{demos_assets_path}/white-texture.png' \
+                if self.active else f'{images_path}/transparent.png'
+
+        MDLabel:
+            font_style: 'Body1'
+            theme_text_color: 'Primary'
+            text: 'Toggle to set custom MDPopupScreen background color'
+            halign: 'center'
+            shorten: True
+
+        MDSwitch:
+            size_hint: None, None
+            size: dp(36), dp(48)
+            pos_hint: {'center_x': .5}
+            on_active:
+                app.popup_screen.background_color = [0, 0, 0, .8] \
+                if self.active else app.theme_cls.primary_color
+
+    Widget:
+
+# Your popup screen.
+<ContentForPopupScreen>
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: self.minimum_height
+    pos_hint: {'top': 1}
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+
+        Widget:
+
+        MDRoundFlatButton:
+            text: "Free call"
+            on_press: app.callback_for_menu_items(self.text)
+            md_bg_color: 1, 1, 1, .4
+            text_color: app.theme_cls.bg_dark
+
+        Widget:
+
+        MDRoundFlatButton:
+            text: "Free message"
+            on_press: app.callback_for_menu_items(self.text)
+            md_bg_color: 1, 1, 1, .4
+            text_color: app.theme_cls.bg_dark
+
+        Widget:
+
+    OneLineIconListItem:
+        text: "Video call"
+        on_press: app.callback_for_menu_items(self.text)
+
+        IconLeftWidget:
+            icon: 'camera-front-variant'
+
+    TwoLineIconListItem:
+        text: "Call Viber Out"
+        on_press: app.callback_for_menu_items(self.text)
+        secondary_text:
+            "[color=%s]Advantageous rates for calls[/color]" \
+            % get_hex_from_color([0, 0, 0, .5])
+
+        IconLeftWidget:
+            icon: 'phone'
+
+    TwoLineIconListItem:
+        text: "Call over mobile network"
+        on_press: app.callback_for_menu_items(self.text)
+        secondary_text:
+            "[color=%s]Operator's tariffs apply[/color]" \
+            % get_hex_from_color([0, 0, 0, .5])
+
+        IconLeftWidget:
+            icon: 'remote'
 """
 
 manager_swiper = """
@@ -1519,8 +1738,27 @@ md_icon_item = """
 <MDIconItem@OneLineIconListItem>
     icon: 'android'
 
-    IconLeftSampleWidget:
+    IconLeftWidget:
         icon: root.icon
+"""
+
+drop_item = """
+#:import toast kivymd.toast.toast
+
+
+<MDDropItem@Screen>
+    name: "drop item"
+    
+    MDDropDownItem:
+        id: dropdown_item
+        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        items: [f"Item {i}" for i in range(50)]
+        dropdown_bg: [1, 1, 1, 1]
+
+    MDRaisedButton:
+        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        text: 'Chek Item'
+        on_release: toast(dropdown_item.current_item)
 """
 
 md_icons = """
@@ -1531,7 +1769,7 @@ md_icons = """
     icon: 'android'
     on_release: root.callback(root.icon)
 
-    IconLeftSampleWidget:
+    IconLeftWidget:
         icon: root.icon
 
 
@@ -1593,6 +1831,12 @@ class Screens(object):
             "kv_string": bottom_sheet,
             "Factory": "Factory.BottomSheet()",
             "name_screen": "bottom sheet",
+            "object": None,
+        },
+        "Dropdown Item": {
+            "kv_string": drop_item,
+            "Factory": "Factory.MDDropItem()",
+            "name_screen": "drop item",
             "object": None,
         },
         "Popup Screen": {
@@ -1715,22 +1959,16 @@ class Screens(object):
             "name_screen": "lists",
             "object": None,
         },
-        "Accordion List": {
-            "kv_string": accordion_list,
-            "Factory": "Factory.AccordionList()",
-            "name_screen": "accordion list",
+        "Expansion Panel": {
+            "kv_string": expansion_panel,
+            "Factory": "Factory.MyExpansionPanel()",
+            "name_screen": "expansion panel",
             "object": None,
         },
         "Grid lists": {
             "kv_string": grid,
             "Factory": "Factory.Grid()",
             "name_screen": "grid",
-            "object": None,
-        },
-        "Accordion": {
-            "kv_string": accordion,
-            "Factory": "Factory.Accord()",
-            "name_screen": "accordion",
             "object": None,
         },
         "Selection controls": {
@@ -1775,54 +2013,6 @@ class Screens(object):
     }
 
     def show_screens_demo(self, name_screen):
-        if (
-            name_screen == "Registration"
-            and not self.data_for_demo[name_screen]["object"]
-        ):
-            from demo_apps.formone import registration_form_one, FormOne  # NOQA
-
-            self.data_for_demo[name_screen]["kv_string"] = registration_form_one
-        elif (
-            name_screen == "Shop Window"
-            and not self.data_for_demo[name_screen]["object"]
-        ):
-            from demo_apps.shopwindow import (
-                screen_shop_window,
-                ShopWindow,
-            )  # NOQA
-
-            self.data_for_demo[name_screen]["kv_string"] = screen_shop_window
-        elif (
-            name_screen == "Coffee Menu"
-            and not self.data_for_demo[name_screen]["object"]
-        ):
-            from demo_apps.coffeemenu import (
-                screen_coffee_menu,
-                CoffeeMenu,
-            )  # NOQA
-
-            self.data_for_demo[name_screen]["kv_string"] = screen_coffee_menu
-        elif (
-            name_screen == "Fitness Club"
-            and not self.data_for_demo[name_screen]["object"]
-        ):
-            from demo_apps.fitnessclub import (
-                screen_fitness_club,
-                FitnessClub,
-            )  # NOQA
-
-            self.data_for_demo[name_screen]["kv_string"] = screen_fitness_club
-        elif (
-            name_screen == "Account Page"
-            and not self.data_for_demo[name_screen]["object"]
-        ):
-            from demo_apps.accountpage import (
-                screen_account_page,
-                AccountPage,
-            )  # NOQA
-
-            self.data_for_demo[name_screen]["kv_string"] = screen_account_page
-
         if name_screen == "Registration":
             self.theme_cls.primary_palette = "Amber"
         if name_screen != "Shop Window":
@@ -1854,9 +2044,7 @@ class Screens(object):
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
-            paginator.screens = (
-                self.manager_swiper.ids.swiper_manager.screen_names
-            )
+            paginator.screens = self.manager_swiper.ids.swiper_manager.screen_names
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)
@@ -1864,28 +2052,4 @@ class Screens(object):
         self.main_widget.ids.scr_mngr.current = "manager swiper"
 
     def show_screen(self, name_screen):
-        if not self.data[name_screen]["object"]:
-            Builder.load_string(self.data[name_screen]["kv_string"])
-            self.data[name_screen]["object"] = eval(
-                self.data[name_screen]["Factory"]
-            )
-            if name_screen == "Bottom App Bar":
-                self.set_appbar()
-                self.data[name_screen]["object"].add_widget(self.md_app_bar)
-            self.main_widget.ids.scr_mngr.add_widget(
-                self.data[name_screen]["object"]
-            )
-            if name_screen == "Text fields":
-                self.data[name_screen]["object"].ids.text_field_error.bind(
-                    on_text_validate=self.set_error_message,
-                    on_focus=self.set_error_message,
-                )
-            elif name_screen == "MD Icons":
-                self.set_list_md_icons()
-            elif name_screen == "Tabs":
-                self.build_tabs()
-            elif name_screen == "Refresh Layout":
-                self.set_list_for_refresh_layout()
-        self.main_widget.ids.scr_mngr.current = self.data[name_screen][
-            "name_screen"
-        ]
+        self.main_widget.ids.scr_mngr.current = self.data[name_screen]["name_screen"]

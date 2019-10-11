@@ -72,7 +72,9 @@ class CommonElevationBehavior(object):
         except KeyError:
             self._elevation = 1
 
-    elevation = AliasProperty(_get_elevation, _set_elevation, bind=("_elevation",))
+    elevation = AliasProperty(
+        _get_elevation, _set_elevation, bind=("_elevation",)
+    )
 
     _soft_shadow_texture = ObjectProperty()
     _soft_shadow_size = ListProperty([0, 0])
@@ -124,7 +126,11 @@ class RectangularElevationBehavior(CommonElevationBehavior):
             self._soft_shadow_size = (soft_width, soft_height)
             self._hard_shadow_size = (width, height)
 
-            y = self.center_y - soft_height / 2 - dp(0.1 * 1.5 ** self.elevation)
+            y = (
+                self.center_y
+                - soft_height / 2
+                - dp(0.1 * 1.5 ** self.elevation)
+            )
             self._soft_shadow_pos = (soft_x, y)
             self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
             self._soft_shadow_texture = self._shadow.textures[

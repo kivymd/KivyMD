@@ -187,7 +187,9 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     def display_menu(self, caller):
         # We need to pick a starting point, see how big we need to be,
         # and where to grow to.
-        c = caller.to_window(caller.center_x, caller.center_y)  # Starting coords
+        c = caller.to_window(
+            caller.center_x, caller.center_y
+        )  # Starting coords
 
         # TODO: ESTABLISH INITIAL TARGET SIZE ESTIMATE
         target_width = self.width_mult * m_res.STANDARD_INCREMENT
@@ -200,7 +202,8 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
         if target_width > Window.width:
             # ...reduce our multiplier to max allowed.
             target_width = (
-                int(Window.width / m_res.STANDARD_INCREMENT) * m_res.STANDARD_INCREMENT
+                int(Window.width / m_res.STANDARD_INCREMENT)
+                * m_res.STANDARD_INCREMENT
             )
 
         target_height = sum([dp(48) for i in self.items])

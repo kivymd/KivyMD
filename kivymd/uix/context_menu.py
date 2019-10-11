@@ -219,7 +219,8 @@ class MDContextDropdownMenu(MDDropdownMenu):
         target_width = self.width_mult * m_res.STANDARD_INCREMENT
         if target_width > Window.width:
             target_width = (
-                int(Window.width / m_res.STANDARD_INCREMENT) * m_res.STANDARD_INCREMENT
+                int(Window.width / m_res.STANDARD_INCREMENT)
+                * m_res.STANDARD_INCREMENT
             )
 
         target_height = sum([dp(48) for i in self.items])
@@ -365,7 +366,9 @@ class MDContextMenuItem(BoxLayout, ThemableBehavior, HoverBehavior):
         def context_menu_open():
             self.parent.open(self, self.text)
             self._color_active = (
-                self.color_active if self.color_active else self.theme_cls.primary_color
+                self.color_active
+                if self.color_active
+                else self.theme_cls.primary_color
             )
 
         if not self.parent.context_menu_open:
@@ -471,10 +474,7 @@ class MDContextMenu(BoxLayout, ThemableBehavior):
 
     def add_separator(self, list_menu):
         list_menu.append(
-            {
-                "viewclass": "MDSeparator",
-                "height": self.separator_height,
-            }
+            {"viewclass": "MDSeparator", "height": self.separator_height}
         )
 
     def add_icon_item(self, list_menu, data):
@@ -492,7 +492,9 @@ class MDContextMenu(BoxLayout, ThemableBehavior):
             }
         )
 
-    def generates_context_submenu(self, instance_menu_item, name_item_menu, text):
+    def generates_context_submenu(
+        self, instance_menu_item, name_item_menu, text
+    ):
         """Generates a sub menu."""
 
         sub_menu = []

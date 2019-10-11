@@ -187,7 +187,10 @@ class MDProgressLoader(MDCard):
 
         """
 
-        self.ids.label_download.text = "%s: %d %%" % (self.label_download, percent)
+        self.ids.label_download.text = "%s: %d %%" % (
+            self.label_download,
+            percent,
+        )
 
     def animation_progress_to_fade(self, interval):
         if not self.download_flag:

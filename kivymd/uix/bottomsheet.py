@@ -60,7 +60,12 @@ from kivy.uix.modalview import ModalView
 from kivymd import images_path
 from kivymd.behaviors.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.uix.label import MDIcon
-from kivymd.uix.list import MDList, OneLineListItem, ILeftBody, OneLineIconListItem
+from kivymd.uix.list import (
+    MDList,
+    OneLineListItem,
+    ILeftBody,
+    OneLineIconListItem,
+)
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(

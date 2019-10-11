@@ -107,7 +107,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.modalview import ModalView
 
-from kivymd.behaviors.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.behaviors.backgroundcolorbehavior import (
+    SpecificBackgroundColorBehavior,
+)
 from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 
@@ -278,12 +280,18 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         touch.ud["swipe_begin"] = 0
 
     def animation_to_bottom(self):
-        Animation(y=self._scroll_y, d=0.4, t="in_out_cubic").start(self._obj_scroll)
+        Animation(y=self._scroll_y, d=0.4, t="in_out_cubic").start(
+            self._obj_scroll
+        )
         Animation(y=self._user_name_y, d=0.5, x=dp(15), t="in_out_cubic").start(
             self._obj_user_name
         )
-        Animation(font_size=sp(36), d=0.3, t="in_out_cubic").start(self._obj_user_name)
-        Animation(y=self._avatar_y, d=0.4, t="in_out_cubic").start(self._obj_avatar)
+        Animation(font_size=sp(36), d=0.3, t="in_out_cubic").start(
+            self._obj_user_name
+        )
+        Animation(y=self._avatar_y, d=0.4, t="in_out_cubic").start(
+            self._obj_avatar
+        )
         Animation(a=0, d=0.4, t="in_out_cubic").start(
             self._obj_avatar.canvas.children[3]
         )
@@ -302,7 +310,9 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         Animation(y=user_name_y, d=0.3, x=user_name_x, t="in_out_cubic").start(
             self._obj_user_name
         )
-        Animation(font_size=sp(20), d=0.3, t="in_out_cubic").start(self._obj_user_name)
+        Animation(font_size=sp(20), d=0.3, t="in_out_cubic").start(
+            self._obj_user_name
+        )
         Animation(y=self._obj_avatar.y + 30, d=0.4, t="in_out_cubic").start(
             self._obj_avatar
         )
@@ -318,7 +328,9 @@ class UserAnimationCard(ThemableBehavior, FloatLayout):
     _primary_color = ListProperty()
 
 
-class ModifiedToolbar(ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout):
+class ModifiedToolbar(
+    ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
+):
     left_action_items = ListProperty()
     title = StringProperty()
 

@@ -128,7 +128,12 @@ from kivy.properties import (
 
 import kivymd.material_resources as m_res
 from kivymd import images_path
-from kivymd.uix.list import ILeftBodyTouch, ILeftBody, IRightBody, IRightBodyTouch
+from kivymd.uix.list import (
+    ILeftBodyTouch,
+    ILeftBody,
+    IRightBody,
+    IRightBodyTouch,
+)
 from kivymd.uix.button import MDIconButton
 from kivymd.font_definitions import theme_font_styles
 from kivymd.behaviors.ripplebehavior import (
@@ -386,7 +391,9 @@ class ModifiedBaseListItem(
 
     secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
+    divider = OptionProperty(
+        "Full", options=["Full", "Inset", None], allownone=True
+    )
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()
@@ -596,7 +603,9 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def check_theme(self):
         self.canvas.children[0].rgba = (
-            [0, 0, 0, 1] if self.theme_cls.theme_style == "Dark" else [1, 1, 1, 1]
+            [0, 0, 0, 1]
+            if self.theme_cls.theme_style == "Dark"
+            else [1, 1, 1, 1]
         )
 
     def show(self, path):
@@ -689,7 +698,9 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         if self.use_access:
             access_data = {"r": os.R_OK, "w": os.W_OK, "x": os.X_OK}
             for access in access_data.keys():
-                access_string += access if os.access(path, access_data[access]) else "-"
+                access_string += (
+                    access if os.access(path, access_data[access]) else "-"
+                )
 
         return access_string
 

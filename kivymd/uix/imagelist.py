@@ -248,7 +248,9 @@ Builder.load_string(
 )
 
 
-class Tile(ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout):
+class Tile(
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout
+):
     """A simple tile. It does nothing special, just inherits the right
     behaviors to work as a building block.
     """

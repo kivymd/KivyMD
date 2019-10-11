@@ -172,7 +172,8 @@ from kivy.properties import (
     ListProperty,
     ObjectProperty,
     BooleanProperty,
-    NumericProperty)
+    NumericProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.uix.stacklayout import StackLayout
@@ -273,11 +274,12 @@ class MDChip(BoxLayout, ThemableBehavior):
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
                         MDIconButton(
-                            icon="check", size_hint_y=None,
+                            icon="check",
+                            size_hint_y=None,
                             height=dp(20),
                             disabled=True,
                             user_font_size=dp(20),
-                            pos_hint={"center_y": .5},
+                            pos_hint={"center_y": 0.5},
                         )
                     )
                 else:

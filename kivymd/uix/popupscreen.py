@@ -282,11 +282,15 @@ class MDPopupScreen(FloatLayout):
             self._added_screen = True
             self._root_screen.background_color = self.background_color
         self._open_menu = True
-        Animation(y=-self.padding, d=0.2, t="in_out_bounce").start(self._root_screen)
+        Animation(y=-self.padding, d=0.2, t="in_out_bounce").start(
+            self._root_screen
+        )
         self.dispatch("on_open", self._open_menu)
 
     def hide(self, *args):
-        Animation(y=-Window.height, d=0.2, t="in_out_bounce").start(self._root_screen)
+        Animation(y=-Window.height, d=0.2, t="in_out_bounce").start(
+            self._root_screen
+        )
         self._open_menu = False
         self.dispatch("on_close", self._open_menu)
 

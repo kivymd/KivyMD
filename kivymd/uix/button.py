@@ -296,7 +296,9 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
 
-from kivymd.behaviors.backgroundcolorbehavior import SpecificBackgroundColorBehavior
+from kivymd.behaviors.backgroundcolorbehavior import (
+    SpecificBackgroundColorBehavior,
+)
 from kivymd.behaviors.ripplebehavior import (
     CircularRippleBehavior,
     RectangularRippleBehavior,
@@ -564,7 +566,10 @@ Builder.load_string(
 
 
 class BaseButton(
-    ThemableBehavior, ButtonBehavior, SpecificBackgroundColorBehavior, AnchorLayout
+    ThemableBehavior,
+    ButtonBehavior,
+    SpecificBackgroundColorBehavior,
+    AnchorLayout,
 ):
     """
     Abstract base class for all MD buttons. This class handles the button's
@@ -625,7 +630,9 @@ class BaseButton(
     def _set_md_bg_color_down(self, value):
         self._md_bg_color_down = value
 
-    md_bg_color_down = AliasProperty(_call_get_bg_color_down, _set_md_bg_color_down)
+    md_bg_color_down = AliasProperty(
+        _call_get_bg_color_down, _set_md_bg_color_down
+    )
 
     def _call_get_bg_color_disabled(self):
         return self._get_md_bg_color_disabled()
@@ -675,7 +682,9 @@ class BasePressedButton(BaseButton):
     def on_touch_up(self, touch):
         if touch.grab_current is self:
             self.fade_bg.stop_property(self, "_current_button_color")
-            Animation(duration=0.05, _current_button_color=self.md_bg_color).start(self)
+            Animation(
+                duration=0.05, _current_button_color=self.md_bg_color
+            ).start(self)
         return super().on_touch_up(touch)
 
 
@@ -879,7 +888,9 @@ class MDRoundFlatButton(MDFlatButton):
     def lay_canvas_instructions(self):
         with self.canvas.after:
             StencilPush()
-            RoundedRectangle(size=self.size, pos=self.pos, radius=[self._radius])
+            RoundedRectangle(
+                size=self.size, pos=self.pos, radius=[self._radius]
+            )
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
@@ -890,7 +901,9 @@ class MDRoundFlatButton(MDFlatButton):
                 ),
             )
             StencilUnUse()
-            RoundedRectangle(size=self.size, pos=self.pos, radius=[self._radius])
+            RoundedRectangle(
+                size=self.size, pos=self.pos, radius=[self._radius]
+            )
             StencilPop()
         self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
 

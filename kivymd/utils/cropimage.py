@@ -61,11 +61,15 @@ def _crop_image(cutting_size, path_to_image, path_to_save_crop_image):
 def add_corners(im, corner, corner_mode):
     def add_top_corners():
         alpha.paste(circle.crop((0, 0, corner, corner)), (0, 0))
-        alpha.paste(circle.crop((corner, 0, corner * 2, corner)), (w - corner, 0))
+        alpha.paste(
+            circle.crop((corner, 0, corner * 2, corner)), (w - corner, 0)
+        )
         print(corner)
 
     def add_bottom_corners():
-        alpha.paste(circle.crop((0, corner, corner, corner * 2)), (0, h - corner))
+        alpha.paste(
+            circle.crop((0, corner, corner, corner * 2)), (0, h - corner)
+        )
         alpha.paste(
             circle.crop((corner, corner, corner * 2, corner * 2)),
             (w - corner, h - corner),

@@ -21,7 +21,8 @@ from kivy.properties import (
     ListProperty,
     BooleanProperty,
     StringProperty,
-    AliasProperty)
+    AliasProperty,
+)
 from kivy.uix.label import Label
 
 from kivymd.font_definitions import theme_font_styles
@@ -84,7 +85,8 @@ class MDLabel(ThemableBehavior, Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
-            font_style=self.update_font_style, can_capitalize=self.update_font_style
+            font_style=self.update_font_style,
+            can_capitalize=self.update_font_style,
         )
         self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style()

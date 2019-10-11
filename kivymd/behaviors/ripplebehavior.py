@@ -59,7 +59,9 @@ class CommonRipple(object):
 
         if not self.disabled:
             if self.doing_ripple:
-                Animation.cancel_all(self, "ripple_rad", "ripple_color", "rect_color")
+                Animation.cancel_all(
+                    self, "ripple_rad", "ripple_color", "rect_color"
+                )
                 self.anim_complete()
             self.ripple_rad = self.ripple_rad_default
             self.ripple_pos = (touch.x, touch.y)
@@ -186,7 +188,10 @@ class CircularRippleBehavior(CommonRipple):
         with self.canvas.after:
             StencilPush()
             self.stencil = Ellipse(
-                size=(self.width * self.ripple_scale, self.height * self.ripple_scale),
+                size=(
+                    self.width * self.ripple_scale,
+                    self.height * self.ripple_scale,
+                ),
                 pos=(
                     self.center_x - (self.width * self.ripple_scale) / 2,
                     self.center_y - (self.height * self.ripple_scale) / 2,
@@ -204,7 +209,9 @@ class CircularRippleBehavior(CommonRipple):
             StencilUnUse()
             Ellipse(pos=self.pos, size=self.size)
             StencilPop()
-            self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+            self.bind(
+                ripple_color=self._set_color, ripple_rad=self._set_ellipse
+            )
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)

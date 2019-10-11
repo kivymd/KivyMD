@@ -2044,7 +2044,9 @@ class Screens(object):
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
-            paginator.screens = self.manager_swiper.ids.swiper_manager.screen_names
+            paginator.screens = (
+                self.manager_swiper.ids.swiper_manager.screen_names
+            )
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)
@@ -2052,4 +2054,6 @@ class Screens(object):
         self.main_widget.ids.scr_mngr.current = "manager swiper"
 
     def show_screen(self, name_screen):
-        self.main_widget.ids.scr_mngr.current = self.data[name_screen]["name_screen"]
+        self.main_widget.ids.scr_mngr.current = self.data[name_screen][
+            "name_screen"
+        ]

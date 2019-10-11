@@ -89,7 +89,9 @@ if __name__ == "__main__":
             if hex_color:
                 col = get_color_from_hex(hex_color)
                 col_bri = get_contrast_text_color(col)
-                con_rat = get_contrast_text_color(col, use_color_brightness=False)
+                con_rat = get_contrast_text_color(
+                    col, use_color_brightness=False
+                )
                 text_color = text_colors[c[0]][name]
                 print(
                     f"   The {name} hue gives {col_bri} using color "

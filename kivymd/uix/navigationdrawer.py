@@ -104,7 +104,9 @@ from kivymd.uix.list import (
 )
 from kivymd.uix.toolbar import MDToolbar
 from kivymd.theming import ThemableBehavior
-from kivymd.vendor.navigationdrawer import NavigationDrawer as VendorNavigationDrawer
+from kivymd.vendor.navigationdrawer import (
+    NavigationDrawer as VendorNavigationDrawer,
+)
 from kivymd import images_path
 from kivymd.behaviors.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
@@ -395,7 +397,9 @@ class NavigationDrawerDivider(OneLineListItem):
         self.height = dp(16)
 
 
-class MDNavigationDrawer(BoxLayout, ThemableBehavior, RectangularElevationBehavior):
+class MDNavigationDrawer(
+    BoxLayout, ThemableBehavior, RectangularElevationBehavior
+):
     _elevation = NumericProperty(0)
     _list = ObjectProperty()
     _drawer_logo = ObjectProperty()
@@ -453,9 +457,13 @@ class NavigationLayout(VendorNavigationDrawer, ThemableBehavior):
     min_dist_to_open = NumericProperty(0.2)
     min_dist_to_close = NumericProperty(0.8)
     anim_time = NumericProperty(0.2)
-    separator_image = StringProperty("{}".format(images_path + "/transparent.png"))
+    separator_image = StringProperty(
+        "{}".format(images_path + "/transparent.png")
+    )
     side_panel_positioning = "left"
-    side_panel_width = (dp(320) * 80) // 100 if dp(320) >= Window.width else dp(320)
+    side_panel_width = (
+        (dp(320) * 80) // 100 if dp(320) >= Window.width else dp(320)
+    )
     max_shadow_opacity = NumericProperty(0.5)
     anim_type = StringProperty("slide_above_simple")
 

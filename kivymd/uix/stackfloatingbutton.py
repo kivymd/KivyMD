@@ -67,7 +67,12 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
-from kivy.properties import StringProperty, DictProperty, ObjectProperty, ListProperty
+from kivy.properties import (
+    StringProperty,
+    DictProperty,
+    ObjectProperty,
+    ListProperty,
+)
 from kivy.metrics import dp
 
 from kivymd.uix.card import MDCard

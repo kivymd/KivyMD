@@ -158,7 +158,9 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
                     "on_release": lambda x=name_item: self.set_item(x),
                 }
             )
-        self.ids.label_item.text = self.current_item if self.current_item else value[0]
+        self.ids.label_item.text = (
+            self.current_item if self.current_item else value[0]
+        )
 
     def set_item(self, name_item):
         self.ids.label_item.text = name_item

@@ -152,9 +152,6 @@ class MDListBottomSheet(MDBottomSheet):
 
 Builder.load_string(
     """
-#:import MDLabel kivymd.label.MDLabel
-
-
 <GridBSItem>
     orientation: 'vertical'
     padding: 0, dp(24), 0, 0

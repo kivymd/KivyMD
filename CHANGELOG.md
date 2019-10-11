@@ -9,16 +9,16 @@
 * Fixed `ReferenceError` in `MDTextFieldRound` class
 
 #### kivymd/cards.py:
-* Added doc string to MDCard class
-* Added color property to MDSeparator class
+* Added doc string to `MDCard` class
+* Added color property to `MDSeparator` class
 
 #### kivymd/button.py:
 * Added new doc in buttons
 * Fixed: the text color in the button did not change
-* Added the ability to change the font size in the MDIconButton
+* Added the ability to change the font size in the `MDIconButton`
 
 #### demos/kitchen_sink/screens.py:
-* Methods for loading KV files moved to the `main.py` file
+* Methods for loading kv-files moved to the `main.py` file
 * Added new example for `bottom navigation` screen
 * Added new example for `popup screen` screen
 * Added new example with `MDTextField`
@@ -30,7 +30,7 @@
 * Edited imports
 
 #### demos/kitchen_sink/main.py:
-* Added dialog for preloading KV files in the `Kitchen Sink` application
+* Added dialog for preloading kv-files in the `Kitchen Sink` application
 * Edited method `show_popup_screen` for new example `popup screen` screen
 * Added new example with `MDDropDownItem`
 * Removed `Accordion List` screen
@@ -42,7 +42,7 @@
 * Added the ability to set the color of the `MDBottomNavigation` panel
 
 #### kivymd/popupscreen.py:
-* Fixed the behavior of MDPopupScreen, which was closed when own events
+* Fixed the behavior of `MDPopupScreen`, which was closed when own events
 * Added the ability to close `MDPopupScreen` with swipe down
 * Added the ability to set the color and background image for `MDPopupScreen`
 * Added new example in doc string
@@ -54,7 +54,7 @@
 * Added `requests` to requires section
 
 #### kivymd/menus.py:
-* Added `on_dismiss` method - same behavior as ModalView
+* Added `on_dismiss` method - same behavior as `ModalView`
 
 #### kivymd/behaviors/hover_behavior.py:
 * Added Hoverable Behaviour (changing when the mouse is on the widget by O. Poyen
@@ -66,6 +66,7 @@
 * Added doc-string
 * Added `duration` value for to control the timing of the toast
 
+
 * Removed `accordion.py`, `accordionlistitem.py` modules - see `expansionpanel.py` module
 
 
@@ -76,17 +77,17 @@
 
 ## [v0.100.1]() - *Alpha*
 
-* Fixed "Due to the use of AsyncImage, the Toolbar did not accept the color of the installed color theme"
+* Fixed "Due to the use of `AsyncImage`, the Toolbar did not accept the color of the installed color theme"
 
 
 ## [v0.100.0]() - *Alpha*
 
-* Fixed "In MDNavigationDrawer I used use_logo='all' it's showing image only not the drawer_title text"
+* Fixed "In `MDNavigationDrawer` I used use_logo='all' it's showing image only not the drawer_title text"
 
 
 ## [v0.99.98]() - *Alpha*
 
-* Added new MDFillRoundFlatIconButton class
+* Added new `MDFillRoundFlatIconButton` class
 
 
 ## [v0.99.97]() - *Alpha*
@@ -97,7 +98,7 @@
 ## [v0.99.96]() - *Alpha*
 
 * Added asynchronous call to list update method in RefreshLayout example in main.py file
-* Added asynckivy.py module for using asynchronous function calls in Kivy
+* Added `asynckivy.py` module for using asynchronous function calls in `Kivy`
 
 
 ## [v0.99.95]() - *Alpha*
@@ -109,8 +110,8 @@
 
 ## [v0.99.94]() - *Alpha*
 
-* Added property `_no_ripple_effect` to BaseListItem class
-* [Banned](https://www.youtube.com/watch?v=P_9oSx0Pz_U) use `ripple effect` in MDAccordionListItem class
+* Added property `_no_ripple_effect` to `BaseListItem` class
+* [Banned](https://www.youtube.com/watch?v=P_9oSx0Pz_U) use `ripple effect` in `MDAccordionListItem` class
 * Added check to use `ripple effect` in RectangularRippleBehavior class
 
 

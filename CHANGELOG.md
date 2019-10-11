@@ -56,7 +56,7 @@
 #### kivymd/menus.py:
 * Added `on_dismiss` method - same behavior as ModalView
 
-####kivymd/behaviors/hover_behavior.py:
+#### kivymd/behaviors/hover_behavior.py:
 * Added Hoverable Behaviour (changing when the mouse is on the widget by O. Poyen
 
 #### kivymd/context_menu.py:
@@ -65,6 +65,8 @@
 #### kivymd/toast/kivytoast/kivytoast.py:
 * Added doc-string
 * Added `duration` value for to control the timing of the toast
+
+* Removed `accordion.py`, `accordionlistitem.py` modules - see `expansionpanel.py` module
 
 
 ## [v0.100.2](https://github.com/HeaTTheatR/KivyMD/tree/1fa2e59) - *Alpha*

@@ -18,6 +18,26 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
+source_code_viewer = """
+#:import PythonLexer kivy.extras.highlight.PythonLexer
+
+
+<CodeInputScreen@Screen>
+    name: "code viewer"
+
+    CodeInputViewer:
+        bar_width: dp(5)
+
+        CodeInput
+            id: code_input
+            mipmap: True
+            font_size: '14sp'
+            height: max(self.minimum_height, root.height)
+            lexer: PythonLexer()
+            size_hint_y: None
+            #style_name: 'native'
+"""
+
 bottom_app_bar = """
 <BottomAppBar@Screen>
     name: 'bottom app bar'
@@ -1767,10 +1787,13 @@ md_icons = """
 
 <MDIconItemForMdIconsList@OneLineIconListItem>:
     icon: 'android'
+    text_color: 0, 0, 0, 1
     on_release: root.callback(root.icon)
 
     IconLeftWidget:
         icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
 
 
 <MDIcons@Screen>
@@ -1825,6 +1848,7 @@ class Screens(object):
             "kv_string": bottom_navigation,
             "Factory": "Factory.BottomNavigation()",
             "name_screen": "bottom navigation",
+            "source_code": "Components-Bottom-Navigation.md",
             "object": None,
         },
         "Bottom Sheets": {
@@ -1837,18 +1861,21 @@ class Screens(object):
             "kv_string": drop_item,
             "Factory": "Factory.MDDropItem()",
             "name_screen": "drop item",
+            "source_code": "Components-DropDownItem.md",
             "object": None,
         },
         "Popup Screen": {
             "kv_string": popup_screen,
             "Factory": "Factory.PopupScreenWidget()",
             "name_screen": "popup screen",
+            "source_code": "Components-Progress-Loader.md",
             "object": None,
         },
         "Fan Manager": {
             "kv_string": fan_manager,
             "Factory": "Factory.FanManager()",
             "name_screen": "fan manager",
+            "source_code": "Components-Fan-Screen-Manager.md",
             "object": None,
         },
         "Progress bars": {
@@ -1867,6 +1894,7 @@ class Screens(object):
             "kv_string": refresh_layout,
             "Factory": "Factory.RefreshLayout()",
             "name_screen": "refresh layout",
+            "source_code": "Components-Refresh-Layout.md",
             "object": None,
         },
         "Sliders": {
@@ -1879,12 +1907,14 @@ class Screens(object):
             "kv_string": stack_buttons,
             "Factory": "Factory.StackButtons()",
             "name_screen": "stack buttons",
+            "source_code": "Components-Stack-Floating-Buttons.md",
             "object": None,
         },
         "Snackbars": {
             "kv_string": snackbar,
             "Factory": "Factory.MySnackBar()",
             "name_screen": "snackbar",
+            "source_code": "Components-Snackbar.md",
             "object": None,
         },
         "Download File": {
@@ -1897,24 +1927,28 @@ class Screens(object):
             "kv_string": user_animation_card,
             "Factory": "Factory.UserCard()",
             "name_screen": "user animation card",
+            "source_code": "Components-User-Animation-Card.md",
             "object": None,
         },
         "Pickers": {
             "kv_string": pickers,
             "Factory": "Factory.Pickers()",
             "name_screen": "pickers",
+            "source_code": "Components-Date-Picker.md",
             "object": None,
         },
         "Cards": {
             "kv_string": cards,
             "Factory": "Factory.Cards()",
             "name_screen": "cards",
+            "source_code": "Components-Card-Post.md",
             "object": None,
         },
         "Dialogs": {
             "kv_string": dialogs,
             "Factory": "Factory.Dialogs()",
             "name_screen": "dialogs",
+            "source_code": "Components-Dialog.md",
             "object": None,
         },
         "Toolbars": {
@@ -1927,18 +1961,21 @@ class Screens(object):
             "kv_string": buttons,
             "Factory": "Factory.Buttons()",
             "name_screen": "buttons",
+            "source_code": "Components-Button.md",
             "object": None,
         },
         "Files Manager": {
             "kv_string": file_manager,
             "Factory": "Factory.FileManager()",
             "name_screen": "file manager",
+            "source_code": "Components-File-Manager.md",
             "object": None,
         },
         "Tabs": {
             "kv_string": tabs,
             "Factory": "Factory.Tabs()",
             "name_screen": "tabs",
+            "source_code": "Components-Tabs.md",
             "object": None,
         },
         "Labels": {
@@ -1951,6 +1988,7 @@ class Screens(object):
             "kv_string": chips,
             "Factory": "Factory.Chips()",
             "name_screen": "chips",
+            "source_code": "Components-Chip.md",
             "object": None,
         },
         "Lists": {
@@ -1963,12 +2001,14 @@ class Screens(object):
             "kv_string": expansion_panel,
             "Factory": "Factory.MyExpansionPanel()",
             "name_screen": "expansion panel",
+            "source_code": "Components-Expansion-Panel.md",
             "object": None,
         },
         "Grid lists": {
             "kv_string": grid,
             "Factory": "Factory.Grid()",
             "name_screen": "grid",
+            "source_code": "Components-SmartTileWithStar.md",
             "object": None,
         },
         "Selection controls": {
@@ -1993,12 +2033,20 @@ class Screens(object):
             "kv_string": bottom_app_bar,
             "Factory": "Factory.BottomAppBar()",
             "name_screen": "bottom app bar",
+            "source_code": "Components-Bottom-App-Bar.md",
+            "object": None,
+        },
+        "Source code": {
+            "kv_string": source_code_viewer,
+            "Factory": "Factory.CodeInputScreen()",
+            "name_screen": "code viewer",
             "object": None,
         },
         "Text fields": {
             "kv_string": textfields,
             "Factory": "Factory.TextFields()",
             "name_screen": "textfields",
+            "source_code": "Components-Text-Field.md",
             "object": None,
         },
     }

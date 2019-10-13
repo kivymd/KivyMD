@@ -101,7 +101,7 @@ Packages for Android are built according to the following instructions:
 Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
 
 
-What's new in version 0.101.4:
+What's new in version 0.101.5:
 ============================
 
 [CHANGELOG.md](CHANGELOG.md)

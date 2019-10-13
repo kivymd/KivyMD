@@ -508,9 +508,11 @@ class MDTimePicker(
     ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
 ):
     time = ObjectProperty()
+    callback = ObjectProperty()
 
-    def __init__(self, **kwargs):
+    def __init__(self, callback, **kwargs):
         super().__init__(**kwargs)
+        self.callback = callback
         self.current_time = self.ids.time_picker.time
 
     def set_time(self, time):
@@ -528,6 +530,7 @@ class MDTimePicker(
     def close_ok(self):
         self.current_time = self.ids.time_picker.time
         self.time = self.current_time
+        self.callback(self.time)
         self.dismiss()
 
 

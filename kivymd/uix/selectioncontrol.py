@@ -26,6 +26,7 @@ from kivy.animation import Animation
 from kivy.utils import get_color_from_hex
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
+from kivy.clock import Clock
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
@@ -274,6 +275,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             primary_palette=self._set_colors,
         )
         self._set_colors()
+        Clock.schedule_once(self._update_thumb,0)
 
     def _set_colors(self, *args):
         self._track_color_normal = self.theme_cls.disabled_hint_text_color

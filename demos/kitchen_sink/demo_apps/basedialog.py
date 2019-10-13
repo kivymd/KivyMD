@@ -15,12 +15,13 @@ from kivy.uix.modalview import ModalView
 
 from kivymd.theming import ThemableBehavior
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import images_path kivymd.images_path
 
 
 <BaseDialogForDemo>
-    background: '{}/transparent.png'.format(images_path)
+    background: f'{images_path}/transparent.png'
 
     canvas.before:
         Color:
@@ -29,7 +30,8 @@ Builder.load_string("""
             pos: self.pos
             size: self.size
             radius: [15,]
-""")
+"""
+)
 
 
 class BaseDialogForDemo(ThemableBehavior, ModalView):
@@ -39,4 +41,4 @@ class BaseDialogForDemo(ThemableBehavior, ModalView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.canvas_color = self.theme_cls.primary_color
-        self.canvas_color[3] = .75
+        self.canvas_color[3] = 0.75

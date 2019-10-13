@@ -22,22 +22,19 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
-from kivymd.ripplebehavior import CircularRippleBehavior
+from kivymd.behaviors.ripplebehavior import CircularRippleBehavior
+from kivymd import demos_assets_path
 
-from . basedialog import BaseDialogForDemo
+from .basedialog import BaseDialogForDemo
 
-if not os.path.exists('./assets/coffee_crop.jpg'):
+if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        './assets/coffee.jpg',
-        './assets/coffee_crop.jpg')
+        f"{demos_assets_path}coffee.jpg",
+        f"{demos_assets_path}coffee_crop.jpg",
+    )
 
-screen_coffee_menu = '''
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCard kivymd.cards.MDCard
-#:import MDFlatButton kivymd.button.MDFlatButton
-
+screen_coffee_menu = """
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
 
@@ -130,7 +127,7 @@ screen_coffee_menu = '''
     text_color: item_color
     on_release: root.callback()
 
-    AvatarSampleWidget:
+    ImageLeftWidget:
         source: './assets/coffee-icon-brown.png'
 
 
@@ -255,21 +252,51 @@ screen_coffee_menu = '''
         MenuDialog:
             id: menu_dialog
             y: app.Window.height
-'''
+"""
 
 
 class CoffeeMenu(Screen):
     coffees_list = [
-        'Americano', 'Affogato', 'Bicherin', 'Vietnamese ice coffee',
-        'Gallon (drink)', 'Glace', 'Ipoh White Coffee', 'Cappuccino',
-        'Carahillo', 'Cortado', 'Irish Coffee', 'Coffee Liège',
-        'Turkish coffee', 'Coffee with liqueur', 'Coffee with milk',
-        'Coffee Tuba', 'Coffee frappe', 'Coffee cocktail', 'Cuban coffee',
-        'Latte', 'Latte Macchiato', 'Long black', 'Lungo', 'Macchiato',
-        'Melange (coffee)', 'Mokkachino', 'Mocha', 'Postum (drink)',
-        'Raf-coffee', 'Ristretto', 'Red ah', 'Pharisee (drink)', 'Flat white',
-        'Frappe (cocktail)', 'Frappuccino', 'Cold coffee', 'Uh', 'Espresso',
-        'Espresso martini']
+        "Americano",
+        "Affogato",
+        "Bicherin",
+        "Vietnamese ice coffee",
+        "Gallon (drink)",
+        "Glace",
+        "Ipoh White Coffee",
+        "Cappuccino",
+        "Carahillo",
+        "Cortado",
+        "Irish Coffee",
+        "Coffee Liège",
+        "Turkish coffee",
+        "Coffee with liqueur",
+        "Coffee with milk",
+        "Coffee Tuba",
+        "Coffee frappe",
+        "Coffee cocktail",
+        "Cuban coffee",
+        "Latte",
+        "Latte Macchiato",
+        "Long black",
+        "Lungo",
+        "Macchiato",
+        "Melange (coffee)",
+        "Mokkachino",
+        "Mocha",
+        "Postum (drink)",
+        "Raf-coffee",
+        "Ristretto",
+        "Red ah",
+        "Pharisee (drink)",
+        "Flat white",
+        "Frappe (cocktail)",
+        "Frappuccino",
+        "Cold coffee",
+        "Uh",
+        "Espresso",
+        "Espresso martini",
+    ]
     menu_open = False
 
     def __init__(self, **kw):
@@ -285,41 +312,47 @@ class CoffeeMenu(Screen):
         self.ids.menu_dialog.ids.rv.data = []
         for name_item in self.coffees_list:
             self.ids.menu_dialog.ids.rv.data.append(
-                {'viewclass': 'ItemCoffeeMenu',
-                 'text': str(name_item),
-                 'callback': self.open_previous_coffee_info})
+                {
+                    "viewclass": "ItemCoffeeMenu",
+                    "text": str(name_item),
+                    "callback": self.open_previous_coffee_info,
+                }
+            )
 
     def add_custom_toolbar(self):
         toolbar = self.ids.toolbar
-        Animation(y=Window.height - toolbar.height, d=.3).start(toolbar)
+        Animation(y=Window.height - toolbar.height, d=0.3).start(toolbar)
 
     def show_menu_animation(self):
-        Animation(x=0, d=.2).start(self.ids.top_menu)
-        Animation(x=Window.width - self.ids.bottom_menu.width, d=.2).start(
-            self.ids.bottom_menu)
+        Animation(x=0, d=0.2).start(self.ids.top_menu)
+        Animation(x=Window.width - self.ids.bottom_menu.width, d=0.2).start(
+            self.ids.bottom_menu
+        )
 
     def show_menu_list_animation(self):
-        Animation(y=dp(60), d=.6, t='out_elastic').start(self.ids.menu_dialog)
+        Animation(y=dp(60), d=0.6, t="out_elastic").start(self.ids.menu_dialog)
         self.menu_open = True
 
     def hide_menu_list_animation(self):
-        Animation(y=Window.height, d=.6, t='in_elastic').start(self.ids.menu_dialog)
+        Animation(y=Window.height, d=0.6, t="in_elastic").start(
+            self.ids.menu_dialog
+        )
         self.menu_open = False
 
     def hide_menu_animation(self):
-        Animation(x=Window.width, d=.2).start(self.ids.top_menu)
-        anim = Animation(x=-Window.width, d=.2)
+        Animation(x=Window.width, d=0.2).start(self.ids.top_menu)
+        anim = Animation(x=-Window.width, d=0.2)
         anim.bind(on_complete=self.back_to_previous_screen)
         anim.start(self.ids.bottom_menu)
 
     def hide_toolbar_animation(self):
-        Animation(y=Window.height, d=.2).start(self.ids.toolbar)
+        Animation(y=Window.height, d=0.2).start(self.ids.toolbar)
 
     def back_to_previous_screen(self, *args):
         if self.menu_open:
             self.menu_open = False
             self.hide_menu_list_animation()
-        App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+        App.get_running_app().main_widget.ids.scr_mngr.current = "previous"
         App.get_running_app().main_widget.ids.toolbar.height = dp(56)
 
     def open_previous_coffee_info(self):
@@ -344,9 +377,10 @@ class PreviousDialogCoffee(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):
-        if not os.path.exists('./assets/Latte-crop.jpg'):
+        if not os.path.exists("./assets/Latte-crop.jpg"):
             crop_image(
                 (int(dp(280)), int(dp(222))),
-                './assets/Latte.jpg',
-                './assets/Latte-crop.jpg')
+                "./assets/Latte.jpg",
+                "./assets/Latte-crop.jpg",
+            )
             self.ids.previous_image.reload()

@@ -1,7 +1,13 @@
+# Python compiled
 *.pyc
-*.swp
-.buildozer
-.idea
+
+# Builds
 build
+.buildozer
 docs/_build
 demos/kitchen_sink/bin
+
+# Editors
+.idea
+*.swp
+.vscode/settings.json

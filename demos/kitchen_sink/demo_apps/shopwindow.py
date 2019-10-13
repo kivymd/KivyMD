@@ -15,20 +15,11 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 from kivy.animation import Animation
 
-from . basedialog import BaseDialogForDemo
+from kivymd import demos_assets_path
 
-screen_shop_window = '''
-#:import MDCard kivymd.cards.MDCard
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
-#:import MDFlatButton kivymd.button.MDFlatButton
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
-#:import MDIconButton kivymd.button.MDIconButton
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
-#:import MDTextFieldRect kivymd.textfields.MDTextField
+from .basedialog import BaseDialogForDemo
 
-
+screen_shop_window = """
 <PreviousDialog>
     size_hint: 0, 0
 
@@ -118,7 +109,7 @@ screen_shop_window = '''
             on_press:
                 self.icon = 'heart' if self.icon == 'heart-outline' else 'heart-outline'
 
-    ImageTouch:
+    MDCustomRoundIconButton:
         source: root.icon
         size_hint: None, None
         height: self.width
@@ -299,7 +290,7 @@ screen_shop_window = '''
 
             CartScreen:
                 id: cart_screen
-'''
+"""
 
 
 class ShopWindow(Screen):
@@ -308,33 +299,37 @@ class ShopWindow(Screen):
         for i in range(5):
             increment_left += 2
             App.get_running_app().main_widget.ids.scr_mngr.get_screen(
-                'shop window').ids.rv_main.data.append(
+                "shop window"
+            ).ids.rv_main.data.append(
                 {
-                    'viewclass': 'CardsBoxForShopWindow',
-                    'height': dp(300),
-                    'product_image': './assets/clock-%d.png' % increment_left,
-                    'product_image2': './assets/clock-%d.png' % (increment_left + 1),
-                    'previous_dialog': dialog
+                    "viewclass": "CardsBoxForShopWindow",
+                    "height": dp(300),
+                    "product_image": f"{demos_assets_path}clock-%d.png"
+                    % increment_left,
+                    "product_image2": f"{demos_assets_path}clock-%d.png"
+                    % (increment_left + 1),
+                    "previous_dialog": dialog,
                 }
             )
 
     def set_list_cart(self):
         for i in range(11):
             App.get_running_app().main_widget.ids.scr_mngr.get_screen(
-                'shop window').ids.cart_screen.ids.rv_cart.data.append(
-                    {
-                        'viewclass': 'CardItemForCart',
-                        'height': dp(150),
-                        'product_image': './assets/clock-%d.png' % i
-                    }
-                )
+                "shop window"
+            ).ids.cart_screen.ids.rv_cart.data.append(
+                {
+                    "viewclass": "CardItemForCart",
+                    "height": dp(150),
+                    "product_image": f"{demos_assets_path}clock-%d.png" % i,
+                }
+            )
 
 
 class PreviousDialog(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):
-        Animation(size_hint=(.7, .7), d=.2, t='in_out_elastic').start(self)
+        Animation(size_hint=(0.7, 0.7), d=0.2, t="in_out_elastic").start(self)
 
 
 dialog = PreviousDialog

@@ -17,26 +17,19 @@ from kivy.metrics import dp
 
 from kivy.animation import Animation
 from kivy.core.window import Window
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.screenmanager import Screen
-from kivy.uix.image import Image
 
-from kivymd.ripplebehavior import CircularRippleBehavior
 from kivymd.utils.cropimage import crop_image
+from kivymd import demos_assets_path
 
-if not os.path.exists('./assets/crossfit-crop.png'):
+if not os.path.exists(f"{demos_assets_path}crossfit-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        './assets/crossfit.png',
-        './assets/crossfit-crop.png')
+        f"{demos_assets_path}crossfit.png",
+        f"{demos_assets_path}crossfit-crop.png",
+    )
 
-screen_fitness_club = '''
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
-#:import MDLabel kivymd.label.MDLabel
-#:import MDIconButton kivymd.button.MDIconButton
-
-
+screen_fitness_club = """
 <InputField@MDTextFieldRect>:
     size_hint: None, None
     multiline: False
@@ -58,7 +51,7 @@ screen_fitness_club = '''
             size: self.size
             pos: self.pos
 
-    AvatarSampleWidget:
+    ImageLeftWidget:
         source: './assets/arrow-right.png'
 
 <ItemLabel@MDLabel>
@@ -147,7 +140,7 @@ screen_fitness_club = '''
         halign: 'center'
 
 
-<MainScreen@FloatLayout>
+<RootMainScreen@FloatLayout>
     Button:
         canvas:
             Rectangle:
@@ -236,9 +229,9 @@ screen_fitness_club = '''
             text: 'Main'
             icon: 'home-variant'
 
-            MainScreen:
+            RootMainScreen:
 
-                ItemMenuForFitness:
+                MDCustomRoundIconButton:
                     id: facebook
                     source: './assets/facebook-round.png'
                     size_hint: None, None
@@ -246,7 +239,7 @@ screen_fitness_club = '''
                     x: -60
                     y: 50
 
-                ItemMenuForFitness:
+                MDCustomRoundIconButton:
                     id: twitter
                     source: './assets/twitter-round.png'
                     size_hint: None, None
@@ -306,55 +299,60 @@ screen_fitness_club = '''
             
             CallUs:
                 id: call_us
-'''
+"""
 
 
 class FitnessClub(Screen):
-    about_text = \
-        "Gym and Fitness was founded in 2002 as a family owned and operated " \
-        "business. The Gym and Fitness founders didn’t want it to be just " \
-        "another gym equipment retailer - they wanted to be the best in the " \
-        "industry and set their minds to doing so! Since its birth, Gym and " \
-        "Fitness has grown into one of Australia’s largest online fitness " \
-        "equipment retailers having helped over 50,000 customers live " \
+    about_text = (
+        "Gym and Fitness was founded in 2002 as a family owned and operated "
+        "business. The Gym and Fitness founders didn’t want it to be just "
+        "another gym equipment retailer - they wanted to be the best in the "
+        "industry and set their minds to doing so! Since its birth, Gym and "
+        "Fitness has grown into one of Australia’s largest online fitness "
+        "equipment retailers having helped over 50,000 customers live "
         "longer, happier and healthier lives"
+    )
 
     def set_focus(self, inctanse_field):
         def set_focus(interval):
             inctanse_field.focus = True
 
-        Clock.schedule_once(set_focus, .5)
+        Clock.schedule_once(set_focus, 0.5)
 
-    def set_image(self, path_to_image, size, corner=False, ext='png'):
-        path_to_crop = '{}-{}.{}'.format(path_to_image, 'crop', ext)
+    def set_image(self, path_to_image, size, corner=False, ext="png"):
+        prefix = "crop"
+        path_to_crop = f"{path_to_image}-{prefix}.{ext}"
         if not os.path.exists(path_to_crop):
             crop_image(
-                size, '{}.{}'.format(path_to_image, ext),
-                path_to_crop, corner=corner)
+                size, f"{path_to_image}.{ext}", path_to_crop, corner=corner
+            )
             self.ids.about_us.ids.about_girl.source = path_to_crop
             self.ids.about_us.ids.about_girl.reload()
 
     def set_item_reg(self):
-        Animation(x=(App.get_running_app().Window.width // 2) - dp(60),
-                  d=.15, t='in_out_bounce').start(self.ids.facebook)
-        Animation(x=App.get_running_app().Window.width // 2,
-                  d=.15, t='in_out_bounce').start(self.ids.twitter)
+        Animation(
+            x=(App.get_running_app().Window.width // 2) - dp(60),
+            d=0.15,
+            t="in_out_bounce",
+        ).start(self.ids.facebook)
+        Animation(
+            x=App.get_running_app().Window.width // 2, d=0.15, t="in_out_bounce"
+        ).start(self.ids.twitter)
 
     def set_item_menu(self):
         def anim_item(*args):
             instance_item = args[0]
-            Animation(x=(App.get_running_app().Window.width // 2) - dp(30),
-                      d=.15, t='in_out_bounce').start(instance_item)
+            Animation(
+                x=(App.get_running_app().Window.width // 2) - dp(30),
+                d=0.15,
+                t="in_out_bounce",
+            ).start(instance_item)
 
-        Clock.schedule_once(lambda x: anim_item(self.ids.exercises), .1)
-        Clock.schedule_once(lambda x: anim_item(self.ids.nutrition), .15)
-        Clock.schedule_once(lambda x: anim_item(self.ids.motivation), .2)
-        Clock.schedule_once(lambda x: anim_item(self.ids.about), .25)
+        Clock.schedule_once(lambda x: anim_item(self.ids.exercises), 0.1)
+        Clock.schedule_once(lambda x: anim_item(self.ids.nutrition), 0.15)
+        Clock.schedule_once(lambda x: anim_item(self.ids.motivation), 0.2)
+        Clock.schedule_once(lambda x: anim_item(self.ids.about), 0.25)
 
     def back_to_previous_screen(self):
-        App.get_running_app().main_widget.ids.scr_mngr.current = 'previous'
+        App.get_running_app().main_widget.ids.scr_mngr.current = "previous"
         App.get_running_app().main_widget.ids.toolbar.height = dp(56)
-
-
-class ItemMenuForFitness(CircularRippleBehavior, ButtonBehavior, Image):
-    pass

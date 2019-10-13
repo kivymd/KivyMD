@@ -18,10 +18,27 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
-bottom_app_bar = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
+source_code_viewer = """
+#:import PythonLexer kivy.extras.highlight.PythonLexer
 
 
+<CodeInputScreen@Screen>
+    name: "code viewer"
+
+    CodeInputViewer:
+        bar_width: dp(5)
+
+        CodeInput
+            id: code_input
+            mipmap: True
+            font_size: '14sp'
+            height: max(self.minimum_height, root.height)
+            lexer: PythonLexer()
+            size_hint_y: None
+            #style_name: 'native'
+"""
+
+bottom_app_bar = """
 <BottomAppBar@Screen>
     name: 'bottom app bar'
 
@@ -38,12 +55,12 @@ bottom_app_bar = '''
         on_release:
             app.md_app_bar.set_pos_action_button('right')
             app.move_item_menu('right')
-'''
+"""
 
-accordion_list = '''
-<AccordionList@Screen>
-    name: 'accordion list'
-    on_enter: app.set_accordion_list()
+expansion_panel = """
+<MyExpansionPanel@Screen>
+    name: 'expansion panel'
+    on_enter: app.set_expansion_panel()
     on_leave: anim_list.clear_widgets()
 
     ScrollView:
@@ -53,12 +70,9 @@ accordion_list = '''
             cols: 1
             size_hint_y: None
             height: self.minimum_height
-'''
+"""
 
-bottom_sheet = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
+bottom_sheet = """
 <BottomSheet@Screen>
     name: 'bottom sheet'
 
@@ -77,63 +91,9 @@ bottom_sheet = '''
         size: 4 * dp(48), dp(48)
         pos_hint: {'center_x': .5, 'center_y': .3}
         on_release: app.show_example_grid_bottom_sheet()
-'''
+"""
 
-accordion = '''
-#:import MDAccordion kivymd.accordion.MDAccordion
-#:import MDAccordionItem kivymd.accordion.MDAccordionItem
-#:import MDAccordionSubItem kivymd.accordion.MDAccordionSubItem
-
-
-<Accord@Screen>
-    name: 'accordion'
-
-    BoxLayout:
-
-        MDAccordion:
-            orientation: 'vertical'
-            size_hint_x: None
-            width: '240dp'
-
-            MDAccordionItem:
-                title:'Item 1'
-                icon: 'home'
-                MDAccordionSubItem:
-                    text: "Subitem 1"
-                MDAccordionSubItem:
-                    text: "Subitem 2"
-                MDAccordionSubItem:
-                    text: "Subitem 3"
-            MDAccordionItem:
-                title:'Item 2'
-                icon: 'earth'
-                MDAccordionSubItem:
-                    text: "Subitem 4"
-                MDAccordionSubItem:
-                    text: "Subitem 5"
-                MDAccordionSubItem:
-                    text: "Subitem 6"
-            MDAccordionItem:
-                title:'Item 3'
-                icon: 'account'
-                MDAccordionSubItem:
-                    text: "Subitem 7"
-                MDAccordionSubItem:
-                    text: "Subitem 8"
-                MDAccordionSubItem:
-                    text: "Subitem 9"
-
-        MDLabel:
-            text: 'Content'
-            halign: 'center'
-            theme_text_color: 'Primary'
-'''
-
-grid = '''
-#:import SmartTileWithStar kivymd.imagelists.SmartTileWithStar
-#:import SmartTileWithLabel kivymd.imagelists.SmartTileWithLabel
-
-
+grid = """
 <Grid@Screen>
     name: 'grid'
 
@@ -191,173 +151,106 @@ grid = '''
                 mipmap: True
                 text: "Tangerines\\n[size=12]tangerines-1111529_1280.png[/size]"
                 font_style: 'Subtitle1'
-'''
+"""
 
-bottom_navigation = '''
-#:import MDBottomNavigation kivymd.tabs.MDBottomNavigation
-#:import MDBottomNavigationItem kivymd.tabs.MDBottomNavigationItem
-#:import MDTextField kivymd.textfields.MDTextField
-#:import MDLabel kivymd.label.MDLabel
-
-
+bottom_navigation = """
 <BottomNavigation@Screen>
     name: 'bottom navigation'
 
     MDBottomNavigation:
-        id: bottom_navigation_demo
+        id: panel
 
         MDBottomNavigationItem:
-            name: 'banking'
-            text: "Bank"
-            icon: 'bank'
+            name: 'files1'
+            text: 'Python'
+            icon: 'language-python'
 
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: None
-                padding: dp(48)
+                height: self.minimum_height
                 spacing: dp(10)
+                pos_hint: {'center_x': .5, 'center_y': .5}
 
-                MDTextField:
-                    hint_text: "You can put any widgets here"
-                    helper_text: "Hello :)"
-                    helper_text_mode: "on_focus"
+                MDLabel:
+                    font_style: 'Body1'
+                    theme_text_color: 'Primary'
+                    text: 'Toggle to set custom panel color'
+                    halign: 'center'
+            
+                MDSwitch:
+                    size_hint: None, None
+                    size: dp(36), dp(48)
+                    pos_hint: {'center_x': .5}
+                    on_active:
+                        panel.panel_color = \
+                        [0.2980392156862745, 0.2823529411764706, 0.32941176470588235, 1] \
+                        if self.active else app.theme_cls.bg_dark
 
         MDBottomNavigationItem:
-            name: 'bottom_navigation_desktop_1'
-            text: "Hello"
-            icon: 'alert'
-            id: bottom_navigation_desktop_1
-
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint_y: None
-                padding: dp(48)
-                spacing: dp(10)
-
-                MDTextField:
-                    hint_text: "Hello again"
-
-        MDBottomNavigationItem:
-            name: 'bottom_navigation_desktop_2'
-            text: "Food"
-            icon: 'food'
-            id: bottom_navigation_desktop_2
+            name: 'files2'
+            text: 'C++'
+            icon: 'language-cpp'
 
             MDLabel:
                 font_style: 'Body1'
                 theme_text_color: 'Primary'
-                text: "Cheese!"
+                text: 'I programming of C++'
                 halign: 'center'
-'''
 
-tabs = '''
-#:import MDTabbedPanel kivymd.tabs.MDTabbedPanel
-#:import MDTab kivymd.tabs.MDTab
-#:import MDLabel kivymd.label.MDLabel
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
+        MDBottomNavigationItem:
+            name: 'files3'
+            text: 'JS'
+            icon: 'language-javascript'
 
+            MDLabel:
+                font_style: 'Body1'
+                theme_text_color: 'Primary'
+                text: 'Oh god JS again'
+                halign: 'center'
+"""
 
+tabs = """
 <Tabs@Screen>
     name: 'tabs'
 
-    MDTabbedPanel:
-        id: tab_panel
-        tab_display_mode: 'text'
-        tab_width_mode: 'stacked'
-
-        MDTab:
-            name: 'music'
-            text: "Music"
-            icon: "playlist-play"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "Here is my music list :)"
-                halign: 'center'
-
-        MDTab:
-            name: 'movies'
-            text: 'Movies'
-            icon: "movie"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "Show movies here :)"
-                halign: 'center'
-
-        MDTab:
-            name: 'python'
-            text: 'Python'
-            icon: "language-python"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "I love Python language"
-                halign: 'center'
-
-        MDTab:
-            name: 'cpp'
-            text: 'C++'
-            icon: "language-cpp"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "I love C++ language"
-                halign: 'center'
-
-        MDTab:
-            name: 'php'
-            text: 'PHP'
-            icon: "language-php"
-
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: "I love PHP language"
-                halign: 'center'
-
     BoxLayout:
-        size_hint_y: None
-        height: dp(72)
-        padding: dp(12)
+        orientation: 'vertical'
+
+        MDTabs:
+            id: android_tabs
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(58)
+            spacing: dp(5)
+            padding: dp(5)
+
+            MDCheckbox:
+                size_hint: None, None
+                size: dp(48), dp(48)
+                on_state:
+                    app.switch_tabs_to_text(android_tabs) if self.state == 'down' \
+                    else app.switch_tabs_to_icon(android_tabs)
+            MDLabel:
+                theme_text_color: 'Primary'
+                text: 'Use text tabs'
+
+            Widget:
+
+
+<MyTab@BoxLayout+MDTabsBase>
+
+    FloatLayout:
 
         MDLabel:
-            font_style: 'Body1'
+            text: 'Content'
+            halign: 'center'
             theme_text_color: 'Primary'
-            text: "Use icons"
-            size_hint_x:None
-            width: dp(64)
+            font_style: 'H6'
+"""
 
-        MDCheckbox:
-            on_state:
-                tab_panel.tab_display_mode = 'icons'\
-                if tab_panel.tab_display_mode=='text' else 'text'
-
-        MDLabel:
-            font_style: 'Body1'
-            theme_text_color: 'Primary'
-            text: "Use fixed"
-            size_hint_x:None
-            width: dp(64)
-
-        MDCheckbox:
-            on_state:
-                tab_panel.tab_width_mode = 'fixed'\
-                if tab_panel.tab_width_mode =='stacked' else 'stacked'
-
-        Widget:
-'''
-
-pickers = '''
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDLabel kivymd.label.MDLabel
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
+pickers = """
 <Pickers@Screen>
     name: 'pickers'
 
@@ -427,93 +320,229 @@ pickers = '''
                     id: date_picker_use_previous_date
                     size_hint: None, None
                     size: dp(48), dp(48)
-'''
+"""
 
-buttons = '''
-#:import MDIconButton kivymd.button.MDIconButton
-#:import MDFloatingActionButton kivymd.button.MDFloatingActionButton
-#:import MDFlatButton kivymd.button.MDFlatButton
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDRectangleFlatButton kivymd.button.MDRectangleFlatButton
-#:import MDRoundFlatButton kivymd.button.MDRoundFlatButton
-#:import MDRectangleFlatIconButton kivymd.button.MDRectangleFlatIconButton
-#:import MDTextButton kivymd.button.MDTextButton
-#:import MDFillRoundFlatButton kivymd.button.MDFillRoundFlatButton
-#:import MDRoundFlatIconButton kivymd.button.MDRoundFlatIconButton
-
-
+buttons = """
 <Buttons@Screen>
     name: 'buttons'
 
-    BoxLayout:
-        size_hint_y: None
-        height: dp(56)
-        spacing: '10dp'
-        pos_hint: {'center_y': .9}
+    ScrollView:
+        size_hint_x: None
+        width: box.width
+        pos_hint: {'center_x': .5}
+        bar_width: 0
 
-        Widget:
+        BoxLayout:
+            id: box
+            padding: dp(10)
+            size_hint: None, None
+            size: self.minimum_size
+            spacing: dp(10)
+            orientation: 'vertical'
+            pos_hint: {'center_x': .5}
 
-        MDIconButton:
-            icon: 'sd'
+            BoxLayout:
+                size_hint: None, None
+                width: self.minimum_width
+                height: dp(56)
+                spacing: '10dp'
 
-        MDFloatingActionButton:
-            icon: 'plus'
-            opposite_colors: True
-            elevation_normal: 8
+                MDIconButton:
+                    icon: 'sd'
 
-        MDFloatingActionButton:
-            icon: 'check'
-            opposite_colors: True
-            elevation_normal: 8
-            md_bg_color: app.theme_cls.primary_color
+                MDFloatingActionButton:
+                    icon: 'plus'
+                    opposite_colors: True
+                    elevation_normal: 8
 
-        MDIconButton:
-            icon: 'sd'
-            theme_text_color: 'Custom'
-            text_color: app.theme_cls.primary_color
+                MDFloatingActionButton:
+                    icon: 'check'
+                    opposite_colors: True
+                    elevation_normal: 8
+                    md_bg_color: app.theme_cls.primary_color
 
-        Widget:
+                MDIconButton:
+                    icon: 'sd'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.primary_color
+ 
+            MDFlatButton:
+                text: 'MDFlatButton'
+                pos_hint: {'center_x': .5}
 
-    MDFlatButton:
-        text: 'MDFlatButton'
-        pos_hint: {'center_x': .5, 'center_y': .75}
+            MDRaisedButton:
+                text: "MDRaisedButton"
+                elevation_normal: 2
+                opposite_colors: True
+                pos_hint: {'center_x': .5}
 
-    MDRaisedButton:
-        text: "MDRaisedButton"
-        elevation_normal: 2
-        opposite_colors: True
-        pos_hint: {'center_x': .5, 'center_y': .65}
+            MDRectangleFlatButton:
+                text: "MDRectangleFlatButton"
+                pos_hint: {'center_x': .5}
 
-    MDRectangleFlatButton:
-        text: "MDRectangleFlatButton"
-        pos_hint: {'center_x': .5, 'center_y': .55}
+            MDRectangleFlatIconButton:
+                text: "MDRectangleFlatIconButton"
+                icon: "language-python"
+                width: dp(230)
+                pos_hint: {'center_x': .5}
 
-    MDRectangleFlatIconButton:
-        text: "MDRectangleFlatIconButton"
-        icon: "language-python"
-        pos_hint: {'center_x': .5, 'center_y': .45}
-        width: dp(230)
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
 
-    MDRoundFlatButton:
-        text: "MDRoundFlatButton"
-        pos_hint: {'center_x': .5, 'center_y': .35}
+            MDRoundFlatIconButton:
+                text: "MDRoundFlatIconButton"
+                icon: "language-python"
+                width: dp(200)
+                pos_hint: {'center_x': .5}
 
-    MDRoundFlatIconButton:
-        text: "MDRoundFlatIconButton"
-        icon: "language-python"
-        pos_hint: {'center_x': .5, 'center_y': .25}
-        width: dp(200)
+            MDFillRoundFlatButton:
+                text: "MDFillRoundFlatButton"
+                pos_hint: {'center_x': .5}
 
-    MDFillRoundFlatButton:
-        text: "MDFillRoundFlatButton"
-        pos_hint: {'center_x': .5, 'center_y': .15}
+            MDFillRoundFlatIconButton:
+                text: "MDFillRoundFlatIconButton"
+                icon: "language-python"
+                pos_hint: {'center_x': .5}
 
-    MDTextButton:
-        text: "MDTextButton"
-        pos_hint: {'center_x': .5, 'center_y': .05}
-'''
+            MDTextButton:
+                text: "MDTextButton"
+                pos_hint: {'center_x': .5}
 
-cards = '''
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: '10dp'
+                size_hint: None, None
+                size: self.minimum_size
+                pos_hint: {'center_x': .5}
+
+                MDSeparator:
+
+                Label:
+                    text: 'Button customization'
+                    color: app.theme_cls.text_color
+                    font_size: '20sp'
+                    size_hint: None, None
+                    size: self.texture_size
+                    
+                MDSeparator:
+
+            ########################################
+            #         CUSTOMIZATION BUTTONS
+            ########################################
+
+            MDRaisedButton:
+                text: "MDRaisedButton"
+                elevation_normal: 2
+                opposite_colors: True
+                pos_hint: {'center_x': .5}
+                text_color: 1, 0, 0, 1
+
+            MDRaisedButton:
+                text: "MDRaisedButton"
+                elevation_normal: 2
+                opposite_colors: True
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+
+            MDRectangleFlatButton:
+                text: "MDRectangleFlatButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+
+            MDRectangleFlatButton:
+                text: "MDRectangleFlatButton"
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+                text_color: 1, 1, 0, 1
+
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
+                md_bg_color: 1, 0, 0, 1
+
+            MDRoundFlatButton:
+                text: "MDRoundFlatButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                md_bg_color: 1, 0, 0, 1
+
+            MDRoundFlatIconButton:
+                text: "MDRoundFlatIconButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                width: dp(210)
+
+            MDRoundFlatIconButton:
+                text: "MDRoundFlatIconButton"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                md_bg_color: 1, 0, 0, 1
+                width: dp(210)
+
+            MDFillRoundFlatIconButton:
+                text: "MDFillRoundFlatIconButton"
+                icon: "language-python"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+
+            MDFillRoundFlatIconButton:
+                text: "MDFillRoundFlatIconButton"
+                icon: "language-python"
+                pos_hint: {'center_x': .5}
+                text_color: 1, 1, 0, 1
+                md_bg_color: 1, 0, 0, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: '10dp'
+                size_hint: None, None
+                size: self.minimum_size
+                pos_hint: {'center_x': .5}
+
+                MDSeparator:
+
+                Label:
+                    text: 'MDIconButton customization'
+                    color: app.theme_cls.text_color
+                    font_size: '20sp'
+                    size_hint: None, None
+                    size: self.texture_size
+                    
+                MDSeparator:
+
+                BoxLayout:
+                    size_hint: None, None
+                    size: self.minimum_size
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "15sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "20sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "24sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "36sp"
+
+                    MDIconButton:
+                        icon: "language-python"
+                        user_font_size: "48sp"
+"""
+
+cards = """
 <Cards@Screen>
     name: 'cards'
     on_enter: app.add_cards(grid_card)
@@ -530,11 +559,8 @@ cards = '''
             padding: dp(5)
             size_hint_y: None
             height: self.minimum_height
-'''
-toolbars = '''
-#:import MDToolbar kivymd.toolbar.MDToolbar
-
-
+"""
+toolbars = """
 <Toolbars@Screen>
     name: 'toolbars'
 
@@ -563,12 +589,9 @@ toolbars = '''
         right_action_items: [['lock', lambda x: None],\
             ['camera', lambda x: None],\
             ['play', lambda x: None]]
-'''
+"""
 
-dialogs = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
+dialogs = """
 <Dialogs@Screen>
     name: 'dialogs'
 
@@ -603,13 +626,9 @@ dialogs = '''
         pos_hint: {'center_x': .5, 'center_y': .2}
         opposite_colors: True
         on_release: app.show_example_ok_cancel_dialog()
-'''
+"""
 
-theming = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDLabel kivymd.label.MDLabel
-
-
+theming = """
 <Theming@Screen>
     name: 'theming'
 
@@ -634,12 +653,16 @@ theming = '''
             theme_text_color: 'Primary'
             pos_hint: {'center_x': .5}
             halign: 'center'
-'''
+"""
 
-textfields = '''
-#:import MDTextFieldRect kivymd.textfields.MDTextFieldRect
-#:import MDTextFieldClear kivymd.textfields.MDTextFieldClear
-#:import MDTextField kivymd.textfields.MDTextField
+textfields = """
+#:set color_shadow [0, 0, 0, .2980392156862745]
+
+
+<MyMDTextFieldRound@MDTextFieldRound>
+    size_hint_x: None
+    normal_color: color_shadow
+    active_color: color_shadow
 
 
 <TextFields@Screen>
@@ -661,9 +684,52 @@ textfields = '''
             padding: dp(48)
             spacing: dp(15)
 
-            MDTextFieldRound:
-                hint_text: 'Password'
-                icon: 'lock-outline'
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field with `normal_color`'
+                normal_color: [.432, .124, .8654, .1]
+
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field without icon'
+
+            MyMDTextFieldRound:
+                icon_type: 'without'
+                hint_text: 'Field with `require_text_error`'
+                require_text_error: 'Field must be not empty!'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_type: 'left'
+                hint_text: 'Field with left icon'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_right: 'account-box'
+                icon_right_dasabled: True
+                hint_text: 'Field with left and right disabled icons'
+
+            MyMDTextFieldRound:
+                icon_type: 'all'
+                icon_left: 'key-variant'
+                icon_right: 'eye-off'
+                icon_right_dasabled: False
+                icon_callback: app.show_password
+                password: True
+                hint_text: 'Field width type `password = True`'
+
+            MyMDTextFieldRound:
+                icon_left: 'email'
+                icon_right: 'account-box'
+                icon_right_dasabled: True
+                field_height: dp(30)
+                hint_text: 'Field with custom size icon'
+                icon_size: "18sp"
+                radius: dp(9)
+
+            MDTextField:
+                input_filter: "int"
+                hint_text: "Numeric field"
 
             MDTextField:
                 hint_text: "No helper text"
@@ -720,7 +786,7 @@ textfields = '''
 
             MDTextFieldRect:
                 size_hint: None, None
-                size: app.Window.width - dp(40), dp(30)
+                size: Window.width - dp(40), dp(30)
                 pos_hint: {'center_y': .5, 'center_x': .5}
 
             Widget:
@@ -729,12 +795,9 @@ textfields = '''
 
             MDTextFieldClear:
                 hint_text: "Text field with clearing type"
-'''
+"""
 
-file_manager = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
+file_manager = """
 <FileManager@Screen>
     name: 'file manager'
 
@@ -745,18 +808,9 @@ file_manager = '''
         opposite_colors: True
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release: app.file_manager_open()
-'''
+"""
 
-lists = '''
-#:import MDList kivymd.list.MDList
-#:import OneLineListItem kivymd.list.OneLineListItem
-#:import TwoLineListItem kivymd.list.TwoLineListItem
-#:import ThreeLineListItem kivymd.list.ThreeLineListItem
-#:import OneLineAvatarListItem kivymd.list.OneLineAvatarListItem
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-#:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
-
-
+lists = """
 <Lists@Screen>
     name: 'lists'
 
@@ -765,77 +819,84 @@ lists = '''
 
         MDList:
             id: ml
+
             OneLineListItem:
                 text: "One-line item"
+
             TwoLineListItem:
                 text: "Two-line item"
                 secondary_text: "Secondary text here"
+
             ThreeLineListItem:
                 text: "Three-line item"
                 secondary_text:
                     "This is a multi-line label where you can "\
                     "fit more text than usual"
+
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
+
             TwoLineAvatarListItem:
                 type: "two-line"
                 text: "Two-line item..."
                 secondary_text: "with avatar"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
+
             ThreeLineAvatarListItem:
                 type: "three-line"
                 text: "Three-line item..."
                 secondary_text:
                     "...with avatar..." + '\\n' + "and third line!"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
+
             OneLineIconListItem:
                 text: "Single-line item with left icon"
-                IconLeftSampleWidget:
+                IconLeftWidget:
                     id: li_icon_1
                     icon: 'star-circle'
+
             TwoLineIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with left icon"
-                IconLeftSampleWidget:
+                IconLeftWidget:
                     id: li_icon_2
                     icon: 'comment-text'
+
             ThreeLineIconListItem:
                 text: "Three-line item..."
                 secondary_text:
                     "...with left icon..." + '\\n' + "and third line!"
-                IconLeftSampleWidget:
+                IconLeftWidget:
                     id: li_icon_3
                     icon: 'sd'
+
             OneLineAvatarIconListItem:
                 text: "Single-line + avatar&icon"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
+
             TwoLineAvatarIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with avatar&icon"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
+
             ThreeLineAvatarIconListItem:
                 text: "Three-line item..."
                 secondary_text:
                     "...with avatar&icon..." + '\\n' + "and third line!"
-                AvatarSampleWidget:
+                ImageLeftWidget:
                     source: './assets/avatar.png'
                 IconRightSampleWidget:
-'''
+"""
 
-snackbar = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDLabel kivymd.label.MDLabel
-
-
+snackbar = """
 <MySnackBar@Screen>
     name: 'snackbar'
 
@@ -866,6 +927,7 @@ snackbar = '''
         MDLabel:
             text: 'Click the MDFloatingActionButton to show the following example...'
             halign: 'center'
+            theme_text_color: 'Primary'
 
         Widget:
 
@@ -875,10 +937,9 @@ snackbar = '''
         x: Window.width - self.width - dp(10)
         y: dp(10)
         on_release: app.show_example_snackbar('float')
-'''
+"""
 
-download_file = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
+download_file = """
 #:import Clock kivy.clock.Clock
 
 
@@ -896,12 +957,9 @@ download_file = '''
             opposite_colors: True
             on_release:
                 Clock.schedule_once(app.show_example_download_file, .1)
-'''
+"""
 
-user_animation_card = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-
-
+user_animation_card = """
 <UserCard@Screen>
     name: 'user animation card'
 
@@ -912,13 +970,9 @@ user_animation_card = '''
         opposite_colors: True
         pos_hint: {'center_x': .5, 'center_y': .6}
         on_release: app.show_user_example_animation_card()
-'''
+"""
 
-selection_controls = '''
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDSwitch kivymd.selectioncontrols.MDSwitch
-
-
+selection_controls = """
 <SelectionControls@Screen>
     name: 'selection controls'
 
@@ -997,12 +1051,9 @@ selection_controls = '''
         pos_hint: {'center_x': .7, 'center_y': .3}
         active: True
         disabled: True
-'''
+"""
 
-sliders = '''
-#:import MDSlider kivymd.slider.MDSlider
-
-
+sliders = """
 <Sliders@Screen>
     name: 'sliders'
 
@@ -1020,42 +1071,40 @@ sliders = '''
             min: 0
             max: 100
             value: hslider.value
-'''
+"""
 
-stack_buttons = '''
+stack_buttons = """
 <StackButtons@Screen>
     name: 'stack buttons'
     on_enter: app.example_add_stack_floating_buttons()
-'''
+"""
 
-update_spinner = '''
-#:import MDLabel kivymd.label.MDLabel
-#:import MDUpdateSpinner kivymd.updatespinner.MDUpdateSpinner
+refresh_layout = """
+<ItemForListRefreshLayout>
+    text: root.text
 
-
-<UpdateSpinner@Screen>
-    name: 'update spinner'
-    on_enter: upd_lbl.text = "Pull to string update"
-    on_leave: upd_lbl.text = ""
-
-    MDLabel:
-        id: upd_lbl
-        font_style: 'H3'
-        theme_text_color: 'Primary'
-        halign: 'center'
-        pos_hint: {'center_x': .5, 'center_y': .6}
-        size_hint_y: None
-        height: self.texture_size[1] + dp(4)
-
-    MDUpdateSpinner:
-        event_update: lambda x: app.update_screen(self)
-'''
-
-progress_bar = '''
-#:import MDSlider kivymd.slider.MDSlider
-#:import MDProgressBar kivymd.progressbar.MDProgressBar
+    IconLeftWidget:
+        icon: root.icon
 
 
+<RefreshLayout@Screen>
+    name: 'refresh layout'
+
+    FloatLayout:
+
+        MDScrollViewRefreshLayout:
+            id: refresh_layout
+            refresh_callback: app.refresh_callback
+            root_layout: app.main_widget.ids.float_box
+
+            GridLayout:
+                id: box
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
+"""
+
+progress_bar = """
 <ProgressBars@Screen>
     name: 'progress bar'
 
@@ -1084,12 +1133,9 @@ progress_bar = '''
             MDProgressBar:
                 orientation: "vertical"
                 value: progress_slider.value
-'''
+"""
 
-labels = '''
-#:import MDLabel kivymd.label.MDLabel
-
-
+labels = """
 <MyMDLabel@MDLabel>
     size_hint_y: None
     height: self.texture_size[1]
@@ -1235,13 +1281,9 @@ labels = '''
                 text_color: (0,1,0,.4)
                 text: "Custom"
                 halign: 'center'
-'''
+"""
 
-menu = '''
-#:import MDRaisedButton kivymd.button.MDRaisedButton
-#:import MDDropdownMenu kivymd.menus.MDDropdownMenu
-
-
+menu = """
 <Menu@Screen>
     name: 'menu'
 
@@ -1289,12 +1331,11 @@ menu = '''
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release:
             MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
-'''
+"""
 
-chips = '''
-#:import MDSeparator kivymd.cards.MDSeparator
-#:import MDChip kivymd.chips.MDChip
-#:import MDChooseChip kivymd.chips.MDChooseChip
+chips = """
+<LabelForChips@MDLabel>
+    theme_text_color: 'Primary'
 
 
 <Chips@Screen>
@@ -1313,7 +1354,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Chips with color:'
 
             MDSeparator:
@@ -1357,7 +1398,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Chip without icon:'
 
             MDSeparator:
@@ -1376,7 +1417,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Chips with check:'
 
             MDSeparator:
@@ -1402,7 +1443,7 @@ chips = '''
                 size_hint_y: None
                 height: dp(5)
 
-            MDLabel:
+            LabelForChips:
                 text: 'Choose chip:'
 
             MDSeparator:
@@ -1423,13 +1464,9 @@ chips = '''
                     label: 'Facebook'
                     icon: 'facebook'
                     callback: app.callback_for_menu_items
-'''
+"""
 
-progress = '''
-#:import MDCheckbox kivymd.selectioncontrols.MDCheckbox
-#:import MDSpinner kivymd.spinner.MDSpinner
-
-
+progress = """
 <Progress@Screen>
     name: 'progress'
 
@@ -1446,12 +1483,9 @@ progress = '''
         size: dp(46), dp(46)
         pos_hint: {'center_x': .5, 'center_y': .5}
         active: True if chkbox.active else False
-'''
+"""
 
-fan_manager = '''
-#:import MDFanScreenManager kivymd.fanscreenmanager.MDFanScreenManager
-
-
+fan_manager = """
 <FanManager@Screen>
     name: 'fan manager'
 
@@ -1509,25 +1543,145 @@ fan_manager = '''
         keep_ratio: False
 
     ContentForAnimCard:
-'''
+"""
 
-popup_screen = '''
+popup_screen = """
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import demos_assets_path kivymd.demos_assets_path
+#:import images_path kivymd.images_path
+#:import Window kivy.core.window.Window
+
+
 <PopupScreenWidget@Screen>
     name: 'popup screen'
-    on_enter: app.set_popup_screen(content_popup)
 
     PopupScreen:
-        id: popup_screen
+        id: popup
 
-        ContentPopup:
-            id: content_popup
-'''
 
-manager_swiper = '''
+<PopupScreen>
+
+    BoxLayout:
+
+        UserScreen:
+            id: start_screen
+
+            canvas.before:
+                Color:
+                    rgba: app.theme_cls.bg_dark
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+
+<UserScreen@FloatLayout>
+
+    MDRoundFlatButton:
+        text: 'Open Menu'
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        on_release: app.show_popup_screen()
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: dp(10)
+        padding: dp(20)
+        pos_hint: {'bottom': .2}
+
+        MDLabel:
+            font_style: 'Body1'
+            theme_text_color: 'Primary'
+            text: 'Toggle to set custom MDPopupScreen image'
+            halign: 'center'
+            shorten: True
+
+        MDSwitch:
+            size_hint: None, None
+            size: dp(36), dp(48)
+            pos_hint: {'center_x': .5}
+            on_active:
+                app.popup_screen.background_image = f'{demos_assets_path}/white-texture.png' \
+                if self.active else f'{images_path}/transparent.png'
+
+        MDLabel:
+            font_style: 'Body1'
+            theme_text_color: 'Primary'
+            text: 'Toggle to set custom MDPopupScreen background color'
+            halign: 'center'
+            shorten: True
+
+        MDSwitch:
+            size_hint: None, None
+            size: dp(36), dp(48)
+            pos_hint: {'center_x': .5}
+            on_active:
+                app.popup_screen.background_color = [0, 0, 0, .8] \
+                if self.active else app.theme_cls.primary_color
+
+    Widget:
+
+# Your popup screen.
+<ContentForPopupScreen>
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: self.minimum_height
+    pos_hint: {'top': 1}
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+
+        Widget:
+
+        MDRoundFlatButton:
+            text: "Free call"
+            on_press: app.callback_for_menu_items(self.text)
+            md_bg_color: 1, 1, 1, .4
+            text_color: app.theme_cls.bg_dark
+
+        Widget:
+
+        MDRoundFlatButton:
+            text: "Free message"
+            on_press: app.callback_for_menu_items(self.text)
+            md_bg_color: 1, 1, 1, .4
+            text_color: app.theme_cls.bg_dark
+
+        Widget:
+
+    OneLineIconListItem:
+        text: "Video call"
+        on_press: app.callback_for_menu_items(self.text)
+
+        IconLeftWidget:
+            icon: 'camera-front-variant'
+
+    TwoLineIconListItem:
+        text: "Call Viber Out"
+        on_press: app.callback_for_menu_items(self.text)
+        secondary_text:
+            "[color=%s]Advantageous rates for calls[/color]" \
+            % get_hex_from_color([0, 0, 0, .5])
+
+        IconLeftWidget:
+            icon: 'phone'
+
+    TwoLineIconListItem:
+        text: "Call over mobile network"
+        on_press: app.callback_for_menu_items(self.text)
+        secondary_text:
+            "[color=%s]Operator's tariffs apply[/color]" \
+            % get_hex_from_color([0, 0, 0, .5])
+
+        IconLeftWidget:
+            icon: 'remote'
+"""
+
+manager_swiper = """
 #:import images_path kivymd.images_path
-#:import MDToolbar kivymd.toolbar.MDToolbar
-#:import MDLabel kivymd.label.MDLabel
-#:import MDSwiperManager kivymd.managerswiper.MDSwiperManager
 
 
 <MyCard>
@@ -1538,7 +1692,7 @@ manager_swiper = '''
 
     Image:
         source:
-            '{}/assets/guitar-1139397_1280_swiper_crop.png'.format(app.directory)
+            f'{app.directory}/assets/guitar-1139397_1280_swiper_crop.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -1598,32 +1752,48 @@ manager_swiper = '''
                     name: 'screen five'
                     MyCard:
                         text: 'Swipe to switch to screen five'.upper()
-'''
+"""
 
-md_icon_item = '''
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
-
-
+md_icon_item = """
 <MDIconItem@OneLineIconListItem>
     icon: 'android'
 
-    IconLeftSampleWidget:
+    IconLeftWidget:
         icon: root.icon
-'''
+"""
 
-md_icons = '''
-#:import OneLineIconListItem kivymd.list.OneLineIconListItem
+drop_item = """
+#:import toast kivymd.toast.toast
+
+
+<MDDropItem@Screen>
+    name: "drop item"
+    
+    MDDropDownItem:
+        id: dropdown_item
+        pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+        items: [f"Item {i}" for i in range(50)]
+        dropdown_bg: [1, 1, 1, 1]
+
+    MDRaisedButton:
+        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        text: 'Chek Item'
+        on_release: toast(dropdown_item.current_item)
+"""
+
+md_icons = """
 #:import images_path kivymd.images_path
-#:import MDTextFieldRect kivymd.textfields.MDTextField
-#:import MDIconButton kivymd.button.MDIconButton
 
 
 <MDIconItemForMdIconsList@OneLineIconListItem>:
     icon: 'android'
+    text_color: 0, 0, 0, 1
     on_release: root.callback(root.icon)
 
-    IconLeftSampleWidget:
+    IconLeftWidget:
         icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
 
 
 <MDIcons@Screen>
@@ -1659,7 +1829,7 @@ md_icons = '''
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: 'vertical'
-'''
+"""
 
 
 class Screens(object):
@@ -1668,284 +1838,270 @@ class Screens(object):
     directory = None
 
     data = {
-        'Themes':
-            {'kv_string': theming,
-             'Factory': 'Factory.Theming()',
-             'name_screen': 'theming',
-             'object': None},
-
-        'Bottom Navigation':
-            {'kv_string': bottom_navigation,
-             'Factory': 'Factory.BottomNavigation()',
-             'name_screen': 'bottom navigation',
-             'object': None},
-
-        'Bottom Sheets':
-            {'kv_string': bottom_sheet,
-             'Factory': 'Factory.BottomSheet()',
-             'name_screen': 'bottom sheet',
-             'object': None},
-
-        'Popup Screen':
-            {'kv_string': popup_screen,
-             'Factory': 'Factory.PopupScreenWidget()',
-             'name_screen': 'popup screen',
-             'object': None},
-
-        'Fan Manager':
-            {'kv_string': fan_manager,
-             'Factory': 'Factory.FanManager()',
-             'name_screen': 'fan manager',
-             'object': None},
-
-        'Progress bars':
-            {'kv_string': progress_bar,
-             'Factory': 'Factory.ProgressBars()',
-             'name_screen': 'progress bar',
-             'object': None},
-
-        'Progress & activity':
-            {'kv_string': progress,
-             'Factory': 'Factory.Progress()',
-             'name_screen': 'progress',
-             'object': None},
-
-        'Update Screen Widget':
-            {'kv_string': update_spinner,
-             'Factory': 'Factory.UpdateSpinner()',
-             'name_screen': 'update spinner',
-             'object': None},
-
-        'Sliders':
-            {'kv_string': sliders,
-             'Factory': 'Factory.Sliders()',
-             'name_screen': 'sliders',
-             'object': None},
-
-        'Stack Floating Buttons':
-            {'kv_string': stack_buttons,
-             'Factory': 'Factory.StackButtons()',
-             'name_screen': 'stack buttons',
-             'object': None},
-
-        'Snackbars':
-            {'kv_string': snackbar,
-             'Factory': 'Factory.MySnackBar()',
-             'name_screen': 'snackbar',
-             'object': None},
-
-        'Download File':
-            {'kv_string': download_file,
-             'Factory': 'Factory.DownloadFile()',
-             'name_screen': 'download file',
-             'object': None},
-
-        'User Animation Card':
-            {'kv_string': user_animation_card,
-             'Factory': 'Factory.UserCard()',
-             'name_screen': 'user animation card',
-             'object': None},
-
-        'Pickers':
-            {'kv_string': pickers,
-             'Factory': 'Factory.Pickers()',
-             'name_screen': 'pickers',
-             'object': None},
-
-        'Cards':
-            {'kv_string': cards,
-             'Factory': 'Factory.Cards()',
-             'name_screen': 'cards',
-             'object': None},
-
-        'Dialogs':
-            {'kv_string': dialogs,
-             'Factory': 'Factory.Dialogs()',
-             'name_screen': 'dialogs',
-             'object': None},
-
-        'MDToolbars':
-            {'kv_string': toolbars,
-             'Factory': 'Factory.Toolbars()',
-             'name_screen': 'toolbars',
-             'object': None},
-
-        'Buttons':
-            {'kv_string': buttons,
-             'Factory': 'Factory.Buttons()',
-             'name_screen': 'buttons',
-             'object': None},
-
-        'Files Manager':
-            {'kv_string': file_manager,
-             'Factory': 'Factory.FileManager()',
-             'name_screen': 'file manager',
-             'object': None},
-
-        'Tabs':
-            {'kv_string': tabs,
-             'Factory': 'Factory.Tabs()',
-             'name_screen': 'tabs',
-             'object': None},
-
-        'Labels':
-            {'kv_string': labels,
-             'Factory': 'Factory.Labels()',
-             'name_screen': 'labels',
-             'object': None},
-
-        'Chips':
-            {'kv_string': chips,
-             'Factory': 'Factory.Chips()',
-             'name_screen': 'chips',
-             'object': None},
-
-        'Lists':
-            {'kv_string': lists,
-             'Factory': 'Factory.Lists()',
-             'name_screen': 'lists',
-             'object': None},
-
-        'Accordion List':
-            {'kv_string': accordion_list,
-             'Factory': 'Factory.AccordionList()',
-             'name_screen': 'accordion list',
-             'object': None},
-
-        'Grid lists':
-            {'kv_string': grid,
-             'Factory': 'Factory.Grid()',
-             'name_screen': 'grid',
-             'object': None},
-
-        'Accordion':
-            {'kv_string': accordion,
-             'Factory': 'Factory.Accord()',
-             'name_screen': 'accordion',
-             'object': None},
-
-        'Selection controls':
-            {'kv_string': selection_controls,
-             'Factory': 'Factory.SelectionControls()',
-             'name_screen': 'selection controls',
-             'object': None},
-
-        'Menus':
-            {'kv_string': menu,
-             'Factory': 'Factory.Menu()',
-             'name_screen': 'menu',
-             'object': None},
-
-        'MD Icons':
-            {'kv_string': md_icons,
-             'Factory': 'Factory.MDIcons()',
-             'name_screen': 'md icons',
-             'object': None},
-
-        'Bottom App Bar':
-            {'kv_string': bottom_app_bar,
-             'Factory': 'Factory.BottomAppBar()',
-             'name_screen': 'bottom app bar',
-             'object': None},
-
-        'Text fields':
-            {'kv_string': textfields,
-             'Factory': 'Factory.TextFields()',
-             'name_screen': 'textfields',
-             'object': None}
+        "Themes": {
+            "kv_string": theming,
+            "Factory": "Factory.Theming()",
+            "name_screen": "theming",
+            "object": None,
+        },
+        "Bottom Navigation": {
+            "kv_string": bottom_navigation,
+            "Factory": "Factory.BottomNavigation()",
+            "name_screen": "bottom navigation",
+            "source_code": "Components-Bottom-Navigation.md",
+            "object": None,
+        },
+        "Bottom Sheets": {
+            "kv_string": bottom_sheet,
+            "Factory": "Factory.BottomSheet()",
+            "name_screen": "bottom sheet",
+            "object": None,
+        },
+        "Dropdown Item": {
+            "kv_string": drop_item,
+            "Factory": "Factory.MDDropItem()",
+            "name_screen": "drop item",
+            "source_code": "Components-DropDownItem.md",
+            "object": None,
+        },
+        "Popup Screen": {
+            "kv_string": popup_screen,
+            "Factory": "Factory.PopupScreenWidget()",
+            "name_screen": "popup screen",
+            "source_code": "Components-Progress-Loader.md",
+            "object": None,
+        },
+        "Fan Manager": {
+            "kv_string": fan_manager,
+            "Factory": "Factory.FanManager()",
+            "name_screen": "fan manager",
+            "source_code": "Components-Fan-Screen-Manager.md",
+            "object": None,
+        },
+        "Progress bars": {
+            "kv_string": progress_bar,
+            "Factory": "Factory.ProgressBars()",
+            "name_screen": "progress bar",
+            "object": None,
+        },
+        "Progress & activity": {
+            "kv_string": progress,
+            "Factory": "Factory.Progress()",
+            "name_screen": "progress",
+            "object": None,
+        },
+        "Refresh Layout": {
+            "kv_string": refresh_layout,
+            "Factory": "Factory.RefreshLayout()",
+            "name_screen": "refresh layout",
+            "source_code": "Components-Refresh-Layout.md",
+            "object": None,
+        },
+        "Sliders": {
+            "kv_string": sliders,
+            "Factory": "Factory.Sliders()",
+            "name_screen": "sliders",
+            "object": None,
+        },
+        "Floating Buttons": {
+            "kv_string": stack_buttons,
+            "Factory": "Factory.StackButtons()",
+            "name_screen": "stack buttons",
+            "source_code": "Components-Stack-Floating-Buttons.md",
+            "object": None,
+        },
+        "Snackbars": {
+            "kv_string": snackbar,
+            "Factory": "Factory.MySnackBar()",
+            "name_screen": "snackbar",
+            "source_code": "Components-Snackbar.md",
+            "object": None,
+        },
+        "Download File": {
+            "kv_string": download_file,
+            "Factory": "Factory.DownloadFile()",
+            "name_screen": "download file",
+            "object": None,
+        },
+        "User Animation Card": {
+            "kv_string": user_animation_card,
+            "Factory": "Factory.UserCard()",
+            "name_screen": "user animation card",
+            "source_code": "Components-User-Animation-Card.md",
+            "object": None,
+        },
+        "Pickers": {
+            "kv_string": pickers,
+            "Factory": "Factory.Pickers()",
+            "name_screen": "pickers",
+            "source_code": "Components-Date-Picker.md",
+            "object": None,
+        },
+        "Cards": {
+            "kv_string": cards,
+            "Factory": "Factory.Cards()",
+            "name_screen": "cards",
+            "source_code": "Components-Card-Post.md",
+            "object": None,
+        },
+        "Dialogs": {
+            "kv_string": dialogs,
+            "Factory": "Factory.Dialogs()",
+            "name_screen": "dialogs",
+            "source_code": "Components-Dialog.md",
+            "object": None,
+        },
+        "Toolbars": {
+            "kv_string": toolbars,
+            "Factory": "Factory.Toolbars()",
+            "name_screen": "toolbars",
+            "object": None,
+        },
+        "Buttons": {
+            "kv_string": buttons,
+            "Factory": "Factory.Buttons()",
+            "name_screen": "buttons",
+            "source_code": "Components-Button.md",
+            "object": None,
+        },
+        "Files Manager": {
+            "kv_string": file_manager,
+            "Factory": "Factory.FileManager()",
+            "name_screen": "file manager",
+            "source_code": "Components-File-Manager.md",
+            "object": None,
+        },
+        "Tabs": {
+            "kv_string": tabs,
+            "Factory": "Factory.Tabs()",
+            "name_screen": "tabs",
+            "source_code": "Components-Tabs.md",
+            "object": None,
+        },
+        "Labels": {
+            "kv_string": labels,
+            "Factory": "Factory.Labels()",
+            "name_screen": "labels",
+            "object": None,
+        },
+        "Chips": {
+            "kv_string": chips,
+            "Factory": "Factory.Chips()",
+            "name_screen": "chips",
+            "source_code": "Components-Chip.md",
+            "object": None,
+        },
+        "Lists": {
+            "kv_string": lists,
+            "Factory": "Factory.Lists()",
+            "name_screen": "lists",
+            "object": None,
+        },
+        "Expansion Panel": {
+            "kv_string": expansion_panel,
+            "Factory": "Factory.MyExpansionPanel()",
+            "name_screen": "expansion panel",
+            "source_code": "Components-Expansion-Panel.md",
+            "object": None,
+        },
+        "Grid lists": {
+            "kv_string": grid,
+            "Factory": "Factory.Grid()",
+            "name_screen": "grid",
+            "source_code": "Components-SmartTileWithStar.md",
+            "object": None,
+        },
+        "Selection controls": {
+            "kv_string": selection_controls,
+            "Factory": "Factory.SelectionControls()",
+            "name_screen": "selection controls",
+            "object": None,
+        },
+        "Menus": {
+            "kv_string": menu,
+            "Factory": "Factory.Menu()",
+            "name_screen": "menu",
+            "object": None,
+        },
+        "MD Icons": {
+            "kv_string": md_icons,
+            "Factory": "Factory.MDIcons()",
+            "name_screen": "md icons",
+            "object": None,
+        },
+        "Bottom App Bar": {
+            "kv_string": bottom_app_bar,
+            "Factory": "Factory.BottomAppBar()",
+            "name_screen": "bottom app bar",
+            "source_code": "Components-Bottom-App-Bar.md",
+            "object": None,
+        },
+        "Source code": {
+            "kv_string": source_code_viewer,
+            "Factory": "Factory.CodeInputScreen()",
+            "name_screen": "code viewer",
+            "object": None,
+        },
+        "Text fields": {
+            "kv_string": textfields,
+            "Factory": "Factory.TextFields()",
+            "name_screen": "textfields",
+            "source_code": "Components-Text-Field.md",
+            "object": None,
+        },
     }
 
     data_for_demo = {
-        'Shop Window':
-            {'class': 'ShopWindow()',
-             'object': None},
-
-        'Fitness Club':
-            {'class': 'FitnessClub()',
-             'object': None},
-
-        'Coffee Menu':
-            {'class': 'CoffeeMenu()',
-             'object': None},
-
-        'Swipe cards':
-            {'class': 'SwipeCards()',
-             'object': None},
-
-        'Registration':
-            {'class': 'FormOne()',
-             'object': None}
+        "Shop Window": {"class": "ShopWindow()", "object": None},
+        "Fitness Club": {"class": "FitnessClub()", "object": None},
+        "Coffee Menu": {"class": "CoffeeMenu()", "object": None},
+        "Swipe cards": {"class": "SwipeCards()", "object": None},
+        "Registration": {"class": "FormOne()", "object": None},
+        "Account Page": {"class": "AccountPage()", "object": None},
     }
 
     def show_screens_demo(self, name_screen):
-        if name_screen == 'Registration' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.formone import registration_form_one, FormOne
-            self.data_for_demo[name_screen]['kv_string'] = registration_form_one
-        elif name_screen == 'Shop Window' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.shopwindow import screen_shop_window, ShopWindow
-            self.data_for_demo[name_screen]['kv_string'] = screen_shop_window
-        elif name_screen == 'Coffee Menu' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.coffeemenu import screen_coffee_menu, CoffeeMenu
-            self.data_for_demo[name_screen]['kv_string'] = screen_coffee_menu
-        elif name_screen == 'Fitness Club' and \
-                not self.data_for_demo[name_screen]['object']:
-            from demo_apps.fitnessclub import screen_fitness_club, FitnessClub
-            self.data_for_demo[name_screen]['kv_string'] = screen_fitness_club
-
-        if name_screen == 'Registration':
-            self.theme_cls.primary_palette = 'Amber'
-        if name_screen != 'Shop Window':
+        if name_screen == "Registration":
+            self.theme_cls.primary_palette = "Amber"
+        if name_screen != "Shop Window":
             self.main_widget.ids.toolbar.height = 0
-        if not self.data_for_demo[name_screen]['object']:
-            Builder.load_string(self.data_for_demo[name_screen]['kv_string'])
-            self.data_for_demo[name_screen]['object'] = eval(
-                self.data_for_demo[name_screen]['class'])
+        if not self.data_for_demo[name_screen]["object"]:
+            Builder.load_string(self.data_for_demo[name_screen]["kv_string"])
+            self.data_for_demo[name_screen]["object"] = eval(
+                self.data_for_demo[name_screen]["class"]
+            )
             self.main_widget.ids.scr_mngr.add_widget(
-                self.data_for_demo[name_screen]['object'])
+                self.data_for_demo[name_screen]["object"]
+            )
 
     def show_manager_swiper(self):
-        from kivymd.managerswiper import MDSwiperPagination
+        from kivymd.uix.managerswiper import MDSwiperPagination
 
         if not self.manager_swiper:
-            path_to_crop_image = \
-                '{}/assets/' \
-                'guitar-1139397_1280_swiper_crop.png'.format(self.directory)
+            path_to_crop_image = (
+                f"{self.directory}/assets/guitar-1139397_1280_swiper_crop.png"
+            )
             if not os.path.exists(path_to_crop_image):
                 crop_image(
                     (int(Window.width - dp(10)), int(dp(250))),
-                    '{}/assets/guitar-1139397_1280.png'.format(
-                        self.directory), path_to_crop_image)
+                    f"{self.directory}/assets/guitar-1139397_1280.png",
+                    path_to_crop_image,
+                )
 
             Builder.load_string(manager_swiper)
             self.manager_swiper = Factory.MySwiperManager()
             self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
-            paginator.screens =\
+            paginator.screens = (
                 self.manager_swiper.ids.swiper_manager.screen_names
+            )
             paginator.manager = self.manager_swiper.ids.swiper_manager
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)
 
-        self.main_widget.ids.scr_mngr.current = 'manager swiper'
+        self.main_widget.ids.scr_mngr.current = "manager swiper"
 
     def show_screen(self, name_screen):
-        if not self.data[name_screen]['object']:
-            Builder.load_string(self.data[name_screen]['kv_string'])
-            self.data[name_screen]['object'] = \
-                eval(self.data[name_screen]['Factory'])
-            if name_screen == 'Bottom App Bar':
-                self.set_appbar()
-                self.data[name_screen]['object'].add_widget(self.md_app_bar)
-            self.main_widget.ids.scr_mngr.add_widget(
-                self.data[name_screen]['object'])
-            if name_screen == 'Text fields':
-                self.data[name_screen]['object'].ids.text_field_error.bind(
-                    on_text_validate=self.set_error_message,
-                    on_focus=self.set_error_message)
-            elif name_screen == 'MD Icons':
-                self.set_list_md_icons()
-        self.main_widget.ids.scr_mngr.current = \
-            self.data[name_screen]['name_screen']
+        self.main_widget.ids.scr_mngr.current = self.data[name_screen][
+            "name_screen"
+        ]

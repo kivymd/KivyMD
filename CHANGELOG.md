@@ -3,10 +3,20 @@
 
 ## [v0.101.5]() - *Alpha*
 
+### demos/kitchen_sink/screens.py:
+* Added the ability to change color in the `MDIconItemForMdIconsList` class
+* A context menu has been added to the `Toolbar` to show the source code of the current example
+
 #### demos/kitchen_sink/main.py:
 * Added names of authors of this fork in the description on the start screen
-* Description text on the start screen has been added to ScrollView
+* Description text on the start screen has been added to `ScrollView`
 * Changed the theme of the application to white style
+* Now a window with a list of demo applications is created only once.
+In the previous version, the window was always created when it was opened.
+* A context menu has been added to the `Toolbar` to show the source code of the current example
+
+
+* Edited with `Black` utility
 
 
 ## [v0.101.4]() - *Alpha*
@@ -24,10 +34,10 @@
 * Code updated to changes in version 0.101.0
 
 ### demos/kitchen_sink/screens.py:
-Changed the icons to `language-python` in the `Buttons` example
+* Changed the icons to `language-python` in the `Buttons` example
 
 ### demos/kitchen_sink/dialogs.py:
-Renamed `BaseDialog` to `BaseDialogForLoadKvFiles` class (Fixed AttributeError: `'MDDialog' object has no attribute 'canvas_color'`)
+* Renamed `BaseDialog` to `BaseDialogForLoadKvFiles` class (Fixed AttributeError: `'MDDialog' object has no attribute 'canvas_color'`)
 
 
 ## [v0.101.2]() - *Alpha*

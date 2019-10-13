@@ -11,12 +11,15 @@ as the Kivy framework.
 
 import os
 import sys
+import webbrowser
+
+from kivy.effects.scroll import ScrollEffect
+from kivy.uix.scrollview import ScrollView
 
 sys.path.append(os.path.abspath(__file__).split("demos")[0])
 
 from kivy.factory import Factory
 from kivy.metrics import dp
-from kivy.uix.widget import Widget
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -26,9 +29,11 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
+from kivy import platform
 
 from screens import Screens
 
+from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.fanscreenmanager import MDFanScreen
 from kivymd.uix.popupscreen import MDPopupScreen
 from kivymd.uix.list import IRightBodyTouch, OneLineIconListItem
@@ -49,6 +54,7 @@ def toast(text):
 
 
 main_widget_kv = """
+#:import Window kivy.core.window.Window
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
@@ -269,14 +275,15 @@ NavigationLayout:
                 background_palette: 'Primary'
                 background_hue: '500'
                 elevation: 10
-                left_action_items:
-                    [['menu', lambda x: app.root.toggle_nav_drawer()]]
+                left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
                 right_action_items:
-                    [['dots-vertical', lambda x: app.root.toggle_nav_drawer()]]
+                    [['dots-vertical', lambda x: app.open_context_menu_source_code(toolbar)]] \
+                    if scr_mngr.current != "previous" else []
 
             ScreenManager:
                 id: scr_mngr
                 transition: NoTransition()
+                on_current: app.set_source_code_file()
 
                 Screen:
                     name: 'previous'
@@ -287,42 +294,48 @@ NavigationLayout:
                             source: f'{images_path}kivy-logo-white-512.png'
                             opacity: .3
 
-                        BoxLayout:
-                            orientation: 'vertical'
-                            spacing: dp(10)
+                        ScrollView:
                             size_hint_y: None
-                            height: self.minimum_height
+                            height: Window.height - dp(200)
                             pos_hint: {'center_x': .5, 'center_y': .5}
 
-                            MDLabel:
-                                text: app.previous_text
+                            GridLayout:
                                 size_hint_y: None
-                                height: self.texture_size[1]
-                                font_style: 'Subtitle1'
-                                theme_text_color: 'Primary'
-                                markup: True
-                                halign: 'center'
-                                text_size: self.width - 20, None
+                                height: self.minimum_height
+                                cols: 1
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+    
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    spacing: dp(10)
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    pos_hint: {'center_x': .5, 'center_y': .5}
+        
+                                    MDLabel:
+                                        text: app.previous_text
+                                        size_hint_y: None
+                                        height: self.texture_size[1]
+                                        font_style: 'Subtitle1'
+                                        theme_text_color: 'Primary'
+                                        markup: True
+                                        halign: 'center'
+                                        text_size: self.width - 20, None
+        
+                                    MDRaisedButton:
+                                        text: 'Click Me'
+                                        pos_hint: {'center_x': .5}
+                                        on_release: app.open_menu_for_demo_apps(self)
 
-                            MDRaisedButton:
-                                text: 'Click Me'
-                                pos_hint: {'center_x': .5}
-                                on_release:
-                                    app.set_menu_for_demo_apps()
-                                    app.instance_menu_demo_apps = MDDropdownMenu(\
-                                    items=app.menu_for_demo_apps, \
-                                    max_height=dp(260), width_mult=4)
-                                    app.instance_menu_demo_apps.open(self)
-
-                            MDLabel:
-                                text: app.previous_text_end
-                                size_hint_y: None
-                                height: self.texture_size[1]
-                                font_style: 'Subtitle1'
-                                theme_text_color: 'Primary'
-                                markup: True
-                                halign: 'center'
-                                text_size: self.width - 20, None
+                                    MDLabel:
+                                        text: app.previous_text_end
+                                        size_hint_y: None
+                                        height: self.texture_size[1]
+                                        font_style: 'Subtitle1'
+                                        theme_text_color: 'Primary'
+                                        markup: True
+                                        halign: 'center'
+                                        text_size: self.width - 20, None
 """
 
 
@@ -332,7 +345,6 @@ class KitchenSink(App, Screens):
     theme_cls.accent_palette = "Gray"
     previous_date = ObjectProperty()
     title = "Kitchen Sink"
-    theme_cls.theme_style = "Dark"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -346,9 +358,12 @@ class KitchenSink(App, Screens):
             for i in range(15)
         ]
         self.Window = Window
+
+        # Default class instances.
         self.manager = None
         self.md_app_bar = None
         self.instance_menu_demo_apps = None
+        self.instance_menu_source_code = None
         self.md_theme_picker = None
         self.long_dialog = None
         self.input_dialog = None
@@ -356,20 +371,26 @@ class KitchenSink(App, Screens):
         self.ok_cancel_dialog = None
         self.long_dialog = None
         self.dialog = None
-        self.manager_open = False
-        self.cards_created = False
         self.user_card = None
         self.bs_menu_1 = None
         self.bs_menu_2 = None
         self.popup_screen = None
         self.my_snackbar = None
         self.dialog_load_kv_files = None
+
+        self.create_stack_floating_buttons = False
+        self.manager_open = False
+        self.cards_created = False
+
         self._interval = 0
         self.tick = 0
         self.x = 0
         self.y = 25
-        self.create_stack_floating_buttons = False
-        self.hex_primary_color = get_hex_from_color(self.theme_cls.primary_color)
+        self.file_source_code = ""
+
+        self.hex_primary_color = get_hex_from_color(
+            self.theme_cls.primary_color
+        )
         self.previous_text = (
             f"Welcome to the application [b][color={self.hex_primary_color}]"
             f"Kitchen Sink[/color][/b].\nTo see [b]"
@@ -382,11 +403,16 @@ class KitchenSink(App, Screens):
             f"Author - [b][color={self.hex_primary_color}]"
             f"Andrés Rodríguez[/color][/b]\n"
             f"[u][b][color={self.hex_primary_color}]"
-            f"andres.rodriguez@lithersoft.com[/color][/b][/u]\n\n"
-            f"Author this Fork - [b][color={self.hex_primary_color}]"
+            f"andres.rodriguez@lithersoft.com[/color][/b][/u]\n\n\n"
+            f"Authors this Fork:\n\n"
+            f"[b][color={self.hex_primary_color}]"
             f"Ivanov Yuri[/color][/b]\n"
             f"[u][b][color={self.hex_primary_color}]"
-            f"kivydevelopment@gmail.com[/color][/b][u]"
+            f"kivydevelopment@gmail.com[/color][/b][/u]\n\n"
+            f"[b][color={self.hex_primary_color}]Artem S. Bulgakov[/color][/b]\n"
+            f"[u][b][color={self.hex_primary_color}]"
+            f"bulgakov-a-s@yandex.ru[/color][/b][/u]\n\n"
+            f"and contributors..."
         )
         self.names_contacts = (
             "Alexandr Taylor",
@@ -407,7 +433,6 @@ class KitchenSink(App, Screens):
             "Registration",
             "Account Page",
         ]
-        self.menu_for_demo_apps = []
         self.list_name_icons = list(md_icons.keys())[0:15]
         Window.bind(on_keyboard=self.events)
         crop_image(
@@ -424,7 +449,9 @@ class KitchenSink(App, Screens):
                 self.data["Refresh Layout"]["object"].ids.box.add_widget(
                     ItemForListRefreshLayout(icon=name_icon, text=name_icon)
                 )
-            self.data["Refresh Layout"]["object"].ids.refresh_layout.refresh_done()
+            self.data["Refresh Layout"][
+                "object"
+            ].ids.refresh_layout.refresh_done()
 
         asynckivy.start(set_list_for_refresh_layout())
 
@@ -452,16 +479,22 @@ class KitchenSink(App, Screens):
         for i, instance_tab in enumerate(
             istance_android_tabs.ids.scrollview.children[0].children
         ):
-            istance_android_tabs.ids.scrollview.children[0].remove_widget(instance_tab)
-            istance_android_tabs.add_widget(Factory.MyTab(text=self.list_name_icons[i]))
+            istance_android_tabs.ids.scrollview.children[0].remove_widget(
+                instance_tab
+            )
+            istance_android_tabs.add_widget(
+                Factory.MyTab(text=self.list_name_icons[i])
+            )
 
     def switch_tabs_to_text(self, istance_android_tabs):
-        for instance_tab in istance_android_tabs.ids.scrollview.children[0].children:
+        for instance_tab in istance_android_tabs.ids.scrollview.children[
+            0
+        ].children:
             for k, v in md_icons.items():
                 if v == instance_tab.text:
-                    istance_android_tabs.ids.scrollview.children[0].remove_widget(
-                        instance_tab
-                    )
+                    istance_android_tabs.ids.scrollview.children[
+                        0
+                    ].remove_widget(instance_tab)
                     istance_android_tabs.add_widget(
                         Factory.MyTab(text=" ".join(k.split("-")).capitalize())
                     )
@@ -532,7 +565,10 @@ class KitchenSink(App, Screens):
         """Hides progress progress."""
 
         self.main_widget.ids.toolbar.right_action_items = [
-            ["download", lambda x: self.download_progress_show(instance_progress)]
+            [
+                "download",
+                lambda x: self.download_progress_show(instance_progress),
+            ]
         ]
 
     def download_progress_show(self, instance_progress):
@@ -548,7 +584,9 @@ class KitchenSink(App, Screens):
 
             try:
                 socket.setdefaulttimeout(timeout)
-                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+                socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect(
+                    (host, port)
+                )
                 return True
             except (TimeoutError, ConnectionError, OSError):
                 return False
@@ -660,7 +698,9 @@ class KitchenSink(App, Screens):
             buttons = ["facebook", "vk", "twitter"]
 
             instance_grid_card.add_widget(
-                MDCardPost(text_post="Card with text", swipe=True, callback=callback)
+                MDCardPost(
+                    text_post="Card with text", swipe=True, callback=callback
+                )
             )
             instance_grid_card.add_widget(
                 MDCardPost(
@@ -679,7 +719,9 @@ class KitchenSink(App, Screens):
                 )
             )
 
-            image_for_card = f"{demos_assets_path}kitten-for_card-1049129_1280-crop.png"
+            image_for_card = (
+                f"{demos_assets_path}kitten-for_card-1049129_1280-crop.png"
+            )
             if not os.path.exists(image_for_card):
                 crop_image(
                     (int(Window.width), int(dp(200))),
@@ -786,7 +828,8 @@ class KitchenSink(App, Screens):
             ).show()
         elif snack_type == "verylong":
             Snackbar(
-                text="This is a very very very very very very very " "long snackbar!"
+                text="This is a very very very very very very very "
+                "long snackbar!"
             ).show()
         elif snack_type == "float":
             if not self.my_snackbar:
@@ -799,7 +842,9 @@ class KitchenSink(App, Screens):
                 self.my_snackbar.show()
                 anim = Animation(y=dp(72), d=0.2)
                 anim.bind(
-                    on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0)
+                    on_complete=lambda *args: Clock.schedule_interval(
+                        wait_interval, 0
+                    )
                 )
                 anim.start(self.data["Snackbars"]["object"].ids.button)
 
@@ -884,7 +929,9 @@ class KitchenSink(App, Screens):
         time_dialog = MDTimePicker()
         time_dialog.bind(time=self.get_time_picker_date)
 
-        if self.data["Pickers"]["object"].ids.time_picker_use_previous_time.active:
+        if self.data["Pickers"][
+            "object"
+        ].ids.time_picker_use_previous_time.active:
             try:
                 time_dialog.set_time(self.previous_time)
             except AttributeError:
@@ -895,17 +942,23 @@ class KitchenSink(App, Screens):
         """Set previous date for MDDatePicker from the screen Pickers."""
 
         self.previous_date = date_obj
-        self.data["Pickers"]["object"].ids.date_picker_label.text = str(date_obj)
+        self.data["Pickers"]["object"].ids.date_picker_label.text = str(
+            date_obj
+        )
 
     def show_example_date_picker(self):
         """Show MDDatePicker from the screen Pickers."""
 
         from kivymd.uix.picker import MDDatePicker
 
-        if self.data["Pickers"]["object"].ids.date_picker_use_previous_date.active:
+        if self.data["Pickers"][
+            "object"
+        ].ids.date_picker_use_previous_date.active:
             pd = self.previous_date
             try:
-                MDDatePicker(self.set_previous_date, pd.year, pd.month, pd.day).open()
+                MDDatePicker(
+                    self.set_previous_date, pd.year, pd.month, pd.day
+                ).open()
             except AttributeError:
                 MDDatePicker(self.set_previous_date).open()
         else:
@@ -920,11 +973,15 @@ class KitchenSink(App, Screens):
             self.bs_menu_1 = MDListBottomSheet()
             self.bs_menu_1.add_item(
                 "Here's an item with text only",
-                lambda x: self.callback_for_menu_items("Here's an item with text only"),
+                lambda x: self.callback_for_menu_items(
+                    "Here's an item with text only"
+                ),
             )
             self.bs_menu_1.add_item(
                 "Here's an item with an icon",
-                lambda x: self.callback_for_menu_items("Here's an item with an icon"),
+                lambda x: self.callback_for_menu_items(
+                    "Here's an item with an icon"
+                ),
                 icon="clipboard-account",
             )
             self.bs_menu_1.add_item(
@@ -998,7 +1055,9 @@ class KitchenSink(App, Screens):
         md_app_bar = self.md_app_bar
         if md_app_bar.anchor != anchor:
             if len(md_app_bar.right_action_items):
-                md_app_bar.left_action_items.append(md_app_bar.right_action_items[0])
+                md_app_bar.left_action_items.append(
+                    md_app_bar.right_action_items[0]
+                )
                 md_app_bar.right_action_items = []
             else:
                 left_action_items = md_app_bar.left_action_items
@@ -1036,7 +1095,9 @@ class KitchenSink(App, Screens):
         """Builds a list of icons for the screen MDIcons."""
 
         def add_icon_item(name_icon):
-            self.main_widget.ids.scr_mngr.get_screen("md icons").ids.rv.data.append(
+            self.main_widget.ids.scr_mngr.get_screen(
+                "md icons"
+            ).ids.rv.data.append(
                 {
                     "viewclass": "MDIconItemForMdIconsList",
                     "icon": name_icon,
@@ -1053,16 +1114,105 @@ class KitchenSink(App, Screens):
             else:
                 add_icon_item(name_icon)
 
-    def set_menu_for_demo_apps(self):
-        if not len(self.menu_for_demo_apps):
+    def set_source_code_file(self):
+        """Assigns the file_source_code attribute the file name
+        with example code for the current screen."""
+
+        if self.main_widget.ids.scr_mngr.current == "code viewer":
+            return
+
+        has_screen = False
+        for name_item_drawer in self.data.keys():
+            if (
+                self.data[name_item_drawer]["name_screen"]
+                == self.main_widget.ids.scr_mngr.current
+            ):
+                self.file_source_code = self.data[name_item_drawer].get(
+                    "source_code", None
+                )
+                has_screen = True
+                break
+        if not has_screen:
+            self.file_source_code = None
+
+    def open_context_menu_source_code(self, instance):
+        def callback_context_menu(icon):
+            context_menu.dismiss()
+
+            if not self.file_source_code:
+                from kivymd.uix.snackbar import Snackbar
+
+                Snackbar(text="No source code for this example").show()
+                return
+            if icon == "source-repository":
+                if platform in ("win", "linux", "macosx"):
+                    webbrowser.open(
+                        f"https://github.com/HeaTTheatR/KivyMD/wiki/"
+                        f"{os.path.splitext(self.file_source_code)[0]}"
+                    )
+                return
+            elif icon == "language-python":
+                self.main_widget.ids.scr_mngr.current = "code viewer"
+                if self.file_source_code:
+                    with open(
+                        f"{self.directory}/KivyMD.wiki/{self.file_source_code}"
+                    ) as source_code:
+                        self.data["Source code"][
+                            "object"
+                        ].ids.code_input.text = source_code.read()
+
+        menu_for_context_menu_source_code = []
+        data = {
+            "Source code": "language-python",
+            "Open in Wiki": "source-repository",
+        }
+        if self.main_widget.ids.scr_mngr.current == "code viewer":
+            data = {"Open in Wiki": "source-repository"}
+        for name_item in data.keys():
+            menu_for_context_menu_source_code.append(
+                {
+                    "viewclass": "MDIconItemForMdIconsList",
+                    "text": name_item,
+                    "icon": data[name_item],
+                    "text_color": [1, 1, 1, 1],
+                    "callback": lambda x=name_item: callback_context_menu(x),
+                }
+            )
+        context_menu = MDDropdownMenu(
+            items=menu_for_context_menu_source_code,
+            max_height=dp(260),
+            width_mult=3,
+        )
+        context_menu.open(instance.ids.right_actions.children[0])
+
+    def open_menu_for_demo_apps(self, instance):
+        """
+        Called when you click the "Click me" button on the start screen.
+        Creates and opens a list of demo applications.
+
+        :type instance: <kivymd.uix.button.MDRaisedButton object>
+
+        """
+
+        if not self.instance_menu_demo_apps:
+            menu_for_demo_apps = []
             for name_item in self.demo_apps_list:
-                self.menu_for_demo_apps.append(
+                menu_for_demo_apps.append(
                     {
                         "viewclass": "OneLineListItem",
                         "text": name_item,
-                        "on_release": lambda x=name_item: self.show_demo_apps(x),
+                        "on_release": lambda x=name_item: self.show_demo_apps(
+                            x
+                        ),
                     }
                 )
+            self.instance_menu_demo_apps = MDDropdownMenu(
+                items=menu_for_demo_apps,
+                max_height=dp(260),
+                width_mult=4,
+                _center=True,
+            )
+        self.instance_menu_demo_apps.open(instance)
 
     def show_demo_apps(self, name_item):
         self.show_screens_demo(name_item)
@@ -1145,6 +1295,12 @@ class KitchenSink(App, Screens):
 
     def open_settings(self, *args):
         return False
+
+
+class CodeInputViewer(ScrollView):
+    text = StringProperty()
+    path = StringProperty()
+    effect_cls = ScrollEffect
 
 
 class ContentForAnimCard(BoxLayout):

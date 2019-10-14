@@ -915,7 +915,7 @@ class KitchenSink(App, Screens):
             )
         self.long_dialog.open()
 
-    def get_time_picker_date(self, instance, time):
+    def get_time_picker_date(self, time):
         """Get date for MDTimePicker from the screen Pickers."""
 
         self.data["Pickers"]["object"].ids.time_picker_label.text = str(time)
@@ -926,8 +926,7 @@ class KitchenSink(App, Screens):
 
         from kivymd.uix.picker import MDTimePicker
 
-        time_dialog = MDTimePicker()
-        time_dialog.bind(time=self.get_time_picker_date)
+        time_dialog = MDTimePicker(self.get_time_picker_date)
 
         if self.data["Pickers"][
             "object"

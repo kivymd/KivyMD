@@ -1,6 +1,12 @@
 # Change Log
 
 
+## [v0.101.6]() - *Alpha*
+
+### kivymd/uix/picker.py:
+* Fixed `NameError: name 'MDThemePicker' is not defined`
+
+
 ## [v0.101.5]() - *Alpha*
 
 ### demos/kitchen_sink/screens.py:

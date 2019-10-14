@@ -917,6 +917,9 @@ if __name__ == "__main__":
         def build(self):
             main_widget = Builder.load_string(
                 """
+#:import MDThemePicker kivymd.uix.picker.MDThemePicker
+
+
 FloatLayout:
     MDRaisedButton:
         size_hint: None, None

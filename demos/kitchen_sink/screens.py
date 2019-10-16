@@ -17,6 +17,7 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
+from kivymd import demos_assets_path
 
 source_code_viewer = """
 #:import PythonLexer kivy.extras.highlight.PythonLexer
@@ -98,13 +99,13 @@ grid = """
     name: 'grid'
 
     on_enter:
-        app.crop_image_for_tile(tile_1, tile_1.size, 'assets/beautiful-931152_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_2, tile_2.size, 'assets/african-lion-951778_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_3, tile_3.size, 'assets/guitar-1139397_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_4, tile_4.size, 'assets/robin-944887_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_5, tile_5.size, 'assets/kitten-1049129_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_6, tile_6.size, 'assets/light-bulb-1042480_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_7, tile_7.size, 'assets/tangerines-1111529_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_1, tile_1.size, f'{demos_assets_path}beautiful-931152_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_2, tile_2.size, f'{demos_assets_path}african-lion-951778_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_3, tile_3.size, f'{demos_assets_path}guitar-1139397_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_4, tile_4.size, f'{demos_assets_path}robin-944887_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_5, tile_5.size, f'{demos_assets_path}kitten-1049129_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_6, tile_6.size, f'{demos_assets_path}light-bulb-1042480_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_7, tile_7.size, f'{demos_assets_path}tangerines-1111529_1280_tile_crop.png')
 
     ScrollView:
         do_scroll_x: False
@@ -346,6 +347,7 @@ buttons = """
                 width: self.minimum_width
                 height: dp(56)
                 spacing: '10dp'
+                pos_hint: {'center_x': .5}
 
                 MDIconButton:
                     icon: 'sd'
@@ -436,19 +438,19 @@ buttons = """
                 elevation_normal: 2
                 opposite_colors: True
                 pos_hint: {'center_x': .5}
-                text_color: 1, 0, 0, 1
+                text_color: get_color_from_hex("#C37C4C")
 
             MDRaisedButton:
                 text: "MDRaisedButton"
                 elevation_normal: 2
                 opposite_colors: True
                 pos_hint: {'center_x': .5}
-                md_bg_color: 1, 0, 0, 1
+                md_bg_color: get_color_from_hex("#26735A")
 
             MDRectangleFlatButton:
                 text: "MDRectangleFlatButton"
                 pos_hint: {'center_x': .5}
-                text_color: 1, 1, 0, 1
+                text_color: get_color_from_hex("#C37C4C")
 
             MDRectangleFlatButton:
                 text: "MDRectangleFlatButton"
@@ -459,30 +461,30 @@ buttons = """
             MDRoundFlatButton:
                 text: "MDRoundFlatButton"
                 pos_hint: {'center_x': .5}
-                md_bg_color: 1, 0, 0, 1
+                md_bg_color: get_color_from_hex("#682348")
 
             MDRoundFlatButton:
                 text: "MDRoundFlatButton"
                 pos_hint: {'center_x': .5}
-                md_bg_color: 1, 0, 0, 1
+                md_bg_color: get_color_from_hex("#3A4D1A")
 
             MDRoundFlatButton:
                 text: "MDRoundFlatButton"
                 pos_hint: {'center_x': .5}
-                text_color: 1, 1, 0, 1
-                md_bg_color: 1, 0, 0, 1
+                text_color: get_color_from_hex("#A23651")
+                md_bg_color: get_color_from_hex("#366EA1")
 
             MDRoundFlatIconButton:
                 text: "MDRoundFlatIconButton"
                 pos_hint: {'center_x': .5}
-                text_color: 1, 1, 0, 1
+                text_color: get_color_from_hex("#C58E50")
                 width: dp(210)
 
             MDRoundFlatIconButton:
                 text: "MDRoundFlatIconButton"
                 pos_hint: {'center_x': .5}
                 text_color: 1, 1, 0, 1
-                md_bg_color: 1, 0, 0, 1
+                md_bg_color: get_color_from_hex("#0B1920")
                 width: dp(210)
 
             MDFillRoundFlatIconButton:
@@ -496,7 +498,7 @@ buttons = """
                 icon: "language-python"
                 pos_hint: {'center_x': .5}
                 text_color: 1, 1, 0, 1
-                md_bg_color: 1, 0, 0, 1
+                md_bg_color: get_color_from_hex("#552A7D")
 
             BoxLayout:
                 orientation: 'vertical'
@@ -513,12 +515,14 @@ buttons = """
                     font_size: '20sp'
                     size_hint: None, None
                     size: self.texture_size
+                    pos_hint: {"center_x": .5}
                     
                 MDSeparator:
 
                 BoxLayout:
                     size_hint: None, None
                     size: self.minimum_size
+                    padding: "10dp"
                     pos_hint: {"center_x": .5, "center_y": .5}
 
                     MDIconButton:
@@ -836,14 +840,14 @@ lists = """
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
                 ImageLeftWidget:
-                    source: './assets/avatar.png'
+                    source: f'{demos_assets_path}avatar.png'
 
             TwoLineAvatarListItem:
                 type: "two-line"
                 text: "Two-line item..."
                 secondary_text: "with avatar"
                 ImageLeftWidget:
-                    source: './assets/avatar.png'
+                    source: f'{demos_assets_path}avatar.png'
 
             ThreeLineAvatarListItem:
                 type: "three-line"
@@ -851,7 +855,7 @@ lists = """
                 secondary_text:
                     "...with avatar..." + '\\n' + "and third line!"
                 ImageLeftWidget:
-                    source: './assets/avatar.png'
+                    source: f'{demos_assets_path}avatar.png'
 
             OneLineIconListItem:
                 text: "Single-line item with left icon"
@@ -877,14 +881,14 @@ lists = """
             OneLineAvatarIconListItem:
                 text: "Single-line + avatar&icon"
                 ImageLeftWidget:
-                    source: './assets/avatar.png'
+                    source: f'{demos_assets_path}avatar.png'
                 IconRightSampleWidget:
 
             TwoLineAvatarIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with avatar&icon"
                 ImageLeftWidget:
-                    source: './assets/avatar.png'
+                    source: f'{demos_assets_path}avatar.png'
                 IconRightSampleWidget:
 
             ThreeLineAvatarIconListItem:
@@ -892,7 +896,7 @@ lists = """
                 secondary_text:
                     "...with avatar&icon..." + '\\n' + "and third line!"
                 ImageLeftWidget:
-                    source: './assets/avatar.png'
+                    source: f'{demos_assets_path}avatar.png'
                 IconRightSampleWidget:
 """
 
@@ -1505,22 +1509,22 @@ fan_manager = """
 
         ScreenOne:
             name: 'Screen One'
-            path_to_image: 'assets/african-lion-951778_1280.png'
+            path_to_image: f'{demos_assets_path}african-lion-951778_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
         ScreenTwo:
             name: 'Screen Two'
-            path_to_image: 'assets/beautiful-931152_1280.png'
+            path_to_image: f'{demos_assets_path}beautiful-931152_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
         ScreenTree:
             name: 'Screen Tree'
-            path_to_image: 'assets/kitten-1049129_1280.png'
+            path_to_image: f'{demos_assets_path}kitten-1049129_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
         ScreenFour:
             name: 'Screen Four'
-            path_to_image: 'assets/tangerines-1111529_1280.png'
+            path_to_image: f'{demos_assets_path}tangerines-1111529_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
 
@@ -1691,8 +1695,7 @@ manager_swiper = """
     pos_hint: {'top': 1}
 
     Image:
-        source:
-            f'{app.directory}/assets/guitar-1139397_1280_swiper_crop.png'
+        source: f'{demos_assets_path}guitar-1139397_1280_swiper_crop.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -2079,12 +2082,12 @@ class Screens(object):
 
         if not self.manager_swiper:
             path_to_crop_image = (
-                f"{self.directory}/assets/guitar-1139397_1280_swiper_crop.png"
+                f"{demos_assets_path}guitar-1139397_1280_swiper_crop.png"
             )
             if not os.path.exists(path_to_crop_image):
                 crop_image(
                     (int(Window.width - dp(10)), int(dp(250))),
-                    f"{self.directory}/assets/guitar-1139397_1280.png",
+                    f"{demos_assets_path}guitar-1139397_1280.png",
                     path_to_crop_image,
                 )
 

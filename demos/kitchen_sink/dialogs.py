@@ -44,9 +44,9 @@ Builder.load_string(
             size_hint: None, None
             size: self.texture_size
             text:
-                'Load screen\\n' \
+                'Load screen: {}%\\n' \
                 '[color={}]{}[/color]'.format(\
-                get_hex_from_color(app.theme_cls.primary_color), root.name_kv_file)
+                root.percent, get_hex_from_color(app.theme_cls.primary_color), root.name_kv_file)
             bold: True
             markup: True
             color: 1, 1, 1, 1
@@ -69,3 +69,4 @@ class DialogLoadKvFiles(BaseDialogForLoadKvFiles):
     """Dialogue to wait for the completion of some action."""
 
     name_kv_file = StringProperty()
+    percent = StringProperty("0")

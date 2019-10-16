@@ -58,6 +58,7 @@ main_widget_kv = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
+#:import demos_assets_path kivymd.demos_assets_path
 
 # FIXME: if you remove the import of this class,
 #        an error is returned when using the `MDMenu` example
@@ -149,7 +150,7 @@ main_widget_kv = """
 
 
 <ContentNavigationDrawer@MDNavigationDrawer>
-    drawer_logo: './assets/drawer_logo.png'
+    drawer_logo: f'{demos_assets_path}drawer_logo.png'
 
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
@@ -549,7 +550,7 @@ class KitchenSink(App, Screens):
             self.data["Expansion Panel"]["object"].ids.anim_list.add_widget(
                 MDExpansionPanel(
                     content=content,
-                    icon="assets/kivy-logo-white-512.png",
+                    icon=f"{demos_assets_path}kivy-logo-white-512.png",
                     title=name_contact,
                 )
             )
@@ -1001,27 +1002,27 @@ class KitchenSink(App, Screens):
             self.bs_menu_2.add_item(
                 "Facebook",
                 lambda x: self.callback_for_menu_items("Facebook"),
-                icon_src="./assets/facebook-box.png",
+                icon_src=f"{demos_assets_path}facebook-box.png",
             )
             self.bs_menu_2.add_item(
                 "YouTube",
                 lambda x: self.callback_for_menu_items("YouTube"),
-                icon_src="./assets/youtube-play.png",
+                icon_src=f"{demos_assets_path}youtube-play.png",
             )
             self.bs_menu_2.add_item(
                 "Twitter",
                 lambda x: self.callback_for_menu_items("Twitter"),
-                icon_src="./assets/twitter.png",
+                icon_src=f"{demos_assets_path}twitter.png",
             )
             self.bs_menu_2.add_item(
                 "Da Cloud",
                 lambda x: self.callback_for_menu_items("Da Cloud"),
-                icon_src="./assets/cloud-upload.png",
+                icon_src=f"{demos_assets_path}cloud-upload.png",
             )
             self.bs_menu_2.add_item(
                 "Camera",
                 lambda x: self.callback_for_menu_items("Camera"),
-                icon_src="./assets/camera.png",
+                icon_src=f"{demos_assets_path}camera.png",
             )
         self.bs_menu_2.open()
 
@@ -1239,9 +1240,11 @@ class KitchenSink(App, Screens):
             )
 
         async def load_all_kv_files():
-            for name_screen in self.data.keys():
+            count_kvs = len(list(self.data.keys()))
+            for i, name_screen in enumerate(self.data.keys()):
                 await asynckivy.sleep(0)
                 self.dialog_load_kv_files.name_kv_file = name_screen
+                self.dialog_load_kv_files.percent = str(i * 100 // count_kvs)
                 Builder.load_string(self.data[name_screen]["kv_string"])
                 self.data[name_screen]["object"] = eval(
                     self.data[name_screen]["Factory"]

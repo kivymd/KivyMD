@@ -1,6 +1,23 @@
 # Change Log
 
 
+## [v0.101.7]() - *Alpha*
+
+### demos/kitchen_sink/screens.py:
+* Fixed colors and position of the buttons in the `Buttons` example
+* Resource paths now use the variable `demos_assets_path`
+
+### demos/kitchen_sink/main.py:
+* Resource paths now use the variable `demos_assets_path`
+* Added to display percent download kv-files
+
+### demos/kitchen_sink/demo_apps:
+* Resource paths now use the variable `demos_assets_path`
+
+### demos/kitchen_sink/dialogs.py:
+* Added to display percent download kv-files
+
+
 ## [v0.101.6]() - *Alpha*
 
 ### kivymd/uix/picker.py:

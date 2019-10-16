@@ -1,6 +1,12 @@
 # Change Log
 
 
+## [v0.101.8]() - *Alpha*
+
+### setup.py:
+* Added `uix` and `behaviors` folder to `package_data`
+
+
 ## [v0.101.7]() - *Alpha*
 
 ### demos/kitchen_sink/screens.py:

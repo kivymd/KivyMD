@@ -28,8 +28,17 @@ if not os.path.exists(f"{demos_assets_path}crossfit-crop.png"):
         f"{demos_assets_path}crossfit.png",
         f"{demos_assets_path}crossfit-crop.png",
     )
+if not os.path.exists(f"{demos_assets_path}about-us-girl-crop.png"):
+    crop_image(
+        (Window.width, Window.height),
+        f"{demos_assets_path}about-us-girl.png",
+        f"{demos_assets_path}about-us-girl-crop.png",
+    )
 
 screen_fitness_club = """
+#:import demos_assets_path kivymd.demos_assets_path
+
+
 <InputField@MDTextFieldRect>:
     size_hint: None, None
     multiline: False
@@ -52,7 +61,7 @@ screen_fitness_club = """
             pos: self.pos
 
     ImageLeftWidget:
-        source: './assets/arrow-right.png'
+        source: f'{demos_assets_path}arrow-right.png'
 
 <ItemLabel@MDLabel>
     color: 1, 1, 1, 1
@@ -132,7 +141,7 @@ screen_fitness_club = """
             pos: self.pos
 
     MDLabel:
-        font_name: './assets/ua_scroonge.ttf'
+        font_name: f'{demos_assets_path}ua_scroonge.ttf'
         text: 'Fitness Club'
         color: 1, 1, 1, 1
         font_size: '36sp'
@@ -146,7 +155,7 @@ screen_fitness_club = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: './assets/crossfit-crop.png'
+                source: f'{demos_assets_path}crossfit-crop.png'
 
 
 <Toolbar@FloatLayout>
@@ -163,7 +172,7 @@ screen_fitness_club = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: './assets/gradient.png'
+                source: f'{demos_assets_path}gradient.png'
         
     Label:
         text: root.text
@@ -200,7 +209,7 @@ screen_fitness_club = """
             id: about_girl
             size_hint: None, None
             size: app.Window.width - dp(20), dp(200)
-            source: './assets/about-us-girl-crop.png'
+            source: f'{demos_assets_path}about-us-girl-crop.png'
 
         ScrollView:
 
@@ -233,7 +242,7 @@ screen_fitness_club = """
 
                 MDCustomRoundIconButton:
                     id: facebook
-                    source: './assets/facebook-round.png'
+                    source: f'{demos_assets_path}facebook-round.png'
                     size_hint: None, None
                     size: dp(50), dp(50)
                     x: -60
@@ -241,7 +250,7 @@ screen_fitness_club = """
 
                 MDCustomRoundIconButton:
                     id: twitter
-                    source: './assets/twitter-round.png'
+                    source: f'{demos_assets_path}twitter-round.png'
                     size_hint: None, None
                     size: dp(50), dp(50)
                     x: app.Window.width
@@ -282,7 +291,7 @@ screen_fitness_club = """
             icon: 'information'
             on_tab_press:
                 root.set_image(\
-                './assets/about-us-girl', \
+                f'{demos_assets_path}about-us-girl', \
                 (int(app.Window.width - dp(20)), int(dp(200))), \
                 20, \
                 'png')

@@ -35,6 +35,7 @@ if not os.path.exists(f"{demos_assets_path}account-background-crop.png"):
 
 screen_account_page = """
 #:import Window kivy.core.window.Window
+#:import demos_assets_path kivymd.demos_assets_path
 
 
 <LabelAccountPage@Label>
@@ -56,7 +57,7 @@ screen_account_page = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: './assets/account-background-crop.png'
+                source: f'{demos_assets_path}account-background-crop.png'
 
         BoxLayout:
             orientation: 'vertical'
@@ -71,7 +72,7 @@ screen_account_page = """
                 Image:
                     size_hint: None, None
                     size: self.size
-                    source: './assets/sasha-round.png'
+                    source: f'{demos_assets_path}sasha-round.png'
                     pos_hint: {'center_x': .5}
 
                 LabelAccountPage:
@@ -130,7 +131,7 @@ screen_account_page = """
                     MDCustomRoundIconButton:
                         size_hint: None, None
                         size: button.height, button.height
-                        source: './assets/add-friend.png'
+                        source: f'{demos_assets_path}add-friend.png'
 
                 ScrollView:
 

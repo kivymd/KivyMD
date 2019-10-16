@@ -28,6 +28,7 @@ if not os.path.exists(f"{demos_assets_path}market-crop.jpg"):
 
 registration_form_one = """
 #:import images_path kivymd.images_path
+#:import demos_assets_path kivymd.demos_assets_path
 
 
 <ButtonRound@MDCustomRoundIconButton>
@@ -55,7 +56,7 @@ registration_form_one = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: './assets/market-crop.jpg'
+                source: f'{demos_assets_path}market-crop.jpg'
 
         BoxLayout:
             id: box_top
@@ -160,11 +161,11 @@ registration_form_one = """
                 pos_hint: {'center_x': .5}
 
                 ButtonRound:
-                    source: './assets/google-flat-round.png'
+                    source: f'{demos_assets_path}google-flat-round.png'
                 ButtonRound:
-                    source: './assets/facebook-flat-round.png'
+                    source: f'{demos_assets_path}facebook-flat-round.png'
                 ButtonRound:
-                    source: './assets/twitter-flat-round.png'
+                    source: f'{demos_assets_path}twitter-flat-round.png'
 
         BoxLayout:
             size_hint_y: None

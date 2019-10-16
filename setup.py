@@ -38,6 +38,8 @@ setup(
             "toast/androidtoast/*.py",
             "stiffscroll/*.py",
             "utils/*.py",
+            "uix/*.py",
+            "behaviors/*.py",
         ]
     },
     requires=["kivy", "pillow", "requests"],

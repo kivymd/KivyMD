@@ -74,6 +74,15 @@ Running on Android
 Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a)
 
 
+Running demo on Desktop
+======================
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=qU6C_Icp6TM">
+    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png">
+  </a>
+</p>
+
 Building
 ========
 

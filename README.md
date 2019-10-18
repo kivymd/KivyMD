@@ -1,4 +1,4 @@
-KivyMD [v0.101.8 - *Alpha*](CHANGELOG.md)
+KivyMD [v0.101.8 - *Alpha*](https://github.com/HeaTTheatR/KivyMD/blob/master/CHANGELOG.md)
 ======
 
 <img align="left" width="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
@@ -190,7 +190,7 @@ Sister projects
 License
 =======
 
-KivyMD is released under the terms of the [MIT License](LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
+KivyMD is released under the terms of the [MIT License](https://github.com/HeaTTheatR/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
 
 [Roboto font](https://fonts.google.com/specimen/Roboto) is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 

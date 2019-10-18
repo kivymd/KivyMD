@@ -1,0 +1,26 @@
+cache: pip
+
+matrix:
+  fast_finish: true
+  include:
+    - name: "Black"
+      env: RUN=black
+      language: python
+      python: 3.7
+      os: linux
+      dist: bionic
+
+install:
+  - pip list
+  - if [ "${RUN}" == "black" ]; then
+      pip install black;
+    fi;
+
+script:
+  - if [ "${RUN}" == "black" ]; then
+        black --check --verbose .;
+    fi;
+
+after_failure:
+  - sleep 10;
+  - echo == End ==

@@ -1,4 +1,13 @@
-# Change Log
+Change Log
+==========
+
+## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
+
+> [v0.101.9]() - *Alpha*
+
+* Moved `kivymd.behaviors` to `kivymd.uix.behaviors`
+* Updated `kivymd/tools/update_icons.py` (added `blank` icon)
+* Updated Iconic font (v4.5.95)
 
 
 ## [v0.101.8]() - *Alpha*

@@ -58,7 +58,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 
 from kivymd import images_path
-from kivymd.behaviors.backgroundcolorbehavior import BackgroundColorBehavior
+from kivymd.uix.behaviors.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.uix.label import MDIcon
 from kivymd.uix.list import (
     MDList,

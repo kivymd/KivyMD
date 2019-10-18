@@ -113,11 +113,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen
 
-from kivymd.behaviors.backgroundcolorbehavior import (
+from kivymd.uix.behaviors.backgroundcolorbehavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivymd.behaviors.elevation import RectangularElevationBehavior
+from kivymd.uix.behaviors.elevation import RectangularElevationBehavior
 from kivymd.uix.button import BaseFlatButton, BasePressedButton
 from kivymd.theming import ThemableBehavior
 

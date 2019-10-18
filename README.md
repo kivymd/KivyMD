@@ -139,7 +139,7 @@ chmod +x install-kivy-buildozer-dependencies.sh
 API Breaking changes
 ====================
 
-* All classes with the Behavior prefix moved to `kivymd.behaviors` module.
+* All classes with the Behavior prefix moved to `kivymd.uix.behaviors` module.
 * All uix modules moved to `kivymd.uix` module.
 * All widgets that usually used in kv-lang are automatically added to Factory.
 You don't need to `#:import` them. Remove all your imports from kv files.

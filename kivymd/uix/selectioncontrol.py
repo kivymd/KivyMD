@@ -29,8 +29,8 @@ from kivy.uix.widget import Widget
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
-from kivymd.behaviors.elevation import CircularElevationBehavior
-from kivymd.behaviors.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.behaviors.elevation import CircularElevationBehavior
+from kivymd.uix.behaviors.ripplebehavior import CircularRippleBehavior
 from kivymd.uix.label import MDIcon
 
 Builder.load_string(

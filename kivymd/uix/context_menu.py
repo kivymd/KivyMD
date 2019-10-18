@@ -107,7 +107,7 @@ from kivy.properties import (
 )
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.behaviors.hover_behavior import HoverBehavior
+from kivymd.uix.behaviors.hover_behavior import HoverBehavior
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.theming import ThemableBehavior
 import kivymd.material_resources as m_res

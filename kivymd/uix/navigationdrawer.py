@@ -108,7 +108,7 @@ from kivymd.vendor.navigationdrawer import (
     NavigationDrawer as VendorNavigationDrawer,
 )
 from kivymd import images_path
-from kivymd.behaviors.elevation import RectangularElevationBehavior
+from kivymd.uix.behaviors.elevation import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
 
 Builder.load_string(

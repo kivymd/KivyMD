@@ -22,7 +22,7 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
-from kivymd.behaviors.ripplebehavior import CircularRippleBehavior
+from kivymd.uix.behaviors.ripplebehavior import CircularRippleBehavior
 from kivymd import demos_assets_path
 
 from .basedialog import BaseDialogForDemo

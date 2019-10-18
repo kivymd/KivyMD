@@ -32,6 +32,6 @@ demos_assets_path = os.path.join(
     path.split("kivymd")[0], "demos", "kitchen_sink", f"assets{os.sep}"
 )
 
-Logger.info(f"KivyMD: KivyMD version: {__version__}")
+Logger.info(f"KivyMD: v{__version__}")
 
 import kivymd.factory_registers

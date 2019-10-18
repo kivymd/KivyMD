@@ -26,8 +26,8 @@ setup(
     package_data={
         "kivymd": [
             "uix/*.py",
+            "uix/behaviors/*.py",
             "utils/*.py",
-            "behaviors/*.py",
             "toast/*.py",
             "toast/kivytoast/*.py",
             "toast/androidtoast/*.py",

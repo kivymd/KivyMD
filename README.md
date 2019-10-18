@@ -22,17 +22,31 @@ If you wish to become a project developer (permission to create branches on the 
 Documentation
 =============
 
-Full documentation yet. Some examples of using KivyMD widgets can be found in our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) and in the code of the [demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps)
+#### Wiki
 
+No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) contents some examples of using KivyMD widgets.
 
-KivyMD Tutorials
-================
+#### Demos
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title='Click to watch "How to run the KivyMD demo on desktop?" on YouTube'>
+  </a>
+</p>
+
+[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher):  [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a).
+
+[Another demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps) contain some useful GUI examples.
+
+#### Tutorials on YouTube
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch Tutorials on YouTube">
   </a>
 </p>
+
+[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
 
 
 Support
@@ -72,21 +86,6 @@ If you want to use KivyMD with buildozer, in your buildozer.spec's requirements 
   requirements = kivy==master, kivymd
   ```
 
-
-Running on Android
-==================
-
-Android 6.0 and higher [kitchen_sink-0.98.4-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.98.4-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a)
-
-
-Running demo on Desktop
-======================
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=qU6C_Icp6TM">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png">
-  </a>
-</p>
 
 Building
 ========
@@ -155,7 +154,7 @@ Video previous
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png">
+    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png" title='Click to watch video on YouTube'>
   </a>
 </p>
 

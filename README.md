@@ -177,8 +177,8 @@ Sister project:
 License
 =======
 
-[MIT License](LICENSE), same as Kivy.
+KivyMD is released under the terms of the [MIT License](LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
 
-Roboto font is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+[Roboto font](https://fonts.google.com/specimen/Roboto) is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
-Icons by the [Material Design Icons](https://materialdesignicons.com/) community covered by [SIL Open Font License 1.1](http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)
+[Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) by the [Material Design Icons](https://materialdesignicons.com/) community covered by [SIL Open Font License 1.1](http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)

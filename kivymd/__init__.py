@@ -20,8 +20,7 @@ as the Kivy framework.
 """
 
 import os
-
-from kivy import Logger
+from kivy.logger import Logger
 
 __version_info__ = (0, 101, 8)
 __version__ = "0.101.8"

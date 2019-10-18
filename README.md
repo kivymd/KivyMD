@@ -1,7 +1,7 @@
-KivyMD
+KivyMD [v0.101.8 - *Alpha*](CHANGELOG.md)
 ======
 
-<img align="left" height="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
+<img align="left" width="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
@@ -32,7 +32,7 @@ No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/w
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
-    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title='Click to watch "How to run the KivyMD demo on desktop?" on YouTube'>
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title="Click to watch on YouTube">
   </a>
 </p>
 
@@ -44,7 +44,7 @@ No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/w
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
-    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch Tutorials on YouTube">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch on YouTube">
   </a>
 </p>
 
@@ -134,19 +134,14 @@ chmod +x install-kivy-buildozer-dependencies.sh
 
 > Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
 
-What's new in version 0.101.8:
-============================
 
-[CHANGELOG.md](CHANGELOG.md)
+API Breaking changes
+====================
 
-
-API Breaking changes:
-=====================
-
-* All classes with the `Behavior` prefix are now placed in the `kivymd/behaviors` directory
-* All uix modules moved to kivymd.uix module.
+* All classes with the Behavior prefix moved to `kivymd.behaviors` module.
+* All uix modules moved to `kivymd.uix` module.
 * All widgets that usually used in kv-lang are automatically added to Factory.
-You don't need to #:import them. Remove all your imports.
+You don't need to `#:import` them. Remove all your imports from kv files.
 * Changed font styles:
 
 | Old      | New       |
@@ -166,11 +161,10 @@ You don't need to #:import them. Remove all your imports.
 | Display3 | H2        |
 | Display4 | H1        |
 
-* Colors `BlueGrey` and `Grey` renamed to `BlueGray` and `Gray` (for better fit MD spec)
+* Colors `BlueGrey` and `Grey` renamed to `BlueGray` and `Gray`
 
-
-Video previous
-==============
+Video preview
+=============
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
@@ -179,18 +173,17 @@ Video previous
 </p>
 
 
-Image previous
-==============
+Image preview
+=============
 
 <p align="center">
   <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png">
 </p>
 
+Sister projects
+===============
 
-Sister project:
-==============
-
-[Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
+* [Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
 
 
 License

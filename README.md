@@ -65,54 +65,72 @@ Installation
 
 #### Dependencies:
 
-* Kivy >= 1.10.1
-* PIL
-* Python 3 *(Python 2 not supported)*
+* [Kivy](https://github.com/kivy/kivy) >= 1.10.1 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
+* [PIL](https://github.com/python-pillow/Pillow) ([Installation](https://pillow.readthedocs.io/en/stable/installation.html#basic-installation))
+* [Python 3](https://www.python.org/) *(Python 2 not supported)*
 
 #### How to install
 
-To install KivyMD, clone the project and run the setup.py script. The following line works on Linux and Mac OS, other OSes not tested:
-  ```bash
-  sudo python ./setup.py install
-  ```
-  or
-  ```bash
-  sudo pip3 install kivymd
-  ```
-#### How to use with Buildozer
+You can install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd):
+```bash
+python3 -m pip install kivymd
+```
+If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/) branch, you should specify git HTTPS address:
+```bash
+# Master branch:
+python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git
+# Specific branch:
+python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@stable
+# Specific tag:
+python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
+# Specific commit:
+python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
+```
+Also you can install manually from sources. Just clone the project and run the setup.py script:
+```bash
+python3 ./setup.py install
+```
 
-If you want to use KivyMD with buildozer, in your buildozer.spec's requirements line you should add the full git HTTPS address, like this example:
-  ```text
-  requirements = kivy==master, kivymd
-  ```
+#### How to use with [Buildozer](https://github.com/kivy/buildozer)
+
+```text
+requirements = kivy==1.11.1, kivymd
+```
+This will download latest release version from PyPI. If you want to use master branch, you should write the full git HTTPS address, like this example:
+```text
+# Master branch:
+requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git
+# Specific branch:
+requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@master
+# Specific tag:
+requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
+# Specific commit:
+requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
+```
+Do not forget to remove `buildozer` directory before building if version was updated (Buildozer doesn't update already downloaded packages).
 
 
-Building
-========
+Building with VM
+================
 
 <a href="https://xubuntu.org/release/18-04/">
-  <img align="left" height="140" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/XUBUNTU.png">
+  <img align="left" width="300" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/XUBUNTU.png" title="Click to download XUbuntu 18.04">
 </a>
 
 Packages for Android are built according to the following instructions:
 * Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/)
 * Create a new virtual machine based on the downloaded image of XUbuntu
-* Start the XUbuntu virtual machine, open the browser and download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh):
+* Start the XUbuntu virtual machine, download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh), add execution permissions and run script:
+```bash
+wget https://github.com/HeaTTheatR/KivyMD-data/raw/master/install-kivy-buildozer-dependencies.sh
+chmod +x install-kivy-buildozer-dependencies.sh
 
-  Add execution permissions:
-  ```bash
-  chmod +x install-kivy-buildozer-dependencies.sh
-  ```
-  ...and run script:
-  ```bash
-  ./install-kivy-buildozer-dependencies.sh
-  ```
-
-* Run the script - it will install all the necessary libraries and tools for creating packages for Android
+./install-kivy-buildozer-dependencies.sh
+```
+* Script will install all the necessary libraries and tools for creating packages for Android
 * Done! Now you have a virtual machine for building Kivy application packages!
 
-Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
-
+> Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
 
 What's new in version 0.101.8:
 ============================

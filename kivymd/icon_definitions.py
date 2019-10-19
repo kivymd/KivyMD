@@ -4616,5 +4616,4 @@ md_icons = {
     "zodiac-scorpio": "\uFA85",
     "zodiac-taurus": "\uFA86",
     "zodiac-virgo": "\uFA87",
-    "blank": "\uF68C",
 }

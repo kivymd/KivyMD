@@ -73,7 +73,7 @@ main_widget_kv = """
 
     Image:
         id: image
-        source: 'assets/guitar-1139397_1280_crop.png'
+        source: f'{demos_assets_path}guitar-1139397_1280_crop.png'
         size_hint: 1, None
         height: dp(Window.height * 35 // 100)
         allow_stretch: True

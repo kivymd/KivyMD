@@ -1275,7 +1275,9 @@ class KitchenSink(App, Screens):
             for i, name_screen in enumerate(self.data.keys()):
                 await asynckivy.sleep(0)
                 self.dialog_load_kv_files.name_kv_file = name_screen
-                self.dialog_load_kv_files.percent = str(((i + 1) * 100) // count_kvs)
+                self.dialog_load_kv_files.percent = str(
+                    ((i + 1) * 100) // count_kvs
+                )
                 Builder.load_string(self.data[name_screen]["kv_string"])
                 self.data[name_screen]["object"] = eval(
                     self.data[name_screen]["Factory"]

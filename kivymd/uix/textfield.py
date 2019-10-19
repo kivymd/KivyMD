@@ -583,10 +583,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             field=self,
         )
         self._hint_lbl = TextfieldLabel(
-            font_style="Subtitle1",
-            halign="left",
-            valign="middle",
-            field=self,
+            font_style="Subtitle1", halign="left", valign="middle", field=self
         )
         super().__init__(**kwargs)
         self.line_color_normal = self.theme_cls.divider_color
@@ -679,7 +676,11 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
         if self.focus:
             if not self._line_blank_space_right_hint_text:
-                self._line_blank_space_right_hint_text = self._hint_lbl.texture_size[0] - dp(10)
+                self._line_blank_space_right_hint_text = self._hint_lbl.texture_size[
+                    0
+                ] - dp(
+                    10
+                )
             Animation(
                 _line_blank_space_right_hint_text=self._line_blank_space_right_hint_text,
                 _line_blank_space_left_hint_text=self._hint_lbl.x - dp(5),
@@ -737,9 +738,9 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                     duration=0.2,
                     _current_right_lbl_color=disabled_hint_text_color,
                 ).start(self)
-                Animation(
-                    duration=0.2, color=self.line_color_focus,
-                ).start(self._hint_lbl)
+                Animation(duration=0.2, color=self.line_color_focus).start(
+                    self._hint_lbl
+                )
                 if self.helper_text_mode == "on_error":
                     Animation(
                         duration=0.2, _current_error_color=(0, 0, 0, 0)

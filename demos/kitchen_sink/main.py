@@ -143,7 +143,7 @@ main_widget_kv = """
 
 
 <MyNavigationDrawerIconButton@NavigationDrawerIconButton>
-    icon: 'checkbox-blank-circle'
+    icon: app.drawer_item_icons.get(root.text, 'checkbox-blank-circle')
     on_release:
         app.show_screen(root.text)
         app.set_title_toolbar(root.text)
@@ -204,7 +204,7 @@ main_widget_kv = """
         text: "Lists"
 
     NavigationDrawerIconButton:
-        icon: 'checkbox-blank-circle'
+        icon: "gesture-swipe"
         text: "Manager Swiper"
         on_release:
             app.show_manager_swiper()
@@ -226,16 +226,13 @@ main_widget_kv = """
         text: "Popup Screen"
 
     MyNavigationDrawerIconButton:
-        text: "Progress bars"
+        text: "Progress and Slider"
 
     MyNavigationDrawerIconButton:
         text: "Refresh Layout"
 
     MyNavigationDrawerIconButton:
         text: "Selection controls"
-
-    MyNavigationDrawerIconButton:
-        text: "Sliders"
 
     MyNavigationDrawerIconButton:
         text: "Snackbars"
@@ -392,6 +389,38 @@ class KitchenSink(App, Screens):
         self.hex_primary_color = get_hex_from_color(
             self.theme_cls.primary_color
         )
+        self.drawer_item_icons = {
+            "Bottom App Bar": "dock-bottom",
+            "Buttons": "rectangle",
+            "Cards": "cards-variant",
+            "Dialogs": "window-open",
+            "Download File": "download",
+            "Dropdown Item": "arrow-down-drop-circle",
+            "Expansion Panel": "arrow-expand-vertical",
+            "Floating Buttons": "format-float-right",
+            "Files Manager": "file-tree",
+            "Grid lists": "grid",
+            "Labels": "label",
+            "Lists": "format-list-bulleted",
+            "MD Icons": "material-design",
+            "Menus": "menu",
+            "Pickers": "calendar",
+            "Refresh Layout": "refresh",
+            "Selection controls": "checkbox-marked-circle-outline",
+            "Tabs": "tab",
+            "Text fields": "signature-text",
+            "Themes": "theme-light-dark",
+            "Toolbars": "set-top-box",
+            "User Animation Card": "animation",
+            "Bottom Navigation": "picture-in-picture-bottom-right",
+            "Bottom Sheets": "file-document-box-outline",
+            "Chips": "label-variant",
+            "Fan Manager": "fan",
+            "Progress & activity": "progress-check",
+            "Popup Screen": "window-closed",
+            "Progress and Slider": "percent",
+            "Snackbars": "dock-window",
+        }
         self.previous_text = (
             f"Welcome to the application [b][color={self.hex_primary_color}]"
             f"Kitchen Sink[/color][/b].\nTo see [b]"
@@ -1182,7 +1211,9 @@ class KitchenSink(App, Screens):
         context_menu = MDDropdownMenu(
             items=menu_for_context_menu_source_code,
             max_height=dp(260),
-            width_mult=3,
+            width_mult=4,
+            width_rectangle=0.1,
+            background_color=self.theme_cls.primary_dark,
         )
         context_menu.open(instance.ids.right_actions.children[0])
 
@@ -1244,7 +1275,7 @@ class KitchenSink(App, Screens):
             for i, name_screen in enumerate(self.data.keys()):
                 await asynckivy.sleep(0)
                 self.dialog_load_kv_files.name_kv_file = name_screen
-                self.dialog_load_kv_files.percent = str(i * 100 // count_kvs)
+                self.dialog_load_kv_files.percent = str(((i + 1) * 100) // count_kvs)
                 Builder.load_string(self.data[name_screen]["kv_string"])
                 self.data[name_screen]["object"] = eval(
                     self.data[name_screen]["Factory"]

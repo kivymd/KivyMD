@@ -19,6 +19,7 @@ Change Log
 * Updated Iconic font (v4.5.95)
 
 #### demos/kitchen_sink/main.py:
+* Replaced 'MyNavigationDrawerIconButton' rule to `NavigationDrawerIconButton`
 * Changed the color and size of the `Source code/Open in Wiki`
 * Fixed calculation of percent loading screens
 * A separate icon has been added for each menu item in `NavigationDrawer`

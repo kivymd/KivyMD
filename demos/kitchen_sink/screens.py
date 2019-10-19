@@ -732,6 +732,10 @@ textfields = """
                 radius: dp(9)
 
             MDTextField:
+                hint_text: "Rectangle mode"
+                mode: "rectangle"
+
+            MDTextField:
                 input_filter: "int"
                 hint_text: "Numeric field"
 
@@ -1055,26 +1059,6 @@ selection_controls = """
         pos_hint: {'center_x': .7, 'center_y': .3}
         active: True
         disabled: True
-"""
-
-sliders = """
-<Sliders@Screen>
-    name: 'sliders'
-
-    BoxLayout:
-
-        MDSlider:
-            id: hslider
-            min: 0
-            max: 100
-            value: 10
-
-        MDSlider:
-            id: vslider
-            orientation: 'vertical'
-            min: 0
-            max: 100
-            value: hslider.value
 """
 
 stack_buttons = """
@@ -1881,7 +1865,7 @@ class Screens(object):
             "source_code": "Components-Fan-Screen-Manager.md",
             "object": None,
         },
-        "Progress bars": {
+        "Progress and Slider": {
             "kv_string": progress_bar,
             "Factory": "Factory.ProgressBars()",
             "name_screen": "progress bar",
@@ -1898,12 +1882,6 @@ class Screens(object):
             "Factory": "Factory.RefreshLayout()",
             "name_screen": "refresh layout",
             "source_code": "Components-Refresh-Layout.md",
-            "object": None,
-        },
-        "Sliders": {
-            "kv_string": sliders,
-            "Factory": "Factory.Sliders()",
-            "name_screen": "sliders",
             "object": None,
         },
         "Floating Buttons": {

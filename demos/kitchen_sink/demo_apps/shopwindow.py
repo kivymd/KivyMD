@@ -97,15 +97,20 @@ screen_shop_window = """
     icon: ''
     previous_dialog: None
 
+    Widget:
+        size_hint_y: None
+        height: dp(10)
+
     AnchorLayout:
         anchor_x: 'right'
         size_hint_y: None
-        height: dp(30)
+        height: dp(24)
 
         MDIconButton:
             icon: 'heart-outline'
             theme_text_color: 'Custom'
             text_color: app.theme_cls.primary_color
+            user_font_size: '24dp'
             on_press:
                 self.icon = 'heart' if self.icon == 'heart-outline' else 'heart-outline'
 
@@ -131,6 +136,8 @@ screen_shop_window = """
         theme_text_color: 'Custom'
         text_color: app.theme_cls.primary_color
         pos_hint: {'center_x': .5}
+
+    Widget:
 
 
 <CardsBoxForShopWindow@BoxLayout>

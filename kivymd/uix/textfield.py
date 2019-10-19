@@ -99,6 +99,10 @@ Builder.load_string('''
                 radius: dp(9)
 
             MDTextField:
+                hint_text: 'mode = "rectangle"'
+                mode: "rectangle"
+
+            MDTextField:
                 input_filter: "int"
                 hint_text: "Numeric field"
 
@@ -202,6 +206,7 @@ Example().run()
 import sys
 
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.animation import Animation
 from kivy.graphics.context_instructions import Color
@@ -220,39 +225,44 @@ from kivy.metrics import dp
 from kivy.metrics import sp
 from kivy.uix.widget import Widget
 
-from kivymd.uix.label import MDLabel
+from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
 <MDTextField>
+
     canvas.before:
         Clear
         Color:
-            rgba: self.line_color_normal
+            rgba: self.line_color_normal if root.mode == "line" else [0, 0, 0, 0]
         Line:
             points:
                 self.x, self.y + dp(16), self.x + self.width, self.y + dp(16)
             width: 1
             dash_length: dp(3)
             dash_offset: 2 if self.disabled else 0
+
         Color:
-            rgba: self._current_line_color
+            rgba: self._current_line_color if root.mode == "line" else [0, 0, 0, 0]
         Rectangle:
             size: self._line_width, dp(2)
             pos: self.center_x - (self._line_width / 2), self.y + dp(16)
+
         Color:
             rgba: self._current_error_color
         Rectangle:
             texture: self._msg_lbl.texture
             size: self._msg_lbl.texture_size
             pos: self.x, self.y
+
         Color:
             rgba: self._current_right_lbl_color
         Rectangle:
             texture: self._right_msg_lbl.texture
             size: self._right_msg_lbl.texture_size
             pos: self.width-self._right_msg_lbl.texture_size[0]+dp(45), self.y
+
         Color:
             rgba:
                 (self._current_line_color if self.focus and not \
@@ -260,17 +270,33 @@ Builder.load_string(
         Rectangle:
             pos: [int(x) for x in self.cursor_pos]
             size: 1, -self.line_height
+
         Color:
             rgba: self._current_hint_text_color
         Rectangle:
             texture: self._hint_lbl.texture
             size: self._hint_lbl.texture_size
             pos: self.x, self.y + self.height - self._hint_y
+
         Color:
             rgba:
                 self.disabled_foreground_color if self.disabled else\
                 (self.hint_text_color if not self.text and not\
                 self.focus else self.foreground_color)
+
+        Color:
+            rgba: self._current_line_color
+        Line:
+            width: dp(1) if root.mode == "rectangle" else dp(0.00001)
+            points:
+                (
+                self.x + root._line_blank_space_right_hint_text, self.top - self._hint_lbl.texture_size[1] // 2,
+                self.right + dp(12), self.top - self._hint_lbl.texture_size[1] // 2,
+                self.right + dp(12), self.y,
+                self.x - dp(12), self.y,
+                self.x - dp(12), self.top - self._hint_lbl.texture_size[1] // 2,
+                self.x + root._line_blank_space_left_hint_text, self.top - self._hint_lbl.texture_size[1] // 2
+                )
 
     font_name: 'Roboto'
     foreground_color: app.theme_cls.text_color
@@ -283,8 +309,12 @@ Builder.load_string(
 
 
 <TextfieldLabel>
-    disabled_color: self.theme_cls.disabled_hint_text_color
-    text_size: (self.width, None)
+    #disabled_color: self.theme_cls.disabled_hint_text_color
+    size_hint_x: None
+    width: self.texture_size[0]
+    shorten: True
+    shorten_from: "right"
+    color: 0, 0, 0, 1
 
 
 <MDTextFieldClear>
@@ -491,70 +521,45 @@ class FixedHintTextInput(TextInput):
         pass
 
 
-class TextfieldLabel(MDLabel):
-    def on_theme_text_color(self, instance, value):
-        t = self.theme_cls
-        op = self.opposite_colors
-        setter = self.setter("color")
-        t.unbind(**self._currently_bound_property)
-        c = {}
-        if value == "Primary":
-            c = {"text_color" if not op else "opposite_text_color": setter}
-            t.bind(**c)
-            self.color = t.text_color if not op else t.opposite_text_color
-        elif value == "Secondary":
-            c = {
-                "secondary_text_color"
-                if not op
-                else "opposite_secondary_text_color": setter
-            }
-            t.bind(**c)
-            self.color = (
-                t.secondary_text_color
-                if not op
-                else t.opposite_secondary_text_color
-            )
-        elif value == "Hint":
-            c = {
-                "disabled_hint_text_color"
-                if not op
-                else "opposite_disabled_hint_text_color": setter
-            }
-            t.bind(**c)
-            self.color = (
-                t.disabled_hint_text_color
-                if not op
-                else t.opposite_disabled_hint_text_color
-            )
-        elif value == "Error":
-            c = {"error_color": setter}
-            t.bind(**c)
-            self.color = t.error_color
-        elif value == "Custom":
-            self.color = self.text_color if self.text_color else (0, 0, 0, 1)
-        self._currently_bound_property = c
+class TextfieldLabel(ThemableBehavior, Label):
+    field = ObjectProperty()
+    font_style = OptionProperty("Body1", options=theme_font_styles)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.font_size = sp(self.theme_cls.font_styles[self.font_style][1])
 
 
 class MDTextField(ThemableBehavior, FixedHintTextInput):
+    # TODO: Add class fields description.
     helper_text = StringProperty("This field is required")
+
     helper_text_mode = OptionProperty(
         "none", options=["none", "on_error", "persistent", "on_focus"]
     )
 
     max_text_length = NumericProperty(None)
+
     required = BooleanProperty(False)
 
     color_mode = OptionProperty(
         "primary", options=["primary", "accent", "custom"]
     )
+
+    mode = OptionProperty("line", options=["rectangle"])
+
     line_color_normal = ListProperty()
+
     line_color_focus = ListProperty()
+
     error_color = ListProperty()
 
     error = BooleanProperty(False)
-    _text_len_error = BooleanProperty(False)
 
+    _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty(sp(16))
+    _line_blank_space_right_hint_text = NumericProperty(0)
+    _line_blank_space_left_hint_text = NumericProperty(0)
     _hint_y = NumericProperty(dp(38))
     _line_width = NumericProperty(0)
     _current_line_color = ListProperty([0.0, 0.0, 0.0, 0.0])
@@ -568,14 +573,20 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             halign="left",
             valign="middle",
             text=self.helper_text,
+            field=self,
         )
-
         self._right_msg_lbl = TextfieldLabel(
-            font_style="Caption", halign="right", valign="middle", text=""
+            font_style="Caption",
+            halign="right",
+            valign="middle",
+            text="",
+            field=self,
         )
-
         self._hint_lbl = TextfieldLabel(
-            font_style="Subtitle1", halign="left", valign="middle"
+            font_style="Subtitle1",
+            halign="left",
+            valign="middle",
+            field=self,
         )
         super().__init__(**kwargs)
         self.line_color_normal = self.theme_cls.divider_color
@@ -638,7 +649,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             self._line_width = width
         self._msg_lbl.width = self.width
         self._right_msg_lbl.width = self.width
-        self._hint_lbl.width = self.width
+        # self._hint_lbl.width = self.width
 
     def on_focus(self, *args):
         disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
@@ -667,6 +678,15 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 has_error = False
 
         if self.focus:
+            if not self._line_blank_space_right_hint_text:
+                self._line_blank_space_right_hint_text = self._hint_lbl.texture_size[0] - dp(10)
+            Animation(
+                _line_blank_space_right_hint_text=self._line_blank_space_right_hint_text,
+                _line_blank_space_left_hint_text=self._hint_lbl.x - dp(5),
+                _current_hint_text_color=[1, 1, 0, 1],
+                duration=0.2,
+                t="out_quad",
+            ).start(self)
             self.has_had_text = True
             Animation.cancel_all(
                 self, "_line_width", "_hint_y", "_hint_lbl_font_size"
@@ -715,9 +735,11 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             else:
                 Animation(
                     duration=0.2,
-                    _current_hint_text_color=self.line_color_focus,
                     _current_right_lbl_color=disabled_hint_text_color,
                 ).start(self)
+                Animation(
+                    duration=0.2, color=self.line_color_focus,
+                ).start(self._hint_lbl)
                 if self.helper_text_mode == "on_error":
                     Animation(
                         duration=0.2, _current_error_color=(0, 0, 0, 0)
@@ -737,6 +759,12 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 Animation(
                     _hint_y=dp(38),
                     _hint_lbl_font_size=sp(16),
+                    duration=0.2,
+                    t="out_quad",
+                ).start(self)
+                Animation(
+                    _line_blank_space_right_hint_text=0,
+                    _line_blank_space_left_hint_text=0,
                     duration=0.2,
                     t="out_quad",
                 ).start(self)

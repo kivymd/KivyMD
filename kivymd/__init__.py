@@ -20,10 +20,11 @@ as the Kivy framework.
 """
 
 import os
-from kivy.logger import Logger
 
-__version_info__ = (0, 101, 8)
-__version__ = "0.101.8"
+from kivy import Logger
+
+__version_info__ = (0, 102, 0)
+__version__ = "0.102.0"
 
 path = os.path.dirname(__file__)
 fonts_path = os.path.join(path, f"fonts{os.sep}")

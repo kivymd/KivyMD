@@ -243,7 +243,7 @@ class MDFanScreenManager(FloatLayout):
             self.shift_x -= 20
             self.shift_y -= 40
             Animation(
-                x=dp(self.shift_x), y=-dp(self.shift_y), d=0.3, t="out_elastic"
+                x=dp(self.shift_x), y=-dp(self.shift_y), d=0.05
             ).start(screen)
         self.fan = "open"
 
@@ -251,7 +251,7 @@ class MDFanScreenManager(FloatLayout):
         self.selected_screen = instance_selected_screen
         for screen in self.children:
             if screen is not instance_selected_screen:
-                anim = Animation(x=self.width, y=0, d=0.5, t="in_elastic")
+                anim = Animation(x=self.width, y=0, d=0.15)
                 anim.bind(on_complete=self.check_screens_closed)
                 anim.start(screen)
         self.fan = "close"

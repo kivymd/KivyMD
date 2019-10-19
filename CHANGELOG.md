@@ -18,7 +18,18 @@ Change Log
 * Updated `kivymd/tools/update_icons.py` (added `blank` icon)
 * Updated Iconic font (v4.5.95)
 
+#### kivymd/tools/release:
+* Added init.py
+
+#### kivymd/__init__.py:
+* Added hook for `PyInstaller`
+
+#### demos/kitchen_sink:
+* Added `pyinstaller.spec` for `kitchen_sink` demo
+* Added `buildozer.spec` for `kitchen_sink` demo
+
 #### demos/kitchen_sink/main.py:
+* Make adding `KivyMD` repo to path when not bundled
 * Replaced 'MyNavigationDrawerIconButton' rule to `NavigationDrawerIconButton`
 * Changed the color and size of the `Source code/Open in Wiki`
 * Fixed calculation of percent loading screens

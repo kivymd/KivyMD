@@ -9,6 +9,7 @@ Change Log
 * Changed the color and size of the `Source code/Open in Wiki`
 * Fixed calculation of percent loading screens
 * A separate icon has been added for each menu item in `NavigationDrawer`
+* Fixed path to `guitar-1139397_1280_crop.png` image
 
 #### demos/kitchen_sink/demo_apps/shopwindow.py:
 * Fixed position of the `Heart` icon on the product card in the `Catalog` tab has been fixed

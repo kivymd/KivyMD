@@ -139,7 +139,7 @@ Builder.load_string(
         size_hint_y: None
         height: spinner.height
         size_hint_x: .8
-        text: 'Download...'
+        text: root.label_downloading_text
 
     Widget:
         size_hint_x: .1
@@ -154,7 +154,10 @@ class MDProgressLoader(MDCard):
     url_on_image = StringProperty()
     """Link to uploaded file."""
 
-    label_download = StringProperty("Download")
+    label_downloading_text = StringProperty("Downloading...")
+    """Default text before downloading."""
+
+    downloading_text = StringProperty("Downloading: {}%")
     """Signature of the downloaded file."""
 
     download_complete = ObjectProperty()
@@ -165,6 +168,9 @@ class MDProgressLoader(MDCard):
 
     download_flag = BooleanProperty(False)
     """If True - the download process is in progress."""
+
+    request = ObjectProperty()
+    """UrlRequest object."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -187,10 +193,7 @@ class MDProgressLoader(MDCard):
 
         """
 
-        self.ids.label_download.text = "%s: %d %%" % (
-            self.label_download,
-            percent,
-        )
+        self.label_downloading_text = self.downloading_text.format(percent)
 
     def animation_progress_to_fade(self, interval):
         if not self.download_flag:
@@ -226,19 +229,22 @@ class MDProgressLoader(MDCard):
         :param path: path to save content;
         """
 
-        req = UrlRequest(
+        self.request = UrlRequest(
             url,
-            on_progress=self.update_progress,
-            chunk_size=1024,
-            on_success=self.on_success,
             file_path=path,
+            chunk_size=1024,
+            on_progress=self.update_progress,
+            on_success=self.on_success,
         )
 
     def update_progress(self, request, current_size, total_size):
+        if total_size == 0:
+            self.draw_progress(0)
+            return
         percent = current_size * 100 // total_size
         self.draw_progress(percent)
 
-    def on_success(self, req, result):
+    def on_success(self, request, result):
         self.root_instance.remove_widget(self)
         self.download_complete()
         self.download_flag = False

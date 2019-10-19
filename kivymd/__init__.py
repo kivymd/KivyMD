@@ -20,7 +20,6 @@ as the Kivy framework.
 """
 
 import os
-
 from kivy import Logger
 
 __version_info__ = (0, 102, 0)
@@ -36,3 +35,4 @@ demos_assets_path = os.path.join(
 Logger.info(f"KivyMD: v{__version__}")
 
 import kivymd.factory_registers
+from kivymd.tools.packaging.pyinstaller import hooks_path

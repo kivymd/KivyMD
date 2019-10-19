@@ -3,7 +3,13 @@ Change Log
 
 ## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
 
-> [v0.102.0]() - *Alpha*
+> [v0.102.0](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*
+
+* Edited import `behaviors` package
+* Updated `demos/kitchen_sink/assets/drawer_logo.png` image
+* Moved `kivymd.behaviors` to `kivymd.uix.behaviors`
+* Updated `kivymd/tools/update_icons.py` (added `blank` icon)
+* Updated Iconic font (v4.5.95)
 
 #### demos/kitchen_sink/main.py:
 * Changed the color and size of the `Source code/Open in Wiki`
@@ -26,17 +32,6 @@ Change Log
 
 #### kivymd/uix/behaviors/__init__.py:
 * Added imports of classes
-
-
-* Edited import `behaviors` package
-* Updated `demos/kitchen_sink/assets/drawer_logo.png` image
-
-
-## [v0.101.9](https://github.com/HeaTTheatR/KivyMD/tree/0.101.9) - *Alpha*
-
-* Moved `kivymd.behaviors` to `kivymd.uix.behaviors`
-* Updated `kivymd/tools/update_icons.py` (added `blank` icon)
-* Updated Iconic font (v4.5.95)
 
 
 ## [v0.101.8](https://github.com/HeaTTheatR/KivyMD/tree/0.101.8) - *Alpha*

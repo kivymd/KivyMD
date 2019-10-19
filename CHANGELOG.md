@@ -3,11 +3,21 @@ Change Log
 
 ## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
 
-> [v0.102.0](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*
+> [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*
 
-* 
-* 
-* 
+#### kivymd/tools/release:
+* Added __init__.py
+
+#### kivymd/__init__.py:
+* Added hook for `PyInstaller`
+
+#### demos/kitchen_sink:
+* Added `pyinstaller.spec` for `kitchen_sink` demo
+* Added `buildozer.spec` for `kitchen_sink` demo
+
+#### demos/kitchen_sink/main.py:
+* Replaced 'MyNavigationDrawerIconButton' rule to `NavigationDrawerIconButton`
+* Make adding `KivyMD` repo to path when not bundled
 
 
 ## [v0.102.0](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*
@@ -18,19 +28,7 @@ Change Log
 * Updated `kivymd/tools/update_icons.py` (added `blank` icon)
 * Updated Iconic font (v4.5.95)
 
-#### kivymd/tools/release:
-* Added init.py
-
-#### kivymd/__init__.py:
-* Added hook for `PyInstaller`
-
-#### demos/kitchen_sink:
-* Added `pyinstaller.spec` for `kitchen_sink` demo
-* Added `buildozer.spec` for `kitchen_sink` demo
-
 #### demos/kitchen_sink/main.py:
-* Make adding `KivyMD` repo to path when not bundled
-* Replaced 'MyNavigationDrawerIconButton' rule to `NavigationDrawerIconButton`
 * Changed the color and size of the `Source code/Open in Wiki`
 * Fixed calculation of percent loading screens
 * A separate icon has been added for each menu item in `NavigationDrawer`

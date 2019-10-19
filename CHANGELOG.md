@@ -3,6 +3,32 @@ Change Log
 
 ## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
 
+## [v0.102.0]() - *Alpha*
+
+#### demos/kitchen_sink/main.py:
+* Changed the color and size of the `Source code/Open in Wiki`
+* Fixed calculation of percent loading screens
+* A separate icon has been added for each menu item in `NavigationDrawer`
+
+#### demos/kitchen_sink/demo_apps/shopwindow.py:
+* Fixed position of the `Heart` icon on the product card in the `Catalog` tab has been fixed
+
+#### kivymd/uix/fanscreenmanager.py:
+* Type and speed of amination of transformation screens has been changed has been fixed
+
+#### demos/kitchen_sink/screens.py:
+* Removed `<Sliders@Screen>`
+* Added new `MDTextField` example with `rectangle` mode
+
+#### kivymd/uix/textfield.py:
+* Added the ability to create text fields `MDTextField` with mode "rectangle"
+
+* Edited import `behaviors` package
+
+#### kivymd/uix/behaviors/__init__.py:
+* Added imports of classes
+
+
 > [v0.101.9](https://github.com/HeaTTheatR/KivyMD/tree/0.101.9) - *Alpha*
 
 * Moved `kivymd.behaviors` to `kivymd.uix.behaviors`
@@ -12,36 +38,36 @@ Change Log
 
 ## [v0.101.8](https://github.com/HeaTTheatR/KivyMD/tree/0.101.8) - *Alpha*
 
-### setup.py:
+#### setup.py:
 * Added `uix` and `behaviors` folder to `package_data`
 
 
 ## [v0.101.7](https://github.com/HeaTTheatR/KivyMD/tree/0.101.7) - *Alpha*
 
-### demos/kitchen_sink/screens.py:
+#### demos/kitchen_sink/screens.py:
 * Fixed colors and position of the buttons in the `Buttons` example
 * Resource paths now use the variable `demos_assets_path`
 
-### demos/kitchen_sink/main.py:
+#### demos/kitchen_sink/main.py:
 * Resource paths now use the variable `demos_assets_path`
 * Added to display percent download kv-files
 
-### demos/kitchen_sink/demo_apps:
+#### demos/kitchen_sink/demo_apps:
 * Resource paths now use the variable `demos_assets_path`
 
-### demos/kitchen_sink/dialogs.py:
+#### demos/kitchen_sink/dialogs.py:
 * Added to display percent download kv-files
 
 
 ## [v0.101.6](https://github.com/HeaTTheatR/KivyMD/tree/0.101.6) - *Alpha*
 
-### kivymd/uix/picker.py:
+#### kivymd/uix/picker.py:
 * Fixed `NameError: name 'MDThemePicker' is not defined`
 
 
 ## [v0.101.5](https://github.com/HeaTTheatR/KivyMD/tree/0.101.5) - *Alpha*
 
-### demos/kitchen_sink/screens.py:
+#### demos/kitchen_sink/screens.py:
 * Added the ability to change color in the `MDIconItemForMdIconsList` class
 * A context menu has been added to the `Toolbar` to show the source code of the current example
 
@@ -71,10 +97,10 @@ In the previous version, the window was always created when it was opened.
 #### kivymd/uix/bottomnavigation.py:
 * Code updated to changes in version 0.101.0
 
-### demos/kitchen_sink/screens.py:
+#### demos/kitchen_sink/screens.py:
 * Changed the icons to `language-python` in the `Buttons` example
 
-### demos/kitchen_sink/dialogs.py:
+#### demos/kitchen_sink/dialogs.py:
 * Renamed `BaseDialog` to `BaseDialogForLoadKvFiles` class (Fixed AttributeError: `'MDDialog' object has no attribute 'canvas_color'`)
 
 

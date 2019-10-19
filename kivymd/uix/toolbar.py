@@ -102,10 +102,10 @@ from kivy.animation import Animation
 from kivy.core.window import Window
 
 from kivymd.uix.button import MDIconButton, MDFloatingActionButton
-from kivymd.uix.behaviors.backgroundcolorbehavior import (
+from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
+    RectangularElevationBehavior,
 )
-from kivymd.uix.behaviors.elevation import RectangularElevationBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(

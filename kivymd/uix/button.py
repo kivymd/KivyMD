@@ -299,11 +299,11 @@ from kivy.animation import Animation
 from kivymd.uix.behaviors.backgroundcolorbehavior import (
     SpecificBackgroundColorBehavior,
 )
-from kivymd.uix.behaviors.ripplebehavior import (
+from kivymd.uix.behaviors import (
     CircularRippleBehavior,
     RectangularRippleBehavior,
 )
-from kivymd.uix.behaviors.elevation import (
+from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     RectangularElevationBehavior,
     CircularElevationBehavior,

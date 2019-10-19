@@ -136,7 +136,7 @@ from kivymd.uix.list import (
 )
 from kivymd.uix.button import MDIconButton
 from kivymd.font_definitions import theme_font_styles
-from kivymd.uix.behaviors.ripplebehavior import (
+from kivymd.uix.behaviors import (
     RectangularRippleBehavior,
     CircularRippleBehavior,
 )

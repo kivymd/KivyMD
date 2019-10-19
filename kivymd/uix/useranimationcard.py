@@ -107,9 +107,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.modalview import ModalView
 
-from kivymd.uix.behaviors.backgroundcolorbehavior import (
-    SpecificBackgroundColorBehavior,
-)
+from kivymd.uix.behaviors import SpecificBackgroundColorBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 

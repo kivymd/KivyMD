@@ -150,7 +150,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.behaviors.ripplebehavior import RectangularRippleBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(

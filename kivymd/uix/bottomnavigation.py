@@ -117,7 +117,7 @@ from kivymd.uix.behaviors.backgroundcolorbehavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivymd.uix.behaviors.elevation import RectangularElevationBehavior
+from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.button import BaseFlatButton, BasePressedButton
 from kivymd.theming import ThemableBehavior
 

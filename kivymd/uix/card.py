@@ -140,7 +140,7 @@ from kivy.uix.widget import Widget
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.navigationdrawer import NavigationLayout
-from kivymd.uix.behaviors.elevation import RectangularElevationBehavior
+from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.list import ILeftBody
 from kivymd.theming import ThemableBehavior
 

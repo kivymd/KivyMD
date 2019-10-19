@@ -40,11 +40,11 @@ from kivy.utils import get_color_from_hex
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors.backgroundcolorbehavior import (
+from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
+    CircularRippleBehavior,
+    RectangularElevationBehavior,
 )
-from kivymd.uix.behaviors.ripplebehavior import CircularRippleBehavior
-from kivymd.uix.behaviors.elevation import RectangularElevationBehavior
 from kivymd.color_definitions import colors, palette
 
 Builder.load_string(

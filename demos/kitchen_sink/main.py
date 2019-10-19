@@ -16,7 +16,8 @@ import webbrowser
 from kivy.effects.scroll import ScrollEffect
 from kivy.uix.scrollview import ScrollView
 
-sys.path.append(os.path.abspath(__file__).split("demos")[0])
+if getattr(sys, "frozen", False):
+    sys.path.append(os.path.abspath(__file__).split("demos")[0])
 
 from kivy.factory import Factory
 from kivy.metrics import dp

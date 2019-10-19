@@ -155,4 +155,10 @@ command(
 )
 
 # Push all changes
-command(["git", "push", "--tags", "origin", "master", *branches_to_push])
+if input("Do you want to push changes? (y)") in ("", "y", "yes"):
+    command(["git", "push", "--tags", "origin", "master", *branches_to_push])
+else:
+    print(
+        "Changes did not pushed. Command for manual pushing:"
+        " git push --tags origin master " + " ".join(branches_to_push)
+    )

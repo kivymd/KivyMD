@@ -19,6 +19,11 @@ from kivy.uix.scrollview import ScrollView
 if not getattr(sys, "frozen", False):
     sys.path.append(os.path.abspath(__file__).split("demos")[0])
 
+os.environ["KITCHEN_SINK_ASSETS"] = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), f"assets{os.sep}"
+)
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
+
 from kivy.factory import Factory
 from kivy.metrics import dp
 from kivy.app import App
@@ -45,7 +50,6 @@ from kivymd.utils import asynckivy
 from kivymd.theming import ThemeManager
 from dialogs import DialogLoadKvFiles
 from kivymd.icon_definitions import md_icons
-from kivymd import demos_assets_path
 
 
 def toast(text):
@@ -59,7 +63,7 @@ main_widget_kv = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
-#:import demos_assets_path kivymd.demos_assets_path
+#:import demos_assets_path main.demos_assets_path
 
 # FIXME: if you remove the import of this class,
 #        an error is returned when using the `MDMenu` example

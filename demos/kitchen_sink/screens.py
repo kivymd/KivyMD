@@ -17,7 +17,8 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
-from kivymd import demos_assets_path
+
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 source_code_viewer = """
 #:import PythonLexer kivy.extras.highlight.PythonLexer
@@ -1535,7 +1536,7 @@ fan_manager = """
 
 popup_screen = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import demos_assets_path kivymd.demos_assets_path
+#:import demos_assets_path main.demos_assets_path
 #:import images_path kivymd.images_path
 #:import Window kivy.core.window.Window
 

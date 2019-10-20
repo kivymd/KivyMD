@@ -28,9 +28,6 @@ __version__ = "0.102.0"
 path = os.path.dirname(__file__)
 fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
-demos_assets_path = os.path.join(
-    path.split("kivymd")[0], "demos", "kitchen_sink", f"assets{os.sep}"
-)
 
 Logger.info(f"KivyMD: v{__version__}")
 

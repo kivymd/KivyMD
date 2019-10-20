@@ -17,7 +17,8 @@ from kivy.metrics import dp
 from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
-from kivymd import demos_assets_path
+
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 if not os.path.exists(f"{demos_assets_path}market-crop.jpg"):
     crop_image(
@@ -28,7 +29,7 @@ if not os.path.exists(f"{demos_assets_path}market-crop.jpg"):
 
 registration_form_one = """
 #:import images_path kivymd.images_path
-#:import demos_assets_path kivymd.demos_assets_path
+#:import demos_assets_path main.demos_assets_path
 
 
 <ButtonRound@MDCustomRoundIconButton>

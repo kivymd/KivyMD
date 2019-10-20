@@ -9,15 +9,16 @@ as the Kivy framework.
 
 """
 
+import os
 from kivy.app import App
 from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 from kivy.animation import Animation
 
-from kivymd import demos_assets_path
-
 from .basedialog import BaseDialogForDemo
+
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 screen_shop_window = """
 <PreviousDialog>

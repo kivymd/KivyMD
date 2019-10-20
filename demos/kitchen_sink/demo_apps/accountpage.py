@@ -17,8 +17,9 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.screenmanager import Screen
 
-from kivymd import demos_assets_path
 from kivymd.utils.cropimage import crop_image, crop_round_image
+
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 if not os.path.exists(f"{demos_assets_path}sasha-round.png"):
     crop_round_image(
@@ -35,7 +36,7 @@ if not os.path.exists(f"{demos_assets_path}account-background-crop.png"):
 
 screen_account_page = """
 #:import Window kivy.core.window.Window
-#:import demos_assets_path kivymd.demos_assets_path
+#:import demos_assets_path main.demos_assets_path
 
 
 <LabelAccountPage@Label>

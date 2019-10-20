@@ -23,9 +23,9 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
 from kivymd.uix.behaviors import CircularRippleBehavior
-from kivymd import demos_assets_path
-
 from .basedialog import BaseDialogForDemo
+
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
     crop_image(
@@ -37,7 +37,7 @@ if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
 screen_coffee_menu = """
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
-#:import demos_assets_path kivymd.demos_assets_path
+#:import demos_assets_path main.demos_assets_path
 
 
 <PreviousDialogCoffee>

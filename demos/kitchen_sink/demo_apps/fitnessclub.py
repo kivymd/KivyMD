@@ -20,7 +20,8 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
-from kivymd import demos_assets_path
+
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 if not os.path.exists(f"{demos_assets_path}crossfit-crop.png"):
     crop_image(
@@ -36,7 +37,7 @@ if not os.path.exists(f"{demos_assets_path}about-us-girl-crop.png"):
     )
 
 screen_fitness_club = """
-#:import demos_assets_path kivymd.demos_assets_path
+#:import demos_assets_path main.demos_assets_path
 
 
 <InputField@MDTextFieldRect>:

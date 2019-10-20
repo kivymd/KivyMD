@@ -147,7 +147,7 @@ Builder.load_string(
 )
 
 
-class MDFloatingLabel(ThemableBehavior, MDCard):
+class MDFloatingLabel(MDCard, ThemableBehavior):
     text = StringProperty()
     text_color = ListProperty([0, 0, 0, 1])
 

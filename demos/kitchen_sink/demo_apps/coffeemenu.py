@@ -25,18 +25,19 @@ from kivymd.utils.cropimage import crop_image
 from kivymd.uix.behaviors import CircularRippleBehavior
 from .basedialog import BaseDialogForDemo
 
-if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg"):
+demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
+
+if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        f"{os.environ['KITCHEN_SINK_ASSETS']}coffee.jpg",
-        f"{os.environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg",
+        f"{demos_assets_path}coffee.jpg",
+        f"{demos_assets_path}coffee_crop.jpg",
     )
 
 screen_coffee_menu = """
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
 #:import environ os.environ
-
 
 <PreviousDialogCoffee>
     size_hint: None, None
@@ -76,48 +77,47 @@ screen_coffee_menu = """
 
 
 <MenuDialog>
-    orientation: 'vertical'
-    size_hint: None, None
-    size: app.Window.width - dp(45), app.Window.height - dp(85)
-    spacing: dp(5)
-    padding: dp(5)
-    pos_hint: {'center_x': .5}
 
-    canvas.before:
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            source: f"{environ['KITCHEN_SINK_ASSETS']}texture-menu.png"
-            radius: [10,]
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(5)
+        padding: dp(5)
 
-    MDLabel:
-        font_name: f"{environ['KITCHEN_SINK_ASSETS']}Pollywog.ttf"
-        text: 'Coffee Menu'
-        color: item_color
-        font_size: '20sp'
-        halign: 'center'
-        size_hint_y: None
-        height: self.texture_size[1]
-
-    Image:
-        source: f"{environ['KITCHEN_SINK_ASSETS']}sep.png"
-        size_hint_y: None
-        height: dp(40)
-
-    RecycleView:
-        id: rv
-        key_viewclass: 'viewclass'
-        key_size: 'height'
-        bar_color: coffee_color
-
-        RecycleBoxLayout:
-            padding: dp(10)
-            spacing: dp(10)
-            default_size: None, dp(48)
-            default_size_hint: 1, None
+        canvas.before:
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                source: f"{environ['KITCHEN_SINK_ASSETS']}texture-menu.png"
+                radius: [10,]
+    
+        MDLabel:
+            font_name: f"{environ['KITCHEN_SINK_ASSETS']}Pollywog.ttf"
+            text: 'Coffee Menu'
+            color: item_color
+            font_size: '20sp'
+            halign: 'center'
             size_hint_y: None
-            height: self.minimum_height
-            orientation: 'vertical'
+            height: self.texture_size[1]
+    
+        Image:
+            source: f"{environ['KITCHEN_SINK_ASSETS']}sep.png"
+            size_hint_y: None
+            height: dp(40)
+    
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+            bar_color: coffee_color
+    
+            RecycleBoxLayout:
+                padding: dp(10)
+                spacing: dp(10)
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
 
 
 <ItemCoffeeMenu@OneLineAvatarListItem>
@@ -201,7 +201,7 @@ screen_coffee_menu = """
 
         CustomToolbar:
             id: toolbar
-            y: app.Window.height
+            y: Window.height - self.height
 
         BoxLayout:
             id: top_menu
@@ -246,11 +246,6 @@ screen_coffee_menu = """
                 name_item: 'Back'
                 on_release:
                     root.hide_menu_animation()
-                    root.hide_toolbar_animation()
-
-        MenuDialog:
-            id: menu_dialog
-            y: app.Window.height
 """
 
 
@@ -300,27 +295,24 @@ class CoffeeMenu(Screen):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.menu_dialog = MenuDialog(size_hint=(0.6, 0.95))
+        self.menu_dialog.bind(on_dismiss=self.hide_menu_list_animation)
         Window.bind(on_keyboard=self.events_program)
 
     def on_enter(self, *args):
-        self.add_custom_toolbar()
         self.show_menu_animation()
         self.set_items_menu()
 
     def set_items_menu(self):
-        self.ids.menu_dialog.ids.rv.data = []
+        self.menu_dialog.ids.rv.data = []
         for name_item in self.coffees_list:
-            self.ids.menu_dialog.ids.rv.data.append(
+            self.menu_dialog.ids.rv.data.append(
                 {
                     "viewclass": "ItemCoffeeMenu",
                     "text": str(name_item),
                     "callback": self.open_previous_coffee_info,
                 }
             )
-
-    def add_custom_toolbar(self):
-        toolbar = self.ids.toolbar
-        Animation(y=Window.height - toolbar.height, d=0.3).start(toolbar)
 
     def show_menu_animation(self):
         Animation(x=0, d=0.2).start(self.ids.top_menu)
@@ -329,13 +321,10 @@ class CoffeeMenu(Screen):
         )
 
     def show_menu_list_animation(self):
-        Animation(y=dp(60), d=0.6, t="out_elastic").start(self.ids.menu_dialog)
+        self.menu_dialog.open()
         self.menu_open = True
 
-    def hide_menu_list_animation(self):
-        Animation(y=Window.height, d=0.6, t="in_elastic").start(
-            self.ids.menu_dialog
-        )
+    def hide_menu_list_animation(self, *args):
         self.menu_open = False
 
     def hide_menu_animation(self):
@@ -360,7 +349,7 @@ class CoffeeMenu(Screen):
     def events_program(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
             if self.menu_open:
-                self.hide_menu_list_animation()
+                self.menu_open.dismiss()
 
 
 class ItemMenu(CircularRippleBehavior, ButtonBehavior, BoxLayout):
@@ -368,17 +357,15 @@ class ItemMenu(CircularRippleBehavior, ButtonBehavior, BoxLayout):
     icon_item = StringProperty()
 
 
-class MenuDialog(BoxLayout):
-    background = StringProperty()
+class MenuDialog(BaseDialogForDemo):
+    pass
 
 
 class PreviousDialogCoffee(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):
-        if not os.path.exists(
-            f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"
-        ):
+        if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"):
             crop_image(
                 (int(dp(280)), int(dp(222))),
                 f"{os.environ['KITCHEN_SINK_ASSETS']}Latte.jpg",

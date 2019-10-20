@@ -30,6 +30,9 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
+
+Window.softinput_mode = "below_target"
+
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty

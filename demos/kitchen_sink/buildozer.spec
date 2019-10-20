@@ -13,7 +13,7 @@ package.domain = com.heattheatr
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py
+source.include_exts = py,png,jpg,jpeg,ttf,md
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*
@@ -24,7 +24,7 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==1.11.1,kivymd,pillow
+requirements = python3,kivy==1.11.1,kivymd,pillow,pygments
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

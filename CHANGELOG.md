@@ -9,6 +9,7 @@ Change Log
 * Added examples of `spec` files for building [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
 * Added some features to `MDProgressLoader`.
 * Bug fixes and other minor improvements.
+* Added the ability to preview the current value of the slider
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)
 ```bash

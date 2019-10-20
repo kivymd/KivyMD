@@ -28,9 +28,6 @@ from kivy.uix.slider import Slider
 
 Builder.load_string(
     """
-#:import images_path kivymd.images_path
-
-
 <MDSlider>
     id: slider
     canvas:
@@ -101,7 +98,6 @@ Builder.load_string(
         id: hint_box
         size_hint: None, None
         md_bg_color: [1, 1, 1, 1] if root.active else [0, 0, 0, 0]
-        #background: f'{images_path}transparent.png'
         elevation: 0 if slider._is_off else (4 if root.active else 0)
         size:
             (dp(12), dp(12)) if root.disabled else ((dp(28), dp(28)) \
@@ -271,12 +267,6 @@ class MDSlider(ThemableBehavior, Slider):
             self.active = False
 
 
-#             thumb = self.ids['thumb']
-#             if thumb.collide_point(*touch.pos):
-#                 thumb.on_touch_down(touch)
-#                 thumb.on_touch_up(touch)
-
-
 if __name__ == "__main__":
     from kivy.app import App
     from kivymd.theming import ThemeManager
@@ -287,47 +277,57 @@ if __name__ == "__main__":
         def build(self):
             return Builder.load_string(
                 """
-BoxLayout:
-    orientation: 'vertical'
-    BoxLayout:
-        size_hint_y: None
-        height: '48dp'
-        Label:
-            text: "Toggle disabled"
-            color: [0, 0, 0, 1]
-        CheckBox:
-            on_press: slider.disabled = not slider.disabled
-    BoxLayout:
-        size_hint_y: None
-        height: '48dp'
-        Label:
-            text: "Toggle active"
-            color: [0, 0, 0, 1]
-        CheckBox:
-            on_press: slider.active = not slider.active
-    BoxLayout:
-        size_hint_y: None
-        height: '48dp'
-        Label:
-            text: "Toggle show off"
-            color: [0, 0, 0, 1]
-        CheckBox:
-            on_press: slider.show_off = not slider.show_off
+Screen
+    name: 'progress bar'
 
-    MDSlider:
-        id: slider
-        min: 0
-        max: 100
-        value: 40
+    BoxLayout:
+        orientation:'vertical'
+        padding: '8dp'
 
-    MDSlider:
-        id: slider2
-        orientation: "vertical"
-        min: 0
-        max: 100
-        value: 40
-        hint: False
+        MDLabel:
+            text: "Slider with [b]hint = True[/b]"
+            markup: True
+            halign: "center"
 
+        MDSlider:
+            id: progress_slider
+            min: 0
+            max: 100
+            value: 40
+
+        MDLabel:
+            text: "Slider with [b]hint = False[/b]"
+            markup: True
+            halign: "center"
+
+        MDSlider:
+            id: progress_slider
+            min: 0
+            max: 100
+            value: 40
+            hint: False
+
+        MDLabel:
+            text: "Examples [b]MDProgressBar[/b]"
+            markup: True
+            halign: "center"
+
+        MDProgressBar:
+            value: progress_slider.value
+
+        MDProgressBar:
+            reversed: True
+            value: progress_slider.value
+
+        BoxLayout:
+            MDProgressBar:
+                orientation: "vertical"
+                reversed: True
+                value: progress_slider.value
+
+            MDProgressBar:
+                orientation: "vertical"
+                value: progress_slider.value
 """
             )
 

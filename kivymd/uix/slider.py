@@ -93,21 +93,6 @@ Builder.load_string(
             if root.disabled else root.thumb_color_down)
         elevation:
             0 if slider._is_off else (4 if root.active else 2)
-
-    Thumb:
-        id: thumb2
-        size_hint: None, None
-        size:
-            (dp(12), dp(12)) if root.disabled else ((dp(24), dp(24))\
-            if root.active else (dp(16), dp(16)))
-        pos:
-            (slider.value_pos[0] - dp(8), slider.center_y - thumb2.height/2 + dp(20))\
-            if slider.orientation == 'horizontal'\
-            else (slider.center_x - thumb2.width / 2 + dp(20),\
-            slider.value_pos[1] - dp(8))
-        color: [1, 1, 0, 0]
-        elevation:
-            0 if slider._is_off else (4 if root.active else 2)
 """
 )
 
@@ -224,7 +209,6 @@ class MDSlider(ThemableBehavior, Slider):
 
     def on_value_normalized(self, *args):
         """ When the value == min set it to "off" state and make slider a ring """
-
         self._update_is_off()
 
     def on_show_off(self, *args):
@@ -240,9 +224,9 @@ class MDSlider(ThemableBehavior, Slider):
         self._update_offset()
 
     def _update_offset(self):
-        """Offset is used to shift the sliders so the background color
-        shows through the off circle."""
-
+        """ Offset is used to shift the sliders so the background color
+            shows through the off circle.
+        """
         d = 2 if self.active else 0
         self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
 

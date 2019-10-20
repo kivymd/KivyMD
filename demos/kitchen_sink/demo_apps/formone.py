@@ -18,18 +18,16 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
-if not os.path.exists(f"{demos_assets_path}market-crop.jpg"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}market-crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        f"{demos_assets_path}market.jpg",
-        f"{demos_assets_path}market-crop.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}market.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}market-crop.jpg",
     )
 
 registration_form_one = """
 #:import images_path kivymd.images_path
-#:import demos_assets_path main.demos_assets_path
+#:import environ os.environ
 
 
 <ButtonRound@MDCustomRoundIconButton>
@@ -57,7 +55,7 @@ registration_form_one = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: f'{demos_assets_path}market-crop.jpg'
+                source: f"{environ['KITCHEN_SINK_ASSETS']}market-crop.jpg"
 
         BoxLayout:
             id: box_top
@@ -162,11 +160,11 @@ registration_form_one = """
                 pos_hint: {'center_x': .5}
 
                 ButtonRound:
-                    source: f'{demos_assets_path}google-flat-round.png'
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}google-flat-round.png"
                 ButtonRound:
-                    source: f'{demos_assets_path}facebook-flat-round.png'
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}facebook-flat-round.png"
                 ButtonRound:
-                    source: f'{demos_assets_path}twitter-flat-round.png'
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}twitter-flat-round.png"
 
         BoxLayout:
             size_hint_y: None

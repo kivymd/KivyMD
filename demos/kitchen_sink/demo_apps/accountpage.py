@@ -19,24 +19,22 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image, crop_round_image
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
-if not os.path.exists(f"{demos_assets_path}sasha-round.png"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}sasha-round.png"):
     crop_round_image(
         (int(dp(Window.width * 30 / 100)), int(dp(Window.width * 30 / 100))),
-        f"{demos_assets_path}sasha-grey.jpg",
-        f"{demos_assets_path}sasha-round.png",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}sasha-grey.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}sasha-round.png",
     )
-if not os.path.exists(f"{demos_assets_path}account-background-crop.png"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}account-background-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        f"{demos_assets_path}account-background.jpeg",
-        f"{demos_assets_path}account-background-crop.png",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}account-background.jpeg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}account-background-crop.png",
     )
 
 screen_account_page = """
 #:import Window kivy.core.window.Window
-#:import demos_assets_path main.demos_assets_path
+#:import environ os.environ
 
 
 <LabelAccountPage@Label>
@@ -58,7 +56,7 @@ screen_account_page = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: f'{demos_assets_path}account-background-crop.png'
+                source: f"{environ['KITCHEN_SINK_ASSETS']}account-background-crop.png"
 
         BoxLayout:
             orientation: 'vertical'
@@ -73,7 +71,7 @@ screen_account_page = """
                 Image:
                     size_hint: None, None
                     size: self.size
-                    source: f'{demos_assets_path}sasha-round.png'
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}sasha-round.png"
                     pos_hint: {'center_x': .5}
 
                 LabelAccountPage:
@@ -132,7 +130,7 @@ screen_account_page = """
                     MDCustomRoundIconButton:
                         size_hint: None, None
                         size: button.height, button.height
-                        source: f'{demos_assets_path}add-friend.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}add-friend.png"
 
                 ScrollView:
 

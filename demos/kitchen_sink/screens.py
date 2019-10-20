@@ -18,8 +18,6 @@ from kivy.metrics import dp
 
 from kivymd.utils.cropimage import crop_image
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
 source_code_viewer = """
 #:import PythonLexer kivy.extras.highlight.PythonLexer
 
@@ -100,13 +98,13 @@ grid = """
     name: 'grid'
 
     on_enter:
-        app.crop_image_for_tile(tile_1, tile_1.size, f'{demos_assets_path}beautiful-931152_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_2, tile_2.size, f'{demos_assets_path}african-lion-951778_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_3, tile_3.size, f'{demos_assets_path}guitar-1139397_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_4, tile_4.size, f'{demos_assets_path}robin-944887_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_5, tile_5.size, f'{demos_assets_path}kitten-1049129_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_6, tile_6.size, f'{demos_assets_path}light-bulb-1042480_1280_tile_crop.png')
-        app.crop_image_for_tile(tile_7, tile_7.size, f'{demos_assets_path}tangerines-1111529_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_1, tile_1.size, f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_2, tile_2.size, f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_3, tile_3.size, f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_4, tile_4.size, f'{environ["KITCHEN_SINK_ASSETS"]}robin-944887_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_5, tile_5.size, f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_6, tile_6.size, f'{environ["KITCHEN_SINK_ASSETS"]}light-bulb-1042480_1280_tile_crop.png')
+        app.crop_image_for_tile(tile_7, tile_7.size, f'{environ["KITCHEN_SINK_ASSETS"]}tangerines-1111529_1280_tile_crop.png')
 
     ScrollView:
         do_scroll_x: False
@@ -845,14 +843,14 @@ lists = """
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
                 ImageLeftWidget:
-                    source: f'{demos_assets_path}avatar.png'
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
 
             TwoLineAvatarListItem:
                 type: "two-line"
                 text: "Two-line item..."
                 secondary_text: "with avatar"
                 ImageLeftWidget:
-                    source: f'{demos_assets_path}avatar.png'
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
 
             ThreeLineAvatarListItem:
                 type: "three-line"
@@ -860,7 +858,7 @@ lists = """
                 secondary_text:
                     "...with avatar..." + '\\n' + "and third line!"
                 ImageLeftWidget:
-                    source: f'{demos_assets_path}avatar.png'
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
 
             OneLineIconListItem:
                 text: "Single-line item with left icon"
@@ -886,14 +884,14 @@ lists = """
             OneLineAvatarIconListItem:
                 text: "Single-line + avatar&icon"
                 ImageLeftWidget:
-                    source: f'{demos_assets_path}avatar.png'
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
                 IconRightSampleWidget:
 
             TwoLineAvatarIconListItem:
                 text: "Two-line item..."
                 secondary_text: "...with avatar&icon"
                 ImageLeftWidget:
-                    source: f'{demos_assets_path}avatar.png'
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
                 IconRightSampleWidget:
 
             ThreeLineAvatarIconListItem:
@@ -901,7 +899,7 @@ lists = """
                 secondary_text:
                     "...with avatar&icon..." + '\\n' + "and third line!"
                 ImageLeftWidget:
-                    source: f'{demos_assets_path}avatar.png'
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
                 IconRightSampleWidget:
 """
 
@@ -1494,22 +1492,22 @@ fan_manager = """
 
         ScreenOne:
             name: 'Screen One'
-            path_to_image: f'{demos_assets_path}african-lion-951778_1280.png'
+            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
         ScreenTwo:
             name: 'Screen Two'
-            path_to_image: f'{demos_assets_path}beautiful-931152_1280.png'
+            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
         ScreenTree:
             name: 'Screen Tree'
-            path_to_image: f'{demos_assets_path}kitten-1049129_1280.png'
+            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
         ScreenFour:
             name: 'Screen Four'
-            path_to_image: f'{demos_assets_path}tangerines-1111529_1280.png'
+            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}tangerines-1111529_1280.png'
             on_enter: app.main_widget.ids.toolbar.title = self.name
 
 
@@ -1536,7 +1534,7 @@ fan_manager = """
 
 popup_screen = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import demos_assets_path main.demos_assets_path
+#:import environ os.environ
 #:import images_path kivymd.images_path
 #:import Window kivy.core.window.Window
 
@@ -1590,7 +1588,7 @@ popup_screen = """
             size: dp(36), dp(48)
             pos_hint: {'center_x': .5}
             on_active:
-                app.popup_screen.background_image = f'{demos_assets_path}/white-texture.png' \
+                app.popup_screen.background_image = f'{environ["KITCHEN_SINK_ASSETS"]}/white-texture.png' \
                 if self.active else f'{images_path}/transparent.png'
 
         MDLabel:
@@ -1680,7 +1678,7 @@ manager_swiper = """
     pos_hint: {'top': 1}
 
     Image:
-        source: f'{demos_assets_path}guitar-1139397_1280_swiper_crop.png'
+        source: f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280_swiper_crop.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -2061,12 +2059,12 @@ class Screens(object):
 
         if not self.manager_swiper:
             path_to_crop_image = (
-                f"{demos_assets_path}guitar-1139397_1280_swiper_crop.png"
+                f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_swiper_crop.png"
             )
             if not os.path.exists(path_to_crop_image):
                 crop_image(
                     (int(Window.width - dp(10)), int(dp(250))),
-                    f"{demos_assets_path}guitar-1139397_1280.png",
+                    f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
                     path_to_crop_image,
                 )
 

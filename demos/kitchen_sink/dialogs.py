@@ -10,6 +10,7 @@ Builder.load_string(
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import Window kivy.core.window.Window
 #:import images_path kivymd.images_path
+#:import environ os.environ
 
 
 <BaseDialogForLoadKvFiles>:
@@ -37,7 +38,7 @@ Builder.load_string(
         Image:
             size_hint: None, None
             size: Window.height * 12 / 100, Window.height * 12 / 100
-            source: 'assets/kivy-logo-white-512.png'
+            source: f"{environ['KITCHEN_SINK_ASSETS']}kivy-logo-white-512.png"
             pos_hint: {'center_y': .5}
 
         Label:

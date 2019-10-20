@@ -25,19 +25,17 @@ from kivymd.utils.cropimage import crop_image
 from kivymd.uix.behaviors import CircularRippleBehavior
 from .basedialog import BaseDialogForDemo
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
-if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        f"{demos_assets_path}coffee.jpg",
-        f"{demos_assets_path}coffee_crop.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}coffee.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg",
     )
 
 screen_coffee_menu = """
 #:set coffee_color [.33725490196078434, .16862745098039217, .0392156862745098, .7]
 #:set item_color [.3333333333333333, .1411764705882353, .06666666666666667, 1]
-#:import demos_assets_path main.demos_assets_path
+#:import environ os.environ
 
 
 <PreviousDialogCoffee>
@@ -52,7 +50,7 @@ screen_coffee_menu = """
             id: previous_image
             size_hint: None, None
             size: dp(280), dp(222)
-            source: f'{demos_assets_path}Latte-crop.jpg'
+            source: f"{environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"
 
         BoxLayout:
             padding: dp(10)
@@ -89,11 +87,11 @@ screen_coffee_menu = """
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            source: f'{demos_assets_path}texture-menu.png'
+            source: f"{environ['KITCHEN_SINK_ASSETS']}texture-menu.png"
             radius: [10,]
 
     MDLabel:
-        font_name: f'{demos_assets_path}Pollywog.ttf'
+        font_name: f"{environ['KITCHEN_SINK_ASSETS']}Pollywog.ttf"
         text: 'Coffee Menu'
         color: item_color
         font_size: '20sp'
@@ -102,7 +100,7 @@ screen_coffee_menu = """
         height: self.texture_size[1]
 
     Image:
-        source: f'{demos_assets_path}sep.png'
+        source: f"{environ['KITCHEN_SINK_ASSETS']}sep.png"
         size_hint_y: None
         height: dp(40)
 
@@ -129,7 +127,7 @@ screen_coffee_menu = """
     on_release: root.callback()
 
     ImageLeftWidget:
-        source: f'{demos_assets_path}coffee-icon-brown.png'
+        source: f"{environ['KITCHEN_SINK_ASSETS']}coffee-icon-brown.png"
 
 
 <CustomToolbar@BoxLayout>
@@ -146,12 +144,12 @@ screen_coffee_menu = """
             pos: self.pos
 
     Image:
-        source: f'{demos_assets_path}coffee-icon.png'
+        source: f"{environ['KITCHEN_SINK_ASSETS']}coffee-icon.png"
         size_hint: None, None
         size: dp(46), dp(46)
 
     MDLabel:
-        font_name: f'{demos_assets_path}Pollywog.ttf'
+        font_name: f"{environ['KITCHEN_SINK_ASSETS']}Pollywog.ttf"
         text: 'Coffee House'
         color: 1, 1, 1, 1
         font_size: '30sp'
@@ -199,7 +197,7 @@ screen_coffee_menu = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: f'{demos_assets_path}coffee_crop.jpg'
+                source: f"{environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg"
 
         CustomToolbar:
             id: toolbar
@@ -215,16 +213,16 @@ screen_coffee_menu = """
             x: Window.width
 
             ItemMenu:
-                icon_item: f'{demos_assets_path}menu.png'
+                icon_item: f"{environ['KITCHEN_SINK_ASSETS']}menu.png"
                 name_item: 'Menu'
                 on_release: root.show_menu_list_animation()
 
             ItemMenu:
-                icon_item: f'{demos_assets_path}about-us.png'
+                icon_item: f"{environ['KITCHEN_SINK_ASSETS']}about-us.png"
                 name_item: 'About Us'
 
             ItemMenu:
-                icon_item: f'{demos_assets_path}facebook.png'
+                icon_item: f"{environ['KITCHEN_SINK_ASSETS']}facebook.png"
                 name_item: 'Facebook'
 
         BoxLayout:
@@ -236,15 +234,15 @@ screen_coffee_menu = """
             x: -Window.width
 
             ItemMenu:
-                icon_item: f'{demos_assets_path}events.png'
+                icon_item: f"{environ['KITCHEN_SINK_ASSETS']}events.png"
                 name_item: 'Events'
 
             ItemMenu:
-                icon_item: f'{demos_assets_path}coffees.png'
+                icon_item: f"{environ['KITCHEN_SINK_ASSETS']}coffees.png"
                 name_item: 'Coffees'
 
             ItemMenu:
-                icon_item: f'{demos_assets_path}back.png'
+                icon_item: f"{environ['KITCHEN_SINK_ASSETS']}back.png"
                 name_item: 'Back'
                 on_release:
                     root.hide_menu_animation()
@@ -378,10 +376,10 @@ class PreviousDialogCoffee(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):
-        if not os.path.exists(f"{demos_assets_path}Latte-crop.jpg"):
+        if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"):
             crop_image(
                 (int(dp(280)), int(dp(222))),
-                f"{demos_assets_path}Latte.jpg",
-                f"{demos_assets_path}Latte-crop.jpg",
+                f"{os.environ['KITCHEN_SINK_ASSETS']}Latte.jpg",
+                f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg",
             )
             self.ids.previous_image.reload()

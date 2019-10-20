@@ -21,23 +21,21 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.utils.cropimage import crop_image
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
-if not os.path.exists(f"{demos_assets_path}crossfit-crop.png"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}crossfit-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        f"{demos_assets_path}crossfit.png",
-        f"{demos_assets_path}crossfit-crop.png",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}crossfit.png",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}crossfit-crop.png",
     )
-if not os.path.exists(f"{demos_assets_path}about-us-girl-crop.png"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}about-us-girl-crop.png"):
     crop_image(
         (Window.width, Window.height),
-        f"{demos_assets_path}about-us-girl.png",
-        f"{demos_assets_path}about-us-girl-crop.png",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}about-us-girl.png",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}about-us-girl-crop.png",
     )
 
 screen_fitness_club = """
-#:import demos_assets_path main.demos_assets_path
+#:import environ os.environ
 
 
 <InputField@MDTextFieldRect>:
@@ -62,7 +60,7 @@ screen_fitness_club = """
             pos: self.pos
 
     ImageLeftWidget:
-        source: f'{demos_assets_path}arrow-right.png'
+        source: f"{environ['KITCHEN_SINK_ASSETS']}arrow-right.png"
 
 <ItemLabel@MDLabel>
     color: 1, 1, 1, 1
@@ -142,7 +140,7 @@ screen_fitness_club = """
             pos: self.pos
 
     MDLabel:
-        font_name: f'{demos_assets_path}ua_scroonge.ttf'
+        font_name: f"{environ['KITCHEN_SINK_ASSETS']}ua_scroonge.ttf"
         text: 'Fitness Club'
         color: 1, 1, 1, 1
         font_size: '36sp'
@@ -156,7 +154,7 @@ screen_fitness_club = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: f'{demos_assets_path}crossfit-crop.png'
+                source: f"{environ['KITCHEN_SINK_ASSETS']}crossfit-crop.png"
 
 
 <Toolbar@FloatLayout>
@@ -173,7 +171,7 @@ screen_fitness_club = """
             Rectangle:
                 size: self.size
                 pos: self.pos
-                source: f'{demos_assets_path}gradient.png'
+                source: f"{environ['KITCHEN_SINK_ASSETS']}gradient.png"
         
     Label:
         text: root.text
@@ -210,7 +208,7 @@ screen_fitness_club = """
             id: about_girl
             size_hint: None, None
             size: app.Window.width - dp(20), dp(200)
-            source: f'{demos_assets_path}about-us-girl-crop.png'
+            source: f"{environ['KITCHEN_SINK_ASSETS']}about-us-girl-crop.png"
 
         ScrollView:
 
@@ -243,7 +241,7 @@ screen_fitness_club = """
 
                 MDCustomRoundIconButton:
                     id: facebook
-                    source: f'{demos_assets_path}facebook-round.png'
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}facebook-round.png"
                     size_hint: None, None
                     size: dp(50), dp(50)
                     x: -60
@@ -251,7 +249,7 @@ screen_fitness_club = """
 
                 MDCustomRoundIconButton:
                     id: twitter
-                    source: f'{demos_assets_path}twitter-round.png'
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}twitter-round.png"
                     size_hint: None, None
                     size: dp(50), dp(50)
                     x: app.Window.width
@@ -292,10 +290,10 @@ screen_fitness_club = """
             icon: 'information'
             on_tab_press:
                 root.set_image(\
-                f'{demos_assets_path}about-us-girl', \
+                f"{environ['KITCHEN_SINK_ASSETS']}about-us-girl", \
                 (int(app.Window.width - dp(20)), int(dp(200))), \
                 20, \
-                'png')
+                "png")
 
             AboutUs:
                 id: about_us

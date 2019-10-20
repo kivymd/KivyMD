@@ -18,8 +18,6 @@ from kivy.animation import Animation
 
 from .basedialog import BaseDialogForDemo
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
 screen_shop_window = """
 <PreviousDialog>
     size_hint: 0, 0
@@ -312,9 +310,9 @@ class ShopWindow(Screen):
                 {
                     "viewclass": "CardsBoxForShopWindow",
                     "height": dp(300),
-                    "product_image": f"{demos_assets_path}clock-%d.png"
+                    "product_image": f"{os.environ['KITCHEN_SINK_ASSETS']}clock-%d.png"
                     % increment_left,
-                    "product_image2": f"{demos_assets_path}clock-%d.png"
+                    "product_image2": f"{os.environ['KITCHEN_SINK_ASSETS']}clock-%d.png"
                     % (increment_left + 1),
                     "previous_dialog": dialog,
                 }
@@ -328,7 +326,7 @@ class ShopWindow(Screen):
                 {
                     "viewclass": "CardItemForCart",
                     "height": dp(150),
-                    "product_image": f"{demos_assets_path}clock-%d.png" % i,
+                    "product_image": f"{os.environ['KITCHEN_SINK_ASSETS']}clock-%d.png" % i,
                 }
             )
 

@@ -16,13 +16,14 @@ import webbrowser
 from kivy.effects.scroll import ScrollEffect
 from kivy.uix.scrollview import ScrollView
 
-if not getattr(sys, "frozen", False):
+if getattr(sys, "frozen", False):  # Bundle mode with PyInstaller
+    os.environ["KITCHEN_SINK_ROOT"] = sys._MEIPASS
+else:
     sys.path.append(os.path.abspath(__file__).split("demos")[0])
-
+    os.environ["KITCHEN_SINK_ROOT"] = os.path.dirname(os.path.abspath(__file__))
 os.environ["KITCHEN_SINK_ASSETS"] = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), f"assets{os.sep}"
+    os.environ["KITCHEN_SINK_ROOT"], f"assets{os.sep}"
 )
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
 
 from kivy.factory import Factory
 from kivy.metrics import dp
@@ -66,7 +67,7 @@ main_widget_kv = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 #:import images_path kivymd.images_path
-#:import demos_assets_path main.demos_assets_path
+#:import environ os.environ
 
 # FIXME: if you remove the import of this class,
 #        an error is returned when using the `MDMenu` example
@@ -81,7 +82,7 @@ main_widget_kv = """
 
     Image:
         id: image
-        source: f'{demos_assets_path}guitar-1139397_1280_crop.png'
+        source: f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280_crop.png'
         size_hint: 1, None
         height: dp(Window.height * 35 // 100)
         allow_stretch: True
@@ -151,7 +152,7 @@ main_widget_kv = """
 
 
 <ContentNavigationDrawer@MDNavigationDrawer>
-    drawer_logo: f'{demos_assets_path}drawer_logo.png'
+    drawer_logo: f'{environ["KITCHEN_SINK_ASSETS"]}drawer_logo.png'
 
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
@@ -588,8 +589,8 @@ class KitchenSink(App, Screens):
         Window.bind(on_keyboard=self.events)
         crop_image(
             (Window.width, int(dp(Window.height * 35 // 100))),
-            f"{demos_assets_path}guitar-1139397_1280.png",
-            f"{demos_assets_path}guitar-1139397_1280_crop.png",
+            f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
+            f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_crop.png",
         )
 
     def set_list_for_refresh_layout(self):
@@ -700,7 +701,7 @@ class KitchenSink(App, Screens):
             self.data["Expansion Panel"]["object"].ids.anim_list.add_widget(
                 MDExpansionPanel(
                     content=content,
-                    icon=f"{demos_assets_path}kivy-logo-white-512.png",
+                    icon=f"{os.environ['KITCHEN_SINK_ASSETS']}kivy-logo-white-512.png",
                     title=name_contact,
                 )
             )
@@ -871,12 +872,12 @@ class KitchenSink(App, Screens):
             )
 
             image_for_card = (
-                f"{demos_assets_path}kitten-for_card-1049129_1280-crop.png"
+                f"{os.environ['KITCHEN_SINK_ASSETS']}kitten-for_card-1049129_1280-crop.png"
             )
             if not os.path.exists(image_for_card):
                 crop_image(
                     (int(Window.width), int(dp(200))),
-                    f"{demos_assets_path}kitten-1049129_1280.png",
+                    f"{os.environ['KITCHEN_SINK_ASSETS']}kitten-1049129_1280.png",
                     image_for_card,
                 )
             instance_grid_card.add_widget(
@@ -935,12 +936,12 @@ class KitchenSink(App, Screens):
 
         if not self.user_card:
             image_for_user_card = (
-                f"{demos_assets_path}guitar-for-user-card1139397_1280-crop.png"
+                f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-for-user-card1139397_1280-crop.png"
             )
             if not os.path.exists(image_for_user_card):
                 crop_image(
                     (int(Window.width), int(dp(Window.height * 40 // 100))),
-                    f"{demos_assets_path}guitar-1139397_1280.png",
+                    f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
                     image_for_user_card,
                 )
 
@@ -1152,27 +1153,27 @@ class KitchenSink(App, Screens):
             self.bs_menu_2.add_item(
                 "Facebook",
                 lambda x: self.callback_for_menu_items("Facebook"),
-                icon_src=f"{demos_assets_path}facebook-box.png",
+                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}facebook-box.png",
             )
             self.bs_menu_2.add_item(
                 "YouTube",
                 lambda x: self.callback_for_menu_items("YouTube"),
-                icon_src=f"{demos_assets_path}youtube-play.png",
+                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}youtube-play.png",
             )
             self.bs_menu_2.add_item(
                 "Twitter",
                 lambda x: self.callback_for_menu_items("Twitter"),
-                icon_src=f"{demos_assets_path}twitter.png",
+                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}twitter.png",
             )
             self.bs_menu_2.add_item(
                 "Da Cloud",
                 lambda x: self.callback_for_menu_items("Da Cloud"),
-                icon_src=f"{demos_assets_path}cloud-upload.png",
+                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}cloud-upload.png",
             )
             self.bs_menu_2.add_item(
                 "Camera",
                 lambda x: self.callback_for_menu_items("Camera"),
-                icon_src=f"{demos_assets_path}camera.png",
+                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}camera.png",
             )
         self.bs_menu_2.open()
 
@@ -1295,22 +1296,20 @@ class KitchenSink(App, Screens):
 
                 Snackbar(text="No source code for this example").show()
                 return
-            if icon == "source-repository":
+            elif icon == "source-repository":
                 if platform in ("win", "linux", "macosx"):
                     webbrowser.open(
                         f"https://github.com/HeaTTheatR/KivyMD/wiki/"
                         f"{os.path.splitext(self.file_source_code)[0]}"
                     )
-                return
             elif icon == "language-python":
                 self.main_widget.ids.scr_mngr.current = "code viewer"
-                if self.file_source_code:
-                    with open(
-                        f"{self.directory}/KivyMD.wiki/{self.file_source_code}"
-                    ) as source_code:
-                        self.data["Source code"][
-                            "object"
-                        ].ids.code_input.text = source_code.read()
+                try:
+                    self.data["Source code"]["object"].ids.code_input.text = open(f"{os.environ['KITCHEN_SINK_ROOT']}/KivyMD.wiki/{self.file_source_code}", "rt", encoding="utf-8").read()
+                except FileNotFoundError:
+                    from kivymd.uix.snackbar import Snackbar
+
+                    Snackbar(text="Cannot load source code").show()
 
         menu_for_context_menu_source_code = []
         data = {

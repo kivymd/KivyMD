@@ -121,7 +121,7 @@ changelog_unreleased_regex = r"(?<=## )[^\n]*(?=\n\n)"
 changelog_see_changes_regex = rf"{old_version}\.\.\.master"
 changelog_see_changes_string = f"{old_version}...{new_version}"
 changelog_install_regex = r"git\+https[\S]*@master(?=\n)"
-changelog_install_string = f"{new_version}"
+changelog_install_string = f"kivymd=={new_version}"
 
 try:
     # Rename Unreleased section with new version

@@ -797,10 +797,9 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                         duration=0.2, _current_error_color=(0, 0, 0, 0)
                     ).start(self)
             else:
-                Animation(
-                    duration=0.2,
-                    color=(1, 1, 1, 1),
-                ).start(self._hint_lbl)
+                Animation(duration=0.2, color=(1, 1, 1, 1)).start(
+                    self._hint_lbl
+                )
                 Animation(
                     duration=0.2,
                     _current_line_color=self.line_color_focus,

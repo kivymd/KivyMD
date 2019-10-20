@@ -326,7 +326,8 @@ class ShopWindow(Screen):
                 {
                     "viewclass": "CardItemForCart",
                     "height": dp(150),
-                    "product_image": f"{os.environ['KITCHEN_SINK_ASSETS']}clock-%d.png" % i,
+                    "product_image": f"{os.environ['KITCHEN_SINK_ASSETS']}clock-%d.png"
+                    % i,
                 }
             )
 

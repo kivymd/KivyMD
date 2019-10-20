@@ -25,7 +25,9 @@ if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}sasha-round.png"):
         f"{os.environ['KITCHEN_SINK_ASSETS']}sasha-grey.jpg",
         f"{os.environ['KITCHEN_SINK_ASSETS']}sasha-round.png",
     )
-if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}account-background-crop.png"):
+if not os.path.exists(
+    f"{os.environ['KITCHEN_SINK_ASSETS']}account-background-crop.png"
+):
     crop_image(
         (Window.width, Window.height),
         f"{os.environ['KITCHEN_SINK_ASSETS']}account-background.jpeg",

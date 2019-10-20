@@ -2058,9 +2058,7 @@ class Screens(object):
         from kivymd.uix.managerswiper import MDSwiperPagination
 
         if not self.manager_swiper:
-            path_to_crop_image = (
-                f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_swiper_crop.png"
-            )
+            path_to_crop_image = f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_swiper_crop.png"
             if not os.path.exists(path_to_crop_image):
                 crop_image(
                     (int(Window.width - dp(10)), int(dp(250))),

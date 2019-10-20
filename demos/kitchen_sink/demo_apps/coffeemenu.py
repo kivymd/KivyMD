@@ -376,7 +376,9 @@ class PreviousDialogCoffee(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):
-        if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"):
+        if not os.path.exists(
+            f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"
+        ):
             crop_image(
                 (int(dp(280)), int(dp(222))),
                 f"{os.environ['KITCHEN_SINK_ASSETS']}Latte.jpg",

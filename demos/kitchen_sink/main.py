@@ -871,9 +871,7 @@ class KitchenSink(App, Screens):
                 )
             )
 
-            image_for_card = (
-                f"{os.environ['KITCHEN_SINK_ASSETS']}kitten-for_card-1049129_1280-crop.png"
-            )
+            image_for_card = f"{os.environ['KITCHEN_SINK_ASSETS']}kitten-for_card-1049129_1280-crop.png"
             if not os.path.exists(image_for_card):
                 crop_image(
                     (int(Window.width), int(dp(200))),
@@ -935,9 +933,7 @@ class KitchenSink(App, Screens):
             toast("Close card")
 
         if not self.user_card:
-            image_for_user_card = (
-                f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-for-user-card1139397_1280-crop.png"
-            )
+            image_for_user_card = f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-for-user-card1139397_1280-crop.png"
             if not os.path.exists(image_for_user_card):
                 crop_image(
                     (int(Window.width), int(dp(Window.height * 40 // 100))),
@@ -1305,7 +1301,13 @@ class KitchenSink(App, Screens):
             elif icon == "language-python":
                 self.main_widget.ids.scr_mngr.current = "code viewer"
                 try:
-                    self.data["Source code"]["object"].ids.code_input.text = open(f"{os.environ['KITCHEN_SINK_ROOT']}/KivyMD.wiki/{self.file_source_code}", "rt", encoding="utf-8").read()
+                    self.data["Source code"][
+                        "object"
+                    ].ids.code_input.text = open(
+                        f"{os.environ['KITCHEN_SINK_ROOT']}/KivyMD.wiki/{self.file_source_code}",
+                        "rt",
+                        encoding="utf-8",
+                    ).read()
                 except FileNotFoundError:
                     from kivymd.uix.snackbar import Snackbar
 

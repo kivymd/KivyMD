@@ -5,12 +5,6 @@ Register KivyMD widgets to use without import
 from kivy.factory import Factory
 
 r = Factory.register
-r("MDAccordion", module="kivymd.uix.accordion")
-r("MDAccordionItem", module="kivymd.uix.accordion")
-r("MDAccordionSubItem", module="kivymd.uix.accordion")
-r("MDAccordionItemTitleLayout", module="kivymd.uix.accordion")
-r("MDAccordionListItem", module="kivymd.uix.accordionlistitem")
-r("AccordionListItem", module="kivymd.uix.accordionlistitem")
 r("MDTab", module="kivymd.uix.bottomnavigation")
 r("MDBottomNavigation", module="kivymd.uix.bottomnavigation")
 r("MDBottomNavigationItem", module="kivymd.uix.bottomnavigation")

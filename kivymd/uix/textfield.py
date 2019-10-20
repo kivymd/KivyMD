@@ -309,12 +309,10 @@ Builder.load_string(
 
 
 <TextfieldLabel>
-    #disabled_color: self.theme_cls.disabled_hint_text_color
     size_hint_x: None
     width: self.texture_size[0]
     shorten: True
     shorten_from: "right"
-    color: 0, 0, 0, 1
 
 
 <MDTextFieldClear>
@@ -646,7 +644,6 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             self._line_width = width
         self._msg_lbl.width = self.width
         self._right_msg_lbl.width = self.width
-        # self._hint_lbl.width = self.width
 
     def on_focus(self, *args):
         disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
@@ -800,6 +797,10 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                         duration=0.2, _current_error_color=(0, 0, 0, 0)
                     ).start(self)
             else:
+                Animation(
+                    duration=0.2,
+                    color=(1, 1, 1, 1),
+                ).start(self._hint_lbl)
                 Animation(
                     duration=0.2,
                     _current_line_color=self.line_color_focus,

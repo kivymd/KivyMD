@@ -330,9 +330,6 @@ main_widget_kv = """
             app.set_title_toolbar(self.text)
 
     NavigationDrawerIconButton:
-        text: "Selection controls"
-
-    NavigationDrawerIconButton:
         text: "Snackbars"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
         on_release:

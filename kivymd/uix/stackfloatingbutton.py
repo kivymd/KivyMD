@@ -74,8 +74,8 @@ from kivy.properties import (
     ListProperty,
 )
 from kivy.metrics import dp
-from kivy.app import App
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.card import MDCard
 
 
@@ -147,13 +147,12 @@ Builder.load_string(
 )
 
 
-class MDFloatingLabel(MDCard):
+class MDFloatingLabel(ThemableBehavior, MDCard):
     text = StringProperty()
     text_color = ListProperty([0, 0, 0, 1])
 
     def on_md_bg_color(self, instance, value):
-        app = App.get_running_app()
-        self.md_bg_color = app.theme_cls.primary_color    
+        self.md_bg_color = self.theme_cls.primary_color
 
 
 class MDStackFloatingButtons(FloatLayout):

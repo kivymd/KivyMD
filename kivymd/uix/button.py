@@ -354,6 +354,7 @@ Builder.load_string(
             root.user_font_size \
             if root.user_font_size \
             else self.font_size
+        font_name: root.font_name if root.font_name is not None else self.font_name
         theme_text_color: root.theme_text_color
         text_color: root.text_color
         disabled: root.disabled
@@ -383,6 +384,7 @@ Builder.load_string(
         id: lbl_txt
         text: root.text if root.button_label else ''
         font_size: sp(root.font_size)
+        font_name: root.font_name if root.font_name is not None else self.font_name
         can_capitalize: root.can_capitalize
         size_hint_x: None
         text_size: (None, root.height)
@@ -497,6 +499,7 @@ Builder.load_string(
             text: root.text
             on_text: print(root.text_color)
             font_size: sp(root.font_size)
+            font_name: root.font_name if root.font_name is not None else self.font_name
             can_capitalize: root.can_capitalize
             shorten: True
             theme_text_color: 'Custom'
@@ -528,6 +531,7 @@ Builder.load_string(
             id: lbl_txt
             text: root.text
             font_size: sp(root.font_size)
+            font_name: root.font_name if root.font_name is not None else self.font_name
             can_capitalize: root.can_capitalize
             shorten: True
             theme_text_color: 'Custom'
@@ -594,13 +598,10 @@ class BaseButton(
     )
     text_color = ListProperty(None, allownone=True)
     opposite_colors = BooleanProperty(False)
-    font_name = StringProperty()
+    font_name = StringProperty(None)
     font_size = NumericProperty(14)
     user_font_size = NumericProperty()
     """Custom font size."""
-
-    def on_font_name(self, instance, value):
-        instance.ids.lbl_txt.font_name = value
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

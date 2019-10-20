@@ -118,6 +118,10 @@ changelog = os.path.abspath("CHANGELOG.md")
 changelog_new_version_regex = r"(?<=\> )[^\n]*(?=\n\n)"
 changelog_new_version_line_regex = r"\> [^\n]*\n\n"
 changelog_unreleased_regex = r"(?<=## )[^\n]*(?=\n\n)"
+changelog_see_changes_regex = rf"{old_version}\.\.\.master"
+changelog_see_changes_string = f"{old_version}...{new_version}"
+changelog_install_regex = rf"(?<=@)master(?=\n)"
+changelog_install_string = f"{new_version}"
 
 try:
     # Rename Unreleased section with new version
@@ -127,6 +131,20 @@ try:
     )[0]
     changelog_file_content = re.sub(
         changelog_new_version_line_regex, "", changelog_file_content, 1, re.M
+    )
+    changelog_file_content = re.sub(
+        changelog_see_changes_regex,
+        changelog_see_changes_string,
+        changelog_file_content,
+        1,
+        re.M,
+    )
+    changelog_file_content = re.sub(
+        changelog_install_regex,
+        changelog_install_string,
+        changelog_file_content,
+        1,
+        re.M,
     )
     changelog_file_content = re.sub(
         changelog_unreleased_regex,
@@ -166,6 +184,11 @@ changelog_unreleased_string = f"""\
 * 
 * 
 * 
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/{new_version}...master)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+```
 
 
 """

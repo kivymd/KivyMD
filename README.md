@@ -27,7 +27,7 @@ Documentation
 
 #### Wiki
 
-No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) contents some examples of using KivyMD widgets.
+No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) contains some examples of using KivyMD widgets.
 
 #### Demos
 

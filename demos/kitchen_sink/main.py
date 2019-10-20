@@ -43,7 +43,7 @@ from kivymd.uix.card import MDCard
 from kivymd.utils.cropimage import crop_image
 from kivymd.utils import asynckivy
 from kivymd.theming import ThemeManager
-from demos.kitchen_sink.dialogs import DialogLoadKvFiles
+from dialogs import DialogLoadKvFiles
 from kivymd.icon_definitions import md_icons
 from kivymd import demos_assets_path
 

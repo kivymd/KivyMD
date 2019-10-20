@@ -25,13 +25,11 @@ from kivymd.utils.cropimage import crop_image
 from kivymd.uix.behaviors import CircularRippleBehavior
 from .basedialog import BaseDialogForDemo
 
-demos_assets_path = os.environ["KITCHEN_SINK_ASSETS"]
-
-if not os.path.exists(f"{demos_assets_path}coffee_crop.jpg"):
+if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg"):
     crop_image(
         (Window.width, Window.height),
-        f"{demos_assets_path}coffee.jpg",
-        f"{demos_assets_path}coffee_crop.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}coffee.jpg",
+        f"{os.environ['KITCHEN_SINK_ASSETS']}coffee_crop.jpg",
     )
 
 screen_coffee_menu = """
@@ -365,7 +363,9 @@ class PreviousDialogCoffee(BaseDialogForDemo):
     icon = StringProperty()
 
     def on_open(self):
-        if not os.path.exists(f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"):
+        if not os.path.exists(
+            f"{os.environ['KITCHEN_SINK_ASSETS']}Latte-crop.jpg"
+        ):
             crop_image(
                 (int(dp(280)), int(dp(222))),
                 f"{os.environ['KITCHEN_SINK_ASSETS']}Latte.jpg",

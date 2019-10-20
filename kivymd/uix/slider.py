@@ -28,6 +28,9 @@ from kivy.uix.slider import Slider
 
 Builder.load_string(
     """
+#:import images_path kivymd.images_path
+
+
 <MDSlider>
     id: slider
     canvas:
@@ -93,6 +96,27 @@ Builder.load_string(
             if root.disabled else root.thumb_color_down)
         elevation:
             0 if slider._is_off else (4 if root.active else 2)
+
+    MDCard:
+        id: hint_box
+        size_hint: None, None
+        md_bg_color: [1, 1, 1, 1] if root.active else [0, 0, 0, 0]
+        #background: f'{images_path}transparent.png'
+        elevation: 0 if slider._is_off else (4 if root.active else 0)
+        size:
+            (dp(12), dp(12)) if root.disabled else ((dp(28), dp(28)) \
+            if root.active else (dp(20), dp(20)))
+        pos:
+            (slider.value_pos[0] - dp(9), slider.center_y - hint_box.height / 2 + dp(30)) \
+            if slider.orientation == 'horizontal' \
+            else (slider.center_x - hint_box.width / 2 + dp(30), \
+            slider.value_pos[1] - dp(8))
+
+        MDLabel:
+            text: str(int(slider.value))
+            font_style: "Caption"
+            halign: "center"
+            color: root.theme_cls.primary_color if root.active else [0, 0, 0, 0]
 """
 )
 
@@ -100,6 +124,9 @@ Builder.load_string(
 class MDSlider(ThemableBehavior, Slider):
     # If the slider is clicked
     active = BooleanProperty(False)
+
+    # If True, then the current value is displayed above the slider
+    hint = BooleanProperty(True)
 
     # Show the "off" ring when set to minimum value
     show_off = BooleanProperty(True)
@@ -185,6 +212,10 @@ class MDSlider(ThemableBehavior, Slider):
         )
         self._set_colors()
 
+    def on_hint(self, instance, value):
+        if not value:
+            self.remove_widget(self.ids.hint_box)
+
     def _set_colors(self, *args):
         if self.theme_cls.theme_style == "Dark":
             self._track_color_normal = get_color_from_hex("FFFFFF")
@@ -209,6 +240,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     def on_value_normalized(self, *args):
         """ When the value == min set it to "off" state and make slider a ring """
+
         self._update_is_off()
 
     def on_show_off(self, *args):
@@ -224,9 +256,9 @@ class MDSlider(ThemableBehavior, Slider):
         self._update_offset()
 
     def _update_offset(self):
-        """ Offset is used to shift the sliders so the background color
-            shows through the off circle.
-        """
+        """Offset is used to shift the sliders so the background color
+        shows through the off circle."""
+
         d = 2 if self.active else 0
         self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
 
@@ -294,6 +326,7 @@ BoxLayout:
         min: 0
         max: 100
         value: 40
+        hint: False
 
 """
             )

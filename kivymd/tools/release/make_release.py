@@ -23,14 +23,13 @@ import os
 import subprocess
 import re
 
-os.chdir(os.path.join(os.path.dirname(__file__), "../../.."))
-
-if not len(sys.argv) in (2, 3):
+if not len(sys.argv) in (3, 5):
     print(
-        "Using:\n"
+        "Usage:\n"
         "python before_release.py new_version new_version_status"
         " next_version next_version_status\n"
-        "Example: python3 before_release.py 1.9.3 alpha 1.9.4 alpha"
+        "Example: python3 before_release.py 1.9.3 alpha 1.9.4 alpha\n"
+        "Example: python3 before_release.py 1.9.3 1.9.4"
     )
     exit(0)
 
@@ -40,21 +39,39 @@ def command(cmd):
     return subprocess.check_output(cmd)
 
 
-# Information
+os.chdir(os.path.join(os.path.dirname(__file__), "../../.."))
+
+# Get new version
 new_version = sys.argv[1]
-new_version_status = sys.argv[2] if len(sys.argv) >= 3 else None
+new_version_status = sys.argv[2] if len(sys.argv) == 5 else None
+postfix_new_version = (
+    f" - *{new_version_status.capitalize()}*"
+    if new_version_status is not None
+    else ""
+)
+full_new_version = f"v{new_version}{postfix_new_version}"
+
+# Get next version
+next_version = sys.argv[3]
+next_version_status = sys.argv[4] if len(sys.argv) == 5 else None
+postfix_next_version = (
+    f" - *{next_version_status.capitalize()}*"
+    if next_version_status is not None
+    else ""
+)
+full_next_version = f"v{next_version}{postfix_next_version}"
+
+# Get old version
 command(["git", "checkout", "master"])
 old_version = command(["git", "describe", "--abbrev=0", "--tags"])
 old_version = str(old_version, encoding="utf-8")[:-1]  # Remove \n
-full_new_version = f"v{new_version}"
-postfix_new_version = ""
-if new_version_status:
-    postfix_new_version = f" - *{new_version_status.capitalize()}*"
-    full_new_version += postfix_new_version
+
+# Print info
 print(f"Old version: {old_version}")
 print(f"New version: {new_version} ({full_new_version})")
-print()
+print(f"Next version: {next_version} ({full_next_version})\n")
 
+# Check what files will be removed
 clean = str(
     command(["git", "clean", "-dx", "--force", "--dry-run"]), encoding="utf-8"
 )
@@ -67,6 +84,7 @@ if not clean == "\n":
         elif ans == "n" or ans == "no":
             print("git clean is required. Exit")
             exit(0)
+
 # Remove all untracked files
 command(["git", "clean", "-dx", "--force"])
 command(["git", "reset", "--hard"])
@@ -77,31 +95,32 @@ command(["git", "reset", "--hard"])
 
 
 def replace_in_file(pattern, repl, file):
+    # Replace one `pattern` match to `repl` in file `file`
     file_content = open(file, "rt", encoding="utf-8").read()
     file_content = re.sub(pattern, repl, file_content, 1, re.M)
     open(file, "wt", encoding="utf-8").write(file_content)
 
 
-# Change version in files
-init = os.path.abspath("kivymd/__init__.py")
-readme = os.path.abspath("README.md")
-changelog = os.path.abspath("CHANGELOG.md")
-
 # Change version in kivymd/__init__.py
+init = os.path.abspath("kivymd/__init__.py")
 init_version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
 init_version_info_regex = r"(?<=^__version_info__ = \()[^\)]+(?=\)$)"
 replace_in_file(init_version_regex, new_version, init)
 replace_in_file(init_version_info_regex, new_version.replace(".", ", "), init)
 
-# Change version in README
+# Change version in README.md
+readme = os.path.abspath("README.md")
 readme_version_regex = rf"(?<=\[)v{old_version}[ \-*\w^\]\n]*(?=\])"
 replace_in_file(readme_version_regex, full_new_version, readme)
 
+# Change version in CHANGELOG.md
+changelog = os.path.abspath("CHANGELOG.md")
 changelog_new_version_regex = r"(?<=\> )[^\n]*(?=\n\n)"
 changelog_new_version_line_regex = r"\> [^\n]*\n\n"
 changelog_unreleased_regex = r"(?<=## )[^\n]*(?=\n\n)"
 
 try:
+    # Rename Unreleased section with new version
     changelog_file_content = open(changelog, "rt", encoding="utf-8").read()
     new_version_in_changelog = re.findall(
         changelog_new_version_regex, changelog_file_content, re.M
@@ -126,30 +145,33 @@ command(["black", "."])
 # Make commit and tag
 command(["git", "commit", "--all", "-m", f"Version {new_version}"])
 command(["git", "tag", new_version])
+
+# Create branch `stable` and `stable-{old_version}` (not tested)
 branches_to_push = []
-# command(["git", "branch", "-m", "stable", f"stable-{new_version}"])
-# branches_to_push.append(f"stable-{new_version}")
+# command(["git", "branch", "-m", "stable", f"stable-{old_version}"])
+# branches_to_push.append(f"stable-{old_version}")
 # command(["git", "branch", "stable"])
 # command(["git", "push", "--force", "origin", "master:stable"])
 # branches_to_push.append("stable")
 
-changelog_unreleased_string = f"""\
-## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)\n
-> [v{new_version}](https://github.com/HeaTTheatR/KivyMD/tree/{new_version})\
-{postfix_new_version}
-\n* \n* \n* \n\n
-"""
+# Regex where to place Unreleased section
 changelog_unreleased_place_regex = f"(?<=Change Log\n==========\n\n)"
-changelog_file_content = open(changelog, "rt", encoding="utf-8").read()
-changelog_file_content = re.sub(
-    changelog_unreleased_place_regex,
-    changelog_unreleased_string,
-    changelog_file_content,
-    1,
-    re.M,
-)
-open(changelog, "wt", encoding="utf-8").write(changelog_file_content)
+# Unreleased section to place in top of CHANGELOG.md
+changelog_unreleased_string = f"""\
+## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
 
+> [v{next_version}](https://github.com/HeaTTheatR/KivyMD/tree/{next_version})\
+{postfix_next_version}
+
+* 
+* 
+* 
+
+
+"""
+replace_in_file(
+    changelog_unreleased_place_regex, changelog_unreleased_string, changelog
+)
 command(
     ["git", "commit", "--all", "-m", f"Add section Unreleased to Change Log"]
 )

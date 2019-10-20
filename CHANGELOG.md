@@ -18,6 +18,11 @@ Change Log
 #### demos/kitchen_sink/main.py:
 * Replaced 'MyNavigationDrawerIconButton' rule to `NavigationDrawerIconButton`
 * Make adding `KivyMD` repo to path when not bundled
+* Fixed adding repo to path
+* Fixed `No module named 'demos'`
+
+#### kivymd/uix/progressloader.py:
+* Added some features to `MDProgressLoader`
 
 
 ## [v0.102.0](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*

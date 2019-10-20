@@ -3,263 +3,252 @@ Change Log
 
 ## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
 
-> [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*
+> [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.1) - *Alpha*
 
-#### kivymd/tools/release:
-* Added __init__.py
+* Added hook for `PyInstaller` (add `hookspath=[kivymd.hooks_path]`).
+* Added examples of `spec` files for building [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
+* Added some features to `MDProgressLoader`.
+* Bug fixes and other minor improvements.
 
-#### kivymd/__init__.py:
-* Added hook for `PyInstaller`
-
-#### demos/kitchen_sink:
-* Added `pyinstaller.spec` for `kitchen_sink` demo
-* Added `buildozer.spec` for `kitchen_sink` demo
-
-#### demos/kitchen_sink/main.py:
-* Replaced 'MyNavigationDrawerIconButton' rule to `NavigationDrawerIconButton`
-* Make adding `KivyMD` repo to path when not bundled
-* Fixed adding repo to path
-* Fixed `No module named 'demos'`
-
-#### kivymd/uix/progressloader.py:
-* Added some features to `MDProgressLoader`
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+```
 
 
 ## [v0.102.0](https://github.com/HeaTTheatR/KivyMD/tree/0.102.0) - *Alpha*
 
-* Edited import `behaviors` package
-* Updated `demos/kitchen_sink/assets/drawer_logo.png` image
-* Moved `kivymd.behaviors` to `kivymd.uix.behaviors`
-* Updated `kivymd/tools/update_icons.py` (added `blank` icon)
-* Updated Iconic font (v4.5.95)
+* Moved `kivymd.behaviors` to `kivymd.uix.behaviors`.
+* Updated [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) (v4.5.95).
+* Added `blank` icon to `icon_definitions`.
+* Bug fixes and other minor improvements.
 
-#### demos/kitchen_sink/main.py:
-* Changed the color and size of the `Source code/Open in Wiki`
-* Fixed calculation of percent loading screens
-* A separate icon has been added for each menu item in `NavigationDrawer`
-* Fixed path to `guitar-1139397_1280_crop.png` image
-
-#### demos/kitchen_sink/demo_apps/shopwindow.py:
-* Fixed position of the `Heart` icon on the product card in the `Catalog` tab has been fixed
-
-#### kivymd/uix/fanscreenmanager.py:
-* Type and speed of amination of transformation screens has been changed has been fixed
-
-#### demos/kitchen_sink/screens.py:
-* Removed `<Sliders@Screen>`
-* Added new `MDTextField` example with `rectangle` mode
-
-#### kivymd/uix/textfield.py:
-* Added the ability to create text fields `MDTextField` with mode "rectangle"
-
-#### kivymd/uix/behaviors/__init__.py:
-* Added imports of classes
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.8...0.102.0)
+```bash
+pip install kivymd==0.102.0
+```
 
 
 ## [v0.101.8](https://github.com/HeaTTheatR/KivyMD/tree/0.101.8) - *Alpha*
 
-#### setup.py:
-* Added `uix` and `behaviors` folder to `package_data`
+* Added `uix` and `behaviors` folder to `package_data`.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.7...0.101.8)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.8
+```
 
 
 ## [v0.101.7](https://github.com/HeaTTheatR/KivyMD/tree/0.101.7) - *Alpha*
 
-#### demos/kitchen_sink/screens.py:
-* Fixed colors and position of the buttons in the `Buttons` example
-* Resource paths now use the variable `demos_assets_path`
+* Fixed colors and position of the buttons in the `Buttons` demo screen ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
+* Displaying percent of loading kv-files ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
 
-#### demos/kitchen_sink/main.py:
-* Resource paths now use the variable `demos_assets_path`
-* Added to display percent download kv-files
-
-#### demos/kitchen_sink/demo_apps:
-* Resource paths now use the variable `demos_assets_path`
-
-#### demos/kitchen_sink/dialogs.py:
-* Added to display percent download kv-files
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.6...0.101.7)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.7
+```
 
 
 ## [v0.101.6](https://github.com/HeaTTheatR/KivyMD/tree/0.101.6) - *Alpha*
 
-#### kivymd/uix/picker.py:
-* Fixed `NameError: name 'MDThemePicker' is not defined`
+* Fixed `NameError: name 'MDThemePicker' is not defined`.
 
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.5...0.101.6)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.6
+```
 
 ## [v0.101.5](https://github.com/HeaTTheatR/KivyMD/tree/0.101.5) - *Alpha*
 
-#### demos/kitchen_sink/screens.py:
-* Added the ability to change color in the `MDIconItemForMdIconsList` class
-* A context menu has been added to the `Toolbar` to show the source code of the current example
+* Added feature to see source code of current example ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
+* Added names of authors of this fork ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
+* Bug fixes and other minor improvements.
 
-#### demos/kitchen_sink/main.py:
-* Added names of authors of this fork in the description on the start screen
-* Description text on the start screen has been added to `ScrollView`
-* Changed the theme of the application to white style
-* Now a window with a list of demo applications is created only once.
-In the previous version, the window was always created when it was opened.
-* A context menu has been added to the `Toolbar` to show the source code of the current example
-
-
-* Edited with `Black` utility
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.4...0.101.5)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.5
+```
 
 
 ## [v0.101.4](https://github.com/HeaTTheatR/KivyMD/tree/0.101.4) - *Alpha*
 
-#### demos/kitchen_sink/main.py:
-* Fixed `ModuleNotFoundError: No module named 'kivymd.dialog'`
+* Bug fixes and other minor improvements.
 
-#### kivymd/uix/dropdownitem.py:
-* Text color fixed - previously the text was white on a white background
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.3...0.101.4)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.4
+```
 
 
 ## [v0.101.3](https://github.com/HeaTTheatR/KivyMD/tree/0.101.3) - *Alpha*
 
-#### kivymd/uix/bottomnavigation.py:
-* Code updated to changes in version 0.101.0
+* Bug fixes and other minor improvements.
 
-#### demos/kitchen_sink/screens.py:
-* Changed the icons to `language-python` in the `Buttons` example
-
-#### demos/kitchen_sink/dialogs.py:
-* Renamed `BaseDialog` to `BaseDialogForLoadKvFiles` class (Fixed AttributeError: `'MDDialog' object has no attribute 'canvas_color'`)
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.2...0.101.3)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.3
+```
 
 
 ## [v0.101.2](https://github.com/HeaTTheatR/KivyMD/tree/0.101.2) - *Alpha*
 
-#### demos/kitchen_sink/main.py:
-* Fixed `AttributeError: 'KitchenSink' object has no attribute 'bs_menu_2'`
+* Bug fixes and other minor improvements.
 
-#### kivymd/uix/bottomsheet.py:
-* Fixed Fixed `Unable to import package 'kivymd.label.MDLabel'`
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.1...0.101.2)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.2
+```
 
 
 ## [v0.101.1](https://github.com/HeaTTheatR/KivyMD/tree/0.101.1) - *Alpha*
 
-#### kivymd/uix/bottomnavigation.py:
-* Fixed  `ModuleNotFoundError: No module named 'kivymd.uix.elevation'`
-* Fixed `ModuleNotFoundError: No module named 'kivymd.uix.backgroundcolorbehavior'`
+* Bug fixes and other minor improvements.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.101.0...0.101.1)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.1
+```
 
 
 ## [v0.101.0](https://github.com/HeaTTheatR/KivyMD/tree/0.101.0) - *Alpha*
 
-#### kivymd/textfields.py:
-* Added ability to resize text field in `MDTextFieldRound` class
-* Added values `icon_left_color` and `icon_right_color` in `MDTextFieldRound` class
-* Fixed `ReferenceError` in `MDTextFieldRound` class
-
-#### kivymd/cards.py:
-* Added doc string to `MDCard` class
+* Added `MDContextMenu` class.
+* Added `MDExpansionPanel` class.
+* Added `HoverBehavior` class by [Olivier POYEN](https://gist.github.com/opqopq/15c707dc4cffc2b6455f).
+* Added markup support for buttons.
+* Added `duration` property to `Toast`.
+* Added `TextInput`'s events and properties to `MDTextFieldRound`.
+* Added feature to resize text field
 * Added color property to `MDSeparator` class
+* Added [tool](https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/tools/update_icons.py) for updating [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont).
+* Updated [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) (v4.3.95).
+* Added new examples for [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
+* Bug fixes and other minor improvements.
 
-#### kivymd/button.py:
-* Added new doc in buttons
-* Fixed: the text color in the button did not change
-* Added the ability to change the font size in the `MDIconButton`
-
-#### demos/kitchen_sink/screens.py:
-* Methods for loading kv-files moved to the `main.py` file
-* Added new example for `bottom navigation` screen
-* Added new example for `popup screen` screen
-* Added new example with `MDTextField`
-* Added new example with `MDDropDownItem`
-* Removed `Accordion List` screen
-* Updated example for `buttons` screen
-* Updated `BottomNavigation` example
-* Deleted imports inside kv-files
-* Edited imports
-
-#### demos/kitchen_sink/main.py:
-* Added dialog for preloading kv-files in the `Kitchen Sink` application
-* Edited method `show_popup_screen` for new example `popup screen` screen
-* Added new example with `MDDropDownItem`
-* Removed `Accordion List` screen
-* Corrected image proportions in the `MDCard` example
-* Corrected image proportions in the `MDUserAnimationCard` example
-
-#### kivymd/bottomnavigation.py:
-* Added new doc
-* Added the ability to set the color of the `MDBottomNavigation` panel
-
-#### kivymd/popupscreen.py:
-* Fixed the behavior of `MDPopupScreen`, which was closed when own events
-* Added the ability to close `MDPopupScreen` with swipe down
-* Added the ability to set the color and background image for `MDPopupScreen`
-* Added new example in doc string
-
-#### kivymd/managerswiper.py:
-* Added `return super().on_touch_down(touch)` to `on_touch_down` method
-
-#### setup.py
-* Added `requests` to requires section
-
-#### kivymd/menus.py:
-* Added `on_dismiss` method - same behavior as `ModalView`
-
-#### kivymd/behaviors/hover_behavior.py:
-* Added Hoverable Behaviour (changing when the mouse is on the widget by O. Poyen
-
-#### kivymd/context_menu.py:
-* Added new module context_menu.py
-
-#### kivymd/toast/kivytoast/kivytoast.py:
-* Added doc-string
-* Added `duration` value for to control the timing of the toast
-
-
-
-* Removed `accordion.py`, `accordionlistitem.py` modules - see `expansionpanel.py` module
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.100.2...0.101.0)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.0
+```
 
 
 ## [v0.100.2](https://github.com/HeaTTheatR/KivyMD/tree/0.100.2) - *Alpha*
 
-* Formatted code using [Black](https://github.com/psf/black) utility
+* [Black](https://github.com/psf/black) formatting.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.100.1...0.100.2)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
+```
 
 
 ## [v0.100.1](https://github.com/HeaTTheatR/KivyMD/tree/0.100.1) - *Alpha*
 
-* Fixed "Due to the use of `AsyncImage`, the Toolbar did not accept the color of the installed color theme"
+* `MDUserAnimationCard` uses `Image` instead of `AsyncImage`.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.100.0...0.100.1)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.1
+```
 
 
 ## [v0.100.0](https://github.com/HeaTTheatR/KivyMD/tree/0.100.0) - *Alpha*
 
-* Fixed "In `MDNavigationDrawer` I used use_logo='all' it's showing image only not the drawer_title text"
+* Added feature to change color for `MDStackFloatingButtons`.
 
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.99.01...0.100.0)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.0
+```
+
+
+## [v0.99.99.01](https://github.com/HeaTTheatR/KivyMD/tree/0.99.99.01) - *Alpha*
+
+* Fixed `MDNavigationDrawer.use_logo`.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.99...0.99.99.01)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.99.01
+```
+
+## [v0.99.99](https://github.com/HeaTTheatR/KivyMD/tree/0.99.99) - *Alpha*
+
+* Added `icon_color` property for `NavigationDrawerIconButton`.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.98...0.99.99)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.99
+```
 
 ## [v0.99.98](https://github.com/HeaTTheatR/KivyMD/tree/0.99.98) - *Alpha*
 
-* Added new `MDFillRoundFlatIconButton` class
+* Added `MDFillRoundFlatIconButton` class.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.97...0.99.98)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.98
+```
 
 
 ## [v0.99.97](https://github.com/HeaTTheatR/KivyMD/tree/0.99.97) - *Alpha*
 
-* Fixed "Spinner closes after updating the screen"
+* Fixed `Spinner` animation.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.96...0.99.97)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.97
+```
 
 
 ## [v0.99.96](https://github.com/HeaTTheatR/KivyMD/tree/0.99.96) - *Alpha*
 
-* Added asynchronous call to list update method in RefreshLayout example in main.py file
-* Added `asynckivy.py` module for using asynchronous function calls in `Kivy`
+* Added `asynckivy` module by [Nattōsai Mitō](https://github.com/gottadiveintopython/asynckivy).
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.95...0.99.96)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.96
+```
 
 
 ## [v0.99.95](https://github.com/HeaTTheatR/KivyMD/tree/0.99.95) - *Alpha*
 
-* Added function to create a round image in `kivymd/utils/cropimage.py` module
-* Added new `MDCustomRoundIconButton` class in `kivymd/button.py` module
-* Added demo application [Account Page](https://www.youtube.com/watch?v=dfUOwqtYoYg)
+* Added function to create a round image in `kivymd/utils/cropimage.py` module.
+* Added `MDCustomRoundIconButton` class.
+* Added demo application [Account Page](https://www.youtube.com/watch?v=dfUOwqtYoYg) for [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.94...0.99.95)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.95
+```
 
 
 ## [v0.99.94](https://github.com/HeaTTheatR/KivyMD/tree/0.99.94) - *Alpha*
 
-* Added property `_no_ripple_effect` to `BaseListItem` class
-* [Banned](https://www.youtube.com/watch?v=P_9oSx0Pz_U) use `ripple effect` in `MDAccordionListItem` class
-* Added check to use `ripple effect` in RectangularRippleBehavior class
+* Added `_no_ripple_effect` property to `BaseListItem` class.
+* Added check to use `ripple effect` in `RectangularRippleBehavior` class.
+* [Disabled](https://www.youtube.com/watch?v=P_9oSx0Pz_U) using `ripple effect` in `MDAccordionListItem` class.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.93...0.99.94)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.94
+```
 
 
 ## [v0.99.93](https://github.com/HeaTTheatR/KivyMD/tree/0.99.93) - *Alpha*
 
-* Updated Material Design Iconic font (v3.6.95)
+* Updated [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) (v3.6.95).
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.92...0.99.93)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.93
+```
 
 
 ## [v0.99.92](https://github.com/HeaTTheatR/KivyMD/tree/0.99.92) - *Alpha*
 
-* Removed automatic change of text field length in the `MDTextFieldRound` class
+* Removed automatic change of text field length in `MDTextFieldRound` class.
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.99.91...0.99.92)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.92
+```

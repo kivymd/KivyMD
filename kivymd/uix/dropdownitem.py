@@ -64,7 +64,8 @@ Test().run()
 """
 
 from kivy.lang import Builder
-from kivy.properties import ListProperty, StringProperty, NumericProperty
+from kivy.properties import ListProperty, StringProperty, NumericProperty, \
+    BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
@@ -138,6 +139,8 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
     current_item = StringProperty()
     """Current label of item MDDropDownItem class."""
 
+    _center = BooleanProperty(True)
+
     _drop_list = None
 
     _list_menu = ListProperty()
@@ -170,7 +173,7 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y) and self._list_menu:
             self._drop_list = MDDropdownMenu(
-                _center=True,
+                _center=self._center,
                 items=self._list_menu,
                 background_color=self.dropdown_bg,
                 max_height=self.dropdown_max_height,

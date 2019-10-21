@@ -135,6 +135,13 @@ chmod +x install-kivy-buildozer-dependencies.sh
 
 > Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
 
+Settings
+========
+
+#### [Syntax highlighting and auto-completion for Kivy/KivyMD .kv files in PyCharm/Intellij IDEA](https://github.com/noembryo/KV4Jetbrains)
+
+
+
 
 API Breaking changes
 ====================

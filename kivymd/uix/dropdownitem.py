@@ -64,8 +64,12 @@ Test().run()
 """
 
 from kivy.lang import Builder
-from kivy.properties import ListProperty, StringProperty, NumericProperty, \
-    BooleanProperty
+from kivy.properties import (
+    ListProperty,
+    StringProperty,
+    NumericProperty,
+    BooleanProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 

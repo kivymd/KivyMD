@@ -182,8 +182,6 @@ Builder.load_string(
         shorten: True
         shorten_from: 'right'
         text: root.user_name
-        y: Window.height - image.height
-        x: dp(15)
         size_hint_y: None
         height: self.texture_size[1]
 
@@ -234,6 +232,10 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
             path_to_avatar=self.path_to_avatar,
             _callback_back=self._callback_back,
             _primary_color=self._primary_color,
+        )
+        self.user_animation_card.ids.user_name.pos = (
+            dp(15),
+            Window.height - self.user_animation_card.ids.image.height,
         )
         self.box_content = self.user_animation_card.ids.box_content
         self.add_widget(self.user_animation_card)

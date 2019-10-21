@@ -15,7 +15,7 @@ a = Analysis(
     ["main.py"],
     pathex=[path],
     binaries=[],
-    datas=[("assets\\", "assets\\"), ("KivyMD.wiki\\", "KivyMD.wiki\\")],
+    datas=[("assets\\", "assets\\")],
     hiddenimports=[],
     hookspath=[kivymd_hooks_path],
     runtime_hooks=[],

@@ -1301,7 +1301,7 @@ class KitchenSink(App, Screens):
                     self.data["Source code"][
                         "object"
                     ].ids.code_input.text = open(
-                        f"{os.environ['KITCHEN_SINK_ROOT']}/KivyMD.wiki/{self.file_source_code}",
+                        f"{os.environ['KITCHEN_SINK_ASSETS']}md/{self.file_source_code}",
                         "rt",
                         encoding="utf-8",
                     ).read()

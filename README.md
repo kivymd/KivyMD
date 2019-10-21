@@ -156,10 +156,6 @@ You don't need to `#:import` them. Remove all your imports from kv files.
 |----------|-----------|
 | Icon     | Icon      |
 | -        | Overline  |
-| Caption  | Caption   |
-| Button   | Button    |
-| Body2    | Body2     |
-| Body1    | Body1     |
 | -        | Subtitle2 |
 | Subhead  | Subtitle1 |
 | Title    | H6        |

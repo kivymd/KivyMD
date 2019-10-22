@@ -11,6 +11,7 @@ Change Log
 * Bug fixes and other minor improvements.
 * Added the ability to preview the current value of the slider
 * Fixed https://github.com/HeaTTheatR/KivyMD/issues/122
+* Fixed https://github.com/HeaTTheatR/KivyMD/issues/123
 * After the animation (swipe up) label on the `Toolbar` disappeared - fixed
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)

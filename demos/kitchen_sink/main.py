@@ -16,6 +16,8 @@ import webbrowser
 from kivy.effects.scroll import ScrollEffect
 from kivy.uix.scrollview import ScrollView
 
+from kivymd.uix.dropdownitem import MDDropDownItem
+
 if getattr(sys, "frozen", False):  # Bundle mode with PyInstaller
     os.environ["KITCHEN_SINK_ROOT"] = sys._MEIPASS
 else:
@@ -36,7 +38,7 @@ Window.softinput_mode = "below_target"
 
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, StringProperty
+from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
 from kivy import platform
@@ -46,7 +48,8 @@ from screens import Screens
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.fanscreenmanager import MDFanScreen
 from kivymd.uix.popupscreen import MDPopupScreen
-from kivymd.uix.list import IRightBodyTouch, OneLineIconListItem
+from kivymd.uix.list import IRightBodyTouch, OneLineIconListItem, \
+    ThreeLineRightIconListItem
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.card import MDCard
 from kivymd.utils.cropimage import crop_image
@@ -221,8 +224,7 @@ main_widget_kv = """
         text: "Dropdown Item"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
         on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+            app.open_drop_items_examples()
 
     NavigationDrawerIconButton:
         text: "Expansion Panel"
@@ -759,6 +761,32 @@ class KitchenSink(App, Screens):
         self.set_chevron_back_screen()
         toast("Done")
 
+    def open_drop_items_examples(self):
+        from kivymd.uix.dialog import MDDialog
+
+        def set_list_drop_items():
+            for i in range(20):
+                self.data["Dropdown Item List"]["object"].ids.box.add_widget(
+                    ItemForDropItemList(
+                        items=[str(i + 1), str(i + 2), str(i + 3)])
+                )
+
+        def open_drop_items_examples(text_item, dialog):
+            dialog.dismiss()
+            data = {"Item": "Dropdown Item", "List": "Dropdown Item List"}
+            self.show_screen(data[text_item])
+            self.set_title_toolbar(data[text_item])
+            set_list_drop_items()
+
+        MDDialog(
+            title="Kitchen Sink",
+            size_hint=(0.8, 0.4),
+            text_button_ok="Item",
+            text="Open MDDropDownItem or ListButtonDropDown?",
+            text_button_cancel="List",
+            events_callback=open_drop_items_examples,
+        ).open()
+
     def file_manager_open(self):
         from kivymd.uix.filemanager import MDFileManager
         from kivymd.uix.dialog import MDDialog
@@ -777,7 +805,7 @@ class KitchenSink(App, Screens):
             self.manager.open()
 
         MDDialog(
-            title="Title",
+            title="Kitchen Sink",
             size_hint=(0.8, 0.4),
             text_button_ok="List",
             text="Open manager with 'list' or 'previous' mode?",
@@ -1493,6 +1521,9 @@ class PopupScreen(MDPopupScreen):
 class ContentForPopupScreen(BoxLayout):
     pass
 
+class ListButtonDropdown(IRightBodyTouch, MDDropDownItem):
+    pass
+
 
 class ItemForListRefreshLayout(OneLineIconListItem):
     icon = StringProperty()
@@ -1500,6 +1531,11 @@ class ItemForListRefreshLayout(OneLineIconListItem):
 
 class MyCard(MDCard):
     text = StringProperty("")
+
+
+class ItemForDropItemList(ThreeLineRightIconListItem):
+    items = ListProperty()
+
 
 
 if __name__ == "__main__":

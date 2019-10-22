@@ -1777,7 +1777,7 @@ drop_item = """
 
 <MDDropItem@Screen>
     name: "drop item"
-    
+
     MDDropDownItem:
         id: dropdown_item
         pos_hint: {'center_x': 0.5, 'center_y': 0.6}
@@ -1788,6 +1788,29 @@ drop_item = """
         pos_hint: {'center_x': 0.5, 'center_y': 0.3}
         text: 'Chek Item'
         on_release: toast(dropdown_item.current_item)
+"""
+
+drop_item_list = """
+<ItemForDropItemList>:
+    height: dp(56)
+    text: "A button with"
+    secondary_text: "a dropdown"
+    font_style: "H6"
+
+    ListButtonDropdown:
+        items: root.items
+
+
+<DropItemList@Screen>
+    name: "drop item list"
+
+    ScrollView:
+
+        GridLayout:
+            id: box
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 1
 """
 
 md_icons = """
@@ -1871,6 +1894,13 @@ class Screens(object):
             "Factory": "Factory.MDDropItem()",
             "name_screen": "drop item",
             "source_code": "Components-DropDownItem.md",
+            "object": None,
+        },
+        "Dropdown Item List": {
+            "kv_string": drop_item_list,
+            "Factory": "Factory.DropItemList()",
+            "name_screen": "drop item list",
+            "source_code": "Components-DropDownItem-with-ScrollView.md",
             "object": None,
         },
         "Popup Screen": {

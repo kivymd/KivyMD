@@ -16,8 +16,6 @@ import webbrowser
 from kivy.effects.scroll import ScrollEffect
 from kivy.uix.scrollview import ScrollView
 
-from kivymd.uix.dropdownitem import MDDropDownItem
-
 if getattr(sys, "frozen", False):  # Bundle mode with PyInstaller
     os.environ["KITCHEN_SINK_ROOT"] = sys._MEIPASS
 else:
@@ -44,18 +42,22 @@ from kivy.utils import get_hex_from_color
 from kivy import platform
 
 from screens import Screens
+from dialogs import DialogLoadKvFiles
 
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.fanscreenmanager import MDFanScreen
 from kivymd.uix.popupscreen import MDPopupScreen
-from kivymd.uix.list import IRightBodyTouch, OneLineIconListItem, \
-    ThreeLineRightIconListItem
+from kivymd.uix.list import (
+    IRightBodyTouch,
+    OneLineIconListItem,
+    ThreeLineRightIconListItem,
+)
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.card import MDCard
 from kivymd.utils.cropimage import crop_image
 from kivymd.utils import asynckivy
 from kivymd.theming import ThemeManager
-from dialogs import DialogLoadKvFiles
+from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.icon_definitions import md_icons
 
 
@@ -768,7 +770,8 @@ class KitchenSink(App, Screens):
             for i in range(20):
                 self.data["Dropdown Item List"]["object"].ids.box.add_widget(
                     ItemForDropItemList(
-                        items=[str(i + 1), str(i + 2), str(i + 3)])
+                        items=[str(i + 1), str(i + 2), str(i + 3)]
+                    )
                 )
 
         def open_drop_items_examples(text_item, dialog):
@@ -1521,6 +1524,7 @@ class PopupScreen(MDPopupScreen):
 class ContentForPopupScreen(BoxLayout):
     pass
 
+
 class ListButtonDropdown(IRightBodyTouch, MDDropDownItem):
     pass
 
@@ -1535,7 +1539,6 @@ class MyCard(MDCard):
 
 class ItemForDropItemList(ThreeLineRightIconListItem):
     items = ListProperty()
-
 
 
 if __name__ == "__main__":

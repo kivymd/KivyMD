@@ -575,11 +575,13 @@ Builder.load_string(
 
 
     MDFlatButton:
+        id: close_button
         pos: root.pos[0]+root.size[0]-self.width-dp(10), root.pos[1] + dp(10)
         text: "Close"
         on_release: root.dismiss()
 
     MDLabel:
+        id: title
         font_style: "H5"
         text: "Change theme"
         size_hint: (None, None)
@@ -595,6 +597,7 @@ Builder.load_string(
         id: tab_panel
 
         Tab:
+            id: theme_tab
             text: "Theme"
 
             BoxLayout:
@@ -720,6 +723,7 @@ Builder.load_string(
                             disabled: True
 
         Tab:
+            id: accent_tab
             text: "Accent"
 
             BoxLayout:
@@ -845,6 +849,7 @@ Builder.load_string(
                             disabled: True
 
         Tab:
+            id: style_tab
             text: "Style"
 
             FloatLayout:

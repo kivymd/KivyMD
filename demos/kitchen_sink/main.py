@@ -46,7 +46,6 @@ from dialogs import DialogLoadKvFiles
 
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.fanscreenmanager import MDFanScreen
-from kivymd.uix.popupscreen import MDPopupScreen
 from kivymd.uix.list import (
     IRightBodyTouch,
     OneLineIconListItem,
@@ -1517,10 +1516,6 @@ class BoxContentForBottomSheetCustomScreenList(BoxLayout):
 
 
 class IconRightSampleWidget(IRightBodyTouch, MDCheckbox):
-    pass
-
-
-class PopupScreen(MDPopupScreen):
     pass
 
 

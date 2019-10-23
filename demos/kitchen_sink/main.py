@@ -1119,17 +1119,19 @@ class KitchenSink(App, Screens):
         else:
             MDDatePicker(self.set_previous_date).open()
 
-    def show_example_custom_bottom_sheet(self, type, corner=None, animation=True):
+    def show_example_custom_bottom_sheet(
+        self, type, corner=None, animation=True
+    ):
         """Show menu from the screen BottomSheet."""
 
         from kivymd.uix.bottomsheet import MDCustomBottomSheet
 
         if type == "custom":
-            custom_screen_for_bottom_sheet = self.data["Popup Screen"][
-                "object"
-            ]
+            custom_screen_for_bottom_sheet = self.data["Popup Screen"]["object"]
         elif type == "list":
-            custom_screen_for_bottom_sheet = BoxContentForBottomSheetCustomScreenList()
+            custom_screen_for_bottom_sheet = (
+                BoxContentForBottomSheetCustomScreenList()
+            )
 
         MDCustomBottomSheet(
             screen=custom_screen_for_bottom_sheet,

@@ -103,7 +103,7 @@ bottom_sheet = """
     IconLeftWidget:
         icon: 'remote'
 
-
+ 
 <CustomItemButton@AnchorLayout>
     size_hint_y: None
     height: "32dp"
@@ -1718,6 +1718,9 @@ popup_screen = """
 
         IconLeftWidget:
             icon: 'remote'
+
+    Widget:
+        size_hint_y: None
 """
 
 manager_swiper = """

@@ -1920,6 +1920,7 @@ class Screens(object):
             "kv_string": bottom_sheet,
             "Factory": "Factory.BottomSheet()",
             "name_screen": "bottom sheet",
+            "source_code": "Components-Bottom-Sheet.md",
             "object": None,
         },
         "Dropdown Item": {

@@ -167,6 +167,7 @@ Builder.load_string(
                 source: f'{images_path}transparent.png'
 
         MDLabel:
+            id: dialog_text
             text: '\\n' + root.text + '\\n'
             size_hint_y: None
             height: self.texture_size[1]

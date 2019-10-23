@@ -104,6 +104,18 @@ bottom_sheet = """
         icon: 'remote'
 
 
+<CustomItemButton@AnchorLayout>
+    size_hint_y: None
+    height: "32dp"
+    anchor_x: "center"
+    text: ""
+    callback: None
+
+    MDRaisedButton:
+        text: root.text
+        on_release: root.callback()
+
+
 <BottomSheet@Screen>
     name: 'bottom sheet'
 
@@ -116,41 +128,21 @@ bottom_sheet = """
             padding: "20dp"
             cols: 1
 
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
+            CustomItemButton:
+                text: "Open custom bottom sheet"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom")
 
-                MDRaisedButton:
-                    text: "Open custom bottom sheet"
-                    on_release: app.show_example_custom_bottom_sheet("custom")
-
-            AnchorLayout:
-                size_hint_y: None
-                height: "32dp"
-                anchor_x: "center"
-
-                MDRaisedButton:
-                    text: "Open custom bottom sheet with list"
-                    on_release: app.show_example_custom_bottom_sheet("list")
+            CustomItemButton:
+                text: "Open custom bottom sheet with list"
+                callback: lambda: app.show_example_custom_bottom_sheet("list")
         
-            AnchorLayout:
-                size_hint_y: None
-                height: "32dp"
-                anchor_x: "center"
+            CustomItemButton:
+                text: "Open list bottom sheet"
+                callback: lambda: app.show_example_bottom_sheet()
 
-                MDRaisedButton:
-                    text: "Open list bottom sheet"
-                    on_release: app.show_example_bottom_sheet()
-
-            AnchorLayout:
-                size_hint_y: None
-                height: "32dp"
-                anchor_x: "center"
-
-                MDRaisedButton:
-                    text: "Open grid bottom sheet"
-                    on_release: app.show_example_grid_bottom_sheet()
+            CustomItemButton:
+                text: "Open grid bottom sheet"
+                callback: lambda: app.show_example_grid_bottom_sheet()
 
             Widget:
                 size_hint_y: None
@@ -163,59 +155,29 @@ bottom_sheet = """
             
             MDSeparator:
 
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
+            CustomItemButton:
+                text: "Corner 'top_left'"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", "top_left")
 
-                MDRaisedButton:
-                    text: "Corner 'top_left'"
-                    on_release: app.show_example_custom_bottom_sheet("custom", "top_left")
+            CustomItemButton:
+                text: "Corner 'top_right'"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", "top_right")
 
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
+            CustomItemButton:
+                text: "Corners 'top'"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", "top")
 
-                MDRaisedButton:
-                    text: "Corner 'top_right'"
-                    on_release: app.show_example_custom_bottom_sheet("custom", "top_right")
+            CustomItemButton:
+                text: "Corner 'bottom_left'"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", "bottom_left")
 
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
+            CustomItemButton:
+                text: "Corner 'bottom_right'"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", "bottom_right")
 
-                MDRaisedButton:
-                    text: "Corners 'top'"
-                    on_release: app.show_example_custom_bottom_sheet("custom", "top")
-
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
-
-                MDRaisedButton:
-                    text: "Corner 'bottom_left'"
-                    on_release: app.show_example_custom_bottom_sheet("custom", "bottom_left")
-
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
-
-                MDRaisedButton:
-                    text: "Corner 'bottom_right'"
-                    on_release: app.show_example_custom_bottom_sheet("custom", "bottom_right")
-
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
-
-                MDRaisedButton:
-                    text: "Corners 'bottom'"
-                    on_release: app.show_example_custom_bottom_sheet("custom", "bottom")
+            CustomItemButton:
+                text: "Corners 'bottom'"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", "bottom")
 
             Widget:
                 size_hint_y: None
@@ -228,14 +190,9 @@ bottom_sheet = """
             
             MDSeparator:
 
-            AnchorLayout:
-                anchor_x: "center"
-                size_hint_y: None
-                height: "32dp"
-
-                MDRaisedButton:
-                    text: "MDBottomSheet without animation opening"
-                    on_release: app.show_example_custom_bottom_sheet("custom", None, False)
+            CustomItemButton:
+                text: "MDBottomSheet without animation opening"
+                callback: lambda: app.show_example_custom_bottom_sheet("custom", None, False)
 """
 
 grid = """

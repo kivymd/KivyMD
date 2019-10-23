@@ -3,7 +3,7 @@ from setuptools import setup
 from os.path import join, dirname
 import re
 
-assert sys.version_info >= (3, 5, 0), "KivyMD requires Python 3.5+"
+assert sys.version_info >= (3, 6, 0), "KivyMD requires Python 3.6+"
 
 
 def get_version() -> str:
@@ -48,5 +48,5 @@ if __name__ == "__main__":
         extras_require={},
         install_requires=["kivy", "pillow", "requests"],
         setup_requires=[],
-        python_requires=">=3.5",
+        python_requires=">=3.6",
     )

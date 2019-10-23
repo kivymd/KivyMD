@@ -73,24 +73,169 @@ expansion_panel = """
 """
 
 bottom_sheet = """
+#:import Window kivy.core.window.Window
+
+
+<BoxContentForBottomSheetCustomScreenList>
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: self.minimum_height
+    pos_hint: {'top': 1}
+
+    ScrollView:
+
+        GridLayout:
+            id: box
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 1
+
+
+<ContentForBottomSheetCustomScreenList@TwoLineIconListItem>
+    text: "Call over mobile network"
+    on_press: app.callback_for_menu_items(self.text)
+    secondary_text:
+        "[color=%s]Operator's tariffs apply[/color]" \
+        % get_hex_from_color([0, 0, 0, .5])
+
+    IconLeftWidget:
+        icon: 'remote'
+
+
 <BottomSheet@Screen>
     name: 'bottom sheet'
 
-    MDRaisedButton:
-        text: "Open list bottom sheet"
-        opposite_colors: True
-        size_hint: None, None
-        size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .6}
-        on_release: app.show_example_bottom_sheet()
+    ScrollView:
 
-    MDRaisedButton:
-        text: "Open grid bottom sheet"
-        opposite_colors: True
-        size_hint: None, None
-        size: 4 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .3}
-        on_release: app.show_example_grid_bottom_sheet()
+        GridLayout:
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: "20dp"
+            padding: "20dp"
+            cols: 1
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Open custom bottom sheet"
+                    on_release: app.show_example_custom_bottom_sheet("custom")
+
+            AnchorLayout:
+                size_hint_y: None
+                height: "32dp"
+                anchor_x: "center"
+
+                MDRaisedButton:
+                    text: "Open custom bottom sheet with list"
+                    on_release: app.show_example_custom_bottom_sheet("list")
+        
+            AnchorLayout:
+                size_hint_y: None
+                height: "32dp"
+                anchor_x: "center"
+
+                MDRaisedButton:
+                    text: "Open list bottom sheet"
+                    on_release: app.show_example_bottom_sheet()
+
+            AnchorLayout:
+                size_hint_y: None
+                height: "32dp"
+                anchor_x: "center"
+
+                MDRaisedButton:
+                    text: "Open grid bottom sheet"
+                    on_release: app.show_example_grid_bottom_sheet()
+
+            Widget:
+                size_hint_y: None
+                height: "5dp"
+
+            MDLabel:
+                text: "MDBottomSheet corners"
+                halign: "center"
+                font_style: "H6"
+            
+            MDSeparator:
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Corner 'top_left'"
+                    on_release: app.show_example_custom_bottom_sheet("custom", "top_left")
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Corner 'top_right'"
+                    on_release: app.show_example_custom_bottom_sheet("custom", "top_right")
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Corners 'top'"
+                    on_release: app.show_example_custom_bottom_sheet("custom", "top")
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Corner 'bottom_left'"
+                    on_release: app.show_example_custom_bottom_sheet("custom", "bottom_left")
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Corner 'bottom_right'"
+                    on_release: app.show_example_custom_bottom_sheet("custom", "bottom_right")
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "Corners 'bottom'"
+                    on_release: app.show_example_custom_bottom_sheet("custom", "bottom")
+
+            Widget:
+                size_hint_y: None
+                height: "5dp"
+
+            MDLabel:
+                text: "MDBottomSheet without animation opening"
+                halign: "center"
+                font_style: "H6"
+            
+            MDSeparator:
+
+            AnchorLayout:
+                anchor_x: "center"
+                size_hint_y: None
+                height: "32dp"
+
+                MDRaisedButton:
+                    text: "MDBottomSheet without animation opening"
+                    on_release: app.show_example_custom_bottom_sheet("custom", None, False)
 """
 
 grid = """
@@ -1557,82 +1702,10 @@ fan_manager = """
 
 popup_screen = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import environ os.environ
-#:import images_path kivymd.images_path
-#:import Window kivy.core.window.Window
 
 
-<PopupScreenWidget@Screen>
-    name: 'popup screen'
-
-    PopupScreen:
-        id: popup
-
-
-<PopupScreen>
-
-    BoxLayout:
-
-        UserScreen:
-            id: start_screen
-
-            canvas.before:
-                Color:
-                    rgba: app.theme_cls.bg_dark
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-
-
-<UserScreen@FloatLayout>
-
-    MDRoundFlatButton:
-        text: 'Open Menu'
-        pos_hint: {'center_x': .5, 'center_y': .6}
-        on_release: app.show_popup_screen()
-
-    BoxLayout:
-        orientation: 'vertical'
-        size_hint_y: None
-        height: self.minimum_height
-        spacing: dp(10)
-        padding: dp(20)
-        pos_hint: {'bottom': .2}
-
-        MDLabel:
-            font_style: 'Body1'
-            theme_text_color: 'Primary'
-            text: 'Toggle to set custom MDPopupScreen image'
-            halign: 'center'
-            shorten: True
-
-        MDSwitch:
-            size_hint: None, None
-            size: dp(36), dp(48)
-            pos_hint: {'center_x': .5}
-            on_active:
-                app.popup_screen.background_image = f'{environ["KITCHEN_SINK_ASSETS"]}/white-texture.png' \
-                if self.active else f'{images_path}/transparent.png'
-
-        MDLabel:
-            font_style: 'Body1'
-            theme_text_color: 'Primary'
-            text: 'Toggle to set custom MDPopupScreen background color'
-            halign: 'center'
-            shorten: True
-
-        MDSwitch:
-            size_hint: None, None
-            size: dp(36), dp(48)
-            pos_hint: {'center_x': .5}
-            on_active:
-                app.popup_screen.background_color = [0, 0, 0, .8] \
-                if self.active else app.theme_cls.primary_color
-
-    Widget:
-
-# Your popup screen.
-<ContentForPopupScreen>
+<ContentForPopupScreen@BoxLayout>
+    id: box
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -1905,7 +1978,7 @@ class Screens(object):
         },
         "Popup Screen": {
             "kv_string": popup_screen,
-            "Factory": "Factory.PopupScreenWidget()",
+            "Factory": "Factory.ContentForPopupScreen()",
             "name_screen": "popup screen",
             "source_code": "Components-Progress-Loader.md",
             "object": None,

@@ -313,13 +313,6 @@ main_widget_kv = """
             app.set_title_toolbar(self.text)
 
     NavigationDrawerIconButton:
-        text: "Popup Screen"
-        icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
-
-    NavigationDrawerIconButton:
         text: "Progress and Slider"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
         on_release:
@@ -493,9 +486,6 @@ class KitchenSink(App, Screens):
         self.long_dialog = None
         self.dialog = None
         self.user_card = None
-        self.bs_menu_1 = None
-        self.bs_menu_2 = None
-        self.popup_screen = None
         self.my_snackbar = None
         self.dialog_load_kv_files = None
 
@@ -540,7 +530,6 @@ class KitchenSink(App, Screens):
             "Chips": "label-variant",
             "Fan Manager": "fan",
             "Progress & activity": "progress-check",
-            "Popup Screen": "window-closed",
             "Progress and Slider": "percent",
             "Snackbars": "dock-window",
         }
@@ -942,15 +931,6 @@ class KitchenSink(App, Screens):
         self.main_widget = Builder.load_string(main_widget_kv)
         return self.main_widget
 
-    def show_popup_screen(self):
-        if not self.popup_screen:
-            self.popup_screen = self.data["Popup Screen"]["object"].ids.popup
-            content_screen = ContentForPopupScreen()
-            self.popup_screen.screen = content_screen
-            self.popup_screen.padding = dp(10)
-            self.popup_screen.background_color = self.theme_cls.primary_color
-        self.popup_screen.show()
-
     def show_user_example_animation_card(self):
         """Create and open instance MDUserAnimationCard
         for the screen UserCard."""
@@ -1140,66 +1120,79 @@ class KitchenSink(App, Screens):
         else:
             MDDatePicker(self.set_previous_date).open()
 
-    def show_example_bottom_sheet(self):
+    def show_example_custom_bottom_sheet(self, type, corner=None, animation=True):
         """Show menu from the screen BottomSheet."""
 
+        from kivymd.uix.bottomsheet import MDCustomBottomSheet
+
+        if type == "custom":
+            custom_screen_for_bottom_sheet = self.data["Popup Screen"][
+                "object"
+            ]
+        elif type == "list":
+            custom_screen_for_bottom_sheet = BoxContentForBottomSheetCustomScreenList()
+
+        MDCustomBottomSheet(
+            screen=custom_screen_for_bottom_sheet,
+            bg_color=[0.2, 0.2, 0.2, 1],
+            animation=animation,
+            radius_from=corner,
+        ).open()
+
+    def show_example_bottom_sheet(self):
         from kivymd.uix.bottomsheet import MDListBottomSheet
 
-        if not self.bs_menu_1:
-            self.bs_menu_1 = MDListBottomSheet()
-            self.bs_menu_1.add_item(
-                "Here's an item with text only",
-                lambda x: self.callback_for_menu_items(
-                    "Here's an item with text only"
-                ),
-            )
-            self.bs_menu_1.add_item(
-                "Here's an item with an icon",
-                lambda x: self.callback_for_menu_items(
-                    "Here's an item with an icon"
-                ),
-                icon="clipboard-account",
-            )
-            self.bs_menu_1.add_item(
-                "Here's another!",
-                lambda x: self.callback_for_menu_items("Here's another!"),
-                icon="nfc",
-            )
-        self.bs_menu_1.open()
+        bs_menu_1 = MDListBottomSheet()
+        bs_menu_1.add_item(
+            "Here's an item with text only",
+            lambda x: self.callback_for_menu_items(
+                "Here's an item with text only"
+            ),
+        )
+        bs_menu_1.add_item(
+            "Here's an item with an icon",
+            lambda x: self.callback_for_menu_items(
+                "Here's an item with an icon"
+            ),
+            icon="clipboard-account",
+        )
+        bs_menu_1.add_item(
+            "Here's another!",
+            lambda x: self.callback_for_menu_items("Here's another!"),
+            icon="nfc",
+        )
+        bs_menu_1.open()
 
     def show_example_grid_bottom_sheet(self):
-        """Show menu from the screen BottomSheet."""
+        from kivymd.uix.bottomsheet import MDGridBottomSheet
 
-        if not self.bs_menu_2:
-            from kivymd.uix.bottomsheet import MDGridBottomSheet
-
-            self.bs_menu_2 = MDGridBottomSheet()
-            self.bs_menu_2.add_item(
-                "Facebook",
-                lambda x: self.callback_for_menu_items("Facebook"),
-                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}facebook-box.png",
-            )
-            self.bs_menu_2.add_item(
-                "YouTube",
-                lambda x: self.callback_for_menu_items("YouTube"),
-                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}youtube-play.png",
-            )
-            self.bs_menu_2.add_item(
-                "Twitter",
-                lambda x: self.callback_for_menu_items("Twitter"),
-                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}twitter.png",
-            )
-            self.bs_menu_2.add_item(
-                "Da Cloud",
-                lambda x: self.callback_for_menu_items("Da Cloud"),
-                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}cloud-upload.png",
-            )
-            self.bs_menu_2.add_item(
-                "Camera",
-                lambda x: self.callback_for_menu_items("Camera"),
-                icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}camera.png",
-            )
-        self.bs_menu_2.open()
+        bs_menu = MDGridBottomSheet()
+        bs_menu.add_item(
+            "Facebook",
+            lambda x: self.callback_for_menu_items("Facebook"),
+            icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}facebook-box.png",
+        )
+        bs_menu.add_item(
+            "YouTube",
+            lambda x: self.callback_for_menu_items("YouTube"),
+            icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}youtube-play.png",
+        )
+        bs_menu.add_item(
+            "Twitter",
+            lambda x: self.callback_for_menu_items("Twitter"),
+            icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}twitter.png",
+        )
+        bs_menu.add_item(
+            "Da Cloud",
+            lambda x: self.callback_for_menu_items("Da Cloud"),
+            icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}cloud-upload.png",
+        )
+        bs_menu.add_item(
+            "Camera",
+            lambda x: self.callback_for_menu_items("Camera"),
+            icon_src=f"{os.environ['KITCHEN_SINK_ASSETS']}camera.png",
+        )
+        bs_menu.open()
 
     def set_title_toolbar(self, title):
         """Set string title in MDToolbar for the whole application."""
@@ -1435,9 +1428,10 @@ class KitchenSink(App, Screens):
                 if name_screen == "Bottom App Bar":
                     self.set_appbar()
                     self.data[name_screen]["object"].add_widget(self.md_app_bar)
-                self.main_widget.ids.scr_mngr.add_widget(
-                    self.data[name_screen]["object"]
-                )
+                if name_screen != "Popup Screen":
+                    self.main_widget.ids.scr_mngr.add_widget(
+                        self.data[name_screen]["object"]
+                    )
                 if name_screen == "Text fields":
                     self.data[name_screen]["object"].ids.text_field_error.bind(
                         on_text_validate=self.set_error_message,
@@ -1513,15 +1507,20 @@ class ScreenFour(BaseFanScreen):
     pass
 
 
+class BoxContentForBottomSheetCustomScreenList(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for i in range(10):
+            self.ids.box.add_widget(
+                Factory.ContentForBottomSheetCustomScreenList()
+            )
+
+
 class IconRightSampleWidget(IRightBodyTouch, MDCheckbox):
     pass
 
 
 class PopupScreen(MDPopupScreen):
-    pass
-
-
-class ContentForPopupScreen(BoxLayout):
     pass
 
 

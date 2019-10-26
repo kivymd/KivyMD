@@ -497,7 +497,6 @@ Builder.load_string(
         MDLabel:
             id: lbl_txt
             text: root.text
-            on_text: print(root.text_color)
             font_size: sp(root.font_size)
             font_name: root.font_name if root.font_name is not None else self.font_name
             can_capitalize: root.can_capitalize

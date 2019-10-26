@@ -2,6 +2,38 @@
 https://gist.github.com/tshirtman/a1065cf74a788434e1162e342b130df8
 Write by tshirtman - https://github.com/tshirtman
 
+Example:
+=======
+
+from kivy.app import App
+from kivy.lang import Builder
+
+from kivymd.theming import ThemeManager
+
+KV = '''
+#:import MagicBehavior kivymd.uix.behaviors.MagicBehavior
+
+
+<MDIconMagicButton@MagicBehavior+MDRaisedButton>
+
+
+FloatLayout:
+
+    MDIconMagicButton:
+        text: "GROW EFFECT"
+        on_release: self.grow()
+        pos_hint: {"center_x": .5, "center_y": .5}
+'''
+
+
+class Example(App):
+    theme_cls = ThemeManager()
+
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()
 """
 
 from kivy.animation import Animation

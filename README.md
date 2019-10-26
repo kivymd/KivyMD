@@ -29,10 +29,10 @@ Documentation
 
 No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) contains some examples of using KivyMD widgets.
 
-#### Demos
+#### How to run the KivyMD demo on desktop?
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
+  <a href="https://www.youtube.com/watch?v=qU6C_Icp6TM">
     <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title="Click to watch on YouTube">
   </a>
 </p>

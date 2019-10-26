@@ -445,7 +445,7 @@ NavigationLayout:
                                     MDRaisedButton:
                                         text: 'Click Me'
                                         pos_hint: {'center_x': .5}
-                                        on_release: app.open_menu_for_demo_apps(self)
+                                        on_release: scr_mngr.current = "stuidies list"
 
                                     MDLabel:
                                         text: app.previous_text_end
@@ -456,6 +456,53 @@ NavigationLayout:
                                         markup: True
                                         halign: 'center'
                                         text_size: self.width - 20, None
+
+                Screen:
+                    name: "stuidies list"
+
+                    ScrollView:
+
+                        GridLayout:
+                            size_hint_y: None
+                            height: self.minimum_height
+                            cols: 1
+
+                            BoxLayout:
+                                size_hint_y: None
+                                height: self.minimum_height
+                                orientation: "vertical"
+                                spacing: "15dp"
+
+                                Image:
+                                    source: f"{environ['KITCHEN_SINK_ASSETS']}shrine.png"
+                                    size_hint: None, None
+                                    width: scr_mngr.width
+                                    height: scr_mngr.height - demo_name.height * 2
+                                    on_touch_down: if self.collide_point(*args[1].pos): scr_mngr.current = "shrine demo"
+
+                                MDLabel:
+                                    id: demo_name
+                                    text:
+                                        "Demo [color={COLOR}][b]Shrine[b][/color]".format(\
+                                        COLOR=get_hex_from_color(app.theme_cls.primary_color))
+                                    font_style: "H6"
+                                    markup: True
+                                    halign: "center"
+                                    size_hint_y: None
+                                    height: self.texture_size[1]
+
+                            Widget:
+                                size_hint_y: None
+                                height: "50dp"
+
+                Screen:
+                    name: "shrine demo"
+                    on_enter: app.show_demo_shrine(self)
+                    on_leave:
+                        app.theme_cls.primary_palette = "BlueGray"
+                        app.set_chevron_menu()
+                        app.set_title_toolbar("Kitchen Sink")
+                        toolbar.height = "56dp"
 """
 
 
@@ -482,7 +529,6 @@ class KitchenSink(App, Screens):
         # Default class instances.
         self.manager = None
         self.md_app_bar = None
-        self.instance_menu_demo_apps = None
         self.instance_menu_source_code = None
         self.md_theme_picker = None
         self.long_dialog = None
@@ -574,13 +620,6 @@ class KitchenSink(App, Screens):
             "Sasha Gray",
             "Vladimir Ivanenko",
         )
-        self.demo_apps_list = [
-            "Shop Window",
-            "Coffee Menu",
-            "Fitness Club",
-            "Registration",
-            "Account Page",
-        ]
         self.list_name_icons = list(md_icons.keys())[0:15]
         Window.bind(on_keyboard=self.events)
         crop_image(
@@ -588,6 +627,46 @@ class KitchenSink(App, Screens):
             f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
             f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_crop.png",
         )
+
+    def show_demo_shrine(self, instance):
+        """
+        :type instance <Screen name='shrine demo'> object
+
+        """
+
+        def show_demo_shrine(interval):
+            from demos.kitchen_sink.studies.shrine.shrine import MDShrine
+
+            instance.remove_widget(box)
+            instance.add_widget(MDShrine())
+            self.theme_cls.primary_palette = "Red"
+
+        from kivy.uix.image import Image
+        from kivymd.uix.label import MDLabel
+
+        self.main_widget.ids.toolbar.right_action_items = []
+        self.main_widget.ids.toolbar.left_action_items = []
+        self.main_widget.ids.toolbar.height = 0
+        self.main_widget.ids.toolbar.title = ""
+        box = BoxLayout(
+            orientation="vertical",
+            size_hint=(None, None),
+            size=(Window.width, Window.height * 50 // 100),
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
+        )
+        path_to_logo = (
+            f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-white.png"
+            if self.theme_cls.theme_style == "Dark"
+            else f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-dark.png"
+        )
+        logo = Image(source=path_to_logo)
+        text_title = MDLabel(text="SHRINE", font_style="H6", halign="center")
+        text_load = MDLabel(text="loading...", halign="center")
+        box.add_widget(logo)
+        box.add_widget(text_title)
+        box.add_widget(text_load)
+        instance.add_widget(box)
+        Clock.schedule_once(show_demo_shrine, 1)
 
     def set_list_for_refresh_layout(self):
         async def set_list_for_refresh_layout():
@@ -1368,59 +1447,10 @@ class KitchenSink(App, Screens):
         )
         context_menu.open(instance.ids.right_actions.children[0])
 
-    def open_menu_for_demo_apps(self, instance):
-        """
-        Called when you click the "Click me" button on the start screen.
-        Creates and opens a list of demo applications.
-
-        :type instance: <kivymd.uix.button.MDRaisedButton object>
-
-        """
-
-        if not self.instance_menu_demo_apps:
-            menu_for_demo_apps = []
-            for name_item in self.demo_apps_list:
-                menu_for_demo_apps.append(
-                    {
-                        "viewclass": "OneLineListItem",
-                        "text": name_item,
-                        "on_release": lambda x=name_item: self.show_demo_apps(
-                            x
-                        ),
-                    }
-                )
-            self.instance_menu_demo_apps = MDDropdownMenu(
-                items=menu_for_demo_apps,
-                max_height=dp(260),
-                width_mult=4,
-                _center=True,
-            )
-        self.instance_menu_demo_apps.open(instance)
-
-    def show_demo_apps(self, name_item):
-        self.show_screens_demo(name_item)
-        self.main_widget.ids.scr_mngr.current = name_item.lower()
-        self.instance_menu_demo_apps.dismiss()
-
     def on_pause(self):
         return True
 
     def on_start(self):
-        def _load_kv_for_demo(name_screen):
-            from demo_apps.formone import FormOne
-            from demo_apps.shopwindow import ShopWindow
-            from demo_apps.coffeemenu import CoffeeMenu
-            from demo_apps.fitnessclub import FitnessClub
-            from demo_apps.accountpage import AccountPage
-
-            Builder.load_string(self.data_for_demo[name_screen]["kv_string"])
-            self.data_for_demo[name_screen]["object"] = eval(
-                self.data_for_demo[name_screen]["class"]
-            )
-            self.main_widget.ids.scr_mngr.add_widget(
-                self.data_for_demo[name_screen]["object"]
-            )
-
         async def load_all_kv_files():
             count_kvs = len(list(self.data.keys()))
             for i, name_screen in enumerate(self.data.keys()):
@@ -1451,26 +1481,6 @@ class KitchenSink(App, Screens):
                     self.build_tabs()
                 elif name_screen == "Refresh Layout":
                     self.set_list_for_refresh_layout()
-
-            from demo_apps.formone import registration_form_one
-            from demo_apps.shopwindow import screen_shop_window
-            from demo_apps.coffeemenu import screen_coffee_menu
-            from demo_apps.fitnessclub import screen_fitness_club
-            from demo_apps.accountpage import screen_account_page
-
-            data = {
-                "Registration": registration_form_one,
-                "Shop Window": screen_shop_window,
-                "Coffee Menu": screen_coffee_menu,
-                "Fitness Club": screen_fitness_club,
-                "Account Page": screen_account_page,
-            }
-
-            for name_screen in data.keys():
-                await asynckivy.sleep(0)
-                self.dialog_load_kv_files.name_kv_file = name_screen
-                self.data_for_demo[name_screen]["kv_string"] = data[name_screen]
-                _load_kv_for_demo(name_screen)
 
             self.dialog_load_kv_files.dismiss()
 

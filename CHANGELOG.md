@@ -15,6 +15,7 @@ Change Log
 * After the animation (swipe up) label on the `Toolbar` disappeared - fixed
 * Delete `uix/popupscreen.py`
 * Added the feature to use custom screens for dialog in `MDBottomSheet` class
+* Added `studies` directory for demos in `material design` style
 
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)

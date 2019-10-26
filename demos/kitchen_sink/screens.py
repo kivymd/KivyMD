@@ -2118,29 +2118,6 @@ class Screens(object):
         },
     }
 
-    data_for_demo = {
-        "Shop Window": {"class": "ShopWindow()", "object": None},
-        "Fitness Club": {"class": "FitnessClub()", "object": None},
-        "Coffee Menu": {"class": "CoffeeMenu()", "object": None},
-        "Swipe cards": {"class": "SwipeCards()", "object": None},
-        "Registration": {"class": "FormOne()", "object": None},
-        "Account Page": {"class": "AccountPage()", "object": None},
-    }
-
-    def show_screens_demo(self, name_screen):
-        if name_screen == "Registration":
-            self.theme_cls.primary_palette = "Amber"
-        if name_screen != "Shop Window":
-            self.main_widget.ids.toolbar.height = 0
-        if not self.data_for_demo[name_screen]["object"]:
-            Builder.load_string(self.data_for_demo[name_screen]["kv_string"])
-            self.data_for_demo[name_screen]["object"] = eval(
-                self.data_for_demo[name_screen]["class"]
-            )
-            self.main_widget.ids.scr_mngr.add_widget(
-                self.data_for_demo[name_screen]["object"]
-            )
-
     def show_manager_swiper(self):
         from kivymd.uix.managerswiper import MDSwiperPagination
 

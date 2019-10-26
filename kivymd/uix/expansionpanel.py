@@ -217,8 +217,12 @@ class MDExpansionPanel(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_open")
+        self.register_event_type("on_close")
 
     def on_open(self, *args):
+        pass
+
+    def on_close(self, *args):
         pass
 
     def check_open_box(self, instance):
@@ -231,6 +235,7 @@ class MDExpansionPanel(BoxLayout):
                 chevron = self.ids.item_anim.ids.chevron
                 self.anim_chevron_up(chevron)
                 self.anim_resize_close(box)
+                self.dispatch("on_close")
                 break
 
         if not press_current_item:

@@ -14,16 +14,16 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 """
 
-from . ripplebehavior import CircularRippleBehavior, RectangularRippleBehavior
-from . hover_behavior import HoverBehavior
-from . elevation import (
+from .ripplebehavior import CircularRippleBehavior, RectangularRippleBehavior
+from .hover_behavior import HoverBehavior
+from .elevation import (
     CommonElevationBehavior,
     RectangularElevationBehavior,
     CircularElevationBehavior,
     RectangularElevationBehavior,
 )
-from . backgroundcolorbehavior import (
+from .backgroundcolorbehavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
-from . magic_behavior import MagicBehavior
+from .magic_behavior import MagicBehavior

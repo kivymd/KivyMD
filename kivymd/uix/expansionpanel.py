@@ -214,6 +214,13 @@ class MDExpansionPanel(BoxLayout):
     icon = StringProperty()
     title = StringProperty()
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_open")
+
+    def on_open(self, *args):
+        pass
+
     def check_open_box(self, instance):
         press_current_item = False
         for box in self.parent.children:
@@ -234,6 +241,7 @@ class MDExpansionPanel(BoxLayout):
         angle = -90
         Animation(angle=angle, d=0.2).start(chevron)
         self.anim_resize_open_item()
+        self.dispatch("on_open")
 
     def anim_chevron_up(self, instance):
         angle = 0

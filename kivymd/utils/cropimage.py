@@ -64,7 +64,6 @@ def add_corners(im, corner, corner_mode):
         alpha.paste(
             circle.crop((corner, 0, corner * 2, corner)), (w - corner, 0)
         )
-        print(corner)
 
     def add_bottom_corners():
         alpha.paste(
@@ -74,7 +73,6 @@ def add_corners(im, corner, corner_mode):
             circle.crop((corner, corner, corner * 2, corner * 2)),
             (w - corner, h - corner),
         )
-        print(corner)
 
     from PIL import Image, ImageDraw
 

@@ -363,7 +363,6 @@ class MDDatePicker(
         try:
             date(year, month, day)
         except Exception as e:
-            print(e)
             if str(e) == "day is out of range for month":
                 raise self.SetDateError(
                     " Day %s day is out of range for month %s" % (day, month)

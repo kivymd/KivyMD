@@ -1,0 +1,93 @@
+#:import colors kivymd.color_definitions.colors
+#:import gch kivy.utils.get_color_from_hex
+#:import ShrineToolbar studies.shrine.baseclass.toolbar.ShrineToolbar
+#:import ShrineMenu studies.shrine.baseclass.menu.ShrineMenu
+#:import BoxBottomSheet studies.shrine.baseclass.box_bottom_sheet.BoxBottomSheet
+#:import BoxBottomSheetProductList studies.shrine.baseclass.box_bottom_sheet.BoxBottomSheetProductList
+#:import MagicBehavior kivymd.uix.behaviors.MagicBehavior
+#:import ProductScreen studies.shrine.baseclass.product_screen.ProductScreen
+#:import Clock kivy.clock.Clock
+#:import environ os.environ
+
+
+<MagicButton@MagicBehavior+MDRaisedButton>
+
+
+<ShrineRootScreen>
+    name: "shrine root screen"
+    on_enter:
+        products_list, products_description = root.set_products_list()
+        root.add_products_box_to_image_list(products_list, products_description)
+
+    canvas:
+        Color:
+            rgba: gch(colors[root.theme_cls.primary_palette]["50"])
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    ShrineToolbar:
+        id: toolbar
+        title: root.title
+        pos_hint: {"top": 1}
+        path_to_icon_menu:
+            f"{environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/menu-white.png" \
+            if root.theme_cls.theme_style == "Dark" \
+            else f"{environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/menu-dark.png"
+        path_to_icon_logo:
+            f"{environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-white.png" \
+            if root.theme_cls.theme_style == "Dark" \
+            else f"{environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-dark.png"
+
+    ShrineMenu:
+
+    MDCard:
+        id: image_list
+        size_hint_y: None
+        height: root.height - toolbar.height
+        md_bg_color: 0, 0, 0, 0
+        elevation: 10
+
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [(45, 45), (0, 0), (0, 0), (0, 0)]
+
+        ScrollView:
+
+            GridLayout:
+                id: product_gallery
+                rows: 1
+                spacing: 10
+                size_hint_x: None
+                width: self.minimum_width
+
+    BoxBottomSheet:
+        id: box_bottom_sheet
+
+        BoxBottomSheetProductList:
+            id: box_bottom_sheet_product_list
+
+    MagicButton:
+        id: clear_button
+        text: "CLEAR CART"
+        increment_width: dp(150)
+        elevation: 10
+        opacity: 0
+        disabled: True
+        pos_hint: {"center_x": .5, "center_y": .1}
+        md_bg_color: gch(colors[root.theme_cls.primary_palette]["200"])
+        on_press:
+            box_bottom_sheet_product_list.data = []
+            box_bottom_sheet.clear_box()
+        on_release:
+            Clock.schedule_once(box_bottom_sheet.hide_clear_button, .2)
+            Clock.schedule_once(box_bottom_sheet.hide_bottom_sheet, .2)
+            self.grow()
+
+    ProductScreen:
+        id: product_screen
+        y: -root.height

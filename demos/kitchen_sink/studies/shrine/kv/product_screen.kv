@@ -1,0 +1,196 @@
+#:import Window kivy.core.window.Window
+#:import MagicBehavior kivymd.uix.behaviors.MagicBehavior
+#:import environ os.environ
+
+
+<MDIconMagicButton@MagicBehavior+MDIconButton>
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+
+
+<PlanItem>
+    size_hint: None, None
+    size: self.minimum_size
+    on_touch_down: if self.collide_point(*args[1].pos): root.press_on_plan(root)
+
+    BoxLayout:
+        size_hint: None, None
+        size: "40dp", "40dp"
+
+        canvas.before:
+            Color:
+                rgba: root.color_select
+            BorderImage
+                pos: self.pos
+                size: self.size
+                source: f"{environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/border.png"
+
+        Label:
+            text_size: self.size
+            halign: 'center'
+            valign: 'middle'
+            text: root.text_item
+            markup: True
+            color: 0, 0, 0, 1
+
+
+<MoreInformation>:
+    padding: "25dp"
+    size_hint_y: None
+    height: self.minimum_height
+
+    Label:
+        size_hint: None, None
+        size: self.texture_size
+        markup: True
+        color: root.theme_cls.text_color
+        text_size: root.width - dp(35), None
+        text:
+            "- Beautiful 3D Design Dial, with '7' marking\n" \
+            "- Comfortable Soft Leather Watch Band\n" \
+            "- Durable stainless steel buckle\n" \
+            "- Precise Quartz movement for accurate time keeping\n" \
+            "- Comfortable for Everyday Wear\n\n" \
+
+            "[color={COLOR}][b]WARRANTY INFORMATION:[/b][/color]\n" \
+            "- For defective products, buyers may return the watch for refund within\n" \
+            "  the Zalora PH return period (within 30 days after delivery).\n\n" \
+
+            "[color={COLOR}][b]THIS WARRANTY DOES NOT COVER:[/b][/color]\n" \
+            "- Damage resulting from impact, accidents, mishandling, or abuse (dents, crushing, knocks or impacts).\n" \
+            "- Loss of water resistance after 24 months without proper and documented maintenance.".format(\
+            COLOR=colors["BlueGray"]["500"])
+
+
+<ProductScreen>
+    name: "product screen"
+    opacity: 0
+
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    ScrollView:
+
+        GridLayout:
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
+
+            Image:
+                id: previous_image
+                size_hint: None, None
+                size: Window.width, int(dp(Window.height * 35 // 100))
+
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "25dp"
+
+                MDLabel:
+                    text: "Chronomart"
+                    font_style: "H6"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+                Widget:
+                    size_hint_x: .1
+
+                MDLabel:
+                    text: "$380"
+                    halign: "right"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "25dp", 0, "25dp", 0
+
+                MDLabel:
+                    text:
+                        "FEYERT Logo Office Lady Fashion Small Dial Stainless " \
+                        "Steel Leather Strap Wrist Watch"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+            BoxLayout:
+                id: expansion_panel_box
+                size_hint_y: None
+                height: "64dp"
+
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "25dp", "25dp", 0, 0
+
+                MDLabel:
+                    text: "Select size"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    font_style: "H6"
+
+            BoxLayout:
+                size_hint_y: None
+                height: "80dp"
+                padding: "25dp", "25dp", "25dp", 0
+
+                ScrollView
+
+                    GridLayout:
+                        id: box
+                        rows: 1
+                        spacing: 10
+                        size_hint_x: None
+                        width: self.minimum_width
+
+                        PlanItem:
+                            text_item: '12'
+                        PlanItem:
+                            text_item: '14'
+                        PlanItem:
+                            text_item: '16'
+                        PlanItem:
+                            text_item: '18'
+                        PlanItem:
+                            text_item: '20'
+                        PlanItem:
+                            text_item: '22'
+                        PlanItem:
+                            text_item: '24'
+                        PlanItem:
+                            text_item: '26'
+                        PlanItem:
+                            text_item: '28'
+
+    BoxLayout:
+        y: previous_image.height - self.height
+        padding: "5dp"
+        size_hint_y: None
+        height: self.minimum_height
+        pos_hint: {"top": 1}
+
+        canvas:
+            Color:
+                rgba: 0, 0, 0, 0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDIconMagicButton:
+            icon: "close"
+            on_release: root.hide_product_screen()
+
+        Widget:
+
+        MDIconMagicButton:
+            icon: "cart-plus"
+
+        MDIconMagicButton:
+            icon: "heart-outline"
+            on_release:
+                self.grow()
+                self.icon = "heart" if self.icon == "heart-outline" else "heart-outline"

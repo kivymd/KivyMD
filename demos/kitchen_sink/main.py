@@ -26,7 +26,7 @@ os.environ["KITCHEN_SINK_ASSETS"] = os.path.join(
 )
 
 from kivy.factory import Factory
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
@@ -77,6 +77,13 @@ main_widget_kv = """
 #        an error is returned when using the `MDMenu` example
 #        NameError: name 'MDDropdownMenu' is not defined
 #:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+
+
+<ShrinePresplashTile@Label>
+    color: app.theme_cls.text_color
+    font_size: "24sp"
+    size_hint_y: None
+    height: self.texture_size[1]
 
 
 <ContentPopup@BoxLayout>
@@ -634,15 +641,28 @@ class KitchenSink(App, Screens):
 
         """
 
+        def add_screen_shrine(MDShrine):
+            def remove_box(*args):
+                instance.remove_widget(box)
+
+            md_shrine = MDShrine()
+            md_shrine.opacity = 0
+            instance.add_widget(md_shrine)
+
+            anim = Animation(opacity=0, d=0.5)
+            anim.bind(on_complete=remove_box)
+            anim.start(box)
+            Animation(opacity=2, d=0.5).start(md_shrine)
+            self.theme_cls.primary_palette = "Red"
+
         def show_demo_shrine(interval):
             from demos.kitchen_sink.studies.shrine.shrine import MDShrine
 
-            instance.remove_widget(box)
-            instance.add_widget(MDShrine())
-            self.theme_cls.primary_palette = "Red"
+            anim = Animation(size_hint=(.2, .2), pos_hint={"center_y": .7}, d=0.5)
+            anim.bind(on_complete=lambda *x: add_screen_shrine(MDShrine))
+            anim.start(box)
 
         from kivy.uix.image import Image
-        from kivymd.uix.label import MDLabel
 
         self.main_widget.ids.toolbar.right_action_items = []
         self.main_widget.ids.toolbar.left_action_items = []
@@ -650,21 +670,18 @@ class KitchenSink(App, Screens):
         self.main_widget.ids.toolbar.title = ""
         box = BoxLayout(
             orientation="vertical",
-            size_hint=(None, None),
-            size=(Window.width, Window.height * 50 // 100),
-            pos_hint={"center_x": 0.5, "center_y": 0.5},
+            size_hint=(.4, .6),
+            spacing=dp(10),
+            pos_hint={"center_x": 0.5, "center_y": 0.6},
         )
         path_to_logo = (
             f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-white.png"
             if self.theme_cls.theme_style == "Dark"
             else f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-dark.png"
         )
-        logo = Image(source=path_to_logo)
-        text_title = MDLabel(text="SHRINE", font_style="H6", halign="center")
-        text_load = MDLabel(text="loading...", halign="center")
+        logo = Image(source=path_to_logo, size_hint_x=.8, pos_hint={"center_x": .5})
         box.add_widget(logo)
-        box.add_widget(text_title)
-        box.add_widget(text_load)
+        box.add_widget(Factory.ShrinePresplashTile(text="SHRINE"))
         instance.add_widget(box)
         Clock.schedule_once(show_demo_shrine, 1)
 

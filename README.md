@@ -29,11 +29,11 @@ Documentation
 
 No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) contains some examples of using KivyMD widgets.
 
-#### How to run the KivyMD demo on desktop?
+#### Demos
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=qU6C_Icp6TM">
-    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title="Click to watch on YouTube">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title='Click to watch "How to run the KivyMD demo on desktop?" on YouTube'>
   </a>
 </p>
 
@@ -45,7 +45,7 @@ No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/w
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
-    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch on YouTube">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch KivyMD Tutorials on YouTube">
   </a>
 </p>
 

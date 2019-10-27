@@ -658,7 +658,9 @@ class KitchenSink(App, Screens):
         def show_demo_shrine(interval):
             from demos.kitchen_sink.studies.shrine.shrine import MDShrine
 
-            anim = Animation(size_hint=(.2, .2), pos_hint={"center_y": .7}, d=0.5)
+            anim = Animation(
+                size_hint=(0.2, 0.2), pos_hint={"center_y": 0.7}, d=0.5
+            )
             anim.bind(on_complete=lambda *x: add_screen_shrine(MDShrine))
             anim.start(box)
 
@@ -670,7 +672,7 @@ class KitchenSink(App, Screens):
         self.main_widget.ids.toolbar.title = ""
         box = BoxLayout(
             orientation="vertical",
-            size_hint=(.4, .6),
+            size_hint=(0.4, 0.6),
             spacing=dp(10),
             pos_hint={"center_x": 0.5, "center_y": 0.6},
         )
@@ -679,7 +681,9 @@ class KitchenSink(App, Screens):
             if self.theme_cls.theme_style == "Dark"
             else f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images/shrine-dark.png"
         )
-        logo = Image(source=path_to_logo, size_hint_x=.8, pos_hint={"center_x": .5})
+        logo = Image(
+            source=path_to_logo, size_hint_x=0.8, pos_hint={"center_x": 0.5}
+        )
         box.add_widget(logo)
         box.add_widget(Factory.ShrinePresplashTile(text="SHRINE"))
         instance.add_widget(box)

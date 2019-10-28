@@ -150,6 +150,7 @@ API Breaking changes
 * All uix modules moved to `kivymd.uix` module.
 * All widgets that usually used in kv-lang are automatically added to Factory.
 You don't need to `#:import` them. Remove all your imports from kv files.
+* Replaced `MDAccordion` and `MDAccordionListItem` with `MDExpansionPanel`.
 * Changed font styles:
 
 | Old      | New       |

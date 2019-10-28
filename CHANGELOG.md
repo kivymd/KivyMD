@@ -123,6 +123,7 @@ pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.1
 
 * Added `MDContextMenu` class.
 * Added `MDExpansionPanel` class.
+* Removed `MDAccordion` and `MDAccordionListItem`. Use `MDExpansionPanel` instead.
 * Added `HoverBehavior` class by [Olivier POYEN](https://gist.github.com/opqopq/15c707dc4cffc2b6455f).
 * Added markup support for buttons.
 * Added `duration` property to `Toast`.

@@ -185,6 +185,17 @@ Image preview
   <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png">
 </p>
 
+
+Contributing
+============
+
+We always welcome your [Bug reports](https://github.com/HeaTTheatR/KivyMD/issues/new?template=bug_report.md),
+[Feature requests](https://github.com/HeaTTheatR/KivyMD/issues/new?template=feature_request.md)
+and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
+Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
+and feel free to improve KivyMD.
+
+
 Sister projects
 ===============
 

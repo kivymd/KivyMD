@@ -155,8 +155,9 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
             self.dropdown_bg = self.theme_cls.primary_color
 
     def on_items(self, instance, value):
+        _list_menu = []
         for name_item in value:
-            self._list_menu.append(
+            _list_menu.append(
                 {
                     "viewclass": "OneLineListItem",
                     "text": name_item,
@@ -165,9 +166,11 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
                     "on_release": lambda x=name_item: self.set_item(x),
                 }
             )
+        self._list_menu = _list_menu
         self.ids.label_item.text = (
             self.current_item if self.current_item else value[0]
         )
+        self.current_item = self.ids.label_item.text
 
     def set_item(self, name_item):
         self.ids.label_item.text = name_item

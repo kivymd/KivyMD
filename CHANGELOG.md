@@ -8,15 +8,11 @@ Change Log
 * Added hook for `PyInstaller` (add `hookspath=[kivymd.hooks_path]`).
 * Added examples of `spec` files for building [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
 * Added some features to `MDProgressLoader`.
+* Added feature to preview the current value of `MDSlider`.
+* Added feature to use custom screens for dialog in `MDBottomSheet` class.
+* Removed `MDPopupScreen`.
+* Added [`studies`](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/studies) directory for demos in Material Design.
 * Bug fixes and other minor improvements.
-* Added the ability to preview the current value of the slider
-* Fixed https://github.com/HeaTTheatR/KivyMD/issues/122
-* Fixed https://github.com/HeaTTheatR/KivyMD/issues/123
-* After the animation (swipe up) label on the `Toolbar` disappeared - fixed
-* Delete `uix/popupscreen.py`
-* Added the feature to use custom screens for dialog in `MDBottomSheet` class
-* Added `studies` directory for demos in `material design` style
-
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)
 ```bash

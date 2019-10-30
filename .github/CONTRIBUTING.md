@@ -27,7 +27,9 @@ possible, attach an **images**.
 
 * **Check that similar changes isn't already requested:**
 [pull requests on GitHub](https://github.com/HeaTTheatR/KivyMD/pulls).
-* Format your code with [Black](https://github.com/psf/black) utility.
+* Format your code with [Black](https://github.com/psf/black) utility. Use
+[pre-commit](https://pre-commit.com/) to automatically format code before
+commit.
 * Do not forget to test your code.
 * Create new [pull request](https://github.com/HeaTTheatR/KivyMD/compare).
 * Write good **title** and **description of changes** and, if possible, attach

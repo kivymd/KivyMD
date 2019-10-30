@@ -1,0 +1,9 @@
+# Pre-commit hooks.
+# python3 -m pip install pre-commit
+# pre-commit install
+
+repos:
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black

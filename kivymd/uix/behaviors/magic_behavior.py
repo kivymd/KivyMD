@@ -67,7 +67,7 @@ Builder.load_string(
 )
 
 
-class MagicBehavior(object):
+class MagicBehavior:
     def grow(self):
         Animation.stop_all(self)
         (

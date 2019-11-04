@@ -39,6 +39,7 @@ Builder.load_string('''
         left_action_items: [['dots-vertical', lambda x: None]]
 
     Screen:
+
         ScrollView:
             size_hint_x: None
             width: box.width
@@ -59,6 +60,7 @@ Builder.load_string('''
                     width: self.minimum_width
                     height: dp(56)
                     spacing: '10dp'
+                    pos_hint: {'center_x': .5}
 
                     MDIconButton:
                         icon: 'sd'
@@ -130,13 +132,41 @@ Builder.load_string('''
                     pos_hint: {'center_x': .5}
 
                     MDSeparator:
+                        size_hint_x: None
+                        width: root.width / 2
 
-                    Label:
-                        text: 'Button customization'
-                        color: app.theme_cls.text_color
-                        font_size: '20sp'
+                    MDLabel:
+                        text: 'MDRoundImageButton'
+                        font_style: "H6"
+                        halign: "center"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                    MDSeparator:
+
+                    BoxLayout:
+                        spacing: "10dp"
                         size_hint: None, None
-                        size: self.texture_size
+                        size: self.minimum_size
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDRoundImageButton:
+                            source: "demos/kitchen_sink/assets/kivymd_logo.png"
+
+                        MDRoundImageButton:
+                            source: "demos/kitchen_sink/assets/kivy-logo-white-512.png"
+
+                        MDRoundImageButton:
+                            source: "data/logo/kivy-icon-512.png"
+
+                    MDSeparator:
+
+                    MDLabel:
+                        text: 'Button customization'
+                        font_style: "H6"
+                        halign: "center"
+                        size_hint_y: None
+                        height: self.texture_size[1]
 
                     MDSeparator:
 
@@ -220,14 +250,16 @@ Builder.load_string('''
 
                     MDSeparator:
 
-                    Label:
+                    MDLabel:
                         text: 'MDIconButton customization'
-                        color: app.theme_cls.text_color
-                        font_size: '20sp'
-                        size_hint: None, None
-                        size: self.texture_size
+                        font_style: "H6"
+                        halign: "center"
+                        size_hint_y: None
+                        height: self.texture_size[1]
 
                     MDSeparator:
+                        size_hint_x: None
+                        width: root.width / 2
 
                     BoxLayout:
                         size_hint: None, None

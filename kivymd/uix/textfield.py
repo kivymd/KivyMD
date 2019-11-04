@@ -432,6 +432,7 @@ Builder.load_string(
             font_family: root.font_family
             font_size: sp(root.font_size)
             allow_copy: root.allow_copy
+            text_validate_unfocus: root.text_validate_unfocus
             on_focus: root._on_focus(self)
             on_text:
                 root.text = self.text
@@ -1026,9 +1027,12 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
 
     focus = BooleanProperty()
     """Whether or not the widget is focused"""
+    
+    text_validate_unfocus= BooleanProperty(False)
+    """ Whether on_text_validate() should unfocus the field"""
 
     radius = NumericProperty(dp(25))
-    """The values ​​of the rounding of the corners of the tex field."""
+    """The values ​​of the rounding of the corners of the text field."""
 
     field_height = NumericProperty(0)
     """Text box height."""

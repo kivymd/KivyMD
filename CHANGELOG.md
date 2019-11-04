@@ -5,6 +5,7 @@ Change Log
 
 > [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.1) - *Alpha*
 
+* Added `MDRoundImageButton` class.
 * Added hook for `PyInstaller` (add `hookspath=[kivymd.hooks_path]`).
 * Added examples of `spec` files for building [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
 * Added some features to `MDProgressLoader`.
@@ -13,8 +14,6 @@ Change Log
 * Removed `MDPopupScreen`.
 * Added [`studies`](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/studies) directory for demos in Material Design.
 * Bug fixes and other minor improvements.
-* Fixed `TypeError: 'NoneType' object is not callable` when no callback function is assigned to the dialog buttons in `MDDialog` class
-* Added `MDRoundImageButton` class to `button.py` module
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)
 ```bash

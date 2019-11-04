@@ -13,6 +13,8 @@ Change Log
 * Removed `MDPopupScreen`.
 * Added [`studies`](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/studies) directory for demos in Material Design.
 * Bug fixes and other minor improvements.
+* Fixed `TypeError: 'NoneType' object is not callable` when no callback function is assigned to the dialog buttons in `MDDialog` class
+* Added `MDRoundImageButton` class to `button.py` module
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)
 ```bash

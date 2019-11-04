@@ -338,6 +338,7 @@ Builder.load_string(
         Ellipse:
             size: self.size
             pos: self.pos
+            source: self.source if hasattr(self, "source") else ""
 
     size:
         (dp(48), dp(48)) \
@@ -876,6 +877,19 @@ class MDFloatingActionButton(
 ):
     icon = StringProperty("android")
     background_palette = StringProperty("Accent")
+
+
+class MDRoundImageButton(MDFloatingActionButton):
+    source = StringProperty()
+    """Button image."""
+
+    _current_button_color = [1, 1, 1, 1]
+
+    def on_source(self, instance, value):
+        self.source = value
+
+    def on_size(self, instance, value):
+        self.remove_widget(self.ids.lbl_txt)
 
 
 class MDRectangleFlatButton(MDFlatButton):

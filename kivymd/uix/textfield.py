@@ -1027,8 +1027,8 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
 
     focus = BooleanProperty()
     """Whether or not the widget is focused"""
-    
-    text_validate_unfocus= BooleanProperty(False)
+
+    text_validate_unfocus = BooleanProperty(False)
     """ Whether on_text_validate() should unfocus the field"""
 
     radius = NumericProperty(dp(25))

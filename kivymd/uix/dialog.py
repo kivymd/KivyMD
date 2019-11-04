@@ -196,7 +196,7 @@ class BaseDialog(ThemableBehavior, ModalView):
     def set_content(self, instance_content_dialog):
         def _events_callback(result_press):
             self.dismiss()
-            if result_press:
+            if result_press and self.events_callback:
                 self.events_callback(result_press, self)
 
         if self.device_ios:  # create buttons for iOS

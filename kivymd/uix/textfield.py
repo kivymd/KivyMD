@@ -433,6 +433,7 @@ Builder.load_string(
             font_size: sp(root.font_size)
             allow_copy: root.allow_copy
             text_validate_unfocus: root.text_validate_unfocus
+            focus: root.focus
             on_focus: root._on_focus(self)
             on_text:
                 root.text = self.text
@@ -1026,9 +1027,9 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     """
 
     focus = BooleanProperty()
-    """Whether or not the widget is focused"""
+    """get/set the widget's focus"""
 
-    text_validate_unfocus = BooleanProperty(False)
+    text_validate_unfocus = BooleanProperty(True)
     """ Whether on_text_validate() should unfocus the field"""
 
     radius = NumericProperty(dp(25))

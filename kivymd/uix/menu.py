@@ -144,6 +144,7 @@ Builder.load_string(
     MDLabel:
         id: item_text
         text: root.text
+        color: root.text_color if root.text_color else app.theme_cls.text_color
         markup: True
         halign: 'left'
 
@@ -201,11 +202,11 @@ Builder.load_string(
 class MDMenuItem(RecycleDataViewBehavior, ButtonBehavior, BoxLayout):
     text = StringProperty()
     icon = StringProperty("")
+    text_color = ListProperty(None, allownone=True)
 
 
 class MDMenu(RecycleView):
     width_mult = NumericProperty(1)
-
 
 class MDDropdownMenu(ThemableBehavior, BoxLayout):
     items = ListProperty()

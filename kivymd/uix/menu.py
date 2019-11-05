@@ -135,7 +135,7 @@ Builder.load_string(
 
     MDIcon:
         id: item_icon
-        icon: root.icon if root.icon else 'null-icon'
+        icon: root.icon if root.icon else "blank"
         size_hint_x: None
         width: self.texture_size[0] if root.icon else 0
         valign: 'middle'

@@ -158,8 +158,8 @@ Builder.load_string(
         id: drawer_logo
         size_hint_y: .3
         source: root.drawer_logo
-        allow_stretch: True
-        keep_ratio: False
+        allow_stretch: root.drawer_logo_allow_stretch
+        keep_ratio: root.drawer_logo_keep_ratio
 
     MDLabel:
         id: drawer_title
@@ -408,6 +408,8 @@ class MDNavigationDrawer(
     orientation = "vertical"
     panel = ObjectProperty()
     drawer_logo = StringProperty()
+    drawer_logo_allow_stretch = BooleanProperty(True)
+    drawer_logo_keep_ratio = BooleanProperty(False)
     drawer_title = StringProperty()
     shadow_color = ListProperty([0, 0, 0, 0])
     use_logo = OptionProperty("none", options=["logo", "label", "all"])

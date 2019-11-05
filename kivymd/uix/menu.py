@@ -208,6 +208,7 @@ class MDMenuItem(RecycleDataViewBehavior, ButtonBehavior, BoxLayout):
 class MDMenu(RecycleView):
     width_mult = NumericProperty(1)
 
+
 class MDDropdownMenu(ThemableBehavior, BoxLayout):
     items = ListProperty()
     """See :attr:`~kivy.uix.recycleview.RecycleView.data`

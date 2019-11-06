@@ -237,9 +237,15 @@ class MDBottomAppBar(FloatLayout):
     )
     anchor = StringProperty("right")
     callback = ObjectProperty(lambda x: None)
+    action_button = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Clock.schedule_once(
+            lambda x: self.on_left_action_items(0, self.left_action_items)
+        )
+
+    def on_left_action_items(self, *args):
         # Default action Button.
         x = (
             Window.width - dp(56) - dp(20)

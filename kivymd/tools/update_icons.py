@@ -70,11 +70,11 @@ def get_icons_list():
     jsons_icons = re_icons_json.findall(preview_file)[0]
     json_icons = re_quote_keys.sub(r'\1"\2"\3', jsons_icons)
     icons = json.loads(json_icons)
-    # Find additional icons (blank icon)
-    jsons_additional_icons = re_additional_icons.findall(preview_file)
-    for j in jsons_additional_icons:
-        json_additional_icons = re_quote_keys.sub(r'\1"\2"\3', j)
-        icons.append(json.loads(json_additional_icons))
+    # Find additional icons (like a blank icon)
+    # jsons_additional_icons = re_additional_icons.findall(preview_file)
+    # for j in jsons_additional_icons:
+    #     json_additional_icons = re_quote_keys.sub(r'\1"\2"\3', j)
+    #     icons.append(json.loads(json_additional_icons))
     return icons, version
 
 
@@ -89,6 +89,7 @@ def make_icon_definitions(icons):
             icon_definitions += f'"{i["name"]}": "\\U{i["hex"].upper()}",\n'
         else:
             icon_definitions += f'"{i["name"]}": "\\u{i["hex"].upper()}",\n'
+    icon_definitions += f'"blank": " ",\n'  # Add blank icon (space)
     icon_definitions += "}"
     return icon_definitions
 

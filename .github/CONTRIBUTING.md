@@ -34,3 +34,20 @@ commit.
 * Create new [pull request](https://github.com/HeaTTheatR/KivyMD/compare).
 * Write good **title** and **description of changes** and, if possible, attach
 a **screenshots**.
+
+
+## What contributions can I make?
+
+See [TODO List](https://github.com/HeaTTheatR/KivyMD/issues/139)
+
+### Documentation
+
+All Python code should be documented. Properties are documented in [Kivy style](https://github.com/kivy/kivy/blob/17e1977a047a21fd7c780b32572ae3948f2e7c2d/kivy/uix/button.py#L124)
+
+### Make widgets fit Material Design
+
+All widgets should look like it drawn in Material specification: https://material.io/components/
+
+### Make widgets more customisable
+
+Widgets should have as many properties as may be required to customize it.

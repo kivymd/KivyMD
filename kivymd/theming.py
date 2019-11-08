@@ -357,15 +357,22 @@ class ThemeManager(Widget):
 
 
 class ThemableBehavior(object):
-    theme_cls = ObjectProperty(None)
+    theme_cls = ObjectProperty()
     opposite_colors = BooleanProperty(False)
-    device_ios = DEVICE_IOS
+    device_ios = BooleanProperty(DEVICE_IOS)
 
     def __init__(self, **kwargs):
         if self.theme_cls is not None:
             pass
-        elif hasattr(App.get_running_app(), "theme_cls"):
-            self.theme_cls = App.get_running_app().theme_cls
         else:
-            self.theme_cls = ThemeManager()
+            if not isinstance(
+                App.get_running_app().property("theme_cls", True),
+                ObjectProperty,
+            ):
+                raise ValueError(
+                    "KivyMD: App object should be inherited from "
+                    "`kivymd.app.MDApp`. See "
+                    "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
+                )
+            self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)

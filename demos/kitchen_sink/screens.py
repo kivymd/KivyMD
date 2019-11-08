@@ -15,6 +15,7 @@ from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
+from kivy.event import EventDispatcher
 
 from kivymd.utils.cropimage import crop_image
 
@@ -1184,7 +1185,7 @@ refresh_layout = """
         MDScrollViewRefreshLayout:
             id: refresh_layout
             refresh_callback: app.refresh_callback
-            root_layout: app.main_widget.ids.float_box
+            root_layout: app.root.ids.float_box
 
             GridLayout:
                 id: box
@@ -1602,7 +1603,7 @@ fan_manager = """
     name: 'fan manager'
 
     on_enter:
-        app.main_widget.ids.toolbar.left_action_items = [['menu', lambda x: fan_screen_manager.open_fan()]]
+        app.root.ids.toolbar.left_action_items = [['menu', lambda x: fan_screen_manager.open_fan()]]
     on_leave: app.set_chevron_menu()
 
     MDFanScreenManager:
@@ -1618,22 +1619,22 @@ fan_manager = """
         ScreenOne:
             name: 'Screen One'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280.png'
-            on_enter: app.main_widget.ids.toolbar.title = self.name
+            on_enter: app.root.ids.toolbar.title = self.name
 
         ScreenTwo:
             name: 'Screen Two'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280.png'
-            on_enter: app.main_widget.ids.toolbar.title = self.name
+            on_enter: app.root.ids.toolbar.title = self.name
 
         ScreenTree:
             name: 'Screen Tree'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280.png'
-            on_enter: app.main_widget.ids.toolbar.title = self.name
+            on_enter: app.root.ids.toolbar.title = self.name
 
         ScreenFour:
             name: 'Screen Four'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}tangerines-1111529_1280.png'
-            on_enter: app.main_widget.ids.toolbar.title = self.name
+            on_enter: app.root.ids.toolbar.title = self.name
 
 
 <BaseFanScreen>
@@ -1897,9 +1898,8 @@ md_icons = """
 """
 
 
-class Screens(object):
+class Screens(EventDispatcher):
     manager_swiper = None
-    main_widget = None
     directory = None
 
     data = {
@@ -2132,7 +2132,7 @@ class Screens(object):
 
             Builder.load_string(manager_swiper)
             self.manager_swiper = Factory.MySwiperManager()
-            self.main_widget.ids.scr_mngr.add_widget(self.manager_swiper)
+            self.root.ids.scr_mngr.add_widget(self.manager_swiper)
             paginator = MDSwiperPagination()
             paginator.screens = (
                 self.manager_swiper.ids.swiper_manager.screen_names
@@ -2141,9 +2141,7 @@ class Screens(object):
             self.manager_swiper.ids.swiper_manager.paginator = paginator
             self.manager_swiper.ids.box.add_widget(paginator)
 
-        self.main_widget.ids.scr_mngr.current = "manager swiper"
+        self.root.ids.scr_mngr.current = "manager swiper"
 
     def show_screen(self, name_screen):
-        self.main_widget.ids.scr_mngr.current = self.data[name_screen][
-            "name_screen"
-        ]
+        self.root.ids.scr_mngr.current = self.data[name_screen]["name_screen"]

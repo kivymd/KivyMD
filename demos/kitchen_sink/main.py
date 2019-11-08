@@ -66,7 +66,7 @@ def toast(text):
     toast(text)
 
 
-main_widget_kv = """
+root_kv = """
 #:import Window kivy.core.window.Window
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import NoTransition kivy.uix.screenmanager.NoTransition
@@ -634,6 +634,56 @@ class KitchenSink(MDApp, Screens):
             f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_crop.png",
         )
 
+    def build(self):
+        self.root = Builder.load_string(root_kv)
+
+    def on_start(self):
+        async def load_all_kv_files():
+            count_kvs = len(list(self.data.keys()))
+            for i, name_screen in enumerate(self.data.keys()):
+                await asynckivy.sleep(0)
+                self.dialog_load_kv_files.name_kv_file = name_screen
+                self.dialog_load_kv_files.percent = str(
+                    ((i + 1) * 100) // count_kvs
+                )
+                Builder.load_string(self.data[name_screen]["kv_string"])
+                self.data[name_screen]["object"] = eval(
+                    self.data[name_screen]["Factory"]
+                )
+                if name_screen == "Bottom App Bar":
+                    self.set_appbar()
+                    self.data[name_screen]["object"].add_widget(self.md_app_bar)
+                if name_screen != "Popup Screen":
+                    self.root.ids.scr_mngr.add_widget(
+                        self.data[name_screen]["object"]
+                    )
+                if name_screen == "Text fields":
+                    self.data[name_screen]["object"].ids.text_field_error.bind(
+                        on_text_validate=self.set_error_message,
+                        on_focus=self.set_error_message,
+                    )
+                elif name_screen == "MD Icons":
+                    self.set_list_md_icons()
+                elif name_screen == "Tabs":
+                    self.build_tabs()
+                elif name_screen == "Refresh Layout":
+                    self.set_list_for_refresh_layout()
+
+            self.dialog_load_kv_files.dismiss()
+
+        self.dialog_load_kv_files = DialogLoadKvFiles()
+        self.dialog_load_kv_files.open()
+        asynckivy.start(load_all_kv_files())
+
+    def on_pause(self):
+        return True
+
+    def on_stop(self):
+        pass
+
+    def open_settings(self, *args):
+        return False
+
     def show_demo_shrine(self, instance):
         """
         :type instance <Screen name='shrine demo'> object
@@ -665,10 +715,10 @@ class KitchenSink(MDApp, Screens):
 
         from kivy.uix.image import Image
 
-        self.main_widget.ids.toolbar.right_action_items = []
-        self.main_widget.ids.toolbar.left_action_items = []
-        self.main_widget.ids.toolbar.height = 0
-        self.main_widget.ids.toolbar.title = ""
+        self.root.ids.toolbar.right_action_items = []
+        self.root.ids.toolbar.left_action_items = []
+        self.root.ids.toolbar.height = 0
+        self.root.ids.toolbar.title = ""
         box = BoxLayout(
             orientation="vertical",
             size_hint=(0.4, 0.6),
@@ -770,7 +820,7 @@ class KitchenSink(MDApp, Screens):
             toast(instance_button.icon)
 
         if not self.create_stack_floating_buttons:
-            screen = self.main_widget.ids.scr_mngr.get_screen("stack buttons")
+            screen = self.root.ids.scr_mngr.get_screen("stack buttons")
             screen.add_widget(
                 MDStackFloatingButtons(
                     icon="lead-pencil",
@@ -804,14 +854,14 @@ class KitchenSink(MDApp, Screens):
     def set_chevron_back_screen(self):
         """Sets the return chevron to the previous screen in ToolBar."""
 
-        self.main_widget.ids.toolbar.right_action_items = [
+        self.root.ids.toolbar.right_action_items = [
             ["dots-vertical", lambda x: self.root.toggle_nav_drawer()]
         ]
 
     def download_progress_hide(self, instance_progress, value):
         """Hides progress progress."""
 
-        self.main_widget.ids.toolbar.right_action_items = [
+        self.root.ids.toolbar.right_action_items = [
             [
                 "download",
                 lambda x: self.download_progress_show(instance_progress),
@@ -928,7 +978,7 @@ class KitchenSink(MDApp, Screens):
         self.set_chevron_menu()
 
     def set_chevron_menu(self):
-        self.main_widget.ids.toolbar.left_action_items = [
+        self.root.ids.toolbar.left_action_items = [
             ["menu", lambda x: self.root.toggle_nav_drawer()]
         ]
 
@@ -1029,12 +1079,6 @@ class KitchenSink(MDApp, Screens):
                 Clock.unschedule(update_screen)
 
         Clock.schedule_interval(update_screen, 1)
-
-    main_widget = None
-
-    def build(self):
-        self.main_widget = Builder.load_string(main_widget_kv)
-        return self.main_widget
 
     def show_user_example_animation_card(self):
         """Create and open instance MDUserAnimationCard
@@ -1304,7 +1348,7 @@ class KitchenSink(MDApp, Screens):
     def set_title_toolbar(self, title):
         """Set string title in MDToolbar for the whole application."""
 
-        self.main_widget.ids.toolbar.title = title
+        self.root.ids.toolbar.title = title
 
     def set_appbar(self):
         """Create MDBottomAppBar for the screen BottomAppBar."""
@@ -1371,9 +1415,7 @@ class KitchenSink(MDApp, Screens):
         """Builds a list of icons for the screen MDIcons."""
 
         def add_icon_item(name_icon):
-            self.main_widget.ids.scr_mngr.get_screen(
-                "md icons"
-            ).ids.rv.data.append(
+            self.root.ids.scr_mngr.get_screen("md icons").ids.rv.data.append(
                 {
                     "viewclass": "MDIconItemForMdIconsList",
                     "icon": name_icon,
@@ -1382,7 +1424,7 @@ class KitchenSink(MDApp, Screens):
                 }
             )
 
-        self.main_widget.ids.scr_mngr.get_screen("md icons").ids.rv.data = []
+        self.root.ids.scr_mngr.get_screen("md icons").ids.rv.data = []
         for name_icon in md_icons.keys():
             if search:
                 if text in name_icon:
@@ -1394,14 +1436,14 @@ class KitchenSink(MDApp, Screens):
         """Assigns the file_source_code attribute the file name
         with example code for the current screen."""
 
-        if self.main_widget.ids.scr_mngr.current == "code viewer":
+        if self.root.ids.scr_mngr.current == "code viewer":
             return
 
         has_screen = False
         for name_item_drawer in self.data.keys():
             if (
                 self.data[name_item_drawer]["name_screen"]
-                == self.main_widget.ids.scr_mngr.current
+                == self.root.ids.scr_mngr.current
             ):
                 self.file_source_code = self.data[name_item_drawer].get(
                     "source_code", None
@@ -1427,7 +1469,7 @@ class KitchenSink(MDApp, Screens):
                         f"{os.path.splitext(self.file_source_code)[0]}"
                     )
             elif icon == "language-python":
-                self.main_widget.ids.scr_mngr.current = "code viewer"
+                self.root.ids.scr_mngr.current = "code viewer"
                 try:
                     self.data["Source code"][
                         "object"
@@ -1446,7 +1488,7 @@ class KitchenSink(MDApp, Screens):
             "Source code": "language-python",
             "Open in Wiki": "source-repository",
         }
-        if self.main_widget.ids.scr_mngr.current == "code viewer":
+        if self.root.ids.scr_mngr.current == "code viewer":
             data = {"Open in Wiki": "source-repository"}
         for name_item in data.keys():
             menu_for_context_menu_source_code.append(
@@ -1466,53 +1508,6 @@ class KitchenSink(MDApp, Screens):
             background_color=self.theme_cls.primary_dark,
         )
         context_menu.open(instance.ids.right_actions.children[0])
-
-    def on_pause(self):
-        return True
-
-    def on_start(self):
-        async def load_all_kv_files():
-            count_kvs = len(list(self.data.keys()))
-            for i, name_screen in enumerate(self.data.keys()):
-                await asynckivy.sleep(0)
-                self.dialog_load_kv_files.name_kv_file = name_screen
-                self.dialog_load_kv_files.percent = str(
-                    ((i + 1) * 100) // count_kvs
-                )
-                Builder.load_string(self.data[name_screen]["kv_string"])
-                self.data[name_screen]["object"] = eval(
-                    self.data[name_screen]["Factory"]
-                )
-                if name_screen == "Bottom App Bar":
-                    self.set_appbar()
-                    self.data[name_screen]["object"].add_widget(self.md_app_bar)
-                if name_screen != "Popup Screen":
-                    self.main_widget.ids.scr_mngr.add_widget(
-                        self.data[name_screen]["object"]
-                    )
-                if name_screen == "Text fields":
-                    self.data[name_screen]["object"].ids.text_field_error.bind(
-                        on_text_validate=self.set_error_message,
-                        on_focus=self.set_error_message,
-                    )
-                elif name_screen == "MD Icons":
-                    self.set_list_md_icons()
-                elif name_screen == "Tabs":
-                    self.build_tabs()
-                elif name_screen == "Refresh Layout":
-                    self.set_list_for_refresh_layout()
-
-            self.dialog_load_kv_files.dismiss()
-
-        self.dialog_load_kv_files = DialogLoadKvFiles()
-        self.dialog_load_kv_files.open()
-        asynckivy.start(load_all_kv_files())
-
-    def on_stop(self):
-        pass
-
-    def open_settings(self, *args):
-        return False
 
 
 class CodeInputViewer(ScrollView):

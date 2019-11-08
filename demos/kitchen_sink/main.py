@@ -903,12 +903,12 @@ class KitchenSink(MDApp, Screens):
 
         if get_connect():
             link = (
-                "https://www.python.org/ftp/python/3.5.1/"
-                "python-3.5.1-embed-win32.zip"
+                "https://www.python.org/ftp/python/3.8.0/"
+                "python-3.8.0-embed-win32.zip"
             )
             progress = MDProgressLoader(
                 url_on_image=link,
-                path_to_file=os.path.join(self.directory, "python-3.5.1.zip"),
+                path_to_file=os.path.join(self.directory, "python-3.8.0.zip"),
                 download_complete=self.download_complete,
                 download_hide=self.download_progress_hide,
             )

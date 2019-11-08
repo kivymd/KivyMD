@@ -88,6 +88,9 @@ python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@stable
 python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
 # Specific commit:
 python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
+
+# If you already has installed KivyMD
+python3 -m pip install --force-reinstall git+https://github.com/HeaTTheatR/KivyMD.git
 ```
 Also you can install manually from sources. Just clone the project and run the setup.py script:
 ```bash

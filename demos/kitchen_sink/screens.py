@@ -2122,7 +2122,15 @@ class Screens(EventDispatcher):
     )
 
     def show_screen(self, name_screen):
-        self.root.ids.scr_mngr.current = self.data[name_screen]["name_screen"]
+        if name_screen == "Dropdown Item":
+            self.open_drop_items_examples()
+        elif name_screen == "Manager Swiper":
+            self.show_manager_swiper()
+        else:
+            self.root.ids.scr_mngr.current = self.data[name_screen][
+                "name_screen"
+            ]
+        self.set_title_toolbar(name_screen)
 
     def show_manager_swiper(self):
         from kivymd.uix.managerswiper import MDSwiperPagination

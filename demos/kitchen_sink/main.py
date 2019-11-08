@@ -174,219 +174,156 @@ root_kv = """
 
     NavigationDrawerSubheader:
         text: "Menu of Examples:"
-        icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
 
     NavigationDrawerIconButton:
         text: "Bottom App Bar"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Bottom Navigation"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Bottom Sheets"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Buttons"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Cards"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Chips"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Dialogs"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Download File"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Dropdown Item"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.open_drop_items_examples()
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Expansion Panel"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Floating Buttons"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Files Manager"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Fan Manager"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Grid lists"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Labels"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Lists"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
-        icon: "gesture-swipe"
         text: "Manager Swiper"
-        on_release:
-            app.show_manager_swiper()
-            app.set_title_toolbar(self.text)
+        icon: "gesture-swipe"
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "MD Icons"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Menus"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Pickers"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Progress & activity"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Progress and Slider"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Refresh Layout"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Selection controls"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Snackbars"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Tabs"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Text fields"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Themes"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "Toolbars"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
     NavigationDrawerIconButton:
         text: "User Animation Card"
         icon: app.drawer_item_icons.get(self.text, 'checkbox-blank-circle')
-        on_release:
-            app.show_screen(self.text)
-            app.set_title_toolbar(self.text)
+        on_release: app.show_screen(self.text)
 
 
 NavigationLayout:
@@ -532,7 +469,7 @@ class KitchenSink(MDApp, Screens):
     ok_cancel_dialog = ObjectProperty()
     dialog = ObjectProperty()
     user_card = ObjectProperty()
-    my_snackbar = ObjectProperty()
+    my_snackbar = ObjectProperty(None, allownone=True)
     dialog_load_kv_files = ObjectProperty()
 
     create_stack_floating_buttons = BooleanProperty(False)
@@ -543,7 +480,7 @@ class KitchenSink(MDApp, Screens):
     tick = NumericProperty(0)
     x = NumericProperty(0)
     y = NumericProperty(25)
-    file_source_code = StringProperty()
+    file_source_code = StringProperty("", allownone=True)
 
     menu_items = ListProperty()
     hex_primary_color = StringProperty()

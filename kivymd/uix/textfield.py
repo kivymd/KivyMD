@@ -1093,11 +1093,17 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
     def on_normal_color(self, instance, value):
         self._current_color = value
 
-    def get_color_line(self, field_inastance, field_text, field_focus):
+    def get_color_line(self, field_instance, field_text, field_focus):
         if not field_focus:
             if self.require_text_error and field_text == "":
                 self._outline_color = self.error_color
-                self._instance_icon_left.text_color = self._outline_color
+                try:
+                    if self._instance_icon_left:
+                        self._instance_icon_left.text_color = (
+                            self._outline_color
+                        )
+                except ReferenceError:
+                    pass
                 if self.require_text_error != "":
                     self.show_require_error()
             else:

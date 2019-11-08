@@ -20,7 +20,7 @@ Example
 
 import os
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
@@ -114,9 +114,7 @@ BoxLayout:
 '''
 
 
-class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+class MyApp(MDApp):
     title = 'Example Smart Tile'
     md_app_bar = None
 

@@ -5,7 +5,7 @@ Write by tshirtman - https://github.com/tshirtman
 Example:
 =======
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
@@ -26,8 +26,7 @@ FloatLayout:
 '''
 
 
-class Example(App):
-    theme_cls = ThemeManager()
+class Example(MDApp):
 
     def build(self):
         return Builder.load_string(KV)

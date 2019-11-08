@@ -18,7 +18,7 @@ as the Kivy framework.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.utils import get_hex_from_color
@@ -54,9 +54,7 @@ Builder.load_string('''
 ''')
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+class Example(MDApp):
     title = "Dialogs"
 
     def build(self):

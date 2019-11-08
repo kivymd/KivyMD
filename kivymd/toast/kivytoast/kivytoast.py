@@ -12,13 +12,12 @@ as the Kivy framework.
 
 Example:
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivymd.theming import ThemeManager
 from kivymd.toast.kivytoast.kivytoast import toast
 
 
-class Test(App):
-    theme_cls = ThemeManager()
+class Test(MDApp):
 
     def show_toast(self):
         toast('Test Kivy Toast')

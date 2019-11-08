@@ -288,9 +288,7 @@ Builder.load_string('''
 ''')
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+class Example(MDApp):
     title = "Example Buttons"
     main_widget = None
 

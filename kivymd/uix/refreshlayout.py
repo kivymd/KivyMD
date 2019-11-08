@@ -13,7 +13,7 @@ as the Kivy framework.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.factory import Factory
@@ -66,9 +66,8 @@ class ItemForList(OneLineIconListItem):
     icon = StringProperty()
 
 
-class Example(App):
+class Example(MDApp):
     title = 'Example Refresh Layout'
-    theme_cls = ThemeManager()
     screen = None
     x = 0
     y = 15

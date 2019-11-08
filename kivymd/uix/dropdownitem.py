@@ -16,7 +16,7 @@ as the Kivy framework.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.factory import Factory
 from kivy.lang import Builder
 
@@ -51,9 +51,7 @@ Builder.load_string(
 ''')
 
 
-class Test(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = "BlueGray"
+class Test(MDApp):
 
     def build(self):
         self.items = [f"Item {i}" for i in range(50)]

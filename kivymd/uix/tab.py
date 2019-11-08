@@ -504,16 +504,13 @@ demo = """
 
 if __name__ == "__main__":
     from kivy.factory import Factory
+    from kivymd.app import MDApp
 
     class MyTab(BoxLayout, MDTabsBase):
         pass
 
-    class Example(App):
+    class Example(MDApp):
         title = "Example Tabs"
-        theme_cls = ThemeManager()
-        theme_cls.primary_palette = "BlueGray"
-        theme_cls.theme_style = "Dark"
-        theme_cls.accent_palette = "Gray"
         list_name_icons = list(md_icons.keys())[0:15]
 
         def switch_tabs_to_icon(self, istance_android_tabs):

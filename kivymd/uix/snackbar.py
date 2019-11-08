@@ -15,7 +15,7 @@ as the Kivy framework.
 Example
 =======
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.metrics import dp
@@ -81,8 +81,7 @@ Screen:
 '''
 
 
-class ExampleSnackBar(App):
-    theme_cls = ThemeManager()
+class ExampleSnackBar(MDApp):
     _interval = 0
     my_snackbar = None
     screen = None

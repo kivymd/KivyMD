@@ -18,7 +18,7 @@ as the Kivy framework.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 
@@ -75,8 +75,7 @@ Builder.load_string('''
 ''')
 
 
-class Test(App):
-    theme_cls = ThemeManager()
+class Test(MDApp):
     menu_items = []
 
     def callback_for_menu_items(self, *args):

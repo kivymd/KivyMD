@@ -18,7 +18,7 @@ Thanks for reply - https://groups.google.com/forum/#!topic/kivy-users/ReAVg8eDrD
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 
@@ -205,9 +205,7 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
     pass
 
 
-class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Red'
+class MyApp(MDApp):
 
     def build(self):
         return TestFanScreenManager()

@@ -27,7 +27,6 @@ os.environ["KITCHEN_SINK_ASSETS"] = os.path.join(
 
 from kivy.factory import Factory
 from kivy.metrics import dp, sp
-from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -44,6 +43,7 @@ from kivy import platform
 from screens import Screens
 from dialogs import DialogLoadKvFiles
 
+from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.fanscreenmanager import MDFanScreen
 from kivymd.uix.list import (
@@ -513,14 +513,13 @@ NavigationLayout:
 """
 
 
-class KitchenSink(App, Screens):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = "BlueGray"
-    theme_cls.accent_palette = "Gray"
+class KitchenSink(MDApp, Screens):
     previous_date = ObjectProperty()
-    title = "Kitchen Sink"
 
     def __init__(self, **kwargs):
+        self.title = "Kitchen Sink"
+        self.theme_cls.primary_palette = "BlueGray"
+        self.theme_cls.accent_palette = "Gray"
         super().__init__(**kwargs)
 
         self.menu_items = [

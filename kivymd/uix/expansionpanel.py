@@ -16,7 +16,7 @@ as the Kivy framework.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.properties import ObjectProperty
@@ -109,9 +109,7 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
     pass
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
+class Example(MDApp):
     title = "Example Expansion Panel"
     main_widget = None
 

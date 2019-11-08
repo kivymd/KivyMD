@@ -13,7 +13,7 @@ as the Kivy framework.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 
@@ -70,9 +70,7 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
     pass
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+class Example(MDApp):
     title = "Example Animation Card"
 
     def __init__(self, **kwargs):

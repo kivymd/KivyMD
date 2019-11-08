@@ -15,7 +15,7 @@ Example
 
 import os
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -130,9 +130,7 @@ class MyCard(MDCard):
     text = StringProperty('')
 
 
-class Test(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Indigo'
+class Test(MDApp):
     swiper_manager = None
 
     def build(self):

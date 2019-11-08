@@ -23,7 +23,7 @@ and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
@@ -242,8 +242,7 @@ class BoxContentForBottomSheetCustomScreenList(BoxLayout):
             )
 
 
-class Example(App):
-    theme_cls = ThemeManager()
+class Example(MDApp):
 
     def build(self):
         return Factory.BottomSheet()

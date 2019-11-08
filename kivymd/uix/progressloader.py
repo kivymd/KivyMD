@@ -17,7 +17,7 @@ Example
 
 import os
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 
@@ -49,11 +49,7 @@ Builder.load_string('''
 ''')
 
 
-class Test(App):
-    theme_cls = ThemeManager()
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+class Test(MDApp):
 
     def build(self):
         self.main_widget = Factory.Root()

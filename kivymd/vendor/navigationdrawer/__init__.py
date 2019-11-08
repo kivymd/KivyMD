@@ -64,7 +64,7 @@ See the example and docstrings for information on individual properties.
 
 Example::
 
-class ExampleApp(App):
+class ExampleApp(MDApp):
 
     def build(self):
         navigationdrawer = NavigationDrawer()

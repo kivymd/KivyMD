@@ -912,12 +912,10 @@ class MDThemePicker(
 
 
 if __name__ == "__main__":
-    from kivy.app import App
+    from kivymd.app import MDApp
     from kivymd.theming import ThemeManager
 
-    class ThemePickerApp(App):
-        theme_cls = ThemeManager()
-
+    class ThemePickerApp(MDApp):
         def build(self):
             main_widget = Builder.load_string(
                 """

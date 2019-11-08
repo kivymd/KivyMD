@@ -146,6 +146,7 @@ Settings
 API Breaking changes
 ====================
 
+* App object should be inherited from `kivymd.app.MDApp`.
 * All classes with the Behavior prefix moved to `kivymd.uix.behaviors` module.
 * All uix modules moved to `kivymd.uix` module.
 * All widgets that usually used in kv-lang are automatically added to Factory.

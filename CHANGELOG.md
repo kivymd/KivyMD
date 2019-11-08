@@ -5,6 +5,7 @@ Change Log
 
 > [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.1) - *Alpha*
 
+* Added `MDApp` class. Now app object should be inherited from `kivymd.app.MDApp`.
 * Added `MDRoundImageButton` class.
 * Added hook for `PyInstaller` (add `hookspath=[kivymd.hooks_path]`).
 * Added examples of `spec` files for building [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).

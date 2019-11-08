@@ -16,6 +16,7 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.event import EventDispatcher
+from kivy.properties import ObjectProperty, StringProperty, DictProperty
 
 from kivymd.utils.cropimage import crop_image
 
@@ -1899,224 +1900,229 @@ md_icons = """
 
 
 class Screens(EventDispatcher):
-    manager_swiper = None
-    directory = None
+    manager_swiper = ObjectProperty()
+    directory = StringProperty()
 
-    data = {
-        "Themes": {
-            "kv_string": theming,
-            "Factory": "Factory.Theming()",
-            "name_screen": "theming",
-            "object": None,
-        },
-        "Bottom Navigation": {
-            "kv_string": bottom_navigation,
-            "Factory": "Factory.BottomNavigation()",
-            "name_screen": "bottom navigation",
-            "source_code": "Components-Bottom-Navigation.md",
-            "object": None,
-        },
-        "Bottom Sheets": {
-            "kv_string": bottom_sheet,
-            "Factory": "Factory.BottomSheet()",
-            "name_screen": "bottom sheet",
-            "source_code": "Components-Bottom-Sheet.md",
-            "object": None,
-        },
-        "Dropdown Item": {
-            "kv_string": drop_item,
-            "Factory": "Factory.MDDropItem()",
-            "name_screen": "drop item",
-            "source_code": "Components-DropDownItem.md",
-            "object": None,
-        },
-        "Dropdown Item List": {
-            "kv_string": drop_item_list,
-            "Factory": "Factory.DropItemList()",
-            "name_screen": "drop item list",
-            "source_code": "Components-DropDownItem-with-ScrollView.md",
-            "object": None,
-        },
-        "Popup Screen": {
-            "kv_string": popup_screen,
-            "Factory": "Factory.ContentForPopupScreen()",
-            "name_screen": "popup screen",
-            "source_code": "Components-Progress-Loader.md",
-            "object": None,
-        },
-        "Fan Manager": {
-            "kv_string": fan_manager,
-            "Factory": "Factory.FanManager()",
-            "name_screen": "fan manager",
-            "source_code": "Components-Fan-Screen-Manager.md",
-            "object": None,
-        },
-        "Progress and Slider": {
-            "kv_string": progress_bar,
-            "Factory": "Factory.ProgressBars()",
-            "name_screen": "progress bar",
-            "object": None,
-        },
-        "Progress & activity": {
-            "kv_string": progress,
-            "Factory": "Factory.Progress()",
-            "name_screen": "progress",
-            "object": None,
-        },
-        "Refresh Layout": {
-            "kv_string": refresh_layout,
-            "Factory": "Factory.RefreshLayout()",
-            "name_screen": "refresh layout",
-            "source_code": "Components-Refresh-Layout.md",
-            "object": None,
-        },
-        "Floating Buttons": {
-            "kv_string": stack_buttons,
-            "Factory": "Factory.StackButtons()",
-            "name_screen": "stack buttons",
-            "source_code": "Components-Stack-Floating-Buttons.md",
-            "object": None,
-        },
-        "Snackbars": {
-            "kv_string": snackbar,
-            "Factory": "Factory.MySnackBar()",
-            "name_screen": "snackbar",
-            "source_code": "Components-Snackbar.md",
-            "object": None,
-        },
-        "Download File": {
-            "kv_string": download_file,
-            "Factory": "Factory.DownloadFile()",
-            "name_screen": "download file",
-            "object": None,
-        },
-        "User Animation Card": {
-            "kv_string": user_animation_card,
-            "Factory": "Factory.UserCard()",
-            "name_screen": "user animation card",
-            "source_code": "Components-User-Animation-Card.md",
-            "object": None,
-        },
-        "Pickers": {
-            "kv_string": pickers,
-            "Factory": "Factory.Pickers()",
-            "name_screen": "pickers",
-            "source_code": "Components-Date-Picker.md",
-            "object": None,
-        },
-        "Cards": {
-            "kv_string": cards,
-            "Factory": "Factory.Cards()",
-            "name_screen": "cards",
-            "source_code": "Components-Card-Post.md",
-            "object": None,
-        },
-        "Dialogs": {
-            "kv_string": dialogs,
-            "Factory": "Factory.Dialogs()",
-            "name_screen": "dialogs",
-            "source_code": "Components-Dialog.md",
-            "object": None,
-        },
-        "Toolbars": {
-            "kv_string": toolbars,
-            "Factory": "Factory.Toolbars()",
-            "name_screen": "toolbars",
-            "object": None,
-        },
-        "Buttons": {
-            "kv_string": buttons,
-            "Factory": "Factory.Buttons()",
-            "name_screen": "buttons",
-            "source_code": "Components-Button.md",
-            "object": None,
-        },
-        "Files Manager": {
-            "kv_string": file_manager,
-            "Factory": "Factory.FileManager()",
-            "name_screen": "file manager",
-            "source_code": "Components-File-Manager.md",
-            "object": None,
-        },
-        "Tabs": {
-            "kv_string": tabs,
-            "Factory": "Factory.Tabs()",
-            "name_screen": "tabs",
-            "source_code": "Components-Tabs.md",
-            "object": None,
-        },
-        "Labels": {
-            "kv_string": labels,
-            "Factory": "Factory.Labels()",
-            "name_screen": "labels",
-            "object": None,
-        },
-        "Chips": {
-            "kv_string": chips,
-            "Factory": "Factory.Chips()",
-            "name_screen": "chips",
-            "source_code": "Components-Chip.md",
-            "object": None,
-        },
-        "Lists": {
-            "kv_string": lists,
-            "Factory": "Factory.Lists()",
-            "name_screen": "lists",
-            "object": None,
-        },
-        "Expansion Panel": {
-            "kv_string": expansion_panel,
-            "Factory": "Factory.MyExpansionPanel()",
-            "name_screen": "expansion panel",
-            "source_code": "Components-Expansion-Panel.md",
-            "object": None,
-        },
-        "Grid lists": {
-            "kv_string": grid,
-            "Factory": "Factory.Grid()",
-            "name_screen": "grid",
-            "source_code": "Components-SmartTileWithStar.md",
-            "object": None,
-        },
-        "Selection controls": {
-            "kv_string": selection_controls,
-            "Factory": "Factory.SelectionControls()",
-            "name_screen": "selection controls",
-            "object": None,
-        },
-        "Menus": {
-            "kv_string": menu,
-            "Factory": "Factory.Menu()",
-            "name_screen": "menu",
-            "object": None,
-        },
-        "MD Icons": {
-            "kv_string": md_icons,
-            "Factory": "Factory.MDIcons()",
-            "name_screen": "md icons",
-            "object": None,
-        },
-        "Bottom App Bar": {
-            "kv_string": bottom_app_bar,
-            "Factory": "Factory.BottomAppBar()",
-            "name_screen": "bottom app bar",
-            "source_code": "Components-Bottom-App-Bar.md",
-            "object": None,
-        },
-        "Source code": {
-            "kv_string": source_code_viewer,
-            "Factory": "Factory.CodeInputScreen()",
-            "name_screen": "code viewer",
-            "object": None,
-        },
-        "Text fields": {
-            "kv_string": textfields,
-            "Factory": "Factory.TextFields()",
-            "name_screen": "textfields",
-            "source_code": "Components-Text-Field.md",
-            "object": None,
-        },
-    }
+    data = DictProperty(
+        {
+            "Themes": {
+                "kv_string": theming,
+                "Factory": "Factory.Theming()",
+                "name_screen": "theming",
+                "object": None,
+            },
+            "Bottom Navigation": {
+                "kv_string": bottom_navigation,
+                "Factory": "Factory.BottomNavigation()",
+                "name_screen": "bottom navigation",
+                "source_code": "Components-Bottom-Navigation.md",
+                "object": None,
+            },
+            "Bottom Sheets": {
+                "kv_string": bottom_sheet,
+                "Factory": "Factory.BottomSheet()",
+                "name_screen": "bottom sheet",
+                "source_code": "Components-Bottom-Sheet.md",
+                "object": None,
+            },
+            "Dropdown Item": {
+                "kv_string": drop_item,
+                "Factory": "Factory.MDDropItem()",
+                "name_screen": "drop item",
+                "source_code": "Components-DropDownItem.md",
+                "object": None,
+            },
+            "Dropdown Item List": {
+                "kv_string": drop_item_list,
+                "Factory": "Factory.DropItemList()",
+                "name_screen": "drop item list",
+                "source_code": "Components-DropDownItem-with-ScrollView.md",
+                "object": None,
+            },
+            "Popup Screen": {
+                "kv_string": popup_screen,
+                "Factory": "Factory.ContentForPopupScreen()",
+                "name_screen": "popup screen",
+                "source_code": "Components-Progress-Loader.md",
+                "object": None,
+            },
+            "Fan Manager": {
+                "kv_string": fan_manager,
+                "Factory": "Factory.FanManager()",
+                "name_screen": "fan manager",
+                "source_code": "Components-Fan-Screen-Manager.md",
+                "object": None,
+            },
+            "Progress and Slider": {
+                "kv_string": progress_bar,
+                "Factory": "Factory.ProgressBars()",
+                "name_screen": "progress bar",
+                "object": None,
+            },
+            "Progress & activity": {
+                "kv_string": progress,
+                "Factory": "Factory.Progress()",
+                "name_screen": "progress",
+                "object": None,
+            },
+            "Refresh Layout": {
+                "kv_string": refresh_layout,
+                "Factory": "Factory.RefreshLayout()",
+                "name_screen": "refresh layout",
+                "source_code": "Components-Refresh-Layout.md",
+                "object": None,
+            },
+            "Floating Buttons": {
+                "kv_string": stack_buttons,
+                "Factory": "Factory.StackButtons()",
+                "name_screen": "stack buttons",
+                "source_code": "Components-Stack-Floating-Buttons.md",
+                "object": None,
+            },
+            "Snackbars": {
+                "kv_string": snackbar,
+                "Factory": "Factory.MySnackBar()",
+                "name_screen": "snackbar",
+                "source_code": "Components-Snackbar.md",
+                "object": None,
+            },
+            "Download File": {
+                "kv_string": download_file,
+                "Factory": "Factory.DownloadFile()",
+                "name_screen": "download file",
+                "object": None,
+            },
+            "User Animation Card": {
+                "kv_string": user_animation_card,
+                "Factory": "Factory.UserCard()",
+                "name_screen": "user animation card",
+                "source_code": "Components-User-Animation-Card.md",
+                "object": None,
+            },
+            "Pickers": {
+                "kv_string": pickers,
+                "Factory": "Factory.Pickers()",
+                "name_screen": "pickers",
+                "source_code": "Components-Date-Picker.md",
+                "object": None,
+            },
+            "Cards": {
+                "kv_string": cards,
+                "Factory": "Factory.Cards()",
+                "name_screen": "cards",
+                "source_code": "Components-Card-Post.md",
+                "object": None,
+            },
+            "Dialogs": {
+                "kv_string": dialogs,
+                "Factory": "Factory.Dialogs()",
+                "name_screen": "dialogs",
+                "source_code": "Components-Dialog.md",
+                "object": None,
+            },
+            "Toolbars": {
+                "kv_string": toolbars,
+                "Factory": "Factory.Toolbars()",
+                "name_screen": "toolbars",
+                "object": None,
+            },
+            "Buttons": {
+                "kv_string": buttons,
+                "Factory": "Factory.Buttons()",
+                "name_screen": "buttons",
+                "source_code": "Components-Button.md",
+                "object": None,
+            },
+            "Files Manager": {
+                "kv_string": file_manager,
+                "Factory": "Factory.FileManager()",
+                "name_screen": "file manager",
+                "source_code": "Components-File-Manager.md",
+                "object": None,
+            },
+            "Tabs": {
+                "kv_string": tabs,
+                "Factory": "Factory.Tabs()",
+                "name_screen": "tabs",
+                "source_code": "Components-Tabs.md",
+                "object": None,
+            },
+            "Labels": {
+                "kv_string": labels,
+                "Factory": "Factory.Labels()",
+                "name_screen": "labels",
+                "object": None,
+            },
+            "Chips": {
+                "kv_string": chips,
+                "Factory": "Factory.Chips()",
+                "name_screen": "chips",
+                "source_code": "Components-Chip.md",
+                "object": None,
+            },
+            "Lists": {
+                "kv_string": lists,
+                "Factory": "Factory.Lists()",
+                "name_screen": "lists",
+                "object": None,
+            },
+            "Expansion Panel": {
+                "kv_string": expansion_panel,
+                "Factory": "Factory.MyExpansionPanel()",
+                "name_screen": "expansion panel",
+                "source_code": "Components-Expansion-Panel.md",
+                "object": None,
+            },
+            "Grid lists": {
+                "kv_string": grid,
+                "Factory": "Factory.Grid()",
+                "name_screen": "grid",
+                "source_code": "Components-SmartTileWithStar.md",
+                "object": None,
+            },
+            "Selection controls": {
+                "kv_string": selection_controls,
+                "Factory": "Factory.SelectionControls()",
+                "name_screen": "selection controls",
+                "object": None,
+            },
+            "Menus": {
+                "kv_string": menu,
+                "Factory": "Factory.Menu()",
+                "name_screen": "menu",
+                "object": None,
+            },
+            "MD Icons": {
+                "kv_string": md_icons,
+                "Factory": "Factory.MDIcons()",
+                "name_screen": "md icons",
+                "object": None,
+            },
+            "Bottom App Bar": {
+                "kv_string": bottom_app_bar,
+                "Factory": "Factory.BottomAppBar()",
+                "name_screen": "bottom app bar",
+                "source_code": "Components-Bottom-App-Bar.md",
+                "object": None,
+            },
+            "Source code": {
+                "kv_string": source_code_viewer,
+                "Factory": "Factory.CodeInputScreen()",
+                "name_screen": "code viewer",
+                "object": None,
+            },
+            "Text fields": {
+                "kv_string": textfields,
+                "Factory": "Factory.TextFields()",
+                "name_screen": "textfields",
+                "source_code": "Components-Text-Field.md",
+                "object": None,
+            },
+        }
+    )
+
+    def show_screen(self, name_screen):
+        self.root.ids.scr_mngr.current = self.data[name_screen]["name_screen"]
 
     def show_manager_swiper(self):
         from kivymd.uix.managerswiper import MDSwiperPagination
@@ -2142,6 +2148,3 @@ class Screens(EventDispatcher):
             self.manager_swiper.ids.box.add_widget(paginator)
 
         self.root.ids.scr_mngr.current = "manager swiper"
-
-    def show_screen(self, name_screen):
-        self.root.ids.scr_mngr.current = self.data[name_screen]["name_screen"]

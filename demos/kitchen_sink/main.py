@@ -35,7 +35,14 @@ Window.softinput_mode = "below_target"
 
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, StringProperty, ListProperty
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty,
+    ListProperty,
+    BooleanProperty,
+    NumericProperty,
+    DictProperty,
+)
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
 from kivy import platform
@@ -515,52 +522,33 @@ NavigationLayout:
 
 class KitchenSink(MDApp, Screens):
     previous_date = ObjectProperty()
+    manager = ObjectProperty()
+    md_app_bar = ObjectProperty()
+    instance_menu_source_code = ObjectProperty()
+    md_theme_picker = ObjectProperty()
+    long_dialog = ObjectProperty()
+    input_dialog = ObjectProperty()
+    alert_dialog = ObjectProperty()
+    ok_cancel_dialog = ObjectProperty()
+    dialog = ObjectProperty()
+    user_card = ObjectProperty()
+    my_snackbar = ObjectProperty()
+    dialog_load_kv_files = ObjectProperty()
 
-    def __init__(self, **kwargs):
-        self.title = "Kitchen Sink"
-        self.theme_cls.primary_palette = "BlueGray"
-        self.theme_cls.accent_palette = "Gray"
-        super().__init__(**kwargs)
+    create_stack_floating_buttons = BooleanProperty(False)
+    manager_open = BooleanProperty(False)
+    cards_created = BooleanProperty(False)
 
-        self.menu_items = [
-            {
-                "viewclass": "MDMenuItem",
-                "text": "Example item %d" % i,
-                "callback": self.callback_for_menu_items,
-            }
-            for i in range(15)
-        ]
-        self.Window = Window
+    _interval = NumericProperty(0)
+    tick = NumericProperty(0)
+    x = NumericProperty(0)
+    y = NumericProperty(25)
+    file_source_code = StringProperty()
 
-        # Default class instances.
-        self.manager = None
-        self.md_app_bar = None
-        self.instance_menu_source_code = None
-        self.md_theme_picker = None
-        self.long_dialog = None
-        self.input_dialog = None
-        self.alert_dialog = None
-        self.ok_cancel_dialog = None
-        self.long_dialog = None
-        self.dialog = None
-        self.user_card = None
-        self.my_snackbar = None
-        self.dialog_load_kv_files = None
-
-        self.create_stack_floating_buttons = False
-        self.manager_open = False
-        self.cards_created = False
-
-        self._interval = 0
-        self.tick = 0
-        self.x = 0
-        self.y = 25
-        self.file_source_code = ""
-
-        self.hex_primary_color = get_hex_from_color(
-            self.theme_cls.primary_color
-        )
-        self.drawer_item_icons = {
+    menu_items = ListProperty()
+    hex_primary_color = StringProperty()
+    drawer_item_icons = DictProperty(
+        {
             "Bottom App Bar": "dock-bottom",
             "Buttons": "rectangle",
             "Cards": "cards-variant",
@@ -591,6 +579,43 @@ class KitchenSink(MDApp, Screens):
             "Progress and Slider": "percent",
             "Snackbars": "dock-window",
         }
+    )
+    previous_text = StringProperty()
+    previous_text_end = StringProperty()
+    names_contacts = ListProperty(
+        (
+            "Alexandr Taylor",
+            "Yuri Ivanov",
+            "Robert Patric",
+            "Bob Marley",
+            "Magnus Carlsen",
+            "Jon Romero",
+            "Anna Bell",
+            "Maxim Kramerer",
+            "Sasha Gray",
+            "Vladimir Ivanenko",
+        )
+    )
+    list_name_icons = ListProperty()
+
+    def __init__(self, **kwargs):
+        self.title = "Kitchen Sink"
+        self.theme_cls.primary_palette = "BlueGray"
+        self.theme_cls.accent_palette = "Gray"
+        super().__init__(**kwargs)
+
+        self.menu_items = [
+            {
+                "viewclass": "MDMenuItem",
+                "text": "Example item %d" % i,
+                "callback": self.callback_for_menu_items,
+            }
+            for i in range(15)
+        ]
+        self.hex_primary_color = get_hex_from_color(
+            self.theme_cls.primary_color
+        )
+
         self.previous_text = (
             f"Welcome to the application [b][color={self.hex_primary_color}]"
             f"Kitchen Sink[/color][/b].\nTo see [b]"
@@ -613,18 +638,6 @@ class KitchenSink(MDApp, Screens):
             f"[u][b][color={self.hex_primary_color}]"
             f"bulgakov-a-s@yandex.ru[/color][/b][/u]\n\n"
             f"and contributors..."
-        )
-        self.names_contacts = (
-            "Alexandr Taylor",
-            "Yuri Ivanov",
-            "Robert Patric",
-            "Bob Marley",
-            "Magnus Carlsen",
-            "Jon Romero",
-            "Anna Bell",
-            "Maxim Kramerer",
-            "Sasha Gray",
-            "Vladimir Ivanenko",
         )
         self.list_name_icons = list(md_icons.keys())[0:15]
         Window.bind(on_keyboard=self.events)

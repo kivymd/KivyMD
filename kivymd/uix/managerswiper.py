@@ -269,8 +269,6 @@ class MDSwiperManager(ScreenManager):
         self.transition.screen_out.pos = self.pos
         super(SlideTransition, self.transition).on_complete()
         self.swipe = False
-        if self.paginator:
-            self.paginator.set_current_screen_round(self.index_screen)
 
     def swith_screen(self, direction):
         if direction == "right":
@@ -284,6 +282,8 @@ class MDSwiperManager(ScreenManager):
             self.index_screen = 0
         self.transition.direction = direction
         self.current = self.screen_names[self.index_screen]
+        if self.paginator:
+            self.paginator.set_current_screen_round(self.index_screen)
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos) and not self.swipe:

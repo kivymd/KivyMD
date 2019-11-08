@@ -11,13 +11,16 @@ as the Kivy framework.
 
 import os
 
-from kivy.factory import Factory
+from kivy import Logger
+from kivy.app import App
+from kivy.factory import Factory  # NOQA
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.event import EventDispatcher
-from kivy.properties import ObjectProperty, StringProperty, DictProperty
+from kivy.properties import DictProperty
 
+from kivymd.uix.navigationdrawer import NavigationDrawerIconButton
 from kivymd.utils.cropimage import crop_image
 
 source_code_viewer = """
@@ -1620,22 +1623,22 @@ fan_manager = """
         ScreenOne:
             name: 'Screen One'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280.png'
-            on_enter: app.root.ids.toolbar.title = self.name
+            on_enter: app.set_title_toolbar(self.name)
 
         ScreenTwo:
             name: 'Screen Two'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280.png'
-            on_enter: app.root.ids.toolbar.title = self.name
+            on_enter: app.set_title_toolbar(self.name)
 
         ScreenTree:
             name: 'Screen Tree'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280.png'
-            on_enter: app.root.ids.toolbar.title = self.name
+            on_enter: app.set_title_toolbar(self.name)
 
         ScreenFour:
             name: 'Screen Four'
             path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}tangerines-1111529_1280.png'
-            on_enter: app.root.ids.toolbar.title = self.name
+            on_enter: app.set_title_toolbar(self.name)
 
 
 <BaseFanScreen>
@@ -1771,6 +1774,7 @@ manager_swiper = """
 
             MDSwiperManager:
                 id: swiper_manager
+                paginator: paginator
 
                 Screen:
                     name: 'screen one'
@@ -1796,6 +1800,12 @@ manager_swiper = """
                     name: 'screen five'
                     MyCard:
                         text: 'Swipe to switch to screen five'.upper()
+            
+            MDSwiperPagination:
+                id: paginator
+                manager: swiper_manager
+                screens: swiper_manager.screen_names
+                
 """
 
 md_icon_item = """
@@ -1900,9 +1910,6 @@ md_icons = """
 
 
 class Screens(EventDispatcher):
-    manager_swiper = ObjectProperty()
-    directory = StringProperty()
-
     data = DictProperty(
         {
             "Themes": {
@@ -1910,6 +1917,7 @@ class Screens(EventDispatcher):
                 "Factory": "Factory.Theming()",
                 "name_screen": "theming",
                 "object": None,
+                "icon": "theme-light-dark",
             },
             "Bottom Navigation": {
                 "kv_string": bottom_navigation,
@@ -1917,6 +1925,7 @@ class Screens(EventDispatcher):
                 "name_screen": "bottom navigation",
                 "source_code": "Components-Bottom-Navigation.md",
                 "object": None,
+                "icon": "picture-in-picture-bottom-right",
             },
             "Bottom Sheets": {
                 "kv_string": bottom_sheet,
@@ -1924,6 +1933,7 @@ class Screens(EventDispatcher):
                 "name_screen": "bottom sheet",
                 "source_code": "Components-Bottom-Sheet.md",
                 "object": None,
+                "icon": "file-document-box-outline",
             },
             "Dropdown Item": {
                 "kv_string": drop_item,
@@ -1931,6 +1941,7 @@ class Screens(EventDispatcher):
                 "name_screen": "drop item",
                 "source_code": "Components-DropDownItem.md",
                 "object": None,
+                "icon": "arrow-down-drop-circle",
             },
             "Dropdown Item List": {
                 "kv_string": drop_item_list,
@@ -1952,18 +1963,21 @@ class Screens(EventDispatcher):
                 "name_screen": "fan manager",
                 "source_code": "Components-Fan-Screen-Manager.md",
                 "object": None,
+                "icon": "fan",
             },
             "Progress and Slider": {
                 "kv_string": progress_bar,
                 "Factory": "Factory.ProgressBars()",
                 "name_screen": "progress bar",
                 "object": None,
+                "icon": "percent",
             },
             "Progress & activity": {
                 "kv_string": progress,
                 "Factory": "Factory.Progress()",
                 "name_screen": "progress",
                 "object": None,
+                "icon": "progress-check",
             },
             "Refresh Layout": {
                 "kv_string": refresh_layout,
@@ -1971,6 +1985,7 @@ class Screens(EventDispatcher):
                 "name_screen": "refresh layout",
                 "source_code": "Components-Refresh-Layout.md",
                 "object": None,
+                "icon": "refresh",
             },
             "Floating Buttons": {
                 "kv_string": stack_buttons,
@@ -1978,6 +1993,7 @@ class Screens(EventDispatcher):
                 "name_screen": "stack buttons",
                 "source_code": "Components-Stack-Floating-Buttons.md",
                 "object": None,
+                "icon": "format-float-right",
             },
             "Snackbars": {
                 "kv_string": snackbar,
@@ -1985,12 +2001,14 @@ class Screens(EventDispatcher):
                 "name_screen": "snackbar",
                 "source_code": "Components-Snackbar.md",
                 "object": None,
+                "icon": "dock-window",
             },
             "Download File": {
                 "kv_string": download_file,
                 "Factory": "Factory.DownloadFile()",
                 "name_screen": "download file",
                 "object": None,
+                "icon": "download",
             },
             "User Animation Card": {
                 "kv_string": user_animation_card,
@@ -1998,6 +2016,7 @@ class Screens(EventDispatcher):
                 "name_screen": "user animation card",
                 "source_code": "Components-User-Animation-Card.md",
                 "object": None,
+                "icon": "animation",
             },
             "Pickers": {
                 "kv_string": pickers,
@@ -2005,6 +2024,7 @@ class Screens(EventDispatcher):
                 "name_screen": "pickers",
                 "source_code": "Components-Date-Picker.md",
                 "object": None,
+                "icon": "calendar",
             },
             "Cards": {
                 "kv_string": cards,
@@ -2012,6 +2032,7 @@ class Screens(EventDispatcher):
                 "name_screen": "cards",
                 "source_code": "Components-Card-Post.md",
                 "object": None,
+                "icon": "cards-variant",
             },
             "Dialogs": {
                 "kv_string": dialogs,
@@ -2019,12 +2040,14 @@ class Screens(EventDispatcher):
                 "name_screen": "dialogs",
                 "source_code": "Components-Dialog.md",
                 "object": None,
+                "icon": "message-processing",
             },
             "Toolbars": {
                 "kv_string": toolbars,
                 "Factory": "Factory.Toolbars()",
                 "name_screen": "toolbars",
                 "object": None,
+                "icon": "set-top-box",
             },
             "Buttons": {
                 "kv_string": buttons,
@@ -2032,6 +2055,7 @@ class Screens(EventDispatcher):
                 "name_screen": "buttons",
                 "source_code": "Components-Button.md",
                 "object": None,
+                "icon": "rectangle",
             },
             "Files Manager": {
                 "kv_string": file_manager,
@@ -2039,6 +2063,7 @@ class Screens(EventDispatcher):
                 "name_screen": "file manager",
                 "source_code": "Components-File-Manager.md",
                 "object": None,
+                "icon": "file-tree",
             },
             "Tabs": {
                 "kv_string": tabs,
@@ -2046,12 +2071,14 @@ class Screens(EventDispatcher):
                 "name_screen": "tabs",
                 "source_code": "Components-Tabs.md",
                 "object": None,
+                "icon": "tab",
             },
             "Labels": {
                 "kv_string": labels,
                 "Factory": "Factory.Labels()",
                 "name_screen": "labels",
                 "object": None,
+                "icon": "label",
             },
             "Chips": {
                 "kv_string": chips,
@@ -2059,12 +2086,14 @@ class Screens(EventDispatcher):
                 "name_screen": "chips",
                 "source_code": "Components-Chip.md",
                 "object": None,
+                "icon": "label-variant",
             },
             "Lists": {
                 "kv_string": lists,
                 "Factory": "Factory.Lists()",
                 "name_screen": "lists",
                 "object": None,
+                "icon": "format-list-bulleted",
             },
             "Expansion Panel": {
                 "kv_string": expansion_panel,
@@ -2072,6 +2101,7 @@ class Screens(EventDispatcher):
                 "name_screen": "expansion panel",
                 "source_code": "Components-Expansion-Panel.md",
                 "object": None,
+                "icon": "arrow-expand-vertical",
             },
             "Grid lists": {
                 "kv_string": grid,
@@ -2079,24 +2109,28 @@ class Screens(EventDispatcher):
                 "name_screen": "grid",
                 "source_code": "Components-SmartTileWithStar.md",
                 "object": None,
+                "icon": "grid",
             },
             "Selection controls": {
                 "kv_string": selection_controls,
                 "Factory": "Factory.SelectionControls()",
                 "name_screen": "selection controls",
                 "object": None,
+                "icon": "checkbox-marked-circle-outline",
             },
             "Menus": {
                 "kv_string": menu,
                 "Factory": "Factory.Menu()",
                 "name_screen": "menu",
                 "object": None,
+                "icon": "menu",
             },
             "MD Icons": {
                 "kv_string": md_icons,
                 "Factory": "Factory.MDIcons()",
                 "name_screen": "md icons",
                 "object": None,
+                "icon": "material-design",
             },
             "Bottom App Bar": {
                 "kv_string": bottom_app_bar,
@@ -2104,6 +2138,7 @@ class Screens(EventDispatcher):
                 "name_screen": "bottom app bar",
                 "source_code": "Components-Bottom-App-Bar.md",
                 "object": None,
+                "icon": "dock-bottom",
             },
             "Source code": {
                 "kv_string": source_code_viewer,
@@ -2117,25 +2152,45 @@ class Screens(EventDispatcher):
                 "name_screen": "textfields",
                 "source_code": "Components-Text-Field.md",
                 "object": None,
+                "icon": "signature-text",
+            },
+            "Manager Swiper": {
+                "kv_string": manager_swiper,
+                "Factory": "Factory.MySwiperManager()",
+                "name_screen": "manager swiper",
+                "object": None,
+                "icon": "gesture-swipe",
             },
         }
     )
 
     def show_screen(self, name_screen):
+        Logger.debug(f"Kitchen Sink: Show screen {name_screen}")
+
         if name_screen == "Dropdown Item":
             self.open_drop_items_examples()
-        elif name_screen == "Manager Swiper":
-            self.show_manager_swiper()
         else:
             self.root.ids.scr_mngr.current = self.data[name_screen][
                 "name_screen"
             ]
         self.set_title_toolbar(name_screen)
 
-    def show_manager_swiper(self):
-        from kivymd.uix.managerswiper import MDSwiperPagination
+    def load_screen(self, name_screen):
+        Logger.debug(f"Kitchen Sink: Load screen {name_screen}")
+        # Add button to navigation drawer
+        if "icon" in self.data[name_screen]:
+            self.root.ids.nav_drawer.add_widget(
+                MyNavigationDrawerIconButton(
+                    text=name_screen, icon=self.data[name_screen]["icon"]
+                )
+            )
 
-        if not self.manager_swiper:
+        # Load kv string
+        if "kv_string" in self.data[name_screen]:
+            Builder.load_string(self.data[name_screen]["kv_string"])
+
+        # Actions before loading screen object
+        if name_screen == "Manager Swiper":
             path_to_crop_image = f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_swiper_crop.png"
             if not os.path.exists(path_to_crop_image):
                 crop_image(
@@ -2144,15 +2199,33 @@ class Screens(EventDispatcher):
                     path_to_crop_image,
                 )
 
-            Builder.load_string(manager_swiper)
-            self.manager_swiper = Factory.MySwiperManager()
-            self.root.ids.scr_mngr.add_widget(self.manager_swiper)
-            paginator = MDSwiperPagination()
-            paginator.screens = (
-                self.manager_swiper.ids.swiper_manager.screen_names
+        # Load screen object
+        if "object" in self.data[name_screen]:
+            self.data[name_screen]["object"] = eval(
+                self.data[name_screen]["Factory"]
             )
-            paginator.manager = self.manager_swiper.ids.swiper_manager
-            self.manager_swiper.ids.swiper_manager.paginator = paginator
-            self.manager_swiper.ids.box.add_widget(paginator)
+            if name_screen != "Popup Screen":
+                self.root.ids.scr_mngr.add_widget(
+                    self.data[name_screen]["object"]
+                )
 
-        self.root.ids.scr_mngr.current = "manager swiper"
+        # Actions after loading screen object
+        if name_screen == "Bottom App Bar":
+            self.set_appbar()
+            self.data[name_screen]["object"].add_widget(self.md_app_bar)
+        elif name_screen == "Text fields":
+            self.data[name_screen]["object"].ids.text_field_error.bind(
+                on_text_validate=self.set_error_message,
+                on_focus=self.set_error_message,
+            )
+        elif name_screen == "MD Icons":
+            self.set_list_md_icons()
+        elif name_screen == "Tabs":
+            self.build_tabs()
+        elif name_screen == "Refresh Layout":
+            self.set_list_for_refresh_layout()
+
+
+class MyNavigationDrawerIconButton(NavigationDrawerIconButton):
+    def on_release(self):
+        App.get_running_app().show_screen(self.text)

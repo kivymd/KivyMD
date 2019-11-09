@@ -6,6 +6,7 @@ from kivy.factory import Factory
 
 r = Factory.register
 r("MDTab", module="kivymd.uix.bottomnavigation")
+r("MDTooltip", module="kivymd.uix.tooltip")
 r("MDBottomNavigation", module="kivymd.uix.bottomnavigation")
 r("MDBottomNavigationItem", module="kivymd.uix.bottomnavigation")
 r("MDBottomNavigationHeader", module="kivymd.uix.bottomnavigation")

@@ -224,7 +224,19 @@ Builder.load_string(
             text_color: root.secondary_text_color
             size_hint_y: None
             height: 0 if root._num_lines == 1 else self.texture_size[1]
-            shorten: True if root._num_lines == 2 else False
+            shorten: True
+            shorten_from: 'right'
+            markup: True
+
+        MDLabel:
+            id: _lbl_tertiary
+            text: '' if root._num_lines == 1 else root.tertiary_text
+            font_style: root.tertiary_font_style
+            theme_text_color: root.tertiary_theme_text_color
+            text_color: root.tertiary_text_color
+            size_hint_y: None
+            height: 0 if root._num_lines == 1 else self.texture_size[1]
+            shorten: True
             shorten_from: 'right'
             markup: True
 
@@ -354,27 +366,39 @@ class BaseListItem(
     font_style = OptionProperty("Subtitle1", options=theme_font_styles)
 
     theme_text_color = StringProperty("Primary", allownone=True)
-    """ Theme text color for primary text """
+    """Theme text color for primary text"""
 
     secondary_text = StringProperty()
-    """Text shown in the second and potentially third line.
-
-    The text will wrap into the third line if the ListItem's type is set to
-    \'one-line\'. It can be forced into the third line by adding a \\n
-    escape sequence.
+    """Text shown in the second line.
 
     :attr:`secondary_text` is a :class:`~kivy.properties.StringProperty` and
     defaults to "".
     """
 
+    tertiary_text = StringProperty()
+    """The text is displayed on the third line.
+
+    :attr:`tertiary_text` is a :class:`~kivy.properties.StringProperty` and
+    defaults to "".
+    """
+
     secondary_text_color = ListProperty(None)
-    """ Text color used for secondary text if secondary_theme_text_color 
+    """Text color used for secondary text if secondary_theme_text_color 
+    is set to 'Custom' """
+
+    tertiary_text_color = ListProperty(None)
+    """Text color used for secondary text if secondary_theme_text_color 
     is set to 'Custom' """
 
     secondary_theme_text_color = StringProperty("Secondary", allownone=True)
-    """ Theme text color for secondary primary text """
+    """Theme text color for secondary primary text"""
+
+    tertiary_theme_text_color = StringProperty("Secondary", allownone=True)
+    """Theme text color for secondary primary text"""
 
     secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
+
+    tertiary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
     divider = OptionProperty(
         "Full", options=["Full", "Inset", None], allownone=True
@@ -384,7 +408,7 @@ class BaseListItem(
     _txt_top_pad = NumericProperty()
     _txt_bot_pad = NumericProperty()
     _txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
-    _num_lines = 2
+    _num_lines = 3
     _no_ripple_effect = BooleanProperty(False)
 
 

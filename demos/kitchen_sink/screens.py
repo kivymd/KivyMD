@@ -943,9 +943,8 @@ lists = """
 
             ThreeLineListItem:
                 text: "Three-line item"
-                secondary_text:
-                    "This is a multi-line label where you can "\
-                    "fit more text than usual"
+                secondary_text: "This is a multi-line label where you can"
+                tertiary_text: "fit more text than usual"
 
             OneLineAvatarListItem:
                 text: "Single-line item with avatar"
@@ -962,8 +961,8 @@ lists = """
             ThreeLineAvatarListItem:
                 type: "three-line"
                 text: "Three-line item..."
-                secondary_text:
-                    "...with avatar..." + '\\n' + "and third line!"
+                secondary_text: "...with avatar..."
+                tertiary_text: "and third line!"
                 ImageLeftWidget:
                     source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
 
@@ -982,8 +981,8 @@ lists = """
 
             ThreeLineIconListItem:
                 text: "Three-line item..."
-                secondary_text:
-                    "...with left icon..." + '\\n' + "and third line!"
+                secondary_text: "...with left icon..."
+                tertiary_text: "and third line!"
                 IconLeftWidget:
                     id: li_icon_3
                     icon: 'sd'
@@ -1003,8 +1002,8 @@ lists = """
 
             ThreeLineAvatarIconListItem:
                 text: "Three-line item..."
-                secondary_text:
-                    "...with avatar&icon..." + '\\n' + "and third line!"
+                secondary_text: "...with avatar&icon..."
+                tertiary_text: "and third line!"
                 ImageLeftWidget:
                     source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
                 IconRightSampleWidget:

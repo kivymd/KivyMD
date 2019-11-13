@@ -42,7 +42,6 @@ Builder.load_string('''
         left_action_items: [['dots-vertical', lambda x: None]]
         pos_hint: {'top': 1}
 
-
     ScrollView:
         id: scroll
         size_hint_y: None
@@ -402,9 +401,9 @@ class MDBanner(MDCard):
         Clock.schedule_once(show, 0.7)
 
     def animation_display_banner(self, i):
-        Animation(
-            banner_y=self.height + dp(68), d=0.15, t="in_quad"
-        ).start(self)
+        Animation(banner_y=self.height + dp(68), d=0.15, t="in_quad").start(
+            self
+        )
         anim = Animation(
             y=self.over_widget.y - self.height, d=0.15, t="in_quad"
         )

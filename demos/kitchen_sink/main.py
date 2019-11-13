@@ -62,7 +62,6 @@ from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.card import MDCard
 from kivymd.utils.cropimage import crop_image
 from kivymd.utils import asynckivy
-from kivymd.theming import ThemeManager
 from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.icon_definitions import md_icons
 

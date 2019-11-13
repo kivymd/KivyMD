@@ -7,6 +7,8 @@ Change Log
 
 * Added `MDApp` class. Now app object should be inherited from `kivymd.app.MDApp`.
 * Added `MDRoundImageButton` class.
+* Added `MDTooltip` class.
+* Added `MDBanner` class.
 * Added hook for `PyInstaller` (add `hookspath=[kivymd.hooks_path]`).
 * Added examples of `spec` files for building [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
 * Added some features to `MDProgressLoader`.

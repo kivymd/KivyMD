@@ -1052,6 +1052,48 @@ snackbar = """
         on_release: app.show_example_snackbar('float')
 """
 
+tooltips = """
+#:import random random
+#:import hex_colormap kivy.utils.hex_colormap
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import md_icons kivymd.icon_definitions.md_icons
+
+#:set ICONS list(md_icons.keys())
+
+
+<IconButtonTooltips@MDIconButton+MDTooltip>
+
+
+<Tooltips@Screen>
+    name: "tooltips"
+
+    BoxLayout:
+        size_hint: None, None
+        size: self.minimum_size
+        padding: "10dp"
+        spacing: "10dp"
+        pos_hint: {'center_x': .5, "center_y": .9}
+
+        IconButtonTooltips:
+            icon: random.choice(ICONS)
+            tooltip_text: "MDIconButton"
+        IconButtonTooltips:
+            icon: random.choice(ICONS)
+            tooltip_text: "MDIconButton"
+        IconButtonTooltips:
+            icon: random.choice(ICONS)
+            tooltip_text: "MDIconButton"
+        IconButtonTooltips:
+            icon: random.choice(ICONS)
+            tooltip_text: "MDIconButton"
+        IconButtonTooltips:
+            icon: random.choice(ICONS)
+            tooltip_text: "MDIconButton"
+        IconButtonTooltips:
+            icon: random.choice(ICONS)
+            tooltip_text: "MDIconButton"
+"""
+
 download_file = """
 #:import Clock kivy.clock.Clock
 
@@ -1249,6 +1291,118 @@ progress_bar = """
             MDProgressBar:
                 orientation: "vertical"
                 value: progress_slider.value
+"""
+
+banner = """
+<Banner@Screen>
+    name: "banner"
+
+    MDBanner:
+        id: banner
+        over_widget: scroll
+
+    ScrollView:
+        id: scroll
+        size_hint_y: None
+        height: Window.height - app.root.ids.toolbar.height
+
+        GridLayout:
+            id: box
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 1
+            padding: "10dp"
+            spacing: "10dp"
+
+            OneLineListItem:
+                text: "ThreeLineBanner"
+                on_release:
+                    banner.type = "three-line"
+                    banner.text = \
+                    [\
+                    "Three line string text example with two actions.", \
+                    "This is the second line of the banner message,", \
+                    "and this is the third line of the banner message.",
+                    ]
+                    banner.left_action = ["CANCEL", lambda x: None]
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
+
+            OneLineListItem:
+                text: "TwoLineBanner"
+                on_release:
+                    banner.type = "two-line"
+                    banner.text = \
+                    [\
+                    "One line string text example with two actions.", \
+                    "This is the second line of the banner message.", \
+                    ]
+                    banner.left_action = ["CANCEL", lambda x: None]
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
+
+            OneLineListItem:
+                text: "OneLineBanner"
+                on_release:
+                    banner.type = "one-line"
+                    banner.text = ["One line string text example with two actions."]
+                    banner.left_action = ["CANCEL", lambda x: None]
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
+
+            OneLineListItem:
+                text: "ThreeLineIconBanner"
+                on_release:
+                    banner.type = "three-line-icon"
+                    banner.text = \
+                    [\
+                    "Three line string text example with two actions.", \
+                    "This is the second line of the banner message,", \
+                    "and this is the third line of the banner message.",
+                    ]
+                    banner.left_action = ["CANCEL", lambda x: None]
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
+
+            OneLineListItem:
+                text: "TwoLineIconBanner"
+                on_release:
+                    banner.type = "two-line-icon"
+                    banner.text = \
+                    [\
+                    "One line string text example with two actions.", \
+                    "This is the second line of the banner message.", \
+                    ]
+                    banner.left_action = ["CANCEL", lambda x: None]
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
+
+            OneLineListItem:
+                text: "OneLineIconBanner"
+                on_release:
+                    banner.type = "one-line-icon"
+                    banner.text = ["One line string text example with two actions."]
+                    banner.left_action = ["CANCEL", lambda x: None]
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
+
+            OneLineListItem:
+                text: "Banner without actions"
+                on_release:
+                    banner.type = "one-line-icon"
+                    banner.text = ["One line string text example without actions."]
+                    banner.left_action = []
+                    banner.right_action = []
+                    banner.show()
+
+            OneLineListItem:
+                text: "Banner with one actions"
+                on_release:
+                    banner.type = "one-line-icon"
+                    banner.text = ["One line string text example without actions."]
+                    banner.left_action = []
+                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                    banner.show()
 """
 
 labels = """
@@ -1918,6 +2072,14 @@ class Screens(EventDispatcher):
                 "object": None,
                 "icon": "theme-light-dark",
             },
+            "Banner": {
+                "kv_string": banner,
+                "Factory": "Factory.Banner()",
+                "name_screen": "banner",
+                "source_code": "Components-Banner.md",
+                "object": None,
+                "icon": "message-alert-outline",
+            },
             "Bottom Navigation": {
                 "kv_string": bottom_navigation,
                 "Factory": "Factory.BottomNavigation()",
@@ -2152,6 +2314,14 @@ class Screens(EventDispatcher):
                 "source_code": "Components-Text-Field.md",
                 "object": None,
                 "icon": "signature-text",
+            },
+            "Tooltips": {
+                "kv_string": tooltips,
+                "Factory": "Factory.Tooltips()",
+                "name_screen": "tooltips",
+                "source_code": "Components-Tooltips.md",
+                "object": None,
+                "icon": "tooltip-text-outline",
             },
             "Manager Swiper": {
                 "kv_string": manager_swiper,

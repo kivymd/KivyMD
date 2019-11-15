@@ -269,7 +269,6 @@ class MDSlider(ThemableBehavior, Slider):
 
 if __name__ == "__main__":
     from kivymd.app import MDApp
-    from kivymd.theming import ThemeManager
 
     class SliderApp(MDApp):
         def build(self):

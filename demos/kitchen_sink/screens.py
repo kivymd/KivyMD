@@ -1417,7 +1417,10 @@ backdrop = """
     on_enter:
         self.toolbar_height = app.root.ids.toolbar.height
         app.root.ids.toolbar.height = 0
-    on_leave: app.root.ids.toolbar.height = self.toolbar_height
+        app.toolbar_hide = True
+    on_leave:
+        app.toolbar_hide = False
+        app.root.ids.toolbar.height = self.toolbar_height
 
     MDBackdrop:
         id: backdrop

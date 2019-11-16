@@ -41,7 +41,6 @@ from kivy.properties import (
     ListProperty,
     BooleanProperty,
     NumericProperty,
-    DictProperty,
 )
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
@@ -59,6 +58,7 @@ from kivymd.uix.list import (
     ThreeLineRightIconListItem,
 )
 from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.card import MDCard
 from kivymd.utils.cropimage import crop_image
 from kivymd.utils import asynckivy
@@ -1283,6 +1283,20 @@ class ScreenTree(BaseFanScreen):
 
 class ScreenFour(BaseFanScreen):
     pass
+
+
+class ItemBackdropBackLayer(ThemableBehavior, BoxLayout):
+    icon = StringProperty("android")
+    text = StringProperty()
+    selected_item = BooleanProperty(False)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            for item in self.parent.children:
+                if item.selected_item:
+                    item.selected_item = False
+            self.selected_item = True
+        return super().on_touch_down(touch)
 
 
 class BoxContentForBottomSheetCustomScreenList(BoxLayout):

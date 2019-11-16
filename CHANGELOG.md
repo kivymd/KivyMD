@@ -5,6 +5,7 @@ Change Log
 
 > [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.1) - *Alpha*
 
+* Implemented the ability [Backdrop](https://material.io/components/backdrop)
 * Added `MDApp` class. Now app object should be inherited from `kivymd.app.MDApp`.
 * Added `MDRoundImageButton` class.
 * Added `MDTooltip` class.

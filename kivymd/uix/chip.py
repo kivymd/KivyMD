@@ -181,6 +181,9 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
+#:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
+
+
 <MDChooseChip>
     size_hint_y: None
     height: self.minimum_height
@@ -192,7 +195,7 @@ Builder.load_string(
     height: "26dp"
     padding: 0, 0, "5dp", 0
     width:
-        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle' \
+        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) if root.icon != 'checkbox-blank-circle'\
         else self.minimum_width
 
     canvas:
@@ -248,7 +251,7 @@ class MDChip(BoxLayout, ThemableBehavior):
     callback = ObjectProperty(lambda x: None)
     """Custom method."""
 
-    radius = NumericProperty(dp(15))
+    radius = NumericProperty(dp(12))
     """Corner radius values."""
 
     def on_icon(self, instance, value):

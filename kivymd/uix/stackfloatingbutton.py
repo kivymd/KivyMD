@@ -194,7 +194,7 @@ class MDStackFloatingButtons(FloatLayout):
 
     def hide_floating_buttons(self):
         for btn in self.btn_list:
-            Animation(y=25, d=0.5, t="in_elastic").start(btn)
+            Animation(y=dp(25), d=0.5, t="in_elastic").start(btn)
 
     def hide_floating_labels(self):
         i = 1

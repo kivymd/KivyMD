@@ -322,6 +322,7 @@ class KitchenSink(MDApp, Screens):
     create_stack_floating_buttons = BooleanProperty(False)
     manager_open = BooleanProperty(False)
     cards_created = BooleanProperty(False)
+    toolbar_hide = BooleanProperty(False)
 
     _interval = NumericProperty(0)
     tick = NumericProperty(0)
@@ -392,12 +393,16 @@ class KitchenSink(MDApp, Screens):
             f"and contributors..."
         )
         self.list_name_icons = list(md_icons.keys())[0:15]
-        Window.bind(on_keyboard=self.events)
+        Window.bind(on_keyboard=self.events, on_resize=self.window_resize)
         crop_image(
             (Window.width, int(dp(Window.height * 35 // 100))),
             f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
             f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_crop.png",
         )
+
+    def window_resize(self, instance_window, width_window, height_window):
+        if self.toolbar_hide:
+            self.root.ids.toolbar.height = 0
 
     def build(self):
         self.root = Builder.load_string(root_kv)

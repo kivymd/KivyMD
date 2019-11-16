@@ -1424,6 +1424,8 @@ backdrop = """
         on_open: print("on_open")
         on_close: print("on_close")
         left_action_items: [['menu', lambda x: self.open()]]
+        right_action_items:
+            [['dots-vertical', lambda x: app.open_context_menu_source_code(backdrop.ids.toolbar)]] 
         title: "Example Backdrop"
         header_text: "Menu:"
 
@@ -2299,9 +2301,9 @@ class Screens(EventDispatcher):
                 "kv_string": backdrop,
                 "Factory": "Factory.Backdrop()",
                 "name_screen": "backdrop",
-                "source_code": "Components-Banner.md",
+                "source_code": "Components-Backdrop.md",
                 "object": None,
-                "icon": "message-alert-outline",
+                "icon": "layers-outline",
             },
             "Banner": {
                 "kv_string": banner,

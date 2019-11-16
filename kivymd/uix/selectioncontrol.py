@@ -71,19 +71,20 @@ Builder.load_string(
                 self._track_color_disabled if self.disabled else\
                 (self._track_color_active if self.active\
                 else self._track_color_normal)
-        Ellipse:
-            size: dp(16), dp(16)
-            pos: self.x, self.center_y - dp(8)
-            angle_start: 180
-            angle_end: 360
-        Rectangle:
-            size: self.width - dp(16), dp(16)
+        #Ellipse:
+        #    size: dp(8), dp(16)
+        #    pos: self.x, self.center_y - dp(8)
+        #    angle_start: 180
+        #    angle_end: 360
+        RoundedRectangle:
+            size: self.width - dp(8), dp(16)
             pos: self.x + dp(8), self.center_y - dp(8)
-        Ellipse:
-            size: dp(16), dp(16)
-            pos: self.right - dp(16), self.center_y - dp(8)
-            angle_start: 0
-            angle_end: 180
+            radius: [dp(7)]
+        #Ellipse:
+        #    size: dp(8), dp(16)
+        #    pos: self.right - dp(4), self.center_y - dp(8)
+        #    angle_start: 0
+        #    angle_end: 180
 
     on_release: thumb.trigger_action()
 
@@ -300,7 +301,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         if self.active:
             self._thumb_pos = (self.right - dp(12), self.center_y - dp(12))
         else:
-            self._thumb_pos = (self.x - dp(12), self.center_y - dp(12))
+            self._thumb_pos = (self.x, self.center_y - dp(12))
         self.bind(active=self._update_thumb)
 
     def _update_thumb(self, *args):
@@ -314,7 +315,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         else:
             Animation.cancel_all(self, "_thumb_pos")
             anim = Animation(
-                _thumb_pos=(self.x - dp(12), self.center_y - dp(12)),
+                _thumb_pos=(self.x, self.center_y - dp(12)),
                 duration=0.2,
                 t="out_quad",
             )

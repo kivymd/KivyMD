@@ -16,7 +16,6 @@ as the Kivy framework.
 `Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
 """
 
-from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.uix.label import Label
@@ -31,14 +30,13 @@ from kivy.utils import boundary
 from kivy.properties import (
     ObjectProperty,
     NumericProperty,
-    VariableListProperty,
     StringProperty,
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
+    ListProperty,
 )
 
-from kivymd.theming import ThemeManager
 from kivymd.theming import ThemableBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd import fonts_path
@@ -52,12 +50,6 @@ class MDTabsException(Exception):
 
 class MDTabsLabel(ToggleButtonBehavior, Label):
     """MDTabsLabel it represent the label of each tab."""
-
-    text_color_normal = VariableListProperty([1, 1, 1, 0.6])
-    """Text color of the label when it is not selected."""
-
-    text_color_active = VariableListProperty([1])
-    """Text color of the label when it is selected."""
 
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
@@ -99,6 +91,12 @@ class MDTabsBase(Widget):
 
     tab_label = ObjectProperty()
     """It is the label object reference of the tab."""
+
+    text_color_normal = ListProperty()
+    """Text color of the label when it is not selected."""
+
+    text_color_active = ListProperty()
+    """Text color of the label when it is selected."""
 
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
@@ -341,6 +339,9 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     allow_stretch = BooleanProperty(True)
     """If False - tabs will not stretch to full screen."""
 
+    background_color = ListProperty()
+    """Background color of `MDTabs`."""
+
     def on_carousel_index(self, carousel, index):
         # when the index of the carousel change, update
         # tab indicator, select the current tab and reset threshold data.
@@ -385,20 +386,20 @@ Builder.load_string(
 
 <MDTabsLabel>
     size_hint: None, 1
-    width: self.texture_size[0]
     halign: 'center'
     padding: '12dp', 0
     group: 'tabs'
     allow_no_selection: False
     text_color_normal:
-        (0, 0, 0, .5) if app.theme_cls.theme_style is 'Dark' \
-        else (1, 1, 1, .6)
+        (0, 0, 0, .5) if app.theme_cls.theme_style == 'Dark' and not root.tab.text_color_normal \
+        else (1, 1, 1, .6) if not root.text_color_normal else root.tab.text_color_normal
     text_color_active:
-        (0, 0, 0, .75) if app.theme_cls.theme_style is 'Dark' \
-        else (1, 1, 1, 1)
+        (0, 0, 0, .75)  if app.theme_cls.theme_style == 'Dark' and not root.tab.text_color_active \
+        else (1, 1, 1, 1) if not root.text_color_normal else root.tab.text_color_active
     color:
-        self.text_color_active if self.state is 'down' \
+        self.text_color_active if self.state == 'down' \
         else self.text_color_normal
+    on_color: print(self.text_color_normal, root.tab.text_color_normal)
     on_x: self._trigger_update_tab_indicator()
     on_width: self._trigger_update_tab_indicator()
 
@@ -438,7 +439,7 @@ Builder.load_string(
 
         canvas:
             Color:
-                rgba: self.theme_cls.primary_color
+                rgba: self.theme_cls.primary_color if not root.background_color else root.background_color
             Rectangle:
                 pos: self.pos
                 size: self.size

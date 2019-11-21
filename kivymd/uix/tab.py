@@ -36,7 +36,6 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
-    ListProperty,
 )
 
 from kivymd.theming import ThemeManager
@@ -54,8 +53,12 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, Label):
     """MDTabsLabel it represent the label of each tab."""
 
-    text_color_normal = ListProperty()
-    text_color_active = ListProperty()
+    text_color_normal = VariableListProperty([1, 1, 1, 0.6])
+    """Text color of the label when it is not selected."""
+
+    text_color_active = VariableListProperty([1])
+    """Text color of the label when it is selected."""
+
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
 
@@ -96,12 +99,6 @@ class MDTabsBase(Widget):
 
     tab_label = ObjectProperty()
     """It is the label object reference of the tab."""
-
-    text_color_normal = ListProperty()
-    """Text color of the label when it is not selected."""
-
-    text_color_active = ListProperty()
-    """Text color of the label when it is selected."""
 
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
@@ -194,26 +191,25 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
         super().__init__(**kwargs)
 
     def _update_tab_bar(self, *args):
-        if self.parent.allow_stretch:
-            # update width of the labels when it is needed
-            width, tabs = self.scrollview.width, self.layout.children
-            tabs_widths = [t.min_space for t in tabs if t.min_space]
-            tabs_space = float(sum(tabs_widths))
+        # update width of the labels when it is needed
+        width, tabs = self.scrollview.width, self.layout.children
+        tabs_widths = [t.min_space for t in tabs if t.min_space]
+        tabs_space = float(sum(tabs_widths))
 
-            if not tabs_space:
-                return
+        if not tabs_space:
+            return
 
-            ratio = width / tabs_space
-            use_ratio = True in (width / len(tabs) < w for w in tabs_widths)
+        ratio = width / tabs_space
+        use_ratio = True in (width / len(tabs) < w for w in tabs_widths)
 
-            for t in tabs:
-                t.width = (
-                    t.min_space
-                    if tabs_space > width
-                    else t.min_space * ratio
-                    if use_ratio is True
-                    else width / len(tabs)
-                )
+        for t in tabs:
+            t.width = (
+                t.min_space
+                if tabs_space > width
+                else t.min_space * ratio
+                if use_ratio is True
+                else width / len(tabs)
+            )
 
     def update_indicator(self, x, w):
         # update position and size of the indicator
@@ -341,12 +337,6 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     the tab indicator animation effect. Default to 0.8.
     """
 
-    allow_stretch = BooleanProperty(True)
-    """If False - tabs will not stretch to full screen."""
-
-    background_color = ListProperty()
-    """Background color of `MDTabs`."""
-
     def on_carousel_index(self, carousel, index):
         # when the index of the carousel change, update
         # tab indicator, select the current tab and reset threshold data.
@@ -396,21 +386,13 @@ Builder.load_string(
     group: 'tabs'
     allow_no_selection: False
     text_color_normal:
-        (\
-        (0, 0, 0, .5) if app.theme_cls.theme_style == 'Dark' and not root.tab.text_color_normal \
-        else (1, 1, 1, .6) \
-        if not root.text_color_normal \
-        else root.tab.text_color_normal \
-        )
+        (0, 0, 0, .5) if app.theme_cls.theme_style is 'Dark' \
+        else (1, 1, 1, .6)
     text_color_active:
-        (\
-        (0, 0, 0, .75) if app.theme_cls.theme_style == 'Dark' and not root.tab.text_color_active \
-        else (1, 1, 1, 1) \
-        if not root.text_color_normal \
-        else root.tab.text_color_active 
-        )
+        (0, 0, 0, .75) if app.theme_cls.theme_style is 'Dark' \
+        else (1, 1, 1, 1)
     color:
-        self.text_color_active if self.state == 'down' \
+        self.text_color_active if self.state is 'down' \
         else self.text_color_normal
     on_x: self._trigger_update_tab_indicator()
     on_width: self._trigger_update_tab_indicator()
@@ -451,9 +433,7 @@ Builder.load_string(
 
         canvas:
             Color:
-                rgba:
-                    self.theme_cls.primary_color if not root.background_color \
-                    else root.background_color
+                rgba: self.theme_cls.primary_color
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -524,13 +504,16 @@ demo = """
 
 if __name__ == "__main__":
     from kivy.factory import Factory
-    from kivymd.app import MDApp
 
     class MyTab(BoxLayout, MDTabsBase):
         pass
 
-    class Example(MDApp):
+    class Example(App):
         title = "Example Tabs"
+        theme_cls = ThemeManager()
+        theme_cls.primary_palette = "BlueGray"
+        theme_cls.theme_style = "Dark"
+        theme_cls.accent_palette = "Gray"
         list_name_icons = list(md_icons.keys())[0:15]
 
         def switch_tabs_to_icon(self, istance_android_tabs):

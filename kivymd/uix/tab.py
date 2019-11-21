@@ -54,8 +54,8 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, Label):
     """MDTabsLabel it represent the label of each tab."""
 
-    #text_color_normal = ListProperty()
-    #text_color_active = ListProperty()
+    text_color_normal = ListProperty()
+    text_color_active = ListProperty()
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
 

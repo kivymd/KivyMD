@@ -113,9 +113,7 @@ Builder.load_string(
 <MDTooltipViewClass>
     size_hint: None, None
     width: self.minimum_width
-    height:
-        dp(24) + root.padding[1] * 2 if DEVICE_TYPE == "desktop" \
-        else dp(32) + root.padding[1] * 2
+    height: self.minimum_height + root.padding[1]
     opacity: 0
 
     padding:
@@ -199,18 +197,41 @@ class MDTooltip(ThemableBehavior, HoverBehavior, BoxLayout):
 
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):
-            Clock.unschedule(touch.ud["event"])
+            try:
+                Clock.unschedule(touch.ud["event"])
+            except KeyError:
+                pass
             self.on_leave()
+
+    def adjust_tooltip_position(self, x, y):
+        """Returns the coordinates of the tooltip
+        that fit into the borders of the screen."""
+
+        # If the position of the tooltip is outside the right border of the screen.
+        if x + self._tooltip.width > Window.width:
+            x = Window.width - (self._tooltip.width + dp(10))
+        else:
+            # If the position of the tooltip is outside the left border of the screen.
+            if x < 0:
+                x = "10dp"
+        # If the tooltip position is below bottom the screen border.
+        if y < 0:
+            y = dp(10)
+        # If the tooltip position is below top the screen border.
+        else:
+            if Window.height - self._tooltip.height < y:
+                y = Window.height - (self._tooltip.height + dp(10))
+        return x, y
 
     def display_tooltip(self, interval):
         if not self._tooltip:
             return
         Window.add_widget(self._tooltip)
         pos = self.to_window(self.center_x, self.center_y)
-        self._tooltip.pos = (
-            pos[0] - self._tooltip.width / 2,
-            pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20),
-        )
+        x = pos[0] - self._tooltip.width / 2
+        y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
+        x, y = self.adjust_tooltip_position(x, y)
+        self._tooltip.pos = (x, y)
         Clock.schedule_once(self.animation_tooltip_show, 0)
 
     def animation_tooltip_show(self, interval):

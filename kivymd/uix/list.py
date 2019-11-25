@@ -400,9 +400,7 @@ class BaseListItem(
 
     tertiary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty(
-        "Full", options=["Full", "Inset", None], allownone=True
-    )
+    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()
@@ -508,11 +506,12 @@ class OneLineListItem(BaseListItem):
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 1
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(48)
+        self.height = dp(48) if not self._height else self._height
 
 
 class TwoLineListItem(BaseListItem):
@@ -520,10 +519,11 @@ class TwoLineListItem(BaseListItem):
 
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineListItem(BaseListItem):
@@ -531,32 +531,35 @@ class ThreeLineListItem(BaseListItem):
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(88)
+        self.height = dp(88) if not self._height else self._height
 
 
 class OneLineAvatarListItem(ContainerSupport, BaseListItem):
     _txt_left_pad = NumericProperty(dp(72))
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(19))  # dp(24) - dp(5)
+    _height = NumericProperty()
     _num_lines = 1
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(56)
+        self.height = dp(56) if not self._height else self._height
 
 
 class TwoLineAvatarListItem(OneLineAvatarListItem):
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 2
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineAvatarListItem(ContainerSupport, ThreeLineListItem):
@@ -570,11 +573,12 @@ class OneLineIconListItem(ContainerSupport, OneLineListItem):
 class TwoLineIconListItem(OneLineIconListItem):
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 2
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineIconListItem(ContainerSupport, ThreeLineListItem):
@@ -589,11 +593,12 @@ class OneLineRightIconListItem(ContainerSupport, OneLineListItem):
 class TwoLineRightIconListItem(OneLineRightIconListItem):
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 2
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineRightIconListItem(ContainerSupport, ThreeLineListItem):

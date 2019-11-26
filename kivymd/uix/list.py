@@ -400,7 +400,9 @@ class BaseListItem(
 
     tertiary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
-    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
+    divider = OptionProperty(
+        "Full", options=["Full", "Inset", None], allownone=True
+    )
 
     _txt_left_pad = NumericProperty(dp(16))
     _txt_top_pad = NumericProperty()

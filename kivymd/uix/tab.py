@@ -61,6 +61,7 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
         self.min_space = 0
 
     def on_release(self):
+        self.tab_bar.parent.dispatch("on_tab_switch", self, self.text)
         # if the label is selected load the relative tab from carousel
         if self.state == "down":
             self.tab_bar.parent.carousel.load_slide(self.tab)
@@ -306,6 +307,9 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     """The MDTabs class.
     You can use it to create your own custom tabbed panel.
 
+    :Events:
+        `on_tab_switch`
+            Called when switching tabs.
     """
 
     default_tab = NumericProperty(0)
@@ -343,6 +347,13 @@ class MDTabs(ThemableBehavior, AnchorLayout):
 
     text_color_active = ListProperty()
     """Text color of the label when it is selected."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_tab_switch")
+
+    def on_tab_switch(self, instance, value):
+        pass
 
     def on_carousel_index(self, carousel, index):
         # when the index of the carousel change, update

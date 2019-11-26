@@ -150,6 +150,40 @@ API Breaking changes
 ====================
 
 * App object should be inherited from `kivymd.app.MDApp`.
+<details>
+<summary>Details</summary>
+
+Now you do not need to create `theme_cls` property manually.
+
+Example of Material application with changed theme properties:
+```python
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
+root_kv = """
+BoxLayout:
+    MDRaisedButton:
+        text: "Click me!"
+        on_release: print("Hi!")
+"""
+
+
+class MainApp(MDApp):
+    def __init__(self, **kwargs):
+        self.title = "My Material Application"
+        self.theme_cls.theme_style = "Dark"
+        self.theme_cls.primary_palette = "DeepPurple"
+        super().__init__(**kwargs)
+
+    def build(self):
+        self.root = Builder.load_string(root_kv)
+
+
+if __name__ == "__main__":
+    MainApp().run()
+```
+</details>
+
 * All classes with the Behavior prefix moved to `kivymd.uix.behaviors` module.
 * All uix modules moved to `kivymd.uix` module.
 * All widgets that usually used in kv-lang are automatically added to Factory.

@@ -11,7 +11,7 @@ as the Kivy framework.
 
 import os
 
-from kivy import Logger
+from kivy.logger import Logger
 from kivy.app import App
 from kivy.factory import Factory  # NOQA
 from kivy.lang import Builder

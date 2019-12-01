@@ -44,7 +44,7 @@ from kivy.properties import (
 )
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_hex_from_color
-from kivy import platform
+from kivy.utils import platform
 
 from screens import Screens
 from dialogs import DialogLoadKvFiles

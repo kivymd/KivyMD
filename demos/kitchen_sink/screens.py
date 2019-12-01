@@ -746,14 +746,14 @@ toolbars = """
 
     MDToolbar:
         title: "Simple toolbar"
-        pos_hint: {'center_x': .5, 'center_y': .75}
+        pos_hint: {'center_x': .5, 'center_y': .8}
         md_bg_color: get_color_from_hex(colors['Teal']['500'])
         background_palette: 'Teal'
         background_hue: '500'
 
     MDToolbar:
         title: "MDToolbar with right buttons"
-        pos_hint: {'center_x': .5, 'center_y': .5}
+        pos_hint: {'center_x': .5, 'center_y': .6}
         md_bg_color: get_color_from_hex(colors['Amber']['700'])
         background_palette: 'Amber'
         background_hue: '700'
@@ -761,7 +761,7 @@ toolbars = """
 
     MDToolbar:
         title: "MDToolbar with left and right buttons"
-        pos_hint: {'center_x': .5, 'center_y': .25}
+        pos_hint: {'center_x': .5, 'center_y': .4}
         md_bg_color: get_color_from_hex(colors['DeepPurple']['A400'])
         background_palette: 'DeepPurple'
         background_hue: 'A400'
@@ -769,6 +769,14 @@ toolbars = """
         right_action_items: [['lock', lambda x: None],\
             ['camera', lambda x: None],\
             ['play', lambda x: None]]
+
+    MDToolbar:
+        title: "MDToolbar with custom right image button"
+        pos_hint: {'center_x': .5, 'center_y': .2}
+        md_bg_color: get_color_from_hex(colors['Red']['A400'])
+        background_palette: 'Red'
+        background_hue: 'A400'
+        left_action_items: [[f"{images_path}kivymd_alpha.png", lambda x: x]]
 """
 
 dialogs = """

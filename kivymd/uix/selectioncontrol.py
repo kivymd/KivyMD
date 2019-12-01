@@ -92,7 +92,7 @@ Builder.load_string(
         id: thumb
         size_hint: None, None
         size: dp(24), dp(24)
-        pos: root._thumb_pos
+        pos: root.pos[0] + root._thumb_pos[0], root.pos[1] + root._thumb_pos[1]
         color:
             root.thumb_color_disabled if root.disabled else\
             (root.thumb_color_down if root.active else root.thumb_color)
@@ -276,6 +276,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             primary_color=self._set_colors,
             primary_palette=self._set_colors,
         )
+        self.bind(active=self._update_thumb_pos)
         self._set_colors()
 
     def _set_colors(self, *args):
@@ -297,26 +298,18 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             self._track_color_disabled = self.theme_cls.disabled_hint_text_color
             self.thumb_color_down = self.theme_cls.primary_color
 
-    def on_pos(self, *args):
+    def _update_thumb_pos(self, *args, animation=True):
         if self.active:
-            self._thumb_pos = (self.right - dp(12), self.center_y - dp(12))
+            _thumb_pos = (self.width - dp(12), self.height / 2 - dp(12))
         else:
-            self._thumb_pos = (self.x, self.center_y - dp(12))
-        self.bind(active=self._update_thumb)
+            _thumb_pos = (0, self.height / 2 - dp(12))
+        Animation.cancel_all(self, "_thumb_pos")
+        if animation:
+            Animation(_thumb_pos=_thumb_pos, duration=0.2, t="out_quad").start(
+                self
+            )
+        else:
+            self._thumb_pos = _thumb_pos
 
-    def _update_thumb(self, *args):
-        if self.active:
-            Animation.cancel_all(self, "_thumb_pos")
-            anim = Animation(
-                _thumb_pos=(self.right - dp(12), self.center_y - dp(12)),
-                duration=0.2,
-                t="out_quad",
-            )
-        else:
-            Animation.cancel_all(self, "_thumb_pos")
-            anim = Animation(
-                _thumb_pos=(self.x, self.center_y - dp(12)),
-                duration=0.2,
-                t="out_quad",
-            )
-        anim.start(self)
+    def on_size(self, *args):
+        self._update_thumb_pos(animation=False)

@@ -193,7 +193,10 @@ NavigationLayout:
                 background_palette: 'Primary'
                 background_hue: '500'
                 elevation: 10
-                left_action_items: [['menu', lambda x: app.root.toggle_nav_drawer()]]
+                left_action_items:
+                    [[f"{environ['KITCHEN_SINK_ASSETS']}kivymd_logo.png", lambda x: app.root.toggle_nav_drawer()]] \
+                    if scr_mngr.current == "previous" else \
+                    [["menu", lambda x: app.root.toggle_nav_drawer()]]
                 right_action_items:
                     [['dots-vertical', lambda x: app.open_context_menu_source_code(toolbar)]] \
                     if scr_mngr.current != "previous" else []

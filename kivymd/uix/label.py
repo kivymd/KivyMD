@@ -39,9 +39,23 @@ Builder.load_string(
     text_size: (self.width, None)
 
 
-<MDIcon>
-    font_style: 'Icon'
-    text: u'{}'.format(md_icons[self.icon])
+<MDIcon>:
+    font_style: "Icon"
+    text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
+    source: None if self.icon in md_icons else self.icon
+    canvas:
+        Color:
+            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
+        Rectangle:
+            source: self.source if self.source else None
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: (1, 1, 1, 1) if self.text else (0, 0, 0, 0)
+        Rectangle:
+            texture: self.texture
+            pos: self.pos
+            size: self.size
 """
 )
 
@@ -143,3 +157,4 @@ class MDLabel(ThemableBehavior, Label):
 
 class MDIcon(MDLabel):
     icon = StringProperty("android")
+    source = StringProperty(None, allownone=True)

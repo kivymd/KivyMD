@@ -18,86 +18,143 @@ as the Kivy framework.
 Example
 -------
 
+from kivy.factory import Factory
+
 from kivymd.app import MDApp
 from kivy.lang import Builder
 
-from kivymd.theming import ThemeManager
-from kivymd.toast import toast
-from kivymd.uix.toolbar import MDBottomAppBar
 
-kv = '''
-BoxLayout:
-    spacing: dp(10)
-    orientation: 'vertical'
+Builder.load_string('''
+<StyleLabel@MDLabel>:
+    size_hint_y: None
+    height: self.texture_size[1]
 
-    AnchorLayout:
-        anchor_y: 'center'
-        anchor_x: 'center'
 
-        BoxLayout:
-            orientation: 'vertical'
-            spacing: dp(10)
+<StyleItemCheck@BoxLayout>:
+    group: ""
+    text: ""
+    active: False
+    size_hint_y: None
+    height: self.minimum_height
 
-            MDRaisedButton:
-                text: 'Anchor center'
-                pos_hint: {'center_x': .5}
-                on_release:
-                    app.md_app_bar.set_pos_action_button('center')
-                    app.move_item_menu('center')
+    MDCheckbox:
+        group: root.group
+        active: root.active
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {"center_y": .5}
+        on_active: app.callback(root.text, self.active)
 
-            MDRaisedButton:
-                text: 'Anchor right'
-                pos_hint: {'center_x': .5}
-                on_release:
-                    app.md_app_bar.set_pos_action_button('right')
-                    app.move_item_menu('right')
+    StyleLabel:
+        text: root.text
+        pos_hint: {"center_y": .5}
+
+
+<BottomAppBar@Screen>
+    name: 'bottom app bar'
+
+    BoxLayout:
+        spacing: dp(10)
+        orientation: 'vertical'
+
+        MDToolbar:
+            title: "Title"
+            md_bg_color: app.theme_cls.primary_color
+            left_action_items: [['menu', lambda x: x]]
+
+        ScrollView:
+
+            GridLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
+                padding: "10dp"
+                spacing: "10dp"
+
+                MDSeparator:
+
+                StyleLabel:
+                    text: "Notch"
+
+                StyleItemCheck:
+                    group: 'notch'
+                    text: "On"
+                    active: True
+
+                StyleItemCheck:
+                    group: 'notch'
+                    text: "Off"
+
+                MDSeparator:
+
+                StyleLabel:
+                    text: "Position"
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Attached - Center"
+                    active: True
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Attached - End"
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Free - Center"
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Free - End"
+
+        MDBottomAppBar
+
+            MDToolbar:
+                id: toolbar
+                title: "Title"
+                icon: "git"
+                type: "bottom"
+                on_action_button: print("on_action_button")
+                left_action_items: [["menu", lambda x: x]]
 '''
+)
 
 
-class MyApp(MDApp):
-    md_app_bar = None
+class BottomAppBarTest(MDApp):
+    def callback(self, text, value):
+        if value and self.root:
+            if text == "Off":
+                self.root.ids.toolbar.remove_notch()
+            elif text == "On":
+                self.root.ids.toolbar.set_notch()
+            elif text == "Attached - End":
+                self.root.ids.toolbar.mode = "end"
+            elif text == "Attached - Center":
+                self.root.ids.toolbar.mode = "center"
+            elif text == "Free - End":
+                self.root.ids.toolbar.mode = "free-end"
+            elif text == "Free - Center":
+                self.root.ids.toolbar.mode = "free-center"
 
     def build(self):
-        root = Builder.load_string(kv)
-        self.md_app_bar = MDBottomAppBar(
-            md_bg_color=self.theme_cls.primary_color,
-            left_action_items=[
-                ['menu', lambda x: x],
-                ['clock', lambda x: x],
-                ['dots-vertical', lambda x: x]],
-            anchor='right',
-            callback=self.press_button)
-        root.add_widget(self.md_app_bar)
-        return root
-
-    def move_item_menu(self, anchor):
-        md_app_bar = self.md_app_bar
-        if md_app_bar.anchor != anchor:
-            if len(md_app_bar.right_action_items):
-                md_app_bar.left_action_items.append(
-                    md_app_bar.right_action_items[0])
-                md_app_bar.right_action_items = []
-            else:
-                left_action_items = md_app_bar.left_action_items
-                action_items = left_action_items[0:2]
-                md_app_bar.right_action_items = [left_action_items[-1]]
-                md_app_bar.left_action_items = action_items
-
-    def press_button(self, instance):
-        toast('Press Button')
+        return Factory.BottomAppBar()
 
 
-MyApp().run()
+BottomAppBarTest().run()
 """
 
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ListProperty, StringProperty, ObjectProperty
+from kivy.properties import (
+    ListProperty,
+    StringProperty,
+    NumericProperty,
+    OptionProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.animation import Animation
 from kivy.core.window import Window
+from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.uix.button import MDIconButton, MDFloatingActionButton
 from kivymd.uix.behaviors import (
@@ -111,27 +168,57 @@ Builder.load_string(
 #:import m_res kivymd.material_resources
 
 
-<AppBarActionButton>
-    size: 0, 0
-    opacity: 0
-    md_bg_color: root.action_button_color
-
-
-<MDBottomAppBar>
-
-    MDToolbar:
-        id: toolbar
-        left_action_items: root.left_action_items
-        right_action_items: root.right_action_items
-        md_bg_color: root.md_bg_color
-
-
 <MDToolbar>
     size_hint_y: None
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
+
+    canvas:
+        Color:
+            rgba: root.theme_cls.primary_color
+        RoundedRectangle:
+            pos:
+                self.pos \
+                if root.mode == "center" else \
+                (self.width - root.action_button.width + dp(6), self.y)
+            size:
+                (((self.width - root.action_button.width) / 2 - dp(6), self.height) \
+                if root.mode == "center" else \
+                (root.action_button.width - dp(6), self.height)) if root.type == "bottom" else self.pos
+            radius:
+                (0, root.round, 0, 0) if root.mode == "center" else (root.round, 0, 0, 0)
+        Rectangle:
+            pos:
+                ((self.width / 2 - root.action_button.width / 2) - dp(6), self.y - root._shift) \
+                if root.mode == "center" else \
+                (self.width - root.action_button.width * 2 - dp(6), self.y - root._shift)
+            size:
+                (root.action_button.width + dp(6) * 2, self.height - root._shift * 2) \
+                if root.type == "bottom" else (0, 0)
+        RoundedRectangle:
+            pos:
+                ((self.width + root.action_button.width) / 2 + dp(6), self.y) \
+                if root.mode == "center" else self.pos
+            size:
+                (((self.width - root.action_button.width) / 2 + dp(6), self.height) \
+                if root.mode == "center" else \
+                ((self.width - root.action_button.width * 2 - dp(6)), self.height)) \
+                if root.type == "bottom" else (0, 0)
+            radius: (root.round, 0, 0, 0) if root.mode == "center" else (0, root.round, 0, 0)
+        Color:
+            rgba: 1, 1, 1, 1
+        Ellipse:
+            pos:
+                (self.center[0] - root.action_button.width / 2 - dp(6), self.center[1] - root._shift * 2) \
+                if root.mode == "center" else \
+                (self.width - root.action_button.width * 2 - dp(6), self.center[1] - root._shift * 2)
+            size:
+                (root.action_button.width + dp(6) * 2, root.action_button.width) \
+                if root.type == "bottom" else (0, 0)
+            angle_start: root._angle_start
+            angle_end: root._angle_end
 
     BoxLayout:
         id: left_actions
@@ -156,9 +243,13 @@ Builder.load_string(
         id: right_actions
         orientation: 'horizontal'
         size_hint_x: None
-        padding: [0, (self.height - dp(48))/2]
+        padding: [0, (self.height - dp(48)) / 2]
 """
 )
+
+
+class MDActionBottomAppBarButton(MDFloatingActionButton):
+    pass
 
 
 class MDToolbar(
@@ -167,8 +258,14 @@ class MDToolbar(
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):
+    """
+    :Events:
+        `on_action_button`
+            Method for the button used for the `MDBottomAppBar` class.
+    """
+
     left_action_items = ListProperty()
-    """The icons on the left of the MDToolbar.
+    """The icons on the left of the `MDToolbar`.
     To add one, append a list like the following:
         ['icon_name', callback]
     where 'icon_name' is a string that corresponds to an icon definition and
@@ -176,19 +273,64 @@ class MDToolbar(
     """
 
     right_action_items = ListProperty()
-    """The icons on the left of the MDToolbar.
+    """The icons on the left of the `MDToolbar`.
     Works the same way as :attr:`left_action_items`
     """
 
     title = StringProperty()
-    """The text displayed on the MDToolbar."""
+    """The text displayed on the `MDToolbar`."""
 
-    md_bg_color = ListProperty([0, 0, 0, 1])
+    md_bg_color = ListProperty([0, 0, 0, 0])
+    """Color for `MDToolbar`."""
 
     anchor_title = StringProperty("left")
 
+    mode = OptionProperty(
+        "center", options=["free-end", "free-center", "end", "center"]
+    )
+    """`MDBottomAppBar` button position."""
+
+    round = NumericProperty(dp(10))
+    """Rounding the corners at the notch for a button in `MDBottomAppBar`"""
+
+    icon = StringProperty("android")
+    """Icon action button."""
+
+    icon_color = ListProperty()
+    """Color action button."""
+
+    type = OptionProperty("top", options=["top", "bottom"])
+    """When using the `MDBottomAppBar` class,
+    the parameter `type` must be set to `bottom`:
+    
+    Python:
+
+        .. code-block:: python
+
+            MDBottomAppBar:
+                type: "bottom"
+    """
+
+    _shift = NumericProperty(dp(3.5))
+    _angle_start = NumericProperty(90)
+    _angle_end = NumericProperty(270)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.register_event_type("on_action_button")
+        self.action_button = MDActionBottomAppBarButton()
+        self.action_button.bind(
+            on_release=lambda x: self.dispatch("on_action_button")
+        )
+        self.action_button.x = Window.width / 2 - self.action_button.width / 2
+        self.action_button.y = (
+            (self.center[1] - self.height / 2)
+            + self.theme_cls.standard_increment / 2
+            + self._shift
+        )
+        if not self.icon_color:
+            self.icon_color = self.theme_cls.primary_color
+        Window.bind(on_resize=self._on_resize)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items)
@@ -196,6 +338,13 @@ class MDToolbar(
         Clock.schedule_once(
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
+
+    def on_action_button(self, *args):
+        pass
+
+    def on_md_bg_color(self, instance, value):
+        if type == "bottom":
+            self.md_bg_color = [0, 0, 0, 0]
 
     def on_left_action_items(self, instance, value):
         self.update_action_bar(self.ids["left_actions"], value)
@@ -225,66 +374,66 @@ class MDToolbar(
         for child in self.ids["right_actions"].children:
             child.text_color = self.specific_text_color
 
+    def _on_resize(self, instance, width, height):
+        if self.mode == "center":
+            self.action_button.x = width / 2 - self.action_button.width / 2
+        else:
+            self.action_button.x = width - self.action_button.width * 2
+
+    def on_icon(self, instance, value):
+        self.action_button.icon = value
+
+    def on_icon_color(self, instance, value):
+        self.action_button.md_bg_color = value
+
+    def on_mode(self, instance, value):
+        if value == "center":
+            self.set_notch()
+            x = Window.width / 2 - self.action_button.width / 2
+            y = (
+                (self.center[1] - self.height / 2)
+                + self.theme_cls.standard_increment / 2
+                + self._shift
+            )
+        elif value == "end":
+            self.set_notch()
+            x = Window.width - self.action_button.width * 2
+            y = (
+                (self.center[1] - self.height / 2)
+                + self.theme_cls.standard_increment / 2
+                + self._shift
+            )
+            self.right_action_items = []
+        elif value == "free-end":
+            self.remove_notch()
+            x = Window.width - self.action_button.width - dp(10)
+            y = self.action_button.height + self.action_button.height / 2
+        elif value == "free-center":
+            self.remove_notch()
+            x = Window.width / 2 - self.action_button.width / 2
+            y = self.action_button.height + self.action_button.height / 2
+        self.action_button.x = x
+        self.action_button.y = y
+
+    def remove_notch(self):
+        self._angle_start = 0
+        self._angle_end = 0
+        self.round = 0
+        self._shift = 0
+
+    def set_notch(self):
+        self._angle_start = 90
+        self._angle_end = 270
+        self.round = dp(10)
+        self._shift = dp(3.5)
+
 
 class MDBottomAppBar(FloatLayout):
-    left_action_items = ListProperty()
-    right_action_items = ListProperty()
-    md_bg_color = ListProperty([0, 0, 0, 1])
-    action_button_color = ListProperty(
-        [1, 0.7568627450980392, 0.027450980392156862, 1]
-    )
-    anchor = StringProperty("right")
-    callback = ObjectProperty(lambda x: None)
-    action_button = ObjectProperty()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.size_hint_y = None
 
-    def on_kv_post(self, base_widget):
-        # Default action Button.
-        x = (
-            Window.width - dp(56) - dp(20)
-            if self.anchor == "right"
-            else Window.width // 2 - dp(56) // 2
-            if self.anchor == "center"
-            else dp(20)
-        )
-        self.action_button = AppBarActionButton(
-            y=self.ids.toolbar.height // 2,
-            x=x,
-            opacity=1,
-            size=(dp(56), dp(56)),
-            on_release=self.callback,
-            action_button_color=self.action_button_color,
-        )
-        self.add_widget(self.action_button)
-
-    def set_pos_action_button(self, anchor):
-        def _set_pos_action_button(*args):
-            if anchor == "center":
-                x = self.width // 2 - dp(56) // 2
-            elif anchor == "right":
-                x = self.width - dp(56) - dp(20)
-            else:
-                return
-
-            self.remove_widget(self.action_button)
-            self.action_button = AppBarActionButton(
-                y=self.ids.toolbar.height // 2,
-                x=x,
-                on_release=self.callback,
-                action_button_color=self.action_button_color,
-            )
-            self.add_widget(self.action_button)
-            Animation(size=(dp(56), dp(56)), opacity=1, d=0.2).start(
-                self.action_button
-            )
-            self.anchor = anchor
-
-        if self.anchor != anchor:
-            anim = Animation(size=(0, 0), opacity=0, d=0.2)
-            anim.bind(on_complete=_set_pos_action_button)
-            anim.start(self.action_button)
-
-
-class AppBarActionButton(MDFloatingActionButton):
-    action_button_color = ListProperty(
-        [1, 0.7568627450980392, 0.027450980392156862, 1]
-    )
+    def add_widget(self, widget, index=0, canvas=None):
+        if widget.__class__ is MDToolbar:
+            super().add_widget(widget)
+            return super().add_widget(widget.action_button)

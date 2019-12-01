@@ -194,7 +194,7 @@ NavigationLayout:
                 background_hue: '500'
                 elevation: 10
                 left_action_items:
-                    [[f"{environ['KITCHEN_SINK_ASSETS']}kivymd_logo.png", lambda x: app.root.toggle_nav_drawer()]] \
+                    [["menu", lambda x: app.root.toggle_nav_drawer()]] \
                     if scr_mngr.current == "previous" else \
                     [["menu", lambda x: app.root.toggle_nav_drawer()]]
                 right_action_items:
@@ -310,7 +310,6 @@ NavigationLayout:
 class KitchenSink(MDApp, Screens):
     previous_date = ObjectProperty()
     manager = ObjectProperty()
-    md_app_bar = ObjectProperty()
     instance_menu_source_code = ObjectProperty()
     md_theme_picker = ObjectProperty()
     long_dialog = ObjectProperty()
@@ -1103,40 +1102,21 @@ class KitchenSink(MDApp, Screens):
 
         self.root.ids.toolbar.title = title
 
-    def set_appbar(self):
-        """Create MDBottomAppBar for the screen BottomAppBar."""
-
-        from kivymd.uix.toolbar import MDBottomAppBar
-
-        def press_button(inctance):
-            toast("Press Button")
-
-        self.md_app_bar = MDBottomAppBar(
-            md_bg_color=self.theme_cls.primary_color,
-            left_action_items=[
-                ["menu", lambda x: x],
-                ["clock", lambda x: x],
-                ["dots-vertical", lambda x: x],
-            ],
-            anchor="right",
-            callback=press_button,
-        )
-
-    def move_item_menu(self, anchor):
-        """Sets icons in MDBottomAppBar for the screen BottomAppBar."""
-
-        md_app_bar = self.md_app_bar
-        if md_app_bar.anchor != anchor:
-            if len(md_app_bar.right_action_items):
-                md_app_bar.left_action_items.append(
-                    md_app_bar.right_action_items[0]
-                )
-                md_app_bar.right_action_items = []
-            else:
-                left_action_items = md_app_bar.left_action_items
-                action_items = left_action_items[0:2]
-                md_app_bar.right_action_items = [left_action_items[-1]]
-                md_app_bar.left_action_items = action_items
+    def callback_for_bottom_app_bar(self, text, value):
+        if value and self.data["Bottom App Bar"]["object"]:
+            toolbar = self.data["Bottom App Bar"]["object"].ids.bottom_toolbar
+            if text == "Off":
+                toolbar.remove_notch()
+            elif text == "On":
+                toolbar.set_notch()
+            elif text == "Attached - End":
+                toolbar.mode = "end"
+            elif text == "Attached - Center":
+                toolbar.mode = "center"
+            elif text == "Free - End":
+                toolbar.mode = "free-end"
+            elif text == "Free - Center":
+                toolbar.mode = "free-center"
 
     def show_password(self, field, button):
         """

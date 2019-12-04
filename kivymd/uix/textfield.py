@@ -680,7 +680,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             Animation(
                 _line_blank_space_right_hint_text=self._line_blank_space_right_hint_text,
                 _line_blank_space_left_hint_text=self._hint_lbl.x - dp(5),
-                _current_hint_text_color=[1, 1, 0, 1],
+                _current_hint_text_color=self.line_color_focus,
                 duration=0.2,
                 t="out_quad",
             ).start(self)
@@ -853,6 +853,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                     ).start(self)
         else:
             if self.focus:
+                print(1)
                 disabled_hint_text_color = (
                     self.theme_cls.disabled_hint_text_color
                 )

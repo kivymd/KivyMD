@@ -50,12 +50,6 @@ Builder.load_string(
             source: self.source if self.source else None
             pos: self.pos
             size: self.size
-        Color:
-            rgba: (1, 1, 1, 1) if self.text else (0, 0, 0, 0)
-        Rectangle:
-            texture: self.texture
-            pos: self.pos
-            size: self.size
 """
 )
 

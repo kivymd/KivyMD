@@ -2197,8 +2197,8 @@ manager_swiper = """
     height: dp(300)
     pos_hint: {'top': 1}
 
-    Image:
-        source: f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280_swiper_crop.png'
+    FitImage:
+        source: f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -2671,16 +2671,6 @@ class Screens(EventDispatcher):
         # Load kv string
         if "kv_string" in self.data[name_screen]:
             Builder.load_string(self.data[name_screen]["kv_string"])
-
-        # Actions before loading screen object
-        if name_screen == "Manager Swiper":
-            path_to_crop_image = f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280_swiper_crop.png"
-            if not os.path.exists(path_to_crop_image):
-                crop_image(
-                    (int(Window.width - dp(10)), int(dp(250))),
-                    f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
-                    path_to_crop_image,
-                )
 
         # Load screen object
         if "object" in self.data[name_screen]:

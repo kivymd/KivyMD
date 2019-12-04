@@ -853,7 +853,6 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                     ).start(self)
         else:
             if self.focus:
-                print(1)
                 disabled_hint_text_color = (
                     self.theme_cls.disabled_hint_text_color
                 )

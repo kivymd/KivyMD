@@ -25,7 +25,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.managerswiper import MDSwiperPagination
 from kivymd.theming import ThemeManager
-from kivymd.utils.cropimage import crop_image
 
 activity = '''
 #:import images_path kivymd.images_path
@@ -37,10 +36,10 @@ activity = '''
     height: dp(300)
     pos_hint: {'top': 1}
 
-    Image:
+    FitImage:
         source:
             f'{app.directory}/demos/kitchen_sink/assets/'\
-            f'guitar-1139397_1280_swiper_crop.png'
+            f'guitar-1139397_1280.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -134,7 +133,6 @@ class Test(MDApp):
     swiper_manager = None
 
     def build(self):
-        self.crop_image_for_card()
         Builder.load_string(activity)
         start_screen = MySwiperManager()
         self.swiper_manager = start_screen.ids.swiper_manager
@@ -145,16 +143,6 @@ class Test(MDApp):
         start_screen.add_widget(paginator)
 
         return start_screen
-
-    def crop_image_for_card(self):
-        path_to_crop_image =\
-            f'{self.directory}/demos/kitchen_sink/assets/'\
-            f'guitar-1139397_1280_swiper_crop.png'
-        if not os.path.exists(path_to_crop_image):
-            crop_image(
-                (int(Window.width - dp(10)), int(dp(250))),
-                f'{self.directory}/demos/kitchen_sink/assets/guitar-1139397_1280.png',
-                path_to_crop_image)
 
 
 if __name__ == '__main__':

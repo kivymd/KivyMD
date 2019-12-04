@@ -842,17 +842,9 @@ class KitchenSink(MDApp, Screens):
             toast("Close card")
 
         if not self.user_card:
-            image_for_user_card = f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-for-user-card1139397_1280-crop.png"
-            if not os.path.exists(image_for_user_card):
-                crop_image(
-                    (int(Window.width), int(dp(Window.height * 40 // 100))),
-                    f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
-                    image_for_user_card,
-                )
-
             self.user_card = MDUserAnimationCard(
                 user_name="Lion Lion",
-                path_to_avatar=image_for_user_card,
+                path_to_avatar=f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
                 callback=main_back_callback,
             )
             self.user_card.box_content.add_widget(ContentForAnimCard())

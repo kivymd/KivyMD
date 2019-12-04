@@ -156,7 +156,7 @@ Builder.load_string(
             size: self.size
             pos: self.pos
 
-    Image:
+    FitImage:
         id: image
         source: root.path_to_avatar
         size_hint: 1, None
@@ -165,7 +165,7 @@ Builder.load_string(
         allow_stretch: True
         keep_ratio: False
 
-        canvas:
+        canvas.after:
             Color:
                 rgba: root._primary_color
             Rectangle:
@@ -287,11 +287,11 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         Animation(font_size=sp(36), d=0.3, t="in_out_cubic").start(
             self._obj_user_name
         )
+        Animation(_primary_color=[0, 0, 0, 0], d=0.3, t="in_out_cubic").start(
+            self.user_animation_card
+        )
         Animation(y=self._avatar_y, d=0.4, t="in_out_cubic").start(
             self._obj_avatar
-        )
-        Animation(a=0, d=0.4, t="in_out_cubic").start(
-            self._obj_avatar.canvas.children[3]
         )
 
     def animation_to_top(self):
@@ -303,7 +303,7 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         user_name_x = self.theme_cls.horizontal_margins + dp(12) * 5
 
         Animation(y=-self._obj_toolbar.height, d=0.4, t="in_out_cubic").start(
-            self.user_animation_card.ids.scroll
+            self._obj_scroll
         )
         Animation(y=user_name_y, d=0.3, x=user_name_x, t="in_out_cubic").start(
             self._obj_user_name
@@ -311,11 +311,11 @@ class MDUserAnimationCard(ThemableBehavior, ModalView):
         Animation(font_size=sp(20), d=0.3, t="in_out_cubic").start(
             self._obj_user_name
         )
+        Animation(
+            _primary_color=self.theme_cls.primary_color, d=0.3, t="in_out_cubic"
+        ).start(self.user_animation_card)
         Animation(y=self._obj_avatar.y + 30, d=0.4, t="in_out_cubic").start(
             self._obj_avatar
-        )
-        Animation(a=1, d=0.4, t="in_out_cubic").start(
-            self._obj_avatar.canvas.children[3]
         )
 
 

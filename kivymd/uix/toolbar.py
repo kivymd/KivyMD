@@ -142,7 +142,7 @@ class BottomAppBarTest(MDApp):
 
 BottomAppBarTest().run()
 """
-
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -166,6 +166,17 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import m_res kivymd.material_resources
+
+
+<MDActionBottomAppBarButton>:
+    canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: root._scale_x
+            y: root._scale_y
+    canvas.after:
+        PopMatrix
 
 
 <MDToolbar>
@@ -249,7 +260,8 @@ Builder.load_string(
 
 
 class MDActionBottomAppBarButton(MDFloatingActionButton):
-    pass
+    _scale_x = NumericProperty(1)
+    _scale_y = NumericProperty(1)
 
 
 class MDToolbar(
@@ -387,6 +399,15 @@ class MDToolbar(
         self.action_button.md_bg_color = value
 
     def on_mode(self, instance, value):
+        def set_button_pos(*args):
+            self.action_button.x = x
+            self.action_button.y = y
+            self.action_button._hard_shadow_size = (0, 0)
+            self.action_button._soft_shadow_size = (0, 0)
+            anim = Animation(_scale_x=1, _scale_y=1, d=0.05)
+            anim.bind(on_complete=self.set_shadow)
+            anim.start(self.action_button)
+
         if value == "center":
             self.set_notch()
             x = Window.width / 2 - self.action_button.width / 2
@@ -396,6 +417,7 @@ class MDToolbar(
                 + self._shift
             )
         elif value == "end":
+
             self.set_notch()
             x = Window.width - self.action_button.width * 2
             y = (
@@ -412,8 +434,10 @@ class MDToolbar(
             self.remove_notch()
             x = Window.width / 2 - self.action_button.width / 2
             y = self.action_button.height + self.action_button.height / 2
-        self.action_button.x = x
-        self.action_button.y = y
+        self.remove_shadow()
+        anim = Animation(_scale_x=0, _scale_y=0, d=0.05)
+        anim.bind(on_complete=set_button_pos)
+        anim.start(self.action_button)
 
     def remove_notch(self):
         self._angle_start = 0
@@ -426,6 +450,14 @@ class MDToolbar(
         self._angle_end = 270
         self.round = dp(10)
         self._shift = dp(3.5)
+
+    def remove_shadow(self):
+        self.action_button._hard_shadow_size = (0, 0)
+        self.action_button._soft_shadow_size = (0, 0)
+
+    def set_shadow(self, *args):
+        self.action_button._hard_shadow_size = (dp(112), dp(112))
+        self.action_button._soft_shadow_size = (dp(112), dp(112))
 
 
 class MDBottomAppBar(FloatLayout):

@@ -1,9 +1,7 @@
 Change Log
 ==========
 
-## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
-
-> [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.1) - *Alpha*
+## [v0.102.1](https://github.com/HeaTTheatR/KivyMD/tree/0.102.1) - *Alpha*
 
 * Implemented the ability [Backdrop](https://material.io/components/backdrop)
 * Added `MDApp` class. Now app object should be inherited from `kivymd.app.MDApp`.
@@ -19,9 +17,9 @@ Change Log
 * Added [`studies`](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/studies) directory for demos in Material Design.
 * Bug fixes and other minor improvements.
 
-[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...master)
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...0.102.1)
 ```bash
-pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+pip install kivymd==0.102.1
 ```
 
 

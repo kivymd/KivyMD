@@ -328,9 +328,9 @@ class MDToolbar(
     _angle_end = NumericProperty(270)
 
     def __init__(self, **kwargs):
+        self.action_button = MDActionBottomAppBarButton()
         super().__init__(**kwargs)
         self.register_event_type("on_action_button")
-        self.action_button = MDActionBottomAppBarButton()
         self.action_button.bind(
             on_release=lambda x: self.dispatch("on_action_button")
         )

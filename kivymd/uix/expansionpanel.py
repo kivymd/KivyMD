@@ -226,15 +226,16 @@ class MDExpansionPanel(BoxLayout):
     def check_open_box(self, instance):
         press_current_item = False
         for box in self.parent.children:
-            if len(box.ids.box_item.children) == 2:
-                if instance is box.ids.item_anim:
-                    press_current_item = True
-                box.ids.box_item.remove_widget(box.ids.box_item.children[0])
-                chevron = self.ids.item_anim.ids.chevron
-                self.anim_chevron_up(chevron)
-                self.anim_resize_close(box)
-                self.dispatch("on_close")
-                break
+            if box.__class__ is MDExpansionPanel:
+                if len(box.ids.box_item.children) == 2:
+                    if instance is box.ids.item_anim:
+                        press_current_item = True
+                    box.ids.box_item.remove_widget(box.ids.box_item.children[0])
+                    chevron = self.ids.item_anim.ids.chevron
+                    self.anim_chevron_up(chevron)
+                    self.anim_resize_close(box)
+                    self.dispatch("on_close")
+                    break
 
         if not press_current_item:
             self.anim_chevron_down()

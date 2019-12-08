@@ -47,7 +47,7 @@ class FitImage(BoxLayout):
 class Container(Widget):
     def __init__(self, source, **kwargs):
         super().__init__(**kwargs)
-        self.bind(size=self.adjust_size)
+        self.bind(size=self.adjust_size, pos=self.adjust_size)
         self.image = Image(source=source)
 
     def adjust_size(self, *args):

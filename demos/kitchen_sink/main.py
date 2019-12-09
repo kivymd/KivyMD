@@ -51,7 +51,6 @@ from dialogs import DialogLoadKvFiles
 
 from kivymd.app import MDApp
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.fanscreenmanager import MDFanScreen
 from kivymd.uix.list import (
     IRightBodyTouch,
     OneLineIconListItem,
@@ -1243,26 +1242,6 @@ class CodeInputViewer(ScrollView):
 
 class ContentForAnimCard(BoxLayout):
     callback = ObjectProperty(lambda x: None)
-
-
-class BaseFanScreen(MDFanScreen):
-    path_to_image = StringProperty()
-
-
-class ScreenOne(BaseFanScreen):
-    pass
-
-
-class ScreenTwo(BaseFanScreen):
-    pass
-
-
-class ScreenTree(BaseFanScreen):
-    pass
-
-
-class ScreenFour(BaseFanScreen):
-    pass
 
 
 class ItemBackdropBackLayer(ThemableBehavior, BoxLayout):

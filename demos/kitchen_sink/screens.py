@@ -2061,66 +2061,6 @@ progress = """
         active: True if chkbox.active else False
 """
 
-fan_manager = """
-<FanManager@Screen>
-    name: 'fan manager'
-
-    on_enter:
-        app.root.ids.toolbar.left_action_items = [['menu', lambda x: fan_screen_manager.open_fan()]]
-    on_leave: app.set_chevron_menu()
-
-    MDFanScreenManager:
-        id: fan_screen_manager
-
-        canvas:
-            Color:
-                rgba: 0, 0, 0, .2
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        ScreenOne:
-            name: 'Screen One'
-            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280.png'
-            on_enter: app.set_title_toolbar(self.name)
-
-        ScreenTwo:
-            name: 'Screen Two'
-            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280.png'
-            on_enter: app.set_title_toolbar(self.name)
-
-        ScreenTree:
-            name: 'Screen Tree'
-            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280.png'
-            on_enter: app.set_title_toolbar(self.name)
-
-        ScreenFour:
-            name: 'Screen Four'
-            path_to_image: f'{environ["KITCHEN_SINK_ASSETS"]}tangerines-1111529_1280.png'
-            on_enter: app.set_title_toolbar(self.name)
-
-
-<BaseFanScreen>
-    orientation: 'vertical'
-
-    canvas.before:
-        Color:
-            rgba: app.theme_cls.bg_light
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
-    Image:
-        source: root.path_to_image
-        size_hint: 1, None
-        height: Window.height * 40 // 100
-        y: Window.height - self.height
-        allow_stretch: True
-        keep_ratio: False
-
-    ContentForAnimCard:
-"""
-
 popup_screen = """
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 
@@ -2431,14 +2371,6 @@ class Screens(EventDispatcher):
                 "name_screen": "popup screen",
                 "source_code": "Components-Progress-Loader.md",
                 "object": None,
-            },
-            "Fan Manager": {
-                "kv_string": fan_manager,
-                "Factory": "Factory.FanManager()",
-                "name_screen": "fan manager",
-                "source_code": "Components-Fan-Screen-Manager.md",
-                "object": None,
-                "icon": "fan",
             },
             "Progress and Slider": {
                 "kv_string": progress_bar,

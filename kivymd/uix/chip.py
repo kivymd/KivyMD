@@ -163,7 +163,7 @@ class MyApp(MDApp):
 
 MyApp().run()
 """
-
+from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.properties import (
     StringProperty,
@@ -272,11 +272,12 @@ class MDChip(BoxLayout, ThemableBehavior):
             if self.callback:
                 self.callback(self, self.label)
             md_choose_chip = self.parent
-            self.color = (
-                self.theme_cls.primary_dark
+            Animation(
+                color=self.theme_cls.primary_dark
                 if not self.selected_chip_color
-                else self.selected_chip_color
-            )
+                else self.selected_chip_color,
+                d=0.3,
+            ).start(self)
             if md_choose_chip.__class__ is MDChooseChip:
                 for chip in md_choose_chip.children:
                     if chip is not self:

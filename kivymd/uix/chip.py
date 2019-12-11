@@ -195,8 +195,8 @@ Builder.load_string(
     height: "26dp"
     padding: 0, 0, "5dp", 0
     width:
-        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) if root.icon != 'checkbox-blank-circle'\
-        else self.minimum_width
+        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
+        if root.icon != 'checkbox-blank-circle' else self.minimum_width
 
     canvas:
         Color:
@@ -242,17 +242,25 @@ class MDChip(BoxLayout, ThemableBehavior):
     icon = StringProperty("checkbox-blank-circle")
     """`MDChip` icon."""
 
-    color = ListProperty([0.4, 0.4, 0.4, 1])
+    color = ListProperty()
     """`MDChip` color."""
 
     check = BooleanProperty(False)
     """If True, a checkmark is added to the left when touch to the chip."""
 
-    callback = ObjectProperty(lambda x: None)
+    callback = ObjectProperty()
     """Custom method."""
 
     radius = NumericProperty(dp(12))
     """Corner radius values."""
+
+    selected_chip_color = ListProperty()
+    """The color of the chip that is currently selected."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.color:
+            self.color = self.theme_cls.primary_color
 
     def on_icon(self, instance, value):
         if value == "":
@@ -261,16 +269,18 @@ class MDChip(BoxLayout, ThemableBehavior):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            self.callback(self.label)
+            if self.callback:
+                self.callback(self, self.label)
             md_choose_chip = self.parent
+            self.color = (
+                self.theme_cls.primary_color
+                if not self.selected_chip_color
+                else self.selected_chip_color
+            )
             if md_choose_chip.__class__ is MDChooseChip:
-                if md_choose_chip.selected_chip:
-                    md_choose_chip.selected_chip.color = (
-                        md_choose_chip.selected_chip_color
-                    )
-                md_choose_chip.selected_chip = self
-                md_choose_chip.selected_chip_color = self.color
-                self.color = self.theme_cls.primary_color
+                for chip in md_choose_chip.children:
+                    if chip is not self:
+                        chip.color = self.theme_cls.primary_color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
@@ -289,8 +299,6 @@ class MDChip(BoxLayout, ThemableBehavior):
 
 
 class MDChooseChip(StackLayout):
-    selected_chip = None
-    """The `MDChi`p object that is currently selected."""
-
-    selected_chip_color = None
-    """The color of the chip that is currently selected."""
+    def add_widget(self, widget, index=0, canvas=None):
+        if widget.__class__ is MDChip:
+            return super().add_widget(widget)

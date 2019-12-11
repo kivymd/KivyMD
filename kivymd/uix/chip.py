@@ -273,7 +273,7 @@ class MDChip(BoxLayout, ThemableBehavior):
                 self.callback(self, self.label)
             md_choose_chip = self.parent
             self.color = (
-                self.theme_cls.primary_color
+                self.theme_cls.primary_dark
                 if not self.selected_chip_color
                 else self.selected_chip_color
             )

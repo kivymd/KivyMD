@@ -27,7 +27,6 @@ MANIFEST
 .installed.cfg
 downloads
 docs/_build
-build
 dist
 bin
 .buildozer

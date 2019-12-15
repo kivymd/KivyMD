@@ -121,6 +121,12 @@ class _Triangle(ThemableBehavior, Widget):
 
 
 class MDDropDownItem(ThemableBehavior, BoxLayout):
+    """
+    :Events:
+        `on_select`
+            Called when an item is selected
+    """
+
     items = ListProperty()
     """String list of items for a drop-down list."""
 
@@ -149,6 +155,7 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.register_event_type("on_select")
         if not self.dropdown_bg:
             self.dropdown_bg = self.theme_cls.primary_color
 
@@ -174,6 +181,10 @@ class MDDropDownItem(ThemableBehavior, BoxLayout):
         self.ids.label_item.text = name_item
         self.current_item = name_item
         self._drop_list.dismiss()
+        self.dispatch("on_select", name_item)
+
+    def on_select(self, value):
+        pass
 
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y) and self._list_menu:

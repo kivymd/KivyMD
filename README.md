@@ -19,6 +19,7 @@ If you wish to become a project developer (permission to create branches on the 
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
 [![Downloads](https://pepy.tech/badge/kivymd)](https://pepy.tech/project/kivymd)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Documentation Status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io/en/latest/?badge=latest)
 [![Build status](https://travis-ci.org/HeaTTheatR/KivyMD.svg?branch=master)](https://travis-ci.org/HeaTTheatR/KivyMD)
 [![Discord server](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
 

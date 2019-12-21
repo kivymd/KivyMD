@@ -14,7 +14,8 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty, NumericProperty
 from kivy.uix.label import Label
 
-Builder.load_string("""
+Builder.load_string(
+    """
 <FpsMonitor>:
     size_hint_y: None
     height: self.texture_size[1]
@@ -27,7 +28,8 @@ Builder.load_string("""
         Rectangle:
             pos: self.pos
             size: self.size
-""")
+"""
+)
 
 
 class FpsMonitor(Label):

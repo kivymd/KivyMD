@@ -365,14 +365,21 @@ class ThemableBehavior(EventDispatcher):
         if self.theme_cls is not None:
             pass
         else:
-            if not isinstance(
-                App.get_running_app().property("theme_cls", True),
-                ObjectProperty,
-            ):
+            try:
+                if not isinstance(
+                    App.get_running_app().property("theme_cls", True),
+                    ObjectProperty,
+                ):
+                    raise ValueError(
+                        "KivyMD: App object should be inherited from "
+                        "`kivymd.app.MDApp`. See "
+                        "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
+                    )
+            except AttributeError:
                 raise ValueError(
-                    "KivyMD: App object should be inherited from "
-                    "`kivymd.app.MDApp`. See "
-                    "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
+                    "KivyMD: App object should be initialized before loading "
+                    "root widget. See "
+                    "https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App#exceptions"
                 )
             self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)

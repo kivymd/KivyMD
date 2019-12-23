@@ -317,7 +317,11 @@ class ThemeManager(EventDispatcher):
         ):
             self.set_clearcolor_by_theme_style(value)
 
+    set_clearcolor = BooleanProperty(True)
+
     def set_clearcolor_by_theme_style(self, theme_style):
+        if not self.set_clearcolor:
+            return
         if theme_style == "Light":
             Window.clearcolor = get_color_from_hex(
                 colors["Light"]["Background"]

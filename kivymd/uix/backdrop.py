@@ -335,7 +335,7 @@ Builder.load_string(
     _BackLayer:
         id: back_layer
         y: -toolbar.height
-        padding: 0, 0, 0, "100dp"
+        padding: 0, 0, 0, toolbar.height + dp(10)
 
     _FrontLayer:
         id: _front_layer
@@ -368,7 +368,7 @@ Builder.load_string(
 
         BoxLayout:
             id: front_layer
-            padding: 0, 0, 0, "100dp"
+            padding: 0, 0, 0, "10dp"
 """
 )
 

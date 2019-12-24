@@ -207,7 +207,12 @@ Builder.load_string(
 
 class ItemPagination(ThemableBehavior, Widget):
     current_index = NumericProperty(0)
-    color_round_not_active = ListProperty([1, 1, 1, 1])
+    color_round_not_active = ListProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.color_round_not_active:
+            self.color_round_not_active = self.theme_cls.primary_light
 
 
 class MDSwiperPagination(ThemableBehavior, BoxLayout):

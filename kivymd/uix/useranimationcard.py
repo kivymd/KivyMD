@@ -195,6 +195,14 @@ Builder.load_string(
         effect_cls: StiffScrollEffect
         scroll_distance: 100
 
+        canvas.before:
+            Color:
+                rgba:
+                    root.theme_cls.bg_dark
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
         GridLayout:
             id: box_content
             size_hint_y: None
@@ -204,9 +212,7 @@ Builder.load_string(
             canvas:
                 Color:
                     rgba:
-                        root.theme_cls.bg_dark \
-                        if root.theme_cls.theme_style == 'Dark' \
-                        else root.theme_cls.bg_light
+                        root.theme_cls.bg_dark
                 Rectangle:
                     size: self.size
                     pos: self.pos

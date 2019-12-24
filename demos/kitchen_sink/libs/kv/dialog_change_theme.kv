@@ -1,0 +1,136 @@
+#:import os os
+#:import Window kivy.core.window.Window
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import images_path kivymd.images_path
+
+
+<KitchenSinkBaseDialog>:
+    background: f"{images_path}/transparent.png"
+    canvas:
+        Color:
+            rgba: root.theme_cls.bg_dark
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+
+
+<KitchenSinkDialogDev>:
+    size_hint: None, None
+    height: Window.height * 60 / 100
+    width: Window.width * 90 / 100
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+        MDLabel:
+            text: "Developers"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: self.theme_cls.primary_color
+            font_style: "H5"
+            bold: True
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDSeparator:
+
+        ScrollView:
+            bar_width: 0
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "10dp"
+
+                KitchenSinkTwoLineLeftAvatarItem:
+                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}andre-rodriges.png'
+                    secondary_text: "https://twitter.com/mixedCase_?s=20"
+                    text: "Andrés Rodríguez"
+
+                KitchenSinkTwoLineLeftAvatarItem:
+                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}heattheatr.png'
+                    secondary_text: "https://github.com/HeaTTheatR"
+                    text: "Ivanov Yuri"
+
+                KitchenSinkTwoLineLeftAvatarItem:
+                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}mountaino.png'
+                    secondary_text: "https://github.com/Mountaino"
+                    text: "Artem S. Bulgakov"
+
+
+<KitchenSinkDialogLicense>:
+    size_hint: None, None
+    height: Window.height * 90 / 100
+    width: Window.width * 90 / 100
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+        padding: 0, 0, 0, "10dp"
+
+        MDLabel:
+            text: "KivyMD"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: self.theme_cls.primary_color
+            font_style: "H5"
+            bold: True
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDSeparator:
+
+        ScrollView:
+            bar_width: 0
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                padding: "10dp"
+
+                MDLabel:
+                    id: text_label
+                    markup: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+
+<KitchenSinkDialogChangeTheme>:
+    size_hint: None, None
+    height: Window.height * 80 / 100
+    width: Window.width * 80 / 100
+
+    BoxLayout:
+        orientation: "vertical"
+
+        BoxLayout:
+            id: box
+            padding: "10dp"
+            spacing: "10dp"
+            size_hint_y: .35
+
+            Image:
+                source: f"{environ['KITCHEN_SINK_ASSETS']}palette.png"
+                size_hint: None, None
+                size: box.height, box.height + dp(40)
+
+            MDLabel:
+                theme_text_color: "Primary"
+                text: "Change Theme"
+                font_style: "Button"
+
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+
+            RecycleBoxLayout:
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'

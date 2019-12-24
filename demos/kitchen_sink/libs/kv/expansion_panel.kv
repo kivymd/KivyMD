@@ -1,0 +1,55 @@
+#:import os os
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import Animation kivy.animation.Animation
+#:import KitchenSinkExpansionPanelContent libs.baseclass.expansionpanel.KitchenSinkExpansionPanelContent
+
+
+<KitchenSinkExpansionPanelContent>
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: self.minimum_height
+
+    KitchenSinkTwoLineLeftIconItem:
+        text: "(050)-123-45-67"
+        secondary_text:
+            "[color=%s]Mobile[/color]" \
+            % get_hex_from_color(app.theme_cls.primary_color)
+        icon: 'phone'
+
+    KitchenSinkTwoLineLeftIconItem:
+        text: "kivydevelopment@gmail.com"
+        secondary_text:
+            "[color=%s]Work[/color]" \
+            % get_hex_from_color(app.theme_cls.primary_color)
+        icon: 'email'
+
+
+<KitchenSinkExpansionPanel@Screen>
+    name: 'expansion panel'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    MDCard:
+        orientation: "vertical"
+        size_hint: .9, None
+        height: self.minimum_height
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        BoxLayout:
+            id: box
+            size_hint_y: None
+            height: dp(150)
+
+            FitImage:
+                source: f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png"
+
+        MDExpansionPanel:
+            on_open: Animation(height=(box.height + self.content.height) - app.theme_cls.standard_increment * 2, d=.2).start(box)
+            on_close: Animation(height=(box.height - self.content.height) + app.theme_cls.standard_increment * 2, d=.2).start(box)
+            icon: f"{os.environ['KITCHEN_SINK_ASSETS']}avatar.png"
+            content: KitchenSinkExpansionPanelContent()
+            title: "KivyMD v.0.102.1"

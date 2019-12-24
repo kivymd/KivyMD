@@ -1,0 +1,64 @@
+#:import Window kivy.core.window.Window
+
+
+<KitchenSinkBoxContentForBottomSheetCustomList>
+    padding: dp(10)
+    spacing: dp(10)
+    size_hint_y: None
+    height: Window.height * 45 / 100
+
+    canvas:
+        Color:
+            rgba: app.theme_cls.bg_dark
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    ScrollView:
+
+        GridLayout:
+            id: box
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 1
+
+
+<KitchenSinkBottomSheetItemButton@AnchorLayout>
+    size_hint_y: None
+    height: "32dp"
+    anchor_x: "center"
+    text: ""
+    callback: None
+
+    MDRaisedButton:
+        text: root.text
+        on_release: root.callback()
+
+
+<KitchenSinkBottomSheet>
+    name: 'bottom sheet'
+    app: app
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    KitchenSinkBottomSheetItemButton:
+        text: "Open custom bottom sheet"
+        callback: lambda: root.show_example_custom_bottom_sheet("custom")
+        pos_hint: {"center_y": .35}
+
+    KitchenSinkBottomSheetItemButton:
+        text: "Open custom bottom sheet with list"
+        callback: lambda: root.show_example_custom_bottom_sheet("list")
+        pos_hint: {"center_y": .45}
+
+    KitchenSinkBottomSheetItemButton:
+        text: "Open list bottom sheet"
+        callback: lambda: root.show_example_bottom_sheet()
+        pos_hint: {"center_y": .55}
+
+    KitchenSinkBottomSheetItemButton:
+        text: "Open grid bottom sheet"
+        callback: lambda: root.show_example_grid_bottom_sheet()
+        pos_hint: {"center_y": .65}

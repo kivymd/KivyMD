@@ -1,0 +1,97 @@
+<StyleLabel@MDLabel>:
+    size_hint_y: None
+    height: self.texture_size[1]
+
+
+<StyleItemCheck@BoxLayout>:
+    group: ""
+    text: ""
+    _parent: None
+    active: False
+    size_hint_y: None
+    height: self.minimum_height
+
+    MDCheckbox:
+        group: root.group
+        active: root.active
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {"center_y": .5}
+        on_active:
+            if root._parent: root._parent.callback_for_bottom_app_bar(app, root.text, self.active)
+
+    StyleLabel:
+        text: root.text
+        pos_hint: {"center_y": .5}
+
+
+<KitchenSinkBottomAppBar>
+    name: 'bottom app bar'
+
+    BoxLayout:
+        spacing: dp(10)
+        orientation: 'vertical'
+
+        Toolbar:
+            id: toolbar
+
+        ScrollView:
+
+            GridLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 1
+                padding: "10dp"
+                spacing: "10dp"
+
+                MDSeparator:
+
+                StyleLabel:
+                    text: "Notch"
+
+                StyleItemCheck:
+                    group: 'notch'
+                    text: "On"
+                    active: True
+                    _parent: root
+
+                StyleItemCheck:
+                    group: 'notch'
+                    text: "Off"
+                    _parent: root
+
+                MDSeparator:
+
+                StyleLabel:
+                    text: "Position"
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Attached - Center"
+                    active: True
+                    _parent: root
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Attached - End"
+                    _parent: root
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Free - Center"
+                    _parent: root
+
+                StyleItemCheck:
+                    group: 'pos'
+                    text: "Free - End"
+                    _parent: root
+
+        MDBottomAppBar:
+
+            MDToolbar:
+                id: bottom_toolbar
+                title: "Title"
+                icon: "git"
+                type: "bottom"
+                on_action_button: print("on_action_button")
+                left_action_items: [["menu", lambda x: x]]

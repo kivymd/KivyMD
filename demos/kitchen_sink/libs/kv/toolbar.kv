@@ -1,0 +1,12 @@
+<Toolbar@MDToolbar>:
+    md_bg_color: app.theme_cls.primary_color
+    background_palette: 'Primary'
+    background_hue: '500'
+    elevation: 10
+    left_action_items:
+        [["arrow-left", lambda x: app.back_to_home_screen()]]
+        #if scr_mngr.current == "previous" else \
+        #[["menu", lambda x: app.root.toggle_nav_drawer()]]
+    right_action_items:
+        [['dots-vertical', lambda x: x]]
+        #if scr_mngr.current != "previous" else []

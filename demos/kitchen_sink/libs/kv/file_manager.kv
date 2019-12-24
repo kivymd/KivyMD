@@ -1,0 +1,14 @@
+<KitchenSinkFileManager>
+    name: 'file manager'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    MDRaisedButton:
+        size_hint: None, None
+        size: 3 * dp(48), dp(48)
+        text: 'Open files manager'
+        opposite_colors: True
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: root.file_manager_open()

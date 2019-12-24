@@ -207,7 +207,11 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
 
     def start_anim_spinner(self):
         spinner = self.ids.body_spinner
-        Animation(y=spinner.y - dp(76), d=0.8, t="out_elastic").start(spinner)
+        Animation(
+            y=spinner.y - self.theme_cls.standard_increment * 2 + dp(10),
+            d=0.8,
+            t="out_elastic",
+        ).start(spinner)
 
     def hide_anim_spinner(self):
         spinner = self.ids.body_spinner

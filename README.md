@@ -150,6 +150,7 @@ Settings
 API Breaking changes
 ====================
 
+* [Using MDNavigationDrawer has changed](https://github.com/HeaTTheatR/KivyMD/wiki/Components-Navigation-Drawer#using-mdnavigationdrawer-has-changed)
 * App object should be inherited from `kivymd.app.MDApp`. See wiki for example
 and more information:
 [Material App on KivyMD wiki](https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App).

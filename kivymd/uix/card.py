@@ -119,6 +119,7 @@ Example().run()
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import (
     BoundedNumericProperty,
@@ -137,7 +138,7 @@ from kivy.uix.widget import Widget
 
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.navigationdrawer import NavigationLayout
+
 from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.list import ILeftBody
 from kivymd.theming import ThemableBehavior
@@ -456,7 +457,7 @@ class MDCardPost(BoxLayout):
                 # the list of its menu is scrolled,
                 # the event is also processed on the cards
                 for widget in Window.children:
-                    if widget.__class__ is NavigationLayout:
+                    if widget.__class__ is Factory.NavigationLayout:
                         if widget.state == "open":
                             return
                 self.shift_post_left()

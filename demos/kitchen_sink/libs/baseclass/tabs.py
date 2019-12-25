@@ -11,7 +11,9 @@ class KitchenSinkTabs(Screen):
     def on_enter(self):
         if not self.tabs_created:
             for name_tab in self.list_name_icons:
-                self.ids.android_tabs.add_widget(Factory.KitchenSinkTabItem(text=name_tab))
+                self.ids.android_tabs.add_widget(
+                    Factory.KitchenSinkTabItem(text=name_tab)
+                )
             self.tabs_created = True
 
     def switch_tabs_to_text(self, istance_android_tabs):
@@ -24,7 +26,9 @@ class KitchenSinkTabs(Screen):
                         0
                     ].remove_widget(instance_tab)
                     istance_android_tabs.add_widget(
-                        Factory.KitchenSinkTabItem(text=" ".join(k.split("-")).capitalize())
+                        Factory.KitchenSinkTabItem(
+                            text=" ".join(k.split("-")).capitalize()
+                        )
                     )
                     break
 

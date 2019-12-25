@@ -23,5 +23,7 @@ class KitchenSinkUserCard(Screen):
                 path_to_avatar=f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png",
                 callback=main_back_callback,
             )
-            self.user_card.box_content.add_widget(Factory.KitchenSinkBaseContent())
+            self.user_card.box_content.add_widget(
+                Factory.KitchenSinkBaseContent()
+            )
         self.user_card.open()

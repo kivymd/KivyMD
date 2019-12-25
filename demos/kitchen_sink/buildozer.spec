@@ -13,7 +13,7 @@ package.domain = com.heattheatr
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,jpeg,ttf,md,kv
+source.include_exts = py,png,jpg,jpeg,ttf,md,kv,json
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*

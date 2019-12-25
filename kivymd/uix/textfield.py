@@ -194,7 +194,7 @@ class Example(MDApp):
         # and set icon of right button.
         field.password = not field.password
         field.focus = True
-        button.icon = "eye" if button.icon == "eye-off" else "eye-off"
+        button.icon = ["eye", "eye-off"][field.password]
 
 
 Example().run()
@@ -1072,6 +1072,15 @@ class MDTextFieldRound(ThemableBehavior, BoxLayout):
                     self.theme_cls.primary_color
                     if field.focus
                     else self.icon_left_color
+                )
+        except ReferenceError:
+            pass
+        try:
+            if self._instance_icon_right:
+                self._instance_icon_right.text_color = (
+                    self.theme_cls.primary_color
+                    if field.focus
+                    else self.icon_right_color
                 )
         except ReferenceError:
             pass

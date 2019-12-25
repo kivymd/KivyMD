@@ -16,4 +16,4 @@ class KitchenSinkTextFields(Screen):
         # and set icon of right button.
         field.password = not field.password
         field.focus = True
-        button.icon = "eye" if button.icon == "eye-off" else "eye-off"
+        button.icon = ["eye", "eye-off"][field.password]

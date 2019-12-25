@@ -77,14 +77,14 @@ Builder.load_string('''
             MyMDTextFieldRound:
                 icon_left: 'email'
                 icon_right: 'account-box'
-                icon_right_dasabled: True
+                icon_right_disabled: True
                 hint_text: 'Field with left and right disabled icons'
 
             MyMDTextFieldRound:
                 icon_type: 'all'
                 icon_left: 'key-variant'
                 icon_right: 'eye-off'
-                icon_right_dasabled: False
+                icon_right_disabled: False
                 icon_callback: app.show_password
                 password: True
                 hint_text: 'Field width type `password = True`'
@@ -92,7 +92,7 @@ Builder.load_string('''
             MyMDTextFieldRound:
                 icon_left: 'email'
                 icon_right: 'account-box'
-                icon_right_dasabled: True
+                icon_right_disabled: True
                 field_height: dp(30)
                 hint_text: 'Field with custom size icon'
                 icon_size: "18sp"

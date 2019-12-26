@@ -233,7 +233,7 @@ class MDNavigationDrawer(MDCard):
 
     closing_transition = StringProperty("out_sine")
     """The name of the animation transition type to use when animating to
-    a closed state. Defaults to 'out_cubic'."""
+    a closed state. Defaults to 'out_sine'."""
 
     _direction = "unknown"
     __state = "close"

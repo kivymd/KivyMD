@@ -13,6 +13,7 @@ from kivymd.uix.selectioncontrol import MDCheckbox
 
 class KitchenSinkTwoLineLeftAvatarItem(TwoLineAvatarListItem):
     icon = StringProperty()
+    secondary_font_style = "Caption"
 
 
 class KitchenSinkTwoLineLeftIconItem(TwoLineAvatarListItem):

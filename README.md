@@ -180,7 +180,7 @@ Video preview
 =============
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=oOTdQ-FHeSw">
+  <a href="https://www.youtube.com/watch?v=HCa8zij69kY">
     <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png" title='Click to watch video on YouTube'>
   </a>
 </p>

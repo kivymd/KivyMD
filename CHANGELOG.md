@@ -1,9 +1,7 @@
 Change Log
 ==========
 
-## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
-
-> [v0.103.0](https://github.com/HeaTTheatR/KivyMD/tree/0.103.0) - *Beta*
+## [v0.103.0](https://github.com/HeaTTheatR/KivyMD/tree/0.103.0) - *Beta*
 
 * Fix `MDSwitch` size according to `material design` guides
 * Fix MDSwitch's thumb position when size changes
@@ -17,9 +15,9 @@ Change Log
 * Delete `fanscreenmanager.py`
 * Bug fixes and other minor improvements.
 
-[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.1...master)
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.1...0.103.0)
 ```bash
-pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+pip install kivymd==0.103.0
 ```
 
 

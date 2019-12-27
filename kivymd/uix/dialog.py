@@ -1,24 +1,24 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Dialog
 ======
 
-`Material Design spec, Dialogs <https://material.io/components/dialogs/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Dialogs <https://material.io/design/components/dialogs.html>`_
 
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.utils import get_hex_from_color
@@ -28,8 +28,6 @@ from kivymd.theming import ThemeManager
 
 
 Builder.load_string('''
-
-
 <ExampleDialogs@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
@@ -56,9 +54,7 @@ Builder.load_string('''
 ''')
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+class Example(MDApp):
     title = "Dialogs"
 
     def build(self):
@@ -88,14 +84,6 @@ class Example(App):
 Example().run()
 """
 
-__all__ = (
-    "BaseDialog",
-    "MDDialog",
-    "ContentMDDialog",
-    "MDInputDialog",
-    "ContentInputDialog",
-)
-
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
@@ -105,9 +93,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 
 from kivymd.uix.card import MDCard
+from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDTextButton
 from kivymd.uix.textfield import MDTextField, MDTextFieldRect
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDTextButton
 from kivymd import images_path
 from kivymd.material_resources import DEVICE_IOS
 
@@ -206,7 +194,7 @@ class BaseDialog(ThemableBehavior, ModalView):
     def set_content(self, instance_content_dialog):
         def _events_callback(result_press):
             self.dismiss()
-            if result_press:
+            if result_press and self.events_callback:
                 self.events_callback(result_press, self)
 
         if self.device_ios:  # create buttons for iOS

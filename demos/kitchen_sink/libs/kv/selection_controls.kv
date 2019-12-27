@@ -1,0 +1,82 @@
+<KitchenSinkSelectionControls@Screen>
+    name: 'selection controls'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .8}
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .8}
+        disabled: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .7}
+        active: True
+
+    MDCheckbox:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .7}
+        active: True
+        disabled: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .6}
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .6}
+        disabled: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .4, 'center_y': .5}
+        active: True
+
+    MDCheckbox:
+        group: 'test'
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {'center_x': .6, 'center_y': .5}
+        active: True
+        disabled: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .3, 'center_y': .4}
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .7, 'center_y': .4}
+        disabled: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .3, 'center_y': .3}
+        active: True
+
+    MDSwitch:
+        size_hint: None, None
+        size: dp(36), dp(48)
+        pos_hint: {'center_x': .7, 'center_y': .3}
+        active: True
+        disabled: True

@@ -1,20 +1,18 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Progress Bar
 ============
-"""
 
-__all__ = ("MDProgressBar",)
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
 from kivy.lang import Builder
 from kivy.properties import OptionProperty, BooleanProperty
@@ -66,12 +64,10 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
 
 
 if __name__ == "__main__":
-    from kivy.app import App
+    from kivymd.app import MDApp
     from kivymd.theming import ThemeManager
 
-    class ProgressBarApp(App):
-        theme_cls = ThemeManager()
-
+    class ProgressBarApp(MDApp):
         def build(self):
             return Builder.load_string(
                 """

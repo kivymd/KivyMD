@@ -1,30 +1,28 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Stack Floating Buttons
 ======================
 
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 
 from kivymd.toast import toast
 from kivymd.theming import ThemeManager
-from kivymd.stackfloatingbuttons import MDStackFloatingButtons
+from kivymd.uix.stackfloatingbuttons import MDStackFloatingButtons
 
 
 Builder.load_string('''
-
-
 <ExampleFloatingButtons@BoxLayout>:
     orientation: 'vertical'
 
@@ -37,9 +35,7 @@ Builder.load_string('''
 ''')
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+class Example(MDApp):
     title = "Example Stack Floating Buttons"
     create_stack_floating_buttons = False
     floating_data = {
@@ -65,8 +61,6 @@ class Example(App):
 Example().run()
 """
 
-__all__ = ("MDStackFloatingButtons", "MDFloatingLabel")
-
 from kivy.animation import Animation
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
@@ -79,6 +73,7 @@ from kivy.properties import (
 )
 from kivy.metrics import dp
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.card import MDCard
 
 
@@ -150,9 +145,12 @@ Builder.load_string(
 )
 
 
-class MDFloatingLabel(MDCard):
+class MDFloatingLabel(MDCard, ThemableBehavior):
     text = StringProperty()
     text_color = ListProperty([0, 0, 0, 1])
+
+    def on_md_bg_color(self, instance, value):
+        self.md_bg_color = self.theme_cls.primary_color
 
 
 class MDStackFloatingButtons(FloatLayout):
@@ -196,7 +194,7 @@ class MDStackFloatingButtons(FloatLayout):
 
     def hide_floating_buttons(self):
         for btn in self.btn_list:
-            Animation(y=25, d=0.5, t="in_elastic").start(btn)
+            Animation(y=dp(25), d=0.5, t="in_elastic").start(btn)
 
     def hide_floating_labels(self):
         i = 1

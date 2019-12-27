@@ -1,24 +1,24 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Cards
 =====
 
-`Material Design spec, Cards <https://material.io/components/cards/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Cards <https://material.io/design/components/cards.html>`_
 
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.factory import Factory
 
@@ -28,8 +28,6 @@ from kivymd.toast import toast
 
 
 Builder.load_string('''
-
-
 <ExampleCardPost@BoxLayout>
     orientation: 'vertical'
     spacing: dp(5)
@@ -57,9 +55,7 @@ Builder.load_string('''
 ''')
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+class Example(MDApp):
     title = "Card Post"
     cards_created = False
 
@@ -121,10 +117,9 @@ class Example(App):
 Example().run()
 """
 
-__all__ = ("MDCard", "MDSeparator", "MDCardPost", "CardPostImage", "LeftIcon")
-
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import (
     BoundedNumericProperty,
@@ -142,10 +137,10 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.elevation import RectangularElevationBehavior
-from kivymd.uix.list import ILeftBody
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.navigationdrawer import NavigationLayout
+
+from kivymd.uix.behaviors import RectangularElevationBehavior
+from kivymd.uix.list import ILeftBody
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
@@ -175,7 +170,7 @@ Builder.load_string(
 <MDSeparator>
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color
+            rgba: self.theme_cls.divider_color if not root.color else root.color
         Rectangle:
             size: self.size
             pos: self.pos
@@ -301,6 +296,9 @@ Builder.load_string(
 class MDSeparator(ThemableBehavior, BoxLayout):
     """A separator line"""
 
+    color = ListProperty()
+    """Separator color."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.on_orientation()
@@ -325,6 +323,7 @@ class MDCard(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
     border_color_a = BoundedNumericProperty(0, min=0.0, max=1.0)
     md_bg_color = ReferenceListProperty(r, g, b, a)
     background = StringProperty()
+    """Background image path."""
 
 
 class LeftIcon(ILeftBody, Image):
@@ -458,7 +457,7 @@ class MDCardPost(BoxLayout):
                 # the list of its menu is scrolled,
                 # the event is also processed on the cards
                 for widget in Window.children:
-                    if widget.__class__ is NavigationLayout:
+                    if widget.__class__ is Factory.NavigationLayout:
                         if widget.state == "open":
                             return
                 self.shift_post_left()

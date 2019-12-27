@@ -1,0 +1,94 @@
+#:import gch kivy.utils.get_color_from_hex
+#:import ImageProduct studies.shrine.baseclass.product_gallery.ImageProduct
+#:import ProductsBox studies.shrine.baseclass.product_gallery.ProductsBox
+
+
+<ImageProduct>
+    orientation: "vertical"
+    spacing: "30dp"
+    padding: "10dp"
+
+    RelativeLayout:
+
+        MDCustomRoundIconButton:
+            id: image_product
+            source: root.path_to_image
+            on_release:
+                root._root.ids.product_screen.dispatch("on_enter")
+                root._root.ids.product_screen.show_product_screen()
+
+            canvas.before:
+                Color:
+                    rgba: gch(colors[root.theme_cls.primary_palette]["50"])
+                RoundedRectangle:
+                    size: self.width, self.height + 20
+                    pos: self.x, self.y - 10
+                    radius: [15]
+        MDIconButton:
+            icon: "cart-plus"
+            x: "10dp"
+            y: image_product.height - self.height
+            on_release: if root.callback: root.callback(root)
+
+    MDLabel:
+        id: description
+        markup: True
+        text: root.products_description
+        halign: "center"
+        size_hint_y: None
+        height: self.texture_size[1]
+
+
+<ProductsBox>
+    size_hint: None, None
+    size: self.minimum_size
+    spacing: "30dp"
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "20dp"
+        size_hint_y: None
+        height: root.box_height
+        width: root.box_width
+
+        BoxLayout:
+
+            Widget:
+                size_hint_x: None
+                width: "20dp"
+
+            ImageProduct:
+                size_hint: None, .5
+                width: root.box_width * 60 / 100
+                path_to_image: root.paths_to_images[0]
+                products_description: root.products_description[0]
+                callback: root.callback
+                _root: root._root
+
+        ImageProduct:
+            size_hint: None, .5
+            width: root.box_width * 60 / 100
+            path_to_image: root.paths_to_images[1]
+            products_description: root.products_description[1]
+            callback: root.callback
+            _root: root._root
+
+    Widget:
+        size_hint: None, None
+        size: root.box_width * 60 / 100, 100
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "20dp"
+        size_hint: None, None
+        size: root.box_width * 70 / 100, root.box_height * 90 / 100
+
+        ImageProduct:
+            path_to_image: root.paths_to_images[2]
+            products_description: root.products_description[2]
+            callback: root.callback
+            _root: root._root
+
+        Widget:
+            size_hint_y: None
+            height: "30dp"

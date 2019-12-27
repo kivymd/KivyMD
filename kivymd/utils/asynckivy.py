@@ -8,6 +8,7 @@ GitHub -
     https://github.com/gottadiveintopython
 GitHub Gist -
     https://gist.github.com/gottadiveintopython/5f4a775849f9277081c396de65dc57c1
+
 """
 
 __all__ = ("start", "sleep", "event")

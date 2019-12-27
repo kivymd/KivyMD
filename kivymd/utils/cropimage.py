@@ -1,13 +1,12 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
-File contains functions for image processing
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 """
 
 
@@ -65,7 +64,6 @@ def add_corners(im, corner, corner_mode):
         alpha.paste(
             circle.crop((corner, 0, corner * 2, corner)), (w - corner, 0)
         )
-        print(corner)
 
     def add_bottom_corners():
         alpha.paste(
@@ -75,7 +73,6 @@ def add_corners(im, corner, corner_mode):
             circle.crop((corner, corner, corner * 2, corner * 2)),
             (w - corner, h - corner),
         )
-        print(corner)
 
     from PIL import Image, ImageDraw
 

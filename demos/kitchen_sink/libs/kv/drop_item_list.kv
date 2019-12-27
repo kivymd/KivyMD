@@ -1,0 +1,20 @@
+<ItemForDropItemList>:
+    height: dp(56)
+    text: "A button with"
+    secondary_text: "a dropdown"
+    font_style: "H6"
+
+    ListButtonDropdown:
+        items: root.items
+
+
+<DropItemList@Screen>
+    name: "drop item list"
+
+    ScrollView:
+
+        GridLayout:
+            id: box
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 1

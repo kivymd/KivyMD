@@ -1,28 +1,26 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Chips
 =====
 
-`Material Design spec, Chips <https://material.io/components/chips/>`_
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Chips <https://material.io/design/components/chips.html>`_
 
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 
 from kivymd.theming import ThemeManager
 
 kv = '''
-
-
 BoxLayout:
     orientation: 'vertical'
     spacing: dp(10)
@@ -154,9 +152,7 @@ BoxLayout:
 '''
 
 
-class MyApp(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Red'
+class MyApp(MDApp):
 
     def callback(self, name_chip):
         pass
@@ -167,15 +163,14 @@ class MyApp(App):
 
 MyApp().run()
 """
-
-__all__ = ("MDChip", "MDChooseChip")
-
+from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.properties import (
     StringProperty,
     ListProperty,
     ObjectProperty,
     BooleanProperty,
+    NumericProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
@@ -186,18 +181,22 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
+#:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
+
+
 <MDChooseChip>
     size_hint_y: None
     height: self.minimum_height
-    spacing: dp(5)
+    spacing: "5dp"
 
 
 <MDChip>
     size_hint: None,  None
-    height: dp(26)
+    height: "26dp"
+    padding: 0, 0, "5dp", 0
     width:
-        self.minimum_width - dp(10) if root.icon != 'checkbox-blank-circle'\
-        else self.minimum_width
+        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
+        if root.icon != 'checkbox-blank-circle' else self.minimum_width
 
     canvas:
         Color:
@@ -205,7 +204,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [15, ]
+            radius: [root.radius]
 
     BoxLayout:
         id: box_check
@@ -228,7 +227,9 @@ Builder.load_string(
         id: icon
         icon: root.icon
         size_hint_y: None
-        height: dp(26)
+        height: "20dp"
+        pos_hint: {"center_y": .5}
+        user_font_size: "20dp"
         disabled: True
 """
 )
@@ -236,10 +237,30 @@ Builder.load_string(
 
 class MDChip(BoxLayout, ThemableBehavior):
     label = StringProperty()
+    """`MDChip` text."""
+
     icon = StringProperty("checkbox-blank-circle")
-    color = ListProperty([0.4, 0.4, 0.4, 1])
+    """`MDChip` icon."""
+
+    color = ListProperty()
+    """`MDChip` color."""
+
     check = BooleanProperty(False)
-    callback = ObjectProperty(lambda x: None)
+    """If True, a checkmark is added to the left when touch to the chip."""
+
+    callback = ObjectProperty()
+    """Custom method."""
+
+    radius = NumericProperty(dp(12))
+    """Corner radius values."""
+
+    selected_chip_color = ListProperty()
+    """The color of the chip that is currently selected."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.color:
+            self.color = self.theme_cls.primary_color
 
     def on_icon(self, instance, value):
         if value == "":
@@ -248,24 +269,30 @@ class MDChip(BoxLayout, ThemableBehavior):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            self.callback(self.label)
+            if self.callback:
+                self.callback(self, self.label)
             md_choose_chip = self.parent
+            if self.selected_chip_color:
+                Animation(
+                    color=self.theme_cls.primary_dark
+                    if not self.selected_chip_color
+                    else self.selected_chip_color,
+                    d=0.3,
+                ).start(self)
             if md_choose_chip.__class__ is MDChooseChip:
-                if md_choose_chip.selected_chip:
-                    md_choose_chip.selected_chip.color = (
-                        md_choose_chip.selected_chip_color
-                    )
-                md_choose_chip.selected_chip = self
-                md_choose_chip.selected_chip_color = self.color
-                self.color = self.theme_cls.primary_color
+                for chip in md_choose_chip.children:
+                    if chip is not self:
+                        chip.color = self.theme_cls.primary_color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
                         MDIconButton(
                             icon="check",
                             size_hint_y=None,
-                            height=dp(26),
+                            height=dp(20),
                             disabled=True,
+                            user_font_size=dp(20),
+                            pos_hint={"center_y": 0.5},
                         )
                     )
                 else:
@@ -274,5 +301,6 @@ class MDChip(BoxLayout, ThemableBehavior):
 
 
 class MDChooseChip(StackLayout):
-    selected_chip = None
-    selected_chip_color = None
+    def add_widget(self, widget, index=0, canvas=None):
+        if widget.__class__ is MDChip:
+            return super().add_widget(widget)

@@ -1,21 +1,21 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Snackbars
 =========
 
-`Material Design spec, Snackbars <https://material.io/components/snackbars/>`_
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Snackbars <https://material.io/design/components/snackbars.html>`_
 
 Example
 =======
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.metrics import dp
@@ -81,8 +81,7 @@ Screen:
 '''
 
 
-class ExampleSnackBar(App):
-    theme_cls = ThemeManager()
+class ExampleSnackBar(MDApp):
     _interval = 0
     my_snackbar = None
     screen = None
@@ -126,8 +125,6 @@ class ExampleSnackBar(App):
 
 ExampleSnackBar().run()
 """
-
-__all__ = ("Snackbar",)
 
 from kivy.animation import Animation
 from kivy.clock import Clock

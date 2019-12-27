@@ -1,19 +1,19 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 ScrollView Refresh Layout
 =========================
 
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.factory import Factory
@@ -26,8 +26,6 @@ from kivymd.theming import ThemeManager
 from kivymd.utils import asynckivy
 
 Builder.load_string('''
-
-
 <ItemForList>
     text: root.text
 
@@ -68,9 +66,8 @@ class ItemForList(OneLineIconListItem):
     icon = StringProperty()
 
 
-class Example(App):
+class Example(MDApp):
     title = 'Example Refresh Layout'
-    theme_cls = ThemeManager()
     screen = None
     x = 0
     y = 15
@@ -110,12 +107,6 @@ class Example(App):
 Example().run()
 
 """
-
-__all__ = (
-    "MDScrollViewRefreshLayout",
-    "RefreshSpinner",
-    "_RefreshScrollEffect",
-)
 
 from kivy.animation import Animation
 from kivy.effects.dampedscroll import DampedScrollEffect
@@ -216,7 +207,11 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
 
     def start_anim_spinner(self):
         spinner = self.ids.body_spinner
-        Animation(y=spinner.y - dp(76), d=0.8, t="out_elastic").start(spinner)
+        Animation(
+            y=spinner.y - self.theme_cls.standard_increment * 2 + dp(10),
+            d=0.8,
+            t="out_elastic",
+        ).start(spinner)
 
     def hide_anim_spinner(self):
         spinner = self.ids.body_spinner

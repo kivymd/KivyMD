@@ -1,33 +1,21 @@
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     modified this module
-# Copyright (c) 2015 Kivy Garden
-#     https://github.com/kivy-garden/garden.androidtabs
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Tabs
 ====
 
-`Material Design spec, Tabs <https://material.io/components/tabs/>`_
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    modified this module
+Copyright (c) 2015 Kivy Garden
+    https://github.com/kivy-garden/garden.androidtabs
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
 """
 
-__all__ = (
-    "MDTabsException",
-    "MDTabsLabel",
-    "MDTabsBase",
-    "MDTabsMain",
-    "MDTabsCarousel",
-    "MDTabsScrollView",
-    "MDTabsBar",
-    "MDTabs",
-)
-
-from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.uix.label import Label
@@ -42,14 +30,13 @@ from kivy.utils import boundary
 from kivy.properties import (
     ObjectProperty,
     NumericProperty,
-    VariableListProperty,
     StringProperty,
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
+    ListProperty,
 )
 
-from kivymd.theming import ThemeManager
 from kivymd.theming import ThemableBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd import fonts_path
@@ -64,12 +51,8 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, Label):
     """MDTabsLabel it represent the label of each tab."""
 
-    text_color_normal = VariableListProperty([1, 1, 1, 0.6])
-    """Text color of the label when it is not selected."""
-
-    text_color_active = VariableListProperty([1])
-    """Text color of the label when it is selected."""
-
+    text_color_normal = ListProperty()
+    text_color_active = ListProperty()
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
 
@@ -78,6 +61,7 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
         self.min_space = 0
 
     def on_release(self):
+        self.tab_bar.parent.dispatch("on_tab_switch", self, self.text)
         # if the label is selected load the relative tab from carousel
         if self.state == "down":
             self.tab_bar.parent.carousel.load_slide(self.tab)
@@ -98,10 +82,8 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
 class MDTabsBase(Widget):
     """
     MDTabsBase allow you to create a tab.
-    You must create a new class that inherits
-    from MDTabsBase.
-    In this way you have total control over the
-    views of your tabbed panel.
+    You must create a new class that inherits from MDTabsBase.
+    In this way you have total control over the views of your tabbed panel.
     """
 
     text = StringProperty()
@@ -204,25 +186,26 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
         super().__init__(**kwargs)
 
     def _update_tab_bar(self, *args):
-        # update width of the labels when it is needed
-        width, tabs = self.scrollview.width, self.layout.children
-        tabs_widths = [t.min_space for t in tabs if t.min_space]
-        tabs_space = float(sum(tabs_widths))
+        if self.parent.allow_stretch:
+            # update width of the labels when it is needed
+            width, tabs = self.scrollview.width, self.layout.children
+            tabs_widths = [t.min_space for t in tabs if t.min_space]
+            tabs_space = float(sum(tabs_widths))
 
-        if not tabs_space:
-            return
+            if not tabs_space:
+                return
 
-        ratio = width / tabs_space
-        use_ratio = True in (width / len(tabs) < w for w in tabs_widths)
+            ratio = width / tabs_space
+            use_ratio = True in (width / len(tabs) < w for w in tabs_widths)
 
-        for t in tabs:
-            t.width = (
-                t.min_space
-                if tabs_space > width
-                else t.min_space * ratio
-                if use_ratio is True
-                else width / len(tabs)
-            )
+            for t in tabs:
+                t.width = (
+                    t.min_space
+                    if tabs_space > width
+                    else t.min_space * ratio
+                    if use_ratio is True
+                    else width / len(tabs)
+                )
 
     def update_indicator(self, x, w):
         # update position and size of the indicator
@@ -324,6 +307,9 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     """The MDTabs class.
     You can use it to create your own custom tabbed panel.
 
+    :Events:
+        `on_tab_switch`
+            Called when switching tabs.
     """
 
     default_tab = NumericProperty(0)
@@ -332,8 +318,8 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     tab_bar_height = NumericProperty("48dp")
     """Height of the tab bar."""
 
-    tab_indicator_anim = BooleanProperty(False)
-    """Tab indicator animation. Default to True.
+    tab_indicator_anim = BooleanProperty(True)
+    """Tab indicator animation. Defaults to True.
     If you do not want animation set it to False.
     """
 
@@ -350,6 +336,25 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     the tab indicator animation effect. Default to 0.8.
     """
 
+    allow_stretch = BooleanProperty(True)
+    """If False - tabs will not stretch to full screen."""
+
+    background_color = ListProperty()
+    """Background color of `MDTabs`."""
+
+    text_color_normal = ListProperty()
+    """Text color of the label when it is not selected."""
+
+    text_color_active = ListProperty()
+    """Text color of the label when it is selected."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_tab_switch")
+
+    def on_tab_switch(self, instance, value):
+        pass
+
     def on_carousel_index(self, carousel, index):
         # when the index of the carousel change, update
         # tab indicator, select the current tab and reset threshold data.
@@ -363,15 +368,20 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
-            if not issubclass(widget.__class__, MDTabsBase):
-                raise MDTabsException(
-                    "MDTabs accept only subclass of MDTabsBase"
-                )
-            widget.tab_label.tab_bar = self.tab_bar
-            self.tab_bar.layout.add_widget(widget.tab_label)
-            self.carousel.add_widget(widget)
-            return
-        return super().add_widget(widget, index, canvas)
+            # FIXME: the condition always works!
+            # if not issubclass(widget.__class__, MDTabsBase):
+            #    print(widget, widget.__class__)
+            #    raise MDTabsException("MDTabs accept only subclass of MDTabsBase")
+            try:
+                widget.tab_label.tab_bar = self.tab_bar
+                widget.tab_label.text_color_normal = self.text_color_normal
+                widget.tab_label.text_color_active = self.text_color_active
+                self.tab_bar.layout.add_widget(widget.tab_label)
+                self.carousel.add_widget(widget)
+                return
+            except AttributeError:
+                pass
+        return super().add_widget(widget)
 
     def remove_widget(self, widget):
         # You can remove only subclass of MDTabsBase.
@@ -395,12 +405,25 @@ Builder.load_string(
     padding: '12dp', 0
     group: 'tabs'
     allow_no_selection: False
-    text_color_normal: (0, 0, 0, .5) if app.theme_cls.theme_style is 'Dark' \
-                                       else (1, 1, 1, .6)
-    text_color_active: (0, 0, 0, .75) if app.theme_cls.theme_style is 'Dark' \
-                                       else (1, 1, 1, 1)
-    color: self.text_color_active if self.state is 'down' \
-                                else self.text_color_normal
+    text_color_normal:
+        (\
+        (0, 0, 0, .5) \
+        if app.theme_cls.theme_style == 'Dark' and not self.text_color_normal \
+        else (1, 1, 1, .6) \
+        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        else self.text_color_normal \
+        )
+    text_color_active:
+        (\
+        (0, 0, 0, .75) \
+        if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
+        else (1, 1, 1, 1) \
+        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        else self.text_color_active 
+        )
+    color:
+        self.text_color_active if self.state == 'down' \
+        else self.text_color_normal
     on_x: self._trigger_update_tab_indicator()
     on_width: self._trigger_update_tab_indicator()
 
@@ -440,7 +463,9 @@ Builder.load_string(
 
         canvas:
             Color:
-                rgba: self.theme_cls.primary_color
+                rgba:
+                    self.theme_cls.primary_color if not root.background_color \
+                    else root.background_color
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -465,12 +490,7 @@ Builder.load_string(
 """
 )
 
-if __name__ == "__main__":
-    from kivy.factory import Factory
-    from kivymd.uix.list import ILeftBodyTouch
-    from kivymd.uix.button import MDIconButton
-
-    demo = """
+demo = """
 <Example@BoxLayout>
     orientation: 'vertical'
 
@@ -512,20 +532,17 @@ if __name__ == "__main__":
             halign: 'center'
             theme_text_color: 'Primary'
             font_style: 'H6'
-    """
+"""
 
-    class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
-        pass
+if __name__ == "__main__":
+    from kivy.factory import Factory
+    from kivymd.app import MDApp
 
     class MyTab(BoxLayout, MDTabsBase):
         pass
 
-    class Example(App):
+    class Example(MDApp):
         title = "Example Tabs"
-        theme_cls = ThemeManager()
-        theme_cls.primary_palette = "BlueGray"
-        theme_cls.theme_style = "Dark"
-        theme_cls.accent_palette = "Gray"
         list_name_icons = list(md_icons.keys())[0:15]
 
         def switch_tabs_to_icon(self, istance_android_tabs):

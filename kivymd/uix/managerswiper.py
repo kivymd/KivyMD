@@ -1,21 +1,21 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Manager Swiper
 ==============
+
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
 
 Example
 -------
 
 import os
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -25,7 +25,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.managerswiper import MDSwiperPagination
 from kivymd.theming import ThemeManager
-from kivymd.utils.cropimage import crop_image
 
 activity = '''
 #:import images_path kivymd.images_path
@@ -37,10 +36,10 @@ activity = '''
     height: dp(300)
     pos_hint: {'top': 1}
 
-    Image:
+    FitImage:
         source:
             f'{app.directory}/demos/kitchen_sink/assets/'\
-            f'guitar-1139397_1280_swiper_crop.png'
+            f'guitar-1139397_1280.png'
         size_hint: None, None
         size: root.width, dp(250)
         pos_hint: {'top': 1}
@@ -130,13 +129,10 @@ class MyCard(MDCard):
     text = StringProperty('')
 
 
-class Test(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Indigo'
+class Test(MDApp):
     swiper_manager = None
 
     def build(self):
-        self.crop_image_for_card()
         Builder.load_string(activity)
         start_screen = MySwiperManager()
         self.swiper_manager = start_screen.ids.swiper_manager
@@ -148,23 +144,10 @@ class Test(App):
 
         return start_screen
 
-    def crop_image_for_card(self):
-        path_to_crop_image =\
-            f'{self.directory}/demos/kitchen_sink/assets/'\
-            f'guitar-1139397_1280_swiper_crop.png'
-        if not os.path.exists(path_to_crop_image):
-            crop_image(
-                (int(Window.width - dp(10)), int(dp(250))),
-                f'{self.directory}/demos/kitchen_sink/assets/'
-                'guitar-1139397_1280.png',
-                path_to_crop_image)
-
 
 if __name__ == '__main__':
     Test().run()
 """
-
-__all__ = ("MDSwiperManager", "MDSwiperPagination", "ItemPagination")
 
 from kivy.properties import NumericProperty, ObjectProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -224,15 +207,22 @@ Builder.load_string(
 
 class ItemPagination(ThemableBehavior, Widget):
     current_index = NumericProperty(0)
-    color_round_not_active = ListProperty([1, 1, 1, 1])
+    color_round_not_active = ListProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.color_round_not_active:
+            self.color_round_not_active = self.theme_cls.primary_light
 
 
 class MDSwiperPagination(ThemableBehavior, BoxLayout):
     screens = ListProperty()
-    items_round_paginator = []
+    items_round_paginator = ListProperty()
     manager = ObjectProperty()
 
     def on_screens(self, instance, screen_names):
+        self.items_round_paginator = []
+        self.ids.box.clear_widgets()
         for i, screen_name in enumerate(screen_names):
             item_paginator = ItemPagination(current_index=i)
             self.ids.box.add_widget(item_paginator)
@@ -272,8 +262,6 @@ class MDSwiperManager(ScreenManager):
         self.transition.screen_out.pos = self.pos
         super(SlideTransition, self.transition).on_complete()
         self.swipe = False
-        if self.paginator:
-            self.paginator.set_current_screen_round(self.index_screen)
 
     def swith_screen(self, direction):
         if direction == "right":
@@ -287,6 +275,8 @@ class MDSwiperManager(ScreenManager):
             self.index_screen = 0
         self.transition.direction = direction
         self.current = self.screen_names[self.index_screen]
+        if self.paginator:
+            self.paginator.set_current_screen_round(self.index_screen)
 
     def on_touch_move(self, touch):
         if self.collide_point(*touch.pos) and not self.swipe:
@@ -310,3 +300,4 @@ class MDSwiperManager(ScreenManager):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self._x = touch.x
+        return super().on_touch_down(touch)

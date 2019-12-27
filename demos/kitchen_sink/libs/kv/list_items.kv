@@ -1,0 +1,41 @@
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import ImageLeftWidget kivymd.uix.list.ImageLeftWidget
+
+
+<KitchenSinkOneLineIconListItem>:
+
+    IconLeftWidget:
+        icon: root.icon
+
+
+<KitchenSinkOneLineLeftIconItem>
+
+    IconLeftWidget:
+        icon: root.icon
+
+
+<KitchenSinkTwoLineLeftIconItem>
+
+    IconLeftWidget:
+        icon: root.icon
+
+
+<KitchenSinkTwoLineLeftAvatarItem>
+    secondary_theme_text_color: "Custom"
+    secondary_text_color: app.theme_cls.primary_color
+
+    ImageLeftWidget:
+        source: root.icon
+
+
+<KitchenSinkOneLineLeftWidgetItem>
+    on_release: app.theme_cls.primary_palette = root.text
+
+    LeftWidget:
+        canvas.before:
+            Color:
+                rgba: root.color
+            Ellipse:
+                pos: self.pos
+                size: self.size
+

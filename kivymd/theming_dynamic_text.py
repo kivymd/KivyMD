@@ -1,23 +1,23 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Bottom Sheets
 =============
 
-Two implementations. The first is based on color brightness obtained from:
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+Two implementations. The first is based on color brightness obtained from:-
 https://www.w3.org/TR/AERT#color-contrast
-The second is based on relative luminance calculation for sRGB obtained from:
+The second is based on relative luminance calculation for sRGB obtained from:-
 https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-and contrast ratio calculation obtained from:
+and contrast ratio calculation obtained from:-
 https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
 
 Preliminary testing suggests color brightness more closely matches the

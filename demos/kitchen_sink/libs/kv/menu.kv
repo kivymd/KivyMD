@@ -1,0 +1,55 @@
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+
+
+<KitchenSinkMenu>
+    name: 'menu'
+    app: app
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    MDRaisedButton:
+        size_hint: None, None
+        size: 3 * dp(48), dp(48)
+        text: 'Open menu'
+        opposite_colors: True
+        pos_hint: {'center_x': .2, 'center_y': .75}
+        on_release:
+            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
+
+    MDRaisedButton:
+        size_hint: None, None
+        size: 3 * dp(48), dp(48)
+        text: 'Open menu'
+        opposite_colors: True
+        pos_hint: {'center_x': .2, 'center_y': .25}
+        on_release:
+            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
+
+    MDRaisedButton:
+        size_hint: None, None
+        size: 3 * dp(48), dp(48)
+        text: 'Open menu'
+        opposite_colors: True
+        pos_hint: {'center_x': .8, 'center_y': .25}
+        on_release:
+            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
+
+    MDRaisedButton:
+        size_hint: None, None
+        size: 3 * dp(48), dp(48)
+        text: 'Open menu'
+        opposite_colors: True
+        pos_hint: {'center_x': .8, 'center_y': .75}
+        on_release:
+            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
+
+    MDRaisedButton:
+        size_hint: None, None
+        size: 3 * dp(48), dp(48)
+        text: 'Open menu'
+        opposite_colors: True
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release:
+            MDDropdownMenu(items=root.menu_items, width_mult=4).open(self)

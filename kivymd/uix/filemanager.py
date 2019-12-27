@@ -1,21 +1,21 @@
-# Copyright (c) 2019 Ivanov Yuri
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 File Manager
 ============
+
+Copyright (c) 2019 Ivanov Yuri
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
 
 A simple manager for selecting directories and files.
 
 Example
 -------
 
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.factory import Factory
@@ -51,9 +51,7 @@ Builder.load_string('''
 ''')
 
 
-class Example(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Teal'
+class Example(MDApp):
     title = "File Manage"
 
     def __init__(self, **kwargs):
@@ -104,18 +102,6 @@ class Example(App):
 Example().run()
 """
 
-__all__ = (
-    "MDFileManager",
-    "IconButton",
-    "FloatButton",
-    "ModifiedBaseListItem",
-    "ModifiedOneLineListItem",
-    "ContainerSupport",
-    "ModifiedOneLineIconListItem",
-    "IconFolder",
-    "BodyManagerWithPrevious",
-)
-
 import os
 import threading
 
@@ -146,13 +132,13 @@ from kivymd.uix.list import (
     IRightBody,
     IRightBodyTouch,
 )
+from kivymd.uix.button import MDIconButton
 from kivymd.font_definitions import theme_font_styles
-from kivymd.uix.ripplebehavior import (
+from kivymd.uix.behaviors import (
     RectangularRippleBehavior,
     CircularRippleBehavior,
 )
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.button import MDIconButton
 
 ACTIVITY_MANAGER = """
 #:import os os
@@ -597,7 +583,7 @@ class MDFileManager(ThemableBehavior, FloatLayout):
 
     def split_list(self, l, n):
         n = max(1, n)
-        return (l[i: i + n] for i in range(0, len(l), n))
+        return (l[i : i + n] for i in range(0, len(l), n))
 
     def create_previous(self, path):
         for image in os.listdir(path):

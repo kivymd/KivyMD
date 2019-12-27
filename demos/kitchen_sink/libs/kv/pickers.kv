@@ -1,0 +1,81 @@
+<KitchenSinkPickers>
+    name: 'pickers'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    BoxLayout:
+        spacing: dp(40)
+        orientation: 'vertical'
+        size_hint_x: None
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+        BoxLayout:
+            orientation: 'vertical'
+            # size_hint: (None, None)
+
+            MDRaisedButton:
+                text: "Open time picker"
+                size_hint: None, None
+                size: 3 * dp(48), dp(48)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                opposite_colors: True
+                on_release: root.show_example_time_picker()
+
+            MDLabel:
+                id: time_picker_label
+                theme_text_color: 'Primary'
+                size_hint: None, None
+                size: dp(48)*3, dp(48)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+            BoxLayout:
+                size: dp(48)*3, dp(48)
+                size_hint: (None, None)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+                MDLabel:
+                    theme_text_color: 'Primary'
+                    text: "Start on previous time"
+                    size_hint: None, None
+                    size: dp(130), dp(48)
+
+                MDCheckbox:
+                    id: time_picker_use_previous_time
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            MDRaisedButton:
+                text: "Open date picker"
+                size_hint: None, None
+                size: 3 * dp(48), dp(48)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                opposite_colors: True
+                on_release: root.show_example_date_picker()
+
+            MDLabel:
+                id: date_picker_label
+                theme_text_color: 'Primary'
+                size_hint: None, None
+                size: dp(48)*3, dp(48)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+            BoxLayout:
+                size: dp(48)*3, dp(48)
+                size_hint: (None, None)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+                MDLabel:
+                    theme_text_color: 'Primary'
+                    text: "Start on previous date"
+                    size_hint: None, None
+                    size: dp(130), dp(48)
+
+                MDCheckbox:
+                    id: date_picker_use_previous_date
+                    size_hint: None, None
+                    size: dp(48), dp(48)

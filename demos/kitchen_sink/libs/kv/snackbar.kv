@@ -1,0 +1,47 @@
+#:import Window kivy.core.window.Window
+
+
+<KitchenSinkSnackBar>
+    name: 'snackbar'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(10)
+
+        Widget:
+
+        MDRaisedButton:
+            text: "Create simple snackbar"
+            pos_hint: {'center_x': .5}
+            on_release: root.show_example_snackbar('simple')
+
+        MDRaisedButton:
+            text: "Create snackbar with button"
+            pos_hint: {'center_x': .5}
+            on_release: root.show_example_snackbar('button')
+
+        MDRaisedButton:
+            text: "Create snackbar with a lot of text"
+            pos_hint: {'center_x': .5}
+            on_release: root.show_example_snackbar('verylong')
+
+        MDSeparator:
+
+        MDLabel:
+            text: 'Click the MDFloatingActionButton to show the following example...'
+            halign: 'center'
+            theme_text_color: 'Primary'
+
+        Widget:
+
+    MDFloatingActionButton:
+        id: button
+        md_bg_color: app.theme_cls.primary_color
+        x: Window.width - self.width - dp(10)
+        y: dp(10)
+        on_release: root.show_example_snackbar('float')

@@ -1,0 +1,20 @@
+#:import Clock kivy.clock.Clock
+
+
+<KitchenSinkDownloadFile>
+    name: 'download file'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    FloatLayout:
+        id: box_flt
+
+        MDRaisedButton:
+            text: "Download file"
+            size_hint: None, None
+            size: 3 * dp(48), dp(48)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            opposite_colors: True
+            on_release: Clock.schedule_once(root.show_example_download_file, .1)

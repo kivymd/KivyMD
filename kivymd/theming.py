@@ -1,23 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Theming
 =======
 
-`Material Design spec, Material theming
-<https://material.io/design/material-theming/>`_
-"""
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-__all__ = ("ThemeManager", "ThemableBehavior")
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Material theming <https://material.io/design/material-theming>`_
+"""
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -32,7 +29,7 @@ from kivy.properties import (
     BooleanProperty,
     DictProperty,
 )
-from kivy.uix.widget import Widget
+from kivy.event import EventDispatcher
 from kivy.utils import get_color_from_hex
 from kivy.atlas import Atlas
 
@@ -42,7 +39,7 @@ from kivymd.material_resources import DEVICE_TYPE, DEVICE_IOS
 from kivymd import images_path
 
 
-class ThemeManager(Widget):
+class ThemeManager(EventDispatcher):
     primary_palette = OptionProperty("Blue", options=palette)
     primary_hue = OptionProperty("500", options=hue)
     primary_light_hue = OptionProperty("200", options=hue)
@@ -320,7 +317,11 @@ class ThemeManager(Widget):
         ):
             self.set_clearcolor_by_theme_style(value)
 
+    set_clearcolor = BooleanProperty(True)
+
     def set_clearcolor_by_theme_style(self, theme_style):
+        if not self.set_clearcolor:
+            return
         if theme_style == "Light":
             Window.clearcolor = get_color_from_hex(
                 colors["Light"]["Background"]
@@ -359,16 +360,30 @@ class ThemeManager(Widget):
         Window.bind(size=self._determine_device_orientation)
 
 
-class ThemableBehavior(object):
-    theme_cls = ObjectProperty(None)
+class ThemableBehavior(EventDispatcher):
+    theme_cls = ObjectProperty()
     opposite_colors = BooleanProperty(False)
-    device_ios = DEVICE_IOS
+    device_ios = BooleanProperty(DEVICE_IOS)
 
     def __init__(self, **kwargs):
         if self.theme_cls is not None:
             pass
-        elif hasattr(App.get_running_app(), "theme_cls"):
-            self.theme_cls = App.get_running_app().theme_cls
         else:
-            self.theme_cls = ThemeManager()
+            try:
+                if not isinstance(
+                    App.get_running_app().property("theme_cls", True),
+                    ObjectProperty,
+                ):
+                    raise ValueError(
+                        "KivyMD: App object should be inherited from "
+                        "`kivymd.app.MDApp`. See "
+                        "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
+                    )
+            except AttributeError:
+                raise ValueError(
+                    "KivyMD: App object should be initialized before loading "
+                    "root widget. See "
+                    "https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App#exceptions"
+                )
+            self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)

@@ -1,22 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Sliders
 =======
 
-`Material Design spec, Sliders <https://material.io/components/sliders/>`_
-"""
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
 
-__all__ = ("MDSlider",)
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Sliders <https://material.io/design/components/sliders.html>`_
+"""
 
 from kivy.lang import Builder
 from kivy.properties import ListProperty, AliasProperty, BooleanProperty
@@ -30,9 +28,6 @@ from kivy.uix.slider import Slider
 
 Builder.load_string(
     """
-#:import Thumb kivymd.uix.selectioncontrol.Thumb
-
-
 <MDSlider>
     id: slider
     canvas:
@@ -99,6 +94,25 @@ Builder.load_string(
         elevation:
             0 if slider._is_off else (4 if root.active else 2)
 
+    MDCard:
+        id: hint_box
+        size_hint: None, None
+        md_bg_color: [1, 1, 1, 1] if root.active else [0, 0, 0, 0]
+        elevation: 0 if slider._is_off else (4 if root.active else 0)
+        size:
+            (dp(12), dp(12)) if root.disabled else ((dp(28), dp(28)) \
+            if root.active else (dp(20), dp(20)))
+        pos:
+            (slider.value_pos[0] - dp(9), slider.center_y - hint_box.height / 2 + dp(30)) \
+            if slider.orientation == 'horizontal' \
+            else (slider.center_x - hint_box.width / 2 + dp(30), \
+            slider.value_pos[1] - dp(8))
+
+        MDLabel:
+            text: str(int(slider.value))
+            font_style: "Caption"
+            halign: "center"
+            color: root.theme_cls.primary_color if root.active else [0, 0, 0, 0]
 """
 )
 
@@ -106,6 +120,9 @@ Builder.load_string(
 class MDSlider(ThemableBehavior, Slider):
     # If the slider is clicked
     active = BooleanProperty(False)
+
+    # If True, then the current value is displayed above the slider
+    hint = BooleanProperty(True)
 
     # Show the "off" ring when set to minimum value
     show_off = BooleanProperty(True)
@@ -191,6 +208,10 @@ class MDSlider(ThemableBehavior, Slider):
         )
         self._set_colors()
 
+    def on_hint(self, instance, value):
+        if not value:
+            self.remove_widget(self.ids.hint_box)
+
     def _set_colors(self, *args):
         if self.theme_cls.theme_style == "Dark":
             self._track_color_normal = get_color_from_hex("FFFFFF")
@@ -215,6 +236,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     def on_value_normalized(self, *args):
         """ When the value == min set it to "off" state and make slider a ring """
+
         self._update_is_off()
 
     def on_show_off(self, *args):
@@ -230,9 +252,9 @@ class MDSlider(ThemableBehavior, Slider):
         self._update_offset()
 
     def _update_offset(self):
-        """ Offset is used to shift the sliders so the background color 
-            shows through the off circle.
-        """
+        """Offset is used to shift the sliders so the background color
+        shows through the off circle."""
+
         d = 2 if self.active else 0
         self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
 
@@ -245,62 +267,64 @@ class MDSlider(ThemableBehavior, Slider):
             self.active = False
 
 
-#             thumb = self.ids['thumb']
-#             if thumb.collide_point(*touch.pos):
-#                 thumb.on_touch_down(touch)
-#                 thumb.on_touch_up(touch)
-
-
 if __name__ == "__main__":
-    from kivy.app import App
-    from kivymd.theming import ThemeManager
+    from kivymd.app import MDApp
 
-    class SliderApp(App):
-        theme_cls = ThemeManager()
-
+    class SliderApp(MDApp):
         def build(self):
             return Builder.load_string(
                 """
-BoxLayout:
-    orientation:'vertical'
-    BoxLayout:
-        size_hint_y:None
-        height: '48dp'
-        Label:
-            text:"Toggle disabled"
-            color: [0,0,0,1]
-        CheckBox:
-            on_press: slider.disabled = not slider.disabled
-    BoxLayout:
-        size_hint_y:None
-        height: '48dp'
-        Label:
-            text:"Toggle active"
-            color: [0,0,0,1]
-        CheckBox:
-            on_press: slider.active = not slider.active
-    BoxLayout:
-        size_hint_y:None
-        height: '48dp'
-        Label:
-            text:"Toggle show off"
-            color: [0,0,0,1]
-        CheckBox:
-            on_press: slider.show_off = not slider.show_off
+Screen
+    name: 'progress bar'
 
-    MDSlider:
-        id:slider
-        min:0
-        max:100
-        value: 40
+    BoxLayout:
+        orientation:'vertical'
+        padding: '8dp'
 
-    MDSlider:
-        id:slider2
-        orientation:"vertical"
-        min:0
-        max:100
-        value: 40
+        MDLabel:
+            text: "Slider with [b]hint = True[/b]"
+            markup: True
+            halign: "center"
 
+        MDSlider:
+            id: progress_slider
+            min: 0
+            max: 100
+            value: 40
+
+        MDLabel:
+            text: "Slider with [b]hint = False[/b]"
+            markup: True
+            halign: "center"
+
+        MDSlider:
+            id: progress_slider
+            min: 0
+            max: 100
+            value: 40
+            hint: False
+
+        MDLabel:
+            text: "Examples [b]MDProgressBar[/b]"
+            markup: True
+            halign: "center"
+
+        MDProgressBar:
+            value: progress_slider.value
+
+        MDProgressBar:
+            reversed: True
+            value: progress_slider.value
+
+        BoxLayout:
+            MDProgressBar:
+                orientation: "vertical"
+                reversed: True
+                value: progress_slider.value
+
+            MDProgressBar:
+                orientation: "vertical"
+                value: progress_slider.value
 """
             )
 

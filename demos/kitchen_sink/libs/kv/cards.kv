@@ -1,0 +1,24 @@
+<KitchenSinkCards>
+    name: 'cards'
+    app: app
+    on_enter: root.add_cards(grid_card)
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+        Toolbar:
+            id: toolbar
+
+        ScrollView:
+            id: scroll
+            size_hint: 1, 1
+            do_scroll_x: False
+
+            GridLayout:
+                id: grid_card
+                cols: 1
+                spacing: dp(5)
+                padding: dp(5)
+                size_hint_y: None
+                height: self.minimum_height

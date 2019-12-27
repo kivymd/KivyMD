@@ -1,19 +1,19 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Lists
 =====
 
-`Material Design spec, Lists <https://material.io/components/lists/>`_
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
+`Material Design spec, Lists <https://material.io/design/components/lists.html>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -149,31 +149,6 @@ API
 ---
 """
 
-__all__ = (
-    "MDList",
-    "BaseListItem",
-    "ILeftBody",
-    "ILeftBodyTouch",
-    "IRightBody",
-    "IRightBodyTouch",
-    "ContainerSupport",
-    "OneLineListItem",
-    "TwoLineListItem",
-    "ThreeLineListItem",
-    "OneLineAvatarListItem",
-    "TwoLineAvatarListItem",
-    "ThreeLineAvatarListItem",
-    "OneLineIconListItem",
-    "TwoLineIconListItem",
-    "ThreeLineIconListItem",
-    "OneLineRightIconListItem",
-    "TwoLineRightIconListItem",
-    "ThreeLineRightIconListItem",
-    "OneLineAvatarIconListItem",
-    "TwoLineAvatarIconListItem",
-    "ThreeLineAvatarIconListItem",
-)
-
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -187,9 +162,11 @@ from kivy.properties import (
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
-from kivymd.uix.ripplebehavior import RectangularRippleBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior
+from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 from kivymd.font_definitions import theme_font_styles
 
@@ -247,7 +224,19 @@ Builder.load_string(
             text_color: root.secondary_text_color
             size_hint_y: None
             height: 0 if root._num_lines == 1 else self.texture_size[1]
-            shorten: True if root._num_lines == 2 else False
+            shorten: True
+            shorten_from: 'right'
+            markup: True
+
+        MDLabel:
+            id: _lbl_tertiary
+            text: '' if root._num_lines == 1 else root.tertiary_text
+            font_style: root.tertiary_font_style
+            theme_text_color: root.tertiary_theme_text_color
+            text_color: root.tertiary_text_color
+            size_hint_y: None
+            height: 0 if root._num_lines == 1 else self.texture_size[1]
+            shorten: True
             shorten_from: 'right'
             markup: True
 
@@ -377,27 +366,39 @@ class BaseListItem(
     font_style = OptionProperty("Subtitle1", options=theme_font_styles)
 
     theme_text_color = StringProperty("Primary", allownone=True)
-    """ Theme text color for primary text """
+    """Theme text color for primary text"""
 
     secondary_text = StringProperty()
-    """Text shown in the second and potentially third line.
-
-    The text will wrap into the third line if the ListItem's type is set to
-    \'one-line\'. It can be forced into the third line by adding a \\n
-    escape sequence.
+    """Text shown in the second line.
 
     :attr:`secondary_text` is a :class:`~kivy.properties.StringProperty` and
     defaults to "".
     """
 
+    tertiary_text = StringProperty()
+    """The text is displayed on the third line.
+
+    :attr:`tertiary_text` is a :class:`~kivy.properties.StringProperty` and
+    defaults to "".
+    """
+
     secondary_text_color = ListProperty(None)
-    """ Text color used for secondary text if secondary_theme_text_color 
+    """Text color used for secondary text if secondary_theme_text_color 
+    is set to 'Custom' """
+
+    tertiary_text_color = ListProperty(None)
+    """Text color used for secondary text if secondary_theme_text_color 
     is set to 'Custom' """
 
     secondary_theme_text_color = StringProperty("Secondary", allownone=True)
-    """ Theme text color for secondary primary text """
+    """Theme text color for secondary primary text"""
+
+    tertiary_theme_text_color = StringProperty("Secondary", allownone=True)
+    """Theme text color for secondary primary text"""
 
     secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
+
+    tertiary_font_style = OptionProperty("Body1", options=theme_font_styles)
 
     divider = OptionProperty(
         "Full", options=["Full", "Inset", None], allownone=True
@@ -407,7 +408,7 @@ class BaseListItem(
     _txt_top_pad = NumericProperty()
     _txt_bot_pad = NumericProperty()
     _txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
-    _num_lines = 2
+    _num_lines = 3
     _no_ripple_effect = BooleanProperty(False)
 
 
@@ -507,11 +508,12 @@ class OneLineListItem(BaseListItem):
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 1
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(48)
+        self.height = dp(48) if not self._height else self._height
 
 
 class TwoLineListItem(BaseListItem):
@@ -519,10 +521,11 @@ class TwoLineListItem(BaseListItem):
 
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineListItem(BaseListItem):
@@ -530,32 +533,35 @@ class ThreeLineListItem(BaseListItem):
 
     _txt_top_pad = NumericProperty(dp(16))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(88)
+        self.height = dp(88) if not self._height else self._height
 
 
 class OneLineAvatarListItem(ContainerSupport, BaseListItem):
     _txt_left_pad = NumericProperty(dp(72))
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(19))  # dp(24) - dp(5)
+    _height = NumericProperty()
     _num_lines = 1
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(56)
+        self.height = dp(56) if not self._height else self._height
 
 
 class TwoLineAvatarListItem(OneLineAvatarListItem):
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 2
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineAvatarListItem(ContainerSupport, ThreeLineListItem):
@@ -569,11 +575,12 @@ class OneLineIconListItem(ContainerSupport, OneLineListItem):
 class TwoLineIconListItem(OneLineIconListItem):
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 2
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineIconListItem(ContainerSupport, ThreeLineListItem):
@@ -588,11 +595,12 @@ class OneLineRightIconListItem(ContainerSupport, OneLineListItem):
 class TwoLineRightIconListItem(OneLineRightIconListItem):
     _txt_top_pad = NumericProperty(dp(20))
     _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _height = NumericProperty()
     _num_lines = 2
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.height = dp(72)
+        self.height = dp(72) if not self._height else self._height
 
 
 class ThreeLineRightIconListItem(ContainerSupport, ThreeLineListItem):
@@ -613,3 +621,19 @@ class TwoLineAvatarIconListItem(TwoLineAvatarListItem):
 class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
     # dp(40) = dp(16) + dp(24):
     _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+
+
+class ImageLeftWidget(ILeftBody, Image):
+    pass
+
+
+class ImageRightWidget(IRightBodyTouch, Image):
+    pass
+
+
+class IconRightWidget(IRightBodyTouch, MDIconButton):
+    pass
+
+
+class IconLeftWidget(ILeftBodyTouch, MDIconButton):
+    pass

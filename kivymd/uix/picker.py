@@ -1,30 +1,20 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Pickers
 =======
 
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+
 Includes date, time and color picker
 """
-
-__all__ = (
-    "DaySelector",
-    "DayButton",
-    "WeekdayLabel",
-    "MDDatePicker",
-    "MDTimePicker",
-    "ColorSelector",
-    "MDThemePicker",
-)
 
 import datetime
 import calendar
@@ -50,9 +40,11 @@ from kivy.utils import get_color_from_hex
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.backgroundcolorbehavior import SpecificBackgroundColorBehavior
-from kivymd.uix.ripplebehavior import CircularRippleBehavior
-from kivymd.uix.elevation import RectangularElevationBehavior
+from kivymd.uix.behaviors import (
+    SpecificBackgroundColorBehavior,
+    CircularRippleBehavior,
+    RectangularElevationBehavior,
+)
 from kivymd.color_definitions import colors, palette
 
 Builder.load_string(
@@ -371,7 +363,6 @@ class MDDatePicker(
         try:
             date(year, month, day)
         except Exception as e:
-            print(e)
             if str(e) == "day is out of range for month":
                 raise self.SetDateError(
                     " Day %s day is out of range for month %s" % (day, month)
@@ -583,11 +574,13 @@ Builder.load_string(
 
 
     MDFlatButton:
+        id: close_button
         pos: root.pos[0]+root.size[0]-self.width-dp(10), root.pos[1] + dp(10)
         text: "Close"
         on_release: root.dismiss()
 
     MDLabel:
+        id: title
         font_style: "H5"
         text: "Change theme"
         size_hint: (None, None)
@@ -603,6 +596,7 @@ Builder.load_string(
         id: tab_panel
 
         Tab:
+            id: theme_tab
             text: "Theme"
 
             BoxLayout:
@@ -728,6 +722,7 @@ Builder.load_string(
                             disabled: True
 
         Tab:
+            id: accent_tab
             text: "Accent"
 
             BoxLayout:
@@ -853,6 +848,7 @@ Builder.load_string(
                             disabled: True
 
         Tab:
+            id: style_tab
             text: "Style"
 
             FloatLayout:
@@ -916,15 +912,16 @@ class MDThemePicker(
 
 
 if __name__ == "__main__":
-    from kivy.app import App
+    from kivymd.app import MDApp
     from kivymd.theming import ThemeManager
 
-    class ThemePickerApp(App):
-        theme_cls = ThemeManager()
-
+    class ThemePickerApp(MDApp):
         def build(self):
             main_widget = Builder.load_string(
                 """
+#:import MDThemePicker kivymd.uix.picker.MDThemePicker
+
+
 FloatLayout:
     MDRaisedButton:
         size_hint: None, None

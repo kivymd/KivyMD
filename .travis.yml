@@ -1,0 +1,35 @@
+cache: pip
+
+matrix:
+  fast_finish: true
+  include:
+    - name: "Black"
+      env: RUN=black
+      language: python
+      python: 3.7
+      os: linux
+      dist: bionic
+
+install:
+  - pip list
+  - if [ "${RUN}" == "black" ]; then
+      pip install black;
+    fi;
+
+script:
+  - if [ "${RUN}" == "black" ]; then
+        black --check --verbose .;
+    fi;
+
+after_failure:
+  - sleep 10;
+  - echo == End ==
+
+deploy:
+  provider: pypi
+  user: "__token__"
+  password:
+    secure: "kL6LYeYAquprnm7S9rRwLdJvgjr+r1QaM+ZtecJm1ibRJhoM8mqO5wrcpCQS1bKqHmOtfAM7hR4cGjjv4ij4tm2F6Hr7zd6ou9VFxJ+2qqomu146EJxMdMQU3ptXxr1Dt1349aCA+/w6oRJ48Zjizq9EZAJVpo/ba6m/C+RTy9x/ZxWj/kFBATJgzJ9LtP9DZSHBE8wQqRF/CNDhkJqKtfQld+lunTE0jBsXNk5KR7KAlenyt7MZHBwExTKz2QsYDr7LS1z/2CrPGXWQqTDLtjflI1PczyUEX8rkOdgtFwZ45TjisH9bhYZ5KjwujULP1Iq36wTjx0DIfCZ6zJbmi4hvmrnSbyz4n8cpn5mAtP67FNrNwlGZS7yX7io8dkikalE6rWFKw6qcl+ipX21Qaev18AMemlLLa/hPC54GNFaSF55zwOA7W2hz2P4bt8aHF2EpnUvgaLzJk/kz1gZq/2pieMLsF6af/9HrNgLBJ6iiFePeEhYD1o0PjHDWSltOoDw58ue3V2J/qHcBs8X2PfZQmneBVZ/CYlwJnSTiZaCxizs8T5CcfLRfNuNcB/Y3PmUTOwAZfkHrIfuFL94cED/1RWxSk3myQ2SDVQmeoELzU62uA0tWY0gyTsQR21rDR7w4PZrYXanGjoqWUdzFVxTsDn3RZA7WRahZcBtb4H4="
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true

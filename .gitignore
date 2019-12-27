@@ -1,13 +1,62 @@
-# Python compiled
-*.pyc
+# Directories and files that cannot be commited to git
 
-# Builds
-build
-.buildozer
+# Byte-compiled
+__pycache__
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+lib
+lib64
+parts
+sdist
+var
+wheels
+pip-wheel-metadata
+share/python-wheels
+develop-eggs
+eggs
+.eggs
+*.egg-info
+*.egg
+MANIFEST
+.installed.cfg
+downloads
 docs/_build
-demos/kitchen_sink/bin
+build
+dist
+bin
+.buildozer
+
+# Logs
+*.log
+pip-log.txt
+pip-delete-this-directory.txt
 
 # Editors
 .idea
+.vscode
+.ipynb_checkpoints
 *.swp
-.vscode/settings.json
+
+# Environments
+venv
+.venv
+env
+.env
+.python-version
+
+#  Temp / Cache
+cache
+.cache
+temp
+.temp
+
+demos/kitchen_sink/assets/*crop.*
+demos/kitchen_sink/assets/sasha-round.png
+kivymd/tools/*.zip
+kivymd/tools/temp

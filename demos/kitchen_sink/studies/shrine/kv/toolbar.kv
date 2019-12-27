@@ -1,0 +1,66 @@
+#:import gch kivy.utils.get_color_from_hex
+
+
+<ShrineToolbar>
+    size_hint_y: None
+    height: "42dp"
+    padding: "10dp"
+
+    MDCustomRoundIconButton:
+        id: button_menu
+        source: root.path_to_icon_menu
+        size_hint_x: None
+        width: root.height
+        on_release:
+            Animation(size=(0, 0), d=.2).start(self)
+            root.set_title_animation_text("MENU")
+            button_logo.disabled = False
+            root.parent.hide_image_list()
+            root.parent.ids.box_bottom_sheet.hide_box_bottom_sheet()
+
+    MDCustomRoundIconButton:
+        id: button_logo
+        source: root.path_to_icon_logo
+        size_hint_x: None
+        width: root.height
+        disabled: True
+        on_release:
+            Animation(size=(root.height, root.height), d=.2).start(button_menu)
+            root.set_title_animation_text(root.title)
+            self.disabled = True
+            root.parent.open_image_list()
+            root.parent.ids.box_bottom_sheet.restore_width_bottom_sheet()
+            root.parent.ids.box_bottom_sheet.restore_opacity_bottom_sheet()
+
+    Label:
+        id: title
+        text: root.title
+        bold: True
+        color: root.theme_cls.text_color
+        size_hint_x: None
+        width: self.texture_size[0]
+        color: root.theme_cls.text_color
+
+    Widget:
+        size_hint_x: None
+        width: "10dp"
+
+    MDTextField:
+        id: search_field
+        pos_hint: {"center_y": .5}
+        disabled: True
+        opacity: 0
+        color_mode: "custom"
+        font_size: "14sp"
+        line_color_focus: root.theme_cls.opposite_bg_normal
+        on_focus: if not self.focus: self.text = ""; root.set_search_field()
+
+    MDIconButton:
+        icon: "magnify"
+        pos_hint: {"center_y": .5}
+        on_release: root.set_search_field()
+
+    MDIconButton:
+        id: button_tune
+        icon: "tune"
+        pos_hint: {"center_y": .5}

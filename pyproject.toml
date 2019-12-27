@@ -1,3 +1,21 @@
 [tool.black]
 line-length = 80
-target_version = ['py37']
+target-version = ['py35', 'py36', 'py37', 'py38']
+include = '(\.pyi?$|\.spec$)'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | buildozer\.spec
+)
+'''

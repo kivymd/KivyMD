@@ -1,0 +1,53 @@
+import os
+
+from kivy.uix.modalview import ModalView
+from kivy.uix.screenmanager import Screen
+
+
+class KitchenSinkFileManager(Screen):
+    manager_open = False
+
+    def file_manager_open(self):
+        from kivymd.uix.filemanager import MDFileManager
+        from kivymd.uix.dialog import MDDialog
+
+        def open_file_manager(text_item, dialog):
+            previous = False if text_item == "List" else True
+            self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
+            self.file_manager = MDFileManager(
+                exit_manager=self.exit_manager,
+                select_path=self.select_path,
+                previous=previous,
+            )
+            self.manager.add_widget(self.file_manager)
+            self.file_manager.show(os.environ["KITCHEN_SINK_ASSETS"])
+            self.manager_open = True
+            self.manager.open()
+
+        MDDialog(
+            title="Kitchen Sink",
+            size_hint=(0.8, 0.4),
+            text_button_ok="List",
+            text="Open manager with 'list' or 'previous' mode?",
+            text_button_cancel="Previous",
+            events_callback=open_file_manager,
+        ).open()
+
+    def select_path(self, path):
+        """It will be called when you click on the file name
+        or the catalog selection button.
+        :type path: str;
+        :param path: path to the selected directory or file;
+
+        """
+
+        from kivymd.toast import toast
+
+        self.exit_manager()
+        toast(path)
+
+    def exit_manager(self, *args):
+        """Called when the user reaches the root of the directory tree."""
+
+        self.manager.dismiss()
+        self.manager_open = False

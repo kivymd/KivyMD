@@ -1,20 +1,18 @@
-# Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-#     KivyMD library up to version 0.1.2
-# Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-#     KivyMD library version 0.1.3 and higher
-#
-# For suggestions and questions:
-# <kivydevelopment@gmail.com>
-#
-# This file is distributed under the terms of the same license,
-# as the Kivy framework.
-
 """
 Label
 =====
-"""
 
-__all__ = ("MDLabel", "MDIcon")
+Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
+    KivyMD library up to version 0.1.2
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
+    KivyMD library version 0.1.3 and higher
+
+For suggestions and questions:
+<kivydevelopment@gmail.com>
+
+This file is distributed under the terms of the same license,
+as the Kivy framework.
+"""
 
 from kivy.lang import Builder
 from kivy.metrics import sp
@@ -28,7 +26,6 @@ from kivy.properties import (
 from kivy.uix.label import Label
 
 from kivymd.font_definitions import theme_font_styles
-from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 
@@ -42,9 +39,17 @@ Builder.load_string(
     text_size: (self.width, None)
 
 
-<MDIcon>
-    font_style: 'Icon'
-    text: u'{}'.format(md_icons[self.icon])
+<MDIcon>:
+    font_style: "Icon"
+    text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
+    source: None if self.icon in md_icons else self.icon
+    canvas:
+        Color:
+            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
+        Rectangle:
+            source: self.source if self.source else None
+            pos: self.pos
+            size: self.size
 """
 )
 
@@ -146,3 +151,4 @@ class MDLabel(ThemableBehavior, Label):
 
 class MDIcon(MDLabel):
     icon = StringProperty("android")
+    source = StringProperty(None, allownone=True)

@@ -1,11 +1,11 @@
-# Copyright (c) 2019 Bulgakov Artem
+# Copyright (c) 2019 Artem S. Bulgakov
 #
 # This file is distributed under the terms of the same license,
 # as the Kivy framework.
 
 """
-Tool for updating icons
-=======================
+Tool for updating Iconic font
+=============================
 
 Downloads archive from https://github.com/Templarian/MaterialDesign-Webfont and
 updates font file with icon_definitions.
@@ -18,24 +18,31 @@ import shutil
 import re
 import json
 
+os.chdir(os.path.dirname(__file__))
 # Paths to files in kivymd repository
 font_path = "../fonts/materialdesignicons-webfont.ttf"
 icon_definitions_path = "../icon_definitions.py"
 
-# URL to download new archive (None if already downloaded)
-url = "https://github.com/Templarian/MaterialDesign-Webfont/archive/master.zip"
+font_version = "master"
+# URL to download new archive (set None if already downloaded)
+url = (
+    f"https://github.com/Templarian/MaterialDesign-Webfont"
+    f"/archive/{font_version}.zip"
+)
+# url = None
 
 # Paths to files in loaded archive
-temp_path = "temp"
-temp_repo_path = f"{temp_path}/MaterialDesign-Webfont-master"
+temp_path = os.path.abspath("temp")
+temp_repo_path = f"{temp_path}/MaterialDesign-Webfont-{font_version}"
 temp_font_path = f"{temp_repo_path}/fonts/materialdesignicons-webfont.ttf"
 temp_preview_path = f"{temp_repo_path}/preview.html"
 
 # Regex
-re_icons_json = re.compile(r"(?<=var icons = )[\S\w^\n]+(?=;)")
+re_icons_json = re.compile(r"(?<=var icons = )[\S ]+(?=;)")
+re_additional_icons = re.compile(r"(?<=icons\.push\()[\S ]+(?=\);)")
 re_version = re.compile(r"(?<=<span class=\"version\">)[\d.]+(?=</span>)")
 re_quote_keys = re.compile(r"([{\s,])(\w+)(:)")
-re_icon_definitions = re.compile(r"md_icons = \{\n([ ]{4}[\s\S]*,\n)*}")
+re_icon_definitions = re.compile(r"md_icons = {\n([ ]{4}[\s\S]*,\n)*}")
 re_version_in_file = re.compile(r"(?<=LAST UPDATED: Version )[\d.]+(?=\n)")
 
 
@@ -57,10 +64,18 @@ def get_icons_list():
     # There is js array with icons in file preview.html
     with open(temp_preview_path, "r") as f:
         preview_file = f.read()
-    json_string = re_icons_json.findall(preview_file)[0]
-    json_string = re_quote_keys.sub(r'\1"\2"\3', json_string)
+    # Find version
     version = re_version.findall(preview_file)[0]
-    return json.loads(json_string), version
+    # Load icons
+    jsons_icons = re_icons_json.findall(preview_file)[0]
+    json_icons = re_quote_keys.sub(r'\1"\2"\3', jsons_icons)
+    icons = json.loads(json_icons)
+    # Find additional icons (like a blank icon)
+    # jsons_additional_icons = re_additional_icons.findall(preview_file)
+    # for j in jsons_additional_icons:
+    #     json_additional_icons = re_quote_keys.sub(r'\1"\2"\3', j)
+    #     icons.append(json.loads(json_additional_icons))
+    return icons, version
 
 
 def make_icon_definitions(icons):
@@ -74,6 +89,7 @@ def make_icon_definitions(icons):
             icon_definitions += f'"{i["name"]}": "\\U{i["hex"].upper()}",\n'
         else:
             icon_definitions += f'"{i["name"]}": "\\u{i["hex"].upper()}",\n'
+    icon_definitions += f'"blank": " ",\n'  # Add blank icon (space)
     icon_definitions += "}"
     return icon_definitions
 
@@ -95,16 +111,17 @@ def export_icon_definitions(icon_definitions, version):
 
 def main():
     if url is not None:
-        if download_file(url, "master.zip"):
+        print(f"Downloading Material Design Icons from {url}")
+        if download_file(url, "iconic-font.zip"):
             print("Archive downloaded")
         else:
             print("Could not download archive")
     else:
         print("URL is None. Do not download archive")
-    if os.path.exists("master.zip"):
-        unzip_archive("master.zip", temp_path)
+    if os.path.exists("iconic-font.zip"):
+        unzip_archive("iconic-font.zip", temp_path)
         print("Unzip successful")
-        os.remove("master.zip")
+        os.remove("iconic-font.zip")
     if os.path.exists(temp_repo_path):
         shutil.copy2(temp_font_path, font_path)
         print("Font copied")
@@ -117,6 +134,8 @@ def main():
         print(
             f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
         )
+    else:
+        print(f"{temp_repo_path} not exists")
 
 
 if __name__ == "__main__":

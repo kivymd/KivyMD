@@ -235,10 +235,14 @@ class MDNavigationDrawer(MDCard):
     """The name of the animation transition type to use when animating to
     a closed state. Defaults to 'out_sine'."""
 
+    swipe_distance = NumericProperty(10)
+    """The size of the area with which the movement of navigation drawer begins."""
+
+    _count_distance = False
     _direction = "unknown"
     __state = "close"
 
-    def on_touch_move(self, touch):
+    def _on_touch_move(self, touch):
         if touch.dx > 0:
             if self.drawer_x < self.width:
                 self._direction = "right"
@@ -248,6 +252,14 @@ class MDNavigationDrawer(MDCard):
             if self.drawer_x > 0:
                 self._direction = "left"
                 self.drawer_x -= abs(touch.dx)
+
+    def on_touch_move(self, touch):
+        if self.__state == "close":
+            if self.swipe_distance > touch.x or self._count_distance is True:
+                self._count_distance = True
+                self._on_touch_move(touch)
+        else:
+            self._on_touch_move(touch)
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
@@ -256,6 +268,7 @@ class MDNavigationDrawer(MDCard):
         elif self._direction == "left":
             self.animation_close()
         self._direction = "unknown"
+        self._count_distance = False
         return super().on_touch_up(touch)
 
     def animation_open(self):

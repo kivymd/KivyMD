@@ -15,6 +15,7 @@ Change Log
 * Added `fitimage.py` - feature to automatically crop a `Kivy` image to fit your layout
 * Added animation when changing the action button position mode in `MDBottomAppBar` class
 * Delete `fanscreenmanager.py`
+* Bug fixes and other minor improvements.
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.1...master)
 ```bash

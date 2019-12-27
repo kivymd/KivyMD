@@ -269,8 +269,6 @@ class MDChip(BoxLayout, ThemableBehavior):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            if self.callback:
-                self.callback(self, self.label)
             md_choose_chip = self.parent
             if self.selected_chip_color:
                 Animation(
@@ -279,7 +277,7 @@ class MDChip(BoxLayout, ThemableBehavior):
                     else self.selected_chip_color,
                     d=0.3,
                 ).start(self)
-            if md_choose_chip.__class__ is MDChooseChip:
+            if issubclass(md_choose_chip.__class__, MDChooseChip):
                 for chip in md_choose_chip.children:
                     if chip is not self:
                         chip.color = self.theme_cls.primary_color
@@ -298,6 +296,8 @@ class MDChip(BoxLayout, ThemableBehavior):
                 else:
                     check = self.ids.box_check.children[0]
                     self.ids.box_check.remove_widget(check)
+            if self.callback:
+                self.callback(self, self.label)
 
 
 class MDChooseChip(StackLayout):

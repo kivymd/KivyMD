@@ -5,9 +5,16 @@ Change Log
 
 > [v0.103.0](https://github.com/HeaTTheatR/KivyMD/tree/0.103.0) - *Beta*
 
-* 
-* 
-* 
+* Fix `MDSwitch` size according to `material design` guides
+* Fix MDSwitch's thumb position when size changes
+* Fix position of the icon relative to the right edge of the `MDChip` class on mobile devices
+* Updated `MDBottomAppBar` class.
+* Updated `navigationdrawer.py`
+* Added `on_tab_switch` method that is called when switching tabs (`MDTabs` class)
+* Added `FpsMonitor` class
+* Added `fitimage.py` - feature to automatically crop a `Kivy` image to fit your layout
+* Added animation when changing the action button position mode in `MDBottomAppBar` class
+* Delete `fanscreenmanager.py`
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.102.1...master)
 ```bash

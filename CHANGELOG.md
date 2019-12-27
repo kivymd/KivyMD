@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+## [Unreleased](https://github.com/HeaTTheatR/KivyMD/tree/master)
+
+> [v0.103.1](https://github.com/HeaTTheatR/KivyMD/tree/0.103.1) - *Beta*
+
+* 
+* 
+* 
+
+[See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...master)
+```bash
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+```
+
+
 ## [v0.103.0](https://github.com/HeaTTheatR/KivyMD/tree/0.103.0) - *Beta*
 
 * Fix `MDSwitch` size according to `material design` guides

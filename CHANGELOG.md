@@ -5,7 +5,7 @@ Change Log
 
 > [v0.103.1](https://github.com/HeaTTheatR/KivyMD/tree/0.103.1) - *Beta*
 
-* 
+* `kivymd/uix/expansionpanel.py` - if, with the panel open, without closing it, try to open another panel, then the chevron of the first panel remained open - fixed
 * 
 * 
 

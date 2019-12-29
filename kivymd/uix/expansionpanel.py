@@ -231,7 +231,7 @@ class MDExpansionPanel(BoxLayout):
                     if instance is box.ids.item_anim:
                         press_current_item = True
                     box.ids.box_item.remove_widget(box.ids.box_item.children[0])
-                    chevron = self.ids.item_anim.ids.chevron
+                    chevron = box.ids.box_item.children[0].ids.chevron
                     self.anim_chevron_up(chevron)
                     self.anim_resize_close(box)
                     self.dispatch("on_close")

@@ -280,6 +280,31 @@ Builder.load_string(
     shorten_from: "right"
 
 
+<MDTextFieldRect>
+    on_focus:
+        root.anim_rect([root.x, root.y, root.right, root.y, root.right,\
+        root.top, root.x, root.top, root.x, root.y], 1) if root.focus\
+        else root.anim_rect([root.x - dp(60), root.y - dp(60),\
+        root.right + dp(60), root.y - dp(60),
+        root.right + dp(60), root.top + dp(60),\
+        root.x - dp(60), root.top + dp(60),\
+        root.x - dp(60), root.y - dp(60)], 0)
+
+    canvas.after:
+        Color:
+            rgba: root._primary_color
+        Line:
+            width: dp(1.5)
+            points:
+                (
+                self.x - dp(60), self.y - dp(60),
+                self.right + dp(60), self.y - dp(60),
+                self.right + dp(60), self.top + dp(60),
+                self.x - dp(60), self.top + dp(60),
+                self.x - dp(60), self.y - dp(60)
+                )
+
+
 <MDTextFieldRound>:
     multiline: False
     size_hint: 1, None

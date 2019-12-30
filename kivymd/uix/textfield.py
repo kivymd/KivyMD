@@ -132,13 +132,6 @@ Builder.load_string('''
                 size_hint: None, None
                 size: Window.width - dp(40), dp(30)
                 pos_hint: {'center_y': .5, 'center_x': .5}
-
-            Widget:
-                size_hint_y: None
-                height: dp(5)
-
-            MDTextFieldClear:
-                hint_text: "Text field with clearing type"
 ''')
 
 
@@ -171,13 +164,11 @@ Example().run()
 
 import sys
 
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.animation import Animation
 from kivy.graphics.context_instructions import Color
 from kivy.lang import Builder
-from kivy.clock import Clock
 from kivy.properties import (
     NumericProperty,
     StringProperty,
@@ -571,7 +562,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 self._line_blank_space_right_hint_text = self._hint_lbl.texture_size[
                     0
                 ] - dp(
-                    10
+                    25
                 )
             Animation(
                 _line_blank_space_right_hint_text=self._line_blank_space_right_hint_text,

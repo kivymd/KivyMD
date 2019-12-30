@@ -178,7 +178,6 @@ from kivy.animation import Animation
 from kivy.graphics.context_instructions import Color
 from kivy.lang import Builder
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.properties import (
     NumericProperty,
     StringProperty,
@@ -189,7 +188,6 @@ from kivy.properties import (
 )
 from kivy.metrics import dp
 from kivy.metrics import sp
-from kivy.uix.widget import Widget
 
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
@@ -280,35 +278,6 @@ Builder.load_string(
     width: self.texture_size[0]
     shorten: True
     shorten_from: "right"
-
-
-<MDTextFieldClear>
-    size_hint_y: None
-    height: self.minimum_height
-
-    FloatLayout:
-
-        MDTextField:
-            id: field
-            text: root.text
-            password: root.password
-            password_mask: root.password_mask
-            pos_hint: {'center_x': .5}
-            padding: 0, clear_btn.width + dp(15)
-            hint_text: root.hint_text
-            on_focus:
-                clear_btn.custom_color = self.line_color_focus\
-                if clear_btn.custom_color != self.line_color_focus\
-                else self.line_color_normal
-            on_text:
-                root.text = self.text
-
-        MDTextButton:
-            id: clear_btn
-            text: 'X'
-            pos_hint: {'right': 1, 'top': .1}
-            custom_color: field.line_color_normal
-            on_press: root.refresh_field(field, clear_btn)
 
 
 <MDTextFieldRound>:
@@ -408,23 +377,6 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
 
         Animation(points=points, d=d_line, t="out_cubic").start(instance_line)
         Animation(a=alpha, d=d_color).start(instance_color)
-
-
-class MDTextFieldClear(BoxLayout):
-    hint_text = StringProperty()
-    text = StringProperty()
-    password = BooleanProperty(False)
-    password_mask = StringProperty("*")
-
-    def refresh_field(self, instance_field, instance_clear_button):
-        def refresh_field(interval):
-            instance_clear_button.custom_color = (
-                instance_field.line_color_normal
-            )
-            instance_field.focus = True
-            instance_field.text = ""
-
-        Clock.schedule_once(refresh_field, 0.2)
 
 
 class FixedHintTextInput(TextInput):

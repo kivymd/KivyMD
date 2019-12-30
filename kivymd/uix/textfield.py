@@ -838,7 +838,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
         if not self.line_color:
             self.line_color = self.theme_cls.primary_dark
         if not self.color_active:
-            self._color_active = [0, 0, 0, .5]
+            self._color_active = [0, 0, 0, 0.5]
 
     def on_focus(self, instance, value):
         if value:
@@ -861,7 +861,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
         self._lbl_icon_right.text_color = value
 
     def on_color_active(self, instance, value):
-        if value != [0, 0, 0, .5]:
+        if value != [0, 0, 0, 0.5]:
             self._color_active = value
             self._color_active[-1] = 0.5
         else:

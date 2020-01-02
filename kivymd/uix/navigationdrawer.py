@@ -238,6 +238,9 @@ class MDNavigationDrawer(MDCard):
     swipe_distance = NumericProperty(10)
     """The size of the area with which the movement of navigation drawer begins."""
 
+    state = StringProperty("close")
+    """Closed or open panel."""
+
     _count_distance = False
     _direction = "unknown"
     __state = "close"
@@ -280,6 +283,7 @@ class MDNavigationDrawer(MDCard):
         anim.bind(on_progress=self._on_progress_open)
         anim.start(self)
         self.__state = "open"
+        self.state = self.state
 
     def animation_close(self):
         anim = Animation(
@@ -288,6 +292,7 @@ class MDNavigationDrawer(MDCard):
         anim.bind(on_progress=self._on_progress_close)
         anim.start(self)
         self.__state = "close"
+        self.state = self.__state
 
     def toggle_nav_drawer(self):
         if self.__state == "open":

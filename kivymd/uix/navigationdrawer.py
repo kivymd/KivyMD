@@ -283,7 +283,7 @@ class MDNavigationDrawer(MDCard):
         anim.bind(on_progress=self._on_progress_open)
         anim.start(self)
         self.__state = "open"
-        self.state = self.state
+        self.state = self.__state
 
     def animation_close(self):
         anim = Animation(

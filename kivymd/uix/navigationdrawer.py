@@ -159,6 +159,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 
 from kivymd.uix.card import MDCard
+from kivymd.uix.toolbar import MDToolbar
 
 Builder.load_string(
     """
@@ -204,11 +205,12 @@ class NavigationLayout(FloatLayout):
         if (
             widget.__class__ is MDNavigationDrawer
             or widget.__class__ is ScreenManager
+            or widget.__class__ is MDToolbar
         ):
             if widget.__class__ is ScreenManager:
                 self.add_canvas(widget)
             self._cache.append(widget)
-            if len(self._cache) > 2:
+            if len(self._cache) > 3:
                 raise NavigationDrawerContentError(
                     "The NavigationLayoutNew should contain "
                     "only MDNavigationDrawer class and only ScreenManager class"

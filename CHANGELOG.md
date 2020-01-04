@@ -8,6 +8,7 @@ Change Log
 * `kivymd/uix/expansionpanel.py` - if, with the panel open, without closing it, try to open another panel, then the chevron of the first panel remained open - fixed
 * The `MDTextFieldRound` class is now directly inherited from the `TextInput` class
 * Remove `MDTextFieldClear` class
+* `NavigationLayout` allowed to add `MDToolbar` class
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...master)
 ```bash

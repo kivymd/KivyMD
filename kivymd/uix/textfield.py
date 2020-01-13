@@ -186,6 +186,9 @@ from kivymd.uix.label import MDIcon
 
 Builder.load_string(
     """
+#:import images_path kivymd.images_path
+
+
 <MDTextField>
 
     canvas.before:

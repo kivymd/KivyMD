@@ -327,6 +327,8 @@ class MDDatePicker(
         month=None,
         day=None,
         firstweekday=0,
+        show_past_date=True,
+        show_future_date=True,
         **kwargs,
     ):
         self.callback = callback
@@ -337,6 +339,8 @@ class MDDatePicker(
         self.month = self.sel_month
         self.year = self.sel_year
         self.day = self.sel_day
+        self.show_past_date= show_past_date
+        self.show_future_date= show_future_date
         super().__init__(**kwargs)
         self.selector = DaySelector(parent=self)
         self.generate_cal_widgets()
@@ -422,7 +426,14 @@ class MDDatePicker(
                     self.cal_list[idx].disabled = True
                     self.cal_list[idx].text = ""
                 else:
-                    self.cal_list[idx].disabled = False
+                    if not self.show_past_date and self.show_future_date:
+                        self.cal_list[idx].disabled = True if dates[idx] < self.today else False
+                    if not self.show_future_date and self.show_past_date:
+                        self.cal_list[idx].disabled = True if dates[idx] > self.today else False
+                    if not self.show_past_date and not self.show_future_date:
+                        self.cal_list[idx].disabled = True if dates[idx] != self.today else False
+                    if self.show_past_date and self.show_future_date:
+                        self.cal_list[idx].disabled = False
                     self.cal_list[idx].text = str(dates[idx].day)
                     self.cal_list[idx].is_today = dates[idx] == self.today
             self.selector.update()

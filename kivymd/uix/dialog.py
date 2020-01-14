@@ -200,7 +200,7 @@ class BaseDialog(ThemableBehavior, ModalView):
         if self.device_ios:  # create buttons for iOS
             self.background = self._background
 
-            if instance_content_dialog.__class__ is ContentInputDialog:
+            if isinstance(instance_content_dialog, ContentInputDialog):
                 self.text_field = MDTextFieldRect(
                     pos_hint={"center_x": 0.5},
                     size_hint=(1, None),
@@ -245,7 +245,7 @@ class BaseDialog(ThemableBehavior, ModalView):
                 )
 
         else:  # create buttons for Android
-            if instance_content_dialog.__class__ is ContentInputDialog:
+            if isinstance(instance_content_dialog, ContentInputDialog):
                 self.text_field = MDTextField(
                     size_hint=(1, None),
                     height=dp(48),

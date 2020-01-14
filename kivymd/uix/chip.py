@@ -302,5 +302,5 @@ class MDChip(BoxLayout, ThemableBehavior):
 
 class MDChooseChip(StackLayout):
     def add_widget(self, widget, index=0, canvas=None):
-        if widget.__class__ is MDChip:
+        if isinstance(widget, MDChip):
             return super().add_widget(widget)

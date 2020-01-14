@@ -327,8 +327,8 @@ class MDDatePicker(
         month=None,
         day=None,
         firstweekday=0,
-        show_past_date=True,
-        show_future_date=True,
+        min_date=None,
+        max_date=None,
         **kwargs,
     ):
         self.callback = callback
@@ -339,8 +339,8 @@ class MDDatePicker(
         self.month = self.sel_month
         self.year = self.sel_year
         self.day = self.sel_day
-        self.show_past_date= show_past_date
-        self.show_future_date= show_future_date
+        self.min_date = min_date
+        self.max_date = max_date
         super().__init__(**kwargs)
         self.selector = DaySelector(parent=self)
         self.generate_cal_widgets()
@@ -426,13 +426,38 @@ class MDDatePicker(
                     self.cal_list[idx].disabled = True
                     self.cal_list[idx].text = ""
                 else:
-                    if not self.show_past_date and self.show_future_date:
-                        self.cal_list[idx].disabled = True if dates[idx] < self.today else False
-                    if not self.show_future_date and self.show_past_date:
-                        self.cal_list[idx].disabled = True if dates[idx] > self.today else False
-                    if not self.show_past_date and not self.show_future_date:
-                        self.cal_list[idx].disabled = True if dates[idx] != self.today else False
-                    if self.show_past_date and self.show_future_date:
+                    if self.min_date and self.max_date:
+                        self.cal_list[idx].disabled = (
+                            True
+                            if (
+                                dates[idx] < self.min_date
+                                or dates[idx] > self.max_date
+                            )
+                            else False
+                        )
+                    elif self.min_date:
+                        if isinstance(self.min_date, date):
+                            self.cal_list[idx].disabled = (
+                                True if dates[idx] < self.min_date else False
+                            )
+                        else:
+                            raise ValueError(
+                                "min_date must be of type {} or None, got {}".format(
+                                    date, type(self.min_date)
+                                )
+                            )
+                    elif self.max_date:
+                        if isinstance(self.max_date, date):
+                            self.cal_list[idx].disabled = (
+                                True if dates[idx] > self.max_date else False
+                            )
+                        else:
+                            raise ValueError(
+                                "max_date must be of type {} or None, got {}".format(
+                                    date, type(self.min_date)
+                                )
+                            )
+                    else:
                         self.cal_list[idx].disabled = False
                     self.cal_list[idx].text = str(dates[idx].day)
                     self.cal_list[idx].is_today = dates[idx] == self.today

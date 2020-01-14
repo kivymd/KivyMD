@@ -9,6 +9,7 @@ Change Log
 * The `MDTextFieldRound` class is now directly inherited from the `TextInput` class
 * Remove `MDTextFieldClear` class
 * `NavigationLayout` allowed to add `MDToolbar` class
+* Added ability to control range of dates to be active in `MDDatePicker` class
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...master)
 ```bash

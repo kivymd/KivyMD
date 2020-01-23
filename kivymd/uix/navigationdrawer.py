@@ -154,7 +154,7 @@ from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import NumericProperty, StringProperty
+from kivy.properties import NumericProperty, StringProperty, BooleanProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 
@@ -242,6 +242,9 @@ class MDNavigationDrawer(MDCard):
 
     state = StringProperty("close")
     """Closed or open panel."""
+    
+    close_on_click= BooleanProperty(False)
+    """Whether it should get closed on clicking outside, defaults to False"""
 
     _count_distance = False
     _direction = "unknown"
@@ -275,6 +278,12 @@ class MDNavigationDrawer(MDCard):
         self._direction = "unknown"
         self._count_distance = False
         return super().on_touch_up(touch)
+    
+    def on_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            if self.close_on_click and self.state == "open":
+                self.animation_close()
+        return super().on_touch_down(touch)
 
     def animation_open(self):
         anim = Animation(

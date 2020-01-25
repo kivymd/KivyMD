@@ -2,7 +2,7 @@
 Navigation Drawer
 =================
 
-Copyright (c) 2019 Ivanov Yuri
+Copyright (c) 2019 Ivanov Yuri and KivyMD contributors.
 
 For suggestions and questions:
 <kivydevelopment@gmail.com>
@@ -148,13 +148,21 @@ TestNavigationDrawer().run()
 
 """
 
-from kivy.animation import Animation
 from kivy.core.window import Window
+from kivy.logger import Logger
+from kivy.animation import Animation, AnimationTransition
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
-from kivy.metrics import dp
-from kivy.properties import NumericProperty, StringProperty
+from kivy.properties import (
+    NumericProperty,
+    StringProperty,
+    OptionProperty,
+    BooleanProperty,
+    ListProperty,
+    ObjectProperty,
+    AliasProperty,
+)
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 
@@ -166,13 +174,14 @@ Builder.load_string(
 #:import Window kivy.core.window.Window
 
 
-<MDNavigationDrawer>
-    size_hint: None, None
-    width: root.side_panel_width
-    height: Window.height
-    drawer_x: 0
+<MDNavigationDrawer>:
+    size_hint_x: None
+    width: Window.width - dp(56) if Window.width <= dp(376) else dp(320)
+    x:
+        (self.width * (self.open_progress - 1)) \
+        if self.anchor == "left" \
+        else (Window.width - self.width * self.open_progress)
     elevation: 10
-    x: self.drawer_x - self.width
 """
 )
 
@@ -182,19 +191,21 @@ class NavigationDrawerContentError(Exception):
 
 
 class NavigationLayout(FloatLayout):
-    _cache = []
-    _color = None
-    _rectangle = None
+    _scrim_color = ObjectProperty(None)
+    _scrim_rectangle = ObjectProperty(None)
 
-    def add_canvas(self, widget):
+    def add_scrim(self, widget):
         with widget.canvas.after:
-            self._color = Color(rgba=[0, 0, 0, 0])
-            self._rectangle = Rectangle(pos=widget.pos, size=widget.size)
-            widget.bind(pos=self.update_rect, size=self.update_rect)
+            self._scrim_color = Color(rgba=[0, 0, 0, 0])
+            self._scrim_rectangle = Rectangle(pos=widget.pos, size=widget.size)
+            widget.bind(
+                pos=self.update_scrim_rectangle,
+                size=self.update_scrim_rectangle,
+            )
 
-    def update_rect(self, *args):
-        self._rectangle.pos = self.pos
-        self._rectangle.size = self.size
+    def update_scrim_rectangle(self, *args):
+        self._scrim_rectangle.pos = self.pos
+        self._scrim_rectangle.size = self.size
 
     def add_widget(self, widget, index=0, canvas=None):
         """Only two layouts are allowed:
@@ -202,108 +213,229 @@ class NavigationLayout(FloatLayout):
 
         """
 
-        if (
-            widget.__class__ is MDNavigationDrawer
-            or widget.__class__ is ScreenManager
-            or widget.__class__ is MDToolbar
+        if not isinstance(
+            widget, (MDNavigationDrawer, ScreenManager, MDToolbar)
         ):
-            if widget.__class__ is ScreenManager:
-                self.add_canvas(widget)
-            self._cache.append(widget)
-            if len(self._cache) > 3:
-                raise NavigationDrawerContentError(
-                    "The NavigationLayoutNew should contain "
-                    "only MDNavigationDrawer class and only ScreenManager class"
-                )
-            return super().add_widget(widget)
+            raise NavigationDrawerContentError(
+                "The NavigationLayout should contain "
+                "only MDNavigationDrawer and ScreenManager"
+            )
+        if isinstance(widget, ScreenManager):
+            self.add_scrim(widget)
+        if len(self.children) > 3:
+            raise NavigationDrawerContentError(
+                "The NavigationLayout should contain "
+                "only MDNavigationDrawer and ScreenManager"
+            )
+        return super().add_widget(widget)
 
 
 class MDNavigationDrawer(MDCard):
-    side_panel_width = (
-        (dp(320) * 80) // 100 if dp(320) >= Window.width else dp(320)
-    )
-    """The width of the hidden side panel. Defaults to the minimum of
-    320dp or half the NavigationDrawer width."""
+    anchor = OptionProperty("left", options=("left", "right"))
+    """Anchoring screen edge for drawer. Set it to "right" for right-to-left
+    languages."""
 
-    anim_time = NumericProperty(0.2)
-    """The time taken for the panel to slide to the open/closed state when
-    released or manually animated with anim_to_state."""
+    close_on_click = BooleanProperty(True)
+    """Close when click on scrim or keyboard escape."""
+
+    state = OptionProperty("close", options=("close", "open"))
+    """Indicates if panel closed or opened. Sets after :attr:`status` change."""
+
+    status = OptionProperty(
+        "closed",
+        options=(
+            "closed",
+            "opening_with_swipe",
+            "opening_with_animation",
+            "opened",
+            "closing_with_swipe",
+            "closing_with_animation",
+        ),
+    )
+    """Detailed state. Sets before :attr:`state`. Bind to :attr:`state` instead
+    of :attr:`status`."""
+
+    open_progress = NumericProperty(0.0)
+    """Percent of visible part of side panel. The percent is specified as a
+    floating point number in the range 0-1. 0.0 if panel is closed and 1.0 if
+    panel is opened."""
+
+    swipe_distance = NumericProperty(10)
+    """The distance of the swipe with which the movement of navigation drawer
+    begins."""
+
+    swipe_edge_width = NumericProperty(20)
+    """The size of the area in px inside which should start swipe to drag
+    navigation drawer."""
+
+    scrim_color = ListProperty([0, 0, 0, 0.5])
+    """Color for scrim. Alpha channel will be multiplied with
+    :attr:`_scrim_alpha`. Set fourth channel to 0 if you want to disable
+    scrim."""
+
+    def _get_scrim_alpha(self):
+        _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
+        if isinstance(self.parent, NavigationLayout):
+            self.parent._scrim_color.rgba = self.scrim_color[:3] + [
+                self.scrim_color[3] * _scrim_alpha
+            ]
+        return _scrim_alpha
+
+    _scrim_alpha = AliasProperty(
+        _get_scrim_alpha,
+        None,
+        bind=("_scrim_alpha_transition", "open_progress", "scrim_color"),
+    )
+    """Multiplier for alpha channel of :attr:`scrim_color`. For internal
+    usage only."""
+
+    scrim_alpha_transition = StringProperty("linear")
+    """The name of the animation transition type to use for changing
+    :attr:`scrim_alpha`. Defaults to 'linear'."""
+
+    def _get_scrim_alpha_transition(self):
+        return getattr(AnimationTransition, self.scrim_alpha_transition)
+
+    _scrim_alpha_transition = AliasProperty(
+        _get_scrim_alpha_transition,
+        None,
+        bind=("scrim_alpha_transition",),
+        cache=True,
+    )
 
     opening_transition = StringProperty("out_cubic")
     """The name of the animation transition type to use when animating to
-    an open state. Defaults to 'out_cubic'."""
+    the :attr:`state` "open". Defaults to 'out_cubic'."""
+
+    opening_time = NumericProperty(0.2)
+    """The time taken for the panel to slide to the :attr:`state` "open"."""
 
     closing_transition = StringProperty("out_sine")
     """The name of the animation transition type to use when animating to
-    a closed state. Defaults to 'out_sine'."""
+    the :attr:`state` "close". Defaults to 'out_sine'."""
 
-    swipe_distance = NumericProperty(10)
-    """The size of the area with which the movement of navigation drawer begins."""
+    closing_time = NumericProperty(0.2)
+    """The time taken for the panel to slide to the :attr:`state` "close"."""
 
-    state = StringProperty("close")
-    """Closed or open panel."""
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(
+            open_progress=self.update_status,
+            status=self.update_status,
+            state=self.update_status,
+        )
+        Window.bind(on_keyboard=self._handle_keyboard)
 
-    _count_distance = False
-    _direction = "unknown"
-    __state = "close"
+    def set_state(self, new_state="toggle", animation=True):
+        """Change state of the side panel.
 
-    def _on_touch_move(self, touch):
-        if touch.dx > 0:
-            if self.drawer_x < self.width:
-                self._direction = "right"
-                if self.drawer_x < self.width:
-                    self.drawer_x += abs(touch.dx)
-        else:
-            if self.drawer_x > 0:
-                self._direction = "left"
-                self.drawer_x -= abs(touch.dx)
+        new_state can be one of "toggle", "open" or "close"."""
+        if new_state == "toggle":
+            new_state = "close" if self.state == "open" else "open"
+
+        if new_state == "open":
+            Animation.cancel_all(self, "open_progress")
+            self.status = "opening_with_animation"
+            if animation:
+                Animation(
+                    open_progress=1.0,
+                    d=self.opening_time * (1 - self.open_progress),
+                    t=self.opening_transition,
+                ).start(self)
+            else:
+                self.open_progress = 1
+        else:  # "close"
+            Animation.cancel_all(self, "open_progress")
+            self.status = "closing_with_animation"
+            if animation:
+                Animation(
+                    open_progress=0.0,
+                    d=self.closing_time * self.open_progress,
+                    t=self.closing_transition,
+                ).start(self)
+            else:
+                self.open_progress = 0
+
+    def toggle_nav_drawer(self):
+        Logger.warning(
+            "KivyMD: The 'toggle_nav_drawer' method is deprecated, "
+            "use 'set_state' instead."
+        )
+        self.set_state("toggle", animation=True)
+
+    def update_status(self, *_):
+        status = self.status
+        if status == "closed":
+            self.state = "close"
+        elif status == "opened":
+            self.state = "open"
+        elif self.open_progress == 1 and status == "opening_with_animation":
+            self.status = "opened"
+            self.state = "open"
+        elif self.open_progress == 0 and status == "closing_with_animation":
+            self.status = "closed"
+            self.state = "close"
+        elif status in (
+            "opening_with_swipe",
+            "opening_with_animation",
+            "closing_with_swipe",
+            "closing_with_animation",
+        ):
+            pass
+
+    def get_dist_from_side(self, x):
+        if self.anchor == "left":
+            return 0 if x < 0 else x
+        return 0 if x > Window.width else Window.width - x
+
+    def on_touch_down(self, touch):
+        if self.status == "closed":
+            return False
+        elif self.status == "opened":
+            for child in self.children[:]:
+                if child.dispatch("on_touch_down", touch):
+                    return True
+        return True
 
     def on_touch_move(self, touch):
-        if self.__state == "close":
-            if self.swipe_distance > touch.x or self._count_distance is True:
-                self._count_distance = True
-                self._on_touch_move(touch)
-        else:
-            self._on_touch_move(touch)
+        if self.status == "closed":
+            if (
+                self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
+                and abs(touch.x - touch.ox) > self.swipe_distance
+            ):
+                self.status = "opening_with_swipe"
+        elif self.status == "opened":
+            self.status = "closing_with_swipe"
+
+        if self.status in ("opening_with_swipe", "closing_with_swipe"):
+            self.open_progress = max(
+                min(self.open_progress + touch.dx / self.width, 1), 0
+            )
+            return True
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        if self._direction == "right":
-            self.animation_open()
-        elif self._direction == "left":
-            self.animation_close()
-        self._direction = "unknown"
-        self._count_distance = False
-        return super().on_touch_up(touch)
+        if self.status == "opening_with_swipe":
+            if self.open_progress > 0.5:
+                self.set_state("open", animation=True)
+            else:
+                self.set_state("close", animation=True)
+        elif self.status == "closing_with_swipe":
+            if self.open_progress < 0.5:
+                self.set_state("close", animation=True)
+            else:
+                self.set_state("open", animation=True)
+        elif self.status == "opened":
+            if (
+                self.close_on_click
+                and self.get_dist_from_side(touch.ox) > self.width
+            ):
+                self.set_state("close", animation=True)
+        elif self.status == "closed":
+            return False
+        return True
 
-    def animation_open(self):
-        anim = Animation(
-            drawer_x=self.side_panel_width,
-            d=self.anim_time,
-            t=self.opening_transition,
-        )
-        anim.bind(on_progress=self._on_progress_open)
-        anim.start(self)
-        self.__state = "open"
-        self.state = self.__state
-
-    def animation_close(self):
-        anim = Animation(
-            drawer_x=0, d=self.anim_time, t=self.closing_transition
-        )
-        anim.bind(on_progress=self._on_progress_close)
-        anim.start(self)
-        self.__state = "close"
-        self.state = self.__state
-
-    def toggle_nav_drawer(self):
-        if self.__state == "open":
-            self.animation_close()
-        elif self.__state == "close":
-            self.animation_open()
-
-    def _on_progress_open(self, animation, widget, progress):
-        self.parent._color.rgba = [0, 0, 0, progress / 2]
-
-    def _on_progress_close(self, animation, widget, progress):
-        self.parent._color.rgba = [0, 0, 0, 0.5 - progress]
+    def _handle_keyboard(self, window, key, *largs):
+        if key == 27 and self.status == "opened" and self.close_on_click:
+            self.set_state("close")
+            return True

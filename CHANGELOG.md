@@ -10,6 +10,7 @@ Change Log
 * Remove `MDTextFieldClear` class
 * `NavigationLayout` allowed to add `MDToolbar` class
 * Added ability to control range of dates to be active in `MDDatePicker` class
+* Updated MDNavigationDrawer realization.
 
 [See changes](https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...master)
 ```bash

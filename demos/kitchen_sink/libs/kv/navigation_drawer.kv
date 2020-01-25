@@ -1,4 +1,5 @@
 #:import images_path kivymd.images_path
+#:import version kivymd.__version__
 
 
 <KitchenSinkContentNavigationDrawer>
@@ -31,11 +32,11 @@
                 icon: "close"
                 x: root.parent.x + dp(10)
                 pos_hint: {"top": 1}
-                on_release: root.parent.toggle_nav_drawer()
+                on_release: root.parent.set_state()
 
             MDLabel:
                 markup: True
-                text: "[b]KivyMD[/b]\nVersion: 0.102.1"
+                text: f"[b]KivyMD[/b]\nVersion: {version}"
                 x: root.parent.x + dp(10)
                 y: root.height - top_box.height + dp(10)
                 size_hint_y: None
@@ -67,7 +68,7 @@
                         title: "Navigation Drawer"
                         md_bg_color: app.theme_cls.primary_color
                         elevation: 10
-                        left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state("toggle")]]
                         right_action_items: [['arrow-left', lambda x: app.back_to_home_screen()]]
 
                     Widget:

@@ -128,6 +128,7 @@ from kivy.properties import (
     ListProperty,
     BooleanProperty,
     ObjectProperty,
+    NumericProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -182,6 +183,7 @@ Builder.load_string(
     orientation: 'vertical'
     size_hint: None, None
     size: root.card_size
+    card_size: Window.width - 10, dp(335)
 
     SmartTileWithLabel:
         source: root.source
@@ -215,6 +217,7 @@ Builder.load_string(
     orientation: 'vertical'
     size_hint: None, None
     size: root.card_size
+    card_size: (Window.width - 10, dp(180))
 
     FloatLayout:
 
@@ -319,7 +322,7 @@ class MDCard(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
     b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
     a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
 
-    border_radius = BoundedNumericProperty(dp(3), min=0)
+    border_radius = NumericProperty("3dp")
     border_color_a = BoundedNumericProperty(0, min=0.0, max=1.0)
     md_bg_color = ReferenceListProperty(r, g, b, a)
     background = StringProperty()
@@ -337,14 +340,14 @@ class CardPostImage(BoxLayout):
     tile_font_style = StringProperty("H5")
     tile_text_color = ListProperty([1, 1, 1, 1])
     callback = ObjectProperty(lambda *x: None)
-    card_size = ListProperty((Window.width - 10, dp(335)))
+    card_size = ListProperty((0, 0))
 
 
 class MDCardPost(BoxLayout):
     name_data = StringProperty("Name Author\nDate and time")
     text_post = StringProperty("Your text post...")
     path_to_avatar = StringProperty("data/logo/kivy-icon-512.png")
-    card_size = ListProperty((Window.width - 10, dp(180)))
+    card_size = ListProperty((0, 0))
 
     source = StringProperty()
     tile_text = StringProperty("Title")

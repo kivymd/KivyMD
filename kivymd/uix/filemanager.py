@@ -393,7 +393,7 @@ class ModifiedBaseListItem(
         "Full", options=["Full", "Inset", None], allownone=True
     )
 
-    _txt_left_pad = NumericProperty(dp(16))
+    _txt_left_pad = NumericProperty("16dp")
     _txt_top_pad = NumericProperty()
     _txt_bot_pad = NumericProperty()
     _txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
@@ -403,8 +403,8 @@ class ModifiedBaseListItem(
 class ModifiedOneLineListItem(ModifiedBaseListItem):
     """A one line list item"""
 
-    _txt_top_pad = NumericProperty(dp(16))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("16dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _num_lines = 1
 
     def __init__(self, **kwargs):
@@ -468,7 +468,7 @@ class ContainerSupport:
 
 
 class ModifiedOneLineIconListItem(ContainerSupport, ModifiedOneLineListItem):
-    _txt_left_pad = NumericProperty(dp(72))
+    _txt_left_pad = NumericProperty("72dp")
 
 
 class IconFolder(ILeftBodyTouch, MDIconButton):

@@ -157,7 +157,7 @@ class _RefreshScrollEffect(DampedScrollEffect):
     If you need any documentation please look at kivy.effects.dampedscrolleffect.
     """
 
-    min_scroll_to_reload = NumericProperty(-dp(100))
+    min_scroll_to_reload = NumericProperty("-100dp")
     """Minimum overscroll value to reload."""
 
     def on_overscroll(self, scrollview, overscroll):

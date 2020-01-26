@@ -333,8 +333,8 @@ class MDList(GridLayout):
     """
 
     selected = ObjectProperty()
-    _min_list_height = dp(16)
-    _list_vertical_padding = dp(8)
+    _min_list_height = NumericProperty("16dp")
+    _list_vertical_padding = NumericProperty("8dp")
 
     icon = StringProperty()
 
@@ -404,7 +404,7 @@ class BaseListItem(
         "Full", options=["Full", "Inset", None], allownone=True
     )
 
-    _txt_left_pad = NumericProperty(dp(16))
+    _txt_left_pad = NumericProperty("16dp")
     _txt_top_pad = NumericProperty()
     _txt_bot_pad = NumericProperty()
     _txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
@@ -506,8 +506,8 @@ class ContainerSupport:
 class OneLineListItem(BaseListItem):
     """A one line list item"""
 
-    _txt_top_pad = NumericProperty(dp(16))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("16dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 1
 
@@ -519,8 +519,8 @@ class OneLineListItem(BaseListItem):
 class TwoLineListItem(BaseListItem):
     """A two line list item"""
 
-    _txt_top_pad = NumericProperty(dp(20))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("20dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
 
     def __init__(self, **kwargs):
@@ -531,8 +531,8 @@ class TwoLineListItem(BaseListItem):
 class ThreeLineListItem(BaseListItem):
     """A three line list item"""
 
-    _txt_top_pad = NumericProperty(dp(16))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("16dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 3
 
@@ -542,9 +542,9 @@ class ThreeLineListItem(BaseListItem):
 
 
 class OneLineAvatarListItem(ContainerSupport, BaseListItem):
-    _txt_left_pad = NumericProperty(dp(72))
-    _txt_top_pad = NumericProperty(dp(20))
-    _txt_bot_pad = NumericProperty(dp(19))  # dp(24) - dp(5)
+    _txt_left_pad = NumericProperty("72dp")
+    _txt_top_pad = NumericProperty("20dp")
+    _txt_bot_pad = NumericProperty("19dp")  # dp(24) - dp(5)
     _height = NumericProperty()
     _num_lines = 1
 
@@ -554,8 +554,8 @@ class OneLineAvatarListItem(ContainerSupport, BaseListItem):
 
 
 class TwoLineAvatarListItem(OneLineAvatarListItem):
-    _txt_top_pad = NumericProperty(dp(20))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("20dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 2
 
@@ -565,16 +565,16 @@ class TwoLineAvatarListItem(OneLineAvatarListItem):
 
 
 class ThreeLineAvatarListItem(ContainerSupport, ThreeLineListItem):
-    _txt_left_pad = NumericProperty(dp(72))
+    _txt_left_pad = NumericProperty("72dp")
 
 
 class OneLineIconListItem(ContainerSupport, OneLineListItem):
-    _txt_left_pad = NumericProperty(dp(72))
+    _txt_left_pad = NumericProperty("72dp")
 
 
 class TwoLineIconListItem(OneLineIconListItem):
-    _txt_top_pad = NumericProperty(dp(20))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("20dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 2
 
@@ -584,17 +584,21 @@ class TwoLineIconListItem(OneLineIconListItem):
 
 
 class ThreeLineIconListItem(ContainerSupport, ThreeLineListItem):
-    _txt_left_pad = NumericProperty(dp(72))
+    _txt_left_pad = NumericProperty("72dp")
 
 
 class OneLineRightIconListItem(ContainerSupport, OneLineListItem):
     # dp(40) = dp(16) + dp(24):
-    _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+    _txt_right_pad = NumericProperty("40dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class TwoLineRightIconListItem(OneLineRightIconListItem):
-    _txt_top_pad = NumericProperty(dp(20))
-    _txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+    _txt_top_pad = NumericProperty("20dp")
+    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
     _height = NumericProperty()
     _num_lines = 2
 
@@ -605,22 +609,38 @@ class TwoLineRightIconListItem(OneLineRightIconListItem):
 
 class ThreeLineRightIconListItem(ContainerSupport, ThreeLineListItem):
     # dp(40) = dp(16) + dp(24):
-    _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+    _txt_right_pad = NumericProperty("40dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class OneLineAvatarIconListItem(OneLineAvatarListItem):
     # dp(40) = dp(16) + dp(24):
-    _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+    _txt_right_pad = NumericProperty("40dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class TwoLineAvatarIconListItem(TwoLineAvatarListItem):
     # dp(40) = dp(16) + dp(24):
-    _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+    _txt_right_pad = NumericProperty("40dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
     # dp(40) = dp(16) + dp(24):
-    _txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+    _txt_right_pad = NumericProperty("40dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class ImageLeftWidget(ILeftBody, Image):

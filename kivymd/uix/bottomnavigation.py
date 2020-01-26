@@ -247,10 +247,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     panel_color = ListProperty([1, 1, 1, 0])
 
     width = BoundedNumericProperty(
-        dp(0),
-        min=dp(80),
-        max=dp(168),
-        errorhandler=lambda x: small_error_warn(x),
+        0, min=80, max=168, errorhandler=lambda x: small_error_warn(x)
     )
     tab = ObjectProperty()
     panel = ObjectProperty()
@@ -258,7 +255,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     text = StringProperty()
 
     _label = ObjectProperty()
-    _label_font_size = NumericProperty(sp(12))
+    _label_font_size = NumericProperty("12sp")
     _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
     _capitalized_text = StringProperty()
 

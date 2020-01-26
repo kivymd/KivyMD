@@ -14,9 +14,13 @@ This file is distributed under the terms of the same license,
 as the Kivy framework.
 """
 
+import os
 from kivy.utils import platform
 from kivy.core.window import Window
 from kivy.metrics import dp
+
+if "KIVY_DOC_INCLUDE" in os.environ:
+    dp = lambda x: x
 
 # Feel free to override this const if you're designing for a device such as
 # a GNU/Linux tablet.

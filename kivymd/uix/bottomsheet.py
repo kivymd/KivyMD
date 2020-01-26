@@ -358,6 +358,7 @@ Builder.load_string(
     md_bg_color: root.value_transparent
     _upper_padding: _upper_padding
     _gl_content: _gl_content
+    _position_content: Window.height
 
     BoxLayout:
         size_hint_y: None
@@ -442,7 +443,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
 
     _upper_padding = ObjectProperty()
     _gl_content = ObjectProperty()
-    _position_content = NumericProperty(Window.height)
+    _position_content = NumericProperty()
 
     def open(self, *largs):
         super().open(*largs)

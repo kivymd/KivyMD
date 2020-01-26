@@ -251,7 +251,7 @@ class MDChip(BoxLayout, ThemableBehavior):
     callback = ObjectProperty()
     """Custom method."""
 
-    radius = NumericProperty(dp(12))
+    radius = NumericProperty("12dp")
     """Corner radius values."""
 
     selected_chip_color = ListProperty()

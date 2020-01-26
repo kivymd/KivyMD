@@ -227,7 +227,7 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
     Set to 0 for no limit. Defaults to 0.
     """
 
-    border_margin = NumericProperty(dp(4))
+    border_margin = NumericProperty("4dp")
     """Margin between Window border and menu
     """
 

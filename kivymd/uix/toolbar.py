@@ -303,7 +303,7 @@ class MDToolbar(
     )
     """`MDBottomAppBar` button position."""
 
-    round = NumericProperty(dp(10))
+    round = NumericProperty("10dp")
     """Rounding the corners at the notch for a button in `MDBottomAppBar`"""
 
     icon = StringProperty("android")
@@ -324,7 +324,7 @@ class MDToolbar(
                 type: "bottom"
     """
 
-    _shift = NumericProperty(dp(3.5))
+    _shift = NumericProperty("3.5dp")
     _angle_start = NumericProperty(90)
     _angle_end = NumericProperty(270)
 

@@ -444,10 +444,10 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     error = BooleanProperty(False)
 
     _text_len_error = BooleanProperty(False)
-    _hint_lbl_font_size = NumericProperty(sp(16))
+    _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_hint_text = NumericProperty(0)
     _line_blank_space_left_hint_text = NumericProperty(0)
-    _hint_y = NumericProperty(dp(38))
+    _hint_y = NumericProperty("38dp")
     _line_width = NumericProperty(0)
     _current_line_color = ListProperty([0.0, 0.0, 0.0, 0.0])
     _current_error_color = ListProperty([0.0, 0.0, 0.0, 0.0])

@@ -312,6 +312,7 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.image import Image
+from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 from kivy.properties import (
     StringProperty,
@@ -604,6 +605,7 @@ class BaseButton(
     ButtonBehavior,
     SpecificBackgroundColorBehavior,
     AnchorLayout,
+    Widget,
 ):
     """
     Abstract base class for all MD buttons. This class handles the button's
@@ -868,12 +870,12 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     """
 
     width = BoundedNumericProperty(
-        dp(88), min=dp(88), max=None, errorhandler=lambda x: dp(88)
+        88, min=88, max=None, errorhandler=lambda x: 88
     )
     text = StringProperty("")
-    increment_width = NumericProperty(dp(32))
-    _radius = NumericProperty(dp(2))
-    _height = NumericProperty(dp(0))
+    increment_width = NumericProperty("32dp")
+    _radius = NumericProperty("2dp")
+    _height = NumericProperty(0)
     button_label = BooleanProperty(True)
     can_capitalize = BooleanProperty(True)
 
@@ -927,7 +929,7 @@ class MDRectangleFlatButton(MDFlatButton):
 
 
 class MDRoundFlatButton(MDFlatButton):
-    _radius = NumericProperty(dp(18))
+    _radius = NumericProperty("18dp")
 
     def lay_canvas_instructions(self):
         with self.canvas.after:
@@ -987,4 +989,4 @@ class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
 
 class MDFillRoundFlatIconButton(MDFillRoundFlatButton):
     icon = StringProperty("android")
-    increment_width = dp(80)
+    increment_width = NumericProperty("80dp")

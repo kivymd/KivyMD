@@ -56,6 +56,7 @@ cache
 temp
 .temp
 
+docs/sources/api
 demos/kitchen_sink/assets/*crop.*
 demos/kitchen_sink/assets/sasha-round.png
 kivymd/tools/*.zip

@@ -18,3 +18,6 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+:class:`~collections.Counter`
+:class:`~kivy.app.App`

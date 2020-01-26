@@ -33,7 +33,11 @@ master_doc = "index"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "autoapi.extension"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "autoapi.extension",
+    "sphinx.ext.intersphinx",
+]
 
 # AutoAPI configuration
 autoapi_dirs = ["../../kivymd"]
@@ -54,6 +58,12 @@ autoapi_include_summaries = True
 autoapi_python_class_content = "class"
 autoapi_python_use_implicit_namespaces = False
 autoapi_keep_files = True  # Debug
+
+# InterSphinx configuration
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "kivy": ("https://kivy.org/docs/", None),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

@@ -45,7 +45,10 @@ if __name__ == "__main__":
                 "fonts/*.ttf",
             ]
         },
-        extras_require={},
+        extras_require={
+            "dev": ["black", "pre-commit"],
+            "docs": ["sphinx", "sphinx-autoapi"],
+        },
         install_requires=["kivy", "pillow", "requests"],
         setup_requires=[],
         python_requires=">=3.6",

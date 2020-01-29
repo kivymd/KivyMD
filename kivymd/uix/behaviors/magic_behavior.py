@@ -3,7 +3,7 @@ https://gist.github.com/tshirtman/a1065cf74a788434e1162e342b130df8
 Write by tshirtman - https://github.com/tshirtman
 
 Example:
-=======
+========
 
 from kivymd.app import MDApp
 from kivy.lang import Builder

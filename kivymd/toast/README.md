@@ -29,13 +29,13 @@ from toast.kivytoast import toast
 ```
 
 PROGRAMMING LANGUAGE
-----------------------
+--------------------
 Python 2.7 +
 
 DEPENDENCE
------------
+----------
 The [Kivy] framework (http://kivy.org/docs/installation/installation.html)
 
 LICENSE
---------
+-------
 MIT

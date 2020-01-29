@@ -144,9 +144,6 @@ Python example:
         item.add_widget(ContactPhoto(source=c[2]))
         item.add_widget(MessageButton(phone_number=c[1])
         ml.add_widget(item)
-
-API
----
 """
 
 from kivy.lang import Builder

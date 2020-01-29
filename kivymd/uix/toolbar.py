@@ -185,6 +185,7 @@ Builder.load_string(
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
+    md_bg_color: self.theme_cls.primary_color
 
     canvas:
         Color:

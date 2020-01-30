@@ -23,17 +23,15 @@ reelase = kivymd.__version__
 
 # General configuration
 master_doc = "index"
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-exclude_patterns = ['ext/*', ]
+exclude_patterns = []
 templates_path = ["_templates"]
 locale_dirs = ["_locales"]
 language = "Python"
 
 
 # HTML Theme
-html_theme = 'sphinx_rtd_theme'
-html_theme_path = ['ext/sphinx_rtd_theme']
+html_theme = "alabaster"
+html_static_path = ["_static"]
 html_favicon = "_static/logo-kivymd.png"
 html_theme_options = {
     "description": "Material Design widgets for Kivy",

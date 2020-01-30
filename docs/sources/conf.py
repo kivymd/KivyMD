@@ -36,7 +36,6 @@ html_favicon = "_static/logo-kivymd.png"
 html_logo = "_static/logo-kivymd.png"
 html_theme_options = {
     "canonical_url": "https://kivymd.readthedocs.io/en/latest/",
-    "titles_only": True,
     "navigation_depth": 8,
 }
 

@@ -47,7 +47,7 @@ if __name__ == "__main__":
         },
         extras_require={
             "dev": ["black", "pre-commit"],
-            "docs": ["sphinx", "sphinx-autoapi"],
+            "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],
         },
         install_requires=["kivy", "pillow", "requests"],
         setup_requires=[],

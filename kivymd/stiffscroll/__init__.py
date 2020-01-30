@@ -36,40 +36,69 @@ class StiffScrollEffect(KineticEffect):
     drag."""
 
     min = NumericProperty(0)
-    """Minimum boundary to stop the scrolling at."""
+    """Minimum boundary to stop the scrolling at.
+
+    :attr:`min` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
 
     max = NumericProperty(0)
-    """Maximum boundary to stop the scrolling at."""
+    """Maximum boundary to stop the scrolling at.
+    
+    :attr:`max` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
 
     max_friction = NumericProperty(1)
-    """How hard should it be to scroll, at the worst?"""
+    """How hard should it be to scroll, at the worst? 
+   
+    :attr:`max_friction` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
 
     body = NumericProperty(0.7)
-    """Proportion of the range in which you can scroll unimpeded."""
+    """Proportion of the range in which you can scroll unimpeded.
+   
+    :attr:`body` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.7`.
+    """
 
     scroll = NumericProperty(0.0)
-    """Computed value for scrolling"""
+    """Computed value for scrolling
+       
+    :attr:`scroll` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
 
     transition_min = ObjectProperty(AnimationTransition.in_cubic)
     """The AnimationTransition function to use when adjusting the friction
     near the minimum end of the effect.
 
+    :attr:`transition_min` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `:attr:`kivy.animation.AnimationTransition.in_cubic`.
     """
 
     transition_max = ObjectProperty(AnimationTransition.in_cubic)
     """The AnimationTransition function to use when adjusting the friction
     near the maximum end of the effect.
 
+    :attr:`transition_max` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `:attr:`kivy.animation.AnimationTransition.in_cubic`.
     """
 
     target_widget = ObjectProperty(None, allownone=True, baseclass=Widget)
-    """The widget to apply the effect to."""
+    """The widget to apply the effect to.
+
+    :attr:`target_widget` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to ``None``.
+    """
 
     displacement = NumericProperty(0)
-    """The absolute distance moved in either direction."""
-
-    scroll = NumericProperty(0.0)
-    """The distance to be used for scrolling."""
+    """The absolute distance moved in either direction.
+    
+    :attr:`displacement` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
 
     def __init__(self, **kwargs):
         """Set ``self.base_friction`` to the value of ``self.friction`` just

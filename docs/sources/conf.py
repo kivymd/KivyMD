@@ -30,19 +30,14 @@ language = "Python"
 
 
 # HTML Theme
-html_theme = "alabaster"
+html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 html_favicon = "_static/logo-kivymd.png"
+html_logo = "_static/logo-kivymd.png"
 html_theme_options = {
-    "description": "Material Design widgets for Kivy",
-    "logo": "logo-kivymd.png",
-    "logo_name": True,
-    "github_user": "HeaTTheatR",
-    "github_repo": "KivyMD",
-    "github_button": True,
-    "github_type": "star",
-    "github_count": "true",
-    "travis_button": True,
+    "canonical_url": "https://kivymd.readthedocs.io/en/latest/",
+    "titles_only": True,
+    "navigation_depth": 8,
 }
 
 

@@ -13,9 +13,9 @@ You can turn on the monitor displaying the current ``FPS`` value in your applica
     KV = '''
     Screen:
 
-    MDLabel:
-        text: "Hello, World!"
-        halign: "center"
+        MDLabel:
+            text: "Hello, World!"
+            halign: "center"
     '''
 
     from kivy.lang import Builder

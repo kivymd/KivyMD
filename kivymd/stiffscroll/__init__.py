@@ -33,7 +33,11 @@ from kivy.uix.widget import Widget
 class StiffScrollEffect(KineticEffect):
     drag_threshold = NumericProperty("20sp")
     """Minimum distance to travel before the movement is considered as a
-    drag."""
+    drag.
+
+    :attr:`drag_threshold` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'20sp'`.
+    """
 
     min = NumericProperty(0)
     """Minimum boundary to stop the scrolling at.
@@ -75,7 +79,7 @@ class StiffScrollEffect(KineticEffect):
     near the minimum end of the effect.
 
     :attr:`transition_min` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `:attr:`kivy.animation.AnimationTransition.in_cubic`.
+    and defaults to :class:`kivy.animation.AnimationTransition`.
     """
 
     transition_max = ObjectProperty(AnimationTransition.in_cubic)
@@ -83,7 +87,7 @@ class StiffScrollEffect(KineticEffect):
     near the maximum end of the effect.
 
     :attr:`transition_max` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `:attr:`kivy.animation.AnimationTransition.in_cubic`.
+    and defaults to :class:`kivy.animation.AnimationTransition`.
     """
 
     target_widget = ObjectProperty(None, allownone=True, baseclass=Widget)
@@ -103,7 +107,6 @@ class StiffScrollEffect(KineticEffect):
     def __init__(self, **kwargs):
         """Set ``self.base_friction`` to the value of ``self.friction`` just
         after instantiation, so that I can reset to that value later.
-
         """
 
         super().__init__(**kwargs)
@@ -112,7 +115,6 @@ class StiffScrollEffect(KineticEffect):
     def update_velocity(self, dt):
         """Before actually updating my velocity, meddle with ``self.friction``
         to make it appropriate to where I'm at, currently.
-
         """
 
         hard_min = self.min
@@ -171,7 +173,6 @@ class StiffScrollEffect(KineticEffect):
     def update(self, val, t=None):
         """Reduce the impact of whatever change has been made to me, in
         proportion with my current friction.
-
         """
 
         t = t or time()

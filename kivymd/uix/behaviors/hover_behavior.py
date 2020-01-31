@@ -2,7 +2,7 @@
 HoveraBehaviour
 ===============
 
-.. rubric:: Changing when the mouse is on the widget by O. Poyen.
+.. rubric:: Changing when the mouse is on the widget.
 
 .. code-block:: python
 

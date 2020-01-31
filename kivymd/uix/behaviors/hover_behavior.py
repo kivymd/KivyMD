@@ -1,27 +1,99 @@
-"""Hoverable Behaviour (changing when the mouse is on the widget by O. Poyen.
-License: LGPL
 """
-__author__ = "Olivier POYEN"
-__site__ = "https://gist.github.com/opqopq/15c707dc4cffc2b6455f"
+HoveraBehaviour
+===============
 
+.. rubric:: Changing when the mouse is on the widget by O. Poyen.
+
+.. code-block:: python
+
+    from kivy.factory import Factory
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.label import MDLabel
+    from kivymd.uix.behaviors import HoverBehavior
+
+    Builder.load_string('''
+    #:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+
+
+    <HoverBehaviorExample@Screen>
+
+        MDRaisedButton:
+            text: "Open menu"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
+    ''')
+
+
+    class MenuItem(MDLabel, HoverBehavior):
+        '''Custom menu item implementing hover behavior.'''
+
+        def on_enter(self, *args):
+            '''The method will be called when the mouse cursor
+            is within the borders of the current widget.'''
+
+            self.text_color = [1, 1, 1, 1]
+
+        def on_leave(self, *args):
+            '''The method will be called when the mouse cursor goes beyond
+            the borders of the current widget.'''
+
+            self.text_color = [0, 0, 0, 1]
+
+
+    class Test(MDApp):
+        menu_items = []
+
+        def build(self):
+            self.menu_items = [
+                {
+                    "viewclass": "MenuItem",
+                    "text": "Example item %d" % i,
+                    "theme_text_color": "Custom",
+                    "text_color": [0, 0, 0, 1],
+                    "halign": "center",
+                }
+                for i in range(5)
+            ]
+            return Factory.HoverBehaviorExample()
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hover-behavior.gif
+   :width: 250 px
+   :align: center
+"""
 
 from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.core.window import Window
 
 
 class HoverBehavior(object):
-    """Hover behavior.
+    """
     :Events:
-        `on_enter`
+        :attr:`on_enter`
             Fired when mouse enter the bbox of the widget.
-        `on_leave`
-            Fired when the mouse exit the widget
+        :attr:`on_leave`
+            Fired when the mouse exit the widget.
     """
 
     hovered = BooleanProperty(False)
+    """
+    `True`, if the mouse cursor is within the borders of the widget.
+
+    :attr:`hovered` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     border_point = ObjectProperty(None)
-    """Contains the last relevant point received by the Hoverable. This can
-    be used in `on_enter` or `on_leave` in order to know where was dispatched the event.
+    """Contains the last relevant point received by the Hoverable.
+    This can be used in :attr:`on_enter` or :attr:`on_leave` in order
+    to know where was dispatched the event.
+    
+    :attr:`border_point` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
     """
 
     def __init__(self, **kwargs):
@@ -56,36 +128,3 @@ class HoverBehavior(object):
 from kivy.factory import Factory
 
 Factory.register("HoverBehavior", HoverBehavior)
-
-
-if __name__ == "__main__":
-    from kivy.uix.floatlayout import FloatLayout
-    from kivy.lang import Builder
-    from kivy.uix.label import Label
-    from kivy.base import runTouchApp
-
-    class HoverLabel(Label, HoverBehavior):
-        def on_enter(self, *args):
-            print("You are in, through this point", self)
-
-        def on_leave(self, *args):
-            print("You left through this point", self)
-
-    Builder.load_string(
-        """
-<HoverLabel>:
-    text: "inside" if self.hovered else "outside"
-    pos: 200,200
-    size_hint: None, None
-    size: 100, 30
-    canvas.before:
-        Color:
-            rgb: 1,0,0
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    """
-    )
-    fl = FloatLayout()
-    fl.add_widget(HoverLabel())
-    runTouchApp(fl)

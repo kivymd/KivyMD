@@ -210,6 +210,7 @@ class ThemeManager(EventDispatcher):
         MainApp().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-colors-light-dark.png
+        :align: center
 
     :attr:`primary_light` is an :class:`~kivy.properties.AliasProperty` that
     returns the value of the current application theme (in lighter color),

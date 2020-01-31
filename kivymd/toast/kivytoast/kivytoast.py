@@ -2,49 +2,43 @@
 KivyToast
 =========
 
-Copyright (c) 2019 Ivanov Yuri
+.. rubric:: Implementation of toasts for desktop.
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
+.. code-block:: python
 
-This file is distributed under the terms of the same license,
-as the Kivy framework.
+    from kivymd.app import MDApp
+    from kivymd.toast import toast
 
-Example:
+    KV = '''
+    BoxLayout:
+        orientation:'vertical'
 
-from kivymd.app import MDApp
-from kivymd.theming import ThemeManager
-from kivymd.toast.kivytoast.kivytoast import toast
+        MDToolbar:
+            id: toolbar
+            title: 'Test Toast'
+            md_bg_color: app.theme_cls.primary_color
+            left_action_items: [['menu', lambda x: '']]
+
+        FloatLayout:
+
+            MDRaisedButton:
+                text: 'TEST KIVY TOAST'
+                on_release: app.show_toast()
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+    '''
 
 
-class Test(MDApp):
+    class Test(MDApp):
+        def show_toast(self):
+            '''Displays a toast on the screen.'''
 
-    def show_toast(self):
-        toast('Test Kivy Toast')
+            toast('Test Kivy Toast')
 
-    def build(self):
-        return Builder.load_string(
-            '''
-BoxLayout:
-    orientation:'vertical'
+        def build(self):
+            return Builder.load_string(KV)
 
-    MDToolbar:
-        id: toolbar
-        title: 'Test Toast'
-        md_bg_color: app.theme_cls.primary_color
-        left_action_items: [['menu', lambda x: '']]
-
-    FloatLayout:
-
-        MDRaisedButton:
-            text: 'TEST KIVY TOAST'
-            on_release: app.show_toast()
-            pos_hint: {'center_x': .5, 'center_y': .5}
-
-'''
-        )
-
-Test().run()
+    Test().run()
 """
 
 from kivy.core.window import Window
@@ -74,6 +68,12 @@ Builder.load_string(
 
 class Toast(ModalView):
     duration = NumericProperty(2.5)
+    """
+    The amount of time (in seconds) that the toast is visible on the screen.
+
+    :attr:`duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `2.5`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -122,5 +122,10 @@ class Toast(ModalView):
         return True
 
 
-def toast(text, duration=2.5):
+def toast(text: str, duration=2.5):
+    """Displays a toast.
+
+    :duration: The amount of time (in seconds) that the toast is visible on the screen.
+    """
+
     Toast(duration=duration).toast(text)

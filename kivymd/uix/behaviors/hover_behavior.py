@@ -1,8 +1,29 @@
 """
-HoveraBehaviour
-===============
+HoverBehaviour
+==============
 
 .. rubric:: Changing when the mouse is on the widget.
+
+To apply hover behavior, you must create a new class that is inherited from the
+widget to which you apply the behavior and from the :attr:`HoverBehavior` class.
+
+In `KV file`:
+
+.. code-block:: kv
+
+    <MenuItem@MDLabel+HoverBehavior>
+
+In `python file`:
+
+.. code-block:: python
+
+    class MenuItem(MDLabel, HoverBehavior):
+        '''Custom menu item implementing hover behavior.'''
+
+After creating a class, you must define two methods for it:
+:attr:`HoverBehavior.on_enter` and :attr:`HoverBehavior.on_leave`, which will be automatically called
+when the mouse cursor is over the widget and when the mouse cursor goes beyond
+the widget.
 
 .. code-block:: python
 
@@ -119,9 +140,13 @@ class HoverBehavior(object):
             self.dispatch("on_leave")
 
     def on_enter(self):
+        """Fired when mouse enter the bbox of the widget."""
+
         pass
 
     def on_leave(self):
+        """Fired when the mouse exit the widget."""
+
         pass
 
 

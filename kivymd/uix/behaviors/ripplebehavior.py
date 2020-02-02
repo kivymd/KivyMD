@@ -63,14 +63,14 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
     KV = '''
     Screen:
 
-        CircularRippleButton:
+        RectangularRippleButton:
             size_hint: None, None
             size: "250dp", "50dp"
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
 
 
-    class CircularRippleButton(
+    class RectangularRippleButton(
         RectangularRippleBehavior, ButtonBehavior, BackgroundColorBehavior
     ):
         md_bg_color = [0, 0, 1, 1]

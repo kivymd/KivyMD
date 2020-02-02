@@ -185,12 +185,12 @@ class Thumb(
     ripple_scale = NumericProperty(2)
 
     def _set_ellipse(self, instance, value):
-        self.ellipse.size = (self.ripple_rad, self.ripple_rad)
+        self.ellipse.size = (self._ripple_rad, self._ripple_rad)
         if self.ellipse.size[0] > self.width * 1.5 and not self._fading_out:
             self.fade_out()
         self.ellipse.pos = (
-            self.center_x - self.ripple_rad / 2.0,
-            self.center_y - self.ripple_rad / 2.0,
+            self.center_x - self._ripple_rad / 2.0,
+            self.center_y - self._ripple_rad / 2.0,
         )
         self.stencil.pos = (
             self.center_x - (self.width * self.ripple_scale) / 2,

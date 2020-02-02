@@ -97,7 +97,7 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
     """See :attr:`kivymd.color_definitions.hue`.
 
     :attr:`background_hue` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `500`.
+    and defaults to `'500'`.
     """
 
     specific_text_color = ListProperty([0, 0, 0, 0.87])

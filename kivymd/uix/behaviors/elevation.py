@@ -2,16 +2,121 @@
 Elevation Behavior
 ==================
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
+.. rubric:: Classes implements a circular and rectangular elevation effects.
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
+To create a widget with rectangular or circular elevation effect,
+you must create a new class that inherits from the
+:class:`~RectangularElevationBehavior` or :class:`~CircularElevationBehavior`
+class.
 
-This file is distributed under the terms of the same license,
-as the Kivy framework.
+For example, let's create an button with a rectangular elevation effect:
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.behaviors import ButtonBehavior
+
+    from kivymd.app import MDApp
+    from kivymd.uix.behaviors import (
+        RectangularRippleBehavior,
+        BackgroundColorBehavior,
+        RectangularElevationBehavior,
+    )
+
+    KV = '''
+    <RectangularElevationButton>:
+        size_hint: None, None
+        size: "250dp", "50dp"
+
+
+    Screen:
+
+        # With elevation effect
+        RectangularElevationButton:
+            pos_hint: {"center_x": .5, "center_y": .6}
+            elevation: 11
+
+        # Without elevation effect
+        RectangularElevationButton:
+            pos_hint: {"center_x": .5, "center_y": .4}
+    '''
+
+
+    class RectangularElevationButton(
+        RectangularRippleBehavior,
+        RectangularElevationBehavior,
+        ButtonBehavior,
+        BackgroundColorBehavior,
+    ):
+        md_bg_color = [0, 0, 1, 1]
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/rectangular-elevation-effect.gif
+    :align: center
+
+Similarly, create a button with a circular elevation effect:
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.image import Image
+    from kivy.uix.behaviors import ButtonBehavior
+
+    from kivymd.app import MDApp
+    from kivymd.uix.behaviors import (
+        CircularRippleBehavior,
+        CircularElevationBehavior,
+    )
+
+    KV = '''
+    #:import images_path kivymd.images_path
+
+
+    <CircularElevationButton>:
+        size_hint: None, None
+        size: "100dp", "100dp"
+        source: f"{images_path}/kivymd_logo.png"
+
+
+    Screen:
+
+        # With elevation effect
+        CircularElevationButton:
+            pos_hint: {"center_x": .5, "center_y": .6}
+            elevation: 5
+
+        # Without elevation effect
+        CircularElevationButton:
+            pos_hint: {"center_x": .5, "center_y": .4}
+            elevation: 0
+    '''
+
+
+    class CircularElevationButton(
+        CircularRippleBehavior,
+        CircularElevationBehavior,
+        ButtonBehavior,
+        Image,
+    ):
+        md_bg_color = [0, 0, 1, 1]
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-effect.gif
+    :align: center
 """
 
 from kivy.app import App
@@ -75,6 +180,12 @@ class CommonElevationBehavior(object):
     elevation = AliasProperty(
         _get_elevation, _set_elevation, bind=("_elevation",)
     )
+    """
+    Elevation value.
+
+    :attr:`elevation` is an :class:`~kivy.properties.AliasProperty` that
+    returns the value for :attr:`elevation`.
+    """
 
     _soft_shadow_texture = ObjectProperty()
     _soft_shadow_size = ListProperty([0, 0])

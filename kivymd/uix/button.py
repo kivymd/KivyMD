@@ -940,10 +940,10 @@ class MDRoundFlatButton(MDFlatButton):
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
-                size=(self.ripple_rad, self.ripple_rad),
+                size=(self._ripple_rad, self._ripple_rad),
                 pos=(
-                    self.ripple_pos[0] - self.ripple_rad / 2.0,
-                    self.ripple_pos[1] - self.ripple_rad / 2.0,
+                    self.ripple_pos[0] - self._ripple_rad / 2.0,
+                    self.ripple_pos[1] - self._ripple_rad / 2.0,
                 ),
             )
             StencilUnUse()
@@ -951,7 +951,7 @@ class MDRoundFlatButton(MDFlatButton):
                 size=self.size, pos=self.pos, radius=[self._radius]
             )
             StencilPop()
-        self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+        self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
 
 class MDTextButton(ThemableBehavior, Button):

@@ -2,16 +2,90 @@
 Ripple Behavior
 ===============
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
+.. rubric:: Classes implements a circular and rectangular ripple effects.
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
+To create a widget with сircular ripple effect, you must create a new class
+that inherits from the :class:`~CircularRippleBehavior` class.
 
-This file is distributed under the terms of the same license,
-as the Kivy framework.
+For example, let's create an image button with a circular ripple effect:
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.behaviors import ButtonBehavior
+    from kivy.uix.image import Image
+
+    from kivymd.app import MDApp
+    from kivymd.uix.behaviors import CircularRippleBehavior
+
+    KV = '''
+    #:import images_path kivymd.images_path
+
+
+    Screen:
+
+        CircularRippleButton:
+            source: f"{images_path}/kivymd_logo.png"
+            size_hint: None, None
+            size: "250dp", "250dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class CircularRippleButton(CircularRippleBehavior, ButtonBehavior, Image):
+        def __init__(self, **kwargs):
+            self.ripple_scale = 0.85
+            super().__init__(**kwargs)
+
+
+    class Example(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-ripple-effect.gif
+    :align: center
+
+To create a widget with rectangularRippleBehavior ripple effect, you must create a new class
+that inherits from the :class:`~RectangularRippleBehavior` class:
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.behaviors import ButtonBehavior
+
+    from kivymd.app import MDApp
+    from kivymd.uix.behaviors import RectangularRippleBehavior, BackgroundColorBehavior
+
+    KV = '''
+    Screen:
+
+        CircularRippleButton:
+            size_hint: None, None
+            size: "250dp", "50dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class CircularRippleButton(
+        RectangularRippleBehavior, ButtonBehavior, BackgroundColorBehavior
+    ):
+        md_bg_color = [0, 0, 1, 1]
+
+
+    class Example(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/rectangular-ripple-effect.gif
+    :align: center
 """
 
 from kivy.properties import (
@@ -33,22 +107,93 @@ from kivy.graphics import (
 
 
 class CommonRipple(object):
-    ripple_rad = NumericProperty()
-    ripple_rad_default = NumericProperty(1)
-    ripple_post = ListProperty()
-    ripple_color = ListProperty()
-    ripple_alpha = NumericProperty(0.5)
-    ripple_scale = NumericProperty(None)
-    ripple_duration_in_fast = NumericProperty(0.3)
-    # FIXME: These speeds should be calculated based on widget size in dp
-    ripple_duration_in_slow = NumericProperty(2)
-    ripple_duration_out = NumericProperty(0.3)
-    ripple_func_in = StringProperty("out_quad")
-    ripple_func_out = StringProperty("out_quad")
+    """Base class for ripple effect."""
 
-    doing_ripple = BooleanProperty(False)
-    finishing_ripple = BooleanProperty(False)
-    fading_out = BooleanProperty(False)
+    ripple_rad_default = NumericProperty(1)
+    """
+    Default value of the ripple effect radius.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-rad-default.gif
+       :align: center
+
+    :attr:`ripple_rad_default` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    ripple_color = ListProperty()
+    """
+    Ripple color in ``rgba`` format.
+
+    :attr:`ripple_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    ripple_alpha = NumericProperty(0.5)
+    """
+    Alpha channel values for ripple effect.
+
+    :attr:`ripple_alpha` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.5`.
+    """
+
+    ripple_scale = NumericProperty(None)
+    """
+    Ripple effect scale.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-scale-1.gif
+       :align: center
+
+    :attr:`ripple_scale` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `None`.
+    """
+
+    ripple_duration_in_fast = NumericProperty(0.3)
+    """
+    Ripple duration when touching to widget.
+    
+    :attr:`ripple_duration_in_fast` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.3`.
+    """
+
+    ripple_duration_in_slow = NumericProperty(2)
+    """
+    Ripple duration when long touching to widget.
+
+    :attr:`ripple_duration_in_slow` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `2`.
+    """
+
+    ripple_duration_out = NumericProperty(0.3)
+    """
+    The duration of the disappearance of the wave effect.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-duration-out.gif
+       :align: center
+
+    :attr:`ripple_duration_out` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.3`.
+    """
+
+    ripple_func_in = StringProperty("out_quad")
+    """
+    Type of animation for ripple in effect.
+
+    :attr:`ripple_func_in` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_quad'`.
+    """
+
+    ripple_func_out = StringProperty("out_quad")
+    """
+    Type of animation for ripple out effect.
+
+    :attr:`ripple_func_in` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'ripple_func_out'`.
+    """
+
+    _ripple_rad = NumericProperty()
+    _doing_ripple = BooleanProperty(False)
+    _finishing_ripple = BooleanProperty(False)
+    _fading_out = BooleanProperty(False)
     _no_ripple_effect = BooleanProperty(False)
 
     def on_touch_down(self, touch):
@@ -58,12 +203,12 @@ class CommonRipple(object):
             return False
 
         if not self.disabled:
-            if self.doing_ripple:
+            if self._doing_ripple:
                 Animation.cancel_all(
-                    self, "ripple_rad", "ripple_color", "rect_color"
+                    self, "_ripple_rad", "ripple_color", "rect_color"
                 )
                 self.anim_complete()
-            self.ripple_rad = self.ripple_rad_default
+            self._ripple_rad = self.ripple_rad_default
             self.ripple_pos = (touch.x, touch.y)
 
             if self.ripple_color:
@@ -90,28 +235,28 @@ class CommonRipple(object):
 
     def on_touch_move(self, touch, *args):
         if not self.collide_point(touch.x, touch.y):
-            if not self.finishing_ripple and self.doing_ripple:
+            if not self._finishing_ripple and self._doing_ripple:
                 self.finish_ripple()
         return super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
-        if self.collide_point(touch.x, touch.y) and self.doing_ripple:
+        if self.collide_point(touch.x, touch.y) and self._doing_ripple:
             self.finish_ripple()
         return super().on_touch_up(touch)
 
     def start_ripple(self):
-        if not self.doing_ripple:
+        if not self._doing_ripple:
             anim = Animation(
-                ripple_rad=self.finish_rad,
+                _ripple_rad=self.finish_rad,
                 t="linear",
                 duration=self.ripple_duration_in_slow,
             )
             anim.bind(on_complete=self.fade_out)
-            self.doing_ripple = True
+            self._doing_ripple = True
             anim.start(self)
 
     def _set_ellipse(self, instance, value):
-        self.ellipse.size = (self.ripple_rad, self.ripple_rad)
+        self.ellipse.size = (self._ripple_rad, self._ripple_rad)
 
     # Adjust ellipse pos here
 
@@ -119,20 +264,20 @@ class CommonRipple(object):
         self.col_instruction.a = value[3]
 
     def finish_ripple(self):
-        if self.doing_ripple and not self.finishing_ripple:
-            Animation.cancel_all(self, "ripple_rad")
+        if self._doing_ripple and not self._finishing_ripple:
+            Animation.cancel_all(self, "_ripple_rad")
             anim = Animation(
-                ripple_rad=self.finish_rad,
+                _ripple_rad=self.finish_rad,
                 t=self.ripple_func_in,
                 duration=self.ripple_duration_in_fast,
             )
             anim.bind(on_complete=self.fade_out)
-            self.finishing_ripple = True
+            self._finishing_ripple = True
             anim.start(self)
 
     def fade_out(self, *args):
         rc = self.ripple_color
-        if not self.fading_out:
+        if not self._fading_out:
             Animation.cancel_all(self, "ripple_color")
             anim = Animation(
                 ripple_color=[rc[0], rc[1], rc[2], 0.0],
@@ -140,18 +285,26 @@ class CommonRipple(object):
                 duration=self.ripple_duration_out,
             )
             anim.bind(on_complete=self.anim_complete)
-            self.fading_out = True
+            self._fading_out = True
             anim.start(self)
 
     def anim_complete(self, *args):
-        self.doing_ripple = False
-        self.finishing_ripple = False
-        self.fading_out = False
+        self._doing_ripple = False
+        self._finishing_ripple = False
+        self._fading_out = False
         self.canvas.after.clear()
 
 
 class RectangularRippleBehavior(CommonRipple):
+    """Class implements a rectangular ripple effect."""
+
     ripple_scale = NumericProperty(2.75)
+    """
+    See :class:`~CommonRipple.ripple_scale`.
+
+    :attr:`ripple_scale` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `2.75`.
+    """
 
     def lay_canvas_instructions(self):
         if self._no_ripple_effect:
@@ -162,27 +315,35 @@ class RectangularRippleBehavior(CommonRipple):
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
-                size=(self.ripple_rad, self.ripple_rad),
+                size=(self._ripple_rad, self._ripple_rad),
                 pos=(
-                    self.ripple_pos[0] - self.ripple_rad / 2.0,
-                    self.ripple_pos[1] - self.ripple_rad / 2.0,
+                    self.ripple_pos[0] - self._ripple_rad / 2.0,
+                    self.ripple_pos[1] - self._ripple_rad / 2.0,
                 ),
             )
             StencilUnUse()
             Rectangle(pos=self.pos, size=self.size)
             StencilPop()
-        self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+        self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
         self.ellipse.pos = (
-            self.ripple_pos[0] - self.ripple_rad / 2.0,
-            self.ripple_pos[1] - self.ripple_rad / 2.0,
+            self.ripple_pos[0] - self._ripple_rad / 2.0,
+            self.ripple_pos[1] - self._ripple_rad / 2.0,
         )
 
 
 class CircularRippleBehavior(CommonRipple):
+    """Class implements a circular ripple effect."""
+
     ripple_scale = NumericProperty(1)
+    """
+    See :class:`~CommonRipple.ripple_scale`.
+
+    :attr:`ripple_scale` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
 
     def lay_canvas_instructions(self):
         with self.canvas.after:
@@ -200,24 +361,24 @@ class CircularRippleBehavior(CommonRipple):
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
-                size=(self.ripple_rad, self.ripple_rad),
+                size=(self._ripple_rad, self._ripple_rad),
                 pos=(
-                    self.center_x - self.ripple_rad / 2.0,
-                    self.center_y - self.ripple_rad / 2.0,
+                    self.center_x - self._ripple_rad / 2.0,
+                    self.center_y - self._ripple_rad / 2.0,
                 ),
             )
             StencilUnUse()
             Ellipse(pos=self.pos, size=self.size)
             StencilPop()
             self.bind(
-                ripple_color=self._set_color, ripple_rad=self._set_ellipse
+                ripple_color=self._set_color, _ripple_rad=self._set_ellipse
             )
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
-        if self.ellipse.size[0] > self.width * 0.6 and not self.fading_out:
+        if self.ellipse.size[0] > self.width * 0.6 and not self._fading_out:
             self.fade_out()
         self.ellipse.pos = (
-            self.center_x - self.ripple_rad / 2.0,
-            self.center_y - self.ripple_rad / 2.0,
+            self.center_x - self._ripple_rad / 2.0,
+            self.center_y - self._ripple_rad / 2.0,
         )

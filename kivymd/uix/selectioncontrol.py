@@ -186,7 +186,7 @@ class Thumb(
 
     def _set_ellipse(self, instance, value):
         self.ellipse.size = (self.ripple_rad, self.ripple_rad)
-        if self.ellipse.size[0] > self.width * 1.5 and not self.fading_out:
+        if self.ellipse.size[0] > self.width * 1.5 and not self._fading_out:
             self.fade_out()
         self.ellipse.pos = (
             self.center_x - self.ripple_rad / 2.0,

@@ -49,7 +49,7 @@ For example, let's create an image button with a circular ripple effect:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-ripple-effect.gif
     :align: center
 
-To create a widget with rectangularRippleBehavior ripple effect, you must create a new class
+To create a widget with rectangular ripple effect, you must create a new class
 that inherits from the :class:`~RectangularRippleBehavior` class:
 
 .. code-block:: python

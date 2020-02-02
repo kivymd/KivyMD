@@ -34,6 +34,8 @@ You can turn on the monitor displaying the current ``FPS`` value in your applica
     MainApp().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fps-monitor.png
+    :width: 350 px
+    :align: center
 
 """
 

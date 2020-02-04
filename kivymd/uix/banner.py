@@ -2,161 +2,137 @@
 Banner
 ======
 
-Tooltips display informative text when users hover over, focus on,
-or tap an element.
+.. rubric:: A banner displays a prominent message and related optional actions.
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
+`Material Design spec, Banner <https://material.io/components/banners>`_
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner.png
+    :align: center
 
-This file is distributed under the terms of the same license,
-as the Kivy framework.
+Usage
+=====
 
-`Material Design spec, Menus <https://material.io/components/banners>`_
+.. code-block:: python
 
-Example
--------
+    from kivy.lang import Builder
+    from kivy.factory import Factory
 
-from kivy.lang import Builder
-from kivy.factory import Factory
+    from kivymd.app import MDApp
 
-from kivymd.app import MDApp
+    Builder.load_string('''
+    <ExampleBanner@Screen>
 
-Builder.load_string('''
-<ExampleBanner@Screen>
+        MDBanner:
+            id: banner
+            text: ["One line string text example without actions."]
+            # The widget that is under the banner.
+            # It will be shifted down to the height of the banner.
+            over_widget: screen
+            vertical_pad: toolbar.height
 
-    MDBanner:
-        id: banner
-        over_widget: scroll
+        MDToolbar:
+            id: toolbar
+            title: "Example Banners"
+            elevation: 10
+            pos_hint: {'top': 1}
 
-
-    MDToolbar:
-        id: toolbar
-        title: "Example Banners"
-        md_bg_color: app.theme_cls.primary_color
-        elevation: 10
-        left_action_items: [['dots-vertical', lambda x: None]]
-        pos_hint: {'top': 1}
-
-    ScrollView:
-        id: scroll
-        size_hint_y: None
-        height: Window.height - toolbar.height
-
-        GridLayout:
-            id: box
+        BoxLayout:
+            id: screen
+            orientation: "vertical"
             size_hint_y: None
-            height: self.minimum_height
-            cols: 1
-            padding: "10dp"
-            spacing: "10dp"
-
-            OneLineListItem:
-                text: "ThreeLineBanner"
-                on_release:
-                    banner.type = "three-line"
-                    banner.text = \
-                    [\
-                    "Three line string text example with two actions.", \
-                    "This is the second line of the banner message,", \
-                    "and this is the third line of the banner message.",
-                    ]
-                    banner.left_action = ["CANCEL", lambda x: None]
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
-
-            OneLineListItem:
-                text: "TwoLineBanner"
-                on_release:
-                    banner.type = "two-line"
-                    banner.text = \
-                    [\
-                    "One line string text example with two actions.", \
-                    "This is the second line of the banner message.", \
-                    ]
-                    banner.left_action = ["CANCEL", lambda x: None]
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
-
-            OneLineListItem:
-                text: "OneLineBanner"
-                on_release:
-                    banner.type = "one-line"
-                    banner.text = ["One line string text example with two actions."]
-                    banner.left_action = ["CANCEL", lambda x: None]
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
-
-            OneLineListItem:
-                text: "ThreeLineIconBanner"
-                on_release:
-                    banner.type = "three-line-icon"
-                    banner.text = \
-                    [\
-                    "Three line string text example with two actions.", \
-                    "This is the second line of the banner message,", \
-                    "and this is the third line of the banner message.",
-                    ]
-                    banner.left_action = ["CANCEL", lambda x: None]
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
-
-            OneLineListItem:
-                text: "TwoLineIconBanner"
-                on_release:
-                    banner.type = "two-line-icon"
-                    banner.text = \
-                    [\
-                    "One line string text example with two actions.", \
-                    "This is the second line of the banner message.", \
-                    ]
-                    banner.left_action = ["CANCEL", lambda x: None]
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
-
-            OneLineListItem:
-                text: "OneLineIconBanner"
-                on_release:
-                    banner.type = "one-line-icon"
-                    banner.text = ["One line string text example with two actions."]
-                    banner.left_action = ["CANCEL", lambda x: None]
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
+            height: Window.height - toolbar.height
 
             OneLineListItem:
                 text: "Banner without actions"
-                on_release:
-                    banner.type = "one-line-icon"
-                    banner.text = ["One line string text example without actions."]
-                    banner.left_action = []
-                    banner.right_action = []
-                    banner.show()
+                on_release: banner.show()
 
-            OneLineListItem:
-                text: "Banner with one actions"
-                on_release:
-                    banner.type = "one-line-icon"
-                    banner.text = ["One line string text example without actions."]
-                    banner.left_action = []
-                    banner.right_action = ["CLOSE", lambda x: banner.hide()]
-                    banner.show()
-''')
+            Widget:
+    ''')
 
 
-class Test(MDApp):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.theme_cls.primary_palette = "DeepPurple"
-
-    def build(self):
-        return Factory.ExampleBanner()
+    class Test(MDApp):
+        def build(self):
+            return Factory.ExampleBanner()
 
 
-Test().run()
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-example-1.gif
+    :align: center
+
+.. rubric:: Banner type.
+
+By default, the banner is of the type ``'one-line'``:
+
+.. code-block:: kv
+
+    MDBanner:
+        text: ["One line string text example without actions."]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-one-line.png
+    :align: center
+
+To use a two-line banner, specify the ``'two-line'`` :attr:`MDBanner.type` for the banner
+and pass the list of two lines to the :attr:`MDBanner.text` parameter:
+
+.. code-block:: kv
+
+    MDBanner:
+        type: "two-line"
+        text:
+            ["One line string text example without actions.", "This is the second line of the banner message."]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-two-line.png
+    :align: center
+
+Similarly, create a three-line banner:
+
+.. code-block:: kv
+
+    MDBanner:
+        type: "three-line"
+        text:
+            ["One line string text example without actions.", "This is the second line of the banner message." "and this is the third line of the banner message."]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-three-line.png
+    :align: center
+
+To add buttons to any type of banner,
+use the :attr:`MDBanner.left_action` and :attr:`MDBanner.right_action` parameters,
+which should take a list ['Button name', function]:
+
+.. code-block:: kv
+
+    MDBanner:
+        text: ["One line string text example without actions."]
+        left_action: ["CANCEL", lambda x: None]
+
+Or two buttons:
+
+.. code-block:: kv
+
+    MDBanner:
+        text: ["One line string text example without actions."]
+        left_action: ["CANCEL", lambda x: None]
+        right_action: ["CLOSE", lambda x: None]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-actions.png
+    :align: center
+
+If you want to use the icon on the left in the banner,
+add the prefix `'-icon'` to the banner type:
+
+.. code-block:: kv
+
+    MDBanner:
+        type: "one-line-icon"
+        icon: f"{images_path}/kivymd_logo.png"
+        text: ["One line string text example without actions."]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-icon.png
+    :align: center
+
+.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Banner>`_
 """
 
 from kivy.animation import Animation
@@ -168,7 +144,9 @@ from kivy.properties import (
     ListProperty,
     StringProperty,
     OptionProperty,
+    NumericProperty,
 )
+from kivy.uix.widget import Widget
 
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.card import MDCard
@@ -277,66 +255,68 @@ Builder.load_string(
 )
 
 
-class BaseBanner:
-    text_message = ListProperty(["", "", ""])
-    icon = StringProperty()
-
-
-class ThreeLineIconBanner(ThreeLineAvatarListItem, BaseBanner):
-    pass
-
-
-class TwoLineIconBanner(TwoLineAvatarListItem, BaseBanner):
-    pass
-
-
-class OneLineIconBanner(OneLineAvatarListItem, BaseBanner):
-    pass
-
-
-class ThreeLineBanner(ThreeLineListItem, BaseBanner):
-    pass
-
-
-class TwoLineBanner(TwoLineListItem, BaseBanner):
-    pass
-
-
-class OneLineBanner(OneLineListItem, BaseBanner):
-    pass
-
-
 class MDBanner(MDCard):
+    vertical_pad = NumericProperty(dp(68))
+    """
+    Indent the banner at the top of the screen.
+
+    :attr:`vertical_pad` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(68)`.
+    """
+
+    opening_transition = StringProperty("in_quad")
+    """
+    The name of the animation transition.
+
+    :attr:`opening_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'in_quad'`.
+    """
+
     icon = StringProperty("data/logo/kivy-icon-128.png")
-    """Icon banner."""
+    """Icon banner.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'data/logo/kivy-icon-128.png'`.
+    """
 
     over_widget = ObjectProperty()
     """
     The widget that is under the banner.
     It will be shifted down to the height of the banner.
+
+    :attr:`over_widget` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
     """
 
     text = ListProperty()
-    """The action of banner.
+    """List of lines for banner text.
+    Must contain no more than three lines for a
+    `'one-line'`, `'two-line'` and `'three-line'` banner, respectively.
 
-    List of lines for banner text. Must contain no more than three lines for a
-    `one-line`, `two-line` and `three-line` banner, respectively.
+    :attr:`text` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     left_action = ListProperty()
     """The action of banner.
 
-    To add one action, append a list like the following:
-        ["name_action", callback]
-    where `name_action` is a string that corresponds to an action name and
-    `callback` is the function called on a touch release event.
+    To add one action, make a list [`'name_action'`, callback]
+    where `'name_action'` is a string that corresponds to an action name and
+    ``callback`` is the function called on a touch release event.
+
+    :attr:`left_action` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     right_action = ListProperty()
-    """Works the same way as :attr:`left_action`."""
+    """Works the same way as :attr:`left_action`.
+
+    :attr:`right_action` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
     type = OptionProperty(
-        None,
+        "one-line",
         options=[
             "one-line",
             "two-line",
@@ -347,7 +327,11 @@ class MDBanner(MDCard):
         ],
         allownone=True,
     )
-    """Banner type."""
+    """Banner type.
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'one-line'`.
+    """
 
     _type_message = None
     _progress = False
@@ -401,11 +385,15 @@ class MDBanner(MDCard):
         Clock.schedule_once(show, 0.7)
 
     def animation_display_banner(self, i):
-        Animation(banner_y=self.height + dp(68), d=0.15, t="in_quad").start(
-            self
-        )
+        Animation(
+            banner_y=self.height + self.vertical_pad,
+            d=0.15,
+            t=self.opening_transition,
+        ).start(self)
         anim = Animation(
-            y=self.over_widget.y - self.height, d=0.15, t="in_quad"
+            y=self.over_widget.y - self.height,
+            d=0.15,
+            t=self.opening_transition,
         )
         anim.bind(on_complete=self._reset_progress)
         anim.start(self.over_widget)
@@ -428,3 +416,35 @@ class MDBanner(MDCard):
 
     def _reset_progress(self, *args):
         self._progress = False
+
+
+class BaseBanner(Widget):
+    text_message = ListProperty(["", "", ""])
+    icon = StringProperty()
+
+    def on_touch_down(self, touch):
+        self.parent.parent.hide()
+
+
+class ThreeLineIconBanner(ThreeLineAvatarListItem, BaseBanner):
+    pass
+
+
+class TwoLineIconBanner(TwoLineAvatarListItem, BaseBanner):
+    pass
+
+
+class OneLineIconBanner(OneLineAvatarListItem, BaseBanner):
+    pass
+
+
+class ThreeLineBanner(ThreeLineListItem, BaseBanner):
+    pass
+
+
+class TwoLineBanner(TwoLineListItem, BaseBanner):
+    pass
+
+
+class OneLineBanner(OneLineListItem, BaseBanner):
+    pass

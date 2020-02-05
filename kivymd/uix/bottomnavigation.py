@@ -2,97 +2,161 @@
 BottomNavigation
 ================
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
+.. rubric:: Bottom navigation bars allow movement between primary destinations in an app:
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
-
-Example:
-
-from kivymd.app import MDApp
-from kivy.lang import Builder
-
-from kivymd.theming import ThemeManager
+`Material Design spec, Bottom navigation <https://material.io/components/bottom-navigation/>`_
 
 
-class Test(MDApp):
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation.png
+    :align: center
 
-    def build(self):
-        return Builder.load_string(
-            '''
-BoxLayout:
-    orientation:'vertical'
+Usage
+=====
 
-    MDToolbar:
-        id: toolbar
-        title: 'Test MDBottomNavigation'
-        md_bg_color: app.theme_cls.primary_color
-        left_action_items: [['menu', lambda x: '']]
+.. code-block:: kv
 
-    MDBottomNavigation:
-        id: panel
+    <Root>>:
 
-        MDBottomNavigationItem:
-            name: 'files1'
-            text: 'Python'
-            icon: 'language-python'
+        MDBottomNavigation:
 
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint_y: None
-                height: self.minimum_height
-                spacing: dp(10)
-                pos_hint: {'center_x': .5, 'center_y': .5}
+            MDBottomNavigationItem:
+                name: "screen 1"
+
+                YourContent:
+
+            MDBottomNavigationItem:
+                name: "screen 2"
+
+                YourContent:
+
+            MDBottomNavigationItem:
+                name: "screen 3"
+
+                YourContent:
+
+For ease of understanding, this code works like this:
+
+.. code-block:: kv
+
+    <Root>>:
+
+        ScreenManager:
+
+            Screen:
+                name: "screen 1"
+
+                YourContent:
+
+            Screen:
+                name: "screen 2"
+
+                YourContent:
+
+            Screen:
+                name: "screen 3"
+
+                YourContent:
+
+Example
+=======
+
+.. code-block:: python
+
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
+
+
+    class Test(MDApp):
+
+        def build(self):
+            self.theme_cls.primary_palette = "Gray"
+            return Builder.load_string(
+                '''
+    BoxLayout:
+        orientation:'vertical'
+
+        MDToolbar:
+            title: 'Bottom navigation'
+            md_bg_color: .2, .2, .2, 1
+            specific_text_color: 1, 1, 1, 1
+
+        MDBottomNavigation:
+            panel_color: .2, .2, .2, 1
+
+            MDBottomNavigationItem:
+                name: 'screen 1'
+                text: 'Python'
+                icon: 'language-python'
 
                 MDLabel:
-                    font_style: 'Body1'
-                    theme_text_color: 'Primary'
-                    text: 'Toggle to set custom panel color'
+                    text: 'Python'
                     halign: 'center'
 
-                MDSwitch:
-                    size_hint: None, None
-                    size: dp(36), dp(48)
-                    pos_hint: {'center_x': .5}
-                    on_active:
-                        panel.panel_color = \
-                        [0.2980392156862745, 0.2823529411764706, 0.32941176470588235, 1] \
-                        if self.active else app.theme_cls.bg_dark
+            MDBottomNavigationItem:
+                name: 'screen 2'
+                text: 'C++'
+                icon: 'language-cpp'
 
-        MDBottomNavigationItem:
-            name: 'files2'
-            text: 'C++'
-            icon: 'language-cpp'
+                MDLabel:
+                    text: 'I programming of C++'
+                    halign: 'center'
 
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: 'I programming of C++'
-                halign: 'center'
+            MDBottomNavigationItem:
+                name: 'screen 3'
+                text: 'JS'
+                icon: 'language-javascript'
 
-        MDBottomNavigationItem:
-            name: 'files3'
-            text: 'JS'
-            icon: 'language-javascript'
+                MDLabel:
+                    text: 'JS'
+                    halign: 'center'
+    '''
+            )
 
-            MDLabel:
-                font_style: 'Body1'
-                theme_text_color: 'Primary'
-                text: 'Oh god JS again'
-                halign: 'center'
-'''
-        )
 
-Test().run()
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation.gif
+    :align: center
+
+.. rubric:: :class:`~MDBottomNavigationItem` provides the following events for use:
+
+.. code-block:: python
+
+    __events__ = (
+        "on_tab_touch_down",
+        "on_tab_touch_move",
+        "on_tab_touch_up",
+        "on_tab_press",
+        "on_tab_release",
+    )
+
+.. Note:: See :class:`~MDTab.__events__`
+
+.. code-block:: kv
+
+    Root:
+
+        MDBottomNavigation:
+
+            MDBottomNavigationItem:
+                on_tab_touch_down: print("on_tab_touch_down")
+                on_tab_touch_move: print("on_tab_touch_move")
+                on_tab_touch_up: print("on_tab_touch_up")
+                on_tab_press: print("on_tab_press")
+                on_tab_release: print("on_tab_release")
+
+                YourContent:
+
+
+.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-Navigation>`_
 """
+
+__all__ = (
+    "TabbedPanelBase",
+    "MDBottomNavigationItem",
+    "MDBottomNavigation",
+    "MDTab",
+)
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -214,45 +278,36 @@ Builder.load_string(
 )
 
 
-class MDBottomNavigationBar(
-    ThemableBehavior,
-    BackgroundColorBehavior,
-    FloatLayout,
-    RectangularElevationBehavior,
-):
-    pass
-
-
-class MDBottomNavigationErrorCache:
-    last_size_warning = 0
-
-
-def small_error_warn(x):
-    if dp(x) <= dp(80):
-        if MDBottomNavigationErrorCache.last_size_warning != x:
-            MDBottomNavigationErrorCache.last_size_warning = x
-            # Logger.warning(
-            #    f"MDBottomNavigation: {x}dp is less than the minimum size "
-            #    f"of 80dp for a MDBottomNavigationItem. "
-            #    f"We must now expand to 168dp."
-            # )
-            # Did you come here to find out what the bug is?
-            # The bug is that on startup, this function returning dp(80)
-            # breaks the way it displays until you resize
-            # I don't know why, this may or may not get fixed in the future
-    return dp(168)
-
-
 class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     panel_color = ListProperty([1, 1, 1, 0])
+    """Panel color of bottom navigation.
+
+    :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[1, 1, 1, 0]`.
+    """
 
     width = BoundedNumericProperty(
         0, min=80, max=168, errorhandler=lambda x: small_error_warn(x)
     )
     tab = ObjectProperty()
+    """
+    :attr:`tab` is an :class:`~MDBottomNavigationItem`
+    and defaults to `Nome`.
+    """
+
     panel = ObjectProperty()
+    """
+    :attr:`panel` is an :class:`~MDBottomNavigation`
+    and defaults to `Nome`.
+    """
+
     active = BooleanProperty(False)
+
     text = StringProperty()
+    """
+    :attr:`text` is an :class:`~MDTab.text`
+    and defaults to `''`.
+    """
 
     _label = ObjectProperty()
     _label_font_size = NumericProperty("12sp")
@@ -292,8 +347,8 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
 
 
 class MDTab(Screen, ThemableBehavior):
-    """ A tab is simply a screen with meta information
-        that defines the content that goes in the tab header.
+    """A tab is simply a screen with meta information
+    that defines the content that goes in the tab header.
     """
 
     __events__ = (
@@ -303,18 +358,21 @@ class MDTab(Screen, ThemableBehavior):
         "on_tab_press",
         "on_tab_release",
     )
+    """Events provided."""
 
-    # Tab header text
     text = StringProperty()
+    """Tab header text.
 
-    # Tab header icon
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
     icon = StringProperty("checkbox-blank-circle")
+    """Tab header icon.
 
-    # Tab dropdown menu items
-    menu_items = ListProperty()
-
-    # Tab dropdown menu (if you want to customize it)
-    menu = ObjectProperty()
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-circle'`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -354,6 +412,10 @@ class MDTab(Screen, ThemableBehavior):
 
 class MDBottomNavigationItem(MDTab):
     header = ObjectProperty()
+    """
+    :attr:`header` is an :class:`~MDBottomNavigationHeader`
+    and defaults to `Nome`.
+    """
 
     def on_tab_press(self, *args):
         par = self.parent_widget
@@ -377,30 +439,49 @@ class MDBottomNavigationItem(MDTab):
 class TabbedPanelBase(
     ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
 ):
-    """
-    A class that contains all variables a TabPannel must have
-    It is here so I (zingballyhoo) don't get mad about
-    the TabbedPannels not being DRY.
+    """A class that contains all variables a :class:`~kivy.properties.TabPannel`
+    must have. It is here so I (zingballyhoo) don't get mad about
+    the :class:`~kivy.properties.TabbedPannels` not being DRY.
 
+    """
+
+    current = StringProperty(None)
+    """Current tab name.
+    
+    :attr:`current` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `None`.
+    """
+
+    previous_tab = ObjectProperty()
+    """
+    :attr:`previous_tab` is an :class:`~MDTab` and defaults to `None`.
+    """
+
+    panel_color = ListProperty()
+    """Panel color of bottom navigation.
+
+    :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     tabs = ListProperty()
 
-    # Current tab name
-    current = StringProperty(None)
-
-    previous_tab = ObjectProperty()
-
-    panel_color = ListProperty()
-
 
 class MDBottomNavigation(TabbedPanelBase):
-    """ A bottom navigation that is implemented by delegating
+    """A bottom navigation that is implemented by delegating
     all items to a ScreenManager."""
 
     first_widget = ObjectProperty()
+    """
+    :attr:`first_widget` is an :class:`~MDBottomNavigationItem`
+    and defaults to `Nome`.
+    """
 
-    tab_header = None
+    tab_header = ObjectProperty()
+    """
+    :attr:`tab_header` is an :class:`~MDBottomNavigationHeader`
+    and defaults to `Nome`.
+    """
 
     def on_panel_color(self, instance, value):
         self.tab_header.panel_color = value
@@ -445,9 +526,9 @@ class MDBottomNavigation(TabbedPanelBase):
             Clock.schedule_once(lambda x: self.on_resize(do_again=False), 0.1)
 
     def add_widget(self, widget, **kwargs):
-        """ Add tabs to the screen or the layout.
-        :param widget: The widget to add.
+        """Add tabs to the screen or the layout.
 
+        :param widget: The widget to add.
         """
 
         if isinstance(widget, MDBottomNavigationItem):
@@ -473,9 +554,9 @@ class MDBottomNavigation(TabbedPanelBase):
             super().add_widget(widget)
 
     def remove_widget(self, widget):
-        """ Remove tabs from the screen or the layout.
-        :param widget: The widget to remove.
+        """Remove tabs from the screen or the layout.
 
+        :param widget: The widget to remove.
         """
 
         if isinstance(widget, MDBottomNavigationItem):
@@ -483,3 +564,32 @@ class MDBottomNavigation(TabbedPanelBase):
             self._refresh_tabs()
         else:
             super().remove_widget(widget)
+
+
+class MDBottomNavigationBar(
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    FloatLayout,
+    RectangularElevationBehavior,
+):
+    pass
+
+
+class MDBottomNavigationErrorCache:
+    last_size_warning = 0
+
+
+def small_error_warn(x):
+    if dp(x) <= dp(80):
+        if MDBottomNavigationErrorCache.last_size_warning != x:
+            MDBottomNavigationErrorCache.last_size_warning = x
+            # Logger.warning(
+            #    f"MDBottomNavigation: {x}dp is less than the minimum size "
+            #    f"of 80dp for a MDBottomNavigationItem. "
+            #    f"We must now expand to 168dp."
+            # )
+            # Did you come here to find out what the bug is?
+            # The bug is that on startup, this function returning dp(80)
+            # breaks the way it displays until you resize
+            # I don't know why, this may or may not get fixed in the future
+    return dp(168)

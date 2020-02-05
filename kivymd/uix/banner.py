@@ -135,6 +135,8 @@ add the prefix `'-icon'` to the banner type:
 .. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Banner>`_
 """
 
+__all__ = ("MDBanner",)
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder

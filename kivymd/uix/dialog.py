@@ -4,7 +4,7 @@ Components/Dialog
 
 .. seealso::
 
-   `Material Design spec, Dialogs <https://material.io/design/components/dialogs.html>`_
+   `Material Design spec, Dialogs <https://material.io/components/dialogs>`_
 
 Example
 -------

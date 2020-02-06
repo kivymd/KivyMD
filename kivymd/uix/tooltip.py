@@ -4,7 +4,7 @@ Components/Tooltip
 
 .. seealso::
 
-   `Material Design spec, Menus <https://material.io/components/tooltips/>`_
+   `Material Design spec, Tooltips <https://material.io/components/tooltips>`_
 
 Tooltips display informative text when users hover over, focus on,
 or tap an element.

@@ -4,7 +4,7 @@ Components/Card
 
 .. seealso::
 
-   `Material Design spec, Cards <https://material.io/design/components/cards.html>`_
+   `Material Design spec, Cards <https://material.io/components/cards>`_
 
 Example
 -------

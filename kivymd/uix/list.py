@@ -4,7 +4,7 @@ Components/List
 
 .. seealso::
 
-   `Material Design spec, Lists <https://material.io/design/components/lists.html>`_
+   `Material Design spec, Lists <https://material.io/components/lists>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to

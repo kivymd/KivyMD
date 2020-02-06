@@ -4,7 +4,7 @@ Components/Text Field
 
 .. seealso::
 
-   `Material Design spec, Text fields <https://material.io/design/components/text-fields.html>`_
+   `Material Design spec, Text fields <https://material.io/components/text-fields>`_
 
 Example
 -------

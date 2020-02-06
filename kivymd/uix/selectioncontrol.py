@@ -4,7 +4,7 @@ Components/Selection Controls
 
 .. seealso::
 
-   `Material Design spec, Selection controls <https://material.io/design/components/selection-controls.html>`_
+   `Material Design spec, Selection controls <https://material.io/components/selection-controls>`_
 """
 
 from kivy.lang import Builder

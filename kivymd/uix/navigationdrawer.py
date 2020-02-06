@@ -4,7 +4,7 @@ Components/Navigation Drawer
 
 .. seealso::
 
-   `Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`
+   `Material Design spec, Navigation drawer <https://material.io/components/navigation-drawer>`
 
 Example
 -------

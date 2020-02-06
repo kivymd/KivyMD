@@ -4,7 +4,7 @@ Components/Snackbar
 
 .. seealso::
 
-   `Material Design spec, Snackbars <https://material.io/design/components/snackbars.html>`_
+   `Material Design spec, Snackbars <https://material.io/components/snackbars>`_
 
 Example
 =======

@@ -4,7 +4,7 @@ Components/Image List
 
 .. seealso::
 
-   `Material Design spec, Image lists <https://material.io/design/components/image-lists.htheme_clsl>`_
+   `Material Design spec, Image lists <https://material.io/components/image-lists>`_
 
 Example
 -------

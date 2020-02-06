@@ -4,7 +4,7 @@ Components/Menu
 
 .. seealso::
 
-   `Material Design spec, Menus <https://material.io/design/components/menus.html>`_
+   `Material Design spec, Menus <https://material.io/components/menus>`_
 
 Example
 -------

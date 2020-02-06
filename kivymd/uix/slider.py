@@ -4,7 +4,7 @@ Components/Slider
 
 .. seealso::
 
-   `Material Design spec, Sliders <https://material.io/design/components/sliders.html>`_
+   `Material Design spec, Sliders <https://material.io/components/sliders>`_
 """
 
 from kivy.lang import Builder

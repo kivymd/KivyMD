@@ -4,9 +4,9 @@ Components/Button
 
 .. seealso::
 
-   `Material Design spec, Buttons <https://material.io/design/components/buttons.html>`
+   `Material Design spec, Buttons <https://material.io/components/buttons>`
 
-   `Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`
+   `Material Design spec, Buttons: floating action button <https://material.io/components/buttons-floating-action-button>`
 
 Example
 -------

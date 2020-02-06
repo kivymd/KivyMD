@@ -4,7 +4,7 @@ Components/Chip
 
 .. seealso::
 
-   `Material Design spec, Chips <https://material.io/design/components/chips.html>`_
+   `Material Design spec, Chips <https://material.io/components/chips>`_
 
 Example
 -------

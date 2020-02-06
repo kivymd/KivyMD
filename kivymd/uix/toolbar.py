@@ -4,7 +4,7 @@ Components/Toolbar
 
 .. seealso::
 
-   `Material Design spec, App bars: top <https://material.io/design/components/app-bars-top.html>`_
+   `Material Design spec, App bars: top <https://material.io/components/app-bars-top>`_
 
 Example
 -------

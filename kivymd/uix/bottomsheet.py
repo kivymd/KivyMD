@@ -354,7 +354,8 @@ class MDBottomSheet(ThemableBehavior, ModalView):
         ],
         allownone=True,
     )
-    """Sets which corners to cut from the dialog.
+    """Sets which corners to cut from the dialog. Available options are:
+    (`"top_left"`, `"top_right"`, `"top"`, `"bottom_right"`, `"bottom_left"`, `"bottom"`).
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottomsheet-radius-from.png
         :align: center

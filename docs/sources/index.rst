@@ -7,6 +7,11 @@ Contents
 --------
 
 .. toctree::
+   :hidden:
+
+   Home <self>
+
+.. toctree::
    :maxdepth: 1
 
    /getting-started
@@ -16,7 +21,7 @@ Contents
    :maxdepth: 1
    :titlesonly:
 
-    API Reference </api/kivymd/index>
+   Unincluded API </unincluded/kivymd/index>
 
 Indices and tables
 ------------------

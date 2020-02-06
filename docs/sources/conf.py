@@ -5,10 +5,11 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath("_extensions"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 
 import kivymd
+import autoapi_kivymd  # from _extensions
 
 
 # Project information
@@ -36,19 +37,16 @@ html_favicon = "_static/logo-kivymd.png"
 html_logo = "_static/logo-kivymd.png"
 html_theme_options = {
     "canonical_url": "https://kivymd.readthedocs.io/en/latest/",
-    "navigation_depth": 8,
+    "navigation_depth": 2,
 }
 
 
 # Extensions
-extensions = [
-    "sphinx.ext.autodoc",
-    "autoapi.extension",
-    "sphinx.ext.intersphinx",
-]
+extensions = ["sphinx.ext.autodoc", "autoapi_kivymd", "sphinx.ext.intersphinx"]
 
 # AutoAPI configuration
 autoapi_dirs = ["../../kivymd"]
+autoapi_template_dir = os.path.abspath("_templates")
 autoapi_ignore = []
 autoapi_type = "python"
 autoapi_file_patterns = ["*.py"]
@@ -60,12 +58,12 @@ autoapi_options = [
     "special-members",
 ]
 autoapi_root = "api"
-autoapi_add_toctree_entry = True
+autoapi_add_toctree_entry = False
 autoapi_include_inheritance_graphs = False
 autoapi_include_summaries = True
 autoapi_python_class_content = "class"
 autoapi_python_use_implicit_namespaces = False
-autoapi_keep_files = True  # Debug
+autoapi_keep_files = False  # True for debugging
 
 # InterSphinx configuration
 intersphinx_mapping = {

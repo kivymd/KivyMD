@@ -104,9 +104,7 @@ def replace_in_file(pattern, repl, file):
 # Change version in kivymd/__init__.py
 init = os.path.abspath("kivymd/__init__.py")
 init_version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
-init_version_info_regex = r"(?<=^__version_info__ = \()[^\)]+(?=\)$)"
 replace_in_file(init_version_regex, new_version, init)
-replace_in_file(init_version_info_regex, new_version.replace(".", ", "), init)
 
 # Change version in README.md
 readme = os.path.abspath("README.md")

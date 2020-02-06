@@ -31,7 +31,6 @@ without asking too.
 import os
 from kivy.logger import Logger
 
-__version_info__ = (0, 103, 0)
 __version__ = "0.103.0"
 
 path = os.path.dirname(__file__)

@@ -1,6 +1,6 @@
 """
-Elevation Behavior
-==================
+Behaviors/Elevation
+===================
 
 .. rubric:: Classes implements a circular and rectangular elevation effects.
 

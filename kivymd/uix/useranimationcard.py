@@ -1,6 +1,6 @@
 """
-User Animation Card
-===================
+Components/User Animation Card
+==============================
 
 Copyright (c) 2019 Ivanov Yuri
 

@@ -1,5 +1,5 @@
 """
-ScrollView Refresh Layout
+Components/Refresh Layout
 =========================
 
 Copyright (c) 2019 Ivanov Yuri

@@ -1,6 +1,6 @@
 """
-Ripple Behavior
-===============
+Behaviors/Ripple
+================
 
 .. rubric:: Classes implements a circular and rectangular ripple effects.
 

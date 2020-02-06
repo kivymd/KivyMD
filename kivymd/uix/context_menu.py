@@ -1,6 +1,6 @@
 """
-Context Menu
-============
+Components/Context Menu
+=======================
 
 Copyright (c) 2019 Ivanov Yuri
 

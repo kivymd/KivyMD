@@ -1,6 +1,6 @@
 """
-MDDropDownItem
-==============
+Components/Dropdown Item
+========================
 
 Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
     KivyMD library up to version 0.1.2

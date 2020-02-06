@@ -1,6 +1,6 @@
 """
-Navigation Drawer
-=================
+Components/Navigation Drawer
+============================
 
 Copyright (c) 2019 Ivanov Yuri and KivyMD contributors.
 

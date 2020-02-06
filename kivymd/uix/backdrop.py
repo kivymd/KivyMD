@@ -1,6 +1,6 @@
 """
-Backdrop
-========
+Components/Backdrop
+===================
 
 .. rubric:: Skeleton layout for using :class:`~MDBackdrop`:
 
@@ -347,7 +347,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         Animation(opacity=1, d=0.2).start(instance_icon_menu)
 
     def add_widget(self, widget, index=0, canvas=None):
-        if widget.__class__ in (MDBackdropToolbar, _BackLayer, _FrontLayer,):
+        if widget.__class__ in (MDBackdropToolbar, _BackLayer, _FrontLayer):
             return super().add_widget(widget)
         else:
             if widget.__class__ is MDBackdropBackLayer:

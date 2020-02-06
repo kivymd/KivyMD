@@ -1,6 +1,6 @@
 """
-File Manager
-============
+Components/File Manager
+=======================
 
 Copyright (c) 2019 Ivanov Yuri
 

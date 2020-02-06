@@ -15,6 +15,9 @@ Contents
    :maxdepth: 1
 
    /getting-started
+   /themes/index
+   /components/index
+   /behaviors/index
    /about
 
 .. toctree::

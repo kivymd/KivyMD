@@ -1,6 +1,6 @@
 """
-Theming
--------
+Themes/Theming
+==============
 
 `Material Design spec, Material theming <https://material.io/design/material-theming>`_
 

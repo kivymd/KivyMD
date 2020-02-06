@@ -1,6 +1,6 @@
 """
-Magic Behavior
-==============
+Behaviors/Magic
+===============
 
 .. rubric:: Magical effects for buttons.
 

@@ -10,8 +10,8 @@
 # as the Kivy framework.
 
 """
-Icon Definitions
-================
+Themes/Icon Definitions
+=======================
 
 List of icons from materialdesignicons.com.. These expanded material design
 icons are maintained by Austin Andrews (Templarian on Github).

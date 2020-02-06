@@ -1,6 +1,6 @@
 """
-HoverBehaviour
-==============
+Behaviors/Hover
+===============
 
 .. rubric:: Changing when the mouse is on the widget.
 

@@ -1,6 +1,6 @@
 """
-Manager Swiper
-==============
+Components/Manager Swiper
+=========================
 
 Copyright (c) 2019 Ivanov Yuri
 

@@ -1,6 +1,6 @@
 """
-Snackbars
-=========
+Components/Snackbar
+===================
 
 Copyright (c) 2019 Ivanov Yuri
 

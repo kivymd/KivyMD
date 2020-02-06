@@ -1,6 +1,6 @@
 """
-Progress Loader
-===============
+Components/Progress Loader
+==========================
 
 Copyright (c) 2019 Ivanov Yuri
 

@@ -1,6 +1,6 @@
 """
-BottomNavigation
-================
+Components/Bottom Navigation
+============================
 
 .. rubric:: Bottom navigation bars allow movement between primary destinations in an app:
 

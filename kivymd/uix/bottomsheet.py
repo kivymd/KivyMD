@@ -1,6 +1,6 @@
 """
-Bottom Sheets
-=============
+Components/Bottom Sheet
+=======================
 
 .. rubric:: Bottom sheets are surfaces containing supplementary content that are anchored to the bottom of the screen.
 
@@ -248,11 +248,7 @@ from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.behaviors import BackgroundColorBehavior
 from kivymd.uix.label import MDIcon
-from kivymd.uix.list import (
-    OneLineListItem,
-    ILeftBody,
-    OneLineIconListItem,
-)
+from kivymd.uix.list import OneLineListItem, ILeftBody, OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 from kivymd import images_path
 

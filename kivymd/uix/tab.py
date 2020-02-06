@@ -1,6 +1,6 @@
 """
-Tabs
-====
+Components/Tabs
+===============
 
 Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
     modified this module

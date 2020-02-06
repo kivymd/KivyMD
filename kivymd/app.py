@@ -1,6 +1,6 @@
 """
-MDApp
-=====
+Themes/Material App
+===================
 
 This module contains :class:`MDApp` class that is inherited from
 :class:`~kivy.app.App`. :class:`MDApp` has some properties needed for ``KivyMD``

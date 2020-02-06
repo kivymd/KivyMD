@@ -1,6 +1,6 @@
 """
-Tooltip
-=======
+Components/Tooltip
+==================
 
 Tooltips display informative text when users hover over, focus on,
 or tap an element.
@@ -86,10 +86,7 @@ class Test(MDApp):
 Test().run()
 """
 
-__all__ = (
-    "MDTooltip",
-    "MDTooltipViewClass",
-)
+__all__ = ("MDTooltip", "MDTooltipViewClass")
 
 from functools import partial
 
@@ -183,7 +180,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
-            on_touch_down=self.create_clock, on_touch_up=self.delete_clock,
+            on_touch_down=self.create_clock, on_touch_up=self.delete_clock
         )
 
     # Methods `create_clock` and `delete_clock` taken from this source -

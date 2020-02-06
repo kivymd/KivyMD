@@ -1,6 +1,6 @@
 """
-Stack Floating Buttons
-======================
+Components/Stack Floating Buttons
+=================================
 
 Copyright (c) 2019 Ivanov Yuri
 

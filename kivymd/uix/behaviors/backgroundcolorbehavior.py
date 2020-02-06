@@ -1,6 +1,6 @@
 """
-Background Color Behavior
-=========================
+Behaviors/Background Color
+==========================
 
 .. note:: The following classes are intended for in-house use of the library.
 """

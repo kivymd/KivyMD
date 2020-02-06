@@ -89,7 +89,7 @@ def make_icon_definitions(icons):
             icon_definitions += f'"{i["name"]}": "\\U{i["hex"].upper()}",\n'
         else:
             icon_definitions += f'"{i["name"]}": "\\u{i["hex"].upper()}",\n'
-    icon_definitions += f'"blank": " ",\n'  # Add blank icon (space)
+    icon_definitions += " " * 4 + f'"blank": " ",\n'  # Add blank icon (space)
     icon_definitions += "}"
     return icon_definitions
 

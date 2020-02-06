@@ -32,10 +32,16 @@ import os
 from kivy.logger import Logger
 
 __version__ = "0.103.0"
+"""KivyMD version."""
 
 path = os.path.dirname(__file__)
+"""Path to KivyMD package directory."""
+
 fonts_path = os.path.join(path, f"fonts{os.sep}")
+"""Path to fonts directory."""
+
 images_path = os.path.join(path, f"images{os.sep}")
+"""Path to images directory."""
 
 Logger.info(f"KivyMD: v{__version__}")
 

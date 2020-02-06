@@ -53,6 +53,9 @@ from os.path import dirname, abspath, join, basename
 import kivymd
 
 hooks_path = dirname(abspath(__file__))
+"""Path to hook directory to use with PyInstaller.
+See :mod:`kivymd.tools.packaging.pyinstaller` for more information."""
+
 datas = [
     (kivymd.fonts_path, join("kivymd", basename(dirname(kivymd.fonts_path)))),
     (kivymd.images_path, join("kivymd", basename(dirname(kivymd.images_path)))),

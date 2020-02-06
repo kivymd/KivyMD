@@ -2,20 +2,11 @@
 Components/Button
 =================
 
-Copyright (c) 2015 Andrés Rodríguez and KivyMD contributors -
-    KivyMD library up to version 0.1.2
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    KivyMD library version 0.1.3 and higher
+.. seealso::
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
+   `Material Design spec, Buttons <https://material.io/design/components/buttons.html>`
 
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Buttons <https://material.io/design/components/buttons.html>`
-
-`Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`
+   `Material Design spec, Buttons: floating action button <https://material.io/design/components/buttons-floating-action-button.html>`
 
 Example
 -------

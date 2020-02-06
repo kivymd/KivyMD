@@ -2,10 +2,11 @@
 Components/Bottom Navigation
 ============================
 
+.. seealso::
+
+   `Material Design spec, Bottom navigation <https://material.io/components/bottom-navigation>`_
+
 .. rubric:: Bottom navigation bars allow movement between primary destinations in an app:
-
-`Material Design spec, Bottom navigation <https://material.io/components/bottom-navigation/>`_
-
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation.png
     :align: center

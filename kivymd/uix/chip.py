@@ -2,15 +2,9 @@
 Components/Chip
 ===============
 
-Copyright (c) 2019 Ivanov Yuri
+.. seealso::
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Chips <https://material.io/design/components/chips.html>`_
+   `Material Design spec, Chips <https://material.io/design/components/chips.html>`_
 
 Example
 -------

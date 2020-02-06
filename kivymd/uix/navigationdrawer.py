@@ -2,15 +2,9 @@
 Components/Navigation Drawer
 ============================
 
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors.
+.. seealso::
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`
+   `Material Design spec, Navigation drawer <https://material.io/design/components/navigation-drawer.html>`
 
 Example
 -------

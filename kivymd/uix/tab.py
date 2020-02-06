@@ -2,18 +2,9 @@
 Components/Tabs
 ===============
 
-Copyright (c) 2019 Ivanov Yuri and KivyMD contributors -
-    modified this module
-Copyright (c) 2015 Kivy Garden
-    https://github.com/kivy-garden/garden.androidtabs
+.. seealso::
 
-For suggestions and questions:
-<kivydevelopment@gmail.com>
-
-This file is distributed under the terms of the same license,
-as the Kivy framework.
-
-`Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
+   `Material Design spec, Tabs <https://material.io/design/components/tabs.html>`_
 """
 
 from kivy.lang import Builder

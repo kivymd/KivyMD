@@ -2,9 +2,11 @@
 Components/Backdrop
 ===================
 
-.. rubric:: Skeleton layout for using :class:`~MDBackdrop`:
+.. seealso::
 
-`Material Design spec, Backdrop <https://material.io/components/backdrop/>`_
+   `Material Design spec, Backdrop <https://material.io/components/backdrop/>`_
+
+.. rubric:: Skeleton layout for using :class:`~MDBackdrop`:
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop.png
     :align: center

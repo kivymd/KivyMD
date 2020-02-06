@@ -2,7 +2,9 @@
 Themes/Theming
 ==============
 
-`Material Design spec, Material theming <https://material.io/design/material-theming>`_
+.. seealso::
+
+   `Material Design spec, Material theming <https://material.io/design/material-theming>`_
 
 Material App
 ------------

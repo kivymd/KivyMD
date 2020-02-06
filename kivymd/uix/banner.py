@@ -2,9 +2,11 @@
 Components/Banner
 =================
 
-.. rubric:: A banner displays a prominent message and related optional actions.
+.. seealso::
 
-`Material Design spec, Banner <https://material.io/components/banners>`_
+   `Material Design spec, Banner <https://material.io/components/banners>`_
+
+.. rubric:: A banner displays a prominent message and related optional actions.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner.png
     :align: center

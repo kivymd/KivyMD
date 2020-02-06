@@ -2,9 +2,11 @@
 Components/Bottom Sheet
 =======================
 
-.. rubric:: Bottom sheets are surfaces containing supplementary content that are anchored to the bottom of the screen.
+.. seealso::
 
-`Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`_
+   `Material Design spec, Sheets: bottom <https://material.io/design/components/sheets-bottom.html>`_
+
+.. rubric:: Bottom sheets are surfaces containing supplementary content that are anchored to the bottom of the screen.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottomsheet.png
     :align: center

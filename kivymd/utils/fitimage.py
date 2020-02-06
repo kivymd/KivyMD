@@ -1,5 +1,6 @@
 """
-fitimage.py
+Fit Image
+=========
 
 Feature to automatically crop a `Kivy` image to fit your layout
 Write by Benedikt Zwölfer

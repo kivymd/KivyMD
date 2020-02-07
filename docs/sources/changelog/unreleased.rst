@@ -11,5 +11,5 @@ Unreleased
 * The :class:`kivymd.uix.textfield.MDTextFieldRound` class is now directly inherited from the :class:`kivy.uix.textinput.TextInput` class.
 * Removed :class:`kivymd.uix.textfield.MDTextFieldClear` class.
 * :class:`kivymd.uix.navigationdrawer.NavigationLayout` allowed to add :class:`kivymd.uix.toolbar.MDToolbar` class.
-* Added ability to control range of dates to be active in :class:`kivymd.uix.pickers.MDDatePicker` class.
+* Added ability to control range of dates to be active in :class:`kivymd.uix.picker.MDDatePicker` class.
 * Updated :class:`kivymd.uix.navigationdrawer.MDNavigationDrawe`r realization.

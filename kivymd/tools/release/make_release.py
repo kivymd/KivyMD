@@ -88,10 +88,10 @@ def git_push(branches_to_push: list):
         )
 
 
-def black_files():
-    """Black all files."""
-    command(["black", "."])
-    git_commit("Black formatting")
+def run_pre_commit():
+    """Run pre-commit."""
+    command(["pre-commit", "run", "--all-files"])
+    git_commit("Run pre-commit")
 
 
 def replace_in_file(pattern, repl, file):
@@ -223,7 +223,7 @@ def main():
     print(f"Previous version: {previous_version}")
     print(f"New version: {version}")
 
-    black_files()
+    run_pre_commit()
     update_init_py(version)
     update_readme(previous_version, version)
 

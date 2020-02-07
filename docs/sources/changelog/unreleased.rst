@@ -12,4 +12,4 @@ Unreleased
 * Removed :class:`kivymd.uix.textfield.MDTextFieldClear` class.
 * :class:`kivymd.uix.navigationdrawer.NavigationLayout` allowed to add :class:`kivymd.uix.toolbar.MDToolbar` class.
 * Added ability to control range of dates to be active in :class:`kivymd.uix.picker.MDDatePicker` class.
-* Updated :class:`kivymd.uix.navigationdrawer.MDNavigationDrawe`r realization.
+* Updated :class:`kivymd.uix.navigationdrawer.MDNavigationDrawer` realization.

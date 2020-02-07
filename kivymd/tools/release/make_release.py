@@ -96,7 +96,10 @@ def git_push(branches_to_push: list):
 
 def run_pre_commit():
     """Run pre-commit."""
-    command(["pre-commit", "run", "--all-files"])
+    try:
+        command(["pre-commit", "run", "--all-files"])
+    except subprocess.CalledProcessError:
+        pass
     git_commit("Run pre-commit", allow_error=True)
 
 

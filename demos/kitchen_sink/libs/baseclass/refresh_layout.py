@@ -23,7 +23,7 @@ class KitchenSinkRefreshLayout(Screen):
                 await asynckivy.sleep(0)
                 self.ids.box.add_widget(
                     KitchenSinkOneLineLeftIconItem(
-                        icon=name_icon, text=name_icon,
+                        icon=name_icon, text=name_icon
                     )
                 )
             self.ids.refresh_layout.refresh_done()

@@ -15,7 +15,7 @@ class KitchenSinkNavigationDrawer(Screen):
             }.items():
                 self.ids.content_drawer.ids.box_item.add_widget(
                     KitchenSinkOneLineLeftIconItem(
-                        text=items[1], icon=items[0], divider=None,
+                        text=items[1], icon=items[0], divider=None
                     )
                 )
 

@@ -65,9 +65,15 @@ def git_clean():
     command(["git", "reset", "--hard"])
 
 
-def git_commit(message: str):
+def git_commit(message: str, allow_error: bool = False):
     """Make commit."""
-    command(["git", "commit", "--all", "--untracked-files=all", "-m", message])
+    try:
+        command(
+            ["git", "commit", "--all", "--untracked-files=all", "-m", message]
+        )
+    except subprocess.CalledProcessError as e:
+        if not allow_error:
+            raise e
 
 
 def git_tag(name: str):
@@ -91,7 +97,7 @@ def git_push(branches_to_push: list):
 def run_pre_commit():
     """Run pre-commit."""
     command(["pre-commit", "run", "--all-files"])
-    git_commit("Run pre-commit")
+    git_commit("Run pre-commit", allow_error=True)
 
 
 def replace_in_file(pattern, repl, file):

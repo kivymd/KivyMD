@@ -63,10 +63,10 @@ autoapi_include_inheritance_graphs = False
 autoapi_include_summaries = True
 autoapi_python_class_content = "class"
 autoapi_python_use_implicit_namespaces = False
-autoapi_keep_files = False  # True for debugging
+autoapi_keep_files = True  # True for debugging
 
 # InterSphinx configuration
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "kivy": ("https://kivy.org/docs/", None),
+    "kivy": ("https://kivy.org/doc/stable/", None),
 }

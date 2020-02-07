@@ -18,7 +18,7 @@ for standard bottom sheets dialogs:
     :align: center
 
 Usage :class:`~MDListBottomSheet`
-================================
+=================================
 
 .. code-block:: python
 

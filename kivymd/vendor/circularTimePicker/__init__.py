@@ -13,33 +13,33 @@ Simple usage
 
 Import the widget with
 
-```python
-from kivy.garden.circulardatetimepicker import CircularTimePicker
-```
+.. code-block:: python
+
+   from kivy.garden.circulardatetimepicker import CircularTimePicker
 
 then use it! That's it!
 
-```python
-c = CircularTimePicker()
-c.bind(time=self.set_time)
-root.add_widget(c)
-```
+.. code-block:: python
+
+   c = CircularTimePicker()
+   c.bind(time=self.set_time)
+   root.add_widget(c)
 
 in Kv language:
 
-```
-<TimeChooserPopup@Popup>:
-    BoxLayout:
-        orientation: "vertical"
+.. code-block:: kv
 
-        CircularTimePicker
+   <TimeChooserPopup@Popup>:
+       BoxLayout:
+           orientation: "vertical"
 
-        Button:
-            text: "Dismiss"
-            size_hint_y: None
-            height: "40dp"
-            on_release: root.dismiss()
-```
+           CircularTimePicker
+
+           Button:
+               text: "Dismiss"
+               size_hint_y: None
+               height: "40dp"
+               on_release: root.dismiss()
 """
 
 import sys

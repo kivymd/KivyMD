@@ -1,7 +1,7 @@
 v0.102.1
 --------
 
-    See on GitHub: `tag 0.102.1 <https://github.com/HeaTTheatR/KivyMD/tree/0.102.1>`_ | `compare 0.103.0/0.102.1 <https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...0.102.1>`_
+    See on GitHub: `tag 0.102.1 <https://github.com/HeaTTheatR/KivyMD/tree/0.102.1>`_ | `compare 0.102.0/0.102.1 <https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...0.102.1>`_
 
     .. code-block:: bash
 

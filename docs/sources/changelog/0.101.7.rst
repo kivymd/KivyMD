@@ -1,7 +1,7 @@
 v0.101.7
 --------
 
-    See on GitHub: `tag 0.101.7 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.7>`_ | `compare 0.101.8/0.101.7 <https://github.com/HeaTTheatR/KivyMD/compare/0.101.8...0.101.7>`_
+    See on GitHub: `tag 0.101.7 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.7>`_ | `compare 0.101.6/0.101.7 <https://github.com/HeaTTheatR/KivyMD/compare/0.101.6...0.101.7>`_
 
     .. code-block:: bash
 

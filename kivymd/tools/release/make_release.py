@@ -67,7 +67,7 @@ def git_clean():
 
 def git_commit(message: str):
     """Make commit."""
-    command(["git", "commit", "--all", "-m", message])
+    command(["git", "commit", "--all", "--untracked-files=all", "-m", message])
 
 
 def git_tag(name: str):
@@ -223,9 +223,9 @@ def main():
     print(f"Previous version: {previous_version}")
     print(f"New version: {version}")
 
+    black_files()
     update_init_py(version)
     update_readme(previous_version, version)
-    black_files()
 
     changelog_index_file = os.path.abspath(
         f"docs{os.sep}sources{os.sep}" f"changelog{os.sep}index.rst"

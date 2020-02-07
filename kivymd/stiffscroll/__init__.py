@@ -52,28 +52,28 @@ class StiffScrollEffect(KineticEffect):
 
     max = NumericProperty(0)
     """Maximum boundary to stop the scrolling at.
-    
+
     :attr:`max` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
     max_friction = NumericProperty(1)
-    """How hard should it be to scroll, at the worst? 
-   
+    """How hard should it be to scroll, at the worst?
+
     :attr:`max_friction` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
     """
 
     body = NumericProperty(0.7)
     """Proportion of the range in which you can scroll unimpeded.
-   
+
     :attr:`body` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.7`.
     """
 
     scroll = NumericProperty(0.0)
     """Computed value for scrolling
-       
+
     :attr:`scroll` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.0`.
     """
@@ -103,7 +103,7 @@ class StiffScrollEffect(KineticEffect):
 
     displacement = NumericProperty(0)
     """The absolute distance moved in either direction.
-    
+
     :attr:`displacement` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """

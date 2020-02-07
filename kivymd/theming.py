@@ -241,7 +241,7 @@ class ThemeManager(EventDispatcher):
     The application color palette used for items such as the tab indicator
     in the :attr:`MDTabsBar` class and so on...
 
-    The image below shows the color schemes with the values 
+    The image below shows the color schemes with the values
     ``self.theme_cls.accent_palette = 'Blue'``, ``Red'`` and​​ ``Yellow'``:
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/accent-palette.png
@@ -376,16 +376,16 @@ class ThemeManager(EventDispatcher):
         KV = '''
         <Box@BoxLayout>:
             bg: 0, 0, 0, 0
-    
+
             canvas:
                 Color:
                     rgba: root.bg
                 Rectangle:
                     pos: self.pos
                     size: self.size
-    
+
         BoxLayout:
-    
+
             Box:
                 bg: app.theme_cls.bg_light
             Box:
@@ -395,18 +395,18 @@ class ThemeManager(EventDispatcher):
             Box:
                 bg: app.theme_cls.bg_darkest
         '''
-    
+
         from kivy.lang import Builder
-    
+
         from kivymd.app import MDApp
-    
-    
+
+
         class MainApp(MDApp):
             def build(self):
                 self.theme_cls.theme_style = "Dark"  # "Light"
                 return Builder.load_string(KV)
-    
-    
+
+
         MainApp().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bg-normal-dark-darkest.png
@@ -613,7 +613,7 @@ class ThemeManager(EventDispatcher):
     """
     The opposite value of color in the :attr:`secondary_text_color`.
 
-    :attr:`opposite_secondary_text_color` 
+    :attr:`opposite_secondary_text_color`
     is an :class:`~kivy.properties.AliasProperty` that returns the value
     in ``rgba`` format for :attr:`opposite_secondary_text_color`,
     property is readonly.
@@ -817,27 +817,27 @@ class ThemeManager(EventDispatcher):
 
         KV = '''
         Screen:
-        
+
             MDLabel:
                 text: "JetBrainsMono"
                 halign: "center"
                 font_style: "JetBrainsMono"
         '''
-        
+
         from kivy.core.text import LabelBase
-        
+
         from kivy.lang import Builder
-        
+
         from kivymd.app import MDApp
         from kivymd.font_definitions import theme_font_styles
-        
-        
+
+
         class MainApp(MDApp):
             def build(self):
                 LabelBase.register(
                     name="JetBrainsMono",
                     fn_regular="JetBrainsMono-Regular.ttf")
-        
+
                 theme_font_styles.append('JetBrainsMono')
                 self.theme_cls.font_styles["JetBrainsMono"] = [
                     "JetBrainsMono",
@@ -846,8 +846,8 @@ class ThemeManager(EventDispatcher):
                     0.15,
                 ]
                 return Builder.load_string(KV)
-        
-        
+
+
         MainApp().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/font-styles.png

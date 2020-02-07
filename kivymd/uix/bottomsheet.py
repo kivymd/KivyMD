@@ -292,14 +292,14 @@ Builder.load_string(
             size_hint_y: None
             cols: 1
             md_bg_color: 0, 0, 0, 0
-            
+
             canvas:
                 Color:
-                    rgba: root.theme_cls.bg_normal if not root.bg_color else root.bg_color  
+                    rgba: root.theme_cls.bg_normal if not root.bg_color else root.bg_color
                 RoundedRectangle:
                     pos: self.pos
                     size: self.size
-                    radius: 
+                    radius:
                         [
                         (root.radius, root.radius) if root.radius_from == "top_left" or root.radius_from == "top" else (0, 0),
                         (root.radius, root.radius) if root.radius_from == "top_right" or root.radius_from == "top" else (0, 0),
@@ -328,7 +328,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
 
     duration_opening = NumericProperty(0.15)
     """The duration of the bottom sheet dialog opening animation.
-    
+
     :attr:`duration_opening` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.15`.
     """
@@ -364,7 +364,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
 
     animation = BooleanProperty(False)
     """To use animation of opening of dialogue of the bottom sheet or not.
-    
+
     :attr:`animation` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """

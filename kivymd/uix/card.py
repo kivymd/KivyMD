@@ -157,7 +157,7 @@ Builder.load_string(
         Line:
             rounded_rectangle:
                 (self.pos[0], self.pos[1], self.size[0], self.size[1],\
-                self.border_radius) 
+                self.border_radius)
     md_bg_color: self.theme_cls.bg_light
 
 

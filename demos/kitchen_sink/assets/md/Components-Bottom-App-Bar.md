@@ -49,46 +49,46 @@ Builder.load_string(
             left_action_items: [['menu', lambda x: x]]
 
         ScrollView:
-    
+
             GridLayout:
                 size_hint_y: None
                 height: self.minimum_height
                 cols: 1
                 padding: "10dp"
                 spacing: "10dp"
-    
+
                 MDSeparator:
-        
+
                 StyleLabel:
                     text: "Notch"
-                
+
                 StyleItemCheck:
                     group: 'notch'
                     text: "On"
                     active: True
-        
+
                 StyleItemCheck:
                     group: 'notch'
                     text: "Off"
-        
+
                 MDSeparator:
-        
+
                 StyleLabel:
                     text: "Position"
-        
+
                 StyleItemCheck:
                     group: 'pos'
                     text: "Attached - Center"
                     active: True
-        
+
                 StyleItemCheck:
                     group: 'pos'
                     text: "Attached - End"
-    
+
                 StyleItemCheck:
                     group: 'pos'
                     text: "Free - Center"
-        
+
                 StyleItemCheck:
                     group: 'pos'
                     text: "Free - End"

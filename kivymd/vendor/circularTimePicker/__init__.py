@@ -109,7 +109,7 @@ Builder.load_string(
             x: self.scale
             y: self.scale
     canvas.after:
-        PopMatrix            
+        PopMatrix
 
 
 <CircularTimePicker>:

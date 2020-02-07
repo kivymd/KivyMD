@@ -375,7 +375,7 @@ class ModifiedBaseListItem(
     """
 
     secondary_text_color = ListProperty(None)
-    """Text color used for secondary text if secondary_theme_text_color 
+    """Text color used for secondary text if secondary_theme_text_color
     is set to 'Custom'"""
 
     secondary_theme_text_color = StringProperty("Secondary", allownone=True)
@@ -489,17 +489,17 @@ class BodyManagerWithPrevious(BoxLayout):
 
 """
  Traceback (most recent call last):
-   File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698, 
+   File "/home/kivy/Projects/KivyMD/demos/kitchen_sink/main.py", line 1698,
        in <module>
      KitchenSink().run()
    File "/usr/lib/python3/dist-packages/kivy/app.py", line 826, in run
      runTouchApp()
    File "/usr/lib/python3/dist-packages/kivy/base.py", line 502, in runTouchApp
      EventLoop.window.mainloop()
-   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", 
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py",
        line 727, in mainloop
      self._mainloop()
-   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py", 
+   File "/usr/lib/python3/dist-packages/kivy/core/window/window_sdl2.py",
        line 460, in _mainloop
      EventLoop.idle()
    File "/usr/lib/python3/dist-packages/kivy/base.py", line 337, in idle

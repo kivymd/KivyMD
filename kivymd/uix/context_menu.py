@@ -138,7 +138,7 @@ Builder.load_string(
         color: root._color_active
         size_hint_y: None
         height: "2dp"
-        
+
 
 <MenuIconItem>
     padding: 0, 0, "5dp", 0

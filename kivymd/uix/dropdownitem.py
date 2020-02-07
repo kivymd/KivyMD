@@ -96,7 +96,7 @@ Builder.load_string(
             size_hint: None, None
             size: self.texture_size
             color: root.theme_cls.text_color
-        
+
 
         _Triangle:
             size_hint: None, None

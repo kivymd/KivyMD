@@ -31,7 +31,7 @@ BoxLayout:
 
         Screen:
             name: 'one'
-            
+
             MDRaisedButton:
                 pos_hint: {'center_x': .5, 'center_y': .55}
                 on_release: manager.current = 'two'

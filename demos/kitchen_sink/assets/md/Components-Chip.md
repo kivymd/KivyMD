@@ -73,7 +73,7 @@ BoxLayout:
 
             MDLabel:
                 text: 'Chip without icon:'
-                
+
             MDSeparator:
 
             StackLayout:

@@ -309,7 +309,7 @@ class MDToolbar(
     type = OptionProperty("top", options=["top", "bottom"])
     """When using the `MDBottomAppBar` class,
     the parameter `type` must be set to `bottom`:
-    
+
     Python:
 
         .. code-block:: python

@@ -250,7 +250,7 @@ Builder.load_string(
             id: left_action_box
             size_hint: None, None
             size: self.minimum_size
-    
+
         BoxLayout:
             id: right_action_box
             size_hint: None, None

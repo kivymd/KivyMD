@@ -410,7 +410,7 @@ Builder.load_string(
         if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
         else (1, 1, 1, 1) \
         if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
-        else self.text_color_active 
+        else self.text_color_active
         )
     color:
         self.text_color_active if self.state == 'down' \

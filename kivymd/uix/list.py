@@ -371,11 +371,11 @@ class BaseListItem(
     """
 
     secondary_text_color = ListProperty(None)
-    """Text color used for secondary text if secondary_theme_text_color 
+    """Text color used for secondary text if secondary_theme_text_color
     is set to 'Custom' """
 
     tertiary_text_color = ListProperty(None)
-    """Text color used for secondary text if secondary_theme_text_color 
+    """Text color used for secondary text if secondary_theme_text_color
     is set to 'Custom' """
 
     secondary_theme_text_color = StringProperty("Secondary", allownone=True)

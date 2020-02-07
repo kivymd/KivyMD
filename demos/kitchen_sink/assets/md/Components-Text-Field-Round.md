@@ -54,7 +54,7 @@ Builder.load_string('''
             icon_left: 'email'
             icon_type: 'left'
             hint_text: 'Field with left icon'
-            
+
         MyMDTextFieldRound:
             icon_left: 'email'
             icon_right: 'account-box'
@@ -144,7 +144,7 @@ if __name__ == '__main__':
     '''Text selection color.'''
 
     icon_callback = ObjectProperty()
-    '''The function that is called when you click on the icon 
+    '''The function that is called when you click on the icon
     in the text field.'''
 
     text = StringProperty()

@@ -448,7 +448,7 @@ class TabbedPanelBase(
 
     current = StringProperty(None)
     """Current tab name.
-    
+
     :attr:`current` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
     """

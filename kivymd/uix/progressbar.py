@@ -19,7 +19,7 @@ Builder.load_string(
         Rectangle:
             size:
                 (self.width , dp(4)) if self.orientation == 'horizontal'\
-                else (dp(4),self.height) 
+                else (dp(4),self.height)
             pos:
                 (self.x, self.center_y - dp(4))\
                 if self.orientation == 'horizontal'\

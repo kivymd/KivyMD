@@ -150,7 +150,7 @@ class CommonRipple(object):
     ripple_duration_in_fast = NumericProperty(0.3)
     """
     Ripple duration when touching to widget.
-    
+
     :attr:`ripple_duration_in_fast` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.3`.
     """

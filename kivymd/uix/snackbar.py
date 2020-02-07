@@ -174,13 +174,13 @@ class Snackbar(FloatLayout):
     text = StringProperty()
     """The text that will appear in the Snackbar.
 
-    :attr:`text` is a :class:`~kivy.properties.StringProperty` 
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to ''.
     """
 
     font_size = NumericProperty("15sp")
     """The font size of the text that will appear in the Snackbar.
-    
+
     :attr:`font_size` is a :class:`~kivy.properties.NumericProperty` and
     defaults to 15sp.
     """

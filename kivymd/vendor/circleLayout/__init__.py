@@ -90,7 +90,7 @@ class CircularLayout(Layout):
     widgets larger than the actual widget, a number smaller than 1 will leave
     a gap.
 
-    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty` 
+    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty`
     and defaults to 1.
     """
 
@@ -99,12 +99,12 @@ class CircularLayout(Layout):
     :attr:`outer_radius_hint` will cause glitches. The closest it is to
     :attr:`outer_radius_hint`, the smallest will be the widget in the layout.
 
-    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty` 
+    :attr:`outer_radius_hint` is a :class:`~kivy.properties.NumericProperty`
     and defaults to 1.
     """
 
     radius_hint = ReferenceListProperty(inner_radius_hint, outer_radius_hint)
-    """Combined :attr:`outer_radius_hint` and :attr:`inner_radius_hint` 
+    """Combined :attr:`outer_radius_hint` and :attr:`inner_radius_hint`
     in a list for convenience. See their documentation for more details.
 
     :attr:`radius_hint` is a :class:`~kivy.properties.ReferenceListProperty`.

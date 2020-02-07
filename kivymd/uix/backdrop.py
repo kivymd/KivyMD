@@ -180,7 +180,7 @@ Builder.load_string(
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
-                radius: 
+                radius:
                     [
                     (root.radius, root.radius),
                     (0, 0),
@@ -213,7 +213,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
 
     padding = ListProperty([0, 0, 0, 0])
     """Padding for contents of the front layer.
-    
+
     :attr:`padding` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
@@ -258,7 +258,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
 
     header = BooleanProperty(True)
     """Whether to use a header above the contents of the front layer.
-    
+
     :attr:`header` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """

@@ -133,7 +133,7 @@ Builder.load_string(
                 height: self.minimum_height
                 cols: 1
                 padding: "5dp"
-        
+
                 ItemBackdropBackLayer:
                     icon: 'theater'
                     text: "TV & Home Theaters"
@@ -201,7 +201,7 @@ Builder.load_string(
                 MDLabel:
                     text: "Types of TVs Home Theater Product"
                     color: 1, 1, 1, 1
-                
+
                 ItemRoundBackdropBackLayerOfSecondScreen:
                     text: "TVs up to 32\\""
                 ItemRoundBackdropBackLayerOfSecondScreen:

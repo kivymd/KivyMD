@@ -112,7 +112,7 @@ class HoverBehavior(object):
     """Contains the last relevant point received by the Hoverable.
     This can be used in :attr:`on_enter` or :attr:`on_leave` in order
     to know where was dispatched the event.
-    
+
     :attr:`border_point` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """

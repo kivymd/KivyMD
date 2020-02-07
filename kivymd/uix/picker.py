@@ -45,7 +45,7 @@ Builder.load_string(
 <MDDatePicker>
     cal_layout: cal_layout
     size_hint: (None, None)
-    size: 
+    size:
         [dp(328), dp(484)] if self.theme_cls.device_orientation == 'portrait'\
         else [dp(512), dp(304)]
     pos_hint: {'center_x': .5, 'center_y': .5}

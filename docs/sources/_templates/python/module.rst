@@ -2,8 +2,8 @@
 {% if not obj.display %}
 {# Do not display warnings #}
 :orphan:
-
 {% endif %}
+
 {# Write last word in summary #}
 {% set unincluded = obj.include_dir("").startswith("/unincluded") %}
 {% set summary_split = obj.summary.split("/") %}

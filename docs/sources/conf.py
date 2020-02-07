@@ -68,7 +68,7 @@ autoapi_include_inheritance_graphs = False
 autoapi_include_summaries = True
 autoapi_python_class_content = "class"
 autoapi_python_use_implicit_namespaces = False
-autoapi_keep_files = True  # True for debugging
+autoapi_keep_files = False  # True for debugging
 
 # InterSphinx configuration
 intersphinx_mapping = {

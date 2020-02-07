@@ -16,6 +16,8 @@
 {{ "=" * obj.name|length }}
 {% endif %}
 
+.. py:module:: {{ obj.name }}
+
 {# Write docstring of module #}
 {% if obj.docstring %}
 .. autoapi-nested-parse::
@@ -27,8 +29,6 @@
 {# API. Write module name #}
 API - :mod:`{{ obj.name }}`
 {{ "-" * 13 }}{{ "-" * obj.name|length }}
-
-.. py:module:: {{ obj.name }}
 
 {% if obj.all is not none %}
 {# Get all visible children #}

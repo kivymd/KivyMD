@@ -26,9 +26,9 @@ If you wish to become a project developer (permission to create branches on the 
 Documentation
 =============
 
-#### Wiki
+See documentation at https://kivymd.readthedocs.io/
 
-No complete documentation yet. Our [Wiki](https://github.com/HeaTTheatR/KivyMD/wiki) contains some examples of using KivyMD widgets.
+Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD/wiki
 
 #### Demos
 

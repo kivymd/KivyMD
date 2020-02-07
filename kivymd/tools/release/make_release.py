@@ -43,7 +43,6 @@ def get_previous_version():
 
 def git_clean():
     """Clean git repository from untracked and changed files."""
-    return
     # Check what files will be removed
     clean = str(
         command(["git", "clean", "-dx", "--force", "--dry-run"]),
@@ -231,6 +230,7 @@ def main():
     print(f"Previous version: {previous_version}")
     print(f"New version: {version}")
 
+    git_clean()
     run_pre_commit()
     update_init_py(version)
     update_readme(previous_version, version)

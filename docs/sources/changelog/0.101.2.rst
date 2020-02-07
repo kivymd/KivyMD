@@ -1,0 +1,10 @@
+v0.101.2
+--------
+
+    See on GitHub: `tag 0.101.2 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.2>`_ | `compare 0.101.3/0.101.2 <https://github.com/HeaTTheatR/KivyMD/compare/0.101.3...0.101.2>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.2
+
+* Bug fixes and other minor improvements.

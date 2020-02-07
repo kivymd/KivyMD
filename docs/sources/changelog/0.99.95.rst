@@ -1,0 +1,12 @@
+v0.99.95
+--------
+
+    See on GitHub: `tag 0.99.95 <https://github.com/HeaTTheatR/KivyMD/tree/0.99.95>`_ | `compare 0.99.96/0.99.95 <https://github.com/HeaTTheatR/KivyMD/compare/0.99.96...0.99.95>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.95
+
+* Added function to create a round image in `kivymd/utils/cropimage.py` module.
+* Added `MDCustomRoundIconButton` class.
+* Added demo application [Account Page](https://www.youtube.com/watch?v=dfUOwqtYoYg) for [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).

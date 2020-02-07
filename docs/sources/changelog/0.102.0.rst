@@ -1,0 +1,13 @@
+v0.102.0
+--------
+
+    See on GitHub: `tag 0.102.0 <https://github.com/HeaTTheatR/KivyMD/tree/0.102.0>`_ | `compare 0.102.1/0.102.0 <https://github.com/HeaTTheatR/KivyMD/compare/0.102.1...0.102.0>`_
+
+    .. code-block:: bash
+
+       pip install kivymd==0.102.0
+
+* Moved `kivymd.behaviors` to `kivymd.uix.behaviors`.
+* Updated [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) (v4.5.95).
+* Added `blank` icon to `icon_definitions`.
+* Bug fixes and other minor improvements.

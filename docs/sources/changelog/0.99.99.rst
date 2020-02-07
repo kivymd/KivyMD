@@ -1,0 +1,10 @@
+v0.99.99
+--------
+
+    See on GitHub: `tag 0.99.99 <https://github.com/HeaTTheatR/KivyMD/tree/0.99.99>`_ | `compare 0.99.99.01/0.99.99 <https://github.com/HeaTTheatR/KivyMD/compare/0.99.99.01...0.99.99>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.99
+
+* Added `icon_color` property for `NavigationDrawerIconButton`.

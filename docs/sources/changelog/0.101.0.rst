@@ -1,0 +1,22 @@
+v0.101.0
+--------
+
+    See on GitHub: `tag 0.101.0 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.0>`_ | `compare 0.101.1/0.101.0 <https://github.com/HeaTTheatR/KivyMD/compare/0.101.1...0.101.0>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.0
+
+* Added `MDContextMenu` class.
+* Added `MDExpansionPanel` class.
+* Removed `MDAccordion` and `MDAccordionListItem`. Use `MDExpansionPanel` instead.
+* Added `HoverBehavior` class by [Olivier POYEN](https://gist.github.com/opqopq/15c707dc4cffc2b6455f).
+* Added markup support for buttons.
+* Added `duration` property to `Toast`.
+* Added `TextInput`'s events and properties to `MDTextFieldRound`.
+* Added feature to resize text field
+* Added color property to `MDSeparator` class
+* Added [tool](https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/tools/update_icons.py) for updating [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont).
+* Updated [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) (v4.3.95).
+* Added new examples for [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
+* Bug fixes and other minor improvements.

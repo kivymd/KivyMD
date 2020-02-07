@@ -1,0 +1,10 @@
+v0.100.2
+--------
+
+    See on GitHub: `tag 0.100.2 <https://github.com/HeaTTheatR/KivyMD/tree/0.100.2>`_ | `compare 0.101.0/0.100.2 <https://github.com/HeaTTheatR/KivyMD/compare/0.101.0...0.100.2>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
+
+* [Black](https://github.com/psf/black) formatting.

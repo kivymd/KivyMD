@@ -1,0 +1,10 @@
+v0.99.99.01
+-----------
+
+    See on GitHub: `tag 0.99.99.01 <https://github.com/HeaTTheatR/KivyMD/tree/0.99.99.01>`_ | `compare 0.100.0/0.99.99.01 <https://github.com/HeaTTheatR/KivyMD/compare/0.100.0...0.99.99.01>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.99.01
+
+* Fixed `MDNavigationDrawer.use_logo`.

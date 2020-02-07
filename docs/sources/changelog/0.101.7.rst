@@ -1,0 +1,11 @@
+v0.101.7
+--------
+
+    See on GitHub: `tag 0.101.7 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.7>`_ | `compare 0.101.8/0.101.7 <https://github.com/HeaTTheatR/KivyMD/compare/0.101.8...0.101.7>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.7
+
+* Fixed colors and position of the buttons in the `Buttons` demo screen ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
+* Displaying percent of loading kv-files ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).

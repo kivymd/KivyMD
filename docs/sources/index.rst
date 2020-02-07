@@ -18,6 +18,7 @@ Contents
    /themes/index
    /components/index
    /behaviors/index
+   /changelog/index
    /about
 
 .. toctree::

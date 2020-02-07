@@ -1,0 +1,10 @@
+v0.101.8
+--------
+
+    See on GitHub: `tag 0.101.8 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.8>`_ | `compare 0.102.0/0.101.8 <https://github.com/HeaTTheatR/KivyMD/compare/0.102.0...0.101.8>`_
+
+    .. code-block:: bash
+
+       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.8
+
+* Added `uix` and `behaviors` folder to `package_data`.

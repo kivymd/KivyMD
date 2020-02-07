@@ -2,7 +2,16 @@
 Themes/Color Definitions
 ========================
 
-`Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`_
+.. seealso::
+
+   `Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`_
+
+Material colors palette to use in :class:`kivymd.theming.ThemeManager`.
+:data:`~colors` is a dict-in-dict where the first key is a value from
+:data:`~palette` and the second key is a value from :data:`~hue`. Color is a hex
+value, a string of 6 characters (0-9, A-F) written in uppercase.
+
+For example, ``colors["Red"]["900"]`` is ``"B71C1C"``.
 """
 
 colors = {
@@ -324,6 +333,8 @@ colors = {
         "FlatButtonDown": "999999",
     },
 }
+"""Color palette. Taken from `2014 Material Design color palettes
+<https://material.io/design/color/the-color-system.html>`_."""
 
 palette = [
     "Red",
@@ -346,6 +357,8 @@ palette = [
     "Gray",
     "BlueGray",
 ]
+"""Valid values for color palette selecting."""
+
 hue = [
     "50",
     "100",
@@ -362,6 +375,7 @@ hue = [
     "A400",
     "A700",
 ]
+"""Valid values for color hue selecting."""
 
 
 light_colors = {
@@ -489,18 +503,8 @@ light_colors = {
     "Dark": [],
     "Light": ["White", "MainBackground", "DialogBackground"],
 }
+"""Which colors are light. Other are dark."""
 
-"""
-# How to generate text_colors dict:
-text_colors = {}
-for p in palette:
-    text_colors[p] = {}
-    for h in hue:
-        if h in light_colors[p]:
-            text_colors[p][h] = '000000'
-        else:
-            text_colors[p][h] = 'FFFFFF'
-"""
 text_colors = {
     "Red": {
         "50": "000000",
@@ -807,6 +811,22 @@ text_colors = {
         "A700": "FFFFFF",
     },
 }
+"""Text colors generated from :data:`~light_colors`. "000000" for light and
+"FFFFFF" for dark.
+
+How to generate text_colors dict
+
+.. code-block:: python
+
+   text_colors = {}
+   for p in palette:
+       text_colors[p] = {}
+       for h in hue:
+           if h in light_colors[p]:
+               text_colors[p][h] = "000000"
+           else:
+               text_colors[p][h] = "FFFFFF"
+"""
 
 theme_colors = [
     "Primary",
@@ -820,3 +840,4 @@ theme_colors = [
     "On_Surface",
     "On_Error",
 ]
+"""Valid theme colors."""

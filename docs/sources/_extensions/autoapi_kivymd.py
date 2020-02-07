@@ -85,7 +85,8 @@ def PythonSphinxMapper_output_rst(
                     f"{index_name}\n"
                     f"{'=' * len(index_name)}\n\n"
                     f".. toctree::\n"
-                    f"   :maxdepth: 1\n\n"
+                    f"    :maxdepth: 1\n"
+                    f"    :sorted:\n\n"
                 )
                 if index_file not in self.app.created_api_files:
                     self.app.created_api_files.append(index_file)
@@ -96,7 +97,7 @@ def PythonSphinxMapper_output_rst(
                 if path_in_rst in index_file_contents:
                     continue
                 index_rst = ""
-            index_rst += f"   {path_in_rst}\n"
+            index_rst += f"    {path_in_rst}\n"
             ensuredir(index_dir)
             open(index_file, "at+", encoding="utf-8").write(index_rst)
 

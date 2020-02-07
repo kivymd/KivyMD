@@ -67,10 +67,9 @@ def git_clean():
 
 def git_commit(message: str, allow_error: bool = False):
     """Make commit."""
+    command(["git", "add", "-A"])
     try:
-        command(
-            ["git", "commit", "--all", "--untracked-files=all", "-m", message]
-        )
+        command(["git", "commit", "--all", "-m", message])
     except subprocess.CalledProcessError as e:
         if not allow_error:
             raise e

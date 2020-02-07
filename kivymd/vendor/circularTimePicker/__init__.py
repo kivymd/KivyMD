@@ -241,7 +241,7 @@ class CircularNumberPicker(CircularLayout):
     """
 
     number_size_factor = NumericProperty(0.5)
-    """Font size scale factor fot the :class:`Number`s.
+    """Font size scale factor for the :class:`~Number`.
 
     :attr:`number_size_factor`
     is a :class:`~kivy.properties.NumericProperty` and defaults to 0.5.

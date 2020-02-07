@@ -4,7 +4,7 @@ Components/Bottom Sheet
 
 .. seealso::
 
-   `Material Design spec, Sheets: bottom <https://material.io/components/sheets-bottom>`_
+    `Material Design spec, Sheets: bottom <https://material.io/components/sheets-bottom>`_
 
 .. rubric:: Bottom sheets are surfaces containing supplementary content that are anchored to the bottom of the screen.
 

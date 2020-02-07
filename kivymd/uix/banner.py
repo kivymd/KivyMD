@@ -4,7 +4,7 @@ Components/Banner
 
 .. seealso::
 
-   `Material Design spec, Banner <https://material.io/components/banners>`_
+    `Material Design spec, Banner <https://material.io/components/banners>`_
 
 .. rubric:: A banner displays a prominent message and related optional actions.
 

@@ -4,7 +4,7 @@ Components/Backdrop
 
 .. seealso::
 
-   `Material Design spec, Backdrop <https://material.io/components/backdrop>`_
+    `Material Design spec, Backdrop <https://material.io/components/backdrop>`_
 
 .. rubric:: Skeleton layout for using :class:`~MDBackdrop`:
 
@@ -12,7 +12,7 @@ Components/Backdrop
     :align: center
 
 Usage
-=====
+-----
 
 .. code-block:: kv
 
@@ -29,7 +29,7 @@ Usage
                  ContentForBackdropFrontLayer:
 
 Example
-=======
+-------
 
 .. code-block:: python
 

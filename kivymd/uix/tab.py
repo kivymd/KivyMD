@@ -4,7 +4,7 @@ Components/Tabs
 
 .. seealso::
 
-   `Material Design spec, Tabs <https://material.io/components/tabs>`_
+    `Material Design spec, Tabs <https://material.io/components/tabs>`_
 """
 
 from kivy.lang import Builder

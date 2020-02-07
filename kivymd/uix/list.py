@@ -4,7 +4,7 @@ Components/List
 
 .. seealso::
 
-   `Material Design spec, Lists <https://material.io/components/lists>`_
+    `Material Design spec, Lists <https://material.io/components/lists>`_
 
 The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -15,7 +15,7 @@ Example
 
 Kv Lang:
 
-.. code-block:: python
+.. code-block:: kv
 
     ScrollView:
         do_scroll_x: False  # Important for MD compliance

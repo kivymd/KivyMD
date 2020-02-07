@@ -5,84 +5,86 @@ Components/Context Menu
 Example
 -------
 
-from kivymd.app import MDApp
-from kivy.lang import Builder
+.. code-block:: python
 
-from kivymd.theming import ThemeManager
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
 
-kv = '''
-FloatLayout:
+    from kivymd.theming import ThemeManager
 
-    MDContextMenu:
-        menu: app.menu
-        pos_hint: {'top': 1}
-        on_enter: app.on_enter(*args)
+    kv = '''
+    FloatLayout:
 
-        MDContextMenuItem:
-            text: 'File'
+        MDContextMenu:
+            menu: app.menu
+            pos_hint: {'top': 1}
+            on_enter: app.on_enter(*args)
 
-        MDContextMenuItem:
-            text: 'Edit'
-'''
+            MDContextMenuItem:
+                text: 'File'
+
+            MDContextMenuItem:
+                text: 'Edit'
+    '''
 
 
-MENU = [
-    [
-        "File",
+    MENU = [
         [
-            {"Item 1": []},
-            {
-                "Item 2": [
-                    "Item 1",
-                    "Item 2",
-                    "Separator",
-                    ["language-python", "Item 3"],
-                ]
-            },
-            "Separator",
-            {"Item 3": []},
-            {
-                "Item 4": [
-                    ["language-python", "Item 1"],
-                    ["language-cpp", "Item 2"],
-                    "Separator",
-                    ["language-swift", "Item 3"],
-                ]
-            },
-            "Separator",
-            {"Item 5": []},
+            "File",
+            [
+                {"Item 1": []},
+                {
+                    "Item 2": [
+                        "Item 1",
+                        "Item 2",
+                        "Separator",
+                        ["language-python", "Item 3"],
+                    ]
+                },
+                "Separator",
+                {"Item 3": []},
+                {
+                    "Item 4": [
+                        ["language-python", "Item 1"],
+                        ["language-cpp", "Item 2"],
+                        "Separator",
+                        ["language-swift", "Item 3"],
+                    ]
+                },
+                "Separator",
+                {"Item 5": []},
+            ],
         ],
-    ],
 
-    [
-        "Edit",
         [
-            {"Item 1": []},
-            ["language-swift", "Item 3"]
+            "Edit",
+            [
+                {"Item 1": []},
+                ["language-swift", "Item 3"]
+            ]
         ]
+
     ]
 
-]
+
+    class Test(MDApp):
+        context_menu = None
+        menu = MENU
+
+        def on_enter(self, instance):
+            '''
+            :type instance: <kivymd.context_menu.MDContextMenu object>
+
+            '''
+
+            print(instance.current_selected_menu.text)
+
+        def build(self):
+            root = Builder.load_string(kv)
+            return root
 
 
-class Test(MDApp):
-    context_menu = None
-    menu = MENU
-
-    def on_enter(self, instance):
-        '''
-        :type instance: <kivymd.context_menu.MDContextMenu object>
-
-        '''
-
-        print(instance.current_selected_menu.text)
-
-    def build(self):
-        root = Builder.load_string(kv)
-        return root
-
-
-Test().run()
+    Test().run()
 """
 
 from kivy.animation import Animation

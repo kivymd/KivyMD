@@ -7,79 +7,81 @@ Progressbar downloads files from the server.
 Example
 -------
 
-import os
+.. code-block:: python
 
-from kivymd.app import MDApp
-from kivy.lang import Builder
-from kivy.factory import Factory
+    import os
 
-from kivymd.uix.progressloader import MDProgressLoader
-from kivymd.theming import ThemeManager
-from kivymd.toast import toast
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
+    from kivy.factory import Factory
 
-
-Builder.load_string('''
-<Root@BoxLayout>
-    orientation: 'vertical'
-    spacing: dp(5)
-
-    MDToolbar:
-        id: toolbar
-        title: 'MD Progress Loader'
-        left_action_items: [['menu', lambda x: None]]
-        elevation: 10
-        md_bg_color: app.theme_cls.primary_color
-
-    FloatLayout:
-        id: box
-
-        MDRoundFlatIconButton:
-            text: "Download file"
-            icon: "download"
-            pos_hint: {'center_x': .5, 'center_y': .6}
-            on_release: app.show_example_download_file()
-''')
+    from kivymd.uix.progressloader import MDProgressLoader
+    from kivymd.theming import ThemeManager
+    from kivymd.toast import toast
 
 
-class Test(MDApp):
+    Builder.load_string('''
+    <Root@BoxLayout>
+        orientation: 'vertical'
+        spacing: dp(5)
 
-    def build(self):
-        self.main_widget = Factory.Root()
-        return self.main_widget
+        MDToolbar:
+            id: toolbar
+            title: 'MD Progress Loader'
+            left_action_items: [['menu', lambda x: None]]
+            elevation: 10
+            md_bg_color: app.theme_cls.primary_color
 
-    def set_chevron_back_screen(self):
-        '''Sets the return chevron to the previous screen in ToolBar.'''
+        FloatLayout:
+            id: box
 
-        self.main_widget.ids.toolbar.right_action_items = []
-
-    def download_progress_hide(self, instance_progress, value):
-        '''Hides progress progress.'''
-
-        self.main_widget.ids.toolbar.right_action_items =\
-            [['download',
-                lambda x: self.download_progress_show(instance_progress)]]
-
-    def download_progress_show(self, instance_progress):
-        self.set_chevron_back_screen()
-        instance_progress.open()
-        instance_progress.animation_progress_from_fade()
-
-    def show_example_download_file(self):
-        link = 'https://www.python.org/ftp/python/3.5.1/python-3.5.1-embed-win32.zip'
-        progress = MDProgressLoader(
-            url_on_image=link,
-            path_to_file=os.path.join(self.directory, 'python-3.5.1.zip'),
-            download_complete=self.download_complete,
-            download_hide=self.download_progress_hide
-        )
-        progress.start(self.main_widget.ids.box)
-
-    def download_complete(self):
-        self.set_chevron_back_screen()
-        toast('Done')
+            MDRoundFlatIconButton:
+                text: "Download file"
+                icon: "download"
+                pos_hint: {'center_x': .5, 'center_y': .6}
+                on_release: app.show_example_download_file()
+    ''')
 
 
-Test().run()
+    class Test(MDApp):
+
+        def build(self):
+            self.main_widget = Factory.Root()
+            return self.main_widget
+
+        def set_chevron_back_screen(self):
+            '''Sets the return chevron to the previous screen in ToolBar.'''
+
+            self.main_widget.ids.toolbar.right_action_items = []
+
+        def download_progress_hide(self, instance_progress, value):
+            '''Hides progress progress.'''
+
+            self.main_widget.ids.toolbar.right_action_items =\
+                [['download',
+                    lambda x: self.download_progress_show(instance_progress)]]
+
+        def download_progress_show(self, instance_progress):
+            self.set_chevron_back_screen()
+            instance_progress.open()
+            instance_progress.animation_progress_from_fade()
+
+        def show_example_download_file(self):
+            link = 'https://www.python.org/ftp/python/3.5.1/python-3.5.1-embed-win32.zip'
+            progress = MDProgressLoader(
+                url_on_image=link,
+                path_to_file=os.path.join(self.directory, 'python-3.5.1.zip'),
+                download_complete=self.download_complete,
+                download_hide=self.download_progress_hide
+            )
+            progress.start(self.main_widget.ids.box)
+
+        def download_complete(self):
+            self.set_chevron_back_screen()
+            toast('Done')
+
+
+    Test().run()
 """
 
 from kivy.clock import Clock

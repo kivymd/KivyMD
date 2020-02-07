@@ -4,120 +4,122 @@ Components/Snackbar
 
 .. seealso::
 
-   `Material Design spec, Snackbars <https://material.io/components/snackbars>`_
+    `Material Design spec, Snackbars <https://material.io/components/snackbars>`_
 
 Example
 =======
 
-from kivymd.app import MDApp
-from kivy.animation import Animation
-from kivy.clock import Clock
-from kivy.metrics import dp
-from kivy.lang import Builder
+.. code-block:: python
 
-from kivymd.uix.snackbar import Snackbar
-from kivymd.theming import ThemeManager
-from kivymd.toast import toast
+    from kivymd.app import MDApp
+    from kivy.animation import Animation
+    from kivy.clock import Clock
+    from kivy.metrics import dp
+    from kivy.lang import Builder
 
-KV = '''
-#:import Window kivy.core.window.Window
+    from kivymd.uix.snackbar import Snackbar
+    from kivymd.theming import ThemeManager
+    from kivymd.toast import toast
+
+    KV = '''
+    #:import Window kivy.core.window.Window
 
 
-Screen:
-    name: 'snackbar'
-
-    BoxLayout:
-        orientation: 'vertical'
-        spacing: dp(10)
-
-        MDToolbar:
-            title: 'Example Snackbar'
-            md_bg_color: app.theme_cls.primary_color
-            left_action_items: [['menu', lambda x: x]]
-            background_palette: 'Primary'
+    Screen:
+        name: 'snackbar'
 
         BoxLayout:
             orientation: 'vertical'
             spacing: dp(10)
-            padding: dp(10)
 
-            Widget:
+            MDToolbar:
+                title: 'Example Snackbar'
+                md_bg_color: app.theme_cls.primary_color
+                left_action_items: [['menu', lambda x: x]]
+                background_palette: 'Primary'
 
-            MDRaisedButton:
-                text: "Create simple snackbar"
-                pos_hint: {'center_x': .5}
-                on_release: app.show_example_snackbar('simple')
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(10)
+                padding: dp(10)
 
-            MDRaisedButton:
-                text: "Create snackbar with button"
-                pos_hint: {'center_x': .5}
-                on_release: app.show_example_snackbar('button')
+                Widget:
 
-            MDRaisedButton:
-                text: "Create snackbar with a lot of text"
-                pos_hint: {'center_x': .5}
-                on_release: app.show_example_snackbar('verylong')
+                MDRaisedButton:
+                    text: "Create simple snackbar"
+                    pos_hint: {'center_x': .5}
+                    on_release: app.show_example_snackbar('simple')
 
-            MDSeparator:
+                MDRaisedButton:
+                    text: "Create snackbar with button"
+                    pos_hint: {'center_x': .5}
+                    on_release: app.show_example_snackbar('button')
 
-            MDLabel:
-                text: 'Click the MDFloatingActionButton to show the following example...'
-                halign: 'center'
+                MDRaisedButton:
+                    text: "Create snackbar with a lot of text"
+                    pos_hint: {'center_x': .5}
+                    on_release: app.show_example_snackbar('verylong')
 
-            Widget:
+                MDSeparator:
 
-    MDFloatingActionButton:
-        id: button
-        md_bg_color: app.theme_cls.primary_color
-        x: Window.width - self.width - dp(10)
-        y: dp(10)
-        on_release: app.show_example_snackbar('float')
-'''
+                MDLabel:
+                    text: 'Click the MDFloatingActionButton to show the following example...'
+                    halign: 'center'
 
+                Widget:
 
-class ExampleSnackBar(MDApp):
-    _interval = 0
-    my_snackbar = None
-    screen = None
-
-    def build(self):
-        self.screen = Builder.load_string(KV)
-        return self.screen
-
-    def show_example_snackbar(self, snack_type):
-        def callback(instance):
-            toast(instance.text)
-
-        def wait_interval(interval):
-            self._interval += interval
-            if self._interval > self.my_snackbar.duration:
-                anim = Animation(y=dp(10), d=.2)
-                anim.start(self.screen.ids.button)
-                Clock.unschedule(wait_interval)
-                self._interval = 0
-                self.my_snackbar = None
-
-        if snack_type == 'simple':
-            Snackbar(text="This is a snackbar!").show()
-        elif snack_type == 'button':
-            Snackbar(text="This is a snackbar", button_text="with a button!",
-                     button_callback=callback).show()
-        elif snack_type == 'verylong':
-            Snackbar(text="This is a very very very very very very very "
-                          "long snackbar!").show()
-        elif snack_type == 'float':
-            if not self.my_snackbar:
-                self.my_snackbar = Snackbar(
-                    text="This is a snackbar!", button_text='Button',
-                    duration=3, button_callback=callback)
-                self.my_snackbar.show()
-                anim = Animation(y=dp(72), d=.2)
-                anim.bind(on_complete=lambda *args: Clock.schedule_interval(
-                    wait_interval, 0))
-                anim.start(self.screen.ids.button)
+        MDFloatingActionButton:
+            id: button
+            md_bg_color: app.theme_cls.primary_color
+            x: Window.width - self.width - dp(10)
+            y: dp(10)
+            on_release: app.show_example_snackbar('float')
+    '''
 
 
-ExampleSnackBar().run()
+    class ExampleSnackBar(MDApp):
+        _interval = 0
+        my_snackbar = None
+        screen = None
+
+        def build(self):
+            self.screen = Builder.load_string(KV)
+            return self.screen
+
+        def show_example_snackbar(self, snack_type):
+            def callback(instance):
+                toast(instance.text)
+
+            def wait_interval(interval):
+                self._interval += interval
+                if self._interval > self.my_snackbar.duration:
+                    anim = Animation(y=dp(10), d=.2)
+                    anim.start(self.screen.ids.button)
+                    Clock.unschedule(wait_interval)
+                    self._interval = 0
+                    self.my_snackbar = None
+
+            if snack_type == 'simple':
+                Snackbar(text="This is a snackbar!").show()
+            elif snack_type == 'button':
+                Snackbar(text="This is a snackbar", button_text="with a button!",
+                         button_callback=callback).show()
+            elif snack_type == 'verylong':
+                Snackbar(text="This is a very very very very very very very "
+                              "long snackbar!").show()
+            elif snack_type == 'float':
+                if not self.my_snackbar:
+                    self.my_snackbar = Snackbar(
+                        text="This is a snackbar!", button_text='Button',
+                        duration=3, button_callback=callback)
+                    self.my_snackbar.show()
+                    anim = Animation(y=dp(72), d=.2)
+                    anim.bind(on_complete=lambda *args: Clock.schedule_interval(
+                        wait_interval, 0))
+                    anim.start(self.screen.ids.button)
+
+
+    ExampleSnackBar().run()
 """
 
 from kivy.animation import Animation

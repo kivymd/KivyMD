@@ -4,7 +4,7 @@ Components/Tooltip
 
 .. seealso::
 
-   `Material Design spec, Tooltips <https://material.io/components/tooltips>`_
+    `Material Design spec, Tooltips <https://material.io/components/tooltips>`_
 
 Tooltips display informative text when users hover over, focus on,
 or tap an element.
@@ -12,69 +12,71 @@ or tap an element.
 Example
 -------
 
-from kivy.lang import Builder
-from kivy.factory import Factory
+.. code-block:: python
 
-from kivymd.app import MDApp
+    from kivy.lang import Builder
+    from kivy.factory import Factory
 
-Builder.load_string('''
-#:import random random
-#:import hex_colormap kivy.utils.hex_colormap
-#:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import md_icons kivymd.icon_definitions.md_icons
+    from kivymd.app import MDApp
 
-#:set ICONS list(md_icons.keys())
+    Builder.load_string('''
+    #:import random random
+    #:import hex_colormap kivy.utils.hex_colormap
+    #:import get_color_from_hex kivy.utils.get_color_from_hex
+    #:import md_icons kivymd.icon_definitions.md_icons
 
-
-<IconButtonTooltips@MDIconButton+MDTooltip>
-
-
-<ExampleTooltips@BoxLayout>
-    orientation: 'vertical'
-
-    MDToolbar:
-        title: "Example Tooltips"
-        md_bg_color: get_color_from_hex(hex_colormap["crimson"])
-        elevation: 10
-        left_action_items: [['dots-vertical', lambda x: None]]
-        tooltip_text: "MDToolbar"
-
-    Screen:
-
-        BoxLayout:
-            size_hint: None, None
-            size: self.minimum_size
-            padding: "10dp"
-            spacing: "10dp"
-            pos_hint: {'center_x': .5, "center_y": .9}
-
-            IconButtonTooltips:
-                icon: random.choice(ICONS)
-                tooltip_text: "MDIconButton"
-            IconButtonTooltips:
-                icon: random.choice(ICONS)
-                tooltip_text: "MDIconButton"
-            IconButtonTooltips:
-                icon: random.choice(ICONS)
-                tooltip_text: "MDIconButton"
-            IconButtonTooltips:
-                icon: random.choice(ICONS)
-                tooltip_text: "MDIconButton"
-            IconButtonTooltips:
-                icon: random.choice(ICONS)
-                tooltip_text: "MDIconButton"
-            IconButtonTooltips:
-                icon: random.choice(ICONS)
-                tooltip_text: "MDIconButton"
-''')
+    #:set ICONS list(md_icons.keys())
 
 
-class Test(MDApp):
-    def build(self):
-        return Factory.ExampleTooltips()
+    <IconButtonTooltips@MDIconButton+MDTooltip>
 
 
-Test().run()
+    <ExampleTooltips@BoxLayout>
+        orientation: 'vertical'
+
+        MDToolbar:
+            title: "Example Tooltips"
+            md_bg_color: get_color_from_hex(hex_colormap["crimson"])
+            elevation: 10
+            left_action_items: [['dots-vertical', lambda x: None]]
+            tooltip_text: "MDToolbar"
+
+        Screen:
+
+            BoxLayout:
+                size_hint: None, None
+                size: self.minimum_size
+                padding: "10dp"
+                spacing: "10dp"
+                pos_hint: {'center_x': .5, "center_y": .9}
+
+                IconButtonTooltips:
+                    icon: random.choice(ICONS)
+                    tooltip_text: "MDIconButton"
+                IconButtonTooltips:
+                    icon: random.choice(ICONS)
+                    tooltip_text: "MDIconButton"
+                IconButtonTooltips:
+                    icon: random.choice(ICONS)
+                    tooltip_text: "MDIconButton"
+                IconButtonTooltips:
+                    icon: random.choice(ICONS)
+                    tooltip_text: "MDIconButton"
+                IconButtonTooltips:
+                    icon: random.choice(ICONS)
+                    tooltip_text: "MDIconButton"
+                IconButtonTooltips:
+                    icon: random.choice(ICONS)
+                    tooltip_text: "MDIconButton"
+    ''')
+
+
+    class Test(MDApp):
+        def build(self):
+            return Factory.ExampleTooltips()
+
+
+    Test().run()
 """
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")

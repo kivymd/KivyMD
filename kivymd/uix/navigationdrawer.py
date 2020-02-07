@@ -4,142 +4,143 @@ Components/Navigation Drawer
 
 .. seealso::
 
-   `Material Design spec, Navigation drawer <https://material.io/components/navigation-drawer>`
+    `Material Design spec, Navigation drawer <https://material.io/components/navigation-drawer>`
 
 Example
 -------
 
-from kivy.uix.boxlayout import BoxLayout
+.. code-block:: python
 
-from kivymd.app import MDApp
-from kivy.lang import Builder
-from kivy.properties import StringProperty
+    from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.uix.list import OneLineAvatarListItem
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
 
-KV = '''
-#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
-#:import images_path kivymd.images_path
+    from kivymd.uix.list import OneLineAvatarListItem
 
-
-<NavigationItem>
-    theme_text_color: 'Custom'
-    divider: None
-
-    IconLeftWidget:
-        icon: root.icon
+    KV = '''
+    #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+    #:import images_path kivymd.images_path
 
 
-<ContentNavigationDrawer>
+    <NavigationItem>
+        theme_text_color: 'Custom'
+        divider: None
 
-    BoxLayout:
-        orientation: 'vertical'
+        IconLeftWidget:
+            icon: root.icon
 
-        FloatLayout:
-            size_hint_y: None
-            height: "200dp"
 
-            canvas:
-                Color:
-                    rgba: app.theme_cls.primary_color
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+    <ContentNavigationDrawer>
 
-            BoxLayout:
-                id: top_box
+        BoxLayout:
+            orientation: 'vertical'
+
+            FloatLayout:
                 size_hint_y: None
                 height: "200dp"
-                #padding: "10dp"
-                x: root.parent.x
-                pos_hint: {"top": 1}
 
-                FitImage:
-                    source: f"{images_path}kivymd_alpha.png"
-
-            MDIconButton:
-                icon: "close"
-                x: root.parent.x + dp(10)
-                pos_hint: {"top": 1}
-                on_release: root.parent.toggle_nav_drawer()
-
-            MDLabel:
-                markup: True
-                text: "[b]KivyMD[/b]\\nVersion: 0.102.1"
-                #pos_hint: {'center_y': .5}
-                x: root.parent.x + dp(10)
-                y: root.height - top_box.height + dp(10)
-                size_hint_y: None
-                height: self.texture_size[1]
-
-        ScrollView:
-            pos_hint: {"top": 1}
-
-            GridLayout:
-                id: box_item
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-
-
-Screen:
-
-    NavigationLayout:
-
-        ScreenManager:
-
-            Screen:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primary_color
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
 
                 BoxLayout:
-                    orientation: 'vertical'
+                    id: top_box
+                    size_hint_y: None
+                    height: "200dp"
+                    #padding: "10dp"
+                    x: root.parent.x
+                    pos_hint: {"top": 1}
 
-                    MDToolbar:
-                        title: "Navigation Drawer"
-                        md_bg_color: app.theme_cls.primary_color
-                        elevation: 10
-                        left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+                    FitImage:
+                        source: f"{images_path}kivymd_alpha.png"
 
-                    Widget:
+                MDIconButton:
+                    icon: "close"
+                    x: root.parent.x + dp(10)
+                    pos_hint: {"top": 1}
+                    on_release: root.parent.toggle_nav_drawer()
+
+                MDLabel:
+                    markup: True
+                    text: "[b]KivyMD[/b]\\nVersion: 0.102.1"
+                    #pos_hint: {'center_y': .5}
+                    x: root.parent.x + dp(10)
+                    y: root.height - top_box.height + dp(10)
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+            ScrollView:
+                pos_hint: {"top": 1}
+
+                GridLayout:
+                    id: box_item
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
 
 
-        MDNavigationDrawer:
-            id: nav_drawer
+    Screen:
 
-            ContentNavigationDrawer:
-                id: content_drawer
+        NavigationLayout:
 
-'''
+            ScreenManager:
+
+                Screen:
+
+                    BoxLayout:
+                        orientation: 'vertical'
+
+                        MDToolbar:
+                            title: "Navigation Drawer"
+                            md_bg_color: app.theme_cls.primary_color
+                            elevation: 10
+                            left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+
+                        Widget:
 
 
-class ContentNavigationDrawer(BoxLayout):
-    pass
+            MDNavigationDrawer:
+                id: nav_drawer
+
+                ContentNavigationDrawer:
+                    id: content_drawer
+
+    '''
 
 
-class NavigationItem(OneLineAvatarListItem):
-    icon = StringProperty()
+    class ContentNavigationDrawer(BoxLayout):
+        pass
 
 
-class TestNavigationDrawer(MDApp):
-    def build(self):
-        return Builder.load_string(KV)
+    class NavigationItem(OneLineAvatarListItem):
+        icon = StringProperty()
 
-    def on_start(self):
-        for items in {
-            "home-circle-outline": "Home",
-            "update": "Check for Update",
-            "settings-outline": "Settings",
-            "exit-to-app": "Exit",
-        }.items():
-            self.root.ids.content_drawer.ids.box_item.add_widget(
-                NavigationItem(
-                    text=items[1],
-                    icon=items[0],
+
+    class TestNavigationDrawer(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for items in {
+                "home-circle-outline": "Home",
+                "update": "Check for Update",
+                "settings-outline": "Settings",
+                "exit-to-app": "Exit",
+            }.items():
+                self.root.ids.content_drawer.ids.box_item.add_widget(
+                    NavigationItem(
+                        text=items[1],
+                        icon=items[0],
+                    )
                 )
-            )
 
 
-TestNavigationDrawer().run()
-
+    TestNavigationDrawer().run()
 """
 
 from kivy.core.window import Window

@@ -5,52 +5,54 @@ Components/Stack Floating Buttons
 Example
 -------
 
-from kivymd.app import MDApp
-from kivy.lang import Builder
-from kivy.factory import Factory
+.. code-block:: python
 
-from kivymd.toast import toast
-from kivymd.theming import ThemeManager
-from kivymd.uix.stackfloatingbuttons import MDStackFloatingButtons
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
+    from kivy.factory import Factory
 
-
-Builder.load_string('''
-<ExampleFloatingButtons@BoxLayout>:
-    orientation: 'vertical'
-
-    MDToolbar:
-        title: 'Stack Floating Buttons'
-        md_bg_color: app.theme_cls.primary_color
-        elevation: 10
-        left_action_items: [['menu', lambda x: None]]
-
-''')
+    from kivymd.toast import toast
+    from kivymd.theming import ThemeManager
+    from kivymd.uix.stackfloatingbuttons import MDStackFloatingButtons
 
 
-class Example(MDApp):
-    title = "Example Stack Floating Buttons"
-    create_stack_floating_buttons = False
-    floating_data = {
-        'Python': 'language-python',
-        'Php': 'language-php',
-        'C++': 'language-cpp'}
+    Builder.load_string('''
+    <ExampleFloatingButtons@BoxLayout>:
+        orientation: 'vertical'
 
-    def set_my_language(self, instance_button):
-        toast(instance_button.icon)
+        MDToolbar:
+            title: 'Stack Floating Buttons'
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 10
+            left_action_items: [['menu', lambda x: None]]
 
-    def build(self):
-        screen = Factory.ExampleFloatingButtons()
-        # Use this condition otherwise the stack will be created each time.
-        if not self.create_stack_floating_buttons:
-            screen.add_widget(MDStackFloatingButtons(
-                icon='lead-pencil',
-                floating_data=self.floating_data,
-                callback=self.set_my_language))
-            self.create_stack_floating_buttons = True
-        return screen
+    ''')
 
 
-Example().run()
+    class Example(MDApp):
+        title = "Example Stack Floating Buttons"
+        create_stack_floating_buttons = False
+        floating_data = {
+            'Python': 'language-python',
+            'Php': 'language-php',
+            'C++': 'language-cpp'}
+
+        def set_my_language(self, instance_button):
+            toast(instance_button.icon)
+
+        def build(self):
+            screen = Factory.ExampleFloatingButtons()
+            # Use this condition otherwise the stack will be created each time.
+            if not self.create_stack_floating_buttons:
+                screen.add_widget(MDStackFloatingButtons(
+                    icon='lead-pencil',
+                    floating_data=self.floating_data,
+                    callback=self.set_my_language))
+                self.create_stack_floating_buttons = True
+            return screen
+
+
+    Example().run()
 """
 
 from kivy.animation import Animation

@@ -4,7 +4,7 @@ Components/Bottom Navigation
 
 .. seealso::
 
-   `Material Design spec, Bottom navigation <https://material.io/components/bottom-navigation>`_
+    `Material Design spec, Bottom navigation <https://material.io/components/bottom-navigation>`_
 
 .. rubric:: Bottom navigation bars allow movement between primary destinations in an app:
 
@@ -12,7 +12,7 @@ Components/Bottom Navigation
     :align: center
 
 Usage
-=====
+-----
 
 .. code-block:: kv
 
@@ -59,7 +59,7 @@ For ease of understanding, this code works like this:
                 YourContent:
 
 Example
-=======
+-------
 
 .. code-block:: python
 

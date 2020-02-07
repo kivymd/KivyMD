@@ -4,134 +4,136 @@ Components/Toolbar
 
 .. seealso::
 
-   `Material Design spec, App bars: top <https://material.io/components/app-bars-top>`_
+    `Material Design spec, App bars: top <https://material.io/components/app-bars-top>`_
 
 Example
 -------
 
-from kivy.factory import Factory
+.. code-block:: python
 
-from kivymd.app import MDApp
-from kivy.lang import Builder
+    from kivy.factory import Factory
 
-
-Builder.load_string('''
-<StyleLabel@MDLabel>:
-    size_hint_y: None
-    height: self.texture_size[1]
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
 
 
-<StyleItemCheck@BoxLayout>:
-    group: ""
-    text: ""
-    active: False
-    size_hint_y: None
-    height: self.minimum_height
-
-    MDCheckbox:
-        group: root.group
-        active: root.active
-        size_hint: None, None
-        size: dp(48), dp(48)
-        pos_hint: {"center_y": .5}
-        on_active: app.callback(root.text, self.active)
-
-    StyleLabel:
-        text: root.text
-        pos_hint: {"center_y": .5}
+    Builder.load_string('''
+    <StyleLabel@MDLabel>:
+        size_hint_y: None
+        height: self.texture_size[1]
 
 
-<BottomAppBar@Screen>
-    name: 'bottom app bar'
+    <StyleItemCheck@BoxLayout>:
+        group: ""
+        text: ""
+        active: False
+        size_hint_y: None
+        height: self.minimum_height
 
-    BoxLayout:
-        spacing: dp(10)
-        orientation: 'vertical'
+        MDCheckbox:
+            group: root.group
+            active: root.active
+            size_hint: None, None
+            size: dp(48), dp(48)
+            pos_hint: {"center_y": .5}
+            on_active: app.callback(root.text, self.active)
 
-        MDToolbar:
-            title: "Title"
-            md_bg_color: app.theme_cls.primary_color
-            left_action_items: [['menu', lambda x: x]]
+        StyleLabel:
+            text: root.text
+            pos_hint: {"center_y": .5}
 
-        ScrollView:
 
-            GridLayout:
-                size_hint_y: None
-                height: self.minimum_height
-                cols: 1
-                padding: "10dp"
-                spacing: "10dp"
+    <BottomAppBar@Screen>
+        name: 'bottom app bar'
 
-                MDSeparator:
-
-                StyleLabel:
-                    text: "Notch"
-
-                StyleItemCheck:
-                    group: 'notch'
-                    text: "On"
-                    active: True
-
-                StyleItemCheck:
-                    group: 'notch'
-                    text: "Off"
-
-                MDSeparator:
-
-                StyleLabel:
-                    text: "Position"
-
-                StyleItemCheck:
-                    group: 'pos'
-                    text: "Attached - Center"
-                    active: True
-
-                StyleItemCheck:
-                    group: 'pos'
-                    text: "Attached - End"
-
-                StyleItemCheck:
-                    group: 'pos'
-                    text: "Free - Center"
-
-                StyleItemCheck:
-                    group: 'pos'
-                    text: "Free - End"
-
-        MDBottomAppBar
+        BoxLayout:
+            spacing: dp(10)
+            orientation: 'vertical'
 
             MDToolbar:
-                id: toolbar
                 title: "Title"
-                icon: "git"
-                type: "bottom"
-                on_action_button: print("on_action_button")
-                left_action_items: [["menu", lambda x: x]]
-'''
-)
+                md_bg_color: app.theme_cls.primary_color
+                left_action_items: [['menu', lambda x: x]]
+
+            ScrollView:
+
+                GridLayout:
+                    size_hint_y: None
+                    height: self.minimum_height
+                    cols: 1
+                    padding: "10dp"
+                    spacing: "10dp"
+
+                    MDSeparator:
+
+                    StyleLabel:
+                        text: "Notch"
+
+                    StyleItemCheck:
+                        group: 'notch'
+                        text: "On"
+                        active: True
+
+                    StyleItemCheck:
+                        group: 'notch'
+                        text: "Off"
+
+                    MDSeparator:
+
+                    StyleLabel:
+                        text: "Position"
+
+                    StyleItemCheck:
+                        group: 'pos'
+                        text: "Attached - Center"
+                        active: True
+
+                    StyleItemCheck:
+                        group: 'pos'
+                        text: "Attached - End"
+
+                    StyleItemCheck:
+                        group: 'pos'
+                        text: "Free - Center"
+
+                    StyleItemCheck:
+                        group: 'pos'
+                        text: "Free - End"
+
+            MDBottomAppBar
+
+                MDToolbar:
+                    id: toolbar
+                    title: "Title"
+                    icon: "git"
+                    type: "bottom"
+                    on_action_button: print("on_action_button")
+                    left_action_items: [["menu", lambda x: x]]
+    '''
+    )
 
 
-class BottomAppBarTest(MDApp):
-    def callback(self, text, value):
-        if value and self.root:
-            if text == "Off":
-                self.root.ids.toolbar.remove_notch()
-            elif text == "On":
-                self.root.ids.toolbar.set_notch()
-            elif text == "Attached - End":
-                self.root.ids.toolbar.mode = "end"
-            elif text == "Attached - Center":
-                self.root.ids.toolbar.mode = "center"
-            elif text == "Free - End":
-                self.root.ids.toolbar.mode = "free-end"
-            elif text == "Free - Center":
-                self.root.ids.toolbar.mode = "free-center"
+    class BottomAppBarTest(MDApp):
+        def callback(self, text, value):
+            if value and self.root:
+                if text == "Off":
+                    self.root.ids.toolbar.remove_notch()
+                elif text == "On":
+                    self.root.ids.toolbar.set_notch()
+                elif text == "Attached - End":
+                    self.root.ids.toolbar.mode = "end"
+                elif text == "Attached - Center":
+                    self.root.ids.toolbar.mode = "center"
+                elif text == "Free - End":
+                    self.root.ids.toolbar.mode = "free-end"
+                elif text == "Free - Center":
+                    self.root.ids.toolbar.mode = "free-center"
 
-    def build(self):
-        return Factory.BottomAppBar()
+        def build(self):
+            return Factory.BottomAppBar()
 
 
-BottomAppBarTest().run()
+    BottomAppBarTest().run()
 """
 from kivy.animation import Animation
 from kivy.clock import Clock

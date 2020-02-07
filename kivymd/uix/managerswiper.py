@@ -5,140 +5,142 @@ Components/Manager Swiper
 Example
 -------
 
-import os
+.. code-block:: python
 
-from kivymd.app import MDApp
-from kivy.core.window import Window
-from kivy.lang import Builder
-from kivy.metrics import dp
-from kivy.properties import StringProperty
-from kivy.uix.boxlayout import BoxLayout
+    import os
 
-from kivymd.uix.card import MDCard
-from kivymd.uix.managerswiper import MDSwiperPagination
-from kivymd.theming import ThemeManager
+    from kivymd.app import MDApp
+    from kivy.core.window import Window
+    from kivy.lang import Builder
+    from kivy.metrics import dp
+    from kivy.properties import StringProperty
+    from kivy.uix.boxlayout import BoxLayout
 
-activity = '''
-#:import images_path kivymd.images_path
+    from kivymd.uix.card import MDCard
+    from kivymd.uix.managerswiper import MDSwiperPagination
+    from kivymd.theming import ThemeManager
+
+    activity = '''
+    #:import images_path kivymd.images_path
 
 
-<MyCard>
-    orientation: 'vertical'
-    size_hint_y: None
-    height: dp(300)
-    pos_hint: {'top': 1}
-
-    FitImage:
-        source:
-            f'{app.directory}/demos/kitchen_sink/assets/'\
-            f'guitar-1139397_1280.png'
-        size_hint: None, None
-        size: root.width, dp(250)
+    <MyCard>
+        orientation: 'vertical'
+        size_hint_y: None
+        height: dp(300)
         pos_hint: {'top': 1}
 
-    MDLabel:
-        theme_text_color: 'Custom'
-        bold: True
-        text_color: app.theme_cls.primary_color
-        text: root.text
-        size_hint_y: None
-        height: dp(60)
-        halign: 'center'
+        FitImage:
+            source:
+                f'{app.directory}/demos/kitchen_sink/assets/'\
+                f'guitar-1139397_1280.png'
+            size_hint: None, None
+            size: root.width, dp(250)
+            pos_hint: {'top': 1}
+
+        MDLabel:
+            theme_text_color: 'Custom'
+            bold: True
+            text_color: app.theme_cls.primary_color
+            text: root.text
+            size_hint_y: None
+            height: dp(60)
+            halign: 'center'
 
 
-<ScreenOne@Screen>
-    name: 'screen one'
-    MyCard:
-        text: 'Swipe to switch to screen one'.upper()
+    <ScreenOne@Screen>
+        name: 'screen one'
+        MyCard:
+            text: 'Swipe to switch to screen one'.upper()
 
 
-<ScreenTwo@Screen>
-    name: 'screen two'
-    MyCard:
-        text: 'Swipe to switch to screen two'.upper()
+    <ScreenTwo@Screen>
+        name: 'screen two'
+        MyCard:
+            text: 'Swipe to switch to screen two'.upper()
 
 
-<ScreenThree@Screen>
-    name: 'screen three'
-    MyCard:
-        text: 'Swipe to switch to screen three'.upper()
+    <ScreenThree@Screen>
+        name: 'screen three'
+        MyCard:
+            text: 'Swipe to switch to screen three'.upper()
 
 
-<ScreenFour@Screen>
-    name: 'screen four'
-    MyCard:
-        text: 'Swipe to switch to screen four'.upper()
+    <ScreenFour@Screen>
+        name: 'screen four'
+        MyCard:
+            text: 'Swipe to switch to screen four'.upper()
 
 
-<ScreenFive@Screen>
-    name: 'screen five'
-    MyCard:
-        text: 'Swipe to switch to screen five'.upper()
+    <ScreenFive@Screen>
+        name: 'screen five'
+        MyCard:
+            text: 'Swipe to switch to screen five'.upper()
 
 
-<MySwiperManager>
-    orientation: 'vertical'
-
-    canvas:
-        Color:
-            rgba: 0, 0, 0, .2
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
-    MDToolbar:
-        id: toolbar
-        title: 'Swiper Manager'
-        md_bg_color: app.theme_cls.primary_color
-        background_palette: 'Primary'
-        elevation: 10
-        left_action_items: [['menu', lambda x: x]]
-
-    BoxLayout:
-        padding: dp(10)
+    <MySwiperManager>
         orientation: 'vertical'
 
-        MDSwiperManager:
-            id: swiper_manager
+        canvas:
+            Color:
+                rgba: 0, 0, 0, .2
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
-            ScreenOne:
+        MDToolbar:
+            id: toolbar
+            title: 'Swiper Manager'
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            elevation: 10
+            left_action_items: [['menu', lambda x: x]]
 
-            ScreenTwo:
+        BoxLayout:
+            padding: dp(10)
+            orientation: 'vertical'
 
-            ScreenThree:
+            MDSwiperManager:
+                id: swiper_manager
 
-            ScreenFour:
+                ScreenOne:
 
-            ScreenFive:
-'''
+                ScreenTwo:
 
+                ScreenThree:
 
-class MySwiperManager(BoxLayout):
-    pass
+                ScreenFour:
 
-
-class MyCard(MDCard):
-    text = StringProperty('')
-
-
-class Test(MDApp):
-    swiper_manager = None
-
-    def build(self):
-        Builder.load_string(activity)
-        start_screen = MySwiperManager()
-        self.swiper_manager = start_screen.ids.swiper_manager
-        paginator = MDSwiperPagination()
-        paginator.screens = self.swiper_manager.screen_names
-        paginator.manager = self.swiper_manager
-        self.swiper_manager.paginator = paginator
-        start_screen.add_widget(paginator)
-
-        return start_screen
+                ScreenFive:
+    '''
 
 
-if __name__ == '__main__':
-    Test().run()
+    class MySwiperManager(BoxLayout):
+        pass
+
+
+    class MyCard(MDCard):
+        text = StringProperty('')
+
+
+    class Test(MDApp):
+        swiper_manager = None
+
+        def build(self):
+            Builder.load_string(activity)
+            start_screen = MySwiperManager()
+            self.swiper_manager = start_screen.ids.swiper_manager
+            paginator = MDSwiperPagination()
+            paginator.screens = self.swiper_manager.screen_names
+            paginator.manager = self.swiper_manager
+            self.swiper_manager.paginator = paginator
+            start_screen.add_widget(paginator)
+
+            return start_screen
+
+
+    if __name__ == '__main__':
+        Test().run()
 """
 
 from kivy.properties import NumericProperty, ObjectProperty, ListProperty

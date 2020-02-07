@@ -4,292 +4,292 @@ Components/Button
 
 .. seealso::
 
-   `Material Design spec, Buttons <https://material.io/components/buttons>`
+    `Material Design spec, Buttons <https://material.io/components/buttons>`
 
-   `Material Design spec, Buttons: floating action button <https://material.io/components/buttons-floating-action-button>`
+    `Material Design spec, Buttons: floating action button <https://material.io/components/buttons-floating-action-button>`
 
 Example
 -------
 
 .. code-block:: python
 
-   from kivy.app import App
-   from kivy.lang import Builder
-   from kivy.factory import Factory
+    from kivy.app import App
+    from kivy.lang import Builder
+    from kivy.factory import Factory
 
-   from kivymd.theming import ThemeManager
+    from kivymd.theming import ThemeManager
 
-   Builder.load_string('''
-   <ExampleButtons@BoxLayout>
-       orientation: 'vertical'
+    Builder.load_string('''
+    <ExampleButtons@BoxLayout>
+        orientation: 'vertical'
 
-       MDToolbar:
-           id: toolbar
-           title: app.title
-           md_bg_color: app.theme_cls.primary_color
-           background_palette: 'Primary'
-           elevation: 10
-           left_action_items: [['dots-vertical', lambda x: None]]
+        MDToolbar:
+            id: toolbar
+            title: app.title
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            elevation: 10
+            left_action_items: [['dots-vertical', lambda x: None]]
 
-       Screen:
+        Screen:
 
-           ScrollView:
-               size_hint_x: None
-               width: box.width
-               pos_hint: {'center_x': .5}
-               bar_width: 0
+            ScrollView:
+                size_hint_x: None
+                width: box.width
+                pos_hint: {'center_x': .5}
+                bar_width: 0
 
-               BoxLayout:
-                   id: box
-                   padding: dp(10)
-                   size_hint: None, None
-                   size: self.minimum_size
-                   spacing: dp(10)
-                   orientation: 'vertical'
-                   pos_hint: {'center_x': .5}
+                BoxLayout:
+                    id: box
+                    padding: dp(10)
+                    size_hint: None, None
+                    size: self.minimum_size
+                    spacing: dp(10)
+                    orientation: 'vertical'
+                    pos_hint: {'center_x': .5}
 
-                   BoxLayout:
-                       size_hint: None, None
-                       width: self.minimum_width
-                       height: dp(56)
-                       spacing: '10dp'
-                       pos_hint: {'center_x': .5}
+                    BoxLayout:
+                        size_hint: None, None
+                        width: self.minimum_width
+                        height: dp(56)
+                        spacing: '10dp'
+                        pos_hint: {'center_x': .5}
 
-                       MDIconButton:
-                           icon: 'sd'
+                        MDIconButton:
+                            icon: 'sd'
 
-                       MDFloatingActionButton:
-                           icon: 'plus'
-                           opposite_colors: True
-                           elevation_normal: 8
+                        MDFloatingActionButton:
+                            icon: 'plus'
+                            opposite_colors: True
+                            elevation_normal: 8
 
-                       MDFloatingActionButton:
-                           icon: 'check'
-                           opposite_colors: True
-                           elevation_normal: 8
-                           md_bg_color: app.theme_cls.primary_color
+                        MDFloatingActionButton:
+                            icon: 'check'
+                            opposite_colors: True
+                            elevation_normal: 8
+                            md_bg_color: app.theme_cls.primary_color
 
-                       MDIconButton:
-                           icon: 'sd'
-                           theme_text_color: 'Custom'
-                           text_color: app.theme_cls.primary_color
+                        MDIconButton:
+                            icon: 'sd'
+                            theme_text_color: 'Custom'
+                            text_color: app.theme_cls.primary_color
 
-                   MDFlatButton:
-                       text: 'MDFlatButton'
-                       pos_hint: {'center_x': .5}
+                    MDFlatButton:
+                        text: 'MDFlatButton'
+                        pos_hint: {'center_x': .5}
 
-                   MDRaisedButton:
-                       text: "MDRaisedButton"
-                       elevation_normal: 2
-                       opposite_colors: True
-                       pos_hint: {'center_x': .5}
+                    MDRaisedButton:
+                        text: "MDRaisedButton"
+                        elevation_normal: 2
+                        opposite_colors: True
+                        pos_hint: {'center_x': .5}
 
-                   MDRectangleFlatButton:
-                       text: "MDRectangleFlatButton"
-                       pos_hint: {'center_x': .5}
+                    MDRectangleFlatButton:
+                        text: "MDRectangleFlatButton"
+                        pos_hint: {'center_x': .5}
 
-                   MDRectangleFlatIconButton:
-                       text: "MDRectangleFlatIconButton"
-                       icon: "language-python"
-                       width: dp(230)
-                       pos_hint: {'center_x': .5}
+                    MDRectangleFlatIconButton:
+                        text: "MDRectangleFlatIconButton"
+                        icon: "language-python"
+                        width: dp(230)
+                        pos_hint: {'center_x': .5}
 
-                   MDRoundFlatButton:
-                       text: "MDRoundFlatButton"
-                       pos_hint: {'center_x': .5}
+                    MDRoundFlatButton:
+                        text: "MDRoundFlatButton"
+                        pos_hint: {'center_x': .5}
 
-                   MDRoundFlatIconButton:
-                       text: "MDRoundFlatIconButton"
-                       icon: "language-python"
-                       width: dp(200)
-                       pos_hint: {'center_x': .5}
+                    MDRoundFlatIconButton:
+                        text: "MDRoundFlatIconButton"
+                        icon: "language-python"
+                        width: dp(200)
+                        pos_hint: {'center_x': .5}
 
-                   MDFillRoundFlatButton:
-                       text: "MDFillRoundFlatButton"
-                       pos_hint: {'center_x': .5}
+                    MDFillRoundFlatButton:
+                        text: "MDFillRoundFlatButton"
+                        pos_hint: {'center_x': .5}
 
-                   MDFillRoundFlatIconButton:
-                       text: "MDFillRoundFlatIconButton"
-                       icon: "language-python"
-                       pos_hint: {'center_x': .5}
+                    MDFillRoundFlatIconButton:
+                        text: "MDFillRoundFlatIconButton"
+                        icon: "language-python"
+                        pos_hint: {'center_x': .5}
 
-                   MDTextButton:
-                       text: "MDTextButton"
-                       pos_hint: {'center_x': .5}
+                    MDTextButton:
+                        text: "MDTextButton"
+                        pos_hint: {'center_x': .5}
 
-                   BoxLayout:
-                       orientation: 'vertical'
-                       spacing: '10dp'
-                       size_hint: None, None
-                       size: self.minimum_size
-                       pos_hint: {'center_x': .5}
+                    BoxLayout:
+                        orientation: 'vertical'
+                        spacing: '10dp'
+                        size_hint: None, None
+                        size: self.minimum_size
+                        pos_hint: {'center_x': .5}
 
-                       MDSeparator:
-                           size_hint_x: None
-                           width: root.width / 2
+                        MDSeparator:
+                            size_hint_x: None
+                            width: root.width / 2
 
-                       MDLabel:
-                           text: 'MDRoundImageButton'
-                           font_style: "H6"
-                           halign: "center"
-                           size_hint_y: None
-                           height: self.texture_size[1]
+                        MDLabel:
+                            text: 'MDRoundImageButton'
+                            font_style: "H6"
+                            halign: "center"
+                            size_hint_y: None
+                            height: self.texture_size[1]
 
-                       MDSeparator:
+                        MDSeparator:
 
-                       BoxLayout:
-                           spacing: "10dp"
-                           size_hint: None, None
-                           size: self.minimum_size
-                           pos_hint: {"center_x": .5, "center_y": .5}
+                        BoxLayout:
+                            spacing: "10dp"
+                            size_hint: None, None
+                            size: self.minimum_size
+                            pos_hint: {"center_x": .5, "center_y": .5}
 
-                           MDRoundImageButton:
-                               source: "demos/kitchen_sink/assets/kivymd_logo.png"
+                            MDRoundImageButton:
+                                source: "demos/kitchen_sink/assets/kivymd_logo.png"
 
-                           MDRoundImageButton:
-                               source: "demos/kitchen_sink/assets/kivy-logo-white-512.png"
+                            MDRoundImageButton:
+                                source: "demos/kitchen_sink/assets/kivy-logo-white-512.png"
 
-                           MDRoundImageButton:
-                               source: "data/logo/kivy-icon-512.png"
+                            MDRoundImageButton:
+                                source: "data/logo/kivy-icon-512.png"
 
-                       MDSeparator:
+                        MDSeparator:
 
-                       MDLabel:
-                           text: 'Button customization'
-                           font_style: "H6"
-                           halign: "center"
-                           size_hint_y: None
-                           height: self.texture_size[1]
+                        MDLabel:
+                            text: 'Button customization'
+                            font_style: "H6"
+                            halign: "center"
+                            size_hint_y: None
+                            height: self.texture_size[1]
 
-                       MDSeparator:
+                        MDSeparator:
 
-                   ########################################
-                   #         CUSTOMIZATION BUTTONS
-                   ########################################
+                    ########################################
+                    #         CUSTOMIZATION BUTTONS
+                    ########################################
 
-                   MDRaisedButton:
-                       text: "MDRaisedButton"
-                       elevation_normal: 2
-                       opposite_colors: True
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 0, 0, 1
+                    MDRaisedButton:
+                        text: "MDRaisedButton"
+                        elevation_normal: 2
+                        opposite_colors: True
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 0, 0, 1
 
-                   MDRaisedButton:
-                       text: "MDRaisedButton"
-                       elevation_normal: 2
-                       opposite_colors: True
-                       pos_hint: {'center_x': .5}
-                       md_bg_color: 1, 0, 0, 1
+                    MDRaisedButton:
+                        text: "MDRaisedButton"
+                        elevation_normal: 2
+                        opposite_colors: True
+                        pos_hint: {'center_x': .5}
+                        md_bg_color: 1, 0, 0, 1
 
-                   MDRectangleFlatButton:
-                       text: "MDRectangleFlatButton"
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 1, 0, 1
+                    MDRectangleFlatButton:
+                        text: "MDRectangleFlatButton"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 1, 0, 1
 
-                   MDRectangleFlatButton:
-                       text: "MDRectangleFlatButton"
-                       pos_hint: {'center_x': .5}
-                       md_bg_color: 1, 0, 0, 1
-                       text_color: 1, 1, 0, 1
+                    MDRectangleFlatButton:
+                        text: "MDRectangleFlatButton"
+                        pos_hint: {'center_x': .5}
+                        md_bg_color: 1, 0, 0, 1
+                        text_color: 1, 1, 0, 1
 
-                   MDRoundFlatButton:
-                       text: "MDRoundFlatButton"
-                       pos_hint: {'center_x': .5}
-                       md_bg_color: 1, 0, 0, 1
+                    MDRoundFlatButton:
+                        text: "MDRoundFlatButton"
+                        pos_hint: {'center_x': .5}
+                        md_bg_color: 1, 0, 0, 1
 
-                   MDRoundFlatButton:
-                       text: "MDRoundFlatButton"
-                       pos_hint: {'center_x': .5}
-                       md_bg_color: 1, 0, 0, 1
+                    MDRoundFlatButton:
+                        text: "MDRoundFlatButton"
+                        pos_hint: {'center_x': .5}
+                        md_bg_color: 1, 0, 0, 1
 
-                   MDRoundFlatButton:
-                       text: "MDRoundFlatButton"
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 1, 0, 1
-                       md_bg_color: 1, 0, 0, 1
+                    MDRoundFlatButton:
+                        text: "MDRoundFlatButton"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 1, 0, 1
+                        md_bg_color: 1, 0, 0, 1
 
-                   MDRoundFlatIconButton:
-                       text: "MDRoundFlatIconButton"
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 1, 0, 1
-                       width: dp(210)
+                    MDRoundFlatIconButton:
+                        text: "MDRoundFlatIconButton"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 1, 0, 1
+                        width: dp(210)
 
-                   MDRoundFlatIconButton:
-                       text: "MDRoundFlatIconButton"
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 1, 0, 1
-                       md_bg_color: 1, 0, 0, 1
-                       width: dp(210)
+                    MDRoundFlatIconButton:
+                        text: "MDRoundFlatIconButton"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 1, 0, 1
+                        md_bg_color: 1, 0, 0, 1
+                        width: dp(210)
 
-                   MDFillRoundFlatIconButton:
-                       text: "MDFillRoundFlatIconButton"
-                       icon: "language-python"
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 1, 0, 1
+                    MDFillRoundFlatIconButton:
+                        text: "MDFillRoundFlatIconButton"
+                        icon: "language-python"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 1, 0, 1
 
-                   MDFillRoundFlatIconButton:
-                       text: "MDFillRoundFlatIconButton"
-                       icon: "language-python"
-                       pos_hint: {'center_x': .5}
-                       text_color: 1, 1, 0, 1
-                       md_bg_color: 1, 0, 0, 1
+                    MDFillRoundFlatIconButton:
+                        text: "MDFillRoundFlatIconButton"
+                        icon: "language-python"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1, 1, 0, 1
+                        md_bg_color: 1, 0, 0, 1
 
-                   BoxLayout:
-                       orientation: 'vertical'
-                       spacing: '10dp'
-                       size_hint: None, None
-                       size: self.minimum_size
-                       pos_hint: {'center_x': .5}
+                    BoxLayout:
+                        orientation: 'vertical'
+                        spacing: '10dp'
+                        size_hint: None, None
+                        size: self.minimum_size
+                        pos_hint: {'center_x': .5}
 
-                       MDSeparator:
+                        MDSeparator:
 
-                       MDLabel:
-                           text: 'MDIconButton customization'
-                           font_style: "H6"
-                           halign: "center"
-                           size_hint_y: None
-                           height: self.texture_size[1]
+                        MDLabel:
+                            text: 'MDIconButton customization'
+                            font_style: "H6"
+                            halign: "center"
+                            size_hint_y: None
+                            height: self.texture_size[1]
 
-                       MDSeparator:
-                           size_hint_x: None
-                           width: root.width / 2
+                        MDSeparator:
+                            size_hint_x: None
+                            width: root.width / 2
 
-                       BoxLayout:
-                           size_hint: None, None
-                           size: self.minimum_size
-                           pos_hint: {"center_x": .5, "center_y": .5}
+                        BoxLayout:
+                            size_hint: None, None
+                            size: self.minimum_size
+                            pos_hint: {"center_x": .5, "center_y": .5}
 
-                           MDIconButton:
-                               icon: "language-python"
-                               user_font_size: "15sp"
+                            MDIconButton:
+                                icon: "language-python"
+                                user_font_size: "15sp"
 
-                           MDIconButton:
-                               icon: "language-python"
-                               user_font_size: "20sp"
+                            MDIconButton:
+                                icon: "language-python"
+                                user_font_size: "20sp"
 
-                           MDIconButton:
-                               icon: "language-python"
-                               user_font_size: "24sp"
+                            MDIconButton:
+                                icon: "language-python"
+                                user_font_size: "24sp"
 
-                           MDIconButton:
-                               icon: "language-python"
-                               user_font_size: "36sp"
+                            MDIconButton:
+                                icon: "language-python"
+                                user_font_size: "36sp"
 
-                           MDIconButton:
-                               icon: "language-python"
-                               user_font_size: "48sp"
-   ''')
-
-
-   class Example(MDApp):
-       title = "Example Buttons"
-       main_widget = None
-
-       def build(self):
-           return Factory.ExampleButtons()
+                            MDIconButton:
+                                icon: "language-python"
+                                user_font_size: "48sp"
+    ''')
 
 
-   Example().run()
+    class Example(MDApp):
+        title = "Example Buttons"
+        main_widget = None
+
+        def build(self):
+            return Factory.ExampleButtons()
+
+
+    Example().run()
 """
 
 from kivy.clock import Clock

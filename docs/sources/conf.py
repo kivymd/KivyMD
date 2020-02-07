@@ -42,7 +42,12 @@ html_theme_options = {
 
 
 # Extensions
-extensions = ["sphinx.ext.autodoc", "autoapi_kivymd", "sphinx.ext.intersphinx"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "autoapi_kivymd",
+    "sphinx.ext.intersphinx",
+    "kivy_lexer",
+]
 
 # AutoAPI configuration
 autoapi_dirs = ["../../kivymd"]

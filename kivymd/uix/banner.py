@@ -331,7 +331,8 @@ class MDBanner(MDCard):
         ],
         allownone=True,
     )
-    """Banner type.
+    """Banner type. . Available options are: (`"one-line"`, `"two-line"`,
+    `"three-line"`, `"one-line-icon"`, `"two-line-icon"`, `"three-line-icon"`).
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'one-line'`.

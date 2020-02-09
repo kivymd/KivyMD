@@ -24,15 +24,11 @@ In `python file`:
 
 .. rubric:: The :attr:`MagicBehavior` class provides five effects:
 
-:attr:`MagicBehavior.wobble`
-
-:attr:`MagicBehavior.grow`
-
-:attr:`MagicBehavior.shake`
-
-:attr:`MagicBehavior.twist`
-
-:attr:`MagicBehavior.shrink`
+- :attr:`MagicBehavior.wobble`
+- :attr:`MagicBehavior.grow`
+- :attr:`MagicBehavior.shake`
+- :attr:`MagicBehavior.twist`
+- :attr:`MagicBehavior.shrink`
 
 Example:
 

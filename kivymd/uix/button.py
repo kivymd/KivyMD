@@ -4,292 +4,329 @@ Components/Button
 
 .. seealso::
 
-    `Material Design spec, Buttons <https://material.io/components/buttons>`
+    `Material Design spec, Buttons <https://material.io/components/buttons>`_
 
-    `Material Design spec, Buttons: floating action button <https://material.io/components/buttons-floating-action-button>`
+    `Material Design spec, Buttons: floating action button <https://material.io/components/buttons-floating-action-button>`_
 
-Example
--------
+.. rubric:: Buttons allow users to take actions, and make choices,
+    with a single tap.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/buttons.png
+    :align: center
+
+`KivyMD` provides the following button classes for use:
+
+- MDIconButton_
+- MDFloatingActionButton_
+- MDFlatButton_
+- MDRaisedButton_
+- MDRectangleFlatButton_
+- MDRectangleFlatIconButton_
+- MDRoundFlatButton_
+- MDRoundFlatIconButton_
+- MDFillRoundFlatButton_
+- MDFillRoundFlatIconButton_
+- MDTextButton_
+
+.. MDIconButton:
+MDIconButton
+------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button.gif
+    :align: center
 
 .. code-block:: python
 
-    from kivy.app import App
     from kivy.lang import Builder
-    from kivy.factory import Factory
 
-    from kivymd.theming import ThemeManager
+    from kivymd.app import MDApp
 
-    Builder.load_string('''
-    <ExampleButtons@BoxLayout>
-        orientation: 'vertical'
+    KV = '''
+    Screen:
 
-        MDToolbar:
-            id: toolbar
-            title: app.title
-            md_bg_color: app.theme_cls.primary_color
-            background_palette: 'Primary'
-            elevation: 10
-            left_action_items: [['dots-vertical', lambda x: None]]
-
-        Screen:
-
-            ScrollView:
-                size_hint_x: None
-                width: box.width
-                pos_hint: {'center_x': .5}
-                bar_width: 0
-
-                BoxLayout:
-                    id: box
-                    padding: dp(10)
-                    size_hint: None, None
-                    size: self.minimum_size
-                    spacing: dp(10)
-                    orientation: 'vertical'
-                    pos_hint: {'center_x': .5}
-
-                    BoxLayout:
-                        size_hint: None, None
-                        width: self.minimum_width
-                        height: dp(56)
-                        spacing: '10dp'
-                        pos_hint: {'center_x': .5}
-
-                        MDIconButton:
-                            icon: 'sd'
-
-                        MDFloatingActionButton:
-                            icon: 'plus'
-                            opposite_colors: True
-                            elevation_normal: 8
-
-                        MDFloatingActionButton:
-                            icon: 'check'
-                            opposite_colors: True
-                            elevation_normal: 8
-                            md_bg_color: app.theme_cls.primary_color
-
-                        MDIconButton:
-                            icon: 'sd'
-                            theme_text_color: 'Custom'
-                            text_color: app.theme_cls.primary_color
-
-                    MDFlatButton:
-                        text: 'MDFlatButton'
-                        pos_hint: {'center_x': .5}
-
-                    MDRaisedButton:
-                        text: "MDRaisedButton"
-                        elevation_normal: 2
-                        opposite_colors: True
-                        pos_hint: {'center_x': .5}
-
-                    MDRectangleFlatButton:
-                        text: "MDRectangleFlatButton"
-                        pos_hint: {'center_x': .5}
-
-                    MDRectangleFlatIconButton:
-                        text: "MDRectangleFlatIconButton"
-                        icon: "language-python"
-                        width: dp(230)
-                        pos_hint: {'center_x': .5}
-
-                    MDRoundFlatButton:
-                        text: "MDRoundFlatButton"
-                        pos_hint: {'center_x': .5}
-
-                    MDRoundFlatIconButton:
-                        text: "MDRoundFlatIconButton"
-                        icon: "language-python"
-                        width: dp(200)
-                        pos_hint: {'center_x': .5}
-
-                    MDFillRoundFlatButton:
-                        text: "MDFillRoundFlatButton"
-                        pos_hint: {'center_x': .5}
-
-                    MDFillRoundFlatIconButton:
-                        text: "MDFillRoundFlatIconButton"
-                        icon: "language-python"
-                        pos_hint: {'center_x': .5}
-
-                    MDTextButton:
-                        text: "MDTextButton"
-                        pos_hint: {'center_x': .5}
-
-                    BoxLayout:
-                        orientation: 'vertical'
-                        spacing: '10dp'
-                        size_hint: None, None
-                        size: self.minimum_size
-                        pos_hint: {'center_x': .5}
-
-                        MDSeparator:
-                            size_hint_x: None
-                            width: root.width / 2
-
-                        MDLabel:
-                            text: 'MDRoundImageButton'
-                            font_style: "H6"
-                            halign: "center"
-                            size_hint_y: None
-                            height: self.texture_size[1]
-
-                        MDSeparator:
-
-                        BoxLayout:
-                            spacing: "10dp"
-                            size_hint: None, None
-                            size: self.minimum_size
-                            pos_hint: {"center_x": .5, "center_y": .5}
-
-                            MDRoundImageButton:
-                                source: "demos/kitchen_sink/assets/kivymd_logo.png"
-
-                            MDRoundImageButton:
-                                source: "demos/kitchen_sink/assets/kivy-logo-white-512.png"
-
-                            MDRoundImageButton:
-                                source: "data/logo/kivy-icon-512.png"
-
-                        MDSeparator:
-
-                        MDLabel:
-                            text: 'Button customization'
-                            font_style: "H6"
-                            halign: "center"
-                            size_hint_y: None
-                            height: self.texture_size[1]
-
-                        MDSeparator:
-
-                    ########################################
-                    #         CUSTOMIZATION BUTTONS
-                    ########################################
-
-                    MDRaisedButton:
-                        text: "MDRaisedButton"
-                        elevation_normal: 2
-                        opposite_colors: True
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 0, 0, 1
-
-                    MDRaisedButton:
-                        text: "MDRaisedButton"
-                        elevation_normal: 2
-                        opposite_colors: True
-                        pos_hint: {'center_x': .5}
-                        md_bg_color: 1, 0, 0, 1
-
-                    MDRectangleFlatButton:
-                        text: "MDRectangleFlatButton"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-
-                    MDRectangleFlatButton:
-                        text: "MDRectangleFlatButton"
-                        pos_hint: {'center_x': .5}
-                        md_bg_color: 1, 0, 0, 1
-                        text_color: 1, 1, 0, 1
-
-                    MDRoundFlatButton:
-                        text: "MDRoundFlatButton"
-                        pos_hint: {'center_x': .5}
-                        md_bg_color: 1, 0, 0, 1
-
-                    MDRoundFlatButton:
-                        text: "MDRoundFlatButton"
-                        pos_hint: {'center_x': .5}
-                        md_bg_color: 1, 0, 0, 1
-
-                    MDRoundFlatButton:
-                        text: "MDRoundFlatButton"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-                        md_bg_color: 1, 0, 0, 1
-
-                    MDRoundFlatIconButton:
-                        text: "MDRoundFlatIconButton"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-                        width: dp(210)
-
-                    MDRoundFlatIconButton:
-                        text: "MDRoundFlatIconButton"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-                        md_bg_color: 1, 0, 0, 1
-                        width: dp(210)
-
-                    MDFillRoundFlatIconButton:
-                        text: "MDFillRoundFlatIconButton"
-                        icon: "language-python"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-
-                    MDFillRoundFlatIconButton:
-                        text: "MDFillRoundFlatIconButton"
-                        icon: "language-python"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-                        md_bg_color: 1, 0, 0, 1
-
-                    BoxLayout:
-                        orientation: 'vertical'
-                        spacing: '10dp'
-                        size_hint: None, None
-                        size: self.minimum_size
-                        pos_hint: {'center_x': .5}
-
-                        MDSeparator:
-
-                        MDLabel:
-                            text: 'MDIconButton customization'
-                            font_style: "H6"
-                            halign: "center"
-                            size_hint_y: None
-                            height: self.texture_size[1]
-
-                        MDSeparator:
-                            size_hint_x: None
-                            width: root.width / 2
-
-                        BoxLayout:
-                            size_hint: None, None
-                            size: self.minimum_size
-                            pos_hint: {"center_x": .5, "center_y": .5}
-
-                            MDIconButton:
-                                icon: "language-python"
-                                user_font_size: "15sp"
-
-                            MDIconButton:
-                                icon: "language-python"
-                                user_font_size: "20sp"
-
-                            MDIconButton:
-                                icon: "language-python"
-                                user_font_size: "24sp"
-
-                            MDIconButton:
-                                icon: "language-python"
-                                user_font_size: "36sp"
-
-                            MDIconButton:
-                                icon: "language-python"
-                                user_font_size: "48sp"
-    ''')
+        MDIconButton:
+            icon: "language-python"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
 
 
     class Example(MDApp):
-        title = "Example Buttons"
-        main_widget = None
-
         def build(self):
-            return Factory.ExampleButtons()
+            return Builder.load_string(KV)
 
 
     Example().run()
+
+The :class:`~MDIconButton.icon` parameter must have the name of the icon
+from ``kivymd/icon_definitions.py`` file.
+
+You can also use custom icons:
+
+.. code-block:: kv
+
+    MDIconButton:
+        icon: "data/logo/kivy-icon-256.png"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-custom-button.gif
+    :align: center
+
+By default, :class:`~MDIconButton` button has a size ``(dp(48), dp (48))``.
+Use :class:`~BaseButton.user_font_size` attribute to resize the button:
+
+.. code-block:: kv
+
+    MDIconButton:
+        icon: "android"
+        user_font_size: "64sp"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button-user-font-size.gif
+    :align: center
+
+By default, the color of :class:`~MDIconButton`
+(depending on the style of the application) is black or white.
+You can change the color of :class:`~MDIconButton` as the text color
+of :class:`~kivymd.uix.label.MDLabel`:
+
+.. code-block:: kv
+
+    MDIconButton:
+        icon: "android"
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button-theme-text-color.png
+    :align: center
+
+.. MDFloatingActionButton:
+MDFloatingActionButton
+----------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button.png
+    :align: center
+
+The above parameters for :class:`~MDIconButton` apply
+to :class:`~MDFloatingActionButton`.
+
+To change :class:`~MDFloatingActionButton` background, use the
+``md_bg_color`` parameter:
+
+.. code-block:: kv
+
+    MDFloatingActionButton:
+        icon: "android"
+        md_bg_color: app.theme_cls.primary_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-md-bg-color.png
+    :align: center
+
+The length of the shadow is controlled by the ``elevation_normal`` parameter:
+
+.. code-block:: kv
+
+    MDFloatingActionButton:
+        icon: "android"
+        elevation_normal: 12
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-elevation-normal.png
+    :align: center
+
+
+.. MDFlatButton:
+MDFlatButton
+------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-flat-button.gif
+    :align: center
+
+To change the text color of: class:`~MDFlatButton` use the ``text_color`` parameter:
+
+.. code-block:: kv
+
+    MDFlatButton:
+        text: "MDFLATBUTTON"
+        text_color: 0, 0, 1, 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-flat-button-text-color.png
+    :align: center
+
+Or use markup:
+
+.. code-block:: kv
+
+    MDFlatButton:
+        text: "[color=#00ffcc]MDFLATBUTTON[/color]"
+        markup: True
+
+To specify the font size and font name, use the parameters as in the usual
+`Kivy` buttons:
+
+.. code-block:: kv
+
+    MDFlatButton:
+        text: "MDFLATBUTTON"
+        font_size: "18sp"
+        font_name: "path/to/font"
+
+.. warning:: You cannot use the ``size_hint_x`` parameter for `KivyMD` buttons
+    (the width of the buttons is set automatically)!
+
+However, if there is a need to increase the width of the button,
+you can use the parameter ``increment_width``:
+
+.. code-block:: kv
+
+    MDFlatButton:
+        text: "MDFLATBUTTON"
+        increment_width: "164dp"
+
+.. MDRaisedButton:
+MDRaisedButton
+--------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-raised-button.gif
+    :align: center
+
+This button is similar to the :class:`~MDFlatButton` button except that you
+can set the background color for :class:`~MDRaisedButton`:
+
+.. code-block:: kv
+
+    MDRaisedButton:
+        text: "MDRAISEDBUTTON"
+        md_bg_color: 1, 0, 1, 1
+
+
+.. MDRectangleFlatButton:
+MDRectangleFlatButton
+---------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button.gif
+    :align: center
+
+Button parameters :class:`~MDRectangleFlatButton` are the same as
+button :class:`~MDRaisedButton`:
+
+.. code-block:: kv
+
+    MDRectangleFlatButton:
+        text: "MDRECTANGLEFLATBUTTON"
+        text_color: 0, 0, 1, 1
+        md_bg_color: 1, 1, 0, 1
+
+.. note:: Note that the frame color will be the same as the text color.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button-md-bg-color.png
+    :align: center
+
+.. MDRectangleFlatIconButton:
+MDRectangleFlatIconButton
+---------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.gif
+    :align: center
+
+Button parameters :class:`~MDRectangleFlatButton` are the same as
+button :class:`~MDRectangleFlatButton`:
+
+.. code-block:: kv
+
+    MDRectangleFlatIconButton:
+        icon: "android"
+        text: "MDRECTANGLEFLATICONBUTTON"
+        width: dp(280)
+
+.. warning:: :class:`~MDRectangleFlatButton` does not stretch to match the
+    text and is always ``dp(150)``. But you should not set the width of the
+    button using parameter ``increment_width``. You should set the width
+    instead using the ``width`` parameter.
+
+.. MDRoundFlatButton:
+MDRoundFlatButton
+-----------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-button.gif
+    :align: center
+
+Button parameters :class:`~MDRoundFlatButton` are the same as
+button :class:`~MDRectangleFlatButton`:
+
+.. code-block:: kv
+
+    MDRoundFlatButton:
+        text: "MDROUNDFLATBUTTON"
+
+.. warning:: The border color does not change when using
+    ``text_color`` parameter.
+
+.. code-block:: kv
+
+    MDRoundFlatButton:
+        text: "MDROUNDFLATBUTTON"
+        text_color: 0, 1, 0, 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-button-text-color.png
+    :align: center
+
+.. MDRoundFlatIconButton:
+MDRoundFlatIconButton
+---------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-icon-button.png
+    :align: center
+
+Button parameters :class:`~MDRoundFlatIconButton` are the same as
+button :class:`~MDRoundFlatButton`:
+
+.. code-block:: kv
+
+    MDRoundFlatIconButton:
+        icon: "android"
+        text: "MDROUNDFLATICONBUTTON"
+        width: dp(250)
+
+.. warning:: The border color does not change when using
+    ``text_color`` parameter.
+
+.. warning:: :class:`~MDRoundFlatIconButton` does not stretch to match the
+    text and is always ``dp(150)``. But you should not set the width of the
+    button using parameter ``increment_width``. You should set the width
+    instead using the ``width`` parameter.
+
+.. MDFillRoundFlatButton:
+MDFillRoundFlatButton
+---------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-fill-round-flat-button.png
+    :align: center
+
+Button parameters :class:`~MDFillRoundFlatButton` are the same as
+button :class:`~MDRaisedButton`.
+
+.. MDFillRoundFlatIconButton:
+MDFillRoundFlatIconButton
+---------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-fill-round-flat-icon-button.png
+    :align: center
+
+Button parameters :class:`~MDFillRoundFlatIconButton` are the same as
+button :class:`~MDRaisedButton`.
+
+.. note:: Notice that the width of the :class:`~MDFillRoundFlatIconButton`
+    button matches the size of the button text.
+
+.. MDTextButton:
+MDTextButton
+------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-text-button.png
+    :align: center
+
+.. code-block:: kv
+
+    MDTextButton:
+        text: "MDTEXTBUTTON"
+        custom_color: 0, 1, 0, 1
 """
 
 from kivy.clock import Clock
@@ -302,7 +339,6 @@ from kivy.graphics.stencil_instructions import (
 )
 from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
@@ -606,9 +642,6 @@ class BaseButton(
     type of button) as well as the disabled state.
     """
 
-    _md_bg_color_down = ListProperty(None, allownone=True)
-    _md_bg_color_disabled = ListProperty(None, allownone=True)
-    _current_button_color = ListProperty([0.0, 0.0, 0.0, 0.0])
     theme_text_color = OptionProperty(
         None,
         allownone=True,
@@ -621,12 +654,50 @@ class BaseButton(
             "ContrastParentBackground",
         ],
     )
+    """
+    Button text type. Available options are: (`"Primary"`, `"Secondary"`,
+    `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
+
+    :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
+    """
+
     text_color = ListProperty(None, allownone=True)
-    opposite_colors = BooleanProperty(False)
+    """
+    Text color in ``rgba`` format.
+
+    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `None`.
+    """
+
     font_name = StringProperty(None)
+    """
+    Font name.
+
+    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `None`.
+    """
+
     font_size = NumericProperty(14)
+    """
+    Font size.
+
+    :attr:`font_size` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `14`.
+    """
+
     user_font_size = NumericProperty()
-    """Custom font size."""
+    """Custom font size for :class:`~MDIconButton`.
+    
+    :attr:`user_font_size` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
+    opposite_colors = BooleanProperty(False)
+
+    _md_bg_color_down = ListProperty(None, allownone=True)
+    _md_bg_color_disabled = ListProperty(None, allownone=True)
+    _current_button_color = ListProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -659,6 +730,13 @@ class BaseButton(
     md_bg_color_down = AliasProperty(
         _call_get_bg_color_down, _set_md_bg_color_down
     )
+    """
+    Value of the current button background color.
+
+    :attr:`md_bg_color_down` is an :class:`~kivy.properties.AliasProperty`
+    that returns the value in ``rgba`` format for :attr:`md_bg_color_down`,
+    property is readonly.
+    """
 
     def _call_get_bg_color_disabled(self):
         return self._get_md_bg_color_disabled()
@@ -675,6 +753,13 @@ class BaseButton(
     md_bg_color_disabled = AliasProperty(
         _call_get_bg_color_disabled, _set_md_bg_color_disabled
     )
+    """
+    Value of the current button disabled color.
+
+    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.AliasProperty`
+    that returns the value in ``rgba`` format for :attr:`md_bg_color_disabled`,
+    property is readonly.
+    """
 
     def on_disabled(self, instance, value):
         if self.disabled:
@@ -866,16 +951,42 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         88, min=88, max=None, errorhandler=lambda x: 88
     )
     text = StringProperty("")
+    """Button text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
     increment_width = NumericProperty("32dp")
+    """
+    Button extra width value.
+
+    :attr:`increment_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'32dp'`.
+    """
+
+    button_label = BooleanProperty(True)
+    """
+    If ``False`` the text on the button will not be displayed.
+
+    :attr:`button_label` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
+    can_capitalize = BooleanProperty(True)
+
     _radius = NumericProperty("2dp")
     _height = NumericProperty(0)
-    button_label = BooleanProperty(True)
-    can_capitalize = BooleanProperty(True)
 
 
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     icon = StringProperty("checkbox-blank-circle")
-    """Button icon."""
+    """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-circle'`.
+    """
 
 
 class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
@@ -884,7 +995,20 @@ class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
 
 class BaseFlatIconButton(MDFlatButton):
     icon = StringProperty("android")
+    """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
+
     text = StringProperty("")
+    """Button text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
     button_label = BooleanProperty(False)
 
 
@@ -901,12 +1025,29 @@ class MDFloatingActionButton(
     BaseRoundButton, CircularElevationBehavior, BaseRaisedButton
 ):
     icon = StringProperty("android")
+    """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
+
     background_palette = StringProperty("Accent")
+    """
+    The name of the palette used for the background color of the button.
+
+    :attr:`background_palette` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Accent'`.
+    """
 
 
 class MDRoundImageButton(MDFloatingActionButton):
     source = StringProperty()
-    """Button image."""
+    """Path to button image.
+
+    :attr:`source` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
     _current_button_color = [1, 1, 1, 1]
 
@@ -949,7 +1090,11 @@ class MDRoundFlatButton(MDFlatButton):
 
 class MDTextButton(ThemableBehavior, Button):
     custom_color = ListProperty()
-    """Custom user button color"""
+    """Custom user button color if ``rgba`` format.
+
+    :attr:`custom_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
     def animation_label(self):
         def set_default_state_label(*args):
@@ -982,4 +1127,17 @@ class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
 
 class MDFillRoundFlatIconButton(MDFillRoundFlatButton):
     icon = StringProperty("android")
+    """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
+
     increment_width = NumericProperty("80dp")
+    """
+    Button extra width value.
+
+    :attr:`increment_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'80dp'`.
+    """

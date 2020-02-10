@@ -327,6 +327,8 @@ MDTextButton
     MDTextButton:
         text: "MDTEXTBUTTON"
         custom_color: 0, 1, 0, 1
+
+.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Button>`_
 """
 
 from kivy.clock import Clock

@@ -18,11 +18,11 @@ Usage
 
     Root:
 
-            MDExpansionPanel:
-                icon: f"{images_path}kivymd_logo.png"
-                # Content of panel. Must be `Kivy` widget.
-                content: Content()
-                title: "KivyMD"
+        MDExpansionPanel:
+            icon: f"{images_path}kivymd_logo.png"
+            # Content of panel. Must be `Kivy` widget.
+            content: Content()
+            title: "KivyMD"
 
 Example
 -------

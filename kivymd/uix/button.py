@@ -331,6 +331,20 @@ MDTextButton
 .. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Button>`_
 """
 
+__all__ = (
+    "MDIconButton",
+    "MDFloatingActionButton",
+    "MDFlatButton",
+    "MDRaisedButton",
+    "MDRectangleFlatButton",
+    "MDRectangleFlatIconButton",
+    "MDRoundFlatButton",
+    "MDRoundFlatIconButton",
+    "MDFillRoundFlatButton",
+    "MDFillRoundFlatIconButton",
+    "MDTextButton",
+)
+
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.stencil_instructions import (

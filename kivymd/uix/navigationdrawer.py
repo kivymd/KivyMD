@@ -212,14 +212,14 @@ class NavigationLayout(FloatLayout):
             widget, (MDNavigationDrawer, ScreenManager, MDToolbar)
         ):
             raise NavigationDrawerContentError(
-                "The NavigationLayout should contain "
+                "The NavigationLayout must contain "
                 "only MDNavigationDrawer and ScreenManager"
             )
         if isinstance(widget, ScreenManager):
             self.add_scrim(widget)
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
-                "The NavigationLayout should contain "
+                "The NavigationLayout must contain "
                 "only MDNavigationDrawer and ScreenManager"
             )
         return super().add_widget(widget)

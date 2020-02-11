@@ -118,6 +118,14 @@ def extension_build_finished(app, exception):
         for file in to_remove:
             os.remove(file)
             directory = os.path.dirname(file)
+            while True:
+                try:
+                    if len(os.listdir(directory)) > 0:
+                        break
+                    os.rmdir(directory)
+                    directory = os.path.dirname(directory)
+                except PermissionError:
+                    break
 
 
 def setup(app):

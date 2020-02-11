@@ -10,7 +10,7 @@ Material App
 ------------
 
 The main class of your application, which in `Kivy` inherits from the App class,
-in `KivyMD` should inherit from the `MDApp` class. The `MDApp` class has
+in `KivyMD` must inherit from the `MDApp` class. The `MDApp` class has
 properties that allow you to control application properties
 such as :attr:`color/style/font` of interface elements and much more.
 
@@ -893,13 +893,13 @@ class ThemableBehavior(EventDispatcher):
                     ObjectProperty,
                 ):
                     raise ValueError(
-                        "KivyMD: App object should be inherited from "
+                        "KivyMD: App object must be inherited from "
                         "`kivymd.app.MDApp`. See "
                         "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
                     )
             except AttributeError:
                 raise ValueError(
-                    "KivyMD: App object should be initialized before loading "
+                    "KivyMD: App object must be initialized before loading "
                     "root widget. See "
                     "https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App#exceptions"
                 )

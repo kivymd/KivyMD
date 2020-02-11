@@ -391,7 +391,7 @@ To demonstrate the shades of the palette, you can run the following code:
     from kivymd.app import MDApp
 
 
-    class MyTab(BoxLayout, MDTabsBase):
+    class Tab(BoxLayout, MDTabsBase):
         pass
 
 

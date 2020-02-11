@@ -24,11 +24,11 @@ You can turn on the monitor displaying the current ``FPS`` value in your applica
 
 
     class MainApp(MDApp):
-    def build(self):
-        return Builder.load_string(KV)
+        def build(self):
+            return Builder.load_string(KV)
 
-    def on_start(self):
-        self.fps_monitor_start()
+        def on_start(self):
+            self.fps_monitor_start()
 
 
     MainApp().run()

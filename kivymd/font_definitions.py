@@ -8,6 +8,7 @@ Themes/Font Definitions
 """
 
 from kivy.core.text import LabelBase
+
 from kivymd import fonts_path
 
 fonts = [
@@ -63,3 +64,6 @@ theme_font_styles = [
     "Overline",
     "Icon",
 ]
+"""
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/font-styles-2.png
+"""

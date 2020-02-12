@@ -5,6 +5,69 @@ Components/Slider
 .. seealso::
 
     `Material Design spec, Sliders <https://material.io/components/sliders>`_
+
+.. rubric:: Sliders allow users to make selections from a range of values.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider.png
+    :align: center
+
+With value hint
+---------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    Screen
+
+        MDSlider:
+            min: 0
+            max: 100
+            value: 40
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-1.gif
+    :align: center
+
+Without value hint
+------------------
+
+.. code-block:: kv
+
+    MDSlider:
+        min: 0
+        max: 100
+        value: 40
+        hint: False
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-2.gif
+    :align: center
+
+Without custom color
+--------------------
+
+.. code-block:: kv
+
+    MDSlider:
+        min: 0
+        max: 100
+        value: 40
+        hint: False
+        humb_color_down: app.theme_cls.accent_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-3.png
+    :align: center
 """
 
 from kivy.lang import Builder
@@ -103,20 +166,35 @@ Builder.load_string(
             text: str(int(slider.value))
             font_style: "Caption"
             halign: "center"
-            color: root.theme_cls.primary_color if root.active else [0, 0, 0, 0]
+            color: root.thumb_color_down if root.active else [0, 0, 0, 0]
 """
 )
 
 
 class MDSlider(ThemableBehavior, Slider):
-    # If the slider is clicked
     active = BooleanProperty(False)
+    """
+    If the slider is clicked.
 
-    # If True, then the current value is displayed above the slider
+    :attr:`active` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     hint = BooleanProperty(True)
+    """
+    If True, then the current value is displayed above the slider.
 
-    # Show the "off" ring when set to minimum value
+    :attr:`hint` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     show_off = BooleanProperty(True)
+    """
+    Show the `'off'` ring when set to minimum value.
+
+    :attr:`show_off` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
 
     # Internal state of ring
     _is_off = BooleanProperty(False)
@@ -140,6 +218,12 @@ class MDSlider(ThemableBehavior, Slider):
     thumb_color = AliasProperty(
         _get_thumb_color, _set_thumb_color, bind=["_thumb_color"]
     )
+    """
+    Current color slider in ``rgba`` format.
+
+    :attr:`thumb_color` is an :class:`~kivy.properties.AliasProperty` that
+    returns the value of the current color slider, property is readonly.
+    """
 
     _thumb_color_down = ListProperty([1, 1, 1, 1])
 
@@ -157,10 +241,6 @@ class MDSlider(ThemableBehavior, Slider):
                 self._thumb_color_down[3] = 1
         elif len(color) == 4:
             self._thumb_color_down = color
-
-    thumb_color_down = AliasProperty(
-        _get_thumb_color_down, _set_thumb_color_down, bind=["_thumb_color_down"]
-    )
 
     _thumb_color_disabled = ListProperty(
         get_color_from_hex(colors["Gray"]["400"])
@@ -184,6 +264,12 @@ class MDSlider(ThemableBehavior, Slider):
         _set_thumb_color_disabled,
         bind=["_thumb_color_disabled"],
     )
+    """
+    Color slider in ``rgba`` format.
+
+    :attr:`thumb_color_down` is an :class:`~kivy.properties.AliasProperty`
+    that returns and set the value of color slider.
+    """
 
     _track_color_active = ListProperty()
     _track_color_normal = ListProperty()
@@ -226,7 +312,9 @@ class MDSlider(ThemableBehavior, Slider):
             self.thumb_color_down = self.theme_cls.primary_color
 
     def on_value_normalized(self, *args):
-        """ When the value == min set it to "off" state and make slider a ring """
+        """When the ``value == min`` set it to `'off'` state and make slider
+        a ring.
+        """
 
         self._update_is_off()
 
@@ -244,7 +332,8 @@ class MDSlider(ThemableBehavior, Slider):
 
     def _update_offset(self):
         """Offset is used to shift the sliders so the background color
-        shows through the off circle."""
+        shows through the off circle.
+        """
 
         d = 2 if self.active else 0
         self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
@@ -256,67 +345,3 @@ class MDSlider(ThemableBehavior, Slider):
     def on_touch_up(self, touch):
         if super().on_touch_up(touch):
             self.active = False
-
-
-if __name__ == "__main__":
-    from kivymd.app import MDApp
-
-    class SliderApp(MDApp):
-        def build(self):
-            return Builder.load_string(
-                """
-Screen
-    name: 'progress bar'
-
-    BoxLayout:
-        orientation:'vertical'
-        padding: '8dp'
-
-        MDLabel:
-            text: "Slider with [b]hint = True[/b]"
-            markup: True
-            halign: "center"
-
-        MDSlider:
-            id: progress_slider
-            min: 0
-            max: 100
-            value: 40
-
-        MDLabel:
-            text: "Slider with [b]hint = False[/b]"
-            markup: True
-            halign: "center"
-
-        MDSlider:
-            id: progress_slider
-            min: 0
-            max: 100
-            value: 40
-            hint: False
-
-        MDLabel:
-            text: "Examples [b]MDProgressBar[/b]"
-            markup: True
-            halign: "center"
-
-        MDProgressBar:
-            value: progress_slider.value
-
-        MDProgressBar:
-            reversed: True
-            value: progress_slider.value
-
-        BoxLayout:
-            MDProgressBar:
-                orientation: "vertical"
-                reversed: True
-                value: progress_slider.value
-
-            MDProgressBar:
-                orientation: "vertical"
-                value: progress_slider.value
-"""
-            )
-
-    SliderApp().run()

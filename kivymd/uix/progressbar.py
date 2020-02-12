@@ -1,10 +1,65 @@
 """
 Components/Progress Bar
 =======================
+
+.. rubric:: Progress indicators express an unspecified wait time or display
+    the length of a process.
+
+Usage
+-----
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    BoxLayout:
+        padding: "10dp"
+
+        MDProgressBar:
+            value: 50
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/progress-bar.png
+    :align: center
+
+Vertical orientation
+--------------------
+
+.. code-block:: kv
+
+    MDProgressBar:
+        orientation: "vertical"
+        value: 50
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/progress-bar-vertical.png
+    :align: center
+
+With custom color
+-----------------
+
+.. code-block:: kv
+
+    MDProgressBar:
+        value: 50
+        color: app.theme_cls.accent_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/progress-bar-custom-color.png
+    :align: center
 """
 
 from kivy.lang import Builder
-from kivy.properties import OptionProperty, BooleanProperty
+from kivy.properties import OptionProperty, BooleanProperty, ListProperty
 
 from kivymd.theming import ThemableBehavior
 from kivy.uix.progressbar import ProgressBar
@@ -25,7 +80,8 @@ Builder.load_string(
                 if self.orientation == 'horizontal'\
                 else (self.center_x - dp(4),self.y)
         Color:
-            rgba: self.theme_cls.primary_color
+            rgba:
+                self.theme_cls.primary_color if not self.color else self.color
         Rectangle:
             size:
                 (self.width * self.value_normalized, sp(4))\
@@ -44,46 +100,26 @@ Builder.load_string(
 
 class MDProgressBar(ThemableBehavior, ProgressBar):
     reversed = BooleanProperty(False)
-    """ Reverse the direction the progressbar moves. """
+    """Reverse the direction the progressbar moves.
+
+    :attr:`reversed` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
 
     orientation = OptionProperty(
         "horizontal", options=["horizontal", "vertical"]
     )
-    """ Orientation of progressbar"""
+    """Orientation of progressbar. Available options are: `'horizontal '`,
+    `'vertical'`.
 
+    :attr:`orientation` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'horizontal'`.
+    """
 
-if __name__ == "__main__":
-    from kivymd.app import MDApp
-    from kivymd.theming import ThemeManager
+    color = ListProperty()
+    """
+    Progress bar color in ``rgba`` format.
 
-    class ProgressBarApp(MDApp):
-        def build(self):
-            return Builder.load_string(
-                """
-BoxLayout:
-    orientation:'vertical'
-    padding: '8dp'
-    MDSlider:
-        id:slider
-        min:0
-        max:100
-        value: 40
-
-    MDProgressBar:
-        value: slider.value
-    MDProgressBar:
-        reversed: True
-        value: slider.value
-    BoxLayout:
-        MDProgressBar:
-            orientation:"vertical"
-            reversed: True
-            value: slider.value
-
-        MDProgressBar:
-            orientation:"vertical"
-            value: slider.value
-"""
-            )
-
-    ProgressBarApp().run()
+    :attr:`color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `[]`.
+    """

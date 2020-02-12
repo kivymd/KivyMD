@@ -1,6 +1,45 @@
 """
 Components/Spinner
 ==================
+
+.. rubric:: Circular progress indicator in Google's Material Design.
+
+Usage
+-----
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    Screen:
+
+        MDSpinner:
+            size_hint: None, None
+            size: dp(46), dp(46)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            active: True if check.active else False
+
+        MDCheckbox:
+            id: check
+            size_hint: None, None
+            size: dp(48), dp(48)
+            pos_hint: {'center_x': .5, 'center_y': .4}
+            active: True
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/spinner.gif
+    :align: center
 """
 
 from kivy.lang import Builder
@@ -36,7 +75,7 @@ Builder.load_string(
 
 class MDSpinner(ThemableBehavior, Widget):
     """:class:`MDSpinner` is an implementation of the circular progress
-    indicator in Google's Material Design.
+    indicator in `Google's Material Design`.
 
     It can be used either as an indeterminate indicator that loops while
     the user waits for something to happen, or as a determinate indicator.
@@ -46,25 +85,28 @@ class MDSpinner(ThemableBehavior, Widget):
     """
 
     determinate = BooleanProperty(False)
-    """:attr:`determinate` is a :class:`~kivy.properties.BooleanProperty` and
-    defaults to False
+    """
+    :attr:`determinate` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     determinate_time = NumericProperty(2)
-    """:attr:`determinate_time` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to 2
+    """
+    :attr:`determinate_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `2`.
     """
 
     active = BooleanProperty(True)
     """Use :attr:`active` to start or stop the spinner.
 
-    :attr:`active` is a :class:`~kivy.properties.BooleanProperty` and
-    defaults to True
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
     """
 
     color = ListProperty([0, 0, 0, 0])
-    """:attr:`color` is a :class:`~kivy.properties.ListProperty` and
-    defaults to 'self.theme_cls.primary_color'
+    """
+    :attr:`color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to ``self.theme_cls.primary_color``.
     """
 
     _alpha = NumericProperty(0)

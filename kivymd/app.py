@@ -72,7 +72,7 @@ class MDApp(App, FpsMonitoring):
 
         class MainApp(MDApp):
             theme_cls = ThemeManager()
-            theme_cls.primary_color = "Teal"
+            theme_cls.primary_palette = "Teal"
 
     .. Note:: Correctly do as shown below!
 
@@ -80,7 +80,7 @@ class MDApp(App, FpsMonitoring):
 
         class MainApp(MDApp):
             def build(self):
-                self.theme_cls.primary_color = "Teal"
+                self.theme_cls.primary_palette = "Teal"
 
     :attr:`theme_cls` is an :class:`~kivy.properties.ObjectProperty`.
     """

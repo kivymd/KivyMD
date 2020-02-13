@@ -6,135 +6,220 @@ Components/Toolbar
 
     `Material Design spec, App bars: top <https://material.io/components/app-bars-top>`_
 
-Example
--------
+    `Material Design spec, App bars: bottom <https://material.io/components/app-bars-bottom/app-bars-bottom.html>`_
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/app-bar-top.png
+    :align: center
+
+`KivyMD` provides the following toolbar positions for use:
+
+- Top_
+- Bottom_
+
+.. Top:
+Top
+---
 
 .. code-block:: python
 
-    from kivy.factory import Factory
-
-    from kivymd.app import MDApp
     from kivy.lang import Builder
 
+    from kivymd.app import MDApp
 
-    Builder.load_string('''
-    <StyleLabel@MDLabel>:
-        size_hint_y: None
-        height: self.texture_size[1]
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
 
+        MDToolbar:
+            title: "MDToolbar"
 
-    <StyleItemCheck@BoxLayout>:
-        group: ""
-        text: ""
-        active: False
-        size_hint_y: None
-        height: self.minimum_height
-
-        MDCheckbox:
-            group: root.group
-            active: root.active
-            size_hint: None, None
-            size: dp(48), dp(48)
-            pos_hint: {"center_y": .5}
-            on_active: app.callback(root.text, self.active)
-
-        StyleLabel:
-            text: root.text
-            pos_hint: {"center_y": .5}
+        MDLabel:
+            text: "Content"
+            halign: "center"
+    '''
 
 
-    <BottomAppBar@Screen>
-        name: 'bottom app bar'
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
 
-        BoxLayout:
-            spacing: dp(10)
-            orientation: 'vertical'
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-1.png
+    :align: center
+
+Add left menu
+-------------
+
+.. code-block:: kv
+
+    MDToolbar:
+        title: "MDToolbar"
+        left_action_items: [["menu", lambda x: app.callback()]]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-2.png
+    :align: center
+
+Add right menu
+--------------
+
+.. code-block:: kv
+
+    MDToolbar:
+        title: "MDToolbar"
+        right_action_items: [["dots-vertical", lambda x: app.callback()]]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-3.png
+    :align: center
+
+Add two item to the right menu
+------------------------------
+
+.. code-block:: kv
+
+    MDToolbar:
+        title: "MDToolbar"
+        right_action_items: [["dots-vertical", lambda x: app.callback_1()], ["clock", lambda x: app.callback_2()]]
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-4.png
+    :align: center
+
+Change toolbar color
+--------------------
+
+.. code-block:: kv
+
+    MDToolbar:
+        title: "MDToolbar"
+        md_bg_color: app.theme_cls.accent_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-5.png
+    :align: center
+
+Change toolbar text color
+-------------------------
+
+.. code-block:: kv
+
+    MDToolbar:
+        title: "MDToolbar"
+        specific_text_color: app.theme_cls.accent_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-6.png
+    :align: center
+
+Shadow elevation control
+------------------------
+
+.. code-block:: kv
+
+    MDToolbar:
+        title: "Elevation 10"
+        elevation: 10
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-7.png
+    :align: center
+
+.. Bottom:
+Bottom
+------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/app-bar-bottom.png
+    :align: center
+
+Usage
+-----
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    BoxLayout:
+
+        # Will always be at the bottom of the screen.
+        MDBottomAppBar:
 
             MDToolbar:
                 title: "Title"
-                md_bg_color: app.theme_cls.primary_color
-                left_action_items: [['menu', lambda x: x]]
-
-            ScrollView:
-
-                GridLayout:
-                    size_hint_y: None
-                    height: self.minimum_height
-                    cols: 1
-                    padding: "10dp"
-                    spacing: "10dp"
-
-                    MDSeparator:
-
-                    StyleLabel:
-                        text: "Notch"
-
-                    StyleItemCheck:
-                        group: 'notch'
-                        text: "On"
-                        active: True
-
-                    StyleItemCheck:
-                        group: 'notch'
-                        text: "Off"
-
-                    MDSeparator:
-
-                    StyleLabel:
-                        text: "Position"
-
-                    StyleItemCheck:
-                        group: 'pos'
-                        text: "Attached - Center"
-                        active: True
-
-                    StyleItemCheck:
-                        group: 'pos'
-                        text: "Attached - End"
-
-                    StyleItemCheck:
-                        group: 'pos'
-                        text: "Free - Center"
-
-                    StyleItemCheck:
-                        group: 'pos'
-                        text: "Free - End"
-
-            MDBottomAppBar
-
-                MDToolbar:
-                    id: toolbar
-                    title: "Title"
-                    icon: "git"
-                    type: "bottom"
-                    on_action_button: print("on_action_button")
-                    left_action_items: [["menu", lambda x: x]]
+                icon: "git"
+                type: "bottom"
+                left_action_items: [["menu", lambda x: x]]
     '''
-    )
 
 
-    class BottomAppBarTest(MDApp):
-        def callback(self, text, value):
-            if value and self.root:
-                if text == "Off":
-                    self.root.ids.toolbar.remove_notch()
-                elif text == "On":
-                    self.root.ids.toolbar.set_notch()
-                elif text == "Attached - End":
-                    self.root.ids.toolbar.mode = "end"
-                elif text == "Attached - Center":
-                    self.root.ids.toolbar.mode = "center"
-                elif text == "Free - End":
-                    self.root.ids.toolbar.mode = "free-end"
-                elif text == "Free - Center":
-                    self.root.ids.toolbar.mode = "free-center"
-
+    class Test(MDApp):
         def build(self):
-            return Factory.BottomAppBar()
+            return Builder.load_string(KV)
 
 
-    BottomAppBarTest().run()
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-8.png
+    :align: center
+
+Event on floating button
+------------------------
+
+Event ``on_action_button``:
+
+.. code-block:: kv
+
+    MDBottomAppBar:
+
+        MDToolbar:
+            title: "Title"
+            icon: "git"
+            type: "bottom"
+            left_action_items: [["menu", lambda x: x]]
+            on_action_button: app.callback(self.icon)
+
+Floating button position
+------------------------
+
+Mode:
+
+- `'free-end'`
+- `'free-center'`
+- `'end'`
+- `'center'`
+
+.. code-block:: kv
+
+    MDBottomAppBar:
+
+        MDToolbar:
+            title: "Title"
+            icon: "git"
+            type: "bottom"
+            left_action_items: [["menu", lambda x: x]]
+            mode: "end"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-9.png
+    :align: center
+
+.. code-block:: kv
+
+    MDBottomAppBar:
+
+        MDToolbar:
+            title: "Title"
+            icon: "git"
+            type: "bottom"
+            left_action_items: [["menu", lambda x: x]]
+            mode: "free-end"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-10.png
+    :align: center
+
+.. seealso::
+
+    `Components-Bottom-App-Bar <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-App-Bar>`_
 """
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -178,7 +263,7 @@ Builder.load_string(
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: 6
-    md_bg_color: self.theme_cls.primary_color
+    md_bg_color: self.theme_cls.primary_color if root.type != "bottom" else [0, 0, 0, 0]
 
     canvas:
         Color:
@@ -268,54 +353,99 @@ class MDToolbar(
     """
     :Events:
         `on_action_button`
-            Method for the button used for the `MDBottomAppBar` class.
+            Method for the button used for the :class:`~MDBottomAppBar` class.
     """
 
     left_action_items = ListProperty()
-    """The icons on the left of the `MDToolbar`.
+    """The icons on the left of the toolbar.
     To add one, append a list like the following:
-        ['icon_name', callback]
-    where 'icon_name' is a string that corresponds to an icon definition and
-     callback is the function called on a touch release event.
+
+    .. code-block:: kv
+
+        left_action_items: [`'icon_name'`, callback]
+
+    where `'icon_name'` is a string that corresponds to an icon definition and
+    ``callback`` is the function called on a touch release event.
+
+    :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     right_action_items = ListProperty()
-    """The icons on the left of the `MDToolbar`.
-    Works the same way as :attr:`left_action_items`
+    """The icons on the left of the toolbar.
+    Works the same way as :attr:`left_action_items`.
+
+    :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     title = StringProperty()
-    """The text displayed on the `MDToolbar`."""
+    """Text toolbar.
+
+    :attr:`title` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
     md_bg_color = ListProperty([0, 0, 0, 0])
-    """Color for `MDToolbar`."""
+    """Color toolbar.
+    
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
 
     anchor_title = StringProperty("left")
 
     mode = OptionProperty(
         "center", options=["free-end", "free-center", "end", "center"]
     )
-    """`MDBottomAppBar` button position."""
+    """Floating button position. Onle for :class:`~MDBottomAppBar` class.
+    Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
+
+    :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'center'`.
+    """
 
     round = NumericProperty("10dp")
-    """Rounding the corners at the notch for a button in `MDBottomAppBar`"""
+    """
+    Rounding the corners at the notch for a button.
+    Onle for :class:`~MDBottomAppBar` class.
+
+    :attr:`round` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'10dp'`.
+    """
 
     icon = StringProperty("android")
-    """Icon action button."""
+    """
+    Floating button. Onle for :class:`~MDBottomAppBar` class.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
 
     icon_color = ListProperty()
-    """Color action button."""
+    """
+    Color action button. Onle for :class:`~MDBottomAppBar` class.
+
+    :attr:`icon_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
     type = OptionProperty("top", options=["top", "bottom"])
-    """When using the `MDBottomAppBar` class,
-    the parameter `type` must be set to `bottom`:
+    """
+    When using the :class:`~MDBottomAppBar` class, the parameter ``type``
+    must be set to `'bottom'`:
 
-    Python:
+    .. code-block:: kv
 
-        .. code-block:: python
+        MDBottomAppBar:
 
-            MDBottomAppBar:
+            MDToolbar:
                 type: "bottom"
+    
+    Available options are: `'top'`, `'bottom'`.
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'top'`.
     """
 
     _shift = NumericProperty("3.5dp")

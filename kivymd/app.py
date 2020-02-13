@@ -64,5 +64,17 @@ class MDApp(App, FpsMonitoring):
     """
     Instance of :class:`~ThemeManager` class.
 
+    .. code-block:: python
+
+        class MainApp(MDApp):
+        # It is not right!
+        # The `theme_cls` attribute is already available in a class
+        # that is inherited from the `MDApp` class.
+        # theme_cls = ThemeManager()
+
+        def build(self):
+            # It is right!
+            self.theme_cls.primary_color = "Teal"
+
     :attr:`theme_cls` is an :class:`~kivy.properties.ObjectProperty`.
     """

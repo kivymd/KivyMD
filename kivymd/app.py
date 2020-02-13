@@ -64,17 +64,23 @@ class MDApp(App, FpsMonitoring):
     """
     Instance of :class:`~ThemeManager` class.
 
+    .. Warning:: The :attr:`~theme_cls` attribute is already available
+        in a class that is inherited from the :class:`~MDApp` class.
+        The following code will result in an error!
+
     .. code-block:: python
 
         class MainApp(MDApp):
-        # It is not right!
-        # The `theme_cls` attribute is already available in a class
-        # that is inherited from the `MDApp` class.
-        # theme_cls = ThemeManager()
+            theme_cls = ThemeManager()
+            theme_cls.primary_color = "Teal"
 
-        def build(self):
-            # It is right!
-            self.theme_cls.primary_color = "Teal"
+    .. Note:: Correctly do as shown below!
+
+    .. code-block:: python
+
+        class MainApp(MDApp):
+            def build(self):
+                self.theme_cls.primary_color = "Teal"
 
     :attr:`theme_cls` is an :class:`~kivy.properties.ObjectProperty`.
     """

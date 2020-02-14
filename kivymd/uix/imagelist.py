@@ -6,125 +6,108 @@ Components/Image List
 
     `Material Design spec, Image lists <https://material.io/components/image-lists>`_
 
-Example
--------
+.. rubric:: Image lists display a collection of images in an organized grid.
 
-.. code-block:: python
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list.png
+    :align: center
 
-    import os
+`KivyMD` provides the following tile classes for use:
+
+- SmartTileWithStar_
+- SmartTileWithLabel_
+
+.. SmartTileWithStar:
+SmartTileWithStar
+-----------------
+
+.. code-block::
 
     from kivymd.app import MDApp
     from kivy.lang import Builder
 
-    from kivymd.theming import ThemeManager
-    from kivymd.utils.cropimage import crop_image
+    KV = '''
+    ScrollView:
 
-    kv = '''
-    <MySmartTileWithLabel@SmartTileWithLabel>
-        mipmap: True
-        font_style: 'Subtitle1'
+        GridLayout:
+            cols: 3
+            row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: dp(4), dp(4)
+            spacing: dp(4)
 
+            SmartTileWithStar:
+                stars: 5
+                source: "cat-1.jpg"
 
-    BoxLayout:
-        orientation: 'vertical'
+            SmartTileWithStar:
+                stars: 5
+                source: "cat-2.jpg"
 
-        MDToolbar:
-            title: app.title
-            elevation: 10
-            left_action_items: [['menu', lambda x: x]]
-            md_bg_color: app.theme_cls.primary_color
-
-        ScreenManager:
-            id: manager
-
-            Screen:
-                name: 'one'
-
-                MDFlatButton:
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-                    on_release: manager.current = 'two'
-                    text: 'Open Grid'
-
-            Screen:
-                name: 'two'
-                on_enter:
-                    app.crop_image_for_tile(tile_1, tile_1.size,\
-                    'demos/kitchen_sink/assets/beautiful-931152_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_2, tile_2.size,\
-                    'demos/kitchen_sink/assets/african-lion-951778_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_3, tile_3.size,\
-                    'demos/kitchen_sink/assets/guitar-1139397_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_4, tile_4.size,\
-                    'demos/kitchen_sink/assets/robin-944887_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_5, tile_5.size,\
-                    'demos/kitchen_sink/assets/kitten-1049129_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_6, tile_6.size,\
-                    'demos/kitchen_sink/assets/light-bulb-1042480_1280_tile_crop.jpg')
-                    app.crop_image_for_tile(tile_7, tile_7.size,\
-                    'demos/kitchen_sink/assets/tangerines-1111529_1280_tile_crop.jpg')
-
-                ScrollView:
-                    do_scroll_x: False
-
-                    GridLayout:
-                        cols: 2
-                        row_default_height:
-                            (self.width - self.cols*self.spacing[0])/self.cols
-                        row_force_default: True
-                        size_hint_y: None
-                        height: self.minimum_height
-                        padding: dp(4), dp(4)
-                        spacing: dp(4)
-
-                        SmartTileWithStar:
-                            id: tile_2
-                            mipmap: True
-                            stars: 3
-                        SmartTileWithStar:
-                            id: tile_3
-                            mipmap: True
-                            stars: 3
-                        SmartTileWithLabel:
-                            id: tile_1
-                            text:
-                                "Beautiful\\n[size=12]beautiful-931152_1280.jpg[/size]"
-                        SmartTileWithLabel:
-                            id: tile_4
-                            text:
-                                "Robin\\n[size=12]robin-944887_1280.jpg[/size]"
-                        SmartTileWithLabel:
-                            id: tile_5
-                            text:
-                                "Kitten\\n[size=12]kitten-1049129_1280.jpg[/size]"
-                        SmartTileWithLabel:
-                            id: tile_6
-                            text:
-                                "Light-Bulb\\n[size=12]light-bulb-1042480_1280.jpg[/size]"
-                        SmartTileWithLabel:
-                            id: tile_7
-                            text:
-                                "Tangerines\\n[size=12]tangerines-1111529_1280.jpg[/size]"
+            SmartTileWithStar:
+                stars: 5
+                source: "cat-.jpg"
     '''
 
 
     class MyApp(MDApp):
-        title = 'Example Smart Tile'
-        md_app_bar = None
-
         def build(self):
-            root = Builder.load_string(kv)
-            return root
-
-        def crop_image_for_tile(self, instance, size, path_to_crop_image):
-            if not os.path.exists(
-                    os.path.join(self.directory, path_to_crop_image)):
-                size = (int(size[0]), int(size[1]))
-                path_to_origin_image = path_to_crop_image.replace('_tile_crop', '')
-                crop_image(size, path_to_origin_image, path_to_crop_image)
-            instance.source = path_to_crop_image
+            return Builder.load_string(KV)
 
 
     MyApp().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/SmartTileWithStar.gif
+    :align: center
+
+.. SmartTileWithLabel:
+SmartTileWithLabel
+------------------
+
+.. code-block:: python
+
+    from kivymd.app import MDApp
+    from kivy.lang import Builder
+
+    KV = '''
+    ScrollView:
+
+        GridLayout:
+            cols: 3
+            row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+            padding: dp(4), dp(4)
+            spacing: dp(4)
+
+            SmartTileWithLabel:
+                source: "/Users/macbookair/1.jpg"
+                text: "[size=26]Cat 1[/size]\\n[size=14]/Users/macbookair/1.jpg[/size]"
+
+            SmartTileWithLabel:
+                source: "/Users/macbookair/2.jpg"
+                text: "[size=26]Cat 2[/size]\\n[size=14]/Users/macbookair/2.jpg[/size]"
+                tile_text_color: app.theme_cls.accent_color
+
+            SmartTileWithLabel:
+                source: "/Users/macbookair/3.jpg"
+                text: "[size=26][color=#ffffff]Cat 3[/color][/size]\\n[size=14]/Users/macbookair/2.jpg[/size]"
+                tile_text_color: app.theme_cls.accent_color
+    '''
+
+
+    class MyApp(MDApp):
+        def build(self):
+            root = Builder.load_string(KV)
+            return root
+
+
+    MyApp().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/SmartTileWithLabel.png
+    :align: center
 """
 
 from kivy.lang import Builder
@@ -156,7 +139,6 @@ Builder.load_string(
         allow_stretch: root.allow_stretch
         anim_delay: root.anim_delay
         anim_loop: root.anim_loop
-        color: root.img_color
         keep_ratio: root.keep_ratio
         mipmap: root.mipmap
         source: root.source
@@ -196,7 +178,6 @@ Builder.load_string(
         allow_stretch: root.allow_stretch
         anim_delay: root.anim_delay
         anim_loop: root.anim_loop
-        color: root.img_color
         keep_ratio: root.keep_ratio
         mipmap: root.mipmap
         source: root.source
@@ -242,7 +223,8 @@ Builder.load_string(
 class Tile(
     ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout
 ):
-    """A simple tile. It does nothing special, just inherits the right
+    """
+    A simple tile. It does nothing special, just inherits the right
     behaviors to work as a building block.
     """
 
@@ -252,37 +234,94 @@ class Tile(
 class SmartTile(
     ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, FloatLayout
 ):
-    """A tile for more complex needs.
+    """
+    A tile for more complex needs.
 
     Includes an image, a container to place overlays and a box that can act
     as a header or a footer, as described in the Material Design specs.
     """
 
     box_color = ListProperty([0, 0, 0, 0.5])
-    """Sets the color and opacity for the information box."""
+    """
+    Sets the color and opacity for the information box.
+
+    :attr:`box_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0.5]`.
+    """
 
     box_position = OptionProperty("footer", options=["footer", "header"])
-    """Determines wether the information box acts as a header or footer to the
-    image.
+    """
+    Determines wether the information box acts as a header or footer to the
+    image. Available are options: `'footer'`, `'header'`.
+
+    :attr:`box_position` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'footer'`.
     """
 
     lines = OptionProperty(1, options=[1, 2])
-    """Number of lines in the header/footer.
+    """
+    Number of lines in the `header/footer`. As per `Material Design specs`,
+    only 1 and 2 are valid values. Available are options: ``1``, ``2``.
 
-    As per Material Design specs, only 1 and 2 are valid values.
+    :attr:`lines` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `1`.
     """
 
     overlap = BooleanProperty(True)
-    """Determines if the header/footer overlaps on top of the image or not"""
+    """
+    Determines if the `header/footer` overlaps on top of the image or not.
 
-    # Img properties
+    :attr:`overlap` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     allow_stretch = BooleanProperty(True)
+    """
+    See :attr:`~kivy.uix.image.Image.allow_stretch`.
+
+    :attr:`allow_stretch` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     anim_delay = NumericProperty(0.25)
+    """
+    See :attr:`~kivy.uix.image.Image.anim_delay`.
+
+    :attr:`anim_delay` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.25`.
+    """
+
     anim_loop = NumericProperty(0)
-    img_color = ListProperty([1, 1, 1, 1])
+    """
+    See :attr:`~kivy.uix.image.Image.anim_loop`.
+
+    :attr:`anim_loop` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
     keep_ratio = BooleanProperty(False)
+    """
+    See :attr:`~kivy.uix.image.Image.keep_ratio`.
+
+    :attr:`keep_ratio` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     mipmap = BooleanProperty(False)
+    """
+    See :attr:`~kivy.uix.image.Image.mipmap`.
+
+    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     source = StringProperty()
+    """
+    Path to tile image. See :attr:`~kivy.uix.image.Image.source`.
+
+    :attr:`source` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
     _img_widget = ObjectProperty()
     _img_overlay = ObjectProperty()
@@ -302,14 +341,31 @@ class SmartTile(
 
 
 class SmartTileWithLabel(SmartTile):
-    _box_label = ObjectProperty()
-
-    # MDLabel properties
     font_style = StringProperty("Caption")
-    theme_text_color = StringProperty("Custom")
+    """
+    Tile font style.
+
+    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'Caption'`.
+    """
+
     tile_text_color = ListProperty([1, 1, 1, 1])
+    """
+    Tile text color in ``rgba`` format.
+
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
+    and defaults to ``.
+    """
+
     text = StringProperty("")
-    """Determines the text for the box footer/header"""
+    """
+    Determines the text for the box `footer/header`.
+
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    _box_label = ObjectProperty()
 
 
 class Star(MDIconButton):
@@ -319,6 +375,12 @@ class Star(MDIconButton):
 
 class SmartTileWithStar(SmartTileWithLabel):
     stars = NumericProperty(1)
+    """
+    Tile stars.
+
+    :attr:`stars` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
 
     def on_stars(self, *args):
         for star in range(self.stars):
@@ -332,16 +394,14 @@ class SmartTileWithStar(SmartTileWithLabel):
 
 
 class IBoxOverlay:
-    """An interface to specify widgets that belong to to the image overlay
+    """
+    An interface to specify widgets that belong to to the image overlay
     in the :class:`SmartTile` widget when added as a child.
     """
-
-    pass
 
 
 class IOverlay:
-    """An interface to specify widgets that belong to to the image overlay
+    """
+    An interface to specify widgets that belong to to the image overlay
     in the :class:`SmartTile` widget when added as a child.
     """
-
-    pass

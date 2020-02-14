@@ -14,7 +14,7 @@ import autoapi_kivymd  # from _extensions
 
 # Project information
 project = "KivyMD"
-copyright = "2019, Andrés Rodríguez, Ivanov Yuri, Artem S. Bulgakov and KivyMD contributors"
+copyright = "2020, Andrés Rodríguez, Ivanov Yuri, Artem S. Bulgakov and KivyMD contributors"
 author = (
     "Andrés Rodríguez, Ivanov Yuri, Artem S. Bulgakov and KivyMD contributors"
 )

@@ -83,17 +83,17 @@ SmartTileWithLabel
             spacing: dp(4)
 
             SmartTileWithLabel:
-                source: "/Users/macbookair/1.jpg"
-                text: "[size=26]Cat 1[/size]\\n[size=14]/Users/macbookair/1.jpg[/size]"
+                source: "cat-1.jpg"
+                text: "[size=26]Cat 1[/size]\\n[size=14]cat-1.jpg[/size]"
 
             SmartTileWithLabel:
-                source: "/Users/macbookair/2.jpg"
-                text: "[size=26]Cat 2[/size]\\n[size=14]/Users/macbookair/2.jpg[/size]"
+                source: "cat-2.jpg"
+                text: "[size=26]Cat 2[/size]\\n[size=14]cat-2.jpg[/size]"
                 tile_text_color: app.theme_cls.accent_color
 
             SmartTileWithLabel:
-                source: "/Users/macbookair/3.jpg"
-                text: "[size=26][color=#ffffff]Cat 3[/color][/size]\\n[size=14]/Users/macbookair/2.jpg[/size]"
+                source: "cat-3.jpg"
+                text: "[size=26][color=#ffffff]Cat 3[/color][/size]\\n[size=14]cat-3.jpg[/size]"
                 tile_text_color: app.theme_cls.accent_color
     '''
 

@@ -1,16 +1,16 @@
 """
-Bottom Sheets
-=============
+Theming Dynamic Text
+====================
 
-Two implementations. The first is based on color brightness obtained from:-
+Two implementations. The first is based on color brightness obtained from-
 https://www.w3.org/TR/AERT#color-contrast
-The second is based on relative luminance calculation for sRGB obtained from:-
+The second is based on relative luminance calculation for sRGB obtained from-
 https://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
-and contrast ratio calculation obtained from:-
+and contrast ratio calculation obtained from-
 https://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef
 
 Preliminary testing suggests color brightness more closely matches the
-Material Design spec suggested text colors, but the alternative implementation
+`Material Design spec` suggested text colors, but the alternative implementation
 is both newer and the current 'correct' recommendation, so is included here
 as an option.
 """

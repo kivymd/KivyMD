@@ -4,10 +4,33 @@ Components/Navigation Drawer
 
 .. seealso::
 
-    `Material Design spec, Navigation drawer <https://material.io/components/navigation-drawer>`
+    `Material Design spec, Navigation drawer <https://material.io/components/navigation-drawer>`_
 
-Example
--------
+.. rubric:: Navigation drawers provide access to destinations in your app.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer.png
+    :align: center
+
+When using the class :class:`~MDNavigationDrawer` skeleton of your `KV` markup
+should look like this:
+
+.. code-block:: kv
+
+    Root:
+
+        NavigationLayout:
+
+            ScreenManager:
+
+                Screen_1:
+
+                Screen_2:
+
+            MDNavigationDrawer:
+                # This custom rule should implement what will be appear in your MDNavigationDrawer
+                ContentNavigationDrawer
+
+A simple example:
 
 .. code-block:: python
 
@@ -15,75 +38,8 @@ Example
 
     from kivymd.app import MDApp
     from kivy.lang import Builder
-    from kivy.properties import StringProperty
-
-    from kivymd.uix.list import OneLineAvatarListItem
 
     KV = '''
-    #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
-    #:import images_path kivymd.images_path
-
-
-    <NavigationItem>
-        theme_text_color: 'Custom'
-        divider: None
-
-        IconLeftWidget:
-            icon: root.icon
-
-
-    <ContentNavigationDrawer>
-
-        BoxLayout:
-            orientation: 'vertical'
-
-            FloatLayout:
-                size_hint_y: None
-                height: "200dp"
-
-                canvas:
-                    Color:
-                        rgba: app.theme_cls.primary_color
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
-
-                BoxLayout:
-                    id: top_box
-                    size_hint_y: None
-                    height: "200dp"
-                    #padding: "10dp"
-                    x: root.parent.x
-                    pos_hint: {"top": 1}
-
-                    FitImage:
-                        source: f"{images_path}kivymd_alpha.png"
-
-                MDIconButton:
-                    icon: "close"
-                    x: root.parent.x + dp(10)
-                    pos_hint: {"top": 1}
-                    on_release: root.parent.toggle_nav_drawer()
-
-                MDLabel:
-                    markup: True
-                    text: "[b]KivyMD[/b]\\nVersion: 0.102.1"
-                    #pos_hint: {'center_y': .5}
-                    x: root.parent.x + dp(10)
-                    y: root.height - top_box.height + dp(10)
-                    size_hint_y: None
-                    height: self.texture_size[1]
-
-            ScrollView:
-                pos_hint: {"top": 1}
-
-                GridLayout:
-                    id: box_item
-                    cols: 1
-                    size_hint_y: None
-                    height: self.minimum_height
-
-
     Screen:
 
         NavigationLayout:
@@ -97,7 +53,6 @@ Example
 
                         MDToolbar:
                             title: "Navigation Drawer"
-                            md_bg_color: app.theme_cls.primary_color
                             elevation: 10
                             left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
 
@@ -105,11 +60,8 @@ Example
 
 
             MDNavigationDrawer:
-                id: nav_drawer
 
                 ContentNavigationDrawer:
-                    id: content_drawer
-
     '''
 
 
@@ -117,30 +69,124 @@ Example
         pass
 
 
-    class NavigationItem(OneLineAvatarListItem):
-        icon = StringProperty()
-
-
     class TestNavigationDrawer(MDApp):
         def build(self):
             return Builder.load_string(KV)
 
-        def on_start(self):
-            for items in {
-                "home-circle-outline": "Home",
-                "update": "Check for Update",
-                "settings-outline": "Settings",
-                "exit-to-app": "Exit",
-            }.items():
-                self.root.ids.content_drawer.ids.box_item.add_widget(
-                    NavigationItem(
-                        text=items[1],
-                        icon=items[0],
-                    )
-                )
-
 
     TestNavigationDrawer().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer.gif
+    :align: center
+
+.. Note:: :class:`~MDNavigationDrawer` is an empty
+    :class:`~kivymd.uix.card.MDCard` panel.
+
+Let's extend the ``ContentNavigationDrawer`` class from the above example and
+create content for our :class:`~MDNavigationDrawer` panel:
+
+.. code-block:: kv
+
+    # Menu item in the DrawerList list.
+    <ItemDrawer>:
+        theme_text_color: "Custom"
+        on_release: self.parent.set_color_item(self)
+
+        IconLeftWidget:
+            id: icon
+            icon: root.icon
+            theme_text_color: "Custom"
+            text_color: root.text_color
+
+.. code-block:: python
+
+    class ItemDrawer(OneLineIconListItem):
+        icon = StringProperty()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/drawer-item.png
+    :align: center
+
+Top of ``ContentNavigationDrawer`` and ``DrawerList`` for menu items:
+
+.. code-block:: kv
+
+    <ContentNavigationDrawer>:
+        orientation: "vertical"
+        padding: "8dp"
+        spacing: "8dp"
+
+        AnchorLayout:
+            anchor_x: "left"
+            size_hint_y: None
+            height: avatar.height
+
+            Image:
+                id: avatar
+                size_hint: None, None
+                size: "56dp", "56dp"
+                source: "kivymd_logo.png"
+
+        MDLabel:
+            text: "KivyMD library"
+            font_style: "Button"
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDLabel:
+            text: "kivydevelopment@gmail.com"
+            font_style: "Caption"
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        ScrollView:
+
+            DrawerList:
+                id: md_list
+
+.. code-block:: python
+
+    class ContentNavigationDrawer(BoxLayout):
+        pass
+
+
+    class DrawerList(ThemableBehavior, MDList):
+        def set_color_item(self, instance_item):
+            '''Called when tap on a menu item.'''
+
+            # Set the color of the icon and text for the menu item.
+            for item in self.children:
+                if item.text_color == self.theme_cls.primary_color:
+                    item.text_color = self.theme_cls.text_color
+                    break
+            instance_item.text_color = self.theme_cls.primary_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/drawer-top.png
+    :align: center
+
+Create a menu list for ``ContentNavigationDrawer``:
+
+.. code-block:: python
+
+    def on_start(self):
+        icons_item = {
+            "folder": "My files",
+            "account-multiple": "Shared with me",
+            "star": "Starred",
+            "history": "Recent",
+            "checkbox-marked": "Shared with me",
+            "upload": "Upload",
+        }
+        for icon_name in icons_item.keys():
+            self.root.ids.content_drawer.ids.md_list.add_widget(
+                ItemDrawer(icon=icon_name, text=icons_item[icon_name])
+            )
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/drawer-work.gif
+    :align: center
+
+.. seealso::
+
+    `Full example of Components-Navigation-Drawer <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Navigation-Drawer>`_
 """
 
 from kivy.core.window import Window
@@ -203,9 +249,10 @@ class NavigationLayout(FloatLayout):
         self._scrim_rectangle.size = self.size
 
     def add_widget(self, widget, index=0, canvas=None):
-        """Only two layouts are allowed:
-        ScreenManager and MDNavigationDrawer.
-
+        """
+        Only two layouts are allowed:
+        :class:`~kivy.uix.screenmanager.ScreenManager` and
+        :class:`~MDNavigationDrawer`.
         """
 
         if not isinstance(
@@ -213,28 +260,44 @@ class NavigationLayout(FloatLayout):
         ):
             raise NavigationDrawerContentError(
                 "The NavigationLayout must contain "
-                "only MDNavigationDrawer and ScreenManager"
+                "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
             self.add_scrim(widget)
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
                 "The NavigationLayout must contain "
-                "only MDNavigationDrawer and ScreenManager"
+                "only `MDNavigationDrawer` and `ScreenManager`"
             )
         return super().add_widget(widget)
 
 
 class MDNavigationDrawer(MDCard):
     anchor = OptionProperty("left", options=("left", "right"))
-    """Anchoring screen edge for drawer. Set it to "right" for right-to-left
-    languages."""
+    """
+    Anchoring screen edge for drawer. Set it to `'right'` for right-to-left
+    languages. Available options are: `'left'`, `'right'`.
+
+    :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `left`.
+    """
 
     close_on_click = BooleanProperty(True)
-    """Close when click on scrim or keyboard escape."""
+    """
+    Close when click on scrim or keyboard escape.
+
+    :attr:`close_on_click` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
 
     state = OptionProperty("close", options=("close", "open"))
-    """Indicates if panel closed or opened. Sets after :attr:`status` change."""
+    """
+    Indicates if panel closed or opened. Sets after :attr:`status` change.
+    Available options are: `'close'`, `'open'`.
+    
+    :attr:`state` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'close'`.
+    """
 
     status = OptionProperty(
         "closed",
@@ -247,26 +310,53 @@ class MDNavigationDrawer(MDCard):
             "closing_with_animation",
         ),
     )
-    """Detailed state. Sets before :attr:`state`. Bind to :attr:`state` instead
-    of :attr:`status`."""
+    """
+    Detailed state. Sets before :attr:`state`. Bind to :attr:`state` instead
+    of :attr:`status`. Available options are: `'closed'`,
+    `'opening_with_swipe'`, `'opening_with_animation'`, `'opened'`,
+    `'closing_with_swipe'`, `'closing_with_animation'`.
+
+    :attr:`status` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'closed'`.
+    """
 
     open_progress = NumericProperty(0.0)
-    """Percent of visible part of side panel. The percent is specified as a
+    """
+    Percent of visible part of side panel. The percent is specified as a
     floating point number in the range 0-1. 0.0 if panel is closed and 1.0 if
-    panel is opened."""
+    panel is opened.
+
+    :attr:`open_progress` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
 
     swipe_distance = NumericProperty(10)
-    """The distance of the swipe with which the movement of navigation drawer
-    begins."""
+    """
+    The distance of the swipe with which the movement of navigation drawer
+    begins.
+
+    :attr:`swipe_distance` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `10`.
+    """
 
     swipe_edge_width = NumericProperty(20)
-    """The size of the area in px inside which should start swipe to drag
-    navigation drawer."""
+    """
+    The size of the area in px inside which should start swipe to drag
+    navigation drawer.
+
+    :attr:`swipe_edge_width` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `20`.
+    """
 
     scrim_color = ListProperty([0, 0, 0, 0.5])
-    """Color for scrim. Alpha channel will be multiplied with
+    """
+    Color for scrim. Alpha channel will be multiplied with
     :attr:`_scrim_alpha`. Set fourth channel to 0 if you want to disable
-    scrim."""
+    scrim.
+
+    :attr:`scrim_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0.5]`.
+    """
 
     def _get_scrim_alpha(self):
         _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
@@ -281,12 +371,19 @@ class MDNavigationDrawer(MDCard):
         None,
         bind=("_scrim_alpha_transition", "open_progress", "scrim_color"),
     )
-    """Multiplier for alpha channel of :attr:`scrim_color`. For internal
-    usage only."""
+    """
+    Multiplier for alpha channel of :attr:`scrim_color`. For internal
+    usage only.
+    """
 
     scrim_alpha_transition = StringProperty("linear")
-    """The name of the animation transition type to use for changing
-    :attr:`scrim_alpha`. Defaults to 'linear'."""
+    """
+    The name of the animation transition type to use for changing
+    :attr:`scrim_alpha`.
+
+    :attr:`scrim_alpha_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'linear'`.
+    """
 
     def _get_scrim_alpha_transition(self):
         return getattr(AnimationTransition, self.scrim_alpha_transition)
@@ -299,18 +396,37 @@ class MDNavigationDrawer(MDCard):
     )
 
     opening_transition = StringProperty("out_cubic")
-    """The name of the animation transition type to use when animating to
-    the :attr:`state` "open". Defaults to 'out_cubic'."""
+    """
+    The name of the animation transition type to use when animating to
+    the :attr:`state` `'open'`.
+
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
 
     opening_time = NumericProperty(0.2)
-    """The time taken for the panel to slide to the :attr:`state` "open"."""
+    """
+    The time taken for the panel to slide to the :attr:`state` `'open'`.
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
 
     closing_transition = StringProperty("out_sine")
     """The name of the animation transition type to use when animating to
-    the :attr:`state` "close". Defaults to 'out_sine'."""
+    the :attr:`state` 'close'.
+
+    :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_sine'`.
+    """
 
     closing_time = NumericProperty(0.2)
-    """The time taken for the panel to slide to the :attr:`state` "close"."""
+    """
+    The time taken for the panel to slide to the :attr:`state` `'close'`.
+
+    :attr:`closing_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -323,8 +439,9 @@ class MDNavigationDrawer(MDCard):
 
     def set_state(self, new_state="toggle", animation=True):
         """Change state of the side panel.
+        New_state can be one of `"toggle"`, `"open"` or `"close"`.
+        """
 
-        new_state can be one of "toggle", "open" or "close"."""
         if new_state == "toggle":
             new_state = "close" if self.state == "open" else "open"
 

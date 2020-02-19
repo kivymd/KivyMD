@@ -1,24 +1,33 @@
 <KitchenSinkCards>
-    name: 'cards'
-    app: app
-    on_enter: root.add_cards(grid_card)
+    name: "cards"
 
-    BoxLayout:
-        orientation: "vertical"
-        spacing: "10dp"
+    Toolbar:
+        title: "MDCard"
+        pos_hint: {"top": 1}
 
-        Toolbar:
-            id: toolbar
+    MDCard:
+        size_hint: None, None
+        size: "320", "180"
+        pos_hint: {"center_x": .5, "center_y": .7}
 
-        ScrollView:
-            id: scroll
-            size_hint: 1, 1
-            do_scroll_x: False
+    MDCard:
+        size_hint: None, None
+        size: "320", "180"
+        pos_hint: {"center_x": .5, "center_y": .3}
 
-            GridLayout:
-                id: grid_card
-                cols: 1
-                spacing: dp(5)
-                padding: dp(5)
+        BoxLayout:
+            orientation: "vertical"
+            padding: "8dp"
+
+            MDLabel:
+                text: "Title"
+                theme_text_color: "Secondary"
                 size_hint_y: None
-                height: self.minimum_height
+                height: "36dp"
+
+            MDSeparator:
+                height: "1dp"
+
+            MDLabel:
+                text: "Body"
+                theme_text_color: "Primary"

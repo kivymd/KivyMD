@@ -13,3 +13,5 @@ Unreleased
 * :class:`kivymd.uix.navigationdrawer.NavigationLayout` allowed to add :class:`kivymd.uix.toolbar.MDToolbar` class.
 * Added ability to control range of dates to be active in :class:`kivymd.uix.picker.MDDatePicker` class.
 * Updated :class:`kivymd.uix.navigationdrawer.MDNavigationDrawer` realization.
+* Removed :class:`kivymd.uix.card.MDCardPost` class.
+* Added :class:`kivymd.uix.card.MDCardSwipe` class.

@@ -142,12 +142,8 @@ class HoverBehavior(object):
     def on_enter(self):
         """Fired when mouse enter the bbox of the widget."""
 
-        pass
-
     def on_leave(self):
         """Fired when the mouse exit the widget."""
-
-        pass
 
 
 from kivy.factory import Factory

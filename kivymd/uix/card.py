@@ -220,7 +220,7 @@ Binding a swipe to one of the sides of the screen
 Swipe behavior
 --------------
 
-.. code-block::
+.. code-block:: kv
 
     <SwipeToDeleteItem>:
         # By default, the parameter is "hand"
@@ -229,7 +229,7 @@ Swipe behavior
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hand-mdcard-swipe.gif
     :align: center
 
-.. code-block::
+.. code-block:: kv
 
     <SwipeToDeleteItem>:
         type_swipe: "auto"
@@ -332,7 +332,7 @@ Add content to the bottom layer of the card
 To add content to the bottom layer of the card,
 use the :class:`~MDCardSwipeLayerBox` class.
 
-.. code-block: kv
+.. code-block:: kv
 
     <SwipeToDeleteItem>:
 
@@ -347,7 +347,7 @@ use the :class:`~MDCardSwipeLayerBox` class.
 End full code
 -------------
 
-.. code-block: python
+.. code-block:: python
 
     from kivy.lang import Builder
     from kivy.properties import StringProperty

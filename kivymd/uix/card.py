@@ -330,7 +330,7 @@ Add content to the bottom layer of the card
 -------------------------------------------
 
 To add content to the bottom layer of the card,
-use the :class:`~MDCardSwipeLayerBox` class:
+use the :class:`~MDCardSwipeLayerBox` class.
 
 .. code-block: kv
 

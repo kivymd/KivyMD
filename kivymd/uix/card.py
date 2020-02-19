@@ -6,140 +6,457 @@ Components/Card
 
     `Material Design spec, Cards <https://material.io/components/cards>`_
 
-Example
--------
+.. rubric:: Cards contain content and actions about a single subject.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/cards.gif
+    :align: center
+
+`KivyMD` provides the following card classes for use:
+
+- MDCard_
+- MDCardSwipe_
+
+.. Note:: :class:`~MDCard` inherited from
+    :class:`~kivy.uix.boxlayout.BoxLayout`. You can use all parameters and
+    attributes of the :class:`~kivy.uix.boxlayout.BoxLayout` class in the
+    :class:`~MDCard` class.
+
+.. MDCard:
+MDCard
+------
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
-    from kivy.factory import Factory
 
-    from kivymd.uix.card import MDCardPost
-    from kivymd.theming import ThemeManager
-    from kivymd.toast import toast
+    from kivymd.app import MDApp
 
+    KV = '''
+    Screen:
 
-    Builder.load_string('''
-    <ExampleCardPost@BoxLayout>
-        orientation: 'vertical'
-        spacing: dp(5)
-
-        MDToolbar:
-            id: toolbar
-            title: app.title
-            left_action_items: [['menu', lambda x: None]]
-            elevation: 10
-            md_bg_color: app.theme_cls.primary_color
+        MDCard:
+            size_hint: None, None
+            size: "280dp", "180dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
 
 
-        ScrollView:
-            id: scroll
-            size_hint: 1, 1
-            do_scroll_x: False
+    class TestCard(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
 
-            GridLayout:
-                id: grid_card
-                cols: 1
-                spacing: dp(5)
-                padding: dp(5)
+
+    TestCard().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card.png
+    :align: center
+
+Add content to card:
+--------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    Screen:
+
+        MDCard:
+            orientation: "vertical"
+            padding: "8dp"
+            size_hint: None, None
+            size: "280dp", "180dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDLabel:
+                text: "Title"
+                theme_text_color: "Secondary"
                 size_hint_y: None
-                height: self.minimum_height
-    ''')
+                height: self.texture_size[1]
+
+            MDSeparator:
+                height: "1dp"
+
+            MDLabel:
+                text: "Body"
+    '''
 
 
-    class Example(MDApp):
-        title = "Card Post"
-        cards_created = False
+    class TestCard(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    TestCard().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-content.png
+    :align: center
+
+.. MDCardSwipe:
+MDCardSwipe
+-----------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDCardSwipe.gif
+    :align: center
+
+To create a card with `swipe-to-delete` behavior, you must create a new class
+that inherits from the :class:`~MDCardSwipe` class:
+
+
+.. code-block:: kv
+
+    <SwipeToDeleteItem>:
+        size_hint_y: None
+        height: content.height
+
+        MDCardSwipeLayerBox:
+
+        MDCardSwipeFrontBox:
+
+            OneLineListItem:
+                id: content
+                text: root.text
+                _no_ripple_effect: True
+
+.. code-block:: python
+
+    class SwipeToDeleteItem(MDCardSwipe):
+        text = StringProperty()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/map-mdcard-swipr.png
+    :align: center
+
+End full code
+-------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
+
+    from kivymd.app import MDApp
+    from kivymd.uix.card import MDCardSwipe
+
+    KV = '''
+    <SwipeToDeleteItem>:
+        size_hint_y: None
+        height: content.height
+
+        MDCardSwipeLayerBox:
+            # Content under the card.
+
+        MDCardSwipeFrontBox:
+
+            # Content of card.
+            OneLineListItem:
+                id: content
+                text: root.text
+                _no_ripple_effect: True
+
+
+    Screen:
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: "10dp"
+
+            MDToolbar:
+                elevation: 10
+                title: "MDCardSwipe"
+
+            ScrollView:
+
+                MDList:
+                    id: md_list
+                    padding: 0
+    '''
+
+
+    class SwipeToDeleteItem(MDCardSwipe):
+        '''Card with `swipe-to-delete` behavior.'''
+
+        text = StringProperty()
+
+
+    class TestCard(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
 
         def build(self):
-            self.screen = Factory.ExampleCardPost()
             return self.screen
 
         def on_start(self):
-            def callback_for_menu_items(text_item):
-                toast(text_item)
+           '''Creates a list of cards.'''
 
-            def callback(instance, value):
-                if value and isinstance(value, int):
-                    toast('Set like in %d stars' % value)
-                elif value and isinstance(value, str):
-                    toast('Repost with %s ' % value)
-                elif value and isinstance(value, list):
-                    toast(value[1])
-                else:
-                    toast('Delete post %s' % str(instance))
-
-            instance_grid_card = self.screen.ids.grid_card
-            buttons = ['facebook', 'vk', 'twitter']
-            menu_items = [
-                {'viewclass': 'MDMenuItem',
-                 'text': 'Example item %d' % i,
-                 'callback': callback_for_menu_items}
-                for i in range(2)
-            ]
-
-            if not self.cards_created:
-                self.cards_created = True
-
-                instance_grid_card.add_widget(
-                    MDCardPost(text_post='Card with text',
-                               swipe=True, callback=callback))
-                instance_grid_card.add_widget(
-                    MDCardPost(
-                        right_menu=menu_items, swipe=True,
-                        text_post='Card with a button to open the menu MDDropDown',
-                        callback=callback))
-                instance_grid_card.add_widget(
-                    MDCardPost(
-                        likes_stars=True, callback=callback, swipe=True,
-                        text_post='Card with asterisks for voting.'))
-
-                instance_grid_card.add_widget(
-                    MDCardPost(
-                        source="./assets/kitten-1049129_1280.jpg",
-                        tile_text="Little Baby",
-                        tile_font_style="H5",
-                        text_post="This is my favorite cat. He's only six months "
-                                  "old. He loves milk and steals sausages :) "
-                                  "And he likes to play in the garden.",
-                        with_image=True, swipe=True, callback=callback,
-                        buttons=buttons))
+            for i in range(20):
+                self.screen.ids.md_list.add_widget(
+                    SwipeToDeleteItem(text=f"One-line item {i}")
+                )
 
 
-    Example().run()
+    TestCard().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-mdcard-swipe.gif
+    :align: center
+
+Binding a swipe to one of the sides of the screen
+-------------------------------------------------
+
+.. code-block:: kv
+
+    <SwipeToDeleteItem>:
+        # By default, the parameter is "left"
+        anchor: "right"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mdcard-swipe-anchor-right.gif
+    :align: center
+
+
+.. None:: You cannot use the left and right swipe at the same time.
+
+Swipe behavior
+--------------
+
+.. code-block::
+
+    <SwipeToDeleteItem>:
+        # By default, the parameter is "hand"
+        type_swipe: "hand"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hand-mdcard-swipe.gif
+    :align: center
+
+.. code-block::
+
+    <SwipeToDeleteItem>:
+        type_swipe: "auto"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/auto-mdcard-swipe.gif
+    :align: center
+
+Removing an item using the ``type_swipe = "auto"`` parameter
+------------------------------------------------------------
+
+The map provides the :attr:`MDCardSwipe.on_swipe_complete` event.
+You can use this event to remove items from a list:
+
+.. code-block:: kv
+
+    <SwipeToDeleteItem>:
+        on_swipe_complete: app.on_swipe_complete(root)
+
+.. code-block:: python
+
+    def on_swipe_complete(self, instance):
+        self.screen.ids.md_list.remove_widget(instance)
+
+End full code
+-------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
+
+    from kivymd.app import MDApp
+    from kivymd.uix.card import MDCardSwipe
+
+    KV = '''
+    <SwipeToDeleteItem>:
+        size_hint_y: None
+        height: content.height
+        type_swipe: "auto"
+        on_swipe_complete: app.on_swipe_complete(root)
+
+        MDCardSwipeLayerBox:
+
+        MDCardSwipeFrontBox:
+
+            OneLineListItem:
+                id: content
+                text: root.text
+                _no_ripple_effect: True
+
+
+    Screen:
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: "10dp"
+
+            MDToolbar:
+                elevation: 10
+                title: "MDCardSwipe"
+
+            ScrollView:
+
+                MDList:
+                    id: md_list
+                    padding: 0
+    '''
+
+
+    class SwipeToDeleteItem(MDCardSwipe):
+        text = StringProperty()
+
+
+    class TestCard(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+
+        def build(self):
+            return self.screen
+
+        def on_swipe_complete(self, instance):
+            self.screen.ids.md_list.remove_widget(instance)
+
+        def on_start(self):
+            for i in range(20):
+                self.screen.ids.md_list.add_widget(
+                    SwipeToDeleteItem(text=f"One-line item {i}")
+                )
+
+
+    TestCard().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/autodelete-mdcard-swipe.gif
+    :align: center
+
+Add content to the bottom layer of the card
+-------------------------------------------
+
+To add content to the bottom layer of the card,
+use the :class:`~MDCardSwipeLayerBox` class:
+
+.. code-block: kv
+
+    <SwipeToDeleteItem>:
+
+        MDCardSwipeLayerBox:
+            padding: "8dp"
+
+            MDIconButton:
+                icon: "trash-can"
+                pos_hint: {"center_y": .5}
+                on_release: app.remove_item(root)
+
+End full code
+-------------
+
+.. code-block: python
+
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
+
+    from kivymd.app import MDApp
+    from kivymd.uix.card import MDCardSwipe
+
+    KV = '''
+    <SwipeToDeleteItem>:
+        size_hint_y: None
+        height: content.height
+
+        MDCardSwipeLayerBox:
+            padding: "8dp"
+
+            MDIconButton:
+                icon: "trash-can"
+                pos_hint: {"center_y": .5}
+                on_release: app.remove_item(root)
+
+        MDCardSwipeFrontBox:
+
+            OneLineListItem:
+                id: content
+                text: root.text
+                _no_ripple_effect: True
+
+
+    Screen:
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: "10dp"
+
+            MDToolbar:
+                elevation: 10
+                title: "MDCardSwipe"
+
+            ScrollView:
+
+                MDList:
+                    id: md_list
+                    padding: 0
+    '''
+
+
+    class SwipeToDeleteItem(MDCardSwipe):
+        text = StringProperty()
+
+
+    class TestCard(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+
+        def build(self):
+            return self.screen
+
+        def remove_item(self, instance):
+            self.screen.ids.md_list.remove_widget(instance)
+
+        def on_start(self):
+            for i in range(20):
+                self.screen.ids.md_list.add_widget(
+                    SwipeToDeleteItem(text=f"One-line item {i}")
+                )
+
+
+    TestCard().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/handdelete-mdcard-swipe.gif
+    :align: center
 """
 
+__all__ = (
+    "MDCard",
+    "MDCardSwipe",
+    "MDCardSwipeFrontBox",
+    "MDCardSwipeLayerBox",
+    "MDSeparator",
+)
+
 from kivy.animation import Animation
-from kivy.clock import Clock
-from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import (
-    BoundedNumericProperty,
-    ReferenceListProperty,
     StringProperty,
     ListProperty,
-    BooleanProperty,
-    ObjectProperty,
     NumericProperty,
+    OptionProperty,
 )
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import Image
 from kivy.metrics import dp
-from kivy.core.window import Window
-from kivy.uix.widget import Widget
+from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.menu import MDDropdownMenu
-
-from kivymd.uix.behaviors import RectangularElevationBehavior
-from kivymd.uix.list import ILeftBody
+from kivymd.uix.behaviors import (
+    RectangularElevationBehavior,
+    BackgroundColorBehavior,
+)
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import images_path kivymd.images_path
+<MDCardSwipeLayerBox>:
+    canvas:
+        Color:
+            rgba: app.theme_cls.divider_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
 
 
 <MDCard>
@@ -151,149 +468,30 @@ Builder.load_string(
             pos: self.pos
             radius: [self.border_radius]
             source: root.background
-        Color:
-            rgba: self.theme_cls.divider_color
-            a: self.border_color_a
-        Line:
-            rounded_rectangle:
-                (self.pos[0], self.pos[1], self.size[0], self.size[1],\
-                self.border_radius)
     md_bg_color: self.theme_cls.bg_light
 
 
 <MDSeparator>
     canvas:
         Color:
-            rgba: self.theme_cls.divider_color if not root.color else root.color
+            rgba:
+                self.theme_cls.divider_color if not root.color else root.color
         Rectangle:
             size: self.size
             pos: self.pos
-
-
-<CardPostImage>
-    spacing: dp(10)
-    padding: dp(5)
-    orientation: 'vertical'
-    size_hint: None, None
-    size: root.card_size
-    card_size: Window.width - 10, dp(335)
-
-    SmartTileWithLabel:
-        source: root.source
-        text: ' %s' % root.tile_text
-        color: root.tile_text_color
-        size_hint_y: None
-        font_style: root.tile_font_style
-        height: dp(200)
-        on_release: root.callback(root, [self, self.source])
-
-    MDLabel:
-        text: root.text_post
-        size_hint_y: None
-        halign: 'justify'
-        valign: 'top'
-        height: dp(60)
-        text_size: self.width - 20, dp(60)
-
-    AnchorLayout:
-        anchor_x: 'right'
-        size_hint_y: None
-        height: dp(40)
-
-        BoxLayout:
-            id: box_buttons
-
-
-<MDCardPost>
-    spacing: dp(5)
-    padding: dp(5)
-    orientation: 'vertical'
-    size_hint: None, None
-    size: root.card_size
-    card_size: (Window.width - 10, dp(180))
-
-    FloatLayout:
-
-        BoxLayout:
-            id: root_box
-            spacing: dp(5)
-            pos_hint: {'top': 1}
-            orientation: 'vertical'
-            x: dp(10)
-
-            BoxLayout:
-                id: title_box
-                size_hint_y: None
-                height: dp(50)
-                spacing: dp(10)
-
-                LeftIcon:
-                    source: root.path_to_avatar
-                    size_hint_x: None
-                    width: self.height
-                    allow_stretch: True
-
-                MDLabel:
-                    markup: True
-                    text: root.name_data
-                    text_size: self.width, None
-                    theme_text_color: 'Primary'
-                    bold: True
-                    font_size: '12sp'
-
-            MDLabel:
-                id: text_post
-                text: root.text_post
-                markup: True
-                font_size: '14sp'
-                size_hint_y: None
-                valign: 'top'
-                height: self.texture_size[1]
-                text_size: self.width - dp(5), None
-                theme_text_color: 'Primary'
-
-            Widget:
-
-            MDSeparator:
-                id: sep
-                height: dp(1)
-
-        AnchorLayout:
-            id: box_delete_post_button
-            size_hint: None, None
-            size: dp(90), root.height - dp(15)
-            pos_hint: {'top': 1, 'right': 1}
-            anchor_x: 'center'
-            opacity: 0
-
-            canvas.before:
-                Color:
-                    rgba: app.theme_cls.primary_color
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-            canvas.after:
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-                    source: f'{images_path}swipe_shadow.png'
-
-            MDIconButton:
-                id: delet_post_button
-                size_hint: None, None
-                size: dp(56), dp(56)
-                icon: 'delete'
-                disabled: True
-                on_release: root.callback(root, None)
 """
 )
 
 
 class MDSeparator(ThemableBehavior, BoxLayout):
-    """A separator line"""
+    """A separator line."""
 
     color = ListProperty()
-    """Separator color."""
+    """Separator color in ``rgba`` format.
+
+    :attr:`color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -309,189 +507,227 @@ class MDSeparator(ThemableBehavior, BoxLayout):
             self.width = dp(1)
 
 
-class MDCard(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
-    r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    g = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
+class MDCard(
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    RectangularElevationBehavior,
+    BoxLayout,
+):
 
     border_radius = NumericProperty("3dp")
-    border_color_a = BoundedNumericProperty(0, min=0.0, max=1.0)
-    md_bg_color = ReferenceListProperty(r, g, b, a)
+    """Card border radius.
+
+    :attr:`border_radius` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `'3dp'`.
+    """
+
     background = StringProperty()
-    """Background image path."""
+    """Background image path.
+    
+    :attr:`background` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
 
-class LeftIcon(ILeftBody, Image):
+class MDCardSwipe(RelativeLayout):
+    """
+    :Events:
+        :attr:`on_swipe_complete`
+            Called when a swipe of card is completed.
+    """
+
+    open_progress = NumericProperty(0.0)
+    """
+    Percent of visible part of side panel. The percent is specified as a
+    floating point number in the range 0-1. 0.0 if panel is closed and 1.0 if
+    panel is opened.
+
+    :attr:`open_progress` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
+
+    opening_transition = StringProperty("out_cubic")
+    """
+    The name of the animation transition type to use when animating to
+    the :attr:`state` `'opened'`.
+
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
+
+    closing_transition = StringProperty("out_sine")
+    """
+    The name of the animation transition type to use when animating to
+    the :attr:`state` 'closed'.
+
+    :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_sine'`.
+    """
+
+    anchor = OptionProperty("left", options=("left", "right"))
+    """
+    Anchoring screen edge for card. Available options are: `'left'`, `'right'`.
+
+    :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `left`.
+    """
+
+    swipe_distance = NumericProperty(50)
+    """
+    The distance of the swipe with which the movement of navigation drawer
+    begins.
+
+    :attr:`swipe_distance` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `10`.
+    """
+
+    opening_time = NumericProperty(0.2)
+    """
+    The time taken for the card to slide to the :attr:`state` `'open'`.
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    state = OptionProperty("closed", options=("closed", "opened"))
+    """
+    Detailed state. Sets before :attr:`state`. Bind to :attr:`state` instead
+    of :attr:`status`. Available options are: `'closed'`,  `'opened'`.
+
+    :attr:`status` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'closed'`.
+    """
+
+    max_swipe_x = NumericProperty(0.3)
+    """
+    If, after the events of :attr:`~on_touch_up` card position exceeds this
+    value - will automatically execute the method :attr:`~open_card`,
+    and if not - will automatically be :attr:`~close_card` method.
+
+    :attr:`max_swipe_x` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.3`.
+    """
+
+    max_opened_x = NumericProperty("100dp")
+    """
+    The value of the position the card shifts to when :attr:`~type_swipe` 
+    s set to `'hand'`.
+
+    :attr:`max_opened_x` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `100dp`.
+    """
+
+    type_swipe = OptionProperty("hand", options=("auto", "hand"))
+    """
+    Type of card opening when swipe. Shift the card to the edge or to
+    a set position :attr:`~max_opened_x`. Available options are:
+    `'auto'`, `'hand'`.
+
+    :attr:`type_swipe` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `auto`.
+    """
+
+    _opens_process = False
+    _to_closed = True
+
+    def __init__(self, **kw):
+        self.register_event_type("on_swipe_complete")
+        super().__init__(**kw)
+
+    def _on_swipe_complete(self, *args):
+        self.dispatch("on_swipe_complete")
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(widget, (MDCardSwipeFrontBox, MDCardSwipeLayerBox)):
+            return super().add_widget(widget)
+
+    def on_swipe_complete(self, *args):
+        """Called when a swipe of card is completed."""
+
+    def on_anchor(self, instance, value):
+        if value == "right":
+            self.open_progress = 1.0
+        else:
+            self.open_progress = 0.0
+
+    def on_open_progress(self, instance, value):
+        if self.anchor == "left":
+            self.children[0].x = self.width * value
+        else:
+            self.children[0].x = self.width * value - self.width
+
+    def on_touch_move(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            expr = (
+                touch.x < self.swipe_distance
+                if self.anchor == "left"
+                else touch.x > self.width - self.swipe_distance
+            )
+            if expr and not self._opens_process:
+                self._opens_process = True
+                self._to_closed = False
+            if self._opens_process:
+                self.open_progress = max(
+                    min(self.open_progress + touch.dx / self.width, 2.5), 0
+                )
+        return super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            if not self._to_closed:
+                self._opens_process = False
+                self.complete_swipe()
+        return super().on_touch_up(touch)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            if self.state == "opened":
+                self._to_closed = True
+                self.close_card()
+        return super().on_touch_down(touch)
+
+    def complete_swipe(self):
+        expr = (
+            self.open_progress <= self.max_swipe_x
+            if self.anchor == "left"
+            else self.open_progress >= self.max_swipe_x
+        )
+        if expr:
+            self.close_card()
+        else:
+            self.open_card()
+
+    def open_card(self):
+        if self.type_swipe == "hand":
+            swipe_x = (
+                self.max_opened_x
+                if self.anchor == "left"
+                else -self.max_opened_x
+            )
+        else:
+            swipe_x = self.width if self.anchor == "left" else 0
+        anim = Animation(
+            x=swipe_x, t=self.opening_transition, d=self.opening_time
+        )
+        anim.bind(on_complete=self._on_swipe_complete)
+        anim.start(self.children[0])
+        self.state = "opened"
+
+    def close_card(self):
+        anim = Animation(x=0, t=self.closing_transition, d=self.opening_time)
+        anim.bind(on_complete=self._reset_open_progress)
+        anim.start(self.children[0])
+        self.state = "closed"
+
+    def _reset_open_progress(self, *args):
+        self.open_progress = 0.0 if self.anchor == "left" else 1.0
+        self._to_closed = False
+        self.dispatch("on_swipe_complete")
+
+
+class MDCardSwipeFrontBox(MDCard):
     pass
 
 
-class CardPostImage(BoxLayout):
-    source = StringProperty()
-    text_post = StringProperty()
-    tile_text = StringProperty("Title")
-    tile_font_style = StringProperty("H5")
-    tile_text_color = ListProperty([1, 1, 1, 1])
-    callback = ObjectProperty(lambda *x: None)
-    card_size = ListProperty((0, 0))
-
-
-class MDCardPost(BoxLayout):
-    name_data = StringProperty("Name Author\nDate and time")
-    text_post = StringProperty("Your text post...")
-    path_to_avatar = StringProperty("data/logo/kivy-icon-512.png")
-    card_size = ListProperty((0, 0))
-
-    source = StringProperty()
-    tile_text = StringProperty("Title")
-    tile_font_style = StringProperty("H5")
-    tile_text_color = ListProperty([1, 1, 1, 1])
-
-    buttons = ListProperty()
-    """A list of icons for buttons that will be used under the text of the post
-    when "with_image" is True
-    """
-
-    right_menu = ListProperty()
-    """If the list is not empty a button will be added to display the menu list
-    """
-
-    likes_stars = BooleanProperty(False)
-    """If True, stars will be added to the card for evaluation"""
-
-    callback = ObjectProperty(lambda *x: None)
-    """User function"""
-
-    swipe = BooleanProperty(False)
-    """Whether to apply to the card the function of a swap"""
-
-    with_image = BooleanProperty(False)
-    """If True, we use a post with an image"""
-
-    _list_instance_likes_stars = ListProperty()
-    _card_shifted = False
-    _shift_x = 10
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.card_shifted = None
-
-        # ---------------------------------------------------------------------
-        if self.with_image:
-            self.ids.root_box.clear_widgets()
-            self._shift_x = dp(5)
-            self.ids.root_box.x = self._shift_x
-            self.card_size[1] = dp(335)
-            card_post = CardPostImage(
-                source=self.source,
-                text_post=self.text_post,
-                tile_text=self.tile_text,
-                tile_font_style=self.tile_font_style,
-                tile_text_color=self.tile_text_color,
-                callback=self.callback,
-            )
-            for name_icon in self.buttons:
-                card_post.ids.box_buttons.add_widget(
-                    MDIconButton(
-                        icon=name_icon,
-                        on_release=lambda x, y=name_icon: self.callback(x, y),
-                    )
-                )
-            self.ids.root_box.add_widget(card_post)
-        # ---------------------------------------------------------------------
-        if len(self.right_menu) and not self.with_image:
-            self.ids.title_box.add_widget(
-                MDIconButton(icon="dots-vertical", on_release=self.open_menu)
-            )
-        # ---------------------------------------------------------------------
-        if self.likes_stars:
-            box_likes_stars_right = AnchorLayout(
-                anchor_x="right", size_hint_y=None, height=dp(30)
-            )
-            self.box_likes_stars = BoxLayout(spacing=(dp(5)))
-            self.box_likes_stars.add_widget(Widget())
-            for i in range(5):  # adding stars
-                like_star = MDIconButton(
-                    icon="star-outline",
-                    size_hint=(None, None),
-                    size=(dp(30), dp(30)),
-                    id=str(i),
-                    on_release=lambda x, y=i: self._update_likes_stars(y),
-                )
-                self.box_likes_stars.add_widget(like_star)
-                self._list_instance_likes_stars.append(like_star)
-            box_likes_stars_right.add_widget(self.box_likes_stars)
-            self.ids.root_box.remove_widget(self.ids.sep)
-            self.add_widget(box_likes_stars_right)
-
-    def open_menu(self, instance):
-        MDDropdownMenu(items=self.right_menu, width_mult=3).open(instance)
-
-    def _update_likes_stars(self, index_star):
-        i = 0
-        for instance_like_star in self._list_instance_likes_stars:
-            if int(instance_like_star.id) <= index_star:
-                if instance_like_star.icon == "star-outline":
-                    instance_like_star.icon = "star"
-                    i = 1
-                else:
-                    if int(instance_like_star.id) == index_star:
-                        instance_like_star.icon = "star-outline"
-            elif int(instance_like_star.id) >= index_star:
-                if instance_like_star.icon == "star":
-                    instance_like_star.icon = "star-outline"
-        self.callback(self, index_star + i)
-
-    def on_touch_move(self, touch):
-        if (
-            self.collide_point(*touch.pos)
-            and self.swipe
-            and not self._card_shifted
-        ):
-            if touch.x < Window.width - 10:
-                # When the Navigation panel is open and
-                # the list of its menu is scrolled,
-                # the event is also processed on the cards
-                for widget in Window.children:
-                    if widget.__class__ is Factory.NavigationLayout:
-                        if widget.state == "open":
-                            return
-                self.shift_post_left()
-        return super().on_touch_move(touch)
-
-    def on_touch_down(self, touch):
-        if self.swipe and self.card_shifted:
-            Clock.schedule_once(self.shift_post_right, 0.1)
-        return super().on_touch_down(touch)
-
-    def shift_post_left(self):
-        def on_anim_complete(*args):
-            self._card_shifted = True
-            self.card_shifted = self
-            self.ids.delet_post_button.disabled = False
-
-        Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(self.ids.root_box)
-        if self.likes_stars:
-            Animation(x=-dp(90), d=0.1, t="in_out_cubic").start(
-                self.children[0]
-            )
-        anim = Animation(opacity=1, d=0.5, t="in_out_cubic")
-        anim.bind(on_complete=on_anim_complete)
-        anim.start(self.ids.box_delete_post_button)
-
-    def shift_post_right(self, interval=0.1):
-        def on_anim_complete(*args):
-            self._card_shifted = False
-            self.card_shifted = None
-            self.ids.delet_post_button.disabled = True
-
-        Animation(x=self._shift_x, d=0.1, t="in_out_cubic").start(
-            self.ids.root_box
-        )
-        if self.likes_stars:
-            Animation(x=self._shift_x, d=0.3, t="in_out_cubic").start(
-                self.children[0]
-            )
-        anim = Animation(opacity=0, d=0.05, t="in_out_cubic")
-        anim.bind(on_complete=on_anim_complete)
-        anim.start(self.ids.box_delete_post_button)
+class MDCardSwipeLayerBox(BoxLayout):
+    pass

@@ -412,7 +412,7 @@ To demonstrate the shades of the palette, you can run the following code:
                 self.screen.ids.android_tabs.add_widget(tab)
             return self.screen
 
-        def on_tab_switch(self, instance_tabs, instance_tabs_label, tab_text):
+        def on_tab_switch(self, instance_tabs, instance_tab, instance_tabs_label, tab_text):
             self.screen.ids.box.clear_widgets()
             for value_color in colors[tab_text]:
                 self.screen.ids.box.add_widget(
@@ -424,6 +424,7 @@ To demonstrate the shades of the palette, you can run the following code:
 
         def on_start(self):
             self.on_tab_switch(
+                None,
                 None,
                 None,
                 self.screen.ids.android_tabs.ids.layout.children[-1].text,

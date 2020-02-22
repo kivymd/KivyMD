@@ -281,7 +281,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     Selected color in ``rgba`` format.
 
     :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to '[]'.
+    and defaults to `[]`.
     """
 
     unselected_color = ListProperty()
@@ -289,7 +289,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     Unelected color in ``rgba`` format.
 
     :attr:`unselected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to '[]'.
+    and defaults to `[]`.
     """
 
     disabled_color = ListProperty()
@@ -297,7 +297,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     Disabled color in ``rgba`` format.
 
     :attr:`disabled_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to '[]'.
+    and defaults to `[]`.
     """
 
     _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])

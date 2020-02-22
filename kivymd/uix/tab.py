@@ -101,7 +101,13 @@ Example with tab icon
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
         ):
-            '''Called when switching tabs.'''
+            '''Called when switching tabs.
+
+            :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+            :param instance_tab: <__main__.Tab object>;
+            :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+            :param tab_text: text or name icon of tab;
+            '''
 
             count_icon = [k for k, v in md_icons.items() if v == tab_text]
             instance_tab.ids.icon.icon = count_icon[0]
@@ -165,7 +171,13 @@ Example with tab text
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
         ):
-            '''Called when switching tabs.'''
+            '''Called when switching tabs.
+
+            :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+            :param instance_tab: <__main__.Tab object>;
+            :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+            :param tab_text: text or name icon of tab;
+            '''
 
             instance_tab.ids.label.text = tab_text
 

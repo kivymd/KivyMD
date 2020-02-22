@@ -175,7 +175,7 @@ from kivy.properties import (
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import Screen, ScreenManagerException
 
 from kivymd.uix.behaviors.backgroundcolorbehavior import (
     BackgroundColorBehavior,
@@ -495,6 +495,23 @@ class MDBottomNavigation(TabbedPanelBase):
 
         Window.bind(on_resize=self.on_resize)
         Clock.schedule_once(lambda x: self.on_resize(), 2)
+
+    def switch_tab(self, name_tab):
+        """Toggles tab by name in parameter ``name_tab``."""
+
+        if not self.ids.tab_manager.has_screen(name_tab):
+            raise ScreenManagerException(f"No Screen with name '{name_tab}'.")
+        self.ids.tab_manager.get_screen("Tab 1").dispatch("on_tab_press")
+        count_index_screen = [
+            self.ids.tab_manager.screens.index(screen)
+            for screen in self.ids.tab_manager.screens
+            if screen.name == name_tab
+        ][0]
+        numbers_screens = list(range(len(self.ids.tab_manager.screens)))
+        numbers_screens.reverse()
+        self.ids.tab_bar.children[
+            numbers_screens.index(count_index_screen)
+        ].dispatch("on_press")
 
     def _refresh_tabs(self):
         """Refresh all tabs."""

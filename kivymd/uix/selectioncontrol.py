@@ -5,7 +5,155 @@ Components/Selection Controls
 .. seealso::
 
     `Material Design spec, Selection controls <https://material.io/components/selection-controls>`_
+
+.. rubric:: Selection controls allow the user to select options.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/selection-controll.png
+    :align: center
+
+`KivyMD` provides the following selection controls classes for use:
+
+- MDCheckbox_
+- MDSwitch_
+
+.. MDCheckbox:
+MDCheckbox
+----------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+
+    KV = '''
+    FloatLayout:
+
+        MDCheckbox:
+            size_hint: None, None
+            size: "48dp", "48dp"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox.gif
+    :align: center
+
+.. Note:: Be sure to specify the size of the checkbox. By default, it is
+    ``(dp(48), dp(48))``, but the ripple effect takes up all the available
+    space.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-no-size.gif
+    :align: center
+
+Control state
+-------------
+
+.. code-block:: kv
+
+    MDCheckbox:
+        on_active: app.on_checkbox_active(*args)
+
+.. code-block:: python
+
+    def on_checkbox_active(self, checkbox, value):
+        if value:
+            print('The checkbox', checkbox, 'is active', 'and', checkbox.state, 'state')
+        else:
+            print('The checkbox', checkbox, 'is inactive', 'and', checkbox.state, 'state')
+
+MDCheckbox with group
+---------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    <Check@MDCheckbox>:
+        group: 'group'
+        size_hint: None, None
+        size: dp(48), dp(48)
+
+
+    FloatLayout:
+
+        Check:
+            active: True
+            pos_hint: {'center_x': .4, 'center_y': .5}
+
+        Check:
+            pos_hint: {'center_x': .6, 'center_y': .5}
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-group.gif
+    :align: center
+
+.. MDSwitch:
+MDSwitch
+--------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    FloatLayout:
+
+        MDSwitch:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch.gif
+    :align: center
+
+.. Note:: For :class:`~MDCheckbox` size is not required. By default it is
+    ``(dp(36), dp(48))``, but you can increase the width if you want.
+
+.. code-block:: kv
+
+    MDSwitch:
+        width: dp(64)
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch_width.png
+    :align: center
+
+.. Note:: Control state of :class:`~MDSwitch` same way as in
+    :class:`~MDCheckbox`.
 """
+
+__all__ = (
+    "MDCheckbox",
+    "MDSwitch",
+)
 
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ListProperty, NumericProperty
@@ -62,20 +210,10 @@ Builder.load_string(
                 self._track_color_disabled if self.disabled else\
                 (self._track_color_active if self.active\
                 else self._track_color_normal)
-        #Ellipse:
-        #    size: dp(8), dp(16)
-        #    pos: self.x, self.center_y - dp(8)
-        #    angle_start: 180
-        #    angle_end: 360
         RoundedRectangle:
             size: self.width - dp(8), dp(16)
             pos: self.x + dp(8), self.center_y - dp(8)
             radius: [dp(7)]
-        #Ellipse:
-        #    size: dp(8), dp(16)
-        #    pos: self.right - dp(4), self.center_y - dp(8)
-        #    angle_start: 0
-        #    angle_end: 180
 
     on_release: thumb.trigger_action()
 
@@ -87,7 +225,7 @@ Builder.load_string(
         color:
             root.thumb_color_disabled if root.disabled else\
             (root.thumb_color_down if root.active else root.thumb_color)
-        elevation:    4 if root.active else 2
+        elevation: 4 if root.active else 2
         on_release: setattr(root, 'active', not root.active)
 """
 )
@@ -95,15 +233,73 @@ Builder.load_string(
 
 class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     active = BooleanProperty(False)
+    """
+    Indicates if the checkbox is active or inactive.
+
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
 
     checkbox_icon_normal = StringProperty("checkbox-blank-outline")
+    """
+    Background icon of the checkbox used for the default graphical
+    representation when the checkbox is not pressed.
+    
+    :attr:`checkbox_icon_normal` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-outline'`.
+    """
+
     checkbox_icon_down = StringProperty("checkbox-marked-outline")
+    """
+    Background icon of the checkbox used for the default graphical
+    representation when the checkbox is pressed.
+
+    :attr:`checkbox_icon_down` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-marked-outline'`.
+    """
+
     radio_icon_normal = StringProperty("checkbox-blank-circle-outline")
+    """
+    Background icon (when using the ``group`` option) of the checkbox used for
+    the default graphical representation when the checkbox is not pressed.
+
+    :attr:`radio_icon_normal` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-circle-outline'`.
+    """
+
     radio_icon_down = StringProperty("checkbox-marked-circle-outline")
+    """
+    Background icon (when using the ``group`` option) of the checkbox used for
+    the default graphical representation when the checkbox is pressed.
+
+    :attr:`radio_icon_down` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-marked-circle-outline'`.
+    """
 
     selected_color = ListProperty()
+    """
+    Selected color in ``rgba`` format.
+
+    :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to '[]'.
+    """
+
     unselected_color = ListProperty()
+    """
+    Unelected color in ``rgba`` format.
+
+    :attr:`unselected_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to '[]'.
+    """
+
     disabled_color = ListProperty()
+    """
+    Disabled color in ``rgba`` format.
+
+    :attr:`disabled_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to '[]'.
+    """
+
     _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):
@@ -174,6 +370,12 @@ class Thumb(
     CircularElevationBehavior, CircularRippleBehavior, ButtonBehavior, Widget
 ):
     ripple_scale = NumericProperty(2)
+    """
+    See :attr:`~kivymd.uix.behaviors.ripplebehavior.CommonRipple.ripple_scale`.
+
+    :attr:`ripple_scale` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `2`.
+    """
 
     def _set_ellipse(self, instance, value):
         self.ellipse.size = (self._ripple_rad, self._ripple_rad)
@@ -191,6 +393,12 @@ class Thumb(
 
 class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     active = BooleanProperty(False)
+    """
+    Indicates if the switch is active or inactive.
+
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
 
     _thumb_color = ListProperty(get_color_from_hex(colors["Gray"]["50"]))
 
@@ -208,6 +416,12 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     thumb_color = AliasProperty(
         _get_thumb_color, _set_thumb_color, bind=["_thumb_color"]
     )
+    """
+    Get thumb color ``rgba`` format.
+
+    :attr:`thumb_color` is an :class:`~kivy.properties.AliasProperty`
+    and property is readonly.
+    """
 
     _thumb_color_down = ListProperty([1, 1, 1, 1])
 
@@ -226,15 +440,17 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         elif len(color) == 4:
             self._thumb_color_down = color
 
-    thumb_color_down = AliasProperty(
-        _get_thumb_color_down, _set_thumb_color_down, bind=["_thumb_color_down"]
-    )
-
     _thumb_color_disabled = ListProperty(
         get_color_from_hex(colors["Gray"]["400"])
     )
 
     thumb_color_disabled = get_color_from_hex(colors["Gray"]["800"])
+    """
+    Get thumb color disabled ``rgba`` format.
+
+    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.AliasProperty`
+    and property is readonly.
+    """
 
     def _get_thumb_color_disabled(self):
         return self._thumb_color_disabled
@@ -254,6 +470,12 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         _set_thumb_color_disabled,
         bind=["_thumb_color_disabled"],
     )
+    """
+    Get thumb color down ``rgba`` format.
+
+    :attr:`thumb_color_down` is an :class:`~kivy.properties.AliasProperty`
+    and property is readonly.
+    """
 
     _track_color_active = ListProperty()
     _track_color_normal = ListProperty()
@@ -269,6 +491,8 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         )
         self.bind(active=self._update_thumb_pos)
         self._set_colors()
+        self.size_hint = (None, None)
+        self.size = (dp(36), dp(48))
 
     def _set_colors(self, *args):
         self._track_color_normal = self.theme_cls.disabled_hint_text_color

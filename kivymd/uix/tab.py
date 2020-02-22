@@ -5,7 +5,174 @@ Components/Tabs
 .. seealso::
 
     `Material Design spec, Tabs <https://material.io/components/tabs>`_
+
+.. rubric:: Tabs organize content across different screens, data sets,
+    and other interactions.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs.png
+    :align: center
+
+.. None:: Module provides tabs in the form of icons or text.
+
+Usage
+-----
+
+.. code-block:: python
+
+    class Tab(FloatLayout, MDTabsBase):
+        '''Class implementing content for a tab.'''
+
+.. code-block:: kv
+
+    <Tab>:
+
+        MDLabel:
+            text: "Content"
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+
+    Root:
+
+        MDTabs:
+
+            Tab:
+                text: "Tab 1"
+
+            Tab:
+                text: "Tab 1"
+
+            ...
+
+Example with tab icon
+--------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+
+    from kivymd.app import MDApp
+    from kivymd.uix.tab import MDTabsBase
+    from kivymd.icon_definitions import md_icons
+
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Example Tabs"
+
+        MDTabs:
+            id: android_tabs
+            on_tab_switch: app.on_tab_switch(*args)
+
+
+    <Tab>:
+
+        MDIconButton:
+            id: icon
+            icon: app.icons[0]
+            user_font_size: "48sp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class Tab(FloatLayout, MDTabsBase):
+        '''Class implementing content for a tab.'''
+
+
+    class Example(MDApp):
+        icons = list(md_icons.keys())[15:30]
+
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for name_tab in self.icons:
+                self.root.ids.android_tabs.add_widget(Tab(text=name_tab))
+
+        def on_tab_switch(
+            self, instance_tabs, instance_tab, instance_tab_label, tab_text
+        ):
+            '''Called when switching tabs.'''
+
+            count_icon = [k for k, v in md_icons.items() if v == tab_text]
+            instance_tab.ids.icon.icon = count_icon[0]
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example.gif
+    :align: center
+
+Example with tab text
+---------------------
+
+.. Note:: The :class:`~MDTabsBase` class has an icon parameter and, by default,
+    tries to find the name of the icon in the file
+    ``kivymd/icon_definitions.py``. If the name of the icon is not found,
+    then the name of the tab will be plain text, if found, the tab will look
+    like the corresponding icon.
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+
+    from kivymd.app import MDApp
+    from kivymd.uix.tab import MDTabsBase
+
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Example Tabs"
+
+        MDTabs:
+            id: android_tabs
+            on_tab_switch: app.on_tab_switch(*args)
+
+
+    <Tab>:
+
+        MDLabel:
+            id: label
+            text: "Tab 0"
+            halign: "center"
+    '''
+
+
+    class Tab(FloatLayout, MDTabsBase):
+        '''Class implementing content for a tab.'''
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for i in range(20):
+                self.root.ids.android_tabs.add_widget(Tab(text=f"Tab {i}"))
+
+        def on_tab_switch(
+            self, instance_tabs, instance_tab, instance_tab_label, tab_text
+        ):
+            '''Called when switching tabs.'''
+
+            instance_tab.ids.label.text = tab_text
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
+    :align: center
 """
+
+__all__ = (
+    "MDTabs",
+    "MDTabsBase",
+)
 
 from kivy.lang import Builder
 from kivy.clock import Clock
@@ -29,18 +196,114 @@ from kivy.properties import (
 )
 
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd import fonts_path
 
+Builder.load_string(
+    """
+#:import DampedScrollEffect kivy.effects.dampedscroll.DampedScrollEffect
+
+
+<MDTabsLabel>
+    size_hint: None, 1
+    halign: 'center'
+    padding: '12dp', 0
+    group: 'tabs'
+    allow_no_selection: False
+    text_color_normal:
+        (\
+        (0, 0, 0, .5) \
+        if app.theme_cls.theme_style == 'Dark' and not self.text_color_normal \
+        else (1, 1, 1, .6) \
+        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        else self.text_color_normal \
+        )
+    text_color_active:
+        (\
+        (0, 0, 0, .75) \
+        if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
+        else (1, 1, 1, 1) \
+        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        else self.text_color_active
+        )
+    color:
+        self.text_color_active if self.state == 'down' \
+        else self.text_color_normal
+    on_x: self._trigger_update_tab_indicator()
+    on_width: self._trigger_update_tab_indicator()
+
+
+<MDTabsScrollView>
+    size_hint: 1, 1
+    do_scroll_y: False
+    bar_color: 0, 0, 0, 0
+    bar_inactive_color: 0, 0, 0, 0
+    bar_width: 0
+    effect_cls: DampedScrollEffect
+
+
+<MDTabs>
+    carousel: carousel
+    tab_bar: tab_bar
+    anchor_y: 'top'
+
+    MDTabsMain:
+        padding: 0, tab_bar.height, 0, 0
+
+        MDTabsCarousel:
+            id: carousel
+            anim_move_duration: root.anim_duration
+            on_index: root.on_carousel_index(*args)
+            on__offset: tab_bar.android_animation(*args)
+            on_slides: self.index = root.default_tab
+            on_slides: root.on_carousel_index(self, 0)
+
+    MDTabsBar:
+        id: tab_bar
+        carousel: carousel
+        scrollview: scrollview
+        layout: layout
+        size_hint: 1, None
+        elevation: root.elevation
+        height: root.tab_bar_height
+
+        canvas:
+            Color:
+                rgba:
+                    self.theme_cls.primary_color if not root.background_color \
+                    else root.background_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDTabsScrollView:
+            id: scrollview
+            on_width: tab_bar._trigger_update_tab_bar()
+
+            GridLayout:
+                id: layout
+                rows: 1
+                size_hint: None, 1
+                width: self.minimum_width
+                on_width: tab_bar._trigger_update_tab_bar()
+
+                canvas.after:
+                    Color:
+                        rgba: root.theme_cls.accent_color
+                    Rectangle:
+                        pos: self.pos
+                        size: 0, root.tab_indicator_height
+"""
+)
+
 
 class MDTabsException(Exception):
-    """The MDTabsException class."""
-
     pass
 
 
 class MDTabsLabel(ToggleButtonBehavior, Label):
-    """MDTabsLabel it represent the label of each tab."""
+    """This class it represent the label of each tab."""
 
     text_color_normal = ListProperty()
     text_color_active = ListProperty()
@@ -52,7 +315,7 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
         self.min_space = 0
 
     def on_release(self):
-        self.tab_bar.parent.dispatch("on_tab_switch", self, self.text)
+        self.tab_bar.parent.dispatch("on_tab_switch", self.tab, self, self.text)
         # if the label is selected load the relative tab from carousel
         if self.state == "down":
             self.tab_bar.parent.carousel.load_slide(self.tab)
@@ -72,19 +335,26 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
 
 class MDTabsBase(Widget):
     """
-    MDTabsBase allow you to create a tab.
+    This class allow you to create a tab.
     You must create a new class that inherits from MDTabsBase.
     In this way you have total control over the views of your tabbed panel.
     """
 
     text = StringProperty()
-    """It will be the label text of the tab."""
-
-    icon = StringProperty()
-    """It will be the icon of the tab."""
+    """
+    It will be the label text of the tab.
+    
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
     tab_label = ObjectProperty()
-    """It is the label object reference of the tab."""
+    """
+    It is the label object reference of the tab.
+
+    :attr:`tab_label` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
 
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
@@ -105,22 +375,17 @@ class MDTabsBase(Widget):
 
 class MDTabsMain(BoxLayout):
     """
-    MDTabsMain is just a boxlayout that contain
-    the carousel. It allows you to have control over the carousel.
-
+    This class is just a boxlayout that contain the carousel.
+    It allows you to have control over the carousel.
     """
-
-    pass
 
 
 class MDTabsCarousel(Carousel):
-    """MDTabsCarousel class."""
-
     pass
 
 
 class MDTabsScrollView(ScrollView):
-    """MDTabsScrollView hacked version to fix scroll_x manual setting."""
+    """This class hacked version to fix scroll_x manual setting."""
 
     def goto(self, scroll_x, scroll_y):
         """Update event value along with scroll_*."""
@@ -138,18 +403,20 @@ class MDTabsScrollView(ScrollView):
             _update(self.effect_y, scroll_y)
 
 
-class MDTabsBar(ThemableBehavior, BoxLayout):
+class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
     """
-    MDTabsBar is just a boxlayout that contain
-    the scrollview for the tabs.
-    It is also responsible to resize the tab label when it needed.
+    This class is just a boxlayout that contains the scroll view for tabs.
+    He is also responsible for resizing the tab shortcut when necessary.
     """
 
     target = ObjectProperty(None, allownone=True)
     """
     Is the carousel reference of the next tab / slide.
-    When you go from "Tab A" to "Tab B", "Tab B" will be the
+    When you go from `'Tab A'` to `'Tab B'`, `'Tab B'` will be the
     target tab / slide of the carousel.
+
+    :attr:`target` is an :class:`~kivy.properties.ObjectProperty`
+    and default to `None`.
     """
 
     def get_rect_instruction(self):
@@ -158,7 +425,11 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
                 return i
 
     indicator = AliasProperty(get_rect_instruction, cache=True)
-    """Is the Rectangle instruction reference of the tab indicator."""
+    """
+    Is the Rectangle instruction reference of the tab indicator.
+
+    :attr:`indicator` is an :class:`~kivy.properties.AliasProperty`.
+    """
 
     def get_last_scroll_x(self):
         return self.scrollview.scroll_x
@@ -166,9 +437,13 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
     last_scroll_x = AliasProperty(
         get_last_scroll_x, bind=("target",), cache=True
     )
-    """Is the carousel reference of the next tab/slide.
-    When you go from "Tab A" to "Tab B", "Tab B" will be the
-    target tab/slide of the carousel."""
+    """
+    Is the carousel reference of the next tab/slide.
+    When you go from `'Tab A'` to `'Tab B'`, `'Tab B'` will be the
+    target tab/slide of the carousel.
+
+    :attr:`last_scroll_x` is an :class:`~kivy.properties.AliasProperty`.
+    """
 
     def __init__(self, **kwargs):
         self._trigger_update_tab_bar = Clock.schedule_once(
@@ -295,8 +570,8 @@ class MDTabsBar(ThemableBehavior, BoxLayout):
 
 
 class MDTabs(ThemableBehavior, AnchorLayout):
-    """The MDTabs class.
-    You can use it to create your own custom tabbed panel.
+    """
+    You can use this class to create your own tabbed panel..
 
     :Events:
         `on_tab_switch`
@@ -304,47 +579,105 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     """
 
     default_tab = NumericProperty(0)
-    """Index of the default tab. Default to 0."""
+    """
+    Index of the default tab.
+
+    :attr:`default_tab` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
 
     tab_bar_height = NumericProperty("48dp")
-    """Height of the tab bar."""
+    """
+    Height of the tab bar.
 
-    tab_indicator_anim = BooleanProperty(True)
-    """Tab indicator animation. Defaults to True.
-    If you do not want animation set it to False.
+    :attr:`tab_bar_height` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'48dp'`.
+    """
+
+    tab_indicator_anim = BooleanProperty(False)
+    """
+    Tab indicator animation. If you want use animation set it to ``True``.
+
+    :attr:`tab_indicator_anim` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     tab_indicator_height = NumericProperty("2dp")
-    """Height of the tab indicator."""
+    """
+    Height of the tab indicator.
+
+    :attr:`tab_indicator_height` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'2dp'`.
+    """
 
     anim_duration = NumericProperty(0.2)
-    """Duration of the slide animation. Default to 0.2."""
+    """
+    Duration of the slide animation.
+
+    :attr:`anim_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
 
     anim_threshold = BoundedNumericProperty(
         0.8, min=0.0, max=1.0, errorhandler=lambda x: 0.0 if x < 0.0 else 1.0
     )
-    """Animation threshold allow you to change
-    the tab indicator animation effect. Default to 0.8.
+    """
+    Animation threshold allow you to change the tab indicator animation effect.
+
+    :attr:`anim_threshold` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0.8`.
     """
 
     allow_stretch = BooleanProperty(True)
-    """If False - tabs will not stretch to full screen."""
+    """
+    If False - tabs will not stretch to full screen.
+
+    :attr:`allow_stretch` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
 
     background_color = ListProperty()
-    """Background color of `MDTabs`."""
+    """
+    Background color of tabs in ``rgba`` format.
+
+    :attr:`background_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
     text_color_normal = ListProperty()
-    """Text color of the label when it is not selected."""
+    """
+    Text color of the label when it is not selected.
+
+    :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
     text_color_active = ListProperty()
-    """Text color of the label when it is selected."""
+    """
+    Text color of the label when it is selected.
+
+    :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    elevation = NumericProperty(0)
+    """
+    Tab value elevation.
+
+    .. seealso::
+
+        `Behaviors/Elevation <https://kivymd.readthedocs.io/en/latest/behaviors/elevation/index.html>`_
+
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_tab_switch")
 
-    def on_tab_switch(self, instance, value):
-        pass
+    def on_tab_switch(self, *args):
+        """Called when switching tabs."""
 
     def on_carousel_index(self, carousel, index):
         # when the index of the carousel change, update
@@ -359,10 +692,6 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
-            # FIXME: the condition always works!
-            # if not issubclass(widget.__class__, MDTabsBase):
-            #    print(widget, widget.__class__)
-            #    raise MDTabsException("MDTabs accept only subclass of MDTabsBase")
             try:
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal
@@ -383,191 +712,3 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         if widget.parent.parent == self.carousel:
             self.tab_bar.layout.remove_widget(widget.tab_label)
             self.carousel.remove_widget(widget)
-
-
-Builder.load_string(
-    """
-#:import DampedScrollEffect kivy.effects.dampedscroll.DampedScrollEffect
-
-
-<MDTabsLabel>
-    size_hint: None, 1
-    halign: 'center'
-    padding: '12dp', 0
-    group: 'tabs'
-    allow_no_selection: False
-    text_color_normal:
-        (\
-        (0, 0, 0, .5) \
-        if app.theme_cls.theme_style == 'Dark' and not self.text_color_normal \
-        else (1, 1, 1, .6) \
-        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
-        else self.text_color_normal \
-        )
-    text_color_active:
-        (\
-        (0, 0, 0, .75) \
-        if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
-        else (1, 1, 1, 1) \
-        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
-        else self.text_color_active
-        )
-    color:
-        self.text_color_active if self.state == 'down' \
-        else self.text_color_normal
-    on_x: self._trigger_update_tab_indicator()
-    on_width: self._trigger_update_tab_indicator()
-
-
-<MDTabsScrollView>
-    size_hint: 1, 1
-    do_scroll_y: False
-    bar_color: 0, 0, 0, 0
-    bar_inactive_color: 0, 0, 0, 0
-    bar_width: 0
-    effect_cls: DampedScrollEffect
-
-
-<MDTabs>
-    carousel: carousel
-    tab_bar: tab_bar
-    anchor_y: 'top'
-
-    MDTabsMain:
-        padding: 0, tab_bar.height, 0, 0
-
-        MDTabsCarousel:
-            id: carousel
-            anim_move_duration: root.anim_duration
-            on_index: root.on_carousel_index(*args)
-            on__offset: tab_bar.android_animation(*args)
-            on_slides: self.index = root.default_tab
-            on_slides: root.on_carousel_index(self, 0)
-
-    MDTabsBar:
-        id: tab_bar
-        carousel: carousel
-        scrollview: scrollview
-        layout: layout
-        size_hint: 1, None
-        height: root.tab_bar_height
-
-        canvas:
-            Color:
-                rgba:
-                    self.theme_cls.primary_color if not root.background_color \
-                    else root.background_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        MDTabsScrollView:
-            id: scrollview
-            on_width: tab_bar._trigger_update_tab_bar()
-
-            GridLayout:
-                id: layout
-                rows: 1
-                size_hint: None, 1
-                width: self.minimum_width
-                on_width: tab_bar._trigger_update_tab_bar()
-
-                canvas.after:
-                    Color:
-                        rgba: root.theme_cls.accent_color
-                    Rectangle:
-                        pos: self.pos
-                        size: 0, root.tab_indicator_height
-"""
-)
-
-demo = """
-<Example@BoxLayout>
-    orientation: 'vertical'
-
-    MDToolbar:
-        title: app.title
-        md_bg_color: app.theme_cls.primary_color
-        background_palette: 'Primary'
-        elevation: 10
-        left_action_items: [['menu', lambda x: x]]
-
-    MDTabs:
-        id: android_tabs
-
-    BoxLayout:
-        size_hint_y: None
-        height: dp(58)
-        spacing: dp(5)
-        padding: dp(5)
-
-        MDCheckbox:
-            size_hint: None, None
-            size: dp(48), dp(48)
-            on_state:
-                app.switch_tabs_to_text(android_tabs) if self.state == 'down' \
-                else app.switch_tabs_to_icon(android_tabs)
-        MDLabel:
-            theme_text_color: 'Primary'
-            text: 'Use text tabs'
-
-        Widget:
-
-
-<MyTab>
-
-    FloatLayout:
-
-        MDLabel:
-            text: 'Content'
-            halign: 'center'
-            theme_text_color: 'Primary'
-            font_style: 'H6'
-"""
-
-if __name__ == "__main__":
-    from kivy.factory import Factory
-    from kivymd.app import MDApp
-
-    class MyTab(BoxLayout, MDTabsBase):
-        pass
-
-    class Example(MDApp):
-        title = "Example Tabs"
-        list_name_icons = list(md_icons.keys())[0:15]
-
-        def switch_tabs_to_icon(self, istance_android_tabs):
-            for i, instance_tab in enumerate(
-                istance_android_tabs.ids.scrollview.children[0].children
-            ):
-                istance_android_tabs.ids.scrollview.children[0].remove_widget(
-                    instance_tab
-                )
-                istance_android_tabs.add_widget(
-                    MyTab(text=self.list_name_icons[i])
-                )
-
-        def switch_tabs_to_text(self, istance_android_tabs):
-            for instance_tab in istance_android_tabs.ids.scrollview.children[
-                0
-            ].children:
-                for k, v in md_icons.items():
-                    if v == instance_tab.text:
-                        istance_android_tabs.ids.scrollview.children[
-                            0
-                        ].remove_widget(instance_tab)
-                        istance_android_tabs.add_widget(
-                            MyTab(text=" ".join(k.split("-")).capitalize())
-                        )
-                        break
-
-        def build(self):
-            Builder.load_string(demo)
-            screen = Factory.Example()
-
-            for name_tab in self.list_name_icons:
-                tab = MyTab(text=name_tab)
-                screen.ids.android_tabs.add_widget(tab)
-            return screen
-
-    Example().run()

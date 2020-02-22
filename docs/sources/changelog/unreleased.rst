@@ -15,3 +15,4 @@ Unreleased
 * Updated :class:`kivymd.uix.navigationdrawer.MDNavigationDrawer` realization.
 * Removed :class:`kivymd.uix.card.MDCardPost` class.
 * Added :class:`kivymd.uix.card.MDCardSwipe` class.
+* Added `switch_tab` method for switching tabs to :class:`kivymd.uix.bottomnavigation.MDBottomNavigation` class.

@@ -512,7 +512,7 @@ class MDBottomNavigation(TabbedPanelBase):
 
         if not self.ids.tab_manager.has_screen(name_tab):
             raise ScreenManagerException(f"No Screen with name '{name_tab}'.")
-        self.ids.tab_manager.get_screen("Tab 1").dispatch("on_tab_press")
+        self.ids.tab_manager.get_screen(name_tab).dispatch("on_tab_press")
         count_index_screen = [
             self.ids.tab_manager.screens.index(screen)
             for screen in self.ids.tab_manager.screens

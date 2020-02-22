@@ -12,7 +12,7 @@ Components/Tabs
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs.png
     :align: center
 
-.. None:: Module provides tabs in the form of icons or text.
+.. Note:: Module provides tabs in the form of icons or text.
 
 Usage
 -----

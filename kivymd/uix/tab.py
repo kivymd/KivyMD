@@ -17,6 +17,10 @@ Components/Tabs
 Usage
 -----
 
+To create a tab, you must create a new class that inherits from the
+:class:`~MDTabsBase` class and the `Kivy` container, in which you will create
+content for the tab.
+
 .. code-block:: python
 
     class Tab(FloatLayout, MDTabsBase):
@@ -30,6 +34,9 @@ Usage
             text: "Content"
             pos_hint: {"center_x": .5, "center_y": .5}
 
+Tabs must be placed in the :class:`~MDTabs` container:
+
+.. code-block:: kv
 
     Root:
 

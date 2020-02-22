@@ -131,9 +131,11 @@ Example
         "on_tab_release",
     )
 
-.. Note:: See :class:`~MDTab.__events__`
+.. seealso::
 
-.. code-block:: kv
+    See :class:`~MDTab.__events__`
+
+.. code-block :: kv
 
     Root:
 
@@ -148,8 +150,17 @@ Example
 
                 YourContent:
 
+How to automatically switch a tab?
+----------------------------------
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-Navigation>`_
+Use method :attr:`~MDBottomNavigation.switch_tab` which takes as argument
+the name of the tab you want to switch to.
+
+.. seealso::
+
+    `See Tab auto switch example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Tabs-Auto-Switch>`_
+
+    `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-Navigation>`_
 """
 
 __all__ = (
@@ -497,7 +508,7 @@ class MDBottomNavigation(TabbedPanelBase):
         Clock.schedule_once(lambda x: self.on_resize(), 2)
 
     def switch_tab(self, name_tab):
-        """Toggles tab by name in parameter ``name_tab``."""
+        """Switching the tab by name."""
 
         if not self.ids.tab_manager.has_screen(name_tab):
             raise ScreenManagerException(f"No Screen with name '{name_tab}'.")

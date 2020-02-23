@@ -12,7 +12,7 @@ Components/Chip
     :align: center
 
 Usage
-=====
+-----
 
 .. code-block:: kv
 
@@ -32,7 +32,8 @@ The user function takes two arguments - the object and the text of the chip:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ordinary-chip.png
     :align: center
 
-.. rubric:: Use custom icon:
+Use custom icon
+---------------
 
 .. code-block:: kv
 
@@ -43,7 +44,8 @@ The user function takes two arguments - the object and the text of the chip:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-custom-icon.png
     :align: center
 
-.. rubric:: Use without icon:
+Use without icon
+----------------
 
 .. code-block:: kv
 
@@ -54,7 +56,8 @@ The user function takes two arguments - the object and the text of the chip:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-without-icon.png
     :align: center
 
-.. rubric:: Chips with check:
+Chips with check
+----------------
 
 .. code-block:: kv
 
@@ -66,7 +69,8 @@ The user function takes two arguments - the object and the text of the chip:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-check-icon.gif
     :align: center
 
-.. rubric:: Choose chip:
+Choose chip
+-----------
 
 .. code-block:: kv
 

@@ -3,7 +3,167 @@ Components/Pickers
 ==================
 
 Includes date, time and color picker
+
+`KivyMD` provides the following classes for use:
+
+- MDTimePicker_
+- MDDatePicker_
+- MDThemePicker_
+
+.. MDTimePicker:
+MDTimePicker
+------------
+
+.. rubric:: Usage
+
+.. code-block::
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.picker import MDTimePicker
+
+    KV = '''
+    FloatLayout:
+
+        MDRaisedButton:
+            text: "Open time picker"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_time_picker()
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def show_time_picker(self):
+            '''Open time picker dialog.'''
+
+            time_dialog = MDTimePicker()
+            time_dialog.open()
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDTimePicker.gif
+    :align: center
+
+Binding method returning set time
+---------------------------------
+
+.. code-block:: python
+
+    def show_time_picker(self):
+        time_dialog = MDTimePicker()
+        time_dialog.bind(time=self.get_time)
+        time_dialog.open()
+
+    def get_time(self, instance, time):
+        '''
+        The method returns the set time.
+
+        :type instance: <kivymd.uix.picker.MDTimePicker object>
+        :type time: <class 'datetime.time'>
+        '''
+
+        return time
+
+Open time dialog with the specified time
+----------------------------------------
+
+Use the :attr:`~MDTimePicker.set_time` method of the
+:class:`~MDTimePicker.` class.
+
+.. code-block:: python
+
+    def show_time_picker(self):
+        from datetime import datetime
+
+        # Must be a datetime object
+        previous_time = datetime.strptime("03:20:00", '%H:%M:%S').time()
+        time_dialog = MDTimePicker()
+        time_dialog.set_time(previous_time)
+        time_dialog.open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/previous-time.png
+    :align: center
+
+.. MDDatePicker:
+MDDatePicker
+------------
+
+When creating an instance of the :class:`~MDDatePicker` class, you must pass
+as a parameter a method that will take one argument - a ``datetime`` object.
+
+.. code-block:: python
+
+    def get_date(self, date):
+        '''
+        :type date: <class 'datetime.date'>
+        '''
+
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(callback=self.get_date)
+        date_dialog.open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDDatePicker.gif
+    :align: center
+
+Open date dialog with the specified date
+----------------------------------------
+
+.. code-block:: python
+
+    def show_date_picker(self):
+        date_dialog = MDDatePicker(
+            callback=self.get_date,
+            year=2010,
+            month=2,
+            day=12,
+        )
+        date_dialog.open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/previous-date.png
+    :align: center
+
+You can set the time interval from and to the set date. All days of the week
+that are not included in this range will have the status `disabled`.
+
+.. code-block:: python
+
+    def show_date_picker(self):
+        min_date = datetime.strptime("2020:02:15", '%Y:%m:%d').date()
+        max_date = datetime.strptime("2020:02:20", '%Y:%m:%d').date()
+        date_dialog = MDDatePicker(
+            callback=self.get_date,
+            min_date=min_date,
+            max_date=max_date,
+        )
+        date_dialog.open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/range-date.png
+    :align: center
+
+.. MDThemePicker:
+MDThemePicker
+-------------
+
+.. code-block:: python
+
+    def show_theme_picker(self):
+        theme_dialog = MDThemePicker()
+        theme_dialog.open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDThemePicker.gif
+    :align: center
 """
+
+__all__ = (
+    "MDTimePicker",
+    "MDDatePicker",
+    "MDThemePicker",
+)
 
 import datetime
 import calendar
@@ -46,8 +206,8 @@ Builder.load_string(
     cal_layout: cal_layout
     size_hint: (None, None)
     size:
-        [dp(328), dp(484)] if self.theme_cls.device_orientation == 'portrait'\
-        else [dp(512), dp(304)]
+        (dp(328), dp(484)) if self.theme_cls.device_orientation == 'portrait'\
+        else (dp(512), dp(304))
     pos_hint: {'center_x': .5, 'center_y': .5}
 
     canvas:
@@ -55,24 +215,24 @@ Builder.load_string(
             rgb: app.theme_cls.primary_color
         Rectangle:
             size:
-                [dp(328), dp(96)]\
+                (dp(328), dp(96))\
                 if self.theme_cls.device_orientation == 'portrait'\
-                else [dp(168), dp(304)]
+                else (dp(168), dp(304))
             pos:
-                [root.pos[0], root.pos[1] + root.height - dp(96)]\
+                (root.pos[0], root.pos[1] + root.height - dp(96))\
                 if self.theme_cls.device_orientation == 'portrait'\
-                else [root.pos[0], root.pos[1] + root.height - dp(304)]
+                else (root.pos[0], root.pos[1] + root.height - dp(304))
         Color:
             rgb: app.theme_cls.bg_normal
         Rectangle:
             size:
-                [dp(328), dp(484)-dp(96)]\
+                (dp(328), dp(484) - dp(96))\
                 if self.theme_cls.device_orientation == 'portrait'\
                 else [dp(344), dp(304)]
             pos:
-                [root.pos[0], root.pos[1] + root.height - dp(96) - (dp(484) - dp(96))]\
+                (root.pos[0], root.pos[1] + root.height - dp(96) - (dp(484) - dp(96)))\
                 if self.theme_cls.device_orientation == 'portrait'\
-                else [root.pos[0] + dp(168), root.pos[1]]
+                else (root.pos[0] + dp(168), root.pos[1])
 
     MDLabel:
         id: label_full_date
@@ -81,19 +241,19 @@ Builder.load_string(
         theme_text_color: 'Custom'
         size_hint: (None, None)
         size:
-            [root.width, dp(30)]\
+            (root.width, dp(30))\
             if root.theme_cls.device_orientation == 'portrait'\
-            else [dp(168), dp(30)]
+            else (dp(168), dp(30))
         pos:
-            [root.pos[0] + dp(23), root.pos[1] + root.height - dp(74)]\
+            (root.pos[0] + dp(23), root.pos[1] + root.height - dp(74))\
             if root.theme_cls.device_orientation == 'portrait'\
-            else [root.pos[0] + dp(3), root.pos[1] + dp(214)]
+            else (root.pos[0] + dp(3), root.pos[1] + dp(214))
         line_height: .84
         valign: 'middle'
         text_size:
-            [root.width, None]\
+            (root.width, None)\
             if root.theme_cls.device_orientation == 'portrait'\
-            else [dp(149), None]
+            else (dp(149), None)
         bold: True
         text:
             root.fmt_lbl_date(root.sel_year, root.sel_month, root.sel_day,\
@@ -107,9 +267,9 @@ Builder.load_string(
         size_hint: (None, None)
         size: root.width, dp(30)
         pos:
-            (root.pos[0] + dp(23), root.pos[1] + root.height-dp(40))\
+            (root.pos[0] + dp(23), root.pos[1] + root.height - dp(40))\
             if root.theme_cls.device_orientation == 'portrait'\
-            else (root.pos[0]+dp(16), root.pos[1]+root.height-dp(41))
+            else (root.pos[0] + dp(16), root.pos[1] + root.height - dp(41))
         valign: 'middle'
         text: str(root.sel_year)
 
@@ -138,8 +298,7 @@ Builder.load_string(
     MDLabel:
         id: label_month_selector
         font_style: 'Body2'
-        text:
-            calendar.month_name[root.month].capitalize() + ' ' + str(root.year)
+        text: calendar.month_name[root.month].capitalize() + ' ' + str(root.year)
         size_hint: (None, None)
         size: root.width, dp(30)
         pos: root.pos
@@ -172,8 +331,7 @@ Builder.load_string(
     MDFlatButton:
         width: dp(32)
         id: ok_button
-        pos:
-            root.pos[0] + root.size[0] - self.width - dp(10), root.pos[1] + dp(10)
+        pos: root.pos[0] + root.size[0] - self.width - dp(10), root.pos[1] + dp(10)
         text: "OK"
         on_release: root.ok_click()
 
@@ -192,8 +350,7 @@ Builder.load_string(
 
     MDLabel:
         font_style: 'Caption'
-        theme_text_color:
-            'Custom' if root.is_today and not root.is_selected else 'Primary'
+        theme_text_color: 'Custom' if root.is_today and not root.is_selected else 'Primary'
         text_color: root.theme_cls.primary_color
         opposite_colors:
             root.is_selected if root.owner.sel_month == root.owner.month\
@@ -221,7 +378,7 @@ Builder.load_string(
 <DaySelector>
     size:
         (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
-                else (dp(32), dp(32))
+        else (dp(32), dp(32))
     size_hint: (None, None)
 
     canvas:
@@ -234,7 +391,7 @@ Builder.load_string(
                 else (dp(32), dp(32))
             pos:
                 self.pos if root.theme_cls.device_orientation == 'portrait'\
-                else [self.pos[0], self.pos[1]]
+                else (self.pos[0], self.pos[1])
 """
 )
 
@@ -480,24 +637,24 @@ Builder.load_string(
 
 <MDTimePicker>
     size_hint: (None, None)
-    size: [dp(270), dp(335) + dp(95)]
+    size: (dp(270), dp(335) + dp(95))
     pos_hint: {'center_x': .5, 'center_y': .5}
 
     canvas:
         Color:
             rgba: self.theme_cls.bg_light
         Rectangle:
-            size: [dp(270), dp(335)]
-            pos: [root.pos[0], root.pos[1] + root.height - dp(335) - dp(95)]
+            size: (dp(270), dp(335))
+            pos: (root.pos[0], root.pos[1] + root.height - dp(335) - dp(95))
         Color:
             rgba: self.theme_cls.primary_color
         Rectangle:
-            size: [dp(270), dp(95)]
-            pos: [root.pos[0], root.pos[1] + root.height - dp(95)]
+            size: (dp(270), dp(95))
+            pos: (root.pos[0], root.pos[1] + root.height - dp(95))
         Color:
             rgba: self.theme_cls.bg_dark
         Ellipse:
-            size: [dp(220), dp(220)]
+            size: (dp(220), dp(220))
             pos:
                 root.pos[0] + dp(270) / 2 - dp(220) / 2, root.pos[1]\
                 + root.height - (dp(335) / 2 + dp(95)) - dp(220) / 2 + dp(35)
@@ -505,7 +662,7 @@ Builder.load_string(
     CircularTimePicker:
         id: time_picker
         pos: (dp(270) / 2) - (self.width / 2), root.height - self.height
-        size_hint: [.8, .8]
+        size_hint: (.8, .8)
         pos_hint: {'center_x': .5, 'center_y': .585}
 
     MDFlatButton:
@@ -532,12 +689,36 @@ class MDTimePicker(
     ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
 ):
     time = ObjectProperty()
+    """
+    Users method. Must take two parameters:
+
+    .. code-block:: python
+
+        def get_time(self, instance, time):
+            '''
+            The method returns the set time.
+
+            :type instance: <kivymd.uix.picker.MDTimePicker object>
+            :type time: <class 'datetime.time'>
+            '''
+
+            return time
+
+    :attr:`time` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.current_time = self.ids.time_picker.time
 
     def set_time(self, time):
+        """
+        Sets user time.
+
+        :type time: <class 'datetime.time'>
+        """
+
         try:
             self.ids.time_picker.set_time(time)
         except AttributeError:
@@ -582,7 +763,7 @@ Builder.load_string(
 
 <MDThemePicker>
     size_hint: (None, None)
-    size: dp(284), dp(120)+dp(290)
+    size: dp(284), dp(120) + dp(290)
     pos_hint: {'center_x': .5, 'center_y': .5}
 
     canvas:
@@ -590,17 +771,17 @@ Builder.load_string(
             rgb: app.theme_cls.primary_color
         Rectangle:
             size: self.width, dp(120)
-            pos: root.pos[0], root.pos[1] + root.height-dp(120)
+            pos: root.pos[0], root.pos[1] + root.height - dp(120)
         Color:
             rgb: app.theme_cls.bg_normal
         Rectangle:
             size: self.width, dp(290)
-            pos: root.pos[0], root.pos[1] + root.height-(dp(120)+dp(290))
+            pos: root.pos[0], root.pos[1] + root.height - (dp(120) + dp(290))
 
 
     MDFlatButton:
         id: close_button
-        pos: root.pos[0]+root.size[0]-self.width-dp(10), root.pos[1] + dp(10)
+        pos: root.pos[0] + root.size[0] - self.width - dp(10), root.pos[1] + dp(10)
         text: "Close"
         on_release: root.dismiss()
 
@@ -616,7 +797,7 @@ Builder.load_string(
 
     MDTabs:
         size_hint: (None, None)
-        size: root.width, root.height-dp(135)
+        size: root.width, root.height - dp(135)
         pos_hint: {'center_x': .5, 'center_y': .475}
         id: tab_panel
 
@@ -626,6 +807,7 @@ Builder.load_string(
 
             BoxLayout:
                 spacing: dp(4)
+                padding: dp(4)
                 size_hint: (None, None)
                 size: dp(270), root.height  # -dp(120)
                 pos_hint: {'center_x': .532, 'center_y': .89}
@@ -752,6 +934,7 @@ Builder.load_string(
 
             BoxLayout:
                 spacing: dp(4)
+                padding: dp(4)
                 size_hint: (None, None)
                 size: dp(270), root.height  # -dp(120)
                 pos_hint: {'center_x': .532, 'center_y': .89}
@@ -934,30 +1117,3 @@ class MDThemePicker(
     RectangularElevationBehavior,
 ):
     pass
-
-
-if __name__ == "__main__":
-    from kivymd.app import MDApp
-    from kivymd.theming import ThemeManager
-
-    class ThemePickerApp(MDApp):
-        def build(self):
-            main_widget = Builder.load_string(
-                """
-#:import MDThemePicker kivymd.uix.picker.MDThemePicker
-
-
-FloatLayout:
-    MDRaisedButton:
-        size_hint: None, None
-        pos_hint: {'center_x': .5, 'center_y': .5}
-        size: 3 * dp(48), dp(48)
-        center_x: self.parent.center_x
-        text: 'Open theme picker'
-        on_release: MDThemePicker().open()
-        opposite_colors: True
-"""
-            )
-            return main_widget
-
-    ThemePickerApp().run()

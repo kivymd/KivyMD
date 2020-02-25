@@ -270,6 +270,8 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
     `Full example of Components-Navigation-Drawer <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Navigation-Drawer>`_
 """
 
+__all__ = ("NavigationLayout", "MDNavigationDrawer")
+
 from kivy.core.window import Window
 from kivy.logger import Logger
 from kivy.animation import Animation, AnimationTransition

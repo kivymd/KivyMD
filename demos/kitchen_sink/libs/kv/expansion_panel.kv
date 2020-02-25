@@ -1,10 +1,9 @@
 #:import os os
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import Animation kivy.animation.Animation
-#:import KitchenSinkExpansionPanelContent libs.baseclass.expansionpanel.KitchenSinkExpansionPanelContent
 
 
-<KitchenSinkExpansionPanelContent>
+<KitchenSinkExpansionPanelContent>:
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
@@ -26,14 +25,16 @@
         icon: 'email'
 
 
-<KitchenSinkExpansionPanel@Screen>
+<KitchenSinkExpansionPanel@Screen>:
     name: 'expansion panel'
+    on_enter: app.add_expansion_panel(card, box)
 
     Toolbar:
         id: toolbar
         pos_hint: {"top": 1}
 
     MDCard:
+        id: card
         orientation: "vertical"
         size_hint: .9, None
         height: self.minimum_height
@@ -46,10 +47,3 @@
 
             FitImage:
                 source: f"{os.environ['KITCHEN_SINK_ASSETS']}guitar-1139397_1280.png"
-
-        MDExpansionPanel:
-            on_open: Animation(height=(box.height + self.content.height) - app.theme_cls.standard_increment * 2, d=.2).start(box)
-            on_close: Animation(height=(box.height - self.content.height) + app.theme_cls.standard_increment * 2, d=.2).start(box)
-            icon: f"{os.environ['KITCHEN_SINK_ASSETS']}avatar.png"
-            content: KitchenSinkExpansionPanelContent()
-            title: "KivyMD v.0.102.1"

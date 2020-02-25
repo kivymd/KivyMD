@@ -6,6 +6,9 @@ from kivy.factory import Factory
 
 r = Factory.register
 r("MDExpansionPanel", module="kivymd.uix.expansionpanel")
+r("MDExpansionPanelOneLine", module="kivymd.uix.expansionpanel")
+r("MDExpansionPanelTwoLine", module="kivymd.uix.expansionpanel")
+r("MDExpansionPanelThreeLine", module="kivymd.uix.expansionpanel")
 r("FitImage", module="kivymd.utils.fitimage")
 r("MDBackdrop", module="kivymd.uix.backdrop")
 r("MDTab", module="kivymd.uix.bottomnavigation")

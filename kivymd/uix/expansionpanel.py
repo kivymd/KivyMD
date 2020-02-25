@@ -14,32 +14,56 @@ Components/Expansion Panel
 Usage
 -----
 
-.. code-block:: kv
+.. code-block:: python
 
-    Root:
+    self.add_widget(
+        MDExpansionPanel(
+            icon="logo.png",  # panel icon
+            content=Content(),  # panel content
+            panel_cls=MDExpansionPanelOneLine(text="Secondary text"),  # panel class
+        )
+    )
 
-        MDExpansionPanel:
-            icon: f"{images_path}kivymd_logo.png"
-            # Content of panel. Must be `Kivy` widget.
-            content: Content()
-            title: "KivyMD"
+To use :class:`~MDExpansionPanel` you must pass one of the following classes
+to the :attr:`~MDExpansionPanel.panel_cls` parameter:
+
+- :class:`~MDExpansionPanelOneLine`
+- :class:`~MDExpansionPanelTwoLine`
+- :class:`~MDExpansionPanelThreeLine`
+
+These classes are inherited from the following classes:
+
+- :class:`~kivymd.uix.list.OneLineAvatarIconListItem`
+- :class:`~kivymd.uix.list.TwoLineAvatarIconListItem`
+- :class:`~kivymd.uix.list.ThreeLineAvatarIconListItem`
+
+.. code-block:: python
+
+    self.root.ids.box.add_widget(
+        MDExpansionPanel(
+            icon="logo.png",
+            content=Content(),
+            panel_cls=MDExpansionPanelThreeLine(
+                text="Text",
+                secondary_text="Secondary text",
+                tertiary_text="Tertiary text",
+            )
+        )
+    )
 
 Example
 -------
 
 .. code-block:: python
 
+    from kivy.lang import Builder
     from kivy.uix.boxlayout import BoxLayout
 
     from kivymd.app import MDApp
-    from kivy.lang import Builder
+    from kivymd import images_path
+    from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelThreeLine
 
     KV = '''
-    #:import Content __main__.Content
-    #:import images_path kivymd.images_path
-
-
-    # Content for expansion panel.
     <Content>
         size_hint_y: None
         height: self.minimum_height
@@ -51,31 +75,35 @@ Example
             IconLeftWidget:
                 icon: 'phone'
 
-    Screen:
 
-        BoxLayout:
-            orientation: "vertical"
+    ScrollView:
 
-            MDToolbar:
-                title: "Expansion panel"
-                elevation: 10
-
-            MDExpansionPanel:
-                icon: f"{images_path}kivymd_logo.png"
-                content: Content()
-                title: "KivyMD"
-
-            Widget:
+        MDList:
+            id: box
     '''
 
 
     class Content(BoxLayout):
-        pass
+        '''Custom content.'''
 
 
     class Test(MDApp):
         def build(self):
             return Builder.load_string(KV)
+
+        def on_start(self):
+            for i in range(10):
+                self.root.ids.box.add_widget(
+                    MDExpansionPanel(
+                        icon=f"{images_path}kivymd_logo.png",
+                        content=Content(),
+                        panel_cls=MDExpansionPanelThreeLine(
+                            text="Text",
+                            secondary_text="Secondary text",
+                            tertiary_text="Tertiary text",
+                        )
+                    )
+                )
 
 
     Test().run()
@@ -83,11 +111,11 @@ Example
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/expansion-panel.gif
     :align: center
 
-.. rubric:: Two events are available for :class:`~MDExpansionPanel`:
+Two events are available for :class:`~MDExpansionPanel`
+------------------------------------------------------
 
-:attr:`~MDExpansionPanel.on_open`
-
-:attr:`~MDExpansionPanel.on_close`
+- :attr:`~MDExpansionPanel.on_open`
+- :attr:`~MDExpansionPanel.on_close`
 
 .. code-block:: kv
 
@@ -102,71 +130,76 @@ The user function takes one argument - the object of the panel:
     def on_panel_open(self, instance_panel):
         print(instance_panel)
 
-.. Note:: `See Expansion panel example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Expansion-Panel>`_
+.. seealso:: `See Expansion panel example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Expansion-Panel>`_
 
     `Expansion panel and MDCard <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Expansion-Panel-and-MDCard>`_
 """
 
-__all__ = ("MDExpansionPanel",)
+__all__ = (
+    "MDExpansionPanel",
+    "MDExpansionPanelOneLine",
+    "MDExpansionPanelTwoLine",
+    "MDExpansionPanelThreeLine",
+)
 
 from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty, NumericProperty, StringProperty
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import Image
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.widget import WidgetException
 
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import (
     IRightBodyTouch,
     OneLineAvatarIconListItem,
-    ILeftBody,
+    TwoLineAvatarIconListItem,
+    ThreeLineAvatarIconListItem,
+    ImageLeftWidget,
 )
 
 Builder.load_string(
     """
-<ExpansionPanel>
-    text: root.title
-    _no_ripple_effect: True
+<MDExpansionChevronRight>:
+    icon: 'chevron-right'
+    disabled: True
 
-    AvatarLeft:
-        source: root.icon
-
-    ChevronRight:
-        id: chevron
-        icon: 'chevron-right'
-        disabled: True
-
-        canvas.before:
-            PushMatrix
-            Rotate:
-                angle: self.angle
-                axis: (0, 0, 1)
-                origin: self.center
-        canvas.after:
-            PopMatrix
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self._angle
+            axis: (0, 0, 1)
+            origin: self.center
+    canvas.after:
+        PopMatrix
 
 
 <MDExpansionPanel>
     size_hint_y: None
-    height: dp(68)
-
-    BoxLayout:
-        id: box_item
-        size_hint_y: None
-        height: root.height
-        orientation: 'vertical'
-
-        ExpansionPanel:
-            id: item_anim
-            title: root.title
-            icon: root.icon
-            on_press: root.check_open_box(self)
+    #height: dp(68)
 """
 )
 
 
-class MDExpansionPanel(BoxLayout):
+class MDExpansionChevronRight(IRightBodyTouch, MDIconButton):
+    """Chevron icon on the right panel."""
+
+    _angle = NumericProperty(0)
+
+
+class MDExpansionPanelOneLine(OneLineAvatarIconListItem):
+    """Single line panel."""
+
+
+class MDExpansionPanelTwoLine(TwoLineAvatarIconListItem):
+    """Two-line panel."""
+
+
+class MDExpansionPanelThreeLine(ThreeLineAvatarIconListItem):
+    """Three-line panel."""
+
+
+class MDExpansionPanel(RelativeLayout):
     """
     :Events:
         :attr:`on_open`
@@ -189,11 +222,47 @@ class MDExpansionPanel(BoxLayout):
     and defaults to `''`.
     """
 
-    title = StringProperty()
-    """Title of panel.
+    opening_transition = StringProperty("out_cubic")
+    """
+    The name of the animation transition type to use when animating to
+    the :attr:`state` `'open'`.
 
-    :attr:`title` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
+
+    opening_time = NumericProperty(0.2)
+    """
+    The time taken for the panel to slide to the :attr:`state` `'open'`.
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    closing_transition = StringProperty("out_sine")
+    """The name of the animation transition type to use when animating to
+    the :attr:`state` 'close'.
+
+    :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_sine'`.
+    """
+
+    closing_time = NumericProperty(0.2)
+    """
+    The time taken for the panel to slide to the :attr:`state` `'close'`.
+
+    :attr:`closing_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    panel_cls = ObjectProperty()
+    """
+    Panel object. The object must be one of the classes
+    :class:`~MDExpansionPanelOneLine`, :class:`~MDExpansionPanelTwoLine` or
+    :class:`~MDExpansionPanelThreeLine`.
+
+    :attr:`panel_cls` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
     """
 
     def __init__(self, **kwargs):
@@ -201,64 +270,103 @@ class MDExpansionPanel(BoxLayout):
         self.register_event_type("on_open")
         self.register_event_type("on_close")
 
+        if self.panel_cls and isinstance(
+            self.panel_cls,
+            (
+                MDExpansionPanelOneLine,
+                MDExpansionPanelTwoLine,
+                MDExpansionPanelThreeLine,
+            ),
+        ):
+            self.panel_cls.pos_hint = {"top": 1}
+            self.panel_cls._no_ripple_effect = True
+            self.panel_cls.bind(
+                on_release=lambda x: self.check_open_panel(self.panel_cls)
+            )
+            self.chevron = MDExpansionChevronRight()
+            self.panel_cls.add_widget(self.chevron)
+            self.panel_cls.add_widget(ImageLeftWidget(source=self.icon))
+            self.add_widget(self.panel_cls)
+        else:
+            raise ValueError(
+                "KivyMD: `panel_cls` object must be must be one of the "
+                "objects from the list\n"
+                "[MDExpansionPanelOneLine, MDExpansionPanelTwoLine, "
+                "MDExpansionPanelThreeLine]"
+            )
+
     def on_open(self, *args):
         """Called when a panel is opened."""
 
     def on_close(self, *args):
         """Called when a panel is closed."""
 
-    def check_open_box(self, instance):
-        press_current_item = False
-        for box in self.parent.children:
-            if box.__class__ is MDExpansionPanel:
-                if len(box.ids.box_item.children) == 2:
-                    if instance is box.ids.item_anim:
-                        press_current_item = True
-                    box.ids.box_item.remove_widget(box.ids.box_item.children[0])
-                    chevron = box.ids.box_item.children[0].ids.chevron
-                    self.anim_chevron_up(chevron)
-                    self.anim_resize_close(box)
+    def check_open_panel(self, instance):
+        """
+        Called when you click on the panel. Called methods to open or close
+        a panel.
+        """
+
+        press_current_panel = False
+        for panel in self.parent.children:
+            if isinstance(panel, MDExpansionPanel):
+                if len(panel.children) == 2:
+                    if instance is panel.children[1]:
+                        press_current_panel = True
+                    panel.remove_widget(panel.children[0])
+                    chevron = panel.children[0].children[0].children[0]
+                    self.set_chevron_up(chevron)
+                    self.close_panel(panel)
                     self.dispatch("on_close")
                     break
+        if not press_current_panel:
+            self.set_chevron_down()
 
-        if not press_current_item:
-            self.anim_chevron_down()
+    def set_chevron_down(self):
+        """Sets the chevron down."""
 
-    def anim_chevron_down(self):
-        chevron = self.ids.item_anim.ids.chevron
-        angle = -90
-        Animation(angle=angle, d=0.2).start(chevron)
-        self.anim_resize_open_item()
+        Animation(_angle=-90, d=self.opening_time).start(self.chevron)
+        self.open_panel()
         self.dispatch("on_open")
 
-    def anim_chevron_up(self, instance):
-        angle = 0
-        Animation(angle=angle, d=0.2).start(instance)
+    def set_chevron_up(self, instance_chevron):
+        """Sets the chevron up."""
 
-    def anim_resize_close(self, box):
-        Animation(height=dp(68), d=0.1, t="in_cubic").start(box)
+        Animation(_angle=0, d=self.closing_time).start(instance_chevron)
 
-    def anim_resize_open_item(self, *args):
-        self.content.name_item = self.title
+    def close_panel(self, instance_panel):
+        """Method closes the panel."""
+
+        Animation(
+            height=self.panel_cls.height, d=self.closing_time, t=self.closing_transition
+        ).start(instance_panel)
+
+    def open_panel(self, *args):
+        """Method opens a panel."""
+
         anim = Animation(
-            height=self.content.height + dp(70), d=0.2, t="in_cubic"
+            height=self.content.height + self.height,
+            d=self.opening_time,
+            t=self.opening_transition,
         )
-        anim.bind(on_complete=self.add_content)
+        anim.bind(on_complete=self._add_content)
         anim.start(self)
 
-    def add_content(self, *args):
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(
+            widget,
+            (
+                MDExpansionPanelOneLine,
+                MDExpansionPanelTwoLine,
+                MDExpansionPanelThreeLine,
+            ),
+        ):
+            self.height = widget.height
+        return super().add_widget(widget)
+
+    def _add_content(self, *args):
         if self.content:
-            self.ids.box_item.add_widget(self.content)
-
-
-class AvatarLeft(ILeftBody, Image):
-    pass
-
-
-class ChevronRight(IRightBodyTouch, MDIconButton):
-    angle = NumericProperty(0)
-
-
-class ExpansionPanel(OneLineAvatarIconListItem):
-    title = StringProperty()
-    icon = StringProperty()
+            try:
+                self.add_widget(self.content)
+            except WidgetException:
+                pass

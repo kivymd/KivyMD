@@ -2,13 +2,16 @@ import ast
 import os
 import sys
 
+from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.factory import Factory
 
+from kivymd.app import MDApp
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+
 from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
 from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
-
-from kivymd.app import MDApp
+from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 
 if getattr(sys, "frozen", False):  # bundle mode with PyInstaller
     os.environ["KITCHEN_SINK_ROOT"] = sys._MEIPASS
@@ -150,6 +153,32 @@ class KitchenSinkApp(MDApp):
         box.add_widget(Factory.ShrinePresplashTile(text="SHRINE"))
         instance.add_widget(box)
         Clock.schedule_once(show_demo_shrine, 1)
+
+    def add_expansion_panel(self, card, box):
+        content = KitchenSinkExpansionPanelContent()
+        card.add_widget(
+            MDExpansionPanel(
+                on_open=lambda x, y: self.panel_open(box, content),
+                on_close=lambda x, y: self.panel_close(box, content),
+                icon=f"{os.environ['KITCHEN_SINK_ASSETS']}avatar.png",
+                content=content,
+                panel_cls=MDExpansionPanelOneLine(text="KivyMD v.0.102.1"),
+            )
+        )
+
+    def panel_open(self, box, content):
+        Animation(
+            height=(box.height + content.height)
+            - self.theme_cls.standard_increment * 2,
+            d=0.2,
+        ).start(box)
+
+    def panel_close(self, box, content):
+        Animation(
+            height=(box.height - content.height)
+            + self.theme_cls.standard_increment * 2,
+            d=0.2,
+        ).start(box)
 
 
 KitchenSinkApp().run()

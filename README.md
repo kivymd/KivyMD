@@ -159,6 +159,7 @@ and more information:
 * All widgets that usually used in kv-lang are automatically added to Factory.
 You don't need to `#:import` them. Remove all your imports from kv files.
 * Replaced `MDAccordion` and `MDAccordionListItem` with `MDExpansionPanel`.
+* [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
 * Changed font styles:
 
 | Old      | New       |

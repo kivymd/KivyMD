@@ -338,7 +338,9 @@ class MDExpansionPanel(RelativeLayout):
         """Method closes the panel."""
 
         Animation(
-            height=self.panel_cls.height, d=self.closing_time, t=self.closing_transition
+            height=self.panel_cls.height,
+            d=self.closing_time,
+            t=self.closing_transition,
         ).start(instance_panel)
 
     def open_panel(self, *args):

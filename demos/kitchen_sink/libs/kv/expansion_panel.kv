@@ -26,7 +26,7 @@
 
 <KitchenSinkExpansionPanel@Screen>:
     name: 'expansion panel'
-    on_enter: app.add_expansion_panel(card, box)
+    on_enter: if len(card.children) <= 1: app.add_expansion_panel(card, box)
 
     Toolbar:
         id: toolbar

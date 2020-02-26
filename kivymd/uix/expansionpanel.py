@@ -144,7 +144,6 @@ __all__ = (
 
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.metrics import dp
 from kivy.properties import ObjectProperty, NumericProperty, StringProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.widget import WidgetException

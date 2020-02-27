@@ -357,7 +357,6 @@ Custom list item
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
     StringProperty,
     NumericProperty,
     ListProperty,
@@ -447,6 +446,7 @@ Builder.load_string(
 
 
 <OneLineAvatarListItem>
+
     BoxLayout:
         id: _left_container
         size_hint: None, None
@@ -456,6 +456,7 @@ Builder.load_string(
 
 
 <ThreeLineAvatarListItem>
+
     BoxLayout:
         id: _left_container
         size_hint: None, None
@@ -465,6 +466,7 @@ Builder.load_string(
 
 
 <OneLineIconListItem>
+
     BoxLayout:
         id: _left_container
         size_hint: None, None
@@ -483,6 +485,7 @@ Builder.load_string(
 
 
 <OneLineRightIconListItem>
+
     BoxLayout:
         id: _right_container
         size_hint: None, None
@@ -492,6 +495,7 @@ Builder.load_string(
 
 
 <ThreeLineRightIconListItem>
+
     BoxLayout:
         id: _right_container
         size_hint: None, None
@@ -501,6 +505,7 @@ Builder.load_string(
 
 
 <OneLineAvatarIconListItem>
+
     BoxLayout:
         id: _right_container
         size_hint: None, None
@@ -510,6 +515,7 @@ Builder.load_string(
 
 
 <TwoLineAvatarIconListItem>
+
     BoxLayout:
         id: _right_container
         size_hint: None, None
@@ -519,6 +525,7 @@ Builder.load_string(
 
 
 <ThreeLineAvatarIconListItem>
+
     BoxLayout:
         id: _right_container
         size_hint: None, None

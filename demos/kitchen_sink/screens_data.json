@@ -259,13 +259,6 @@
       'object': 0,
       'icon': 'tooltip-text-outline'
   },
-  'Manager Swiper': {
-      'kv_string': 'manager_swiper',
-      'Factory': 'Factory.KitchenSinkSwiperManager()',
-      'name_screen': 'manager swiper',
-      'object': 0,
-      'icon': 'gesture-swipe'
-  },
   'Navigation Drawer': {
       'kv_string': 'navigation_drawer',
       'Import': 'from libs.baseclass.navigation_drawer import KitchenSinkNavigationDrawer',

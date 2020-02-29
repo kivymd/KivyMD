@@ -267,7 +267,7 @@ Builder.load_string(
 
     canvas:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba: root._bottom_md_bg_color
         RoundedRectangle:
             pos:
                 self.pos \
@@ -393,6 +393,12 @@ class MDToolbar(
     and defaults to `[0, 0, 0, 0]`.
     """
 
+    _bottom_md_bg_color = ListProperty([0, 0, 0, 0])
+    """Color of the bottom toolbar
+
+    This is not meant to be used directly, set md_bg_color instead
+    """
+
     anchor_title = StringProperty("left")
 
     mode = OptionProperty(
@@ -480,8 +486,9 @@ class MDToolbar(
         pass
 
     def on_md_bg_color(self, instance, value):
-        if type == "bottom":
+        if self.type == "bottom":
             self.md_bg_color = [0, 0, 0, 0]
+            self._bottom_md_bg_color = value
 
     def on_left_action_items(self, instance, value):
         self.update_action_bar(self.ids["left_actions"], value)

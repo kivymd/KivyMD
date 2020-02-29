@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 ---
 
-#### Description of the Bug
+### Description of the Bug
 
 Your text
 

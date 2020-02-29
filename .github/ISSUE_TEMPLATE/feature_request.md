@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 ---
 
-#### Description of the Feature
+### Description of the Feature
 
 Your text
 

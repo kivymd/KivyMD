@@ -298,7 +298,7 @@ Builder.load_string(
                 if root.type == "bottom" else (0, 0)
             radius: (root.round, 0, 0, 0) if root.mode == "center" else (0, root.round, 0, 0)
         Color:
-            rgba: 1, 1, 1, 1
+            rgba: root.theme_cls.bg_normal
         Ellipse:
             pos:
                 (self.center[0] - root.action_button.width / 2 - dp(6), self.center[1] - root._shift * 2) \

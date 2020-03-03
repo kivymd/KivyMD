@@ -69,7 +69,7 @@
       'object': 0,
       'icon': 'refresh'
   },
-  'Floating Buttons': {
+  'Button Speed Dial': {
       'kv_string': 'stack_buttons',
       'Import': 'from libs.baseclass.stack_buttons import KitchenSinkStackButtons',
       'Factory': 'KitchenSinkStackButtons()',

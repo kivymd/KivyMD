@@ -1374,6 +1374,17 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     """
     Custom callback.
 
+    .. code-block:: kv
+
+        MDFloatingActionButtonSpeedDial:
+            callback: app.callback
+
+    .. code-block:: python
+
+        def callback(self, instance):
+            print(instance.icon)
+
+
     :attr:`callback` is a :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """

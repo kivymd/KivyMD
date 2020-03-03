@@ -19,3 +19,4 @@ Unreleased
 * Added feature to use panel type in the :class:`kivymd.uix.expansionpanel.MDExpansionPanel` class: :class:`kivymd.uix.expansionpanel.MDExpansionPanelOneLine`, :class:`kivymd.uix.expansionpanel.MDExpansionPanelTwoLine` or :class:`kivymd.uix.expansionpanel.MDExpansionPanelThreeLine`.
 * Fixed panel opening animation in the :class:`kivymd.uix.expansionpanel.MDExpansionPanel` class.
 * Delete `kivymd.uix.managerswiper.py`
+* Add `MDFloatingActionButtonSpeedDial` class

@@ -419,7 +419,6 @@ You can set your color values ​​for background, text of buttons etc:
 
     `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Button>`_
 """
-from kivy.uix.boxlayout import BoxLayout
 
 __all__ = (
     "MDIconButton",
@@ -445,6 +444,7 @@ from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.animation import Animation
@@ -1325,7 +1325,9 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
     _bg_color = ListProperty()
 
 
-class BaseFloatingLabel(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
+class BaseFloatingLabel(
+    ThemableBehavior, RectangularElevationBehavior, BoxLayout
+):
     text = StringProperty()
     text_color = ListProperty()
     bg_color = ListProperty()

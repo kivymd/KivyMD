@@ -27,6 +27,7 @@ Components/Button
 - MDFillRoundFlatButton_
 - MDFillRoundFlatIconButton_
 - MDTextButton_
+- MDFloatingActionButtonSpeedDial_
 
 .. MDIconButton:
 MDIconButton
@@ -328,8 +329,97 @@ MDTextButton
         text: "MDTEXTBUTTON"
         custom_color: 0, 1, 0, 1
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Button>`_
+.. MDFloatingActionButtonSpeedDial:
+MDFloatingActionButtonSpeedDial
+-------------------------------
+
+.. Note:: See the full list of arguments in the class
+    :class:`~MDFloatingActionButtonSpeedDial`.
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    Screen:
+
+        MDFloatingActionButtonSpeedDial:
+            data: app.data
+            rotation_root_button: True
+    '''
+
+
+    class Example(MDApp):
+        data = {
+            'language-python': 'Python',
+            'language-php': 'PHP',
+            'language-cpp': 'C++',
+        }
+
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial.gif
+    :align: center
+
+Or without KV Language:
+
+.. code-block:: python
+
+    from kivy.uix.screenmanager import Screen
+
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDFloatingActionButtonSpeedDial
+
+
+    class Example(MDApp):
+        data = {
+            'language-python': 'Python',
+            'language-php': 'PHP',
+            'language-cpp': 'C++',
+        }
+
+        def build(self):
+            screen = Screen()
+            speed_dial = MDFloatingActionButtonSpeedDial()
+            speed_dial.data = self.data
+            speed_dial.rotation_root_button = True
+            screen.add_widget(speed_dial)
+            return screen
+
+
+    Example().run()
+
+You can use various types of animation of labels for buttons on the stack:
+
+.. code-block:: kv
+
+    MDFloatingActionButtonSpeedDial:
+        hint_animation: True
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial-hint.gif
+    :align: center
+
+You can set your color values ​​for background, text of buttons etc:
+
+.. code-block:: kv
+
+    MDFloatingActionButtonSpeedDial:
+        bg_hint_color: app.theme_cls.primary_light
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial-hint-color.png
+    :align: center
+
+.. seealso::
+
+    `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Button>`_
 """
+from kivy.uix.boxlayout import BoxLayout
 
 __all__ = (
     "MDIconButton",
@@ -343,22 +433,29 @@ __all__ = (
     "MDFillRoundFlatButton",
     "MDFillRoundFlatIconButton",
     "MDTextButton",
+    "MDFloatingActionButtonSpeedDial",
 )
 
+from kivy.core.window import Window
+from kivy.metrics import dp
 from kivy.clock import Clock
+from kivy.lang import Builder
+from kivy.uix.button import Button
+from kivy.uix.image import Image
+from kivy.uix.widget import Widget
+from kivy.utils import get_color_from_hex
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.animation import Animation
 from kivy.graphics.context_instructions import Color
+from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.graphics.stencil_instructions import (
     StencilPush,
     StencilUse,
     StencilPop,
     StencilUnUse,
 )
-from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
-from kivy.lang import Builder
-from kivy.uix.button import Button
-from kivy.uix.image import Image
-from kivy.uix.widget import Widget
-from kivy.utils import get_color_from_hex
 from kivy.properties import (
     StringProperty,
     BoundedNumericProperty,
@@ -367,30 +464,23 @@ from kivy.properties import (
     BooleanProperty,
     NumericProperty,
     OptionProperty,
+    ObjectProperty,
+    DictProperty,
 )
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.animation import Animation
 
-from kivymd.uix.behaviors.backgroundcolorbehavior import (
-    SpecificBackgroundColorBehavior,
-)
-from kivymd.uix.behaviors import (
-    CircularRippleBehavior,
-    RectangularRippleBehavior,
-)
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.tooltip import MDTooltip
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     RectangularElevationBehavior,
     CircularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+    CircularRippleBehavior,
+    RectangularRippleBehavior,
 )
-from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
-#:import Animation kivy.animation.Animation
-#:import md_icons kivymd.icon_definitions.md_icons
-#:import colors kivymd.color_definitions.colors
 #:import images_path kivymd.images_path
 
 
@@ -641,6 +731,69 @@ Builder.load_string(
     background_down: f'{images_path}transparent.png'
     background_normal: f'{images_path}transparent.png'
     opacity: 1
+
+
+# SpeedDial classes
+
+
+<BaseFloatingBottomButton>
+    size_hint: None, None
+    size: dp(46), dp(46)
+    theme_text_color: "Custom"
+    md_bg_color: self.theme_cls.primary_color
+
+    canvas.before:
+        Color:
+            rgba:
+                self.theme_cls.primary_color \
+                if not self._bg_color else self._bg_color
+        RoundedRectangle:
+            pos:
+                (self.x - self._canvas_width) + self._padding_right / 2, \
+                self.y - self._padding_right / 2
+            size:
+                self.width + self._canvas_width, \
+                self.height + self._padding_right
+            radius: [self.height / 2]
+
+
+<BaseFloatingRootButton>
+    elevation: 5
+    theme_text_color: "Custom"
+    md_bg_color: self.theme_cls.primary_color
+
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self._angle
+            axis: (0, 0, 1)
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+
+<BaseFloatingLabel>
+    size_hint: None, None
+    padding: "8dp", "4dp", "8dp", "4dp"
+    height: label.texture_size[1] + self.padding[1] * 2
+    width: label.texture_size[0] + self.padding[0] * 2
+    elevation: 10
+
+    canvas:
+        Color:
+            rgba: self.theme_cls.primary_color if not root.bg_color else root.bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+
+    Label:
+        id: label
+        markup: True
+        text: root.text
+        size_hint: None, None
+        size: self.texture_size
+        color: root.theme_cls.text_color if not root.text_color else root.text_color
 """
 )
 
@@ -1157,3 +1310,474 @@ class MDFillRoundFlatIconButton(MDFillRoundFlatButton):
     :attr:`increment_width` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `'80dp'`.
     """
+
+
+# SpeedDial classes
+
+
+class BaseFloatingRootButton(MDFloatingActionButton):
+    _angle = NumericProperty(0)
+
+
+class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
+    _canvas_width = NumericProperty(0)
+    _padding_right = NumericProperty(0)
+    _bg_color = ListProperty()
+
+
+class BaseFloatingLabel(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
+    text = StringProperty()
+    text_color = ListProperty()
+    bg_color = ListProperty()
+
+
+class MDFloatingBottomButton(BaseFloatingBottomButton):
+    pass
+
+
+class MDFloatingRootButton(BaseFloatingRootButton):
+    pass
+
+
+class MDFloatingLabel(BaseFloatingLabel):
+    pass
+
+
+class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
+    """
+    :Events:
+        :attr:`on_open`
+            Called when a stack is opened.
+        :attr:`on_close`
+            Called when a stack is closed.
+    """
+
+    icon = StringProperty("plus")
+    """
+    Root button icon name.
+
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'plus'`.
+    """
+
+    anchor = OptionProperty("right", option=["right"])
+    """
+    Stack anchor. Available options are: `'right'`.
+
+    :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'right'`.
+    """
+
+    callback = ObjectProperty(lambda x: None)
+    """
+    Custom callback.
+
+    :attr:`callback` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    label_text_color = ListProperty([0, 0, 0, 1])
+    """
+    Floating text color in ``rgba`` format.
+
+    :attr:`label_text_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 1]`.
+    """
+
+    data = DictProperty()
+    """
+    Must be a dictionary 
+
+    .. code-block:: python
+
+        {
+            'name-icon': 'Text label',
+            ...,
+            ...,
+        }
+    """
+
+    rotation_root_button = BooleanProperty(False)
+    """
+    If ``True`` then the root button will rotate 45 degrees when the stack
+    is opened.
+
+    :attr:`rotation_root_button` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    opening_transition = StringProperty("out_cubic")
+    """
+    The name of the stack opening animation type.
+
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
+
+    closing_transition = StringProperty("out_cubic")
+    """
+    The name of the stack closing animation type.
+
+    :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
+
+    opening_transition_button_rotation = StringProperty("out_cubic")
+    """
+    The name of the animation type to rotate the root button when opening the
+    stack.
+
+    :attr:`opening_transition_button_rotation` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
+
+    closing_transition_button_rotation = StringProperty("out_cubic")
+    """
+    The name of the animation type to rotate the root button when closing the
+    stack.
+
+    :attr:`closing_transition_button_rotation` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
+    """
+
+    opening_time = NumericProperty(0.5)
+    """
+    Time required for the stack to go to: attr:`state` `'open'`.
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    closing_time = NumericProperty(0.2)
+    """
+    Time required for the stack to go to: attr:`state` `'close'`.
+
+    :attr:`closing_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    opening_time_button_rotation = NumericProperty(0.2)
+    """
+    Time required to rotate the root button 45 degrees during the stack
+    opening animation.
+
+    :attr:`opening_time_button_rotation` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    closing_time_button_rotation = NumericProperty(0.2)
+    """
+    Time required to rotate the root button 0 degrees during the stack
+    closing animation.
+
+    :attr:`closing_time_button_rotation` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    state = OptionProperty("close", options=("close", "open"))
+    """
+    Indicates whether the stack is closed or open.
+    Available options are: `'close'`, `'open'`.
+
+    :attr:`state` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'close'`.
+    """
+
+    bg_color_root_button = ListProperty()
+    """
+    Root button color in ``rgba`` format.
+
+    :attr:`bg_color_root_button` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    bg_color_stack_button = ListProperty()
+    """
+    The color of the buttons in the stack ``rgba`` format.
+
+    :attr:`bg_color_stack_button` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    color_icon_stack_button = ListProperty()
+    """
+    The color icon of the buttons in the stack ``rgba`` format.
+
+    :attr:`color_icon_stack_button` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    color_icon_root_button = ListProperty()
+    """
+    The color icon of the root button ``rgba`` format.
+
+    :attr:`color_icon_root_button` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    bg_hint_color = ListProperty()
+    """
+    Background color for the text of the buttons in the stack ``rgba`` format.
+
+    :attr:`bg_hint_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    hint_animation = BooleanProperty(False)
+    """
+    Whether to use button extension animation to display text labels.
+
+    :attr:`hint_animation` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    _label_pos_y_set = False
+    _anim_buttons_data = {}
+    _anim_labels_data = {}
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_open")
+        self.register_event_type("on_close")
+        Window.bind(on_resize=self._update_pos_buttons)
+
+    def on_open(self, *args):
+        """Called when a stack is opened."""
+
+    def on_close(self, *args):
+        """Called when a stack is closed."""
+
+    def on_leave(self, instance):
+        """Called when the mouse cursor goes outside the button of stack."""
+
+        if self.state == "open":
+            for widget in self.children:
+                if isinstance(widget, MDFloatingLabel) and self.hint_animation:
+                    Animation.cancel_all(widget)
+                    if self.data[instance.icon] == widget.text:
+                        Animation(
+                            _canvas_width=0,
+                            _padding_right=0,
+                            d=self.opening_time,
+                            t=self.opening_transition,
+                        ).start(instance)
+                        if self.hint_animation:
+                            Animation(
+                                opacity=0, d=0.1, t=self.opening_transition,
+                            ).start(widget)
+                        break
+
+    def on_enter(self, instance):
+        """Called when the mouse cursor is over a button from the stack."""
+
+        if self.state == "open":
+            for widget in self.children:
+                if isinstance(widget, MDFloatingLabel) and self.hint_animation:
+                    widget.elevation = 0
+                    if self.data[instance.icon] == widget.text:
+                        Animation(
+                            _canvas_width=widget.width + dp(24),
+                            _padding_right=dp(5),
+                            d=self.opening_time,
+                            t=self.opening_transition,
+                        ).start(instance)
+                        if self.hint_animation:
+                            Animation(
+                                opacity=1,
+                                d=self.opening_time,
+                                t=self.opening_transition,
+                            ).start(widget)
+                        break
+
+    def on_data(self, instance, value):
+        """Creates a stack of buttons."""
+
+        # Bottom buttons.
+        for name_icon in self.data.keys():
+            bottom_button = MDFloatingBottomButton(
+                icon=name_icon,
+                on_enter=self.on_enter,
+                on_leave=self.on_leave,
+                opacity=0,
+            )
+            bottom_button.bind(
+                on_release=lambda x=bottom_button: self.callback(x)
+            )
+            self.set_pos_bottom_buttons(bottom_button)
+            self.add_widget(bottom_button)
+            # Labels.
+            floating_text = value[name_icon]
+            if floating_text:
+                label = MDFloatingLabel(text=floating_text, opacity=0)
+                self.add_widget(label)
+        # Top root button.
+        root_button = MDFloatingRootButton(
+            icon=self.icon, on_release=self.open_stack,
+        )
+        self.set_pos_root_button(root_button)
+        self.add_widget(root_button)
+
+    def on_label_text_color(self, instance, value):
+        for widget in self.children:
+            if isinstance(widget, MDFloatingLabel):
+                widget.text_color = value
+
+    def on_color_icon_stack_button(self, instance, value):
+        for widget in self.children:
+            if isinstance(widget, MDFloatingBottomButton):
+                widget.text_color = value
+
+    def on_hint_animation(self, instance, value):
+        for widget in self.children:
+            if isinstance(widget, MDFloatingLabel):
+                widget.bg_color = (0, 0, 0, 0)
+
+    def on_bg_hint_color(self, instance, value):
+        for widget in self.children:
+            if isinstance(widget, MDFloatingBottomButton):
+                widget._bg_color = value
+
+    def on_color_icon_root_button(self, instance, value):
+        self._get_count_widget(MDFloatingRootButton).text_color = value
+
+    def on_bg_color_stack_button(self, instance, value):
+        self._get_count_widget(MDFloatingBottomButton).md_bg_color = value
+
+    def on_bg_color_root_button(self, instance, value):
+        self._get_count_widget(MDFloatingRootButton).md_bg_color = value
+
+    def set_pos_labels(self, widget):
+        """Sets the position of the floating labels."""
+
+        if self.anchor == "right":
+            widget.x = Window.width - widget.width - dp(86)
+
+    def set_pos_root_button(self, instance):
+        """Sets the position of the root button."""
+
+        if self.anchor == "right":
+            instance.y = dp(20)
+            instance.x = Window.width - (dp(56) + dp(20))
+
+    def set_pos_bottom_buttons(self, instance):
+        """Sets the position of the bottom buttons in a stack."""
+
+        if self.anchor == "right":
+            if self.state != "open":
+                instance.y = instance.height / 2
+            instance.x = Window.width - (instance.height + instance.width / 2)
+
+    def open_stack(self, instance):
+        """Opens a button stack."""
+
+        if self.state != "open":
+            y = 0
+            l = dp(56)
+            anim_buttons_data = {}
+            anim_labels_data = {}
+
+            for widget in self.children:
+                if isinstance(widget, MDFloatingBottomButton):
+                    # Sets new button positions.
+                    y += dp(56)
+                    widget.y = widget.y * 2 + y
+                    if not self._anim_buttons_data:
+                        anim_buttons_data[widget] = Animation(
+                            opacity=1,
+                            d=self.opening_time,
+                            t=self.opening_transition,
+                        )
+                elif isinstance(widget, MDFloatingLabel):
+                    # Sets new labels positions.
+                    l += dp(56)
+                    # Sets the position of signatures only once.
+                    if not self._label_pos_y_set:
+                        widget.y = widget.y * 2 + l
+                        widget.x = Window.width - widget.width - dp(86)
+                    if not self._anim_labels_data:
+                        anim_labels_data[widget] = Animation(
+                            opacity=1, d=self.opening_time
+                        )
+                elif (
+                    isinstance(widget, MDFloatingRootButton)
+                    and self.rotation_root_button
+                ):
+                    # Rotates the root button 45 degrees.
+                    Animation(
+                        _angle=-45,
+                        d=self.opening_time_button_rotation,
+                        t=self.opening_transition_button_rotation,
+                    ).start(widget)
+
+            if anim_buttons_data:
+                self._anim_buttons_data = anim_buttons_data
+            if anim_labels_data and not self.hint_animation:
+                self._anim_labels_data = anim_labels_data
+
+            self.state = "open"
+            self.dispatch("on_open")
+            self.do_animation_open_stack(self._anim_buttons_data)
+            self.do_animation_open_stack(self._anim_labels_data)
+            if not self._label_pos_y_set:
+                self._label_pos_y_set = True
+        else:
+            self.close_stack()
+
+    def do_animation_open_stack(self, anim_data):
+        def on_progress(animation, widget, value):
+            if value >= 0.1:
+                animation_open_stack()
+
+        def animation_open_stack(*args):
+            try:
+                widget = next(widgets_list)
+                animation = anim_data[widget]
+                animation.bind(on_progress=on_progress)
+                animation.start(widget)
+            except StopIteration:
+                pass
+
+        widgets_list = iter(list(anim_data.keys()))
+        animation_open_stack()
+
+    def close_stack(self):
+        """Closes the button stack."""
+
+        for widget in self.children:
+            if isinstance(widget, MDFloatingBottomButton):
+                Animation(
+                    y=widget.height / 2,
+                    d=self.closing_time,
+                    t=self.closing_transition,
+                    opacity=0,
+                ).start(widget)
+            elif isinstance(widget, MDFloatingLabel):
+                Animation(opacity=0, d=0.1).start(widget)
+            elif (
+                isinstance(widget, MDFloatingRootButton)
+                and self.rotation_root_button
+            ):
+                Animation(
+                    _angle=0,
+                    d=self.closing_time_button_rotation,
+                    t=self.closing_transition_button_rotation,
+                ).start(widget)
+        self.state = "close"
+        self.dispatch("on_close")
+
+    def _update_pos_buttons(self, instance, width, height):
+        # Updates button positions when resizing screen.
+        for widget in self.children:
+            if isinstance(widget, MDFloatingBottomButton):
+                self.set_pos_bottom_buttons(widget)
+            elif isinstance(widget, MDFloatingRootButton):
+                self.set_pos_root_button(widget)
+            elif isinstance(widget, MDFloatingLabel):
+                self.set_pos_labels(widget)
+
+    def _get_count_widget(self, instance):
+        widget = None
+        for widget in self.children:
+            if isinstance(widget, instance):
+                break
+        return widget

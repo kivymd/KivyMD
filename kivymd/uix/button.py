@@ -1670,6 +1670,10 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     def open_stack(self, instance):
         """Opens a button stack."""
 
+        for widget in self.children:
+            if isinstance(widget, MDFloatingLabel):
+                Animation.cancel_all(widget)
+
         if self.state != "open":
             y = 0
             l = dp(56)

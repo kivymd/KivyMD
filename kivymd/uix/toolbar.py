@@ -247,6 +247,8 @@ Builder.load_string(
 
 
 <MDActionBottomAppBarButton>:
+    md_bg_color: self.theme_cls.primary_color
+
     canvas.before:
         PushMatrix
         Scale:

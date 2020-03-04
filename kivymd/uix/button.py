@@ -1644,11 +1644,12 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 label = MDFloatingLabel(text=floating_text, opacity=0)
                 self.add_widget(label)
         # Top root button.
-        root_button = MDFloatingRootButton(
-            icon=self.icon, on_release=self.open_stack,
-        )
+        root_button = MDFloatingRootButton(on_release=self.open_stack)
         self.set_pos_root_button(root_button)
         self.add_widget(root_button)
+
+    def on_icon(self, instance, value):
+        self._get_count_widget(MDFloatingRootButton).icon = value
 
     def on_label_text_color(self, instance, value):
         for widget in self.children:

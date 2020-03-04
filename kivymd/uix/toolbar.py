@@ -480,7 +480,7 @@ class MDToolbar(
         pass
 
     def on_md_bg_color(self, instance, value):
-        if type == "bottom":
+        if self.type == "bottom":
             self.md_bg_color = [0, 0, 0, 0]
 
     def on_left_action_items(self, instance, value):

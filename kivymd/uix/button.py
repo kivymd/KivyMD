@@ -1410,6 +1410,25 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         }
     """
 
+    right_pad = BooleanProperty(False)
+    """
+    If `True`, the button will increase on the right side by 2.5 piesels
+    if the :attr:`~hint_animation` parameter equal to `True`.
+
+    .. rubric:: False
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial-right-pad.gif
+        :align: center
+
+    .. rubric:: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial-right-pad-true.gif
+        :align: center
+
+    :attr:`right_pad` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     rotation_root_button = BooleanProperty(False)
     """
     If ``True`` then the root button will rotate 45 degrees when the stack
@@ -1590,7 +1609,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                     if self.data[instance.icon] == widget.text:
                         Animation(
                             _canvas_width=widget.width + dp(24),
-                            _padding_right=dp(5),
+                            _padding_right=dp(5) if self.right_pad else 0,
                             d=self.opening_time,
                             t=self.opening_transition,
                         ).start(instance)
@@ -1654,7 +1673,9 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self._get_count_widget(MDFloatingRootButton).text_color = value
 
     def on_bg_color_stack_button(self, instance, value):
-        self._get_count_widget(MDFloatingBottomButton).md_bg_color = value
+        for widget in self.children:
+            if isinstance(widget, MDFloatingBottomButton):
+                widget.md_bg_color = value
 
     def on_bg_color_root_button(self, instance, value):
         self._get_count_widget(MDFloatingRootButton).md_bg_color = value

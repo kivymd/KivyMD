@@ -482,6 +482,7 @@ from kivymd.uix.behaviors import (
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
+#:import md_icons kivymd.icon_definitions.md_icons
 
 
 <BaseButton>
@@ -500,7 +501,7 @@ Builder.load_string(
     canvas:
         Clear
         Color:
-            rgba: self._current_button_color
+            rgba: self._current_button_color if root.icon in md_icons else (0, 0, 0, 0)
         Ellipse:
             size: self.size
             pos: self.pos
@@ -511,7 +512,7 @@ Builder.load_string(
         if not root.user_font_size \
         else (dp(root.user_font_size + 23), dp(root.user_font_size + 23))
     lbl_txt: lbl_txt
-    padding: dp(12)
+    padding: dp(12) if root.icon in md_icons else 0
     theme_text_color: 'Primary'
 
     MDIcon:
@@ -749,11 +750,11 @@ Builder.load_string(
                 if not self._bg_color else self._bg_color
         RoundedRectangle:
             pos:
-                (self.x - self._canvas_width) + self._padding_right / 2, \
-                self.y - self._padding_right / 2
+                (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
+                self.y - self._padding_right / 2 + dp(1.5)
             size:
-                self.width + self._canvas_width, \
-                self.height + self._padding_right
+                self.width + self._canvas_width - dp(3), \
+                self.height + self._padding_right - dp(3)
             radius: [self.height / 2]
 
 
@@ -1410,7 +1411,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         }
     """
 
-    right_pad = BooleanProperty(False)
+    right_pad = BooleanProperty(True)
     """
     If `True`, the button will increase on the right side by 2.5 piesels
     if the :attr:`~hint_animation` parameter equal to `True`.

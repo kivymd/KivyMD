@@ -230,6 +230,8 @@ Builder.load_string(
     padding: '12dp', 0
     group: 'tabs'
     allow_no_selection: False
+    markup: True
+    on_ref_press: if root.callback: root.callback(self)
     text_color_normal:
         (\
         (0, 0, 0, .5) \
@@ -309,7 +311,7 @@ Builder.load_string(
 
                 canvas.after:
                     Color:
-                        rgba: root.theme_cls.accent_color
+                        rgba: root.theme_cls.accent_color if not root.color_indicator else root.color_indicator
                     Rectangle:
                         pos: self.pos
                         size: 0, root.tab_indicator_height
@@ -328,6 +330,7 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
     text_color_active = ListProperty()
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
+    callback = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -691,6 +694,23 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     and defaults to `0`.
     """
 
+    color_indicator = ListProperty()
+    """
+    Color indicator in ``rgba`` format.
+
+    :attr:`color_indicator` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    callback = ObjectProperty()
+    """
+    User callback. The method will be called when the ``on_ref_press`` event
+    occurs in the :class:`~MDTabsLabel` class.
+
+    :attr:`callback` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_tab_switch")
@@ -712,6 +732,7 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
+                widget.tab_label.callback = self.callback
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal
                 widget.tab_label.text_color_active = self.text_color_active

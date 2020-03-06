@@ -667,7 +667,9 @@ class BaseListItem(
     and defaults to `'Body1'`.
     """
 
-    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
+    divider = OptionProperty(
+        "Full", options=["Full", "Inset", None], allownone=True
+    )
     """
     Divider mode. Available options are: `'Full'`, `'Inset'`
     and default to `'Full'`.

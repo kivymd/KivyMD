@@ -20,3 +20,5 @@ Unreleased
 * Fixed panel opening animation in the :class:`kivymd.uix.expansionpanel.MDExpansionPanel` class.
 * Delete `kivymd.uix.managerswiper.py`
 * Add `MDFloatingActionButtonSpeedDial` class
+* Added the feature to create text on tabs using markup, thereby triggering the `on_ref_press` event in the `MDTabsLabel` class
+* Added `color_indicator` attribute to set custom indicator color in the `MDTabs` class

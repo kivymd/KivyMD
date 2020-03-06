@@ -399,6 +399,11 @@ Builder.load_string(
                     (root.x+root._txt_left_pad, root.y,\
                     root.x+self.width-root._txt_left_pad-root._txt_right_pad,\
                     root.y)
+        Color:
+            rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     BoxLayout:
         id: _text_container
@@ -662,15 +667,21 @@ class BaseListItem(
     and defaults to `'Body1'`.
     """
 
-    divider = OptionProperty(
-        "Full", options=["Full", "Inset", None], allownone=True
-    )
+    divider = OptionProperty("Full", options=["Full", "Inset", None], allownone=True)
     """
     Divider mode. Available options are: `'Full'`, `'Inset'`
     and default to `'Full'`.
 
     :attr:`tertiary_font_style` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'Body1'`.
+    """
+
+    bg_color = ListProperty()
+    """
+    Background color for menu item.
+
+    :attr:`bg_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     _txt_left_pad = NumericProperty("16dp")

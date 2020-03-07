@@ -382,7 +382,7 @@ Builder.load_string(
 <MDList>
     cols: 1
     size_hint_y: None
-    height: self._min_list_height
+    height: self.minimum_height
     padding: 0, self._list_vertical_padding
 
 
@@ -549,7 +549,6 @@ class MDList(GridLayout):
     children, plus top and bottom paddings as described by the `MD` spec.
     """
 
-    _min_list_height = NumericProperty("16dp")
     _list_vertical_padding = NumericProperty("8dp")
 
     def add_widget(self, widget, index=0, canvas=None):

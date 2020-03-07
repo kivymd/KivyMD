@@ -78,8 +78,11 @@ Example
 
     ScrollView:
 
-        MDList:
+        GridLayout:
             id: box
+            cols: 1
+            size_hint_y: None
+            height: self.minimum_height
     '''
 
 

@@ -23,3 +23,4 @@ Unreleased
 * Added the feature to create text on tabs using markup, thereby triggering the `on_ref_press` event in the `MDTabsLabel` class
 * Added `color_indicator` attribute to set custom indicator color in the `MDTabs` class
 * Added the feature to change the background color of menu items in the `BaseListItem` class
+* Add `MDTapTargetView` class

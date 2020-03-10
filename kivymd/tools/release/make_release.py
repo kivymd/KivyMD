@@ -215,7 +215,7 @@ def main():
     if len(sys.argv) > 3:
         print("Usage:\npython make_release.py version")
         return
-    elif len(sys.argv) == 3:
+    elif len(sys.argv) == 2:
         version = sys.argv[1]
     else:
         version = input("Type version: ")

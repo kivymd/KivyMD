@@ -113,6 +113,15 @@
       'object': 0,
       'icon': 'calendar'
   },
+  'TapTargetView': {
+      'kv_string': 'taptargetview',
+      'Import': 'from libs.baseclass.taptargetview import KitchenSinkTapTargetView',
+      'Factory': 'KitchenSinkTapTargetView()',
+      'name_screen': 'taptargetview',
+      'source_code': 'Components-TapTargetView.md',
+      'object': 0,
+      'icon': 'calendar'
+  },
   'Cards': {
       'kv_string': 'cards',
       'Import': 'from libs.baseclass.cards import KitchenSinkCards',

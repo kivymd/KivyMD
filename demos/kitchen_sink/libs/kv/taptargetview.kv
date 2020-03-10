@@ -1,0 +1,68 @@
+#:import images_path kivymd.images_path
+
+
+<KitchenSinkTapTargetView>
+    name: 'taptargetview'
+    app: app
+
+    Image:
+        id: logo
+        source: f"{images_path}kivymd_alpha.png"
+
+    CustomToolbar:
+        id: toolbar
+        size_hint_y: None
+        height: app.theme_cls.standard_increment
+        md_bg_color: app.theme_cls.primary_color
+        elevation: 10
+        padding: "8dp", 0, 0, 0
+        pos_hint: {"top": 1}
+
+        MDIconButton:
+            id: menu_btn
+            icon: "menu"
+            theme_text_color: "Custom"
+            text_color: toolbar.specific_text_color
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"center_y": .5}
+
+        Widget:
+            size_hint_x: None
+            width: "25dp"
+
+        MDLabel:
+            text: "TapTargetView"
+            shorten: True
+            font_style: 'H6'
+            theme_text_color: "Custom"
+            text_color: toolbar.specific_text_color
+
+        MDIconButton:
+            id: search_btn
+            icon: "magnify"
+            md_bg_color: 0, 0, 0, 0
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            pos_hint: {"center_y": .5}
+
+        MDIconButton:
+            id: info_btn
+            icon: "arrow-left"
+            md_bg_color: 0, 0, 0, 0
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            pos_hint: {"center_y": .5}
+            on_release:
+                if root._complete: app.root.ids.screen_manager.current = "home"
+
+    MDLabel:
+        id: lbl
+        text: "Click the arrow \nin the upper right corner\nto return to the list of examples"
+        opacity: 0
+        font_size: "24sp"
+        halign: "center"
+
+    MDFloatingActionButton:
+        id: add_btn
+        icon: "plus"
+        pos: 10, 10

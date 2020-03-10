@@ -1,4 +1,4 @@
-KivyMD [v0.103.0 - *Beta*](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
+KivyMD [0.104.0](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 ======
 
 <img align="left" width="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>

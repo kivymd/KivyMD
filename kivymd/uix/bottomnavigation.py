@@ -298,9 +298,6 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     and defaults to `[1, 1, 1, 0]`.
     """
 
-    width = BoundedNumericProperty(
-        0, min=80, max=168, errorhandler=lambda x: small_error_warn(x)
-    )
     tab = ObjectProperty()
     """
     :attr:`tab` is an :class:`~MDBottomNavigationItem`
@@ -606,19 +603,3 @@ class MDBottomNavigationBar(
 
 class MDBottomNavigationErrorCache:
     last_size_warning = 0
-
-
-def small_error_warn(x):
-    if dp(x) <= dp(80):
-        if MDBottomNavigationErrorCache.last_size_warning != x:
-            MDBottomNavigationErrorCache.last_size_warning = x
-            # Logger.warning(
-            #    f"MDBottomNavigation: {x}dp is less than the minimum size "
-            #    f"of 80dp for a MDBottomNavigationItem. "
-            #    f"We must now expand to 168dp."
-            # )
-            # Did you come here to find out what the bug is?
-            # The bug is that on startup, this function returning dp(80)
-            # breaks the way it displays until you resize
-            # I don't know why, this may or may not get fixed in the future
-    return dp(168)

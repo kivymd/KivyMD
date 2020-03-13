@@ -8,7 +8,7 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
     """
     If `True`, the following properties will be applied to the widget:
 
-    .. code-block: kv
+    .. code-block:: kv
 
         size_hint_y: None
         height: self.minimum_height
@@ -21,7 +21,7 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
     """
     If `True`, the following properties will be applied to the widget:
 
-    .. code-block: kv
+    .. code-block:: kv
 
         size_hint_x: None
         width: self.minimum_width
@@ -34,7 +34,7 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
     """
     If `True`, the following properties will be applied to the widget:
 
-    .. code-block: kv
+    .. code-block:: kv
 
         size_hint: None, None
         size: self.minimum_size

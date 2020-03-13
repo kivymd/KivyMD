@@ -8,3 +8,4 @@ Unreleased
        pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
 
 * Bug fixes and other minor improvements.
+* Added `MDGridLayout` and `MDBoxLayout` classes

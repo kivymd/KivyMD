@@ -26,7 +26,7 @@ If you wish to become a project developer (permission to create branches on the 
 Documentation
 =============
 
-See documentation at https://kivymd.readthedocs.io/
+See documentation at https://kivymd.readthedocs.io/en/latest/?badge=latest
 
 Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD/wiki
 

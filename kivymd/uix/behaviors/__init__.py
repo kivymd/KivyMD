@@ -18,3 +18,4 @@ from .backgroundcolorbehavior import (
     SpecificBackgroundColorBehavior,
 )
 from .magic_behavior import MagicBehavior
+from .touch_behavior import TouchBehavior

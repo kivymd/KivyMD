@@ -96,10 +96,10 @@ class TouchBehavior:
                 self.on_triple_tap(touch, *args)
 
     def on_long_touch(self, touch, *args):
-        """Вызывается при долгом нажатии на виджет."""
+        """Called when the widget is pressed for a long time."""
 
     def on_double_tap(self, touch, *args):
-        """Вызывается при двойном нажатии на виджет."""
+        """Called by double clicking on the widget."""
 
     def on_triple_tap(self, touch, *args):
-        """Вызывается при тройном нажатии на виджет."""
+        """Called by triple clicking on the widget."""

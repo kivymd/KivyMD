@@ -7,6 +7,7 @@ from kivy.factory import Factory
 r = Factory.register
 r("MDBoxLayout", module="kivymd.uix.boxlayout")
 r("MDGridLayout", module="kivymd.uix.gridlayout")
+r("MDStackLayout", module="kivymd.uix.stacklayout")
 r("MDExpansionPanel", module="kivymd.uix.expansionpanel")
 r("MDExpansionPanelOneLine", module="kivymd.uix.expansionpanel")
 r("MDExpansionPanelTwoLine", module="kivymd.uix.expansionpanel")

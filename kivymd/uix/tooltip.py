@@ -66,8 +66,6 @@ In Python code:
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")
 
-from functools import partial
-
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -77,7 +75,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ListProperty, StringProperty, NumericProperty
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import HoverBehavior
+from kivymd.uix.behaviors import HoverBehavior, TouchBehavior
 from kivymd.material_resources import DEVICE_TYPE
 
 Builder.load_string(
@@ -130,7 +128,7 @@ Builder.load_string(
 )
 
 
-class MDTooltip(ThemableBehavior, HoverBehavior, BoxLayout):
+class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     tooltip_bg_color = ListProperty()
     """Tooltip background color in ``rgba`` format.
     
@@ -152,32 +150,10 @@ class MDTooltip(ThemableBehavior, HoverBehavior, BoxLayout):
     and defaults to `''`.
     """
 
-    duration_long_touch = NumericProperty(0.4)
-    """Time for a long touch until a tooltip appears.
-    Used only on mobile devices.
-
-    :attr:`duration_long_touch` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.4`.
-    """
-
     _tooltip = None
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.bind(
-            on_touch_down=self.create_clock, on_touch_up=self.delete_clock
-        )
-
-    # Methods `create_clock` and `delete_clock` taken from this source -
-    # https://github.com/kivy/kivy/wiki/Menu-on-long-touch
-    def create_clock(self, widget, touch, *args):
-        if self.collide_point(touch.x, touch.y):
-            callback = partial(self.on_long_touch, touch)
-            Clock.schedule_once(callback, self.duration_long_touch)
-            touch.ud["event"] = callback
-
     def delete_clock(self, widget, touch, *args):
-        if self.collide_point(touch.x, touch.y):
+        if self.collide_point(touch.x, touch.y) and touch.grab_current:
             try:
                 Clock.unschedule(touch.ud["event"])
             except KeyError:

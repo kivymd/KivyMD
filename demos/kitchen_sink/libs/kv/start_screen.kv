@@ -64,30 +64,6 @@ BoxLayout:
                 self.clear_widgets()
 
 
-<KitchenSinkItemBackdropBackLayer>
-    size_hint_y: None
-    height: self.minimum_height
-    spacing: "10dp"
-
-    canvas:
-        Color:
-            rgba:
-                root.theme_cls.primary_dark if root.selected_item \
-                else root.theme_cls.primary_color
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-
-    MDIconButton:
-        icon: root.icon
-        theme_text_color: "Custom"
-        text_color: 1, 1, 1, .5 if not root.selected_item else 1, 1, 1, 1
-
-    MDLabel:
-        text: root.text
-        color: 1, 1, 1, .5 if not root.selected_item else 1, 1, 1, 1
-
-
 <KitchenSinkBackdropFrontLayer@RecycleView>
     backdrop: None
     backlayer: None
@@ -131,17 +107,15 @@ BoxLayout:
 
             ScrollView:
 
-                GridLayout:
-                    size_hint_y: None
-                    height: self.minimum_height
+                MDGridLayout:
+                    adaptive_height: True
                     cols: 1
                     padding: "10dp"
                     spacing: "10dp"
 
-                    BoxLayout:
+                    MDBoxLayout:
                         orientation: "vertical"
-                        size_hint_y: None
-                        height: self.minimum_height
+                        adaptive_height: True
                         padding: "5dp"
                         spacing: "10dp"
 
@@ -150,9 +124,9 @@ BoxLayout:
                             bold: True
                             theme_text_color: "Primary"
 
-                        BoxLayout:
+                        MDBoxLayout:
                             size_hint: None, None
-                            size: self.minimum_size
+                            adaptive_size: True
                             spacing: "30dp"
 
                             MDCheckbox:

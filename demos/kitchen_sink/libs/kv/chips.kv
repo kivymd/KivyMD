@@ -14,12 +14,11 @@
 
         ScrollView:
 
-            GridLayout:
+            MDGridLayout:
                 padding: dp(10)
                 spacing: dp(10)
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
 
                 Widget:
                     size_hint_y: None
@@ -30,9 +29,8 @@
 
                 MDSeparator:
 
-                StackLayout:
-                    size_hint_y: None
-                    height: self.minimum_height
+                MDStackLayout:
+                    adaptive_height: True
                     spacing: dp(5)
 
                     MDChip:
@@ -74,9 +72,8 @@
 
                 MDSeparator:
 
-                StackLayout:
-                    size_hint_y: None
-                    height: self.minimum_height
+                MDStackLayout:
+                    adaptive_height: True
                     spacing: dp(5)
 
                     MDChip:
@@ -93,9 +90,8 @@
 
                 MDSeparator:
 
-                StackLayout:
-                    size_hint_y: None
-                    height: self.minimum_height
+                MDStackLayout:
+                    adaptive_height: True
                     spacing: dp(5)
 
                     MDChip:

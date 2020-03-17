@@ -161,10 +161,9 @@ which will be used as an icon to the left of the item:
 
         ScrollView:
 
-            GridLayout:
+            MDGridLayout:
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
 
                 ItemForCustomBottomSheet:
                     icon: "page-previous"
@@ -261,11 +260,10 @@ Builder.load_string(
 
 <SheetList>:
 
-    GridLayout:
+    MDGridLayout:
         id: box_sheet_list
         cols: 1
-        size_hint_y: None
-        height: self.minimum_height
+        adaptive_height: True
         padding: 0, 0, 0, "96dp"
 
 
@@ -275,11 +273,9 @@ Builder.load_string(
     _gl_content: _gl_content
     _position_content: Window.height
 
-    BoxLayout:
-        size_hint_y: None
+    MDBoxLayout:
         orientation: "vertical"
         padding: 0, 1, 0, 0
-        height: self.minimum_height
 
         BsPadding:
             id: _upper_padding

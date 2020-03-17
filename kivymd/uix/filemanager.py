@@ -174,13 +174,12 @@ ACTIVITY_MANAGER = """
     type: 'folder'
     events_callback: lambda x: None
 
-    GridLayout:
+    MDGridLayout:
         id: grid_box
         cols: 3
         row_default_height: (self.width - self.cols*self.spacing[0])/self.cols
         row_force_default: True
-        size_hint_y: None
-        height: self.minimum_height
+        adaptive_height: True
         padding: dp(4), dp(4)
         spacing: dp(4)
 

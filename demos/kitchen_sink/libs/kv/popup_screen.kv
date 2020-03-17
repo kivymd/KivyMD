@@ -1,18 +1,16 @@
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 
 
-<ContentForPopupScreen@BoxLayout>
+<ContentForPopupScreen@MDBoxLayout>
     id: box
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     pos_hint: {'top': 1}
 
-    BoxLayout:
-        size_hint_y: None
-        height: self.minimum_height
+    MDBoxLayout:
+        adaptive_height: True
 
         Widget:
 

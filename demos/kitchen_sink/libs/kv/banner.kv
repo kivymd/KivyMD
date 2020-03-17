@@ -17,10 +17,9 @@
             size_hint_y: None
             height: Window.height - app.theme_cls.standard_increment
 
-            GridLayout:
+            MDGridLayout:
                 id: box
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
                 cols: 1
                 padding: "10dp"
                 spacing: "10dp"

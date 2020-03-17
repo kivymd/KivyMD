@@ -59,9 +59,9 @@ from kivy.properties import (
     NumericProperty,
     BooleanProperty,
 )
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.theming import ThemableBehavior
 
@@ -82,13 +82,11 @@ Builder.load_string(
 
 <MDDropDownItem>
     orientation: 'vertical'
-    size_hint: None, None
-    size: self.minimum_size
+    adaptive_size: True
     spacing: '5dp'
 
-    BoxLayout:
-        size_hint: None, None
-        size: self.minimum_size
+    MDBoxLayout:
+        adaptive_size: True
         spacing: '10dp'
 
         Label:
@@ -111,7 +109,7 @@ class _Triangle(ThemableBehavior, Widget):
     pass
 
 
-class MDDropDownItem(ThemableBehavior, BoxLayout):
+class MDDropDownItem(ThemableBehavior, MDBoxLayout):
     """
     :Events:
         `on_select`

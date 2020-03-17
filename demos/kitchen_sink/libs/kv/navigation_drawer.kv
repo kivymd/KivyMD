@@ -45,11 +45,10 @@
         ScrollView:
             pos_hint: {"top": 1}
 
-            GridLayout:
+            MDGridLayout:
                 id: box_item
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
 
 
 <KitchenSinkNavigationDrawer>:

@@ -108,10 +108,10 @@ from kivy.properties import (
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
-from kivy.uix.stacklayout import StackLayout
 
 from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.stacklayout import MDStackLayout
 
 Builder.load_string(
     """
@@ -119,8 +119,7 @@ Builder.load_string(
 
 
 <MDChooseChip>
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     spacing: "5dp"
 
 
@@ -140,15 +139,13 @@ Builder.load_string(
             size: self.size
             radius: [root.radius]
 
-    BoxLayout:
+    MDBoxLayout:
         id: box_check
-        size_hint: None, None
-        size: self.minimum_size
+        adaptive_size: True
         pos_hint: {'center_y': .5}
 
-    BoxLayout:
-        size_hint_x: None
-        width: self.minimum_width
+    MDBoxLayout:
+        adaptive_width: True
         padding: dp(10)
 
         Label:
@@ -263,7 +260,7 @@ class MDChip(BoxLayout, ThemableBehavior):
                 self.callback(self, self.label)
 
 
-class MDChooseChip(StackLayout):
+class MDChooseChip(MDStackLayout):
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDChip):
             return super().add_widget(widget)

@@ -17,18 +17,17 @@
             pos_hint: {'center_x': .5}
             bar_width: 0
 
-            BoxLayout:
+            MDBoxLayout:
                 id: box
                 padding: dp(10)
-                size_hint: None, None
-                size: self.minimum_size
+                adaptive_size: True
                 spacing: dp(10)
                 orientation: 'vertical'
                 pos_hint: {'center_x': .5}
 
-                BoxLayout:
-                    size_hint: None, None
-                    width: self.minimum_width
+                MDBoxLayout:
+                    size_hint_y: None
+                    adaptive_width: True
                     height: dp(56)
                     spacing: '10dp'
                     pos_hint: {'center_x': .5}
@@ -95,11 +94,10 @@
                     text: "MDTextButton"
                     pos_hint: {'center_x': .5}
 
-                BoxLayout:
+                MDBoxLayout:
                     orientation: 'vertical'
                     spacing: '10dp'
-                    size_hint: None, None
-                    size: self.minimum_size
+                    adaptive_size: True
                     pos_hint: {'center_x': .5}
 
                     MDSeparator:
@@ -184,11 +182,10 @@
                     text_color: 1, 1, 0, 1
                     md_bg_color: get_color_from_hex("#552A7D")
 
-                BoxLayout:
+                MDBoxLayout:
                     orientation: 'vertical'
                     spacing: '10dp'
-                    size_hint: None, None
-                    size: self.minimum_size
+                    adaptive_size: True
                     pos_hint: {'center_x': .5}
 
                     MDSeparator:
@@ -203,9 +200,8 @@
 
                     MDSeparator:
 
-                    BoxLayout:
-                        size_hint: None, None
-                        size: self.minimum_size
+                    MDBoxLayout:
+                        adaptive_size: True
                         padding: "10dp"
                         pos_hint: {"center_x": .5, "center_y": .5}
 

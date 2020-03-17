@@ -1,17 +1,10 @@
-<KitchenSinkBaseContent@BoxLayout>
+<KitchenSinkBaseContent@MDBoxLayout>
     id: box
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
-    size_hint_y: None
-    height: self.minimum_height
-
-    canvas:
-        Color:
-            rgba: app.theme_cls.bg_dark
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    adaptive_height: True
+    md_bg_color: app.theme_cls.bg_dark
 
     KitchenSinkOneLineLeftIconItem:
         text: "Video call"

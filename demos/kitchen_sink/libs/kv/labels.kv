@@ -3,9 +3,8 @@
     height: self.texture_size[1]
 
 
-<MyBoxLayout@BoxLayout>
-    size_hint_y: None
-    height: self.minimum_height
+<MyBoxLayout@MDBoxLayout>
+    adaptive_height: True
 
 
 <KitchenSinkLabels@Screen>
@@ -20,10 +19,9 @@
 
         ScrollView:
 
-            GridLayout:
+            MDGridLayout:
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
                 spacing: dp(10)
                 padding: dp(10)
 

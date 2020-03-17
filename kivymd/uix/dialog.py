@@ -85,6 +85,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
 
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDTextButton
 from kivymd.uix.textfield import MDTextField, MDTextFieldRect
@@ -255,8 +256,7 @@ class BaseDialog(ThemableBehavior, ModalView):
             box_buttons = AnchorLayout(
                 anchor_x="right", size_hint_y=None, height=dp(30)
             )
-            box = BoxLayout(size_hint_x=None, spacing=dp(5))
-            box.bind(minimum_width=box.setter("width"))
+            box = MDBoxLayout(adaptive_width=True, spacing=dp(5))
             button_ok = MDRaisedButton(
                 text=self.text_button_ok,
                 on_release=lambda x: _events_callback(self.text_button_ok),

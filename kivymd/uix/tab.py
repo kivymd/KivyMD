@@ -302,11 +302,11 @@ Builder.load_string(
             id: scrollview
             on_width: tab_bar._trigger_update_tab_bar()
 
-            GridLayout:
+            MDGridLayout:
                 id: layout
                 rows: 1
-                size_hint: None, 1
-                width: self.minimum_width
+                size_hint_y: 1
+                adaptive_width: True
                 on_width: tab_bar._trigger_update_tab_bar()
 
                 canvas.after:

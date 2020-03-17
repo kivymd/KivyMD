@@ -22,16 +22,14 @@ Example
     #:import get_hex_from_color kivy.utils.get_hex_from_color
 
 
-    <TestAnimationCard@BoxLayout>
+    <TestAnimationCard@MDBoxLayout>
         orientation: 'vertical'
         padding: dp(10)
         spacing: dp(10)
-        size_hint_y: None
-        height: self.minimum_height
+        adaptive_height: True
 
-        BoxLayout:
-            size_hint_y: None
-            height: self.minimum_height
+        MDBoxLayout:
+            adaptive_height: True
 
             Widget:
             MDRoundFlatButton:
@@ -197,10 +195,9 @@ Builder.load_string(
                 size: self.size
                 pos: self.pos
 
-        GridLayout:
+        MDGridLayout:
             id: box_content
-            size_hint_y: None
-            height: self.minimum_height
+            adaptive_height: True
             cols: 1
 
             canvas:

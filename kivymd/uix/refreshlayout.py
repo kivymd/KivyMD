@@ -44,10 +44,9 @@ Example
                 refresh_callback: app.refresh_callback
                 root_layout: root
 
-                GridLayout:
+                MDGridLayout:
                     id: box
-                    size_hint_y: None
-                    height: self.minimum_height
+                    adaptive_height: True
                     cols: 1
     ''')
 

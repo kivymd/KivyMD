@@ -408,7 +408,6 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
@@ -416,6 +415,7 @@ from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 from kivymd.font_definitions import theme_font_styles
+from kivymd.uix.gridlayout import MDGridLayout
 
 Builder.load_string(
     """
@@ -424,8 +424,7 @@ Builder.load_string(
 
 <MDList>
     cols: 1
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     padding: 0, self._list_vertical_padding
 
 
@@ -584,7 +583,7 @@ Builder.load_string(
 )
 
 
-class MDList(GridLayout):
+class MDList(MDGridLayout):
     """ListItem container. Best used in conjunction with a
     :class:`kivy.uix.ScrollView`.
 

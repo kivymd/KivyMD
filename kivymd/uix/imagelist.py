@@ -28,12 +28,11 @@ SmartTileWithStar
     KV = '''
     ScrollView:
 
-        GridLayout:
+        MDGridLayout:
             cols: 3
             row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
             row_force_default: True
-            size_hint_y: None
-            height: self.minimum_height
+            adaptive_height: True
             padding: dp(4), dp(4)
             spacing: dp(4)
 
@@ -73,12 +72,11 @@ SmartTileWithLabel
     KV = '''
     ScrollView:
 
-        GridLayout:
+        MDGridLayout:
             cols: 3
             row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
             row_force_default: True
-            size_hint_y: None
-            height: self.minimum_height
+            adaptive_height: True
             padding: dp(4), dp(4)
             spacing: dp(4)
 
@@ -163,8 +161,7 @@ Builder.load_string(
         size_hint_y: None
         height: dp(68) if root.lines == 2 else dp(48)
         x: root.x
-        y: root.y if root.box_position == 'footer'\
-            else root.y + root.height - self.height
+        y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
 
 
 <SmartTileWithLabel>
@@ -201,16 +198,14 @@ Builder.load_string(
 
         id: box
         size_hint_y: None
-        padding: dp(5), 0, 0, 0
-        height: self.minimum_height #dp(68) if root.lines == 2 else dp(48)
+        padding: "5dp", 0, 0, 0
+        height: self.minimum_height
         x: root.x
-        y: root.y if root.box_position == 'footer'\
-            else root.y + root.height - self.height
+        y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
 
         MDLabel:
             id: boxlabel
             font_style: root.font_style
-            #halign: "center"
             size_hint_y: None
             height: self.texture_size[1]
             text: root.text

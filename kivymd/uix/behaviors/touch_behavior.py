@@ -57,8 +57,8 @@ from kivy.properties import NumericProperty
 
 class TouchBehavior:
     duration_long_touch = NumericProperty(0.4)
-    """Time for a long touch until a tooltip appears.
-    Used only on mobile devices.
+    """
+    Time for a long touch.
 
     :attr:`duration_long_touch` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.4`.
@@ -77,14 +77,12 @@ class TouchBehavior:
             touch.ud["event"] = callback
 
     def delete_clock(self, widget, touch, *args):
-        # FIXME: Works correctly with all widgets except buttons.
-        # When using the buttons, the methods
-        # `` on_double_tap`` and `` on_triple_tap`` are called twice.
-        # But on condition
-        # ``if self.collide_point(touch.x, touch.y) and touch.grab_current:``
-        # the on_double_tap and on_triple_tap methods are called once,
-        # but incorrectly called for other widgets.
-        if self.collide_point(touch.x, touch.y):
+        if not touch.grab_list:
+            expr = self.collide_point(touch.x, touch.y)
+        else:
+            expr = self.collide_point(touch.x, touch.y) and touch.grab_current
+
+        if expr:
             try:
                 Clock.unschedule(touch.ud["event"])
             except KeyError:

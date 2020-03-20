@@ -732,6 +732,21 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
+                self.background_color = (
+                    self.background_color
+                    if self.background_color
+                    else self.theme_cls.primary_color
+                )
+                self.text_color_normal = (
+                    self.text_color_normal
+                    if self.text_color_normal
+                    else self.theme_cls.text_color
+                )
+                self.text_color_active = (
+                    self.text_color_active
+                    if self.text_color_active
+                    else self.theme_cls.bg_dark
+                )
                 widget.tab_label.callback = self.callback
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal

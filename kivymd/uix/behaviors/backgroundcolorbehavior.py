@@ -19,9 +19,10 @@ Builder.load_string(
     canvas:
         Color:
             rgba: self.md_bg_color
-        Rectangle:
+        RoundedRectangle:
             size: self.size
             pos: self.pos
+            radius: root.radius
 """
 )
 
@@ -53,6 +54,20 @@ class BackgroundColorBehavior(Widget):
 
     :attr:`a` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `0.0`.
+    """
+
+    radius = ListProperty([0, 0, 0, 0])
+    """Canvas radius.
+
+    .. code-block:: python
+
+        # Top left corner slice.
+        MDBoxLayout:
+            md_bg_color: app.theme_cls.primary_color
+            radius: [25, 0, 0, 0]
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     md_bg_color = ReferenceListProperty(r, g, b, a)

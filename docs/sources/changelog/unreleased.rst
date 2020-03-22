@@ -10,3 +10,4 @@ Unreleased
 * Bug fixes and other minor improvements.
 * Added `MDGridLayout` and `MDBoxLayout` classes
 * Add `TouchBehavior` class
+* Add `radius` parameter to `BackgroundColorBehavior` class

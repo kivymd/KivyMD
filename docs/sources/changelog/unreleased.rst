@@ -11,3 +11,5 @@ Unreleased
 * Added `MDGridLayout` and `MDBoxLayout` classes
 * Add `TouchBehavior` class
 * Add `radius` parameter to `BackgroundColorBehavior` class
+* Add `MDScreen` class
+* Add `MDFloatLayout` class

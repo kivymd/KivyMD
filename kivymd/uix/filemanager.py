@@ -736,7 +736,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(path):
-            self.history = []
             self.select_path(path)
             return
 
@@ -759,7 +758,6 @@ class MDFileManager(ThemableBehavior, FloatLayout):
         self.select_dir_or_file(path)
 
     def select_directory_on_press_button(self, *args):
-        self.history = []
         self.select_path(self.current_path)
 
 

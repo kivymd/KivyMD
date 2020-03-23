@@ -5,6 +5,8 @@ Register KivyMD widgets to use without import
 from kivy.factory import Factory
 
 r = Factory.register
+r("MDFloatLayout", module="kivymd.uix.floatlayout")
+r("MDScreen", module="kivymd.uix.screen")
 r("MDBoxLayout", module="kivymd.uix.boxlayout")
 r("MDGridLayout", module="kivymd.uix.gridlayout")
 r("MDStackLayout", module="kivymd.uix.stacklayout")

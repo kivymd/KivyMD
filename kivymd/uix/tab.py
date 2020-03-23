@@ -187,6 +187,7 @@ Example with tab text
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
     :align: center
 """
+from kivymd.uix.boxlayout import MDBoxLayout
 
 __all__ = (
     "MDTabs",
@@ -197,7 +198,6 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.uix.label import Label
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.carousel import Carousel
 from kivy.uix.widget import Widget
@@ -288,15 +288,7 @@ Builder.load_string(
         size_hint: 1, None
         elevation: root.elevation
         height: root.tab_bar_height
-
-        canvas:
-            Color:
-                rgba:
-                    self.theme_cls.primary_color if not root.background_color \
-                    else root.background_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        md_bg_color: self.theme_cls.primary_color if not root.background_color else root.background_color
 
         MDTabsScrollView:
             id: scrollview
@@ -395,7 +387,7 @@ class MDTabsBase(Widget):
             self.tab_label.text = self.text
 
 
-class MDTabsMain(BoxLayout):
+class MDTabsMain(MDBoxLayout):
     """
     This class is just a boxlayout that contain the carousel.
     It allows you to have control over the carousel.
@@ -425,7 +417,7 @@ class MDTabsScrollView(ScrollView):
             _update(self.effect_y, scroll_y)
 
 
-class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, BoxLayout):
+class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     """
     This class is just a boxlayout that contains the scroll view for tabs.
     He is also responsible for resizing the tab shortcut when necessary.

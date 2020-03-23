@@ -141,13 +141,15 @@ Custom usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-custom-usage.gif
     :align: center
 """
+from kivymd.uix.floatlayout import MDFloatLayout
+
+__all__ = ("Snackbar",)
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.uix.button import MDFlatButton
 
@@ -188,7 +190,7 @@ Builder.load_string(
 )
 
 
-class Snackbar(FloatLayout):
+class Snackbar(MDFloatLayout):
     text = StringProperty()
     """The text that will appear in the snackbar.
 
@@ -236,7 +238,9 @@ class Snackbar(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if self.button_text != "":
-            button = MDFlatButton(text=self.button_text)
+            button = MDFlatButton(
+                text=self.button_text, text_color=(1, 1, 1, 1)
+            )
             self.ids.box.add_widget(button)
             if self.button_callback:
                 button.bind(on_release=self.button_callback)

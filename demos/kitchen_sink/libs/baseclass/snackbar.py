@@ -44,7 +44,7 @@ class KitchenSinkSnackBar(Screen):
             if not self.snackbar:
                 self.snackbar = Snackbar(
                     text="This is a snackbar!",
-                    button_text="Button",
+                    button_text="BUTTON",
                     duration=3,
                     button_callback=callback,
                 )

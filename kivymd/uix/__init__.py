@@ -1,4 +1,6 @@
 from kivy.properties import BooleanProperty
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.screenmanager import Screen
 
 from kivymd.uix.behaviors import SpecificBackgroundColorBehavior
 
@@ -44,13 +46,16 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
     """
 
     def on_adaptive_height(self, instance, value):
-        self.size_hint_y = None
-        self.bind(minimum_height=self.setter("height"))
+        if not isinstance(self, (FloatLayout, Screen)):
+            self.size_hint_y = None
+            self.bind(minimum_height=self.setter("height"))
 
     def on_adaptive_width(self, instance, value):
-        self.size_hint_x = None
-        self.bind(minimum_width=self.setter("width"))
+        if not isinstance(self, (FloatLayout, Screen)):
+            self.size_hint_x = None
+            self.bind(minimum_width=self.setter("width"))
 
     def on_adaptive_size(self, instance, value):
-        self.size_hint = (None, None)
-        self.bind(minimum_size=self.setter("size"))
+        if not isinstance(self, (FloatLayout, Screen)):
+            self.size_hint = (None, None)
+            self.bind(minimum_size=self.setter("size"))

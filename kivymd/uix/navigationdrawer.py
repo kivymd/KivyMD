@@ -60,6 +60,7 @@ A simple example:
 
 
             MDNavigationDrawer:
+                id: nav_drawer
 
                 ContentNavigationDrawer:
     '''

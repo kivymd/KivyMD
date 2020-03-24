@@ -5,6 +5,7 @@ import sys
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.factory import Factory
+from kivy.core.window import Window
 
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
@@ -21,6 +22,7 @@ else:
 os.environ["KITCHEN_SINK_ASSETS"] = os.path.join(
     os.environ["KITCHEN_SINK_ROOT"], f"assets{os.sep}"
 )
+Window.softinput_mode = "below_target"
 
 
 class KitchenSinkApp(MDApp):

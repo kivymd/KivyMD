@@ -199,6 +199,19 @@ Rectangle mode
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-rectangle-mode.gif
     :align: center
 
+Fill mode
+---------
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Fill mode"
+        mode: "fill"
+        fill_color: 0, 0, 0, .4
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-mode.gif
+    :align: center
+
 .. MDTextFieldRect:
 MDTextFieldRect
 ---------------
@@ -326,20 +339,22 @@ Builder.load_string(
 
     canvas.before:
         Clear
+
+        # Disabled line.
         Color:
-            rgba: self.line_color_normal if root.mode == "line" else [0, 0, 0, 0]
+            rgba: self.line_color_normal if root.mode == "line" else (0, 0, 0, 0)
         Line:
-            points:
-                self.x, self.y + dp(16), self.x + self.width, self.y + dp(16)
+            points: self.x, self.y + dp(16), self.x + self.width, self.y + dp(16)
             width: 1
             dash_length: dp(3)
             dash_offset: 2 if self.disabled else 0
 
+        # Active line.
         Color:
-            rgba: self._current_line_color if root.mode == "line" else [0, 0, 0, 0]
+            rgba: self._current_line_color if root.mode in ("line", "fill") and root.active_line else (0, 0, 0, 0)
         Rectangle:
             size: self._line_width, dp(2)
-            pos: self.center_x - (self._line_width / 2), self.y + dp(16)
+            pos: self.center_x - (self._line_width / 2), self.y + (dp(16) if root.mode != "fill" else 0)
 
         Color:
             rgba: self._current_error_color
@@ -353,14 +368,14 @@ Builder.load_string(
         Rectangle:
             texture: self._right_msg_lbl.texture
             size: self._right_msg_lbl.texture_size
-            pos: self.width-self._right_msg_lbl.texture_size[0]+dp(45), self.y
+            pos: self.width-self._right_msg_lbl.texture_size[0] + dp(45), self.y
 
         Color:
             rgba:
                 (self._current_line_color if self.focus and not \
                 self._cursor_blink else (0, 0, 0, 0))
         Rectangle:
-            pos: [int(x) for x in self.cursor_pos]
+            pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height
 
         Color:
@@ -368,7 +383,7 @@ Builder.load_string(
         Rectangle:
             texture: self._hint_lbl.texture
             size: self._hint_lbl.texture_size
-            pos: self.x, self.y + self.height - self._hint_y
+            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y + self.height - self._hint_y
 
         Color:
             rgba:
@@ -376,6 +391,7 @@ Builder.load_string(
                 (self.hint_text_color if not self.text and not\
                 self.focus else self.foreground_color)
 
+        # "rectangle" mode
         Color:
             rgba: self._current_line_color
         Line:
@@ -390,11 +406,23 @@ Builder.load_string(
                 self.x + root._line_blank_space_left_hint_text, self.top - self._hint_lbl.texture_size[1] // 2
                 )
 
+    # "fill" mode.
+    canvas.after:
+        Color:
+            rgba: root.fill_color if root.mode == "fill" else (0, 0, 0, 0)
+        Rectangle:
+            pos: self.x, self.y
+            size: self.width, self.height + dp(8)
+
     font_name: 'Roboto'
     foreground_color: app.theme_cls.text_color
-    font_size: sp(16)
+    font_size: "16sp"
     bold: False
-    padding: 0, dp(16), 0, dp(10)
+    padding:
+        0 if root.mode != "fill" else "8dp", \
+        "16dp" if root.mode != "fill" else "24dp", \
+        0 if root.mode != "fill" else "8dp", \
+        "20dp" if root.mode == "fill" else "10dp"
     multiline: False
     size_hint_y: None
     height: self.minimum_height + dp(8)
@@ -409,12 +437,12 @@ Builder.load_string(
 
 <MDTextFieldRect>
     on_focus:
-        root.anim_rect([root.x, root.y, root.right, root.y, root.right,\
-        root.top, root.x, root.top, root.x, root.y], 1) if root.focus\
-        else root.anim_rect([root.x - dp(60), root.y - dp(60),\
+        root.anim_rect([root.x, root.y, root.right, root.y, root.right, \
+        root.top, root.x, root.top, root.x, root.y], 1) if root.focus \
+        else root.anim_rect([root.x - dp(60), root.y - dp(60), \
         root.right + dp(60), root.y - dp(60),
-        root.right + dp(60), root.top + dp(60),\
-        root.x - dp(60), root.top + dp(60),\
+        root.right + dp(60), root.top + dp(60), \
+        root.x - dp(60), root.top + dp(60), \
         root.x - dp(60), root.y - dp(60)], 0)
 
     canvas.after:
@@ -597,9 +625,9 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     and defaults to `'primary'`.
     """
 
-    mode = OptionProperty("line", options=["rectangle"])
+    mode = OptionProperty("line", options=["rectangle", "fill"])
     """
-    Text field mode. Available options are: `'line'`, `'rectangle'`.
+    Text field mode. Available options are: `'line'`, `'rectangle'`, `'fill'`.
 
     :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'line'`.
@@ -627,6 +655,23 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
     :attr:`error_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+    """
+
+    fill_color = ListProperty([0, 0, 0, 0])
+    """
+    The background color of the fill in rgba format when the ``mode`` parameter 
+    is "fill".
+
+    :attr:`fill_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
+    active_line = BooleanProperty(True)
+    """
+    Show active line or not.
+
+    :attr:`active_line` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
     """
 
     error = BooleanProperty(False)

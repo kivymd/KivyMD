@@ -3,8 +3,7 @@
 
 
 <TotalPriceForBoxBottomSheetProductList>
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     spacing: "10dp"
     total_price: ""
 
@@ -21,8 +20,7 @@
 
 
 <ToolbarForBoxBottomSheetProductList>
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     spacing: "10dp"
     callback: lambda x: x
     count_item: 0
@@ -64,25 +62,17 @@
 
 
 <BoxBottomSheet>
-    canvas:
-        Color:
-            rgba: gch(colors[root.theme_cls.primary_palette]["50"])
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [(25, 25), (0, 0), (0, 0), (0, 0)]
-
+    md_bg_color: gch(colors[root.theme_cls.primary_palette]["50"])
+    radius: [(25, 25), (0, 0), (0, 0), (0, 0)]
     size_hint: None, None
     width: "68dp"
     height: "68dp"
     padding: "10dp"
     pos_hint: {"bottom": 1, "right": 1}
-    md_bg_color: 0, 0, 0, 0
 
-    BoxLayout:
+    MDBoxLayout:
         id: previous_box
-        size_hint: None, None
-        size: self.minimum_size
+        adaptive_size: True
         spacing: "10dp"
         pos_hint: {"center_y": .5}
 

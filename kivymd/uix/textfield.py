@@ -379,7 +379,7 @@ Builder.load_string(
             size: 1, -self.line_height
 
         Color:
-            rgba: self._current_hint_text_color
+            rgba: self._current_hint_text_color if not self.current_hint_text_color else self.current_hint_text_color
         Rectangle:
             texture: self._hint_lbl.texture
             size: self._hint_lbl.texture_size
@@ -414,7 +414,7 @@ Builder.load_string(
             pos: self.x, self.y
             size: self.width, self.height + dp(8)
 
-    font_name: 'Roboto'
+    font_name: "Roboto" if not root.font_name else root.font_name
     foreground_color: app.theme_cls.text_color
     font_size: "16sp"
     bold: False
@@ -682,6 +682,14 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     and defaults to `False`.
     """
 
+    current_hint_text_color = ListProperty()
+    """
+    ``hint_text`` text color.
+
+    :attr:`current_hint_text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_hint_text = NumericProperty(0)
@@ -806,10 +814,13 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 ] - dp(
                     25
                 )
+            _fill_color = self.fill_color
+            _fill_color[3] = self.fill_color[3] - 0.1
             Animation(
                 _line_blank_space_right_hint_text=self._line_blank_space_right_hint_text,
                 _line_blank_space_left_hint_text=self._hint_lbl.x - dp(5),
                 _current_hint_text_color=self.line_color_focus,
+                fill_color=_fill_color,
                 duration=0.2,
                 t="out_quad",
             ).start(self)
@@ -881,6 +892,11 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                         _current_error_color=disabled_hint_text_color,
                     ).start(self)
         else:
+            _fill_color = self.fill_color
+            _fill_color[3] = self.fill_color[3] + 0.1
+            Animation(
+                fill_color=_fill_color, duration=0.2, t="out_quad",
+            ).start(self)
             if not self.text:
                 Animation(
                     _hint_y=dp(38),

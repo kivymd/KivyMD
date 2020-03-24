@@ -13,3 +13,4 @@ Unreleased
 * Add `radius` parameter to `BackgroundColorBehavior` class
 * Add `MDScreen` class
 * Add `MDFloatLayout` class
+* Added a `MDTextField` with `fill` mode

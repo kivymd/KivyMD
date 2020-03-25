@@ -135,6 +135,9 @@ class MDDropDownItem(ThemableBehavior, MDBoxLayout):
 
     current_item = StringProperty()
     """Current label of item MDDropDownItem class."""
+    
+    disabled = BooleanProperty(False)
+    """The menu will not open if disabled is True."""
 
     _center = BooleanProperty(True)
 
@@ -169,14 +172,15 @@ class MDDropDownItem(ThemableBehavior, MDBoxLayout):
     def set_item(self, name_item):
         self.ids.label_item.text = name_item
         self.current_item = name_item
-        self._drop_list.dismiss()
+        if self._drop_list:
+            self._drop_list.dismiss()
         self.dispatch("on_select", name_item)
 
     def on_select(self, value):
         pass
 
     def on_touch_down(self, touch):
-        if self.collide_point(touch.x, touch.y) and self._list_menu:
+        if self.collide_point(touch.x, touch.y) and self._list_menu and not self.disabled:
             self._drop_list = MDDropdownMenu(
                 _center=self._center,
                 items=self._list_menu,

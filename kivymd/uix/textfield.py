@@ -356,12 +356,13 @@ Builder.load_string(
             size: self._line_width, dp(2)
             pos: self.center_x - (self._line_width / 2), self.y + (dp(16) if root.mode != "fill" else 0)
 
+        # Helper text.
         Color:
             rgba: self._current_error_color
         Rectangle:
             texture: self._msg_lbl.texture
             size: self._msg_lbl.texture_size
-            pos: self.x, self.y
+            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y
 
         Color:
             rgba: self._current_right_lbl_color
@@ -378,6 +379,7 @@ Builder.load_string(
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height
 
+        # Hint text.
         Color:
             rgba: self._current_hint_text_color if not self.current_hint_text_color else self.current_hint_text_color
         Rectangle:

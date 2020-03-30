@@ -6,375 +6,764 @@ Components/Menu
 
     `Material Design spec, Menus <https://material.io/components/menus>`_
 
-Example
--------
+.. rubric:: Menus display a list of choices on temporary surfaces.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-previous.png
+    :align: center
+
+Usage
+-----
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
-    from kivy.factory import Factory
 
-    from kivymd.theming import ThemeManager
-    from kivymd.toast import toast
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu
 
-    Builder.load_string('''
-    # Here a compulsory import
-    #:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
-
-
-    <Menu@Screen>
+    KV = '''
+    Screen:
 
         MDRaisedButton:
-            size_hint: None, None
-            size: 3 * dp(48), dp(48)
-            text: 'Open menu'
-            opposite_colors: True
-            pos_hint: {'center_x': .2, 'center_y': .9}
-            on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
-
-        MDRaisedButton:
-            size_hint: None, None
-            size: 3 * dp(48), dp(48)
-            text: 'Open menu'
-            opposite_colors: True
-            pos_hint: {'center_x': .2, 'center_y': .1}
-            on_release:
-                MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
-
-        MDRaisedButton:
-            size_hint: None, None
-            size: 3 * dp(48), dp(48)
-            text: 'Open menu'
-            opposite_colors: True
-            pos_hint: {'center_x': .8, 'center_y': .1}
-            on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
-
-        MDRaisedButton:
-            size_hint: None, None
-            size: 3 * dp(48), dp(48)
-            text: 'Open menu'
-            opposite_colors: True
-            pos_hint: {'center_x': .8, 'center_y': .9}
-            on_release: MDDropdownMenu(items=app.menu_items, width_mult=3).open(self)
-
-        MDRaisedButton:
-            size_hint: None, None
-            size: 3 * dp(48), dp(48)
-            text: 'Open menu'
-            opposite_colors: True
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
-    ''')
+            id: button
+            text: "PRESS ME"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.menu.open()
+    '''
 
 
     class Test(MDApp):
-        menu_items = []
-
-        def callback_for_menu_items(self, *args):
-            toast(args[0])
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+            menu_items = [{"icon": "git", "text": f"Item {i}"} for i in range(5)]
+            self.menu = MDDropdownMenu(
+                caller=self.screen.ids.button, items=menu_items, width_mult=4
+            )
 
         def build(self):
-            self.menu_items = [
-                {
-                    "viewclass": "MDMenuItem",
-                    "text": "Example item %d" % i,
-                    "callback": self.callback_for_menu_items,
-                }
-                for i in range(15)
-            ]
-            return Factory.Menu()
+            return self.screen
 
 
     Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-usage.gif
+    :align: center
+
+.. Warning:: Do not create the :class:`~MDDropdownMenu` object when you open
+    the menu window. Because on a mobile device this one will be very slow!
+
+Wrong
+-----
+
+.. code-block:: python
+
+    menu = MDDropdownMenu(caller=self.screen.ids.button, items=menu_items)
+    menu.open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-wrong.gif
+    :align: center
+
+Customization of menu item
+--------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right.gif
+    :align: center
+
+You must create a new class that inherits from the :class:`~RightContent` class:
+
+.. code-block:: python
+
+    class RightContentCls(RightContent):
+        pass
+
+Now in the KV rule you can create your own elements that will be displayed in
+the menu item on the right:
+
+.. code-block:: kv
+
+    <RightContentCls>
+        disabled: True
+
+        MDIconButton:
+            icon: root.icon
+            user_font_size: "16sp"
+            pos_hint: {"center_y": .5}
+
+        MDLabel:
+            text: root.text
+            font_style: "Caption"
+            size_hint_x: None
+            width: self.texture_size[0]
+            text_size: None, None
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right-detail.png
+    :align: center
+
+Now create menu items as usual, but add the key ``right_content_cls`` whose
+value is the class ``RightContentCls`` that you created:
+
+.. code-block:: python
+
+    menu_items = [
+        {
+            "right_content_cls": RightContentCls(
+                text=f"R+{i}", icon="apple-keyboard-command",
+            ),
+            "icon": "git",
+            "text": f"Item {i}",
+        }
+        for i in range(5)
+    ]
+    self.menu = MDDropdownMenu(
+        caller=self.screen.ids.button, items=menu_items, width_mult=4
+    )
+
+Full example
+------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu, RightContent
+
+    KV = '''
+    <RightContentCls>
+        disabled: True
+
+        MDIconButton:
+            icon: root.icon
+            user_font_size: "16sp"
+            pos_hint: {"center_y": .5}
+
+        MDLabel:
+            text: root.text
+            font_style: "Caption"
+            size_hint_x: None
+            width: self.texture_size[0]
+            text_size: None, None
+
+
+    Screen:
+
+        MDRaisedButton:
+            id: button
+            text: "PRESS ME"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.menu.open()
+    '''
+
+
+    class RightContentCls(RightContent):
+        pass
+
+
+    class Test(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+            menu_items = [
+                {
+                    "right_content_cls": RightContentCls(
+                        text=f"R+{i}", icon="apple-keyboard-command",
+                    ),
+                    "icon": "git",
+                    "text": f"Item {i}",
+                }
+                for i in range(5)
+            ]
+            self.menu = MDDropdownMenu(
+                caller=self.screen.ids.button, items=menu_items, width_mult=4
+            )
+
+        def build(self):
+            return self.screen
+
+
+    Test().run()
+
+Menu with MDToolbar
+-------------------
+
+.. Warning:: The :class:`~MDDropdownMenu` does not work with the standard
+    :class:`~kivymd.uix.toolbar.MDToolbar`. You can use your own
+    ``CustomToolbar`` and bind the menu window output to its elements.
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu
+    from kivymd.theming import ThemableBehavior
+    from kivymd.uix.behaviors import RectangularElevationBehavior
+    from kivymd.uix.boxlayout import MDBoxLayout
+
+    KV = '''
+    <CustomToolbar>:
+        size_hint_y: None
+        height: self.theme_cls.standard_increment
+        padding: "5dp"
+        spacing: "12dp"
+
+        MDIconButton:
+            id: button_1
+            icon: "menu"
+            pos_hint: {"center_y": .5}
+            on_release: app.menu_1.open()
+
+        MDLabel:
+            text: "MDDropdownMenu"
+            pos_hint: {"center_y": .5}
+            size_hint_x: None
+            width: self.texture_size[0]
+            text_size: None, None
+            font_style: 'H6'
+
+        Widget:
+
+        MDIconButton:
+            id: button_2
+            icon: "dots-vertical"
+            pos_hint: {"center_y": .5}
+            on_release: app.menu_2.open()
+
+
+    Screen:
+
+        CustomToolbar:
+            id: toolbar
+            elevation: 10
+            pos_hint: {"top": 1}
+    '''
+
+
+    class CustomToolbar(
+        ThemableBehavior, RectangularElevationBehavior, MDBoxLayout,
+    ):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.md_bg_color = self.theme_cls.primary_color
+
+
+    class Test(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+            self.menu_1 = self.create_menu(
+                "Button menu", self.screen.ids.toolbar.ids.button_1
+            )
+            self.menu_2 = self.create_menu(
+                "Button dots", self.screen.ids.toolbar.ids.button_2
+            )
+
+        def create_menu(self, text, instance):
+            menu_items = [{"icon": "git", "text": text} for i in range(5)]
+            return MDDropdownMenu(caller=instance, items=menu_items, width_mult=5)
+
+        def build(self):
+            return self.screen
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-with-toolbar.gif
+    :align: center
+
+Position menu
+=============
+
+Bottom position
+---------------
+
+.. seealso::
+
+    :attr:`~MDDropdownMenu.position`
+
+.. code-block:: python
+
+    from kivy.clock import Clock
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu
+
+    KV = '''
+    Screen
+
+        MDTextField:
+            id: field
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            size_hint_x: None
+            width: "200dp"
+            hint_text: "Password"
+            on_focus: if self.focus: app.menu.open()
+    '''
+
+
+    class Test(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+            menu_items = [{"icon": "git", "text": f"Item {i}"} for i in range(5)]
+            self.menu = MDDropdownMenu(
+                caller=self.screen.ids.field,
+                items=menu_items,
+                position="bottom",
+                callback=self.set_item,
+                width_mult=4,
+            )
+
+        def set_item(self, instance):
+            def set_item(interval):
+                self.screen.ids.field.text = instance.text
+
+            Clock.schedule_once(set_item, 0.5)
+
+        def build(self):
+            return self.screen
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position.gif
+    :align: center
+
+Center position
+---------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu
+
+    KV = '''
+    Screen
+
+        MDDropDownItem:
+            id: drop_item
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            text: 'Item 0'
+            on_release: app.menu.open()
+    '''
+
+
+    class Test(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+            menu_items = [{"icon": "git", "text": f"Item {i}"} for i in range(5)]
+            self.menu = MDDropdownMenu(
+                caller=self.screen.ids.drop_item,
+                items=menu_items,
+                position="center",
+                callback=self.set_item,
+                width_mult=4,
+            )
+
+        def set_item(self, instance):
+            self.screen.ids.drop_item.set_item(instance.text)
+
+        def build(self):
+            return self.screen
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position-center.gif
+    :align: center
 """
+
+__all__ = (
+    "MDDropdownMenu",
+    "MDMenuItem",
+    "RightContent",
+)
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.recycleview import RecycleView
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.scrollview import ScrollView
 from kivy.metrics import dp
 from kivy.properties import (
     NumericProperty,
     ListProperty,
     OptionProperty,
     StringProperty,
-    BooleanProperty,
+    ObjectProperty,
 )
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
-
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.list import OneLineAvatarIconListItem, IRightBodyTouch
 
 Builder.load_string(
     """
 #:import STD_INC kivymd.material_resources.STANDARD_INCREMENT
 
 
+<RightContent>
+    adaptive_width: True
+
+
 <MDMenuItem>
-    size_hint: None, None
-    height: dp(48)
-    spacing: dp(16) if root.icon else 0  # Spec
-    padding: dp(16), 0
-    # Horrible, but hey it works.
-    on_release:
-        root.parent.parent.parent.parent.dispatch("on_dismiss")
-        root.callback(root.text)
+    _txt_top_pad: "8dp"
+    _txt_bot_pad: "16dp"
+    on_release: root.parent.parent.parent.parent.dispatch("on_dismiss")
 
-    MDIcon:
-        id: item_icon
-        icon: root.icon if root.icon else "blank"
-        size_hint_x: None
-        width: self.texture_size[0] if root.icon else 0
-        valign: 'middle'
-        halign: 'center'
+    IconLeftWidget:
+        icon: root.icon
+        pos_hint: {"center_y": .5}
 
-    MDLabel:
-        id: item_text
-        text: root.text
-        color: root.text_color if root.text_color else app.theme_cls.text_color
-        markup: True
-        halign: 'left'
 
 <MDMenu>
     size_hint: None, None
     width: root.width_mult * STD_INC
-    key_viewclass: 'viewclass'
-    key_size: 'height'
+    bar_width: 0
 
-    RecycleBoxLayout:
-        default_size: None, dp(48)
-        default_size_hint: 1, None
-        orientation: 'vertical'
-        size_hint_y: None
-        height: self.minimum_height
-        orientation: 'vertical'
+    MDGridLayout:
+        id: box
+        cols: 1
+        adaptive_height: True
 
 
 <MDDropdownMenu>
 
-    FloatLayout:
-        id: fl
+    MDCard:
+        id: card
+        elevation: 10
+        size_hint: None, None
+        size: md_menu.size
+        pos: md_menu.pos
+        md_bg_color: 0, 0, 0, 0
+        opacity: md_menu.opacity
+
+        canvas:
+            Color:
+                rgba: root.background_color if root.background_color else root.theme_cls.bg_dark
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [7,]
 
         MDMenu:
             id: md_menu
-            data: root.items
             width_mult: root.width_mult
             size_hint: None, None
             size: 0, 0
-
-            canvas.before:
-                Color:
-                    rgba: root.background_color
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
-            canvas.after:
-                Color:
-                    rgba: root.color_rectangle
-                Line:
-                    width: dp(root.width_rectangle)
-                    points:
-                        (
-                        self.x, self.y,
-                        self.right, self.y,
-                        self.right, self.top,
-                        self.x, self.top,
-                        self.x, self.y
-                        )
+            opacity: 0
 """
 )
 
 
-class MDMenuItem(RecycleDataViewBehavior, ButtonBehavior, BoxLayout):
+class RightContent(IRightBodyTouch, MDBoxLayout):
     text = StringProperty()
-    icon = StringProperty("")
-    text_color = ListProperty(None, allownone=True)
+    icon = StringProperty()
 
 
-class MDMenu(RecycleView):
+class MDMenuItem(OneLineAvatarIconListItem):
+    text = StringProperty()
+    icon = StringProperty()
+
+
+class MDMenu(ScrollView):
     width_mult = NumericProperty(1)
+    """
+    See :attr:`~MDDropdownMenu.width_mult`.
+    """
 
 
-class MDDropdownMenu(ThemableBehavior, BoxLayout):
+class MDDropdownMenu(ThemableBehavior, FloatLayout):
     items = ListProperty()
-    """See :attr:`~kivy.uix.recycleview.RecycleView.data`
+    """
+    See :attr:`~kivy.uix.recycleview.RecycleView.data`.
+
+    :attr:`items` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     width_mult = NumericProperty(1)
-    """This number multiplied by the standard increment (56dp on mobile,
+    """
+    This number multiplied by the standard increment (56dp on mobile,
     64dp on desktop, determines the width of the menu items.
 
     If the resulting number were to be too big for the application Window,
     the multiplier will be adjusted for the biggest possible one.
+
+    :attr:`width_mult` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
     """
 
     max_height = NumericProperty()
-    """The menu will grow no bigger than this number.
+    """
+    The menu will grow no bigger than this number. Set to 0 for no limit.
 
-    Set to 0 for no limit. Defaults to 0.
+    :attr:`max_height` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
     """
 
     border_margin = NumericProperty("4dp")
-    """Margin between Window border and menu
+    """
+    Margin between Window border and menu.
+
+    :attr:`border_margin` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `4dp`.
     """
 
     ver_growth = OptionProperty(None, allownone=True, options=["up", "down"])
-    """Where the menu will grow vertically to when opening
+    """
+    Where the menu will grow vertically to when opening. Set to None to let
+    the widget pick for you. Available options are: `'up'`, `'down'`.
 
-    Set to None to let the widget pick for you. Defaults to None.
+    :attr:`ver_growth` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
     """
 
     hor_growth = OptionProperty(None, allownone=True, options=["left", "right"])
-    """Where the menu will grow horizontally to when opening
+    """
+    Where the menu will grow horizontally to when opening. Set to None to let
+    the widget pick for you. Available options are: `'left'`, `'right'`.
 
-    Set to None to let the widget pick for you. Defaults to None.
+    :attr:`hor_growth` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
     """
 
     background_color = ListProperty()
-    """Color of the background of the menu
+    """
+    Color of the background of the menu.
+
+    :attr:`background_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
-    color_rectangle = ListProperty()
-    """Color of the rectangle of the menu
+    opening_transition = StringProperty("out_cubic")
+    """
+    Type of animation for opening a menu window.
+
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_cubic'`.
     """
 
-    width_rectangle = NumericProperty(2)
-    """Width of the rectangle of the menu
+    opening_time = NumericProperty(0.2)
+    """
+    Menu window opening animation time.
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
     """
 
-    _center = BooleanProperty(False)
+    caller = ObjectProperty()
+    """
+    The widget object that caller the menu window.
+
+    :attr:`caller` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    callback = ObjectProperty()
+    """
+    The method that will be called when you click menu items.
+
+    :attr:`callback` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    position = OptionProperty("auto", options=["auto", "center", "bottom"])
+    """
+    Menu window position relative to parent element.
+    Available options are: `'auto'`, `'center'`, `'bottom'`.
+
+    :attr:`position` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'auto'`.
+    """
+
+    _start_coords = []
+    _calculate_complete = False
+    _calculate_process = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_dismiss")
+        self.menu = self.ids.md_menu
+        Clock.schedule_once(self.set_menu_properties, 2)
 
-        if not len(self.background_color):
-            self.background_color = self.theme_cls.primary_color
-        if not len(self.color_rectangle):
-            self.color_rectangle = self.theme_cls.divider_color
+    def create_menu_items(self):
+        """Creates menu items."""
 
-    def open(self, *args):
-        if self.parent:
-            self.parent.remove_widget(self)
-        Window.add_widget(self)
-        Clock.schedule_once(lambda x: self.display_menu(args[0]), -1)
+        for data in self.items:
+            item = MDMenuItem(
+                text=data.get("text", ""),
+                icon=data.get("icon", ""),
+                divider=data.get("divider", "Full"),
+            )
+            if self.callback:
+                item.bind(on_release=self.callback)
+            right_content_cls = data.get("right_content_cls", None)
+            # Set right content.
+            if isinstance(right_content_cls, RightContent):
+                item.ids._right_container.width = right_content_cls.width + dp(
+                    20
+                )
+                item.ids._right_container.padding = ("10dp", 0, 0, 0)
+                item.add_widget(right_content_cls)
+            else:
+                item.ids._right_container.width = 0
+            self.menu.ids.box.add_widget(item)
 
-    def display_menu(self, caller):
+    def set_menu_properties(self, interval):
+        """Sets the size and position for the menu window."""
+
+        self.create_menu_items()
         # We need to pick a starting point, see how big we need to be,
         # and where to grow to.
-        c = caller.to_window(
-            caller.center_x, caller.center_y
-        )  # Starting coords
-
-        # TODO: ESTABLISH INITIAL TARGET SIZE ESTIMATE
-        target_width = self.width_mult * m_res.STANDARD_INCREMENT
-        # md_menu = self.ids.md_menu
-        # opts = md_menu.layout_manager.view_opts
-        # md_item = md_menu.view_adapter.get_view(1, md_menu.data[1],
-        #                                         opts[1]['viewclass'])
+        self._start_coords = self.caller.to_window(
+            self.caller.center_x, self.caller.center_y
+        )
+        self.target_width = self.width_mult * m_res.STANDARD_INCREMENT
 
         # If we're wider than the Window...
-        if target_width > Window.width:
+        if self.target_width > Window.width:
             # ...reduce our multiplier to max allowed.
-            target_width = (
+            self.target_width = (
                 int(Window.width / m_res.STANDARD_INCREMENT)
                 * m_res.STANDARD_INCREMENT
             )
 
-        target_height = sum([dp(48) for i in self.items])
+        self.target_height = sum([dp(48) for i in self.items])
         # If we're over max_height...
-        if 0 < self.max_height < target_height:
-            target_height = self.max_height
+        if 0 < self.max_height < self.target_height:
+            self.target_height = self.max_height
 
-        # ---ESTABLISH VERTICAL GROWTH DIRECTION---
+        # Establish vertical growth direction.
         if self.ver_growth is not None:
             ver_growth = self.ver_growth
         else:
             # If there's enough space below us:
-            if target_height <= c[1] - self.border_margin:
+            if self.target_height <= self._start_coords[1] - self.border_margin:
                 ver_growth = "down"
             # if there's enough space above us:
-            elif target_height < Window.height - c[1] - self.border_margin:
+            elif (
+                self.target_height
+                < Window.height - self._start_coords[1] - self.border_margin
+            ):
                 ver_growth = "up"
-            # otherwise, let's pick the one with more space and adjust ourselves
+            # Otherwise, let's pick the one with more space and adjust ourselves.
             else:
-                # if there's more space below us:
-                if c[1] >= Window.height - c[1]:
+                # If there"s more space below us:
+                if (
+                    self._start_coords[1]
+                    >= Window.height - self._start_coords[1]
+                ):
                     ver_growth = "down"
-                    target_height = c[1] - self.border_margin
-                # if there's more space above us:
+                    self.target_height = (
+                        self._start_coords[1] - self.border_margin
+                    )
+                # If there's more space above us:
                 else:
                     ver_growth = "up"
-                    target_height = Window.height - c[1] - self.border_margin
+                    self.target_height = (
+                        Window.height
+                        - self._start_coords[1]
+                        - self.border_margin
+                    )
 
         if self.hor_growth is not None:
             hor_growth = self.hor_growth
         else:
             # If there's enough space to the right:
-            if target_width <= Window.width - c[0] - self.border_margin:
+            if (
+                self.target_width
+                <= Window.width - self._start_coords[0] - self.border_margin
+            ):
                 hor_growth = "right"
             # if there's enough space to the left:
-            elif target_width < c[0] - self.border_margin:
+            elif self.target_width < self._start_coords[0] - self.border_margin:
                 hor_growth = "left"
-            # otherwise, let's pick the one with more space and adjust ourselves
+            # Otherwise, let's pick the one with more space and adjust ourselves.
             else:
-                # if there's more space to the right:
-                if Window.width - c[0] >= c[0]:
+                # if there"s more space to the right:
+                if (
+                    Window.width - self._start_coords[0]
+                    >= self._start_coords[0]
+                ):
                     hor_growth = "right"
-                    target_width = Window.width - c[0] - self.border_margin
-                # if there's more space to the left:
+                    self.target_width = (
+                        Window.width
+                        - self._start_coords[0]
+                        - self.border_margin
+                    )
+                # if there"s more space to the left:
                 else:
                     hor_growth = "left"
-                    target_width = c[0] - self.border_margin
+                    self.target_width = (
+                        self._start_coords[0] - self.border_margin
+                    )
 
         if ver_growth == "down":
-            tar_y = c[1] - target_height
-        else:  # should always be 'up'
-            tar_y = c[1]
+            self.tar_y = self._start_coords[1] - self.target_height
+        else:  # should always be "up"
+            self.tar_y = self._start_coords[1]
 
         if hor_growth == "right":
-            tar_x = c[0]
-        else:  # should always be 'left'
-            tar_x = c[0] - target_width
+            self.tar_x = self._start_coords[0]
+        else:  # should always be "left"
+            self.tar_x = self._start_coords[0] - self.target_width
+        self._calculate_complete = True
 
-        menu = self.ids.md_menu
-        if not self._center:
-            anim = Animation(
-                x=tar_x,
-                y=tar_y,
-                width=target_width,
-                height=target_height,
-                duration=0.3,
-                transition="out_quint",
-            )
-            menu.pos = c
-            anim.start(menu)
-        else:
-            menu.width = target_width
-            menu.height = target_height
-            menu.pos = (c[0] - target_width / 2, c[1] - target_height / 2)
+    def open(self):
+        """Animate the opening of a menu window."""
 
-            # TODO: Add the ability to set the list to the current user selection.
-            """
-            for data in menu.data:
-                if data["text"] == caller.ids.label_item.text:
-                    opts = menu.layout_manager.view_opts
-                    item = menu.view_adapter.get_view(1, data, opts[1]["viewclass"])
-                    # AttributeError: 'function' object has no attribute 'is_triggered'
-                    # https://github.com/kivy/kivy/issues/5014
-                    # Attempt to fix - https://github.com/Bakterija/log_fruit/blob/dev/src/app_modules/widgets/app_recycleview/recycleview.py#L25-L34
-                    menu.scroll_to(item)
-                    break
-            """
+        def open(interval):
+            if not self._calculate_complete:
+                return
+            if self.position == "auto":
+                self.menu.pos = self._start_coords
+                anim = Animation(
+                    x=self.tar_x,
+                    y=self.tar_y,
+                    width=self.target_width,
+                    height=self.target_height,
+                    duration=self.opening_time,
+                    opacity=1,
+                    transition=self.opening_transition,
+                )
+                anim.start(self.menu)
+            else:
+                if self.position == "center":
+                    self.menu.pos = (
+                        self._start_coords[0] - self.target_width / 2,
+                        self._start_coords[1] - self.target_height / 2,
+                    )
+                elif self.position == "bottom":
+                    self.menu.pos = (
+                        self._start_coords[0] - self.target_width / 2,
+                        self.caller.pos[1] - self.target_height,
+                    )
+                anim = Animation(
+                    width=self.target_width,
+                    height=self.target_height,
+                    duration=self.opening_time,
+                    opacity=1,
+                    transition=self.opening_transition,
+                )
+            anim.start(self.menu)
+            Window.add_widget(self)
+            Clock.unschedule(open)
+            self._calculate_process = False
+
+        if not self._calculate_process:
+            self._calculate_process = True
+            Clock.schedule_interval(open, 0)
 
     def on_touch_down(self, touch):
-        if not self.ids.md_menu.collide_point(*touch.pos):
+        if not self.menu.collide_point(*touch.pos):
             self.dispatch("on_dismiss")
             return True
         super().on_touch_down(touch)
@@ -390,6 +779,9 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
 
     def on_dismiss(self):
         Window.remove_widget(self)
+        self.menu.width = 0
+        self.menu.height = 0
+        self.menu.opacity = 0
 
     def dismiss(self):
         self.on_dismiss()

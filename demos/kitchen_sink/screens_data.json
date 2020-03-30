@@ -26,7 +26,8 @@
   },
   'Dropdown Item': {
       'kv_string': 'drop_item',
-      'Factory': 'Factory.MDDropItem()',
+      'Factory': 'MDDropItem()',
+      'Import': 'from libs.baseclass.drop_item import MDDropItem',
       'name_screen': 'drop item',
       'source_code': 'Components-DropDownItem.md',
       'object': 0,

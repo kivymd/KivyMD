@@ -160,6 +160,8 @@ and more information:
 You don't need to `#:import` them. Remove all your imports from kv files.
 * Replaced `MDAccordion` and `MDAccordionListItem` with `MDExpansionPanel`.
 * [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
+* [Changed the use of the MDDropdownMenu panel](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
+* [Changed the use of the MDDropDownItem panel](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
 * Changed font styles:
 
 | Old      | New       |

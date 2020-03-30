@@ -14,3 +14,5 @@ Unreleased
 * Add `MDScreen` class
 * Add `MDFloatLayout` class
 * Added a `MDTextField` with `fill` mode
+* Added a shadow, increased speed of opening, added the feature to control the position of the `MDDropdownMenu` class
+* The `MDDropDownItem` class is now a regular element, such as a button

@@ -425,10 +425,10 @@ Builder.load_string(
         0 if root.mode != "fill" else "8dp", \
         "16dp" if root.mode != "fill" else "24dp", \
         0 if root.mode != "fill" else "8dp", \
-        "20dp" if root.mode == "fill" else "10dp"
+        "16dp" if root.mode == "fill" else "10dp"
     multiline: False
     size_hint_y: None
-    height: self.minimum_height + dp(8)
+    height: self.minimum_height + (dp(8) if root.mode != "fill" else 0)
 
 
 <TextfieldLabel>

@@ -412,9 +412,10 @@ Builder.load_string(
     canvas.after:
         Color:
             rgba: root.fill_color if root.mode == "fill" else (0, 0, 0, 0)
-        Rectangle:
+        RoundedRectangle:
             pos: self.x, self.y
             size: self.width, self.height + dp(8)
+            radius: [10, 10, 0, 0, 0]
 
     font_name: "Roboto" if not root.font_name else root.font_name
     foreground_color: app.theme_cls.text_color

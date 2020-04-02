@@ -297,6 +297,44 @@ Control background color
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-active-color.gif
     :align: center
 
+With right icon
+---------------
+
+.. Note:: The icon on the right is available for use in all text fields.
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Name"
+        mode: "fill"
+        fill_color: 0, 0, 0, .4
+        icon_right: "arrow-down-drop-circle-outline"
+        icon_right_color: app.theme_cls.primary_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-mode-icon.png
+    :align: center
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Name"
+        icon_right: "arrow-down-drop-circle-outline"
+        icon_right_color: app.theme_cls.primary_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-right-icon.png
+    :align: center
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Name"
+        mode: "rectangle"
+        icon_right: "arrow-down-drop-circle-outline"
+        icon_right_color: app.theme_cls.primary_color
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-rectangle-right-icon.png
+    :align: center
+
 .. seealso::
 
     See more information in the :class:`~MDTextFieldRect` class.
@@ -364,6 +402,18 @@ Builder.load_string(
             size: self._msg_lbl.texture_size
             pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y
 
+        # Texture of right Icon.
+        Color:
+            rgba: self.icon_right_color
+        Rectangle:
+            texture: self._lbl_icon_right.texture
+            size: self._lbl_icon_right.texture_size if self.icon_right else (0, 0)
+            pos:
+                (self.width + self.x) - (self._lbl_icon_right.texture_size[1]) - dp(8), \
+                self.center[1] - self._lbl_icon_right.texture_size[1] / 2 + (dp(8) if root.mode != "fill" else 0) \
+                if root.mode != "rectangle" else \
+                self.center[1] - self._lbl_icon_right.texture_size[1] / 2 - dp(4)
+
         Color:
             rgba: self._current_right_lbl_color
         Rectangle:
@@ -424,7 +474,7 @@ Builder.load_string(
     padding:
         0 if root.mode != "fill" else "8dp", \
         "16dp" if root.mode != "fill" else "24dp", \
-        0 if root.mode != "fill" else "8dp", \
+        0 if root.mode != "fill" and not root.icon_right else ("14dp" if not root.icon_right else self._lbl_icon_right.texture_size[1] + dp(20)), \
         "16dp" if root.mode == "fill" else "10dp"
     multiline: False
     size_hint_y: None
@@ -693,6 +743,20 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
     and defaults to `[]`.
     """
 
+    icon_right = StringProperty()
+    """Right icon.
+
+    :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    icon_right_color = ListProperty([0, 0, 0, 1])
+    """Color of right icon in ``rgba`` format.
+
+    :attr:`icon_right_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 1]`.
+    """
+
     _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_hint_text = NumericProperty(0)
@@ -722,6 +786,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         self._hint_lbl = TextfieldLabel(
             font_style="Subtitle1", halign="left", valign="middle", field=self
         )
+        self._lbl_icon_right = MDIcon(theme_text_color="Custom")
         super().__init__(**kwargs)
         self.line_color_normal = self.theme_cls.divider_color
         self.line_color_focus = self.theme_cls.primary_color
@@ -775,6 +840,12 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                         self.theme_cls.disabled_hint_text_color
                     )
 
+    def on_icon_right(self, instance, value):
+        self._lbl_icon_right.icon = value
+
+    def on_icon_right_color(self, instance, value):
+        self._lbl_icon_right.text_color = value
+
     def on_width(self, instance, width):
         if (
             any([self.focus, self.error, self._text_len_error])
@@ -817,6 +888,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 ] - dp(
                     25
                 )
+                print(self._line_blank_space_right_hint_text)
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1
             Animation(

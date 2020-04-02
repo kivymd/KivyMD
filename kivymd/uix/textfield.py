@@ -399,8 +399,10 @@ Builder.load_string(
             rgba: self._current_error_color
         Rectangle:
             texture: self._msg_lbl.texture
-            size: self._msg_lbl.texture_size
-            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y
+            size:
+                self._msg_lbl.texture_size[0] - (dp(3) if root.mode in ("fill", "rectangle") else 0), \
+                self._msg_lbl.texture_size[1] - (dp(3) if root.mode in ("fill", "rectangle") else 0)
+            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y + (dp(3) if root.mode in ("fill", "rectangle") else 0)
 
         # Texture of right Icon.
         Color:

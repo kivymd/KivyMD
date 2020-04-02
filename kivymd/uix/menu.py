@@ -636,7 +636,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 * m_res.STANDARD_INCREMENT
             )
 
-        self.target_height = sum([dp(48) for i in self.items])
+        self.target_height = sum([dp(56) for i in self.items])
         # If we're over max_height...
         if 0 < self.max_height < self.target_height:
             self.target_height = self.max_height

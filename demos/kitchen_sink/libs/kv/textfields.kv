@@ -43,9 +43,22 @@
                     mode: "rectangle"
 
                 MDTextField:
+                    hint_text: "With right icon"
+                    mode: "rectangle"
+                    fill_color: 0, 0, 0, .4
+                    icon_right: "arrow-down-drop-circle-outline"
+                    icon_right_color: app.theme_cls.disabled_hint_text_color
+
+                MDTextField:
                     hint_text: "Fill mode"
                     mode: "fill"
                     fill_color: 0, 0, 0, .4
+
+                MDTextField:
+                    hint_text: "With right icon"
+                    mode: "fill"
+                    fill_color: 0, 0, 0, .4
+                    icon_right: "arrow-down-drop-circle-outline"
 
                 MDTextField:
                     input_filter: "int"
@@ -53,6 +66,11 @@
 
                 MDTextField:
                     hint_text: "No helper text"
+
+                MDTextField:
+                    hint_text: "With right icon"
+                    icon_right: "arrow-down-drop-circle-outline"
+                    icon_right_color: app.theme_cls.disabled_hint_text_color
 
                 MDTextField:
                     hint_text: "Helper text on focus"

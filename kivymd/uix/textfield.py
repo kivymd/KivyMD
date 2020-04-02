@@ -888,7 +888,6 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
                 ] - dp(
                     25
                 )
-                print(self._line_blank_space_right_hint_text)
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1
             Animation(

@@ -420,6 +420,114 @@ End full code
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/handdelete-mdcard-swipe.gif
     :align: center
+
+Focus behavior
+-------------
+
+.. code-block:: kv
+
+    MDCard:
+        focus_behavior: True
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-focus.gif
+    :align: center
+
+Ripple behavior
+---------------
+
+.. code-block:: kv
+
+    MDCard:
+        ripple_behavior: True
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-behavior.gif
+    :align: center
+
+End full code
+-------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    <StarButton@MDIconButton>
+        icon: "star"
+        on_release: self.icon = "star-outline" if self.icon == "star" else "star"
+
+
+    Screen:
+
+        MDCard:
+            orientation: "vertical"
+            size_hint: .5, None
+            height: box_top.height + box_bottom.height
+            focus_behavior: True
+            ripple_behavior: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDBoxLayout:
+                id: box_top
+                spacing: "20dp"
+                adaptive_height: True
+
+                FitImage:
+                    source: "/Users/macbookair/album.jpeg"
+                    size_hint: .3, None
+                    height: text_box.height
+
+                MDBoxLayout:
+                    id: text_box
+                    orientation: "vertical"
+                    adaptive_height: True
+                    spacing: "10dp"
+                    padding: 0, "10dp", "10dp", "10dp"
+
+                    MDLabel:
+                        text: "Ride the Lightning"
+                        theme_text_color: "Primary"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                    MDLabel:
+                        text: "July 27, 1984"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        theme_text_color: "Primary"
+
+            MDSeparator:
+
+            MDBoxLayout:
+                id: box_bottom
+                adaptive_height: True
+                padding: "10dp", 0, 0, 0
+
+                MDLabel:
+                    text: "Rate this album"
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    pos_hint: {"center_y": .5}
+                    theme_text_color: "Primary"
+
+                StarButton:
+                StarButton:
+                StarButton:
+                StarButton:
+                StarButton:
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+
+    Test().run()
 """
 
 __all__ = (
@@ -430,6 +538,7 @@ __all__ = (
     "MDSeparator",
 )
 
+from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import (
@@ -437,6 +546,7 @@ from kivy.properties import (
     ListProperty,
     NumericProperty,
     OptionProperty,
+    BooleanProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.metrics import dp
@@ -445,6 +555,8 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
     BackgroundColorBehavior,
+    RectangularRippleBehavior,
+    FocusBehavior,
 )
 from kivymd.theming import ThemableBehavior
 
@@ -511,22 +623,51 @@ class MDCard(
     ThemableBehavior,
     BackgroundColorBehavior,
     RectangularElevationBehavior,
+    RectangularRippleBehavior,
+    FocusBehavior,
     BoxLayout,
 ):
 
     border_radius = NumericProperty("3dp")
-    """Card border radius.
+    """
+    Card border radius.
 
     :attr:`border_radius` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `'3dp'`.
     """
 
     background = StringProperty()
-    """Background image path.
+    """
+    Background image path.
     
     :attr:`background` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
+
+    focus_behavior = BooleanProperty(False)
+    """
+    Using focus when hovering over a card.
+
+    :attr:`focus_behavior` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    ripple_behavior = BooleanProperty(False)
+    """
+    Use ripple effect for card.
+
+    :attr:`ripple_behavior` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(
+            lambda x: self._on_ripple_behavior(0, self.ripple_behavior)
+        )
+
+    def _on_ripple_behavior(self, instance, value):
+        self._no_ripple_effect = False if value else True
 
 
 class MDCardSwipe(RelativeLayout):

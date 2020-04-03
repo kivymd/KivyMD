@@ -241,10 +241,9 @@ class BaseDialog(ThemableBehavior, ModalView):
         else:  # create buttons for Android
             if isinstance(instance_content_dialog, ContentInputDialog):
                 self.text_field = MDTextField(
-                    size_hint=(1, None),
-                    height=dp(48),
-                    hint_text=instance_content_dialog.hint_text,
+                    size_hint=(1, None), height=dp(48)
                 )
+                self.text_field.hint_text = instance_content_dialog.hint_text
                 instance_content_dialog.ids.box_input.height = dp(48)
                 instance_content_dialog.ids.box_input.add_widget(
                     self.text_field

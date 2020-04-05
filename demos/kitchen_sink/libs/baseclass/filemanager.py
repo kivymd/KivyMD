@@ -8,6 +8,8 @@ class KitchenSinkFileManager(Screen):
     file_manager = None
 
     def file_manager_open(self):
+        from kivy.app import App
+
         from kivymd.uix.filemanager import MDFileManager
         from kivymd.uix.dialog import MDDialog
 
@@ -19,7 +21,7 @@ class KitchenSinkFileManager(Screen):
                     select_path=self.select_path,
                 )
             self.file_manager.previous = previous
-            self.file_manager.show(os.getcwd())
+            self.file_manager.show(App.get_running_app().user_data_dir)
             self.manager_open = True
 
         MDDialog(

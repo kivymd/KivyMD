@@ -416,6 +416,7 @@ from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 from kivymd.font_definitions import theme_font_styles
 from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.selectioncontrol import MDCheckbox
 
 Builder.load_string(
     """
@@ -984,4 +985,8 @@ class IconRightWidget(IRightBodyTouch, MDIconButton):
 
 
 class IconLeftWidget(ILeftBodyTouch, MDIconButton):
+    pass
+
+
+class CheckboxRightWidget(ILeftBodyTouch, MDCheckbox):
     pass

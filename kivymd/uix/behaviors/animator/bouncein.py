@@ -39,9 +39,7 @@ class BounceInAnimator(Animator):
 
         anim += Animation(d=self.duration / 3, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class BounceInDownAnimator(Animator):
@@ -79,9 +77,7 @@ class BounceInDownAnimator(Animator):
 
         anim += Animation(d=self.duration / 3, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class BounceInLeftAnimator(Animator):
@@ -119,9 +115,7 @@ class BounceInLeftAnimator(Animator):
 
         anim += Animation(d=self.duration / 3, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class BounceInRightAnimator(Animator):
@@ -158,9 +152,7 @@ class BounceInRightAnimator(Animator):
 
         anim += Animation(d=self.duration / 3, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class BounceInUpAnimator(Animator):
@@ -197,6 +189,4 @@ class BounceInUpAnimator(Animator):
 
         anim += Animation(d=self.duration / 3, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

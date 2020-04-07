@@ -27,9 +27,7 @@ class FadeInAnimator(Animator):
         ]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeInDownAnimator(Animator):
@@ -49,9 +47,7 @@ class FadeInDownAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeInLeftAnimator(Animator):
@@ -71,9 +67,7 @@ class FadeInLeftAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeInRightAnimator(Animator):
@@ -93,9 +87,7 @@ class FadeInRightAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeInUpAnimator(Animator):
@@ -115,6 +107,4 @@ class FadeInUpAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

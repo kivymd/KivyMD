@@ -25,9 +25,7 @@ class SlideOutDownAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SlideOutLeftAnimator(Animator):
@@ -44,9 +42,7 @@ class SlideOutLeftAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SlideOutRightAnimator(Animator):
@@ -63,9 +59,7 @@ class SlideOutRightAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SlideOutUpAnimator(Animator):
@@ -82,6 +76,4 @@ class SlideOutUpAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

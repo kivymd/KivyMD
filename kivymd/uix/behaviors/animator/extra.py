@@ -22,9 +22,7 @@ class FlyOutAnimator(Animator):
         vals = [self._original["height"] * 2, self._original["width"] * 2, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FlyInAnimator(Animator):
@@ -36,9 +34,7 @@ class FlyInAnimator(Animator):
         vals = [self._original["height"], self._original["width"], 1]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class DropOutAnimator(Animator):
@@ -56,9 +52,7 @@ class DropOutAnimator(Animator):
 
         anim = Animation(t="out_bounce", d=self.duration, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class HingLeftAnimator(Animator):
@@ -84,9 +78,7 @@ class HingLeftAnimator(Animator):
             t="out_sine", d=self.duration, **dict(zip(props, vals))
         )
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class HingRightAnimator(Animator):
@@ -115,9 +107,7 @@ class HingRightAnimator(Animator):
             t="out_sine", d=self.duration, **dict(zip(props, vals))
         )
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RollInAnimator(Animator):
@@ -137,9 +127,7 @@ class RollInAnimator(Animator):
         vals = [self._original["angle"], 1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RollOutAnimator(Animator):
@@ -155,6 +143,4 @@ class RollOutAnimator(Animator):
         vals = [-90, 0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

@@ -19,9 +19,7 @@ class RotateOutAnimator(Animator):
         vals = [-200, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RotateOutDownLeftAnimator(Animator):
@@ -33,9 +31,7 @@ class RotateOutDownLeftAnimator(Animator):
         vals = [-90, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RotateOutDownRightAnimator(Animator):
@@ -47,9 +43,7 @@ class RotateOutDownRightAnimator(Animator):
         vals = [90, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RotateOutUpLeftAnimator(Animator):
@@ -61,9 +55,7 @@ class RotateOutUpLeftAnimator(Animator):
         vals = [90, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RotateOutUpRightAnimator(Animator):
@@ -75,6 +67,4 @@ class RotateOutUpRightAnimator(Animator):
         vals = [-90, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

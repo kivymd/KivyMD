@@ -28,9 +28,7 @@ class SlideInDownAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SlideInLeftAnimator(Animator):
@@ -50,9 +48,7 @@ class SlideInLeftAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SlideInRightAnimator(Animator):
@@ -72,9 +68,7 @@ class SlideInRightAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SlideInUpAnimator(Animator):
@@ -94,6 +88,4 @@ class SlideInUpAnimator(Animator):
         vals = [1, self._original["pos_hint"]]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

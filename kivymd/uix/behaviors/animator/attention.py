@@ -22,9 +22,7 @@ class FlashAnimator(Animator):
         anim += Animation(t="linear", d=self.duration / 4, opacity=0)
         anim += Animation(t="linear", d=self.duration / 4, opacity=1)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class PulseAnimator(Animator):
@@ -37,9 +35,7 @@ class PulseAnimator(Animator):
         )
         anim += Animation(t="out_circ", d=self.duration / 2, **self._original)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class RubberBandAnimator(Animator):
@@ -63,9 +59,7 @@ class RubberBandAnimator(Animator):
 
         anim += Animation(t="out_circ", d=self.duration / 4, **self._original)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class ShakeAnimator(Animator):
@@ -173,9 +167,7 @@ class ShakeAnimator(Animator):
 
         anim += Animation(t="out_circ", d=self.duration / 10, **self._original)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class SwingAnimator(Animator):
@@ -202,9 +194,7 @@ class SwingAnimator(Animator):
 
         anim += Animation(t="out_circ", d=self.duration / 7, **self._original)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class WobbleAnimator(Animator):
@@ -258,9 +248,7 @@ class WobbleAnimator(Animator):
 
         anim += Animation(t="out_circ", d=self.duration / 6, **self._original)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class TadaAnimator(Animator):
@@ -325,9 +313,7 @@ class TadaAnimator(Animator):
 
         anim += Animation(t="out_circ", d=self.duration / 9, **self._original,)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class WaveAnimator(Animator):
@@ -348,6 +334,4 @@ class WaveAnimator(Animator):
 
         anim += Animation(d=self.duration / 5, **self._original)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

@@ -27,9 +27,7 @@ class FadeOutAnimator(Animator):
         ]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeOutDownAnimator(Animator):
@@ -46,9 +44,7 @@ class FadeOutDownAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeOutLeftAnimator(Animator):
@@ -65,9 +61,7 @@ class FadeOutLeftAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeOutRightAnimator(Animator):
@@ -84,9 +78,7 @@ class FadeOutRightAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class FadeOutUpAnimator(Animator):
@@ -103,6 +95,4 @@ class FadeOutUpAnimator(Animator):
         vals = [0, __tmp]
         anim = Animation(d=self.duration, **dict(zip(props, vals)),)
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

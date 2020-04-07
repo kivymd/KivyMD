@@ -19,9 +19,7 @@ class ZoomOutAnimator(Animator):
         vals = [self._original["height"] * 0, self._original["width"] * 0, 0]
         anim = Animation(d=self.duration, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class ZoomOutDownAnimator(Animator):
@@ -56,9 +54,7 @@ class ZoomOutDownAnimator(Animator):
         ]
         anim += Animation(d=self.duration / 2, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class ZoomOutLeftAnimator(Animator):
@@ -93,9 +89,7 @@ class ZoomOutLeftAnimator(Animator):
         ]
         anim += Animation(d=self.duration / 2, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class ZoomOutRightAnimator(Animator):
@@ -130,9 +124,7 @@ class ZoomOutRightAnimator(Animator):
         ]
         anim += Animation(d=self.duration / 2, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)
 
 
 class ZoomOutUpAnimator(Animator):
@@ -167,6 +159,4 @@ class ZoomOutUpAnimator(Animator):
         ]
         anim += Animation(d=self.duration / 2, **dict(zip(props, vals)))
 
-        anim.cancel_all(self.widget)
-        anim.start(self.widget)
-        anim.bind(on_complete=partial(self.anim_complete, self))
+        self._animate(anim)

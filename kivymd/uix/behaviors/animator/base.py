@@ -35,26 +35,9 @@ class Animator:
         self._original = {}
         self.attr = ["opacity", "height", "width", "pos_hint", "angle"]
 
-        """
-		setattr(self.widget, "origin_", None)
-		setattr(self.widget, "angle", 0)
-		setattr(self.widget, "axis", tuple((0,0,1)))
-		
-		with widget.canvas.before:
-			PushMatrix()
-			dsh= {
-				"axis":getattr(self.widget, "axis"),
-				"angle": getattr(self.widget, "angle"),
-				"origin": getattr(self.widget, "origin_") or getattr(self.widget, "center")
-			}
-			print(dsh)
-			Rotate(
-			**dsh
-			)
-			PopMatrix()
-		#with widget.canvas.after:
-		#	PopMatrix()
-		"""
+        setattr(self.widget, "origin_", "")
+        setattr(self.widget, "angle", 0)
+        setattr(self.widget, "axis", tuple((0, 0, 1)))
 
         for key in self.attr:
             self._original[key] = getattr(self.widget, key)
@@ -64,6 +47,7 @@ class Animator:
         if obj._repeat:
             for key, val in obj._original.items():
                 setattr(widget, key, val)
+            obj._update_canvas()
 
             inst.unbind(on_complete=obj.anim_complete)
             time.sleep(0.3)  # just to make repeatition visually clear
@@ -75,3 +59,26 @@ class Animator:
     def _initialize(self, **kwargs):
         for key, val in kwargs.items():
             setattr(self.widget, key, val)
+        self._update_canvas()
+
+    def _animate(self, anim_obj):
+        self._update_canvas()  # this is to reset any previous animation value
+        anim_obj.cancel_all(self.widget)
+        anim_obj.bind(on_progress=self._update_canvas)
+        anim_obj.bind(on_complete=partial(self.anim_complete, self))
+        anim_obj.start(self.widget)
+
+    def _update_canvas(self, *args):
+        self.widget.canvas.before.remove_group("animator_group")
+        with self.widget.canvas.before:
+            PushMatrix(group="animator_group")
+            dsh = {
+                "axis": getattr(self.widget, "axis"),
+                "angle": getattr(self.widget, "angle"),
+                "origin": getattr(self.widget, "origin_")
+                or getattr(self.widget, "center"),
+            }
+            Rotate(**dsh, group="animator_group")
+        self.widget.canvas.after.remove_group("animator_group")
+        with self.widget.canvas.after:
+            PopMatrix(group="animator_group")

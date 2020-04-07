@@ -623,9 +623,9 @@ class MDCard(
     ThemableBehavior,
     BackgroundColorBehavior,
     RectangularElevationBehavior,
-    RectangularRippleBehavior,
     FocusBehavior,
     BoxLayout,
+    RectangularRippleBehavior,
 ):
 
     border_radius = NumericProperty("3dp")

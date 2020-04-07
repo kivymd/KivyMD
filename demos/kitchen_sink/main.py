@@ -158,31 +158,15 @@ class KitchenSinkApp(MDApp):
         instance.add_widget(box)
         Clock.schedule_once(show_demo_shrine, 1)
 
-    def add_expansion_panel(self, card, box):
+    def add_expansion_panel(self, card):
         content = KitchenSinkExpansionPanelContent()
         card.add_widget(
             MDExpansionPanel(
-                on_open=lambda x, y: self.panel_open(box, content),
-                on_close=lambda x, y: self.panel_close(box, content),
                 icon=f"{os.environ['KITCHEN_SINK_ASSETS']}avatar.png",
                 content=content,
                 panel_cls=MDExpansionPanelOneLine(text="KivyMD v.0.102.1"),
             )
         )
-
-    def panel_open(self, box, content):
-        Animation(
-            height=(box.height + content.height)
-            - self.theme_cls.standard_increment * 2,
-            d=0.2,
-        ).start(box)
-
-    def panel_close(self, box, content):
-        Animation(
-            height=(box.height - content.height)
-            + self.theme_cls.standard_increment * 2,
-            d=0.2,
-        ).start(box)
 
 
 KitchenSinkApp().run()

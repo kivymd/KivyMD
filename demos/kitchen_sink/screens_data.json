@@ -134,8 +134,8 @@
   },
   'Dialogs': {
       'kv_string': 'dialogs',
-      'Import': 'from libs.baseclass.dialogs import KitchenSinkCDialogs',
-      'Factory': 'KitchenSinkCDialogs()',
+      'Import': 'from libs.baseclass.dialogs import KitchenSinkDialogs',
+      'Factory': 'KitchenSinkDialogs()',
       'name_screen': 'dialogs',
       'source_code': 'Components-Dialog.md',
       'object': 0,

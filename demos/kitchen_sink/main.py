@@ -2,7 +2,6 @@ import ast
 import os
 import sys
 
-from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.factory import Factory
 from kivy.core.window import Window

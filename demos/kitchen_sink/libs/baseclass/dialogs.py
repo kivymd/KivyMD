@@ -71,13 +71,16 @@ class KitchenSinkDialogs(Screen):
                 type="simple",
                 items=[
                     KitchenSinkOneLineLeftAvatarItem(
-                        text="user01@gmail.com", source=f"{os.environ['KITCHEN_SINK_ASSETS']}heattheatr.png"
+                        text="user01@gmail.com",
+                        source=f"{os.environ['KITCHEN_SINK_ASSETS']}heattheatr.png",
                     ),
                     KitchenSinkOneLineLeftAvatarItem(
-                        text="user02@gmail.com", source=f"{os.environ['KITCHEN_SINK_ASSETS']}mountaino.png"
+                        text="user02@gmail.com",
+                        source=f"{os.environ['KITCHEN_SINK_ASSETS']}mountaino.png",
                     ),
                     KitchenSinkOneLineLeftAvatarItem(
-                        text="Add account", source=f"{os.environ['KITCHEN_SINK_ASSETS']}twitter-round.png"
+                        text="Add account",
+                        source=f"{os.environ['KITCHEN_SINK_ASSETS']}twitter-round.png",
                     ),
                 ],
             )

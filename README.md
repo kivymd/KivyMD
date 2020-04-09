@@ -162,6 +162,7 @@ You don't need to `#:import` them. Remove all your imports from kv files.
 * [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
 * [Changed the use of the MDDropdownMenu panel](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
 * [Changed the use of the MDDropDownItem panel](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
+* [Changed the use of the MDDialog](https://kivymd.readthedocs.io/en/latest/components/dialog/index.html)
 * Changed font styles:
 
 | Old      | New       |

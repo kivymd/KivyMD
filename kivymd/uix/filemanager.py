@@ -407,7 +407,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
-        self.ext = [".png", ".jpg", ".jpeg"]
         self.app = App.get_running_app()
         if not os.path.exists(os.path.join(self.app.user_data_dir, "thumb")):
             os.mkdir(os.path.join(self.app.user_data_dir, "thumb"))

@@ -44,7 +44,7 @@ Usage
 __all__ = ("MDDropDownItem",)
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, NumericProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 
@@ -82,6 +82,7 @@ Builder.load_string(
             size_hint: None, None
             size: self.texture_size
             color: root.theme_cls.text_color
+            font_size: root.font_size
 
 
         _Triangle:
@@ -114,6 +115,14 @@ class MDDropDownItem(
 
     :attr:`current_item` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+    """
+
+    font_size = NumericProperty("16sp")
+    """
+    Item font size.
+
+    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `'16sp'`.
     """
 
     def on_text(self, instance, value):

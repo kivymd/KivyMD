@@ -397,12 +397,13 @@ from kivy.properties import (
     OptionProperty,
     StringProperty,
     ObjectProperty,
-)
+    BooleanProperty)
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import OneLineAvatarIconListItem, IRightBodyTouch
+from kivymd.uix.list import OneLineAvatarIconListItem, IRightBodyTouch, \
+    OneLineListItem
 
 Builder.load_string(
     """
@@ -468,8 +469,12 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
     icon = StringProperty()
 
 
-class MDMenuItem(OneLineAvatarIconListItem):
+class MDMenuItemIcon(OneLineAvatarIconListItem):
     text = StringProperty()
+    icon = StringProperty()
+
+
+class MDMenuItem(OneLineListItem):
     icon = StringProperty()
 
 
@@ -584,21 +589,37 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `'auto'`.
     """
 
+    use_icon_item = BooleanProperty(True)
+    """Whether to use menu items with an icon on the left.
+    
+    :attr:`use_icon_item` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     _start_coords = []
     _calculate_complete = False
     _calculate_process = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Window.bind(on_resize=self.check_position_caller)
         self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
         Clock.schedule_once(self.set_menu_properties, 2)
 
+    def check_position_caller(self, instance, width, height):
+        self.set_menu_properties(0)
+
     def create_menu_items(self):
         """Creates menu items."""
 
+        if self.use_icon_item:
+            item_cls = MDMenuItemIcon
+        else:
+            item_cls = MDMenuItem
+
         for data in self.items:
-            item = MDMenuItem(
+            item = item_cls(
                 text=data.get("text", ""),
                 icon=data.get("icon", ""),
                 divider=data.get("divider", "Full"),
@@ -614,7 +635,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 item.ids._right_container.padding = ("10dp", 0, 0, 0)
                 item.add_widget(right_content_cls)
             else:
-                item.ids._right_container.width = 0
+                if "_right_container" in item.ids:
+                    item.ids._right_container.width = 0
             self.menu.ids.box.add_widget(item)
 
     def set_menu_properties(self, interval):

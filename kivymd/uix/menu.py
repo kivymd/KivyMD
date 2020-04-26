@@ -642,7 +642,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     def set_menu_properties(self, interval):
         """Sets the size and position for the menu window."""
 
-        self.create_menu_items()
+        if not self.menu.ids.box.children:
+            self.create_menu_items()
         # We need to pick a starting point, see how big we need to be,
         # and where to grow to.
         self._start_coords = self.caller.to_window(

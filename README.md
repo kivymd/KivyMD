@@ -40,8 +40,6 @@ Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD
 
 [Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher):  [kitchen_sink-0.102.1-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.103.0-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a).
 
-[Another demo applications](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink/demo_apps) contain some useful GUI examples.
-
 #### Tutorials on YouTube
 
 <p align="center">
@@ -58,10 +56,8 @@ Support
 
 If you need assistance or you have a question, you can ask for help on our mailing list:
 
-* **Discord server (priority):** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
-* VK group: https://vk.com/kivy_development (Russian)
-* Google group: https://groups.google.com/forum/#!categories/kivymd-users-support (English)
-* Email: kivydevelopment@gmail.com
+* **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
+* *Email:* kivydevelopment@gmail.com
 
 
 Installation
@@ -145,40 +141,13 @@ Settings
 #### [Syntax highlighting and auto-completion for Kivy/KivyMD .kv files in PyCharm/Intellij IDEA](https://github.com/noembryo/KV4Jetbrains)
 
 
-
-
 API Breaking changes
 ====================
 
-* [Using MDNavigationDrawer has changed](https://github.com/HeaTTheatR/KivyMD/wiki/Components-Navigation-Drawer#using-mdnavigationdrawer-has-changed)
-* App object must be inherited from `kivymd.app.MDApp`. See wiki for example
-and more information:
-[Material App on KivyMD wiki](https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App).
-* All classes with the Behavior prefix moved to `kivymd.uix.behaviors` module.
-* All uix modules moved to `kivymd.uix` module.
-* All widgets that usually used in kv-lang are automatically added to Factory.
-You don't need to `#:import` them. Remove all your imports from kv files.
-* Replaced `MDAccordion` and `MDAccordionListItem` with `MDExpansionPanel`.
 * [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
-* [Changed the use of the MDDropdownMenu panel](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
-* [Changed the use of the MDDropDownItem panel](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
+* [Changed the use of the MDDropdownMenu](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
+* [Changed the use of the MDDropDownItem](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
 * [Changed the use of the MDDialog](https://kivymd.readthedocs.io/en/latest/components/dialog/index.html)
-* Changed font styles:
-
-| Old      | New       |
-|----------|-----------|
-| Icon     | Icon      |
-| -        | Overline  |
-| -        | Subtitle2 |
-| Subhead  | Subtitle1 |
-| Title    | H6        |
-| Headline | H5        |
-| Display1 | H4        |
-| Display2 | H3        |
-| Display3 | H2        |
-| Display4 | H1        |
-
-* Colors `BlueGrey` and `Grey` renamed to `BlueGray` and `Gray`
 
 Video preview
 =============
@@ -206,6 +175,12 @@ We always welcome your [Bug reports](https://github.com/HeaTTheatR/KivyMD/issues
 and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
 Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
+
+<p align="left">
+  <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/open-collective.png" title='Open collective'>
+</p>
+
+If you want to support development or become a sponsor of the project, you can make a donation at https://opencollective.com/kivymd
 
 
 Sister projects

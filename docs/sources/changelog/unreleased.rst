@@ -19,3 +19,4 @@ Unreleased
 * Added the ability to use the texture of the icon on the right in any `MDTextField` classes
 * Added the feature to use ripple and focus behavior in `MDCard` class
 * `MDDialogs` class redesigned to meet material design requirements
+* Added `MDDataTable` class

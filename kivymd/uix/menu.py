@@ -397,13 +397,17 @@ from kivy.properties import (
     OptionProperty,
     StringProperty,
     ObjectProperty,
-    BooleanProperty)
+    BooleanProperty,
+)
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import OneLineAvatarIconListItem, IRightBodyTouch, \
-    OneLineListItem
+from kivymd.uix.list import (
+    OneLineAvatarIconListItem,
+    IRightBodyTouch,
+    OneLineListItem,
+)
 
 Builder.load_string(
     """

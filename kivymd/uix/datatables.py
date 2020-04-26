@@ -550,7 +550,10 @@ class TableData(RecycleView):
 
         if self.pagination:
             if direction == "forward":
-                if len(self._row_data_parts[self._rows_number]) < self._to_value:
+                if (
+                    len(self._row_data_parts[self._rows_number])
+                    < self._to_value
+                ):
                     self._current_value = self._current_value + self.rows_num
                 else:
                     self._current_value = self._current_value + len(
@@ -646,7 +649,7 @@ class TableData(RecycleView):
             self._split_list_into_equal_parts(self.row_data, value)
         )
 
-    #def on_pagination(self, instance_table, instance_pagination):
+    # def on_pagination(self, instance_table, instance_pagination):
     #    if len(self._row_data_parts) <= self._to_value:
     #        instance_pagination.ids.button_forward.disabled = True
 

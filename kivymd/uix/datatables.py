@@ -4,7 +4,7 @@ Components/DataTables
 
 .. seealso::
 
-    `Material Design spec, Banner <https://material.io/components/data-tables>`_
+    `Material Design spec, DataTables <https://material.io/components/data-tables>`_
 
 .. rubric:: Data tables display sets of data across rows and columns.
 

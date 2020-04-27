@@ -15,6 +15,15 @@
       'object': 0,
       'icon': 'picture-in-picture-bottom-right'
   },
+  'Data Tables': {
+      'kv_string': 'data_tables',
+      'Factory': 'KitchenSinkDataTables()',
+      'Import': 'from libs.baseclass.data_tables import KitchenSinkDataTables',
+      'name_screen': 'data tables',
+      'source_code': 'Components-Data-Tables.md',
+      'object': 0,
+      'icon': 'table-large'
+  },
   'Bottom Sheets': {
       'kv_string': 'bottom_sheet',
       'Factory': 'KitchenSinkBottomSheet()',

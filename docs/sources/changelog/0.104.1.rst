@@ -1,11 +1,11 @@
-Unreleased
-----------
+v0.104.1
+--------
 
-    See on GitHub: `branch master <https://github.com/HeaTTheatR/KivyMD/tree/master>`_ | `compare 0.103.0/master <https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...master>`_
+    See on GitHub: `tag 0.104.1 <https://github.com/HeaTTheatR/KivyMD/tree/0.104.1>`_ | `compare 0.103.0/master <https://github.com/HeaTTheatR/KivyMD/compare/0.103.0...master>`_
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+       pip install kivymd==0.104.1
 
 * Bug fixes and other minor improvements.
 * Added `MDGridLayout` and `MDBoxLayout` classes

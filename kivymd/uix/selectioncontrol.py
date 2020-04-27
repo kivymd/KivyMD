@@ -327,8 +327,12 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             disabled=self.update_color,
             state=self.update_color,
         )
+        self.theme_cls.bind(primary_color=self.update_primary_color)
         self.update_icon()
         self.update_color()
+
+    def update_primary_color(self, instance, value):
+        self.selected_color = value
 
     def update_icon(self, *args):
         if self.state == "down":

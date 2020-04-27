@@ -1,0 +1,54 @@
+<KitchenSinkDataTablesCheckItem@MDBoxLayout>
+    spacing: "5dp"
+    text: ""
+    adaptive_height: True
+
+    MDCheckbox:
+        id: check
+        size_hint: None, None
+        size: "48dp", "48dp"
+
+    MDLabel:
+        text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        pos_hint: {"center_y": .5}
+
+
+<KitchenSinkDataTables>
+    name: "data tables"
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    MDBoxLayout:
+        orientation: "vertical"
+        size_hint: .8, None
+        adaptive_height: True
+        md_bg_color: app.theme_cls.primary_light
+        pos_hint: {"center_x": .5, "center_y": .5}
+        radius: 15, 15, 15, 15
+        padding: "16dp"
+        spacing: "4dp"
+
+        MDLabel:
+            text: "Select table properties:"
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDSeparator:
+
+        KitchenSinkDataTablesCheckItem:
+            id: use_checkbox
+            text: "Use checkbox"
+
+        KitchenSinkDataTablesCheckItem:
+            id: use_pagination
+            text: "Use pagination"
+
+        MDFlatButton:
+            text: "OPEN TABLE"
+            pos_hint: {"right": 1}
+            on_release:
+                root.open_table(use_checkbox.ids.check.active, use_pagination.ids.check.active)

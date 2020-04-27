@@ -177,7 +177,9 @@ Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.gi
 and feel free to improve KivyMD.
 
 <p align="left">
-  <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/open-collective.png" title='Open collective'>
+  <a href="https://opencollective.com/kivymd">
+    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/open-collective.png" title='Open collective'>
+  </a>
 </p>
 
 If you want to support development or become a sponsor of the project, you can make a donation at https://opencollective.com/kivymd

@@ -53,6 +53,7 @@ from kivymd.uix.menu import MDDropdownMenu
 Builder.load_string(
     """
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
+#:import StiffScrollEffect kivymd.stiffscroll.StiffScrollEffect
 
 
 <CellRow>
@@ -153,6 +154,7 @@ Builder.load_string(
     data: root.recycle_data
     data_first_cells: root.data_first_cells
     key_viewclass: "viewclass"
+    effect_cls: StiffScrollEffect
 
     TableRecycleGridLayout:
         id: row_controller

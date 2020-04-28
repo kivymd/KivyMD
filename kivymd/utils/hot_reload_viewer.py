@@ -117,6 +117,8 @@ class HotReloadViewer(BoxLayout):
         except Exception as error:
             self.padding = ("4dp", "4dp", "4dp", "4dp")
             self.error_label.text = (
-                error.message if getattr(error, r"message", None) else str(error)
+                error.message
+                if getattr(error, r"message", None)
+                else str(error)
             )
             self.add_widget(self.error_label)

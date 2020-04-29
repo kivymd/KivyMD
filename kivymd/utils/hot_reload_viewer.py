@@ -97,7 +97,8 @@ Builder.load_string(
             root.errors_text_color if root.errors_text_color \
             else root.theme_cls.text_color
         text: root.text
-""")
+"""
+)
 
 
 class HotReloadErrorText(ThemableBehavior, ScrollView):

@@ -12,42 +12,47 @@ dynamically display a KV file, taking its changes into account
 Usage
 -----
 
-    .. code-block:: python
+.. code-block:: python
 
-        from kivy.lang import Builder
+    from kivy.lang import Builder
 
-        from kivymd.app import MDApp
+    from kivymd.app import MDApp
 
-        KV = '''
-        #:import KivyLexer kivy.extras.highlight.KivyLexer
-        #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
-
-
-        BoxLayout:
-
-            CodeInput:
-                lexer: KivyLexer()
-                on_text: app.update_kv_file(self.text)
-                size_hint_x: .6
-
-            HotReloadViewer:
-                size_hint_x: .4
-                path: app.path_to_kv_file
-        '''
+    KV = '''
+    #:import KivyLexer kivy.extras.highlight.KivyLexer
+    #:import HotReloadViewer kivymd.utils.hot_reload_viewer.HotReloadViewer
 
 
-        class Example(MDApp):
-            path_to_kv_file = "kv_file.kv"
+    BoxLayout:
 
-            def build(self):
-                return Builder.load_string(KV)
+        CodeInput:
+            lexer: KivyLexer()
+            style_name: "native"
+            on_text: app.update_kv_file(self.text)
+            size_hint_x: .7
 
-            def update_kv_file(self, text):
-                with open(self.path_to_kv_file, "w") as kv_file:
-                    kv_file.write(text)
+        HotReloadViewer:
+            size_hint_x: .3
+            path: app.path_to_kv_file
+            errors: True
+            errors_text_color: 1, 1, 0, 1
+            errors_background_color: app.theme_cls.bg_dark
+    '''
 
 
-        Example().run()
+    class Example(MDApp):
+        path_to_kv_file = "kv_file.kv"
+
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+        def update_kv_file(self, text):
+            with open(self.path_to_kv_file, "w") as kv_file:
+                kv_file.write(text)
+
+
+    Example().run()
 
 This will display the test.kv and automatically update the display when the
 file changes.
@@ -55,26 +60,61 @@ file changes.
 .. raw:: html
 
     <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
-        <iframe src="https://www.youtube.com/embed/AV-D73RynoA" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+        <iframe src="https://www.youtube.com/embed/3h6B5Q9VPX0" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
     </div>
 
-.. note: This scripts uses watchdog to listen for file changes. To install
-   watchdog::
+
+.. rubric:: This scripts uses watchdog to listen for file changes. To install
+   watchdog.
+
+.. code-block:: bash
 
    pip install watchdog
 """
 
 import os
 
-from kivy.properties import StringProperty
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import StringProperty, BooleanProperty, ListProperty
 from kivy.lang import Builder
 from kivy.clock import Clock, mainthread
+from kivy.uix.scrollview import ScrollView
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from kivymd.uix.label import MDLabel
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
+
+Builder.load_string(
+    """
+<HotReloadErrorText>
+
+    MDLabel:
+        size_hint_y: None
+        height: self.texture_size[1]
+        theme_text_color: "Custom"
+        text_color:
+            root.errors_text_color if root.errors_text_color \
+            else root.theme_cls.text_color
+        text: root.text
+""")
+
+
+class HotReloadErrorText(ThemableBehavior, ScrollView):
+    text = StringProperty()
+    """Text errors.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    errors_text_color = ListProperty()
+    """
+    Error text color.
+
+    :attr:`errors_text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
 
 class HotReloadHandler(FileSystemEventHandler):
@@ -87,7 +127,7 @@ class HotReloadHandler(FileSystemEventHandler):
         self.callback()
 
 
-class HotReloadViewer(BoxLayout):
+class HotReloadViewer(ThemableBehavior, MDBoxLayout):
     path = StringProperty()
     """Path to KV file.
 
@@ -95,10 +135,39 @@ class HotReloadViewer(BoxLayout):
     and defaults to `''`.
     """
 
+    errors = BooleanProperty(False)
+    """
+    Show errors while editing KV-file.
+
+    :attr:`errors` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    errors_background_color = ListProperty()
+    """
+    Error background color.
+
+    :attr:`errors_background_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    errors_text_color = ListProperty()
+    """
+    Error text color.
+
+    :attr:`errors_text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    _temp_widget = None
+
     def __init__(self, **kwargs):
         self.observer = Observer()
-        self.error_label = MDLabel()
+        self.error_text = HotReloadErrorText()
         super().__init__(**kwargs)
+
+    def on_errors_text_color(self, instance, value):
+        self.error_text.errors_text_color = value
 
     def on_path(self, instance, value):
         self.observer.schedule(
@@ -112,13 +181,24 @@ class HotReloadViewer(BoxLayout):
         Builder.unload_file(self.path)
         self.clear_widgets()
         try:
-            self.add_widget(Builder.load_file(self.path))
             self.padding = (0, 0, 0, 0)
+            self.md_bg_color = (0, 0, 0, 0)
+            self._temp_widget = Builder.load_file(self.path)
+            self.add_widget(self._temp_widget)
         except Exception as error:
+            self.show_error(error)
+
+    def show_error(self, error):
+        if self._temp_widget and not self.errors:
+            self.add_widget(self._temp_widget)
+            return
+        else:
+            if self.errors_background_color:
+                self.md_bg_color = self.errors_background_color
             self.padding = ("4dp", "4dp", "4dp", "4dp")
-            self.error_label.text = (
+            self.error_text.text = (
                 error.message
                 if getattr(error, r"message", None)
                 else str(error)
             )
-            self.add_widget(self.error_label)
+            self.add_widget(self.error_text)

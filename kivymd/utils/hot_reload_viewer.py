@@ -129,6 +129,12 @@ class HotReloadHandler(FileSystemEventHandler):
 
 
 class HotReloadViewer(ThemableBehavior, MDBoxLayout):
+    """
+    :Events:
+        :attr:`on_error`
+            Called when an error occurs in the KV-file that the user is editing.
+    """
+
     path = StringProperty()
     """Path to KV file.
 
@@ -166,19 +172,12 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
         self.observer = Observer()
         self.error_text = HotReloadErrorText()
         super().__init__(**kwargs)
-
-    def on_errors_text_color(self, instance, value):
-        self.error_text.errors_text_color = value
-
-    def on_path(self, instance, value):
-        self.observer.schedule(
-            HotReloadHandler(self.update, value), os.path.split(value)[0]
-        )
-        self.observer.start()
-        Clock.schedule_once(self.update, 1)
+        self.register_event_type("on_error")
 
     @mainthread
     def update(self, *args):
+        """Updates and displays the KV-file that the user edits."""
+
         Builder.unload_file(self.path)
         self.clear_widgets()
         try:
@@ -188,8 +187,11 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
             self.add_widget(self._temp_widget)
         except Exception as error:
             self.show_error(error)
+            self.dispatch("on_error", error)
 
     def show_error(self, error):
+        """Displays text with a current error."""
+
         if self._temp_widget and not self.errors:
             self.add_widget(self._temp_widget)
             return
@@ -203,3 +205,18 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
                 else str(error)
             )
             self.add_widget(self.error_text)
+
+    def on_error(self, *args):
+        """
+        Called when an error occurs in the KV-file that the user is editing.
+        """
+
+    def on_errors_text_color(self, instance, value):
+        self.error_text.errors_text_color = value
+
+    def on_path(self, instance, value):
+        self.observer.schedule(
+            HotReloadHandler(self.update, value), os.path.split(value)[0]
+        )
+        self.observer.start()
+        Clock.schedule_once(self.update, 1)

@@ -418,6 +418,12 @@ Builder.load_string(
     adaptive_width: True
 
 
+<MDMenuItemIcon>
+
+    IconLeftWidget:
+        icon: root.icon
+
+
 <MDMenuItem>
     _txt_top_pad: "8dp"
     _txt_bot_pad: "16dp"
@@ -474,7 +480,6 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
 
 
 class MDMenuItemIcon(OneLineAvatarIconListItem):
-    text = StringProperty()
     icon = StringProperty()
 
 
@@ -625,7 +630,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         for data in self.items:
             item = item_cls(
                 text=data.get("text", ""),
-                icon=data.get("icon", ""),
+                icon=data.get("icon", "") if self.use_icon_item else "",
                 divider=data.get("divider", "Full"),
             )
             if self.callback:

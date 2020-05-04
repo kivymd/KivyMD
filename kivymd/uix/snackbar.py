@@ -44,42 +44,49 @@ Usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-simple.gif
     :align: center
 
+Usage with padding
+------------------
+
+.. code-block:: python
+
+    Snackbar(text="This is a snackbar!", padding="20dp").show()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-padding.gif
+    :align: center
+
 Usage with button
 -----------------
 
 .. code-block:: python
 
-    from kivy.lang import Builder
+    Snackbar(
+        text="This is a snackbar",
+        button_text="BUTTON",
+        button_callback=app.callback
+    ).show()
 
-    from kivymd.app import MDApp
+.. code-block:: python
+    def callback(self, instance):
+        from kivymd.toast import toast
 
-    KV = '''
-    #:import Snackbar kivymd.uix.snackbar.Snackbar
-
-
-    Screen:
-
-        MDRaisedButton:
-            text: "Create simple snackbar"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: Snackbar(text="This is a snackbar", button_text="BUTTON", button_callback=app.callback).show()
-
-    '''
-
-
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def callback(self, instance):
-            from kivymd.toast import toast
-
-            toast(instance.text)
-
-
-    Test().run()
+        toast(instance.text)
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button.gif
+    :align: center
+
+Using a button with custom color
+-------------------------------
+
+.. code-block:: python
+
+    Snackbar(
+        text="This is a snackbar!",
+        padding="20dp",
+        button_text="ACTION",
+        button_color=(1, 0, 1, 1)
+    ).show()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button-custom-color.gif
     :align: center
 
 Custom usage
@@ -141,15 +148,21 @@ Custom usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-custom-usage.gif
     :align: center
 """
-from kivymd.uix.floatlayout import MDFloatLayout
 
 __all__ = ("Snackbar",)
 
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, StringProperty, NumericProperty
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty,
+    NumericProperty,
+    ListProperty,
+)
+from kivy.metrics import dp
 
 from kivymd.uix.button import MDFlatButton
 
@@ -158,22 +171,19 @@ Builder.load_string(
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 
 
-<Snackbar>:
+<Snackbar>
 
-    BoxLayout:
+    MDCard:
         id: box
         size_hint_y: None
         height: dp(58)
         spacing: dp(5)
         padding: dp(10)
         y: -self.height
-
-        canvas:
-            Color:
-                rgba: get_color_from_hex('323232')
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        x: root.padding
+        md_bg_color: get_color_from_hex('323232')
+        radius: (5, 5, 5, 5) if root.padding else (0, 0, 0, 0)
+        elevation: 11 if root.padding else 0
 
         MDLabel:
             id: text_bar
@@ -226,6 +236,13 @@ class Snackbar(MDFloatLayout):
     and defaults to `None`.
     """
 
+    button_color = ListProperty()
+    """Button color.
+
+    :attr:`button_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     duration = NumericProperty(3)
     """The amount of time that the snackbar will stay on screen for.
 
@@ -233,13 +250,21 @@ class Snackbar(MDFloatLayout):
     and defaults to `3`.
     """
 
+    padding = NumericProperty("0dp")
+    """Snackbar padding.
+
+    :attr:`padding` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `'0dp'`.
+    """
+
     _interval = 0
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         if self.button_text != "":
-            button = MDFlatButton(
-                text=self.button_text, text_color=(1, 1, 1, 1)
+            button = MDFlatButton(text=self.button_text)
+            button.text_color = (
+                (1, 1, 1, 1) if not self.button_color else self.button_color
             )
             self.ids.box.add_widget(button)
             if self.button_callback:
@@ -259,8 +284,10 @@ class Snackbar(MDFloatLayout):
                 Clock.unschedule(wait_interval)
                 self._interval = 0
 
+        self.size_hint_x = None
+        self.width = Window.width - dp(self.padding) * 2
         Window.parent.add_widget(self)
-        anim = Animation(y=0, d=0.2)
+        anim = Animation(y=self.padding, d=0.2)
         anim.bind(
             on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0)
         )

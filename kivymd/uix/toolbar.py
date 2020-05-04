@@ -278,7 +278,7 @@ Builder.load_string(
             size:
                 (((self.width - root.action_button.width) / 2 - dp(6), self.height) \
                 if root.mode == "center" else \
-                (root.action_button.width - dp(6), self.height)) if root.type == "bottom" else self.pos
+                (root.action_button.width - dp(6), self.height)) if root.type == "bottom" else (0, 0)
             radius:
                 (0, root.round, 0, 0) if root.mode == "center" else (root.round, 0, 0, 0)
         Rectangle:

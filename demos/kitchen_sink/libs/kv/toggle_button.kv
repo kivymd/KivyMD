@@ -1,0 +1,65 @@
+<KitchenSinkToggleButtons>
+    name: 'toggle button'
+
+    Toolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_size: True
+        spacing: "12dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDBoxLayout:
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+            spacing: 12
+
+            FillRoundFlatToggleButton:
+                text: "Show ads"
+                group: "x"
+
+            FillRoundFlatToggleButton:
+                text: "Do not show ads"
+                group: "x"
+
+            FillRoundFlatToggleButton:
+                text: "Does not matter"
+                group: "x"
+
+        MDBoxLayout:
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+            RectangleFlatButtonToggleButton:
+                text: "Show ads"
+                group: "y"
+
+            RectangleFlatButtonToggleButton:
+                text: "Do not show ads"
+                group: "y"
+
+            RectangleFlatButtonToggleButton:
+                text: "Does not matter"
+                group: "y"
+
+        MDBoxLayout:
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+            spacing: 12
+
+            RoundFlatIconToggleButton:
+                text: "Show ads"
+                icon: "settings"
+                group: "z"
+
+            RoundFlatIconToggleButton:
+                text: "Do not show ads"
+                icon: "git"
+                group: "z"
+
+            RoundFlatIconToggleButton:
+                text: "Does not matter"
+                icon: "star"
+                group: "z"

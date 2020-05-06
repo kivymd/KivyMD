@@ -10,3 +10,4 @@ Unreleased
 * Bug fixes and other minor improvements.
 * Add `HotReloadViewer` class;
 * Added features to `Snackbar` class: use padding, set custom button color, elevation
+* Add `MDToggleButton` class

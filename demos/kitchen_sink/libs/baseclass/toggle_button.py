@@ -2,8 +2,11 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
-from kivymd.uix.button import MDFillRoundFlatButton, MDRectangleFlatButton, \
-    MDFillRoundFlatIconButton
+from kivymd.uix.button import (
+    MDFillRoundFlatButton,
+    MDRectangleFlatButton,
+    MDFillRoundFlatIconButton,
+)
 
 
 class KitchenSinkToggleButtons(Screen):

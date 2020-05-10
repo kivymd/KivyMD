@@ -31,12 +31,11 @@ class KitchenSinkFileManager(Screen):
             text="Open manager with 'list' or 'previous' mode?",
             buttons=[
                 MDFlatButton(
-                    text='List',
-                    on_release=lambda x:open_file_manager("List")
+                    text="List", on_release=lambda x: open_file_manager("List")
                 ),
                 MDFlatButton(
-                    text='Previous',
-                    on_release=lambda x:open_file_manager('Previous')
+                    text="Previous",
+                    on_release=lambda x: open_file_manager("Previous"),
                 ),
             ],
         ).open()

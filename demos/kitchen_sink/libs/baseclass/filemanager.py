@@ -12,8 +12,9 @@ class KitchenSinkFileManager(Screen):
 
         from kivymd.uix.filemanager import MDFileManager
         from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.button import MDFlatButton
 
-        def open_file_manager(text_item, dialog):
+        def open_file_manager(text_item):
             previous = False if text_item == "List" else True
             if not self.file_manager:
                 self.file_manager = MDFileManager(
@@ -27,10 +28,17 @@ class KitchenSinkFileManager(Screen):
         MDDialog(
             title="Kitchen Sink",
             size_hint=(0.8, 0.4),
-            text_button_ok="List",
             text="Open manager with 'list' or 'previous' mode?",
-            text_button_cancel="Previous",
-            events_callback=open_file_manager,
+            buttons=[
+                MDFlatButton(
+                    text='List',
+                    on_release=lambda x:open_file_manager("List")
+                ),
+                MDFlatButton(
+                    text='Previous',
+                    on_release=lambda x:open_file_manager('Previous')
+                ),
+            ],
         ).open()
 
     def select_path(self, path):

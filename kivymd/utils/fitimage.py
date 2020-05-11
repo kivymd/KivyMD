@@ -35,13 +35,17 @@ from kivy.uix.widget import Widget
 
 class FitImage(BoxLayout):
     source = StringProperty()
+    texture = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
-        self.container = Container(self.source)
+        if self.source != '':
+            self.container = Container(self.source)
+        else:
+            self.container = Container(self.texture)
         self.add_widget(self.container)
 
 
@@ -49,7 +53,10 @@ class Container(Widget):
     def __init__(self, source, **kwargs):
         super().__init__(**kwargs)
         self.bind(size=self.adjust_size, pos=self.adjust_size)
-        self.image = Image(source=source)
+        if type(source) == str:
+            self.image = Image(source=source)
+        else:
+            self.image = Image(texture=source)
 
     def adjust_size(self, *args):
         (par_x, par_y) = self.parent.size

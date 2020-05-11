@@ -36,9 +36,11 @@ from kivy.uix.widget import Widget
 class FitImage(BoxLayout):
     source = StringProperty()
     texture = ObjectProperty()
+    container = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.bind(texture=self._source_changed, source=self._source_changed)
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
@@ -47,6 +49,11 @@ class FitImage(BoxLayout):
         else:
             self.container = Container(self.texture)
         self.add_widget(self.container)
+        
+    def _source_changed(self, *args):
+        if self.container != None:
+            self.remove_widget(self.container)
+            self._late_init()
 
 
 class Container(Widget):

@@ -27,7 +27,7 @@ Example:
 
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import StringProperty, Clock
+from kivy.properties import StringProperty, ObjectProperty, Clock
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
@@ -35,7 +35,7 @@ from kivy.uix.widget import Widget
 
 class FitImage(BoxLayout):
     source = StringProperty()
-    texture = None
+    texture = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

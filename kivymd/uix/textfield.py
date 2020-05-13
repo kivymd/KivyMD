@@ -714,7 +714,7 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
 
     fill_color = ListProperty([0, 0, 0, 0])
     """
-    The background color of the fill in rgba format when the ``mode`` parameter 
+    The background color of the fill in rgba format when the ``mode`` parameter
     is "fill".
 
     :attr:`fill_color` is an :class:`~kivy.properties.ListProperty`
@@ -1200,7 +1200,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
         if not self.line_color:
             self.line_color = self.theme_cls.primary_dark
         if not self.color_active:
-            self._color_active = [0, 0, 0, 0.5]
+            self._color_active = [0.5, 0.5, 0.5, 0.5]
 
     def on_focus(self, instance, value):
         if value:

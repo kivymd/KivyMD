@@ -173,6 +173,7 @@ ACTIVITY_MANAGER = """
     shorten_from: 'center'
     halign: 'center'
     text_size: self.width, None
+    theme_text_color: 'Primary'
 
 
 <BodyManagerWithPrevious>

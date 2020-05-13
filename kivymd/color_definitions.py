@@ -327,9 +327,9 @@ colors = {
     },
     "Dark": {
         "StatusBar": "000000",
-        "AppBar": "212121",
-        "Background": "303030",
-        "CardsDialogs": "424242",
+        "AppBar": "1f1f1f",
+        "Background": "121212",
+        "CardsDialogs": "212121",
         "FlatButtonDown": "999999",
     },
 }

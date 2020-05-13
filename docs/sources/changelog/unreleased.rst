@@ -11,3 +11,4 @@ Unreleased
 * Add `HotReloadViewer` class;
 * Added features to `Snackbar` class: use padding, set custom button color, elevation
 * Add `MDToggleButton` class
+* Change to `Material Design` `Baseline` dark theme spec

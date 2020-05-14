@@ -547,8 +547,9 @@ class MDDialog(BaseDialog):
         )
 
     def edit_padding_for_item(self, instance_item):
-        instance_item.ids._left_container.x = 0
-        instance_item._txt_left_pad = "56dp"
+        if '_left_container' in instance_item.ids:
+            instance_item.ids._left_container.x = 0
+            instance_item._txt_left_pad = "56dp"
 
     def create_items(self):
         self.ids.container.remove_widget(self.ids.text)

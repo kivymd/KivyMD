@@ -275,6 +275,7 @@ __all__ = ("NavigationLayout", "MDNavigationDrawer")
 
 from kivy.core.window import Window
 from kivy.logger import Logger
+from kivy.clock import Clock
 from kivy.animation import Animation, AnimationTransition
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
@@ -347,7 +348,7 @@ class NavigationLayout(FloatLayout):
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
-            self.add_scrim(widget)
+            Clock.schedule_once(lambda _: self.add_scrim(widget), 0)
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
                 "The NavigationLayout must contain "

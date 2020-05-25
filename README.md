@@ -182,8 +182,6 @@ and feel free to improve KivyMD.
   </a>
 </p>
 
-If you want to support development or become a sponsor of the project, you can make a donation at https://opencollective.com/kivymd
-
 
 Sister projects
 ===============

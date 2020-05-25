@@ -15,7 +15,7 @@ Join the project! Just fork the project, branch out and submit a pull request wh
 
 If you wish to become a project developer (permission to create branches on the project without forking for easier collaboration), have at least one PR approved and ask for it. If you contribute regularly to the project the role may be offered to you without asking too.
 
-[![Latest version on PyPI](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
+[![Financial Contributors on Open Collective](https://opencollective.com/KivyMD/all/badge.svg?label=financial+contributors)](https://opencollective.com/KivyMD) [![Latest version on PyPI](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
 [![Downloads](https://pepy.tech/badge/kivymd)](https://pepy.tech/project/kivymd)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -199,3 +199,33 @@ KivyMD is released under the terms of the [MIT License](https://github.com/HeaTT
 [Roboto font](https://fonts.google.com/specimen/Roboto) is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) by the [Material Design Icons](https://materialdesignicons.com/) community covered by [SIL Open Font License 1.1](http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/HeaTTheatR/KivyMD/graphs/contributors"><img src="https://opencollective.com/KivyMD/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/KivyMD/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/KivyMD"><img src="https://opencollective.com/KivyMD/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/KivyMD/contribute)]
+
+<a href="https://opencollective.com/KivyMD/organization/0/website"><img src="https://opencollective.com/KivyMD/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/1/website"><img src="https://opencollective.com/KivyMD/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/2/website"><img src="https://opencollective.com/KivyMD/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/3/website"><img src="https://opencollective.com/KivyMD/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/4/website"><img src="https://opencollective.com/KivyMD/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/5/website"><img src="https://opencollective.com/KivyMD/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/6/website"><img src="https://opencollective.com/KivyMD/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/7/website"><img src="https://opencollective.com/KivyMD/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/8/website"><img src="https://opencollective.com/KivyMD/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/KivyMD/organization/9/website"><img src="https://opencollective.com/KivyMD/organization/9/avatar.svg"></a>

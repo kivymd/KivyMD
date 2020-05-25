@@ -176,12 +176,6 @@ and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
 Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
 
-<p align="left">
-  <a href="https://opencollective.com/kivymd">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/open-collective.png" title='Open collective'>
-  </a>
-</p>
-
 
 Sister projects
 ===============

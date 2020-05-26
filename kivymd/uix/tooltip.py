@@ -28,7 +28,7 @@ In Python code:
     class TooltipMDIconButton(MDIconButton, MDTooltip):
         pass
 
-.. Warning:: :class:`~MDTooltip` only works correctly with button classes.
+.. Warning:: :class:`~MDTooltip` only works correctly with button and label classes.
 
 .. code-block:: python
 
@@ -149,6 +149,8 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     :attr:`tooltip_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
+
+    padding = ListProperty([0, 0, 0, 0])
 
     _tooltip = None
 

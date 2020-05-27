@@ -153,6 +153,7 @@ Builder.load_string(
             text: root.label
             size_hint_x: None
             width: self.texture_size[0]
+            color: root.text_color
 
     MDIconButton:
         id: icon
@@ -187,7 +188,14 @@ class MDChip(BoxLayout, ThemableBehavior):
     :attr:`color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
+    
+    text_color = ListProperty()
+    """Chip's text color in ``rgba`` format.
 
+    :attr:`color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+    
     check = BooleanProperty(False)
     """
     If True, a checkmark is added to the left when touch to the chip.

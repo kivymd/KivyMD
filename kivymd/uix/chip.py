@@ -153,7 +153,7 @@ Builder.load_string(
             text: root.label
             size_hint_x: None
             width: self.texture_size[0]
-            color: root.text_color
+            color: root.text_color if root.text_color else (root.theme_cls.text_color)
 
     MDIconButton:
         id: icon

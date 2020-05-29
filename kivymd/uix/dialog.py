@@ -339,7 +339,7 @@ class MDDialog(BaseDialog):
         <ItemConfirm>
             on_release: root.set_icon(check)
 
-            CheckboxRightWidget:
+            CheckboxLeftWidget:
                 id: check
                 group: "check"
 

@@ -988,5 +988,5 @@ class IconLeftWidget(ILeftBodyTouch, MDIconButton):
     pass
 
 
-class CheckboxRightWidget(ILeftBodyTouch, MDCheckbox):
+class CheckboxLeftWidget(ILeftBodyTouch, MDCheckbox):
     pass

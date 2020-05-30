@@ -512,7 +512,7 @@ Builder.load_string(
         if not root.user_font_size \
         else (dp(root.user_font_size + 23), dp(root.user_font_size + 23))
     lbl_txt: lbl_txt
-    padding: dp(12) if root.icon in md_icons else 0
+    padding: (dp(12), dp(12), dp(12), dp(12)) if root.icon in md_icons else (0, 0, 0, 0)
     theme_text_color: 'Primary'
 
     MDIcon:

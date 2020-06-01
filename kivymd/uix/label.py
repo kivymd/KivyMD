@@ -278,7 +278,7 @@ class MDLabel(ThemableBehavior, Label):
     """Text of the label."""
 
     theme_text_color = OptionProperty(
-        None,
+        "Primary",
         allownone=True,
         options=[
             "Primary",

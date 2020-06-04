@@ -188,14 +188,14 @@ class MDChip(BoxLayout, ThemableBehavior):
     :attr:`color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
-    
+
     text_color = ListProperty()
     """Chip's text color in ``rgba`` format.
 
     :attr:`color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
-    
+
     check = BooleanProperty(False)
     """
     If True, a checkmark is added to the left when touch to the chip.

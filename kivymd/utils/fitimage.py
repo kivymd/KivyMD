@@ -43,6 +43,7 @@ class FitImage(BoxLayout):
     def _late_init(self, *args):
         self.container = Container(self.source)
         self.add_widget(self.container)
+        self.bind(source= self.container.image.setter('source') )
 
 
 class Container(Widget):

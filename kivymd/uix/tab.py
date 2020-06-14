@@ -187,6 +187,9 @@ Example with tab text
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
     :align: center
 """
+
+__all__ = ("MDTabs", "MDTabsBase")
+
 from kivy.clock import Clock
 from kivy.graphics import Rectangle
 from kivy.lang import Builder
@@ -212,9 +215,6 @@ from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-
-__all__ = ("MDTabs", "MDTabsBase")
-
 
 Builder.load_string(
     """

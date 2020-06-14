@@ -25,16 +25,18 @@ Example:
             source: 'images/img2.jpg'
 """
 
+from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import Clock, StringProperty
+from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 
 
 class FitImage(BoxLayout):
-    source = StringProperty()
+    source = ObjectProperty()
+    container = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -42,16 +44,31 @@ class FitImage(BoxLayout):
 
     def _late_init(self, *args):
         self.container = Container(self.source)
+        self.bind(source=self.container.setter("source"))
         self.add_widget(self.container)
 
 
 class Container(Widget):
+    source = ObjectProperty()
+    image = ObjectProperty()
+
     def __init__(self, source, **kwargs):
         super().__init__(**kwargs)
+        self.image = Image()
+        self.source = source
         self.bind(size=self.adjust_size, pos=self.adjust_size)
-        self.image = Image(source=source)
+
+    def on_source(self, instance, value):
+        if isinstance(value, str):
+            self.image.source = value
+        else:
+            self.image.texture = value
+        self.adjust_size()
 
     def adjust_size(self, *args):
+        if not self.parent:
+            return
+
         (par_x, par_y) = self.parent.size
 
         if par_x == 0 or par_y == 0:

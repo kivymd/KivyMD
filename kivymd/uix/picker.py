@@ -298,7 +298,6 @@ Builder.load_string(
         size_hint: (None, None)
         size: root.width, dp(30)
         pos: root.pos
-        theme_text_color: 'Primary'
         pos_hint:
             {'center_x': .5, 'center_y': .75}\
             if self.theme_cls.device_orientation == 'portrait'\

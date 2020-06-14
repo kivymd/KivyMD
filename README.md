@@ -176,6 +176,18 @@ and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
 Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
 
+Setup environment
+-----------------
+
+We recommend you to use PyCharm to work with KivyMD code. Install Kivy and
+development dependencies to your virtual environment:
+
+```bash
+pip install pre-commit black isort[pyproject] sphinx sphinx-autoapi sphinx_rtd_theme
+pre-commit install
+```
+
+pre-commit will format modified files with Black and sort imports with isort.
 
 Sister projects
 ===============

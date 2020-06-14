@@ -8,5 +8,5 @@
         #if scr_mngr.current == "previous" else \
         #[["menu", lambda x: app.root.toggle_nav_drawer()]]
     right_action_items:
-        [['dots-vertical', lambda x: x]]
+        [['brightness-6', lambda x: app.switch_theme_style()], ['dots-vertical', lambda x: x]]
         #if scr_mngr.current != "previous" else []

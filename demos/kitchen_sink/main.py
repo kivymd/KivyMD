@@ -95,6 +95,11 @@ class KitchenSinkApp(MDApp):
     def back_to_home_screen(self):
         self.root.ids.screen_manager.current = "home"
 
+    def switch_theme_style(self):
+        self.theme_cls.theme_style = (
+            "Light" if self.theme_cls.theme_style == "Dark" else "Dark"
+        )
+
     def callback_for_menu_items(self, *args):
         from kivymd.toast import toast
 

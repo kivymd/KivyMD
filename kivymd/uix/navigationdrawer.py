@@ -622,9 +622,8 @@ class MDNavigationDrawer(MDCard):
             else:
                 self.set_state("open", animation=True)
         elif self.status == "opened":
-            if (
-                self.close_on_click
-                and not self.collide_point(touch.ox, touch.oy)
+            if self.close_on_click and not self.collide_point(
+                touch.ox, touch.oy
             ):
                 self.set_state("close", animation=True)
         elif self.status == "closed":

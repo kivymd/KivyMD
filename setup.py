@@ -46,7 +46,7 @@ if __name__ == "__main__":
             ]
         },
         extras_require={
-            "dev": ["black", "pre-commit"],
+            "dev": ["pre-commit", "black", "isort[pyproject]"],
             "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],
         },
         install_requires=["kivy", "pillow", "requests"],

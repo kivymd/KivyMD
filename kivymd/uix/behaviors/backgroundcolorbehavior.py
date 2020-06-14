@@ -6,12 +6,16 @@ Behaviors/Background Color
 """
 
 from kivy.lang import Builder
-from kivy.properties import BoundedNumericProperty, ReferenceListProperty
-from kivy.properties import OptionProperty, ListProperty
+from kivy.properties import (
+    BoundedNumericProperty,
+    ListProperty,
+    OptionProperty,
+    ReferenceListProperty,
+)
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 
-from kivymd.color_definitions import palette, hue, text_colors
+from kivymd.color_definitions import hue, palette, text_colors
 
 Builder.load_string(
     """

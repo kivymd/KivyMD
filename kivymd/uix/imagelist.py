@@ -110,20 +110,20 @@ SmartTileWithLabel
 
 from kivy.lang import Builder
 from kivy.properties import (
-    StringProperty,
     BooleanProperty,
-    ObjectProperty,
-    NumericProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior
+from kivymd.uix.button import MDIconButton
 
 Builder.load_string(
     """

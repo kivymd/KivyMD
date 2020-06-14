@@ -116,30 +116,29 @@ __all__ = ("MDFileManager",)
 import os
 import threading
 
-from PIL import Image
-
 from kivy.app import App
+from kivy.lang import Builder
 from kivy.metrics import dp
+from kivy.properties import (
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
+)
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.lang import Builder
 from kivy.uix.image import AsyncImage
-from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
-    ListProperty,
-    BooleanProperty,
-    NumericProperty,
-    OptionProperty,
-)
 from kivy.uix.modalview import ModalView
+from PIL import Image
 
 from kivymd import images_path
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.list import BaseListItem, ContainerSupport
 from kivymd.theming import ThemableBehavior
 from kivymd.toast import toast
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.list import BaseListItem, ContainerSupport
 
 ACTIVITY_MANAGER = """
 #:import os os

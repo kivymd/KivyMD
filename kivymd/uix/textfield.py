@@ -340,29 +340,24 @@ With right icon
     See more information in the :class:`~MDTextFieldRect` class.
 """
 
-__all__ = (
-    "MDTextField",
-    "MDTextFieldRect",
-    "MDTextFieldRound",
-)
+__all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
 import sys
 
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.animation import Animation
 from kivy.graphics.context_instructions import Color
 from kivy.lang import Builder
+from kivy.metrics import dp, sp
 from kivy.properties import (
-    NumericProperty,
-    StringProperty,
     BooleanProperty,
-    OptionProperty,
     ListProperty,
+    NumericProperty,
     ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
-from kivy.metrics import dp
-from kivy.metrics import sp
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
 
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
@@ -970,9 +965,9 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
         else:
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] + 0.1
-            Animation(
-                fill_color=_fill_color, duration=0.2, t="out_quad",
-            ).start(self)
+            Animation(fill_color=_fill_color, duration=0.2, t="out_quad").start(
+                self
+            )
             if not self.text:
                 Animation(
                     _hint_y=dp(38),

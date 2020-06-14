@@ -84,12 +84,12 @@ Example
     Test().run()
 """
 
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.animation import Animation
-from kivy.network.urlrequest import UrlRequest
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
+from kivy.network.urlrequest import UrlRequest
+from kivy.properties import BooleanProperty, ObjectProperty, StringProperty
 
 from kivymd.uix.card import MDCard
 

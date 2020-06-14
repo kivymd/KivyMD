@@ -273,20 +273,20 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 
 __all__ = ("NavigationLayout", "MDNavigationDrawer")
 
-from kivy.core.window import Window
-from kivy.logger import Logger
 from kivy.animation import Animation, AnimationTransition
+from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.properties import (
-    NumericProperty,
-    StringProperty,
-    OptionProperty,
+    AliasProperty,
     BooleanProperty,
     ListProperty,
+    NumericProperty,
     ObjectProperty,
-    AliasProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager

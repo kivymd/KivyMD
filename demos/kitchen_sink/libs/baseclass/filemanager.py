@@ -18,8 +18,7 @@ class KitchenSinkFileManager(Screen):
             previous = False if text_item == "List" else True
             if not self.file_manager:
                 self.file_manager = MDFileManager(
-                    exit_manager=self.exit_manager,
-                    select_path=self.select_path,
+                    exit_manager=self.exit_manager, select_path=self.select_path
                 )
             self.file_manager.previous = previous
             self.file_manager.show(App.get_running_app().user_data_dir)

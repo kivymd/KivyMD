@@ -400,21 +400,21 @@ Custom list item
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
-    NumericProperty,
-    ListProperty,
-    OptionProperty,
     BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
+from kivymd.font_definitions import theme_font_styles
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.button import MDIconButton
-from kivymd.theming import ThemableBehavior
-from kivymd.font_definitions import theme_font_styles
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
 

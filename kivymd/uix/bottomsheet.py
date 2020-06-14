@@ -233,12 +233,12 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
-    NumericProperty,
-    ListProperty,
     BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -247,11 +247,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.scrollview import ScrollView
 
+from kivymd import images_path
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import BackgroundColorBehavior
 from kivymd.uix.label import MDIcon
-from kivymd.uix.list import OneLineListItem, ILeftBody, OneLineIconListItem
-from kivymd.theming import ThemableBehavior
-from kivymd import images_path
+from kivymd.uix.list import ILeftBody, OneLineIconListItem, OneLineListItem
 
 Builder.load_string(
     """

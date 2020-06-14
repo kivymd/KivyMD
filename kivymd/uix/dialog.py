@@ -64,24 +64,23 @@ Usage
 
 __all__ = ("MDDialog",)
 
+from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
-    NumericProperty,
     ListProperty,
-    OptionProperty,
+    NumericProperty,
     ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.modalview import ModalView
-from kivy.metrics import dp
-from kivy.core.window import Window
 
+from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import BaseButton
-from kivymd.uix.list import BaseListItem
 from kivymd.uix.card import MDSeparator
-from kivymd.material_resources import DEVICE_TYPE
-
+from kivymd.uix.list import BaseListItem
 
 Builder.load_string(
     """

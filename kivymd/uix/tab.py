@@ -187,37 +187,34 @@ Example with tab text
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
     :align: center
 """
-from kivymd.uix.boxlayout import MDBoxLayout
-
-__all__ = (
-    "MDTabs",
-    "MDTabsBase",
-)
-
-from kivy.lang import Builder
 from kivy.clock import Clock
-from kivy.uix.label import Label
-from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.carousel import Carousel
-from kivy.uix.widget import Widget
-from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Rectangle
-from kivy.utils import boundary
+from kivy.lang import Builder
 from kivy.properties import (
-    ObjectProperty,
-    NumericProperty,
-    StringProperty,
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
 )
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ToggleButtonBehavior
+from kivy.uix.carousel import Carousel
+from kivy.uix.label import Label
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.widget import Widget
+from kivy.utils import boundary
 
+from kivymd import fonts_path
+from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularElevationBehavior
-from kivymd.icon_definitions import md_icons
-from kivymd import fonts_path
+from kivymd.uix.boxlayout import MDBoxLayout
+
+__all__ = ("MDTabs", "MDTabsBase")
+
 
 Builder.load_string(
     """

@@ -1,6 +1,5 @@
 from kivy.utils import platform
 
-
 if platform == "android":
     try:
         from .androidtoast import toast

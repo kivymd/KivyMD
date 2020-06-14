@@ -87,8 +87,9 @@ the widget.
    :align: center
 """
 
-from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.core.window import Window
+from kivy.factory import Factory
+from kivy.properties import BooleanProperty, ObjectProperty
 
 
 class HoverBehavior(object):
@@ -145,7 +146,5 @@ class HoverBehavior(object):
     def on_leave(self):
         """Fired when the mouse exit the widget."""
 
-
-from kivy.factory import Factory
 
 Factory.register("HoverBehavior", HoverBehavior)

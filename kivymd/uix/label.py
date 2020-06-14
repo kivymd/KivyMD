@@ -204,19 +204,16 @@ The :class:`~MDIcon` class is inherited from
     :align: center
 """
 
-__all__ = (
-    "MDLabel",
-    "MDIcon",
-)
+__all__ = ("MDLabel", "MDIcon")
 
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (
-    OptionProperty,
-    ListProperty,
-    BooleanProperty,
-    StringProperty,
     AliasProperty,
+    BooleanProperty,
+    ListProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.label import Label
 

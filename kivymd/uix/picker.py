@@ -159,42 +159,38 @@ MDThemePicker
     :align: center
 """
 
-__all__ = (
-    "MDTimePicker",
-    "MDDatePicker",
-    "MDThemePicker",
-)
+__all__ = ("MDTimePicker", "MDDatePicker", "MDThemePicker")
 
-import datetime
 import calendar
+import datetime
 from datetime import date
 
+from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.modalview import ModalView
-from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import (
-    StringProperty,
-    NumericProperty,
-    ObjectProperty,
     BooleanProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.clock import Clock
-from kivy.core.window import Window
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.modalview import ModalView
 from kivy.utils import get_color_from_hex
 
-from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDIconButton
+from kivymd.color_definitions import colors, palette
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    SpecificBackgroundColorBehavior,
     CircularRippleBehavior,
     RectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
 )
-from kivymd.color_definitions import colors, palette
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.label import MDLabel
 
 Builder.load_string(
     """

@@ -30,7 +30,7 @@ from time import time
 
 from kivy.animation import AnimationTransition
 from kivy.effects.kinetic import KineticEffect
-from kivy.properties import ObjectProperty, NumericProperty
+from kivy.properties import NumericProperty, ObjectProperty
 from kivy.uix.widget import Widget
 
 

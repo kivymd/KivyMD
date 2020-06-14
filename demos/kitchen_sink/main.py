@@ -2,16 +2,15 @@ import ast
 import os
 import sys
 
-from kivy.lang import Builder
-from kivy.factory import Factory
 from kivy.core.window import Window
+from kivy.factory import Factory
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
-
 from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
-from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
 from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
+from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
 
 if getattr(sys, "frozen", False):  # bundle mode with PyInstaller
     os.environ["KITCHEN_SINK_ROOT"] = sys._MEIPASS

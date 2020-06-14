@@ -174,27 +174,26 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-
 from kivy.metrics import dp, sp
 from kivy.properties import (
-    StringProperty,
-    ListProperty,
-    ObjectProperty,
-    BoundedNumericProperty,
-    NumericProperty,
     BooleanProperty,
+    BoundedNumericProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
 
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolorbehavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.button import BaseFlatButton, BasePressedButton
-from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """

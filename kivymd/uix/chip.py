@@ -98,19 +98,19 @@ Choose chip
 """
 
 from kivy.animation import Animation
+from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
-    ListProperty,
-    ObjectProperty,
     BooleanProperty,
+    ListProperty,
     NumericProperty,
+    ObjectProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.lang import Builder
 
-from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.stacklayout import MDStackLayout
 
 Builder.load_string(

@@ -13,7 +13,7 @@ class KitchenSinkMenu(Screen):
         menu_items = [
             {
                 "right_content_cls": RightContentCls(
-                    text=f"R+{i}", icon="apple-keyboard-command",
+                    text=f"R+{i}", icon="apple-keyboard-command"
                 ),
                 "icon": "git",
                 "text": f"Item {i}",

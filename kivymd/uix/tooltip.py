@@ -66,17 +66,17 @@ In Python code:
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")
 
-from kivy.clock import Clock
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.metrics import dp
 from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.properties import ListProperty, NumericProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ListProperty, StringProperty, NumericProperty
 
+from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import HoverBehavior, TouchBehavior
-from kivymd.material_resources import DEVICE_TYPE
 
 Builder.load_string(
     """

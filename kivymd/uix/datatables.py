@@ -22,33 +22,33 @@ Components/DataTables
 
 __all__ = ("MDDataTable",)
 
-from kivy.lang import Builder
 from kivy import Logger
+from kivy.clock import Clock
+from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
-    ObjectProperty,
-    NumericProperty,
     DictProperty,
-    StringProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
-from kivy.clock import Clock
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.behaviors import FocusBehavior, ButtonBehavior
+from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.recycleview import RecycleView
 from kivy.uix.recyclegridlayout import RecycleGridLayout
+from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
+from kivy.uix.scrollview import ScrollView
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import BaseDialog
-from kivymd.uix.tooltip import MDTooltip
 from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.tooltip import MDTooltip
 
 Builder.load_string(
     """
@@ -956,7 +956,7 @@ class MDDataTable(BaseDialog):
         menu_items = [
             {"text": f"{i}"}
             for i in range(
-                self.rows_num, len(self.row_data) // 2, self.rows_num,
+                self.rows_num, len(self.row_data) // 2, self.rows_num
             )
         ]
         pagination_menu = MDDropdownMenu(

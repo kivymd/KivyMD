@@ -5,9 +5,8 @@ from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
 
-from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
-
 from kivymd.icon_definitions import md_icons
+from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
 
 
 class KitchenSinkBottomSheet(Screen):

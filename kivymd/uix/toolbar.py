@@ -222,24 +222,24 @@ Mode:
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     ListProperty,
-    StringProperty,
     NumericProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 
-from kivymd.uix.button import MDIconButton, MDFloatingActionButton
-from kivymd.uix.behaviors import (
-    SpecificBackgroundColorBehavior,
-    RectangularElevationBehavior,
-)
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    RectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+)
+from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 
 Builder.load_string(
     """

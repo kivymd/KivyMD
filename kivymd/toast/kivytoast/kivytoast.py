@@ -41,14 +41,14 @@ KivyToast
     Test().run()
 """
 
+from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import NumericProperty
 from kivy.uix.label import Label
-from kivy.animation import Animation
 from kivy.uix.modalview import ModalView
-from kivy.clock import Clock
-from kivy.metrics import dp
-from kivy.lang import Builder
 
 from kivymd import images_path
 

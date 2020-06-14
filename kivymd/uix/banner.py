@@ -144,23 +144,23 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
     ListProperty,
-    StringProperty,
-    OptionProperty,
     NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.widget import Widget
 
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import (
-    ThreeLineAvatarListItem,
-    TwoLineAvatarListItem,
     OneLineAvatarListItem,
-    ThreeLineListItem,
-    TwoLineListItem,
     OneLineListItem,
+    ThreeLineAvatarListItem,
+    ThreeLineListItem,
+    TwoLineAvatarListItem,
+    TwoLineListItem,
 )
 
 Builder.load_string(

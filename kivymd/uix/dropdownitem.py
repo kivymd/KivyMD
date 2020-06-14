@@ -44,13 +44,13 @@ Usage
 __all__ = ("MDDropDownItem",)
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, NumericProperty
+from kivy.properties import NumericProperty, StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """

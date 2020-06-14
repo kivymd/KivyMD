@@ -92,18 +92,17 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 
+import kivymd.material_resources as m_res
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.theming import ThemableBehavior
-import kivymd.material_resources as m_res
-
 
 Builder.load_string(
     """

@@ -151,20 +151,20 @@ Custom usage
 
 __all__ = ("Snackbar",)
 
-from kivymd.uix.floatlayout import MDFloatLayout
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
+    ListProperty,
+    NumericProperty,
     ObjectProperty,
     StringProperty,
-    NumericProperty,
-    ListProperty,
 )
-from kivy.metrics import dp
 
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.floatlayout import MDFloatLayout
 
 Builder.load_string(
     """

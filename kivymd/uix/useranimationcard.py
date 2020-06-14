@@ -87,19 +87,19 @@ Example
 """
 
 
-from kivy.clock import Clock
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.metrics import dp, sp
-from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivy.lang import Builder
+from kivy.metrics import dp, sp
+from kivy.properties import ListProperty, ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.modalview import ModalView
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import SpecificBackgroundColorBehavior
 from kivymd.uix.button import MDIconButton
-from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """

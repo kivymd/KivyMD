@@ -11,12 +11,13 @@ Downloads archive from https://github.com/Templarian/MaterialDesign-Webfont and
 updates font file with icon_definitions.
 """
 
-import os
-import requests
-import zipfile
-import shutil
-import re
 import json
+import os
+import re
+import shutil
+import zipfile
+
+import requests
 
 os.chdir(os.path.dirname(__file__))
 # Paths to files in kivymd repository

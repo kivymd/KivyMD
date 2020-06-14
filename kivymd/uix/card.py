@@ -538,27 +538,27 @@ __all__ = (
     "MDSeparator",
 )
 
-from kivy.clock import Clock
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
+    BooleanProperty,
     ListProperty,
     NumericProperty,
     OptionProperty,
-    BooleanProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.metrics import dp
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.behaviors import (
-    RectangularElevationBehavior,
-    BackgroundColorBehavior,
-    RectangularRippleBehavior,
-    FocusBehavior,
-)
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    FocusBehavior,
+    RectangularElevationBehavior,
+    RectangularRippleBehavior,
+)
 
 Builder.load_string(
     """

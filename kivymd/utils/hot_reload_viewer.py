@@ -74,13 +74,12 @@ file changes.
 
 import os
 
-from kivy.properties import StringProperty, BooleanProperty, ListProperty
-from kivy.lang import Builder
 from kivy.clock import Clock, mainthread
+from kivy.lang import Builder
+from kivy.properties import BooleanProperty, ListProperty, StringProperty
 from kivy.uix.scrollview import ScrollView
-
-from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout

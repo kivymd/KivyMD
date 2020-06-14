@@ -59,10 +59,10 @@ With custom color
 """
 
 from kivy.lang import Builder
-from kivy.properties import OptionProperty, BooleanProperty, ListProperty
+from kivy.properties import BooleanProperty, ListProperty, OptionProperty
+from kivy.uix.progressbar import ProgressBar
 
 from kivymd.theming import ThemableBehavior
-from kivy.uix.progressbar import ProgressBar
 
 Builder.load_string(
     """

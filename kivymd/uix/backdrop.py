@@ -125,9 +125,9 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     ListProperty,
     NumericProperty,
-    BooleanProperty,
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout

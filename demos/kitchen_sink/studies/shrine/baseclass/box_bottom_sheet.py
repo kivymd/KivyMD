@@ -2,7 +2,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ObjectProperty
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.recycleview import RecycleView
 
 from kivymd.theming import ThemableBehavior

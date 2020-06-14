@@ -143,19 +143,19 @@ __all__ = (
     "MDExpansionPanelThreeLine",
 )
 
-from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.properties import ObjectProperty, NumericProperty, StringProperty
+from kivy.lang import Builder
+from kivy.properties import NumericProperty, ObjectProperty, StringProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.widget import WidgetException
 
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import (
+    ImageLeftWidget,
     IRightBodyTouch,
     OneLineAvatarIconListItem,
-    TwoLineAvatarIconListItem,
     ThreeLineAvatarIconListItem,
-    ImageLeftWidget,
+    TwoLineAvatarIconListItem,
 )
 
 Builder.load_string(

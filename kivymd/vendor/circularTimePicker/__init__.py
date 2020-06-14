@@ -42,33 +42,32 @@ in Kv language:
                on_release: root.dismiss()
 """
 
-import sys
 import datetime
-from math import atan, pi, radians, sin, cos
+import sys
+from math import atan, cos, pi, radians, sin
 
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivymd.vendor.circleLayout import CircularLayout
-from kivy.graphics import Line, Color, Ellipse
+from kivy.graphics import Color, Ellipse, Line
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
-    NumericProperty,
+    AliasProperty,
+    BooleanProperty,
     BoundedNumericProperty,
-    ObjectProperty,
-    StringProperty,
     DictProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
-    BooleanProperty,
     ReferenceListProperty,
-    AliasProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.metrics import dp
 
 from kivymd.theming import ThemableBehavior
-
+from kivymd.vendor.circleLayout import CircularLayout
 
 if sys.version_info[0] > 2:
 

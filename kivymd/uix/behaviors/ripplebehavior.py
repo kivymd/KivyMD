@@ -88,21 +88,21 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
     :align: center
 """
 
-from kivy.properties import (
-    ListProperty,
-    NumericProperty,
-    StringProperty,
-    BooleanProperty,
-)
 from kivy.animation import Animation
 from kivy.graphics import (
     Color,
     Ellipse,
-    StencilPush,
-    StencilPop,
-    StencilUse,
-    StencilUnUse,
     Rectangle,
+    StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
+)
+from kivy.properties import (
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    StringProperty,
 )
 
 

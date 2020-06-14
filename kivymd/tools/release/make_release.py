@@ -22,10 +22,10 @@ What this script does:
 * Git push
 """
 
-import sys
 import os
-import subprocess
 import re
+import subprocess
+import sys
 
 
 def command(cmd: list):

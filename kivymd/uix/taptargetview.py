@@ -228,19 +228,20 @@ Events control
 """
 
 from kivy.animation import Animation
-from kivy.metrics import dp
-from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.event import EventDispatcher
+from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.logger import Logger
+from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
-    NumericProperty,
-    ListProperty,
-    StringProperty,
     BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.label import Label
+
 from kivymd.theming import ThemableBehavior
 
 

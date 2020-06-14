@@ -435,49 +435,49 @@ __all__ = (
     "MDFloatingActionButtonSpeedDial",
 )
 
-from kivy.core.window import Window
-from kivy.metrics import dp
+from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.graphics.context_instructions import Color
+from kivy.graphics.stencil_instructions import (
+    StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
+)
+from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.properties import (
+    AliasProperty,
+    BooleanProperty,
+    BoundedNumericProperty,
+    DictProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
+)
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.animation import Animation
-from kivy.graphics.context_instructions import Color
-from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
-from kivy.graphics.stencil_instructions import (
-    StencilPush,
-    StencilUse,
-    StencilPop,
-    StencilUnUse,
-)
-from kivy.properties import (
-    StringProperty,
-    BoundedNumericProperty,
-    ListProperty,
-    AliasProperty,
-    BooleanProperty,
-    NumericProperty,
-    OptionProperty,
-    ObjectProperty,
-    DictProperty,
-)
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.tooltip import MDTooltip
 from kivymd.uix.behaviors import (
+    CircularElevationBehavior,
+    CircularRippleBehavior,
     CommonElevationBehavior,
     RectangularElevationBehavior,
-    CircularElevationBehavior,
-    SpecificBackgroundColorBehavior,
-    CircularRippleBehavior,
     RectangularRippleBehavior,
+    SpecificBackgroundColorBehavior,
 )
+from kivymd.uix.tooltip import MDTooltip
 
 Builder.load_string(
     """
@@ -1596,7 +1596,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                         ).start(instance)
                         if self.hint_animation:
                             Animation(
-                                opacity=0, d=0.1, t=self.opening_transition,
+                                opacity=0, d=0.1, t=self.opening_transition
                             ).start(widget)
                         break
 

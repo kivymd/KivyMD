@@ -1,7 +1,8 @@
-import sys
-from setuptools import setup
-from os.path import join, dirname
 import re
+import sys
+from os.path import dirname, join
+
+from setuptools import setup
 
 assert sys.version_info >= (3, 6, 0), "KivyMD requires Python 3.6+"
 

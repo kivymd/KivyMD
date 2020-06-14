@@ -121,9 +121,13 @@ Similarly, create a button with a circular elevation effect:
 
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ListProperty, ObjectProperty, NumericProperty
-from kivy.properties import AliasProperty
 from kivy.metrics import dp
+from kivy.properties import (
+    AliasProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+)
 
 Builder.load_string(
     """

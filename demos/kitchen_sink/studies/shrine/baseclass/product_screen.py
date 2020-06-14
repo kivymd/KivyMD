@@ -1,20 +1,19 @@
 import os
 
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import ListProperty, StringProperty
 from kivy.utils import get_color_from_hex
-from kivy.animation import Animation
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import MagicBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
-from kivymd.uix.behaviors import MagicBehavior
 from kivymd.uix.screen import MDScreen
 from kivymd.utils.cropimage import crop_image
-
 
 PATH_TO_IMAGES = f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images"
 

@@ -4,9 +4,10 @@ Material Resources
 """
 
 import os
-from kivy.utils import platform
+
 from kivy.core.window import Window
 from kivy.metrics import dp
+from kivy.utils import platform
 
 if "KIVY_DOC_INCLUDE" in os.environ:
     dp = lambda x: x

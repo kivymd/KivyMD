@@ -378,34 +378,30 @@ Center position
     :align: center
 """
 
-__all__ = (
-    "MDDropdownMenu",
-    "MDMenuItem",
-    "RightContent",
-)
+__all__ = ("MDDropdownMenu", "MDMenuItem", "RightContent")
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.scrollview import ScrollView
 from kivy.metrics import dp
 from kivy.properties import (
-    NumericProperty,
+    BooleanProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
     StringProperty,
-    ObjectProperty,
-    BooleanProperty,
 )
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.scrollview import ScrollView
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import (
-    OneLineAvatarIconListItem,
     IRightBodyTouch,
+    OneLineAvatarIconListItem,
     OneLineListItem,
 )
 

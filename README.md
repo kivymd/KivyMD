@@ -15,13 +15,16 @@ Join the project! Just fork the project, branch out and submit a pull request wh
 
 If you wish to become a project developer (permission to create branches on the project without forking for easier collaboration), have at least one PR approved and ask for it. If you contribute regularly to the project the role may be offered to you without asking too.
 
-[![Financial Contributors on Open Collective](https://opencollective.com/KivyMD/all/badge.svg?label=financial+contributors)](https://opencollective.com/KivyMD) [![Latest version on PyPI](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
+[![PyPI version](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
 [![Downloads](https://pepy.tech/badge/kivymd)](https://pepy.tech/project/kivymd)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Documentation Status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io/en/latest/?badge=latest)
-[![Build status](https://travis-ci.org/HeaTTheatR/KivyMD.svg?branch=master)](https://travis-ci.org/HeaTTheatR/KivyMD)
 [![Discord server](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
+[![Financial Contributors on Open Collective](https://opencollective.com/KivyMD/all/badge.svg?label=financial+contributors)](https://opencollective.com/KivyMD)
+
+[![Lint workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Lint/badge.svg)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ALint)
+[![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io/en/latest/?badge=latest)
+[![Build status](https://travis-ci.org/HeaTTheatR/KivyMD.svg?branch=master)](https://travis-ci.org/HeaTTheatR/KivyMD)
 
 Documentation
 =============

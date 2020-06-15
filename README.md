@@ -182,12 +182,19 @@ and feel free to improve KivyMD.
 Setup environment
 -----------------
 
-We recommend you to use PyCharm to work with KivyMD code. Install Kivy and
+We recommend you to use PyCharm to work with KivyMD code. Install
+[Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html) and
 development dependencies to your virtual environment:
 
 ```bash
-pip install pre-commit black isort[pyproject] sphinx sphinx-autoapi sphinx_rtd_theme
+pip install -e .[dev,docs]
 pre-commit install
+```
+
+Format all files and run tests:
+```bash
+pre-commit run --all-files
+pytest kivymd/tests --cov=kivymd --cov-report=term -s
 ```
 
 pre-commit will format modified files with Black and sort imports with isort.

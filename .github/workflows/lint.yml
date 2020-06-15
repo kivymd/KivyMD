@@ -4,22 +4,23 @@ on: [push, pull_request]
 
 jobs:
 
-  check_pre_commit:
+  # Lint job. Runs pre-commit, fails if there are changed files
+  lint:
     name: Check pre-commit [Python ${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-18.04]
+        os: [ubuntu-latest]
         python-version: [3.7]
         architecture: [x64]
     runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
         architecture: ${{ matrix.architecture }}

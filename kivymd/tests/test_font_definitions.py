@@ -3,6 +3,13 @@ def test_fonts_registration():
     import kivymd  # NOQA
     from kivy.core.text import LabelBase
 
-    fonts = ["Roboto", "RobotoThin", "RobotoLight", "RobotoMedium", "RobotoBlack", "Icons"]
+    fonts = [
+        "Roboto",
+        "RobotoThin",
+        "RobotoLight",
+        "RobotoMedium",
+        "RobotoBlack",
+        "Icons",
+    ]
     for font in fonts:
         assert font in LabelBase._fonts.keys()

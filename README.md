@@ -23,6 +23,7 @@ If you wish to become a project developer (permission to create branches on the 
 [![Financial Contributors on Open Collective](https://opencollective.com/KivyMD/all/badge.svg?label=financial+contributors)](https://opencollective.com/KivyMD)
 
 [![Lint workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Lint/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ALint)
+[![Build workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ABuild)
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io/en/latest/?badge=latest)
 [![Build status](https://travis-ci.org/HeaTTheatR/KivyMD.svg?branch=master)](https://travis-ci.org/HeaTTheatR/KivyMD)
 

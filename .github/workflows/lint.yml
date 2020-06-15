@@ -6,7 +6,7 @@ jobs:
 
   # Lint job. Runs pre-commit, fails if there are changed files
   lint:
-    name: Check pre-commit [Python ${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
+    name: Check pre-commit [${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
     strategy:
       fail-fast: true
       matrix:

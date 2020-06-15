@@ -6,7 +6,7 @@ jobs:
 
   # Build job. Builds source distribution (sdist) and binary wheels distribution (bdist_wheel)
   build:
-    name: Build ${{ matrix.dist }} [Python ${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
+    name: Build ${{ matrix.dist }} [${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
     strategy:
       fail-fast: false
       matrix:

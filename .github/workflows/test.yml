@@ -75,7 +75,8 @@ jobs:
 
     # Only from Ubuntu
     - name: Upload coverage report
-      uses: coverallsapp/github-action@master
       if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'HeaTTheatR/KivyMD' && startswith(matrix.os, 'ubuntu')
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: python -m coveralls

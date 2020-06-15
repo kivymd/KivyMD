@@ -55,6 +55,8 @@ cache
 .cache
 temp
 .temp
+.pytest_cache
+.coverage
 
 docs/sources/api
 demos/kitchen_sink/assets/*crop.*

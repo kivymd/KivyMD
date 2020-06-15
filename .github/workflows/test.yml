@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
 
-  # Test job. Runs pytest on Ubuntu, MacOS and Windows
+  # Test job. Runs pytest on Ubuntu, MacOS and Windows, uploads coverage report
   test:
     name: Test [${{ matrix.python-version }} | Kivy ${{ matrix.kivy-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
     strategy:
@@ -72,3 +72,10 @@ jobs:
 
     - name: Test
       run: python -m pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
+
+    # Only from Ubuntu
+    - name: Upload coverage report
+      uses: coverallsapp/github-action@master
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'HeaTTheatR/KivyMD' && startswith(matrix.os, 'ubuntu')
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}

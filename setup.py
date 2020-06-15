@@ -54,6 +54,7 @@ if __name__ == "__main__":
                 "pytest",
                 "pytest-cov",
                 "pytest_asyncio",
+                "pytest-timeout",
                 "coveralls",
             ],
             "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],

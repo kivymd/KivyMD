@@ -195,7 +195,7 @@ pre-commit install
 Format all files and run tests:
 ```bash
 pre-commit run --all-files
-pytest kivymd/tests --cov=kivymd --cov-report=term -s
+pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
 ```
 
 pre-commit will format modified files with Black and sort imports with isort.

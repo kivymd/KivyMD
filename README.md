@@ -19,14 +19,18 @@ If you wish to become a project developer (permission to create branches on the 
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
 [![Downloads](https://pepy.tech/badge/kivymd)](https://pepy.tech/project/kivymd)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Discord server](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
-[![Financial Contributors on Open Collective](https://opencollective.com/KivyMD/all/badge.svg?label=financial+contributors)](https://opencollective.com/KivyMD)
+
+[![Discord](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
+[![Twitter](https://img.shields.io/twitter/follow/KivyMD?label=follow&logo=twitter&style=flat&color=brightgreen)](https://twitter.com/KivyMD)
+[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=1K)](https://www.youtube.com/c/KivyMD)
+[![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
+[![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/KivyMD)
 
 [![Coverage status](https://coveralls.io/repos/github/HeaTTheatR/KivyMD/badge.svg)](https://coveralls.io/github/HeaTTheatR/KivyMD)
 [![Lint workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Lint/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ALint)
 [![Build workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ABuild)
 [![Test workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ATest)
-[![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io/en/latest/?badge=latest)
+[![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 
 Documentation
 =============

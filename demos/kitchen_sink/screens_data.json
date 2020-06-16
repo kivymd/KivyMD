@@ -31,7 +31,7 @@
       'name_screen': 'bottom sheet',
       'source_code': 'Components-Bottom-Sheet.md',
       'object': 0,
-      'icon': 'file-document-box-outline'
+      'icon': 'text-box-outline'
   },
   'Dropdown Item': {
       'kv_string': 'drop_item',

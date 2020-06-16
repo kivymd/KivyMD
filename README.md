@@ -99,6 +99,9 @@ Also you can install manually from sources. Just clone the project and run the s
 python3 ./setup.py install
 ```
 
+***Speed Tip***: If you don't need full commit history, you can use a shallow clone
+(`git clone git@github.com:HeaTTheatR/KivyMD.git --depth 1`) to save time.
+
 #### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```text

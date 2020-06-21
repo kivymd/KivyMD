@@ -153,7 +153,7 @@ class MDProgressLoader(MDCard):
     download_complete = ObjectProperty()
     """Function, called after a successful file upload."""
 
-    download_hide = ObjectProperty(lambda x: None)
+    download_hide = ObjectProperty(lambda _inst, _val: None)
     """Function that is called when the download window is closed."""
 
     download_flag = BooleanProperty(False)

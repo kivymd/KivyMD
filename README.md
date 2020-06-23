@@ -30,6 +30,7 @@ If you wish to become a project developer (permission to create branches on the 
 [![Lint workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Lint/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ALint)
 [![Build workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ABuild)
 [![Test workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ATest)
+[![Build demos workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3A"Build+demos")
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 
 Documentation

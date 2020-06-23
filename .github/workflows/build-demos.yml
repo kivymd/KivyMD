@@ -1,0 +1,28 @@
+name: Build demos
+on: [push, pull_request]
+
+jobs:
+  # Build job. Builds every demo app for Android with Buildozer
+  build-android:
+    name: Build Android [${{ matrix.demo-name }}]
+    strategy:
+      fail-fast: false
+      matrix:
+        demo-name: [kitchen_sink]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build with Buildozer
+      uses: ArtemSBulgakov/buildozer-action@v1
+      id: buildozer
+      with:
+        workdir: demos/${{ matrix.demo-name }}
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: package ${{ matrix.demo-name }}
+        path: ${{ steps.buildozer.outputs.filename }}

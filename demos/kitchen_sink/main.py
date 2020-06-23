@@ -32,12 +32,6 @@ class KitchenSinkApp(MDApp):
         self.data_screens = {}
 
     def build(self):
-        Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
-        )
-        Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv"
-        )
         return Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv"
         )
@@ -51,6 +45,12 @@ class KitchenSinkApp(MDApp):
     def on_start(self):
         """Creates a list of items with examples on start screen."""
 
+        Builder.load_file(
+            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
+        )
+        Builder.load_file(
+            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv"
+        )
         Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv"
         )

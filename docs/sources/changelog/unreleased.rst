@@ -12,3 +12,5 @@ Unreleased
 * Added features to `Snackbar` class: use padding, set custom button color, elevation
 * Add `MDToggleButton` class
 * Change to `Material Design` `Baseline` dark theme spec
+* Fix https://github.com/HeaTTheatR/KivyMD/issues/365
+* Fix `ReferenceError: weakly-referenced object no longer exists` when start demo application

@@ -16,10 +16,6 @@ jobs:
         kivy-version: [1.11.1]
         include:
           - os: windows-latest
-            python-version: 3.6
-            architecture: x86
-            kivy-version: 1.11.1
-          - os: windows-latest
             python-version: 3.7
             architecture: x86
             kivy-version: 1.11.1

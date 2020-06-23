@@ -46,9 +46,6 @@ class KitchenSinkApp(MDApp):
         """Creates a list of items with examples on start screen."""
 
         Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/toolbar.kv"
-        )
-        Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
         )
         Builder.load_file(
@@ -57,7 +54,9 @@ class KitchenSinkApp(MDApp):
         Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv"
         )
-
+        Builder.load_file(
+            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/toolbar.kv"
+        )
         with open(f"{os.getcwd()}/screens_data.json") as read_file:
             self.data_screens = ast.literal_eval(read_file.read())
             data_screens = list(self.data_screens.keys())

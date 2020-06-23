@@ -60,7 +60,7 @@ class FpsMonitoring:
 
 
 class MDApp(App, FpsMonitoring):
-    theme_cls = ObjectProperty(ThemeManager())
+    theme_cls = ObjectProperty()
     """
     Instance of :class:`~ThemeManager` class.
 
@@ -84,3 +84,7 @@ class MDApp(App, FpsMonitoring):
 
     :attr:`theme_cls` is an :class:`~kivy.properties.ObjectProperty`.
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls = ThemeManager()

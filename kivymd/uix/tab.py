@@ -50,7 +50,6 @@ Tabs must be placed in the :class:`~MDTabs` container:
 
             ...
 
-.. Example with tab icon:
 Example with tab icon
 ---------------------
 
@@ -119,7 +118,6 @@ Example with tab icon
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example.gif
     :align: center
 
-.. Example with tab text:
 Example with tab text
 ---------------------
 
@@ -189,7 +187,6 @@ Example with tab text
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
     :align: center
 
-.. ExampleWithTabIconAndText:
 Example with tab icon and text
 ------------------------------
 

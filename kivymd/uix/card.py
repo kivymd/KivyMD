@@ -167,6 +167,7 @@ End full code
                 title: "MDCardSwipe"
 
             ScrollView:
+                scroll_timeout : 100
 
                 MDList:
                     id: md_list

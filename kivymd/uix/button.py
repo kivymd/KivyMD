@@ -812,8 +812,7 @@ class BaseButton(
     """
 
     theme_text_color = OptionProperty(
-        None,
-        allownone=True,
+        "Primary",
         options=[
             "Primary",
             "Secondary",

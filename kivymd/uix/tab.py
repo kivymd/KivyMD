@@ -50,8 +50,9 @@ Tabs must be placed in the :class:`~MDTabs` container:
 
             ...
 
+.. Example with tab icon:
 Example with tab icon
---------------------
+---------------------
 
 .. code-block:: python
 
@@ -118,6 +119,7 @@ Example with tab icon
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example.gif
     :align: center
 
+.. Example with tab text:
 Example with tab text
 ---------------------
 
@@ -185,6 +187,54 @@ Example with tab text
     Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
+    :align: center
+
+.. ExampleWithTabIconAndText:
+Example with tab icon and text
+------------------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+
+    from kivymd.app import MDApp
+    from kivymd.uix.tab import MDTabsBase
+    from kivymd.font_definitions import fonts
+    from kivymd.icon_definitions import md_icons
+
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Example Tabs"
+
+        MDTabs:
+            id: android_tabs
+    '''
+
+
+    class Tab(FloatLayout, MDTabsBase):
+        pass
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for name_tab in list(md_icons.keys())[15:30]:
+                self.root.ids.android_tabs.add_widget(
+                    Tab(
+                        text=f"[size=20][font={fonts[-1]['fn_regular']}]{md_icons[name_tab]}[/size][/font] {name_tab}"
+                    )
+                )
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-icon-text.png
     :align: center
 """
 

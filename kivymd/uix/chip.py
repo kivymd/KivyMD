@@ -192,7 +192,7 @@ class MDChip(BoxLayout, ThemableBehavior):
     text_color = ListProperty()
     """Chip's text color in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 

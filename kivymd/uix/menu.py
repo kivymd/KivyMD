@@ -378,7 +378,7 @@ Center position
     :align: center
 """
 
-__all__ = ("MDDropdownMenu", "MDMenuItem", "RightContent")
+__all__ = ("MDDropdownMenu", "RightContent")
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -417,17 +417,8 @@ Builder.load_string(
 <MDMenuItemIcon>
 
     IconLeftWidget:
+        id: icon_widget
         icon: root.icon
-
-
-<MDMenuItem>
-    _txt_top_pad: "8dp"
-    _txt_bot_pad: "16dp"
-    on_release: root.parent.parent.parent.parent.dispatch("on_dismiss")
-
-    IconLeftWidget:
-        icon: root.icon
-        pos_hint: {"center_y": .5}
 
 
 <MDMenu>
@@ -476,10 +467,6 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
 
 
 class MDMenuItemIcon(OneLineAvatarIconListItem):
-    icon = StringProperty()
-
-
-class MDMenuItem(OneLineListItem):
     icon = StringProperty()
 
 
@@ -618,17 +605,15 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     def create_menu_items(self):
         """Creates menu items."""
 
-        if self.use_icon_item:
-            item_cls = MDMenuItemIcon
-        else:
-            item_cls = MDMenuItem
-
         for data in self.items:
-            item = item_cls(
-                text=data.get("text", ""),
-                icon=data.get("icon", "") if self.use_icon_item else "",
-                divider=data.get("divider", "Full"),
+            item = MDMenuItemIcon(
+                text=data.get("text", ""), divider=data.get("divider", "Full")
             )
+            if not self.use_icon_item:
+                item.remove_widget(item.ids._left_container)
+                item._txt_left_pad = dp(16)
+            else:
+                item.icon = data.get("icon", "")
             if self.callback:
                 item.bind(on_release=self.callback)
             right_content_cls = data.get("right_content_cls", None)
@@ -665,11 +650,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             )
 
         # The height of each MDMenuItem or MDMenuItemIcon
-        menu_item_height = (
-            MDMenuItemIcon().height
-            if self.use_icon_item
-            else MDMenuItem().height
-        )
+        menu_item_height = MDMenuItemIcon().height
         # Set the target_height of the menu depending on the size of
         # each MDMenuItem or MDMenuItemIcon
         self.target_height = menu_item_height * len(self.items)

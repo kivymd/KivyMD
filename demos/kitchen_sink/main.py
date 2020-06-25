@@ -8,6 +8,7 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+
 from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
 from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
@@ -32,6 +33,9 @@ class KitchenSinkApp(MDApp):
         self.data_screens = {}
 
     def build(self):
+        Builder.load_file(
+            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
+        )
         return Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv"
         )
@@ -46,17 +50,12 @@ class KitchenSinkApp(MDApp):
         """Creates a list of items with examples on start screen."""
 
         Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
-        )
-        Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv"
         )
         Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv"
         )
-        Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/toolbar.kv"
-        )
+
         with open(f"{os.getcwd()}/screens_data.json") as read_file:
             self.data_screens = ast.literal_eval(read_file.read())
             data_screens = list(self.data_screens.keys())
@@ -99,6 +98,7 @@ class KitchenSinkApp(MDApp):
         self.theme_cls.theme_style = (
             "Light" if self.theme_cls.theme_style == "Dark" else "Dark"
         )
+        self.root.ids.backdrop.ids._front_layer.md_bg_color = [0, 0, 0, 0]
 
     def callback_for_menu_items(self, *args):
         from kivymd.toast import toast

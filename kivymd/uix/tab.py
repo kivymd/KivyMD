@@ -315,8 +315,8 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, Label):
     """This class it represent the label of each tab."""
 
-    text_color_normal = ListProperty()
-    text_color_active = ListProperty()
+    text_color_normal = ListProperty((1, 1, 1, 1))
+    text_color_active = ListProperty((1, 1, 1, 1))
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
     callback = ObjectProperty()
@@ -354,7 +354,7 @@ class MDTabsBase(Widget):
     text = StringProperty()
     """
     It will be the label text of the tab.
-    
+
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
@@ -655,20 +655,20 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     and defaults to `[]`.
     """
 
-    text_color_normal = ListProperty()
+    text_color_normal = ListProperty((1, 1, 1, 1))
     """
     Text color of the label when it is not selected.
 
     :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and defaults to `(1, 1, 1, 1)`.
     """
 
-    text_color_active = ListProperty()
+    text_color_active = ListProperty((1, 1, 1, 1))
     """
     Text color of the label when it is selected.
 
     :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and defaults to `(1, 1, 1, 1)`.
     """
 
     elevation = NumericProperty(0)
@@ -721,21 +721,6 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
-                self.background_color = (
-                    self.background_color
-                    if self.background_color
-                    else self.theme_cls.primary_color
-                )
-                self.text_color_normal = (
-                    self.text_color_normal
-                    if self.text_color_normal
-                    else self.theme_cls.text_color
-                )
-                self.text_color_active = (
-                    self.text_color_active
-                    if self.text_color_active
-                    else self.theme_cls.bg_dark
-                )
                 widget.tab_label.callback = self.callback
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal

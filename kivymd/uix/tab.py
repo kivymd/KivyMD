@@ -233,6 +233,83 @@ Example with tab icon and text
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-icon-text.png
     :align: center
+
+Dynamic tab management
+----------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.scrollview import ScrollView
+
+    from kivymd.app import MDApp
+    from kivymd.uix.tab import MDTabsBase
+
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Example Tabs"
+
+        MDTabs:
+            id: android_tabs
+
+
+    <Tab>:
+
+        MDList:
+
+            MDBoxLayout:
+                adaptive_height: True
+
+                MDFlatButton:
+                    text: "ADD TAB"
+                    on_release: app.add_tab()
+
+                MDFlatButton:
+                    text: "REMOVE LAST TAB"
+                    on_release: app.remove_tab()
+
+                MDFlatButton:
+                    text: "GET TAB LIST"
+                    on_release: app.get_tab_list()
+    '''
+
+
+    class Tab(ScrollView, MDTabsBase):
+        '''Class implementing content for a tab.'''
+
+
+    class Example(MDApp):
+        index = 0
+
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            self.add_tab()
+
+        def get_tab_list(self):
+            '''Prints a list of tab objects.'''
+
+            print(self.root.ids.android_tabs.get_tab_list())
+
+        def add_tab(self):
+            self.index += 1
+            self.root.ids.android_tabs.add_widget(Tab(text=f"{self.index} tab"))
+
+        def remove_tab(self):
+            self.index -= 1
+            self.root.ids.android_tabs.remove_widget(
+                self.root.ids.android_tabs.get_tab_list()[0]
+            )
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-dynamic-managmant.gif
+    :align: center
 """
 
 __all__ = ("MDTabs", "MDTabsBase")
@@ -754,6 +831,11 @@ class MDTabs(ThemableBehavior, AnchorLayout):
     def on_tab_switch(self, *args):
         """Called when switching tabs."""
 
+    def get_tab_list(self):
+        """Returns a list of tab objects."""
+
+        return self.tab_bar.layout.children
+
     def on_carousel_index(self, carousel, index):
         # when the index of the carousel change, update
         # tab indicator, select the current tab and reset threshold data.
@@ -780,11 +862,13 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         return super().add_widget(widget)
 
     def remove_widget(self, widget):
-        # You can remove only subclass of MDTabsBase.
-        if not issubclass(widget.__class__, MDTabsBase):
+        # You can remove only subclass of MDTabsLabel.
+        if not issubclass(widget.__class__, MDTabsLabel):
             raise MDTabsException(
-                "MDTabs can remove only subclass of MDTabBase"
+                "MDTabs can remove only subclass of MDTabsLabel"
             )
-        if widget.parent.parent == self.carousel:
-            self.tab_bar.layout.remove_widget(widget.tab_label)
-            self.carousel.remove_widget(widget)
+        self.tab_bar.layout.remove_widget(widget)
+        for tab in self.carousel.slides:
+            if tab.text == widget.text:
+                self.carousel.slides.remove(tab)
+                break

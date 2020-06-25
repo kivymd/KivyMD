@@ -8,7 +8,6 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
-
 from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
 from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem

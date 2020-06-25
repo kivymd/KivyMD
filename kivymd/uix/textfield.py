@@ -882,8 +882,10 @@ class MDTextField(ThemableBehavior, FixedHintTextInput):
             if not self._line_blank_space_right_hint_text:
                 self._line_blank_space_right_hint_text = self._hint_lbl.texture_size[
                     0
-                ] - dp(
-                    25
+                ] - self._hint_lbl.texture_size[
+                    0
+                ] / 100 * dp(
+                    18
                 )
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1

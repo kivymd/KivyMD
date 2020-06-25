@@ -530,7 +530,7 @@ class MDDialog(BaseDialog):
 
     def on_open(self):
         # TODO: Add scrolling text.
-        pass
+        self.height = self.ids.container.height
 
     def set_normal_height(self):
         self.size_hint_y = 0.8

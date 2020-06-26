@@ -101,6 +101,41 @@ Usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/lists.gif
     :align: center
 
+Events of List
+--------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    ScrollView:
+
+        MDList:
+
+            OneLineAvatarIconListItem:
+                on_release: print("Click!")
+
+                IconLeftWidget:
+                    icon: "github"
+
+            OneLineAvatarIconListItem:
+                on_release: print("Click 2!")
+
+                IconLeftWidget:
+                    icon: "gitlab"
+    '''
+
+
+    class MainApp(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    MainApp().run()
+
 .. OneLineListItem:
 OneLineListItem
 ---------------

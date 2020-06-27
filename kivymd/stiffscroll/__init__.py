@@ -156,11 +156,9 @@ class StiffScrollEffect(KineticEffect):
     def on_value(self, *args):
         """Prevent moving beyond my bounds, and update ``self.scroll``"""
 
-        if self.value < self.min:
-            self.velocity = 0
+        if self.value > 0:
             self.scroll = self.min
-        elif self.value > self.max:
-            self.velocity = 0
+        elif self.value < self.max:
             self.scroll = self.max
         else:
             self.scroll = self.value

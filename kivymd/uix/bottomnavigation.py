@@ -333,26 +333,26 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     and defaults to `''`.
     """
 
-    text_color_normal = ListProperty((1, 1, 1, 1))
+    text_color_normal = ListProperty([1, 1, 1, 1])
     """
     Text color of the label when it is not selected.
 
     :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `(1, 1, 1, 1)`.
+    and defaults to `[1, 1, 1, 1]`.
     """
 
-    text_color_active = ListProperty((1, 1, 1, 1))
+    text_color_active = ListProperty([1, 1, 1, 1])
     """
     Text color of the label when it is selected.
 
     :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `(1, 1, 1, 1)`.
+    and defaults to `[1, 1, 1, 1]`.
     """
 
     _label = ObjectProperty()
     _label_font_size = NumericProperty("12sp")
-    _text_color_normal = ListProperty((0, 0, 0, 0))
-    _text_color_active = ListProperty((0, 0, 0, 0))
+    _text_color_normal = ListProperty([1, 1, 1, 1])
+    _text_color_active = ListProperty([1, 1, 1, 1])
 
     def __init__(self, panel, height, tab):
         self.panel = panel

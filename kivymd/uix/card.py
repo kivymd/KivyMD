@@ -661,13 +661,20 @@ class MDCard(
     and defaults to `False`.
     """
 
+    elevation = NumericProperty(0)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Clock.schedule_once(lambda x: self._on_elevation(self.elevation))
         Clock.schedule_once(
-            lambda x: self._on_ripple_behavior(0, self.ripple_behavior)
+            lambda x: self._on_ripple_behavior(self.ripple_behavior)
         )
 
-    def _on_ripple_behavior(self, instance, value):
+    def _on_elevation(self, value):
+        if not value:
+            self.elevation = 6
+
+    def _on_ripple_behavior(self, value):
         self._no_ripple_effect = False if value else True
 
 

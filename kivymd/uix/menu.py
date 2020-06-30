@@ -184,6 +184,20 @@ Full example
 
     Test().run()
 
+Hover Behavior
+--------------
+
+.. code-block:: python
+
+    self.menu = MDDropdownMenu(
+        ...,
+        ...,
+        selected_color=self.theme_cls.primary_dark_hue,
+    )
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-with-hover.gif
+    :align: center
+
 Menu with MDToolbar
 -------------------
 
@@ -398,12 +412,9 @@ from kivy.uix.scrollview import ScrollView
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import (
-    IRightBodyTouch,
-    OneLineAvatarIconListItem,
-    OneLineListItem,
-)
+from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem
 
 Builder.load_string(
     """
@@ -453,6 +464,7 @@ Builder.load_string(
 
         MDMenu:
             id: md_menu
+            drop_cls: root
             width_mult: root.width_mult
             size_hint: None, None
             size: 0, 0
@@ -466,8 +478,11 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
     icon = StringProperty()
 
 
-class MDMenuItemIcon(OneLineAvatarIconListItem):
+class MDMenuItemIcon(HoverBehavior, OneLineAvatarIconListItem):
     icon = StringProperty()
+
+    def on_enter(self):
+        self.parent.parent.drop_cls.set_bg_color_items(self)
 
 
 class MDMenu(ScrollView):
@@ -476,8 +491,20 @@ class MDMenu(ScrollView):
     See :attr:`~MDDropdownMenu.width_mult`.
     """
 
+    drop_cls = ObjectProperty()
+    """
+    See :class:`~MDDropdownMenu` class.
+    """
+
 
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
+    selected_color = ListProperty()
+    """Custom color (``rgba`` format) for list item when hover behavior occurs.
+    
+    :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     items = ListProperty()
     """
     See :attr:`~kivy.uix.recycleview.RecycleView.data`.
@@ -601,6 +628,19 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     def check_position_caller(self, instance, width, height):
         self.set_menu_properties(0)
+
+    def set_bg_color_items(self, instance_selected_item):
+        """Called when a Hover Behavior event occurs for a list item.
+
+        :type instance_selected_item: <kivymd.uix.menu.MDMenuItemIcon object>
+        """
+
+        if self.selected_color:
+            for item in self.menu.ids.box.children:
+                if item is not instance_selected_item:
+                    item.bg_color = (0, 0, 0, 0)
+                else:
+                    instance_selected_item.bg_color = self.selected_color
 
     def create_menu_items(self):
         """Creates menu items."""

@@ -30,7 +30,7 @@ from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import Image
+from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
 
 
@@ -54,7 +54,8 @@ class Container(Widget):
 
     def __init__(self, source, **kwargs):
         super().__init__(**kwargs)
-        self.image = Image()
+        self.image = AsyncImage()
+        self.image.bind(on_load=self.adjust_size)
         self.source = source
         self.bind(size=self.adjust_size, pos=self.adjust_size)
 
@@ -66,7 +67,7 @@ class Container(Widget):
         self.adjust_size()
 
     def adjust_size(self, *args):
-        if not self.parent:
+        if not self.parent or not self.image.texture:
             return
 
         (par_x, par_y) = self.parent.size
@@ -77,7 +78,6 @@ class Container(Widget):
             return
 
         par_scale = par_x / par_y
-
         (img_x, img_y) = self.image.texture.size
         img_scale = img_x / img_y
 

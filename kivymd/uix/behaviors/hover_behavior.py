@@ -87,6 +87,8 @@ the widget.
    :align: center
 """
 
+__all__ = "HoverBehavior"
+
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.properties import BooleanProperty, ObjectProperty

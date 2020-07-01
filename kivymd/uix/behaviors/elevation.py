@@ -119,10 +119,11 @@ Similarly, create a button with a circular elevation effect:
     :align: center
 """
 
-from kivy.app import App
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty
+
+from kivymd.app import MDApp
 
 Builder.load_string(
     """
@@ -165,6 +166,8 @@ Builder.load_string(
 
 
 class CommonElevationBehavior(object):
+    """Common base class for rectangular and circular elevation behavior."""
+
     elevation = NumericProperty(1)
     """
     Elevation value.
@@ -175,12 +178,12 @@ class CommonElevationBehavior(object):
 
     _elevation = NumericProperty(0)
     _soft_shadow_texture = ObjectProperty()
-    _soft_shadow_size = ListProperty([0, 0])
-    _soft_shadow_pos = ListProperty([0, 0])
+    _soft_shadow_size = ListProperty((0, 0))
+    _soft_shadow_pos = ListProperty((0, 0))
     _soft_shadow_a = NumericProperty(0)
     _hard_shadow_texture = ObjectProperty()
-    _hard_shadow_size = ListProperty([0, 0])
-    _hard_shadow_pos = ListProperty([0, 0])
+    _hard_shadow_size = ListProperty((0, 0))
+    _hard_shadow_pos = ListProperty((0, 0))
     _hard_shadow_a = NumericProperty(0)
 
     def __init__(self, **kwargs):
@@ -201,15 +204,19 @@ class CommonElevationBehavior(object):
 
 
 class RectangularElevationBehavior(CommonElevationBehavior):
+    """Base class for rectangular elevation behavior.
+    Controls the size and position of the shadow."""
+
     def _update_shadow(self, *args):
         if self._elevation > 0:
+            # Set shadow size.
             ratio = self.width / (self.height if self.height != 0 else 1)
             if -2 < ratio < 2:
-                self._shadow = App.get_running_app().theme_cls.quad_shadow
+                self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.9
                 height = soft_height = self.height * 1.9
             elif ratio <= -2:
-                self._shadow = App.get_running_app().theme_cls.rec_st_shadow
+                self._shadow = MDApp.get_running_app().theme_cls.rec_st_shadow
                 ratio = abs(ratio)
                 if ratio > 5:
                     ratio = ratio * 22
@@ -221,27 +228,28 @@ class RectangularElevationBehavior(CommonElevationBehavior):
                     self.height + dp(ratio) + dp(self._elevation) * 0.5
                 )
             else:
-                self._shadow = App.get_running_app().theme_cls.quad_shadow
+                self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.8
                 height = soft_height = self.height * 1.8
 
-            x = self.center_x - width / 2
-            soft_x = self.center_x - soft_width / 2
             self._soft_shadow_size = (soft_width, soft_height)
             self._hard_shadow_size = (width, height)
-
-            y = (
+            # Set ``soft_shadow`` parameters.
+            self._soft_shadow_pos = (
+                self.center_x - soft_width / 2,
                 self.center_y
                 - soft_height / 2
-                - dp(0.1 * 1.5 ** self._elevation)
+                - dp(0.1 * 1.5 ** self._elevation),
             )
-            self._soft_shadow_pos = (soft_x, y)
             self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
             self._soft_shadow_texture = self._shadow.textures[
-                str(int(round(self._elevation - 1)))
+                str(int(round(self._elevation)))
             ]
-            y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation)
-            self._hard_shadow_pos = (x, y)
+            # Set ``hard_shadow`` parameters.
+            self._hard_shadow_pos = (
+                self.center_x - width / 2,
+                self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation),
+            )
             self._hard_shadow_a = 0.4 * 0.9 ** self._elevation
             self._hard_shadow_texture = self._shadow.textures[
                 str(int(round(self._elevation)))
@@ -252,25 +260,30 @@ class RectangularElevationBehavior(CommonElevationBehavior):
 
 
 class CircularElevationBehavior(CommonElevationBehavior):
+    """Base class for circular elevation behavior.
+    Controls the size and position of the shadow."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._shadow = App.get_running_app().theme_cls.round_shadow
+        self._shadow = MDApp.get_running_app().theme_cls.round_shadow
 
     def _update_shadow(self, *args):
         if self.elevation > 0:
+            # Set shadow size.
             width = self.width * 2
             height = self.height * 2
 
             x = self.center_x - width / 2
             self._soft_shadow_size = (width, height)
             self._hard_shadow_size = (width, height)
-
+            # Set ``soft_shadow`` parameters.
             y = self.center_y - height / 2 - dp(0.1 * 1.5 ** self._elevation)
             self._soft_shadow_pos = (x, y)
             self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
             self._soft_shadow_texture = self._shadow.textures[
                 str(int(round(self._elevation)))
             ]
+            # Set ``hard_shadow`` parameters.
             y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation)
             self._hard_shadow_pos = (x, y)
             self._hard_shadow_a = 0.4 * 0.9 ** self._elevation

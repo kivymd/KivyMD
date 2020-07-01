@@ -5,7 +5,9 @@ import sys
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
+from kivy.loader import Loader
 
+from kivymd import images_path
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
@@ -30,6 +32,7 @@ class KitchenSinkApp(MDApp):
         self.dialog_change_theme = None
         self.toolbar = None
         self.data_screens = {}
+        Loader.loading_image = f"{images_path}transparent.png"
 
     def build(self):
         Builder.load_file(

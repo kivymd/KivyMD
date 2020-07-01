@@ -70,6 +70,7 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 - :class:`~kivymd.uix.button.MDFillRoundFlatIconButton`
 """
 
+__all__ = "MDToggleButton"
 
 from kivy.properties import ListProperty
 from kivy.uix.behaviors import ToggleButtonBehavior

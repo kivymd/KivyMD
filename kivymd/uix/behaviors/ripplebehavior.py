@@ -88,6 +88,12 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
     :align: center
 """
 
+__all__ = (
+    "CommonRipple",
+    "RectangularRippleBehavior",
+    "CircularRippleBehavior",
+)
+
 from kivy.animation import Animation
 from kivy.graphics import (
     Color,

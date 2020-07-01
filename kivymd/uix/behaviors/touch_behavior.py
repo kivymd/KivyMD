@@ -49,7 +49,7 @@ Usage
     MainApp().run()
 """
 
-__all__ = "TouchBehavior"
+__all__ = ("TouchBehavior",)
 
 from functools import partial
 

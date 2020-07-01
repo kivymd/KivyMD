@@ -49,6 +49,8 @@ Usage
     MainApp().run()
 """
 
+__all__ = "TouchBehavior"
+
 from functools import partial
 
 from kivy.clock import Clock

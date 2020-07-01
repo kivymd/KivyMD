@@ -119,6 +119,12 @@ Similarly, create a button with a circular elevation effect:
     :align: center
 """
 
+__all__ = (
+    "CommonElevationBehavior",
+    "RectangularElevationBehavior",
+    "CircularElevationBehavior",
+)
+
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty

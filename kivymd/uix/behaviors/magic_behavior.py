@@ -86,7 +86,7 @@ Example:
    :align: center
 """
 
-__all__ = "MagicBehavior"
+__all__ = ("MagicBehavior",)
 
 from kivy.animation import Animation
 from kivy.factory import Factory

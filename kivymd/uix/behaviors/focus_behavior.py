@@ -98,7 +98,7 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
     """
 
     def on_enter(self):
-        """Fired when mouse enter the bbox of the widget."""
+        """Called when mouse enter the bbox of the widget."""
 
         if hasattr(self, "md_bg_color") and self.focus_behavior:
             if hasattr(self, "theme_cls") and not self.focus_color:
@@ -110,7 +110,7 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
                     self.md_bg_color = self.focus_color
 
     def on_leave(self):
-        """Fired when the mouse exit the widget."""
+        """Called when the mouse exit the widget."""
 
         if hasattr(self, "md_bg_color") and self.focus_behavior:
             if hasattr(self, "theme_cls") and not self.unfocus_color:

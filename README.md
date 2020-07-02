@@ -76,7 +76,6 @@ Installation
 #### Dependencies:
 
 * [Kivy](https://github.com/kivy/kivy) >= 1.10.1 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
-* [PIL](https://github.com/python-pillow/Pillow) ([Installation](https://pillow.readthedocs.io/en/stable/installation.html#basic-installation))
 * [Python 3.6+](https://www.python.org/) *(Python 2 not supported)*
 
 #### How to install

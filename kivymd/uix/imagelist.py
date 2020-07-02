@@ -150,16 +150,11 @@ Builder.load_string(
         size: img.size
         pos: img.pos
 
-    BoxLayout:
-        canvas:
-            Color:
-                rgba: root.box_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    MDBoxLayout:
         id: box
+        md_bg_color: root.box_color
         size_hint_y: None
-        height: dp(68) if root.lines == 2 else dp(48)
+        height: "68dp" if root.lines == 2 else "48dp"
         x: root.x
         y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
 
@@ -182,18 +177,11 @@ Builder.load_string(
         size: img.size
         pos: img.pos
 
-    BoxLayout:
-        canvas:
-            Color:
-                rgba: root.box_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
+    MDBoxLayout:
         id: box
-        size_hint_y: None
         padding: "5dp", 0, 0, 0
-        height: self.minimum_height
+        md_bg_color: root.box_color
+        adaptive_height: True
         x: root.x
         y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
 
@@ -219,12 +207,12 @@ class SmartTile(
     as a header or a footer, as described in the Material Design specs.
     """
 
-    box_color = ListProperty([0, 0, 0, 0.5])
+    box_color = ListProperty((0, 0, 0, 0.5))
     """
     Sets the color and opacity for the information box.
 
     :attr:`box_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[0, 0, 0, 0.5]`.
+    and defaults to `(0, 0, 0, 0.5)`.
     """
 
     box_position = OptionProperty("footer", options=["footer", "header"])
@@ -253,46 +241,6 @@ class SmartTile(
     and defaults to `True`.
     """
 
-    allow_stretch = BooleanProperty(True)
-    """
-    See :attr:`~kivy.uix.image.Image.allow_stretch`.
-
-    :attr:`allow_stretch` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `True`.
-    """
-
-    anim_delay = NumericProperty(0.25)
-    """
-    See :attr:`~kivy.uix.image.Image.anim_delay`.
-
-    :attr:`anim_delay` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.25`.
-    """
-
-    anim_loop = NumericProperty(0)
-    """
-    See :attr:`~kivy.uix.image.Image.anim_loop`.
-
-    :attr:`anim_loop` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
-    """
-
-    keep_ratio = BooleanProperty(False)
-    """
-    See :attr:`~kivy.uix.image.Image.keep_ratio`.
-
-    :attr:`keep_ratio` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    mipmap = BooleanProperty(False)
-    """
-    See :attr:`~kivy.uix.image.Image.mipmap`.
-
-    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
     source = StringProperty()
     """
     Path to tile image. See :attr:`~kivy.uix.image.Image.source`.
@@ -319,15 +267,15 @@ class SmartTileWithLabel(SmartTile):
     and defaults to `'Caption'`.
     """
 
-    tile_text_color = ListProperty([1, 1, 1, 1])
+    tile_text_color = ListProperty((1, 1, 1, 1))
     """
     Tile text color in ``rgba`` format.
 
-    :attr:`text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to ``.
+    :attr:`tile_text_color` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `(1, 1, 1, 1)`.
     """
 
-    text = StringProperty("")
+    text = StringProperty()
     """
     Determines the text for the box `footer/header`.
 
@@ -353,7 +301,7 @@ class SmartTileWithStar(SmartTileWithLabel):
                 _Star(
                     icon="star-outline",
                     theme_text_color="Custom",
-                    text_color=[1, 1, 1, 1],
+                    text_color=(1, 1, 1, 1),
                 )
             )
 

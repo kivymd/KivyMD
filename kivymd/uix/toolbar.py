@@ -390,7 +390,7 @@ class MDToolbar(
 
     md_bg_color = ListProperty([0, 0, 0, 0])
     """Color toolbar.
-    
+
     :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
@@ -443,7 +443,7 @@ class MDToolbar(
 
             MDToolbar:
                 type: "bottom"
-    
+
     Available options are: `'top'`, `'bottom'`.
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`

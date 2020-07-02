@@ -1,5 +1,3 @@
-import os
-
 from kivy.uix.screenmanager import Screen
 
 

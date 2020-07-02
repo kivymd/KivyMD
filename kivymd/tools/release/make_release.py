@@ -202,7 +202,7 @@ def create_unreleased_changelog(index_file, unreleased_file, previous_version):
     # Update index file
     replace_in_file(
         r"(?<=Change Log\n==========\n\n)",
-        f".. include:: /changelog/unreleased.rst\n",
+        ".. include:: /changelog/unreleased.rst\n",
         index_file,
     )
 

@@ -92,7 +92,7 @@ Builder.load_string(
 
 
 <MDDialog>
-            
+
     MDCard:
         id: container
         orientation: "vertical"

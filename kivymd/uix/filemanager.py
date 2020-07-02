@@ -600,10 +600,10 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def _update_list_images(self):
         self.ids.rv.refresh_from_layout()
 
-    def _split_list(self, l, n):
-        if l:
+    def _split_list(self, lst, n):
+        if lst:
             n = max(1, n)
-            return (l[i : i + n] for i in range(0, len(l), n))
+            return (lst[i : i + n] for i in range(0, len(lst), n))
         else:
             return []
 

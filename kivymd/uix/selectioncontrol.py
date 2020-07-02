@@ -245,7 +245,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     """
     Background icon of the checkbox used for the default graphical
     representation when the checkbox is not pressed.
-    
+
     :attr:`checkbox_icon_normal` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-outline'`.
     """

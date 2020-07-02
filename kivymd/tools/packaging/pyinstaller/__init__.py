@@ -46,7 +46,7 @@ Example of .spec file
     )
 """
 
-__all__ = ("hooks_path", "datas")
+__all__ = ("hooks_path", "datas", "hiddenimports")
 
 from os.path import abspath, basename, dirname, join
 

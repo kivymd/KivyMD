@@ -250,7 +250,7 @@ class MDLabel(ThemableBehavior, Label):
     font_style = OptionProperty("Body1", options=theme_font_styles)
     """
     Label font style.
-    
+
     Available options are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`, `'H6'`,
     `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.

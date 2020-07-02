@@ -5,10 +5,7 @@ Behaviors/Background Color
 .. note:: The following classes are intended for in-house use of the library.
 """
 
-__all__ = (
-    "BackgroundColorBehavior",
-    "SpecificBackgroundColorBehavior",
-)
+__all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 
 from kivy.lang import Builder
 from kivy.properties import (

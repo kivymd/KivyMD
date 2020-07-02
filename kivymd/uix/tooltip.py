@@ -131,7 +131,7 @@ Builder.load_string(
 class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     tooltip_bg_color = ListProperty()
     """Tooltip background color in ``rgba`` format.
-    
+
     :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """

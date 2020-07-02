@@ -128,7 +128,7 @@ Builder.load_string(
                 id: box
                 padding: "8dp", "8dp", "4dp", 0
                 spacing: "16dp"
-        
+
                 MDCheckbox:
                     id: check
                     size_hint: None, None
@@ -386,8 +386,8 @@ class CellRow(
 
         if active and self.index not in self.table.current_selection_check:
             if (
-                not self.table._rows_number
-                in self.table.current_selection_check
+                self.table._rows_number
+                not in self.table.current_selection_check
             ):
                 self.table.current_selection_check[self.table._rows_number] = []
             if (
@@ -542,9 +542,7 @@ class TableData(RecycleView):
                     }
                 )
             if not self.table_header.column_data:
-                raise ValueError(
-                    f"Set value for column_data in class TableData"
-                )
+                raise ValueError("Set value for column_data in class TableData")
             self.data_first_cells.append(self.table_header.column_data[0][0])
 
     def set_text_from_of(self, direction):
@@ -831,8 +829,8 @@ class MDDataTable(BaseDialog):
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
-        
-        
+
+
         class Example(MDApp):
             def build(self):
                 self.data_tables = MDDataTable(
@@ -850,11 +848,11 @@ class MDDataTable(BaseDialog):
                         (f"{i + 1}", "1", "2", "3", "4", "5") for i in range(50)
                     ],
                 )
-        
+
             def on_start(self):
                 self.data_tables.open()
-        
-        
+
+
         Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-use-pagination.png

@@ -500,7 +500,7 @@ class MDMenu(ScrollView):
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
     selected_color = ListProperty()
     """Custom color (``rgba`` format) for list item when hover behavior occurs.
-    
+
     :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
@@ -610,7 +610,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     use_icon_item = BooleanProperty(True)
     """Whether to use menu items with an icon on the left.
-    
+
     :attr:`use_icon_item` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """

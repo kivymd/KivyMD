@@ -856,7 +856,7 @@ class BaseButton(
 
     user_font_size = NumericProperty()
     """Custom font size for :class:`~MDIconButton`.
-    
+
     :attr:`user_font_size` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
@@ -1398,7 +1398,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     data = DictProperty()
     """
-    Must be a dictionary 
+    Must be a dictionary
 
     .. code-block:: python
 
@@ -1712,7 +1712,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
         if self.state != "open":
             y = 0
-            l = dp(56)
+            label_position = dp(56)
             anim_buttons_data = {}
             anim_labels_data = {}
 
@@ -1729,10 +1729,10 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                         )
                 elif isinstance(widget, MDFloatingLabel):
                     # Sets new labels positions.
-                    l += dp(56)
+                    label_position += dp(56)
                     # Sets the position of signatures only once.
                     if not self._label_pos_y_set:
-                        widget.y = widget.y * 2 + l
+                        widget.y = widget.y * 2 + label_position
                         widget.x = Window.width - widget.width - dp(86)
                     if not self._anim_labels_data:
                         anim_labels_data[widget] = Animation(

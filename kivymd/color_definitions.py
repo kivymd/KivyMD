@@ -344,7 +344,7 @@ To demonstrate the shades of the palette, you can run the following code:
     from kivy.uix.boxlayout import BoxLayout
     from kivy.utils import get_color_from_hex
     from kivy.properties import ListProperty, StringProperty
-    
+
     from kivymd.color_definitions import colors
     from kivymd.uix.tab import MDTabsBase
 

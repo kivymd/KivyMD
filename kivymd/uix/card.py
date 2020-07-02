@@ -640,7 +640,7 @@ class MDCard(
     background = StringProperty()
     """
     Background image path.
-    
+
     :attr:`background` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
@@ -759,7 +759,7 @@ class MDCardSwipe(RelativeLayout):
 
     max_opened_x = NumericProperty("100dp")
     """
-    The value of the position the card shifts to when :attr:`~type_swipe` 
+    The value of the position the card shifts to when :attr:`~type_swipe`
     s set to `'hand'`.
 
     :attr:`max_opened_x` is a :class:`~kivy.properties.NumericProperty`

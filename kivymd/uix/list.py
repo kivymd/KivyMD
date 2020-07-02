@@ -657,7 +657,7 @@ class BaseListItem(
     """
     Text color in ``rgba`` format used if :attr:`~theme_text_color` is set
     to `'Custom'`.
-    
+
     :attr:`text_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `None`.
     """

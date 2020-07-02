@@ -201,7 +201,7 @@ class CommonElevationBehavior(object):
         )
 
     def _update_shadow(self, *args):
-        raise NotImplemented
+        raise NotImplementedError
 
     def _update_elevation(self, instance, value):
         if not self._elevation:

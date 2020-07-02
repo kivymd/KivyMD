@@ -1,9 +1,11 @@
+__all__ = ("toast",)
+
 from kivy.utils import platform
 
 if platform == "android":
     try:
         from .androidtoast import toast
-    except:
+    except BaseException:
         from .kivytoast import toast
 else:
     from .kivytoast import toast

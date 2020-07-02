@@ -45,10 +45,10 @@ AndroidToast
     Test().run()
 """
 
-from android import activity
+__all__ = ("toast",)
+
 from android.runnable import run_on_ui_thread
-from jnius import PythonJavaClass, autoclass, cast, java_method
-from kivy.logger import Logger
+from jnius import autoclass, cast
 
 Toast = autoclass("android.widget.Toast")
 context = autoclass("org.kivy.android.PythonActivity").mActivity

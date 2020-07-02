@@ -378,7 +378,7 @@ class MDNavigationDrawer(MDCard):
     """
     Indicates if panel closed or opened. Sets after :attr:`status` change.
     Available options are: `'close'`, `'open'`.
-    
+
     :attr:`state` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """

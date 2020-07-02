@@ -26,27 +26,30 @@ SmartTileWithStar
     from kivy.lang import Builder
 
     KV = '''
+    <MyTile@SmartTileWithStar>
+        size_hint_y: None
+        height: "240dp"
+
+
     ScrollView:
 
         MDGridLayout:
             cols: 3
-            row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
-            row_force_default: True
             adaptive_height: True
             padding: dp(4), dp(4)
             spacing: dp(4)
 
-            SmartTileWithStar:
+            MyTile:
                 stars: 5
                 source: "cat-1.jpg"
 
-            SmartTileWithStar:
+            MyTile:
                 stars: 5
                 source: "cat-2.jpg"
 
-            SmartTileWithStar:
+            MyTile:
                 stars: 5
-                source: "cat-.jpg"
+                source: "cat-3.jpg"
     '''
 
 
@@ -70,26 +73,29 @@ SmartTileWithLabel
     from kivy.lang import Builder
 
     KV = '''
+    <MyTile@SmartTileWithStar>
+        size_hint_y: None
+        height: "240dp"
+
+
     ScrollView:
 
         MDGridLayout:
             cols: 3
-            row_default_height: (self.width - self.cols*self.spacing[0]) / self.cols
-            row_force_default: True
             adaptive_height: True
             padding: dp(4), dp(4)
             spacing: dp(4)
 
-            SmartTileWithLabel:
+            MyTile:
                 source: "cat-1.jpg"
                 text: "[size=26]Cat 1[/size]\\n[size=14]cat-1.jpg[/size]"
 
-            SmartTileWithLabel:
+            MyTile:
                 source: "cat-2.jpg"
                 text: "[size=26]Cat 2[/size]\\n[size=14]cat-2.jpg[/size]"
                 tile_text_color: app.theme_cls.accent_color
 
-            SmartTileWithLabel:
+            MyTile:
                 source: "cat-3.jpg"
                 text: "[size=26][color=#ffffff]Cat 3[/color][/size]\\n[size=14]cat-3.jpg[/size]"
                 tile_text_color: app.theme_cls.accent_color
@@ -98,8 +104,7 @@ SmartTileWithLabel
 
     class MyApp(MDApp):
         def build(self):
-            root = Builder.load_string(KV)
-            return root
+            return Builder.load_string(KV)
 
 
     MyApp().run()
@@ -107,6 +112,8 @@ SmartTileWithLabel
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/SmartTileWithLabel.png
     :align: center
 """
+
+__all__ = ("SmartTile", "SmartTileWithLabel", "SmartTileWithStar")
 
 from kivy.lang import Builder
 from kivy.properties import (
@@ -118,12 +125,11 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.floatlayout import MDFloatLayout
 
 Builder.load_string(
     """
@@ -132,15 +138,9 @@ Builder.load_string(
     _img_overlay: img_overlay
     _box_overlay: box
 
-    AsyncImage:
+    FitImage:
         id: img
-        allow_stretch: root.allow_stretch
-        anim_delay: root.anim_delay
-        anim_loop: root.anim_loop
-        keep_ratio: root.keep_ratio
-        mipmap: root.mipmap
         source: root.source
-        size_hint_y: 1 if root.overlap else None
         x: root.x
         y: root.y if root.overlap or root.box_position == 'header' else box.top
 
@@ -170,15 +170,9 @@ Builder.load_string(
     _box_overlay: box
     _box_label: boxlabel
 
-    AsyncImage:
+    FitImage:
         id: img
-        allow_stretch: root.allow_stretch
-        anim_delay: root.anim_delay
-        anim_loop: root.anim_loop
-        keep_ratio: root.keep_ratio
-        mipmap: root.mipmap
         source: root.source
-        size_hint_y: 1 if root.overlap else None
         x: root.x
         y: root.y if root.overlap or root.box_position == 'header' else box.top
 
@@ -215,19 +209,8 @@ Builder.load_string(
 )
 
 
-class Tile(
-    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, BoxLayout
-):
-    """
-    A simple tile. It does nothing special, just inherits the right
-    behaviors to work as a building block.
-    """
-
-    pass
-
-
 class SmartTile(
-    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, FloatLayout
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, MDFloatLayout
 ):
     """
     A tile for more complex needs.
@@ -326,14 +309,6 @@ class SmartTile(
     def reload(self):
         self._img_widget.reload()
 
-    def add_widget(self, widget, index=0, canvas=None):
-        if issubclass(widget.__class__, IOverlay):
-            self._img_overlay.add_widget(widget, index, canvas)
-        elif issubclass(widget.__class__, IBoxOverlay):
-            self._box_overlay.add_widget(widget, index, canvas)
-        else:
-            super().add_widget(widget, index, canvas)
-
 
 class SmartTileWithLabel(SmartTile):
     font_style = StringProperty("Caption")
@@ -363,11 +338,6 @@ class SmartTileWithLabel(SmartTile):
     _box_label = ObjectProperty()
 
 
-class Star(MDIconButton):
-    def on_touch_down(self, touch):
-        return True
-
-
 class SmartTileWithStar(SmartTileWithLabel):
     stars = NumericProperty(1)
     """
@@ -380,7 +350,7 @@ class SmartTileWithStar(SmartTileWithLabel):
     def on_stars(self, *args):
         for star in range(self.stars):
             self.ids.box.add_widget(
-                Star(
+                _Star(
                     icon="star-outline",
                     theme_text_color="Custom",
                     text_color=[1, 1, 1, 1],
@@ -388,15 +358,6 @@ class SmartTileWithStar(SmartTileWithLabel):
             )
 
 
-class IBoxOverlay:
-    """
-    An interface to specify widgets that belong to to the image overlay
-    in the :class:`SmartTile` widget when added as a child.
-    """
-
-
-class IOverlay:
-    """
-    An interface to specify widgets that belong to to the image overlay
-    in the :class:`SmartTile` widget when added as a child.
-    """
+class _Star(MDIconButton):
+    def on_touch_down(self, touch):
+        return True

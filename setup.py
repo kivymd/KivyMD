@@ -51,6 +51,7 @@ if __name__ == "__main__":
                 "pre-commit",
                 "black",
                 "isort[pyproject]",
+                "flake8",
                 "pytest",
                 "pytest-cov",
                 "pytest_asyncio",

@@ -14,5 +14,11 @@ repos:
   - repo: https://github.com/timothycrosley/isort
     rev: 4.3.21
     hooks:
-    -   id: isort
+      - id: isort
         additional_dependencies: ["toml"]
+
+  # Lint Python
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.3
+    hooks:
+      - id: flake8

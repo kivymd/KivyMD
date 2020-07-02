@@ -359,6 +359,7 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 from kivymd.font_definitions import theme_font_styles
+from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.label import MDIcon
 
@@ -1060,9 +1061,12 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def _get_line_blank_space_right_point(self):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_line_blank_space_right_point.png
-        return self._hint_lbl.texture_size[0] - self._hint_lbl.texture_size[
-            0
-        ] / 100 * dp(18)
+        return (
+            self._hint_lbl.texture_size[0]
+            - self._hint_lbl.texture_size[0] / 100 * dp(18)
+            if DEVICE_TYPE == "desktop"
+            else dp(10)
+        )
 
     def _get_max_text_length(self):
         """Returns the maximum number of characters that can be entered in a

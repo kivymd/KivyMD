@@ -617,7 +617,7 @@ class MDDatePicker(
         self.cal_list = cal_list
 
     def change_month(self, operation):
-        op = 1 if operation is "next" else -1
+        op = 1 if operation == "next" else -1
         sl, sy = self.month, self.year
         m = 12 if sl + op == 0 else 1 if sl + op == 13 else sl + op
         y = sy - 1 if sl + op == 0 else sy + 1 if sl + op == 13 else sy

@@ -38,8 +38,11 @@ Usage
             self.screen = Builder.load_string(KV)
             menu_items = [{"icon": "git", "text": f"Item {i}"} for i in range(5)]
             self.menu = MDDropdownMenu(
-                caller=self.screen.ids.button, items=menu_items, width_mult=4
+                caller=self.screen.ids.button, items=menu_items, width_mult=4, callback=self.menu_callback
             )
+
+        def menu_callback(self, instance):
+            self.menu.dismiss()
 
         def build(self):
             return self.screen
@@ -175,8 +178,11 @@ Full example
                 for i in range(5)
             ]
             self.menu = MDDropdownMenu(
-                caller=self.screen.ids.button, items=menu_items, width_mult=4
+                caller=self.screen.ids.button, items=menu_items, width_mult=4, callback=self.menu_callback
             )
+
+        def menu_callback(self, instance):
+            self.menu.dismiss()
 
         def build(self):
             return self.screen
@@ -267,15 +273,21 @@ Menu with MDToolbar
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
             self.menu_1 = self.create_menu(
-                "Button menu", self.screen.ids.toolbar.ids.button_1
+                "Button menu", self.screen.ids.toolbar.ids.button_1, self.menu_1_callback
             )
             self.menu_2 = self.create_menu(
-                "Button dots", self.screen.ids.toolbar.ids.button_2
+                "Button dots", self.screen.ids.toolbar.ids.button_2, self.menu_2_callback
             )
 
-        def create_menu(self, text, instance):
+        def create_menu(self, text, instance, callback):
             menu_items = [{"icon": "git", "text": text} for i in range(5)]
-            return MDDropdownMenu(caller=instance, items=menu_items, width_mult=5)
+            return MDDropdownMenu(caller=instance, items=menu_items, width_mult=5, callback=callback)
+
+        def menu_1_callback(self, instance):
+            self.menu_1.dismiss()
+
+        def menu_2_callback(self, instance):
+            self.menu_2.dismiss()
 
         def build(self):
             return self.screen
@@ -333,6 +345,7 @@ Bottom position
         def set_item(self, instance):
             def set_item(interval):
                 self.screen.ids.field.text = instance.text
+                self.menu.dismiss()
 
             Clock.schedule_once(set_item, 0.5)
 
@@ -381,6 +394,7 @@ Center position
 
         def set_item(self, instance):
             self.screen.ids.drop_item.set_item(instance.text)
+            self.menu.dismiss()
 
         def build(self):
             return self.screen

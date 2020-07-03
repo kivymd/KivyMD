@@ -393,7 +393,7 @@ Builder.load_string(
     carousel: carousel
     tab_bar: tab_bar
     anchor_y: 'top'
-    background_palette: "Primary" 
+    background_palette: "Primary"
     text_color_normal: (\
     self.specific_secondary_text_color if self.theme_cls.theme_style == "Dark" else self.theme_cls.primary_color\
     )

@@ -892,6 +892,16 @@ class MDTabs(ThemableBehavior, AnchorLayout):
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal
                 widget.tab_label.text_color_active = self.text_color_active
+                self.bind(
+                    text_color_normal=widget.tab_label.setter(
+                        "text_color_normal"
+                    )
+                )
+                self.bind(
+                    text_color_active=widget.tab_label.setter(
+                        "text_color_active"
+                    )
+                )
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
                 return

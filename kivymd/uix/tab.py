@@ -314,6 +314,7 @@ Dynamic tab management
 
 __all__ = ("MDTabs", "MDTabsBase")
 
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics import Rectangle
 from kivy.lang import Builder
@@ -395,6 +396,7 @@ Builder.load_string(
 
         MDTabsCarousel:
             id: carousel
+            lock_swiping: root.lock_swiping
             anim_move_duration: root.anim_duration
             on_index: root.on_carousel_index(*args)
             on__offset: tab_bar.android_animation(*args)
@@ -516,7 +518,35 @@ class MDTabsMain(MDBoxLayout):
 
 
 class MDTabsCarousel(Carousel):
-    pass
+    lock_swiping = BooleanProperty(False)
+    """
+    If True - prohibits switching tabs by swipe.
+
+    :attr:`lock_swiping` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    def on_touch_down(self, touch):
+        # lock a swiping
+        if self.lock_swiping:
+            return super(Carousel, self).on_touch_down(touch)
+        if not self.collide_point(*touch.pos):
+            touch.ud[self._get_uid("cavoid")] = True
+            return
+        if self.disabled:
+            return True
+        if self._touch:
+            return super(Carousel, self).on_touch_down(touch)
+        Animation.cancel_all(self)
+        self._touch = touch
+        uid = self._get_uid()
+        touch.grab(self)
+        touch.ud[uid] = {"mode": "unknown", "time": touch.time_start}
+        self._change_touch_mode_ev = Clock.schedule_once(
+            self._change_touch_mode, self.scroll_timeout / 1000.0
+        )
+        self.touch_mode_change = False
+        return True
 
 
 class MDTabsScrollView(ScrollView):
@@ -822,6 +852,14 @@ class MDTabs(ThemableBehavior, AnchorLayout):
 
     :attr:`callback` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
+    """
+
+    lock_swiping = BooleanProperty(False)
+    """
+    If True - prohibits switching tabs by swipe.
+
+    :attr:`lock_swiping` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     def __init__(self, **kwargs):

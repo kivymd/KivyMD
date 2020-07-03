@@ -17,7 +17,7 @@ project = "KivyMD"
 copyright = "2020, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 version = kivymd.__version__
-reelase = kivymd.__version__
+release = kivymd.__version__
 
 
 # General configuration

@@ -359,7 +359,7 @@ Builder.load_string(
         (0, 0, 0, .5) \
         if app.theme_cls.theme_style == 'Dark' and not self.text_color_normal \
         else (1, 1, 1, .6) \
-        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        if app.theme_cls.theme_style == 'Light' and not self.text_color_normal \
         else self.text_color_normal \
         )
     text_color_active:
@@ -367,7 +367,7 @@ Builder.load_string(
         (0, 0, 0, .75) \
         if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
         else (1, 1, 1, 1) \
-        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        if app.theme_cls.theme_style == 'Light' and not self.text_color_normal \
         else self.text_color_active
         )
     color:

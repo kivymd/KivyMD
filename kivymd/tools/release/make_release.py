@@ -118,7 +118,7 @@ def update_init_py(version):
 def update_readme(previous_version, version):
     """Change version in README."""
     readme_file = os.path.abspath("README.md")
-    readme_version_regex = rf"(?<=\[)v{previous_version}[ \-*\w^\]\n]*(?=\])"
+    readme_version_regex = rf"(?<=\[v){previous_version}[ \-*\w^\]\n]*(?=\])"
     replace_in_file(readme_version_regex, version, readme_file)
 
 

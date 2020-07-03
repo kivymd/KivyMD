@@ -359,7 +359,7 @@ Builder.load_string(
         (0, 0, 0, .5) \
         if app.theme_cls.theme_style == 'Dark' and not self.text_color_normal \
         else (1, 1, 1, .6) \
-        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        if app.theme_cls.theme_style == 'Light' and not self.text_color_normal \
         else self.text_color_normal \
         )
     text_color_active:
@@ -367,7 +367,7 @@ Builder.load_string(
         (0, 0, 0, .75) \
         if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
         else (1, 1, 1, 1) \
-        if app.theme_cls.theme_style == 'White' and not self.text_color_normal \
+        if app.theme_cls.theme_style == 'Light' and not self.text_color_normal \
         else self.text_color_active
         )
     color:
@@ -892,6 +892,16 @@ class MDTabs(ThemableBehavior, AnchorLayout):
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal
                 widget.tab_label.text_color_active = self.text_color_active
+                self.bind(
+                    text_color_normal=widget.tab_label.setter(
+                        "text_color_normal"
+                    )
+                )
+                self.bind(
+                    text_color_active=widget.tab_label.setter(
+                        "text_color_active"
+                    )
+                )
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
                 return

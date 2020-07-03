@@ -76,7 +76,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                     KitchenSinkOneLineLeftAvatarItem(
                         text="user02@gmail.com",
-                        source=f"{os.environ['KITCHEN_SINK_ASSETS']}mountaino.png",
+                        source=f"{os.environ['KITCHEN_SINK_ASSETS']}artemsbulgakov.png",
                     ),
                     KitchenSinkOneLineLeftAvatarItem(
                         text="Add account",

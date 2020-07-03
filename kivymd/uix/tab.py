@@ -520,7 +520,7 @@ class MDTabsMain(MDBoxLayout):
 class MDTabsCarousel(Carousel):
     lock_swiping = BooleanProperty(False)
     """
-    If True - prohibits switching tabs by swipe.
+    If True - disable switching tabs by swipe.
 
     :attr:`lock_swiping` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -856,7 +856,7 @@ class MDTabs(ThemableBehavior, AnchorLayout):
 
     lock_swiping = BooleanProperty(False)
     """
-    If True - prohibits switching tabs by swipe.
+    If True - disable switching tabs by swipe.
 
     :attr:`lock_swiping` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.

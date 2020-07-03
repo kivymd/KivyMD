@@ -888,6 +888,7 @@ class MDTabs(ThemableBehavior, AnchorLayout):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
+                widget.tab_label.group = str(self)
                 widget.tab_label.callback = self.callback
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal

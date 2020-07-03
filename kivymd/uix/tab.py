@@ -394,16 +394,9 @@ Builder.load_string(
     tab_bar: tab_bar
     anchor_y: 'top'
     background_palette: "Primary"
-    text_color_normal: (\
-    self.specific_secondary_text_color if self.theme_cls.theme_style == "Dark" else self.theme_cls.primary_color\
-    )
-    text_color_active: (\
-    self.specific_text_color if self.theme_cls.theme_style == "Dark" else self.theme_cls.primary_dark\
-    )
-    background_color: self.theme_cls.primary_color if self.theme_cls.theme_style == "Dark" else self.theme_cls.bg_dark
-    color_indicator: (\
-    self.theme_cls.accent_color if self.theme_cls.theme_style == "Dark" else self.theme_cls.primary_dark\
-    )
+    text_color_normal: self.specific_secondary_text_color
+    text_color_active: self.specific_text_color
+
     MDTabsMain:
         padding: 0, tab_bar.height, 0, 0
 

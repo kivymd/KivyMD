@@ -338,7 +338,10 @@ from kivy.utils import boundary
 from kivymd import fonts_path
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularElevationBehavior
+from kivymd.uix.behaviors import (
+    RectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+)
 from kivymd.uix.boxlayout import MDBoxLayout
 
 Builder.load_string(
@@ -390,6 +393,9 @@ Builder.load_string(
     carousel: carousel
     tab_bar: tab_bar
     anchor_y: 'top'
+    background_palette: "Primary"
+    text_color_normal: self.specific_secondary_text_color
+    text_color_active: self.specific_text_color
 
     MDTabsMain:
         padding: 0, tab_bar.height, 0, 0
@@ -735,7 +741,7 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
             self.update_indicator(x_step, w_step)
 
 
-class MDTabs(ThemableBehavior, AnchorLayout):
+class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     You can use this class to create your own tabbed panel..
 

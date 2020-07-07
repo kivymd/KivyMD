@@ -254,9 +254,13 @@ ACTIVITY_MANAGER = """
 """
 
 
-class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
+class BodyManagerWithPreview(MDBoxLayout):
     """Base class for folder icons and thumbnails images in ``preview`` mode.
     """
+
+
+class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
+    """Folder icons/thumbnails images in ``preview`` mode."""
 
 
 class FloatButton(AnchorLayout):
@@ -274,10 +278,6 @@ class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.height = dp(48)
-
-
-class BodyManagerWithPreview(MDBoxLayout):
-    pass
 
 
 class MDFileManager(ThemableBehavior, MDFloatLayout):
@@ -368,12 +368,13 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
-        action_button = FloatButton(
-            callback=self.select_directory_on_press_button,
-            md_bg_color=self.theme_cls.primary_color,
-            icon=self.icon,
+        self.add_widget(
+            FloatButton(
+                callback=self.select_directory_on_press_button,
+                md_bg_color=self.theme_cls.primary_color,
+                icon=self.icon,
+            )
         )
-        self.add_widget(action_button)
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
 
@@ -385,11 +386,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         """
 
         dirs, files = self.get_content(path)
-
-        if self.preview:
-            split_dirs = self._split_list(dirs, 3)
-            split_files = self._split_list(files, 3)
-
         self.current_path = path
         manager_list = []
 
@@ -399,35 +395,33 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             return
 
         if self.preview:
-            for list_dirs in split_dirs:
-                for name_dir in list_dirs:
+            for name_dir in dirs:
+                manager_list.append(
+                    {
+                        "viewclass": "BodyManagerWithPreview",
+                        "path": f"{images_path}folder.png",
+                        "realpath": os.path.join(path),
+                        "type": "folder",
+                        "name": name_dir,
+                        "events_callback": self.select_dir_or_file,
+                        "height": dp(150),
+                    }
+                )
+            for name_file in files:
+                if (
+                    os.path.splitext(os.path.join(path, name_file))[1]
+                    in self.ext
+                ):
                     manager_list.append(
                         {
                             "viewclass": "BodyManagerWithPreview",
-                            "path": f"{images_path}folder.png",
-                            "realpath": os.path.join(path),
-                            "type": "folder",
-                            "name": name_dir,
+                            "path": os.path.join(path, name_file),
+                            "name": name_file,
+                            "type": "files",
                             "events_callback": self.select_dir_or_file,
                             "height": dp(150),
                         }
                     )
-            for list_files in list(split_files):
-                for name_file in list_files:
-                    if (
-                        os.path.splitext(os.path.join(path, name_file))[1]
-                        in self.ext
-                    ):
-                        manager_list.append(
-                            {
-                                "viewclass": "BodyManagerWithPreview",
-                                "path": os.path.join(path, name_file),
-                                "name": name_file,
-                                "type": "files",
-                                "events_callback": self.select_dir_or_file,
-                                "height": dp(150),
-                            }
-                        )
         else:
             for name in dirs:
                 _path = path + name if path == "/" else path + "/" + name
@@ -468,13 +462,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         if not self._window_manager_open:
             self._window_manager.open()
             self._window_manager_open = True
-
-    def count_ext(self, path):
-        ext = os.path.splitext(path)[1]
-        if ext != "":
-            if ext.lower() in self.ext or ext.upper() in self.ext:
-                return True
-        return False
 
     def get_access_string(self, path):
         access_string = ""
@@ -552,13 +539,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         """Called when a click on a floating button."""
 
         self.select_path(self.current_path)
-
-    def _split_list(self, lst, n):
-        if lst:
-            n = max(1, n)
-            return (lst[i : i + n] for i in range(0, len(lst), n))
-        else:
-            return []
 
 
 Builder.load_string(ACTIVITY_MANAGER)

@@ -89,7 +89,18 @@ Builder.load_string(
 
 <BaseDialog>
     background: '{}/transparent.png'.format(images_path)
-
+    canvas.before:
+        PushMatrix
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+        Scale:
+            origin: self.center
+            x: root._scale_x
+            y: root._scale_y
+    canvas.after:
+        PopMatrix
 
 <MDDialog>
 
@@ -98,7 +109,7 @@ Builder.load_string(
         orientation: "vertical"
         size_hint_y: None
         height: self.minimum_height
-        elevation: 12
+        elevation: 4
         md_bg_color: 0, 0, 0, 0
         padding: "24dp", "24dp", "8dp", "8dp"
 
@@ -165,7 +176,8 @@ Builder.load_string(
 
 
 class BaseDialog(ThemableBehavior, ModalView):
-    pass
+    _scale_x = NumericProperty(1)
+    _scale_y = NumericProperty(1)
 
 
 class MDDialog(BaseDialog):

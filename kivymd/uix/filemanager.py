@@ -19,14 +19,14 @@ Usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/file-manager.png
     :align: center
 
-Or with ``previous`` mode:
+Or with ``preview`` mode:
 
 .. code-block:: python
 
     file_manager = MDFileManager(
         exit_manager=self.exit_manager,
         select_path=self.select_path,
-        previous=True,
+        preview=True,
     )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/file-manager-previous.png
@@ -72,7 +72,7 @@ Example
             self.file_manager = MDFileManager(
                 exit_manager=self.exit_manager,
                 select_path=self.select_path,
-                previous=True,
+                preview=True,
             )
 
         def build(self):
@@ -114,9 +114,7 @@ Example
 __all__ = ("MDFileManager",)
 
 import os
-import threading
 
-from kivy.app import App
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -129,29 +127,28 @@ from kivy.properties import (
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import AsyncImage
 from kivy.uix.modalview import ModalView
-from PIL import Image
 
 from kivymd import images_path
 from kivymd.theming import ThemableBehavior
-from kivymd.toast import toast
+from kivymd.uix.behaviors import CircularRippleBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
+from kivymd.utils.fitimage import FitImage
 
 ACTIVITY_MANAGER = """
 #:import os os
 
 
 <BodyManager@BoxLayout>
-    icon: 'folder'
-    path: ''
-    background_normal: ''
-    background_down: ''
-    dir_or_file_name: ''
+    icon: "folder"
+    path: ""
+    background_normal: ""
+    background_down: ""
+    dir_or_file_name: ""
     events_callback: lambda x: None
-    orientation: 'vertical'
+    orientation: "vertical"
 
     ModifiedOneLineIconListItem:
         text: root.dir_or_file_name
@@ -169,66 +166,37 @@ ACTIVITY_MANAGER = """
     size_hint_y: None
     height: self.texture_size[1]
     shorten: True
-    shorten_from: 'center'
-    halign: 'center'
+    shorten_from: "center"
+    halign: "center"
     text_size: self.width, None
 
 
-<BodyManagerWithPrevious>
-    paths: []
-    path: ''
-    type: 'folder'
+<BodyManagerWithPreview>
+    name: ""
+    path: ""
+    realpath: ""
+    type: "folder"
     events_callback: lambda x: None
+    orientation: "vertical"
+    size_hint_y: None
+    hright: root.height
+    padding: dp(20)
 
-    MDGridLayout:
-        id: grid_box
-        cols: 3
-        row_default_height: (self.width - self.cols * self.spacing[0]) / self.cols
-        row_force_default: True
-        adaptive_height: True
-        padding: dp(4), dp(4)
-        spacing: dp(4)
+    IconButton:
+        mipmap: True
+        source: root.path
+        on_release:
+            root.events_callback(\
+            os.path.join(root.path if root.type != "folder" else root.realpath, \
+            root.name))
 
-        BoxLayout:
-            orientation: 'vertical'
-            IconButton:
-                mipmap: True
-                size_hint_y: None
-                height: dp(100) if self.source and os.path.split(self.source)[1] == "folder.png" else dp(50)
-                source: root.get_source(root.type, label_box_1, root.paths, 1)
-                on_release: root.events_callback(os.path.join(root.path, label_box_1.text))
-            LabelContent:
-                id: label_box_1
-                text: os.path.split(root.paths[0])[1].replace('thumb_', '') if len(root.paths) >= 1 else ''
-
-        BoxLayout:
-            orientation: 'vertical'
-            IconButton:
-                mipmap: True
-                size_hint_y: None
-                height: dp(100) if self.source and os.path.split(self.source)[1] == "folder.png" else dp(50)
-                source: root.get_source(root.type, label_2, root.paths, 2)
-                on_release: root.events_callback(os.path.join(root.path, label_2.text))
-            LabelContent:
-                id: label_2
-                text: os.path.split(root.paths[1])[1].replace('thumb_', '') if len(root.paths) >= 2 else ''
-
-        BoxLayout:
-            orientation: 'vertical'
-            IconButton:
-                mipmap: True
-                size_hint_y: None
-                height: dp(100) if self.source and os.path.split(self.source)[1] == "folder.png" else dp(50)
-                source: root.get_source(root.type, label_3, root.paths, 3)
-                on_release: root.events_callback(os.path.join(root.path, label_3.text))
-            LabelContent:
-                id: label_3
-                text: os.path.split(root.paths[2])[1].replace('thumb_', '') if len(root.paths) >= 3 else ''
+    LabelContent:
+        text: root.name
 
 
 <FloatButton>
-    anchor_x: 'right'
-    anchor_y: 'bottom'
+    anchor_x: "right"
+    anchor_y: "bottom"
     size_hint_y: None
     height: dp(56)
     padding: dp(10)
@@ -247,31 +215,32 @@ ACTIVITY_MANAGER = """
     md_bg_color: root.theme_cls.bg_normal
 
     BoxLayout:
-        orientation: 'vertical'
+        orientation: "vertical"
         spacing: dp(5)
 
         MDToolbar:
             id: toolbar
-            title: '%s' % root.current_path
-            right_action_items: [['close-box', lambda x: root.exit_manager(1)]]
-            left_action_items: [['chevron-left', lambda x: root.back()]]
+            title: root.current_path
+            right_action_items: [["close-box", lambda x: root.exit_manager(1)]]
+            left_action_items: [["chevron-left", lambda x: root.back()]]
             elevation: 10
 
         RecycleView:
             id: rv
-            key_viewclass: 'viewclass'
-            key_size: 'height'
+            key_viewclass: "viewclass"
+            key_size: "height"
             bar_width: dp(4)
             bar_color: root.theme_cls.primary_color
-            on_scroll_stop: root._update_list_images()
+            #on_scroll_stop: root._update_list_images()
 
-            RecycleBoxLayout:
+            RecycleGridLayout:
                 padding: dp(10)
+                cols: 3 if root.preview else 1
                 default_size: None, dp(48)
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
-                orientation: 'vertical'
+                orientation: "vertical"
 
 
 <ModifiedOneLineIconListItem>
@@ -285,8 +254,9 @@ ACTIVITY_MANAGER = """
 """
 
 
-class IconButton(ButtonBehavior, AsyncImage):
-    pass
+class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
+    """Base class for folder icons and thumbnails images in ``preview`` mode.
+    """
 
 
 class FloatButton(AnchorLayout):
@@ -306,16 +276,8 @@ class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):
         self.height = dp(48)
 
 
-class BodyManagerWithPrevious(BoxLayout):
-    def get_source(self, source_type, instance_label, paths, index):
-        if source_type == "folder" and instance_label.text != "":
-            source = self.icon_folder
-        else:
-            if len(paths) >= index:
-                source = paths[index - 1]
-            else:
-                source = f"{images_path}transparent.png"
-        return source
+class BodyManagerWithPreview(MDBoxLayout):
+    pass
 
 
 class MDFileManager(ThemableBehavior, MDFloatLayout):
@@ -329,7 +291,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
 
     icon_folder = StringProperty(f"{images_path}folder.png")
     """
-    The icon that will be used for folder icons when using ``previous = True``.
+    The icon that will be used for folder icons when using ``preview = True``.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `check`.
@@ -387,11 +349,11 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `True`.
     """
 
-    previous = BooleanProperty(False)
+    preview = BooleanProperty(False)
     """
     Shows only image previews.
 
-    :attr:`previous` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`preview` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -406,27 +368,25 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self.history_flag = True
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
-        self.ext = [".png", ".jpg", ".jpeg"]
-        self.app = App.get_running_app()
-        if not os.path.exists(os.path.join(self.app.user_data_dir, "thumb")):
-            os.mkdir(os.path.join(self.app.user_data_dir, "thumb"))
         action_button = FloatButton(
             callback=self.select_directory_on_press_button,
             md_bg_color=self.theme_cls.primary_color,
             icon=self.icon,
         )
         self.add_widget(action_button)
+        if self.preview:
+            self.ext = [".png", ".jpg", ".jpeg"]
 
     def show(self, path):
         """Forms the body of a directory tree.
 
-        :param path: The path to the directory that will be opened in the file manager.
+        :param path:
+            The path to the directory that will be opened in the file manager.
         """
 
         dirs, files = self.get_content(path)
 
-        if self.previous:
-            threading.Thread(target=self._create_previous, args=(path,)).start()
+        if self.preview:
             split_dirs = self._split_list(dirs, 3)
             split_files = self._split_list(files, 3)
 
@@ -438,31 +398,36 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         elif not dirs and not files:  # directory is unavailable
             return
 
-        if self.previous:
+        if self.preview:
             for list_dirs in split_dirs:
-                manager_list.append(
-                    {
-                        "viewclass": "BodyManagerWithPrevious",
-                        "path": path,
-                        "icon_folder": self.icon_folder,
-                        "paths": list_dirs,
-                        "type": "folder",
-                        "events_callback": self.select_dir_or_file,
-                        "height": dp(105),
-                    }
-                )
+                for name_dir in list_dirs:
+                    manager_list.append(
+                        {
+                            "viewclass": "BodyManagerWithPreview",
+                            "path": f"{images_path}folder.png",
+                            "realpath": os.path.join(path),
+                            "type": "folder",
+                            "name": name_dir,
+                            "events_callback": self.select_dir_or_file,
+                            "height": dp(150),
+                        }
+                    )
             for list_files in list(split_files):
-                manager_list.append(
-                    {
-                        "viewclass": "BodyManagerWithPrevious",
-                        "path": path,
-                        "icon_folder": self.icon_folder,
-                        "paths": list_files,
-                        "type": "files",
-                        "events_callback": self.select_dir_or_file,
-                        "height": dp(105),
-                    }
-                )
+                for name_file in list_files:
+                    if (
+                        os.path.splitext(os.path.join(path, name_file))[1]
+                        in self.ext
+                    ):
+                        manager_list.append(
+                            {
+                                "viewclass": "BodyManagerWithPreview",
+                                "path": os.path.join(path, name_file),
+                                "name": name_file,
+                                "type": "files",
+                                "events_callback": self.select_dir_or_file,
+                                "height": dp(150),
+                            }
+                        )
         else:
             for name in dirs:
                 _path = path + name if path == "/" else path + "/" + name
@@ -483,15 +448,16 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                 )
             for name in files:
                 _path = path + name if path == "/" else path + "/" + name
-                manager_list.append(
-                    {
-                        "viewclass": "BodyManager",
-                        "path": _path,
-                        "icon": "file-outline",
-                        "dir_or_file_name": name,
-                        "events_callback": self.select_dir_or_file,
-                    }
-                )
+                if self.ext and os.path.splitext(name)[1] in self.ext:
+                    manager_list.append(
+                        {
+                            "viewclass": "BodyManager",
+                            "path": _path,
+                            "icon": "file-outline",
+                            "dir_or_file_name": name,
+                            "events_callback": self.select_dir_or_file,
+                        }
+                    )
         self.ids.rv.data = manager_list
 
         if not self._window_manager:
@@ -540,17 +506,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     if self.search == "all" or self.search == "files":
                         if len(self.ext) != 0:
                             try:
-                                if self.count_ext(content):
-                                    if self.previous:
-                                        files.append(
-                                            os.path.join(
-                                                self.app.user_data_dir,
-                                                "thumb",
-                                                f"thumb_{content}",
-                                            )
-                                        )
-                                    else:
-                                        files.append(content)
+                                files.append(os.path.join(path, content))
                             except IndexError:
                                 pass
                         else:
@@ -597,31 +553,12 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
 
         self.select_path(self.current_path)
 
-    def _update_list_images(self):
-        self.ids.rv.refresh_from_layout()
-
     def _split_list(self, lst, n):
         if lst:
             n = max(1, n)
             return (lst[i : i + n] for i in range(0, len(lst), n))
         else:
             return []
-
-    def _create_previous(self, path):
-        if "r" not in self.get_access_string(path):
-            toast("PermissionError")
-            return
-        for image in os.listdir(path):
-            _path = os.path.join(path, image)
-            if os.path.isfile(_path):
-                if self.count_ext(_path):
-                    path_to_thumb = os.path.join(
-                        self.app.user_data_dir, "thumb", f"thumb_{image}"
-                    )
-                    if not os.path.exists(path_to_thumb):
-                        im = Image.open(_path)
-                        im.thumbnail((200, 200))
-                        im.save(path_to_thumb, "PNG")
 
 
 Builder.load_string(ACTIVITY_MANAGER)

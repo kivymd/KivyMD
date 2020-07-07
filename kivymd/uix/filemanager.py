@@ -399,7 +399,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                 manager_list.append(
                     {
                         "viewclass": "BodyManagerWithPreview",
-                        "path": f"{images_path}folder.png",
+                        "path": self.icon_folder,
                         "realpath": os.path.join(path),
                         "type": "folder",
                         "name": name_dir,

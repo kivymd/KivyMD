@@ -638,7 +638,6 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         Window.bind(on_resize=self.check_position_caller)
         self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
-        Clock.schedule_once(self.set_menu_properties, 2)
 
     def check_position_caller(self, instance, width, height):
         self.set_menu_properties(0)
@@ -683,7 +682,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     item.ids._right_container.width = 0
             self.menu.ids.box.add_widget(item)
 
-    def set_menu_properties(self, interval):
+    def set_menu_properties(self, interval=0):
         """Sets the size and position for the menu window."""
 
         if not self.menu.ids.box.children:
@@ -830,6 +829,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             Clock.unschedule(open)
             self._calculate_process = False
 
+        self.set_menu_properties()
         if not self._calculate_process:
             self._calculate_process = True
             Clock.schedule_interval(open, 0)

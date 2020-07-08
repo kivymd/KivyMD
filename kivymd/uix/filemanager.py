@@ -32,6 +32,9 @@ Or with ``preview`` mode:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/file-manager-previous.png
     :align: center
 
+.. warning:: The `preview` mode is intended only for viewing images and will
+    not display other types of files.
+
 Example
 -------
 

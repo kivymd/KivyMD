@@ -954,7 +954,8 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
                 return False
             if self in touch.ud:
                 return False
-            self._anim_raised.start(self)
+            if self._anim_raised:
+                self._anim_raised.start(self)
         return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):

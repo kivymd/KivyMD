@@ -135,8 +135,4 @@ class MDToggleButton(ToggleButtonBehavior):
             if button.state == "down":
                 button.md_bg_color = self.background_down
             else:
-                if isinstance(button, MDFlatButton):
-                    background_normal = (0, 0, 0, 0)
-                else:
-                    background_normal = self.background_normal
-                button.md_bg_color = background_normal
+                button.md_bg_color = self.background_normal

@@ -828,6 +828,7 @@ class BaseButton(
     _current_button_color = ListProperty([0.0, 0.0, 0.0, 0.0])
     _current_text_color = ListProperty([1.0, 1.0, 1.0, 1])
     _md_bg_color_down = ListProperty([0.0, 0.0, 0.0, 0.1])
+    _md_bg_color_disabled = ListProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -838,6 +839,11 @@ class BaseButton(
         """Called when the application color palette changes."""
 
     def check_current_button_color(self, interval):
+        if self.md_bg_color_disabled:
+            self._md_bg_color_disabled = self.md_bg_color_disabled
+        else:
+            self._md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
+        self.on_disabled(self, self.disabled)
         if self._current_button_color == [0.0, 0.0, 0.0, 0.0]:
             self._current_button_color = self.md_bg_color
 
@@ -851,11 +857,7 @@ class BaseButton(
 
     def on_disabled(self, instance, value):
         if self.disabled:
-            self._current_button_color = (
-                self.theme_cls.disabled_hint_text_color
-                if not self.md_bg_color_disabled
-                else self.md_bg_color_disabled
-            )
+            self._current_button_color = self._md_bg_color_disabled
         else:
             self._current_button_color = self.md_bg_color
 

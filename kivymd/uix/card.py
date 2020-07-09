@@ -727,7 +727,7 @@ class MDCardSwipe(RelativeLayout):
     begins.
 
     :attr:`swipe_distance` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `10`.
+    and defaults to `50`.
     """
 
     opening_time = NumericProperty(0.2)

@@ -15,51 +15,19 @@
             adaptive_size: True
             pos_hint: {"center_x": .5, "center_y": .5}
             spacing: 12
+            orientation: "vertical"
 
-            FillRoundFlatToggleButton:
+            RoundFlatToggleButton:
                 text: "Show ads"
-                group: "x"
-
-            FillRoundFlatToggleButton:
-                text: "Do not show ads"
-                group: "x"
-
-            FillRoundFlatToggleButton:
-                text: "Does not matter"
-                group: "x"
-
-        MDBoxLayout:
-            adaptive_size: True
-            pos_hint: {"center_x": .5, "center_y": .5}
-
-            RectangleFlatButtonToggleButton:
-                text: "Show ads"
-                group: "y"
-
-            RectangleFlatButtonToggleButton:
-                text: "Do not show ads"
-                group: "y"
-
-            RectangleFlatButtonToggleButton:
-                text: "Does not matter"
-                group: "y"
-
-        MDBoxLayout:
-            adaptive_size: True
-            pos_hint: {"center_x": .5, "center_y": .5}
-            spacing: 12
-
-            RoundFlatIconToggleButton:
-                text: "Show ads"
-                icon: "settings"
                 group: "z"
+                pos_hint: {"center_x": .5}
 
-            RoundFlatIconToggleButton:
+            RoundFlatToggleButton:
                 text: "Do not show ads"
-                icon: "git"
                 group: "z"
+                pos_hint: {"center_x": .5}
 
-            RoundFlatIconToggleButton:
+            RoundFlatToggleButton:
                 text: "Does not matter"
-                icon: "star"
                 group: "z"
+                pos_hint: {"center_x": .5}

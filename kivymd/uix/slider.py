@@ -70,9 +70,16 @@ Without custom color
     :align: center
 """
 
+__all__ = ("MDSlider",)
+
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import AliasProperty, BooleanProperty, ListProperty
+from kivy.properties import (
+    AliasProperty,
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+)
 from kivy.uix.slider import Slider
 from kivy.utils import get_color_from_hex
 
@@ -81,68 +88,71 @@ from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
+#:import images_path kivymd.images_path
+
+
 <MDSlider>
     id: slider
     canvas:
         Clear
         Color:
             rgba:
-                self._track_color_disabled if self.disabled\
-                else (self._track_color_active if self.active\
+                self._track_color_disabled if self.disabled \
+                else (self._track_color_active if self.active \
                 else self._track_color_normal)
         Rectangle:
             size:
-                (self.width - self.padding*2 - self._offset[0], dp(4)) if\
-                self.orientation == 'horizontal'\
+                (self.width - self.padding*2 - self._offset[0], dp(4)) if \
+                self.orientation == "horizontal" \
                 else (dp(4),self.height - self.padding*2 - self._offset[1])
             pos:
-                (self.x + self.padding + self._offset[0], self.center_y - dp(4))\
-                if self.orientation == 'horizontal' else\
+                (self.x + self.padding + self._offset[0], self.center_y - dp(4)) \
+                if self.orientation == "horizontal" else \
                 (self.center_x - dp(4),self.y + self.padding + self._offset[1])
 
         # If 0 draw circle
         Color:
             rgba:
-                [0, 0, 0, 0] if not self._is_off\
-                else (self._track_color_disabled if self.disabled\
-                else (self._track_color_active\
+                (0, 0, 0, 0) if not self._is_off \
+                else (self._track_color_disabled if self.disabled \
+                else (self._track_color_active \
                 if self.active else self._track_color_normal))
         Line:
             width: 2
             circle:
-                (self.x + self.padding + dp(3), self.center_y-dp(2), 8\
-                if self.active else 6 ) if self.orientation == 'horizontal'\
-                else (self.center_x - dp(2), self.y + self.padding+dp(3), 8\
+                (self.x + self.padding + dp(3), self.center_y-dp(2), 8 \
+                if self.active else 6 ) if self.orientation == "horizontal" \
+                else (self.center_x - dp(2), self.y + self.padding+dp(3), 8 \
                 if self.active else 6)
 
         Color:
             rgba:
-                [0, 0, 0, 0] if self._is_off\
-                else (self.thumb_color_down if not self.disabled\
+                (0, 0, 0, 0) if self._is_off \
+                else (self.thumb_color_down if not self.disabled \
                 else self._track_color_disabled)
         Rectangle:
             size:
-                ((self.width-self.padding*2)*self.value_normalized, sp(4))\
-                if slider.orientation == 'horizontal' else (sp(4),\
+                ((self.width-self.padding*2)*self.value_normalized, sp(4)) \
+                if slider.orientation == "horizontal" else (sp(4), \
                 (self.height-self.padding*2)*self.value_normalized)
             pos:
-                (self.x + self.padding, self.center_y - dp(4))\
-                if self.orientation == 'horizontal'\
+                (self.x + self.padding, self.center_y - dp(4)) \
+                if self.orientation == "horizontal" \
                 else (self.center_x - dp(4),self.y + self.padding)
 
     Thumb:
         id: thumb
         size_hint: None, None
         size:
-            (dp(12), dp(12)) if root.disabled else ((dp(24), dp(24))\
+            (dp(12), dp(12)) if root.disabled else ((dp(24), dp(24)) \
             if root.active else (dp(16), dp(16)))
         pos:
-            (slider.value_pos[0] - dp(8), slider.center_y - thumb.height/2 - dp(2))\
-            if slider.orientation == 'horizontal'\
-            else (slider.center_x - thumb.width / 2 - dp(2),\
+            (slider.value_pos[0] - dp(8), slider.center_y - thumb.height/2 - dp(2)) \
+            if slider.orientation == "horizontal" \
+            else (slider.center_x - thumb.width / 2 - dp(2), \
             slider.value_pos[1] - dp(8))
         color:
-            [0, 0, 0, 0] if slider._is_off else (root._track_color_disabled\
+            (0, 0, 0, 0) if slider._is_off else (root._track_color_disabled \
             if root.disabled else root.thumb_color_down)
         elevation:
             0 if slider._is_off else (4 if root.active else 2)
@@ -150,14 +160,17 @@ Builder.load_string(
     MDCard:
         id: hint_box
         size_hint: None, None
-        md_bg_color: [1, 1, 1, 1] if root.active else [0, 0, 0, 0]
-        elevation: 0 if slider._is_off else (4 if root.active else 0)
+        md_bg_color: (1, 1, 1, 1) if not root.hint_bg_color else slider.hint_bg_color
+        elevation: 0
+        opacity: 1 if slider.active else 0
+        background: f"{images_path}transparent.png"
+        radius: [slider.hint_radius,]
         size:
             (dp(12), dp(12)) if root.disabled else ((dp(28), dp(28)) \
             if root.active else (dp(20), dp(20)))
         pos:
             (slider.value_pos[0] - dp(9), slider.center_y - hint_box.height / 2 + dp(30)) \
-            if slider.orientation == 'horizontal' \
+            if slider.orientation == "horizontal" \
             else (slider.center_x - hint_box.width / 2 + dp(30), \
             slider.value_pos[1] - dp(8))
 
@@ -165,7 +178,10 @@ Builder.load_string(
             text: str(int(slider.value))
             font_style: "Caption"
             halign: "center"
-            color: root.thumb_color_down if root.active else [0, 0, 0, 0]
+            theme_text_color: "Custom"
+            text_color:
+                (root.thumb_color_down if root.active else (0, 0, 0, 0)) \
+                if not slider.hint_text_color else slider.hint_text_color
 """
 )
 
@@ -185,6 +201,30 @@ class MDSlider(ThemableBehavior, Slider):
 
     :attr:`hint` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
+    """
+
+    hint_bg_color = ListProperty()
+    """
+    Hint rectangle color in ``rgba`` format.
+
+    :attr:`hint_bg_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    hint_text_color = ListProperty()
+    """
+    Hint text color in ``rgba`` format.
+
+    :attr:`hint_text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    hint_radius = NumericProperty(4)
+    """
+    Hint radius.
+
+    :attr:`hint_text_color` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `4`.
     """
 
     show_off = BooleanProperty(True)

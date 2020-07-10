@@ -16,9 +16,10 @@ class KitchenSinkFileManager(Screen):
             preview = False if text_item == "List" else True
             if not self.file_manager:
                 self.file_manager = MDFileManager(
-                    exit_manager=self.exit_manager, select_path=self.select_path
+                    exit_manager=self.exit_manager,
+                    select_path=self.select_path,
+                    preview=preview,
                 )
-            self.file_manager.preview = preview
             self.file_manager.show(MDApp.get_running_app().user_data_dir)
             self.manager_open = True
 

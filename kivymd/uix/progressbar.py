@@ -2,13 +2,21 @@
 Components/Progress Bar
 =======================
 
+.. seealso::
+
+    `Material Design spec, Progress indicators https://material.io/components/progress-indicators`_
+
 .. rubric:: Progress indicators express an unspecified wait time or display
     the length of a process.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/progress-bar-preview.png
+    :align: center
 
 `KivyMD` provides the following bars classes for use:
 
 - MDProgressBar_
-- MDDeterminateProgressBar_
+- Determinate_
+- Indeterminate_
 
 .. MDProgressBar:
 MDProgressBar
@@ -63,9 +71,9 @@ With custom color
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/progress-bar-custom-color.png
     :align: center
 
-.. MDDeterminateProgressBar:
-MDDeterminateProgressBar
-------------------------
+.. Indeterminate:
+Indeterminate
+-------------
 
 .. code-block:: python
 
@@ -77,9 +85,10 @@ MDDeterminateProgressBar
     KV = '''
     Screen:
 
-        MDDeterminateProgressBar:
-            id: determinate_progress
+        MDProgressBar:
+            id: progress
             pos_hint: {"center_y": .6}
+            type: "indeterminate"
 
         MDRaisedButton:
             text: "START"
@@ -96,8 +105,8 @@ MDDeterminateProgressBar
 
         def on_state(self, instance, value):
             {
-                "start": self.root.ids.determinate_progress.start,
-                "stop": self.root.ids.determinate_progress.stop,
+                "start": self.root.ids.progress.start,
+                "stop": self.root.ids.progress.stop,
             }.get(value)()
 
 
@@ -117,12 +126,23 @@ Speed control
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar_speed.gif
     :align: center
+
+.. Determinate:
+Determinate
+-----------
+
+.. code-block:: kv
+
+    MDProgressBar:
+        type: "determinate"
+        running_duration: 1
+        catching_duration: 1.5
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate.gif
+    :align: center
 """
 
-__all__ = (
-    "MDProgressBar",
-    "MDDeterminateProgressBar",
-)
+__all__ = ("MDProgressBar",)
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -199,10 +219,6 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     and defaults to `[]`.
     """
 
-    _x = NumericProperty(0)
-
-
-class MDDeterminateProgressBar(MDProgressBar):
     running_transition = StringProperty("in_cubic")
     """Running transition.
 
@@ -231,15 +247,34 @@ class MDDeterminateProgressBar(MDProgressBar):
     and defaults to `0.8`.
     """
 
+    type = OptionProperty(
+        None, options=["indeterminate", "determinate"], allownone=True
+    )
+    """Type of progressbar. Available options are: `'indeterminate '`,
+    `'determinate'`.
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
+    """
+
+    _x = NumericProperty(0)
+
     def __init__(self, **kwargs):
+        self.catching_anim = None
+        self.running_anim = None
         super().__init__(**kwargs)
-        Clock.schedule_once(self._set_default_value)
-        Clock.schedule_once(self._create_animation)
 
     def start(self):
         """Start animation."""
 
-        self.running_away()
+        if self.type in ("indeterminate", "determinate"):
+            Clock.schedule_once(self._set_default_value)
+            if not self.catching_anim and not self.running_anim:
+                if self.type == "indeterminate":
+                    self._create_indeterminate_animations()
+                else:
+                    self._create_determinate_animations()
+            self.running_away()
 
     def stop(self):
         """Stop animation."""
@@ -252,10 +287,24 @@ class MDDeterminateProgressBar(MDProgressBar):
         self.running_anim.start(self)
 
     def catching_up(self, *args):
-        self.reversed = True
+        if self.type == "indeterminate":
+            self.reversed = True
         self.catching_anim.start(self)
 
-    def _create_animation(self, interval):
+    def _create_determinate_animations(self):
+        self.running_anim = Animation(
+            value=100,
+            opacity=1,
+            t=self.running_transition,
+            d=self.running_duration,
+        )
+        self.running_anim.bind(on_complete=self.catching_up)
+        self.catching_anim = Animation(
+            opacity=0, t=self.catching_transition, d=self.catching_duration,
+        )
+        self.catching_anim.bind(on_complete=self.running_away)
+
+    def _create_indeterminate_animations(self):
         self.running_anim = Animation(
             _x=self.width / 2,
             value=50,

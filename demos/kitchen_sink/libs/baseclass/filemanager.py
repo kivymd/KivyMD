@@ -20,6 +20,7 @@ class KitchenSinkFileManager(Screen):
                     select_path=self.select_path,
                     preview=preview,
                 )
+            self.file_manager.preview = preview
             self.file_manager.show(MDApp.get_running_app().user_data_dir)
             self.manager_open = True
 

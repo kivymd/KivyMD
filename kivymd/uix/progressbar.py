@@ -5,8 +5,14 @@ Components/Progress Bar
 .. rubric:: Progress indicators express an unspecified wait time or display
     the length of a process.
 
-Usage
------
+`KivyMD` provides the following bars classes for use:
+
+- MDProgressBar_
+- MDDeterminateProgressBar_
+
+.. MDProgressBar:
+MDProgressBar
+-------------
 
 .. code-block:: python
 
@@ -56,10 +62,78 @@ With custom color
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/progress-bar-custom-color.png
     :align: center
+
+.. MDDeterminateProgressBar:
+MDDeterminateProgressBar
+------------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    Screen:
+
+        MDDeterminateProgressBar:
+            id: determinate_progress
+            pos_hint: {"center_y": .6}
+
+        MDRaisedButton:
+            text: "START"
+            pos_hint: {"center_x": .5, "center_y": .45}
+            on_press: app.state = "stop" if app.state == "start" else "start"
+    '''
+
+
+    class Test(MDApp):
+        state = StringProperty("stop")
+
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_state(self, instance, value):
+            {
+                "start": self.root.ids.determinate_progress.start,
+                "stop": self.root.ids.determinate_progress.stop,
+            }.get(value)()
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar.gif
+    :align: center
+
+Speed control
+-------------
+
+.. code-block:: python
+
+    MDDeterminateProgressBar:
+        running_duration: .8
+        catching_duration: 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar_speed.gif
+    :align: center
 """
 
+__all__ = (
+    "MDProgressBar",
+    "MDDeterminateProgressBar",
+)
+
+from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ListProperty, OptionProperty
+from kivy.properties import (
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    OptionProperty,
+    StringProperty,
+)
 from kivy.uix.progressbar import ProgressBar
 
 from kivymd.theming import ThemableBehavior
@@ -73,26 +147,27 @@ Builder.load_string(
             rgba: self.theme_cls.divider_color
         Rectangle:
             size:
-                (self.width , dp(4)) if self.orientation == 'horizontal'\
-                else (dp(4),self.height)
+                (self.width, dp(4)) \
+                if self.orientation == "horizontal" \
+                else (dp(4), self.height)
             pos:
-                (self.x, self.center_y - dp(4))\
-                if self.orientation == 'horizontal'\
+                (self.x, self.center_y - dp(4)) \
+                if self.orientation == "horizontal" \
                 else (self.center_x - dp(4),self.y)
         Color:
             rgba:
                 self.theme_cls.primary_color if not self.color else self.color
         Rectangle:
             size:
-                (self.width * self.value_normalized, sp(4))\
-                if self.orientation == 'horizontal' else (sp(4),\
-                self.height*self.value_normalized)
+                (self.width * self.value_normalized, sp(4)) \
+                if self.orientation == "horizontal" \
+                else (sp(4), self.height * self.value_normalized)
             pos:
-                (self.width*(1 - self.value_normalized) + self.x\
-                if self.reversed else self.x, self.center_y - dp(4))\
-                if self.orientation == 'horizontal'\
-                else (self.center_x - dp(4),self.height\
-                * (1 - self.value_normalized) + self.y if self.reversed\
+                (self.width * (1 - self.value_normalized) + self.x \
+                if self.reversed else self.x + self._x, self.center_y - dp(4)) \
+                if self.orientation == "horizontal" \
+                else (self.center_x - dp(4),self.height \
+                * (1 - self.value_normalized) + self.y if self.reversed \
                 else self.y)
 """
 )
@@ -123,3 +198,77 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     :attr:`color` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `[]`.
     """
+
+    _x = NumericProperty(0)
+
+
+class MDDeterminateProgressBar(MDProgressBar):
+    running_transition = StringProperty("in_cubic")
+    """Running transition.
+
+    :attr:`running_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'in_cubic'`.
+    """
+
+    catching_transition = StringProperty("out_quart")
+    """Catching transition.
+
+    :attr:`catching_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_quart'`.
+    """
+
+    running_duration = NumericProperty(0.5)
+    """Running duration.
+
+    :attr:`running_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.5`.
+    """
+
+    catching_duration = NumericProperty(0.8)
+    """Catching duration.
+
+    :attr:`running_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.8`.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self._set_default_value)
+        Clock.schedule_once(self._create_animation)
+
+    def start(self):
+        """Start animation."""
+
+        self.running_away()
+
+    def stop(self):
+        """Stop animation."""
+
+        Animation.cancel_all(self)
+        self._set_default_value(0)
+
+    def running_away(self, *args):
+        self._set_default_value(0)
+        self.running_anim.start(self)
+
+    def catching_up(self, *args):
+        self.reversed = True
+        self.catching_anim.start(self)
+
+    def _create_animation(self, interval):
+        self.running_anim = Animation(
+            _x=self.width / 2,
+            value=50,
+            t=self.running_transition,
+            d=self.running_duration,
+        )
+        self.running_anim.bind(on_complete=self.catching_up)
+        self.catching_anim = Animation(
+            value=0, t=self.catching_transition, d=self.catching_duration
+        )
+        self.catching_anim.bind(on_complete=self.running_away)
+
+    def _set_default_value(self, interval):
+        self._x = 0
+        self.value = 0
+        self.reversed = False

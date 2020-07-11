@@ -112,19 +112,7 @@ Indeterminate
 
     Test().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar.gif
-    :align: center
-
-Speed control
--------------
-
-.. code-block:: python
-
-    MDDeterminateProgressBar:
-        running_duration: .8
-        catching_duration: 1
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar_speed.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/indeterminate-progress-bar.gif
     :align: center
 
 .. Determinate:
@@ -138,7 +126,7 @@ Determinate
         running_duration: 1
         catching_duration: 1.5
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar.gif
     :align: center
 """
 

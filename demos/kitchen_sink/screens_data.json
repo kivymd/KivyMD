@@ -97,14 +97,6 @@
       'object': 0,
       'icon': 'dock-window'
   },
-  'Download File': {
-      'kv_string': 'download_file',
-      'Import': 'from libs.baseclass.download_file import KitchenSinkDownloadFile',
-      'Factory': 'KitchenSinkDownloadFile()',
-      'name_screen': 'download file',
-      'object': 0,
-      'icon': 'download'
-  },
   'User Animation Card': {
       'kv_string': 'user_animation_card',
       'Import': 'from libs.baseclass.user_animation_card import KitchenSinkUserCard',

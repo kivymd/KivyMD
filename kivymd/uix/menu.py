@@ -497,6 +497,10 @@ class MDMenuItemIcon(HoverBehavior, OneLineAvatarIconListItem):
 
     def on_enter(self):
         self.parent.parent.drop_cls.set_bg_color_items(self)
+        self.parent.parent.drop_cls.dispatch("on_enter", self)
+
+    def on_leave(self):
+        self.parent.parent.drop_cls.dispatch("on_leave", self)
 
 
 class MDMenu(ScrollView):
@@ -512,6 +516,16 @@ class MDMenu(ScrollView):
 
 
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
+    """
+    :Events:
+        :attr:`on_enter`
+            Call when mouse enter the bbox of item menu.
+        :attr:`on_leave`
+            Call when the mouse exit the item menu.
+        :attr:`on_dismiss`
+            Call when closes menu.
+    """
+
     selected_color = ListProperty()
     """Custom color (``rgba`` format) for list item when hover behavior occurs.
 
@@ -637,6 +651,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         super().__init__(**kwargs)
         Window.bind(on_resize=self.check_position_caller)
         self.register_event_type("on_dismiss")
+        self.register_event_type("on_enter")
+        self.register_event_type("on_leave")
         self.menu = self.ids.md_menu
 
     def check_position_caller(self, instance, width, height):
@@ -848,6 +864,12 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     def on_touch_up(self, touch):
         super().on_touch_up(touch)
         return True
+
+    def on_enter(self, instance):
+        pass
+
+    def on_leave(self, instance):
+        pass
 
     def on_dismiss(self):
         Window.remove_widget(self)

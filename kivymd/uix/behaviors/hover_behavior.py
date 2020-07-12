@@ -87,9 +87,9 @@ class HoverBehavior(object):
     """
     :Events:
         :attr:`on_enter`
-            Fired when mouse enter the bbox of the widget.
+            Call when mouse enter the bbox of the widget.
         :attr:`on_leave`
-            Fired when the mouse exit the widget.
+            Call when the mouse exit the widget.
     """
 
     hovered = BooleanProperty(False)

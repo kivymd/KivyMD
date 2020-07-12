@@ -132,10 +132,10 @@ class HoverBehavior(object):
             self.dispatch("on_leave")
 
     def on_enter(self):
-        """Fired when mouse enter the bbox of the widget."""
+        """Call when mouse enter the bbox of the widget."""
 
     def on_leave(self):
-        """Fired when the mouse exit the widget."""
+        """Call when the mouse exit the widget."""
 
 
 Factory.register("HoverBehavior", HoverBehavior)

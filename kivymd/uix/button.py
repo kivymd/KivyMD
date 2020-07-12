@@ -711,7 +711,6 @@ Builder.load_string(
 
 
 <BaseFloatingRootButton>
-    elevation: 5
     theme_text_color: "Custom"
     md_bg_color: self.theme_cls.primary_color
 
@@ -1213,6 +1212,10 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
 
 class BaseFloatingRootButton(MDFloatingActionButton):
     _angle = NumericProperty(0)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.elevation = 5
 
 
 class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):

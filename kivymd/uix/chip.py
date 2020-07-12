@@ -163,6 +163,7 @@ Builder.load_string(
         pos_hint: {"center_y": .5}
         user_font_size: "20dp"
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
 """
 )
 

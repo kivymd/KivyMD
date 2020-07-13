@@ -63,3 +63,4 @@ demos/kitchen_sink/assets/*crop.*
 demos/kitchen_sink/assets/sasha-round.png
 kivymd/tools/*.zip
 kivymd/tools/temp
+kivymd/_version.py

@@ -35,6 +35,11 @@ from kivy.logger import Logger
 __version__ = "0.104.1"
 """KivyMD version."""
 
+try:
+    from kivymd._version import __hash__, __short_hash__, __date__
+except ImportError:
+    __hash__ = __short_hash__ = __date__ = ""
+
 path = os.path.dirname(__file__)
 """Path to KivyMD package directory."""
 
@@ -44,7 +49,13 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
 """Path to images directory."""
 
-Logger.info(f"KivyMD: v{__version__}")
+if __short_hash__:
+    Logger.info(
+        f"KivyMD: v{__version__}, git-{__short_hash__}, {__date__}"
+        f' (installed at "{__file__}")'
+    )
+else:
+    Logger.info(f'KivyMD: v{__version__} (installed at "{__file__}")')
 
 import kivymd.factory_registers  # NOQA
 import kivymd.font_definitions  # NOQA

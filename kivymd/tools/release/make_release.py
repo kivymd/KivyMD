@@ -27,6 +27,10 @@ import re
 import subprocess
 import sys
 
+yes = "-y" in sys.argv or "--yes" in sys.argv
+sys.argv.remove("-y")
+sys.argv.remove("--yes")
+
 
 def command(cmd: list):
     print("Command:", " ".join(cmd))
@@ -49,7 +53,7 @@ def git_clean():
         encoding="utf-8",
     )
     # Ask before removing
-    if not clean == "\n":
+    if not yes and not clean == "\n":
         print(clean)
         while True:
             ans = input("Do you want to remove these files? (yes/no)").lower()
@@ -81,7 +85,11 @@ def git_tag(name: str):
 
 def git_push(branches_to_push: list):
     """Push all changes."""
-    if input("Do you want to push changes? (y)") in ("", "y", "yes"):
+    if not yes and input("Do you want to push changes? (y)") in (
+        "",
+        "y",
+        "yes",
+    ):
         command(
             ["git", "push", "--tags", "origin", "master", *branches_to_push]
         )
@@ -179,11 +187,9 @@ def move_changelog(
 def create_unreleased_changelog(index_file, unreleased_file, previous_version):
     # Check if unreleased file exists
     if os.path.exists(unreleased_file):
-        if input(f'Do you want to rewrite "{unreleased_file}"? (y)') not in (
-            "",
-            "y",
-            "yes",
-        ):
+        if not yes and input(
+            f'Do you want to rewrite "{unreleased_file}"? (y)'
+        ) not in ("", "y", "yes",):
             exit(0)
     # Generate unreleased changelog
     changelog = f"""Unreleased
@@ -213,7 +219,7 @@ def main():
 
     # Get version
     if len(sys.argv) > 3:
-        print("Usage:\npython make_release.py version")
+        print("Usage:\npython make_release.py version [--yes]")
         return
     elif len(sys.argv) == 2:
         version = sys.argv[1]

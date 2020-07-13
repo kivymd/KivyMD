@@ -264,7 +264,7 @@ Builder.load_string(
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
-    elevation: 6
+    elevation: root.elevation
     md_bg_color: self.theme_cls.primary_color if root.type != "bottom" else [0, 0, 0, 0]
 
     canvas:
@@ -356,6 +356,14 @@ class MDToolbar(
     :Events:
         `on_action_button`
             Method for the button used for the :class:`~MDBottomAppBar` class.
+    """
+
+    elevation = NumericProperty(6)
+    """
+    Elevation value.
+
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `6`.
     """
 
     left_action_items = ListProperty()

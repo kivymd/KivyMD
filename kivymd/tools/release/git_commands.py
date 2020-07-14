@@ -43,9 +43,10 @@ def git_clean(ask: bool = True):
     command(["git", "reset", "--hard"])
 
 
-def git_commit(message: str, allow_error: bool = False):
+def git_commit(message: str, allow_error: bool = False, add_files: list = None):
     """Make commit."""
-    command(["git", "add", "-A"])
+    add_files = add_files if add_files else ["-A"]
+    command(["git", "add", *add_files])
     try:
         command(["git", "commit", "--all", "-m", message])
     except subprocess.CalledProcessError as e:

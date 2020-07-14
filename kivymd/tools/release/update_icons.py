@@ -147,7 +147,13 @@ def main():
         shutil.rmtree(temp_path, ignore_errors=True)
 
         if make_commit:
-            git_commit(f"Update Iconic font (v{version})")
+            git_commit(
+                f"Update Iconic font (v{version})",
+                add_files=[
+                    "kivymd/icon_definitions.py",
+                    "kivymd/fonts/materialdesignicons-webfont.ttf",
+                ],
+            )
             print("\nSuccessful. You can now push changes")
         else:
             print(

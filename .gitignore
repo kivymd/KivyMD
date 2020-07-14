@@ -38,10 +38,12 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Editors
-.idea
 .vscode
 .ipynb_checkpoints
 *.swp
+# PyCharm
+.idea/*
+!/.idea/runConfigurations
 
 # Environments
 venv
@@ -61,6 +63,6 @@ temp
 docs/sources/api
 demos/kitchen_sink/assets/*crop.*
 demos/kitchen_sink/assets/sasha-round.png
-kivymd/tools/*.zip
-kivymd/tools/temp
+kivymd/tools/release/*.zip
+kivymd/tools/release/temp
 kivymd/_version.py

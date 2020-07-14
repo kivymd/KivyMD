@@ -45,6 +45,7 @@ pip-delete-this-directory.txt
 .idea/*
 !/.idea/*.iml
 !/.idea/modules.xml
+!/.idea/vcs.xml
 !/.idea/runConfigurations
 
 # Environments

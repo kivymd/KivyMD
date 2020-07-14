@@ -15,9 +15,12 @@ import json
 import os
 import re
 import shutil
+import sys
 import zipfile
 
 import requests
+
+from .git_commands import git_commit
 
 os.chdir(os.path.dirname(__file__))
 # Paths to files in kivymd repository
@@ -118,6 +121,9 @@ def export_icon_definitions(icon_definitions, version):
 
 
 def main():
+    make_commit = "--commit" in sys.argv
+    sys.argv.remove("--commit")
+
     if url is not None:
         print(f"Downloading Material Design Icons from {url}")
         if download_file(url, "iconic-font.zip"):
@@ -139,9 +145,14 @@ def main():
         export_icon_definitions(icon_definitions, version)
         print("File icon_definitions.py updated")
         shutil.rmtree(temp_path, ignore_errors=True)
-        print(
-            f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
-        )
+
+        if make_commit:
+            git_commit(f"Update Iconic font (v{version})")
+            print("\nSuccessful. You can now push changes")
+        else:
+            print(
+                f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
+            )
     else:
         print(f"Error: {temp_repo_path} not exists")
         exit(1)

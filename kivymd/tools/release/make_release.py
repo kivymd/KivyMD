@@ -4,8 +4,8 @@
 # as the Kivy framework.
 
 """
-Script Before release
-=====================
+Script to make release
+======================
 
 Run this script before release (before deploying).
 
@@ -13,7 +13,7 @@ What this script does:
 
 * Undo all local changes in repository
 * Update version in __init__.py, README
-* Black files
+* Format files
 * Rename file "unreleased.rst" to version, add to index.rst
 * Commit "Version ..."
 * Create tag
@@ -27,77 +27,14 @@ import re
 import subprocess
 import sys
 
-yes = "-y" in sys.argv or "--yes" in sys.argv
-sys.argv.remove("-y")
-sys.argv.remove("--yes")
-
-
-def command(cmd: list):
-    print("Command:", " ".join(cmd))
-    return subprocess.check_output(cmd)
-
-
-def get_previous_version():
-    """Returns latest tag in git."""
-    command(["git", "checkout", "master"])
-    old_version = command(["git", "describe", "--abbrev=0", "--tags"])
-    old_version = str(old_version, encoding="utf-8")[:-1]  # Remove \n
-    return old_version
-
-
-def git_clean():
-    """Clean git repository from untracked and changed files."""
-    # Check what files will be removed
-    clean = str(
-        command(["git", "clean", "-dx", "--force", "--dry-run"]),
-        encoding="utf-8",
-    )
-    # Ask before removing
-    if not yes and not clean == "\n":
-        print(clean)
-        while True:
-            ans = input("Do you want to remove these files? (yes/no)").lower()
-            if ans == "y" or ans == "yes":
-                break
-            elif ans == "n" or ans == "no":
-                print("git clean is required. Exit")
-                exit(0)
-
-    # Remove all untracked files
-    command(["git", "clean", "-dx", "--force"])
-    command(["git", "reset", "--hard"])
-
-
-def git_commit(message: str, allow_error: bool = False):
-    """Make commit."""
-    command(["git", "add", "-A"])
-    try:
-        command(["git", "commit", "--all", "-m", message])
-    except subprocess.CalledProcessError as e:
-        if not allow_error:
-            raise e
-
-
-def git_tag(name: str):
-    """Create tag."""
-    command(["git", "tag", name])
-
-
-def git_push(branches_to_push: list):
-    """Push all changes."""
-    if not yes and input("Do you want to push changes? (y)") in (
-        "",
-        "y",
-        "yes",
-    ):
-        command(
-            ["git", "push", "--tags", "origin", "master", *branches_to_push]
-        )
-    else:
-        print(
-            "Changes are not pushed. Command for manual pushing:"
-            " git push --tags origin master " + " ".join(branches_to_push)
-        )
+from .git_commands import (
+    command,
+    get_previous_version,
+    git_clean,
+    git_commit,
+    git_push,
+    git_tag,
+)
 
 
 def run_pre_commit():
@@ -133,6 +70,7 @@ def update_readme(previous_version, version):
 def move_changelog(
     index_file, unreleased_file, previous_version, version_file, version
 ):
+    """Edit unreleased.rst and rename to <version>.rst."""
     # Read unreleased changelog
     changelog = open(unreleased_file, "rt", encoding="utf-8").read()
 
@@ -184,10 +122,13 @@ def move_changelog(
     )
 
 
-def create_unreleased_changelog(index_file, unreleased_file, previous_version):
+def create_unreleased_changelog(
+    index_file, unreleased_file, previous_version, ask: bool = True
+):
+    """Create unreleased.rst by template."""
     # Check if unreleased file exists
     if os.path.exists(unreleased_file):
-        if not yes and input(
+        if ask and input(
             f'Do you want to rewrite "{unreleased_file}"? (y)'
         ) not in ("", "y", "yes",):
             exit(0)
@@ -214,6 +155,10 @@ def create_unreleased_changelog(index_file, unreleased_file, previous_version):
 
 
 def main():
+    yes = "-y" in sys.argv or "--yes" in sys.argv
+    sys.argv.remove("-y")
+    sys.argv.remove("--yes")
+
     # Change directory to repository root
     os.chdir(os.path.join(os.path.dirname(__file__), "../../.."))
 
@@ -236,7 +181,7 @@ def main():
     print(f"Previous version: {previous_version}")
     print(f"New version: {version}")
 
-    git_clean()
+    git_clean(ask=not yes)
     run_pre_commit()
     update_init_py(version)
     update_readme(previous_version, version)
@@ -274,7 +219,7 @@ def main():
         changelog_index_file, changelog_unreleased_file, previous_version
     )
     git_commit("Add section Unreleased to Change Log")
-    git_push(branches_to_push)
+    git_push(branches_to_push, ask=not yes)
 
 
 if __name__ == "__main__":

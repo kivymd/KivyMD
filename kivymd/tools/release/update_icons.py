@@ -21,8 +21,11 @@ import requests
 
 os.chdir(os.path.dirname(__file__))
 # Paths to files in kivymd repository
-font_path = "../fonts/materialdesignicons-webfont.ttf"
-icon_definitions_path = "../icon_definitions.py"
+kivymd_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+font_path = os.path.join(
+    kivymd_path, "fonts", "materialdesignicons-webfont.ttf"
+)
+icon_definitions_path = os.path.join(kivymd_path, "icon_definitions.py")
 
 font_version = "master"
 # URL to download new archive (set None if already downloaded)
@@ -33,10 +36,14 @@ url = (
 # url = None
 
 # Paths to files in loaded archive
-temp_path = os.path.abspath("temp")
-temp_repo_path = f"{temp_path}/MaterialDesign-Webfont-{font_version}"
-temp_font_path = f"{temp_repo_path}/fonts/materialdesignicons-webfont.ttf"
-temp_preview_path = f"{temp_repo_path}/preview.html"
+temp_path = os.path.join(os.path.dirname(__file__), "temp")
+temp_repo_path = os.path.join(
+    temp_path, f"MaterialDesign-Webfont-{font_version}"
+)
+temp_font_path = os.path.join(
+    temp_repo_path, "fonts", "materialdesignicons-webfont.ttf"
+)
+temp_preview_path = os.path.join(temp_repo_path, "preview.html")
 
 # Regex
 re_icons_json = re.compile(r"(?<=var icons = )[\S ]+(?=;)")
@@ -116,7 +123,7 @@ def main():
         if download_file(url, "iconic-font.zip"):
             print("Archive downloaded")
         else:
-            print("Could not download archive")
+            print("Error: Could not download archive")
     else:
         print("URL is None. Do not download archive")
     if os.path.exists("iconic-font.zip"):
@@ -136,7 +143,8 @@ def main():
             f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
         )
     else:
-        print(f"{temp_repo_path} not exists")
+        print(f"Error: {temp_repo_path} not exists")
+        exit(1)
 
 
 if __name__ == "__main__":

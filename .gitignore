@@ -43,6 +43,8 @@ pip-delete-this-directory.txt
 *.swp
 # PyCharm
 .idea/*
+!/.idea/*.iml
+!/.idea/modules.xml
 !/.idea/runConfigurations
 
 # Environments

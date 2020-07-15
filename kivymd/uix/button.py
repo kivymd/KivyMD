@@ -813,11 +813,11 @@ class BaseButton(
     and defaults to `0`.
     """
 
-    md_bg_color_disabled = ListProperty()
+    md_bg_color_disabled = ListProperty((0, 0, 0, 0))
     """Color disabled.
 
     :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     line_width = NumericProperty(1)

@@ -1020,7 +1020,9 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     and defaults to `'checkbox-blank-circle'`.
     """
 
-    md_bg_color_disabled = (0, 0, 0, 0)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.md_bg_color_disabled = (0, 0, 0, 0)
 
 
 class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):

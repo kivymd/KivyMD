@@ -102,13 +102,13 @@ Builder.load_string(
                 else self._track_color_normal)
         Rectangle:
             size:
-                (self.width - self.padding*2 - self._offset[0], dp(4)) if \
+                (self.width - self.padding * 2 - self._offset[0], dp(4)) if \
                 self.orientation == "horizontal" \
                 else (dp(4),self.height - self.padding*2 - self._offset[1])
             pos:
                 (self.x + self.padding + self._offset[0], self.center_y - dp(4)) \
                 if self.orientation == "horizontal" else \
-                (self.center_x - dp(4),self.y + self.padding + self._offset[1])
+                (self.center_x - dp(4), self.y + self.padding + self._offset[1])
 
         # If 0 draw circle
         Color:
@@ -120,9 +120,9 @@ Builder.load_string(
         Line:
             width: 2
             circle:
-                (self.x + self.padding + dp(3), self.center_y-dp(2), 8 \
+                (self.x + self.padding + dp(3), self.center_y - dp(2), 8 \
                 if self.active else 6 ) if self.orientation == "horizontal" \
-                else (self.center_x - dp(2), self.y + self.padding+dp(3), 8 \
+                else (self.center_x - dp(2), self.y + self.padding + dp(3), 8 \
                 if self.active else 6)
 
         Color:
@@ -132,13 +132,13 @@ Builder.load_string(
                 else self._track_color_disabled)
         Rectangle:
             size:
-                ((self.width-self.padding*2)*self.value_normalized, sp(4)) \
+                ((self.width - self.padding * 2) * self.value_normalized, sp(4)) \
                 if slider.orientation == "horizontal" else (sp(4), \
-                (self.height-self.padding*2)*self.value_normalized)
+                (self.height - self.padding * 2) * self.value_normalized)
             pos:
                 (self.x + self.padding, self.center_y - dp(4)) \
                 if self.orientation == "horizontal" \
-                else (self.center_x - dp(4),self.y + self.padding)
+                else (self.center_x - dp(4), self.y + self.padding)
 
     Thumb:
         id: thumb
@@ -147,7 +147,7 @@ Builder.load_string(
             (dp(12), dp(12)) if root.disabled else ((dp(24), dp(24)) \
             if root.active else (dp(16), dp(16)))
         pos:
-            (slider.value_pos[0] - dp(8), slider.center_y - thumb.height/2 - dp(2)) \
+            (slider.value_pos[0] - dp(8), slider.center_y - thumb.height / 2 - dp(2)) \
             if slider.orientation == "horizontal" \
             else (slider.center_x - thumb.width / 2 - dp(2), \
             slider.value_pos[1] - dp(8))
@@ -223,7 +223,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Hint radius.
 
-    :attr:`hint_text_color` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`hint_radius` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `4`.
     """
 

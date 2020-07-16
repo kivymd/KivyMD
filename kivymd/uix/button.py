@@ -214,7 +214,7 @@ button :class:`~MDRaisedButton`:
 MDRectangleFlatIconButton
 ---------------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
     :align: center
 
 Button parameters :class:`~MDRectangleFlatButton` are the same as
@@ -230,7 +230,7 @@ button :class:`~MDRectangleFlatButton`:
 MDRoundFlatButton
 -----------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-button.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-button.png
     :align: center
 
 Button parameters :class:`~MDRoundFlatButton` are the same as
@@ -813,11 +813,11 @@ class BaseButton(
     and defaults to `0`.
     """
 
-    md_bg_color_disabled = ListProperty((0, 0, 0, 0))
+    md_bg_color_disabled = ListProperty()
     """Color disabled.
 
     :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[0, 0, 0, 0]`.
+    and defaults to ``.
     """
 
     line_width = NumericProperty(1)
@@ -1019,6 +1019,8 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
+
+    md_bg_color_disabled = (0, 0, 0, 0)
 
 
 class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):

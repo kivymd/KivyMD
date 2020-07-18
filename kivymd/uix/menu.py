@@ -1125,6 +1125,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.width = 0
         self.menu.height = 0
         self.menu.opacity = 0
+        self.target_height = 0
 
     def dismiss(self):
         self.on_dismiss()

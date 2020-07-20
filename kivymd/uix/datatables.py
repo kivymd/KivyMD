@@ -960,7 +960,6 @@ class MDDataTable(BaseDialog):
         pagination_menu = MDDropdownMenu(
             caller=self.pagination.ids.drop_item,
             items=menu_items,
-            use_icon_item=False,
             position=self.pagination_menu_pos,
             max_height=self.pagination_menu_height,
             callback=self.table_data.set_number_displayed_lines,

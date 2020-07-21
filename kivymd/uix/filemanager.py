@@ -444,8 +444,8 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     }
                 )
             for name in files:
-                file_name = name.replace("/" and "\\", ",")
-                file_name = file_name.split(",")
+                file_name = name.replace("\\", "/")
+                file_name = file_name.split("/")
                 file_name = file_name[-1]
                 _path = path + file_name if path == "/" else path + "/" + file_name
                 if self.ext and os.path.splitext(name)[1] in self.ext:

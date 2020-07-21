@@ -411,16 +411,16 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     }
                 )
             for name_file in files:
-                splited_name = name_file.split('\\')
-                if (
-                    os.path.splitext(os.path.join(path, name_file))[1]
-                    in self.ext
-                ):
+                file_name = name.replace("/" and "\\", ",")
+                file_name = file_name.split(",")
+                name_file = file_name[-1]
+
+                if os.path.splitext(os.path.join(path, name_file))[1] in self.ext:
                     manager_list.append(
                         {
                             "viewclass": "BodyManagerWithPreview",
                             "path": os.path.join(path, name_file),
-                            "name": splited_name[-1],
+                            "name": name_file,
                             "type": "files",
                             "events_callback": self.select_dir_or_file,
                             "height": dp(150),
@@ -445,24 +445,25 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     }
                 )
             for name in files:
-                splited_name = name.split('\\')
-                _path = path + splited_name[-1] if path == "/" else path + "/" + splited_name[-1]
+                file_name = name.replace("/" and "\\", ",")
+                file_name = file_name.split(",")
+                name = file_name[-1]
+                _path = path + name if path == "/" else path + "/" + name
                 if self.ext and os.path.splitext(name)[1] in self.ext:
                     manager_list.append(
                         {
                             "viewclass": "BodyManager",
                             "path": _path,
                             "icon": "file-outline",
-                            "dir_or_file_name": splited_name[-1],
+                            "dir_or_file_name": name,
                             "events_callback": self.select_dir_or_file,
                         }
                     )
+
         self.ids.rv.data = manager_list
 
         if not self._window_manager:
-            self._window_manager = ModalView(
-                size_hint=(1, 1), auto_dismiss=False
-            )
+            self._window_manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
             self._window_manager.add_widget(self)
         if not self._window_manager_open:
             self._window_manager.open()
@@ -473,9 +474,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         if self.use_access:
             access_data = {"r": os.R_OK, "w": os.W_OK, "x": os.X_OK}
             for access in access_data.keys():
-                access_string += (
-                    access if os.access(path, access_data[access]) else "-"
-                )
+                access_string += access if os.access(path, access_data[access]) else "-"
         return access_string
 
     def get_content(self, path):

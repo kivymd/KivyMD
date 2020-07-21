@@ -1177,7 +1177,9 @@ class MDCustomRoundIconButton(CircularRippleBehavior, ButtonBehavior, Image):
     pass
 
 
-class MDFillRoundFlatButton(MDRoundFlatButton):
+class MDFillRoundFlatButton(CircularElevationBehavior, MDRoundFlatButton):
+    _elevation_normal = NumericProperty()
+
     def __init__(self, **kwargs):
         self.text_color = (1, 1, 1, 1)
         self.line_width = 0.001
@@ -1190,6 +1192,48 @@ class MDFillRoundFlatButton(MDRoundFlatButton):
     def on_md_bg_color(self, instance, value):
         if value != [0.0, 0.0, 0.0, 0.0]:
             self._current_button_color = value
+
+    def on_elevation(self, instance, value):
+        if value:
+            self._elevation_normal = value
+
+    def on_disabled(self, instance, value):
+        # FIXME:The elevation parameter is not restored.
+        '''
+        from kivy.lang import Builder
+
+        from kivymd.app import MDApp
+
+        root_kv = """
+        Screen:
+
+            MDFillRoundFlatButton:
+                id: btn
+                text: "Click me!"
+                pos_hint: {"center_x": .5, "center_y": .6}
+                elevation: 8
+                on_press: self.disabled = True
+
+            MDFillRoundFlatButton:
+                text: "UNDISABLED"
+                pos_hint: {"center_x": .5, "center_y": .4}
+                on_press: btn.disabled = False
+        """
+
+        class MainApp(MDApp):
+            def build(self):
+                self.root = Builder.load_string(root_kv)
+
+        MainApp().run()
+        '''
+
+        if self.disabled:
+            self.elevation = 0
+            self._update_shadow(instance, 0)
+        else:
+            self.elevation = self._elevation_normal
+            self._update_elevation(instance, self.elevation)
+        super().on_disabled(instance, value)
 
 
 class MDRectangleFlatIconButton(BaseFlatIconButton):

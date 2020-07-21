@@ -409,7 +409,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     }
                 )
             for name_file in files:
-                name_file = name_file.replace("\\" , "/")
+                name_file = name_file.replace("\\", "/")
                 file_name = name_file.split("/")
                 file_name = file_name[-1]
 
@@ -521,8 +521,6 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             return
 
         self.select_path(path)
-
-
 
     def back(self):
         """Returning to the branch down in the directory tree."""

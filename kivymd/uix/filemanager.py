@@ -187,11 +187,9 @@ ACTIVITY_MANAGER = """
 
     IconButton:
         mipmap: True
-        source: root.path
+        source: root.path if root.type == "folder" else os.path.join(root.realpath, root.name)
         on_release:
-            root.events_callback(\
-            os.path.join(root.path if root.type != "folder" else root.realpath, \
-            root.name))
+            root.events_callback(root.path if root.type == "file" else os.path.join(root.realpath , root.name))
 
     LabelContent:
         text: root.name
@@ -411,16 +409,17 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     }
                 )
             for name_file in files:
-                file_name = name.replace("/" and "\\", ",")
-                file_name = file_name.split(",")
-                name_file = file_name[-1]
+                name_file = name_file.replace("\\" , "/")
+                file_name = name_file.split("/")
+                file_name = file_name[-1]
 
-                if os.path.splitext(os.path.join(path, name_file))[1] in self.ext:
+                if os.path.splitext(name_file)[1] in self.ext:
                     manager_list.append(
                         {
                             "viewclass": "BodyManagerWithPreview",
-                            "path": os.path.join(path, name_file),
-                            "name": name_file,
+                            "path": name_file,
+                            "name": file_name,
+                            "realpath": os.path.join(path),
                             "type": "files",
                             "events_callback": self.select_dir_or_file,
                             "height": dp(150),
@@ -447,15 +446,15 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             for name in files:
                 file_name = name.replace("/" and "\\", ",")
                 file_name = file_name.split(",")
-                name = file_name[-1]
-                _path = path + name if path == "/" else path + "/" + name
+                file_name = file_name[-1]
+                _path = path + file_name if path == "/" else path + "/" + file_name
                 if self.ext and os.path.splitext(name)[1] in self.ext:
                     manager_list.append(
                         {
                             "viewclass": "BodyManager",
                             "path": _path,
                             "icon": "file-outline",
-                            "dir_or_file_name": name,
+                            "dir_or_file_name": file_name,
                             "events_callback": self.select_dir_or_file,
                         }
                     )
@@ -516,12 +515,14 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def select_dir_or_file(self, path):
         """Called by tap on the name of the directory or file."""
 
-        if os.path.isfile(path):
-            self.select_path(path)
+        if os.path.isdir(path):
+            self.current_path = path
+            self.show(path)
             return
 
-        self.current_path = path
-        self.show(path)
+        self.select_path(path)
+
+
 
     def back(self):
         """Returning to the branch down in the directory tree."""

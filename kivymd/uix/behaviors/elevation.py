@@ -193,12 +193,12 @@ class CommonElevationBehavior(object):
     _hard_shadow_a = NumericProperty(0)
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self.bind(
             elevation=self._update_elevation,
             pos=self._update_shadow,
             size=self._update_shadow,
         )
+        super().__init__(**kwargs)
 
     def _update_shadow(self, *args):
         raise NotImplementedError
@@ -286,16 +286,18 @@ class CircularElevationBehavior(CommonElevationBehavior):
             y = self.center_y - height / 2 - dp(0.1 * 1.5 ** self._elevation)
             self._soft_shadow_pos = (x, y)
             self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
-            self._soft_shadow_texture = self._shadow.textures[
-                str(int(round(self._elevation)))
-            ]
+            if hasattr(self, "_shadow"):
+                self._soft_shadow_texture = self._shadow.textures[
+                    str(int(round(self._elevation)))
+                ]
             # Set ``hard_shadow`` parameters.
             y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation)
             self._hard_shadow_pos = (x, y)
             self._hard_shadow_a = 0.4 * 0.9 ** self._elevation
-            self._hard_shadow_texture = self._shadow.textures[
-                str(int(round(self._elevation)))
-            ]
+            if hasattr(self, "_shadow"):
+                self._hard_shadow_texture = self._shadow.textures[
+                    str(int(round(self._elevation)))
+                ]
         else:
             self._soft_shadow_a = 0
             self._hard_shadow_a = 0

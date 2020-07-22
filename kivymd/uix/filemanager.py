@@ -427,7 +427,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     )
         else:
             for name in dirs:
-                _path = path + name if path == "/" else path + "/" + name
+                _path = os.path.join(path, name)
                 access_string = self.get_access_string(_path)
                 if "r" not in access_string:
                     icon = "folder-lock"
@@ -444,14 +444,13 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     }
                 )
             for name in files:
-                _path = path + name if path == "/" else path + "/" + name
                 if self.ext and os.path.splitext(name)[1] in self.ext:
                     manager_list.append(
                         {
                             "viewclass": "BodyManager",
-                            "path": _path,
+                            "path": name,
                             "icon": "file-outline",
-                            "dir_or_file_name": name,
+                            "dir_or_file_name": os.path.split(name)[1],
                             "events_callback": self.select_dir_or_file,
                         }
                     )

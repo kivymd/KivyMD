@@ -15,14 +15,19 @@ import json
 import os
 import re
 import shutil
+import sys
 import zipfile
 
 import requests
 
-os.chdir(os.path.dirname(__file__))
+from kivymd.tools.release.git_commands import git_commit
+
 # Paths to files in kivymd repository
-font_path = "../fonts/materialdesignicons-webfont.ttf"
-icon_definitions_path = "../icon_definitions.py"
+kivymd_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+font_path = os.path.join(
+    kivymd_path, "fonts", "materialdesignicons-webfont.ttf"
+)
+icon_definitions_path = os.path.join(kivymd_path, "icon_definitions.py")
 
 font_version = "master"
 # URL to download new archive (set None if already downloaded)
@@ -33,10 +38,14 @@ url = (
 # url = None
 
 # Paths to files in loaded archive
-temp_path = os.path.abspath("temp")
-temp_repo_path = f"{temp_path}/MaterialDesign-Webfont-{font_version}"
-temp_font_path = f"{temp_repo_path}/fonts/materialdesignicons-webfont.ttf"
-temp_preview_path = f"{temp_repo_path}/preview.html"
+temp_path = os.path.join(os.path.dirname(__file__), "temp")
+temp_repo_path = os.path.join(
+    temp_path, f"MaterialDesign-Webfont-{font_version}"
+)
+temp_font_path = os.path.join(
+    temp_repo_path, "fonts", "materialdesignicons-webfont.ttf"
+)
+temp_preview_path = os.path.join(temp_repo_path, "preview.html")
 
 # Regex
 re_icons_json = re.compile(r"(?<=var icons = )[\S ]+(?=;)")
@@ -110,13 +119,13 @@ def export_icon_definitions(icon_definitions, version):
         f.write(new_icon_definitions)
 
 
-def main():
+def update_icons(make_commit: bool = False):
     if url is not None:
         print(f"Downloading Material Design Icons from {url}")
         if download_file(url, "iconic-font.zip"):
             print("Archive downloaded")
         else:
-            print("Could not download archive")
+            print("Error: Could not download archive", file=sys.stderr)
     else:
         print("URL is None. Do not download archive")
     if os.path.exists("iconic-font.zip"):
@@ -132,11 +141,30 @@ def main():
         export_icon_definitions(icon_definitions, version)
         print("File icon_definitions.py updated")
         shutil.rmtree(temp_path, ignore_errors=True)
-        print(
-            f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
-        )
+
+        if make_commit:
+            git_commit(
+                f"Update Iconic font (v{version})",
+                allow_error=True,
+                add_files=[
+                    "kivymd/icon_definitions.py",
+                    "kivymd/fonts/materialdesignicons-webfont.ttf",
+                ],
+            )
+            print("\nSuccessful. You can now push changes")
+        else:
+            print(
+                f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
+            )
     else:
-        print(f"{temp_repo_path} not exists")
+        print(f"Error: {temp_repo_path} not exists", file=sys.stderr)
+        exit(1)
+
+
+def main():
+    make_commit = "--commit" in sys.argv
+    sys.argv.remove("--commit")
+    update_icons(make_commit=make_commit)
 
 
 if __name__ == "__main__":

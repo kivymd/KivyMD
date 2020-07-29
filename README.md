@@ -22,12 +22,12 @@ If you wish to become a project developer (permission to create branches on the 
 
 [![Discord](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
 [![Twitter](https://img.shields.io/twitter/follow/KivyMD?label=follow&logo=twitter&style=flat&color=brightgreen)](https://twitter.com/KivyMD)
-[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=1K)](https://www.youtube.com/c/KivyMD)
+[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=1k)](https://www.youtube.com/c/KivyMD)
 [![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
+[![StackOverflow](https://img.shields.io/stackexchange/stackoverflow/t/%5Bkivymd%5D?color=brightgreen&label=stackoverflow&logo=stackoverflow)](https://stackoverflow.com/tags/kivymd)
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/KivyMD)
 
 [![Coverage status](https://coveralls.io/repos/github/HeaTTheatR/KivyMD/badge.svg)](https://coveralls.io/github/HeaTTheatR/KivyMD)
-[![Lint workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Lint/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ALint)
 [![Build workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ABuild)
 [![Test workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ATest)
 [![Build demos workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3A"Build+demos")
@@ -36,7 +36,7 @@ If you wish to become a project developer (permission to create branches on the 
 Documentation
 =============
 
-See documentation at https://kivymd.readthedocs.io/en/latest/
+See documentation at https://kivymd.readthedocs.io
 
 Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD/wiki
 
@@ -48,7 +48,7 @@ Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD
   </a>
 </p>
 
-[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher):  [kitchen_sink-0.102.1-x86.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/x86) or [kitchen_sink-0.103.0-armeabi-v7a.apk](https://github.com/HeaTTheatR/KivyMD-data/tree/master/bin/armeabi-v7a).
+[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher):  [data branch](https://github.com/HeaTTheatR/KivyMD/tree/data/demo_kitchen_sink).
 
 #### Tutorials on YouTube
 
@@ -67,6 +67,7 @@ Support
 If you need assistance or you have a question, you can ask for help on our mailing list:
 
 * **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
+* *StackOverflow tag:* [kivymd](https://stackoverflow.com/tags/kivymd)
 * *Email:* kivydevelopment@gmail.com
 
 

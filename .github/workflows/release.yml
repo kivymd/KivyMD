@@ -1,0 +1,61 @@
+name: Release
+on:
+  push:
+    branches-ignore:
+      - data
+      - gh-pages
+    tags:
+      - '**'
+  pull_request:
+    branches-ignore:
+      - data
+      - gh-pages
+  workflow_dispatch:
+    inputs:
+      version:
+        description: New version in format n.n.n (1.111.11)
+        required: true
+
+jobs:
+
+  # Release job. Runs make_release.py tool. Pushes changes only on dispatch_event
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        persist-credentials: ${{ github.event_name != 'workflow_dispatch' }}  # Allow using PAT when making release
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+        architecture: x64
+
+    - name: Set up environment
+      run: |
+        git config user.name KivyMD
+        git config user.email kivydevelopment@gmail.com
+        pip install -e .
+        pip install pre-commit
+
+    - name: Release
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        # Use personal token to push (when using GITHUB_TOKEN, it will not run workflows)
+        git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+        python kivymd/tools/release/make_release.py release "${{ github.event.inputs.version }}" --yes --push
+
+    - name: Release preparation
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event_name != 'workflow_dispatch'
+      run: |
+        python kivymd/tools/release/make_release.py prepare --yes --push
+
+    - name: Release test
+      if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event_name != 'workflow_dispatch')
+      run: |
+        python kivymd/tools/release/make_release.py test --yes

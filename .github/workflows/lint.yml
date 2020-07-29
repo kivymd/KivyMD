@@ -1,6 +1,15 @@
 name: Lint
-
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - data
+      - gh-pages
+    tags:
+      - '**'
+  pull_request:
+    branches-ignore:
+      - data
+      - gh-pages
 
 jobs:
 

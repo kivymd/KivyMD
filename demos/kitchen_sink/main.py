@@ -134,7 +134,7 @@ class KitchenSinkApp(MDApp):
 
         def show_demo_shrine(interval):
             from kivy.animation import Animation
-            from demos.kitchen_sink.studies.shrine.shrine import MDShrine
+            from studies.shrine.shrine import MDShrine
 
             anim = Animation(
                 size_hint=(0.2, 0.2), pos_hint={"center_y": 0.7}, d=0.5

@@ -329,7 +329,6 @@ from kivy.properties import (
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.carousel import Carousel
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
@@ -343,6 +342,7 @@ from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.carousel import MDCarousel
 
 Builder.load_string(
     """
@@ -354,6 +354,7 @@ Builder.load_string(
     halign: 'center'
     padding: '12dp', 0
     group: 'tabs'
+    font: root.font_name
     allow_no_selection: False
     markup: True
     on_ref_press: if root.callback: root.callback(self)
@@ -453,6 +454,7 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
     callback = ObjectProperty()
+    font_name = StringProperty("Roboto")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -524,7 +526,7 @@ class MDTabsMain(MDBoxLayout):
     """
 
 
-class MDTabsCarousel(Carousel):
+class MDTabsCarousel(MDCarousel):
     lock_swiping = BooleanProperty(False)
     """
     If True - disable switching tabs by swipe.
@@ -536,14 +538,14 @@ class MDTabsCarousel(Carousel):
     def on_touch_down(self, touch):
         # lock a swiping
         if self.lock_swiping:
-            return super(Carousel, self).on_touch_down(touch)
+            return super().on_touch_down(touch)
         if not self.collide_point(*touch.pos):
             touch.ud[self._get_uid("cavoid")] = True
             return
         if self.disabled:
             return True
         if self._touch:
-            return super(Carousel, self).on_touch_down(touch)
+            return super().on_touch_down(touch)
         Animation.cancel_all(self)
         self._touch = touch
         uid = self._get_uid()
@@ -869,12 +871,25 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `False`.
     """
 
+    font_name = StringProperty("Roboto")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_tab_switch")
+        self.register_event_type("on_slide_progress")
+        Clock.schedule_once(self._carousel_bind, 1)
+
+    def _carousel_bind(self, i):
+        self.carousel.bind(on_slide_progress=self._on_slide_progress)
+
+    def on_slide_progress(self, *args):
+        pass
 
     def on_tab_switch(self, *args):
         """Called when switching tabs."""
+
+    def _on_slide_progress(self, *args):
+        self.dispatch("on_slide_progress", args)
 
     def get_tab_list(self):
         """Returns a list of tab objects."""
@@ -910,6 +925,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                         "text_color_active"
                     )
                 )
+                self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
                 return

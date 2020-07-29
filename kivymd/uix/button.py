@@ -1571,8 +1571,13 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     def on_data(self, instance, value):
         """Creates a stack of buttons."""
 
+        self.clear_widgets()
+        self._anim_buttons_data = {}
+        self._anim_labels_data = {}
+        self._label_pos_y_set = False
+
         # Bottom buttons.
-        for name_icon in self.data.keys():
+        for name_icon in value.keys():
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
                 on_enter=self.on_enter,

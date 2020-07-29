@@ -34,12 +34,6 @@ jobs:
         repository_root: master
         workdir: demos/${{ matrix.demo-name }}
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: package ${{ matrix.demo-name }}
-        path: ${{ steps.buildozer.outputs.filename }}
-
     - name: Checkout data branch
       uses: actions/checkout@v2
       with:

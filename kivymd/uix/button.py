@@ -159,13 +159,13 @@ Or use markup:
         markup: True
 
 To specify the font size and font name, use the parameters as in the usual
-`Kivy` buttons:
+`Kivy` buttons without the metric (sp):
 
 .. code-block:: kv
 
     MDFlatButton:
         text: "MDFLATBUTTON"
-        font_size: "18sp"
+        font_size: 18
         font_name: "path/to/font"
 
 .. warning:: You cannot use the ``size_hint_x`` parameter for `KivyMD` buttons

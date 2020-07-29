@@ -6,30 +6,37 @@
 import subprocess
 
 
-def command(cmd: list) -> bytes:
+def command(cmd: list, capture_output: bool = False) -> str:
     """Run system command."""
-    print("Command:", " ".join(cmd))
-    return subprocess.check_output(cmd)
+    print(f"Command: {subprocess.list2cmdline(cmd)}")
+    if capture_output:
+        out = subprocess.check_output(cmd)
+        out = out.decode("utf-8")
+        print(out)
+        return out
+    else:
+        subprocess.check_call(cmd)
+        return ""
 
 
 def get_previous_version() -> str:
     """Returns latest tag in git."""
     command(["git", "checkout", "master"])
-    old_version = command(["git", "describe", "--abbrev=0", "--tags"])
-    old_version = str(old_version, encoding="utf-8")[:-1]  # Remove \n
+    old_version = command(
+        ["git", "describe", "--abbrev=0", "--tags"], capture_output=True
+    )
+    old_version = old_version[:-1]  # Remove \n
     return old_version
 
 
 def git_clean(ask: bool = True):
     """Clean git repository from untracked and changed files."""
     # Check what files will be removed
-    clean = str(
-        command(["git", "clean", "-dx", "--force", "--dry-run"]),
-        encoding="utf-8",
+    clean = command(
+        ["git", "clean", "-dx", "--force", "--dry-run"], capture_output=True
     )
     # Ask before removing
-    if ask or not clean == "\n":
-        print(clean)
+    if ask and not clean == "\n":
         while True:
             ans = input("Do you want to remove these files? (yes/no)").lower()
             if ans == "y" or ans == "yes":
@@ -59,18 +66,15 @@ def git_tag(name: str):
     command(["git", "tag", name])
 
 
-def git_push(branches_to_push: list, ask: bool = True):
+def git_push(branches_to_push: list, ask: bool = True, push: bool = False):
     """Push all changes."""
-    if not ask or input("Do you want to push changes? (y)") in (
-        "",
-        "y",
-        "yes",
-    ):
-        command(
-            ["git", "push", "--tags", "origin", "master", *branches_to_push]
-        )
+    if ask:
+        push = input("Do you want to push changes? (y)") in ("", "y", "yes",)
+
+    cmd = ["git", "push", "--tags", "origin", "master", *branches_to_push]
+    if push:
+        command(cmd)
     else:
         print(
-            "Changes are not pushed. Command for manual pushing:"
-            " git push --tags origin master " + " ".join(branches_to_push)
+            f"Changes are not pushed. Command for manual pushing: {subprocess.list2cmdline(cmd)}"
         )

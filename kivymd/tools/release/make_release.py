@@ -27,7 +27,8 @@ import re
 import subprocess
 import sys
 
-from .git_commands import (
+from kivymd.tools.release.argument_parser import ArgumentParserWithHelp
+from kivymd.tools.release.git_commands import (
     command,
     get_previous_version,
     git_clean,
@@ -35,6 +36,7 @@ from .git_commands import (
     git_push,
     git_tag,
 )
+from kivymd.tools.release.update_icons import update_icons
 
 
 def run_pre_commit():
@@ -49,26 +51,36 @@ def run_pre_commit():
 def replace_in_file(pattern, repl, file):
     """Replace one `pattern` match to `repl` in file `file`."""
     file_content = open(file, "rt", encoding="utf-8").read()
-    file_content = re.sub(pattern, repl, file_content, 1, re.M)
-    open(file, "wt", encoding="utf-8").write(file_content)
+    new_file_content = re.sub(pattern, repl, file_content, 1, re.M)
+    open(file, "wt", encoding="utf-8").write(new_file_content)
+    return not file_content == new_file_content
 
 
-def update_init_py(version):
+def update_init_py(version, test: bool = False):
     """Change version in `kivymd/__init__.py`."""
     init_file = os.path.abspath("kivymd/__init__.py")
     init_version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
-    replace_in_file(init_version_regex, version, init_file)
+    success = replace_in_file(init_version_regex, version, init_file)
+    if test and not success:
+        print("Couldn't update __init__.py file.", file=sys.stderr)
 
 
-def update_readme(previous_version, version):
+def update_readme(previous_version, version, test: bool = False):
     """Change version in README."""
     readme_file = os.path.abspath("README.md")
     readme_version_regex = rf"(?<=\[v){previous_version}[ \-*\w^\]\n]*(?=\])"
-    replace_in_file(readme_version_regex, version, readme_file)
+    success = replace_in_file(readme_version_regex, version, readme_file)
+    if test and not success:
+        print("Couldn't update README.md file.", file=sys.stderr)
 
 
 def move_changelog(
-    index_file, unreleased_file, previous_version, version_file, version
+    index_file,
+    unreleased_file,
+    previous_version,
+    version_file,
+    version,
+    test: bool = False,
 ):
     """Edit unreleased.rst and rename to <version>.rst."""
     # Read unreleased changelog
@@ -117,13 +129,19 @@ def move_changelog(
     # Remove unreleased changelog
     os.remove(unreleased_file)
     # Update index file
-    replace_in_file(
+    success = replace_in_file(
         "/changelog/unreleased.rst", f"/changelog/{version}.rst", index_file
     )
+    if test and not success:
+        print("Couldn't update changelog file.", file=sys.stderr)
 
 
 def create_unreleased_changelog(
-    index_file, unreleased_file, previous_version, ask: bool = True
+    index_file,
+    unreleased_file,
+    previous_version,
+    ask: bool = True,
+    test: bool = False,
 ):
     """Create unreleased.rst by template."""
     # Check if unreleased file exists
@@ -147,33 +165,41 @@ def create_unreleased_changelog(
     # Create unreleased file
     open(unreleased_file, "wt", encoding="utf-8").write(changelog)
     # Update index file
-    replace_in_file(
+    success = replace_in_file(
         r"(?<=Change Log\n==========\n\n)",
         ".. include:: /changelog/unreleased.rst\n",
         index_file,
     )
+    if test and not success:
+        print("Couldn't update changelog index file.", file=sys.stderr)
 
 
 def main():
-    yes = "-y" in sys.argv or "--yes" in sys.argv
-    sys.argv.remove("-y")
-    sys.argv.remove("--yes")
+    parser = create_argument_parser()
+    args = parser.parse_args()
+
+    release = args.command == "release"
+    version = args.version or "0.0.0"
+    prepare = args.command == "prepare"
+    test = args.command == "test"
+    ask = args.yes is not True
+    push = args.push is True
+
+    if release and version == "0.0.0":
+        parser.error("Please specify new version.")
+    if not re.match(r"[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}", version):
+        parser.error('Version "{version}" doesn\'t match template.')
+    if test and push:
+        parser.error("Don't use --push with test.")
+
+    repository_root = os.path.normpath(
+        os.path.dirname(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+        )
+    )
 
     # Change directory to repository root
-    os.chdir(os.path.join(os.path.dirname(__file__), "../../.."))
-
-    # Get version
-    if len(sys.argv) > 3:
-        print("Usage:\npython make_release.py version [--yes]")
-        return
-    elif len(sys.argv) == 2:
-        version = sys.argv[1]
-    else:
-        version = input("Type version: ")
-
-    if not re.match(r"[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}", version):
-        print(f'Version "{version}" doesn\'t match template.')
-        return
+    os.chdir(repository_root)
 
     previous_version = get_previous_version()
 
@@ -181,19 +207,25 @@ def main():
     print(f"Previous version: {previous_version}")
     print(f"New version: {version}")
 
-    git_clean(ask=not yes)
+    update_icons(make_commit=True)
+    git_clean(ask=ask)
     run_pre_commit()
-    update_init_py(version)
-    update_readme(previous_version, version)
 
-    changelog_index_file = os.path.abspath(
-        f"docs{os.sep}sources{os.sep}" f"changelog{os.sep}index.rst"
+    if prepare:
+        git_push([], ask=ask, push=push)
+        return
+
+    update_init_py(version, test=test)
+    update_readme(previous_version, version, test=test)
+
+    changelog_index_file = os.path.join(
+        repository_root, "docs", "sources", "changelog", "index.rst"
     )
-    changelog_unreleased_file = os.path.abspath(
-        f"docs{os.sep}sources{os.sep}" f"changelog{os.sep}unreleased.rst"
+    changelog_unreleased_file = os.path.join(
+        repository_root, "docs", "sources", "changelog", "unreleased.rst"
     )
-    changelog_version_file = os.path.abspath(
-        f"docs{os.sep}sources{os.sep}" f"changelog{os.sep}{version}.rst"
+    changelog_version_file = os.path.join(
+        repository_root, "docs", "sources", "changelog", f"{version}.rst"
     )
     move_changelog(
         changelog_index_file,
@@ -201,6 +233,7 @@ def main():
         previous_version,
         changelog_version_file,
         version,
+        test=test,
     )
 
     git_commit(f"Version {version}")
@@ -216,10 +249,45 @@ def main():
     # branches_to_push.append("stable")
 
     create_unreleased_changelog(
-        changelog_index_file, changelog_unreleased_file, previous_version
+        changelog_index_file,
+        changelog_unreleased_file,
+        previous_version,
+        test=test,
     )
     git_commit("Add section Unreleased to Change Log")
-    git_push(branches_to_push, ask=not yes)
+    git_push(branches_to_push, ask=ask, push=push)
+
+
+def create_argument_parser():
+    parser = ArgumentParserWithHelp(
+        prog="make_release.py",
+        allow_abbrev=False,
+        # usage="%(prog)s command [options] extensions [--exclude extensions]",
+    )
+    parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="remove and modify files without asking.",
+    )
+    parser.add_argument(
+        "--push",
+        action="store_true",
+        help="push changes to remote repository. Use only with release and prepare.",
+    )
+    parser.add_argument(
+        "command",
+        choices=["release", "prepare", "test"],
+        help="release will update icons, modify files and make tag.\n"
+        "prepare will update icons and format files.\n"
+        "test will check if script can modify each file correctly.",
+    )
+    parser.add_argument(
+        "version",
+        type=str,
+        nargs="?",
+        help="new version in format n.n.n (1.111.11).",
+    )
+    return parser
 
 
 if __name__ == "__main__":

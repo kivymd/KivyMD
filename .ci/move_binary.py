@@ -21,7 +21,7 @@ commit_hash = (
     .strip()
 )
 commit_subject = (
-    subprocess.check_output(["git", "log", "-1", "--pretty=format:'%s'"])
+    subprocess.check_output(["git", "log", "-1", "--pretty=format:%s"])
     .decode("utf-8")
     .strip()
 )
@@ -44,10 +44,10 @@ if not is_tag:
 
 # Set author info to the latest commit author
 author_name = subprocess.check_output(
-    ["git", "log", "-1", "--pretty=format:'%an'"]
+    ["git", "log", "-1", "--pretty=format:%an"]
 ).decode("utf-8")
 author_email = subprocess.check_output(
-    ["git", "log", "-1", "--pretty=format:'%ae'"]
+    ["git", "log", "-1", "--pretty=format:%ae"]
 ).decode("utf-8")
 files_to_commit = []
 
@@ -60,7 +60,7 @@ if is_tag:
         old_file = [
             file
             for file in os.listdir(directory)
-            if os.path.isfile(file)
+            if os.path.isfile(os.path.join(directory, file))
             and os.path.splitext(file)[1] == os.path.splitext(filename)[1]
         ][0]
         shutil.move(

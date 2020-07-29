@@ -20,9 +20,8 @@ import zipfile
 
 import requests
 
-from .git_commands import git_commit
+from kivymd.tools.release.git_commands import git_commit
 
-os.chdir(os.path.dirname(__file__))
 # Paths to files in kivymd repository
 kivymd_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 font_path = os.path.join(
@@ -120,16 +119,13 @@ def export_icon_definitions(icon_definitions, version):
         f.write(new_icon_definitions)
 
 
-def main():
-    make_commit = "--commit" in sys.argv
-    sys.argv.remove("--commit")
-
+def update_icons(make_commit: bool = False):
     if url is not None:
         print(f"Downloading Material Design Icons from {url}")
         if download_file(url, "iconic-font.zip"):
             print("Archive downloaded")
         else:
-            print("Error: Could not download archive")
+            print("Error: Could not download archive", file=sys.stderr)
     else:
         print("URL is None. Do not download archive")
     if os.path.exists("iconic-font.zip"):
@@ -149,6 +145,7 @@ def main():
         if make_commit:
             git_commit(
                 f"Update Iconic font (v{version})",
+                allow_error=True,
                 add_files=[
                     "kivymd/icon_definitions.py",
                     "kivymd/fonts/materialdesignicons-webfont.ttf",
@@ -160,8 +157,14 @@ def main():
                 f'\nSuccessful. Commit message: "Update Iconic font (v{version})"'
             )
     else:
-        print(f"Error: {temp_repo_path} not exists")
+        print(f"Error: {temp_repo_path} not exists", file=sys.stderr)
         exit(1)
+
+
+def main():
+    make_commit = "--commit" in sys.argv
+    sys.argv.remove("--commit")
+    update_icons(make_commit=make_commit)
 
 
 if __name__ == "__main__":

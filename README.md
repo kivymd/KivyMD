@@ -110,28 +110,24 @@ requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@master
 ```
 Do not forget to remove `buildozer` directory before building if version was updated (Buildozer doesn't update already downloaded packages).
 
+##### On Linux
 
-Building with VM
-================
+Use Buildozer [directly](https://github.com/kivy/buildozer#installing-buildozer-with-target-python-3-default)
+or via [Docker](https://github.com/kivy/buildozer/blob/master/Dockerfile).
 
-<a href="https://xubuntu.org/release/18-04/">
-  <img align="left" width="300" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/XUBUNTU.png" title="Click to download XUbuntu 18.04">
-</a>
+##### On Windows 10
 
-Packages for Android are built according to the following instructions:
-* Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/)
-* Create a new virtual machine based on the downloaded image of XUbuntu
-* Start the XUbuntu virtual machine, download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh), add execution permissions and run script:
-```bash
-wget https://github.com/HeaTTheatR/KivyMD-data/raw/master/install-kivy-buildozer-dependencies.sh
-chmod +x install-kivy-buildozer-dependencies.sh
+Install [Ubuntu WSL](https://ubuntu.com/wsl) and follow [Linux steps](#On-Linux).
 
-./install-kivy-buildozer-dependencies.sh
-```
-* Script will install all the necessary libraries and tools for creating packages for Android
-* Done! Now you have a virtual machine for building Kivy application packages!
+##### On Windows without WSL
 
-> Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
+Install VirtualBox and follow steps from [here](https://github.com/HeaTTheatR/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
+
+##### Build automatically via GitHub Actions
+
+Use [ArtemSBulgakov/buildozer-action@v1](https://github.com/ArtemSBulgakov/buildozer-action)
+to build your packages automatically on push or pull request.
+See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#full-workflow).
 
 Settings
 ========

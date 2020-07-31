@@ -54,6 +54,10 @@ if __short_hash__:
         f"KivyMD: v{__version__}, git-{__short_hash__}, {__date__}"
         f' (installed at "{__file__}")'
     )
+elif __date__:
+    Logger.info(
+        f'KivyMD: v{__version__}, {__date__} (installed at "{__file__}")'
+    )
 else:
     Logger.info(f'KivyMD: v{__version__} (installed at "{__file__}")')
 

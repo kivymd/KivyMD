@@ -1575,6 +1575,18 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     def on_data(self, instance, value):
         """Creates a stack of buttons."""
 
+        # FIXME: Don't know how to fix AttributeError error:
+        # File "/Users/macbookair/Projects/My-Project/KivyMD/kivymd/uix/button.py", line 1597, in on_data
+        #     self.add_widget(bottom_button)
+        # File "/Users/macbookair/Opt/Venv-38/venv/lib/python3.8/site-packages/kivy/uix/floatlayout.py", line 140, in add_widget
+        #     return super(FloatLayout, self).add_widget(widget, index, canvas)
+        # File "/Users/macbookair/Opt/Venv-38/venv/lib/python3.8/site-packages/kivy/uix/layout.py", line 97, in add_widget
+        #     return super(Layout, self).add_widget(widget, index, canvas)
+        # File "/Users/macbookair/Opt/Venv-38/venv/lib/python3.8/site-packages/kivy/uix/widget.py", line 629, in add_widget
+        #     canvas.add(widget.canvas)
+        # AttributeError: 'NoneType' object has no attribute 'add'
+        super().__init__()
+
         self.clear_widgets()
         self._anim_buttons_data = {}
         self._anim_labels_data = {}

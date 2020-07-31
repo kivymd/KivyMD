@@ -671,7 +671,6 @@ Builder.load_string(
     # Defaults to 56-by-56 and a background of the accent color according to
     # guidelines
     size: (dp(56), dp(56))
-    md_bg_color: root.theme_cls.accent_color
     theme_text_color: 'Custom'
 
 
@@ -1078,6 +1077,11 @@ class MDFloatingActionButton(
     :attr:`background_palette` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Accent'`.
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.md_bg_color == [1.0, 1.0, 1.0, 0.0]:
+            self.md_bg_color = self.theme_cls.accent_color
 
     def on_md_bg_color(self, instance, value):
         if value != self.theme_cls.accent_color:

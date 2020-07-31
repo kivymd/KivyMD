@@ -360,6 +360,8 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
             self.update_icon()
+            if self.group:
+                self._release_group(self)
             self.active = True
         else:
             self.check_anim_in.cancel(self)

@@ -24,7 +24,7 @@ version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.0.0rc3,git+https://github.com/HeaTTheatR/KivyMD.git,sdl2_ttf==2.0.15
+requirements = python3,kivy==2.0.0rc3,https://github.com/HeaTTheatR/KivyMD/archive/master.zip,sdl2_ttf==2.0.15
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

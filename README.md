@@ -75,28 +75,33 @@ If you need assistance or you have a question, you can ask for help on our maili
 
 ### How to install
 
-You can install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd):
-
 ```bash
 pip install kivymd==0.104.1
 ```
 
-If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/) branch, you should specify git HTTPS address:
+Command above will install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
+
+If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+branch, you should specify link to zip archive:
 
 ```bash
-pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 ```
 
-Also you can install manually from sources. Just clone the project and run the setup.py script:
+**_Tip_**: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
+download KivyMD from specific commit.
+
+Also you can install manually from sources. Just clone the project and run pip:
 
 ```bash
-git clone git@github.com:HeaTTheatR/KivyMD.git
+git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1
 cd KivyMD
 pip install .
 ```
 
-**_Speed Tip_**: If you don't need full commit history, you can use a shallow clone
-(`git clone git@github.com:HeaTTheatR/KivyMD.git --depth 1`) to save time.
+**_Speed Tip_**: If you don't need full commit history (about 320 MiB), you can
+use a shallow clone (`git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1`)
+to save time. If you need full commit history, then remove `--depth 1`.
 
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
@@ -104,13 +109,18 @@ pip install .
 requirements = kivy==1.11.1, kivymd==0.104.1
 ```
 
-This will download latest release version from PyPI. If you want to use master branch, you should write the full git HTTPS address, like this example:
+This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
+
+If you want to use development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+branch, you should specify link to zip archive:
 
 ```ini
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@master
+requirements = kivy==1.11.1, https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 ```
 
-Do not forget to remove `buildozer` directory before building if version was updated (Buildozer doesn't update already downloaded packages).
+Do not forget to run `buildozer android clean` or remove `.buildozer` directory
+before building if version was updated (Buildozer doesn't update already
+downloaded packages).
 
 #### On Linux
 

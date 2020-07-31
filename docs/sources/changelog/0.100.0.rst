@@ -5,6 +5,6 @@ v0.100.0
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.0
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.100.0.zip
 
 * Added feature to change color for `MDStackFloatingButtons`.

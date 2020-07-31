@@ -5,7 +5,7 @@ v0.101.7
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.7
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.101.7.zip
 
 * Fixed colors and position of the buttons in the `Buttons` demo screen ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
 * Displaying percent of loading kv-files ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).

@@ -5,6 +5,6 @@ v0.99.96
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.96
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.99.96.zip
 
 * Added `asynckivy` module by [Nattōsai Mitō](https://github.com/gottadiveintopython/asynckivy).

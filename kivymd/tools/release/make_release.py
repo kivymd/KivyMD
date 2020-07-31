@@ -133,7 +133,7 @@ def move_changelog(
         re.M,
     )
     changelog = re.sub(
-        r"(?<=pip install )git\+https[\S]*@master(?=\n)",
+        r"(?<=pip install )https[\S]*/master.zip(?=\n)",
         f"kivymd=={version}",
         changelog,
         1,
@@ -174,7 +174,7 @@ def create_unreleased_changelog(
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
 """

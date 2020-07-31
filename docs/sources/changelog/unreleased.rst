@@ -5,7 +5,7 @@ Unreleased
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
 * Add `HotReloadViewer` class

@@ -85,7 +85,7 @@ if __name__ == "__main__":
             ],
             "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],
         },
-        install_requires=["kivy"],
+        install_requires=["kivy>=1.10.1"],
         setup_requires=[],
         python_requires=">=3.6",
     )

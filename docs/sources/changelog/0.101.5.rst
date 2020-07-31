@@ -5,7 +5,7 @@ v0.101.5
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.5
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.101.5.zip
 
 * Added feature to see source code of current example ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).
 * Added names of authors of this fork ([Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink)).

@@ -5,7 +5,7 @@ v0.99.95
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.99.95
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.99.95.zip
 
 * Added function to create a round image in `kivymd/utils/cropimage.py` module.
 * Added `MDCustomRoundIconButton` class.

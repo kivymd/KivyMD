@@ -79,7 +79,7 @@ for i in range(3):
     except subprocess.CalledProcessError:  # There is changes in repository
         # Undo local changes
         subprocess.check_call(
-            ["git", "reset", "origin", data_repository, "--hard"]
+            ["git", "reset", f"origin/{data_repository}", "--hard"]
         )
         # Pull new changes
         subprocess.check_call(

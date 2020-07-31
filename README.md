@@ -83,25 +83,17 @@ Installation
 
 You can install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd):
 ```bash
-python3 -m pip install kivymd
+pip install kivymd==0.104.1
 ```
 If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/) branch, you should specify git HTTPS address:
 ```bash
-# Master branch:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git
-# Specific branch:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@stable
-# Specific tag:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
-# Specific commit:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
-
-# If you already has installed KivyMD
-python3 -m pip install --force-reinstall git+https://github.com/HeaTTheatR/KivyMD.git
+pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
 ```
 Also you can install manually from sources. Just clone the project and run the setup.py script:
 ```bash
-python3 ./setup.py install
+git clone git@github.com:HeaTTheatR/KivyMD.git
+cd KivyMD
+pip install .
 ```
 
 ***Speed Tip***: If you don't need full commit history, you can use a shallow clone
@@ -109,19 +101,12 @@ python3 ./setup.py install
 
 #### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
-```text
-requirements = kivy==1.11.1, kivymd
+```ini
+requirements = kivy==1.11.1, kivymd==0.104.1
 ```
 This will download latest release version from PyPI. If you want to use master branch, you should write the full git HTTPS address, like this example:
-```text
-# Master branch:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git
-# Specific branch:
+```ini
 requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@master
-# Specific tag:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
-# Specific commit:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
 ```
 Do not forget to remove `buildozer` directory before building if version was updated (Buildozer doesn't update already downloaded packages).
 

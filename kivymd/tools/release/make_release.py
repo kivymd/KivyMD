@@ -72,6 +72,22 @@ def update_readme(previous_version, version, test: bool = False):
     success = replace_in_file(readme_version_regex, version, readme_file)
     if test and not success:
         print("Couldn't update README.md file.", file=sys.stderr)
+    readme_install_version_regex = (
+        rf"(?<=pip install kivymd==){previous_version}(?=\n```)"
+    )
+    success = replace_in_file(
+        readme_install_version_regex, version, readme_file
+    )
+    if test and not success:
+        print("Couldn't update README.md file.", file=sys.stderr)
+    readme_buildozer_version_regex = (
+        rf"(?<=, kivymd==){previous_version}(?=\n```)"
+    )
+    success = replace_in_file(
+        readme_buildozer_version_regex, version, readme_file
+    )
+    if test and not success:
+        print("Couldn't update README.md file.", file=sys.stderr)
 
 
 def move_changelog(

@@ -83,10 +83,12 @@ for i in range(3):
         )
         # Pull new changes
         subprocess.check_call(
-            ["git", "pull", "origin", data_repository, "--force"]
+            ["git", "pull", "origin", data_repository, "--force", "--ff-only"]
         )
     else:
         break  # Exit loop if there is no errors
+else:
+    raise Exception("Cannot push binary")
 
 new_commit_hash = (
     subprocess.check_output(["git", "rev-parse", "--verify", "--short", "HEAD"])

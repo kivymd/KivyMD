@@ -52,7 +52,9 @@ jobs:
     - name: Push binary to data branch
       run: |
         # Use personal token to push (when using GITHUB_TOKEN, it will not allow pushes from PR)
-        git config user.name KivyMD Bot
-        git config user.email 69076719+KivyMD-Bot@users.noreply.github.com
-        cd data && git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} && cd ..
+        cd data && \
+          git config user.name KivyMD Bot && \
+          git config user.email 69076719+KivyMD-Bot@users.noreply.github.com && \
+          git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} && \
+          cd ..
         python master/.ci/move_binary.py "${{ steps.buildozer.outputs.filename }}" master data ${{ matrix.demo-name }}

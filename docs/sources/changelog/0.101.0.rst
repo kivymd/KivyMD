@@ -5,7 +5,7 @@ v0.101.0
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.0
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.101.0.zip
 
 * Added `MDContextMenu` class.
 * Added `MDExpansionPanel` class.

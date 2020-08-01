@@ -72,6 +72,22 @@ def update_readme(previous_version, version, test: bool = False):
     success = replace_in_file(readme_version_regex, version, readme_file)
     if test and not success:
         print("Couldn't update README.md file.", file=sys.stderr)
+    readme_install_version_regex = (
+        rf"(?<=pip install kivymd==){previous_version}(?=\n```)"
+    )
+    success = replace_in_file(
+        readme_install_version_regex, version, readme_file
+    )
+    if test and not success:
+        print("Couldn't update README.md file.", file=sys.stderr)
+    readme_buildozer_version_regex = (
+        rf"(?<=, kivymd==){previous_version}(?=\n```)"
+    )
+    success = replace_in_file(
+        readme_buildozer_version_regex, version, readme_file
+    )
+    if test and not success:
+        print("Couldn't update README.md file.", file=sys.stderr)
 
 
 def move_changelog(
@@ -117,7 +133,7 @@ def move_changelog(
         re.M,
     )
     changelog = re.sub(
-        r"(?<=pip install )git\+https[\S]*@master(?=\n)",
+        r"(?<=pip install )https[\S]*/master.zip(?=\n)",
         f"kivymd=={version}",
         changelog,
         1,
@@ -158,7 +174,7 @@ def create_unreleased_changelog(
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@master
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
 """

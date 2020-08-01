@@ -29,6 +29,8 @@ jobs:
             architecture: x86
             kivy-version: 1.11.1
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUNBUFFERED: 1
 
     steps:
     - name: Checkout

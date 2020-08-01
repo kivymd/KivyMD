@@ -23,6 +23,8 @@ jobs:
         python-version: [3.7]
         architecture: [x64]
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUNBUFFERED: 1
 
     steps:
     - name: Checkout

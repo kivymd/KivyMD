@@ -1,5 +1,4 @@
-KivyMD [v0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
-======
+# KivyMD [v0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
 <img align="left" width="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
 
@@ -33,14 +32,13 @@ If you wish to become a project developer (permission to create branches on the 
 [![Build demos workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3A"Build+demos")
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 
-Documentation
-=============
+## Documentation
 
 See documentation at https://kivymd.readthedocs.io
 
 Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD/wiki
 
-#### Demos
+### Demos
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=qU6C_Icp6TM">
@@ -48,9 +46,9 @@ Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD
   </a>
 </p>
 
-[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher):  [data branch](https://github.com/HeaTTheatR/KivyMD/tree/data/demo_kitchen_sink).
+[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/HeaTTheatR/KivyMD/tree/data/demo_kitchen_sink).
 
-#### Tutorials on YouTube
+### Tutorials on YouTube
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
@@ -60,110 +58,101 @@ Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD
 
 [Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
 
-
-Support
-=======
+## Support
 
 If you need assistance or you have a question, you can ask for help on our mailing list:
 
-* **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
-* *StackOverflow tag:* [kivymd](https://stackoverflow.com/tags/kivymd)
-* *Email:* kivydevelopment@gmail.com
+- **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
+- _StackOverflow tag:_ [kivymd](https://stackoverflow.com/tags/kivymd)
+- _Email:_ kivydevelopment@gmail.com
 
+## Installation
 
-Installation
-============
+### Dependencies:
 
-#### Dependencies:
+- [Kivy](https://github.com/kivy/kivy) >= 1.10.1 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
+- [Python 3.6+](https://www.python.org/) _(Python 2 not supported)_
 
-* [Kivy](https://github.com/kivy/kivy) >= 1.10.1 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
-* [Python 3.6+](https://www.python.org/) *(Python 2 not supported)*
+### How to install
 
-#### How to install
-
-You can install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd):
 ```bash
-python3 -m pip install kivymd
+pip install kivymd==0.104.1
 ```
-If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/) branch, you should specify git HTTPS address:
+
+Command above will install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
+
+If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+branch, you should specify link to zip archive:
+
 ```bash
-# Master branch:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git
-# Specific branch:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@stable
-# Specific tag:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
-# Specific commit:
-python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
-
-# If you already has installed KivyMD
-python3 -m pip install --force-reinstall git+https://github.com/HeaTTheatR/KivyMD.git
+pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 ```
-Also you can install manually from sources. Just clone the project and run the setup.py script:
+
+**_Tip_**: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
+download KivyMD from specific commit.
+
+Also you can install manually from sources. Just clone the project and run pip:
+
 ```bash
-python3 ./setup.py install
+git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1
+cd KivyMD
+pip install .
 ```
 
-***Speed Tip***: If you don't need full commit history, you can use a shallow clone
-(`git clone git@github.com:HeaTTheatR/KivyMD.git --depth 1`) to save time.
+**_Speed Tip_**: If you don't need full commit history (about 320 MiB), you can
+use a shallow clone (`git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1`)
+to save time. If you need full commit history, then remove `--depth 1`.
 
-#### How to use with [Buildozer](https://github.com/kivy/buildozer)
+### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
-```text
-requirements = kivy==1.11.1, kivymd
+```ini
+requirements = kivy==1.11.1, kivymd==0.104.1
 ```
-This will download latest release version from PyPI. If you want to use master branch, you should write the full git HTTPS address, like this example:
-```text
-# Master branch:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git
-# Specific branch:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@master
-# Specific tag:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
-# Specific commit:
-requirements = kivy==1.11.1, git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
+
+This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
+
+If you want to use development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+branch, you should specify link to zip archive:
+
+```ini
+requirements = kivy==1.11.1, https://github.com/HeaTTheatR/KivyMD/archive/master.zip
 ```
-Do not forget to remove `buildozer` directory before building if version was updated (Buildozer doesn't update already downloaded packages).
 
+Do not forget to run `buildozer android clean` or remove `.buildozer` directory
+before building if version was updated (Buildozer doesn't update already
+downloaded packages).
 
-Building with VM
-================
+#### On Linux
 
-<a href="https://xubuntu.org/release/18-04/">
-  <img align="left" width="300" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/XUBUNTU.png" title="Click to download XUbuntu 18.04">
-</a>
+Use Buildozer [directly](https://github.com/kivy/buildozer#installing-buildozer-with-target-python-3-default)
+or via [Docker](https://github.com/kivy/buildozer/blob/master/Dockerfile).
 
-Packages for Android are built according to the following instructions:
-* Download [XUbuntu 18.04](https://xubuntu.org/release/18-04/)
-* Create a new virtual machine based on the downloaded image of XUbuntu
-* Start the XUbuntu virtual machine, download [this bash script](https://github.com/HeaTTheatR/KivyMD-data/blob/master/install-kivy-buildozer-dependencies.sh), add execution permissions and run script:
-```bash
-wget https://github.com/HeaTTheatR/KivyMD-data/raw/master/install-kivy-buildozer-dependencies.sh
-chmod +x install-kivy-buildozer-dependencies.sh
+#### On Windows 10
 
-./install-kivy-buildozer-dependencies.sh
-```
-* Script will install all the necessary libraries and tools for creating packages for Android
-* Done! Now you have a virtual machine for building Kivy application packages!
+Install [Ubuntu WSL](https://ubuntu.com/wsl) and follow [Linux steps](#On-Linux).
 
-> Or see the instructions [here](https://github.com/zaemiel/kivy-buildozer-installer).
+#### On Windows without WSL
 
-Settings
-========
+Install VirtualBox and follow steps from [here](https://github.com/HeaTTheatR/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
+
+#### Build automatically via GitHub Actions
+
+Use [ArtemSBulgakov/buildozer-action@v1](https://github.com/ArtemSBulgakov/buildozer-action)
+to build your packages automatically on push or pull request.
+See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#full-workflow).
+
+## Settings
 
 #### [Syntax highlighting and auto-completion for Kivy/KivyMD .kv files in PyCharm/Intellij IDEA](https://github.com/noembryo/KV4Jetbrains)
 
+## API Breaking changes
 
-API Breaking changes
-====================
+- [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
+- [Changed the use of the MDDropdownMenu](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
+- [Changed the use of the MDDropDownItem](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
+- [Changed the use of the MDDialog](https://kivymd.readthedocs.io/en/latest/components/dialog/index.html)
 
-* [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
-* [Changed the use of the MDDropdownMenu](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
-* [Changed the use of the MDDropDownItem](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
-* [Changed the use of the MDDialog](https://kivymd.readthedocs.io/en/latest/components/dialog/index.html)
-
-Video preview
-=============
+## Video preview
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=HCa8zij69kY">
@@ -171,17 +160,13 @@ Video preview
   </a>
 </p>
 
-
-Image preview
-=============
+## Image preview
 
 <p align="center">
   <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png">
 </p>
 
-
-Contributing
-============
+## Contributing
 
 We always welcome your [Bug reports](https://github.com/HeaTTheatR/KivyMD/issues/new?template=bug_report.md),
 [Feature requests](https://github.com/HeaTTheatR/KivyMD/issues/new?template=feature_request.md)
@@ -189,8 +174,7 @@ and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
 Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
 
-Setup environment
------------------
+### Setup environment
 
 We recommend you to use PyCharm to work with KivyMD code. Install
 [Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html) and
@@ -202,6 +186,7 @@ pre-commit install
 ```
 
 Format all files and run tests:
+
 ```bash
 pre-commit run --all-files
 pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
@@ -209,14 +194,11 @@ pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
 
 pre-commit will format modified files with Black and sort imports with isort.
 
-Sister projects
-===============
+## Sister projects
 
-* [Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
+- [Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
 
-
-License
-=======
+## License
 
 KivyMD is released under the terms of the [MIT License](https://github.com/HeaTTheatR/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
 

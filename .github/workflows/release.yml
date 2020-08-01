@@ -22,6 +22,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: 1
 
     steps:
     - name: Checkout
@@ -49,13 +51,16 @@ jobs:
         # Use personal token to push (when using GITHUB_TOKEN, it will not run workflows)
         git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
         python kivymd/tools/release/make_release.py release "${{ github.event.inputs.version }}" --yes --push
+        git diff origin/master...
 
     - name: Release preparation
       if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event_name != 'workflow_dispatch'
       run: |
         python kivymd/tools/release/make_release.py prepare --yes --push
+        git diff origin/master...
 
     - name: Release test
       if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event_name != 'workflow_dispatch')
       run: |
         python kivymd/tools/release/make_release.py test --yes
+        git diff origin/master...

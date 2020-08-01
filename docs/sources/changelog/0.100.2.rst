@@ -5,6 +5,6 @@ v0.100.2
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.100.2.zip
 
 * [Black](https://github.com/psf/black) formatting.

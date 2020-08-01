@@ -5,6 +5,6 @@ v0.101.6
 
     .. code-block:: bash
 
-       pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.101.6
+       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.101.6.zip
 
 * Fixed `NameError: name 'MDThemePicker' is not defined`.

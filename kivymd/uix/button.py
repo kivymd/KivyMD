@@ -671,7 +671,6 @@ Builder.load_string(
     # Defaults to 56-by-56 and a background of the accent color according to
     # guidelines
     size: (dp(56), dp(56))
-    md_bg_color: root.theme_cls.accent_color
     theme_text_color: 'Custom'
 
 
@@ -1078,6 +1077,11 @@ class MDFloatingActionButton(
     :attr:`background_palette` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Accent'`.
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.md_bg_color == [1.0, 1.0, 1.0, 0.0]:
+            self.md_bg_color = self.theme_cls.accent_color
 
     def on_md_bg_color(self, instance, value):
         if value != self.theme_cls.accent_color:
@@ -1570,6 +1574,18 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     def on_data(self, instance, value):
         """Creates a stack of buttons."""
+
+        # FIXME: Don't know how to fix AttributeError error:
+        # File "kivymd/uix/button.py", line 1597, in on_data
+        #     self.add_widget(bottom_button)
+        # File "kivy/uix/floatlayout.py", line 140, in add_widget
+        #     return super(FloatLayout, self).add_widget(widget, index, canvas)
+        # File "kivy/uix/layout.py", line 97, in add_widget
+        #     return super(Layout, self).add_widget(widget, index, canvas)
+        # File "kivy/uix/widget.py", line 629, in add_widget
+        #     canvas.add(widget.canvas)
+        # AttributeError: 'NoneType' object has no attribute 'add'
+        super().__init__()
 
         self.clear_widgets()
         self._anim_buttons_data = {}

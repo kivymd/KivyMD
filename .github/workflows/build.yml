@@ -29,6 +29,8 @@ jobs:
             architecture: x64
             dist: sdist bdist_wheel
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUNBUFFERED: 1
 
     steps:
     - name: Checkout
@@ -58,6 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+    env:
+      PYTHONUNBUFFERED: 1
 
     steps:
     - name: Checkout

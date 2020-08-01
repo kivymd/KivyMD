@@ -175,9 +175,9 @@ How to change icon color?
 
 .. seealso::
 
-    `See Tab auto switch example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Tabs-Auto-Switch>`_
+    `See Tab auto switch example <https://github.com/kivymd/KivyMD/wiki/Components-Tabs-Auto-Switch>`_
 
-    `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-Navigation>`_
+    `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-Navigation>`_
 """
 
 __all__ = (

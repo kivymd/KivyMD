@@ -94,7 +94,7 @@ Choose chip
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-shoose-icon.gif
     :align: center
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Chip>`_
+.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Chip>`_
 """
 
 from kivy.animation import Animation

@@ -3,42 +3,42 @@
 ### I need a support
 
 * **Do not create an issue.** You can find support information in
-[README](https://github.com/HeaTTheatR/KivyMD#support).
+[README](https://github.com/kivymd/KivyMD#support).
 
 ### I found a bug
 
 * **Check that this bug isn't already reported:**
-[issues on GitHub](https://github.com/HeaTTheatR/KivyMD/issues).
+[issues on GitHub](https://github.com/kivymd/KivyMD/issues).
 * Create new issue with
-[Bug report template](https://github.com/HeaTTheatR/KivyMD/issues/new?template=bug_report.md).
+[Bug report template](https://github.com/kivymd/KivyMD/issues/new?template=bug_report.md).
 * Write good **title** and clear **description**, paste **code sample** and, if
 possible, attach a **screenshot**.
 
 ### I want to suggest a new feature
 
 * **Check that similar feature isn't already published:**
-[issues on GitHub](https://github.com/HeaTTheatR/KivyMD/issues).
+[issues on GitHub](https://github.com/kivymd/KivyMD/issues).
 * Create new issue with
-[Feature request template](https://github.com/HeaTTheatR/KivyMD/issues/new?template=feature_request.md).
+[Feature request template](https://github.com/kivymd/KivyMD/issues/new?template=feature_request.md).
 * Write good **title** and clear **description**, paste **code sample** and, if
 possible, attach an **images**.
 
 ### I have a changes
 
 * **Check that similar changes isn't already requested:**
-[pull requests on GitHub](https://github.com/HeaTTheatR/KivyMD/pulls).
+[pull requests on GitHub](https://github.com/kivymd/KivyMD/pulls).
 * Format your code with [Black](https://github.com/psf/black) utility. Use
 [pre-commit](https://pre-commit.com/) to automatically format code before
 commit.
 * Do not forget to test your code.
-* Create new [pull request](https://github.com/HeaTTheatR/KivyMD/compare).
+* Create new [pull request](https://github.com/kivymd/KivyMD/compare).
 * Write good **title** and **description of changes** and, if possible, attach
 a **screenshots**.
 
 
 ## What contributions can I make?
 
-See [TODO List](https://github.com/HeaTTheatR/KivyMD/issues/139)
+See [TODO List](https://github.com/kivymd/KivyMD/issues/139)
 
 ### Documentation
 

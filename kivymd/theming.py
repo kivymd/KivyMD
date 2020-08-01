@@ -896,13 +896,13 @@ class ThemableBehavior(EventDispatcher):
                     raise ValueError(
                         "KivyMD: App object must be inherited from "
                         "`kivymd.app.MDApp`. See "
-                        "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
+                        "https://github.com/kivymd/KivyMD/blob/master/README.md#api-breaking-changes"
                     )
             except AttributeError:
                 raise ValueError(
                     "KivyMD: App object must be initialized before loading "
                     "root widget. See "
-                    "https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App#exceptions"
+                    "https://github.com/kivymd/KivyMD/wiki/Modules-Material-App#exceptions"
                 )
             self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)

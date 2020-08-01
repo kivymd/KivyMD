@@ -134,7 +134,7 @@ add the prefix `'-icon'` to the banner type:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-icon.png
     :align: center
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Banner>`_
+.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Banner>`_
 """
 
 __all__ = ("MDBanner",)

@@ -268,7 +268,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 
 .. seealso::
 
-    `Full example of Components-Navigation-Drawer <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Navigation-Drawer>`_
+    `Full example of Components-Navigation-Drawer <https://github.com/kivymd/KivyMD/wiki/Components-Navigation-Drawer>`_
 """
 
 __all__ = ("NavigationLayout", "MDNavigationDrawer")

@@ -131,9 +131,9 @@ The user function takes one argument - the object of the panel:
     def on_panel_open(self, instance_panel):
         print(instance_panel)
 
-.. seealso:: `See Expansion panel example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Expansion-Panel>`_
+.. seealso:: `See Expansion panel example <https://github.com/kivymd/KivyMD/wiki/Components-Expansion-Panel>`_
 
-    `Expansion panel and MDCard <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Expansion-Panel-and-MDCard>`_
+    `Expansion panel and MDCard <https://github.com/kivymd/KivyMD/wiki/Components-Expansion-Panel-and-MDCard>`_
 """
 
 __all__ = (

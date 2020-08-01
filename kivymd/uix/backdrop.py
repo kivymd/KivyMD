@@ -110,7 +110,7 @@ Example
     :width: 280 px
     :align: center
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Backdrop>`_
+.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Backdrop>`_
 """
 
 __all__ = (

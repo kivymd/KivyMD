@@ -1,6 +1,6 @@
 # KivyMD [v0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
-<img align="left" width="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
+<img align="left" width="256" src="https://github.com/kivymd/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
@@ -26,17 +26,17 @@ If you wish to become a project developer (permission to create branches on the 
 [![StackOverflow](https://img.shields.io/stackexchange/stackoverflow/t/%5Bkivymd%5D?color=brightgreen&label=stackoverflow&logo=stackoverflow)](https://stackoverflow.com/tags/kivymd)
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/KivyMD)
 
-[![Coverage status](https://coveralls.io/repos/github/HeaTTheatR/KivyMD/badge.svg)](https://coveralls.io/github/HeaTTheatR/KivyMD)
-[![Build workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ABuild)
-[![Test workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ATest)
-[![Build demos workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3A"Build+demos")
+[![Coverage status](https://coveralls.io/repos/github/kivymd/KivyMD/badge.svg)](https://coveralls.io/github/kivymd/KivyMD)
+[![Build workflow](https://github.com/kivymd/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ABuild)
+[![Test workflow](https://github.com/kivymd/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ATest)
+[![Build demos workflow](https://github.com/kivymd/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3A"Build+demos")
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 
 ## Documentation
 
 See documentation at https://kivymd.readthedocs.io
 
-Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD/wiki
+Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wiki
 
 ### Demos
 
@@ -46,7 +46,7 @@ Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD
   </a>
 </p>
 
-[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/HeaTTheatR/KivyMD/tree/data/demo_kitchen_sink).
+[Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/kivymd/KivyMD/tree/data/demo_kitchen_sink).
 
 ### Tutorials on YouTube
 
@@ -81,11 +81,11 @@ pip install kivymd==0.104.1
 
 Command above will install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
 
-If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+If you want to install development version from [master](https://github.com/kivymd/KivyMD/tree/master/)
 branch, you should specify link to zip archive:
 
 ```bash
-pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
+pip install https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 **_Tip_**: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
@@ -94,13 +94,13 @@ download KivyMD from specific commit.
 Also you can install manually from sources. Just clone the project and run pip:
 
 ```bash
-git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1
+git clone https://github.com/kivymd/KivyMD.git --depth 1
 cd KivyMD
 pip install .
 ```
 
 **_Speed Tip_**: If you don't need full commit history (about 320 MiB), you can
-use a shallow clone (`git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1`)
+use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
@@ -111,11 +111,11 @@ requirements = kivy==1.11.1, kivymd==0.104.1
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
 
-If you want to use development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+If you want to use development version from [master](https://github.com/kivymd/KivyMD/tree/master/)
 branch, you should specify link to zip archive:
 
 ```ini
-requirements = kivy==1.11.1, https://github.com/HeaTTheatR/KivyMD/archive/master.zip
+requirements = kivy==1.11.1, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 Do not forget to run `buildozer android clean` or remove `.buildozer` directory
@@ -133,7 +133,7 @@ Install [Ubuntu WSL](https://ubuntu.com/wsl) and follow [Linux steps](#On-Linux)
 
 #### On Windows without WSL
 
-Install VirtualBox and follow steps from [here](https://github.com/HeaTTheatR/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
+Install VirtualBox and follow steps from [here](https://github.com/kivymd/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
 
 #### Build automatically via GitHub Actions
 
@@ -168,10 +168,10 @@ See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#f
 
 ## Contributing
 
-We always welcome your [Bug reports](https://github.com/HeaTTheatR/KivyMD/issues/new?template=bug_report.md),
-[Feature requests](https://github.com/HeaTTheatR/KivyMD/issues/new?template=feature_request.md)
-and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
-Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
+We always welcome your [Bug reports](https://github.com/kivymd/KivyMD/issues/new?template=bug_report.md),
+[Feature requests](https://github.com/kivymd/KivyMD/issues/new?template=feature_request.md)
+and [Pull requests](https://github.com/kivymd/KivyMD/pulls)!
+Check out [CONTRIBUTING.md](https://github.com/kivymd/KivyMD/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
 
 ### Setup environment
@@ -200,7 +200,7 @@ pre-commit will format modified files with Black and sort imports with isort.
 
 ## License
 
-KivyMD is released under the terms of the [MIT License](https://github.com/HeaTTheatR/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
+KivyMD is released under the terms of the [MIT License](https://github.com/kivymd/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
 
 [Roboto font](https://fonts.google.com/specimen/Roboto) is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
@@ -211,7 +211,7 @@ KivyMD is released under the terms of the [MIT License](https://github.com/HeaTT
 ### Code Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](.github/CONTRIBUTING.md)].
-<a href="https://github.com/HeaTTheatR/KivyMD/graphs/contributors"><img src="https://opencollective.com/KivyMD/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/kivymd/KivyMD/graphs/contributors"><img src="https://opencollective.com/KivyMD/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
 

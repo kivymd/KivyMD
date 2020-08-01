@@ -40,8 +40,8 @@ jobs:
 
     - name: Set up environment
       run: |
-        git config user.name KivyMD
-        git config user.email kivydevelopment@gmail.com
+        git config user.name KivyMD Bot
+        git config user.email 69076719+KivyMD-Bot@users.noreply.github.com
         pip install -e .
         pip install pre-commit
 
@@ -49,7 +49,7 @@ jobs:
       if: github.event_name == 'workflow_dispatch'
       run: |
         # Use personal token to push (when using GITHUB_TOKEN, it will not run workflows)
-        git remote set-url origin https://${{ github.repository_owner }}:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+        git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
         python kivymd/tools/release/make_release.py release "${{ github.event.inputs.version }}" --yes --push
         git diff origin/master...
 

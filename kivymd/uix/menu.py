@@ -891,6 +891,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Window.bind(on_resize=self.check_position_caller)
+        Window.bind(on_maximize=self.set_menu_properties)
+        Window.bind(on_restore=self.set_menu_properties)
         self.register_event_type("on_dismiss")
         self.register_event_type("on_enter")
         self.register_event_type("on_leave")

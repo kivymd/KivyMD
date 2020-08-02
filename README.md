@@ -171,7 +171,7 @@ See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#f
 We always welcome your [Bug reports](https://github.com/kivymd/KivyMD/issues/new?template=bug_report.md),
 [Feature requests](https://github.com/kivymd/KivyMD/issues/new?template=feature_request.md)
 and [Pull requests](https://github.com/kivymd/KivyMD/pulls)!
-Check out [CONTRIBUTING.md](https://github.com/kivymd/KivyMD/blob/master/.github/CONTRIBUTING.md)
+Check out [CONTRIBUTING.md](https://github.com/kivymd/.github/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
 
 ### Setup environment

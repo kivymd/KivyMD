@@ -81,6 +81,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
+from kivy.clock import Clock
 
 Builder.load_string(
     """
@@ -525,6 +526,7 @@ class MDDialog(BaseDialog):
         else:
             self.create_buttons()
 
+        update_height = False
         if self.type in ("simple", "confirmation"):
             if self.type == "confirmation":
                 self.ids.spacer_top_box.add_widget(MDSeparator())
@@ -535,10 +537,16 @@ class MDDialog(BaseDialog):
                 self.ids.container.remove_widget(self.ids.scroll)
                 self.ids.container.remove_widget(self.ids.text)
                 self.ids.spacer_top_box.add_widget(self.content_cls)
-                self._spacer_top = self.content_cls.height + dp(24)
                 self.ids.spacer_top_box.padding = (0, "24dp", "16dp", 0)
+                update_height = True
         if self.type == "alert":
             self.ids.scroll.bar_width = 0
+
+        if update_height:
+            Clock.schedule_once(self.update_height)
+    
+    def update_height(self, *_):
+        self._spacer_top = self.content_cls.height + dp(24)
 
     def on_open(self):
         # TODO: Add scrolling text.

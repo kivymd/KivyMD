@@ -64,6 +64,7 @@ Usage
 
 __all__ = ("MDDialog",)
 
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -81,7 +82,6 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
-from kivy.clock import Clock
 
 Builder.load_string(
     """
@@ -544,7 +544,7 @@ class MDDialog(BaseDialog):
 
         if update_height:
             Clock.schedule_once(self.update_height)
-    
+
     def update_height(self, *_):
         self._spacer_top = self.content_cls.height + dp(24)
 

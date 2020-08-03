@@ -314,7 +314,6 @@ Dynamic tab management
 
 __all__ = ("MDTabs", "MDTabsBase")
 
-from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics import Rectangle
 from kivy.lang import Builder
@@ -581,25 +580,6 @@ class MDTabsCarousel(MDCarousel):
                 self._offset += touch.dx
             if direction in "tb":
                 self._offset += touch.dy
-        return True
-
-    def on_touch_down(self, touch):
-        if not self.collide_point(*touch.pos):
-            touch.ud[self._get_uid("cavoid")] = True
-            return
-        if self.disabled:
-            return True
-        if self._touch:
-            return super().on_touch_down(touch)
-        Animation.cancel_all(self)
-        self._touch = touch
-        uid = self._get_uid()
-        touch.grab(self)
-        touch.ud[uid] = {"mode": "unknown", "time": touch.time_start}
-        self._change_touch_mode_ev = Clock.schedule_once(
-            self._change_touch_mode, self.scroll_timeout / 1000.0
-        )
-        self.touch_mode_change = False
         return True
 
 

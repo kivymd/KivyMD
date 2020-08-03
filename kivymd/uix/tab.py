@@ -535,10 +535,55 @@ class MDTabsCarousel(MDCarousel):
     and defaults to `False`.
     """
 
-    def on_touch_down(self, touch):
+    def on_touch_move(self, touch):
         # lock a swiping
         if self.lock_swiping:
-            return super().on_touch_down(touch)
+            return
+        if not self.touch_mode_change:
+            if self.ignore_perpendicular_swipes and self.direction in (
+                "top",
+                "bottom",
+            ):
+                if abs(touch.oy - touch.y) < self.scroll_distance:
+                    if abs(touch.ox - touch.x) > self.scroll_distance:
+                        self._change_touch_mode()
+                        self.touch_mode_change = True
+            elif self.ignore_perpendicular_swipes and self.direction in (
+                "right",
+                "left",
+            ):
+                if abs(touch.ox - touch.x) < self.scroll_distance:
+                    if abs(touch.oy - touch.y) > self.scroll_distance:
+                        self._change_touch_mode()
+                        self.touch_mode_change = True
+
+        if self._get_uid("cavoid") in touch.ud:
+            return
+        if self._touch is not touch:
+            super().on_touch_move(touch)
+            return self._get_uid() in touch.ud
+        if touch.grab_current is not self:
+            return True
+        ud = touch.ud[self._get_uid()]
+        direction = self.direction[0]
+        if ud["mode"] == "unknown":
+            if direction in "rl":
+                distance = abs(touch.ox - touch.x)
+            else:
+                distance = abs(touch.oy - touch.y)
+            if distance > self.scroll_distance:
+                ev = self._change_touch_mode_ev
+                if ev is not None:
+                    ev.cancel()
+                ud["mode"] = "scroll"
+        else:
+            if direction in "rl":
+                self._offset += touch.dx
+            if direction in "tb":
+                self._offset += touch.dy
+        return True
+
+    def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
             touch.ud[self._get_uid("cavoid")] = True
             return

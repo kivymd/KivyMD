@@ -25,7 +25,7 @@ For example, let's create an image button with a circular ripple effect:
     Screen:
 
         CircularRippleButton:
-            source: f"{images_path}/kivymd_logo.png"
+            source: f"{images_path}/kivymd.png"
             size_hint: None, None
             size: "250dp", "250dp"
             pos_hint: {"center_x": .5, "center_y": .5}

@@ -82,7 +82,7 @@ Similarly, create a button with a circular elevation effect:
     <CircularElevationButton>:
         size_hint: None, None
         size: "100dp", "100dp"
-        source: f"{images_path}/kivymd_logo.png"
+        source: f"{images_path}/kivymd.png"
 
 
     Screen:

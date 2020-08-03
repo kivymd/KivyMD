@@ -65,7 +65,7 @@ Example
 
     <MyBackdropBackLayer@Image>
         size_hint: .8, .8
-        source: f"{images_path}/kivymd_logo.png"
+        source: f"{images_path}/kivymd.png"
         pos_hint: {"center_x": .5, "center_y": .6}
     '''
     )

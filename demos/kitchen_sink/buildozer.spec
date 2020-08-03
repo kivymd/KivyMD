@@ -34,7 +34,7 @@ requirements.source.kivymd = ../../kivymd
 presplash.filename = %(source.dir)s/assets/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/assets/kivy-logo-white-512.png
+icon.filename = %(source.dir)s/assets/kivymd.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait

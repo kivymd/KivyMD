@@ -125,7 +125,7 @@ Top of ``ContentNavigationDrawer`` and ``DrawerList`` for menu items:
                 id: avatar
                 size_hint: None, None
                 size: "56dp", "56dp"
-                source: "kivymd_logo.png"
+                source: "kivymd.png"
 
         MDLabel:
             text: "KivyMD library"

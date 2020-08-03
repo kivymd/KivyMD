@@ -128,7 +128,7 @@ add the prefix `'-icon'` to the banner type:
 
     MDBanner:
         type: "one-line-icon"
-        icon: f"{images_path}/kivymd_logo.png"
+        icon: f"{images_path}/kivymd.png"
         text: ["One line string text example without actions."]
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-icon.png

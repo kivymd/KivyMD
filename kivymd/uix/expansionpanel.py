@@ -96,7 +96,7 @@ Example
             for i in range(10):
                 self.root.ids.box.add_widget(
                     MDExpansionPanel(
-                        icon=f"{images_path}kivymd_logo.png",
+                        icon=f"{images_path}kivymd.png",
                         content=Content(),
                         panel_cls=MDExpansionPanelThreeLine(
                             text="Text",

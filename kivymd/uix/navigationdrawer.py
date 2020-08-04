@@ -289,7 +289,9 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager
+from kivy.clock import Clock
 
 from kivymd.uix.card import MDCard
 from kivymd.uix.toolbar import MDToolbar
@@ -318,6 +320,29 @@ class NavigationDrawerContentError(Exception):
 class NavigationLayout(FloatLayout):
     _scrim_color = ObjectProperty(None)
     _scrim_rectangle = ObjectProperty(None)
+
+    type = OptionProperty("standard", options=("standard", "modal"))
+    screen_manager = ObjectProperty(None)
+    nav_drawer = ObjectProperty(None)
+    standard_layout = ObjectProperty(None)
+
+    def __init__(self, *args, **kwargs):
+        super(NavigationLayout, self).__init__(*args, **kwargs)
+        Clock.schedule_once(self.check_type)
+
+    def check_type(self, *args):
+        if self.type == "modal":
+            super().add_widget(self.screen_manager)
+            super().add_widget(self.nav_drawer)
+        else:
+            self.standard_layout = BoxLayout(orientation="horizontal")
+            if self.nav_drawer.anchor == 'left':
+                self.standard_layout.add_widget(self.nav_drawer)
+                self.standard_layout.add_widget(self.screen_manager)
+            else:
+                self.standard_layout.add_widget(self.screen_manager)
+                self.standard_layout.add_widget(self.nav_drawer)
+            super().add_widget(self.standard_layout)
 
     def add_scrim(self, widget):
         with widget.canvas.after:
@@ -348,12 +373,15 @@ class NavigationLayout(FloatLayout):
             )
         if isinstance(widget, ScreenManager):
             self.add_scrim(widget)
+            self.screen_manager = widget
+        if isinstance(widget, MDNavigationDrawer):
+            self.nav_drawer = widget
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
                 "The NavigationLayout must contain "
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
-        return super().add_widget(widget)
+        # return super().add_widget(widget)
 
 
 class MDNavigationDrawer(MDCard):
@@ -514,12 +542,21 @@ class MDNavigationDrawer(MDCard):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(
-            open_progress=self.update_status,
-            status=self.update_status,
-            state=self.update_status,
-        )
-        Window.bind(on_keyboard=self._handle_keyboard)
+        Clock.schedule_once(self.check_type)
+
+    def check_type(self, *args):
+        if isinstance(self.parent, BoxLayout):
+            # TYPE IS STANDARD
+            self.type = 'standard'
+        else:
+            # TYPE IS MODAL
+            self.type = 'modal'
+            self.bind(
+                open_progress=self.update_status,
+                status=self.update_status,
+                state=self.update_status,
+            )
+            Window.bind(on_keyboard=self._handle_keyboard)
 
     def set_state(self, new_state="toggle", animation=True):
         """Change state of the side panel.
@@ -585,49 +622,56 @@ class MDNavigationDrawer(MDCard):
         return 0 if x > Window.width else Window.width - x
 
     def on_touch_down(self, touch):
-        if self.status == "closed":
-            return False
-        elif self.status == "opened":
+        if self.type == 'modal':
+            if self.status == "closed":
+                return False
+            elif self.status == "opened":
+                for child in self.children[:]:
+                    if child.dispatch("on_touch_down", touch):
+                        return True
+        else:
             for child in self.children[:]:
                 if child.dispatch("on_touch_down", touch):
                     return True
         return True
 
     def on_touch_move(self, touch):
-        if self.status == "closed":
-            if (
-                self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
-                and abs(touch.x - touch.ox) > self.swipe_distance
-            ):
-                self.status = "opening_with_swipe"
-        elif self.status == "opened":
-            self.status = "closing_with_swipe"
+        if self.type == 'modal':
+            if self.status == "closed":
+                if (
+                    self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
+                    and abs(touch.x - touch.ox) > self.swipe_distance
+                ):
+                    self.status = "opening_with_swipe"
+            elif self.status == "opened":
+                self.status = "closing_with_swipe"
 
-        if self.status in ("opening_with_swipe", "closing_with_swipe"):
-            self.open_progress = max(
-                min(self.open_progress + touch.dx / self.width, 1), 0
-            )
-            return True
+            if self.status in ("opening_with_swipe", "closing_with_swipe"):
+                self.open_progress = max(
+                    min(self.open_progress + touch.dx / self.width, 1), 0
+                )
+                return True
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        if self.status == "opening_with_swipe":
-            if self.open_progress > 0.5:
-                self.set_state("open", animation=True)
-            else:
-                self.set_state("close", animation=True)
-        elif self.status == "closing_with_swipe":
-            if self.open_progress < 0.5:
-                self.set_state("close", animation=True)
-            else:
-                self.set_state("open", animation=True)
-        elif self.status == "opened":
-            if self.close_on_click and not self.collide_point(
-                touch.ox, touch.oy
-            ):
-                self.set_state("close", animation=True)
-        elif self.status == "closed":
-            return False
+        if self.type == 'modal':
+            if self.status == "opening_with_swipe":
+                if self.open_progress > 0.5:
+                    self.set_state("open", animation=True)
+                else:
+                    self.set_state("close", animation=True)
+            elif self.status == "closing_with_swipe":
+                if self.open_progress < 0.5:
+                    self.set_state("close", animation=True)
+                else:
+                    self.set_state("open", animation=True)
+            elif self.status == "opened":
+                if self.close_on_click and not self.collide_point(
+                    touch.ox, touch.oy
+                ):
+                    self.set_state("close", animation=True)
+            elif self.status == "closed":
+                return False
         return True
 
     def _handle_keyboard(self, window, key, *largs):

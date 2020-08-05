@@ -634,6 +634,12 @@ class MDNavigationDrawer(MDCard):
             "closing_with_animation",
         ):
             pass
+        if self.status == "closed":
+            self._elevation = 0
+            self._update_shadow(self, self._elevation)
+        else:
+            self._elevation = self.elevation
+            self._update_shadow(self, self._elevation)
 
     def get_dist_from_side(self, x):
         if self.anchor == "left":

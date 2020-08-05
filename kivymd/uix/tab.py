@@ -454,6 +454,7 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
     tab_bar = ObjectProperty()
     callback = ObjectProperty()
     font_name = StringProperty("Roboto")
+    tab_alias = StringProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -500,6 +501,13 @@ class MDTabsBase(Widget):
     :attr:`tab_label` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
+    tab_alias = StringProperty()
+    """
+    use this to give an  alias to a tab.
+
+    :attr:`tab_alias` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
@@ -516,6 +524,10 @@ class MDTabsBase(Widget):
         # Set the label text
         else:
             self.tab_label.text = self.text
+
+    def on_kv_post(self, base_widget):
+        # Set tab_alias
+        self.tab_label.tab_alias = self.tab_alias
 
 
 class MDTabsMain(MDBoxLayout):

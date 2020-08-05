@@ -274,6 +274,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 __all__ = ("NavigationLayout", "MDNavigationDrawer")
 
 from kivy.animation import Animation, AnimationTransition
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
@@ -289,9 +290,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager
-from kivy.clock import Clock
 
 from kivymd.uix.card import MDCard
 from kivymd.uix.toolbar import MDToolbar
@@ -330,19 +329,25 @@ class NavigationLayout(FloatLayout):
         super(NavigationLayout, self).__init__(*args, **kwargs)
         Clock.schedule_once(self.check_type)
 
+    def adjust_components(self, widget, value):
+        if value[0] == 0:
+            self.screen_manager.pos[0] += self.nav_drawer.size[0]
+            self.screen_manager.width -= self.nav_drawer.width
+        else:
+            self.screen_manager.pos[0] = 0
+            self.screen_manager.width = self.width
+
     def check_type(self, *args):
         if self.type == "modal":
+            self.add_scrim(self.screen_manager)
             super().add_widget(self.screen_manager)
             super().add_widget(self.nav_drawer)
         else:
-            self.standard_layout = BoxLayout(orientation="horizontal")
-            if self.nav_drawer.anchor == 'left':
-                self.standard_layout.add_widget(self.nav_drawer)
-                self.standard_layout.add_widget(self.screen_manager)
-            else:
-                self.standard_layout.add_widget(self.screen_manager)
-                self.standard_layout.add_widget(self.nav_drawer)
-            super().add_widget(self.standard_layout)
+            # self.screen_manager.size[0] = self.nav_drawer.size[0] - self.size[0]
+            # self.screen_manager.pos[0] = -(self.nav_drawer.pos[0])
+            self.nav_drawer.bind(pos=self.adjust_components)
+            super().add_widget(self.nav_drawer)
+            super().add_widget(self.screen_manager)
 
     def add_scrim(self, widget):
         with widget.canvas.after:
@@ -372,7 +377,6 @@ class NavigationLayout(FloatLayout):
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
-            self.add_scrim(widget)
             self.screen_manager = widget
         if isinstance(widget, MDNavigationDrawer):
             self.nav_drawer = widget
@@ -472,7 +476,7 @@ class MDNavigationDrawer(MDCard):
 
     def _get_scrim_alpha(self):
         _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
-        if isinstance(self.parent, NavigationLayout):
+        if self.parent.type == "modal":
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
                 self.scrim_color[3] * _scrim_alpha
             ]
@@ -542,26 +546,29 @@ class MDNavigationDrawer(MDCard):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.bind(
+            open_progress=self.update_status,
+            status=self.update_status,
+            state=self.update_status,
+        )
+        Window.bind(on_keyboard=self._handle_keyboard)
         Clock.schedule_once(self.check_type)
 
     def check_type(self, *args):
-        if isinstance(self.parent, BoxLayout):
+        if self.parent.type == "standard":
             # TYPE IS STANDARD
-            self.type = 'standard'
+            self.type = "standard"
+            self.set_state("open", animation=False)
         else:
             # TYPE IS MODAL
-            self.type = 'modal'
-            self.bind(
-                open_progress=self.update_status,
-                status=self.update_status,
-                state=self.update_status,
-            )
-            Window.bind(on_keyboard=self._handle_keyboard)
+            self.type = "modal"
 
     def set_state(self, new_state="toggle", animation=True):
         """Change state of the side panel.
         New_state can be one of `"toggle"`, `"open"` or `"close"`.
         """
+        if self.type == "standard":
+            animation = False
 
         if new_state == "toggle":
             new_state = "close" if self.state == "open" else "open"
@@ -622,7 +629,7 @@ class MDNavigationDrawer(MDCard):
         return 0 if x > Window.width else Window.width - x
 
     def on_touch_down(self, touch):
-        if self.type == 'modal':
+        if self.type == "modal":
             if self.status == "closed":
                 return False
             elif self.status == "opened":
@@ -636,7 +643,7 @@ class MDNavigationDrawer(MDCard):
         return True
 
     def on_touch_move(self, touch):
-        if self.type == 'modal':
+        if self.type == "modal":
             if self.status == "closed":
                 if (
                     self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
@@ -654,7 +661,7 @@ class MDNavigationDrawer(MDCard):
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        if self.type == 'modal':
+        if self.type == "modal":
             if self.status == "opening_with_swipe":
                 if self.open_progress > 0.5:
                     self.set_state("open", animation=True)

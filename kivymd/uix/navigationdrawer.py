@@ -274,7 +274,6 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 __all__ = ("NavigationLayout", "MDNavigationDrawer")
 
 from kivy.animation import Animation, AnimationTransition
-from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
@@ -320,34 +319,24 @@ class NavigationLayout(FloatLayout):
     _scrim_color = ObjectProperty(None)
     _scrim_rectangle = ObjectProperty(None)
 
-    type = OptionProperty("standard", options=("standard", "modal"))
-    screen_manager = ObjectProperty(None)
-    nav_drawer = ObjectProperty(None)
-    standard_layout = ObjectProperty(None)
+    _screen_manager = ObjectProperty(None)
+    _navigation_drawer = ObjectProperty(None)
 
-    def __init__(self, *args, **kwargs):
-        super(NavigationLayout, self).__init__(*args, **kwargs)
-        Clock.schedule_once(self.check_type)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(width=self.update_pos)
 
-    def adjust_components(self, widget, value):
-        if value[0] == 0:
-            self.screen_manager.pos[0] += self.nav_drawer.size[0]
-            self.screen_manager.width -= self.nav_drawer.width
-        else:
-            self.screen_manager.pos[0] = 0
-            self.screen_manager.width = self.width
-
-    def check_type(self, *args):
-        if self.type == "modal":
-            self.add_scrim(self.screen_manager)
-            super().add_widget(self.screen_manager)
-            super().add_widget(self.nav_drawer)
-        else:
-            # self.screen_manager.size[0] = self.nav_drawer.size[0] - self.size[0]
-            # self.screen_manager.pos[0] = -(self.nav_drawer.pos[0])
-            self.nav_drawer.bind(pos=self.adjust_components)
-            super().add_widget(self.nav_drawer)
-            super().add_widget(self.screen_manager)
+    def update_pos(self, *args):
+        drawer = self._navigation_drawer
+        manager = self._screen_manager
+        if drawer.type == "standard" or manager.width < self.width:
+            manager.size_hint_x = None
+            if drawer.anchor == "left":
+                manager.x = drawer.width + drawer.x
+                manager.width = self.width - manager.x
+            else:
+                manager.x = 0
+                manager.width = drawer.x
 
     def add_scrim(self, widget):
         with widget.canvas.after:
@@ -377,18 +366,33 @@ class NavigationLayout(FloatLayout):
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
-            self.screen_manager = widget
+            self._screen_manager = widget
+            self.add_scrim(widget)
         if isinstance(widget, MDNavigationDrawer):
-            self.nav_drawer = widget
+            self._navigation_drawer = widget
+            widget.bind(
+                x=self.update_pos, width=self.update_pos, anchor=self.update_pos
+            )
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
                 "The NavigationLayout must contain "
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
-        # return super().add_widget(widget)
+        return super().add_widget(widget)
 
 
 class MDNavigationDrawer(MDCard):
+    type = OptionProperty("modal", options=("standard", "modal"))
+    """
+    Type of drawer. Modal type will be on top of screen. Standard type will be
+    at left or right of screen. Also it automatically disables
+    :attr:`close_on_click` and :attr:`enable_swiping` to prevent closing
+    drawer for standard type.
+
+    :attr:`type` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `modal`.
+    """
+
     anchor = OptionProperty("left", options=("left", "right"))
     """
     Anchoring screen edge for drawer. Set it to `'right'` for right-to-left
@@ -400,7 +404,8 @@ class MDNavigationDrawer(MDCard):
 
     close_on_click = BooleanProperty(True)
     """
-    Close when click on scrim or keyboard escape.
+    Close when click on scrim or keyboard escape. It automatically sets to
+    False for "standard" type.
 
     :attr:`close_on_click` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -446,6 +451,15 @@ class MDNavigationDrawer(MDCard):
     and defaults to `0.0`.
     """
 
+    enable_swiping = BooleanProperty(True)
+    """
+    Allow to open or close navigation drawer with swipe. It automatically
+    sets to False for "standard" type.
+
+    :attr:`enable_swiping` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     swipe_distance = NumericProperty(10)
     """
     The distance of the swipe with which the movement of navigation drawer
@@ -475,8 +489,10 @@ class MDNavigationDrawer(MDCard):
     """
 
     def _get_scrim_alpha(self):
-        _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
-        if self.parent.type == "modal":
+        _scrim_alpha = 0
+        if self.type == "modal":
+            _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
+        if isinstance(self.parent, NavigationLayout):
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
                 self.scrim_color[3] * _scrim_alpha
             ]
@@ -544,6 +560,14 @@ class MDNavigationDrawer(MDCard):
     and defaults to `0.2`.
     """
 
+    def on_type(self, *args):
+        if self.type == "standard":
+            self.enable_swiping = False
+            self.close_on_click = False
+        else:
+            self.enable_swiping = True
+            self.close_on_click = True
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
@@ -552,23 +576,11 @@ class MDNavigationDrawer(MDCard):
             state=self.update_status,
         )
         Window.bind(on_keyboard=self._handle_keyboard)
-        Clock.schedule_once(self.check_type)
-
-    def check_type(self, *args):
-        if self.parent.type == "standard":
-            # TYPE IS STANDARD
-            self.type = "standard"
-            self.set_state("open", animation=False)
-        else:
-            # TYPE IS MODAL
-            self.type = "modal"
 
     def set_state(self, new_state="toggle", animation=True):
         """Change state of the side panel.
         New_state can be one of `"toggle"`, `"open"` or `"close"`.
         """
-        if self.type == "standard":
-            animation = False
 
         if new_state == "toggle":
             new_state = "close" if self.state == "open" else "open"
@@ -629,21 +641,20 @@ class MDNavigationDrawer(MDCard):
         return 0 if x > Window.width else Window.width - x
 
     def on_touch_down(self, touch):
-        if self.type == "modal":
-            if self.status == "closed":
-                return False
-            elif self.status == "opened":
-                for child in self.children[:]:
-                    if child.dispatch("on_touch_down", touch):
-                        return True
-        else:
+        if self.status == "closed":
+            return False
+        elif self.status == "opened":
             for child in self.children[:]:
                 if child.dispatch("on_touch_down", touch):
                     return True
+        if self.type == "standard" and not self.collide_point(
+            touch.ox, touch.oy
+        ):
+            return False
         return True
 
     def on_touch_move(self, touch):
-        if self.type == "modal":
+        if self.enable_swiping:
             if self.status == "closed":
                 if (
                     self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
@@ -653,32 +664,35 @@ class MDNavigationDrawer(MDCard):
             elif self.status == "opened":
                 self.status = "closing_with_swipe"
 
-            if self.status in ("opening_with_swipe", "closing_with_swipe"):
-                self.open_progress = max(
-                    min(self.open_progress + touch.dx / self.width, 1), 0
-                )
-                return True
+        if self.status in ("opening_with_swipe", "closing_with_swipe"):
+            self.open_progress = max(
+                min(self.open_progress + touch.dx / self.width, 1), 0
+            )
+            return True
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        if self.type == "modal":
-            if self.status == "opening_with_swipe":
-                if self.open_progress > 0.5:
-                    self.set_state("open", animation=True)
-                else:
-                    self.set_state("close", animation=True)
-            elif self.status == "closing_with_swipe":
-                if self.open_progress < 0.5:
-                    self.set_state("close", animation=True)
-                else:
-                    self.set_state("open", animation=True)
-            elif self.status == "opened":
-                if self.close_on_click and not self.collide_point(
-                    touch.ox, touch.oy
-                ):
-                    self.set_state("close", animation=True)
-            elif self.status == "closed":
+        if self.status == "opening_with_swipe":
+            if self.open_progress > 0.5:
+                self.set_state("open", animation=True)
+            else:
+                self.set_state("close", animation=True)
+        elif self.status == "closing_with_swipe":
+            if self.open_progress < 0.5:
+                self.set_state("close", animation=True)
+            else:
+                self.set_state("open", animation=True)
+        elif self.status == "opened":
+            if self.close_on_click and not self.collide_point(
+                touch.ox, touch.oy
+            ):
+                self.set_state("close", animation=True)
+            elif self.type == "standard" and not self.collide_point(
+                touch.ox, touch.oy
+            ):
                 return False
+        elif self.status == "closed":
+            return False
         return True
 
     def _handle_keyboard(self, window, key, *largs):

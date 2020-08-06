@@ -24,7 +24,6 @@ If you wish to become a project developer (permission to create branches on the 
 [![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=1k)](https://www.youtube.com/c/KivyMD)
 [![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
 [![StackOverflow](https://img.shields.io/stackexchange/stackoverflow/t/%5Bkivymd%5D?color=brightgreen&label=stackoverflow&logo=stackoverflow)](https://stackoverflow.com/tags/kivymd)
-[![Bountysource](https://img.shields.io/bountysource/team/kivymd/activity?label=bountysource)](https://www.bountysource.com/teams/kivymd/issues)
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/kivymd)
 
 [![Coverage status](https://coveralls.io/repos/github/kivymd/KivyMD/badge.svg)](https://coveralls.io/github/kivymd/KivyMD)

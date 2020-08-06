@@ -464,6 +464,9 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
         # if the label is selected load the relative tab from carousel
         if self.state == "down":
             self.tab_bar.parent.carousel.load_slide(self.tab)
+    
+    def switch_to(self):
+        self.tab_bar.parent.carousel.load_slide(self.tab)
 
     def on_texture(self, widget, texture):
         # just save the minimum width of the label based of the content

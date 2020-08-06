@@ -1,4 +1,4 @@
-#:import images_path kivymd.images_path
+#:import environ os.environ
 #:import version kivymd.__version__
 
 
@@ -26,7 +26,7 @@
                 pos_hint: {"top": 1}
 
                 FitImage:
-                    source: f"{images_path}kivymd.png"
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}kivymd.png"
 
             MDIconButton:
                 icon: "close"

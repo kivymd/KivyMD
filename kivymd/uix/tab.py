@@ -70,7 +70,7 @@ Example with tab icon
             title: "Example Tabs"
 
         MDTabs:
-            id: android_tabs
+            id: tabs
             on_tab_switch: app.on_tab_switch(*args)
 
 
@@ -96,7 +96,7 @@ Example with tab icon
 
         def on_start(self):
             for name_tab in self.icons:
-                self.root.ids.android_tabs.add_widget(Tab(text=name_tab))
+                self.root.ids.tabs.add_widget(Tab(text=name_tab))
 
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
@@ -143,7 +143,7 @@ Example with tab text
             title: "Example Tabs"
 
         MDTabs:
-            id: android_tabs
+            id: tabs
             on_tab_switch: app.on_tab_switch(*args)
 
 
@@ -166,7 +166,7 @@ Example with tab text
 
         def on_start(self):
             for i in range(20):
-                self.root.ids.android_tabs.add_widget(Tab(text=f"Tab {i}"))
+                self.root.ids.tabs.add_widget(Tab(text=f"Tab {i}"))
 
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
@@ -208,7 +208,7 @@ Example with tab icon and text
             title: "Example Tabs"
 
         MDTabs:
-            id: android_tabs
+            id: tabs
     '''
 
 
@@ -222,7 +222,7 @@ Example with tab icon and text
 
         def on_start(self):
             for name_tab in list(md_icons.keys())[15:30]:
-                self.root.ids.android_tabs.add_widget(
+                self.root.ids.tabs.add_widget(
                     Tab(
                         text=f"[size=20][font={fonts[-1]['fn_regular']}]{md_icons[name_tab]}[/size][/font] {name_tab}"
                     )
@@ -253,7 +253,7 @@ Dynamic tab management
             title: "Example Tabs"
 
         MDTabs:
-            id: android_tabs
+            id: tabs
 
 
     <Tab>:
@@ -293,22 +293,172 @@ Dynamic tab management
         def get_tab_list(self):
             '''Prints a list of tab objects.'''
 
-            print(self.root.ids.android_tabs.get_tab_list())
+            print(self.root.ids.tabs.get_tab_list())
 
         def add_tab(self):
             self.index += 1
-            self.root.ids.android_tabs.add_widget(Tab(text=f"{self.index} tab"))
+            self.root.ids.tabs.add_widget(Tab(text=f"{self.index} tab"))
 
         def remove_tab(self):
             self.index -= 1
-            self.root.ids.android_tabs.remove_widget(
-                self.root.ids.android_tabs.get_tab_list()[0]
+            self.root.ids.tabs.remove_widget(
+                self.root.ids.tabs.get_tab_list()[0]
             )
 
 
     Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-dynamic-managmant.gif
+    :align: center
+
+Use on_ref_press method
+-----------------------
+
+You can use markup for the text of the tabs and use the ``on_ref_press``
+method accordingly:
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+
+    from kivymd.app import MDApp
+    from kivymd.font_definitions import fonts
+    from kivymd.uix.tab import MDTabsBase
+    from kivymd.icon_definitions import md_icons
+
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Example Tabs"
+
+        MDTabs:
+            id: tabs
+            on_ref_press: app.on_ref_press(*args)
+
+
+    <Tab>:
+
+        MDIconButton:
+            id: icon
+            icon: app.icons[0]
+            user_font_size: "48sp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class Tab(FloatLayout, MDTabsBase):
+        '''Class implementing content for a tab.'''
+
+
+    class Example(MDApp):
+        icons = list(md_icons.keys())[15:30]
+
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for name_tab in self.icons:
+                self.root.ids.tabs.add_widget(
+                    Tab(
+                        text=f"[ref={name_tab}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {name_tab}"
+                    )
+                )
+
+        def on_ref_press(
+            self,
+            instance_tabs,
+            instance_tab_label,
+            instance_tab,
+            instance_tab_bar,
+            instance_carousel,
+        ):
+            '''
+            The method will be called when the ``on_ref_press`` event
+            occurs when you, for example, use markup text for tabs.
+
+            :param instance_tabs: <kivymd.uix.tab.MDTabs object>
+            :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>
+            :param instance_tab: <__main__.Tab object>
+            :param instance_tab_bar: <kivymd.uix.tab.MDTabsBar object>
+            :param instance_carousel: <kivymd.uix.tab.MDTabsCarousel object>
+            '''
+
+            # Removes a tab by clicking on the close icon on the left.
+            for instance_tab in instance_carousel.slides:
+                if instance_tab.text == instance_tab_label.text:
+                    instance_tabs.remove_widget(instance_tab_label)
+                    break
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-on-ref-press.gif
+    :align: center
+
+Switching the tab by name
+-------------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+
+    from kivymd.app import MDApp
+    from kivymd.uix.tab import MDTabsBase
+    from kivymd.icon_definitions import md_icons
+
+    KV = '''
+    BoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "Example Tabs"
+
+        MDTabs:
+            id: tabs
+
+
+    <Tab>:
+
+        MDIconButton:
+            id: icon
+            icon: "arrow-right"
+            user_font_size: "48sp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.switch_tab()
+    '''
+
+
+    class Tab(FloatLayout, MDTabsBase):
+        '''Class implementing content for a tab.'''
+
+
+    class Example(MDApp):
+        icons = list(md_icons.keys())[15:30]
+
+        def build(self):
+            self.iter_list = iter(list(self.icons))
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for name_tab in list(self.icons):
+                self.root.ids.tabs.add_widget(Tab(text=name_tab))
+
+        def switch_tab(self):
+            '''Switching the tab by name.'''
+
+            try:
+                self.root.ids.tabs.switch_tab(next(self.iter_list))
+            except StopIteration:
+                pass
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switching-tab-by-name.gif
     :align: center
 """
 
@@ -356,7 +506,13 @@ Builder.load_string(
     font: root.font_name
     allow_no_selection: False
     markup: True
-    on_ref_press: if root.callback: root.callback(self)
+    on_ref_press:
+        self.tab_bar.parent.dispatch(\
+        "on_ref_press",
+        self, \
+        self.tab, \
+        self.tab_bar, \
+        self.tab_bar.parent.carousel)
     text_color_normal:
         (\
         (0, 0, 0, .5) \
@@ -452,7 +608,6 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
     text_color_active = ListProperty((1, 1, 1, 1))
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
-    callback = ObjectProperty()
     font_name = StringProperty("Roboto")
 
     def __init__(self, **kwargs):
@@ -775,6 +930,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     :Events:
         `on_tab_switch`
             Called when switching tabs.
+        `on_slide_progress`
+            Called while the slide is scrolling.
+        `on_ref_press`
+            The method will be called when the ``on_ref_press`` event
+            occurs when you, for example, use markup text for tabs.
     """
 
     default_tab = NumericProperty(0)
@@ -879,15 +1039,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `[]`.
     """
 
-    callback = ObjectProperty()
-    """
-    User callback. The method will be called when the ``on_ref_press`` event
-    occurs in the :class:`~MDTabsLabel` class.
-
-    :attr:`callback` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `None`.
-    """
-
     lock_swiping = BooleanProperty(False)
     """
     If True - disable switching tabs by swipe.
@@ -897,46 +1048,38 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
 
     font_name = StringProperty("Roboto")
+    """
+    Font name for tab text.
+
+    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Roboto'`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_tab_switch")
+        self.register_event_type("on_ref_press")
         self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._carousel_bind, 1)
 
-    def _carousel_bind(self, i):
-        self.carousel.bind(on_slide_progress=self._on_slide_progress)
+    def switch_tab(self, name_tab):
+        """Switching the tab by name."""
 
-    def on_slide_progress(self, *args):
-        pass
-
-    def on_tab_switch(self, *args):
-        """Called when switching tabs."""
-
-    def _on_slide_progress(self, *args):
-        self.dispatch("on_slide_progress", args)
+        for instance_tab in self.tab_bar.parent.carousel.slides:
+            if instance_tab.text == name_tab:
+                self.tab_bar.parent.carousel.load_slide(instance_tab)
+                break
 
     def get_tab_list(self):
         """Returns a list of tab objects."""
 
         return self.tab_bar.layout.children
 
-    def on_carousel_index(self, carousel, index):
-        # when the index of the carousel change, update
-        # tab indicator, select the current tab and reset threshold data.
-        current_tab_label = carousel.current_slide.tab_label
-        if current_tab_label.state == "normal":
-            current_tab_label._do_press()
-        self.tab_bar.update_indicator(
-            current_tab_label.x, current_tab_label.width
-        )
-
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
                 widget.tab_label.group = str(self)
-                widget.tab_label.callback = self.callback
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal
                 widget.tab_label.text_color_active = self.text_color_active
@@ -969,3 +1112,32 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             if tab.text == widget.text:
                 self.carousel.slides.remove(tab)
                 break
+
+    def on_slide_progress(self, *args):
+        """Called while the slide is scrolling."""
+
+    def on_carousel_index(self, carousel, index):
+        """Called when the carousel index changes."""
+
+        # when the index of the carousel change, update
+        # tab indicator, select the current tab and reset threshold data.
+        if carousel.current_slide:
+            current_tab_label = carousel.current_slide.tab_label
+            if current_tab_label.state == "normal":
+                current_tab_label._do_press()
+            self.tab_bar.update_indicator(
+                current_tab_label.x, current_tab_label.width
+            )
+
+    def on_ref_press(self, *args):
+        """The method will be called when the ``on_ref_press`` event
+        occurs when you, for example, use markup text for tabs."""
+
+    def on_tab_switch(self, *args):
+        """Called when switching tabs."""
+
+    def _carousel_bind(self, i):
+        self.carousel.bind(on_slide_progress=self._on_slide_progress)
+
+    def _on_slide_progress(self, *args):
+        self.dispatch("on_slide_progress", args)

@@ -34,10 +34,10 @@ A simple example:
 
 .. code-block:: python
 
+    from kivy.lang import Builder
     from kivy.uix.boxlayout import BoxLayout
 
     from kivymd.app import MDApp
-    from kivy.lang import Builder
 
     KV = '''
     Screen:
@@ -266,6 +266,19 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 
     TestNavigationDrawer().run()
 
+NavigationDrawer with type ``standard``
+---------------------------------------
+
+You can use the ``standard`` behavior type for the NavigationDrawer:
+
+.. code-block:: kv
+
+    MDNavigationDrawer:
+        type: "standard"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-standard.gif
+    :align: center
+
 .. seealso::
 
     `Full example of Components-Navigation-Drawer <https://github.com/kivymd/KivyMD/wiki/Components-Navigation-Drawer>`_
@@ -341,7 +354,7 @@ class NavigationLayout(FloatLayout):
                 manager.width = drawer.x
 
     def add_scrim(self, widget):
-        with widget.canvas.after:
+        with widget.canvas.before:
             self._scrim_color = Color(rgba=[0, 0, 0, 0])
             self._scrim_rectangle = Rectangle(pos=widget.pos, size=widget.size)
             widget.bind(
@@ -494,10 +507,15 @@ class MDNavigationDrawer(MDCard):
         _scrim_alpha = 0
         if self.type == "modal":
             _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
-        if isinstance(self.parent, NavigationLayout):
+        if (
+            isinstance(self.parent, NavigationLayout)
+            and self.parent._scrim_color
+        ):
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
                 self.scrim_color[3] * _scrim_alpha
             ]
+        else:
+            self.parent.add_scrim(self.parent)
         return _scrim_alpha
 
     _scrim_alpha = AliasProperty(

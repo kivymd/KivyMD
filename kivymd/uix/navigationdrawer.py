@@ -329,6 +329,8 @@ class NavigationLayout(FloatLayout):
     def update_pos(self, *args):
         drawer = self._navigation_drawer
         manager = self._screen_manager
+        if not drawer or not manager:
+            return
         if drawer.type == "standard" or manager.width < self.width:
             manager.size_hint_x = None
             if drawer.anchor == "left":

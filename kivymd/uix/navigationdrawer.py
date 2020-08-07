@@ -354,7 +354,7 @@ class NavigationLayout(FloatLayout):
                 manager.width = drawer.x
 
     def add_scrim(self, widget):
-        with widget.canvas.before:
+        with widget.canvas.after:
             self._scrim_color = Color(rgba=[0, 0, 0, 0])
             self._scrim_rectangle = Rectangle(pos=widget.pos, size=widget.size)
             widget.bind(
@@ -514,8 +514,6 @@ class MDNavigationDrawer(MDCard):
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
                 self.scrim_color[3] * _scrim_alpha
             ]
-        else:
-            self.parent.add_scrim(self.parent)
         return _scrim_alpha
 
     _scrim_alpha = AliasProperty(

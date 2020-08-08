@@ -600,7 +600,7 @@ class TableData(RecycleView):
             self.pagination_menu_open = True
             self.pagination_menu.open()
 
-    def set_number_displayed_lines(self, instance_menu, instance_menu_item):
+    def set_number_displayed_lines(self, instance_menu_item):
         """
         Called when the user sets the number of pages displayed
         in the table.
@@ -962,10 +962,8 @@ class MDDataTable(BaseDialog):
             items=menu_items,
             position=self.pagination_menu_pos,
             max_height=self.pagination_menu_height,
+            callback=self.table_data.set_number_displayed_lines,
             width_mult=2,
         )
-        pagination_menu.bind(
-            on_release=self.table_data.set_number_displayed_lines,
-            on_dismiss=self.table_data.close_pagination_menu,
-        )
+        pagination_menu.bind(on_dismiss=self.table_data.close_pagination_menu)
         self.table_data.pagination_menu = pagination_menu

@@ -190,7 +190,7 @@ End full code
             return self.screen
 
         def on_start(self):
-           '''Creates a list of cards.'''
+            '''Creates a list of cards.'''
 
             for i in range(20):
                 self.screen.ids.md_list.add_widget(

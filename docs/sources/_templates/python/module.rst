@@ -1,4 +1,4 @@
-:github_url: https://github.com/HeaTTheatR/KivyMD/blob/master/{{ obj.obj.relative_path|replace("\\", "/") }}
+:github_url: https://github.com/kivymd/KivyMD/blob/master/{{ obj.obj.relative_path|replace("\\", "/") }}
 {% if not obj.display %}
 {# Do not display warnings #}
 :orphan:

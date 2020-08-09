@@ -61,7 +61,7 @@ In Python code:
 
 .. Note:: The behavior of tooltips on desktop and mobile devices is different.
     For more detailed information,
-    `click here <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Tooltips>`_.
+    `click here <https://github.com/kivymd/KivyMD/wiki/Components-Tooltips>`_.
 """
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")

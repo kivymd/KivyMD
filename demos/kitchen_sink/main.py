@@ -38,11 +38,19 @@ class KitchenSinkApp(MDApp):
         Loader.loading_image = f"{images_path}transparent.png"
 
     def build(self):
-        Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
+        Builder.load_string(
+            open(
+                f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv",
+                "rt",
+                encoding="utf-8",
+            ).read()
         )
-        return Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv"
+        return Builder.load_string(
+            open(
+                f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv",
+                "rt",
+                encoding="utf-8",
+            ).read()
         )
 
     def show_dialog_change_theme(self):
@@ -54,11 +62,19 @@ class KitchenSinkApp(MDApp):
     def on_start(self):
         """Creates a list of items with examples on start screen."""
 
-        Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv"
+        Builder.load_string(
+            open(
+                f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv",
+                "rt",
+                encoding="utf-8",
+            ).read()
         )
-        Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv"
+        Builder.load_string(
+            open(
+                f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv",
+                "rt",
+                encoding="utf-8",
+            ).read()
         )
 
         with open(f"{os.getcwd()}/screens_data.json") as read_file:
@@ -84,8 +100,12 @@ class KitchenSinkApp(MDApp):
             self.data_screens[name_screen]["name_screen"]
         ):
             name_kv_file = self.data_screens[name_screen]["kv_string"]
-            Builder.load_file(
-                f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/{name_kv_file}.kv"
+            Builder.load_string(
+                open(
+                    f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/{name_kv_file}.kv",
+                    "rt",
+                    encoding="utf-8",
+                ).read()
             )
             if "Import" in self.data_screens[name_screen]:
                 exec(self.data_screens[name_screen]["Import"])

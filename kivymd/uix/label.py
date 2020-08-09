@@ -186,7 +186,7 @@ You can use labels to display material design icons using the
 
     `Material Design Icons <https://materialdesignicons.com/>`_
 
-    `Material Design Icon Names <https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/icon_definitions.py>`_
+    `Material Design Icon Names <https://github.com/kivymd/KivyMD/blob/master/kivymd/icon_definitions.py>`_
 
 The :class:`~MDIcon` class is inherited from
 :class:`~MDLabel` and has the same parameters.

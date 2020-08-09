@@ -1,6 +1,5 @@
 #:import environ os.environ
 #:import get_hex_from_color kivy.utils.get_hex_from_color
-#:import images_path kivymd.images_path
 #:import Animation kivy.animation.Animation
 #:import Home libs.baseclass.home.Home
 #:import KitchenSinkDialogLicense libs.baseclass.dialog_change_theme.KitchenSinkDialogLicense
@@ -104,7 +103,7 @@ BoxLayout:
             PopMatrix
 
         opacity: .2
-        source: f"{images_path}kivymd_alpha.png"
+        source: f"{environ['KITCHEN_SINK_ASSETS']}kivymd.png"
         pos_hint: {"center_y": .55}
 
     ScreenManager:

@@ -217,7 +217,7 @@ Mode:
 
 .. seealso::
 
-    `Components-Bottom-App-Bar <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-App-Bar>`_
+    `Components-Bottom-App-Bar <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-App-Bar>`_
 """
 
 from kivy.animation import Animation

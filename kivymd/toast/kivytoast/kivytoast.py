@@ -6,6 +6,8 @@ KivyToast
 
 .. code-block:: python
 
+    from kivy.lang import Builder
+
     from kivymd.app import MDApp
     from kivymd.toast import toast
 

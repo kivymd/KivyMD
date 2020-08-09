@@ -12,9 +12,10 @@ class MDDropItem(Screen):
             caller=self.ids.dropdown_item,
             items=menu_items,
             position="center",
-            callback=self.set_item,
             width_mult=4,
         )
+        self.menu.bind(on_release=self.set_item)
 
-    def set_item(self, instance):
-        self.ids.dropdown_item.set_item(instance.text)
+    def set_item(self, instance_menu, instance_menu_item):
+        self.ids.dropdown_item.set_item(instance_menu_item.text)
+        instance_menu.dismiss()

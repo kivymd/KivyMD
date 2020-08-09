@@ -1,11 +1,11 @@
 Unreleased
 ----------
 
-    See on GitHub: `branch master <https://github.com/HeaTTheatR/KivyMD/tree/master>`_ | `compare 0.104.1/master <https://github.com/HeaTTheatR/KivyMD/compare/0.104.1...master>`_
+    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare 0.104.1/master <https://github.com/kivymd/KivyMD/compare/0.104.1...master>`_
 
     .. code-block:: bash
 
-       pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
+       pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
 * Add `HotReloadViewer` class

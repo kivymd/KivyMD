@@ -392,7 +392,7 @@ You can set your color values ​​for background, text of buttons etc:
 
 .. seealso::
 
-    `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Button>`_
+    `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
 """
 
 __all__ = (

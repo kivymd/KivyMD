@@ -190,7 +190,7 @@ End full code
             return self.screen
 
         def on_start(self):
-           '''Creates a list of cards.'''
+            '''Creates a list of cards.'''
 
             for i in range(20):
                 self.screen.ids.md_list.add_widget(
@@ -553,6 +553,7 @@ from kivy.properties import (
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
+from kivymd import images_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
@@ -579,7 +580,6 @@ Builder.load_string(
         RoundedRectangle:
             size: self.size
             pos: self.pos
-            radius: [self.border_radius]
             source: root.background
     md_bg_color: self.theme_cls.bg_light
 
@@ -628,15 +628,6 @@ class MDCard(
     BoxLayout,
     RectangularRippleBehavior,
 ):
-
-    border_radius = NumericProperty("3dp")
-    """
-    Card border radius.
-
-    :attr:`border_radius` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `'3dp'`.
-    """
-
     background = StringProperty()
     """
     Background image path.
@@ -662,6 +653,12 @@ class MDCard(
     """
 
     elevation = NumericProperty(None, allownone=True)
+    """
+    Elevation value.
+
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to 1.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -669,6 +666,10 @@ class MDCard(
         Clock.schedule_once(
             lambda x: self._on_ripple_behavior(self.ripple_behavior)
         )
+
+    def on_radius(self, instance, value):
+        if self.radius != [0, 0, 0, 0]:
+            self.background = f"{images_path}/transparent.png"
 
     def _on_elevation(self, value):
         if value is None:

@@ -1,11 +1,11 @@
 v0.101.0
 --------
 
-    See on GitHub: `tag 0.101.0 <https://github.com/HeaTTheatR/KivyMD/tree/0.101.0>`_ | `compare 0.100.2/0.101.0 <https://github.com/HeaTTheatR/KivyMD/compare/0.100.2...0.101.0>`_
+    See on GitHub: `tag 0.101.0 <https://github.com/kivymd/KivyMD/tree/0.101.0>`_ | `compare 0.100.2/0.101.0 <https://github.com/kivymd/KivyMD/compare/0.100.2...0.101.0>`_
 
     .. code-block:: bash
 
-       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.101.0.zip
+       pip install https://github.com/kivymd/KivyMD/archive/0.101.0.zip
 
 * Added `MDContextMenu` class.
 * Added `MDExpansionPanel` class.
@@ -16,7 +16,7 @@ v0.101.0
 * Added `TextInput`'s events and properties to `MDTextFieldRound`.
 * Added feature to resize text field
 * Added color property to `MDSeparator` class
-* Added [tool](https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/tools/update_icons.py) for updating [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont).
+* Added [tool](https://github.com/kivymd/KivyMD/blob/master/kivymd/tools/update_icons.py) for updating [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont).
 * Updated [Iconic font](https://github.com/Templarian/MaterialDesign-Webfont) (v4.3.95).
-* Added new examples for [Kitchen Sink demo](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink).
+* Added new examples for [Kitchen Sink demo](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink).
 * Bug fixes and other minor improvements.

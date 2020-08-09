@@ -14,7 +14,7 @@ sacrificing ease of use or application performance.
 This library is a fork of the `KivyMD project
 <https://gitlab.com/kivymd/KivyMD>`_ the author of which stopped supporting
 this project three years ago. We found the strength and brought this project
-to a new level. Currently we're in **alpha** status, so things are changing
+to a new level. Currently we're in **beta** status, so things are changing
 all the time and we cannot promise any kind of API stability.
 However it is safe to vendor now and make use of what's currently available.
 

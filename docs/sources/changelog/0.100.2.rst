@@ -1,10 +1,10 @@
 v0.100.2
 --------
 
-    See on GitHub: `tag 0.100.2 <https://github.com/HeaTTheatR/KivyMD/tree/0.100.2>`_ | `compare 0.100.1/0.100.2 <https://github.com/HeaTTheatR/KivyMD/compare/0.100.1...0.100.2>`_
+    See on GitHub: `tag 0.100.2 <https://github.com/kivymd/KivyMD/tree/0.100.2>`_ | `compare 0.100.1/0.100.2 <https://github.com/kivymd/KivyMD/compare/0.100.1...0.100.2>`_
 
     .. code-block:: bash
 
-       pip install https://github.com/HeaTTheatR/KivyMD/archive/0.100.2.zip
+       pip install https://github.com/kivymd/KivyMD/archive/0.100.2.zip
 
 * [Black](https://github.com/psf/black) formatting.

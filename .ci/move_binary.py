@@ -28,14 +28,6 @@ commit_subject = (
     .strip()
 )
 
-# Set author info to the latest commit author
-author_name = subprocess.check_output(
-    ["git", "log", "-1", "--pretty=format:%an"]
-).decode("utf-8")
-author_email = subprocess.check_output(
-    ["git", "log", "-1", "--pretty=format:%ae"]
-).decode("utf-8")
-
 is_tag = env["GITHUB_EVENT_NAME"] == "push" and env["GITHUB_REF"].startswith(
     "refs/tags"
 )
@@ -64,8 +56,6 @@ else:
 # Prepare for pushing
 os.chdir(data_repository_directory)
 os.makedirs(directory, exist_ok=True)
-subprocess.check_call(["git", "config", "user.name", author_name])
-subprocess.check_call(["git", "config", "user.email", author_email])
 # Ensure that there is no changes
 subprocess.check_call(["git", "pull", "origin", data_repository, "--ff-only"])
 

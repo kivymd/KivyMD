@@ -404,7 +404,7 @@ Custom list item
             self.ids._right_container.x = container.width
 
         IconLeftWidget:
-            icon: "settings"
+            icon: "cog"
 
         Container:
             id: container

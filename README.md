@@ -1,6 +1,6 @@
 # KivyMD [v0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
-<img align="left" width="256" src="https://github.com/HeaTTheatR/KivyMD/raw/master/kivymd/images/kivy-logo-white-512.png"/>
+<img align="left" width="256" src="https://github.com/kivymd/internal/raw/master/logo/kivymd.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
@@ -24,19 +24,19 @@ If you wish to become a project developer (permission to create branches on the 
 [![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=1k)](https://www.youtube.com/c/KivyMD)
 [![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
 [![StackOverflow](https://img.shields.io/stackexchange/stackoverflow/t/%5Bkivymd%5D?color=brightgreen&label=stackoverflow&logo=stackoverflow)](https://stackoverflow.com/tags/kivymd)
-[![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/KivyMD)
+[![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/kivymd)
 
-[![Coverage status](https://coveralls.io/repos/github/HeaTTheatR/KivyMD/badge.svg)](https://coveralls.io/github/HeaTTheatR/KivyMD)
-[![Build workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ABuild)
-[![Test workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3ATest)
-[![Build demos workflow](https://github.com/HeaTTheatR/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/HeaTTheatR/KivyMD/actions?query=workflow%3A"Build+demos")
+[![Coverage status](https://coveralls.io/repos/github/kivymd/KivyMD/badge.svg)](https://coveralls.io/github/kivymd/KivyMD)
+[![Build workflow](https://github.com/kivymd/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ABuild)
+[![Test workflow](https://github.com/kivymd/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ATest)
+[![Build demos workflow](https://github.com/kivymd/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3A"Build+demos")
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 
 ## Documentation
 
 See documentation at https://kivymd.readthedocs.io
 
-Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD/wiki
+Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wiki
 
 ### Demos
 
@@ -46,7 +46,7 @@ Wiki with examples of using KivyMD widgets: https://github.com/HeaTTheatR/KivyMD
   </a>
 </p>
 
-[Kitchen sink](https://github.com/HeaTTheatR/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/HeaTTheatR/KivyMD/tree/data/demo_kitchen_sink).
+[Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/kivymd/KivyMD/tree/data/demo_kitchen_sink).
 
 ### Tutorials on YouTube
 
@@ -81,11 +81,11 @@ pip install kivymd==0.104.1
 
 Command above will install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
 
-If you want to install development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+If you want to install development version from [master](https://github.com/kivymd/KivyMD/tree/master/)
 branch, you should specify link to zip archive:
 
 ```bash
-pip install https://github.com/HeaTTheatR/KivyMD/archive/master.zip
+pip install https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 **_Tip_**: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
@@ -94,13 +94,13 @@ download KivyMD from specific commit.
 Also you can install manually from sources. Just clone the project and run pip:
 
 ```bash
-git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1
+git clone https://github.com/kivymd/KivyMD.git --depth 1
 cd KivyMD
 pip install .
 ```
 
 **_Speed Tip_**: If you don't need full commit history (about 320 MiB), you can
-use a shallow clone (`git clone https://github.com/HeaTTheatR/KivyMD.git --depth 1`)
+use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
@@ -111,11 +111,11 @@ requirements = kivy==1.11.1, kivymd==0.104.1
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
 
-If you want to use development version from [master](https://github.com/HeaTTheatR/KivyMD/tree/master/)
+If you want to use development version from [master](https://github.com/kivymd/KivyMD/tree/master/)
 branch, you should specify link to zip archive:
 
 ```ini
-requirements = kivy==1.11.1, https://github.com/HeaTTheatR/KivyMD/archive/master.zip
+requirements = kivy==1.11.1, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 Do not forget to run `buildozer android clean` or remove `.buildozer` directory
@@ -133,7 +133,7 @@ Install [Ubuntu WSL](https://ubuntu.com/wsl) and follow [Linux steps](#On-Linux)
 
 #### On Windows without WSL
 
-Install VirtualBox and follow steps from [here](https://github.com/HeaTTheatR/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
+Install VirtualBox and follow steps from [here](https://github.com/kivymd/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
 
 #### Build automatically via GitHub Actions
 
@@ -168,10 +168,10 @@ See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#f
 
 ## Contributing
 
-We always welcome your [Bug reports](https://github.com/HeaTTheatR/KivyMD/issues/new?template=bug_report.md),
-[Feature requests](https://github.com/HeaTTheatR/KivyMD/issues/new?template=feature_request.md)
-and [Pull requests](https://github.com/HeaTTheatR/KivyMD/pulls)!
-Check out [CONTRIBUTING.md](https://github.com/HeaTTheatR/KivyMD/blob/master/.github/CONTRIBUTING.md)
+We always welcome your [Bug reports](https://github.com/kivymd/KivyMD/issues/new?template=bug_report.md),
+[Feature requests](https://github.com/kivymd/KivyMD/issues/new?template=feature_request.md)
+and [Pull requests](https://github.com/kivymd/KivyMD/pulls)!
+Check out [CONTRIBUTING.md](https://github.com/kivymd/.github/blob/master/.github/CONTRIBUTING.md)
 and feel free to improve KivyMD.
 
 ### Setup environment
@@ -200,7 +200,7 @@ pre-commit will format modified files with Black and sort imports with isort.
 
 ## License
 
-KivyMD is released under the terms of the [MIT License](https://github.com/HeaTTheatR/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
+KivyMD is released under the terms of the [MIT License](https://github.com/kivymd/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).
 
 [Roboto font](https://fonts.google.com/specimen/Roboto) is licensed and distributed under the terms of the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
@@ -208,30 +208,165 @@ KivyMD is released under the terms of the [MIT License](https://github.com/HeaTT
 
 ## Contributors
 
+### KivyMD Team
+
+They spent a lot of time to improve KivyMD.
+
+- Yuri Ivanov [@HeaTTheatR](https://github.com/HeaTTheatR) - Core developer
+- Artem Bulgakov [@ArtemSBulgakov](https://github.com/ArtemSBulgakov) - Technical administrator, contributor
+- Andrés Rodríguez [@mixedCase](https://github.com/mixedCase) - First author of KivyMD project, contributor
+
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](.github/CONTRIBUTING.md)].
-<a href="https://github.com/HeaTTheatR/KivyMD/graphs/contributors"><img src="https://opencollective.com/KivyMD/contributors.svg?width=890&button=false" /></a>
+This project exists thanks to all the people who contribute.
+*[How to contribute](#Contributing)*
+
+<a href="https://github.com/kivymd/KivyMD/graphs/contributors"><img src="https://opencollective.com/kivymd/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
 
-Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/KivyMD/contribute)]
+[Become a financial contributor](https://opencollective.com/kivymd#section-contribute)
+on OpenCollective and help us sustain our community.
 
-#### Individuals
+#### Gold Sponsors
 
-<a href="https://opencollective.com/KivyMD"><img src="https://opencollective.com/KivyMD/individuals.svg?width=890"></a>
+[Become a Gold Sponsor](https://opencollective.com/kivymd/contribute/gold-sponsor-16160)
+and get your logo on our Readme with a link to your website.
 
-#### Organizations
+<a href="https://opencollective.com/kivymd/gold-sponsor/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/0/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/1/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/2/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/3/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/4/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/5/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/6/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/7/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/8/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/9/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/10/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/10/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/11/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/11/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/12/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/12/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/13/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/13/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/14/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/14/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/15/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/15/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/16/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/16/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/17/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/17/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/18/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/18/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/19/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/19/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/20/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/20/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/21/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/21/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/22/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/22/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/23/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/23/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/24/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/24/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/25/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/25/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/26/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/26/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/27/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/27/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/28/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/28/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/gold-sponsor/29/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/29/avatar.svg?requireActive=false"></a>
 
-Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/KivyMD/contribute)]
+#### Backers
 
-<a href="https://opencollective.com/KivyMD/organization/0/website"><img src="https://opencollective.com/KivyMD/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/1/website"><img src="https://opencollective.com/KivyMD/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/2/website"><img src="https://opencollective.com/KivyMD/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/3/website"><img src="https://opencollective.com/KivyMD/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/4/website"><img src="https://opencollective.com/KivyMD/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/5/website"><img src="https://opencollective.com/KivyMD/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/6/website"><img src="https://opencollective.com/KivyMD/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/7/website"><img src="https://opencollective.com/KivyMD/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/8/website"><img src="https://opencollective.com/KivyMD/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/KivyMD/organization/9/website"><img src="https://opencollective.com/KivyMD/organization/9/avatar.svg"></a>
+[Become a Backer](https://opencollective.com/kivymd/contribute/backer-16159)
+and get your image on our Readme with a link to your website. Also you will get
+a gift in the future.
+
+<a href="https://opencollective.com/kivymd/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/0/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/1/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/2/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/3/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/4/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/5/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/6/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/7/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/8/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/9/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/10/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/10/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/11/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/11/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/12/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/12/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/13/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/13/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/14/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/14/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/15/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/15/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/16/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/16/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/17/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/17/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/18/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/18/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/19/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/19/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/20/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/20/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/21/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/21/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/22/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/22/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/23/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/23/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/24/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/24/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/25/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/25/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/26/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/26/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/27/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/27/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/28/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/28/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/29/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/29/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/30/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/30/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/31/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/31/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/32/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/32/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/33/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/33/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/34/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/34/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/35/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/35/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/36/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/36/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/37/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/37/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/38/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/38/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/39/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/39/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/40/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/40/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/41/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/41/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/42/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/42/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/43/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/43/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/44/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/44/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/45/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/45/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/46/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/46/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/47/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/47/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/48/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/48/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/49/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/49/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/50/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/50/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/51/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/51/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/52/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/52/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/53/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/53/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/54/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/54/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/55/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/55/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/56/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/56/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/57/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/57/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/58/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/58/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/59/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/59/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/60/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/60/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/61/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/61/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/62/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/62/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/63/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/63/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/64/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/64/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/65/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/65/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/66/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/66/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/67/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/67/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/68/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/68/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/69/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/69/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/70/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/70/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/71/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/71/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/72/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/72/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/73/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/73/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/74/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/74/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/75/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/75/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/76/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/76/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/77/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/77/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/78/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/78/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/79/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/79/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/80/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/80/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/81/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/81/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/82/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/82/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/83/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/83/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/84/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/84/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/85/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/85/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/86/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/86/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/87/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/87/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/88/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/88/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/89/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/89/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/90/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/90/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/91/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/91/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/92/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/92/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/93/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/93/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/94/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/94/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/95/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/95/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/96/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/96/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/97/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/97/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/98/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/98/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd/backer/99/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/99/avatar.svg?requireActive=false"></a>

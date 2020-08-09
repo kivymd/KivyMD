@@ -2,6 +2,18 @@
 Behaviors/ToggleButton
 ======================
 
+This behavior must always be inherited after the button's Widget class since it
+works with the inherited properties of the button class.
+
+example:
+
+.. code-block:: python
+
+    class MyToggleButtonWidget(MDFlatButton, MDToggleButton):
+        # [...]
+        pass
+
+
 .. code-block:: python
 
     from kivy.lang import Builder
@@ -96,19 +108,36 @@ class MDToggleButton(ToggleButtonBehavior):
 
     background_normal = ListProperty()
     """
-    Color of the button in the ``rgba`` format in the 'normal' state.
+    Color of the button in ``rgba`` format for the 'normal' state.
 
     :attr:`background_normal` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and is defaults to `[]`.
     """
 
     background_down = ListProperty()
     """
-    Color of the button in the ``rgba`` format in the 'down' state.
+    Color of the button in ``rgba`` format for the 'down' state.
 
     :attr:`background_down` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and is defaults to `[]`.
     """
+
+    font_color_normal = ListProperty()
+    """
+    Color of the font's button in ``rgba`` format for the 'normal' state.
+
+    :attr:`font_color_normal` is a :class:`~kivy.properties.ListProperty`
+    and is defaults to `[[1,1,1,1]]`.
+    """
+
+    font_color_down = ListProperty([1, 1, 1, 1])
+    """
+    Color of the font's button in ``rgba`` format for the 'down' state.
+
+    :attr:`font_color_down` is a :class:`~kivy.properties.ListProperty`
+    and is defaults to `[[1,1,1,1]]`.
+    """
+
     __is_filled = BooleanProperty(False)
 
     def __init__(self, **kwargs):
@@ -163,6 +192,8 @@ class MDToggleButton(ToggleButtonBehavior):
             self.background_down = (
                 self.theme_cls.primary_dark
             )  # get the primary_color dark from themecls
+        if not self.font_color_normal:
+            self.font_color_normal = self.theme_cls.primary_color
         # self.bind(state=self._update_bg)                                      # Alternative to bind the function to the property
         self.fbind("state", self._update_bg)
 
@@ -176,7 +207,7 @@ class MDToggleButton(ToggleButtonBehavior):
             if (
                 self.__is_filled is False
             ):  # if the background is transparent, and the button it toggled, the font color must be withe [1,1,1,1]
-                self.text_color = [1, 1, 1, 1]
+                self.text_color = self.font_color_down
                 # self.update_md_bg_color(self, [1,1,1,1])
             if self.group:
                 self._release_group(self)
@@ -185,7 +216,7 @@ class MDToggleButton(ToggleButtonBehavior):
             if (
                 self.__is_filled is False
             ):  # if the background is transparent, the font color must be the primary color
-                self.text_color = self.theme_cls._get_primary_color()
+                self.text_color = self.font_color_normal
                 # self.update_md_bg_color(self, self.theme_cls._get_primary_color())
 
 

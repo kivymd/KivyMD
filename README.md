@@ -44,19 +44,19 @@ Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wik
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
-    <img width="500" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch KivyMD Tutorials on YouTube">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch KivyMD Tutorials on YouTube">
   </a>
 </p>
+
+[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
 
 ### Comparison of Flutter & KivyMD
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM">
-    <img width="500" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" title="Click to watch it on YouTube">
+    <img width="600" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" title="Click to watch it on YouTube">
   </a>
 </p>
-
-[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
 
 ## Support
 

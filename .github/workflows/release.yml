@@ -15,6 +15,9 @@ on:
       version:
         description: New version in format n.n.n (1.111.11)
         required: true
+      next_version:
+        description: Next development version in format n.n.n.devn (1.111.11.dev0). USE ONLY FOR MAJOR DEVELOPMENT VERSIONS (2.0.0.dev0). DON'T WRITE ANYTHING HERE
+        required: false
 
 jobs:
 
@@ -50,7 +53,7 @@ jobs:
       run: |
         # Use personal token to push (when using GITHUB_TOKEN, it will not run workflows)
         git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
-        python kivymd/tools/release/make_release.py release "${{ github.event.inputs.version }}" --yes --push
+        python kivymd/tools/release/make_release.py release "${{ github.event.inputs.version }}" "${{ github.event.inputs.next_version }}" --yes --push
         git diff origin/master...
 
     - name: Release preparation

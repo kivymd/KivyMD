@@ -567,7 +567,7 @@ class TableData(RecycleView):
                     self._row_data_parts[self._rows_number]
                 )
                 self._to_value = self._to_value - len(
-                    self._row_data_parts[self._rows_number]
+                    self._row_data_parts[self._rows_number + 1]
                 )
             if direction == "increment":
                 self._current_value = 1

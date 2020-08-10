@@ -264,7 +264,7 @@ def main():
         test=test,
     )
 
-    git_commit(f"Version {version}")
+    git_commit(f"KivyMD {version}")
     git_tag(version)
 
     branches_to_push = []
@@ -280,7 +280,7 @@ def main():
         changelog_index_file, changelog_unreleased_file, version, test=test,
     )
     update_init_py(next_version, is_release=False, test=test)
-    git_commit("Add section Unreleased to Change Log")
+    git_commit(f"KivyMD {next_version}")
     git_push(branches_to_push, ask=ask, push=push)
 
 

@@ -1,4 +1,4 @@
-v0.101.6
+0.101.6
 --------
 
     See on GitHub: `tag 0.101.6 <https://github.com/kivymd/KivyMD/tree/0.101.6>`_ | `compare 0.101.5/0.101.6 <https://github.com/kivymd/KivyMD/compare/0.101.5...0.101.6>`_

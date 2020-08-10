@@ -2,6 +2,18 @@
 Behaviors/ToggleButton
 ======================
 
+This behavior must always be inherited after the button's Widget class since it
+works with the inherited properties of the button class.
+
+example:
+
+.. code-block:: python
+
+    class MyToggleButtonWidget(MDFlatButton, MDToggleButton):
+        # [...]
+        pass
+
+
 .. code-block:: python
 
     from kivy.lang import Builder
@@ -72,10 +84,9 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 
 __all__ = ("MDToggleButton",)
 
-from kivy.properties import ListProperty
+from kivy.properties import BooleanProperty, ListProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
-from kivymd.app import MDApp
 from kivymd.uix.button import (
     MDFillRoundFlatButton,
     MDFillRoundFlatIconButton,
@@ -87,23 +98,43 @@ from kivymd.uix.button import (
     MDRoundFlatIconButton,
 )
 
+# from kivy.logger import Logger
+
 
 class MDToggleButton(ToggleButtonBehavior):
     background_normal = ListProperty()
     """
-    Color of the button in the ``rgba`` format in the 'normal' state.
+    Color of the button in ``rgba`` format for the 'normal' state.
 
     :attr:`background_normal` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and is defaults to `[]`.
     """
 
     background_down = ListProperty()
     """
-    Color of the button in the ``rgba`` format in the 'down' state.
+    Color of the button in ``rgba`` format for the 'down' state.
 
     :attr:`background_down` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    and is defaults to `[]`.
     """
+
+    font_color_normal = ListProperty()
+    """
+    Color of the font's button in ``rgba`` format for the 'normal' state.
+
+    :attr:`font_color_normal` is a :class:`~kivy.properties.ListProperty`
+    and is defaults to `[[1,1,1,1]]`.
+    """
+
+    font_color_down = ListProperty([1, 1, 1, 1])
+    """
+    Color of the font's button in ``rgba`` format for the 'down' state.
+
+    :attr:`font_color_down` is a :class:`~kivy.properties.ListProperty`
+    and is defaults to `[[1,1,1,1]]`.
+    """
+
+    __is_filled = BooleanProperty(False)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -117,22 +148,61 @@ class MDToggleButton(ToggleButtonBehavior):
             MDFillRoundFlatButton,
             MDFillRoundFlatIconButton,
         )
+        # Verify: Do The object inherited from the "supported" Buttons?
         if not issubclass(self.__class__, classinfo):
             raise ValueError(
                 f"Class {self.__class__} must be inherited from one of the classes in the list {classinfo}"
             )
-        if not self.background_normal:
-            self.background_normal = (
-                MDApp.get_running_app().theme_cls.primary_color
-            )
-        if not self.background_down:
-            self.background_down = (
-                MDApp.get_running_app().theme_cls.primary_dark
-            )
-
-    def on_release(self):
-        for button in self.get_widgets(self.group):
-            if button.state == "down":
-                button.md_bg_color = self.background_down
+        if (
+            not self.background_normal
+        ):  # this means that if the value == [] or None will return True
+            # Verify: If the object inherits from buttons with backgroud:
+            if isinstance(
+                self,
+                (
+                    MDRaisedButton,
+                    MDFillRoundFlatButton,
+                    MDFillRoundFlatIconButton,
+                ),
+            ):
+                self.__is_filled = True
+                self.background_normal = self.theme_cls.primary_color
+            # if not the background_normal must be the same as the inherited one:
             else:
-                button.md_bg_color = self.background_normal
+                self.background_normal = self.md_bg_color[:]
+        # Verify; If no background_down is setted. then:
+        if (
+            not self.background_down
+        ):  # this means that if the value == [] or None will return True
+            self.background_down = (
+                self.theme_cls.primary_dark
+            )  # get the primary_color dark from themecls
+        if not self.font_color_normal:
+            self.font_color_normal = self.theme_cls.primary_color
+        # Alternative to bind the function to the property
+        # self.bind(state=self._update_bg)
+        self.fbind("state", self._update_bg)
+
+    #
+    def _update_bg(self, ins, val):
+        # """
+        # This function Updates the color of the backgroud
+        # """
+        if val == "down":
+            self.md_bg_color = self.background_down
+            if (
+                self.__is_filled is False
+            ):  # if the background is transparent, and the button it toggled,
+                # the font color must be withe [1,1,1,1]
+                self.text_color = self.font_color_down
+                # self.update_md_bg_color(self, [1,1,1,1])
+            if self.group:
+                self._release_group(self)
+        else:
+            self.md_bg_color = self.background_normal
+            if (
+                self.__is_filled is False
+            ):  # If the background is transparent, the font color must be the
+                # primary color
+                self.text_color = self.font_color_normal
+                # self.update_md_bg_color(self, self.theme_cls._get_primary_color())

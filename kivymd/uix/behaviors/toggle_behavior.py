@@ -84,7 +84,7 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 
 __all__ = ("MDToggleButton",)
 
-from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
+from kivy.properties import BooleanProperty, ListProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
 from kivymd.app import MDApp
@@ -103,9 +103,6 @@ from kivymd.uix.button import (
 
 
 class MDToggleButton(ToggleButtonBehavior):
-    # THeming
-    theme_cls = ObjectProperty()
-
     background_normal = ListProperty()
     """
     Color of the button in ``rgba`` format for the 'normal' state.
@@ -152,22 +149,13 @@ class MDToggleButton(ToggleButtonBehavior):
             MDFillRoundFlatButton,
             MDFillRoundFlatIconButton,
         )
-        # Verify: Do The app class has theme_cls?
-        app = MDApp.get_running_app()  # This saves some flops
-        if not hasattr(app, "theme_cls"):
-            raise ValueError(  # If the app doesn't has the theme_cls, it will raise a ValueError exception with message
-                "KivyMD: App object must be inherited from "
-                "`kivymd.app.MDApp`. See "
-                "https://github.com/kivymd/KivyMD/blob/master/README.md#api-breaking-changes"
-            )
         # Verify: Do The object inherited from the "supported" Buttons?
         if not issubclass(self.__class__, classinfo):
             raise ValueError(
                 f"Class {self.__class__} must be inherited from one of the classes in the list {classinfo}"
             )
         else:
-            self.theme_cls = app.theme_cls
-        # Verify; If no background_normal is setted. then:
+            self.theme_cls = MDApp.get_running_app().theme_cls
         if (
             not self.background_normal
         ):  # this means that if the value == [] or None will return True
@@ -194,7 +182,8 @@ class MDToggleButton(ToggleButtonBehavior):
             )  # get the primary_color dark from themecls
         if not self.font_color_normal:
             self.font_color_normal = self.theme_cls.primary_color
-        # self.bind(state=self._update_bg)                                      # Alternative to bind the function to the property
+        # Alternative to bind the function to the property
+        # self.bind(state=self._update_bg)
         self.fbind("state", self._update_bg)
 
     #
@@ -206,7 +195,8 @@ class MDToggleButton(ToggleButtonBehavior):
             self.md_bg_color = self.background_down
             if (
                 self.__is_filled is False
-            ):  # if the background is transparent, and the button it toggled, the font color must be withe [1,1,1,1]
+            ):  # if the background is transparent, and the button it toggled,
+                # the font color must be withe [1,1,1,1]
                 self.text_color = self.font_color_down
                 # self.update_md_bg_color(self, [1,1,1,1])
             if self.group:
@@ -215,7 +205,8 @@ class MDToggleButton(ToggleButtonBehavior):
             self.md_bg_color = self.background_normal
             if (
                 self.__is_filled is False
-            ):  # if the background is transparent, the font color must be the primary color
+            ):  # If the background is transparent, the font color must be the
+                # primary color
                 self.text_color = self.font_color_normal
                 # self.update_md_bg_color(self, self.theme_cls._get_primary_color())
 
@@ -223,15 +214,17 @@ class MDToggleButton(ToggleButtonBehavior):
 # TEST APP
 # this test app shows every type of button supported by MDToggleButton
 # every row is a different group
-# the cols var allows you to increase or decrease the ammount of elements in screen
-# to see the changes between the installed module and this one, unmart the import bellows
+# the cols var allows you to increase or decrease the ammount of elements in
+# screen to see the changes between the installed module and this one, unmart
+# the import bellows
 
 if __name__ == "__main__":
     from kivy.lang import Builder
 
     # from kivymd.app import MDApp
 
-    # from kivymd.uix.behaviors.toggle_behavior import MDToggleButton # if this import is active, it will override the MDToggleButton of this file
+    # if this import is active, it will override the MDToggleButton of this file
+    # from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
 
     KV = """
 MDGridLayout:
@@ -311,7 +304,8 @@ MDGridLayout:
     # This is the TEST app class
     class Test(MDApp):
         def build(self):
-            cols = 5  # Change this value to increase or decrease the elements in the gird
+            # Change this value to increase or decrease the elements in the gird
+            cols = 5
             x = Builder.load_string(KV)
             x.cols = cols
             lista = [
@@ -326,10 +320,11 @@ MDGridLayout:
             ]
             for n, i in enumerate(lista):
                 for ii in range(cols):
-                    # x.ids.container.add_widget(i(text=f"element {ii}",group=str(n)))
                     x.add_widget(
-                        i(  # I is the custom toggle button class from the lista list
-                            text=f"element {ii}", group=str(n)
+                        i(  # I is the custom toggle button class from the lista
+                            # list
+                            text=f"element {ii}",
+                            group=str(n),
                         )
                     )
             return x

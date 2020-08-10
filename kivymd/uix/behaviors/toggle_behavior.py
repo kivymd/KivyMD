@@ -45,8 +45,8 @@ example:
 
     class MyToggleButton(MDRectangleFlatButton, MDToggleButton):
         def __init__(self, **kwargs):
-            self.background_down = MDApp.get_running_app().theme_cls.primary_light
             super().__init__(**kwargs)
+            self.background_down = self.theme_cls.primary_light
 
 
     class Test(MDApp):
@@ -98,8 +98,6 @@ from kivymd.uix.button import (
     MDRoundFlatIconButton,
 )
 
-# from kivy.logger import Logger
-
 
 class MDToggleButton(ToggleButtonBehavior):
     background_normal = ListProperty()
@@ -123,7 +121,7 @@ class MDToggleButton(ToggleButtonBehavior):
     Color of the font's button in ``rgba`` format for the 'normal' state.
 
     :attr:`font_color_normal` is a :class:`~kivy.properties.ListProperty`
-    and is defaults to `[[1,1,1,1]]`.
+    and is defaults to `[]`.
     """
 
     font_color_down = ListProperty([1, 1, 1, 1])
@@ -131,7 +129,7 @@ class MDToggleButton(ToggleButtonBehavior):
     Color of the font's button in ``rgba`` format for the 'down' state.
 
     :attr:`font_color_down` is a :class:`~kivy.properties.ListProperty`
-    and is defaults to `[[1,1,1,1]]`.
+    and is defaults to `[1, 1, 1, 1]`.
     """
 
     __is_filled = BooleanProperty(False)
@@ -148,15 +146,15 @@ class MDToggleButton(ToggleButtonBehavior):
             MDFillRoundFlatButton,
             MDFillRoundFlatIconButton,
         )
-        # Verify: Do The object inherited from the "supported" Buttons?
+        # Do the object inherited from the "supported" buttons?
         if not issubclass(self.__class__, classinfo):
             raise ValueError(
                 f"Class {self.__class__} must be inherited from one of the classes in the list {classinfo}"
             )
         if (
             not self.background_normal
-        ):  # this means that if the value == [] or None will return True
-            # Verify: If the object inherits from buttons with backgroud:
+        ):  # This means that if the value == [] or None will return True.
+            # If the object inherits from buttons with background:
             if isinstance(
                 self,
                 (
@@ -167,35 +165,32 @@ class MDToggleButton(ToggleButtonBehavior):
             ):
                 self.__is_filled = True
                 self.background_normal = self.theme_cls.primary_color
-            # if not the background_normal must be the same as the inherited one:
+            # If not the background_normal must be the same as the inherited one:
             else:
                 self.background_normal = self.md_bg_color[:]
-        # Verify; If no background_down is setted. then:
+        # If no background_down is setted:
         if (
             not self.background_down
-        ):  # this means that if the value == [] or None will return True
+        ):  # This means that if the value == [] or None will return True.
             self.background_down = (
                 self.theme_cls.primary_dark
-            )  # get the primary_color dark from themecls
+            )  # get the primary_color dark from theme_cls
         if not self.font_color_normal:
             self.font_color_normal = self.theme_cls.primary_color
-        # Alternative to bind the function to the property
+        # Alternative to bind the function to the property.
         # self.bind(state=self._update_bg)
         self.fbind("state", self._update_bg)
 
-    #
     def _update_bg(self, ins, val):
-        # """
-        # This function Updates the color of the backgroud
-        # """
+        """Updates the color of the background."""
+
         if val == "down":
             self.md_bg_color = self.background_down
             if (
                 self.__is_filled is False
-            ):  # if the background is transparent, and the button it toggled,
-                # the font color must be withe [1,1,1,1]
+            ):  # If the background is transparent, and the button it toggled,
+                # the font color must be withe [1, 1, 1, 1].
                 self.text_color = self.font_color_down
-                # self.update_md_bg_color(self, [1,1,1,1])
             if self.group:
                 self._release_group(self)
         else:
@@ -203,6 +198,5 @@ class MDToggleButton(ToggleButtonBehavior):
             if (
                 self.__is_filled is False
             ):  # If the background is transparent, the font color must be the
-                # primary color
+                # primary color.
                 self.text_color = self.font_color_normal
-                # self.update_md_bg_color(self, self.theme_cls._get_primary_color())

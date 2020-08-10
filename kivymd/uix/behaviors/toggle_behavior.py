@@ -154,8 +154,6 @@ class MDToggleButton(ToggleButtonBehavior):
             raise ValueError(
                 f"Class {self.__class__} must be inherited from one of the classes in the list {classinfo}"
             )
-        else:
-            self.theme_cls = MDApp.get_running_app().theme_cls
         if (
             not self.background_normal
         ):  # this means that if the value == [] or None will return True

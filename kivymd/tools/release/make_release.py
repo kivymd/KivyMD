@@ -157,11 +157,7 @@ def move_changelog(
 
 
 def create_unreleased_changelog(
-    index_file,
-    unreleased_file,
-    previous_version,
-    ask: bool = True,
-    test: bool = False,
+    index_file, unreleased_file, version, ask: bool = True, test: bool = False,
 ):
     """Create unreleased.rst by template."""
     # Check if unreleased file exists
@@ -174,7 +170,7 @@ def create_unreleased_changelog(
     changelog = f"""Unreleased
 ----------
 
-    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare {previous_version}/master <https://github.com/kivymd/KivyMD/compare/{previous_version}...master>`_
+    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare {version}/master <https://github.com/kivymd/KivyMD/compare/{version}...master>`_
 
     .. code-block:: bash
 
@@ -281,10 +277,7 @@ def main():
     # branches_to_push.append("stable")
 
     create_unreleased_changelog(
-        changelog_index_file,
-        changelog_unreleased_file,
-        previous_version,
-        test=test,
+        changelog_index_file, changelog_unreleased_file, version, test=test,
     )
     update_init_py(next_version, is_release=False, test=test)
     git_commit("Add section Unreleased to Change Log")

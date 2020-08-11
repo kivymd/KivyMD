@@ -36,8 +36,15 @@ jobs:
         repository_root: master
         workdir: demos/${{ matrix.demo-name }}
 
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: package ${{ matrix.demo-name }}
+        path: ${{ steps.buildozer.outputs.filename }}
+
     - name: Checkout data branch
       uses: actions/checkout@v2
+      if: github.event_name == 'push'
       with:
         path: data
         ref: data # Branch name
@@ -45,11 +52,13 @@ jobs:
 
     - name: Set up Python
       uses: actions/setup-python@v2
+      if: github.event_name == 'push'
       with:
         python-version: 3.7
         architecture: x64
 
     - name: Push binary to data branch
+      if: github.event_name == 'push'
       run: |
         # Use personal token to push (when using GITHUB_TOKEN, it will not allow pushes from PR)
         cd data && \

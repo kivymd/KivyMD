@@ -19,8 +19,10 @@ source.include_exts = py,png,jpg,jpeg,ttf,md,kv,json
 source.include_patterns = assets/*
 
 # (str) Application versioning (method 2)
-version.regex = __version__ = ['"]([\d\.]*)['"abcr]
+version.regex = __version__ = ['"](.*)['"]
 version.filename = %(source.dir)s/../../kivymd/__init__.py
+
+android.numeric_version = 1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy

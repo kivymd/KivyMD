@@ -29,12 +29,18 @@ jobs:
       with:
         path: master
 
+    - name: Set numeric version
+      id: settings
+      run: echo "::set-output name=numeric_version::$(date +%Y%m%d%H%M%S)"
+
     - name: Build with Buildozer
       uses: ArtemSBulgakov/buildozer-action@v1
       id: buildozer
       with:
         repository_root: master
         workdir: demos/${{ matrix.demo-name }}
+      env:
+        BUILDOZER_APP_ANDROID_NUMERIC_VERSION: ${{ steps.settings.outputs.numeric_version }}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

@@ -19,7 +19,7 @@ source.include_exts = py,png,jpg,jpeg,ttf,md,kv,json
 source.include_patterns = assets/*
 
 # (str) Application versioning (method 2)
-version.regex = __version__ = ['"](.*)['"]
+version.regex = __version__ = ['"]([\d\.]*)['"abcr]
 version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 # (list) Application requirements

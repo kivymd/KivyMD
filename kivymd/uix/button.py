@@ -38,25 +38,7 @@ MDIconButton
 
 .. code-block:: python
 
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-
-    KV = '''
-    Screen:
-
-        MDIconButton:
-            icon: "language-python"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
-
-
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-
-    Example().run()
+MDRectangleFlatIconButton
 
 The :class:`~MDIconButton.icon` parameter must have the name of the icon
 from ``kivymd/icon_definitions.py`` file.
@@ -225,6 +207,41 @@ button :class:`~MDRectangleFlatButton`:
     MDRectangleFlatIconButton:
         icon: "android"
         text: "MDRECTANGLEFLATICONBUTTON"
+
+Without border
+--------------
+
+.. code-block:: python
+
+    from kivy.uix.screenmanager import Screen
+
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDRectangleFlatIconButton
+
+
+    class Example(MDApp):
+        def build(self):
+            screen = Screen()
+            screen.add_widget(
+                MDRectangleFlatIconButton(
+                    text="MDRectangleFlatIconButton",
+                    icon="language-python",
+                    line_color=(0, 0, 0, 0),
+                    pos_hint={"center_x": .5, "center_y": .5},
+                )
+            )
+            return screen
+
+
+    Example().run()
+
+.. code-block:: kv
+
+    MDRectangleFlatIconButton:
+        text: "MDRectangleFlatIconButton"
+        icon: "language-python"
+        line_color: 0, 0, 0, 0
+        pos_hint: {"center_x": .5, "center_y": .5}
 
 .. MDRoundFlatButton:
 MDRoundFlatButton
@@ -593,6 +610,7 @@ Builder.load_string(
     canvas.before:
         Color:
             rgba:
+                root.line_color if root.line_color else \
                 (root.theme_cls.primary_color if not root.text_color else root.text_color) \
                 if not root.disabled else root.theme_cls.disabled_hint_text_color
         Line:
@@ -1153,7 +1171,7 @@ class MDRoundFlatButton(MDFlatButton):
 
 class MDTextButton(ThemableBehavior, Button):
     custom_color = ListProperty()
-    """Custom user button color if ``rgba`` format.
+    """Custom user button color in ``rgba`` format.
 
     :attr:`custom_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
@@ -1241,7 +1259,12 @@ class MDFillRoundFlatButton(CircularElevationBehavior, MDRoundFlatButton):
 
 
 class MDRectangleFlatIconButton(BaseFlatIconButton):
-    pass
+    line_color = ListProperty()
+    """Button border color in ``rgba`` format.
+
+    :attr:`line_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
 
 
 class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):

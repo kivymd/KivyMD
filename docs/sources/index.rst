@@ -9,7 +9,7 @@ Contents
 .. toctree::
    :hidden:
 
-   Home <self>
+   Welcome <self>
 
 .. toctree::
    :maxdepth: 1

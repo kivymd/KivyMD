@@ -1,0 +1,10 @@
+:orphan:
+
+Page not found
+==============
+
+We could not find this page.
+
+Try using the search box or links from the sidebar to find what you are looking for.
+
+Please, `post an issue <https://github.com/kivymd/KivyMD/issues>`_, so we can make redirects to the new page.

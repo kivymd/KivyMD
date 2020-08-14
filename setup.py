@@ -83,7 +83,12 @@ if __name__ == "__main__":
                 "pytest-timeout",
                 "coveralls",
             ],
-            "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],
+            "docs": [
+                "sphinx",
+                "sphinx-autoapi",
+                "sphinx_rtd_theme",
+                "sphinx-notfound-page",
+            ],
         },
         install_requires=["kivy>=1.10.1"],
         setup_requires=[],

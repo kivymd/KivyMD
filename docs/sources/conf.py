@@ -42,6 +42,7 @@ html_theme_options = {
 
 # Extensions
 extensions = [
+    "notfound.extension",
     "sphinx.ext.autodoc",
     "autoapi_kivymd",
     "sphinx.ext.intersphinx",

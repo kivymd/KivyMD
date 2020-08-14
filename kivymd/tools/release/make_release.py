@@ -17,7 +17,7 @@ What this script does:
 * Rename file "unreleased.rst" to version, add to index.rst
 * Commit "Version ..."
 * Create tag
-* Add "unreleased.rst" to Change Log, add to index.rst
+* Add "unreleased.rst" to Changelog, add to index.rst
 * Commit
 * Git push
 """
@@ -190,7 +190,7 @@ def create_unreleased_changelog(
     open(unreleased_file, "wt", encoding="utf-8").write(changelog)
     # Update index file
     success = replace_in_file(
-        r"(?<=Change Log\n==========\n\n)",
+        r"(?<=Changelog\n=========\n\n)",
         ".. include:: /changelog/unreleased.rst\n",
         index_file,
     )

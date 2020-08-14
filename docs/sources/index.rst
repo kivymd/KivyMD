@@ -25,7 +25,7 @@ Contents
    :maxdepth: 1
    :titlesonly:
 
-   Unincluded API </unincluded/kivymd/index>
+   API </api/kivymd/index>
 
 Indices and tables
 ------------------

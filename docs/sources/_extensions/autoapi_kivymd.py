@@ -43,7 +43,7 @@ def PythonPythonMapper_pathname(self: PythonPythonMapper):
     slug = re.sub(r"[^\w\./]+", "-", slug).strip("-")
     slug_split = slug.split("/")
     if slug == "" or len(slug_split) == 1 or self.type == "package":
-        return os.path.join("unincluded", *self.name.split("."))
+        return os.path.join("api", *self.name.split("."))
     return os.path.join(*slug_split)
 
 
@@ -72,7 +72,7 @@ def PythonSphinxMapper_output_rst(
             self.app.created_api_files = []
         self.app.created_api_files.append(path)
 
-        if not obj.pathname.startswith("unincluded"):
+        if not obj.pathname.startswith("api"):
             path_in_rst = f"/{obj.pathname.replace(os.sep, '/')}/index"
             index_dir = os.path.dirname(detail_dir)
             index_file = os.path.join(index_dir, "index" + source_suffix)

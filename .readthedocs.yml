@@ -21,3 +21,11 @@ python:
       path: .
       extra_requirements:
         - docs
+
+search:
+   ranking:
+     # Components are more important
+     components/*: 2
+
+     # Unincluded API isn't very important
+     api/*: -2

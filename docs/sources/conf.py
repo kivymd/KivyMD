@@ -37,6 +37,7 @@ html_theme_options = {
     "canonical_url": "https://kivymd.readthedocs.io/en/latest/",
     "navigation_depth": 2,
     "collapse_navigation": False,
+    "titles_only": True,
 }
 
 

@@ -53,7 +53,7 @@ extensions = [
 # AutoAPI configuration
 autoapi_dirs = ["../../kivymd"]
 autoapi_template_dir = os.path.abspath("_templates")
-autoapi_ignore = []
+autoapi_ignore = ["**/kivymd/tests/**"]
 autoapi_type = "python"
 autoapi_file_patterns = ["*.py"]
 autoapi_generate_api_docs = True

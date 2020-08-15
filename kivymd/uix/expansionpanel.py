@@ -218,7 +218,7 @@ class MDExpansionPanel(RelativeLayout):
     and defaults to `None`.
     """
 
-    icon = StringProperty("")
+    icon = StringProperty()
     """Icon of panel.
 
     Icon Should be either be a path to an image or

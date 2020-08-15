@@ -32,8 +32,10 @@ import os
 
 from kivy.logger import Logger
 
-__version__ = "0.104.1"
+__version__ = "0.104.2.dev0"
 """KivyMD version."""
+
+release = False
 
 try:
     from kivymd._version import __hash__, __short_hash__, __date__
@@ -49,17 +51,15 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
 """Path to images directory."""
 
-if __short_hash__:
-    Logger.info(
-        f"KivyMD: v{__version__}, git-{__short_hash__}, {__date__}"
-        f' (installed at "{__file__}")'
-    )
-elif __date__:
-    Logger.info(
-        f'KivyMD: v{__version__}, {__date__} (installed at "{__file__}")'
-    )
-else:
-    Logger.info(f'KivyMD: v{__version__} (installed at "{__file__}")')
+_log_message = (
+    "KivyMD:"
+    + (" Release" if release else "")
+    + f" {__version__}"
+    + (f", git-{__short_hash__}" if __short_hash__ else "")
+    + (f", {__date__}" if __date__ else "")
+    + f' (installed at "{__file__}")'
+)
+Logger.info(_log_message)
 
 import kivymd.factory_registers  # NOQA
 import kivymd.font_definitions  # NOQA

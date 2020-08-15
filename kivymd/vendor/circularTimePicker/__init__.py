@@ -21,19 +21,29 @@ then use it! That's it!
 
 .. code-block:: python
 
-   c = CircularTimePicker()
-   c.bind(time=self.set_time)
-   root.add_widget(c)
+    from kivymd.app import MDApp
+    from kivymd.uix.screen import MDScreen
+
+
+    class Example(MDApp):
+        def build(self):
+            box = MDScreen(md_bg_color=self.theme_cls.bg_darkest)
+            box.add_widget(CircularTimePicker())
+            return box
+
+
+    Example().run()
 
 in Kv language:
 
 .. code-block:: kv
 
    <TimeChooserPopup@Popup>:
-       BoxLayout:
+
+       MDBoxLayout:
            orientation: "vertical"
 
-           CircularTimePicker
+           CircularTimePicker:
 
            Button:
                text: "Dismiss"
@@ -863,7 +873,13 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
 
 
 if __name__ == "__main__":
-    from kivy.base import runTouchApp
+    from kivymd.app import MDApp
+    from kivymd.uix.screen import MDScreen
 
-    c = CircularTimePicker()
-    runTouchApp(c)
+    class Example(MDApp):
+        def build(self):
+            box = MDScreen(md_bg_color=self.theme_cls.bg_darkest)
+            box.add_widget(CircularTimePicker())
+            return box
+
+    Example().run()

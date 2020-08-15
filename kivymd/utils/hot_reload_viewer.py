@@ -214,8 +214,9 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
         self.error_text.errors_text_color = value
 
     def on_path(self, instance, value):
+        value = os.path.abspath(value)
         self.observer.schedule(
-            HotReloadHandler(self.update, value), os.path.split(value)[0]
+            HotReloadHandler(self.update, value), os.path.dirname(value)
         )
         self.observer.start()
         Clock.schedule_once(self.update, 1)

@@ -56,11 +56,15 @@ def replace_in_file(pattern, repl, file):
     return not file_content == new_file_content
 
 
-def update_init_py(version, test: bool = False):
+def update_init_py(version, is_release, test: bool = False):
     """Change version in `kivymd/__init__.py`."""
     init_file = os.path.abspath("kivymd/__init__.py")
     init_version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
     success = replace_in_file(init_version_regex, version, init_file)
+    if test and not success:
+        print("Couldn't update __init__.py file.", file=sys.stderr)
+    init_version_regex = r"(?<=^release = )(True|False)(?=$)"
+    success = replace_in_file(init_version_regex, str(is_release), init_file)
     if test and not success:
         print("Couldn't update __init__.py file.", file=sys.stderr)
 
@@ -68,7 +72,7 @@ def update_init_py(version, test: bool = False):
 def update_readme(previous_version, version, test: bool = False):
     """Change version in README."""
     readme_file = os.path.abspath("README.md")
-    readme_version_regex = rf"(?<=\[v){previous_version}[ \-*\w^\]\n]*(?=\])"
+    readme_version_regex = rf"(?<=\[){previous_version}[ \-*\w^\]\n]*(?=\])"
     success = replace_in_file(readme_version_regex, version, readme_file)
     if test and not success:
         print("Couldn't update README.md file.", file=sys.stderr)
@@ -105,7 +109,7 @@ def move_changelog(
     # Edit changelog
     changelog = re.sub(
         r"Unreleased\n----------",
-        f"v{version}\n{'-' * (1 + len(version))}",
+        f"{version}\n{'-' * (1 + len(version))}",
         changelog,
         1,
         re.M,
@@ -153,11 +157,7 @@ def move_changelog(
 
 
 def create_unreleased_changelog(
-    index_file,
-    unreleased_file,
-    previous_version,
-    ask: bool = True,
-    test: bool = False,
+    index_file, unreleased_file, version, ask: bool = True, test: bool = False,
 ):
     """Create unreleased.rst by template."""
     # Check if unreleased file exists
@@ -170,7 +170,7 @@ def create_unreleased_changelog(
     changelog = f"""Unreleased
 ----------
 
-    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare {previous_version}/master <https://github.com/kivymd/KivyMD/compare/{previous_version}...master>`_
+    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare {version}/master <https://github.com/kivymd/KivyMD/compare/{version}...master>`_
 
     .. code-block:: bash
 
@@ -196,6 +196,11 @@ def main():
 
     release = args.command == "release"
     version = args.version or "0.0.0"
+    next_version = args.next_version or (
+        (version[:-1] + str(int(version[-1]) + 1) + ".dev0")
+        if "rc" not in version
+        else version
+    )
     prepare = args.command == "prepare"
     test = args.command == "test"
     ask = args.yes is not True
@@ -203,8 +208,14 @@ def main():
 
     if release and version == "0.0.0":
         parser.error("Please specify new version.")
-    if not re.match(r"[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}", version):
-        parser.error('Version "{version}" doesn\'t match template.')
+    version_re = r"[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}(rc[\d]{1,3})?"
+    if not re.match(version_re, version):
+        parser.error(f'Version "{version}" doesn\'t match template.')
+    next_version_re = (
+        r"[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}(\.dev[\d]{1,3}|rc[\d]{1,3})?"
+    )
+    if not re.match(next_version_re, next_version):
+        parser.error(f'Next version "{next_version}" doesn\'t match template.')
     if test and push:
         parser.error("Don't use --push with test.")
 
@@ -222,6 +233,7 @@ def main():
     # Print info
     print(f"Previous version: {previous_version}")
     print(f"New version: {version}")
+    print(f"Next version: {next_version}")
 
     update_icons(make_commit=True)
     git_clean(ask=ask)
@@ -231,7 +243,7 @@ def main():
         git_push([], ask=ask, push=push)
         return
 
-    update_init_py(version, test=test)
+    update_init_py(version, is_release=True, test=test)
     update_readme(previous_version, version, test=test)
 
     changelog_index_file = os.path.join(
@@ -252,7 +264,7 @@ def main():
         test=test,
     )
 
-    git_commit(f"Version {version}")
+    git_commit(f"KivyMD {version}")
     git_tag(version)
 
     branches_to_push = []
@@ -265,12 +277,10 @@ def main():
     # branches_to_push.append("stable")
 
     create_unreleased_changelog(
-        changelog_index_file,
-        changelog_unreleased_file,
-        previous_version,
-        test=test,
+        changelog_index_file, changelog_unreleased_file, version, test=test,
     )
-    git_commit("Add section Unreleased to Change Log")
+    update_init_py(next_version, is_release=False, test=test)
+    git_commit(f"KivyMD {next_version}")
     git_push(branches_to_push, ask=ask, push=push)
 
 
@@ -302,6 +312,12 @@ def create_argument_parser():
         type=str,
         nargs="?",
         help="new version in format n.n.n (1.111.11).",
+    )
+    parser.add_argument(
+        "next_version",
+        type=str,
+        nargs="?",
+        help="development version in format n.n.n.devn (1.111.11.dev0).",
     )
     return parser
 

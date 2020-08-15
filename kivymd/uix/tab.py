@@ -1125,6 +1125,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             current_tab_label = carousel.current_slide.tab_label
             if current_tab_label.state == "normal":
                 current_tab_label._do_press()
+                current_tab_label.dispatch("on_release")
             self.tab_bar.update_indicator(
                 current_tab_label.x, current_tab_label.width
             )

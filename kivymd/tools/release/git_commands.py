@@ -12,7 +12,7 @@ def command(cmd: list, capture_output: bool = False) -> str:
     if capture_output:
         out = subprocess.check_output(cmd)
         out = out.decode("utf-8")
-        print(out)
+        print(out.strip())
         return out
     else:
         subprocess.check_call(cmd)
@@ -32,11 +32,11 @@ def get_previous_version() -> str:
 def git_clean(ask: bool = True):
     """Clean git repository from untracked and changed files."""
     # Check what files will be removed
-    clean = command(
+    files_to_clean = command(
         ["git", "clean", "-dx", "--force", "--dry-run"], capture_output=True
-    )
+    ).strip()
     # Ask before removing
-    if ask and not clean == "\n":
+    if ask and files_to_clean:
         while True:
             ans = input("Do you want to remove these files? (yes/no)").lower()
             if ans == "y" or ans == "yes":
@@ -78,3 +78,7 @@ def git_push(branches_to_push: list, ask: bool = True, push: bool = False):
         print(
             f"Changes are not pushed. Command for manual pushing: {subprocess.list2cmdline(cmd)}"
         )
+
+
+if __name__ == "__main__":
+    git_clean(ask=True)

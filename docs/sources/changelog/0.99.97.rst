@@ -1,4 +1,4 @@
-v0.99.97
+0.99.97
 --------
 
     See on GitHub: `tag 0.99.97 <https://github.com/kivymd/KivyMD/tree/0.99.97>`_ | `compare 0.99.96/0.99.97 <https://github.com/kivymd/KivyMD/compare/0.99.96...0.99.97>`_

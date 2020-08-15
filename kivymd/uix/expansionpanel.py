@@ -293,9 +293,17 @@ class MDExpansionPanel(RelativeLayout):
             self.panel_cls.add_widget(self.chevron)
             if self.icon:
                 if self.icon in md_icons.keys():
-                    self.panel_cls.add_widget(IconLeftWidget(icon=self.icon))
+                    self.panel_cls.add_widget(
+                        IconLeftWidget(
+                            icon=self.icon, pos_hint={"center_y": 0.5}
+                        )
+                    )
                 else:
-                    self.panel_cls.add_widget(ImageLeftWidget(source=self.icon))
+                    self.panel_cls.add_widget(
+                        ImageLeftWidget(
+                            source=self.icon, pos_hint={"center_y": 0.5}
+                        )
+                    )
             else:
                 # if no icon
                 self.panel_cls._txt_left_pad = m_res.HORIZ_MARGINS

@@ -45,23 +45,9 @@ class KitchenSinkApp(MDApp):
         Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
         )
-        # Builder.load_string(
-        #     open(
-        #         f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv",
-        #         "rt",
-        #         encoding="utf-8",
-        #     ).read()
-        # )
         return Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv"
         )
-        # return Builder.load_string(
-        # open(
-        #     f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv",
-        #     "rt",
-        #     encoding="utf-8",
-        # ).read()
-        # )
 
     def show_dialog_change_theme(self):
         if not self.dialog_change_theme:
@@ -74,23 +60,9 @@ class KitchenSinkApp(MDApp):
         Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv",
         )
-        # Builder.load_string(
-        #     open(
-        #         f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv",
-        #         "rt",
-        #         encoding="utf-8",
-        #     ).read()
-        # )
         Builder.load_file(
             f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv",
         )
-        # Builder.load_string(
-        #     open(
-        #         f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/base_content.kv",
-        #         "rt",
-        #         encoding="utf-8",
-        #     ).read()
-        # )
 
         with open(
             f"{os.environ['KITCHEN_SINK_ROOT']}/screens_data.json"
@@ -98,7 +70,6 @@ class KitchenSinkApp(MDApp):
             self.data_screens = ast.literal_eval(read_file.read())
             data_screens = list(self.data_screens.keys())
             data_screens.sort()
-
         for name_item_example in data_screens:
             self.root.ids.backdrop_front_layer.data.append(
                 {
@@ -120,13 +91,6 @@ class KitchenSinkApp(MDApp):
             Builder.load_file(
                 f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/{name_kv_file}.kv",
             )
-            # Builder.load_string(
-            #     open(
-            #         f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/{name_kv_file}.kv",
-            #         "rt",
-            #         encoding="utf-8",
-            #     ).read()
-            # )
             if "Import" in self.data_screens[name_screen]:
                 exec(self.data_screens[name_screen]["Import"])
             screen_object = eval(self.data_screens[name_screen]["Factory"])

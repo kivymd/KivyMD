@@ -319,7 +319,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     ext = ListProperty()
     """
     List of file extensions to be displayed
-    in the manager. For example, `['py', 'kv']` - will filter out all files,
+    in the manager. For example, `['.py', '.kv']` - will filter out all files,
     except python scripts and Kv Language.
 
     :attr:`ext` is an :class:`~kivy.properties.ListProperty`
@@ -357,6 +357,14 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     Shows only image previews.
 
     :attr:`preview` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    show_hidden_files = BooleanProperty(False)
+    """
+    Shows hidden files.
+
+    :attr:`show_hidden_files` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -490,7 +498,11 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             for content in os.listdir(path):
                 if os.path.isdir(os.path.join(path, content)):
                     if self.search == "all" or self.search == "dirs":
-                        dirs.append(content)
+                        if not self.show_hidden_files and content.startswith("."):
+                            continue
+                        else:
+                            dirs.append(content)
+
                 else:
                     if self.search == "all" or self.search == "files":
                         if len(self.ext) != 0:
@@ -499,8 +511,12 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                             except IndexError:
                                 pass
                         else:
-                            files.append(content)
+                            if not self.show_hidden_files and content.startswith("."):
+                                continue
+                            else:
+                                files.append(content)
             return dirs, files
+
         except OSError:
             self.history.pop()
             return None, None

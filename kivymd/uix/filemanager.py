@@ -117,6 +117,7 @@ Example
 __all__ = ("MDFileManager",)
 
 import os
+import locale
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -318,19 +319,19 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
 
     ext = ListProperty()
     """
-    List of file extensions to be displayed
-    in the manager. For example, `['.py', '.kv']` - will filter out all files,
+    List of file extensions to be displayed in the manager.
+    For example, `['.py', '.kv']` - will filter out all files,
     except python scripts and Kv Language.
 
     :attr:`ext` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
-    search = OptionProperty("all", options=["all", "files"])
+    search = OptionProperty("all", options=["all", "dirs", "files"])
     """
-    It can take the values 'dirs' 'files' - display only directories
-    or only files. By default, it displays and folders, and files.
-    Available options are: `'all'`, `'files'`.
+    It can take the values 'all' 'dirs' 'files' - display only directories
+    or only files or both them. By default, it displays folders, and files.
+    Available options are: `'all'`, `'dirs'`, `'files'`.
 
     :attr:`search` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `all`.
@@ -368,6 +369,24 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `False`.
     """
 
+    sort_by = OptionProperty("name", options=["nothing", "name", "date", "size", "type"])
+    """
+    It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files by option
+    By default, sort by name.
+    Available options are: `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
+
+    :attr:`sort_by` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `name`.
+    """
+
+    sort_by_desc = BooleanProperty(False)
+    """
+    Sort by descending.
+
+    :attr:`sort_by_desc` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     _window_manager = None
     _window_manager_open = False
 
@@ -389,6 +408,43 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
 
+    def __sort_files(self, files):
+        def sort_by_name(files):
+            files.sort(key=locale.strxfrm)
+            files.sort(key=str.casefold)
+
+            return files
+
+        if self.sort_by == "name":
+            sorted_files = sort_by_name(files)
+
+        elif self.sort_by == "date":
+            _files = sort_by_name(files)
+            _sorted_files = [os.path.join(self.current_path, f) for f in _files]
+            _sorted_files.sort(key=os.path.getmtime, reverse=True)
+
+            sorted_files = [os.path.basename(f) for f in _sorted_files]
+
+        elif self.sort_by == "size":
+            _files = sort_by_name(files)
+            _sorted_files = [os.path.join(self.current_path, f) for f in _files]
+            _sorted_files.sort(key=os.path.getsize, reverse=True)
+
+            sorted_files = [os.path.basename(f) for f in _sorted_files]
+
+        elif self.sort_by == "type":
+            _files = sort_by_name(files)
+
+            sorted_files = sorted(_files, key=lambda f: (os.path.splitext(f)[1], os.path.splitext(f)[0]))
+
+        else:
+            sorted_files = files
+
+        if self.sort_by_desc:
+            sorted_files.reverse()
+
+        return sorted_files
+
     def show(self, path):
         """Forms the body of a directory tree.
 
@@ -406,7 +462,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             return
 
         if self.preview:
-            for name_dir in dirs:
+            for name_dir in self.__sort_files(dirs):
                 manager_list.append(
                     {
                         "viewclass": "BodyManagerWithPreview",
@@ -418,7 +474,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "height": dp(150),
                     }
                 )
-            for name_file in files:
+            for name_file in self.__sort_files(files):
                 if (
                     os.path.splitext(os.path.join(path, name_file))[1]
                     in self.ext
@@ -434,7 +490,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         }
                     )
         else:
-            for name in dirs:
+            for name in self.__sort_files(dirs):
                 _path = os.path.join(path, name)
                 access_string = self.get_access_string(_path)
                 if "r" not in access_string:
@@ -451,17 +507,19 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "events_callback": self.select_dir_or_file,
                     }
                 )
-            for name in files:
-                if self.ext and os.path.splitext(name)[1] in self.ext:
-                    manager_list.append(
-                        {
-                            "viewclass": "BodyManager",
-                            "path": name,
-                            "icon": "file-outline",
-                            "dir_or_file_name": os.path.split(name)[1],
-                            "events_callback": self.select_dir_or_file,
-                        }
-                    )
+            for name in self.__sort_files(files):
+                if self.ext and os.path.splitext(name)[1] not in self.ext:
+                    continue
+
+                manager_list.append(
+                    {
+                        "viewclass": "BodyManager",
+                        "path": name,
+                        "icon": "file-outline",
+                        "dir_or_file_name": os.path.split(name)[1],
+                        "events_callback": self.select_dir_or_file,
+                    }
+                )
         self.ids.rv.data = manager_list
 
         if not self._window_manager:

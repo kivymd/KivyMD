@@ -149,8 +149,11 @@ from kivy.properties import NumericProperty, ObjectProperty, StringProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.widget import WidgetException
 
+import kivymd.material_resources as m_res
+from kivymd.icon_definitions import md_icons
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import (
+    IconLeftWidget,
     ImageLeftWidget,
     IRightBodyTouch,
     OneLineAvatarIconListItem,
@@ -217,6 +220,9 @@ class MDExpansionPanel(RelativeLayout):
 
     icon = StringProperty()
     """Icon of panel.
+
+    Icon Should be either be a path to an image or
+    a logo name in :class:`~kivymd.icon_definitions.md_icons`
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
@@ -285,7 +291,22 @@ class MDExpansionPanel(RelativeLayout):
             )
             self.chevron = MDExpansionChevronRight()
             self.panel_cls.add_widget(self.chevron)
-            self.panel_cls.add_widget(ImageLeftWidget(source=self.icon))
+            if self.icon:
+                if self.icon in md_icons.keys():
+                    self.panel_cls.add_widget(
+                        IconLeftWidget(
+                            icon=self.icon, pos_hint={"center_y": 0.5}
+                        )
+                    )
+                else:
+                    self.panel_cls.add_widget(
+                        ImageLeftWidget(
+                            source=self.icon, pos_hint={"center_y": 0.5}
+                        )
+                    )
+            else:
+                # if no icon
+                self.panel_cls._txt_left_pad = m_res.HORIZ_MARGINS
             self.add_widget(self.panel_cls)
         else:
             raise ValueError(

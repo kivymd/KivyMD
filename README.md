@@ -1,4 +1,4 @@
-# KivyMD [v0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
+# KivyMD [0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
 <img align="left" width="256" src="https://github.com/kivymd/internal/raw/master/logo/kivymd.png"/>
 
@@ -23,7 +23,7 @@ If you wish to become a project developer (permission to create branches on the 
 [![Twitter](https://img.shields.io/twitter/follow/KivyMD?label=follow&logo=twitter&style=flat&color=brightgreen)](https://twitter.com/KivyMD)
 [![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=1k)](https://www.youtube.com/c/KivyMD)
 [![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
-[![StackOverflow](https://img.shields.io/stackexchange/stackoverflow/t/%5Bkivymd%5D?color=brightgreen&label=stackoverflow&logo=stackoverflow)](https://stackoverflow.com/tags/kivymd)
+[![StackOverflow](https://img.shields.io/static/v1?label=stackoverflow%20tag&logo=stackoverflow&logoColor=fe7a16&color=brightgreen&message=kivymd)](https://stackoverflow.com/tags/kivymd)
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/kivymd)
 
 [![Coverage status](https://coveralls.io/repos/github/kivymd/KivyMD/badge.svg)](https://coveralls.io/github/kivymd/KivyMD)
@@ -38,14 +38,6 @@ See documentation at https://kivymd.readthedocs.io
 
 Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wiki
 
-### Demos
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=qU6C_Icp6TM">
-    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo-run-in-desktop.png" title='Click to watch "How to run the KivyMD demo on desktop?" on YouTube'>
-  </a>
-</p>
-
 [Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/kivymd/KivyMD/tree/data/demo_kitchen_sink).
 
 ### Tutorials on YouTube
@@ -57,6 +49,14 @@ Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wik
 </p>
 
 [Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
+
+### Comparison of Flutter & KivyMD
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM">
+    <img width="600" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" title="Click to watch it on YouTube">
+  </a>
+</p>
 
 ## Support
 

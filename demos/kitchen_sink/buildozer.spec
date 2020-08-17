@@ -22,6 +22,8 @@ source.include_patterns = assets/*
 version.regex = __version__ = ['"](.*)['"]
 version.filename = %(source.dir)s/../../kivymd/__init__.py
 
+android.numeric_version = 1
+
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 requirements = python3,kivy==2.0.0rc3,https://github.com/kivymd/KivyMD/archive/master.zip,sdl2_ttf==2.0.15

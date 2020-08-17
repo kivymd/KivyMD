@@ -192,7 +192,7 @@ class KitchenSinkApp(MDApp):
             MDExpansionPanel(
                 icon=f"{os.environ['KITCHEN_SINK_ASSETS']}avatar.png",
                 content=content,
-                panel_cls=MDExpansionPanelOneLine(text="KivyMD v.0.104.1"),
+                panel_cls=MDExpansionPanelOneLine(text="KivyMD 0.104.1"),
             )
         )
 

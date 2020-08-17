@@ -17,11 +17,14 @@
             # pos_hint: {'center_x': .5}
             width: self.parent.width
             bar_width: 0
+
             MDGridLayout:
                 size_hint_y: None
                 height: self.minimum_height
                 cols: 3
+
                 Widget:
+
                 MDBoxLayout:
                     id: box
                     padding: dp(10)
@@ -281,4 +284,5 @@
                             MDIconButton:
                                 icon: "language-python"
                                 user_font_size: "48sp"
+                                
                 Widget:

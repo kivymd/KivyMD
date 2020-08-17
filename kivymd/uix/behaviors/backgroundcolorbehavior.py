@@ -21,13 +21,16 @@ from kivymd.color_definitions import hue, palette, text_colors
 
 Builder.load_string(
     """
+#:import RelativeLayout kivy.uix.relativelayout.RelativeLayout
+
+
 <BackgroundColorBehavior>
     canvas:
         Color:
             rgba: self.md_bg_color
         RoundedRectangle:
             size: self.size
-            pos: self.pos
+            pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             radius: root.radius
 """
 )

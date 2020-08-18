@@ -116,8 +116,8 @@ Example
 
 __all__ = ("MDFileManager",)
 
-import os
 import locale
+import os
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -369,7 +369,9 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `False`.
     """
 
-    sort_by = OptionProperty("name", options=["nothing", "name", "date", "size", "type"])
+    sort_by = OptionProperty(
+        "name", options=["nothing", "name", "date", "size", "type"]
+    )
     """
     It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files by option
     By default, sort by name.
@@ -435,7 +437,10 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         elif self.sort_by == "type":
             _files = sort_by_name(files)
 
-            sorted_files = sorted(_files, key=lambda f: (os.path.splitext(f)[1], os.path.splitext(f)[0]))
+            sorted_files = sorted(
+                _files,
+                key=lambda f: (os.path.splitext(f)[1], os.path.splitext(f)[0]),
+            )
 
         else:
             sorted_files = files
@@ -556,7 +561,9 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             for content in os.listdir(path):
                 if os.path.isdir(os.path.join(path, content)):
                     if self.search == "all" or self.search == "dirs":
-                        if not self.show_hidden_files and content.startswith("."):
+                        if (not self.show_hidden_files) and (
+                            content.startswith(".")
+                        ):
                             continue
                         else:
                             dirs.append(content)
@@ -569,7 +576,10 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                             except IndexError:
                                 pass
                         else:
-                            if not self.show_hidden_files and content.startswith("."):
+                            if (
+                                not self.show_hidden_files
+                                and content.startswith(".")
+                            ):
                                 continue
                             else:
                                 files.append(content)

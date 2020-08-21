@@ -873,6 +873,34 @@ class BaseButton(
     _md_bg_color_down = ListProperty([0.0, 0.0, 0.0, 0.1])
     _md_bg_color_disabled = ListProperty([0.0, 0.0, 0.0, 0.0])
 
+    theme_button_color = OptionProperty(
+        "None", options=["None", "Primary", "Custom"]
+    )
+    """
+    Button's Background Theme.
+
+    This Property sets the button's background color behavior.
+
+    When the property is set to "Primary", the button's background color will
+    match the one from the theme_cls.primary_color.
+    This includes the event of theme change.
+
+    When the property is set to "Custom", the button's background color will
+    match the buttons.md_bg_color property.
+    app.theme_cls.primary_color update event will be dissmised.
+
+    .. warning:: Do not set to None:
+        This set it's only meant to work as a placeholed when a new instance is
+        created of MDRaisedButton. after creation, the set will be automatically
+        change to either "Primary" or "Custom" option.
+
+
+    :attr:`theme_button_color` is an :class:`~kivy.properties.OptionProperty`
+    and is default to `None`.
+
+    The available options are "None", "Primary" and "Custom"
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
@@ -1125,34 +1153,6 @@ class MDRaisedButton(
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
-    """
-
-    theme_button_color = OptionProperty(
-        "None", options=["None", "Primary", "Custom"]
-    )
-    """
-    Button's Background Theme.
-
-    This Property sets the button's background color behavior.
-
-    When the property is set to "Primary", the button's background color will
-    match the one from the theme_cls.primary_color.
-    This includes the event of theme change.
-
-    When the property is set to "Custom", the button's background color will
-    match the buttons.md_bg_color property.
-    app.theme_cls.primary_color update event will be dissmised.
-
-    .. warning:: Do not set to None:
-        This set it's only meant to work as a placeholed when a new instance is
-        created of MDRaisedButton. after creation, the set will be automatically
-        change to either "Primary" or "Custom" option.
-
-
-    :attr:`theme_button_color` is an :class:`~kivy.properties.OptionProperty`
-    and is default to `None`.
-
-    The available options are "None", "Primary" and "Custom"
     """
 
     def __init__(self, **kwargs):

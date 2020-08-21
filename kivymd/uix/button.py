@@ -1924,58 +1924,197 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 #
 if __name__ == "__main__":
     from kivy.uix.screenmanager import Screen
+    from kivy.uix.gridlayout import GridLayout
     from kivymd.app import MDApp
 
     # from kivymd.uix.button import MDRaisedButton as OLDMDRaisedButton
 
     class App(MDApp):
-        raised_button = ObjectProperty()
-        raised_button1 = ObjectProperty()
-        raised_button2 = ObjectProperty()
+        buttons = ListProperty()
 
         def build(self) -> None:
             screen = Screen()
-            self.raised_button = MDRaisedButton(
-                text="Blue Theme & make red primary color",
-                # md_bg_color=[1, 0, 0, 1],
-                pos_hint={"center_x": 0.3, "center_y": 0.5},
-                on_release=self.change_theme_color3,
-                theme_button_color="Primary",
+            x = GridLayout(cols=3, padding=20, spacing=20,)
+            b1 = MDFlatButton(text="MDFLATBUTTON", text_color=[0, 0, 1, 1],)
+            self.buttons.append(b1)
+            b1 = MDFlatButton(text="MDFLATBUTTON", text_color=[0, 0, 1, 1],)
+            self.buttons.append(b1)
+            b1 = MDFlatButton(
+                text="MDFLATBUTTON",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 0, 1],
             )
-            screen.add_widget(self.raised_button)
-            self.raised_button1 = MDRaisedButton(
-                text="Red theme",
-                # md_bg_color=[1, 0, 1, 1],
-                pos_hint={"center_x": 0.5, "center_y": 0.5},
-                theme_button_color="Primary",
-                on_release=self.change_theme_color2,
+            self.buttons.append(b1)
+            #
+
+            b1 = MDRaisedButton(
+                text="MDRaisedButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
             )
-            screen.add_widget(self.raised_button1)
-            self.raised_button2 = MDRaisedButton(
-                text="Green Theme & make red Custom color",
-                md_bg_color=[0, 0.8, 0.4, 1],
-                pos_hint={"center_x": 0.7, "center_y": 0.5},
-                on_release=self.change_theme_color,
+            self.buttons.append(b1)
+            b1 = MDRaisedButton(
+                text="MDRaisedButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
             )
-            screen.add_widget(self.raised_button2)
-            flat1 = MDFlatButton(
-                text="Exmaple", pos_hint={"center_x": 0.7, "center_y": 0.7},
+            self.buttons.append(b1)
+            b1 = MDRaisedButton(
+                text="MDRaisedButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
             )
-            screen.add_widget(flat1)
+            self.buttons.append(b1)
+            #
+
+            b1 = MDRectangleFlatButton(
+                text="MDRectangleFlatButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRectangleFlatButton(
+                text="MDRectangleFlatButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRectangleFlatButton(
+                text="MDRectangleFlatButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            b1 = MDRectangleFlatIconButton(
+                text="MDRectangleFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRectangleFlatIconButton(
+                text="MDRectangleFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRectangleFlatIconButton(
+                text="MDRectangleFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            b1 = MDRoundFlatButton(
+                text="MDRoundFlatButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRoundFlatButton(
+                text="MDRoundFlatButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRoundFlatButton(
+                text="MDRoundFlatButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            b1 = MDRoundFlatIconButton(
+                text="MDRoundFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRoundFlatIconButton(
+                text="MDRoundFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDRoundFlatIconButton(
+                text="MDRoundFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            b1 = MDFillRoundFlatButton(
+                text="MDFillRoundFlatButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDFillRoundFlatButton(
+                text="MDFillRoundFlatButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDFillRoundFlatButton(
+                text="MDFillRoundFlatButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            b1 = MDFillRoundFlatIconButton(
+                text="MDFillRoundFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 1, 0, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDFillRoundFlatIconButton(
+                text="MDFillRoundFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                md_bg_color=[1, 0, 1, 1],
+            )
+            self.buttons.append(b1)
+            b1 = MDFillRoundFlatIconButton(
+                text="MDFillRoundFlatIconButton",
+                text_color=[0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            b1 = MDTextButton(
+                text="MDTextButton",
+                # text_color= [0, 0, 1, 1],
+                # md_bg_color=[1,1,0,1],
+            )
+            self.buttons.append(b1)
+            b1 = MDTextButton(
+                text="MDTextButton",
+                # text_color= [0, 0, 1, 1],
+                # md_bg_color=[1,0,1,1],
+            )
+            self.buttons.append(b1)
+            b1 = MDTextButton(
+                text="MDTextButton",
+                # text_color= [0, 0, 1, 1],
+                # md_bg_color=[1,0,0,1],
+            )
+            self.buttons.append(b1)
+            #
+
+            for i in self.buttons:
+                x.add_widget(i)
+            screen.add_widget(x)
             return screen
 
-        def change_theme_color(self, *dt):
-            self.theme_cls.primary_palette = "Green"
-            self.raised_button1.theme_button_color = "Custom"
-
         #
-        def change_theme_color2(self, *dt):
-            self.theme_cls.primary_palette = "Red"
-
-        #
-        def change_theme_color3(self, *dt):
-            self.theme_cls.primary_palette = "Blue"
-            self.raised_button1.theme_button_color = "Primary"
+        def change_theme_color3(self, color, *dt):
+            self.theme_cls.primary_palette = color
 
     app = App()
     app.run()

@@ -707,7 +707,7 @@ Builder.load_string(
 
 
 <MDRaisedButton>
-    md_bg_color: root.theme_cls.primary_color
+    md_bg_color: root.md_bg_color
     theme_text_color: 'Custom'
     text_color: root.specific_text_color
 
@@ -1101,7 +1101,86 @@ class MDRaisedButton(
     BaseRaisedButton,
     BasePressedButton,
 ):
-    pass
+    """
+    The MDRaisedButton has a behavior similar to :class:`~MDFlatButton` With
+    the difference that you can set a background color.
+
+    bases: :class:`~BaseRectangularButton`,
+    :class:`~RectangularElevationBehavior`,
+    :class:`~BaseRaisedButton`,
+    :class:`~BasePressedButton`
+    """
+
+    md_bg_color = ListProperty([])
+    """
+    Button's Background Color.
+
+    Set this property to change the background color, it only works if the
+    :attr:`theme_button_color`is set to Custom, otherwise the Button's
+    background will be set to the theme's primary_color.
+
+    .. note:: on python's code
+        If you set this property while creating a new instance, the property
+        :attr:`theme_button_color` will be set to "Custom" automatically.
+
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    theme_button_color = OptionProperty(
+        "None", options=["None", "Primary", "Custom"]
+    )
+    """
+    Button's Background Theme.
+
+    This Property sets the button's background color behavior.
+
+    When the property is set to "Primary", the button's background color will
+    match the one from the theme_cls.primary_color.
+    This includes the event of theme change.
+
+    When the property is set to "Custom", the button's background color will
+    match the buttons.md_bg_color property.
+    app.theme_cls.primary_color update event will be dissmised.
+
+    .. warning:: Do not set to None:
+        This set it's only meant to work as a placeholed when a new instance is
+        created of MDRaisedButton. after creation, the set will be automatically
+        change to either "Primary" or "Custom" option.
+
+
+    :attr:`theme_button_color` is an :class:`~kivy.properties.OptionProperty`
+    and is default to `None`.
+
+    The available options are "None", "Primary" and "Custom"
+    """
+
+    def __init__(self, **kwargs):
+        super(MDRaisedButton, self).__init__(**kwargs)
+        if self.theme_button_color == "None":
+            if not self.md_bg_color:
+                self.theme_button_color = "Primary"
+                self.md_bg_color = self.theme_cls.primary_color
+            else:
+                self.theme_button_color = "Custom"
+        elif self.theme_button_color == "Primary":
+            self.md_bg_color = self.theme_cls.primary_color
+            # self._current_button_color = self.theme_cls.primary_color
+
+    def on_theme_button_color(self, ins, val):
+        # TODO Add other pointers to update the color to differente colors
+        #     automatically
+        # The md_bg_color will keep different from the _current_button_color
+        # This allows to use set a cusotm color and enable or disable at will.
+        if self.theme_button_color == "Primary":
+            self._current_button_color = self.theme_cls.primary_color
+        elif self.theme_button_color == "Custom":
+            self._current_button_color = self.md_bg_color
+
+    def update_md_bg_color(self, instance, value):
+        """Called when the application color palette changes."""
+        if self.theme_button_color == "Primary":
+            self._current_button_color = self.theme_cls._get_primary_color()
 
 
 class MDFloatingActionButton(
@@ -1840,3 +1919,63 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             if isinstance(widget, instance):
                 break
         return widget
+
+
+#
+if __name__ == "__main__":
+    from kivy.uix.screenmanager import Screen
+    from kivymd.app import MDApp
+
+    # from kivymd.uix.button import MDRaisedButton as OLDMDRaisedButton
+
+    class App(MDApp):
+        raised_button = ObjectProperty()
+        raised_button1 = ObjectProperty()
+        raised_button2 = ObjectProperty()
+
+        def build(self) -> None:
+            screen = Screen()
+            self.raised_button = MDRaisedButton(
+                text="Blue Theme & make red primary color",
+                # md_bg_color=[1, 0, 0, 1],
+                pos_hint={"center_x": 0.3, "center_y": 0.5},
+                on_release=self.change_theme_color3,
+                theme_button_color="Primary",
+            )
+            screen.add_widget(self.raised_button)
+            self.raised_button1 = MDRaisedButton(
+                text="Red theme",
+                # md_bg_color=[1, 0, 1, 1],
+                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                theme_button_color="Primary",
+                on_release=self.change_theme_color2,
+            )
+            screen.add_widget(self.raised_button1)
+            self.raised_button2 = MDRaisedButton(
+                text="Green Theme & make red Custom color",
+                md_bg_color=[0, 0.8, 0.4, 1],
+                pos_hint={"center_x": 0.7, "center_y": 0.5},
+                on_release=self.change_theme_color,
+            )
+            screen.add_widget(self.raised_button2)
+            flat1 = MDFlatButton(
+                text="Exmaple", pos_hint={"center_x": 0.7, "center_y": 0.7},
+            )
+            screen.add_widget(flat1)
+            return screen
+
+        def change_theme_color(self, *dt):
+            self.theme_cls.primary_palette = "Green"
+            self.raised_button1.theme_button_color = "Custom"
+
+        #
+        def change_theme_color2(self, *dt):
+            self.theme_cls.primary_palette = "Red"
+
+        #
+        def change_theme_color3(self, *dt):
+            self.theme_cls.primary_palette = "Blue"
+            self.raised_button1.theme_button_color = "Primary"
+
+    app = App()
+    app.run()

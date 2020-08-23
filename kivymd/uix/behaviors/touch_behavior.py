@@ -79,10 +79,7 @@ class TouchBehavior:
             touch.ud["event"] = callback
 
     def delete_clock(self, widget, touch, *args):
-        if not touch.grab_list:
-            expr = self.collide_point(touch.x, touch.y)
-        else:
-            expr = self.collide_point(touch.x, touch.y) and touch.grab_current
+        expr = self.collide_point(touch.x, touch.y)
 
         if expr:
             try:

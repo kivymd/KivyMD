@@ -479,7 +479,7 @@ Builder.load_string(
         Rectangle:
             texture: self._right_msg_lbl.texture
             size: self._right_msg_lbl.texture_size
-            pos: self.width-self._right_msg_lbl.texture_size[0] + dp(45), self.y
+            pos: self.x + self.width - self._right_msg_lbl.texture_size[0] - dp(16), self.y
 
         Color:
             rgba:

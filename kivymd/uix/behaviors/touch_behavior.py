@@ -79,9 +79,7 @@ class TouchBehavior:
             touch.ud["event"] = callback
 
     def delete_clock(self, widget, touch, *args):
-        expr = self.collide_point(touch.x, touch.y)
-
-        if expr:
+        if self.collide_point(touch.x, touch.y):
             try:
                 Clock.unschedule(touch.ud["event"])
             except KeyError:

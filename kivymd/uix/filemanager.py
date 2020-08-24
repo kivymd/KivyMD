@@ -394,12 +394,10 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.history = []  # directory navigation history
-        # If False - do not add a directory to the history -
-        # The user moves down the tree.
-        self.history_flag = True
+
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
+
         self.add_widget(
             FloatButton(
                 callback=self.select_directory_on_press_button,
@@ -407,6 +405,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                 icon=self.icon,
             )
         )
+
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
 
@@ -457,8 +456,8 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
             The path to the directory that will be opened in the file manager.
         """
 
-        dirs, files = self.get_content(path)
         self.current_path = path
+        dirs, files = self.get_content()
         manager_list = []
 
         if dirs == [] and files == []:  # selected directory
@@ -546,20 +545,15 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                 )
         return access_string
 
-    def get_content(self, path):
+    def get_content(self):
         """Returns a list of the type [[Folder List], [file list]]."""
 
         try:
             files = []
             dirs = []
 
-            if self.history_flag:
-                self.history.append(path)
-            if not self.history_flag:
-                self.history_flag = True
-
-            for content in os.listdir(path):
-                if os.path.isdir(os.path.join(path, content)):
+            for content in os.listdir(self.current_path):
+                if os.path.isdir(os.path.join(self.current_path, content)):
                     if self.search == "all" or self.search == "dirs":
                         if (not self.show_hidden_files) and (
                             content.startswith(".")
@@ -572,7 +566,9 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                     if self.search == "all" or self.search == "files":
                         if len(self.ext) != 0:
                             try:
-                                files.append(os.path.join(path, content))
+                                files.append(
+                                    os.path.join(self.current_path, content)
+                                )
                             except IndexError:
                                 pass
                         else:
@@ -583,10 +579,10 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                                 continue
                             else:
                                 files.append(content)
+
             return dirs, files
 
         except OSError:
-            self.history.pop()
             return None, None
 
     def close(self):
@@ -598,28 +594,24 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def select_dir_or_file(self, path):
         """Called by tap on the name of the directory or file."""
 
-        if os.path.isfile(path):
-            self.select_path(path)
-            return
+        if os.path.isfile(os.path.join(self.current_path, path)):
+            self.select_path(os.path.join(self.current_path, path))
 
-        self.current_path = path
-        self.show(path)
+        else:
+            self.current_path = path
+            self.show(path)
 
     def back(self):
         """Returning to the branch down in the directory tree."""
 
-        if len(self.history) == 1:
-            path, end = os.path.split(self.history[0])
-            if end == "":
-                self.close()
-                self.exit_manager(1)
-                return
-            self.history[0] = path
+        path, end = os.path.split(self.current_path)
+
+        if not end:
+            self.close()
+            self.exit_manager(1)
+
         else:
-            self.history.pop()
-            path = self.history[-1]
-        self.history_flag = False
-        self.select_dir_or_file(path)
+            self.show(path)
 
     def select_directory_on_press_button(self, *args):
         """Called when a click on a floating button."""

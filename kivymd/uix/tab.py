@@ -300,7 +300,8 @@ Dynamic tab management
             self.root.ids.tabs.add_widget(Tab(text=f"{self.index} tab"))
 
         def remove_tab(self):
-            self.index -= 1
+            if self.index > 1:
+                self.index -= 1
             self.root.ids.tabs.remove_widget(
                 self.root.ids.tabs.get_tab_list()[0]
             )

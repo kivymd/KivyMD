@@ -229,7 +229,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
             )
             Clock.schedule_once(self.display_tooltip, -1)
 
-    def on_leave(self):
+    def on_leave(self, *args):
         """See
         :attr:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior.on_leave`
         method in :class:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior`
@@ -239,6 +239,10 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
         if self._tooltip:
             Window.remove_widget(self._tooltip)
             self._tooltip = None
+
+    def show(self, duration=float('inf')):
+        self.on_enter(True)
+        Clock.schedule_once(self.on_leave, duration)
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):

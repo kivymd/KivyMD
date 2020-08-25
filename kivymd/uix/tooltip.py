@@ -243,6 +243,9 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     def show(self, duration=float('inf')):
         self.on_enter(True)
         Clock.schedule_once(self.on_leave, duration)
+        
+    def hide(self):
+        self.on_leave()
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):

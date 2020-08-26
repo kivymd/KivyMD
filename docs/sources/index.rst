@@ -2,6 +2,7 @@ Welcome to KivyMD's documentation!
 ==================================
 
 .. autoapimodule:: kivymd
+   :noindex:
 
 Contents
 --------

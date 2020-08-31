@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 
 #
@@ -16,6 +15,7 @@ from kivy.graphics.stencil_instructions import (
 )
 from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
+
 # Eliminar!
 from kivy.metrics import dp, sp
 from kivy.properties import (
@@ -50,15 +50,6 @@ from kivymd.uix.behaviors import (
 from kivymd.uix.label import MDIcon
 from kivymd.uix.tooltip import MDTooltip
 
-print("'distutils' not in sys.modules")
-print("distutils" not in sys.modules)
-print("distutils" not in sys.modules)
-print("distutils" not in sys.modules)
-
-print("'distutils' not in sys.modules")
-print("distutils" not in sys.modules)
-print("distutils" not in sys.modules)
-print("distutils" not in sys.modules)
 """
 Components/Button
 =================

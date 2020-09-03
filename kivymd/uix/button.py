@@ -5,7 +5,12 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Line, Mesh, Rectangle  # Color,
-from kivy.graphics.context_instructions import Color
+from kivy.graphics.context_instructions import (
+    Color,
+    PopMatrix,
+    PushMatrix,
+    Rotate,
+)
 from kivy.graphics.instructions import InstructionGroup
 from kivy.graphics.stencil_instructions import (
     StencilPop,
@@ -15,8 +20,7 @@ from kivy.graphics.stencil_instructions import (
 )
 from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
-
-# Eliminar!
+from kivy.logger import Logger
 from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
@@ -676,7 +680,7 @@ class BaseButton(
 
     lbl_txt = ObjectProperty()
 
-    text_color = ListProperty([1.0, 1.0, 1.0, 1.0])
+    text_color = ListProperty()
     """
     The color of the text in ``rgba`` format.
 
@@ -867,6 +871,7 @@ class BaseButton(
     # and the outside properties will update this values when necesary
     _current_button_color = ListProperty([1.0, 1.0, 1.0, 0.0])
     _current_text_color = ListProperty([1.0, 1.0, 1.0, 0.0])
+    # _current_text = StringProperty("")
     _current_icon_color = ListProperty([1.0, 1.0, 1.0, 0.0])
     _current_line_color = ListProperty([1.0, 1.0, 1.0, 0.0])
 
@@ -915,10 +920,10 @@ class BaseButton(
     _has_line = BooleanProperty(None)
 
     # Define if the widget text color must be procesed
-    _has_text = BooleanProperty(False)
+    _has_text = BooleanProperty(None)
 
     # Define if the widget icon color must be procesed
-    _has_icon = BooleanProperty(False)
+    _has_icon = BooleanProperty(None)
 
     # Size of the Rounded Corner
     _radius = BoundedNumericProperty(1, min=1, max=None,)
@@ -929,15 +934,34 @@ class BaseButton(
 
     # Root container
     container = ObjectProperty()
+
+    # Deprecated
+    user_font_size = NumericProperty(deprecated=True)
+    """
+    Custom font size for all :class:`~icon_behavior` classes.
+
+    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty`
+    defaults to `0`.
+
+    .. warning::
+    The user_font_size property is deprecated and will be removed in future
+    verisons, please use font_size instead.
+
+
+    """
+
+    def on_user_font_size(self, instance, value):
+        self.font_size = value
+
     # -------------------------------------------------------------------------
     # Function Definitions
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(primary_palette=self._on_primary_palette)
-        Clock.schedule_once(self.__after_init__, 0)
+        Clock.schedule_once(self.__after_init__, -1)
 
-    def __after_init__(self, interval):
+    def __after_init__(self, *args):
         if self._is_filled is True:
             if self.theme_button_color is None:
                 if self.md_bg_color == [1.0, 1.0, 1.0, 0.0]:
@@ -949,8 +973,11 @@ class BaseButton(
             self._md_bg_color_disabled = self.md_bg_color_disabled
         else:
             self._md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
+        #
+        self.on__is_filled(self, self._is_filled)
         self.on_disabled(self, self.disabled)
         self.on_font_size(self, self.font_size)
+        self.on_theme_text_color(self, self.theme_text_color)
 
     def on_radius(self, instance, value):
         if value > self.height // 2:
@@ -1074,12 +1101,14 @@ class BaseButton(
                     lambda x: self.on_theme_line_color(
                         self, self.theme_line_color
                     ),
+                    -1,
                 )
             if self.theme_icon_color == "Text":
                 Clock.schedule_once(
                     lambda x: self.on_theme_icon_color(
                         self, self.theme_icon_color
                     ),
+                    -1,
                 )
 
     def on_theme_icon_color(self, instance, value):
@@ -1237,15 +1266,17 @@ class shaped_background_behaivor(BaseButton):
         # else:
         #     self.radius=self.height//2
         self.__bg_group_instructions = InstructionGroup()
-        self.canvas.before.add(self.__bg_group_instructions)
         self.bind(_current_button_color=self._update_bg_color)
         self.bind(_is_filled=self._update_bg_color)
         self.bind(pos=self._update_shape_coords)
         self.bind(size=self._update_shape_coords)
+        Clock.schedule_once(
+            lambda x: self.canvas.before.add(self.__bg_group_instructions), -1
+        )
 
     def __after_init__(self, *dt):
-        super().__after_init__(*dt)
         self._update_bg_color(self, self._current_button_color)
+        super().__after_init__(*dt)
 
     def _update_shape_coords(self, *dt):
         if self.radius:
@@ -2031,27 +2062,48 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 Builder.load_string(
     """
 <BaseRectangularButton>
-        # Todo fix the background drawing to allow a mesh instead of a
-        # RoundedRectangle to complete the behavior
-
-    # lbl_txt: lbl_txt
-    # width: lbl_txt.texture_size[0] + dp(24)
-    # markup: False
+    lbl_txt: lbl_txt.__self__
+    container: container.__self__
     # padding: (dp(8), 0)  # For MDRectangleFlatIconButton
-    height: dp(22) + sp(root._current_font_size )
     width: container.width + dp(24)
+    height: dp(22) + sp(root._current_font_size )
+    # canvas:
+    #     Color:
+    #         rgba:[0.6, 0.55, 0.45, 1]
+    #     Rectangle:
+    #         pos:self.pos
+    #         size:self.size
     BoxLayout:
         size_hint:None, None
-        size: self.minimum_width, self.minimum_height
-        # size:10, 10
+        # size: self.minimum_width, self.minimum_height
+        width: self.minimum_width
         id: container
         spacing: root.spacing
-        # canvas:
+        # canvas.before:
         #     Color:
-        #         rgb:.2, .7, .2
+        #         rgb:.42, .67, .55
         #     Rectangle:
         #         pos:self.pos
         #         size:self.size
+        #     Color:
+        #         rgb:1,0,0
+        #     Rectangle:
+        #         pos:self.pos
+        #         size:5,5
+        #     Rectangle:
+        #         pos:self.pos
+        #         size:-5,-5
+        #     Color:
+        #         rgb:1,0,1,1
+        #     Rectangle:
+        #         pos:self.right,self.top
+        #         size:5,5
+        #     Rectangle:
+        #         pos:self.right,self.top
+        #         size:-5,-5
+        on_children:
+            self.width = self.minimum_width
+            self.height = self.minimum_height
         MDLabel:
             id: lbl_txt
             text: root.text if root.show_label else ''
@@ -2097,36 +2149,52 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     )
     __bg_instruction = ObjectProperty(None)
 
+    lbl_txt = ObjectProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    def __after_init__(self, *args):
+        if self.text_color:
+            self.theme_text_color = "Custom"
+        super().__after_init__(*args)
         self.lbl_txt = self.ids.lbl_txt
         self.container = self.ids.container
         self.lbl_txt.bind(texture_size=self._update_width)
-        # Clock.schedule_once(lambda x: self.on_text(self, self.text))
-        # self.width = self.lbl_txt.texture_size[0] + dp(24)
-
-    def __after_init__(self, *dt):
-        super().__after_init__(*dt)
+        self.on_theme_text_color(self, self.theme_text_color)
+        self.theme_text_color = "Custom" if self.text_color else "Primary_color"
         self._update_width()
+        # Logger.debug(f"TEST: AFTER_INIT IN BaseRectangularButton ::  self : {self}")
+        # Logger.debug(f"TEST: AFTER_INIT IN BaseRectangularButton ::  text_color : {self.text_color}")
 
     def _update_width(self, *dt):
         for i in self.container.children:
             if hasattr(i, "texture_size"):
-                i.width = i.texture_size[0]
                 i.text_size = None, self.height
+                i.width = i.texture_size[0]
+                i.height = self.container.height
         if hasattr(self, "icon_position"):
             if self.icon_position == "icon_only":
                 if not self.font_size:
                     self.size = [dp(48), dp(48)]
                 else:
                     self.size = [
-                        self.font_size + dp(23),
-                        self.font_size + dp(23),
+                        self.font_size + dp(24),
+                        self.font_size + dp(24),
                     ]
                 return
-        self.container.width = self.container.minimum_width
+        # self.container.width = self.container.minimum_width
+        self.container.height = self.height
+        Logger.debug(
+            f"TEST: TEXT={self.text}\n"
+            f"\tChildren == self.container in [{type(self)}]::{self.children[0] is self.container}\n"
+            f"\tchildren:\t{self.children[0]}; size:{self.children[0].size} \n"
+            f"\tcontainer:\t{self.container}; size:{self.container.size}\n"
+            f"\tself size:\t{self.size}\n"
+            "\n"
+        )
 
-    _height = NumericProperty(0)
+    # _height = NumericProperty(0)
 
 
 class icon_behavior(BaseRectangularButton):
@@ -2138,12 +2206,13 @@ class icon_behavior(BaseRectangularButton):
     __icon_bg = ObjectProperty()
     __icon_source = StringProperty()
     __had_fill = BooleanProperty()
+    icon_rotation = NumericProperty()
+    __current_rotation = NumericProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._has_icon = True
-        if not self.icon:
-            self.icon = "home"
+        # self._is_filled = True
         if not self.theme_icon_color:
             self.theme_icon_color = "Text"
         if not self.icon_position:
@@ -2161,10 +2230,10 @@ class icon_behavior(BaseRectangularButton):
         self.bind(_current_icon_color=self._update_icon)
         self.bind(_current_font_size=self._update_icon)
         self.bind(pos=self.update_icon_canvas_coords)
-        # self.bind(size=self.update_icon_canvas_coords)
         self.__Icon_instruction = InstructionGroup()
+        self.bind(size=self.update_icon_canvas_coords)
         Clock.schedule_once(
-            lambda x: self.canvas.before.add(self.__Icon_instruction)
+            lambda x: self.canvas.add(self.__Icon_instruction), -1
         )
         # self.bind(_current_text_color=self._update_icon)
 
@@ -2221,15 +2290,17 @@ class icon_behavior(BaseRectangularButton):
     def __after_init__(self, *dt):
         super().__after_init__(*dt)
         self._update_icon(self, 1)
+        self.on_icon(self, self.on_icon)
         # self.update_icon_canvas()
-        Clock.schedule_once(self.update_icon_canvas, 0)
+        self.on_icon_position(self, self.icon_position)
+        Clock.schedule_once(self.update_icon_canvas, -1)
 
     def on_icon(self, instance, value):
-        if self._has_icon:
+        if self._has_icon and self.container:
             icon_error = 0
             if not self.__icon:
                 self.__icon = MDIcon(
-                    icon="",
+                    icon="" if not self.icon else self.icon,
                     theme_text_color=self._current_theme_icon_color,
                     font_size=self._current_font_size,
                     text_color=self._current_icon_color,
@@ -2245,14 +2316,15 @@ class icon_behavior(BaseRectangularButton):
                     self.__icon.icon = self.icon
                 elif Path(self.icon).resolve().exists():
                     self.__icon.icon = ""
-                    Clock.schedule_once(self.update_icon_canvas)
+                    Clock.schedule_once(self.update_icon_canvas, -1)
                 else:
                     icon_error = True
                 self.__icon.width = self.__icon.texture_size[0]
+                self.__icon.height = self.__icon.texture_size[1]
                 self.on_icon_position(self, self.icon_position)
 
             if self.__icon in self.container.children and icon_error is True:
-                Logger.error(f"Invalid Icon {self.icon}")
+                Logger.error(f"Invalid Icon {self.icon} at {self}")
                 self.container.remove_widget(self.__icon)
 
     def _update_icon(self, instance, value):
@@ -2269,23 +2341,31 @@ class icon_behavior(BaseRectangularButton):
             self.update_icon_canvas()
 
     def on_icon_position(self, instance, value):
-        if self.__icon:
+        if self.__icon and self.container:
+            if self.__icon.parent:
+                self.__icon.parent.remove_widget(self.__icon)
+            if self.lbl_txt.parent:
+                self.lbl_txt.parent.remove_widget(self.lbl_txt)
+            #
             if self.icon_position == "left":
-                self.container.remove_widget(self.__icon)
                 self.container.add_widget(self.__icon)
-                self.container.remove_widget(self.lbl_txt)
                 self.container.add_widget(self.lbl_txt)
+            #
             elif self.icon_position == "right":
-                self.container.remove_widget(self.__icon)
+                self.container.add_widget(self.lbl_txt)
                 self.container.add_widget(self.__icon)
+            #
             elif self.icon_position == "icon_only":
-                self.container.remove_widget(self.__icon)
-                self.container.remove_widget(self.lbl_txt)
                 self.container.add_widget(self.__icon)
+            #
             else:
                 self.container.remove_widget(self.__icon)
             self._update_width(self.__icon.texture_size)
             self.update_icon_canvas()
+            #
+
+    def on__has_line(self, instance, value):
+        self.on_theme_line_color(self, self.theme_line_color)
 
     def on__has_icon(self, instance, value):
         self.on_icon(self, self.icon)
@@ -2313,6 +2393,34 @@ class icon_behavior(BaseRectangularButton):
                 else [1] * 4
             )
         super().on_disabled(instance, value)
+
+    def rotate_icon(self, degree, *dt):
+        if self.__icon:
+            if self.icon_position == "icon_only":
+                with self.__icon.canvas.before:
+                    PushMatrix()
+                    Rotate(angle=degree, origin=self.__icon.center)
+            else:
+                with self.__Icon_instruction:
+                    PushMatrix()
+                    Rotate(angle=degree, origin=self.__icon.center)
+
+            with self.__icon.canvas:
+                PopMatrix()
+
+    def on_icon_rotation(self, instance, value):
+        val = value - self.__current_rotation
+        self.rotate_icon(val)
+        self.__current_rotation = value
+
+    def rot_90(self, *dt, reverse=False):
+        if self.__icon:
+            self.ev = Animation(
+                icon_rotation=(0 if reverse else -90),
+                duration=0.125,
+                t="in_quad",
+            )
+            self.ev.start(self)
 
 
 # ------------------------------------------------------------------------------
@@ -2364,24 +2472,41 @@ Builder.load_string(
         # Todo fix the background drawing to allow a mesh instead of a
         # RoundedRectangle to complete the behavior
 
-    height: dp(22) + sp(root._current_font_size )
+    # height: dp(22) + sp(root._current_font_size )
     # width: container.width + dp(24)
-    size:
-        (dp(48), dp(48)) \
-        if not root.font_size \
-        else (dp(root.font_size + 23), dp(root.font_size + 23))
-    BoxLayout:
-        size_hint:None, None
-        size: self.minimum_width, self.minimum_height
-        # size:10, 10
-        id: container
-        # spacing: root.spacing
-        # canvas:
-        #     Color:
-        #         rgb:.2, .7, .2
-        #     Rectangle:
-        #         pos:self.pos
-        #         size:self.size
+    # container: container.__self__
+    # size:
+    #     (dp(48), dp(48)) \
+    #     if not root.font_size \
+    #     else (dp(root.font_size + 23), dp(root.font_size + 23))
+    # BoxLayout:
+    #     size_hint:None, None
+    #     size: self.minimum_width, self.minimum_height
+    #     # size:10, 10
+    #     id: container
+    #     # spacing: root.spacing
+    #     canvas:
+    #         Color:
+    #             rgb:.32, .47, .85
+    #         Rectangle:
+    #             pos:self.pos
+    #             size:self.size
+    #         Color:
+    #             rgb:1,.2,.7
+    #         Rectangle:
+    #             pos:self.pos
+    #             size:5,-5
+    #         Rectangle:
+    #             pos:self.pos
+    #             size:-5,5
+    #         Color:
+    #             rgb:.51,0.5,.71
+    #         Rectangle:
+    #             pos:self.right,self.top
+    #             size:5,-5
+    #         Rectangle:
+    #             pos:self.right,self.top
+    #             size:-5,+5
 
     """,
     filename="MDBaseRoundButton.kv",
@@ -2396,7 +2521,8 @@ class BaseRoundButton(
     on-touch behavior
     """
 
-    spacing = NumericProperty(4)
+    spacing = NumericProperty(dp(4))
+
     width = BoundedNumericProperty(
         dp(24), min=dp(24), max=None, errorhandler=lambda x: dp(24)
     )
@@ -2405,10 +2531,13 @@ class BaseRoundButton(
     )
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self.corner_type = "Rounded"
         self._is_filled = True
-        self.container = self.ids.container
+        super().__init__(**kwargs)
+
+    def __after_init__(self, *args):
+        super().__after_init__(*args)
+        # self.container = self.ids.container
 
     def on_width(self, instance, value):
         self.height = value
@@ -2419,7 +2548,6 @@ class BaseRoundButton(
         self.radius = self.width // 2
 
     def on_icon(self, *dt):
-        super().on_icon(*dt)
         if hasattr(self, "__icon"):
             if self.__icon.source is not None:
                 self._is_filled = True
@@ -2428,6 +2556,7 @@ class BaseRoundButton(
                 if isinstance(self, MDIconButton):
                     self._is_filled = False
                     self.__bg_instruction.source = None
+        super().on_icon(*dt)
         pass
 
     # def _update_width(self, *dt):
@@ -2451,8 +2580,8 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self._is_filled = True
         self._is_filled = False
+        # self._is_filled = True
 
 
 # ------------------------------------------------------------------------------
@@ -2469,6 +2598,9 @@ class MDFlatButton(
         self._has_text = True
         self.show_label = True
         self._is_filled = False
+
+    def __after_init__(self, *kwargs):
+        super().__after_init__(*kwargs)
 
 
 # ------------------------------------------------------------------------------
@@ -2545,11 +2677,12 @@ class MDRaisedButton(
         self._has_line = False
         self.corner_type = "Square"
 
-    def __after_init__(self, interval):
-        super().__after_init__(interval)
+    def __after_init__(self, *args):
         if self.theme_text_color is None:
             self.theme_text_color = "White"
-            self.on_theme_icon_color(self, self.theme_icon_color)
+            self.text_color = self._current_text_color
+        self.on_theme_icon_color(self, self.theme_icon_color)
+        super().__after_init__(*args)
 
 
 # ------------------------------------------------------------------------------
@@ -2576,30 +2709,27 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
     over the layout.
 
     Check the examples for better usage advice.
+    bases: `MDIconButton`, `CircularElevationBehavior`
     """
 
-    icon = StringProperty("android")
-    """
-    Button icon.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'android'`.
-    """
-
-    background_palette = StringProperty("Accent")
+    background_palette = StringProperty("Accent", deprecated=True)
     """
     The name of the palette used for the background color of the button.
 
     :attr:`background_palette` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'Accent'`.
+    and defaults to `'Accent'
+
+    This property is now deprecated and will be removed in next updates
+    use theme_button_color instead`.
     """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._is_filled = True
+        self.theme_button_color = "Accent"
 
-    def __after_init__(self, *dt):
-        super().__after_init__(*dt)
+    def __after_init__(self, *args):
+        super().__after_init__(*args)
 
         if not self.font_size:
             self.font_size = dp(56)
@@ -2667,18 +2797,18 @@ class MDRoundImageButton(MDFloatingActionButton):
 #     """,
 #     filename="MDRectangleFlatButton.kv",
 # )
-# class MDRectangleFlatButton(MDFlatButton):
 class MDRectangleFlatButton(BaseOutlineButton, MDFlatButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._has_line = True
+
+    def __after_init__(self, *args):
+        super().__after_init__(*args)
+        self._has_line = True if self._has_line is None else self._has_line
         if self.theme_line_color is None:
             self.theme_line_color = "Text"
         if self.corner_type is None:
             self.corner_type = "Square"
 
-    # def __after_init__(self,*dt):
-    # super().__after_init__(*dt)
     # self.on_corner_type(self,self.on_corner_type)
 
 
@@ -2696,7 +2826,7 @@ class MDRoundFlatButton(BaseOutlineButton, MDFlatButton):
     # _radius = NumericProperty("18dp")
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._has_line = True
+        self._has_line = False if self._has_line is False else True
         if self.theme_line_color is None:
             self.theme_line_color = "Text"
         if self.corner_type is None:
@@ -2799,76 +2929,34 @@ class MDFillRoundFlatButton(
         self._is_filled = True
         self._has_line = False
 
-    def __after_init__(self, *dt):
-        super().__after_init__(*dt)
+    def __after_init__(self, *args):
+        if self.theme_text_color is None:
+            self.theme_text_color = "White"
+            self.text_color = self._current_text_color
+        self.on_theme_icon_color(self, self.theme_icon_color)
+        super().__after_init__(*args)
         self.on_corner_type(self, self.on_corner_type)
-
-        # if self.disabled:
-        #     self.elevation = 0
-        #     self._update_shadow(instance, 0)
-        # else:
-        #     self.elevation = self._elevation_normal
-        #     self._update_elevation(instance, self.elevation)
-        # super().on_disabled(instance, value)
 
 
 # ------------------------------------------------------------------------------
 # MDRectangleFlatIconButton
 # ------------------------------------------------------------------------------
 #
-# Builder.load_string(
-#     """
-# <MDRectangleFlatIconButton>
-#     # canvas.before:
-#     #     Color:
-#     #         rgba: root._current_line_color
-#     #     Line:
-#     #         width: 1
-#     #         rectangle: (self.x, self.y, self.width, self.height)
-#     #
-#     # size_hint_x: None
-#     # width: lbl_txt.texture_size[0] + lbl_ic.texture_size[0] + box.spacing * 3
-#     #
-#     # BoxLayout:
-#     #     id: box
-#     #     spacing: dp(10)
-#     #
-#     #     MDIcon:
-#     #         id: lbl_ic
-#     #         icon: root.icon
-#     #         theme_text_color: "Custom" #TODO make it check the theme_icon_color
-#     #         text_color: root._current_icon_color
-#     #         size_hint_x: None
-#     #         width: self.texture_size[0]
-#     #
-#     #
-#     #     # Label:
-#     #     #     id: lbl_txt
-#     #     #     text: root.text
-#     #     #     font_size : sp(root._current_font_size )
-#     #     #     font_name: root.font_name if root.font_name else self.font_name
-#     #     #     shorten: True
-#     #     #     width: self.texture_size[0]
-#     #     #     color: root._current_button_color
-#     #     #     markup: root.markup
-#     """,
-#     filename="MDRectangleFlatIconButton.kv",
-# )
 
 
 class MDRectangleFlatIconButton(MDRectangleFlatButton, icon_behavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # if self.radius is None:
-        #     self.radius=self.size[1]//2
-
-    # line_color = ListProperty()
-    # """Button border color in ``rgba`` format.
-    #
-    # :attr:`line_color` is an :class:`~kivy.properties.ListProperty`
-    # and defaults to `[]`.
-    # """
+    def __after_init__(self, *args):
+        Logger.debug(
+            "TEST: __after_init__\n"
+            f"  Text:\t{self.text}\n"
+            f"  Type:\t{type(self)}\n"
+            f"  _has_line {self._has_line}\n\n"
+        )
+        self.on__has_line(self, self._has_line)
+        super().__after_init__(*args)
 
 
 # ------------------------------------------------------------------------------
@@ -2897,9 +2985,9 @@ class MDFillRoundFlatIconButton(MDFillRoundFlatButton, icon_behavior):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Logger.info(self)
-        Logger.info(self.icon)
-        Logger.info(self.theme_icon_color)
+
+    def __after_init__(self, *args):
+        super().__after_init__(*args)
         self.on_theme_icon_color(self, self.theme_icon_color)
 
     # def _on_primary_palette(self, instance, value):
@@ -2920,12 +3008,13 @@ Builder.load_string(
     theme_text_color: "Custom"
     md_bg_color: self.theme_cls.primary_color
 
-    canvas.before:
+    canvas:
         PushMatrix
         Rotate:
             angle: self._angle
             axis: (0, 0, 1)
             origin: self.center
+        # PopMatrix
     canvas.after:
         PopMatrix
     """,
@@ -2983,27 +3072,6 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
 # ------------------------------------------------------------------------------
 #
 
-# Builder.load_string(
-#     """
-#
-#     """,
-#     filename="BaseFloatingLabel.kv",
-# )
-
-
-class BaseFloatingLabel(
-    ThemableBehavior, RectangularElevationBehavior, BoxLayout
-):
-    text = StringProperty()
-    text_color = ListProperty()
-    bg_color = ListProperty()
-
-
-# ------------------------------------------------------------------------------
-# MDFloatingBottomButton
-# ------------------------------------------------------------------------------
-#
-
 Builder.load_string(
     """
 <BaseFloatingLabel>
@@ -3027,10 +3095,27 @@ Builder.load_string(
         text: root.text
         size_hint: None, None
         size: self.texture_size
-        color: root.text_color
+        color: root.text_color if root.text_color else  [1]*4
     """,
-    filename="MDFloatingBottomButton.kv",
+    filename="BaseFloatingLabel.kv",
 )
+
+
+class BaseFloatingLabel(
+    ThemableBehavior,
+    RectangularElevationBehavior,
+    BoxLayout
+    #
+):
+    text = StringProperty()
+    text_color = ListProperty()
+    bg_color = ListProperty()
+
+
+# ------------------------------------------------------------------------------
+# MDFloatingBottomButton
+# ------------------------------------------------------------------------------
+#
 
 
 class MDFloatingBottomButton(BaseFloatingBottomButton):
@@ -3533,6 +3618,10 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 isinstance(widget, MDFloatingRootButton)
                 and self.rotation_root_button
             ):
+                Logger.debug(
+                    f"ROTATION of {widget}, parent: {widget.parent}\n"
+                    f"canvas: {self.canvas.children[0].children}"
+                )
                 Animation(
                     _angle=0,
                     d=self.closing_time_button_rotation,
@@ -3565,27 +3654,27 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 #
 
 if __name__ == "__main__":
-    from kivy.logger import Logger
     from kivy.uix.screenmanager import Screen
 
     from kivymd.app import MDApp
 
     kv = """
-ScrollView:
-    do_scroll_y:True
-    GridLayout:
-        id: x
-        cols: 3
-        spacing:dp(10)
-        MDBoxLayout:
-            # size_hint_x:None
-            md_bg_color:.1,.2,.3,1
-        MDBoxLayout:
-            # size_hint_x:None
-            md_bg_color:.1,.3,.3,1
-        MDBoxLayout
-            # size_hint_x:None
-            md_bg_color:.4,.3,.3,1
+Screen:
+    ScrollView:
+        do_scroll_y:True
+        GridLayout:
+            id: x
+            cols: 3
+            # spacing:dp(10)
+            MDBoxLayout:
+                # size_hint_x:None
+                md_bg_color:.1,.2,.3,1
+            MDBoxLayout:
+                # size_hint_x:None
+                md_bg_color:.1,.3,.3,1
+            MDBoxLayout
+                # size_hint_x:None
+                md_bg_color:.4,.3,.3,1
 """
 
     class Custom_flat_btn(MDFlatButton):
@@ -3807,16 +3896,40 @@ ScrollView:
                 MDFloatingActionButton(
                     icon="android", md_bg_color=app.theme_cls.primary_color,
                 ),
-                MDFloatingActionButtonSpeedDial(
-                    data={
-                        "language-python": "Python",
-                        "language-php": "PHP",
-                        "language-cpp": "C++",
-                    },
-                    rotation_root_button=True,
+                # MDFloatingActionButtonSpeedDial(
+                #     data={
+                #         "language-python": "Python",
+                #         "language-php": "PHP",
+                #         "language-cpp": "C++",
+                #         "language-java": "java",
+                #     },
+                #     rotation_root_button=True,
+                # ),
+                MDFillRoundFlatIconButton(
+                    text="MDFillRoundFlatIconButton",
+                    md_bg_color=[1, 0, 1, 1],  # not work
+                    elevation=10,
                 ),
+                MDFillRoundFlatIconButton(
+                    text="MDFillRoundFlatIconButton",
+                    md_bg_color=[1, 0, 1, 1],  # not work
+                    elevation=10,
+                ),
+                # MDFillRoundFlatIconButton(
+                #     text="MDFillRoundFlatIconButton",
+                #     md_bg_color=[1, 0, 1, 1],  # not work
+                #     elevation= 16
+                # ),
             ]
-
+            # XAX=MDFillRoundFlatIconButton(
+            #     text="ВВВВВВВВВ",
+            #     md_bg_color=[1, 0, 0, 1],  # not work
+            #     pos=[150,200],
+            # )
+            # XAX.bind(on_release=lambda *x: print(dir(XAX)))
+            # self.root.add_widget(
+            #     XAX,
+            # )
             # Logger.debug(f"MAINAPP: self.buttons is {self.buttons}")
 
             for i in self.buttons:
@@ -3901,11 +4014,14 @@ ScrollView:
                 if hasattr(i, "theme_button_color"):
                     i.theme_button_color = self.tema
                     i.theme_text_color = self.theme_text_color
-                    # i.theme_line_color = "Text" if i.theme_line_color =='Custom' else 'Custom'
+                    i.theme_line_color = (
+                        "Text" if i.theme_line_color == "Custom" else "Custom"
+                    )
                     i.corner_type = ["Square", "Rounded", "Bevel"][
                         self.le_counter
                     ]
                     try:
+                        i.icon_rotation = i.icon_rotation + 10
                         i.text = f"spacing:{i.spacing};tema_btn:{self.tema} ; tema_text:{self.theme_text_color} ; tema_line:{i.theme_line_color}: corner_type:{i.corner_type}"
                         i.icon = (
                             "home"
@@ -3916,8 +4032,8 @@ ScrollView:
                                 else "C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login.png"
                             )
                         )
-                        if isinstance(i, MDIconButton):
-                            i.font_size = i.font_size + 4
+                        # if isinstance(i, MDIconButton):
+                        # i.font_size = i.font_size + 4
                     except Exception as e:
                         Logger.debug(f"TEXT: EXCEPTION : {e}")
                         pass

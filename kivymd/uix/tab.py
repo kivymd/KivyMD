@@ -300,7 +300,8 @@ Dynamic tab management
             self.root.ids.tabs.add_widget(Tab(text=f"{self.index} tab"))
 
         def remove_tab(self):
-            self.index -= 1
+            if self.index > 1:
+                self.index -= 1
             self.root.ids.tabs.remove_widget(
                 self.root.ids.tabs.get_tab_list()[0]
             )
@@ -1107,10 +1108,13 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             raise MDTabsException(
                 "MDTabs can remove only subclass of MDTabsLabel"
             )
+        # The last tab is not deleted.
+        if len(self.tab_bar.layout.children) == 1:
+            return
         self.tab_bar.layout.remove_widget(widget)
         for tab in self.carousel.slides:
             if tab.text == widget.text:
-                self.carousel.slides.remove(tab)
+                self.carousel.remove_widget(tab)
                 break
 
     def on_slide_progress(self, *args):

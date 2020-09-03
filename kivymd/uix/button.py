@@ -553,7 +553,11 @@ class button_background_behavior(Widget):
     :attr:`a` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `0.0`.
     """
-    radius = BoundedNumericProperty(1, min=dp(2), max=None,)
+    radius = BoundedNumericProperty(
+        1,
+        min=dp(2),
+        max=None,
+    )
     """Canvas radius.
 
     .. code-block:: python
@@ -702,7 +706,10 @@ class BaseButton(
     """
 
     _current_font_size = BoundedNumericProperty(
-        sp(14), min=sp(4), max=None, errorhandler=lambda x: sp(4),
+        sp(14),
+        min=sp(4),
+        max=None,
+        errorhandler=lambda x: sp(4),
     )
     # NumericProperty(14)
     """
@@ -817,7 +824,8 @@ class BaseButton(
     """
 
     theme_button_color = OptionProperty(
-        None, options=["Primary", "Accent", "Custom", "Error"],
+        None,
+        options=["Primary", "Accent", "Custom", "Error"],
     )
     """
     Button's Background Theme.
@@ -931,7 +939,11 @@ class BaseButton(
     _has_icon = BooleanProperty(None)
 
     # Size of the Rounded Corner
-    _radius = BoundedNumericProperty(1, min=1, max=None,)
+    _radius = BoundedNumericProperty(
+        1,
+        min=1,
+        max=None,
+    )
     radius = NumericProperty(None)
 
     # height of the button
@@ -1046,9 +1058,9 @@ class BaseButton(
         """
         if self._is_filled is True:
             if self.theme_button_color == "Primary":
-                self._current_button_color = self.theme_cls._get_primary_color()[
-                    :
-                ]
+                self._current_button_color = (
+                    self.theme_cls._get_primary_color()[:]
+                )
 
             elif self.theme_button_color == "Accent":
                 self._current_button_color = self.theme_cls.accent_color
@@ -1457,7 +1469,8 @@ class shaped_background_behaivor(BaseButton):
             # all this instrucitons will be used as mask
             if self.corner_type == "Square":
                 Rectangle(
-                    pos=self.pos, size=self.size,
+                    pos=self.pos,
+                    size=self.size,
                 )
             elif self.corner_type == "Rounded":
                 RoundedRectangle(
@@ -1523,7 +1536,8 @@ class shaped_background_behaivor(BaseButton):
             StencilUnUse()
             if self.corner_type == "Square":
                 Rectangle(
-                    pos=self.pos, size=self.size,
+                    pos=self.pos,
+                    size=self.size,
                 )
             elif self.corner_type == "Rounded":
                 RoundedRectangle(
@@ -2519,7 +2533,9 @@ Builder.load_string(
 
 
 class BaseRoundButton(
-    CircularRippleBehavior, icon_behavior, BaseOutlineButton,
+    CircularRippleBehavior,
+    icon_behavior,
+    BaseOutlineButton,
 ):
     """
     Abstract base class for all round buttons, bringing in the appropriate
@@ -2596,7 +2612,9 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
 
 
 class MDFlatButton(
-    BaseRectangularButton, BaseFlatButton, BasePressedButton,
+    BaseRectangularButton,
+    BaseFlatButton,
+    BasePressedButton,
 ):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -3702,9 +3720,18 @@ Screen:
 
         def after_build(self, *dt):
             self.buttons = [
-                MDFlatButton(text="MDFLATBUTTON", text_color=[0, 0, 1, 1],),
-                MDFlatButton(text="MDFLATBUTTON", text_color=[0, 0, 1, 1],),
-                MDFlatButton(text="MDFLATBUTTON", text_color=[0, 0, 1, 1],),
+                MDFlatButton(
+                    text="MDFLATBUTTON",
+                    text_color=[0, 0, 1, 1],
+                ),
+                MDFlatButton(
+                    text="MDFLATBUTTON",
+                    text_color=[0, 0, 1, 1],
+                ),
+                MDFlatButton(
+                    text="MDFLATBUTTON",
+                    text_color=[0, 0, 1, 1],
+                ),
             ]
 
             self.buttons = self.buttons + [
@@ -3886,8 +3913,14 @@ Screen:
             #
             Logger.debug("MAINAPP: Adding MDIconButton")
             self.buttons = self.buttons + [
-                MDIconButton(icon="android", font_size="14sp",),
-                MDIconButton(icon="home", font_size="34sp",),
+                MDIconButton(
+                    icon="android",
+                    font_size="14sp",
+                ),
+                MDIconButton(
+                    icon="home",
+                    font_size="34sp",
+                ),
                 MDIconButton(
                     icon="C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login.png",
                     font_size="4sp",
@@ -3899,7 +3932,8 @@ Screen:
             Logger.debug("MAINAPP: Adding MDFloatingActionButton")
             self.buttons = self.buttons + [
                 MDFloatingActionButton(
-                    icon="android", md_bg_color=app.theme_cls.primary_color,
+                    icon="android",
+                    md_bg_color=app.theme_cls.primary_color,
                 ),
                 # MDFloatingActionButtonSpeedDial(
                 #     data={

@@ -259,8 +259,7 @@ ACTIVITY_MANAGER = """
 
 
 class BodyManagerWithPreview(MDBoxLayout):
-    """Base class for folder icons and thumbnails images in ``preview`` mode.
-    """
+    """Base class for folder icons and thumbnails images in ``preview`` mode."""
 
 
 class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):

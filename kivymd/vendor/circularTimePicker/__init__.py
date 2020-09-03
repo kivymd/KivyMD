@@ -171,8 +171,7 @@ Builder.load_string(
 
 
 class Number(Label):
-    """The class used to show the numbers in the selector.
-    """
+    """The class used to show the numbers in the selector."""
 
     size_factor = NumericProperty(0.5)
     """Font size scale.
@@ -415,8 +414,7 @@ class CircularNumberPicker(CircularLayout):
             self._center_dot.size = csize
 
     def pos_for_number(self, n):
-        """Returns the center x, y coordinates for a given number.
-        """
+        """Returns the center x, y coordinates for a given number."""
 
         if self.items == 0:
             return 0, 0
@@ -491,8 +489,7 @@ class CircularNumberPicker(CircularLayout):
 
 
 class CircularMinutePicker(CircularNumberPicker):
-    """:class:`CircularNumberPicker` implementation for minutes.
-    """
+    """:class:`CircularNumberPicker` implementation for minutes."""
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -510,8 +507,7 @@ class CircularMinutePicker(CircularNumberPicker):
 
 
 class CircularHourPicker(CircularNumberPicker):
-    """:class:`CircularNumberPicker` implementation for hours.
-    """
+    """:class:`CircularNumberPicker` implementation for hours."""
 
     # military = BooleanProperty(False)
 

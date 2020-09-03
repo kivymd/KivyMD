@@ -1,6 +1,5 @@
 from pathlib import Path
 
-#
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -675,7 +674,13 @@ class BaseButton(
     markup = BooleanProperty(False)
     """
     This property enables or dissables the markup processing in the button's
-    Label.
+    Label, and only affects buttons that have a label.
+
+    This property does not affect any icon button.
+
+    .. note:: markup language.
+    The MDlabel's markup langage is inherited from
+    :class:`~kivy.uix.label.Label`.
     """
 
     lbl_txt = ObjectProperty()

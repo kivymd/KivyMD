@@ -344,7 +344,7 @@ class NavigationLayout(FloatLayout):
         manager = self._screen_manager
         if not drawer or not manager:
             return
-        if drawer.type == "standard" or manager.width < self.width:
+        if drawer.type == "standard":
             manager.size_hint_x = None
             if drawer.anchor == "left":
                 manager.x = drawer.width + drawer.x
@@ -352,6 +352,13 @@ class NavigationLayout(FloatLayout):
             else:
                 manager.x = 0
                 manager.width = drawer.x
+        elif drawer.type == "modal":
+            manager.size_hint_x = None
+            manager.x = 0
+            if drawer.anchor == "left":
+                manager.width = self.width - manager.x
+            else:
+                manager.width = self.width
 
     def add_scrim(self, widget):
         with widget.canvas.after:

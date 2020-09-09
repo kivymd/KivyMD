@@ -69,7 +69,11 @@ def git_tag(name: str):
 def git_push(branches_to_push: list, ask: bool = True, push: bool = False):
     """Push all changes."""
     if ask:
-        push = input("Do you want to push changes? (y)") in ("", "y", "yes",)
+        push = input("Do you want to push changes? (y)") in (
+            "",
+            "y",
+            "yes",
+        )
 
     cmd = ["git", "push", "--tags", "origin", "master", *branches_to_push]
     if push:

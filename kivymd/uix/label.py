@@ -212,11 +212,12 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ListProperty,
-    OptionProperty,
     ObjectProperty,
+    OptionProperty,
     StringProperty,
 )
 from kivy.uix.label import Label
+
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 
@@ -321,8 +322,12 @@ class MDLabel(ThemableBehavior, Label):
 
     def check_font_styles(self):
         if self.font_style not in list(self.theme_cls.font_styles.keys()):
-            raise ValueError("MDLabel.font_style is set to an invalid option '{}'. "
-                             "Must be one of: {}".format( self.font_style, list(self.theme_cls.font_styles)))
+            raise ValueError(
+                "MDLabel.font_style is set to an invalid option '{}'. "
+                "Must be one of: {}".format(
+                    self.font_style, list(self.theme_cls.font_styles)
+                )
+            )
 
     def update_font_style(self, *args):
         font_info = self.theme_cls.font_styles[self.font_style]

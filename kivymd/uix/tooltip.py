@@ -71,7 +71,12 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ListProperty, NumericProperty, StringProperty
+from kivy.properties import (
+    BoundedNumericProperty,
+    ListProperty,
+    NumericProperty,
+    StringProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.material_resources import DEVICE_TYPE
@@ -150,6 +155,13 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     and defaults to `''`.
     """
 
+    tooltip_display_delay = BoundedNumericProperty(0, min=0, max=4)
+    """Tooltip dsiplay delay.
+
+    :attr:`tooltip_display_delay` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0`, min of `0` & max of `4`. This property only works on desktop.
+    """
+
     padding = ListProperty([0, 0, 0, 0])
 
     _tooltip = None
@@ -193,7 +205,12 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
         y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
         x, y = self.adjust_tooltip_position(x, y)
         self._tooltip.pos = (x, y)
-        Clock.schedule_once(self.animation_tooltip_show, 0)
+        if DEVICE_TYPE == "desktop":
+            Clock.schedule_once(
+                self.animation_tooltip_show, self.tooltip_display_delay
+            )
+        else:
+            Clock.schedule_once(self.animation_tooltip_show, 0)
 
     def animation_tooltip_show(self, interval):
         if not self._tooltip:

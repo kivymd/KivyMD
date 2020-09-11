@@ -255,7 +255,7 @@ class MDLabel(ThemableBehavior, Label):
     `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
-    :attr:`font_style` is an :class:`~kivy.properties.OptionProperty`
+    :attr:`font_style` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `'Body1'`.
     """
 

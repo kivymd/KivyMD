@@ -4,12 +4,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics import Line, Mesh, Rectangle  # Color,
-from kivy.graphics.context_instructions import (
-    Color,
-    PopMatrix,
-    PushMatrix,
-    Rotate,
-)
+from kivy.graphics.context_instructions import Color
 from kivy.graphics.instructions import InstructionGroup
 from kivy.graphics.stencil_instructions import (
     StencilPop,
@@ -50,7 +45,7 @@ from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
     RectangularRippleBehavior,
 )
-from kivymd.uix.label import MDIcon
+from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.uix.tooltip import MDTooltip
 
 """
@@ -1283,16 +1278,17 @@ class shaped_background_behaivor(BaseButton):
         # else:
         #     self.radius=self.height//2
         self.__bg_group_instructions = InstructionGroup()
-        self.bind(_current_button_color=self._update_bg_color)
-        self.bind(_is_filled=self._update_bg_color)
-        self.bind(pos=self._update_shape_coords)
-        self.bind(size=self._update_shape_coords)
+
         Clock.schedule_once(
             lambda x: self.canvas.before.add(self.__bg_group_instructions), -1
         )
 
     def __after_init__(self, *dt):
         self._update_bg_color(self, self._current_button_color)
+        self.bind(_current_button_color=self._update_bg_color)
+        self.bind(_is_filled=self._update_bg_color)
+        self.bind(pos=self._update_shape_coords)
+        self.bind(size=self._update_shape_coords)
         super().__after_init__(*dt)
 
     def _update_shape_coords(self, *dt):
@@ -2081,70 +2077,72 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 Builder.load_string(
     """
 <BaseRectangularButton>
-    lbl_txt: lbl_txt.__self__
+    # lbl_txt: lbl_txt.__self__
     container: container.__self__
     # padding: (dp(8), 0)  # For MDRectangleFlatIconButton
-    width: container.width + dp(24)
-    height: dp(22) + sp(root._current_font_size )
+    width: (container.width + dp((32 if self._has_line or self._is_filled else 16) if len(container.children) == 1 else (28 if self._is_filled or self._has_line else 22) ) ) if len(container.children) > 0 else dp(64)
+    height: dp(23) + sp(root._current_font_size)
     # canvas:
     #     Color:
-    #         rgba:[0.6, 0.55, 0.45, 1]
+    #         rgb:[0.780, 0, 0.447]
     #     Rectangle:
     #         pos:self.pos
     #         size:self.size
     BoxLayout:
-        size_hint:None, None
-        # size: self.minimum_width, self.minimum_height
+        size_hint: None, None
+        size: self.minimum_width, self.minimum_height
         width: self.minimum_width
         id: container
         spacing: root.spacing
-        # canvas.before:
-        #     Color:
-        #         rgb:.42, .67, .55
-        #     Rectangle:
-        #         pos:self.pos
-        #         size:self.size
-        #     Color:
-        #         rgb:1,0,0
-        #     Rectangle:
-        #         pos:self.pos
-        #         size:5,5
-        #     Rectangle:
-        #         pos:self.pos
-        #         size:-5,-5
-        #     Color:
-        #         rgb:1,0,1,1
-        #     Rectangle:
-        #         pos:self.right,self.top
-        #         size:5,5
-        #     Rectangle:
-        #         pos:self.right,self.top
-        #         size:-5,-5
+        canvas.before:
+            Color:
+                rgb:[0.545, 0.780, 0]
+            Rectangle:
+                pos:self.pos
+                size:self.size
+            Color:
+                rgb:1,0,0
+            Rectangle:
+                pos:self.pos
+                size:5,5
+            Rectangle:
+                pos:self.pos
+                size:-5,-5
+            Color:
+                rgb:1,0,1,1
+            Rectangle:
+                pos:self.right,self.top
+                size:5,5
+            Rectangle:
+                pos:self.right,self.top
+                size:-5,-5
         on_children:
-            self.width = self.minimum_width
-            self.height = self.minimum_height
-        MDLabel:
-            id: lbl_txt
-            text: root.text if root.show_label else ''
-            font_size : sp(root._current_font_size )
-            font_name: root.font_name if root.font_name else self.font_name
-            size_hint_x: None
-            text_size: (None, dp(22) + sp(root._current_font_size ))
-            height: self.texture_size[1]
-            theme_text_color: root._current_theme_text_color
-            text_color: root._current_text_color
-            markup: root.markup
-            valign: 'middle'
-            disabled: root.disabled
-            opposite_colors: root.opposite_colors
-            on_texture_size:
-                root._update_width()
-            # canvas.before:
-            #     Color:
-            #         rgb:.5, .5, .6
-            #     Rectangle:
-            #         pos:self.pos
-            #         size:self.size
+            root.Update_Container_size()
+        #     self.width = self.minimum_width
+        #     self.height = self.minimum_height
+            # root.width = (self.width + dp(32 if len(self.children) == 1 else 28)) if len(self.children) > 0 else dp(64)
+        # MDLabel:
+        #     id: lbl_txt
+        #     text: root.text if root.show_label else ''
+        #     font_size : sp(root._current_font_size )
+        #     font_name: root.font_name if root.font_name else self.font_name
+        #     size_hint_x: None
+        #     text_size: (None, dp(22) + sp(root._current_font_size ))
+        #     height: root._current_font_size
+        #     theme_text_color: root._current_theme_text_color
+        #     text_color: root._current_text_color
+        #     markup: root.markup
+        #     valign: 'middle'
+        #     disabled: root.disabled
+        #     opposite_colors: root.opposite_colors
+        #     on_texture_size:
+        #         root.Update_Container_size()
+        #     canvas.before:
+        #         Color:
+        #             rgb:.5, .5, .6
+        #         Rectangle:
+        #             pos:self.pos
+        #             size:self.size
     """,
     filename="MDBaseRectangularButton.kv",
 )
@@ -2159,10 +2157,8 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
 
     """
 
-    spacing = NumericProperty(4)
-    # spacing = BoundedNumericProperty(
-    #     4, min=0, max=None, errorhandler=lambda x: 4
-    # )
+    spacing = NumericProperty(8)
+
     width = BoundedNumericProperty(
         88, min=88, max=None, errorhandler=lambda x: 88
     )
@@ -2177,201 +2173,183 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         if self.text_color:
             self.theme_text_color = "Custom"
         super().__after_init__(*args)
-        self.lbl_txt = self.ids.lbl_txt
+        # self.on_theme_text_color(self, self.theme_text_color)
         self.container = self.ids.container
-        self.lbl_txt.bind(texture_size=self._update_width)
-        self.on_theme_text_color(self, self.theme_text_color)
+        self.container.bind(children=self.Update_Container_size)
         self.theme_text_color = "Custom" if self.text_color else "Primary_color"
-        self._update_width()
-        # Logger.debug(f"TEST: AFTER_INIT IN BaseRectangularButton ::  self : {self}")
-        # Logger.debug(f"TEST: AFTER_INIT IN BaseRectangularButton ::  text_color : {self.text_color}")
 
-    def _update_width(self, *dt):
-        for i in self.container.children:
-            if hasattr(i, "texture_size"):
-                i.text_size = None, self.height
-                i.width = i.texture_size[0]
-                i.height = self.container.height
+    def on__has_text(self, instance, value):
+        if value is True:
+            if not self.lbl_txt:
+                self.lbl_txt = MDLabel(
+                    text=self.text if self.show_label else "",
+                    font_size=self._current_font_size,
+                    theme_text_color=self._current_theme_text_color,
+                    opposite_colors=self.opposite_colors,
+                    text_color=self._current_text_color,
+                    valign="middle",
+                    markup=self.markup,
+                    disabled=self.disabled,
+                    size_hint_x=None,
+                    size_hint_y=None,
+                    text_size=(None, self._current_font_size),
+                    height=self._current_font_size,
+                )
+                self.lbl_txt.font_name = (
+                    self.font_name
+                    if self.font_name
+                    else self.theme_cls.font_styles["Button"][0]
+                )
+                self.container.add_widget(self.lbl_txt)
+                # self.bind(size = lambda x,y: setattr(self.lbl_txt, "text_size", [None, self._current_font_size]))
+                self.lbl_txt.bind(texture_size=self.Update_Container_size)
+
+                # TODO REMOVE THIS TEST
+                with self.lbl_txt.canvas.before:
+                    Color(0, 0.780, 0.564, 1)
+                    # cl=Color(0, 0.780, 0.564,.5)
+                    rt = Rectangle(pos=self.lbl_txt.pos, size=self.lbl_txt.size)
+                    self.lbl_txt.bind(pos=lambda x, y: setattr(rt, "pos", y))
+                    self.lbl_txt.bind(size=lambda x, y: setattr(rt, "size", y))
+
+                # TEST ZONE
+
+                # self.lbl_txt.bind(pos = lambda *x: Logger.debug(
+                #         f"TEST: label from {self}\n"
+                #         f"\t[pos]\t{self.lbl_txt.pos}\n")
+                #     )
+                # self.lbl_txt.bind(size = lambda *x: Logger.debug(
+                #         f"TEST: label from {self}\n"
+                #         f"\t[size]\t{self.lbl_txt.size}\n")
+                #     )
+                # self.lbl_txt.bind(size = lambda *x: Logger.debug(
+                #         f"TEST: {self}\n"
+                #         f"\t[size]\t{self.size}\n")
+                #     )
+                # self.lbl_txt.bind(texture_size = lambda *x: Logger.debug(
+                #         f"TEST: label from {self}\n"
+                #         f"\t[texture_size]\t{self.lbl_txt.texture_size}\n")
+                #     )
+
+        else:
+            if self.lbl_txt:
+                self.lbl_txt.unbind(texture_size=self.Update_Container_size)
+                self.container.remove_widget(self.lbl_txt)
+
+    def Update_Container_size(self, *dt):
+        if self.show_label and self.lbl_txt and self._has_text:
+            self.lbl_txt.text_size = [None, self._current_font_size]
+            self.lbl_txt.width = self.lbl_txt.texture_size[0]
+            if self._has_icon is True:
+                self.lbl_txt.height = self.container.height
+        pass
         if hasattr(self, "icon_position"):
             if self.icon_position == "icon_only":
-                if not self.font_size:
-                    self.size = [dp(48), dp(48)]
-                else:
-                    self.size = [
-                        self.font_size + dp(24),
-                        self.font_size + dp(24),
-                    ]
+                self.size = [
+                    self._current_font_size * 2,
+                    self._current_font_size * 2,
+                ]
                 return
-        # self.container.width = self.container.minimum_width
-        self.container.height = self.height
-        Logger.debug(
-            f"TEST: TEXT={self.text}\n"
-            f"\tChildren == self.container in [{type(self)}]::{self.children[0] is self.container}\n"
-            f"\tchildren:\t{self.children[0]}; size:{self.children[0].size} \n"
-            f"\tcontainer:\t{self.container}; size:{self.container.size}\n"
-            f"\tself size:\t{self.size}\n"
-            "\n"
-        )
-
-    # _height = NumericProperty(0)
+        else:
+            self.container.width = self.container.minimum_width
 
 
 class icon_behavior(BaseRectangularButton):
     icon_position = OptionProperty(None, options=["left", "right", "icon_only"])
     __icon = ObjectProperty()
-    __Icon_instruction = ObjectProperty(None)
-    __icon_cl_bg = ObjectProperty()
-    __icon_cl_bg_l = ListProperty()
-    __icon_bg = ObjectProperty()
-    __icon_source = StringProperty()
-    __had_fill = BooleanProperty()
     icon_rotation = NumericProperty()
     __current_rotation = NumericProperty()
+    __icon_mode = OptionProperty(None, options=["icon", "image", "error"])
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self._has_icon = True
-        # self._is_filled = True
+    def __after_init__(self, *dt):
+        self._has_icon = True if self._has_icon is None else self._has_icon
+        super().__after_init__(*dt)
         if not self.theme_icon_color:
             self.theme_icon_color = "Text"
+        #
         if not self.icon_position:
             if isinstance(self, MDIconButton):
                 self.icon_position = "icon_only"
             else:
                 self.icon_position = "left"
+        #
         if not self.font_size:
             self.font_size = (
                 "12sp"
                 if not isinstance(self, MDFloatingActionButton)
                 else "32sp"
             )
-        self.__icon_source = ""
-        self.bind(_current_icon_color=self._update_icon)
-        self.bind(_current_font_size=self._update_icon)
-        self.bind(pos=self.update_icon_canvas_coords)
-        self.__Icon_instruction = InstructionGroup()
-        self.bind(size=self.update_icon_canvas_coords)
-        Clock.schedule_once(
-            lambda x: self.canvas.add(self.__Icon_instruction), -1
-        )
-        # self.bind(_current_text_color=self._update_icon)
-
-    def update_icon_canvas_coords(self, *dt):
-        if self.__icon_bg and Path(self.icon).resolve().exists():
-            self.__icon_bg.pos = (
-                self.pos
-                if self.icon_position == "icon_only"
-                else self.__icon.pos
-            )
-            self.__icon_bg.size = [self.height, self.height]
-
-    def update_icon_canvas(self, *dt):
-        if self.__icon and self.__Icon_instruction and self.icon:
-            # self.unbind(pos=self.update_icon_canvas, size=self.update_icon_canvas)
-            if Path(self.icon).resolve().exists():
-                if not self.__icon_bg:
-                    self.__icon_bg = Rectangle(
-                        pos=self.pos,
-                        size=[self.height, self.height],
-                        soruce=self.icon,
-                    )
-                else:
-                    if self.__icon_bg.source == self.icon:
-                        return
-                    self.__icon_bg.pos = (
-                        self.pos
-                        if self.icon_position == "icon_only"
-                        else self.__icon.pos
-                    )
-                    self.__icon_bg.size = [self.height, self.height]
-                    self.__icon_bg.source = self.icon
-                #
-                if not self.__icon_cl_bg:
-                    self.__icon_cl_bg_l = (
-                        [1, 0, 0, 1] if self.disabled is False else [0.1] * 4
-                    )
-                    self.__icon_cl_bg = Color(self.__icon_cl_bg_l)
-                    # self.__icon_cl_bg = Color([1]*4)
-                else:
-                    self.__icon_cl_bg_l = (
-                        [1, 0, 0, 1] if self.disabled is False else [0.1] * 4
-                    )
-                    pass
-                #
-                self.__icon.size = [self.height, self.height]
-                self.__Icon_instruction.clear()
-                self.__Icon_instruction.add(self.__icon_cl_bg)
-                self.__Icon_instruction.add(self.__icon_bg)
-            else:
-                self.__Icon_instruction.clear()
-            # self.bind(pos=self.update_icon_canvas, size=self.update_icon_canvas)
-
-    def __after_init__(self, *dt):
-        super().__after_init__(*dt)
-        self._update_icon(self, 1)
-        self.on_icon(self, self.on_icon)
-        # self.update_icon_canvas()
+        #
+        # self.on_icon(self, self.on_icon)
         self.on_icon_position(self, self.icon_position)
-        Clock.schedule_once(self.update_icon_canvas, -1)
 
     def on_icon(self, instance, value):
         if self._has_icon and self.container:
-            icon_error = 0
             if not self.__icon:
                 self.__icon = MDIcon(
-                    icon="" if not self.icon else self.icon,
+                    icon=self.icon,
                     theme_text_color=self._current_theme_icon_color,
-                    font_size=self._current_font_size,
+                    opposite_colors=self.opposite_colors,
+                    font_size=(
+                        round(self._current_font_size * 1.28)
+                        if self._has_text is True
+                        else self._current_font_size
+                    ),
                     text_color=self._current_icon_color,
                     size_hint=[None, None],
                     halign="center",
                     valign="middle",
                     disabled=self.disabled,
                 )
-                self.__icon.bind(texture_size=self._update_width)
-                self.bind(font_size=self._update_icon)
-            if self.icon:
-                if self.icon in md_icons:
+                # TODO REMOVE THIS TEST
+                with self.__icon.canvas.before:
+                    Color(0, 0.780, 0.564, 1)
+                    # cl=Color(0, 0.780, 0.564,.5)
+                    rt = Rectangle(pos=self.__icon.pos, size=self.__icon.size)
+                    # binding block, unbind when it's not necesary !!!
+                    self.__icon.bind(pos=lambda x, y: setattr(rt, "pos", y))
+                    self.__icon.bind(size=lambda x, y: setattr(rt, "size", y))
+
+                self.__icon.bind(texture_size=self.Update_Container_size)
+            if value:
+                if value in md_icons:
+                    self.__icon_mode = "icon"
                     self.__icon.icon = self.icon
                 elif Path(self.icon).resolve().exists():
-                    self.__icon.icon = ""
-                    Clock.schedule_once(self.update_icon_canvas, -1)
+                    Logger.debug("THIS IS A IMAGE ICON BUTTON")
+                    self.__icon.icon = self.icon
+                    self.__icon_mode = "image"
                 else:
-                    icon_error = True
+                    self.__icon_mode = "error"
+                    # icon_error = True
                 self.__icon.width = self.__icon.texture_size[0]
                 self.__icon.height = self.__icon.texture_size[1]
-                self.on_icon_position(self, self.icon_position)
+                # self.on_icon_position(self, self.icon_position)
 
-            if self.__icon in self.container.children and icon_error is True:
+            if (
+                self.__icon in self.container.children
+                and self.__icon_mode == "error"
+            ):
                 Logger.error(f"Invalid Icon {self.icon} at {self}")
                 self.container.remove_widget(self.__icon)
-
-    def _update_icon(self, instance, value):
-        if self.__icon:
-            self.__icon.text_color = self._current_icon_color
-            self.__icon.theme_text_color = self._current_theme_icon_color
-            if self._has_text:
-                self.__icon.font_size = self._current_font_size + (
-                    self._current_font_size * 0.70
-                )
-            else:
-                self.__icon.font_size = self._current_font_size
-            self.__icon.size = self.__icon.texture_size
-            self.update_icon_canvas()
 
     def on_icon_position(self, instance, value):
         if self.__icon and self.container:
             if self.__icon.parent:
                 self.__icon.parent.remove_widget(self.__icon)
-            if self.lbl_txt.parent:
-                self.lbl_txt.parent.remove_widget(self.lbl_txt)
+            if self.lbl_txt:
+                if self.lbl_txt.parent:
+                    self.lbl_txt.parent.remove_widget(self.lbl_txt)
             #
+            Logger.debug(type(self))
             if self.icon_position == "left":
                 self.container.add_widget(self.__icon)
-                self.container.add_widget(self.lbl_txt)
+                if self._has_text is True:
+                    self.container.add_widget(self.lbl_txt)
             #
             elif self.icon_position == "right":
-                self.container.add_widget(self.lbl_txt)
+                if self._has_text is True:
+                    self.container.add_widget(self.lbl_txt)
                 self.container.add_widget(self.__icon)
             #
             elif self.icon_position == "icon_only":
@@ -2379,8 +2357,8 @@ class icon_behavior(BaseRectangularButton):
             #
             else:
                 self.container.remove_widget(self.__icon)
-            self._update_width(self.__icon.texture_size)
-            self.update_icon_canvas()
+            self.Update_Container_size(self.__icon.texture_size)
+            # self.update_icon_canvas()
             #
 
     def on__has_line(self, instance, value):
@@ -2396,50 +2374,15 @@ class icon_behavior(BaseRectangularButton):
             if self.__icon:
                 self.container.remove_widget(self.__icon)
 
-    def on_disabled(self, instance, value):
-        if (
-            self.__icon_cl_bg
-            and self.__Icon_instruction
-            and Path(self.icon).resolve().exists()
-        ):
-            self.__icon_cl_bg.rgba = (
-                (
-                    [0.7, 0.7, 0.7, 0.8]
-                    if self._is_filled is False
-                    else [0.7, 0.7, 0.7, 0.6]
-                )
-                if value is True
-                else [1] * 4
+    def Update_Container_size(self, *dt):
+        if self.__icon and self._has_icon:
+            # self.__icon.size = (self.__icon.texture_size[1],self.__icon.texture_size[1])
+            self.__icon.size = (
+                self.__icon.texture_size[1],
+                self.__icon.texture_size[1],
             )
-        super().on_disabled(instance, value)
-
-    def rotate_icon(self, degree, *dt):
-        if self.__icon:
-            if self.icon_position == "icon_only":
-                with self.__icon.canvas.before:
-                    PushMatrix()
-                    Rotate(angle=degree, origin=self.__icon.center)
-            else:
-                with self.__Icon_instruction:
-                    PushMatrix()
-                    Rotate(angle=degree, origin=self.__icon.center)
-
-            with self.__icon.canvas:
-                PopMatrix()
-
-    def on_icon_rotation(self, instance, value):
-        val = value - self.__current_rotation
-        self.rotate_icon(val)
-        self.__current_rotation = value
-
-    def rot_90(self, *dt, reverse=False):
-        if self.__icon:
-            self.ev = Animation(
-                icon_rotation=(0 if reverse else -90),
-                duration=0.125,
-                t="in_quad",
-            )
-            self.ev.start(self)
+        super().Update_Container_size(*dt)
+        pass
 
 
 # ------------------------------------------------------------------------------
@@ -2485,51 +2428,51 @@ class icon_behavior(BaseRectangularButton):
 # )
 
 
-Builder.load_string(
-    """
-<BaseRoundButton>
-        # Todo fix the background drawing to allow a mesh instead of a
-        # RoundedRectangle to complete the behavior
-
-    # height: dp(22) + sp(root._current_font_size )
-    # width: container.width + dp(24)
-    # container: container.__self__
-    # size:
-    #     (dp(48), dp(48)) \
-    #     if not root.font_size \
-    #     else (dp(root.font_size + 23), dp(root.font_size + 23))
-    # BoxLayout:
-    #     size_hint:None, None
-    #     size: self.minimum_width, self.minimum_height
-    #     # size:10, 10
-    #     id: container
-    #     # spacing: root.spacing
-    #     canvas:
-    #         Color:
-    #             rgb:.32, .47, .85
-    #         Rectangle:
-    #             pos:self.pos
-    #             size:self.size
-    #         Color:
-    #             rgb:1,.2,.7
-    #         Rectangle:
-    #             pos:self.pos
-    #             size:5,-5
-    #         Rectangle:
-    #             pos:self.pos
-    #             size:-5,5
-    #         Color:
-    #             rgb:.51,0.5,.71
-    #         Rectangle:
-    #             pos:self.right,self.top
-    #             size:5,-5
-    #         Rectangle:
-    #             pos:self.right,self.top
-    #             size:-5,+5
-
-    """,
-    filename="MDBaseRoundButton.kv",
-)
+# Builder.load_string(
+#     """
+# <BaseRoundButton>
+#         # Todo fix the background drawing to allow a mesh instead of a
+#         # RoundedRectangle to complete the behavior
+#
+#     # height: dp(22) + sp(root._current_font_size )
+#     # width: container.width + dp(24)
+#     # container: container.__self__
+#     # size:
+#     #     (dp(48), dp(48)) \
+#     #     if not root.font_size \
+#     #     else (dp(root.font_size + 23), dp(root.font_size + 23))
+#     # BoxLayout:
+#     #     size_hint:None, None
+#     #     size: self.minimum_width, self.minimum_height
+#     #     # size:10, 10
+#     #     id: container
+#     #     # spacing: root.spacing
+#     #     canvas:
+#     #         Color:
+#     #             rgb:.32, .47, .85
+#     #         Rectangle:
+#     #             pos:self.pos
+#     #             size:self.size
+#     #         Color:
+#     #             rgb:1,.2,.7
+#     #         Rectangle:
+#     #             pos:self.pos
+#     #             size:5,-5
+#     #         Rectangle:
+#     #             pos:self.pos
+#     #             size:-5,5
+#     #         Color:
+#     #             rgb:.51,0.5,.71
+#     #         Rectangle:
+#     #             pos:self.right,self.top
+#     #             size:5,-5
+#     #         Rectangle:
+#     #             pos:self.right,self.top
+#     #             size:-5,+5
+#
+#     """,
+#     filename="MDBaseRoundButton.kv",
+# )
 
 
 class BaseRoundButton(
@@ -2553,8 +2496,8 @@ class BaseRoundButton(
 
     def __init__(self, **kwargs):
         self.corner_type = "Rounded"
-        self._is_filled = True
         super().__init__(**kwargs)
+        # self._is_filled = True
 
     def __after_init__(self, *args):
         super().__after_init__(*args)
@@ -2566,21 +2509,12 @@ class BaseRoundButton(
 
     def on_height(self, instance, value):
         self.width = value
-        self.radius = self.width // 2
+        self.radius = self.height // 2
 
     def on_icon(self, *dt):
-        if hasattr(self, "__icon"):
-            if self.__icon.source is not None:
-                self._is_filled = True
-                self.__bg_instruction.source = self.__icon.source
-            else:
-                if isinstance(self, MDIconButton):
-                    self._is_filled = False
-                    self.__bg_instruction.source = None
         super().on_icon(*dt)
-        pass
 
-    # def _update_width(self, *dt):
+    # def Update_Container_size(self, *dt):
     #     pass
 
 
@@ -2616,14 +2550,16 @@ class MDFlatButton(
     BaseFlatButton,
     BasePressedButton,
 ):
+    test = OptionProperty(0, options=[1, 2, 3])
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._has_text = True
         self.show_label = True
-        self._is_filled = False
 
     def __after_init__(self, *kwargs):
         super().__after_init__(*kwargs)
+        self._has_text = True
+        self._is_filled = False
 
 
 # ------------------------------------------------------------------------------
@@ -2695,17 +2631,17 @@ class MDRaisedButton(
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._has_text = True
+
+    def __after_init__(self, *args):
         self.show_label = True
         self._has_line = False
         self.corner_type = "Square"
-
-    def __after_init__(self, *args):
         if self.theme_text_color is None:
             self.theme_text_color = "White"
             self.text_color = self._current_text_color
         self.on_theme_icon_color(self, self.theme_icon_color)
         super().__after_init__(*args)
+        self._has_text = True
 
 
 # ------------------------------------------------------------------------------
@@ -2972,13 +2908,13 @@ class MDRectangleFlatIconButton(MDRectangleFlatButton, icon_behavior):
         super().__init__(**kwargs)
 
     def __after_init__(self, *args):
-        Logger.debug(
-            "TEST: __after_init__\n"
-            f"  Text:\t{self.text}\n"
-            f"  Type:\t{type(self)}\n"
-            f"  _has_line {self._has_line}\n\n"
-        )
-        self.on__has_line(self, self._has_line)
+        # Logger.debug(
+        #     "TEST: __after_init__\n"
+        #     f"  Text:\t{self.text}\n"
+        #     f"  Type:\t{type(self)}\n"
+        #     f"  _has_line {self._has_line}\n\n"
+        # )
+        # self.on__has_line(self, self._has_line)
         super().__after_init__(*args)
 
 
@@ -3688,7 +3624,7 @@ Screen:
         GridLayout:
             id: x
             cols: 3
-            # spacing:dp(10)
+            spacing:dp(8)
             MDBoxLayout:
                 # size_hint_x:None
                 md_bg_color:.1,.2,.3,1

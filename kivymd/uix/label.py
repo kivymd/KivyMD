@@ -498,11 +498,17 @@ class MDIcon(MDLabel):
             # Setup texture.
             if not hasattr(self, "_icon_bg"):
                 self._icon_bg = Rectangle(
-                    pos=self.pos, size=self.size, source=self.source,
+                    pos=self.pos,
+                    size=self.size,
+                    source=self.source,
                 )
                 self.__Icon_instruction.add(self._icon_bg)
-                self.bind(pos=lambda x, y: setattr(self._icon_bg, "pos", y),)
-                self.bind(size=lambda x, y: setattr(self._icon_bg, "size", y),)
+                self.bind(
+                    pos=lambda x, y: setattr(self._icon_bg, "pos", y),
+                )
+                self.bind(
+                    size=lambda x, y: setattr(self._icon_bg, "size", y),
+                )
 
             #
         else:
@@ -513,7 +519,9 @@ class MDIcon(MDLabel):
             #
             if hasattr(self, "_icon_bg"):
                 # unbind resize and position events
-                self.unbind(pos=lambda x, y: setattr(self._icon_bg, "pos", y),)
+                self.unbind(
+                    pos=lambda x, y: setattr(self._icon_bg, "pos", y),
+                )
                 self.unbind(
                     size=lambda x, y: setattr(self._icon_bg, "size", y),
                 )
@@ -534,7 +542,11 @@ class MDIcon(MDLabel):
         seet Animation for more details about arguments
         you can override this function to allow a more complex animaiton.
         """
-        self.ev = Animation(rotation=degree, duration=t, t="in_quad",)
+        self.ev = Animation(
+            rotation=degree,
+            duration=t,
+            t="in_quad",
+        )
         self.ev.start(self)
 
     #

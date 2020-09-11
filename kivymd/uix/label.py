@@ -205,44 +205,44 @@ The :class:`~MDIcon` class is inherited from
 """
 
 __all__ = ("MDLabel", "MDIcon")
+from pathlib import Path
 
+from kivy.animation import Animation
+from kivy.clock import Clock
+from kivy.graphics import Rectangle
+from kivy.graphics.context_instructions import Color
+from kivy.graphics.instructions import InstructionGroup
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
     StringProperty,
 )
 from kivy.uix.label import Label
 
 from kivymd.font_definitions import theme_font_styles
+from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 
+# ------------------------------------------------------------------------------
+# MDLabel
+# ------------------------------------------------------------------------------
 Builder.load_string(
     """
 #:import md_icons kivymd.icon_definitions.md_icons
-
 
 <MDLabel>
     disabled_color: self.theme_cls.disabled_hint_text_color
     text_size: self.width, None
 
-
-<MDIcon>:
-    font_style: "Icon"
-    text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
-    source: None if self.icon in md_icons else self.icon
-    canvas:
-        Color:
-            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
-        Rectangle:
-            source: self.source if self.source else None
-            pos: self.pos
-            size: self.size
-"""
+""",
+    filename="MDLabel.kv",
 )
 
 
@@ -318,6 +318,15 @@ class MDLabel(ThemableBehavior, Label):
         self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style()
         self.on_opposite_colors(None, self.opposite_colors)
+        Clock.schedule_once(self.__after_init__, -1)
+
+    def __after_init__(self, *dt):
+        """
+        This funciton's purpose is to add the ability to call new funcitons that
+        rely in the configuraion betweem KVLang and python code instances to all
+        subclassess of MDLabel.
+        """
+        pass
 
     def update_font_style(self, *args):
         font_info = self.theme_cls.font_styles[self.font_style]
@@ -368,8 +377,60 @@ class MDLabel(ThemableBehavior, Label):
         self.on_theme_text_color(self, self.theme_text_color)
 
 
+# ------------------------------------------------------------------------------
+# MDIcon
+# ------------------------------------------------------------------------------
+Builder.load_string(
+    """
+<MDIcon>:
+    font_style: "Icon"
+    text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
+    source: None if self.icon in md_icons else self.icon
+    size_hint:(None,None)
+    on_font_size:
+        self.size = self.font_size,self.font_size
+    on_icon:
+        self.size = self.font_size,self.font_size
+    on_text:
+        self.size = self.font_size,self.font_size
+    canvas.before:
+        # Color:
+        #     rgb:1,0,0
+        # Rectangle:
+        #     pos: self.pos
+        #     size: self.size
+        PushMatrix
+        Rotate:
+            axis: 0,0,1
+            angle: root.rotation
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+""",
+    filename="MDIcon.kv",
+)
+
+
 class MDIcon(MDLabel):
-    icon = StringProperty("android")
+    """
+    MDIcon is a subclass of MDLabel. with the difference that this class only
+    accepts one character as input.
+
+    You can either use the `text` property to setup an icon from a custom font or
+    you could use the property `icon` to set a listed icon in
+    `kivymd.icon_definitions.md_icons`.
+
+    Take in count that if you set the `icon` property while having something
+    in `text`, the `text` property will be overrode by the `icon` property
+
+    .. note:: size_hint!
+    Note that the MDIcon has a deffault size_hint of `(None,None)` and
+    the size will always be `[font_size, font_size]` This allows a better
+    representation on screen.
+    """
+
+    icon = StringProperty(None)
     """
     Label icon name.
 
@@ -384,3 +445,101 @@ class MDIcon(MDLabel):
     :attr:`source` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
     """
+    _has_texture = BooleanProperty()
+
+    ev = ObjectProperty(None, allownone=True)
+
+    rotation = NumericProperty(0)
+    __Icon_instruction = ObjectProperty()
+    __current_rotation = 0
+
+    def __init__(self, **kwargs):
+        self.__Icon_instruction = InstructionGroup()
+        super().__init__(**kwargs)
+
+    def __after_init__(self, *dt):
+        super().__after_init__(*dt)
+        self.canvas.before.add(self.__Icon_instruction)
+        if self.icon is None:
+            self.icon = "help"
+            self._has_texture = False
+        else:
+            x = Path(self.icon).resolve()
+            if x.exists and x.is_file():
+                self._has_texture = True
+            else:
+                self._has_texture = False
+
+    def on_text(self, instance, value):
+        if 0 > len(value) > 1:
+            # Solo se admite una letra en caso de ser icono externo
+            self.text = value[0]
+            self._has_texture = False
+
+    def on_icon(self, instance, value):
+        value = Path(self.icon).resolve()
+        self.text = ""
+        self._has_texture = False
+        #
+        if value.exists() and value.is_file():
+            self.source = self.icon
+            self._has_texture = True
+        elif self.icon not in md_icons:
+            self.icon = "help"
+        else:
+            self.source = None
+
+    def on_source(self, instance, value):
+        if value:
+            # Setup color.
+            if not hasattr(self, "_icon_cl_bg"):
+                self._icon_cl_bg = Color([1] * 4)
+                self.__Icon_instruction.add(self._icon_cl_bg)
+            # Setup texture.
+            if not hasattr(self, "_icon_bg"):
+                self._icon_bg = Rectangle(
+                    pos=self.pos, size=self.size, source=self.source,
+                )
+                self.__Icon_instruction.add(self._icon_bg)
+                self.bind(pos=lambda x, y: setattr(self._icon_bg, "pos", y),)
+                self.bind(size=lambda x, y: setattr(self._icon_bg, "size", y),)
+
+            #
+        else:
+            # Clean instructions
+            if hasattr(self, "_icon_cl_bg"):
+                self.__Icon_instruction.remove(self._icon_cl_bg)
+                del self._icon_cl_bg
+            #
+            if hasattr(self, "_icon_bg"):
+                # unbind resize and position events
+                self.unbind(pos=lambda x, y: setattr(self._icon_bg, "pos", y),)
+                self.unbind(
+                    size=lambda x, y: setattr(self._icon_bg, "size", y),
+                )
+                self.__Icon_instruction.remove(self._icon_bg)
+                del self._icon_bg
+
+    def animate_rotation(self, degree, *dt, t=0.125, reverse=False):
+        """
+        Animate_rotation allows the developer to reproduce a simple rotation
+        animation over the widget canvas
+
+        #. the icon rotation is in degrees. rotated from the middle of the canvas.
+
+        #. The deffault duration time is 0.125 s
+
+        #. t is "in_quad" by deffect (for performance this setting is static)
+
+        seet Animation for more details about arguments
+        you can override this function to allow a more complex animaiton.
+        """
+        self.ev = Animation(rotation=degree, duration=t, t="in_quad",)
+        self.ev.start(self)
+
+    #
+
+    def on_disabled(self, instance, value):
+        # super().on_disabled(instance, value)
+        if self._has_texture:
+            self._icon_cl_bg.rgba = [1] * 4 if value is False else [0.7] * 4

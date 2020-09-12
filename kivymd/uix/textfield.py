@@ -940,10 +940,9 @@ class MDTextField(ThemableBehavior, TextInput):
                     self._anim_current_error_color(disabled_hint_text_color)
             else:
                 self._anim_current_right_lbl_color(disabled_hint_text_color)
-                Animation(
-                    duration=0.2,
-                    _current_hint_text_color=self.line_color_focus
-                ).start(self)
+                Animation(duration=0.2, _current_hint_text_color=self.line_color_focus).start(
+                    self
+                )
                 if self.helper_text_mode == "on_error":
                     self._anim_current_error_color((0, 0, 0, 0))
                 if self.helper_text_mode in ("persistent", "on_focus"):

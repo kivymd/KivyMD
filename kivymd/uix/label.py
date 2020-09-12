@@ -206,6 +206,7 @@ The :class:`~MDIcon` class is inherited from
 
 __all__ = ("MDLabel", "MDIcon")
 
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (
@@ -311,7 +312,7 @@ class MDLabel(ThemableBehavior, Label):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.check_font_styles()
+
         self.bind(
             font_style=self.update_font_style,
             can_capitalize=self.update_font_style,
@@ -320,7 +321,9 @@ class MDLabel(ThemableBehavior, Label):
         self.update_font_style()
         self.on_opposite_colors(None, self.opposite_colors)
 
-    def check_font_styles(self):
+        Clock.schedule_once(self.check_font_styles)
+
+    def check_font_styles(self, dt):
         if self.font_style not in list(self.theme_cls.font_styles.keys()):
             raise ValueError(
                 "MDLabel.font_style is set to an invalid option '{}'. "
@@ -328,15 +331,19 @@ class MDLabel(ThemableBehavior, Label):
                     self.font_style, list(self.theme_cls.font_styles)
                 )
             )
+        else:
+            return True
 
     def update_font_style(self, *args):
-        font_info = self.theme_cls.font_styles[self.font_style]
-        self.font_name = font_info[0]
-        self.font_size = sp(font_info[1])
-        if font_info[2] and self.can_capitalize:
-            self._capitalizing = True
-        else:
-            self._capitalizing = False
+        if self.check_font_styles("") is True:
+            font_info = self.theme_cls.font_styles[self.font_style]
+            self.font_name = font_info[0]
+            self.font_size = sp(font_info[1])
+            if font_info[2] and self.can_capitalize:
+                self._capitalizing = True
+            else:
+                self._capitalizing = False
+
         # TODO: Add letter spacing change
         # self.letter_spacing = font_info[3]
 

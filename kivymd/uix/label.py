@@ -213,7 +213,6 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ListProperty,
-    ObjectProperty,
     OptionProperty,
     StringProperty,
 )
@@ -248,15 +247,15 @@ Builder.load_string(
 
 
 class MDLabel(ThemableBehavior, Label):
-    font_style = ObjectProperty("Body1")
+    font_style = StringProperty("Body1")
     """
     Label font style.
 
-    Available options are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`, `'H6'`,
+    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`, `'H6'`,
     `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
-    :attr:`font_style` is an :class:`~kivy.properties.ObjectProperty`
+    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 

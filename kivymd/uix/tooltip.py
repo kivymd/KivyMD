@@ -71,7 +71,12 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ListProperty, NumericProperty, StringProperty
+from kivy.properties import (
+    BoundedNumericProperty,
+    ListProperty,
+    NumericProperty,
+    StringProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.material_resources import DEVICE_TYPE
@@ -130,24 +135,43 @@ Builder.load_string(
 
 class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     tooltip_bg_color = ListProperty()
-    """Tooltip background color in ``rgba`` format.
+    """
+    Tooltip background color in ``rgba`` format.
 
     :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     tooltip_text_color = ListProperty()
-    """Tooltip text color in ``rgba`` format.
+    """
+    Tooltip text color in ``rgba`` format.
 
     :attr:`tooltip_text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     tooltip_text = StringProperty()
-    """Tooltip text.
+    """
+    Tooltip text.
 
     :attr:`tooltip_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+    """
+
+    tooltip_display_delay = BoundedNumericProperty(0, min=0, max=4)
+    """
+    Tooltip dsiplay delay.
+
+    :attr:`tooltip_display_delay` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0`, min of `0` & max of `4`. This property only works on desktop.
+    """
+
+    shift_y = NumericProperty()
+    """
+    Y-offset of tooltip text.
+
+    :attr:`shift_y` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `0`.
     """
 
     padding = ListProperty([0, 0, 0, 0])
@@ -190,10 +214,21 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
         Window.add_widget(self._tooltip)
         pos = self.to_window(self.center_x, self.center_y)
         x = pos[0] - self._tooltip.width / 2
-        y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
+
+        if not self.shift_y:
+            y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
+        else:
+            y = pos[1] - self._tooltip.height / 2 - self.height + self.shift_y
+
         x, y = self.adjust_tooltip_position(x, y)
         self._tooltip.pos = (x, y)
-        Clock.schedule_once(self.animation_tooltip_show, 0)
+
+        if DEVICE_TYPE == "desktop":
+            Clock.schedule_once(
+                self.animation_tooltip_show, self.tooltip_display_delay
+            )
+        else:
+            Clock.schedule_once(self.animation_tooltip_show, 0)
 
     def animation_tooltip_show(self, interval):
         if not self._tooltip:

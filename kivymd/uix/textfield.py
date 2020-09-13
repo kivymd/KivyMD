@@ -906,14 +906,15 @@ class MDTextField(ThemableBehavior, TextInput):
             )
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1
-            Animation(
-                _line_blank_space_right_point=self._line_blank_space_right_point,
-                _line_blank_space_left_point=self._hint_lbl.x - dp(5),
-                _current_hint_text_color=self.line_color_focus,
-                fill_color=_fill_color,
-                duration=0.2,
-                t="out_quad",
-            ).start(self)
+            if not self._get_has_error():
+                Animation(
+                    _line_blank_space_right_point=self._line_blank_space_right_point,
+                    _line_blank_space_left_point=self._hint_lbl.x - dp(5),
+                    _current_hint_text_color=self.line_color_focus,
+                    fill_color=_fill_color,
+                    duration=0.2,
+                    t="out_quad",
+                ).start(self)
             self.has_had_text = True
             Animation.cancel_all(
                 self, "_line_width", "_hint_y", "_hint_lbl_font_size"
@@ -939,9 +940,9 @@ class MDTextField(ThemableBehavior, TextInput):
                     self._anim_current_error_color(disabled_hint_text_color)
             else:
                 self._anim_current_right_lbl_color(disabled_hint_text_color)
-                Animation(duration=0.2, color=self.line_color_focus).start(
-                    self._hint_lbl
-                )
+                Animation(
+                    duration=0.2, _current_hint_text_color=self.line_color_focus
+                ).start(self)
                 if self.helper_text_mode == "on_error":
                     self._anim_current_error_color((0, 0, 0, 0))
                 if self.helper_text_mode in ("persistent", "on_focus"):

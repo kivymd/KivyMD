@@ -322,19 +322,17 @@ class MDLabel(ThemableBehavior, Label):
 
         Clock.schedule_once(self.check_font_styles)
 
-    def check_font_styles(self, dt):
+    def check_font_styles(self, *dt):
         if self.font_style not in list(self.theme_cls.font_styles.keys()):
             raise ValueError(
-                "MDLabel.font_style is set to an invalid option '{}'. "
-                "Must be one of: {}".format(
-                    self.font_style, list(self.theme_cls.font_styles)
-                )
+                f"MDLabel.font_style is set to an invalid option '{self.font_style}'."
+                f"Must be one of: {list(self.theme_cls.font_styles)}"
             )
         else:
             return True
 
     def update_font_style(self, *args):
-        if self.check_font_styles("") is True:
+        if self.check_font_styles() is True:
             font_info = self.theme_cls.font_styles[self.font_style]
             self.font_name = font_info[0]
             self.font_size = sp(font_info[1])

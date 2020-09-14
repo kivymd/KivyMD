@@ -151,12 +151,14 @@ ACTIVITY_MANAGER = """
     background_normal: ""
     background_down: ""
     dir_or_file_name: ""
+    _selected: False
     events_callback: lambda x: None
     orientation: "vertical"
 
     ModifiedOneLineIconListItem:
         text: root.dir_or_file_name
-        on_release: root.events_callback(root.path)
+        bg_color: self.theme_cls.bg_darkest if root._selected else self.theme_cls.bg_normal
+        on_release: root.events_callback(root.path, root)
 
         IconLeftWidget:
             icon: root.icon
@@ -181,6 +183,7 @@ ACTIVITY_MANAGER = """
     realpath: ""
     type: "folder"
     events_callback: lambda x: None
+    _selected: False
     orientation: "vertical"
     size_hint_y: None
     hright: root.height
@@ -189,10 +192,11 @@ ACTIVITY_MANAGER = """
     IconButton:
         mipmap: True
         source: root.path
+        bg_color: app.theme_cls.bg_darkest if root._selected else app.theme_cls.bg_normal
         on_release:
             root.events_callback(\
             os.path.join(root.path if root.type != "folder" else root.realpath, \
-            root.name))
+            root.name), root)
 
     LabelContent:
         text: root.name
@@ -388,6 +392,22 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `False`.
     """
 
+    multiselect = BooleanProperty(False)
+    """
+    Determines whether the user is able to select multiple files or not.
+    
+    :attr:`multiselect` is a :class:`~kivy.properties.BooleanProperty` and defaults to
+    False.
+    """
+
+    selection = ListProperty([])
+    """
+    Contains the list of files that are currently selected.
+    
+    :attr:`selection` is a read-only :class:`~kivy.properties.ListProperty` and
+    defaults to [].
+    """
+
     _window_manager = None
     _window_manager_open = False
 
@@ -456,6 +476,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         """
 
         self.current_path = path
+        self.selection = []
         dirs, files = self.get_content()
         manager_list = []
 
@@ -475,6 +496,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "name": name_dir,
                         "events_callback": self.select_dir_or_file,
                         "height": dp(150),
+                        "_selected": False,
                     }
                 )
             for name_file in self.__sort_files(files):
@@ -490,6 +512,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                             "type": "files",
                             "events_callback": self.select_dir_or_file,
                             "height": dp(150),
+                            "_selected": False,
                         }
                     )
         else:
@@ -508,6 +531,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "icon": icon,
                         "dir_or_file_name": name,
                         "events_callback": self.select_dir_or_file,
+                        "_selected": False,
                     }
                 )
             for name in self.__sort_files(files):
@@ -521,6 +545,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "icon": "file-outline",
                         "dir_or_file_name": os.path.split(name)[1],
                         "events_callback": self.select_dir_or_file,
+                        "_selected": False,
                     }
                 )
         self.ids.rv.data = manager_list
@@ -590,11 +615,20 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self._window_manager.dismiss()
         self._window_manager_open = False
 
-    def select_dir_or_file(self, path):
+    def select_dir_or_file(self, path, widget):
         """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(os.path.join(self.current_path, path)):
-            self.select_path(os.path.join(self.current_path, path))
+            if self.multiselect:
+                file_path = os.path.join(self.current_path, path)
+                if file_path in self.selection:
+                    widget._selected = False
+                    self.selection.remove(file_path)
+                else:
+                    widget._selected = True
+                    self.selection.append(file_path)
+            else:
+                self.select_path(os.path.join(self.current_path, path))
 
         else:
             self.current_path = path
@@ -615,7 +649,10 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def select_directory_on_press_button(self, *args):
         """Called when a click on a floating button."""
 
-        self.select_path(self.current_path)
+        if self.multiselect:
+            self.select_path(self.selection)
+        else:
+            self.select_path(self.current_path)
 
 
 Builder.load_string(ACTIVITY_MANAGER)

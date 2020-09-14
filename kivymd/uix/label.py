@@ -452,6 +452,8 @@ class MDIcon(MDLabel):
     rotation = NumericProperty(0)
     __Icon_instruction = ObjectProperty()
     __current_rotation = 0
+    _icon_cl_bg = ObjectProperty(None, allownone=True)
+    _icon_bg = ObjectProperty(None, allownone=True)
 
     def __init__(self, **kwargs):
         self.__Icon_instruction = InstructionGroup()
@@ -481,43 +483,58 @@ class MDIcon(MDLabel):
         self.text = ""
         self._has_texture = False
         #
-        if value.exists() and value.is_file():
+        if self.icon in md_icons:
+            self.source = None
+        elif value.exists() and value.is_file():
             self.source = self.icon
             self._has_texture = True
-        elif self.icon not in md_icons:
-            self.icon = "help"
+            self.on_source(self, self.source)
         else:
+            self.icon = "help"
             self.source = None
 
     def on_source(self, instance, value):
         if value:
-            # Setup color.
-            if not hasattr(self, "_icon_cl_bg"):
-                self._icon_cl_bg = Color([1] * 4)
+            _value = Path(self.icon)
+            if _value.exists() and _value.is_file():
+                # Setup color.
+                if self._icon_cl_bg is None:
+                    self._icon_cl_bg = Color([1] * 4)
+                # Setup texture.
+                if self._icon_bg is None:
+                    self._icon_bg = Rectangle(
+                        pos=self.pos,
+                        size=self.size,
+                        source=value,
+                    )
+                    self.bind(
+                        pos=lambda x, y: setattr(self._icon_bg, "pos", y)
+                        if self._icon_bg
+                        else "",
+                    )
+                    self.bind(
+                        size=lambda x, y: setattr(self._icon_bg, "size", y)
+                        if self._icon_bg
+                        else "",
+                    )
+                self._icon_bg.source = value
+                self.__Icon_instruction.clear()
                 self.__Icon_instruction.add(self._icon_cl_bg)
-            # Setup texture.
-            if not hasattr(self, "_icon_bg"):
-                self._icon_bg = Rectangle(
-                    pos=self.pos,
-                    size=self.size,
-                    source=self.source,
-                )
                 self.__Icon_instruction.add(self._icon_bg)
-                self.bind(
-                    pos=lambda x, y: setattr(self._icon_bg, "pos", y),
-                )
-                self.bind(
-                    size=lambda x, y: setattr(self._icon_bg, "size", y),
+            else:
+                raise ValueError(
+                    "Invalid File Extension.\n"
+                    f"The file '{value}' is not a valid image!"
                 )
 
             #
         else:
             # Clean instructions
-            if hasattr(self, "_icon_cl_bg"):
+            if self._icon_cl_bg is not None:
                 self.__Icon_instruction.remove(self._icon_cl_bg)
-                del self._icon_cl_bg
+                # self._icon_cl_bg = None
             #
-            if hasattr(self, "_icon_bg"):
+            if self._icon_bg is not None:
                 # unbind resize and position events
                 self.unbind(
                     pos=lambda x, y: setattr(self._icon_bg, "pos", y),
@@ -526,7 +543,7 @@ class MDIcon(MDLabel):
                     size=lambda x, y: setattr(self._icon_bg, "size", y),
                 )
                 self.__Icon_instruction.remove(self._icon_bg)
-                del self._icon_bg
+                # self._icon_bg = None
 
     def animate_rotation(self, degree, *dt, t=0.125, reverse=False):
         """
@@ -553,5 +570,5 @@ class MDIcon(MDLabel):
 
     def on_disabled(self, instance, value):
         # super().on_disabled(instance, value)
-        if self._has_texture:
+        if self._has_texture and self._icon_cl_bg:
             self._icon_cl_bg.rgba = [1] * 4 if value is False else [0.7] * 4

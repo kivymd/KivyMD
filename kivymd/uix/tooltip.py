@@ -94,12 +94,6 @@ Builder.load_string(
     height: self.minimum_height + root.padding[1]
     opacity: 0
 
-    padding:
-        dp(8) if DEVICE_TYPE == "desktop" else dp(16), \
-        dp(4), \
-        dp(8) if DEVICE_TYPE == "desktop" else dp(16), \
-        dp(4)
-
     canvas.before:
         PushMatrix
         Color:
@@ -116,7 +110,6 @@ Builder.load_string(
             y: root._scale_y
     canvas.after:
         PopMatrix
-
 
     Label:
         id: label_tooltip
@@ -173,8 +166,6 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     :attr:`shift_y` is an :class:`~kivy.properties.StringProperty`
     and defaults to `0`.
     """
-
-    padding = ListProperty([0, 0, 0, 0])
 
     _tooltip = None
 
@@ -294,3 +285,12 @@ class MDTooltipViewClass(ThemableBehavior, BoxLayout):
 
     _scale_x = NumericProperty(0)
     _scale_y = NumericProperty(0)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.padding = [
+            dp(8) if DEVICE_TYPE == "desktop" else dp(16),
+            dp(4),
+            dp(8) if DEVICE_TYPE == "desktop" else dp(16),
+            dp(4),
+        ]

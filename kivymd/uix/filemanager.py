@@ -395,7 +395,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     multiselect = BooleanProperty(False)
     """
     Determines whether the user is able to select multiple files or not.
-    
+
     :attr:`multiselect` is a :class:`~kivy.properties.BooleanProperty` and defaults to
     False.
     """
@@ -403,7 +403,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     selection = ListProperty([])
     """
     Contains the list of files that are currently selected.
-    
+
     :attr:`selection` is a read-only :class:`~kivy.properties.ListProperty` and
     defaults to [].
     """
@@ -649,7 +649,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def select_directory_on_press_button(self, *args):
         """Called when a click on a floating button."""
 
-        if self.multiselect:
+        if len(self.selection) > 0:
             self.select_path(self.selection)
         else:
             self.select_path(self.current_path)

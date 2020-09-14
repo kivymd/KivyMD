@@ -29,7 +29,7 @@ Usage
 
         MDRaisedButton:
             text: "Create simple snackbar"
-            on_release: Snackbar(text="This is a snackbar!").show()
+            on_release: Snackbar(text="This is a snackbar!").open()
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
 
@@ -49,9 +49,29 @@ Usage with padding
 
 .. code-block:: python
 
-    Snackbar(text="This is a snackbar!", padding="20dp").show()
+    Snackbar(text="This is a snackbar!", padding="20dp").open()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-padding.gif
+    :align: center
+
+Custom text color
+-----------------
+
+.. code-block:: python
+
+    Snackbar(text="[color=#ddbb34]This is a snackbar![/color]", size_hint_x=.7, padding="20dp").open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-custom-color.png
+    :align: center
+
+Control width
+-------------
+
+.. code-block:: python
+
+    Snackbar(text="This is a snackbar!", size_hint_x=.5).open()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-percent-width.png
     :align: center
 
 Usage with button
@@ -59,19 +79,24 @@ Usage with button
 
 .. code-block:: python
 
-    Snackbar(
-        text="This is a snackbar",
-        button_text="BUTTON",
-        button_callback=app.callback
-    ).show()
+    snackbar = Snackbar(
+        text="This is a snackbar!",
+    )
+    snackbar.buttons = [
+        MDFlatButton(
+            text="UPDATE",
+            text_color=(1, 1, 1, 1),
+            on_release=snackbar.dismiss,
+        ),
+        MDFlatButton(
+            text="CANCEL",
+            text_color=(1, 1, 1, 1),
+            on_release=snackbar.dismiss,
+        ),
+    ]
+    snackbar.open()
 
-.. code-block:: python
-    def callback(self, instance):
-        from kivymd.toast import toast
-
-        toast(instance.text)
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button.png
     :align: center
 
 Using a button with custom color
@@ -80,13 +105,11 @@ Using a button with custom color
 .. code-block:: python
 
     Snackbar(
-        text="This is a snackbar!",
-        padding="20dp",
-        button_text="ACTION",
-        button_color=(1, 0, 1, 1)
-    ).show()
+        ...
+        bg_color=(0, 0, 1, 1),
+    ).open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button-custom-color.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button-custom-color.png
     :align: center
 
 Custom usage
@@ -126,7 +149,7 @@ Custom usage
 
         def wait_interval(self, interval):
             self._interval += interval
-            if self._interval > self.snackbar.duration:
+            if self._interval > self.snackbar.duration + 0.5:
                 anim = Animation(y=dp(10), d=.2)
                 anim.start(self.screen.ids.button)
                 Clock.unschedule(self.wait_interval)
@@ -136,7 +159,7 @@ Custom usage
         def snackbar_show(self):
             if not self.snackbar:
                 self.snackbar = Snackbar(text="This is a snackbar!")
-                self.snackbar.show()
+                self.snackbar.open()
                 anim = Animation(y=dp(72), d=.2)
                 anim.bind(on_complete=lambda *args: Clock.schedule_interval(
                     self.wait_interval, 0))
@@ -157,6 +180,7 @@ Custom Snackbar
     from kivy.properties import StringProperty
 
     from kivymd.app import MDApp
+    from kivymd.uix.button import MDFlatButton
     from kivymd.uix.snackbar import Snackbar
 
     KV = '''
@@ -214,9 +238,8 @@ Custom Snackbar
                 text="This is a snackbar!",
                 icon="information",
                 padding="20dp",
-                button_text="ACTION",
-                button_color=(1, 0, 1, 1)
-            ).show()
+                buttons=[MDFlatButton(text="ACTION", text_color=(1, 1, 1, 1))]
+            ).open()
 
 
     Test().run()
@@ -231,16 +254,14 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     ListProperty,
     NumericProperty,
-    ObjectProperty,
     StringProperty,
 )
 
-from kivymd.uix.button import MDFlatButton
-from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 
 Builder.load_string(
     """
@@ -252,12 +273,12 @@ Builder.load_string(
     MDCard:
         id: box
         size_hint_y: None
-        height: dp(58)
-        spacing: dp(5)
-        padding: dp(10)
+        height: "58dp"
+        spacing: "4dp"
+        padding: "10dp", "10dp", "10dp", "10dp"
         y: -self.height
-        x: root.padding
-        md_bg_color: get_color_from_hex('323232')
+        x: root.padding[0]
+        md_bg_color: get_color_from_hex("323232") if not root.bg_color else root.bg_color
         radius: (5, 5, 5, 5) if root.padding else (0, 0, 0, 0)
         elevation: 11 if root.padding else 0
 
@@ -267,104 +288,124 @@ Builder.load_string(
             height: self.texture_size[1]
             text: root.text
             font_size: root.font_size
-            theme_text_color: 'Custom'
-            text_color: get_color_from_hex('ffffff')
+            theme_text_color: "Custom"
+            text_color: get_color_from_hex("ffffff")
             shorten: True
-            shorten_from: 'right'
-            pos_hint: {'center_y': .5}
+            shorten_from: "right"
+            markup: True
+            pos_hint: {"center_y": .5}
 """
 )
 
 
-class Snackbar(MDFloatLayout):
+class Snackbar(MDBoxLayout):
+    """
+    :Events:
+        :attr:`on_open`
+            Called when a dialog is opened.
+        :attr:`on_dismiss`
+            When the front layer rises.
+    """
+
     text = StringProperty()
-    """The text that will appear in the snackbar.
+    """
+    The text that will appear in the snackbar.
 
     :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
     font_size = NumericProperty("15sp")
-    """The font size of the text that will appear in the snackbar.
+    """
+    The font size of the text that will appear in the snackbar.
 
     :attr:`font_size` is a :class:`~kivy.properties.NumericProperty` and
     defaults to `'15sp'`.
     """
 
-    button_text = StringProperty()
-    """The text that will appear in the snackbar's button.
-
-    .. Note::
-        If this variable is None, the snackbar will have no button.
-
-    :attr:`button_text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    button_callback = ObjectProperty()
-    """The callback that will be triggered when the snackbar's
-    button is pressed.
-
-    .. Note::
-        If this variable is None, the snackbar will have no button.
-
-    :attr:`button_callback` is a :class:`~kivy.properties.ObjectProperty`
-    and defaults to `None`.
-    """
-
-    button_color = ListProperty()
-    """Button color.
-
-    :attr:`button_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
-    """
-
     duration = NumericProperty(3)
-    """The amount of time that the snackbar will stay on screen for.
+    """
+    The amount of time that the snackbar will stay on screen for.
 
     :attr:`duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `3`.
     """
 
-    padding = NumericProperty("0dp")
-    """Snackbar padding.
+    auto_dismiss = BooleanProperty(True)
+    """
+    Whether to use automatic closing of the snackbar or not.
 
-    :attr:`padding` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `'0dp'`.
+    :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `'True'`.
+    """
+
+    bg_color = ListProperty()
+    """
+    Snackbar background.
+
+    :attr:`bg_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `'[]'`.
+    """
+
+    buttons = ListProperty()
+    """
+    Snackbar buttons.
+
+    :attr:`buttons` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `'[]'`
     """
 
     _interval = 0
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if self.button_text != "":
-            button = MDFlatButton(text=self.button_text)
-            button.text_color = (
-                (1, 1, 1, 1) if not self.button_color else self.button_color
-            )
-            self.ids.box.add_widget(button)
-            if self.button_callback:
-                button.bind(on_release=self.button_callback)
+        self.register_event_type("on_open")
+        self.register_event_type("on_dismiss")
 
-    def show(self):
+    def dismiss(self, *args):
+        """Dismiss the snackbar."""
+
+        def dismiss(interval):
+            anim = Animation(y=-self.ids.box.height, d=0.2)
+            anim.bind(
+                on_complete=lambda *args: Window.parent.remove_widget(self)
+            )
+            anim.start(self.ids.box)
+
+        Clock.schedule_once(dismiss, 0.5)
+        self.dispatch("on_dismiss")
+
+    def open(self):
         """Show the snackbar."""
 
         def wait_interval(interval):
             self._interval += interval
             if self._interval > self.duration:
-                anim = Animation(y=-self.ids.box.height, d=0.2)
-                anim.bind(
-                    on_complete=lambda *args: Window.parent.remove_widget(self)
-                )
-                anim.start(self.ids.box)
+                self.dismiss()
                 Clock.unschedule(wait_interval)
                 self._interval = 0
 
-        self.size_hint_x = None
-        self.width = Window.width - dp(self.padding) * 2
+        self.y = -self.ids.box.height - self.padding[0]
         Window.parent.add_widget(self)
-        anim = Animation(y=self.padding, d=0.2)
-        anim.bind(
-            on_complete=lambda *args: Clock.schedule_interval(wait_interval, 0)
-        )
+        anim = Animation(y=self.padding[0], d=0.2)
+        if self.auto_dismiss:
+            anim.bind(
+                on_complete=lambda *args: Clock.schedule_interval(
+                    wait_interval, 0
+                )
+            )
         anim.start(self.ids.box)
+        self.dispatch("on_open")
+
+    def on_open(self, *args):
+        """Called when a dialog is opened."""
+
+    def on_dismiss(self, *args):
+        """Called when the dialog is closed."""
+
+    def on_buttons(self, instance, value):
+        def on_buttons(interval):
+            for button in value:
+                self.ids.box.add_widget(button)
+
+        Clock.schedule_once(on_buttons)

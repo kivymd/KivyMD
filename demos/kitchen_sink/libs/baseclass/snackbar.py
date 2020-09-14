@@ -50,14 +50,17 @@ class KitchenSinkSnackBar(Screen):
             snack = Snackbar(text="This is a snackbar!", padding="20dp")
             snack.buttons = [
                 MDFlatButton(
-                    text="ACTION", text_color=(1, 1, 1, 1), on_release=callback,
+                    text="ACTION",
+                    text_color=(1, 1, 1, 1),
+                    on_release=callback,
                 )
             ]
             snack.open()
         elif snack_type == "float":
             if not self.snackbar:
                 self.snackbar = Snackbar(
-                    text="This is a snackbar!", duration=3,
+                    text="This is a snackbar!",
+                    duration=3,
                 )
                 self.snackbar.buttons = [
                     MDFlatButton(

@@ -12,3 +12,17 @@
         opposite_colors: True
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release: root.file_manager_open()
+
+<FileManagerTypeDialog>:
+    orientation: 'vertical'
+    adaptive_height: True
+    MDLabel:
+        text: "Open manager with 'list' or 'preview' mode?"
+    MDBoxLayout:
+        orientation: 'horizontal'
+        adaptive_height: True
+        MDCheckbox:
+            on_active: root.set_selection_type(*args)
+            size_hint_x: None
+        MDLabel:
+            text: "Allow Multiple Selection ?"

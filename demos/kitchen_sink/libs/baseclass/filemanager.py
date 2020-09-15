@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import Screen
 from kivymd.uix.boxlayout import MDBoxLayout
 
 
-class FileManagerTypeDialog(MDBoxLayout):
+class KitchenSinkFileFileManagerTypeDialog(MDBoxLayout):
     """ Choose file manager type and selection type """
 
     allow_multiple_selection = False
@@ -38,7 +38,7 @@ class KitchenSinkFileManager(Screen):
             self.file_manager.show(MDApp.get_running_app().user_data_dir)
             self.manager_open = True
 
-        manager_type_dialog = FileManagerTypeDialog()
+        manager_type_dialog = KitchenSinkFileFileManagerTypeDialog()
 
         MDDialog(
             title="Kitchen Sink",

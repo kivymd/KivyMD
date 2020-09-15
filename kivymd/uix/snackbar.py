@@ -262,6 +262,7 @@ from kivy.properties import (
 )
 
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import BaseButton
 
 Builder.load_string(
     """
@@ -406,6 +407,11 @@ class Snackbar(MDBoxLayout):
     def on_buttons(self, instance, value):
         def on_buttons(interval):
             for button in value:
-                self.ids.box.add_widget(button)
+                if issubclass(button.__class__, (BaseButton,)):
+                    self.ids.box.add_widget(button)
+                else:
+                    raise ValueError(
+                        f"The {button} object must be inherited from the base class <BaseButton>"
+                    )
 
         Clock.schedule_once(on_buttons)

@@ -570,7 +570,7 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_op_text_color(self):
-        return self._get_text_color(True)
+        return self._get_text_color(opposite=True)
 
     opposite_text_color = AliasProperty(
         _get_op_text_color, bind=["theme_style"]

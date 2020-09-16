@@ -669,7 +669,7 @@ class BaseButton(
     :attr:`show_label` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
-    _current_markup=BooleanProperty(False)
+    _current_markup = BooleanProperty(False)
     markup = BooleanProperty(False)
     """
     This property enables or dissables the markup processing in the button's
@@ -1105,7 +1105,9 @@ class BaseButton(
             theme = self.theme_cls
             if self.disabled is True:
                 self._current_theme_text_color = "Custom"
-                self._current_text_color = self.theme_cls.disabled_hint_text_color
+                self._current_text_color = (
+                    self.theme_cls.disabled_hint_text_color
+                )
                 return
             if value == "Primary":
                 self._current_theme_text_color = "Primary"
@@ -1171,7 +1173,7 @@ class BaseButton(
         """
         This fucntion process the color theme of the buttons's Icon.
         """
-        if self._has_icon:# and self.disabled is False:
+        if self._has_icon:  # and self.disabled is False:
             theme = self.theme_cls
             self.unbind(
                 _current_text_color=lambda x, y: setattr(
@@ -1180,7 +1182,9 @@ class BaseButton(
             )
             if self.disabled is True:
                 self._current_theme_icon_color = "Custom"
-                self._current_icon_color = self.theme_cls.disabled_hint_text_color
+                self._current_icon_color = (
+                    self.theme_cls.disabled_hint_text_color
+                )
                 return
             if self.theme_icon_color == "Primary":
                 self._current_theme_icon_color = "Primary"
@@ -1205,17 +1209,17 @@ class BaseButton(
                     self._current_icon_color = self.icon_color
             #
             elif self.theme_icon_color == "Accent_color":
-                    self._current_theme_icon_color = "Custom"
-                    self._current_icon_color = theme.accent_color
-                #
+                self._current_theme_icon_color = "Custom"
+                self._current_icon_color = theme.accent_color
+            #
             elif self.theme_icon_color == "Primary_color":
-                    self._current_theme_icon_color = "Custom"
-                    self._current_icon_color = theme.primary_color
-                #
+                self._current_theme_icon_color = "Custom"
+                self._current_icon_color = theme.primary_color
+            #
             elif self.theme_icon_color == "White":
-                    self._current_theme_icon_color = "Custom"
-                    self._current_icon_color = [1, 1, 1, 1]
-                #
+                self._current_theme_icon_color = "Custom"
+                self._current_icon_color = [1, 1, 1, 1]
+            #
             elif self.theme_icon_color == "Text":
                 if self.lbl_txt:
                     self._current_theme_icon_color = "Custom"
@@ -1347,7 +1351,9 @@ class BaseButton(
                     self.current_elevation = self.elevation
                     self.elevation = 1
             if self._has_text:
-                self._current_text_color = self.theme_cls.opposite_disabled_hint_text_color
+                self._current_text_color = (
+                    self.theme_cls.opposite_disabled_hint_text_color
+                )
             # if self._has_icon:
             #     self._current_icon_color = self.theme_cls.opposite_disabled_hint_text_color
         else:
@@ -1359,7 +1365,7 @@ class BaseButton(
                 # self._current_button_color = self.md_bg_color
             else:
                 self._current_button_color[-1] = 0
-        self._on_primary_palette(self,None)
+        self._on_primary_palette(self, None)
 
     def on_font_size(self, instance, value):
         """
@@ -2336,7 +2342,9 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                     _current_theme_text_color=lambda x, y: setattr(
                         self.lbl_txt, "theme_text_color", y
                     ),
-                    _current_markup=lambda x, y: setattr(self.lbl_txt, "markup", y),
+                    _current_markup=lambda x, y: setattr(
+                        self.lbl_txt, "markup", y
+                    ),
                     disabled=lambda x, y: setattr(self.lbl_txt, "disabled", y),
                 )
                 self.lbl_txt.font_name = (
@@ -2374,7 +2382,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
             # self.lbl_txt.disabled = True - self.disabled
             self.lbl_txt.disabled = self.disabled
             self._current_markup = False if value is True else self.markup
-        super().on_disabled(instance,value)
+        super().on_disabled(instance, value)
 
     def on_markup(self, instance, value):
         self._current_markup = value
@@ -2567,8 +2575,9 @@ class icon_behavior(BaseRectangularButton):
         if self.__icon is not None:
             self.__icon.disabled = True - self.disabled
             self.__icon.disabled = self.disabled
-            self.__icon.on_disabled(self,self.__icon.disabled)
-        super().on_disabled(instance,value)
+            self.__icon.on_disabled(self, self.__icon.disabled)
+        super().on_disabled(instance, value)
+
 
 # ------------------------------------------------------------------------------
 # BaseRoundButton
@@ -2641,9 +2650,9 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
         if self._is_filled is None:
             self._is_filled = False
         #
-        if self.text_color != None:
+        if self.text_color is not None:
             self.icon_color = self.text_color
-            self.theme_icon_color="Custom"
+            self.theme_icon_color = "Custom"
 
         if self.icon_color is None:
             self.theme_icon_color = "Primary"

@@ -669,7 +669,7 @@ class BaseButton(
     :attr:`show_label` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
-
+    _current_markup=BooleanProperty(False)
     markup = BooleanProperty(False)
     """
     This property enables or dissables the markup processing in the button's
@@ -1103,6 +1103,10 @@ class BaseButton(
         """
         if self._has_text is True:
             theme = self.theme_cls
+            if self.disabled is True:
+                self._current_theme_text_color = "Custom"
+                self._current_text_color = self.theme_cls.disabled_hint_text_color
+                return
             if value == "Primary":
                 self._current_theme_text_color = "Primary"
             elif value == "Secondary":
@@ -1167,50 +1171,52 @@ class BaseButton(
         """
         This fucntion process the color theme of the buttons's Icon.
         """
-        if self._has_icon:
+        if self._has_icon:# and self.disabled is False:
             theme = self.theme_cls
             self.unbind(
                 _current_text_color=lambda x, y: setattr(
                     self, "_current_icon_color", y
                 )
             )
-            if value == "Primary":
-                self._current_theme_icon_color = "Primary"
-            elif value == "Secondary":
-                self._current_theme_icon_color = "Secondary"
-
-            elif value == "Hint":
-                self._current_theme_icon_color = "Hint"
-
-            elif value == "Error":
-                self._current_theme_icon_color = "Error"
-
-            elif value == "ContrastParentBackground":
-                self._current_theme_icon_color = "ContrastParentBackground"
-
-            elif value == "Custom":
+            if self.disabled is True:
                 self._current_theme_icon_color = "Custom"
-                Logger.debug(
-                    f"on_theme_icon_color: self.icon_color = {self.icon_color}"
-                )
+                self._current_icon_color = self.theme_cls.disabled_hint_text_color
+                return
+            if self.theme_icon_color == "Primary":
+                self._current_theme_icon_color = "Primary"
+            #
+            elif self.theme_icon_color == "Secondary":
+                self._current_theme_icon_color = "Secondary"
+            #
+            elif self.theme_icon_color == "Hint":
+                self._current_theme_icon_color = "Hint"
+            #
+            elif self.theme_icon_color == "Error":
+                self._current_theme_icon_color = "Error"
+            #
+            elif self.theme_icon_color == "ContrastParentBackground":
+                self._current_theme_icon_color = "ContrastParentBackground"
+            #
+            elif self.theme_icon_color == "Custom":
+                self._current_theme_icon_color = "Custom"
                 if self.icon_color is None:
                     self.theme_icon_color = "Primary"
                 else:
                     self._current_icon_color = self.icon_color
-
-            elif value == "Accent_color":
-                self._current_theme_icon_color = "Custom"
-                self._current_icon_color = theme.accent_color
-
-            elif value == "Primary_color":
-                self._current_theme_icon_color = "Custom"
-                self._current_icon_color = theme.primary_color
-
-            elif value == "White":
-                self._current_theme_icon_color = "Custom"
-                self._current_icon_color = [1, 1, 1, 1]
-
-            elif value == "Text":
+            #
+            elif self.theme_icon_color == "Accent_color":
+                    self._current_theme_icon_color = "Custom"
+                    self._current_icon_color = theme.accent_color
+                #
+            elif self.theme_icon_color == "Primary_color":
+                    self._current_theme_icon_color = "Custom"
+                    self._current_icon_color = theme.primary_color
+                #
+            elif self.theme_icon_color == "White":
+                    self._current_theme_icon_color = "Custom"
+                    self._current_icon_color = [1, 1, 1, 1]
+                #
+            elif self.theme_icon_color == "Text":
                 if self.lbl_txt:
                     self._current_theme_icon_color = "Custom"
                     self._current_icon_color = self.lbl_txt.color[:]
@@ -1221,11 +1227,12 @@ class BaseButton(
                     )
                 else:
                     self.theme_icon_color = "Primary"
+            #
             if self._is_filled:
                 if self.md_bg_color == self._current_icon_color:
                     self._current_icon_color = [1] * 4
-            else:
-                self._current_icon_color[-1] = 0
+        else:
+            self._current_icon_color[-1] = 0
 
     def on_opposite_colors(self, instance, value):
         self.on_theme_text_color(self, self.theme_text_color)
@@ -1333,11 +1340,16 @@ class BaseButton(
         Event launched when the button's disabled property is changed.
         """
         if self.disabled is True:
-            self._current_button_color = self._md_bg_color_disabled
+            if self._is_filled:
+                self._current_button_color = self._md_bg_color_disabled
             if hasattr(self, "elevation"):
                 if self.elevation:
                     self.current_elevation = self.elevation
                     self.elevation = 1
+            if self._has_text:
+                self._current_text_color = self.theme_cls.opposite_disabled_hint_text_color
+            # if self._has_icon:
+            #     self._current_icon_color = self.theme_cls.opposite_disabled_hint_text_color
         else:
             if self._is_filled:
                 self.on_theme_button_color(self, self.theme_button_color)
@@ -1347,6 +1359,7 @@ class BaseButton(
                 # self._current_button_color = self.md_bg_color
             else:
                 self._current_button_color[-1] = 0
+        self._on_primary_palette(self,None)
 
     def on_font_size(self, instance, value):
         """
@@ -2295,7 +2308,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                     # opposite_colors=self.opposite_colors,
                     text_color=self._current_text_color,
                     valign="middle",
-                    markup=self.markup,
+                    markup=self._current_markup,
                     disabled=self.disabled,
                     size_hint_x=None,
                     size_hint_y=None,
@@ -2323,7 +2336,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                     _current_theme_text_color=lambda x, y: setattr(
                         self.lbl_txt, "theme_text_color", y
                     ),
-                    markup=lambda x, y: setattr(self.lbl_txt, "markup", y),
+                    _current_markup=lambda x, y: setattr(self.lbl_txt, "markup", y),
                     disabled=lambda x, y: setattr(self.lbl_txt, "disabled", y),
                 )
                 self.lbl_txt.font_name = (
@@ -2355,6 +2368,16 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                 return
         else:
             self.container.width = self.container.minimum_width
+
+    def on_disabled(self, instance, value):
+        if self.lbl_txt is not None:
+            # self.lbl_txt.disabled = True - self.disabled
+            self.lbl_txt.disabled = self.disabled
+            self._current_markup = False if value is True else self.markup
+        super().on_disabled(instance,value)
+
+    def on_markup(self, instance, value):
+        self._current_markup = value
 
 
 class icon_behavior(BaseRectangularButton):
@@ -2398,8 +2421,7 @@ class icon_behavior(BaseRectangularButton):
         self.on_theme_icon_color(self, self.theme_icon_color)
 
     def on_theme_icon_color(self, instance, value):
-        if self.__icon and self.opposite_colors is not None:
-            self.__icon.opposite_colors = self.opposite_colors
+        if self.__icon:
             self.__icon.on_theme_text_color(self, self.__icon.theme_text_color)
         super().on_theme_icon_color(instance, value)
 
@@ -2541,6 +2563,12 @@ class icon_behavior(BaseRectangularButton):
             else:
                 self.__icon.font_size = value
 
+    def on_disabled(self, instance, value):
+        if self.__icon is not None:
+            self.__icon.disabled = True - self.disabled
+            self.__icon.disabled = self.disabled
+            self.__icon.on_disabled(self,self.__icon.disabled)
+        super().on_disabled(instance,value)
 
 # ------------------------------------------------------------------------------
 # BaseRoundButton
@@ -2601,23 +2629,22 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     """
 
     def __after_init__(self, *kwargs):
-        Logger.debug(
-            f"TEST TEXTCOLOR: {self} \n\ttext_color = {self.text_color}"
-        )
-        self._has_icon = True
+        if self._has_icon is None:
+            self._has_icon = True
         #
-        self._has_text = False
+        if self._has_text is None:
+            self._has_text = False
         #
         if self._has_line is None:
             self._has_line = False
         #
         if self._is_filled is None:
             self._is_filled = False
-        # #
-        # if self.text_color != None:
-        #     self.icon_color = self.text_color
-        #     self.theme_icon_color="Custom"
         #
+        if self.text_color != None:
+            self.icon_color = self.text_color
+            self.theme_icon_color="Custom"
+
         if self.icon_color is None:
             self.theme_icon_color = "Primary"
         else:
@@ -2628,7 +2655,7 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     def on_text_color(self, instance, value):
         self.icon_color = self.text_color
         self.theme_icon_color = "Custom"
-        self.on_theme_icon_color(self, self.theme_icon_color)
+        f"TEST TEXTCOLOR: {self} \n\ttext_color = {self.text_color}"
 
 
 # ------------------------------------------------------------------------------
@@ -3912,9 +3939,11 @@ Screen:
                     font_size="34sp",
                 ),
                 MDIconButton(
-                    icon="C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login.png",
+                    icon="home",
+                    # icon="C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login.png",
                     font_size="48sp",
-                    text_color=self.theme_cls.primary_color,
+                    # text_color=self.theme_cls.primary_color,
+                    icon_color=self.theme_cls.primary_color,
                 ),
             ]
             #

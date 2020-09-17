@@ -157,14 +157,22 @@ def move_changelog(
 
 
 def create_unreleased_changelog(
-    index_file, unreleased_file, version, ask: bool = True, test: bool = False,
+    index_file,
+    unreleased_file,
+    version,
+    ask: bool = True,
+    test: bool = False,
 ):
     """Create unreleased.rst by template."""
     # Check if unreleased file exists
     if os.path.exists(unreleased_file):
         if ask and input(
             f'Do you want to rewrite "{unreleased_file}"? (y)'
-        ) not in ("", "y", "yes",):
+        ) not in (
+            "",
+            "y",
+            "yes",
+        ):
             exit(0)
     # Generate unreleased changelog
     changelog = f"""Unreleased
@@ -277,7 +285,10 @@ def main():
     # branches_to_push.append("stable")
 
     create_unreleased_changelog(
-        changelog_index_file, changelog_unreleased_file, version, test=test,
+        changelog_index_file,
+        changelog_unreleased_file,
+        version,
+        test=test,
     )
     update_init_py(next_version, is_release=False, test=test)
     git_commit(f"KivyMD {next_version}")

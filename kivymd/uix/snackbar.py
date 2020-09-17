@@ -280,7 +280,7 @@ Builder.load_string(
         y: -self.height
         x: root.padding[0]
         md_bg_color: get_color_from_hex("323232") if not root.bg_color else root.bg_color
-        radius: (5, 5, 5, 5) if root.padding else (0, 0, 0, 0)
+        radius: root.radius if root.padding != [0, 0, 0, 0] else [0, 0, 0, 0]
         elevation: 11 if root.padding else 0
 
         MDLabel:
@@ -354,6 +354,14 @@ class Snackbar(MDBoxLayout):
 
     :attr:`buttons` is a :class:`~kivy.properties.ListProperty`
     and defaults to `'[]'`
+    """
+
+    radius = ListProperty([5, 5, 5, 5])
+    """
+    Snackbar radius.
+
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `'[5, 5, 5, 5]'`
     """
 
     _interval = 0

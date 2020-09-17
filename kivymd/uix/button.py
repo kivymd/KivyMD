@@ -74,6 +74,8 @@ Components/Button
 - MDRectangleFlatIconButton_
 - MDRoundFlatButton_
 - MDRoundFlatIconButton_
+- MDBevelFlatButton_
+- MDBevelFlatIconButton_
 - MDFillRoundFlatButton_
 - MDFillRoundFlatIconButton_
 - MDTextButton_
@@ -498,6 +500,8 @@ __all__ = (
     "MDRectangleFlatIconButton",
     "MDRoundFlatButton",
     "MDRoundFlatIconButton",
+    "MDBevelFlatButton",
+    "MDBevelFlatIconButton",
     "MDFillRoundFlatButton",
     "MDFillRoundFlatIconButton",
     "MDTextButton",
@@ -1078,6 +1082,11 @@ class BaseButton(
         this theme is not linked to any other configuration.
         """
         if self._is_filled is True:
+            if self.disabled is True:
+                self._current_button_color = (
+                    self.theme_cls.disabled_hint_text_color
+                )
+                return
             if self.theme_button_color == "Primary":
                 self._current_button_color = (
                     self.theme_cls._get_primary_color()[:]
@@ -2398,6 +2407,10 @@ class icon_behavior(BaseRectangularButton):
     icon_rotation = NumericProperty(0)
     __icon_mode = OptionProperty(None, options=["icon", "image", "error"])
     _current_icon_font_size = NumericProperty(0)
+    source = StringProperty(None, allownone=False)
+
+    def on_source(self, instenca, value):
+        self.icon = value
 
     def __after_init__(self, *dt):
         super().__after_init__(*dt)
@@ -3042,29 +3055,27 @@ class MDFillRoundFlatIconButton(MDFillRoundFlatButton, icon_behavior):
 # ------------------------------------------------------------------------------
 #
 
-Builder.load_string(
-    """
-<BaseFloatingRootButton>
-    theme_text_color: "Custom"
-    md_bg_color: self.theme_cls.primary_color
-
-    canvas:
-        PushMatrix
-        Rotate:
-            angle: self._angle
-            axis: (0, 0, 1)
-            origin: self.center
-        # PopMatrix
-    canvas.after:
-        PopMatrix
-    """,
-    filename="BaseFloatingRootButton.kv",
-)
+# Builder.load_string(
+#     """
+# <BaseFloatingRootButton>
+#     theme_text_color: "Custom"
+#     md_bg_color: self.theme_cls.primary_color
+#
+#     canvas:
+#         PushMatrix
+#         Rotate:
+#             angle: self._angle
+#             axis: (0, 0, 1)
+#             origin: self.center
+#         # PopMatrix
+#     canvas.after:
+#         PopMatrix
+#     """,
+#     filename="BaseFloatingRootButton.kv",
+# )
 
 
 class BaseFloatingRootButton(MDFloatingActionButton):
-    _angle = NumericProperty(0)
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.elevation = 5
@@ -3504,10 +3515,10 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 label.text_color = self.label_text_color
                 self.add_widget(label)
         # Top root button.
-        root_button = MDFloatingRootButton(on_release=self.open_stack)
-        root_button.icon = self.icon
-        self.set_pos_root_button(root_button)
-        self.add_widget(root_button)
+        self.root_button = MDFloatingRootButton(on_release=self.open_stack)
+        self.root_button.icon = self.icon
+        self.set_pos_root_button(self.root_button)
+        self.add_widget(self.root_button)
 
     def on_icon(self, instance, value):
         self._get_count_widget(MDFloatingRootButton).icon = value
@@ -3604,11 +3615,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                     and self.rotation_root_button
                 ):
                     # Rotates the root button 45 degrees.
-                    Animation(
-                        _angle=-45,
-                        d=self.opening_time_button_rotation,
-                        t=self.opening_transition_button_rotation,
-                    ).start(widget)
+                    self.root_button.rot_90(clockwise=True)
 
             if anim_buttons_data:
                 self._anim_buttons_data = anim_buttons_data
@@ -3658,11 +3665,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 isinstance(widget, MDFloatingRootButton)
                 and self.rotation_root_button
             ):
-                Animation(
-                    _angle=0,
-                    d=self.closing_time_button_rotation,
-                    t=self.closing_transition_button_rotation,
-                ).start(widget)
+                self.root_button.rot_90(clockwise=True)
         self.state = "close"
         self.dispatch("on_close")
 
@@ -3682,441 +3685,3 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             if isinstance(widget, instance):
                 break
         return widget
-
-
-# ------------------------------------------------------------------------------
-# TEST APP WILL BE REMOVED
-# ------------------------------------------------------------------------------
-#
-
-if __name__ == "__main__":
-    from kivy.uix.screenmanager import Screen
-
-    from kivymd.app import MDApp
-
-    kv = """
-Screen:
-    ScrollView:
-        do_scroll_y:True
-        GridLayout:
-            id: x
-            cols: 3
-            spacing:dp(8)
-            MDBoxLayout:
-                # size_hint_x:None
-                md_bg_color:.1,.2,.3,1
-            MDBoxLayout:
-                # size_hint_x:None
-                md_bg_color:.1,.3,.3,1
-            MDBoxLayout
-                # size_hint_x:None
-                md_bg_color:.4,.3,.3,1
-"""
-
-    class Custom_flat_btn(MDFlatButton):
-        def __init__(self, **kwargs):
-            super(Custom_flat_btn, self).__init__(**kwargs)
-
-        pass
-
-    class App(MDApp):
-        buttons = ListProperty([])
-
-        def build(self):
-            screen = Screen()
-            self.container = Builder.load_string(kv)
-            screen.add_widget(self.container)
-            return screen
-
-        def on_start(self, *dt):
-            self.after_build()
-
-        def after_build(self, *dt):
-            self.buttons = [
-                MDBevelFlatButton(
-                    text="swap theme",
-                    on_release=lambda *X: setattr(
-                        self.theme_cls,
-                        "theme_style",
-                        "Dark"
-                        if self.theme_cls.theme_style == "Light"
-                        else "Light",
-                    ),
-                )
-            ]
-
-            self.buttons = self.buttons + [
-                MDFlatButton(
-                    text="MDFLATBUTTON",
-                    text_color=[0, 0, 1, 1],
-                ),
-                MDFlatButton(
-                    text="MDFLATBUTTON",
-                    text_color=[0, 0, 1, 1],
-                ),
-                MDFlatButton(
-                    text="MDFLATBUTTON",
-                    text_color=[0, 0, 1, 1],
-                ),
-            ]
-
-            self.buttons = self.buttons + [
-                MDRaisedButton(
-                    text="MDRaisedButton",
-                    text_color=[0, 0, 1, 1],
-                    # md_bg_color=[1, 1, 0, 1],
-                    # elevation=10
-                ),
-                MDRaisedButton(
-                    text="MDRaisedButton",
-                    # text_color=[0, 0, 1, 1],
-                    # md_bg_color=[1, 0, 1, 1],
-                    # elevation=9
-                ),
-                MDRaisedButton(
-                    text="MDRaisedButton",
-                    # text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 0, 1],
-                    # elevation=16
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDRectangleFlatButton")
-            self.buttons = self.buttons + [
-                MDRectangleFlatButton(
-                    text="MDRectangleFlatButton",
-                    #
-                ),
-                MDRectangleFlatButton(
-                    text="MDRectangleFlatButton",
-                    corner_type="Bevel",
-                    radius=dp(24),
-                    #
-                ),
-                MDRectangleFlatButton(
-                    text="MDRectangleFlatButton",
-                    corner_type="Rounded",
-                    spacing=dp(32),
-                    # text_color=[0, 0, 1, 1],
-                    # md_bg_color=[1, 0, 0, 1],
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDRectangleFlatIconButton")
-            self.buttons = self.buttons + [
-                MDRectangleFlatIconButton(
-                    text="MDRectangleFlatIconButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 1, 0, 1],
-                    corner_type="Square",
-                    radius=dp(24),
-                    # spacing=dp(8),
-                ),
-                MDRectangleFlatIconButton(
-                    text="MDRectangleFlatIconButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 1, 1],
-                    icon_position="right",
-                    spacing=dp(16),
-                    corner_type="Bevel",
-                    radius=dp(24),
-                ),
-                MDRectangleFlatIconButton(
-                    text="MDRectangleFlatIconButton",
-                    radius=22,
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 1, 1],
-                    corner_type="Rounded",
-                    spacing=dp(32),
-                    # theme_line_color="Text"
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDRoundFlatButton")
-            self.buttons = self.buttons + [
-                MDRoundFlatButton(
-                    text="MDRoundFlatButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 1, 0, 1],
-                ),
-                MDRoundFlatButton(
-                    text="MDRoundFlatButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 1, 1],
-                ),
-                MDRoundFlatButton(
-                    text="MDRoundFlatButton",
-                    text_color=[0, 0, 1, 1],
-                    # theme_line_color="Text"
-                    # md_bg_color=[1, 0, 0, 1],
-                ),
-            ]
-            #
-            #
-            Logger.debug("MAINAPP: Adding MDRoundFlatIconButton")
-            self.buttons = self.buttons + [
-                MDRoundFlatIconButton(
-                    text="MDRoundFlatIconButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 1, 0, 1],
-                ),
-                MDRoundFlatIconButton(
-                    text="MDRoundFlatIconButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 1, 1],
-                ),
-                MDRoundFlatIconButton(
-                    text="MDRoundFlatIconButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 0, 1],
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDFillRoundFlatButton")
-            self.buttons = self.buttons + [
-                MDFillRoundFlatButton(
-                    text="MDFillRoundFlatButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 1, 0, 1],
-                ),
-                MDFillRoundFlatButton(
-                    text="MDFillRoundFlatButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 1, 1],
-                ),
-                MDFillRoundFlatButton(
-                    text="MDFillRoundFlatButton",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 0, 1],
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDFillRoundFlatIconButton")
-            self.buttons = self.buttons + [
-                MDFillRoundFlatIconButton(
-                    text="MDFillRoundFlatIconButton 1",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 1, 0, 1],
-                ),
-                MDFillRoundFlatIconButton(
-                    text="MDFillRoundFlatIconButton 2",
-                    text_color=[0, 0, 1, 1],
-                    icon_position="right",
-                    md_bg_color=[1, 0, 1, 1],
-                ),
-                MDFillRoundFlatIconButton(
-                    text="MDFillRoundFlatIconButton 3",
-                    text_color=[0, 0, 1, 1],
-                    md_bg_color=[1, 0, 0, 1],
-                    icon="C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login2.png",
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDTextButton")
-            self.buttons = self.buttons + [
-                MDTextButton(
-                    text="MDTextButton",
-                    # text_color= [0, 0, 1, 1],
-                    # md_bg_color=[1, 1, 0, 1],
-                ),
-                MDTextButton(
-                    text="MDTextButton",
-                    # text_color= [0, 0, 1, 1],
-                    # md_bg_color=[1, 0, 1, 1],
-                ),
-                MDTextButton(
-                    text="MDTextButton",
-                    # text_color= [0, 0, 1, 1],
-                    # md_bg_color=[1, 0, 0, 1],
-                ),
-            ]
-            #
-            Logger.debug("MAINAPP: Adding MDIconButton")
-            self.buttons = self.buttons + [
-                MDIconButton(
-                    icon="android",
-                    font_size="14sp",
-                ),
-                MDIconButton(
-                    icon="home",
-                    font_size="34sp",
-                ),
-                MDIconButton(
-                    icon="home",
-                    # icon="C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login.png",
-                    font_size="48sp",
-                    # text_color=self.theme_cls.primary_color,
-                    icon_color=self.theme_cls.primary_color,
-                ),
-            ]
-            #
-
-            Logger.debug("MAINAPP: Adding MDFloatingActionButton")
-            self.buttons = self.buttons + [
-                MDFloatingActionButton(
-                    icon="android",
-                    md_bg_color=app.theme_cls.primary_color,
-                ),
-                # MDFloatingActionButtonSpeedDial(
-                #     data={
-                #         "language-python": "Python",
-                #         "language-php": "PHP",
-                #         "language-cpp": "C++",
-                #         "language-java": "java",
-                #     },
-                #     rotation_root_button=True,
-                # ),
-                MDFillRoundFlatIconButton(
-                    text="MDFillRoundFlatIconButton",
-                    md_bg_color=[1, 0, 1, 1],  # not work
-                    elevation=10,
-                ),
-                MDFillRoundFlatIconButton(
-                    text="MDFillRoundFlatIconButton",
-                    md_bg_color=[1, 0, 1, 1],  # not work
-                    elevation=10,
-                ),
-                # MDFillRoundFlatIconButton(
-                #     text="MDFillRoundFlatIconButton",
-                #     md_bg_color=[1, 0, 1, 1],  # not work
-                #     elevation= 16
-                # ),
-            ]
-            # XAX=MDFillRoundFlatIconButton(
-            #     text="ВВВВВВВВВ",
-            #     md_bg_color=[1, 0, 0, 1],  # not work
-            #     pos=[150,200],
-            # )
-            # XAX.bind(on_release=lambda *x: print(dir(XAX)))
-            # self.root.add_widget(
-            #     XAX,
-            # )
-            # Logger.debug(f"MAINAPP: self.buttons is {self.buttons}")
-
-            for i in self.buttons:
-                self.container.ids.x.add_widget(i)
-            # Logger.debug("MAINAPP: Changing bindimgs to on_release events")
-            for i in self.buttons[::3]:
-                i.on_release = self.change_theme_color3
-            for i in self.buttons[1::3]:
-                i.on_release = self.change_to_custom
-            for i in self.buttons[2::3]:
-                i.on_release = self.fake_disable
-
-        def change_theme_color3(self, *dt):
-            self.theme_cls.primary_palette = (
-                "Teal"
-                if self.theme_cls.primary_palette == "Blue"
-                else (
-                    "Blue"
-                    if self.theme_cls.primary_palette == "Orange"
-                    else (
-                        "Orange"
-                        if self.theme_cls.primary_palette == "Green"
-                        else (
-                            "Green"
-                            if self.theme_cls.primary_palette == "Red"
-                            else (
-                                "Red"
-                                if self.theme_cls.primary_palette == "Teal"
-                                else ("Teal")
-                            )
-                        )
-                    )
-                )
-            )
-            Logger.debug("")
-            Logger.debug(
-                f"change_theme_color3: Setting up primary palete to {self.theme_cls.primary_palette}\n{'_'*80}\n{'#'*80}\n\n"
-            )
-
-        tema = "Custom"
-        theme_text_color = "Primary"
-
-        def change_to_custom(self):
-            self.tema = "Custom" if self.tema == "Primary" else "Primary"
-            self.theme_text_color = (
-                "Primary"
-                if self.theme_text_color == "Secondary"
-                else (
-                    "Secondary"
-                    if self.theme_text_color == "Hint"
-                    else (
-                        "Hint"
-                        if self.theme_text_color == "Error"
-                        else (
-                            "Error"
-                            if self.theme_text_color == "Custom"
-                            else (
-                                "Custom"
-                                if self.theme_text_color == "Primary_color"
-                                else (
-                                    "Primary_color"
-                                    if self.theme_text_color == "Accent_color"
-                                    else (
-                                        "Accent_color"
-                                        if self.theme_text_color == "Primary"
-                                        else ("Primary")
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-
-            # Logger.debug(f"Cambiando a tema = {self.tema}")
-            Logger.debug(
-                f"Cambiando theme_text_color = {self.theme_text_color}"
-            )
-            for i in self.container.ids.x.children[::3]:
-                if hasattr(i, "theme_button_color"):
-                    i.theme_button_color = self.tema
-                    i.theme_text_color = self.theme_text_color
-                    i.theme_line_color = (
-                        "Text" if i.theme_line_color == "Custom" else "Custom"
-                    )
-                    # i.corner_type = ["Square", "Rounded", "Bevel"][
-                    #     self.le_counter
-                    # ]
-                    i.text = f"t_btn:{i.theme_button_color} ; t_txt:{i.theme_text_color} ; t_ln:{i.theme_line_color}: corner:{i.corner_type}"
-                    try:
-                        if i._has_icon is True:
-                            i.icon = (
-                                "home"
-                                if self.le_counter % 3 == 0
-                                else (
-                                    "android"
-                                    if self.le_counter % 3 == 1
-                                    else "C:/Users/manue/Documents/SilverBits/IAI/training-software/source/etc/images/Login.png"
-                                )
-                            )
-                            Logger.debug(f"TESTAPP:\tIcon set to: {i.icon}")
-                            i.icon_rotation = 10 + i.icon_rotation
-                    except Exception as e:
-                        Logger.error(f"TEXT: EXCEPTION : {e}")
-                        pass
-            self.le_counter = self.le_counter + 1
-            Logger.debug("-" * 80)
-            pass
-
-        le_counter = BoundedNumericProperty(
-            0, min=0, max=2, errorhandler=lambda x: 0
-        )
-
-        def fake_disable(self, *dt):
-            Clock.schedule_once(self.lockunlock)
-            Clock.schedule_once(self.lockunlock, 3)
-            pass
-
-        def lockunlock(self, *dt):
-            self.root.disabled = True if self.root.disabled is False else False
-
-    app = App()
-    app.run()

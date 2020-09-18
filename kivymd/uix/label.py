@@ -319,7 +319,6 @@ class MDLabel(ThemableBehavior, Label):
         self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style()
         self.on_opposite_colors(None, self.opposite_colors)
-
         Clock.schedule_once(self.__after_init__, -1)
 
     def __after_init__(self, *dt):

@@ -3,6 +3,8 @@ from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.uix.screenmanager import Screen
 
+from kivymd.uix.button import MDFlatButton
+
 
 class KitchenSinkSnackBar(Screen):
     snackbar = None
@@ -18,7 +20,7 @@ class KitchenSinkSnackBar(Screen):
 
         def wait_interval(interval):
             self._interval += interval
-            if self._interval > self.snackbar.duration:
+            if self._interval > self.snackbar.duration + 0.5:
                 anim = Animation(y=dp(10), d=0.2)
                 anim.start(self.ids.button)
                 Clock.unschedule(wait_interval)
@@ -28,34 +30,46 @@ class KitchenSinkSnackBar(Screen):
         from kivymd.uix.snackbar import Snackbar
 
         if snack_type == "simple":
-            Snackbar(text="This is a snackbar!").show()
+            Snackbar(text="This is a snackbar!").open()
         elif snack_type == "button":
-            Snackbar(
-                text="This is a snackbar",
-                button_text="WITH A BUTTON",
-                button_callback=callback,
-            ).show()
+            snack = Snackbar(text="This is a snackbar")
+            snack.buttons = [
+                MDFlatButton(
+                    text="WITH A BUTTON",
+                    text_color=(1, 1, 1, 1),
+                    on_release=callback,
+                )
+            ]
+            snack.open()
         elif snack_type == "verylong":
             Snackbar(
                 text="This is a very very very very very very very "
                 "long snackbar!"
-            ).show()
+            ).open()
         elif snack_type == "padding":
-            Snackbar(
-                text="This is a snackbar!",
-                padding="20dp",
-                button_text="ACTION",
-                button_color=(1, 0, 1, 1),
-            ).show()
+            snack = Snackbar(text="This is a snackbar!", padding="20dp")
+            snack.buttons = [
+                MDFlatButton(
+                    text="ACTION",
+                    text_color=(1, 1, 1, 1),
+                    on_release=callback,
+                )
+            ]
+            snack.open()
         elif snack_type == "float":
             if not self.snackbar:
                 self.snackbar = Snackbar(
                     text="This is a snackbar!",
-                    button_text="BUTTON",
                     duration=3,
-                    button_callback=callback,
                 )
-                self.snackbar.show()
+                self.snackbar.buttons = [
+                    MDFlatButton(
+                        text="ACTION",
+                        text_color=(1, 1, 1, 1),
+                        on_release=callback,
+                    )
+                ]
+                self.snackbar.open()
                 anim = Animation(y=dp(72), d=0.2)
                 anim.bind(
                     on_complete=lambda *args: Clock.schedule_interval(

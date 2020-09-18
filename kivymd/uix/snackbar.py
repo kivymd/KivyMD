@@ -283,6 +283,14 @@ Builder.load_string(
         radius: root.radius if root.padding != [0, 0, 0, 0] else [0, 0, 0, 0]
         elevation: 11 if root.padding else 0
 
+        canvas:
+            Color:
+                rgba: self.md_bg_color
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: self.radius
+
         MDLabel:
             id: text_bar
             size_hint_y: None

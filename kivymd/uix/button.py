@@ -2167,7 +2167,7 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
             self._elevation = 0
             self._update_shadow(instance, 0)
         else:
-            self._update_shadow(instance,self.elevation)
+            self._update_shadow(instance, self.elevation)
         super().on_disabled(instance, value)
 
     def on_touch_down(self, touch):
@@ -2822,7 +2822,6 @@ class MDRaisedButton(
             self.text_color = self._current_text_color
         self._has_text = True
 
-
         super().__after_init__(*args)
 
 
@@ -3154,8 +3153,6 @@ class BaseFloatingLabel(
     text = StringProperty()
     text_color = ListProperty()
     bg_color = ListProperty()
-
-
 
 
 # ------------------------------------------------------------------------------

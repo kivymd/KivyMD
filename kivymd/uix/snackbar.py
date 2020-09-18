@@ -272,7 +272,8 @@ Builder.load_string(
             shorten: True
             shorten_from: 'right'
             pos_hint: {'center_y': .5}
-"""
+""",
+    filename="Snackbar.kv",
 )
 
 

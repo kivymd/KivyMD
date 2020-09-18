@@ -698,12 +698,13 @@ Builder.load_string(
         opacity: md_menu.opacity
 
         canvas:
+            Clear
             Color:
                 rgba: root.background_color if root.background_color else root.theme_cls.bg_dark
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
-                radius: [7,]
+                radius: [root.radius,]
 
         MDMenu:
             id: md_menu
@@ -876,6 +877,14 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`position` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'auto'`.
+    """
+
+    radius = NumericProperty(7)
+    """
+    Menu radius.
+
+    :attr:`radius` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `'7'`.
     """
 
     _start_coords = []

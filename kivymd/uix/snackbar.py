@@ -383,6 +383,7 @@ class Snackbar(MDBoxLayout):
                 on_complete=lambda *args: Window.parent.remove_widget(self)
             )
             anim.start(self.ids.box)
+
         Clock.schedule_once(dismiss, 0.5)
         self.dispatch("on_dismiss")
 

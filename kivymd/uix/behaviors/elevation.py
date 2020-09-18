@@ -125,15 +125,20 @@ __all__ = (
     "CircularElevationBehavior",
 )
 
+from io import BytesIO
+
+from kivy.clock import Clock
+from kivy.core.image import Image as CoreImage
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ListProperty, NumericProperty, ObjectProperty
+from PIL import Image
 
 from kivymd.app import MDApp
 
 Builder.load_string(
     """
-<RectangularElevationBehavior>
+<CommonElevationBehavior>
     canvas.before:
         Color:
             a: self._soft_shadow_a
@@ -149,32 +154,15 @@ Builder.load_string(
             pos: self._hard_shadow_pos
         Color:
             a: 1
-
-
-<CircularElevationBehavior>
-    canvas.before:
-        Color:
-            a: self._soft_shadow_a
-        Rectangle:
-            texture: self._soft_shadow_texture
-            size: self._soft_shadow_size
-            pos: self._soft_shadow_pos
-        Color:
-            a: self._hard_shadow_a
-        Rectangle:
-            texture: self._hard_shadow_texture
-            size: self._hard_shadow_size
-            pos: self._hard_shadow_pos
-        Color:
-            a: 1
-"""
+""",
+    filename="CommonElevationBehavior.kv",
 )
 
 
 class CommonElevationBehavior(object):
     """Common base class for rectangular and circular elevation behavior."""
 
-    elevation = NumericProperty(1)
+    elevation = NumericProperty(None)
     """
     Elevation value.
 
@@ -183,30 +171,90 @@ class CommonElevationBehavior(object):
     """
 
     _elevation = NumericProperty(0)
+
+    # soft shadow
     _soft_shadow_texture = ObjectProperty()
     _soft_shadow_size = ListProperty((0, 0))
     _soft_shadow_pos = ListProperty((0, 0))
+    _soft_shadow_cl = ListProperty([1, 1, 1, 0])
     _soft_shadow_a = NumericProperty(0)
+
+    # hard shadow
     _hard_shadow_texture = ObjectProperty()
     _hard_shadow_size = ListProperty((0, 0))
     _hard_shadow_pos = ListProperty((0, 0))
+    _hard_shadow_cl = ListProperty([1, 1, 1, 0])
     _hard_shadow_a = NumericProperty(0)
 
     def __init__(self, **kwargs):
+        #
+        im = BytesIO()
+        Image.new("RGBA", (4, 4), color=(0, 0, 0, 0)).save(im, format="png")
+        im.seek(0)
+        #
+        self._soft_shadow_texture = self._hard_shadow_texture = CoreImage(
+            im, ext="png"
+        ).texture
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.shadow_preset, -1)
+
+    def shadow_preset(self, *dt):
+        """
+        This function is meant to set the deffault configuration of the
+        elevation.
+
+        After a new instance is created, the elevation property will be launched
+        and thus this function will update the elevation if the KV lang have not
+        done it already.
+
+        Works similar to an `__after_init__` call inside a widget.
+        """
+        if self.elevation is None:
+            self.elevation = 10
+        self._update_shadow(None, self.elevation)
         self.bind(
-            elevation=self._update_elevation,
             pos=self._update_shadow,
             size=self._update_shadow,
         )
-        super().__init__(**kwargs)
 
-    def _update_shadow(self, *args):
-        raise NotImplementedError
-
-    def _update_elevation(self, instance, value):
-        if not self._elevation:
+    def on_elevation(self, instance, value):
+        if value is not None:
             self._elevation = value
             self._update_shadow(instance, value)
+
+    def on__soft_shadow_a(self, instance, value):
+        self._soft_shadow_cl[-1] = value
+
+    def on__hard_shadow_a(self, instance, value):
+        self._hard_shadow_cl[-1] = value
+
+    def _update_shadow(self, instance, value):
+        if not isinstance(
+            self, (RectangularElevationBehavior, CircularElevationBehavior)
+        ):
+            raise NotImplementedError(
+                "This is a CommonElevationBehavior instance only, "
+                "CommonElevationBehavior is not intended to be used alone. try "
+                "to use RectangularElevationBehavior or "
+                "CircularElevationBehavior instead."
+            )
+        if self._elevation > 0:
+            self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
+            self._hard_shadow_a = 0.4 * 0.9 ** self._elevation
+        else:
+            self._soft_shadow_a = 0
+            self._hard_shadow_a = 0
+
+    def on_disabled(self, instance, value):
+        if self.disabled is True:
+            self._elevation = 0
+        else:
+            self._elevation = 0 if self.elevation is None else self.elevation
+        self._update_shadow(self, self._elevation)
+        try:
+            super().on_disabled(instance, value)
+        except Exception:
+            pass
 
 
 class RectangularElevationBehavior(CommonElevationBehavior):
@@ -214,6 +262,7 @@ class RectangularElevationBehavior(CommonElevationBehavior):
     Controls the size and position of the shadow."""
 
     def _update_shadow(self, *args):
+        super()._update_shadow(*args)
         if self._elevation > 0:
             # Set shadow size.
             ratio = self.width / (self.height if self.height != 0 else 1)
@@ -260,9 +309,6 @@ class RectangularElevationBehavior(CommonElevationBehavior):
             self._hard_shadow_texture = self._shadow.textures[
                 str(int(round(self._elevation)))
             ]
-        else:
-            self._soft_shadow_a = 0
-            self._hard_shadow_a = 0
 
 
 class CircularElevationBehavior(CommonElevationBehavior):
@@ -274,7 +320,8 @@ class CircularElevationBehavior(CommonElevationBehavior):
         self._shadow = MDApp.get_running_app().theme_cls.round_shadow
 
     def _update_shadow(self, *args):
-        if self.elevation > 0:
+        super()._update_shadow(*args)
+        if self._elevation > 0:
             # Set shadow size.
             width = self.width * 2
             height = self.height * 2
@@ -285,7 +332,6 @@ class CircularElevationBehavior(CommonElevationBehavior):
             # Set ``soft_shadow`` parameters.
             y = self.center_y - height / 2 - dp(0.1 * 1.5 ** self._elevation)
             self._soft_shadow_pos = (x, y)
-            self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
             if hasattr(self, "_shadow"):
                 self._soft_shadow_texture = self._shadow.textures[
                     str(int(round(self._elevation)))
@@ -293,11 +339,10 @@ class CircularElevationBehavior(CommonElevationBehavior):
             # Set ``hard_shadow`` parameters.
             y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation)
             self._hard_shadow_pos = (x, y)
-            self._hard_shadow_a = 0.4 * 0.9 ** self._elevation
             if hasattr(self, "_shadow"):
                 self._hard_shadow_texture = self._shadow.textures[
                     str(int(round(self._elevation)))
                 ]
-        else:
-            self._soft_shadow_a = 0
-            self._hard_shadow_a = 0
+
+
+#

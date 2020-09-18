@@ -986,7 +986,6 @@ class BaseButton(
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.current_elevation = None
         self.theme_cls.bind(primary_palette=self._on_primary_palette)
         Clock.schedule_once(self.__after_init__, -1)
 
@@ -1355,23 +1354,13 @@ class BaseButton(
         if self.disabled is True:
             if self._is_filled:
                 self._current_button_color = self._md_bg_color_disabled
-            if hasattr(self, "elevation"):
-                if self.elevation:
-                    self.current_elevation = self.elevation
-                    self.elevation = 1
             if self._has_text:
                 self._current_text_color = (
                     self.theme_cls.opposite_disabled_hint_text_color
                 )
-            # if self._has_icon:
-            #     self._current_icon_color = self.theme_cls.opposite_disabled_hint_text_color
         else:
             if self._is_filled:
                 self.on_theme_button_color(self, self.theme_button_color)
-                if self.current_elevation is not None:
-                    self.elevation = self.current_elevation
-                    self.current_elevation = None
-                # self._current_button_color = self.md_bg_color
             else:
                 self._current_button_color[-1] = 0
         self._on_primary_palette(self, None)
@@ -2167,18 +2156,18 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
     #     super().__after_init__(*dt)
 
     def on_elevation(self, instance, value):
+        super().on_elevation(instance, value)
         self._elevation_normal = self.elevation
         self._elevation_raised = self.elevation
         self._anim_raised = Animation(_elevation=value + 2, d=0.2)
         self._anim_raised.bind(on_progress=self._do_anim_raised)
-        self._update_elevation(instance, value)
 
     def on_disabled(self, instance, value):
         if value is True:
             self._elevation = 0
             self._update_shadow(instance, 0)
         else:
-            self._update_elevation(instance, self._elevation_normal)
+            self._update_shadow(instance,self.elevation)
         super().on_disabled(instance, value)
 
     def on_touch_down(self, touch):
@@ -2832,8 +2821,7 @@ class MDRaisedButton(
             self.theme_text_color = "White"
             self.text_color = self._current_text_color
         self._has_text = True
-        if not self.elevation:
-            self.elevation = 10
+
 
         super().__after_init__(*args)
 
@@ -2878,6 +2866,11 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
                 self.internal_padding = dp(32)
             else:
                 self.internal_padding = dp(8)
+
+    def shadow_preset(self, *dt):
+        if self.elevation is None:
+            self.elevation = 10
+        super().shadow_preset(*dt)
 
     def __after_init__(self, *args):
         if self._is_filled is None:
@@ -3161,6 +3154,8 @@ class BaseFloatingLabel(
     text = StringProperty()
     text_color = ListProperty()
     bg_color = ListProperty()
+
+
 
 
 # ------------------------------------------------------------------------------
@@ -3459,7 +3454,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         if self.state == "open":
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
-                    widget.elevation = 0
+                    widget.elevation = 1
                     if self.data[instance.icon] == widget.text:
                         Animation(
                             _canvas_width=widget.width + dp(24),

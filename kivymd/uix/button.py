@@ -1,53 +1,3 @@
-from pathlib import Path
-
-from kivy.animation import Animation
-from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.graphics import Line, Mesh, Rectangle  # Color,
-from kivy.graphics.context_instructions import Color
-from kivy.graphics.instructions import InstructionGroup
-from kivy.graphics.stencil_instructions import (
-    StencilPop,
-    StencilPush,
-    StencilUnUse,
-    StencilUse,
-)
-from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
-from kivy.lang import Builder
-from kivy.logger import Logger
-from kivy.metrics import dp, sp
-from kivy.properties import (
-    BooleanProperty,
-    BoundedNumericProperty,
-    DictProperty,
-    ListProperty,
-    NumericProperty,
-    ObjectProperty,
-    OptionProperty,
-    ReferenceListProperty,
-    StringProperty,
-)
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image
-from kivy.uix.widget import Widget
-
-from kivymd import images_path
-from kivymd.icon_definitions import md_icons
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import (
-    CircularElevationBehavior,
-    CircularRippleBehavior,
-    CommonElevationBehavior,
-    RectangularElevationBehavior,
-    RectangularRippleBehavior,
-)
-from kivymd.uix.label import MDIcon, MDLabel
-from kivymd.uix.tooltip import MDTooltip
-
 """
 Components/Button
 =================
@@ -491,6 +441,56 @@ You can set your color values ​​for background, text of buttons etc:
     `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
 """
 
+from pathlib import Path
+
+from kivy.animation import Animation
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.graphics import Line, Mesh, Rectangle
+from kivy.graphics.context_instructions import Color
+from kivy.graphics.instructions import InstructionGroup
+from kivy.graphics.stencil_instructions import (
+    StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
+)
+from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
+from kivy.lang import Builder
+from kivy.logger import Logger
+from kivy.metrics import dp, sp
+from kivy.properties import (
+    BooleanProperty,
+    BoundedNumericProperty,
+    DictProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    ReferenceListProperty,
+    StringProperty,
+)
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
+from kivy.uix.widget import Widget
+
+from kivymd import images_path
+from kivymd.icon_definitions import md_icons
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    CircularElevationBehavior,
+    CircularRippleBehavior,
+    CommonElevationBehavior,
+    RectangularElevationBehavior,
+    RectangularRippleBehavior,
+)
+from kivymd.uix.label import MDIcon, MDLabel
+from kivymd.uix.tooltip import MDTooltip
+
 __all__ = (
     "MDIconButton",
     "MDFloatingActionButton",
@@ -695,6 +695,7 @@ class BaseButton(
     :attr:`text_color` is a :class:`~kivy.properties.ListProperty`
     defaults to `[]`.
     """
+    disabled_text_color = ListProperty(None, allownone=False)
 
     font_name = StringProperty("")
     """
@@ -1015,6 +1016,8 @@ class BaseButton(
                     self.text_color = self._current_text_color
             else:
                 self.theme_text_color = "Custom"
+        if self.disabled_text_color is None:
+            self.disabled_text_color = self.theme_cls.disabled_hint_text_color
         # Icon Configurations
         # Moved to icon_behavior.__after_init__
         # Line Configurations
@@ -1357,8 +1360,20 @@ class BaseButton(
             if self._has_text:
                 self._current_text_color = (
                     self.theme_cls.opposite_disabled_hint_text_color
+                    if self.disabled_text_color is None
+                    else self.disabled_text_color
+                )
+            if self._has_icon:
+                self._current_icon_color = (
+                    self.theme_cls.opposite_disabled_hint_text_color
+                    if self.disabled_text_color is None
+                    else self.disabled_text_color
                 )
         else:
+            if self._has_text:
+                self.on_theme_text_color(self, self.theme_text_color)
+            if self._has_icon:
+                self.on_theme_icon_color(self, self.theme_icon_color)
             if self._is_filled:
                 self.on_theme_button_color(self, self.theme_button_color)
             else:
@@ -2575,8 +2590,8 @@ class icon_behavior(BaseRectangularButton):
 
     def on_disabled(self, instance, value):
         if self.__icon is not None:
-            self.__icon.disabled = True - self.disabled
-            self.__icon.disabled = self.disabled
+            # self.__icon.disabled = True - self.disabled
+            # self.__icon.disabled = self.disabled
             self.__icon.on_disabled(self, self.__icon.disabled)
         super().on_disabled(instance, value)
 

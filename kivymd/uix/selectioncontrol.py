@@ -150,16 +150,19 @@ MDSwitch
     :class:`~MDCheckbox`.
 """
 
-__all__ = ("MDCheckbox", "MDSwitch")
+__all__ = ("MDCheckbox", "MDSwitch", "New_MDCheckbox")
 
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.metrics import dp, sp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ListProperty,
     NumericProperty,
+    OptionProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
@@ -173,11 +176,14 @@ from kivymd.uix.behaviors import (
     CircularElevationBehavior,
     CircularRippleBehavior,
 )
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDIcon
 
 Builder.load_string(
     """
-<MDCheckbox>
+<New_MDCheckbox>:
+
+<MDCheckbox>:
     canvas:
         Clear
         Color:
@@ -204,7 +210,7 @@ Builder.load_string(
             pos: self.pos
 
 
-<MDSwitch>
+<MDSwitch>:
     canvas.before:
         Color:
             rgba:
@@ -230,6 +236,282 @@ Builder.load_string(
         on_release: setattr(root, 'active', not root.active)
 """
 )
+
+
+class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
+    # Deprecated
+    checkbox_icon_normal = StringProperty(None, deprecated=True)
+    """
+    Background icon of the checkbox used for the default graphical
+    representation when the checkbox is not pressed.
+
+    :attr:`checkbox_icon_normal` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-outline'`.
+
+    .. warning:: Deprecated
+    This property is now deprecated, use selection_normal instead.
+    """
+    checkbox_icon_down = StringProperty(None, deprecated=True)
+    """
+    Background icon of the checkbox used for the default graphical
+    representation when the checkbox is pressed.
+
+    :attr:`checkbox_icon_down` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-marked-outline'`.
+
+    .. warning:: Deprecated
+    This property is now deprecated, use selection_normal instead.
+    """
+    radio_icon_normal = StringProperty(None, deprecated=True)
+    """
+    Background icon (when using the ``group`` option) of the checkbox used for
+    the default graphical representation when the checkbox is not pressed.
+
+    :attr:`radio_icon_normal` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-circle-outline'`.
+
+    .. warning:: Deprecated
+    This property is now deprecated, use selection_normal instead.
+    """
+    radio_icon_down = StringProperty(None, deprecated=True)
+    """
+    Background icon (when using the ``group`` option) of the checkbox used for
+    the default graphical representation when the checkbox is pressed.
+
+    :attr:`radio_icon_down` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-marked-circle-outline'`.
+
+    .. warning:: Deprecated
+    This property is now deprecated, use selection_normal instead.
+    """
+    # New
+    selection_normal = StringProperty(None, allownone=False)
+    selection_down = StringProperty(None, allownone=False)
+    group_normal = StringProperty(None, allownone=False)
+    group_down = StringProperty(None, allownone=False)
+    #
+    color_normal = ListProperty(None, allownone=False)
+    theme_color_normal = OptionProperty(
+        None,
+        options=[
+            "Primary",
+            "Secondary",
+            "Hint",
+            "Error",
+            "Custom",
+            "ContrastParentBackground",
+            "Primary_color",
+            "Accent_color",
+            "White",
+        ],
+    )
+    color_down = ListProperty(None, allownone=False)
+    theme_color_down = OptionProperty(
+        None,
+        options=[
+            "Primary",
+            "Secondary",
+            "Hint",
+            "Error",
+            "Custom",
+            "ContrastParentBackground",
+            "Primary_color",
+            "Accent_color",
+            "White",
+        ],
+    )
+
+    disabled_color = ListProperty(None)
+    """
+    Disabled color in ``rgba`` format.
+
+    :attr:`disabled_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    selected_color = ListProperty(None, deprecated=True)
+    """
+    Selected color in ``rgba`` format.
+
+    :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+
+    .. warning:: Deprecated
+    This property is now deprecated, use `color_down` instead.
+    """
+
+    unselected_color = ListProperty(None, deprecated=True)
+    """
+    Unelected color in ``rgba`` format.
+
+    :attr:`unselected_color` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+
+    .. warning:: Deprecated
+    This property is now deprecated, use `color_normal` instead.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.__after_init__)
+
+    def __after_init__(self, *dt):
+        # self.theme_icon_color="Primary"
+        # check if the developer gave a custom color input
+        if self.color_normal is not None:
+            self.theme_color_normal = "Custom"
+        if self.color_down is not None:
+            self.theme_color_down = "Custom"
+        # Check if the developer gave a custom color theme
+        if self.theme_color_normal is None:
+            self.theme_color_normal = "Primary"
+        if self.theme_color_down is None:
+            self.theme_color_down = "Primary_color"
+        #
+        if self.disabled_text_color is None:
+            self.disabled_text_color = self.theme_cls.disabled_hint_text_color
+        #
+        if self.active is None:
+            self.active = False
+        #
+        self.update_state()
+        self.bind(
+            state=self.update_state,
+            group_normal=self.update_state,
+            group_down=self.update_state,
+            selection_normal=self.update_state,
+            selection_down=self.update_state,
+            theme_color_down=self.toggle_theme,
+            theme_color_normal=self.toggle_theme,
+        )
+        # complement
+        self.bind(
+            state=self.toggle_theme,
+        )
+        super().__after_init__(*dt)
+        if self.state == "down":
+            self._release_group(self)
+        self.toggle_theme()
+
+    def toggle_theme(self, *dt):
+        if self.state == "down":
+            self.theme_icon_color = self.theme_color_down
+            if self.theme_color_down == "Custom":
+                self.text_color = self.color_down
+        else:
+            self.theme_icon_color = self.theme_color_normal
+            if self.theme_color_normal == "Custom":
+                self.text_color = self.color_normal
+
+    def update_state(self, *dt):
+        """
+        This funciton is in charge of updating the icon when it's needed
+        """
+        if self.group is None:
+            self.selection_update()
+        else:
+            self.group_update()
+
+    # @property
+    def get_active(self):
+        return True if self.state == "down" else False
+
+    # @active.setter
+    def set_active(self, value):
+        if value is True:
+            self.state = "down"
+        elif value is False:
+            self.state = "normal"
+        else:
+            raise ValueError(f"Active is a bool property, got {type(value)}")
+        return True
+
+    active = AliasProperty(get_active, set_active, bind=["state"], cache=True)
+    """
+    Indicates if the checkbox is active or inactive.
+
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    def on_group(self, instance, value):
+        """
+        This function ensures that the toggle button group updates every time a
+        button group is pressed.
+
+        it also ensures that the icon shown inside the button is the correct
+        type.
+        """
+        super().on_group(instance, value)
+        self.update_state()
+
+    def selection_update(self, *dt):
+        if self.selection_normal is None:
+            self.selection_normal = "checkbox-blank-outline"
+        if self.selection_down is None:
+            self.selection_down = "checkbox-marked-outline"
+        if self.group is None:
+            if self.state == "down":
+                self.icon = self.selection_down
+            else:
+                self.icon = self.selection_normal
+
+    def group_update(self, *dt):
+        if self.group_normal is None:
+            self.group_normal = "checkbox-blank-circle-outline"
+        if self.group_down is None:
+            self.group_down = "checkbox-marked-circle-outline"
+        if self.group is not None:
+            if self.state == "down":
+                self.icon = self.group_down
+            else:
+                self.icon = self.group_normal
+
+    # Backward compatibility:
+    #   This section will be removed in future versions
+    # TODO remove this in nex release!
+
+    def on_checkbox_icon_normal(self, instance, value):
+        Logger.info(
+            "checkbox_icon_normal is now a Deprecated property please use "
+            "`'selection_normal'` instead."
+        )
+        self.selection_normal = value
+
+    def on_checkbox_icon_down(self, instance, value):
+        Logger.info(
+            "checkbox_icon_down is now a Deprecated property please use "
+            "`'selection_down'` instead."
+        )
+        self.selection_down = value
+
+    def on_radio_icon_normal(self, instance, value):
+        Logger.info(
+            "radio_icon_normal is now a Deprecated property please use "
+            "`'group_normal'` instead."
+        )
+        self.group_normal = value
+
+    def on_radio_icon_down(self, instance, value):
+        Logger.info(
+            "radio_icon_down is now a Deprecated property please use "
+            "`'group_down'` instead."
+        )
+        self.group_down = value
+
+    def on_selected_color(self, instance, value):
+        Logger.debug(
+            "radio_icon_down is now a Deprecated property please use "
+            "`'color_down'` instead."
+        )
+        self.color_down = value
+
+    def on_unselected_color(self, instance, value):
+        Logger.debug(
+            "radio_icon_down is now a Deprecated property please use "
+            "`'color_normal'` instead."
+        )
+        self.color_normal = value
 
 
 class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):

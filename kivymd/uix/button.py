@@ -2613,13 +2613,6 @@ class BaseRoundButton(
 
     spacing = NumericProperty(dp(4))
 
-    width = BoundedNumericProperty(
-        dp(24), min=dp(24), max=None, errorhandler=lambda x: dp(24)
-    )
-    height = BoundedNumericProperty(
-        dp(24), min=dp(24), max=None, errorhandler=lambda x: dp(24)
-    )
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # self._is_filled = True
@@ -2637,6 +2630,13 @@ class BaseRoundButton(
     def on_height(self, instance, value):
         self.width = value
         self.radius = self.height // 2
+
+    def on_size(self, instance, value):
+        # super().on_size(instance, value)
+        if value[0] < dp(24):
+            self.size[0] = dp(24)
+        if value[1] < dp(24):
+            self.size[1] = dp(24)
 
 
 # ------------------------------------------------------------------------------

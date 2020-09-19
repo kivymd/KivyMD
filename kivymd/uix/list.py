@@ -751,8 +751,8 @@ class BaseListItem(
     Divider mode. Available options are: `'Full'`, `'Inset'`
     and default to `'Full'`.
 
-    :attr:`tertiary_font_style` is a :class:`~kivy.properties.OptionProperty`
-    and defaults to `'Body1'`.
+    :attr:`divider` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'Full'`.
     """
 
     bg_color = ListProperty()

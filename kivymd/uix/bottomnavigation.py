@@ -274,7 +274,7 @@ Builder.load_string(
             text_color: root._text_color_normal
             valign: 'middle'
             halign: 'center'
-            opposite_colors: root.opposite_colors
+            opposite_colors: root.opposite_colors if root.opposite_colors is not None else True
             pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
             pos_hint: {'center_x': .5, 'center_y': .7}
@@ -290,7 +290,7 @@ Builder.load_string(
             text_color: root._text_color_normal
             valign: 'bottom'
             halign: 'center'
-            opposite_colors: root.opposite_colors
+            opposite_colors: root.opposite_colors if root.opposite_colors is not None else True
             font_size: root._label_font_size
             pos_hint: {'center_x': .5, 'center_y': .6}
 

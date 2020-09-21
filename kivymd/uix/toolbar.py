@@ -247,8 +247,6 @@ Builder.load_string(
 
 
 <MDActionBottomAppBarButton>:
-    md_bg_color: self.theme_cls.primary_color
-
     canvas.before:
         PushMatrix
         Scale:
@@ -266,6 +264,7 @@ Builder.load_string(
     opposite_colors: True
     elevation: root.elevation
     md_bg_color: self.theme_cls.primary_color if root.type != "bottom" else [0, 0, 0, 0]
+    elevation: 0
 
     canvas:
         Color:
@@ -281,13 +280,14 @@ Builder.load_string(
                 (root.action_button.width - dp(6), self.height)) if root.type == "bottom" else (0, 0)
             radius:
                 (0, root.round, 0, 0) if root.mode == "center" else (root.round, 0, 0, 0)
-        Rectangle:
+        Rectangle: # Trouble maker!!!
             pos:
                 ((self.width / 2 - root.action_button.width / 2) - dp(6), self.y - root._shift) \
                 if root.mode == "center" else \
                 (self.width - root.action_button.width * 2 - dp(6), self.y - root._shift)
             size:
-                (root.action_button.width + dp(6) * 2, self.height - root._shift * 2) \
+                (root.action_button.width + dp(6) * 2, (self.height - root._shift * 2)\
+                -(4 if root.mode in ("end","center") else 0) ) \
                 if root.type == "bottom" else (0, 0)
         RoundedRectangle:
             pos:
@@ -344,6 +344,11 @@ Builder.load_string(
 class MDActionBottomAppBarButton(MDFloatingActionButton):
     _scale_x = NumericProperty(1)
     _scale_y = NumericProperty(1)
+
+    def __after_init__(self,*dt):
+        if self.theme_button_color is None:
+            self.theme_button_color="Primary"
+        super().__after_init__(*dt)
 
 
 class MDToolbar(
@@ -406,7 +411,7 @@ class MDToolbar(
     anchor_title = StringProperty("left")
 
     mode = OptionProperty(
-        "center", options=["free-end", "free-center", "end", "center"]
+        None, options=["free-end", "free-center", "end", "center"]
     )
     """Floating button position. Onle for :class:`~MDBottomAppBar` class.
     Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
@@ -434,7 +439,7 @@ class MDToolbar(
 
     icon_color = ListProperty()
     """
-    Color action button. Onle for :class:`~MDBottomAppBar` class.
+    Color action button. Only for :class:`~MDBottomAppBar` class.
 
     :attr:`icon_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
@@ -463,28 +468,24 @@ class MDToolbar(
     _angle_end = NumericProperty(270)
 
     def __init__(self, **kwargs):
-        self.action_button = MDActionBottomAppBarButton()
         super().__init__(**kwargs)
+        self.action_button = MDActionBottomAppBarButton(elevation=10)
         self.register_event_type("on_action_button")
         self.action_button.bind(
             on_release=lambda x: self.dispatch("on_action_button")
         )
-        self.action_button.x = Window.width / 2 - self.action_button.width / 2
-        self.action_button.y = (
-            (self.center[1] - self.height / 2)
-            + self.theme_cls.standard_increment / 2
-            + self._shift
-        )
-        if not self.icon_color:
-            self.icon_color = self.theme_cls.primary_color
         Window.bind(on_resize=self._on_resize)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
-        Clock.schedule_once(
-            lambda x: self.on_left_action_items(0, self.left_action_items)
-        )
-        Clock.schedule_once(
-            lambda x: self.on_right_action_items(0, self.right_action_items)
-        )
+        Clock.schedule_once(self.__after_init__, -1)
+
+    def __after_init__(self,*dt):
+        if self.icon_color is None:
+            self.action_button.theme_icon_color="Accent_color"
+        if self.mode is None:
+            self.mode = "center"
+        # self.on_mode(self,self.mode)
+        self.on_left_action_items(0, self.left_action_items)
+        self.on_right_action_items(0, self.right_action_items)
 
     def on_action_button(self, *args):
         pass
@@ -537,9 +538,8 @@ class MDToolbar(
         def set_button_pos(*args):
             self.action_button.x = x
             self.action_button.y = y
-            self.action_button._hard_shadow_size = (0, 0)
-            self.action_button._soft_shadow_size = (0, 0)
-            anim = Animation(_scale_x=1, _scale_y=1, d=0.05)
+            self.action_button.elevation = 0
+            anim = Animation(_scale_x=1, _scale_y=1, d=0.1)
             anim.bind(on_complete=self.set_shadow)
             anim.start(self.action_button)
 
@@ -570,7 +570,7 @@ class MDToolbar(
             x = Window.width / 2 - self.action_button.width / 2
             y = self.action_button.height + self.action_button.height / 2
         self.remove_shadow()
-        anim = Animation(_scale_x=0, _scale_y=0, d=0.05)
+        anim = Animation(_scale_x=0, _scale_y=0, d=0.1)
         anim.bind(on_complete=set_button_pos)
         anim.start(self.action_button)
 
@@ -591,8 +591,10 @@ class MDToolbar(
         self.action_button._soft_shadow_size = (0, 0)
 
     def set_shadow(self, *args):
-        self.action_button._hard_shadow_size = (dp(112), dp(112))
-        self.action_button._soft_shadow_size = (dp(112), dp(112))
+        # self.action_button.elevation=0
+        self.action_button.elevation=10
+        # self.action_button._hard_shadow_size = (dp(112), dp(112))
+        # self.action_button._soft_shadow_size = (dp(112), dp(112))
 
 
 class MDBottomAppBar(FloatLayout):
@@ -602,5 +604,11 @@ class MDBottomAppBar(FloatLayout):
 
     def add_widget(self, widget, index=0, canvas=None):
         if widget.__class__ is MDToolbar:
+            widget.type="bottom"
             super().add_widget(widget)
             return super().add_widget(widget.action_button)
+        else:
+            raise ValueError(
+                "MDBottomAppBar only accepts MDToolbar like objects\n"
+                f"Widget type = {widget.__class__}"
+            )

@@ -150,13 +150,13 @@ MDSwitch
     :class:`~MDCheckbox`.
 """
 
-__all__ = ("MDCheckbox", "MDSwitch", "New_MDCheckbox")
+__all__ = ("MDCheckbox", "MDSwitch")
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.logger import Logger
-from kivy.metrics import dp, sp
+from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -177,28 +177,10 @@ from kivymd.uix.behaviors import (
     CircularRippleBehavior,
 )
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.label import MDIcon
 
 Builder.load_string(
     """
-<New_MDCheckbox>:
-
 <MDCheckbox>:
-    canvas:
-        Clear
-        Color:
-            rgba: self.color
-        Rectangle:
-            texture: self.texture
-            size: self.texture_size
-            pos:
-                int(self.center_x - self.texture_size[0] / 2.),\
-                int(self.center_y - self.texture_size[1] / 2.)
-
-    color: self._current_color
-    halign: 'center'
-    valign: 'middle'
-
 
 <Thumb>
     color: 1, 1, 1, 1
@@ -238,8 +220,9 @@ Builder.load_string(
 )
 
 
-class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
-    # Deprecated
+class MDCheckbox(ToggleButtonBehavior, MDIconButton):
+
+    # Deprecated properties ====================================================
     checkbox_icon_normal = StringProperty(None, deprecated=True)
     """
     Background icon of the checkbox used for the default graphical
@@ -284,13 +267,81 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
     .. warning:: Deprecated
     This property is now deprecated, use selection_normal instead.
     """
-    # New
+    # Active properties ========================================================
     selection_normal = StringProperty(None, allownone=False)
+    """
+    Selection Checkbox displayed icon, used as the indicator when the checkbox is
+    not pressed.
+
+    This value is used when the MDCheckbox is on selection mode
+    (whe group is None).
+
+    This value can either be a listed icon, or a image path.
+
+    .. note:: unexpected Loading time.
+    keep in mind that if the image is not already in memory there might be some
+    delay as the interpreter loads the image in memory.
+    """
     selection_down = StringProperty(None, allownone=False)
+    """
+    Selection Checkbox displayed icon, used as the indicator when the checkbox is
+    pressed.
+
+    This value is used when the MDCheckbox is on selection mode
+    (whe group is None).
+
+    This value can either be a listed icon, or a image path.
+
+    .. note:: unexpected Loading time.
+    keep in mind that if the image is not already in memory there might be some
+    delay as the interpreter loads the image in memory.
+    """
     group_normal = StringProperty(None, allownone=False)
+    """
+    Group Checkbox displayed icon, used as the indicator when the checkbox is
+    not pressed.
+
+    This value is used when the MDCheckbox is on group mode
+    (whe group is not None).
+
+    This value can either be a listed icon, or a image path.
+
+    .. note:: unexpected Loading time.
+    keep in mind that if the image is not already in memory there might be some
+    delay as the interpreter loads the image in memory.
+    """
     group_down = StringProperty(None, allownone=False)
+    """
+    Group Checkbox displayed icon, used as the indicator when the checkbox is
+    pressed.
+
+    This value is used when the MDCheckbox is on group mode
+    (whe group is not None).
+
+    This value can either be a listed icon, or a image path.
+
+    .. note:: unexpected Loading time.
+    keep in mind that if the image is not already in memory there might be some
+    delay as the interpreter loads the image in memory.
+    """
     #
     color_normal = ListProperty(None, allownone=False)
+    """
+    This property sets the text color when the button is not pressed.
+    it only works when the `theme_color_normal` is set to `"Custom"`.
+
+    :attr:`color_normal` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `None`.
+
+    .. note:: Special Behavior on new instances.
+    If you set this property inside a widget definition in kvlang or as a kwarg
+    in python code, it will make the class to change `theme_color_normal` to
+    `"Custom"`.
+
+    after the new instance is created this property won't affect
+    `theme_color_normal` property.
+    """
+
     theme_color_normal = OptionProperty(
         None,
         options=[
@@ -305,7 +356,29 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
             "White",
         ],
     )
+    """
+    This property will be set when the state of the MDCheckbox is set to
+    `"normal"` (`active` is `False`).
+
+    """
+
     color_down = ListProperty(None, allownone=False)
+    """
+    This property sets the text color when the button is pressed.
+    it only works when the `theme_color_down` is set to `"Custom"`.
+
+    :attr:`color_down` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `None`.
+
+    .. note:: Special Behavior on new instances.
+    If you set this property inside a widget definition in kvlang or as a kwarg
+    in python code, it will make the class to change `theme_color_down` to
+    `"Custom"`.
+
+    after the new instance is created this property won't affect
+    `theme_color_down` property.
+    """
+
     theme_color_down = OptionProperty(
         None,
         options=[
@@ -320,6 +393,11 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
             "White",
         ],
     )
+    """
+    This property will be set when the state of the MDCheckbox is set to
+    `"down"` (`active` is `True`).
+
+    """
 
     disabled_color = ListProperty(None)
     """
@@ -350,13 +428,54 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
     .. warning:: Deprecated
     This property is now deprecated, use `color_normal` instead.
     """
+    _font_size_normal = NumericProperty("24sp")
+    """
+    This property stores the actual size to animate the label
+    and regain it's actual size once the animation has ended.
+
+    .. warning:: Internal use Only.
+    This property is intended for interla use only.
+    """
+    # Animations
+    animate = BooleanProperty(True)
+    """
+    This property allows the widget to play an animation every time the Widget
+    changes state.
+
+    This is for performance purposes only.
+
+    :attr:`animate` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    animate
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self.__after_init__)
 
     def __after_init__(self, *dt):
-        # self.theme_icon_color="Primary"
+        # updates icon states
+        if self.selection_normal is None:
+            self.selection_normal = "checkbox-blank-outline"
+        if self.selection_down is None:
+            self.selection_down = "checkbox-marked-outline"
+        if self.group_normal is None:
+            self.group_normal = "checkbox-blank-circle-outline"
+        if self.group_down is None:
+            self.group_down = "checkbox-marked-circle-outline"
+        if self.icon is None:
+            if self.active is True:
+                self.icon = (
+                    self.selection_down
+                    if self.group is None
+                    else self.group_down
+                )
+            else:
+                self.icon = (
+                    self.selection_normal
+                    if self.group is None
+                    else self.group_normal
+                )
         # check if the developer gave a custom color input
         if self.color_normal is not None:
             self.theme_color_normal = "Custom"
@@ -374,7 +493,7 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         if self.active is None:
             self.active = False
         #
-        self.update_state()
+        self.update_state(skip=True)
         self.bind(
             state=self.update_state,
             group_normal=self.update_state,
@@ -383,6 +502,8 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
             selection_down=self.update_state,
             theme_color_down=self.toggle_theme,
             theme_color_normal=self.toggle_theme,
+            color_down=self.toggle_theme,
+            color_normal=self.toggle_theme,
         )
         # complement
         self.bind(
@@ -392,8 +513,18 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         if self.state == "down":
             self._release_group(self)
         self.toggle_theme()
+        self.Update_Container_size()
+
+    def on_font_size(self, instance, value):
+        super().on_font_size(instance, value)
+        if value:
+            self._font_size_normal = value
 
     def toggle_theme(self, *dt):
+        """
+        This function is in charge to update the colors and themes of the
+        displayed MDIcon.
+        """
         if self.state == "down":
             self.theme_icon_color = self.theme_color_down
             if self.theme_color_down == "Custom":
@@ -403,14 +534,16 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
             if self.theme_color_normal == "Custom":
                 self.text_color = self.color_normal
 
-    def update_state(self, *dt):
+    def update_state(self, *dt, skip=False):
         """
-        This funciton is in charge of updating the icon when it's needed
+        This funciton is in charge of updating the icon when it's needed.
+        it will force the update of the icon to the respective behavior
+        either be as a group icon or as a selection icon.
         """
         if self.group is None:
-            self.selection_update()
+            self.selection_update(skip=skip)
         else:
-            self.group_update()
+            self.group_update(skip=skip)
 
     # @property
     def get_active(self):
@@ -430,8 +563,10 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
     """
     Indicates if the checkbox is active or inactive.
 
-    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
+    :attr:`active` is a :class:`~kivy.properties.AliasProperty` that acts as a
+    common BooleanProperty and by default is set to `False` .
+    it uses get_active as a getter and set_active as a setter.
+    its binded to the ToggleButtonBehavior.state and it's cached.
     """
 
     def on_group(self, instance, value):
@@ -445,33 +580,56 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         super().on_group(instance, value)
         self.update_state()
 
-    def selection_update(self, *dt):
-        if self.selection_normal is None:
-            self.selection_normal = "checkbox-blank-outline"
-        if self.selection_down is None:
-            self.selection_down = "checkbox-marked-outline"
+    def selection_update(self, *dt, skip=False):
+        """
+        This function is called uppon an state update of the button
+        It will change the icon to the respective selection icon.
+        """
         if self.group is None:
-            if self.state == "down":
-                self.icon = self.selection_down
+            if (
+                self.zoom_in_animation
+                and self.animate is True
+                and skip is False
+            ):
+                self.zoom_in_animation(
+                    next_icon=self.selection_down
+                    if self.state == "down"
+                    else self.selection_normal
+                )
             else:
-                self.icon = self.selection_normal
+                if self.state == "down":
+                    self.next_icon = self.selection_down
+                else:
+                    self.next_icon = self.selection_normal
 
-    def group_update(self, *dt):
-        if self.group_normal is None:
-            self.group_normal = "checkbox-blank-circle-outline"
-        if self.group_down is None:
-            self.group_down = "checkbox-marked-circle-outline"
+    def group_update(self, *dt, skip=False):
+        """
+        This function is called uppon an state update of the button
+        It will change the icon to the respective group icon.
+        """
         if self.group is not None:
-            if self.state == "down":
-                self.icon = self.group_down
+            if (
+                self.zoom_in_animation
+                and self.animate is True
+                and skip is False
+            ):
+                self.zoom_in_animation(
+                    next_icon=self.group_down
+                    if self.state == "down"
+                    else self.group_normal
+                )
             else:
-                self.icon = self.group_normal
+                if self.state == "down":
+                    self.icon = self.group_down
+                else:
+                    self.icon = self.group_normal
 
     # Backward compatibility:
     #   This section will be removed in future versions
     # TODO remove this in nex release!
 
     def on_checkbox_icon_normal(self, instance, value):
+        # TODO remove this in nex release!
         Logger.info(
             "checkbox_icon_normal is now a Deprecated property please use "
             "`'selection_normal'` instead."
@@ -479,6 +637,7 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         self.selection_normal = value
 
     def on_checkbox_icon_down(self, instance, value):
+        # TODO remove this in nex release!
         Logger.info(
             "checkbox_icon_down is now a Deprecated property please use "
             "`'selection_down'` instead."
@@ -486,6 +645,7 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         self.selection_down = value
 
     def on_radio_icon_normal(self, instance, value):
+        # TODO remove this in nex release!
         Logger.info(
             "radio_icon_normal is now a Deprecated property please use "
             "`'group_normal'` instead."
@@ -493,6 +653,7 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         self.group_normal = value
 
     def on_radio_icon_down(self, instance, value):
+        # TODO remove this in nex release!
         Logger.info(
             "radio_icon_down is now a Deprecated property please use "
             "`'group_down'` instead."
@@ -500,6 +661,7 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         self.group_down = value
 
     def on_selected_color(self, instance, value):
+        # TODO remove this in nex release!
         Logger.debug(
             "radio_icon_down is now a Deprecated property please use "
             "`'color_down'` instead."
@@ -507,152 +669,12 @@ class New_MDCheckbox(ToggleButtonBehavior, MDIconButton):
         self.color_down = value
 
     def on_unselected_color(self, instance, value):
+        # TODO remove this in nex release!
         Logger.debug(
             "radio_icon_down is now a Deprecated property please use "
             "`'color_normal'` instead."
         )
         self.color_normal = value
-
-
-class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
-    active = BooleanProperty(False)
-    """
-    Indicates if the checkbox is active or inactive.
-
-    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    checkbox_icon_normal = StringProperty("checkbox-blank-outline")
-    """
-    Background icon of the checkbox used for the default graphical
-    representation when the checkbox is not pressed.
-
-    :attr:`checkbox_icon_normal` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank-outline'`.
-    """
-
-    checkbox_icon_down = StringProperty("checkbox-marked-outline")
-    """
-    Background icon of the checkbox used for the default graphical
-    representation when the checkbox is pressed.
-
-    :attr:`checkbox_icon_down` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-marked-outline'`.
-    """
-
-    radio_icon_normal = StringProperty("checkbox-blank-circle-outline")
-    """
-    Background icon (when using the ``group`` option) of the checkbox used for
-    the default graphical representation when the checkbox is not pressed.
-
-    :attr:`radio_icon_normal` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank-circle-outline'`.
-    """
-
-    radio_icon_down = StringProperty("checkbox-marked-circle-outline")
-    """
-    Background icon (when using the ``group`` option) of the checkbox used for
-    the default graphical representation when the checkbox is pressed.
-
-    :attr:`radio_icon_down` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-marked-circle-outline'`.
-    """
-
-    selected_color = ListProperty()
-    """
-    Selected color in ``rgba`` format.
-
-    :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
-    """
-
-    unselected_color = ListProperty()
-    """
-    Unelected color in ``rgba`` format.
-
-    :attr:`unselected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
-    """
-
-    disabled_color = ListProperty()
-    """
-    Disabled color in ``rgba`` format.
-
-    :attr:`disabled_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
-    """
-
-    _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
-
-    def __init__(self, **kwargs):
-        self.check_anim_out = Animation(font_size=0, duration=0.1, t="out_quad")
-        self.check_anim_in = Animation(
-            font_size=sp(24), duration=0.1, t="out_quad"
-        )
-        super().__init__(**kwargs)
-        self.selected_color = self.theme_cls.primary_color
-        self.unselected_color = self.theme_cls.secondary_text_color
-        self.disabled_color = self.theme_cls.divider_color
-        self._current_color = self.unselected_color
-        self.check_anim_out.bind(
-            on_complete=lambda *x: self.check_anim_in.start(self)
-        )
-        self.bind(
-            checkbox_icon_normal=self.update_icon,
-            checkbox_icon_down=self.update_icon,
-            radio_icon_normal=self.update_icon,
-            radio_icon_down=self.update_icon,
-            group=self.update_icon,
-            selected_color=self.update_color,
-            unselected_color=self.update_color,
-            disabled_color=self.update_color,
-            disabled=self.update_color,
-            state=self.update_color,
-        )
-        self.theme_cls.bind(primary_color=self.update_primary_color)
-        self.update_icon()
-        self.update_color()
-
-    def update_primary_color(self, instance, value):
-        self.selected_color = value
-
-    def update_icon(self, *args):
-        if self.state == "down":
-            self.icon = (
-                self.radio_icon_down if self.group else self.checkbox_icon_down
-            )
-        else:
-            self.icon = (
-                self.radio_icon_normal
-                if self.group
-                else self.checkbox_icon_normal
-            )
-
-    def update_color(self, *args):
-        if self.disabled:
-            self._current_color = self.disabled_color
-        elif self.state == "down":
-            self._current_color = self.selected_color
-        else:
-            self._current_color = self.unselected_color
-
-    def on_state(self, *args):
-        if self.state == "down":
-            self.check_anim_in.cancel(self)
-            self.check_anim_out.start(self)
-            self.update_icon()
-            if self.group:
-                self._release_group(self)
-            self.active = True
-        else:
-            self.check_anim_in.cancel(self)
-            self.check_anim_out.start(self)
-            self.update_icon()
-            self.active = False
-
-    def on_active(self, *args):
-        self.state = "down" if self.active else "normal"
 
 
 class Thumb(

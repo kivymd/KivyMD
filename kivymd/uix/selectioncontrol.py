@@ -357,8 +357,15 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
         ],
     )
     """
-    This property will be set when the state of the MDCheckbox is set to
-    `"normal"` (`active` is `False`).
+    This property will be set to the icon when the state of the MDCheckbox
+    `state` is set to `"normal"` (`active` is `False`).
+
+    :attr:`theme_color_normal` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
+
+    .. note:: Special Behavior on new instances.
+    If you don't set this property inside a widget definition in kvlang or as a kwarg
+    in python code, it will be settled to "Primary"
 
     """
 
@@ -394,8 +401,15 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
         ],
     )
     """
-    This property will be set when the state of the MDCheckbox is set to
-    `"down"` (`active` is `True`).
+    This property will be set to the icon when the state of the MDCheckbox
+    `state` is set to `"down"` (`active` is `True`).
+
+    :attr:`theme_color_down` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
+
+    .. note:: Special Behavior on new instances.
+    If you don't set this property inside a widget definition in kvlang or as a kwarg
+    in python code, it will be settled to "Primary_color"
 
     """
 

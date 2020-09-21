@@ -131,32 +131,48 @@ BoxLayout:
                             text: "Change Style"
                             bold: True
                             theme_text_color: "Primary"
+                            size_hint_y: None
+                            height:self.font_size+dp(4)
+
 
                         MDBoxLayout:
                             size_hint: None, None
-                            adaptive_size: True
                             spacing: "30dp"
+                            height: dp(48)
+                            width:self.minimum_width
 
                             MDCheckbox:
+                                id:Light_chkbx
                                 group: "style"
-                                size_hint: None, None
-                                size: "48dp", '48dp'
                                 active: True
-                                on_active: if self.active: app.switch_theme_style()
+                                theme_color_down:"Primary"
+                                on_active:
+                                    if self.active and app.theme_cls.theme_style != "Light": app.switch_theme_style()
 
-                            Label:
+                            MDLabel:
                                 text: "Light"
-                                color: app.theme_cls.text_color
+                                theme_text_color: "Primary"
+                                size_hint:None,1
+                                height:self.parent.height
+                                width:self.texture_size[0]
+                                text_size:None,self.font_size
+                                valign:"middle"
 
                             MDCheckbox:
+                                id:Dark_chkbx
                                 group: "style"
-                                size_hint: None, None
-                                size: "48dp", '48dp'
-                                on_active: if self.active: app.switch_theme_style()
+                                theme_color_down:"Primary"
+                                on_active:
+                                    if self.active and app.theme_cls.theme_style != "Dark": app.switch_theme_style()
 
-                            Label:
+                            MDLabel:
                                 text: "Dark"
-                                color: app.theme_cls.text_color
+                                theme_text_color: "Primary"
+                                size_hint:None,1
+                                height:self.parent.height
+                                width:self.texture_size[0]
+                                text_size:None,self.font_size
+                                valign:"middle"
 
                     MDSeparator:
 

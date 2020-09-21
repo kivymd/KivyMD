@@ -988,10 +988,12 @@ class BaseButton(
     """
 
     def on_user_font_size(self, instance, value):
+        # TODO: Deprecated:remove this function and the propety as well.
         Logger.info(
             "BaseButton: user_font_size is deprecated ::\n"
             "This property is now deprecated and will be "
-            "removed in future updates. use font_size instead."
+            "removed in future updates.\n"
+            "From now on use font_size instead.\n"
         )
         self.font_size = value
 
@@ -1034,6 +1036,7 @@ class BaseButton(
         # Icon Configurations
         # Moved to icon_behavior.__after_init__
         # Line Configurations
+        # Moved to BaseOutlineButton.__after_init__
         self.on_opposite_colors(self, self.on_opposite_colors)
         self.on__is_filled(self, self._is_filled)
         self.on_font_size(self, self.font_size)
@@ -1046,7 +1049,6 @@ class BaseButton(
     def on_radius(self, instance, value):
         if value > self.height // 2:
             self._radius = self.height // 2
-            # self.radius = self._radius
         else:
             self._radius = self.radius
 
@@ -1054,8 +1056,8 @@ class BaseButton(
         self.on_theme_text_color(self, self.theme_text_color)
 
     def on_icon(self, instance, value):
-        self.on_theme_icon_color(self, self.theme_icon_color)
         # Call the theme property of the icon property.
+        self.on_theme_icon_color(self, self.theme_icon_color)
 
     def on__is_filled(self, instance, value):
         """
@@ -1082,13 +1084,15 @@ class BaseButton(
         # Verifica el color de texto
         if self._is_filled:
             self.on_theme_button_color(self, self.theme_button_color)
+
         if self._has_text and self.show_label:
             self.on_theme_text_color(self, self.theme_text_color)
+
         if self._has_line:
             self.on_theme_line_color(self, self.theme_line_color)
+
         if self._has_icon:
             self.on_theme_icon_color(self, self.theme_icon_color)
-        #
 
     def on_theme_button_color(self, ins, val):
         """
@@ -1171,7 +1175,6 @@ class BaseButton(
                         self._current_text_color = self.text_color
                     else:
                         self.theme_text_color = "Primary"
-                        # self._current_text_color = [0] * 4
             elif value == "Accent_color":
                 self._current_theme_text_color = "Custom"
                 self._current_text_color = theme.accent_color
@@ -1264,7 +1267,6 @@ class BaseButton(
                     )
                 else:
                     self.theme_icon_color = "Primary"
-            #
             if self._is_filled:
                 if self.md_bg_color == self._current_icon_color:
                     self._current_icon_color = [1] * 4
@@ -1319,13 +1321,10 @@ class BaseButton(
                 self._current_line_color = theme.error_color
 
             elif self.theme_line_color == "Custom":
-                # Force reload of the color
-                # self._current_line_color = [0, 0, 0, 0]
                 if self.line_color:
                     self._current_line_color = self.line_color
                 else:
                     self.theme_line_color = "Primary_color"
-                    # self.line_color = [0,0,0,1]
                 pass
 
             elif self.theme_line_color == "Primary_color":
@@ -1589,7 +1588,6 @@ class shaped_background_behaivor(BaseButton):
                     vertices=self.__bg_coords[0],
                     indices=self.__bg_coords[1],
                     mode="triangle_fan",
-                    # group="shaped_background_behaivor",
                 )
                 self.__bg_group_instructions.clear()
                 self.__bg_group_instructions.add(self.__bg_cl_instruction)
@@ -1753,8 +1751,6 @@ class BaseOutlineButton(shaped_background_behaivor):
             if self._has_line is True
             else None
         )
-        # self.bind(pos=self._update_shape_coords)
-        # self.bind(size=self._update_shape_coords)
 
     def __after_init__(self, *dt):
         if self._has_line is None:
@@ -2093,12 +2089,6 @@ class BaseOutlineButton(shaped_background_behaivor):
         super().on_disabled(instance, value)
 
 
-# ------------------------------------------------------------------------------
-# BasePressedButton
-# ------------------------------------------------------------------------------
-#
-
-
 class BasePressedButton(BaseButton):
     """
     Abstract base class for those button which fade to a background color on
@@ -2134,18 +2124,12 @@ class BasePressedButton(BaseButton):
         return super().on_touch_up(touch)
 
 
-# ------------------------------------------------------------------------------
-# BaseFlatButton
-# ------------------------------------------------------------------------------
-#
-
 Builder.load_string(
     """
 <BaseFlatButton>:
 """,
     filename="MDBaseFlatButton.kv",
 )
-#
 
 
 class BaseFlatButton(BaseButton):
@@ -2155,20 +2139,6 @@ class BaseFlatButton(BaseButton):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-
-# ------------------------------------------------------------------------------
-# BaseRaisedButton
-# ------------------------------------------------------------------------------
-#
-
-# Builder.load_string(
-#     """
-# <BaseRaisedButton>:
-# """,
-#     filename="MDBaseRaisedButton.kv",
-# )
-# #
 
 
 class BaseRaisedButton(CommonElevationBehavior, BaseButton):
@@ -2233,12 +2203,6 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
         self._elevation += value
         if self._elevation < self._elevation_raised + 2:
             self._update_shadow(instance, self._elevation)
-
-
-# ------------------------------------------------------------------------------
-# BaseRectangularButton
-# ------------------------------------------------------------------------------
-#
 
 
 Builder.load_string(
@@ -2452,13 +2416,6 @@ class icon_behavior(BaseRectangularButton):
     source = StringProperty(None, allownone=False)
     next_icon = ObjectProperty(None, allownone=True)
 
-    def zoom_in_animation(self, next_icon=None):
-        if self.__icon:
-            self.__icon.zoom_in_animation(
-                next_icon=next_icon,
-                callback=lambda *x: setattr(self, "icon", self.__icon.icon),
-            )
-
     def on_next_icon(self, instenca, value):
         if self.__icon:
             self.__icon.next_icon = value
@@ -2489,7 +2446,6 @@ class icon_behavior(BaseRectangularButton):
                 self._current_font_size = sp(24)
             else:
                 self._current_font_size = sp(14)
-        # self.bind(_current_font_size = self.Update_Container_size)
         self.on__has_icon(self, self._has_icon)
         self.on_icon(self, self.icon)
         self.on_icon_position(self, self.icon_position)
@@ -2634,7 +2590,6 @@ class icon_behavior(BaseRectangularButton):
                 self.__icon.size = [self.__icon.font_size] * 2
             else:
                 self.__icon.size = self.__icon.size
-            # self.__icon.size = [self.__icon.font_size] * 2
 
         super().Update_Container_size(*dt)
 
@@ -2668,10 +2623,16 @@ class icon_behavior(BaseRectangularButton):
             self.__icon.on_disabled(self, self.__icon.disabled)
         super().on_disabled(instance, value)
 
-
-# ------------------------------------------------------------------------------
-# BaseRoundButton
-# ------------------------------------------------------------------------------
+    def zoom_in_animation(self, next_icon=None):
+        """
+        This animation zooms out and then zooms in the icon
+        next icon is a String kwarg.
+        """
+        if self.__icon:
+            self.__icon.zoom_in_animation(
+                next_icon=next_icon,
+                callback=lambda *x: setattr(self, "icon", self.__icon.icon),
+            )
 
 
 class BaseRoundButton(
@@ -2712,14 +2673,7 @@ class BaseRoundButton(
             self.size[1] = dp(24)
 
 
-# ------------------------------------------------------------------------------
-# MDIconButton
-# ------------------------------------------------------------------------------
-#
-
-
 class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
-    # icon = StringProperty("checkbox-blank-circle")
     """
     Button icon.
 
@@ -2754,13 +2708,6 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
     def on_text_color(self, instance, value):
         self.icon_color = self.text_color
         self.theme_icon_color = "Custom"
-        f"TEST TEXTCOLOR: {self} \n\ttext_color = {self.text_color}"
-
-
-# ------------------------------------------------------------------------------
-# MDFlatButton
-# ------------------------------------------------------------------------------
-#
 
 
 class MDFlatButton(
@@ -2782,11 +2729,6 @@ class MDFlatButton(
         super().__after_init__(*kwargs)
 
 
-# ------------------------------------------------------------------------------
-# MDRectangleFlatButton
-# ------------------------------------------------------------------------------
-
-
 class MDRectangleFlatButton(BaseOutlineButton, MDFlatButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -2797,11 +2739,6 @@ class MDRectangleFlatButton(BaseOutlineButton, MDFlatButton):
         super().__after_init__(*args)
 
 
-# ------------------------------------------------------------------------------
-# MDRectangleFlatIconButton
-# ------------------------------------------------------------------------------
-
-
 class MDRectangleFlatIconButton(MDRectangleFlatButton, icon_behavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -2809,11 +2746,6 @@ class MDRectangleFlatIconButton(MDRectangleFlatButton, icon_behavior):
     def __after_init__(self, *args):
         super().__after_init__(*args)
         # self.theme_button_color = "Primary" if self.theme_button_color is None else "Custom"
-
-
-# ------------------------------------------------------------------------------
-# MDRoundFlatButton
-# ------------------------------------------------------------------------------
 
 
 class MDRoundFlatButton(MDRectangleFlatButton):
@@ -2826,22 +2758,12 @@ class MDRoundFlatButton(MDRectangleFlatButton):
         super().__after_init__(*dt)
 
 
-# ------------------------------------------------------------------------------
-# MDRoundFlatIconButton
-# ------------------------------------------------------------------------------
-
-
 class MDRoundFlatIconButton(MDRoundFlatButton, icon_behavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def __after_init__(self, *dt):
         super().__after_init__(*dt)
-
-
-# ------------------------------------------------------------------------------
-# MDBevelFlatButton
-# ------------------------------------------------------------------------------
 
 
 class MDBevelFlatButton(MDRectangleFlatButton):
@@ -2854,11 +2776,6 @@ class MDBevelFlatButton(MDRectangleFlatButton):
         super().__after_init__(*dt)
 
 
-# ------------------------------------------------------------------------------
-# MDBevelFlatIconButton
-# ------------------------------------------------------------------------------
-
-
 class MDBevelFlatIconButton(MDRoundFlatButton, icon_behavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -2866,11 +2783,6 @@ class MDBevelFlatIconButton(MDRoundFlatButton, icon_behavior):
     def __after_init__(self, *dt):
         super().__after_init__(*dt)
 
-
-# ------------------------------------------------------------------------------
-# MDRaisedButton
-# ------------------------------------------------------------------------------
-#
 
 Builder.load_string(
     """
@@ -2912,11 +2824,6 @@ class MDRaisedButton(
 
         super().__after_init__(*args)
 
-
-# ------------------------------------------------------------------------------
-# MDFloatingActionButton
-# ------------------------------------------------------------------------------
-#
 
 Builder.load_string(
     """
@@ -2976,11 +2883,6 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
             self._current_font_size = dp(24)
 
 
-# ------------------------------------------------------------------------------
-# MDRoundImageButton
-# ------------------------------------------------------------------------------
-#
-
 Builder.load_string(
     """
 
@@ -3005,11 +2907,6 @@ class MDRoundImageButton(MDFloatingActionButton):
     def on_size(self, instance, value):
         self.remove_widget(self.ids.lbl_txt)
 
-
-# ------------------------------------------------------------------------------
-# MDTextButton
-# ------------------------------------------------------------------------------
-#
 
 Builder.load_string(
     """
@@ -3061,20 +2958,8 @@ class MDTextButton(ThemableBehavior, Button):
             self.background_disabled_normal = f"{images_path}transparent.png"
 
 
-# ------------------------------------------------------------------------------
-# MDCustomRoundIconButton
-# ------------------------------------------------------------------------------
-#
-
-
 class MDCustomRoundIconButton(CircularRippleBehavior, ButtonBehavior, Image):
     pass
-
-
-# ------------------------------------------------------------------------------
-# MDFillRoundFlatButton
-# ------------------------------------------------------------------------------
-#
 
 
 class MDFillRoundFlatButton(
@@ -3104,15 +2989,7 @@ class MDFillRoundFlatButton(
         super().__after_init__(*args)
 
 
-# ------------------------------------------------------------------------------
-# MDFillRoundFlatIconButton
-# ------------------------------------------------------------------------------
-#
-
-
 class MDFillRoundFlatIconButton(MDFillRoundFlatButton, icon_behavior):
-    # text_color = ListProperty((1, 1, 1, 1))
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -3123,48 +3000,12 @@ class MDFillRoundFlatIconButton(MDFillRoundFlatButton, icon_behavior):
         super().__after_init__(*args)
         self.on_theme_icon_color(self, self.theme_icon_color)
 
-    # def _on_primary_palette(self, instance, value):
-    #     super()._on_primary_palette(instance, value)
-    # self._current_button_color = self.theme_cls.primary_color
-
-
-# SpeedDial classes
-
-# ------------------------------------------------------------------------------
-# BaseFloatingRootButton
-# ------------------------------------------------------------------------------
-#
-
-# Builder.load_string(
-#     """
-# <BaseFloatingRootButton>
-#     theme_text_color: "Custom"
-#     md_bg_color: self.theme_cls.primary_color
-#
-#     canvas:
-#         PushMatrix
-#         Rotate:
-#             angle: self._angle
-#             axis: (0, 0, 1)
-#             origin: self.center
-#         # PopMatrix
-#     canvas.after:
-#         PopMatrix
-#     """,
-#     filename="BaseFloatingRootButton.kv",
-# )
-
 
 class BaseFloatingRootButton(MDFloatingActionButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.elevation = 5
 
-
-# ------------------------------------------------------------------------------
-# BaseFloatingBottomButton
-# ------------------------------------------------------------------------------
-#
 
 Builder.load_string(
     """
@@ -3197,11 +3038,6 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
     _padding_right = NumericProperty(0)
     _bg_color = ListProperty()
 
-
-# ------------------------------------------------------------------------------
-# BaseFloatingLabel
-# ------------------------------------------------------------------------------
-#
 
 Builder.load_string(
     """
@@ -3243,40 +3079,16 @@ class BaseFloatingLabel(
     bg_color = ListProperty()
 
 
-# ------------------------------------------------------------------------------
-# MDFloatingBottomButton
-# ------------------------------------------------------------------------------
-#
-
-
 class MDFloatingBottomButton(BaseFloatingBottomButton):
     pass
-
-
-# ------------------------------------------------------------------------------
-# MDFloatingRootButton
-# ------------------------------------------------------------------------------
-#
 
 
 class MDFloatingRootButton(BaseFloatingRootButton):
     pass
 
 
-# ------------------------------------------------------------------------------
-# MDFloatingLabel
-# ------------------------------------------------------------------------------
-#
-
-
 class MDFloatingLabel(BaseFloatingLabel):
     pass
-
-
-# ------------------------------------------------------------------------------
-# MDFloatingActionButtonSpeedDial
-# ------------------------------------------------------------------------------
-#
 
 
 class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):

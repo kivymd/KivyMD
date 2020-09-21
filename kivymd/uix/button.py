@@ -518,28 +518,48 @@ Builder.load_string(
 
 
 class button_background_behavior(Widget):
-    r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
+    r = BoundedNumericProperty(
+        None,
+        min=0.0,
+        max=1.0,
+        errorhandler=lambda x: 0 if x < 0 else (1 if x > 1 else x),
+    )
     """The value of ``red`` in the ``rgba`` palette.
 
     :attr:`r` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
-    g = BoundedNumericProperty(1.0, min=0.0, max=1.0)
+    g = BoundedNumericProperty(
+        None,
+        min=0.0,
+        max=1.0,
+        errorhandler=lambda x: 0 if x < 0 else (1 if x > 1 else x),
+    )
     """The value of ``green`` in the ``rgba`` palette.
 
     :attr:`g` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
-    b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
+    b = BoundedNumericProperty(
+        None,
+        min=0.0,
+        max=1.0,
+        errorhandler=lambda x: 0 if x < 0 else (1 if x > 1 else x),
+    )
     """The value of ``blue`` in the ``rgba`` palette.
 
     :attr:`b` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
-    a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
+    a = BoundedNumericProperty(
+        None,
+        min=0.0,
+        max=1.0,
+        errorhandler=lambda x: 0 if x < 0 else (1 if x > 1 else x),
+    )
     """The value of ``alpha channel`` in the ``rgba`` palette.
 
     :attr:`a` is an :class:`~kivy.properties.BoundedNumericProperty`
@@ -989,7 +1009,7 @@ class BaseButton(
         # Background configurations
         if self._is_filled is True:
             if self.theme_button_color is None:
-                if self.md_bg_color == [1.0, 1.0, 1.0, 0.0]:
+                if self.md_bg_color == [None] * 4:
                     self.theme_button_color = "Primary"
                     self.md_bg_color = self.theme_cls._get_primary_color()
                 else:
@@ -1094,7 +1114,16 @@ class BaseButton(
                 self._current_button_color = self.theme_cls.error_color
 
             elif self.theme_button_color == "Custom":
-                self._current_button_color = self.md_bg_color
+                if self.md_bg_color != [None] * 4:
+                    self._current_button_color = self.md_bg_color
+                else:
+                    Logger.error(
+                        f"{self.__class__}: on_theme_button_color :: Error\n\t"
+                        "theme_button_color can't be 'Custom' if theres no"
+                        "self.md_bg_color value\n\t"
+                        "md_bg_color = {self.md_bg_color} invalid!!!"
+                    )
+                    self.theme_button_color = "Primary"
         else:
             self._current_button_color[-1] = 0
 
@@ -2746,11 +2775,11 @@ class MDFlatButton(
         self.show_label = True
 
     def __after_init__(self, *kwargs):
-        super().__after_init__(*kwargs)
         if self._has_text is None:
             self._has_text = True
         if self._is_filled is None:
             self._is_filled = False
+        super().__after_init__(*kwargs)
 
 
 # ------------------------------------------------------------------------------
@@ -2933,7 +2962,7 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
     def __after_init__(self, *args):
         if self._is_filled is None:
             self._is_filled = True
-        if self.md_bg_color != [1.0, 1.0, 1.0, 0.0]:
+        if self.md_bg_color != [None] * 4:
             self.theme_button_color = "Custom"
         if self.action_mode is None:
             self.action_mode = "regular"

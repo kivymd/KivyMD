@@ -309,6 +309,12 @@ class MDLabel(ThemableBehavior, Label):
 
     can_capitalize = BooleanProperty(True)
 
+    static_size = BooleanProperty(None)
+    """
+    allows the widget to apply it's boundingbox to resize and
+    not only it's texture size.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -327,6 +333,9 @@ class MDLabel(ThemableBehavior, Label):
         rely in the configuraion betweem KVLang and python code instances to all
         subclassess of MDLabel.
         """
+        if self.static_size is None:
+            # This will make execute all resizing rules
+            self.static_size = False
         self.check_font_styles()
         pass
 
@@ -396,22 +405,19 @@ class MDLabel(ThemableBehavior, Label):
 Builder.load_string(
     """
 <MDIcon>:
+    valign:"middle"
+    halign:"center"
     font_style: "Icon"
     text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
     source: None if self.icon in md_icons else self.icon
     size_hint:(None,None)
     on_font_size:
-        self.size = self.font_size,self.font_size
+        root.force_size()
     on_icon:
-        self.size = self.font_size,self.font_size
+        root.force_size()
     on_text:
-        self.size = self.font_size,self.font_size
+        root.force_size()
     canvas.before:
-        # Color:
-        #     rgb:1,0,0
-        # Rectangle:
-        #     pos: self.pos
-        #     size: self.size
         PushMatrix
         Rotate:
             axis: 0,0,1
@@ -467,12 +473,18 @@ class MDIcon(MDLabel):
     __current_rotation = 0
     _icon_cl_bg = ObjectProperty(None, allownone=True)
     _icon_bg = ObjectProperty(None, allownone=True)
+    anim_in = ObjectProperty(None, allownone=True)
+    anim_out = ObjectProperty(None, allownone=True)
+    next_icon = ObjectProperty(None, allownone=True)
 
     def __init__(self, **kwargs):
         self.__Icon_instruction = InstructionGroup()
+        self.current_font_size = 0
         super().__init__(**kwargs)
 
     def __after_init__(self, *dt):
+        if self.static_size is None:
+            self.static_size = False
         super().__after_init__(*dt)
         self.canvas.before.add(self.__Icon_instruction)
         if self.icon is None:
@@ -484,10 +496,11 @@ class MDIcon(MDLabel):
                 self._has_texture = True
             else:
                 self._has_texture = False
+        self.force_size()
 
     def on_text(self, instance, value):
         if 0 > len(value) > 1:
-            # Solo se admite una letra en caso de ser icono externo
+            # It only accepts a character in case it's an outside font
             self.text = value[0]
             self._has_texture = False
 
@@ -579,9 +592,44 @@ class MDIcon(MDLabel):
         )
         self.ev.start(self)
 
-    #
+    def force_size(self, *dt):
+        if self.static_size is False:
+            self.size = [self.font_size, self.font_size]
+        else:
+            pass
 
     def on_disabled(self, instance, value):
         # super().on_disabled(instance, value)
         if self._has_texture and self._icon_cl_bg:
             self._icon_cl_bg.rgba = [1] * 4 if value is False else [0.7] * 4
+
+    def change_icon(self, *dt):
+        if self.next_icon:
+            self.icon = self.next_icon
+            self.next_icon = None
+        self.anim_in.start(self)
+
+    def EOA(self, *dt, callback=None):
+        """End Of Animation"""
+        self.static_size = False
+        if callback:
+            callback()
+
+    def zoom_in_animation(self, next_icon=None, callback=None):
+        if next_icon is not None:
+            self.next_icon = next_icon
+        self.current_font_size = self.font_size
+        self.anim_in = Animation(
+            font_size=self.current_font_size,
+            duration=0.1,
+        )
+        if self.anim_out is None:
+            self.anim_out = Animation(
+                font_size=0,
+                duration=0.1,
+            )
+        self.anim_out.bind(on_complete=self.change_icon)
+        self.anim_in.bind(on_complete=lambda *x: self.EOA(callback=callback))
+        self.static_size = True
+        self.anim_in.cancel(self)
+        self.anim_out.start(self)

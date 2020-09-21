@@ -226,6 +226,7 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     ListProperty,
     NumericProperty,
     OptionProperty,
@@ -287,7 +288,7 @@ Builder.load_string(
                 (self.width - root.action_button.width * 2 - dp(6), self.y - root._shift)
             size:
                 (root.action_button.width + dp(6) * 2, (self.height - root._shift * 2)\
-                -(4 if root.mode in ("end","center") else 0) ) \
+                -(4 if root.notch is True else 0) ) \
                 if root.type == "bottom" else (0, 0)
         RoundedRectangle:
             pos:
@@ -345,9 +346,9 @@ class MDActionBottomAppBarButton(MDFloatingActionButton):
     _scale_x = NumericProperty(1)
     _scale_y = NumericProperty(1)
 
-    def __after_init__(self,*dt):
+    def __after_init__(self, *dt):
         if self.theme_button_color is None:
-            self.theme_button_color="Primary"
+            self.theme_button_color = "Primary"
         super().__after_init__(*dt)
 
 
@@ -420,6 +421,17 @@ class MDToolbar(
     and defaults to `'center'`.
     """
 
+    notch = BooleanProperty(None)
+    """
+    This property manages wheter is drawn a notch or not behind the
+    floatinbutton.
+
+    This property will only have effect if `mode` is `"end"` or `"center"`
+
+    :attr:`mode` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `'None'`.
+    """
+
     round = NumericProperty("10dp")
     """
     Rounding the corners at the notch for a button.
@@ -478,14 +490,24 @@ class MDToolbar(
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(self.__after_init__, -1)
 
-    def __after_init__(self,*dt):
+    def __after_init__(self, *dt):
         if self.icon_color is None:
-            self.action_button.theme_icon_color="Accent_color"
+            self.action_button.theme_icon_color = "Accent_color"
         if self.mode is None:
             self.mode = "center"
-        # self.on_mode(self,self.mode)
+        if self.notch is None:
+            if self.mode in ("center", "end"):
+                self.notch = True
+            else:
+                self.notch = False
+        self.on_mode(self, self.mode)
         self.on_left_action_items(0, self.left_action_items)
         self.on_right_action_items(0, self.right_action_items)
+
+    def on_notch(self, instance, value):
+        self.on_mode(self, self.mode)
+        if value is False:
+            self.remove_notch()
 
     def on_action_button(self, *args):
         pass
@@ -544,7 +566,8 @@ class MDToolbar(
             anim.start(self.action_button)
 
         if value == "center":
-            self.set_notch()
+            if self.notch is True:
+                self.set_notch()
             x = Window.width / 2 - self.action_button.width / 2
             y = (
                 (self.center[1] - self.height / 2)
@@ -552,8 +575,8 @@ class MDToolbar(
                 + self._shift
             )
         elif value == "end":
-
-            self.set_notch()
+            if self.notch is True:
+                self.set_notch()
             x = Window.width - self.action_button.width * 2
             y = (
                 (self.center[1] - self.height / 2)
@@ -591,10 +614,7 @@ class MDToolbar(
         self.action_button._soft_shadow_size = (0, 0)
 
     def set_shadow(self, *args):
-        # self.action_button.elevation=0
-        self.action_button.elevation=10
-        # self.action_button._hard_shadow_size = (dp(112), dp(112))
-        # self.action_button._soft_shadow_size = (dp(112), dp(112))
+        self.action_button.elevation = 10
 
 
 class MDBottomAppBar(FloatLayout):
@@ -604,7 +624,7 @@ class MDBottomAppBar(FloatLayout):
 
     def add_widget(self, widget, index=0, canvas=None):
         if widget.__class__ is MDToolbar:
-            widget.type="bottom"
+            widget.type = "bottom"
             super().add_widget(widget)
             return super().add_widget(widget.action_button)
         else:

@@ -345,9 +345,9 @@ class MDActionBottomAppBarButton(MDFloatingActionButton):
     _scale_x = NumericProperty(1)
     _scale_y = NumericProperty(1)
 
-    def __after_init__(self,*dt):
+    def __after_init__(self, *dt):
         if self.theme_button_color is None:
-            self.theme_button_color="Primary"
+            self.theme_button_color = "Primary"
         super().__after_init__(*dt)
 
 
@@ -478,9 +478,9 @@ class MDToolbar(
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         Clock.schedule_once(self.__after_init__, -1)
 
-    def __after_init__(self,*dt):
+    def __after_init__(self, *dt):
         if self.icon_color is None:
-            self.action_button.theme_icon_color="Accent_color"
+            self.action_button.theme_icon_color = "Accent_color"
         if self.mode is None:
             self.mode = "center"
         # self.on_mode(self,self.mode)
@@ -592,7 +592,7 @@ class MDToolbar(
 
     def set_shadow(self, *args):
         # self.action_button.elevation=0
-        self.action_button.elevation=10
+        self.action_button.elevation = 10
         # self.action_button._hard_shadow_size = (dp(112), dp(112))
         # self.action_button._soft_shadow_size = (dp(112), dp(112))
 
@@ -604,7 +604,7 @@ class MDBottomAppBar(FloatLayout):
 
     def add_widget(self, widget, index=0, canvas=None):
         if widget.__class__ is MDToolbar:
-            widget.type="bottom"
+            widget.type = "bottom"
             super().add_widget(widget)
             return super().add_widget(widget.action_button)
         else:

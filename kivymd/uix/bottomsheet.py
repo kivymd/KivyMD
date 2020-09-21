@@ -251,7 +251,7 @@ from kivy.uix.scrollview import ScrollView
 from kivymd import images_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import BackgroundColorBehavior
-from kivymd.uix.label import MDIcon
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import ILeftBody, OneLineIconListItem, OneLineListItem
 
 Builder.load_string(
@@ -415,14 +415,13 @@ class MDBottomSheet(ThemableBehavior, ModalView):
 Builder.load_string(
     """
 <ListBottomSheetIconLeft>
-    halign: "center"
     theme_text_color: "Primary"
-    valign: "middle"
+
 """
 )
 
 
-class ListBottomSheetIconLeft(ILeftBody, MDIcon):
+class ListBottomSheetIconLeft(ILeftBody, MDIconButton):
     pass
 
 

@@ -441,6 +441,23 @@ You can set your color values ​​for background, text of buttons etc:
     `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
 """
 
+__all__ = (
+    "MDIconButton",
+    "MDFloatingActionButton",
+    "MDFlatButton",
+    "MDRaisedButton",
+    "MDRectangleFlatButton",
+    "MDRectangleFlatIconButton",
+    "MDRoundFlatButton",
+    "MDRoundFlatIconButton",
+    "MDBevelFlatButton",
+    "MDBevelFlatIconButton",
+    "MDFillRoundFlatButton",
+    "MDFillRoundFlatIconButton",
+    "MDTextButton",
+    "MDFloatingActionButtonSpeedDial",
+)
+
 from pathlib import Path
 
 from kivy.animation import Animation
@@ -490,30 +507,6 @@ from kivymd.uix.behaviors import (
 )
 from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.uix.tooltip import MDTooltip
-
-__all__ = (
-    "MDIconButton",
-    "MDFloatingActionButton",
-    "MDFlatButton",
-    "MDRaisedButton",
-    "MDRectangleFlatButton",
-    "MDRectangleFlatIconButton",
-    "MDRoundFlatButton",
-    "MDRoundFlatIconButton",
-    "MDBevelFlatButton",
-    "MDBevelFlatIconButton",
-    "MDFillRoundFlatButton",
-    "MDFillRoundFlatIconButton",
-    "MDTextButton",
-    "MDFloatingActionButtonSpeedDial",
-)
-
-
-#
-
-
-# import kivy.factory
-#
 
 Builder.load_string(
     """
@@ -972,12 +965,12 @@ class BaseButton(
     The user_font_size property is deprecated and will be removed in future
     verisons, please use font_size instead.
 
-
     """
 
     def on_user_font_size(self, instance, value):
         Logger.info(
-            "BaseButton: deprecated :: This property is now deprecated and will be "
+            "BaseButton: user_font_size is deprecated ::\n"
+            "This property is now deprecated and will be "
             "removed in future updates. use font_size instead."
         )
         self.font_size = value
@@ -2370,6 +2363,22 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         else:
             if self.lbl_txt:
                 self.lbl_txt.unbind(texture_size=self.Update_Container_size)
+                self.unbind(
+                    text=lambda x, y: setattr(self.lbl_txt, "text", y),
+                    opposite_colors=lambda x, y: setattr(
+                        self.lbl_txt, "opposite_colors", y
+                    ),
+                    _current_text_color=lambda x, y: setattr(
+                        self.lbl_txt, "text_color", y
+                    ),
+                    _current_theme_text_color=lambda x, y: setattr(
+                        self.lbl_txt, "theme_text_color", y
+                    ),
+                    _current_markup=lambda x, y: setattr(
+                        self.lbl_txt, "markup", y
+                    ),
+                    disabled=lambda x, y: setattr(self.lbl_txt, "disabled", y),
+                )
                 self.container.remove_widget(self.lbl_txt)
 
     def Update_Container_size(self, *dt):
@@ -2412,6 +2421,18 @@ class icon_behavior(BaseRectangularButton):
     __icon_mode = OptionProperty(None, options=["icon", "image", "error"])
     _current_icon_font_size = NumericProperty(0)
     source = StringProperty(None, allownone=False)
+    next_icon = ObjectProperty(None, allownone=True)
+
+    def zoom_in_animation(self, next_icon=None):
+        if self.__icon:
+            self.__icon.zoom_in_animation(
+                next_icon=next_icon,
+                callback=lambda *x: setattr(self, "icon", self.__icon.icon),
+            )
+
+    def on_next_icon(self, instenca, value):
+        if self.__icon:
+            self.__icon.next_icon = value
 
     def on_source(self, instenca, value):
         self.icon = value
@@ -2436,14 +2457,15 @@ class icon_behavior(BaseRectangularButton):
         #
         if not self.font_size:
             if isinstance(self, (MDIconButton, MDFloatingActionButton)):
-                self.font_size = sp(24)
+                self._current_font_size = sp(24)
             else:
-                self.font_size = sp(14)
+                self._current_font_size = sp(14)
         # self.bind(_current_font_size = self.Update_Container_size)
         self.on__has_icon(self, self._has_icon)
         self.on_icon(self, self.icon)
         self.on_icon_position(self, self.icon_position)
         self.on_theme_icon_color(self, self.theme_icon_color)
+        self.Update_Container_size()
 
     def on_theme_icon_color(self, instance, value):
         if self.__icon:
@@ -2511,6 +2533,7 @@ class icon_behavior(BaseRectangularButton):
                     halign="center",
                     valign="middle",
                     disabled=self.disabled,
+                    static_size=False,
                 )
                 # ################################################################
                 # # TODO REMOVE THIS TEST
@@ -2535,10 +2558,17 @@ class icon_behavior(BaseRectangularButton):
                     ),
                     disabled=lambda x, y: setattr(self.__icon, "disabled", y),
                 )
-                self.__icon.bind(texture_size=self.Update_Container_size)
+                self.__icon.bind(
+                    size=self.Update_Container_size,
+                    # texture_size = self.Update_Container_size,
+                    texture_size=lambda *x: self.Update_Container_size()
+                    if self.__icon.static_size is not True
+                    else "",
+                )
             self.on_icon(self, self.icon)
             self.on_icon_position(self, self.icon_position)
             self.on_theme_icon_color(self, self.theme_icon_color)
+            self.Update_Container_size()
         else:
             self._current_icon_color[-1] = 0
             if self.__icon:
@@ -2554,15 +2584,29 @@ class icon_behavior(BaseRectangularButton):
                     ),
                     disabled=lambda x, y: setattr(self.__icon, "disabled", y),
                 )
-                self.__icon.unbind(texture_size=self.Update_Container_size)
+                self.__icon.unbind(
+                    size=self.Update_Container_size,
+                    # texture_size = self.Update_Container_size,
+                    texture_size=lambda *x: self.Update_Container_size()
+                    if self.__icon.static_size is not True
+                    else "",
+                )
+                self.__icon.next_icon = None  # removes any link that avoids gc
                 self.container.remove_widget(self.__icon)
+
+    def get_icon_prop(self, prop):
+        if self.__icon:
+            return getattr(self.__icon, prop)
 
     def Update_Container_size(self, *dt):
         self.on__current_font_size(self, self._current_font_size)
         if self.__icon and self._has_icon:
-            # self.__icon.size = [self._current_font_size]*2
-            self.__icon.size = [self.__icon.font_size] * 2
-        pass
+            if self.__icon.static_size is not True:
+                self.__icon.size = [self.__icon.font_size] * 2
+            else:
+                self.__icon.size = self.__icon.size
+            # self.__icon.size = [self.__icon.font_size] * 2
+
         super().Update_Container_size(*dt)
 
     def on_icon_rotation(self, instance, degree):
@@ -2633,9 +2677,9 @@ class BaseRoundButton(
 
     def on_size(self, instance, value):
         # super().on_size(instance, value)
-        if value[0] < dp(24):
+        if self.size[0] < dp(24):
             self.size[0] = dp(24)
-        if value[1] < dp(24):
+        if self.size[1] < dp(24):
             self.size[1] = dp(24)
 
 
@@ -2900,7 +2944,7 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
         super().__after_init__(*args)
 
         if not self.font_size:
-            self.font_size = dp(24)
+            self._current_font_size = dp(24)
 
 
 # ------------------------------------------------------------------------------

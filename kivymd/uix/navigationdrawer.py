@@ -691,10 +691,8 @@ class MDNavigationDrawer(MDCard):
                     self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
                     and abs(touch.x - touch.ox) > self.swipe_distance
                 ):
-                    # print("-- opening with swipe --")
                     self.status = "opening_with_swipe"
             elif self.status == "opened":
-                # print("-- closing with swipe --")
                 self.status = "closing_with_swipe"
 
         if self.status in ("opening_with_swipe", "closing_with_swipe"):

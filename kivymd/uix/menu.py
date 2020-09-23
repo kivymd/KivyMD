@@ -459,7 +459,7 @@ Menu with MDToolbar
         height: self.theme_cls.standard_increment
         padding: "5dp"
         spacing: "12dp"
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: self.theme_cls.primary_color
 
         MDIconButton:
             id: button_1

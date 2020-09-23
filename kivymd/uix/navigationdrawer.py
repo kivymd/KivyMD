@@ -696,14 +696,15 @@ class MDNavigationDrawer(MDCard):
                 self.status = "closing_with_swipe"
 
         if self.status in ("opening_with_swipe", "closing_with_swipe"):
-            if self.anchor == "left":
-                self.open_progress = max(
-                    min(self.open_progress + touch.dx / self.width, 1), 0
-                )
-            else:
-                self.open_progress = max(
-                    min(self.open_progress - touch.dx / self.width, 1), 0
-                )
+            self.open_progress = max(
+                min(
+                    self.open_progress
+                    + (touch.dx if self.anchor == "left" else -touch.dx)
+                    / self.width,
+                    1,
+                ),
+                0,
+            )
             return True
         return super().on_touch_move(touch)
 

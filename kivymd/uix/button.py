@@ -895,7 +895,7 @@ class BaseButton(
             self._current_text_color = value
 
     def on_md_bg_color(self, instance, value):
-        if value != self.theme_cls.primary_color:
+        if value != self._current_button_color:
             self._current_button_color = value
 
     def on_disabled(self, instance, value):

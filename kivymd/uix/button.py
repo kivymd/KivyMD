@@ -456,6 +456,8 @@ __all__ = (
     "MDFillRoundFlatIconButton",
     "MDTextButton",
     "MDFloatingActionButtonSpeedDial",
+    "BaseButton",
+    "icon_behavior",
 )
 
 from pathlib import Path

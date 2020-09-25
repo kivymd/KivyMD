@@ -1,33 +1,306 @@
+<ToggleFlatButton@MDFlatButton+MDToggleButton>:
 <KitchenSinkToggleButtons>
     name: 'toggle button'
+
+    ScrollView:
+        height: self.parent.height - toolbar.height
+        do_scroll_y:True
+        do_scroll_x:False
+
+        MDBoxLayout:
+            orientation: "vertical"
+            # adaptive_size: True
+            spacing: "16dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            height:self.minimum_height
+            size_hint_y:None
+            Widget:
+                size_hint_y:None
+                height:toolbar.height
+
+            MDLabel:
+                text: "Buttons in a group"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+
+            MDBoxLayout:
+                # adaptive_size: True
+                size_hint_y:None
+                height:self.minimum_height
+                pos_hint: {"center_x": .5, "center_y": .5}
+                spacing: 12
+                orientation: "vertical"
+
+
+
+                RoundFlatToggleButton:
+                    text: "Show ads"
+                    group: "z"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        self.memview()
+
+                RoundFlatToggleButton:
+                    text: "Do not show ads"
+                    group: "z"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        self.memview()
+
+                RoundFlatToggleButton:
+                    text: "It doesn't matter"
+                    group: "z"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        self.memview()
+            #
+            MDLabel:
+                text: "Selection Buttons"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+            MDBoxLayout:
+                # adaptive_size: True
+                size_hint_y:None
+                height:self.minimum_height
+                pos_hint: {"center_x": .5, "center_y": .5}
+                spacing: 12
+                orientation: "vertical"
+
+
+
+                RoundFlatToggleButton:
+                    text: "Show ads"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        self.memview()
+
+                RoundFlatToggleButton:
+                    text: "Do not show ads"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        self.memview()
+
+                RoundFlatToggleButton:
+                    text: "It doesn't matter"
+                    pos_hint: {"center_x": .5}
+                    on_release:
+                        self.memview()
+
+            #
+            MDLabel:
+                text: "IconButtons in a group"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+
+            AnchorLayout:
+                anchor_y:"top"
+                anchor_x:"center"
+                size_hint_y:None
+                # height:self.minimum_height
+                MDGridLayout:
+                    cols:3
+                    size_hint_y:None
+                    # height: self.minimum_height
+                    height: dp(48)
+                    size_hint_x:None
+                    width: self.minimum_width
+
+                    ToggleIconButton:
+                        text:"btn1"
+                        icon:"gamepad-round-outline"
+                        icon_down:"gamepad-round"
+                        group:"a"
+                        on_release:
+                            self.memview()
+
+                    ToggleIconButton:
+                        text:"btn1"
+                        icon:"gamepad-round-outline"
+                        icon_down:"gamepad-round"
+                        group:"a"
+                        on_release:
+                            self.memview()
+                    #
+                    ToggleIconButton:
+                        text:"btn1"
+                        icon:"gamepad-round-outline"
+                        icon_down:"gamepad-round"
+                        group:"a"
+                        on_release:
+                            self.memview()
+            #
+            MDLabel:
+                text: "Selection IconButtons"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+            AnchorLayout:
+                anchor_y:"top"
+                anchor_x:"center"
+                size_hint_y:None
+                MDGridLayout:
+                    cols:3
+                    size_hint_y:None
+                    height: self.minimum_height
+                    height: dp(48)
+                    size_hint_x:None
+                    width: self.minimum_width
+
+                    ToggleIconButton:
+                        text:"btn1"
+                        icon:"gamepad-round-outline"
+                        icon_down:"gamepad-round"
+                        on_release:
+                            self.memview()
+
+                    ToggleIconButton:
+                        text:"btn1"
+                        icon:"gamepad-round-outline"
+                        icon_down:"gamepad-round"
+                        on_release:
+                            self.memview()
+                    #
+                    ToggleIconButton:
+                        text:"btn1"
+                        icon:"gamepad-round-outline"
+                        icon_down:"gamepad-round"
+                        on_release:
+                            self.memview()
+            #
+            MDLabel:
+                text: "Filled FlatIconButton in a group"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+
+            AnchorLayout:
+                anchor_y:"top"
+                anchor_x:"center"
+                size_hint_y:None
+                MDGridLayout:
+                    cols:1
+                    spacing:dp(16)
+                    size_hint_y:None
+                    height: self.minimum_height
+                    size_hint_x:None
+                    width: self.minimum_width
+                    on_height:
+                        self.parent.height=self.height
+                    ToggleFillFlatIconButton:
+                        group:"b"
+                        icon: "language-markdown-outline"
+                        icon_down: "language-markdown"
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+
+                    ToggleFillFlatIconButton:
+                        group:"b"
+                        icon: "language-markdown-outline"
+                        icon_down: "language-markdown"
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                    #
+                    ToggleFillFlatIconButton:
+                        group:"b"
+                        icon: "language-markdown-outline"
+                        icon_down: "language-markdown"
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                    Widget:
+
+
+            MDLabel:
+                text: "Selection Filled Flat Icon Button"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+
+            AnchorLayout:
+                anchor_y:"top"
+                anchor_x:"center"
+                size_hint_y:None
+                MDGridLayout:
+                    cols:1
+                    spacing:dp(16)
+                    size_hint_y:None
+                    height: self.minimum_height
+                    size_hint_x:None
+                    width: self.minimum_width
+                    on_height:
+                        self.parent.height=self.height
+                    ToggleFillFlatIconButton:
+                        icon: "language-markdown-outline"
+                        icon_down: "language-markdown"
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                        on_release:
+                            self.memview()
+                    ToggleFillFlatIconButton:
+                        icon: "language-markdown-outline"
+                        icon_down: "language-markdown"
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                        on_release:
+                            self.memview()
+                    #
+                    ToggleFillFlatIconButton:
+                        icon: "language-markdown-outline"
+                        icon_down: "language-markdown"
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                        on_release:
+                            self.memview()
+            #
+            MDLabel:
+                text: "Selection FlatButton"
+                halign:"center"
+                font_style:"H6"
+                size_hint_y:None
+                height: dp(48)
+
+            AnchorLayout:
+                anchor_y:"top"
+                anchor_x:"center"
+                size_hint_y:None
+                MDGridLayout:
+                    cols:1
+                    spacing:dp(16)
+                    size_hint_y:None
+                    height: self.minimum_height
+                    size_hint_x:None
+                    width: self.minimum_width
+                    on_height:
+                        self.parent.height=self.height
+                    ToggleFlatButton:
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                        theme_text_color_down:"Accent_color"
+                        on_release:
+                            self.memview()
+                    ToggleFlatButton:
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                        theme_text_color_down:"Accent_color"
+                        on_release:
+                            self.memview()
+                    #
+                    ToggleFlatButton:
+                        text: "Press on Me"
+                        text_down: "You Selected me uwu"
+                        theme_text_color_down:"Accent_color"
+                        on_release:
+                            self.memview()
+            Widget:
 
     Toolbar:
         id: toolbar
         pos_hint: {"top": 1}
-
-    MDBoxLayout:
-        orientation: "vertical"
-        adaptive_size: True
-        spacing: "12dp"
-        pos_hint: {"center_x": .5, "center_y": .5}
-
-        MDBoxLayout:
-            adaptive_size: True
-            pos_hint: {"center_x": .5, "center_y": .5}
-            spacing: 12
-            orientation: "vertical"
-
-            RoundFlatToggleButton:
-                text: "Show ads"
-                group: "z"
-                pos_hint: {"center_x": .5}
-
-            RoundFlatToggleButton:
-                text: "Do not show ads"
-                group: "z"
-                pos_hint: {"center_x": .5}
-
-            RoundFlatToggleButton:
-                text: "Does not matter"
-                group: "z"
-                pos_hint: {"center_x": .5}

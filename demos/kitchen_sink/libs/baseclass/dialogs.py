@@ -3,11 +3,11 @@ import os
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
-from libs.baseclass.list_items import KitchenSinkOneLineLeftAvatarItem
 
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineAvatarIconListItem
+from libs.baseclass.list_items import KitchenSinkOneLineLeftAvatarItem
 
 
 class KitchenSinkDialogsCustomContent(BoxLayout):

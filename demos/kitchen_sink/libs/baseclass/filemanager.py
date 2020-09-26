@@ -1,6 +1,10 @@
 from kivy.uix.screenmanager import Screen
 
+from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.filemanager import MDFileManager
 
 
 class KitchenSinkFileFileManagerTypeDialog(MDBoxLayout):
@@ -15,13 +19,9 @@ class KitchenSinkFileFileManagerTypeDialog(MDBoxLayout):
 class KitchenSinkFileManager(Screen):
     manager_open = False
     file_manager = None
+    dialog = None
 
     def file_manager_open(self):
-        from kivymd.app import MDApp
-        from kivymd.uix.button import MDFlatButton
-        from kivymd.uix.dialog import MDDialog
-        from kivymd.uix.filemanager import MDFileManager
-
         def open_file_manager(text_item):
             preview = False if text_item == "List" else True
             if not self.file_manager:
@@ -39,10 +39,9 @@ class KitchenSinkFileManager(Screen):
 
         manager_type_dialog = KitchenSinkFileFileManagerTypeDialog()
 
-        MDDialog(
+        self.dialog = MDDialog(
             title="Kitchen Sink",
             type="custom",
-            size_hint=(0.8, 0.4),
             content_cls=manager_type_dialog,
             buttons=[
                 MDFlatButton(

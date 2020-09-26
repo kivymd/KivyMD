@@ -1005,6 +1005,7 @@ class BaseButton(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(primary_palette=self._on_primary_palette)
+        self.size_hint = [None, None]
         Clock.schedule_once(self.__after_init__, -1)
 
     def __after_init__(self, *args):
@@ -2159,10 +2160,12 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._is_filled = True
 
-    # def __after_init__(self,*dt):
-    #     super().__after_init__(*dt)
+    def __after_init__(self, *dt):
+        self._is_filled = True
+        if self.elevation is None:
+            self.elevation = 10
+        super().__after_init__(*dt)
 
     def on_elevation(self, instance, value):
         super().on_elevation(instance, value)
@@ -2300,10 +2303,10 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
             self.lbl_txt.text_size = (None, value)
             self.lbl_txt.height = value
 
-    def on_theme_text_color(self, instance, value):
-        super().on_theme_text_color(instance, value)
-        if self.lbl_txt and self.opposite_colors:
-            self.lbl_txt.opposite_colors = self.opposite_colors
+    # def on_theme_text_color(self, instance, value):
+    #     super().on_theme_text_color(instance, value)
+    #     # if self.lbl_txt and self.opposite_colors:
+    #     #     self.lbl_txt.opposite_colors = self.opposite_colors
 
     def on__has_text(self, instance, value):
         if value is True:
@@ -2813,17 +2816,17 @@ class MDRaisedButton(
 
     def __after_init__(self, *args):
         # self.text_color=[1]*4
-        self.opposite_colors = False
+        if self.opposite_colors is None:
+            self.opposite_colors = False
         if self.show_label is None:
             self.show_label = True
         if self._has_line is None:
             self._has_line = False
         self.corner_type = "Square"
         if self.theme_text_color is None:
+            self._has_text = True
             self.theme_text_color = "White"
-            self.text_color = self._current_text_color
-        self._has_text = True
-
+            self.on_theme_text_color(self, self.theme_text_color)
         super().__after_init__(*args)
 
 

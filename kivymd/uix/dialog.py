@@ -116,7 +116,7 @@ Builder.load_string(
 
         canvas:
             Color:
-                rgba: root.theme_cls.bg_dark
+                rgba: root.md_bg_color
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
@@ -505,11 +505,23 @@ class MDDialog(BaseDialog):
     and defaults to `'None'`.
     """
 
+    md_bg_color = ListProperty()
+    """
+    Background color in the format (r, g, b, a).
+
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     _scroll_height = NumericProperty("28dp")
     _spacer_top = NumericProperty("24dp")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.md_bg_color = (
+            self.theme_cls.bg_dark if not self.md_bg_color else self.md_bg_color
+        )
 
         if self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
             self.size_hint = (None, None)

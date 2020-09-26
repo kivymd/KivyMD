@@ -320,6 +320,17 @@ Builder.load_string(
         if self.anchor == "left" \
         else (Window.width - self.width * self.open_progress)
     elevation: 10
+
+    canvas:
+        Clear
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: root.background
+            radius: root._radius
+    md_bg_color: self.theme_cls.bg_light
 """
 )
 
@@ -510,6 +521,8 @@ class MDNavigationDrawer(MDCard):
     and defaults to `[0, 0, 0, 0.5]`.
     """
 
+    _radius = ListProperty([0, 0, 0, 0])
+
     def _get_scrim_alpha(self):
         _scrim_alpha = 0
         if self.type == "modal":
@@ -584,14 +597,6 @@ class MDNavigationDrawer(MDCard):
     :attr:`closing_time` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
     """
-
-    def on_type(self, *args):
-        if self.type == "standard":
-            self.enable_swiping = False
-            self.close_on_click = False
-        else:
-            self.enable_swiping = True
-            self.close_on_click = True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -731,6 +736,17 @@ class MDNavigationDrawer(MDCard):
         elif self.status == "closed":
             return False
         return True
+
+    def on_radius(self, instance, value):
+        self._radius = value
+
+    def on_type(self, *args):
+        if self.type == "standard":
+            self.enable_swiping = False
+            self.close_on_click = False
+        else:
+            self.enable_swiping = True
+            self.close_on_click = True
 
     def _handle_keyboard(self, window, key, *largs):
         if key == 27 and self.status == "opened" and self.close_on_click:

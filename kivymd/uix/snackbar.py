@@ -402,6 +402,10 @@ class Snackbar(MDBoxLayout):
                 Clock.unschedule(wait_interval)
                 self._interval = 0
 
+        for c in Window.parent.children:
+            if issubclass(type(c), Snackbar):
+                return
+
         self.y = -self.ids.box.height - self.padding[0]
         Window.parent.add_widget(self)
         anim = Animation(y=self.padding[0], d=0.2)

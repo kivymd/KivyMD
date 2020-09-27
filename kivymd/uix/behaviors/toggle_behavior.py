@@ -59,6 +59,7 @@ example:
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toggle-button-1.gif
     :align: center
 
@@ -68,6 +69,7 @@ example:
         def __init__(self, **kwargs):
         self.background_down = MDApp.get_running_app().theme_cls.primary_dark
         super().__init__(**kwargs)
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toggle-button-2.gif
     :align: center
@@ -83,6 +85,7 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 - :class:`~kivymd.uix.button.MDRoundFlatIconButton`
 - :class:`~kivymd.uix.button.MDFillRoundFlatButton`
 - :class:`~kivymd.uix.button.MDFillRoundFlatIconButton`
+
 """
 
 __all__ = ("MDToggleButton",)
@@ -147,8 +150,8 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you don't set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will be settled to "Primary"
+        If you don't set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will be settled to "Primary"
     """
 
     theme_background_down = OptionProperty(
@@ -163,8 +166,8 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you don't set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will be settled to "Primary"
+        If you don't set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will be settled to "Primary"
     """
 
     # New properties.
@@ -177,9 +180,9 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will make the class to change `theme_color_normal` to
-    `"Custom"`.
+        If you set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will make the class to change `theme_color_normal` to
+        `"Custom"`.
 
     after the new instance is created this property won't affect
     `theme_color_normal` property.
@@ -207,8 +210,8 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you don't set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will be settled to "Primary"
+        If you don't set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will be settled to "Primary"
 
     """
 
@@ -221,12 +224,12 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will make the class to change `theme_color_down` to
-    `"Custom"`.
+        If you set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will make the class to change `theme_color_down` to
+        `"Custom"`.
 
-    after the new instance is created this property won't affect
-    `theme_color_down` property.
+        after the new instance is created this property won't affect
+        `theme_color_down` property.
     """
 
     theme_color_down = OptionProperty(
@@ -251,8 +254,8 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you don't set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will be settled to "Primary_color"
+        If you don't set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will be settled to "Primary_color"
 
     """
 

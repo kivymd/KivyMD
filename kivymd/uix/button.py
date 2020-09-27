@@ -32,15 +32,7 @@ Components/Button
 - MDFloatingActionButtonSpeedDial_
 
 .. MDIconButton:
-MDIconButton
-------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button.gif
-    :align: center
-
-.. code-block:: python
-
-.. MDIconButton:
 MDIconButton
 ------------
 
@@ -110,8 +102,9 @@ of :class:`~kivymd.uix.label.MDLabel`:
     :align: center
 
 .. MDFloatingActionButton:
+
 MDFloatingActionButton
-----------------------
+-----------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button.png
     :align: center
@@ -144,6 +137,7 @@ The length of the shadow is controlled by the ``elevation_normal`` parameter:
 
 
 .. MDFlatButton:
+
 MDFlatButton
 ------------
 
@@ -183,6 +177,7 @@ To specify the font size and font name, use the parameters as in the usual
     (the width of the buttons is set automatically)!
 
 .. MDRaisedButton:
+
 MDRaisedButton
 --------------
 
@@ -200,8 +195,9 @@ can set the background color for :class:`~MDRaisedButton`:
 
 
 .. MDRectangleFlatButton:
+
 MDRectangleFlatButton
----------------------
+----------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button.gif
     :align: center
@@ -222,8 +218,9 @@ button :class:`~MDRaisedButton`:
     :align: center
 
 .. MDRectangleFlatIconButton:
+
 MDRectangleFlatIconButton
----------------------
+--------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
     :align: center
@@ -273,6 +270,7 @@ Without border
         pos_hint: {"center_x": .5, "center_y": .5}
 
 .. MDRoundFlatButton:
+
 MDRoundFlatButton
 -----------------
 
@@ -299,8 +297,9 @@ button :class:`~MDRectangleFlatButton`:
     :align: center
 
 .. MDRoundFlatIconButton:
+
 MDRoundFlatIconButton
----------------------
+----------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-icon-button.png
     :align: center
@@ -314,22 +313,70 @@ button :class:`~MDRoundFlatButton`:
         icon: "android"
         text: "MDROUNDFLATICONBUTTON"
 
+
+.. MDBevelFlatButton:
+
+MDBevelFlatButton
+----------------------
+
+Note: replace next image with an actual image of the MDBevelFlatButton.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-icon-button.png
+    :align: center
+
+
+Button parameters :class:`~MDBevelFlatButton` are the same as
+button :class:`~MDRoundFlatButton`:
+
+.. code-block:: kv
+
+    MDBevelFlatButton:
+        icon: "android"
+        text: "MDBevelFlatButton"
+
+
+.. MDBevelFlatIconButton:
+
+MDBevelFlatIconButton
+----------------------
+
+Note: replace next image with an actual image of the MDBevelFlatIconButton.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-icon-button.png
+    :align: center
+
+
+Button parameters :class:`~MDBevelFlatIconButton` are the same as
+button :class:`~MDRoundFlatButton`:
+
+.. code-block:: kv
+
+    MDBevelFlatIconButton:
+        icon: "android"
+        text: "MDBevelFlatIconButton"
+
+
 .. MDFillRoundFlatButton:
+
 MDFillRoundFlatButton
----------------------
+----------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-fill-round-flat-button.png
     :align: center
 
+
 Button parameters :class:`~MDFillRoundFlatButton` are the same as
 button :class:`~MDRaisedButton`.
 
+
 .. MDFillRoundFlatIconButton:
+
 MDFillRoundFlatIconButton
----------------------
+--------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-fill-round-flat-icon-button.png
     :align: center
+
 
 Button parameters :class:`~MDFillRoundFlatIconButton` are the same as
 button :class:`~MDRaisedButton`.
@@ -338,24 +385,30 @@ button :class:`~MDRaisedButton`.
     button matches the size of the button text.
 
 .. MDTextButton:
+
 MDTextButton
-------------
+-------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-text-button.png
     :align: center
 
+
 .. code-block:: kv
 
+    # kv
     MDTextButton:
         text: "MDTEXTBUTTON"
         custom_color: 0, 1, 0, 1
 
+
 .. MDFloatingActionButtonSpeedDial:
+
 MDFloatingActionButtonSpeedDial
 -------------------------------
 
 .. Note:: See the full list of arguments in the class
     :class:`~MDFloatingActionButtonSpeedDial`.
+
 
 .. code-block:: python
 
@@ -385,8 +438,10 @@ MDFloatingActionButtonSpeedDial
 
     Example().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial.gif
     :align: center
+
 
 Or without KV Language:
 
@@ -416,6 +471,7 @@ Or without KV Language:
 
     Example().run()
 
+
 You can use various types of animation of labels for buttons on the stack:
 
 .. code-block:: kv
@@ -426,6 +482,7 @@ You can use various types of animation of labels for buttons on the stack:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial-hint.gif
     :align: center
 
+
 You can set your color values ​​for background, text of buttons etc:
 
 .. code-block:: kv
@@ -433,10 +490,12 @@ You can set your color values ​​for background, text of buttons etc:
     MDFloatingActionButtonSpeedDial:
         bg_hint_color: app.theme_cls.primary_light
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDFloatingActionButtonSpeedDial-hint-color.png
     :align: center
 
 .. seealso::
+
 
     `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
 """
@@ -458,6 +517,7 @@ __all__ = (
     "MDFloatingActionButtonSpeedDial",
     "BaseButton",
     "icon_behavior",
+    "New_MDFloatingActionButtonSpeedDial",
 )
 
 from pathlib import Path
@@ -647,7 +707,7 @@ class BaseButton(
 
     The BaseButton Class handles all the buttons Backend events and behaviors.
 
-    .. wrning:: Do not use Alone.
+    .. warning:: Do not use Alone.
         This base class must never be used alone, since this class has no UI
         instruction.
 
@@ -697,8 +757,8 @@ class BaseButton(
     This property does not affect any icon button.
 
     .. note:: markup language.
-    The MDlabel's markup langage is inherited from
-    :class:`~kivy.uix.label.Label`.
+        The MDlabel's markup langage is inherited from :class:`~kivy.uix.label.Label`.
+
     """
 
     lbl_txt = ObjectProperty()
@@ -709,6 +769,7 @@ class BaseButton(
 
     :attr:`text_color` is a :class:`~kivy.properties.ListProperty`
     defaults to `[]`.
+
     """
     disabled_text_color = ListProperty(None, allownone=False)
 
@@ -718,6 +779,7 @@ class BaseButton(
 
     :attr:`font_name` is a :class:`~kivy.properties.StringProperty`
     defaults to `''`.
+
     """
 
     _current_font_size = BoundedNumericProperty(
@@ -732,6 +794,7 @@ class BaseButton(
 
     :attr:`_current_font_size ` is a :class:`~kivy.properties.NumericProperty`
     defaults to `14`.
+
     """
 
     font_size = NumericProperty(None)
@@ -739,6 +802,7 @@ class BaseButton(
 
     :attr:`font_size` is a :class:`~kivy.properties.NumericProperty`
     defaults to `0`.
+
     """
 
     icon = StringProperty(None)
@@ -747,12 +811,14 @@ class BaseButton(
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     defaults to `''`.
+
     """
     icon_position = OptionProperty(None, options=["left", "right", "icon_only"])
     """
     This property defines the position of the icon.
     if it should be drawn before the text, after the text or if it should be
     only the icon drawn on screen.
+
     """
 
     md_bg_color_disabled = ListProperty()
@@ -760,6 +826,7 @@ class BaseButton(
 
     :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ListProperty`
     defaults to `[]`.
+
     """
 
     line_color = ListProperty(None)
@@ -774,6 +841,7 @@ class BaseButton(
     """
     This porperty sets the opposite color theme for every theme text color.
     This only affects Primary, Secondary, Hint color themes.
+
     """
 
     theme_text_color = OptionProperty(
@@ -984,8 +1052,8 @@ class BaseButton(
     defaults to `0`.
 
     .. warning::
-    The user_font_size property is deprecated and will be removed in future
-    verisons, please use font_size instead.
+        The user_font_size property is deprecated and will be removed in future
+        verisons, please use font_size instead.
 
     """
 
@@ -1064,7 +1132,7 @@ class BaseButton(
 
     def on__is_filled(self, instance, value):
         """
-        This property's on_ event sets te current _current_button_color to
+        This property's `on_` event sets te current _current_button_color to
         transparent if the value is False. (meaning it should have no filling)
 
         otherwise, calls on_theme_button_color to update the background color
@@ -1081,7 +1149,7 @@ class BaseButton(
         to the :attr:`_current_button_color`
 
         .. None:: External call
-        This event is Called everytime the application's color palette changes.
+            This event is Called everytime the application's color palette changes.
         """
         # self.on_theme_button_color(self, self.theme_button_color)
         # Verifica el color de texto
@@ -2217,7 +2285,7 @@ Builder.load_string(
     container: container.__self__
     # padding: (dp(8), 0)  # For MDRectangleFlatIconButton
     width: (container.width + dp((32 if self._has_line or self._is_filled else 16) if len(container.children) == 1 else (28 if self._is_filled or self._has_line else 22) ) ) if len(container.children) > 0 else dp(64)
-    height: root.internal_padding + sp(root._current_font_size)
+    height: root._internal_padding + sp(root._current_font_size)
     # canvas.before:
     #     Color:
     #         rgb:[0.780, 0, 0.447]
@@ -2269,7 +2337,8 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
     """
 
     spacing = NumericProperty(8)
-    internal_padding = NumericProperty("23dp")
+    _internal_padding = NumericProperty(0)
+    internal_padding = NumericProperty(None)
     width = BoundedNumericProperty(
         88, min=88, max=None, errorhandler=lambda x: 88
     )
@@ -2281,6 +2350,8 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         super().__init__(**kwargs)
 
     def __after_init__(self, *args):
+        if self.internal_padding is None:
+            self.internal_padding = "23dp"
         if self._has_text is None:
             self._has_text = True
         if self._has_text is True:
@@ -2294,6 +2365,9 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         self.container = self.ids.container
         self.container.bind(children=self.Update_Container_size)
         self.theme_text_color = "Custom" if self.text_color else "Primary_color"
+
+    def on_internal_padding(self, instance, value):
+        self._internal_padding = value
 
     def on__current_font_size(self, instance, value):
         pass
@@ -2390,8 +2464,8 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         if hasattr(self, "icon_position"):
             if self.icon_position == "icon_only":
                 self.size = [
-                    self._current_font_size * 2,
-                    self._current_font_size * 2,
+                    self._current_font_size + self._internal_padding,
+                    self._current_font_size + self._internal_padding,
                 ]
                 return
         else:
@@ -2458,9 +2532,12 @@ class icon_behavior(BaseRectangularButton):
         self.Update_Container_size()
 
     def on_theme_icon_color(self, instance, value):
-        if self.__icon:
-            self.__icon.on_theme_text_color(self, self.__icon.theme_text_color)
         super().on_theme_icon_color(instance, value)
+
+    def on__current_theme_icon_color(self, instance, value):
+        self.__icon.theme_text_color = value
+        # if self._current_theme_icon_color == "Custom":
+        #     self.__icon.text_color
 
     def on_icon(self, instance, value):
         if self._has_icon and self.container and self.__icon:
@@ -2704,14 +2781,15 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
             self.theme_icon_color = "Custom"
 
         if self.icon_color is None:
-            self.theme_icon_color = "Primary"
+            if self.theme_icon_color is None:
+                self.theme_icon_color = "Primary"
         else:
             self.theme_icon_color = "Custom"
         #
         super().__after_init__(*kwargs)
 
     def on_text_color(self, instance, value):
-        self.icon_color = self.text_color
+        self.icon_color = value
         self.theme_icon_color = "Custom"
 
 
@@ -2852,24 +2930,13 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
     bases: `MDIconButton`, `CircularElevationBehavior`
     """
 
-    action_mode = OptionProperty(None, options=["regular", "mini FAB"])
+    action_mode = OptionProperty(
+        None, options=["regular", "mini", "micro", None]
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # self._is_filled = True
-        self.internal_padding = "32dp"
-
-    def on_action_mode(self, instance, value):
-        if value:
-            if value == "regular":
-                self.internal_padding = dp(32)
-            else:
-                self.internal_padding = dp(8)
-
-    def shadow_preset(self, *dt):
-        if self.elevation is None:
-            self.elevation = 10
-        super().shadow_preset(*dt)
 
     def __after_init__(self, *args):
         if self._is_filled is None:
@@ -2883,17 +2950,25 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
         if self.theme_text_color is None:
             self.theme_text_color = "Primary"
         super().__after_init__(*args)
-
+        self.on_action_mode(self, self.action_mode)
         if not self.font_size:
             self._current_font_size = dp(24)
 
+    def on_action_mode(self, instance, value):
+        if value:
+            if value == "regular":
+                self.internal_padding = dp(32)
+            elif value == "mini":
+                self.internal_padding = dp(16)
+            elif value == "micro":
+                self.internal_padding = dp(8)
+            else:
+                pass
 
-Builder.load_string(
-    """
-
-    """,
-    filename="MDRoundImageButton.kv",
-)
+    def shadow_preset(self, *dt):
+        if self.elevation is None:
+            self.elevation = 10
+        super().shadow_preset(*dt)
 
 
 class MDRoundImageButton(MDFloatingActionButton):
@@ -3096,13 +3171,102 @@ class MDFloatingLabel(BaseFloatingLabel):
     pass
 
 
+# New MDFloatingActionButtonSpeedDial experimental
+#   this new class is an attempt to simplify and improve the
+#   MDFloatingActionButtonSpeedDial.
+
+
+class New_MDFloatingActionButtonSpeedDial(FloatLayout):
+    data = DictProperty()
+    """
+    Must be a dictionary
+
+    .. code-block:: python
+
+        data = {
+            'name-icon': ['Text label', callback],
+            [...],
+            [...],
+        }
+    """
+
+    direction = OptionProperty(
+        None,
+        options=[
+            "left",
+            "up",
+            "right",
+            "down",
+        ],
+    )
+    position = OptionProperty(
+        None,
+        options=[
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+            "Fixed",
+        ],
+    )
+    """
+    Sets the position of the speed dial over the screen.
+    not all `direction` are availabe for every `position`
+
+
+    +----------------+---------------------+---------------+
+    |Position        | Possible Direction  | fixed padding |
+    +================+=====================+===============+
+    |`"top-left"`    | `"right"`, `"down"` | dp(16), Fixed |
+    +----------------+---------------------+---------------+
+    |`"top-right"`   | `"left"`, `"down"`  | dp(16), Fixed |
+    +----------------+---------------------+---------------+
+    |`"bottom-left"` | `"right"`, `"up"`   | dp(16), Fixed |
+    +----------------+---------------------+---------------+
+    |`"bottom-right"`| `"left"`, `"up"`    | dp(16), Fixed |
+    +----------------+---------------------+---------------+
+    |`"Fixed"`       | All                 | None          |
+    +----------------+---------------------+---------------+
+
+    Availabe options are: `"top-left"`, `"top-right"`, `"bottom-left"`,
+    `"bottom-right"`, `"Fixed"`.
+    """
+
+    def __init__(self, **kwargs):
+        self.relations = {}
+        self.size_hint = [None, None]
+        super().__init__(**kwargs)
+        self.register_event_type("on_open")
+        self.register_event_type("on_close")
+
+    def on_open(self, *args):
+        """Called when a stack is opened."""
+
+    def on_close(self, *args):
+        """Called when a stack is closed."""
+
+    def on_data(self, instance, value):
+        for i in value:
+
+            pass
+
+    def allign_children():
+        pass
+
+
+# DELETE LATER
 class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     """
     :Events:
+
         :attr:`on_open`
+
             Called when a stack is opened.
+
         :attr:`on_close`
+
             Called when a stack is closed.
+
     """
 
     icon = StringProperty("plus")
@@ -3126,11 +3290,13 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     Custom callback.
 
     .. code-block:: kv
+
         # kv lang
         MDFloatingActionButtonSpeedDial:
             callback: app.callback
 
     .. code-block:: python
+
         # Python
         def callback(self, instance):
             Logger.debug(instance.icon)
@@ -3163,7 +3329,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     right_pad = BooleanProperty(True)
     """
-    If `True`, the button will increase on the right side by 2.5 piesels
+    If `True`, the button will increase on the right side by 2.5 pixesels
     if the :attr:`~hint_animation` parameter equal to `True`.
 
     .. rubric:: False
@@ -3317,8 +3483,12 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     _label_pos_y_set = False
     _anim_buttons_data = {}
     _anim_labels_data = {}
+    buttons_bottom_padding = NumericProperty("24dp")
+    buttons_padding = NumericProperty("16dp")
 
     def __init__(self, **kwargs):
+        self.relations = {}
+        self.size_hint = [None, None]
         super().__init__(**kwargs)
         self.register_event_type("on_open")
         self.register_event_type("on_close")
@@ -3385,25 +3555,38 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         # File "kivy/uix/widget.py", line 629, in add_widget
         #     canvas.add(widget.canvas)
         # AttributeError: 'NoneType' object has no attribute 'add'
-        super().__init__()
+        # super().__init__()
 
         self.clear_widgets()
         self._anim_buttons_data = {}
         self._anim_labels_data = {}
-        self._label_pos_y_set = False
-
+        self.relations = {}
+        # create and store the root button.
+        # Rvery button size will be computed after the root button.
+        self.root_button = MDFloatingRootButton(
+            on_release=self.open_stack,
+        )
+        self.root_button.icon = self.icon
         # Bottom buttons.
-        for name_icon in value.keys():
+        counter = 0
+        for name_icon in value:
+            # add buttons
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
                 on_enter=self.on_enter,
                 on_leave=self.on_leave,
                 opacity=0,
+                action_mode="mini",
+                internal_padding=dp(8),
+                elevation=10,
+                md_bg_color=[1, 1, 1, 1],
+                theme_button_color="Custom",
+                icon_color=[0, 0, 0, 1],
             )
             bottom_button.bind(
                 on_release=lambda x=bottom_button: self.callback(x)
             )
-            self.set_pos_bottom_buttons(bottom_button)
+            # self.set_pos_bottom_buttons(bottom_button)
             self.add_widget(bottom_button)
             # Labels.
             floating_text = value[name_icon]
@@ -3411,11 +3594,15 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 label = MDFloatingLabel(text=floating_text, opacity=0)
                 label.text_color = self.label_text_color
                 self.add_widget(label)
-        # Top root button.
-        self.root_button = MDFloatingRootButton(on_release=self.open_stack)
-        self.root_button.icon = self.icon
-        self.set_pos_root_button(self.root_button)
+            self.relations[counter] = (bottom_button, label)
+            counter += 1
+        # add on top the root button.
         self.add_widget(self.root_button)
+        self._update_pos_buttons()
+        # self.root_button.bind(
+        #     x = lambda *x: self.set_pos_bottom_buttons()
+        # )
+        Clock.schedule_once(self._update_pos_buttons, -1)
 
     def on_icon(self, instance, value):
         self._get_count_widget(MDFloatingRootButton).icon = value
@@ -3434,6 +3621,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         for widget in self.children:
             if isinstance(widget, MDFloatingLabel):
                 widget.bg_color = (0, 0, 0, 0)
+                widget.elevation = 0 if value is True else 10
 
     def on_bg_hint_color(self, instance, value):
         for widget in self.children:
@@ -3455,22 +3643,48 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         """Sets the position of the floating labels."""
 
         if self.anchor == "right":
-            widget.x = Window.width - widget.width - dp(86)
+            # TODO: change this, it doesn't use the container position.
+            widget.right = Window.width - dp(86)
 
     def set_pos_root_button(self, instance):
         """Sets the position of the root button."""
 
         if self.anchor == "right":
-            instance.y = dp(20)
-            instance.x = Window.width - (dp(56) + dp(20))
+            instance.y = dp(16)
+            instance.right = Window.width - dp(16)
 
     def set_pos_bottom_buttons(self, instance):
         """Sets the position of the bottom buttons in a stack."""
 
         if self.anchor == "right":
             if self.state != "open":
-                instance.y = instance.height / 2
-            instance.x = Window.width - (instance.height + instance.width / 2)
+                instance.center[1] = self.root_button.center[1]
+            instance.center[0] = self.root_button.center[0]
+
+    def calculate_heights(self, *dt):
+        anim_buttons_data = {}
+        anim_labels_data = {}
+        y = self.root_button.top + self.buttons_bottom_padding
+        for i in self.relations:
+            self.relations[i][0].y = y
+            y += self.buttons_padding + self.relations[i][0].height
+
+            if not self._anim_buttons_data:
+                anim_buttons_data[self.relations[i][0]] = Animation(
+                    opacity=1,
+                    d=self.opening_time,
+                    t=self.opening_transition,
+                )
+            # Sets the position of signatures only once.
+            self.relations[i][1].center[1] = self.relations[i][0].center[1]
+
+            if not self._anim_labels_data:
+                anim_labels_data[self.relations[i][1]] = Animation(
+                    opacity=1, d=self.opening_time
+                )
+            else:
+                pass
+        return (anim_buttons_data, anim_labels_data)
 
     def open_stack(self, instance):
         """Opens a button stack."""
@@ -3480,40 +3694,14 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 Animation.cancel_all(widget)
 
         if self.state != "open":
-            y = 0
-            label_position = dp(56)
             anim_buttons_data = {}
             anim_labels_data = {}
-
-            for widget in self.children:
-                if isinstance(widget, MDFloatingBottomButton):
-                    # Sets new button positions.
-                    y += dp(56)
-                    widget.y = widget.y * 2 + y
-                    if not self._anim_buttons_data:
-                        anim_buttons_data[widget] = Animation(
-                            opacity=1,
-                            d=self.opening_time,
-                            t=self.opening_transition,
-                        )
-                elif isinstance(widget, MDFloatingLabel):
-                    # Sets new labels positions.
-                    label_position += dp(56)
-                    # Sets the position of signatures only once.
-                    if not self._label_pos_y_set:
-                        widget.y = widget.y * 2 + label_position
-                        widget.x = Window.width - widget.width - dp(86)
-                    if not self._anim_labels_data:
-                        anim_labels_data[widget] = Animation(
-                            opacity=1, d=self.opening_time
-                        )
-                elif (
-                    isinstance(widget, MDFloatingRootButton)
-                    and self.rotation_root_button
-                ):
-                    # Rotates the root button 45 degrees.
-                    self.root_button.rot_90(clockwise=True)
-
+            # Rotates the root button 45 degrees.
+            if self.rotation_root_button:
+                self.root_button.rot_90(clockwise=True)
+            # position the elements in grid
+            anim_buttons_data, anim_labels_data = self.calculate_heights()
+            #
             if anim_buttons_data:
                 self._anim_buttons_data = anim_buttons_data
             if anim_labels_data and not self.hint_animation:
@@ -3523,8 +3711,6 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             self.dispatch("on_open")
             self.do_animation_open_stack(self._anim_buttons_data)
             self.do_animation_open_stack(self._anim_labels_data)
-            if not self._label_pos_y_set:
-                self._label_pos_y_set = True
         else:
             self.close_stack()
 
@@ -3566,13 +3752,14 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self.state = "close"
         self.dispatch("on_close")
 
-    def _update_pos_buttons(self, instance, width, height):
+    # Removed args instance, width, height since they're not needed.
+    def _update_pos_buttons(self, *dt):
         # Updates button positions when resizing screen.
         for widget in self.children:
-            if isinstance(widget, MDFloatingBottomButton):
-                self.set_pos_bottom_buttons(widget)
-            elif isinstance(widget, MDFloatingRootButton):
+            if isinstance(widget, MDFloatingRootButton):
                 self.set_pos_root_button(widget)
+            elif isinstance(widget, MDFloatingBottomButton):
+                self.set_pos_bottom_buttons(widget)
             elif isinstance(widget, MDFloatingLabel):
                 self.set_pos_labels(widget)
 

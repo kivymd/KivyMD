@@ -1,6 +1,6 @@
 """
 Components/Backdrop
-===================
+====================
 
 .. seealso::
 
@@ -12,7 +12,7 @@ Components/Backdrop
     :align: center
 
 Usage
------
+------
 
 .. code-block:: kv
 
@@ -28,8 +28,9 @@ Usage
 
                  ContentForBackdropFrontLayer:
 
+
 Example
--------
+--------
 
 .. code-block:: python
 
@@ -106,11 +107,13 @@ Example
 
     TestBackdrop().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop.gif
     :width: 280 px
     :align: center
 
-.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Backdrop>`_
+
+.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Backdrop>`
 """
 
 __all__ = (
@@ -205,77 +208,100 @@ Builder.load_string(
 class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     :Events:
+
         :attr:`on_open`
+
             When the front layer drops.
+
         :attr:`on_close`
+
             When the front layer rises.
+
     """
 
     padding = ListProperty([0, 0, 0, 0])
-    """Padding for contents of the front layer.
+    """
+    Padding for contents of the front layer.
 
     :attr:`padding` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
+
     """
 
     left_action_items = ListProperty()
-    """The icons and methods left of the :class:`kivymd.uix.toolbar.MDToolbar`
+    """
+    The icons and methods left of the :class:`kivymd.uix.toolbar.MDToolbar`
     in back layer. For more information, see the :class:`kivymd.uix.toolbar.MDToolbar` module
     and :attr:`left_action_items` parameter.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     right_action_items = ListProperty()
-    """Works the same way as :attr:`left_action_items`.
+    """
+    Works the same way as :attr:`left_action_items`.
 
     :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     title = StringProperty()
-    """See the :class:`kivymd.uix.toolbar.MDToolbar.title` parameter.
+    """
+    See the :class:`kivymd.uix.toolbar.MDToolbar.title` parameter.
 
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
     """
 
     background_color = ListProperty()
-    """Background color of back layer.
+    """
+    Background color of back layer.
 
     :attr:`background_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     radius = NumericProperty(25)
-    """The value of the rounding radius of the upper left corner
+    """
+    The value of the rounding radius of the upper left corner
     of the front layer.
 
     :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `25`.
+
     """
 
     header = BooleanProperty(True)
-    """Whether to use a header above the contents of the front layer.
+    """
+    Whether to use a header above the contents of the front layer.
 
     :attr:`header` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
+
     """
 
     header_text = StringProperty("Header")
-    """Text of header.
+    """
+    Text of header.
 
     :attr:`header_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Header'`.
+
     """
 
     close_icon = StringProperty("close")
-    """The name of the icon that will be installed on the toolbar
+    """
+    The name of the icon that will be installed on the toolbar
     on the left when opening the front layer.
 
     :attr:`close_icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'close'`.
+
     """
 
     _open_icon = ""
@@ -310,9 +336,10 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         """
         Opens the front layer.
 
-        :open_up_to:
+        :attr:`open_up_to`
             the height to which the front screen will be lowered;
             if equal to zero - falls to the bottom of the screen;
+
         """
 
         self.animtion_icon_menu()

@@ -17,8 +17,9 @@ Components/Toolbar
 - Bottom_
 
 .. Top:
+
 Top
----
+----
 
 .. code-block:: python
 
@@ -46,6 +47,7 @@ Top
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-1.png
     :align: center
 
@@ -57,6 +59,7 @@ Add left menu
     MDToolbar:
         title: "MDToolbar"
         left_action_items: [["menu", lambda x: app.callback()]]
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-2.png
     :align: center
@@ -70,6 +73,7 @@ Add right menu
         title: "MDToolbar"
         right_action_items: [["dots-vertical", lambda x: app.callback()]]
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-3.png
     :align: center
 
@@ -82,6 +86,7 @@ Add two item to the right menu
         title: "MDToolbar"
         right_action_items: [["dots-vertical", lambda x: app.callback_1()], ["clock", lambda x: app.callback_2()]]
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-4.png
     :align: center
 
@@ -93,6 +98,7 @@ Change toolbar color
     MDToolbar:
         title: "MDToolbar"
         md_bg_color: app.theme_cls.accent_color
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-5.png
     :align: center
@@ -122,6 +128,7 @@ Shadow elevation control
     :align: center
 
 .. Bottom:
+
 Bottom
 ------
 
@@ -157,6 +164,7 @@ Usage
 
 
     Test().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-8.png
     :align: center
@@ -198,6 +206,7 @@ Mode:
             left_action_items: [["menu", lambda x: x]]
             mode: "end"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-9.png
     :align: center
 
@@ -211,6 +220,7 @@ Mode:
             type: "bottom"
             left_action_items: [["menu", lambda x: x]]
             mode: "free-end"
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-10.png
     :align: center
@@ -360,8 +370,10 @@ class MDToolbar(
 ):
     """
     :Events:
+
         `on_action_button`
             Method for the button used for the :class:`~MDBottomAppBar` class.
+
     """
 
     elevation = NumericProperty(6)
@@ -370,10 +382,12 @@ class MDToolbar(
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `6`.
+
     """
 
     left_action_items = ListProperty()
-    """The icons on the left of the toolbar.
+    """
+    The icons on the left of the toolbar.
     To add one, append a list like the following:
 
     .. code-block:: kv
@@ -385,10 +399,12 @@ class MDToolbar(
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     right_action_items = ListProperty()
-    """The icons on the left of the toolbar.
+    """
+    The icons on the left of the toolbar.
     Works the same way as :attr:`left_action_items`.
 
     :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
@@ -396,10 +412,12 @@ class MDToolbar(
     """
 
     title = StringProperty()
-    """Text toolbar.
+    """
+    Text toolbar.
 
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
     """
 
     md_bg_color = ListProperty([0, 0, 0, 0])
@@ -407,6 +425,7 @@ class MDToolbar(
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
+
     """
 
     anchor_title = StringProperty("left")
@@ -414,11 +433,13 @@ class MDToolbar(
     mode = OptionProperty(
         None, options=["free-end", "free-center", "end", "center"]
     )
-    """Floating button position. Onle for :class:`~MDBottomAppBar` class.
+    """
+    Floating button position. Onle for :class:`~MDBottomAppBar` class.
     Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
 
     :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'center'`.
+
     """
 
     notch = BooleanProperty(None)
@@ -430,6 +451,7 @@ class MDToolbar(
 
     :attr:`mode` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `'None'`.
+
     """
 
     round = NumericProperty("10dp")
@@ -447,6 +469,7 @@ class MDToolbar(
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
+
     """
 
     icon_color = ListProperty()
@@ -455,6 +478,7 @@ class MDToolbar(
 
     :attr:`icon_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     type = OptionProperty("top", options=["top", "bottom"])
@@ -469,10 +493,12 @@ class MDToolbar(
             MDToolbar:
                 type: "bottom"
 
+
     Available options are: `'top'`, `'bottom'`.
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'top'`.
+
     """
 
     _shift = NumericProperty("3.5dp")

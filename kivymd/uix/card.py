@@ -1,10 +1,10 @@
 """
 Components/Card
-===============
+================
 
 .. seealso::
 
-    `Material Design spec, Cards <https://material.io/components/cards>`_
+    `Material Design spec, Cards <https://material.io/components/cards>`
 
 .. rubric:: Cards contain content and actions about a single subject.
 
@@ -22,8 +22,9 @@ Components/Card
     :class:`~MDCard` class.
 
 .. MDCard:
+
 MDCard
-------
+-------
 
 .. code-block:: python
 
@@ -48,11 +49,12 @@ MDCard
 
     TestCard().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card.png
     :align: center
 
 Add content to card:
---------------------
+---------------------
 
 .. code-block:: python
 
@@ -91,12 +93,14 @@ Add content to card:
 
     TestCard().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-content.png
     :align: center
 
 .. MDCardSwipe:
+
 MDCardSwipe
------------
+------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDCardSwipe.gif
     :align: center
@@ -120,16 +124,18 @@ that inherits from the :class:`~MDCardSwipe` class:
                 text: root.text
                 _no_ripple_effect: True
 
+
 .. code-block:: python
 
     class SwipeToDeleteItem(MDCardSwipe):
         text = StringProperty()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/map-mdcard-swipr.png
     :align: center
 
 End full code
--------------
+--------------
 
 .. code-block:: python
 
@@ -200,11 +206,12 @@ End full code
 
     TestCard().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-mdcard-swipe.gif
     :align: center
 
 Binding a swipe to one of the sides of the screen
--------------------------------------------------
+---------------------------------------------------
 
 .. code-block:: kv
 
@@ -212,20 +219,23 @@ Binding a swipe to one of the sides of the screen
         # By default, the parameter is "left"
         anchor: "right"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mdcard-swipe-anchor-right.gif
     :align: center
 
 
-.. None:: You cannot use the left and right swipe at the same time.
+.. Note::
+    You cannot use the left and right swipe at the same time.
 
 Swipe behavior
---------------
+---------------
 
 .. code-block:: kv
 
     <SwipeToDeleteItem>:
         # By default, the parameter is "hand"
         type_swipe: "hand"
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hand-mdcard-swipe.gif
     :align: center
@@ -235,11 +245,12 @@ Swipe behavior
     <SwipeToDeleteItem>:
         type_swipe: "auto"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/auto-mdcard-swipe.gif
     :align: center
 
 Removing an item using the ``type_swipe = "auto"`` parameter
-------------------------------------------------------------
+--------------------------------------------------------------
 
 The map provides the :attr:`MDCardSwipe.on_swipe_complete` event.
 You can use this event to remove items from a list:
@@ -249,13 +260,15 @@ You can use this event to remove items from a list:
     <SwipeToDeleteItem>:
         on_swipe_complete: app.on_swipe_complete(root)
 
+
 .. code-block:: python
 
     def on_swipe_complete(self, instance):
         self.screen.ids.md_list.remove_widget(instance)
 
+
 End full code
--------------
+--------------
 
 .. code-block:: python
 
@@ -324,11 +337,12 @@ End full code
 
     TestCard().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/autodelete-mdcard-swipe.gif
     :align: center
 
 Add content to the bottom layer of the card
--------------------------------------------
+---------------------------------------------
 
 To add content to the bottom layer of the card,
 use the :class:`~MDCardSwipeLayerBox` class.
@@ -345,8 +359,9 @@ use the :class:`~MDCardSwipeLayerBox` class.
                 pos_hint: {"center_y": .5}
                 on_release: app.remove_item(root)
 
+
 End full code
--------------
+---------------
 
 .. code-block:: python
 
@@ -423,29 +438,31 @@ End full code
     :align: center
 
 Focus behavior
--------------
+---------------
 
 .. code-block:: kv
 
     MDCard:
         focus_behavior: True
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-focus.gif
     :align: center
 
 Ripple behavior
----------------
+-----------------
 
 .. code-block:: kv
 
     MDCard:
         ripple_behavior: True
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-behavior.gif
     :align: center
 
 End full code
--------------
+---------------
 
 .. code-block:: python
 
@@ -529,6 +546,8 @@ End full code
 
 
     Test().run()
+
+
 """
 
 __all__ = (
@@ -598,13 +617,17 @@ Builder.load_string(
 
 
 class MDSeparator(ThemableBehavior, BoxLayout):
-    """A separator line."""
+    """
+    A separator line.
+    """
 
     color = ListProperty()
-    """Separator color in ``rgba`` format.
+    """
+    Separator color in ``rgba`` format.
 
     :attr:`color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     def __init__(self, **kwargs):
@@ -685,7 +708,9 @@ class MDCard(
 class MDCardSwipe(RelativeLayout):
     """
     :Events:
+
         :attr:`on_swipe_complete`
+
             Called when a swipe of card is completed.
     """
 
@@ -795,7 +820,9 @@ class MDCardSwipe(RelativeLayout):
             return super().add_widget(widget)
 
     def on_swipe_complete(self, *args):
-        """Called when a swipe of card is completed."""
+        """
+        Event called when the card swipe is completed.
+        """
 
     def on_anchor(self, instance, value):
         if value == "right":

@@ -4,7 +4,7 @@ Components/Progress Bar
 
 .. seealso::
 
-    `Material Design spec, Progress indicators https://material.io/components/progress-indicators`_
+    Material Design spec, Progress indicators at material.io <https://material.io/components/progress-indicators>_
 
 .. rubric:: Progress indicators express an unspecified wait time or display
     the length of a process.
@@ -19,6 +19,7 @@ Components/Progress Bar
 - Indeterminate_
 
 .. MDProgressBar:
+
 MDProgressBar
 -------------
 
@@ -72,6 +73,7 @@ With custom color
     :align: center
 
 .. Indeterminate:
+
 Indeterminate
 -------------
 
@@ -116,6 +118,7 @@ Indeterminate
     :align: center
 
 .. Determinate:
+
 Determinate
 -----------
 
@@ -128,6 +131,7 @@ Determinate
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-progress-bar.gif
     :align: center
+
 """
 
 __all__ = ("MDProgressBar",)

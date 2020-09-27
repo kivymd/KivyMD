@@ -22,7 +22,12 @@ release = kivymd.__version__
 
 # General configuration
 master_doc = "index"
-exclude_patterns = []
+exclude_patterns = [
+"unincluded/kivymd/*",
+"unincluded/test_app/*",
+"unincluded/test_font_definitions/*",
+"unincluded/test_icon_definitions/*",
+]
 templates_path = ["_templates"]
 locale_dirs = ["_locales"]
 language = "Python"
@@ -52,7 +57,7 @@ extensions = [
 # AutoAPI configuration
 autoapi_dirs = ["../../kivymd"]
 autoapi_template_dir = os.path.abspath("_templates")
-autoapi_ignore = []
+autoapi_ignore = ["../../kivymd/tests/*"]
 autoapi_type = "python"
 autoapi_file_patterns = ["*.py"]
 autoapi_generate_api_docs = True

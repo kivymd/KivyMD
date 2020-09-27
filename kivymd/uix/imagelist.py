@@ -17,10 +17,11 @@ Components/Image List
 - SmartTileWithLabel_
 
 .. SmartTileWithStar:
-SmartTileWithStar
------------------
 
-.. code-block::
+SmartTileWithStar
+------------------
+
+.. code-block:: py
 
     from kivymd.app import MDApp
     from kivy.lang import Builder
@@ -60,12 +61,14 @@ SmartTileWithStar
 
     MyApp().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/SmartTileWithStar.gif
     :align: center
 
 .. SmartTileWithLabel:
+
 SmartTileWithLabel
-------------------
+-------------------
 
 .. code-block:: python
 
@@ -108,6 +111,7 @@ SmartTileWithLabel
 
 
     MyApp().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/SmartTileWithLabel.png
     :align: center

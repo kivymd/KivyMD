@@ -53,6 +53,7 @@ Usage
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-usage.gif
     :align: center
 
@@ -60,18 +61,19 @@ Usage
     the menu window. Because on a mobile device this one will be very slow!
 
 Wrong
------
+-------
 
 .. code-block:: python
 
     menu = MDDropdownMenu(caller=self.screen.ids.button, items=menu_items)
     menu.open()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-wrong.gif
     :align: center
 
 Customization of menu item
---------------------------
+----------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right.gif
     :align: center
@@ -82,6 +84,7 @@ You must create a new class that inherits from the :class:`~RightContent` class:
 
     class RightContentCls(RightContent):
         pass
+
 
 Now in the KV rule you can create your own elements that will be displayed in
 the menu item on the right:
@@ -102,6 +105,7 @@ the menu item on the right:
             size_hint_x: None
             width: self.texture_size[0]
             text_size: None, None
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right-detail.png
     :align: center
@@ -125,8 +129,9 @@ value is the class ``RightContentCls`` that you created:
         caller=self.screen.ids.button, items=menu_items, width_mult=4
     )
 
+
 Full example
-------------
+-------------
 
 .. code-block:: python
 
@@ -194,8 +199,9 @@ Full example
 
     Test().run()
 
+
 Menu without icons on the left
-------------------------------
+-------------------------------
 
 If you do not want to use the icons in the menu items on the left,
 then do not use the "icon" key when creating menu items:
@@ -212,11 +218,12 @@ then do not use the "icon" key when creating menu items:
             for i in range(5)
         ]
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-without-icon.png
     :align: center
 
 Item height adjustment
-----------------------
+-----------------------
 
 .. code-block:: python
 
@@ -233,11 +240,12 @@ Item height adjustment
             for i in range(5)
         ]
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-item-pad.png
     :align: center
 
 Mixin items
------------
+------------
 
 .. code-block:: python
 
@@ -343,11 +351,12 @@ Mixin items
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-mixin.png
     :align: center
 
 Hover Behavior
---------------
+----------------
 
 .. code-block:: python
 
@@ -357,11 +366,12 @@ Hover Behavior
         selected_color=self.theme_cls.primary_dark_hue,
     )
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-with-hover.gif
     :align: center
 
 Create submenu
---------------
+----------------
 
 .. code-block:: python
 
@@ -433,11 +443,12 @@ Create submenu
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-submenu.gif
     :align: center
 
 Menu with MDToolbar
--------------------
+---------------------
 
 .. Warning:: The :class:`~MDDropdownMenu` does not work with the standard
     :class:`~kivymd.uix.toolbar.MDToolbar`. You can use your own
@@ -526,14 +537,15 @@ Menu with MDToolbar
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-with-toolbar.gif
     :align: center
 
 Position menu
-=============
+==============
 
 Bottom position
----------------
+----------------
 
 .. seealso::
 
@@ -585,11 +597,13 @@ Bottom position
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position.gif
     :align: center
 
+
 Center position
----------------
+----------------
 
 .. code-block:: python
 
@@ -631,6 +645,7 @@ Center position
 
 
     Test().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position-center.gif
     :align: center
@@ -724,6 +739,7 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
 
     :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
     """
 
     icon = StringProperty()
@@ -732,6 +748,7 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
     """
 
 
@@ -742,6 +759,7 @@ class MDMenuItemIcon(HoverBehavior, OneLineAvatarIconListItem):
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
     """
 
     def on_enter(self):
@@ -756,25 +774,36 @@ class MDMenu(ScrollView):
     width_mult = NumericProperty(1)
     """
     See :attr:`~MDDropdownMenu.width_mult`.
+
     """
 
     drop_cls = ObjectProperty()
     """
     See :class:`~MDDropdownMenu` class.
+
     """
 
 
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
     :Events:
+
         :attr:`on_enter`
+
             Call when mouse enter the bbox of item menu.
+
         :attr:`on_leave`
+
             Call when the mouse exit the item menu.
+
         :attr:`on_dismiss`
+
             Call when closes menu.
+
         :attr:`on_release`
+
             The method that will be called when you click menu items.
+
     """
 
     selected_color = ListProperty()
@@ -782,6 +811,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     items = ListProperty()
@@ -790,6 +820,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     width_mult = NumericProperty(1)
@@ -802,6 +833,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`width_mult` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
+
     """
 
     max_height = NumericProperty()
@@ -810,6 +842,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`max_height` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
+
     """
 
     border_margin = NumericProperty("4dp")
@@ -818,6 +851,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`border_margin` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `4dp`.
+
     """
 
     ver_growth = OptionProperty(None, allownone=True, options=["up", "down"])
@@ -827,6 +861,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`ver_growth` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
+
     """
 
     hor_growth = OptionProperty(None, allownone=True, options=["left", "right"])
@@ -836,6 +871,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`hor_growth` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
+
     """
 
     background_color = ListProperty()
@@ -844,6 +880,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`background_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     opening_transition = StringProperty("out_cubic")
@@ -852,6 +889,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'out_cubic'`.
+
     """
 
     opening_time = NumericProperty(0.2)
@@ -860,6 +898,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
+
     """
 
     caller = ObjectProperty()
@@ -868,6 +907,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`caller` is a :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
+
     """
 
     position = OptionProperty("auto", options=["auto", "center", "bottom"])
@@ -877,6 +917,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`position` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'auto'`.
+
     """
 
     radius = NumericProperty(7)
@@ -885,6 +926,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     :attr:`radius` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `'7'`.
+
     """
 
     _start_coords = []
@@ -907,9 +949,11 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.set_menu_properties(0)
 
     def set_bg_color_items(self, instance_selected_item):
-        """Called when a Hover Behavior event occurs for a list item.
+        """
+        Called when a Hover Behavior event occurs for a list item.
 
         :type instance_selected_item: <kivymd.uix.menu.MDMenuItemIcon object>
+
         """
 
         if self.selected_color:
@@ -920,7 +964,9 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     instance_selected_item.bg_color = self.selected_color
 
     def create_menu_items(self):
-        """Creates menu items."""
+        """
+        Creates menu items.
+        """
 
         for data in self.items:
             item = MDMenuItemIcon(
@@ -954,7 +1000,9 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             self.menu.ids.box.add_widget(item)
 
     def set_menu_properties(self, interval=0):
-        """Sets the size and position for the menu window."""
+        """
+        Sets the size and position for the menu window.
+        """
 
         if self.caller:
             if not self.menu.ids.box.children:
@@ -1067,7 +1115,9 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             self._calculate_complete = True
 
     def open(self):
-        """Animate the opening of a menu window."""
+        """
+        Animate the opening of a menu window.
+        """
 
         def open(interval):
             if not self._calculate_complete:
@@ -1128,16 +1178,24 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         return True
 
     def on_enter(self, instance):
-        """Call when mouse enter the bbox of the item of menu."""
+        """
+        Call when mouse enter the bbox of the item of menu.
+        """
 
     def on_leave(self, instance):
-        """Call when the mouse exit the item of menu."""
+        """
+        Call when the mouse exit the item of menu.
+        """
 
     def on_release(self, *args):
-        """The method that will be called when you click menu items."""
+        """
+        The method that will be called when you click menu items.
+        """
 
     def on_dismiss(self):
-        """Called when the menu is closed."""
+        """
+        Called when the menu is closed.
+        """
 
         Window.remove_widget(self)
         self.menu.width = 0
@@ -1145,6 +1203,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.opacity = 0
 
     def dismiss(self):
-        """Closes the menu."""
+        """
+        Closes the menu.
+        """
 
         self.on_dismiss()

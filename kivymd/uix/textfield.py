@@ -23,14 +23,15 @@ Components/Text Field
     available in the :class:`~MDTextField` class.
 
 .. MDTextField:
+
 MDTextField
------------
+------------
 
 
 :class:`~MDTextField` can be with helper text and without.
 
 Without helper text mode
-------------------------
+-------------------------
 
 .. code-block:: kv
 
@@ -41,7 +42,7 @@ Without helper text mode
     :align: center
 
 Helper text mode on ``on_focus`` event
---------------------------------------
+---------------------------------------
 
 .. code-block:: kv
 
@@ -54,7 +55,7 @@ Helper text mode on ``on_focus`` event
     :align: center
 
 Persistent helper text mode
----------------------------
+----------------------------
 
 .. code-block:: kv
 
@@ -67,7 +68,7 @@ Persistent helper text mode
     :align: center
 
 Helper text mode `'on_error'`
-----------------------------
+-----------------------------
 
 To display an error in a text field when using the
 ``helper_text_mode: "on_error"`` parameter, set the `"error"` text field
@@ -114,7 +115,7 @@ parameter to `True`:
     :align: center
 
 Helper text mode `'on_error'` (with required)
---------------------------------------------
+----------------------------------------------
 
 .. code-block:: kv
 
@@ -128,7 +129,7 @@ Helper text mode `'on_error'` (with required)
     :align: center
 
 Text length control
--------------------
+--------------------
 
 .. code-block:: kv
 
@@ -141,7 +142,7 @@ Text length control
 
 
 Multi line text
----------------
+----------------
 
 .. code-block:: kv
 
@@ -153,7 +154,7 @@ Multi line text
     :align: center
 
 Color mode
-----------
+-----------
 
 .. code-block:: kv
 
@@ -188,7 +189,7 @@ Available options are  `'primary'`, `'accent'` or `'custom`'.
     :align: center
 
 Rectangle mode
---------------
+---------------
 
 .. code-block:: kv
 
@@ -200,7 +201,7 @@ Rectangle mode
     :align: center
 
 Fill mode
----------
+----------
 
 .. code-block:: kv
 
@@ -213,8 +214,9 @@ Fill mode
     :align: center
 
 .. MDTextFieldRect:
+
 MDTextFieldRect
----------------
+----------------
 
 .. Note:: :class:`~MDTextFieldRect` inherited from
     :class:`~kivy.uix.textinput.TextInput`. You can use all parameters and
@@ -233,11 +235,12 @@ MDTextFieldRect
 .. Warning:: While there is no way to change the color of the border.
 
 .. MDTextFieldRound:
+
 MDTextFieldRound
-----------------
+-----------------
 
 Without icon
-------------
+-------------
 
 .. code-block:: kv
 
@@ -248,7 +251,7 @@ Without icon
     :align: center
 
 With left icon
---------------
+---------------
 
 .. Warning:: The icons in the :class:`~MDTextFieldRound` are static. You cannot
     bind events to them.
@@ -263,7 +266,7 @@ With left icon
     :align: center
 
 With left and right icons
--------------------------
+--------------------------
 
 .. code-block:: kv
 
@@ -276,7 +279,7 @@ With left and right icons
     :align: center
 
 Control background color
-------------------------
+-------------------------
 
 .. code-block:: kv
 
@@ -298,7 +301,7 @@ Control background color
     :align: center
 
 Clickable icon for MDTextFieldRound
------------------------------------
+------------------------------------
 
 .. code-block:: python
 
@@ -361,7 +364,7 @@ Clickable icon for MDTextFieldRound
     Test().run()
 
 With right icon
----------------
+----------------
 
 .. Note:: The icon on the right is available for use in all text fields.
 
@@ -394,6 +397,7 @@ With right icon
         mode: "rectangle"
         icon_right: "arrow-down-drop-circle-outline"
         icon_right_color: app.theme_cls.primary_color
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-rectangle-right-icon.png
     :align: center
@@ -688,6 +692,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`helper_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'This field is required'`.
+
     """
 
     helper_text_mode = OptionProperty(
@@ -699,6 +704,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`helper_text_mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'none'`.
+
     """
 
     max_text_length = NumericProperty(None)
@@ -707,6 +713,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`max_text_length` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.
+
     """
 
     required = BooleanProperty(False)
@@ -715,6 +722,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`required` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
+
     """
 
     color_mode = OptionProperty(
@@ -726,6 +734,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`color_mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'primary'`.
+
     """
 
     mode = OptionProperty("line", options=["rectangle", "fill"])
@@ -734,6 +743,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'line'`.
+
     """
 
     line_color_normal = ListProperty()
@@ -742,6 +752,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`line_color_normal` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     line_color_focus = ListProperty()
@@ -750,6 +761,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`line_color_focus` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     error_color = ListProperty()
@@ -758,6 +770,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`error_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     fill_color = ListProperty((0, 0, 0, 0))
@@ -767,6 +780,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`fill_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `(0, 0, 0, 0)`.
+
     """
 
     active_line = BooleanProperty(True)

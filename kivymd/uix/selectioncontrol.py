@@ -17,8 +17,9 @@ Components/Selection Controls
 - MDSwitch_
 
 .. MDCheckbox:
+
 MDCheckbox
-----------
+-----------
 
 .. code-block:: python
 
@@ -36,13 +37,12 @@ MDCheckbox
             pos_hint: {'center_x': .5, 'center_y': .5}
     '''
 
-
     class Test(MDApp):
         def build(self):
             return Builder.load_string(KV)
 
-
     Test().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox.gif
     :align: center
@@ -55,7 +55,7 @@ MDCheckbox
     :align: center
 
 Control state
--------------
+--------------
 
 .. code-block:: kv
 
@@ -65,13 +65,14 @@ Control state
 .. code-block:: python
 
     def on_checkbox_active(self, checkbox, value):
-        if value:
-            print('The checkbox', checkbox, 'is active', 'and', checkbox.state, 'state')
-        else:
-            print('The checkbox', checkbox, 'is inactive', 'and', checkbox.state, 'state')
+        print(
+            f"The {checkbox} is {'active' if value else 'inactive'}"
+            f"and {checkbox.state} state"
+        )
+
 
 MDCheckbox with group
----------------------
+----------------------
 
 .. code-block:: python
 
@@ -104,12 +105,14 @@ MDCheckbox with group
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-group.gif
     :align: center
 
 .. MDSwitch:
+
 MDSwitch
---------
+---------
 
 .. code-block:: python
 
@@ -132,6 +135,7 @@ MDSwitch
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch.gif
     :align: center
 
@@ -142,6 +146,7 @@ MDSwitch
 
     MDSwitch:
         width: dp(64)
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch_width.png
     :align: center
@@ -232,7 +237,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `'checkbox-blank-outline'`.
 
     .. warning:: Deprecated
-    This property is now deprecated, use selection_normal instead.
+        This property is now deprecated, use selection_normal instead.
     """
     checkbox_icon_down = StringProperty(None, deprecated=True)
     """
@@ -243,7 +248,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `'checkbox-marked-outline'`.
 
     .. warning:: Deprecated
-    This property is now deprecated, use selection_normal instead.
+        This property is now deprecated, use selection_normal instead.
     """
     radio_icon_normal = StringProperty(None, deprecated=True)
     """
@@ -254,7 +259,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `'checkbox-blank-circle-outline'`.
 
     .. warning:: Deprecated
-    This property is now deprecated, use selection_normal instead.
+        This property is now deprecated, use selection_normal instead.
     """
     radio_icon_down = StringProperty(None, deprecated=True)
     """
@@ -265,7 +270,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `'checkbox-marked-circle-outline'`.
 
     .. warning:: Deprecated
-    This property is now deprecated, use selection_normal instead.
+        This property is now deprecated, use selection_normal instead.
     """
     # Active properties ========================================================
     selection_normal = StringProperty(None, allownone=False)
@@ -279,8 +284,8 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     This value can either be a listed icon, or a image path.
 
     .. note:: unexpected Loading time.
-    keep in mind that if the image is not already in memory there might be some
-    delay as the interpreter loads the image in memory.
+        keep in mind that if the image is not already in memory there might be some
+        delay as the interpreter loads the image in memory.
     """
     selection_down = StringProperty(None, allownone=False)
     """
@@ -293,8 +298,8 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     This value can either be a listed icon, or a image path.
 
     .. note:: unexpected Loading time.
-    keep in mind that if the image is not already in memory there might be some
-    delay as the interpreter loads the image in memory.
+        keep in mind that if the image is not already in memory there might be some
+        delay as the interpreter loads the image in memory.
     """
     group_normal = StringProperty(None, allownone=False)
     """
@@ -307,8 +312,8 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     This value can either be a listed icon, or a image path.
 
     .. note:: unexpected Loading time.
-    keep in mind that if the image is not already in memory there might be some
-    delay as the interpreter loads the image in memory.
+        keep in mind that if the image is not already in memory there might be some
+        delay as the interpreter loads the image in memory.
     """
     group_down = StringProperty(None, allownone=False)
     """
@@ -321,8 +326,8 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     This value can either be a listed icon, or a image path.
 
     .. note:: unexpected Loading time.
-    keep in mind that if the image is not already in memory there might be some
-    delay as the interpreter loads the image in memory.
+        keep in mind that if the image is not already in memory there might be some
+        delay as the interpreter loads the image in memory.
     """
     #
     color_normal = ListProperty(None, allownone=False)
@@ -334,9 +339,9 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will make the class to change `theme_color_normal` to
-    `"Custom"`.
+        If you set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will make the class to change `theme_color_normal` to
+        `"Custom"`.
 
     after the new instance is created this property won't affect
     `theme_color_normal` property.
@@ -364,8 +369,8 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you don't set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will be settled to "Primary"
+        If you don't set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will be settled to "Primary"
 
     """
 
@@ -378,9 +383,9 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will make the class to change `theme_color_down` to
-    `"Custom"`.
+        If you set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will make the class to change `theme_color_down` to
+        `"Custom"`.
 
     after the new instance is created this property won't affect
     `theme_color_down` property.
@@ -408,8 +413,8 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `None`.
 
     .. note:: Special Behavior on new instances.
-    If you don't set this property inside a widget definition in kvlang or as a kwarg
-    in python code, it will be settled to "Primary_color"
+        If you don't set this property inside a widget definition in kvlang or as a kwarg
+        in python code, it will be settled to "Primary_color"
 
     """
 
@@ -429,7 +434,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `[]`.
 
     .. warning:: Deprecated
-    This property is now deprecated, use `color_down` instead.
+        This property is now deprecated, use `color_down` instead.
     """
 
     unselected_color = ListProperty(None, deprecated=True)
@@ -440,7 +445,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and defaults to `[]`.
 
     .. warning:: Deprecated
-    This property is now deprecated, use `color_normal` instead.
+        This property is now deprecated, use `color_normal` instead.
     """
     _font_size_normal = NumericProperty("24sp")
     """
@@ -448,7 +453,7 @@ class MDCheckbox(ToggleButtonBehavior, MDIconButton):
     and regain it's actual size once the animation has ended.
 
     .. warning:: Internal use Only.
-    This property is intended for interla use only.
+        This property is intended for interla use only.
     """
     # Animations
     animate = BooleanProperty(True)

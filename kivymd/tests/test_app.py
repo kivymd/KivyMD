@@ -7,6 +7,10 @@ from kivymd.theming import ThemeManager
 
 
 class AppTest(GraphicUnitTest):
+    """
+    This is a simple test app.
+    """
+
     def test_start_raw_app(self):
         lang._delayed_start = None
         a = MDApp()

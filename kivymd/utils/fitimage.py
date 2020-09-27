@@ -9,7 +9,7 @@ Referene - https://gist.github.com/benni12er/95a45eb168fc33a4fcd2d545af692dad
 
 
 Example:
-========
+=========
 
 .. code-block:: kv
 
@@ -27,7 +27,7 @@ Example:
             source: 'images/img2.jpg'
 
 Example with round corners:
-==========================
+============================
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
     :align: center

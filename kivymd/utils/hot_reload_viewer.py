@@ -1,6 +1,6 @@
 """
 HotReloadViewer
-===============
+================
 
 .. Note:: The :class:`~HotReloadViewer` class is based on
     the `KvViewerApp <https://github.com/kivy/kivy/blob/master/kivy/tools/kviewer.py>`_ class
@@ -10,7 +10,7 @@ dynamically display a KV file, taking its changes into account
 (thanks to watchdog). The idea is to facilitate design using the KV language.
 
 Usage
------
+-------
 
 .. code-block:: python
 
@@ -54,6 +54,7 @@ Usage
 
     Example().run()
 
+
 This will display the test.kv and automatically update the display when the
 file changes.
 
@@ -70,6 +71,8 @@ file changes.
 .. code-block:: bash
 
    pip install watchdog
+
+
 """
 
 import os
@@ -130,8 +133,11 @@ class HotReloadHandler(FileSystemEventHandler):
 class HotReloadViewer(ThemableBehavior, MDBoxLayout):
     """
     :Events:
+
         :attr:`on_error`
+
             Called when an error occurs in the KV-file that the user is editing.
+
     """
 
     path = StringProperty()
@@ -139,6 +145,7 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
 
     :attr:`path` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
     """
 
     errors = BooleanProperty(False)
@@ -147,6 +154,7 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
 
     :attr:`errors` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
+
     """
 
     errors_background_color = ListProperty()
@@ -155,6 +163,7 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
 
     :attr:`errors_background_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     errors_text_color = ListProperty()
@@ -163,6 +172,7 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
 
     :attr:`errors_text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     _temp_widget = None
@@ -175,7 +185,9 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
 
     @mainthread
     def update(self, *args):
-        """Updates and displays the KV-file that the user edits."""
+        """
+        Updates and displays the KV-file that the user edits.
+        """
 
         Builder.unload_file(self.path)
         self.clear_widgets()
@@ -189,7 +201,9 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
             self.dispatch("on_error", error)
 
     def show_error(self, error):
-        """Displays text with a current error."""
+        """
+        Displays text with a current error.
+        """
 
         if self._temp_widget and not self.errors:
             self.add_widget(self._temp_widget)

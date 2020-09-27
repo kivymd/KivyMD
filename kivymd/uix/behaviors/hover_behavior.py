@@ -1,6 +1,6 @@
 """
 Behaviors/Hover
-===============
+================
 
 .. rubric:: Changing when the mouse is on the widget.
 
@@ -13,12 +13,14 @@ In `KV file`:
 
     <HoverItem@MDBoxLayout+ThemableBehavior+HoverBehavior>
 
+
 In `python file`:
 
 .. code-block:: python
 
     class HoverItem(MDBoxLayout, ThemableBehavior, HoverBehavior):
         '''Custom item implementing hover behavior.'''
+
 
 After creating a class, you must define two methods for it:
 :attr:`HoverBehavior.on_enter` and :attr:`HoverBehavior.on_leave`, which will be automatically called
@@ -71,6 +73,7 @@ the widget.
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hover-behavior.gif
    :width: 250 px
    :align: center
@@ -86,10 +89,15 @@ from kivy.properties import BooleanProperty, ObjectProperty
 class HoverBehavior(object):
     """
     :Events:
+
         :attr:`on_enter`
+
             Call when mouse enter the bbox of the widget.
+
         :attr:`on_leave`
+
             Call when the mouse exit the widget.
+
     """
 
     hovered = BooleanProperty(False)

@@ -1,6 +1,6 @@
 """
 Components/Dialog
-=================
+==================
 
 .. seealso::
 
@@ -14,7 +14,7 @@ Components/Dialog
     :align: center
 
 Usage
------
+------
 
 .. code-block:: python
 
@@ -277,8 +277,7 @@ class MDDialog(BaseDialog):
     List of items objects for dialog.
     Objects must be inherited from :class:`~kivymd.uix.list.BaseListItem` class.
 
-    With type 'simple'
-    -----------------
+    **Simple Dialog Type**
 
     .. code-block:: python
 
@@ -335,8 +334,8 @@ class MDDialog(BaseDialog):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-items.png
         :align: center
 
-    With type 'confirmation'
-    -----------------------
+
+    **Confirmation Dialog Type**
 
     .. code-block:: python
 
@@ -413,6 +412,7 @@ class MDDialog(BaseDialog):
 
 
         Example().run()
+
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-confirmation.png
         :align: center

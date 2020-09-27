@@ -11,6 +11,7 @@ Includes date, time and color picker
 - MDThemePicker_
 
 .. MDTimePicker:
+
 MDTimePicker
 ------------
 
@@ -86,10 +87,12 @@ Use the :attr:`~MDTimePicker.set_time` method of the
         time_dialog.set_time(previous_time)
         time_dialog.open()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/previous-time.png
     :align: center
 
 .. MDDatePicker:
+
 MDDatePicker
 ------------
 
@@ -124,6 +127,7 @@ Open date dialog with the specified date
         )
         date_dialog.open()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/previous-date.png
     :align: center
 
@@ -146,6 +150,7 @@ that are not included in this range will have the status `disabled`.
     :align: center
 
 .. MDThemePicker:
+
 MDThemePicker
 -------------
 
@@ -155,8 +160,10 @@ MDThemePicker
         theme_dialog = MDThemePicker()
         theme_dialog.open()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDThemePicker.gif
     :align: center
+
 """
 
 __all__ = ("MDTimePicker", "MDDatePicker", "MDThemePicker")

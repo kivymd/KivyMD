@@ -51,8 +51,9 @@ class FpsMonitoring:
     """Adds a monitor to display the current FPS in the toolbar."""
 
     def fps_monitor_start(self):
-        from kivymd.utils.fpsmonitor import FpsMonitor
         from kivy.core.window import Window
+
+        from kivymd.utils.fpsmonitor import FpsMonitor
 
         monitor = FpsMonitor()
         monitor.start()

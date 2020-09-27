@@ -1,6 +1,6 @@
 """
 Components/Label
-================
+=================
 
 .. rubric:: The :class:`MDLabel` widget is for rendering text.
 
@@ -11,8 +11,9 @@ Components/Label
 - MDIcon_
 
 .. MDLabel:
+
 MDLabel
--------
+--------
 
 Class :class:`MDLabel` inherited from the :class:`~kivy.uix.label.Label` class
 but for :class:`MDLabel` the ``text_size`` parameter is ``(self.width, None)``
@@ -58,11 +59,12 @@ and default is positioned on the left:
             text: "MDLabel"
             halign: "center"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-to-center.png
     :align: center
 
 :class:`~MDLabel` color:
-------------------------
+-------------------------
 
 :class:`~MDLabel` provides standard color themes for label color management:
 
@@ -108,6 +110,7 @@ and default is positioned on the left:
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-theme-text-color.png
     :align: center
 
@@ -122,6 +125,7 @@ in the ``text_color`` parameter:
         halign: "center"
         theme_text_color: "Custom"
         text_color: 0, 0, 1, 1
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-custom-color.png
     :align: center
@@ -172,10 +176,12 @@ parameter:
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-font-style.gif
     :align: center
 
 .. MDIcon:
+
 MDIcon
 -------
 
@@ -184,9 +190,9 @@ You can use labels to display material design icons using the
 
 .. seealso::
 
-    `Material Design Icons <https://materialdesignicons.com/>`_
+    `Material Design Icons <https://materialdesignicons.com/>`
 
-    `Material Design Icon Names <https://github.com/kivymd/KivyMD/blob/master/kivymd/icon_definitions.py>`_
+    `Material Design Icon Names <https://github.com/kivymd/KivyMD/blob/master/kivymd/icon_definitions.py>`
 
 The :class:`~MDIcon` class is inherited from
 :class:`~MDLabel` and has the same parameters.
@@ -202,6 +208,7 @@ The :class:`~MDIcon` class is inherited from
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon.png
     :align: center
+
 """
 
 __all__ = ("MDLabel", "MDIcon")
@@ -294,6 +301,7 @@ class MDLabel(ThemableBehavior, Label):
 
     :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
+
     """
 
     text_color = ListProperty(None, allownone=True)
@@ -301,6 +309,7 @@ class MDLabel(ThemableBehavior, Label):
 
     :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `None`.
+
     """
 
     parent_background = ListProperty(None, allownone=True)
@@ -313,6 +322,7 @@ class MDLabel(ThemableBehavior, Label):
     """
     allows the widget to apply it's boundingbox to resize and
     not only it's texture size.
+
     """
 
     def __init__(self, **kwargs):
@@ -332,6 +342,7 @@ class MDLabel(ThemableBehavior, Label):
         This funciton's purpose is to add the ability to call new funcitons that
         rely in the configuraion betweem KVLang and python code instances to all
         subclassess of MDLabel.
+
         """
         if self.static_size is None:
             # This will make execute all resizing rules
@@ -444,9 +455,10 @@ class MDIcon(MDLabel):
     in `text`, the `text` property will be overrode by the `icon` property
 
     .. note:: size_hint!
-    Note that the MDIcon has a deffault size_hint of `(None,None)` and
-    the size will always be `[font_size, font_size]` This allows a better
-    representation on screen.
+        Note that the MDIcon has a deffault size_hint of `(None,None)` and
+        the size will always be `[font_size, font_size]` This allows a better
+        representation on screen.
+
     """
 
     icon = StringProperty(None)
@@ -455,6 +467,7 @@ class MDIcon(MDLabel):
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
+
     """
 
     source = StringProperty(None, allownone=True)
@@ -463,7 +476,9 @@ class MDIcon(MDLabel):
 
     :attr:`source` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
+
     """
+
     _has_texture = BooleanProperty()
 
     ev = ObjectProperty(None, allownone=True)

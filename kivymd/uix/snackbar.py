@@ -13,7 +13,7 @@ Components/Snackbar
     :align: center
 
 Usage
------
+------
 
 .. code-block:: python
 
@@ -45,7 +45,7 @@ Usage
     :align: center
 
 Usage with padding
-------------------
+-------------------
 
 .. code-block:: python
 
@@ -55,7 +55,7 @@ Usage with padding
     :align: center
 
 Custom text color
------------------
+------------------
 
 .. code-block:: python
 
@@ -65,7 +65,7 @@ Custom text color
     :align: center
 
 Control width
--------------
+--------------
 
 .. code-block:: python
 
@@ -75,7 +75,7 @@ Control width
     :align: center
 
 Usage with button
------------------
+------------------
 
 .. code-block:: python
 
@@ -96,11 +96,12 @@ Usage with button
     ]
     snackbar.open()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-button.png
     :align: center
 
 Using a button with custom color
--------------------------------
+---------------------------------
 
 .. code-block:: python
 
@@ -113,7 +114,7 @@ Using a button with custom color
     :align: center
 
 Custom usage
-------------
+-------------
 
 .. code-block:: python
 
@@ -172,7 +173,7 @@ Custom usage
     :align: center
 
 Custom Snackbar
----------------
+----------------
 
 .. code-block:: python
 
@@ -313,10 +314,15 @@ Builder.load_string(
 class Snackbar(MDBoxLayout):
     """
     :Events:
+
         :attr:`on_open`
+
             Called when a dialog is opened.
+
         :attr:`on_dismiss`
+
             When the front layer rises.
+
     """
 
     text = StringProperty()

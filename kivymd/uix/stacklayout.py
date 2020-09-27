@@ -1,12 +1,12 @@
 """
 Components/StackLayout
-======================
+=======================
 
 :class:`~kivy.uix.stacklayout.StackLayout` class equivalent. Simplifies working
 with some widget properties. For example:
 
 StackLayout
------------
+------------
 
 .. code-block::
 
@@ -22,7 +22,7 @@ StackLayout
                 size: self.size
 
 MDStackLayout
--------------
+--------------
 
 .. code-block::
 
@@ -31,15 +31,16 @@ MDStackLayout
         md_bg_color: app.theme_cls.primary_color
 
 Available options are:
----------------------
+-----------------------
 
 - adaptive_height_
 - adaptive_width_
 - adaptive_size_
 
 .. adaptive_height:
+
 adaptive_height
----------------
+----------------
 
 .. code-block:: kv
 
@@ -53,8 +54,9 @@ Equivalent
     height: self.minimum_height
 
 .. adaptive_width:
+
 adaptive_width
---------------
+---------------
 
 .. code-block:: kv
 
@@ -68,8 +70,9 @@ Equivalent
     height: self.minimum_width
 
 .. adaptive_size:
+
 adaptive_size
--------------
+--------------
 
 .. code-block:: kv
 

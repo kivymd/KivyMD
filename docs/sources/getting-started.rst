@@ -33,7 +33,7 @@ use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
 First KivyMD application
-------------------------
+-------------------------
 
 .. code-block:: python
 

@@ -69,7 +69,7 @@ based on the above classes.
 - ThreeLineAvatarIconListItem_
 
 Usage
------
+------
 
 .. code-block:: python
 
@@ -98,11 +98,12 @@ Usage
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/lists.gif
     :align: center
 
 Events of List
---------------
+----------------
 
 .. code-block:: python
 
@@ -136,21 +137,25 @@ Events of List
 
     MainApp().run()
 
+
 .. OneLineListItem:
+
 OneLineListItem
----------------
+----------------
 
 .. code-block:: kv
 
     OneLineListItem:
         text: "Single-line item"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/OneLineListItem.png
     :align: center
 
 .. TwoLineListItem:
+
 TwoLineListItem
----------------
+----------------
 
 .. code-block:: kv
 
@@ -158,12 +163,14 @@ TwoLineListItem
         text: "Two-line item"
         secondary_text: "Secondary text here"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/TwoLineListItem.png
     :align: center
 
 .. ThreeLineListItem:
+
 ThreeLineListItem
------------------
+------------------
 
 .. code-block:: kv
 
@@ -172,12 +179,14 @@ ThreeLineListItem
         secondary_text: "This is a multi-line label where you can"
         tertiary_text: "fit more text than usual"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ThreeLineListItem.png
     :align: center
 
 .. OneLineAvatarListItem:
+
 OneLineAvatarListItem
----------------------
+----------------------
 
 .. code-block:: kv
 
@@ -187,12 +196,14 @@ OneLineAvatarListItem
         ImageLeftWidget:
             source: "data/logo/kivy-icon-256.png"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/lists-map.png
     :align: center
 
 .. TwoLineAvatarListItem:
+
 TwoLineAvatarListItem
----------------------
+----------------------
 
 .. code-block:: kv
 
@@ -203,13 +214,15 @@ TwoLineAvatarListItem
         ImageLeftWidget:
             source: "data/logo/kivy-icon-256.png"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/TwoLineAvatarListItem.png
     :align: center
 
 
 .. ThreeLineAvatarListItem:
+
 ThreeLineAvatarListItem
------------------------
+------------------------
 
 .. code-block:: kv
 
@@ -221,12 +234,14 @@ ThreeLineAvatarListItem
         ImageLeftWidget:
             source: "data/logo/kivy-icon-256.png"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ThreeLineAvatarListItem.png
     :align: center
 
 .. OneLineIconListItem:
+
 OneLineIconListItem
--------------------
+--------------------
 
 .. code-block:: kv
 
@@ -236,12 +251,14 @@ OneLineIconListItem
         IconLeftWidget:
             icon: "language-python"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/OneLineIconListItem.png
     :align: center
 
 .. TwoLineIconListItem:
+
 TwoLineIconListItem
--------------------
+--------------------
 
 .. code-block:: kv
 
@@ -252,12 +269,14 @@ TwoLineIconListItem
         IconLeftWidget:
             icon: "language-python"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/TwoLineIconListItem.png
     :align: center
 
 .. ThreeLineIconListItem:
+
 ThreeLineIconListItem
----------------------
+----------------------
 
 .. code-block:: kv
 
@@ -269,12 +288,14 @@ ThreeLineIconListItem
         IconLeftWidget:
             icon: "language-python"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ThreeLineIconListItem.png
     :align: center
 
 .. OneLineAvatarIconListItem:
+
 OneLineAvatarIconListItem
--------------------------
+--------------------------
 
 .. code-block:: kv
 
@@ -287,12 +308,14 @@ OneLineAvatarIconListItem
         IconRightWidget:
             icon: "minus"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/OneLineAvatarIconListItem.png
     :align: center
 
 .. TwoLineAvatarIconListItem:
+
 TwoLineAvatarIconListItem
--------------------------
+--------------------------
 
 .. code-block:: kv
 
@@ -306,12 +329,14 @@ TwoLineAvatarIconListItem
         IconRightWidget:
             icon: "minus"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/TwoLineAvatarIconListItem.png
     :align: center
 
 .. ThreeLineAvatarIconListItem:
+
 ThreeLineAvatarIconListItem
----------------------------
+----------------------------
 
 .. code-block:: kv
 
@@ -326,11 +351,12 @@ ThreeLineAvatarIconListItem
         IconRightWidget:
             icon: "minus"
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ThreeLineAvatarIconListItem.png
     :align: center
 
 Custom list item
-----------------
+-----------------
 
 .. code-block:: python
 
@@ -385,6 +411,7 @@ Custom list item
 
     MainApp().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/custom-list-item.png
     :align: center
 
@@ -427,6 +454,7 @@ Custom list item
 
 
     MainApp().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/custom-list-right-container.png
     :align: center

@@ -1,6 +1,6 @@
 """
 KivyMD
-======
+=======
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png
 
@@ -26,6 +26,8 @@ developer (permission to create branches on the project without forking for
 easier collaboration), have at least one PR approved and ask for it.
 If you contribute regularly to the project the role may be offered to you
 without asking too.
+
+:noindex:
 """
 
 import os
@@ -38,7 +40,7 @@ __version__ = "0.104.2.dev0"
 release = False
 
 try:
-    from kivymd._version import __hash__, __short_hash__, __date__
+    from kivymd._version import __date__, __hash__, __short_hash__
 except ImportError:
     __hash__ = __short_hash__ = __date__ = ""
 

@@ -1,14 +1,14 @@
 """
 Components/GridLayout
-====================
+======================
 
 :class:`~kivy.uix.gridlayout.GridLayout` class equivalent. Simplifies working
 with some widget properties. For example:
 
 GridLayout
----------
+-----------
 
-.. code-block::
+.. code-block:: kv
 
     GridLayout:
         size_hint_y: None
@@ -22,24 +22,26 @@ GridLayout
                 size: self.size
 
 MDGridLayout
------------
+-------------
 
-.. code-block::
+.. code-block:: kv
 
     MDGridLayout:
         adaptive_height: True
         md_bg_color: app.theme_cls.primary_color
 
+
 Available options are:
----------------------
+-----------------------
 
 - adaptive_height_
 - adaptive_width_
 - adaptive_size_
 
 .. adaptive_height:
+
 adaptive_height
----------------
+----------------
 
 .. code-block:: kv
 
@@ -53,8 +55,9 @@ Equivalent
     height: self.minimum_height
 
 .. adaptive_width:
+
 adaptive_width
---------------
+---------------
 
 .. code-block:: kv
 
@@ -67,13 +70,16 @@ Equivalent
     size_hint_x: None
     height: self.minimum_width
 
+
 .. adaptive_size:
+
 adaptive_size
--------------
+--------------
 
 .. code-block:: kv
 
     adaptive_size: True
+
 
 Equivalent
 
@@ -81,6 +87,8 @@ Equivalent
 
     size_hint: None, None
     size: self.minimum_size
+
+
 """
 
 from kivy.uix.gridlayout import GridLayout

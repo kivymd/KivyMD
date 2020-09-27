@@ -1,6 +1,80 @@
 <KitchenSinkStackButtons>
     name: 'stack buttons'
 
+    MDGridLayout:
+        cols:2
+        height:self.parent.height - toolbar.height
+        Widget:
+            size_hint:None,None
+            height:toolbar.height+dp(24)
+        Widget:
+            size_hint:None,None
+            height:toolbar.height+dp(24)
+        AnchorLayout:
+            anchor_y:"top"
+            size_hint_x:None
+            MDFloatingActionButton:
+                action_mode: "regular"
+                theme_button_color:"Primary"
+                icon:"home"
+                theme_icon_color:"White"
+                on_release:
+                    print(f"theme_icon_color = {self.theme_icon_color}")
+                    print(f"_current_theme_icon_color = {self._current_theme_icon_color}")
+                    print(f"_current_icon_color = {self._current_icon_color}")
+        BoxLayout:
+            orientation:'vertical'
+            MDLabel:
+                font_style:"H5"
+                text: "MDFloatingActionButton regular"
+                size_hint_y:None
+                height:self.texture_size[1]
+            MDLabel:
+                font_style: "Body1"
+                text: "This Icon button has the property action mode set to 'regular' this mens that the icon internal padding will be set to 32dp, thus making the button smaller"
+                valign:"top"
+                text_size:self.size
+
+        AnchorLayout:
+            anchor_y:"top"
+            size_hint_x:None
+            MDFloatingActionButton:
+                action_mode: "mini"
+                theme_button_color:"Error"
+                icon_color:1,1,1,1
+                icon:"home"
+        BoxLayout:
+            orientation:'vertical'
+            MDLabel:
+                font_style:"H5"
+                text: "MDFloatingActionButton mini"
+                size_hint_y:None
+                height:self.texture_size[1]
+            MDLabel:
+                font_style: "Body1"
+                text: "This Icon button has the property action mode set to 'mini' this mens that the icon internal padding will be set to 16dp, thus making the button smaller"
+                valign:"top"
+                text_size:self.size
+
+        AnchorLayout:
+            anchor_y:"top"
+            size_hint_x:None
+            MDFloatingActionButton:
+                action_mode: "micro"
+                #
+                icon:"home"
+        BoxLayout:
+            orientation:'vertical'
+            MDLabel:
+                font_style:"H5"
+                text: "MDFloatingActionButton micro"
+                size_hint_y:None
+                height:self.texture_size[1]
+            MDLabel:
+                font_style: "Body1"
+                text: "This Icon button has the property action mode set to 'micro' this mens that the icon internal padding will be set to 8dp, thus making the button smaller"
+                valign:"top"
+                text_size:self.size
     Toolbar:
         id: toolbar
         pos_hint: {"top": 1}

@@ -1,6 +1,6 @@
 """
 Behaviors/Focus
-===============
+================
 
 .. rubric:: Changing the background color when the mouse is on the widget.
 
@@ -8,7 +8,7 @@ To apply focus behavior, you must create a new class that is inherited from the
 widget to which you apply the behavior and from the :class:`FocusBehavior` class.
 
 Usage
------
+------
 
 .. code-block:: python
 
@@ -47,10 +47,12 @@ Usage
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/focus-widget.gif
     :align: center
 
 Color change at focus/defocus
+
 
 .. code-block:: kv
 
@@ -58,8 +60,10 @@ Color change at focus/defocus
         focus_color: 1, 0, 1, 1
         unfocus_color: 0, 0, 1, 1
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/focus-defocus-color.gif
     :align: center
+
 """
 
 __all__ = ("FocusBehavior",)
@@ -79,6 +83,7 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
 
     :attr:`focus_behavior` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
+
     """
 
     focus_color = ListProperty()
@@ -87,6 +92,7 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
 
     :attr:`focus_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     unfocus_color = ListProperty()
@@ -95,10 +101,14 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
 
     :attr:`unfocus_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
     """
 
     def on_enter(self):
-        """Called when mouse enter the bbox of the widget."""
+        """
+        Called when mouse enter the bbox of the widget.
+
+        """
 
         if hasattr(self, "md_bg_color") and self.focus_behavior:
             if hasattr(self, "theme_cls") and not self.focus_color:
@@ -110,7 +120,10 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
                     self.md_bg_color = self.focus_color
 
     def on_leave(self):
-        """Called when the mouse exit the widget."""
+        """
+        Called when the mouse exit the widget.
+
+        """
 
         if hasattr(self, "md_bg_color") and self.focus_behavior:
             if hasattr(self, "theme_cls") and not self.unfocus_color:

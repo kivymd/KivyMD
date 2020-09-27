@@ -1,6 +1,6 @@
 """
 Components/Expansion Panel
-==========================
+===========================
 
 .. seealso::
 
@@ -12,7 +12,7 @@ Components/Expansion Panel
     :align: center
 
 Usage
------
+------
 
 .. code-block:: python
 
@@ -51,8 +51,9 @@ These classes are inherited from the following classes:
         )
     )
 
+
 Example
--------
+--------
 
 .. code-block:: python
 
@@ -109,11 +110,12 @@ Example
 
     Test().run()
 
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/expansion-panel.gif
     :align: center
 
 Two events are available for :class:`~MDExpansionPanel`
-------------------------------------------------------
+---------------------------------------------------------
 
 - :attr:`~MDExpansionPanel.on_open`
 - :attr:`~MDExpansionPanel.on_close`
@@ -124,6 +126,7 @@ Two events are available for :class:`~MDExpansionPanel`
             on_open: app.on_panel_open(args)
             on_close: app.on_panel_close(args)
 
+
 The user function takes one argument - the object of the panel:
 
 .. code-block:: python
@@ -131,9 +134,11 @@ The user function takes one argument - the object of the panel:
     def on_panel_open(self, instance_panel):
         print(instance_panel)
 
-.. seealso:: `See Expansion panel example <https://github.com/kivymd/KivyMD/wiki/Components-Expansion-Panel>`_
 
-    `Expansion panel and MDCard <https://github.com/kivymd/KivyMD/wiki/Components-Expansion-Panel-and-MDCard>`_
+.. seealso:: `See Expansion panel example <https://github.com/kivymd/KivyMD/wiki/Components-Expansion-Panel>`
+
+    `Expansion panel and MDCard <https://github.com/kivymd/KivyMD/wiki/Components-Expansion-Panel-and-MDCard>`
+
 """
 
 __all__ = (
@@ -205,21 +210,27 @@ class MDExpansionPanelThreeLine(ThreeLineAvatarIconListItem):
 class MDExpansionPanel(RelativeLayout):
     """
     :Events:
+
         :attr:`on_open`
+
             Called when a panel is opened.
+
         :attr:`on_close`
+
             Called when a panel is closed.
     """
 
     content = ObjectProperty()
-    """Content of panel. Must be `Kivy` widget.
+    """
+    Content of panel. Must be `Kivy` widget.
 
     :attr:`content` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 
     icon = StringProperty()
-    """Icon of panel.
+    """
+    Icon of panel.
 
     Icon Should be either be a path to an image or
     a logo name in :class:`~kivymd.icon_definitions.md_icons`
@@ -246,7 +257,8 @@ class MDExpansionPanel(RelativeLayout):
     """
 
     closing_transition = StringProperty("out_sine")
-    """The name of the animation transition type to use when animating to
+    """
+    The name of the animation transition type to use when animating to
     the :attr:`state` 'close'.
 
     :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
@@ -317,10 +329,14 @@ class MDExpansionPanel(RelativeLayout):
             )
 
     def on_open(self, *args):
-        """Called when a panel is opened."""
+        """
+        Called when a panel is opened.
+        """
 
     def on_close(self, *args):
-        """Called when a panel is closed."""
+        """
+        Called when a panel is closed.
+        """
 
     def check_open_panel(self, instance):
         """

@@ -3493,7 +3493,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self.register_event_type("on_open")
         self.register_event_type("on_close")
         Window.bind(on_resize=self._update_pos_buttons)
-        Clock.schedule_once(self._update_pos_buttons,0)
+        Clock.schedule_once(self._update_pos_buttons, 0)
 
     def on_open(self, *args):
         """Called when a stack is opened."""

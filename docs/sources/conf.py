@@ -23,10 +23,10 @@ release = kivymd.__version__
 # General configuration
 master_doc = "index"
 exclude_patterns = [
-"unincluded/kivymd/*",
-"unincluded/test_app/*",
-"unincluded/test_font_definitions/*",
-"unincluded/test_icon_definitions/*",
+    "unincluded/kivymd/*",
+    "unincluded/test_app/*",
+    "unincluded/test_font_definitions/*",
+    "unincluded/test_icon_definitions/*",
 ]
 templates_path = ["_templates"]
 locale_dirs = ["_locales"]

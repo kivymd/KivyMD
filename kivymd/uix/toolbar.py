@@ -322,12 +322,15 @@ Builder.load_string(
                 if root.type == "bottom" else (0, 0)
             angle_start: root._angle_start
             angle_end: root._angle_end
-
+    # AnchorLayout:
+    #     anchor_x: "left"
+    #     anchor_y: "center"
+    #     -size_hint_x:None
     BoxLayout:
         id: left_actions
         orientation: 'horizontal'
         size_hint_x: None
-        padding: [0, (self.height - dp(48))/2]
+        padding: [0, (self.size-dp(56))/2]
 
     BoxLayout:
         padding: dp(12), 0
@@ -560,8 +563,10 @@ class MDToolbar(
                     opposite_colors=True,
                     text_color=self.specific_text_color,
                     theme_text_color="Custom",
+                    font_size="24sp",
                 )
             )
+
         action_bar.width = new_width
 
     def update_action_bar_text_colors(self, instance, value):

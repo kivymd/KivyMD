@@ -684,12 +684,18 @@ Builder.load_string(
     size_hint: (None, None)
     anchor_x: 'center'
     anchor_y: 'center'
+    # # ######################################################################
+    # # Canvas Test Zone, DO NOT REMOVE
+    # # UNCOMMENT TO SEE THE BUTTON REAL SIZE
+    # # DEVELOPMENT PURPOSES ONLY!!!
+    # # ######################################################################
     # canvas.before:
     #     Color:
-    #         rgba:1,1,1,1
+    #         rgba:.831,.71,.851,1
     #     Rectangle:
     #         pos:self.pos
     #         size:self.size
+    # # ######################################################################
 """,
     filename="MDBaseButton.kv",
 )
@@ -2298,6 +2304,11 @@ Builder.load_string(
         width: self.minimum_width
         id: container
         spacing: root.spacing
+        # # ######################################################################
+        # # Canvas Test Zone, DO NOT REMOVE
+        # # UNCOMMENT TO SEE THE CONTAINER REAL SIZE
+        # # DEVELOPMENT PURPOSES ONLY!!!
+        # # ######################################################################
         # canvas.before:
         #     Color:
         #         rgb:[0.545, 0.780, 0]
@@ -2320,6 +2331,7 @@ Builder.load_string(
         #     Rectangle:
         #         pos:self.right,self.top
         #         size:-5,-5
+        # # ######################################################################
         on_children:
             root.Update_Container_size()
     """,
@@ -2400,7 +2412,7 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                     height=self._current_font_size,
                 )
                 # ################################################################
-                # # TODO REMOVE THIS TEST
+                # # TODO DO NOT REMOVE THIS TEST
                 # ################################################################
                 # with self.lbl_txt.canvas.before:
                 #     Color(0, 0.780, 0.564, 1)
@@ -2460,13 +2472,12 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
             self.lbl_txt.text_size = [None, self._current_font_size]
             if self._has_icon is True:
                 self.lbl_txt.height = self.container.height
-        pass
         if hasattr(self, "icon_position"):
             if self.icon_position == "icon_only":
                 self.size = [
                     self._current_font_size + self._internal_padding,
-                    self._current_font_size + self._internal_padding,
-                ]
+                    # self._current_font_size + self._internal_padding,
+                ] * 2
                 return
         else:
             self.container.width = self.container.minimum_width
@@ -2529,7 +2540,7 @@ class icon_behavior(BaseRectangularButton):
         self.on_icon(self, self.icon)
         self.on_icon_position(self, self.icon_position)
         self.on_theme_icon_color(self, self.theme_icon_color)
-        self.Update_Container_size()
+        Clock.schedule_once(self.Update_Container_size, -1)
 
     def on_theme_icon_color(self, instance, value):
         super().on_theme_icon_color(instance, value)
@@ -2602,9 +2613,9 @@ class icon_behavior(BaseRectangularButton):
                     disabled=self.disabled,
                     static_size=False,
                 )
-                # ################################################################
-                # # TODO REMOVE THIS TEST
-                # ################################################################
+                # # ################################################################
+                # # # TODO DO NOT REMOVE THIS TEST
+                # # ################################################################
                 # with self.__icon.canvas.before:
                 #     Color(0, 0.780, 0.564, 1)
                 #     # cl=Color(0, 0.780, 0.564,.5)
@@ -2612,7 +2623,7 @@ class icon_behavior(BaseRectangularButton):
                 #     # binding block, unbind when it's not necesary !!!
                 #     self.__icon.bind(pos=lambda x, y: setattr(rt, "pos", y))
                 #     self.__icon.bind(size=lambda x, y: setattr(rt, "size", y))
-                # ################################################################
+                # # ################################################################
                 self.bind(
                     opposite_colors=lambda x, y: setattr(
                         self.__icon, "opposite_colors", y
@@ -2666,6 +2677,7 @@ class icon_behavior(BaseRectangularButton):
             return getattr(self.__icon, prop)
 
     def Update_Container_size(self, *dt):
+        super().Update_Container_size(*dt)
         self.on__current_font_size(self, self._current_font_size)
         if self.__icon and self._has_icon:
             if self.__icon.static_size is not True:
@@ -2673,7 +2685,8 @@ class icon_behavior(BaseRectangularButton):
             else:
                 self.__icon.size = self.__icon.size
 
-        super().Update_Container_size(*dt)
+    def on_release(self, *dt):
+        self.Update_Container_size()
 
     def on_icon_rotation(self, instance, degree):
         if self.__icon and self._has_icon is True:
@@ -3493,7 +3506,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self.register_event_type("on_open")
         self.register_event_type("on_close")
         Window.bind(on_resize=self._update_pos_buttons)
-        Clock.schedule_once(self._update_pos_buttons,0)
+        Clock.schedule_once(self._update_pos_buttons, 0)
 
     def on_open(self, *args):
         """Called when a stack is opened."""

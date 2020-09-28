@@ -8,7 +8,26 @@ works with the inherited properties of the button class.
 it will also require to excecute the button's __after_init__ function.
 since it's the base for the property management.
 
+the proper order of excecution is
+
+1. Buttonclas
+2. MDToggleButton
+
+.. warning:: if you place the MDToggleButton before the button class it Will
+    throw an error, since it makes a verification inside the `__init__`
+    function to ensure the correct order and avoid any behavior bug.
+
+.. warning:: Do not use with `kivy.uix.button`
+    The MDToggleButton is not compatible with the normal kivy button.
+
 example:
+
+.. code-block:: kv
+
+    <MyToggleButtonWidget@MDFlatButton+MDToggleButton>:
+
+.. note:: remmeber to use `+` inside kv to allow classes to be merged while
+    creating a new instance.
 
 .. code-block:: python
 
@@ -16,6 +35,11 @@ example:
         # [...]
         pass
 
+
+The nex example shows the behavior applied to a simple app.
+remember that the MDToggleButton class is a plugin that enhances the kivymd
+buttons lib. it wont work with anything that is not an instance of
+`kivymd.uix.button.basebutton`
 
 .. code-block:: python
 
@@ -401,8 +425,6 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
 
     def __after_init__(self, *dt):
         # execute button __after_init__
-        Logger.debug("I exists!!!")
-        Logger.debug(f"self.type = {self.__class__}!!!\n\n")
         # text color state
         if self._has_text is True:
             if self.text is not None and self.text_normal is None:
@@ -473,7 +495,6 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
                 self.theme_background_down = "Accent"
         #
         super().__after_init__(*dt)
-        self.memview()
         self.bind(
             state=self.update_state,
             #
@@ -500,7 +521,14 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
         self.update_state(skip=True)
         self.toggle_theme()
 
-    def memview(self, *dt):
+    def MemView(self, *dt):
+        """
+        This is an inspection tool,
+        it will help developers to know the status of the properties in memory,
+        thus making it easier to find bugs and having design errors.
+
+        this is an optional tool, it doesn't alter the way it works the button.
+        """
         Logger.debug(
             "__after_init__:\n"
             f"{self.__class__}\n"
@@ -515,20 +543,21 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
             f"\t text_normal = {self.text_normal} \n"
             f"\t text_down = {self.text_down} \n"
             "\n"
-            "\nCOLORS - BACKGROUND \n"
+            "\nBACKGROUND - COLORS \n"
             f"\t background_normal = {self.background_normal} \n"
             f"\t background_down = {self.background_down} \n"
-            "\nTHEMING - BACKGROUND \n"
+            "\nBACKGROUND - THEMING \n"
             f"\t theme_background_normal = {self.theme_background_normal} \n"
             f"\t theme_background_down = {self.theme_background_down} \n"
-            "\nTHEMING - TEXT \n"
+            "\nTEXT - THEMING \n"
             f"\t theme_text_color_normal = {self.theme_text_color_normal} \n"
             f"\t theme_text_color_down = {self.theme_text_color_down} \n"
+            "\n"
             "COMMON BUTTON SETTINGS \n"
             f"\t _md_bg_color = {self.md_bg_color} \n"
             f"\t text_color = {self.text_color} \n"
             f"\t icon_color = {self.icon_color} \n"
-            "\nTHEMES \n"
+            "\n GENERAL THEMING \n"
             f"\t theme_button_color = {self.theme_button_color} \n"
             f"\t theme_text_color = {self.theme_text_color} \n"
             f"\t theme_icon_color = {self.theme_icon_color} \n"
@@ -537,8 +566,13 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
 
     def toggle_theme(self, *dt):
         """
-        This function is in charge to update the colors and themes of the
-        displayed MDIcon.
+        This function updates all themes and colors according to the
+        configuration, provided by the properties.
+
+        .. warning:: This is a  critical function of the MDToggleButton.
+            remmeber to use super().toggle_theme() if you're going to subclass
+            MDToggleButton. to avoid any visual bug
+
         """
         if self.state == "down":
             # Background theme
@@ -586,10 +620,15 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     def on_group(self, instance, value):
         """
         This function ensures that the toggle button group updates every time a
-        button group is pressed.
+        group button is pressed.
 
         it also ensures that the icon shown inside the button is the correct
         type.
+
+        similar to checkbox in structure, but it only ensures the button Works
+        as group and updates the theme of the button while doing that.
+
+        it wont change any property given.
         """
         super().on_group(instance, value)
         self.update_state()
@@ -616,6 +655,14 @@ class MDToggleButton(BaseButton, ToggleButtonBehavior):
     common BooleanProperty and by default is set to `False` .
     it uses get_active as a getter and set_active as a setter.
     its binded to the ToggleButtonBehavior.state and it's cached.
+
+    .. note:: you can bind to `active`.
+        `active` is a kivy property that will dispatch an update event everytime
+        the value `state` changes or the property `active` is modified
+        externaly.
+
+        remember, `active` is cached so it won't dispatch an event if the value
+        assigned to it is the same that it already has.
     """
 
     def update_state(self, *dt, skip=False):

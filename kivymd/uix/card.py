@@ -552,8 +552,10 @@ from kivy.properties import (
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.utils import get_color_from_hex
 
 from kivymd import images_path
+from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
@@ -575,14 +577,10 @@ Builder.load_string(
 
 <MDCard>
     canvas:
-        Clear
-        Color:
-            rgba: self.md_bg_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
             source: root.background
-    md_bg_color: self.theme_cls.bg_light
 
 
 <MDSeparator>
@@ -661,12 +659,24 @@ class MDCard(
     and defaults to 1.
     """
 
+    _bg_color_map = (
+        get_color_from_hex(colors["Light"]["CardsDialogs"]),
+        get_color_from_hex(colors["Dark"]["CardsDialogs"]),
+        [1.0, 1.0, 1.0, 0.0],
+    )
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.theme_cls.bind(theme_style=self.update_md_bg_color)
         Clock.schedule_once(lambda x: self._on_elevation(self.elevation))
         Clock.schedule_once(
             lambda x: self._on_ripple_behavior(self.ripple_behavior)
         )
+        self.update_md_bg_color(self, self.theme_cls.theme_style)
+
+    def update_md_bg_color(self, instance, value):
+        if self.md_bg_color in self._bg_color_map:
+            self.md_bg_color = get_color_from_hex(colors[value]["CardsDialogs"])
 
     def on_radius(self, instance, value):
         if self.radius != [0, 0, 0, 0]:

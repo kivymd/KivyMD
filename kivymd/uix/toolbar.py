@@ -322,15 +322,18 @@ Builder.load_string(
                 if root.type == "bottom" else (0, 0)
             angle_start: root._angle_start
             angle_end: root._angle_end
-    # AnchorLayout:
-    #     anchor_x: "left"
-    #     anchor_y: "center"
-    #     -size_hint_x:None
-    BoxLayout:
-        id: left_actions
-        orientation: 'horizontal'
-        size_hint_x: None
-        padding: [0, (self.size-dp(56))/2]
+    AnchorLayout:
+        anchor_x: "left"
+        anchor_y: "center"
+        -size_hint_x:None
+        MDBoxLayout:
+            id: left_actions
+            orientation: 'horizontal'
+            size_hint:None,None
+            size: self.minimum_width, self.minimum_height
+            padding: 0
+            # md_bg_color: [.86,.45,.75,1] # development property, un comment to see the real size of the container
+
 
     BoxLayout:
         padding: dp(12), 0

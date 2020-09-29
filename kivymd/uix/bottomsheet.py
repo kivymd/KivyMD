@@ -466,7 +466,7 @@ class MDListBottomSheet(MDBottomSheet):
         """
         :arg text: element text;
         :arg callback: function that will be called when clicking on an item;
-        :arg icon_src: which will be used as an icon to the left of the item;
+        :arg icon: which will be used as an icon to the left of the item;
         """
 
         if icon:

@@ -1,5 +1,10 @@
-#:import get_color_from_hex kivy.utils.get_color_from_hex
-
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+<customMDFillRoundFlatIconButton@MDFillRoundFlatIconButton>:
+    selector:0
+    on_radius:
+        self.selector = (self.selector + (1 if self.radius == 1 else 0)) if self.selector <2 else 0
+    on_selector:
+        self.corner_type= ("Rounded","Bevel","Rounded")[self.selector]
 
 <Buttons@Screen>
     name: 'buttons'
@@ -14,7 +19,6 @@
         ScrollView:
             size_hint_x: None
             width: box.width
-            # pos_hint: {'center_x': .5}
             width: self.parent.width
             bar_width: 0
 
@@ -46,13 +50,15 @@
                         MDFloatingActionButton:
                             icon: 'plus'
                             opposite_colors: True
-                            elevation: 8
+                            on_release:
+                                self.MemView()
 
                         MDFloatingActionButton:
                             icon: 'check'
                             opposite_colors: True
-                            elevation: 8
                             md_bg_color: app.theme_cls.primary_color
+                            on_release:
+                                self.MemView()
 
                         MDIconButton:
                             icon: 'sd'
@@ -65,9 +71,10 @@
 
                     MDRaisedButton:
                         text: "MDRaisedButton"
-                        elevation: 8
                         opposite_colors: True
                         pos_hint: {'center_x': .5}
+                        on_release:
+                            self.MemView()
 
                     MDRectangleFlatButton:
                         text: "MDRectangleFlatButton"
@@ -90,11 +97,15 @@
                     MDFillRoundFlatButton:
                         text: "MDFillRoundFlatButton"
                         pos_hint: {'center_x': .5}
+                        on_release:
+                            self.MemView()
 
                     MDFillRoundFlatIconButton:
                         text: "MDFillRoundFlatIconButton"
                         icon: "language-python"
                         pos_hint: {'center_x': .5}
+                        on_release:
+                            self.MemView()
 
                     MDTextButton:
                         text: "MDTextButton"
@@ -242,6 +253,39 @@
                         text_color: 1, 1, 0, 1
                         md_bg_color: get_color_from_hex("#552A7D")
 
+                    #
+                    customMDFillRoundFlatIconButton:
+                        text: "Hello World!"
+                        icon: "earth"
+                        pos_hint: {'center_x': .5}
+                        text_color: 1,1,1,1
+                        theme_icon_color: "Text"
+                        icon_color:get_color_from_hex("#66cc66")
+                        md_bg_color: self.theme_cls.primary_color
+                        icon_size:"24sp"
+                        radius:"24sp"
+                        on_release:
+                            Animation.stop_all(self)
+                            theme_icon_color: "Custom"
+                            t =(
+                            Animation(
+                            md_bg_color=self.theme_cls.bg_light,
+                            icon_rotation=45,
+                            text_color=get_color_from_hex("#33ccff"),
+                            radius=sp(24),
+                            d=1.5
+                            )
+                            + Animation(
+                            icon_rotation=-45,
+                            text_color=get_color_from_hex("#9966ff"),
+                            radius=1,
+                            d=1.5
+                            )
+                            )
+                            t.repeat=True
+                            t.start(self)
+                            self.MemView()
+
                     MDBoxLayout:
                         orientation: 'vertical'
                         spacing: '10dp'
@@ -267,22 +311,22 @@
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "15sp"
+                                icon_size: "15sp"
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "20sp"
+                                icon_size: "20sp"
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "24sp"
+                                icon_size: "24sp"
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "36sp"
+                                icon_size: "36sp"
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "48sp"
-                                
+                                icon_size: "48sp"
+
                 Widget:

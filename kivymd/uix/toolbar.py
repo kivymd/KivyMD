@@ -280,6 +280,7 @@ Builder.load_string(
     canvas:
         Color:
             rgba: root.theme_cls.primary_color
+
         RoundedRectangle:
             pos:
                 self.pos \
@@ -291,6 +292,7 @@ Builder.load_string(
                 (root.action_button.width - dp(6), self.height)) if root.type == "bottom" else (0, 0)
             radius:
                 (0, root.round, 0, 0) if root.mode == "center" else (root.round, 0, 0, 0)
+
         Rectangle: # Trouble maker!!!
             pos:
                 ((self.width / 2 - root.action_button.width / 2) - dp(6), self.y - root._shift) \
@@ -300,6 +302,7 @@ Builder.load_string(
                 (root.action_button.width + dp(6) * 2, (self.height - root._shift * 2)\
                 -(4 if (root.notch is True and "Attached" in self.mode) else 0) ) \
                 if root.type == "bottom" else (0, 0)
+
         RoundedRectangle:
             pos:
                 ((self.width + root.action_button.width) / 2 + dp(6), self.y) \
@@ -310,8 +313,10 @@ Builder.load_string(
                 ((self.width - root.action_button.width * 2 - dp(6)), self.height)) \
                 if root.type == "bottom" else (0, 0)
             radius: (root.round, 0, 0, 0) if root.mode == "center" else (0, root.round, 0, 0)
+
         Color:
             rgba: 1, 1, 1, 1
+
         Ellipse:
             pos:
                 (self.center[0] - root.action_button.width / 2 - dp(6), self.center[1] - root._shift * 2) \
@@ -322,18 +327,15 @@ Builder.load_string(
                 if root.type == "bottom" else (0, 0)
             angle_start: root._angle_start
             angle_end: root._angle_end
-    AnchorLayout:
-        anchor_x: "left"
-        anchor_y: "center"
-        -size_hint_x:None
-        MDBoxLayout:
-            id: left_actions
-            orientation: 'horizontal'
-            size_hint:None,None
-            size: self.minimum_width, self.minimum_height
-            padding: 0
-            # md_bg_color: [.86,.45,.75,1] # development property, un comment to see the real size of the container
 
+    MDBoxLayout:
+        id: left_actions
+        orientation: 'horizontal'
+        size_hint:None,None
+        size: self.minimum_width, self.minimum_height
+        pos_hint:{"center_y":0.5}
+        padding: 0
+        # md_bg_color: [.86,.45,.75,1] # development property, un comment to see the real size of the container
 
     BoxLayout:
         padding: dp(12), 0
@@ -348,12 +350,19 @@ Builder.load_string(
             shorten: True
             shorten_from: 'right'
             halign: root.anchor_title
+            # canvas.before:
+            #     Color:
+            #         rgb:1,0,0
+            #     Rectangle:
+            #         pos:self.pos
+            #         size:self.size
 
-    BoxLayout:
+    MDBoxLayout:
         id: right_actions
         orientation: 'horizontal'
         size_hint_x: None
         padding: [0, (self.height - dp(48)) / 2]
+        # md_bg_color: [.46,.655,.65,1] # development property, un comment to see the real size of the container
 """
 )
 

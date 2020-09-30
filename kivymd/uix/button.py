@@ -1506,6 +1506,9 @@ class BaseButton(
             else:
                 self.font_size = sp(4)
                 self._current_font_size = sp(4)
+            if self.lbl_txt:
+                if self.lbl_txt.font_size != self._current_font_size:
+                    self.lbl_txt.font_size = self._current_font_size
 
     def MemView(self, *dt):
         Logger.debug(
@@ -1569,6 +1572,7 @@ class shaped_background_behaivor(BaseButton):
         self.bind(_is_filled=self._update_bg_color)
         self.bind(pos=self._update_shape_coords)
         self.bind(size=self._update_shape_coords)
+        self.bind(_radius=self._update_shape_coords)
         super().__after_init__(*dt)
 
     def _update_shape_coords(self, *dt):
@@ -2273,9 +2277,6 @@ class BaseFlatButton(BaseButton):
     Abstract base class for flat buttons which do not elevate from material.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
 
 class BaseRaisedButton(CommonElevationBehavior, BaseButton):
     """
@@ -2296,11 +2297,17 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 
     def __after_init__(self, *dt):
         self._is_filled = True
-        if self.elevation is None:
-            self.elevation = 10
         super().__after_init__(*dt)
 
+    def shadow_preset(self, *dt):
+        if self.elevation is None:
+            self.elevation = 8
+        super().shadow_preset(*dt)
+
     def on_elevation(self, instance, value):
+        if not 2 <= value <= 8:
+            self.elevation = 2 if value < 2 else 8
+            return
         super().on_elevation(instance, value)
         self._elevation_normal = self.elevation
         self._elevation_raised = self.elevation
@@ -2446,15 +2453,10 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
 
     def on__current_font_size(self, instance, value):
         # super().on__current_font_size(instance, value)
-        if self.lbl_txt:
+        if self.lbl_txt and self._has_text is True:
             self.lbl_txt.font_size = value
             self.lbl_txt.text_size = (None, value)
             self.lbl_txt.height = value
-
-    # def on_theme_text_color(self, instance, value):
-    #     super().on_theme_text_color(instance, value)
-    #     # if self.lbl_txt and self.opposite_colors:
-    #     #     self.lbl_txt.opposite_colors = self.opposite_colors
 
     def on__has_text(self, instance, value):
         if value is True:
@@ -2568,6 +2570,9 @@ class icon_behavior(BaseRectangularButton):
 
     def on_icon_size(self, instenca, value):
         self._current_icon_size = value
+        if self.__icon:
+            if self.__icon.font_size != self._current_icon_size:
+                self.__icon.font_size = value
 
     def on_next_icon(self, instenca, value):
         if self.__icon:
@@ -2596,7 +2601,9 @@ class icon_behavior(BaseRectangularButton):
                 )
             else:
                 self.icon_position = "left"
-                self.icon_size = "18sp"
+                self.icon_size = (
+                    "18sp" if self.icon_size is None else self.icon_size
+                )
         #
         if self.icon_size is None:
             self.icon_size = (
@@ -2606,6 +2613,7 @@ class icon_behavior(BaseRectangularButton):
         self.on__has_icon(self, self._has_icon)
         self.on_icon(self, self.icon)
         self.on_icon_position(self, self.icon_position)
+        self.on_icon_size(self, self.icon_size)
         self.on_theme_icon_color(self, self.theme_icon_color)
         Clock.schedule_once(self.Update_Container_size, -1)
 
@@ -2801,13 +2809,10 @@ class BaseRoundButton(
 
     spacing = NumericProperty(dp(4))
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # self._is_filled = True
-
     def __after_init__(self, *args):
         if self.corner_type is None:
             self.corner_type = "Rounded"
+        self.radius = (self.width + self.height) / 4
         super().__after_init__(*args)
         # self.container = self.ids.container
 
@@ -2827,20 +2832,20 @@ class BaseRoundButton(
             self.size[1] = dp(24)
 
 
-class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
+class MDIconButton(
+    BaseRoundButton,  # Controls the icon and gives base properties, ripple too
+    BaseFlatButton,  # Gives the background and outline propertyes
+    BasePressedButton,  # gives the ripple animation and others.
+):
     """
-    Button icon.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank-circle'`.
+    icon Button.
     """
 
     def __after_init__(self, *kwargs):
+        self._has_text = False
+        #
         if self._has_icon is None:
             self._has_icon = True
-        #
-        if self._has_text is None:
-            self._has_text = False
         #
         if self._has_line is None:
             self._has_line = False
@@ -2851,7 +2856,7 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
         if self.text_color is not None:
             self.icon_color = self.text_color
             self.theme_icon_color = "Custom"
-
+        #
         if self.icon_color is None:
             if self.theme_icon_color is None:
                 self.theme_icon_color = "Primary"
@@ -2861,6 +2866,8 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
         if self.icon_size is None:
             if self.font_size is not None:
                 self.icon_size = self.font_size
+            else:
+                self.icon_size = "24sp"
         super().__after_init__(*kwargs)
 
     def on_text_color(self, instance, value):
@@ -2973,8 +2980,15 @@ class MDRaisedButton(
     :class:`~BasePressedButton`
     """
 
+    def shadow_preset(self, *dt):
+        if self.elevation is None:
+            self.elevation = 8
+        super().shadow_preset(*dt)
+
     def __after_init__(self, *args):
         # self.text_color=[1]*4
+        Logger.debug(f"self = {self}")
+        self.MemView()
         if self.opposite_colors is None:
             self.opposite_colors = False
         if self.show_label is None:
@@ -2987,6 +3001,8 @@ class MDRaisedButton(
             self.theme_text_color = "White"
             self.on_theme_text_color(self, self.theme_text_color)
         super().__after_init__(*args)
+        self.MemView()
+        Logger.debug("---------- END ----------\n")
 
 
 Builder.load_string(
@@ -3046,9 +3062,15 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
             else:
                 pass
 
+    def on_elevation(self, instance, value):
+        if self.elevation != 6:
+            self.elevation = 6
+            return
+        super().on_elevation(instance, value)
+
     def shadow_preset(self, *dt):
         if self.elevation is None:
-            self.elevation = 10
+            self.elevation = 6
         super().shadow_preset(*dt)
 
 
@@ -3134,6 +3156,11 @@ class MDFillRoundFlatButton(
 
     _elevation_normal = NumericProperty(0)
 
+    def shadow_preset(self, *dt):
+        if self.elevation is None:
+            self.elevation = 8
+        super().shadow_preset(*dt)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -3141,10 +3168,12 @@ class MDFillRoundFlatButton(
         self._has_line = False
         self._is_filled = True
         self.corner_type = "Rounded"
+        if self.text_color is not None:
+            self.theme_text_color = "Custom"
         if self.theme_text_color is None:
             self.theme_text_color = "White"
             self.text_color = self._current_text_color
-        self.theme_icon_color = "Text"
+        # self.theme_icon_color = "Text"
         self.on_theme_icon_color(self, self.theme_icon_color)
         self.on_corner_type(self, self.corner_type)
         super().__after_init__(*args)
@@ -3238,6 +3267,11 @@ class BaseFloatingLabel(
     text = StringProperty()
     text_color = ListProperty()
     bg_color = ListProperty()
+
+    def shadow_preset(self, *dt):
+        if self.elevation is None:
+            self.elevation = 6
+        super().shadow_preset(*dt)
 
 
 class MDFloatingBottomButton(BaseFloatingBottomButton):

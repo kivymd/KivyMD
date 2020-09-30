@@ -298,7 +298,7 @@ Builder.load_string(
                 (self.width - root.action_button.width * 2 - dp(6), self.y - root._shift)
             size:
                 (root.action_button.width + dp(6) * 2, (self.height - root._shift * 2)\
-                -(4 if root.notch is True else 0) ) \
+                -(4 if (root.notch is True and "Attached" in self.mode) else 0) ) \
                 if root.type == "bottom" else (0, 0)
         RoundedRectangle:
             pos:

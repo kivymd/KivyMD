@@ -817,8 +817,20 @@ class BaseButton(
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     defaults to `''`.
-
     """
+
+    icon_size = NumericProperty(None)  # "24sp" deffaults
+    """
+    Icon's font size. remember to use SP to all fonts.
+    """
+
+    _current_icon_size = NumericProperty("24sp")
+    """
+    current Icon's font size. remember to use SP to all fonts.
+    this property is a static property, not intended to be modified ecternally.
+    use :attr:`icon_size` instead.
+    """
+
     icon_position = OptionProperty(None, options=["left", "right", "icon_only"])
     """
     This property defines the position of the icon.
@@ -1040,6 +1052,7 @@ class BaseButton(
         1,
         min=1,
         max=None,
+        errorvalue=1,
     )
     radius = NumericProperty(None)
 
@@ -1062,6 +1075,8 @@ class BaseButton(
         verisons, please use font_size instead.
 
     """
+    elevation = NumericProperty(None)
+    _elevation = NumericProperty(None)
 
     def on_user_font_size(self, instance, value):
         # TODO: Deprecated:remove this function and the propety as well.
@@ -1110,6 +1125,8 @@ class BaseButton(
                 self.theme_text_color = "Custom"
         if self.disabled_text_color is None:
             self.disabled_text_color = self.theme_cls.disabled_hint_text_color
+        if self.font_size is None:
+            self.font_size = "14sp"
         # Icon Configurations
         # Moved to icon_behavior.__after_init__
         # Line Configurations
@@ -1122,6 +1139,7 @@ class BaseButton(
         self.on_theme_icon_color(self, self.theme_icon_color)
         self.on_theme_line_color(self, self.theme_line_color)
         self.on_disabled(self, self.disabled)
+        # self.bind(on_release=self.MemView) # FOR DEVELOPMENT PURPOSES ONLY!!!
 
     def on_radius(self, instance, value):
         if value > self.height // 2:
@@ -1488,6 +1506,47 @@ class BaseButton(
             else:
                 self.font_size = sp(4)
                 self._current_font_size = sp(4)
+
+    def MemView(self, *dt):
+        Logger.debug(
+            "MEMVIEW: this is a development tool, do not use for anything else"
+            "\n--- Background \n"
+            f"\t _is_filled : {self._is_filled} \n"
+            f"\t md_bg_color : {self.md_bg_color} \n"
+            f"\t line_color : {self.line_color} \n"
+            f"\t corner_type : {self.corner_type} \n"
+            f"\t radius : {self.radius} \n"
+            f"\t elevation : {self.elevation} \n"
+            f"\t --- INTERNAL VALUES\n"
+            f"\t _current_line_color : {self._current_line_color} \n"
+            f"\t _radius : {self._radius} \n"
+            f"\t _current_button_color : {self._current_button_color} \n"
+            f"\t _elevation : {self._elevation} \n"
+            # f"\t  : {self.} \n"
+            "\n--- Text \n"
+            f"\t _has_text : {self._has_text} \n"
+            f"\t show_label : {self.show_label} \n"
+            f"\t text : {self.text} \n"
+            f"\t font_size : {self.font_size} \n"
+            f"\t text_color : {self.text_color} \n"
+            f"\t theme_text_color : {self.theme_text_color} \n"
+            f"\t --- INTERNAL VALUES\n"
+            f"\t _current_font_size : {self._current_font_size} \n"
+            f"\t _current_text_color : {self._current_text_color} \n"
+            f"\t _current_theme_text_color : {self._current_theme_text_color} \n"
+            "\n--- icon \n"
+            f"\t _has_icon : {self._has_icon} \n"
+            f"\t icon : {self.icon} \n"
+            f"\t icon_size : {self.icon_size} \n"
+            f"\t icon_color : {self.icon_color} \n"
+            f"\t theme_icon_color : {self.theme_icon_color} \n"
+            f"\t --- INTERNAL VALUES\n"
+            f"\t _current_icon_size : {self._current_icon_size} \n"
+            f"\t _current_icon_color : {self._current_icon_color} \n"
+            f"\t _current_theme_icon_color : {self._current_theme_icon_color} \n"
+            "\n"
+        )
+        pass
 
 
 class shaped_background_behaivor(BaseButton):
@@ -2287,17 +2346,22 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
 Builder.load_string(
     """
 <BaseRectangularButton>:
-    # lbl_txt: lbl_txt.__self__
     container: container.__self__
     # padding: (dp(8), 0)  # For MDRectangleFlatIconButton
     width: (container.width + dp((32 if self._has_line or self._is_filled else 16) if len(container.children) == 1 else (28 if self._is_filled or self._has_line else 22) ) ) if len(container.children) > 0 else dp(64)
-    height: root._internal_padding + sp(root._current_font_size)
+    height: root._internal_padding + (root._current_font_size if self.icon_position != "icon_only" else self._current_icon_size)
+    # # ######################################################################
+    # # Canvas Test Zone, DO NOT REMOVE
+    # # UNCOMMENT TO SEE THE BUTTON'S REAL SIZE
+    # # DEVELOPMENT PURPOSES ONLY!!!
+    # # ######################################################################
     # canvas.before:
     #     Color:
     #         rgb:[0.780, 0, 0.447]
     #     Rectangle:
     #         pos:self.pos
     #         size:self.size
+    # # ######################################################################
     BoxLayout:
         size_hint: None, None
         size: self.minimum_width, self.minimum_height
@@ -2372,7 +2436,6 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
             self.theme_text_color = "Custom"
         else:
             self.theme_text_color = "Primary"
-            # self.on_text_color(self,self.text_color)
         super().__after_init__(*args)
         self.container = self.ids.container
         self.container.bind(children=self.Update_Container_size)
@@ -2382,7 +2445,6 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
         self._internal_padding = value
 
     def on__current_font_size(self, instance, value):
-        pass
         # super().on__current_font_size(instance, value)
         if self.lbl_txt:
             self.lbl_txt.font_size = value
@@ -2403,24 +2465,25 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
                     theme_text_color=self._current_theme_text_color,
                     # opposite_colors=self.opposite_colors,
                     text_color=self._current_text_color,
-                    valign="middle",
+                    valign="center",
                     markup=self._current_markup,
                     disabled=self.disabled,
                     size_hint_x=None,
                     size_hint_y=None,
                     text_size=(None, self._current_font_size),
                     height=self._current_font_size,
+                    pos_hint={"center_y": 0.5},
                 )
-                # ################################################################
+                # # ################################################################
                 # # TODO DO NOT REMOVE THIS TEST
-                # ################################################################
+                # # ################################################################
                 # with self.lbl_txt.canvas.before:
                 #     Color(0, 0.780, 0.564, 1)
                 #     # cl=Color(0, 0.780, 0.564,.5)
                 #     rt = Rectangle(pos=self.lbl_txt.pos, size=self.lbl_txt.size)
                 #     self.lbl_txt.bind(pos=lambda x, y: setattr(rt, "pos", y))
                 #     self.lbl_txt.bind(size=lambda x, y: setattr(rt, "size", y))
-                # ################################################################
+                # # ################################################################
                 self.bind(
                     text=lambda x, y: setattr(self.lbl_txt, "text", y),
                     opposite_colors=lambda x, y: setattr(
@@ -2470,12 +2533,10 @@ class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
             self.lbl_txt.height = self._current_font_size
             self.lbl_txt.width = self.lbl_txt.texture_size[0]
             self.lbl_txt.text_size = [None, self._current_font_size]
-            if self._has_icon is True:
-                self.lbl_txt.height = self.container.height
         if hasattr(self, "icon_position"):
             if self.icon_position == "icon_only":
                 self.size = [
-                    self._current_font_size + self._internal_padding,
+                    self._current_icon_size + self._internal_padding,
                     # self._current_font_size + self._internal_padding,
                 ] * 2
                 return
@@ -2502,9 +2563,11 @@ class icon_behavior(BaseRectangularButton):
     __icon = ObjectProperty()
     icon_rotation = NumericProperty(0)
     __icon_mode = OptionProperty(None, options=["icon", "image", "error"])
-    _current_icon_font_size = NumericProperty(0)
     source = StringProperty(None, allownone=False)
     next_icon = ObjectProperty(None, allownone=True)
+
+    def on_icon_size(self, instenca, value):
+        self._current_icon_size = value
 
     def on_next_icon(self, instenca, value):
         if self.__icon:
@@ -2525,17 +2588,21 @@ class icon_behavior(BaseRectangularButton):
             else:
                 self.theme_icon_color = "Primary"
         #
-        if not self.icon_position:
+        if self.icon_position is None:
             if isinstance(self, (MDIconButton, MDFloatingActionButton)):
                 self.icon_position = "icon_only"
+                self.icon_size = (
+                    "24sp" if self.icon_size is None else self.icon_size
+                )
             else:
                 self.icon_position = "left"
+                self.icon_size = "18sp"
         #
-        if not self.font_size:
-            if isinstance(self, (MDIconButton, MDFloatingActionButton)):
-                self._current_font_size = sp(24)
-            else:
-                self._current_font_size = sp(14)
+        if self.icon_size is None:
+            self.icon_size = (
+                "24sp" if self.icon_position == "icon_only" else "18sp"
+            )
+        #
         self.on__has_icon(self, self._has_icon)
         self.on_icon(self, self.icon)
         self.on_icon_position(self, self.icon_position)
@@ -2547,8 +2614,6 @@ class icon_behavior(BaseRectangularButton):
 
     def on__current_theme_icon_color(self, instance, value):
         self.__icon.theme_text_color = value
-        # if self._current_theme_icon_color == "Custom":
-        #     self.__icon.text_color
 
     def on_icon(self, instance, value):
         if self._has_icon and self.container and self.__icon:
@@ -2601,11 +2666,7 @@ class icon_behavior(BaseRectangularButton):
                 self.__icon = MDIcon(
                     icon=self.icon,
                     theme_text_color=self._current_theme_icon_color,
-                    font_size=(
-                        round(self._current_font_size * 1.28)
-                        if self._has_text is True
-                        else self._current_font_size
-                    ),
+                    font_size=self._current_icon_size,
                     text_color=self._current_icon_color,
                     size_hint=[None, None],
                     halign="center",
@@ -2625,6 +2686,9 @@ class icon_behavior(BaseRectangularButton):
                 #     self.__icon.bind(size=lambda x, y: setattr(rt, "size", y))
                 # # ################################################################
                 self.bind(
+                    _current_icon_size=lambda x, y: setattr(
+                        self.__icon, "font_size", y
+                    ),
                     opposite_colors=lambda x, y: setattr(
                         self.__icon, "opposite_colors", y
                     ),
@@ -2651,6 +2715,9 @@ class icon_behavior(BaseRectangularButton):
             self._current_icon_color[-1] = 0
             if self.__icon:
                 self.unbind(
+                    _current_icon_size=lambda x, y: setattr(
+                        self.__icon, "font_size", y
+                    ),
                     opposite_colors=lambda x, y: setattr(
                         self.__icon, "opposite_colors", y
                     ),
@@ -2702,14 +2769,6 @@ class icon_behavior(BaseRectangularButton):
                 self.__icon.animate_rotation(
                     90 if self.__icon.rotation == 0 else 0
                 )
-
-    def on__current_font_size(self, instance, value):
-        super().on__current_font_size(instance, value)
-        if self.__icon and value:
-            if not isinstance(self, (MDIconButton,)):
-                self.__icon.font_size = round(1.285 * value)
-            else:
-                self.__icon.font_size = value
 
     def on_disabled(self, instance, value):
         if self.__icon is not None:
@@ -2799,11 +2858,20 @@ class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
         else:
             self.theme_icon_color = "Custom"
         #
+        if self.icon_size is None:
+            if self.font_size is not None:
+                self.icon_size = self.font_size
         super().__after_init__(*kwargs)
 
     def on_text_color(self, instance, value):
         self.icon_color = value
         self.theme_icon_color = "Custom"
+
+    def on_font_size(self, instance, value):
+        Logger.debug(
+            "on_font_size: Do not use this property with icon only buttons!\n"
+            "\t use `icon_size` instead!"
+        )
 
 
 class MDFlatButton(
@@ -2964,8 +3032,8 @@ class MDFloatingActionButton(MDIconButton, CircularElevationBehavior):
             self.theme_text_color = "Primary"
         super().__after_init__(*args)
         self.on_action_mode(self, self.action_mode)
-        if not self.font_size:
-            self._current_font_size = dp(24)
+        if self.font_size is None:
+            self.font_size = sp(14)
 
     def on_action_mode(self, instance, value):
         if value:

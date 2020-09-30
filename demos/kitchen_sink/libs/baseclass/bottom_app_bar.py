@@ -6,9 +6,11 @@ class KitchenSinkBottomAppBar(Screen):
         if value and app.data_screens["Bottom App Bar"]["object"]:
             toolbar = self.ids.bottom_toolbar
             if text == "Off":
-                toolbar.remove_notch()
+                # toolbar.remove_notch()
+                toolbar.notch = False
             elif text == "On":
-                toolbar.set_notch()
+                # toolbar.set_notch()
+                toolbar.notch = True
             elif text == "Attached - End":
                 toolbar.mode = "end"
             elif text == "Attached - Center":

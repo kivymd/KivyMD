@@ -66,7 +66,12 @@ Control width
 
 .. code-block:: python
 
-    Snackbar(text="This is a snackbar!", snackbar_x="10dp", snackbar_y="10dp", size_hint_x=.5).open()
+    Snackbar(
+        text="This is a snackbar!",
+        snackbar_x="10dp",
+        snackbar_y="10dp",
+        size_hint_x=.5
+    ).open()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-percent-width.png
     :align: center
@@ -76,7 +81,12 @@ Custom text color
 
 .. code-block:: python
 
-    Snackbar(text="[color=#ddbb34]This is a snackbar![/color]", snackbar_y="10dp", snackbar_y="10dp", size_hint_x=.7).open()
+    Snackbar(
+        text="[color=#ddbb34]This is a snackbar![/color]",
+        snackbar_y="10dp",
+        snackbar_y="10dp",
+        size_hint_x=.7
+    ).open()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-custom-color.png
     :align: center
@@ -91,7 +101,9 @@ Usage with button
         snackbar_x="10dp",
         snackbar_y="10dp",
     )
-    snackbar.size_hint_x = (Window.width - (snackbar.snackbar_x * 2)) / Window.width;
+    snackbar.size_hint_x = (
+        Window.width - (snackbar.snackbar_x * 2)
+    ) / Window.width
     snackbar.buttons = [
         MDFlatButton(
             text="UPDATE",
@@ -242,7 +254,9 @@ Custom Snackbar
                 snackbar_y="10dp",
                 buttons=[MDFlatButton(text="ACTION", text_color=(1, 1, 1, 1))]
             )
-            snackbar.size_hint_x = (Window.width - (snackbar.snackbar_x * 2)) / Window.width
+            snackbar.size_hint_x = (
+                Window.width - (snackbar.snackbar_x * 2)
+            ) / Window.width
             snackbar.open()
 
 
@@ -311,10 +325,17 @@ Builder.load_string(
 
 class BaseSnackbar(MDCard):
     """
-    Abstract base class for all Snackbars. This class handles sizing, positioning, shape and holds events for Snackbars
+    Abstract base class for all Snackbars.
+    This class handles sizing, positioning, shape and events for Snackbars
 
-    All Snackbars will be made off of this `BaseSnackbar`. `BaseSnackbar` will always try to fill the remainder of the screen with your Snackbar.
-    To make your Snackbar dynamic and symetric with snackbar_x. Set size_hint_x like below:
+    All Snackbars will be made off of this `BaseSnackbar`.
+
+    `BaseSnackbar` will always try to fill the remainder of the screen with
+    your Snackbar.
+
+    To make your Snackbar dynamic and symetric with snackbar_x.
+
+    Set size_hint_x like below:
 
     `size_hint_z = (
         Window.width - (snackbar_x * 2)

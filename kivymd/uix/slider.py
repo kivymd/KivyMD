@@ -226,6 +226,10 @@ class MDSlider(ThemableBehavior, Slider):
     :attr:`hint_radius` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `4`.
     """
+    hint_elevation = NumericProperty(None)
+
+    def on_hint_elevation(self, instance, value):
+        self.ids.hint_box.elevation = value
 
     show_off = BooleanProperty(True)
     """

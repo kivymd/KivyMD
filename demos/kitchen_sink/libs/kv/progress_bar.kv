@@ -9,14 +9,16 @@
             id: toolbar
 
         BoxLayout:
-            orientation:'vertical'
+            orientation: 'vertical'
             padding: '8dp'
 
             MDLabel:
-                text: "Slider with [b]hint = True[/b]"
+                text: "[b]Slider[/b] with [b]hint = True[/b]"
                 markup: True
                 halign: "center"
                 theme_text_color: "Primary"
+                height: self.texture_size[1]+dp(12)
+                size_hint_y: None
 
             MDSlider:
                 id: progress_slider
@@ -25,10 +27,27 @@
                 value: 40
 
             MDLabel:
-                text: "Slider with [b]hint = False[/b]"
+                text: "[b]Slider[/b] with the [b]hint_box[/b] elevated!"
                 markup: True
                 halign: "center"
                 theme_text_color: "Primary"
+                height: self.texture_size[1]+dp(12)
+                size_hint_y: None
+
+            MDSlider:
+                id: progress_slider
+                min: 0
+                max: 100
+                value: 40
+                hint_elevation: 2
+
+            MDLabel:
+                text: "[b]Slider[/b] with [b]hint = False[/b]"
+                markup: True
+                halign: "center"
+                theme_text_color: "Primary"
+                height: self.texture_size[1]+dp(12)
+                size_hint_y: None
 
             MDSlider:
                 id: progress_slider
@@ -43,19 +62,29 @@
                 halign: "center"
                 theme_text_color: "Primary"
 
-            MDProgressBar:
-                value: progress_slider.value
-
-            MDProgressBar:
-                reversed: True
-                value: progress_slider.value
 
             BoxLayout:
+                size_hint_y:2
+
                 MDProgressBar:
                     orientation: "vertical"
                     reversed: True
                     value: progress_slider.value
+                    size_hint_x:None
+                    width: dp(48)
+
+                BoxLayout:
+                    padding:dp(16)
+                    orientation: "vertical"
+                    MDProgressBar:
+                        value: progress_slider.value
+
+                    MDProgressBar:
+                        reversed: True
+                        value: progress_slider.value
 
                 MDProgressBar:
                     orientation: "vertical"
                     value: progress_slider.value
+                    size_hint_x:None
+                    width: dp(48)

@@ -594,14 +594,12 @@ Builder.load_string(
 
 <MDCard>
     canvas:
-        Clear
         Color:
             rgba: self.md_bg_color
         RoundedRectangle:
             size: self.size
             pos: self.pos
             source: root.background
-    md_bg_color: self.theme_cls.bg_light
 
 
 <MDSeparator>

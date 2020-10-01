@@ -49,7 +49,14 @@ Usage with snackbar_x, snackbar_y
 
 .. code-block:: python
 
-    Snackbar(text="This is a snackbar!", snackbar_x="10dp", snackbar_y="10dp", size_hint_x=(Window.width - (dp(10) * 2)) / Window.width).open()
+    Snackbar(
+        text="This is a snackbar!",
+        snackbar_x="10dp",
+        snackbar_y="10dp",
+        size_hint_x=(
+            Window.width - (dp(10) * 2)
+        ) / Window.width
+    ).open()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-padding.gif
     :align: center
@@ -181,11 +188,11 @@ Custom Snackbar
 
     from kivy.lang import Builder
     from kivy.core.window import Window
-    from kivy.properties import StringProperty
+    from kivy.properties import StringProperty, NumericProperty
 
     from kivymd.app import MDApp
     from kivymd.uix.button import MDFlatButton
-    from kivymd.uix.snackbar import Snackbar
+    from kivymd.uix.snackbar import BaseSnackbar
 
     KV = '''
     <CustomSnackbar>
@@ -309,7 +316,9 @@ class BaseSnackbar(MDCard):
     All Snackbars will be made off of this `BaseSnackbar`. `BaseSnackbar` will always try to fill the remainder of the screen with your Snackbar.
     To make your Snackbar dynamic and symetric with snackbar_x. Set size_hint_x like below:
 
-    `size_hint_z = (Window.width - (snackbar_x * 2)) / Window.width`
+    `size_hint_z = (
+        Window.width - (snackbar_x * 2)
+    ) / Window.width`
 
     :Events:
         :attr:`on_open`
@@ -368,7 +377,9 @@ class BaseSnackbar(MDCard):
         ],
     )
     """
-    Snackbar animation direction. Available options are: (`"Top"`, `"Bottom"`, `"Left"`, `"Right"`).
+    Snackbar animation direction.
+
+    Available options are: `"Top"`, `"Bottom"`, `"Left"`, `"Right"`
 
     :attr:`snackbar_animation_dir` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Bottom'`.

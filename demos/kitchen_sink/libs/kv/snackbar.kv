@@ -26,14 +26,19 @@
             on_release: root.show_example_snackbar('button')
 
         MDRaisedButton:
-            text: "Create snackbar with a lot of text"
+            text: "Create snackbar from the left"
             pos_hint: {'center_x': .5}
-            on_release: root.show_example_snackbar('verylong')
+            on_release: root.show_example_snackbar('left')
 
         MDRaisedButton:
-            text: "Create snackbar with padding"
+            text: "Create snackbar using snackbar_x, snackbar_y"
             pos_hint: {'center_x': .5}
-            on_release: root.show_example_snackbar('padding')
+            on_release: root.show_example_snackbar('xy')
+
+        MDRaisedButton:
+            text: "Create snackbar from the top"
+            pos_hint: {'center_x': .5}
+            on_release: root.show_example_snackbar('top')
 
         MDSeparator:
 

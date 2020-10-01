@@ -6,8 +6,7 @@
     orientation: 'vertical'
     padding: dp(10)
     spacing: dp(10)
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
 
     KitchenSinkTwoLineLeftIconItem:
         text: "(050)-123-45-67"
@@ -26,7 +25,7 @@
 
 <KitchenSinkExpansionPanel@Screen>:
     name: 'expansion panel'
-    on_enter: if len(card.children) <= 1: app.add_expansion_panel(card, box)
+    on_enter: if len(card.children) <= 1: app.add_expansion_panel(card)
 
     Toolbar:
         id: toolbar

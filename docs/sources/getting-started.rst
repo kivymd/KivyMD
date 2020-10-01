@@ -10,27 +10,27 @@ on your computer. Once you have installed `Kivy`, you can install `KivyMD`.
 Installation
 ------------
 
-You can install latest release version of `KivyMD` from `PyPI`::
+    pip install kivymd
 
-    python3 -m pip install kivymd
+Command above will install latest release version of KivyMD from `PyPI <https://pypi.org/project/kivymd>`_.
 
-If you want to install development version from master branch, you should specify git HTTPS address::
+If you want to install development version from `master <https://github.com/kivymd/KivyMD/tree/master/>`_
+branch, you should specify link to zip archive:
 
-    # Master branch:
-    python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git
-    # Specific branch:
-    python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@stable
-    # Specific tag:
-    python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@0.100.2
-    # Specific commit:
-    python3 -m pip install git+https://github.com/HeaTTheatR/KivyMD.git@f80d9c8b812d54a724db7eda30c4211d0ba764c2
+    pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
-    # If you already has installed KivyMD::
-    python3 -m pip install --force-reinstall git+https://github.com/HeaTTheatR/KivyMD.git
+**_Tip_**: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
+download KivyMD from specific commit.
 
-Also you can install manually from sources. Just clone the project and run the ``setup.py`` script::
+Also you can install manually from sources. Just clone the project and run pip::
 
-    python3 ./setup.py install
+    git clone https://github.com/kivymd/KivyMD.git --depth 1
+    cd KivyMD
+    pip install .
+
+**_Speed Tip_**: If you don't need full commit history (about 320 MiB), you can
+use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
+to save time. If you need full commit history, then remove `--depth 1`.
 
 First KivyMD application
 ------------------------

@@ -1,16 +1,16 @@
-from kivy.properties import StringProperty, ListProperty
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ListProperty, StringProperty
 
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 
 
-class ShrineItemMenu(ThemableBehavior, BoxLayout):
+class ShrineItemMenu(ThemableBehavior, MDBoxLayout):
     text = StringProperty()
     color = ListProperty([0, 0, 0, 0])
     color_text = ListProperty()
 
 
-class ShrineMenu(ThemableBehavior, BoxLayout):
+class ShrineMenu(ThemableBehavior, MDBoxLayout):
     """`Menu` for `ShrineRootScreen` screen."""
 
     def press_on_item_menu(self, instance_item):

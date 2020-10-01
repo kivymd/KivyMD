@@ -25,7 +25,7 @@ For example, let's create an image button with a circular ripple effect:
     Screen:
 
         CircularRippleButton:
-            source: f"{images_path}/kivymd_logo.png"
+            source: f"{images_path}/kivymd.png"
             size_hint: None, None
             size: "250dp", "250dp"
             pos_hint: {"center_x": .5, "center_y": .5}
@@ -88,21 +88,27 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
     :align: center
 """
 
-from kivy.properties import (
-    ListProperty,
-    NumericProperty,
-    StringProperty,
-    BooleanProperty,
+__all__ = (
+    "CommonRipple",
+    "RectangularRippleBehavior",
+    "CircularRippleBehavior",
 )
+
 from kivy.animation import Animation
 from kivy.graphics import (
     Color,
     Ellipse,
-    StencilPush,
-    StencilPop,
-    StencilUse,
-    StencilUnUse,
     Rectangle,
+    StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
+)
+from kivy.properties import (
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    StringProperty,
 )
 
 
@@ -196,6 +202,53 @@ class CommonRipple(object):
     _fading_out = BooleanProperty(False)
     _no_ripple_effect = BooleanProperty(False)
 
+    def lay_canvas_instructions(self):
+        raise NotImplementedError
+
+    def start_ripple(self):
+        if not self._doing_ripple:
+            self._doing_ripple = True
+            anim = Animation(
+                _ripple_rad=self.finish_rad,
+                t="linear",
+                duration=self.ripple_duration_in_slow,
+            )
+            anim.bind(on_complete=self.fade_out)
+
+            anim.start(self)
+
+    def finish_ripple(self):
+        if self._doing_ripple and not self._finishing_ripple:
+            self._finishing_ripple = True
+            self._doing_ripple = False
+            Animation.cancel_all(self, "_ripple_rad")
+            anim = Animation(
+                _ripple_rad=self.finish_rad,
+                t=self.ripple_func_in,
+                duration=self.ripple_duration_in_fast,
+            )
+            anim.bind(on_complete=self.fade_out)
+            anim.start(self)
+
+    def fade_out(self, *args):
+        rc = self.ripple_color
+        if not self._fading_out:
+            self._fading_out = True
+            Animation.cancel_all(self, "ripple_color")
+            anim = Animation(
+                ripple_color=[rc[0], rc[1], rc[2], 0.0],
+                t=self.ripple_func_out,
+                duration=self.ripple_duration_out,
+            )
+            anim.bind(on_complete=self.anim_complete)
+            anim.start(self)
+
+    def anim_complete(self, *args):
+        self._doing_ripple = False
+        self._finishing_ripple = False
+        self._fading_out = False
+        self.canvas.after.clear()
+
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
             return False
@@ -216,7 +269,7 @@ class CommonRipple(object):
             elif hasattr(self, "theme_cls"):
                 self.ripple_color = self.theme_cls.ripple_color
             else:
-                # If no theme, set Gray 300
+                # If no theme, set Gray 300.
                 self.ripple_color = [
                     0.8784313725490196,
                     0.8784313725490196,
@@ -224,14 +277,10 @@ class CommonRipple(object):
                     self.ripple_alpha,
                 ]
             self.ripple_color[3] = self.ripple_alpha
-
             self.lay_canvas_instructions()
             self.finish_rad = max(self.width, self.height) * self.ripple_scale
             self.start_ripple()
         return super().on_touch_down(touch)
-
-    def lay_canvas_instructions(self):
-        raise NotImplementedError
 
     def on_touch_move(self, touch, *args):
         if not self.collide_point(touch.x, touch.y):
@@ -244,17 +293,6 @@ class CommonRipple(object):
             self.finish_ripple()
         return super().on_touch_up(touch)
 
-    def start_ripple(self):
-        if not self._doing_ripple:
-            anim = Animation(
-                _ripple_rad=self.finish_rad,
-                t="linear",
-                duration=self.ripple_duration_in_slow,
-            )
-            anim.bind(on_complete=self.fade_out)
-            self._doing_ripple = True
-            anim.start(self)
-
     def _set_ellipse(self, instance, value):
         self.ellipse.size = (self._ripple_rad, self._ripple_rad)
 
@@ -262,37 +300,6 @@ class CommonRipple(object):
 
     def _set_color(self, instance, value):
         self.col_instruction.a = value[3]
-
-    def finish_ripple(self):
-        if self._doing_ripple and not self._finishing_ripple:
-            Animation.cancel_all(self, "_ripple_rad")
-            anim = Animation(
-                _ripple_rad=self.finish_rad,
-                t=self.ripple_func_in,
-                duration=self.ripple_duration_in_fast,
-            )
-            anim.bind(on_complete=self.fade_out)
-            self._finishing_ripple = True
-            anim.start(self)
-
-    def fade_out(self, *args):
-        rc = self.ripple_color
-        if not self._fading_out:
-            Animation.cancel_all(self, "ripple_color")
-            anim = Animation(
-                ripple_color=[rc[0], rc[1], rc[2], 0.0],
-                t=self.ripple_func_out,
-                duration=self.ripple_duration_out,
-            )
-            anim.bind(on_complete=self.anim_complete)
-            self._fading_out = True
-            anim.start(self)
-
-    def anim_complete(self, *args):
-        self._doing_ripple = False
-        self._finishing_ripple = False
-        self._fading_out = False
-        self.canvas.after.clear()
 
 
 class RectangularRippleBehavior(CommonRipple):

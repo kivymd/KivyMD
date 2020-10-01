@@ -1,4 +1,18 @@
-#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+<RightContentCls>
+    disabled: True
+
+    MDIconButton:
+        icon: root.icon
+        user_font_size: "16sp"
+        pos_hint: {"center_y": .5}
+        md_bg_color_disabled: 0, 0, 0, 0
+
+    MDLabel:
+        text: root.text
+        font_style: "Caption"
+        size_hint_x: None
+        width: self.texture_size[0]
+        text_size: None, None
 
 
 <KitchenSinkMenu>
@@ -10,46 +24,7 @@
         pos_hint: {"top": 1}
 
     MDRaisedButton:
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        text: 'Open menu'
-        opposite_colors: True
-        pos_hint: {'center_x': .2, 'center_y': .75}
-        on_release:
-            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
-
-    MDRaisedButton:
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        text: 'Open menu'
-        opposite_colors: True
-        pos_hint: {'center_x': .2, 'center_y': .25}
-        on_release:
-            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
-
-    MDRaisedButton:
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        text: 'Open menu'
-        opposite_colors: True
-        pos_hint: {'center_x': .8, 'center_y': .25}
-        on_release:
-            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
-
-    MDRaisedButton:
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        text: 'Open menu'
-        opposite_colors: True
-        pos_hint: {'center_x': .8, 'center_y': .75}
-        on_release:
-            MDDropdownMenu(items=root.menu_items, width_mult=3).open(self)
-
-    MDRaisedButton:
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        text: 'Open menu'
-        opposite_colors: True
-        pos_hint: {'center_x': .5, 'center_y': .5}
-        on_release:
-            MDDropdownMenu(items=root.menu_items, width_mult=4).open(self)
+        id: button
+        text: "PRESS ME"
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_release: root.menu.open()

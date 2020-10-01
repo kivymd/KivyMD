@@ -1,0 +1,89 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - data
+      - gh-pages
+    tags:
+      - '**'
+  pull_request:
+    branches-ignore:
+      - data
+      - gh-pages
+
+jobs:
+
+  # Test job. Runs pytest on Ubuntu, MacOS and Windows, uploads coverage report
+  test:
+    name: Test [${{ matrix.python-version }} | Kivy ${{ matrix.kivy-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.7]
+        architecture: [x64]
+        kivy-version: [1.11.1]
+        include:
+          - os: windows-latest
+            python-version: 3.7
+            architecture: x86
+            kivy-version: 1.11.1
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUNBUFFERED: 1
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: ${{ matrix.architecture }}
+
+    - name: Cache MacOS deps
+      uses: actions/cache@v2
+      if: startswith(matrix.os, 'macos')
+      with:
+        path: macos-cache
+        key: ${{ runner.OS }}-deps-${{ hashFiles('.ci/macos_versions.sh') }}
+
+    - name: Cache MacOS gst-devel deps
+      uses: actions/cache@v2
+      if: startswith(matrix.os, 'macos')
+      with:
+        path: macos-cache-gst-devel
+        key: gst-devel-${{ runner.OS }}-deps-gst-devel-${{ hashFiles('.ci/macos_versions.sh') }}
+
+    - name: Install dependencies for Ubuntu
+      if: startswith(matrix.os, 'ubuntu')
+      env:
+        KIVY_VERSION: ${{ matrix.kivy-version }}
+      run: .ci/ubuntu_dependencies.sh
+
+    - name: Install dependencies for MacOS
+      if: startswith(matrix.os, 'macos')
+      env:
+        KIVY_VERSION: ${{ matrix.kivy-version }}
+      run: .ci/macos_dependencies.sh
+
+    - name: Install dependencies for Windows
+      if: startswith(matrix.os, 'windows')
+      env:
+        KIVY_VERSION: ${{ matrix.kivy-version }}
+      run: .ci\windows_dependencies.ps1
+
+    - name: Install KivyMD
+      run: python -m pip install -e .
+
+    - name: Test
+      run: python -m pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
+
+    # Only from Ubuntu
+    - name: Upload coverage report
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'kivymd/KivyMD' && startswith(matrix.os, 'ubuntu')
+      continue-on-error: true
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: python -m coveralls

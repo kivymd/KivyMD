@@ -40,7 +40,6 @@ BoxLayout:
 
                 MDLabel:
                     font_style: 'Body1'
-                    theme_text_color: 'Primary'
                     text: 'Toggle to set custom panel color'
                     halign: 'center'
 
@@ -60,7 +59,6 @@ BoxLayout:
 
             MDLabel:
                 font_style: 'Body1'
-                theme_text_color: 'Primary'
                 text: 'I programming of C++'
                 halign: 'center'
 
@@ -71,7 +69,6 @@ BoxLayout:
 
             MDLabel:
                 font_style: 'Body1'
-                theme_text_color: 'Primary'
                 text: 'Oh god JS again'
                 halign: 'center'
 ''')

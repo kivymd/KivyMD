@@ -1,0 +1,22 @@
+0.104.1
+--------
+
+    See on GitHub: `tag 0.104.1 <https://github.com/kivymd/KivyMD/tree/0.104.1>`_ | `compare 0.104.0/0.104.1 <https://github.com/kivymd/KivyMD/compare/0.104.0...0.104.1>`_
+
+    .. code-block:: bash
+
+       pip install kivymd==0.104.1
+
+* Bug fixes and other minor improvements.
+* Added `MDGridLayout` and `MDBoxLayout` classes
+* Add `TouchBehavior` class
+* Add `radius` parameter to `BackgroundColorBehavior` class
+* Add `MDScreen` class
+* Add `MDFloatLayout` class
+* Added a `MDTextField` with `fill` mode
+* Added a shadow, increased speed of opening, added the feature to control the position of the `MDDropdownMenu` class
+* The `MDDropDownItem` class is now a regular element, such as a button
+* Added the ability to use the texture of the icon on the right in any `MDTextField` classes
+* Added the feature to use ripple and focus behavior in `MDCard` class
+* `MDDialogs` class redesigned to meet material design requirements
+* Added `MDDataTable` class

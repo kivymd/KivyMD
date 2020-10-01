@@ -18,7 +18,6 @@ from kivy.uix.screenmanager import ScreenManager
 
 from kivymd.theming import ThemableBehavior
 
-
 Builder.load_string(
     """
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition

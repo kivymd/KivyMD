@@ -101,6 +101,41 @@ Usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/lists.gif
     :align: center
 
+Events of List
+--------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    ScrollView:
+
+        MDList:
+
+            OneLineAvatarIconListItem:
+                on_release: print("Click!")
+
+                IconLeftWidget:
+                    icon: "github"
+
+            OneLineAvatarIconListItem:
+                on_release: print("Click 2!")
+
+                IconLeftWidget:
+                    icon: "gitlab"
+    '''
+
+
+    class MainApp(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    MainApp().run()
+
 .. OneLineListItem:
 OneLineListItem
 ---------------
@@ -369,7 +404,7 @@ Custom list item
             self.ids._right_container.x = container.width
 
         IconLeftWidget:
-            icon: "settings"
+            icon: "cog"
 
         Container:
             id: container
@@ -400,22 +435,23 @@ Custom list item
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
-    NumericProperty,
-    ListProperty,
-    OptionProperty,
     BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
+from kivymd.font_definitions import theme_font_styles
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.button import MDIconButton
-from kivymd.theming import ThemableBehavior
-from kivymd.font_definitions import theme_font_styles
+from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.selectioncontrol import MDCheckbox
 
 Builder.load_string(
     """
@@ -424,8 +460,7 @@ Builder.load_string(
 
 <MDList>
     cols: 1
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     padding: 0, self._list_vertical_padding
 
 
@@ -584,7 +619,7 @@ Builder.load_string(
 )
 
 
-class MDList(GridLayout):
+class MDList(MDGridLayout):
     """ListItem container. Best used in conjunction with a
     :class:`kivy.uix.ScrollView`.
 
@@ -622,7 +657,7 @@ class BaseListItem(
     """
     Text color in ``rgba`` format used if :attr:`~theme_text_color` is set
     to `'Custom'`.
-    
+
     :attr:`text_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `None`.
     """
@@ -716,8 +751,8 @@ class BaseListItem(
     Divider mode. Available options are: `'Full'`, `'Inset'`
     and default to `'Full'`.
 
-    :attr:`tertiary_font_style` is a :class:`~kivy.properties.OptionProperty`
-    and defaults to `'Body1'`.
+    :attr:`divider` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `'Full'`.
     """
 
     bg_color = ListProperty()
@@ -985,4 +1020,8 @@ class IconRightWidget(IRightBodyTouch, MDIconButton):
 
 
 class IconLeftWidget(ILeftBodyTouch, MDIconButton):
+    pass
+
+
+class CheckboxLeftWidget(ILeftBodyTouch, MDCheckbox):
     pass

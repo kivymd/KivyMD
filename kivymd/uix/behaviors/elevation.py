@@ -82,7 +82,7 @@ Similarly, create a button with a circular elevation effect:
     <CircularElevationButton>:
         size_hint: None, None
         size: "100dp", "100dp"
-        source: f"{images_path}/kivymd_logo.png"
+        source: f"{images_path}/kivymd.png"
 
 
     Screen:
@@ -119,11 +119,17 @@ Similarly, create a button with a circular elevation effect:
     :align: center
 """
 
-from kivy.app import App
+__all__ = (
+    "CommonElevationBehavior",
+    "RectangularElevationBehavior",
+    "CircularElevationBehavior",
+)
+
 from kivy.lang import Builder
-from kivy.properties import ListProperty, ObjectProperty, NumericProperty
-from kivy.properties import AliasProperty
 from kivy.metrics import dp
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty
+
+from kivymd.app import MDApp
 
 Builder.load_string(
     """
@@ -166,129 +172,132 @@ Builder.load_string(
 
 
 class CommonElevationBehavior(object):
-    _elevation = NumericProperty(1)
+    """Common base class for rectangular and circular elevation behavior."""
 
-    def _get_elevation(self):
-        return self._elevation
-
-    def _set_elevation(self, elevation):
-        try:
-            self._elevation = elevation
-        except KeyError:
-            self._elevation = 1
-
-    elevation = AliasProperty(
-        _get_elevation, _set_elevation, bind=("_elevation",)
-    )
+    elevation = NumericProperty(1)
     """
     Elevation value.
 
-    :attr:`elevation` is an :class:`~kivy.properties.AliasProperty` that
-    returns the value for :attr:`elevation`.
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to 1.
     """
 
+    _elevation = NumericProperty(0)
     _soft_shadow_texture = ObjectProperty()
-    _soft_shadow_size = ListProperty([0, 0])
-    _soft_shadow_pos = ListProperty([0, 0])
+    _soft_shadow_size = ListProperty((0, 0))
+    _soft_shadow_pos = ListProperty((0, 0))
     _soft_shadow_a = NumericProperty(0)
     _hard_shadow_texture = ObjectProperty()
-    _hard_shadow_size = ListProperty([0, 0])
-    _hard_shadow_pos = ListProperty([0, 0])
+    _hard_shadow_size = ListProperty((0, 0))
+    _hard_shadow_pos = ListProperty((0, 0))
     _hard_shadow_a = NumericProperty(0)
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self.bind(
-            elevation=self._update_shadow,
+            elevation=self._update_elevation,
             pos=self._update_shadow,
             size=self._update_shadow,
         )
+        super().__init__(**kwargs)
 
     def _update_shadow(self, *args):
-        raise NotImplemented
+        raise NotImplementedError
+
+    def _update_elevation(self, instance, value):
+        if not self._elevation:
+            self._elevation = value
+            self._update_shadow(instance, value)
 
 
 class RectangularElevationBehavior(CommonElevationBehavior):
+    """Base class for rectangular elevation behavior.
+    Controls the size and position of the shadow."""
+
     def _update_shadow(self, *args):
-        if self.elevation > 0:
+        if self._elevation > 0:
+            # Set shadow size.
             ratio = self.width / (self.height if self.height != 0 else 1)
             if -2 < ratio < 2:
-                self._shadow = App.get_running_app().theme_cls.quad_shadow
+                self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.9
                 height = soft_height = self.height * 1.9
             elif ratio <= -2:
-                self._shadow = App.get_running_app().theme_cls.rec_st_shadow
+                self._shadow = MDApp.get_running_app().theme_cls.rec_st_shadow
                 ratio = abs(ratio)
                 if ratio > 5:
                     ratio = ratio * 22
                 else:
                     ratio = ratio * 11.5
-
                 width = soft_width = self.width * 1.9
                 height = self.height + dp(ratio)
-                soft_height = self.height + dp(ratio) + dp(self.elevation) * 0.5
+                soft_height = (
+                    self.height + dp(ratio) + dp(self._elevation) * 0.5
+                )
             else:
-                self._shadow = App.get_running_app().theme_cls.quad_shadow
+                self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
                 width = soft_width = self.width * 1.8
                 height = soft_height = self.height * 1.8
 
-            x = self.center_x - width / 2
-            soft_x = self.center_x - soft_width / 2
             self._soft_shadow_size = (soft_width, soft_height)
             self._hard_shadow_size = (width, height)
-
-            y = (
+            # Set ``soft_shadow`` parameters.
+            self._soft_shadow_pos = (
+                self.center_x - soft_width / 2,
                 self.center_y
                 - soft_height / 2
-                - dp(0.1 * 1.5 ** self.elevation)
+                - dp(0.1 * 1.5 ** self._elevation),
             )
-            self._soft_shadow_pos = (soft_x, y)
-            self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
+            self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
             self._soft_shadow_texture = self._shadow.textures[
-                str(int(round(self.elevation - 1)))
+                str(int(round(self._elevation)))
             ]
-
-            y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self.elevation)
-            self._hard_shadow_pos = (x, y)
-            self._hard_shadow_a = 0.4 * 0.9 ** self.elevation
+            # Set ``hard_shadow`` parameters.
+            self._hard_shadow_pos = (
+                self.center_x - width / 2,
+                self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation),
+            )
+            self._hard_shadow_a = 0.4 * 0.9 ** self._elevation
             self._hard_shadow_texture = self._shadow.textures[
-                str(int(round(self.elevation)))
+                str(int(round(self._elevation)))
             ]
-
         else:
             self._soft_shadow_a = 0
             self._hard_shadow_a = 0
 
 
 class CircularElevationBehavior(CommonElevationBehavior):
+    """Base class for circular elevation behavior.
+    Controls the size and position of the shadow."""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._shadow = App.get_running_app().theme_cls.round_shadow
+        self._shadow = MDApp.get_running_app().theme_cls.round_shadow
 
     def _update_shadow(self, *args):
         if self.elevation > 0:
+            # Set shadow size.
             width = self.width * 2
             height = self.height * 2
 
             x = self.center_x - width / 2
             self._soft_shadow_size = (width, height)
-
             self._hard_shadow_size = (width, height)
-
-            y = self.center_y - height / 2 - dp(0.1 * 1.5 ** self.elevation)
+            # Set ``soft_shadow`` parameters.
+            y = self.center_y - height / 2 - dp(0.1 * 1.5 ** self._elevation)
             self._soft_shadow_pos = (x, y)
-            self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
-            self._soft_shadow_texture = self._shadow.textures[
-                str(int(round(self.elevation)))
-            ]
-
-            y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self.elevation)
+            self._soft_shadow_a = 0.1 * 1.1 ** self._elevation
+            if hasattr(self, "_shadow"):
+                self._soft_shadow_texture = self._shadow.textures[
+                    str(int(round(self._elevation)))
+                ]
+            # Set ``hard_shadow`` parameters.
+            y = self.center_y - height / 2 - dp(0.5 * 1.18 ** self._elevation)
             self._hard_shadow_pos = (x, y)
-            self._hard_shadow_a = 0.4 * 0.9 ** self.elevation
-            self._hard_shadow_texture = self._shadow.textures[
-                str(int(round(self.elevation - 1)))
-            ]
-
+            self._hard_shadow_a = 0.4 * 0.9 ** self._elevation
+            if hasattr(self, "_shadow"):
+                self._hard_shadow_texture = self._shadow.textures[
+                    str(int(round(self._elevation)))
+                ]
         else:
             self._soft_shadow_a = 0
             self._hard_shadow_a = 0

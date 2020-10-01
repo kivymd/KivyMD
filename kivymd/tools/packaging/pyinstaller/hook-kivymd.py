@@ -1,1 +1,1 @@
-from kivymd.tools.packaging.pyinstaller import *
+from kivymd.tools.packaging.pyinstaller import *  # NOQA

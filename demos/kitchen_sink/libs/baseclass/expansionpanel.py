@@ -1,5 +1,5 @@
-from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 
 
-class KitchenSinkExpansionPanelContent(BoxLayout):
+class KitchenSinkExpansionPanelContent(MDBoxLayout):
     pass

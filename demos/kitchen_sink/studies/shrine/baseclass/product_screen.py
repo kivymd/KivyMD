@@ -1,29 +1,24 @@
 import os
 
-from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.metrics import dp
-from kivy.properties import StringProperty, ListProperty
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import Screen
-from kivy.utils import get_color_from_hex
 from kivy.animation import Animation
+from kivy.properties import ListProperty, StringProperty
+from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.behaviors import MagicBehavior
-from kivymd.utils.cropimage import crop_image
-
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+from kivymd.uix.screen import MDScreen
 
 PATH_TO_IMAGES = f"{os.environ['KITCHEN_SINK_ROOT']}/studies/shrine/data/images"
 
 
-class MoreInformation(ThemableBehavior, BoxLayout):
+class MoreInformation(ThemableBehavior, MDBoxLayout):
     pass
 
 
-class PlanItem(ThemableBehavior, MagicBehavior, BoxLayout):
+class PlanItem(ThemableBehavior, MagicBehavior, MDBoxLayout):
     text_item = StringProperty()
     border = StringProperty()
     color_select = ListProperty()
@@ -42,16 +37,8 @@ class PlanItem(ThemableBehavior, MagicBehavior, BoxLayout):
         instance_plan.color_select = self.primary
 
 
-class ProductScreen(ThemableBehavior, Screen):
+class ProductScreen(ThemableBehavior, MDScreen):
     has_already_opened = False
-
-    # FIXME: Some kind of dirty hack - after opening the `md_expansion_panel`,
-    #  the `content_for_panel` height is 1900 pixels.
-    def on_panel_open(self, instance_md_expansion_panel):
-        Animation(height=dp(450), d=0.2).start(self.ids.expansion_panel_box)
-
-    def on_panel_close(self, instance_md_expansion_panel):
-        Animation(height=dp(65), d=0.2).start(self.ids.expansion_panel_box)
 
     def show_product_screen(self):
         Animation(y=0, opacity=1, d=0.3).start(self)
@@ -69,20 +56,7 @@ class ProductScreen(ThemableBehavior, Screen):
         md_expansion_panel = MDExpansionPanel(
             content=content_for_panel,
             icon=f"{PATH_TO_IMAGES}/information.png",
-            title="More information",
+            panel_cls=MDExpansionPanelOneLine(text="More information"),
         )
-        md_expansion_panel.bind(on_open=self.on_panel_open)
-        md_expansion_panel.bind(on_close=self.on_panel_close)
         self.ids.expansion_panel_box.add_widget(md_expansion_panel)
-
-        path = f"{PATH_TO_IMAGES}/previous_crop.jpg"
-        if not os.path.exists(path):
-            crop_image(
-                (Window.width, int(dp(Window.height * 35 // 100))),
-                f"{PATH_TO_IMAGES}/previous.jpg",
-                path,
-            )
-        Clock.schedule_once(lambda x: self.set_path_toImage_product(path), 0.2)
-
-    def set_path_toImage_product(self, path, interval=0):
-        self.ids.previous_image.source = path
+        self.ids.previous_image.source = f"{PATH_TO_IMAGES}/previous.jpg"

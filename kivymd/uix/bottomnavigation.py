@@ -135,7 +135,7 @@ Example
 
     See :class:`~MDTab.__events__`
 
-.. code-block :: kv
+.. code-block:: kv
 
     Root:
 
@@ -156,11 +156,28 @@ How to automatically switch a tab?
 Use method :attr:`~MDBottomNavigation.switch_tab` which takes as argument
 the name of the tab you want to switch to.
 
+How to change icon color?
+-------------------------
+
+.. code-block:: kv
+
+    MDBottomNavigation:
+        text_color_active: 1, 0, 1, 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-text_color_active.png
+
+.. code-block:: kv
+
+    MDBottomNavigation:
+        text_color_normal: 1, 0, 1, 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-text_color_normal.png
+
 .. seealso::
 
-    `See Tab auto switch example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Tabs-Auto-Switch>`_
+    `See Tab auto switch example <https://github.com/kivymd/KivyMD/wiki/Components-Tabs-Auto-Switch>`_
 
-    `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Bottom-Navigation>`_
+    `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-Navigation>`_
 """
 
 __all__ = (
@@ -174,27 +191,25 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-
-from kivy.metrics import dp, sp
+from kivy.metrics import sp
 from kivy.properties import (
-    StringProperty,
-    ListProperty,
-    ObjectProperty,
-    BoundedNumericProperty,
-    NumericProperty,
     BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
 
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolorbehavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivymd.uix.behaviors import RectangularElevationBehavior
 from kivymd.uix.button import BaseFlatButton, BasePressedButton
-from kivymd.theming import ThemableBehavior
 
 Builder.load_string(
     """
@@ -256,7 +271,7 @@ Builder.load_string(
             text_size: (None, root.height)
             height: self.texture_size[1]
             theme_text_color: 'Custom'
-            text_color: root._current_color
+            text_color: root._text_color_normal
             valign: 'middle'
             halign: 'center'
             opposite_colors: root.opposite_colors
@@ -272,7 +287,7 @@ Builder.load_string(
             text_size: (None, root.height)
             height: self.texture_size[1]
             theme_text_color: 'Custom'
-            text_color: root._current_color
+            text_color: root._text_color_normal
             valign: 'bottom'
             halign: 'center'
             opposite_colors: root.opposite_colors
@@ -301,13 +316,13 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     tab = ObjectProperty()
     """
     :attr:`tab` is an :class:`~MDBottomNavigationItem`
-    and defaults to `Nome`.
+    and defaults to `None`.
     """
 
     panel = ObjectProperty()
     """
     :attr:`panel` is an :class:`~MDBottomNavigation`
-    and defaults to `Nome`.
+    and defaults to `None`.
     """
 
     active = BooleanProperty(False)
@@ -318,41 +333,60 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     and defaults to `''`.
     """
 
+    text_color_normal = ListProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is not selected.
+
+    :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    text_color_active = ListProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is selected.
+
+    :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
     _label = ObjectProperty()
     _label_font_size = NumericProperty("12sp")
-    _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
-    _capitalized_text = StringProperty()
-
-    def on_text(self, instance, value):
-        self._capitalized_text = value.upper()
+    _text_color_normal = ListProperty([1, 1, 1, 1])
+    _text_color_active = ListProperty([1, 1, 1, 1])
 
     def __init__(self, panel, height, tab):
         self.panel = panel
         self.height = height
         self.tab = tab
         super().__init__()
-        self._current_color = self.theme_cls.disabled_hint_text_color
+        self._text_color_normal = (
+            self.theme_cls.disabled_hint_text_color
+            if self.text_color_normal == [1, 1, 1, 1]
+            else self.text_color_normal
+        )
         self._label = self.ids._label
         self._label_font_size = sp(12)
-        self.theme_cls.bind(
-            primary_color=self._update_theme_color,
-            disabled_hint_text_color=self._update_theme_style,
-        )
+        self.theme_cls.bind(disabled_hint_text_color=self._update_theme_style)
         self.active = False
 
     def on_press(self):
         Animation(_label_font_size=sp(14), d=0.1).start(self)
-        Animation(_current_color=self.theme_cls.primary_color, d=0.1).start(
-            self
-        )
-
-    def _update_theme_color(self, instance, color):
-        if self.active:
-            self._current_color = self.theme_cls.primary_color
+        Animation(
+            _text_color_normal=self.theme_cls.primary_color
+            if self.text_color_active == [1, 1, 1, 1]
+            else self.text_color_active,
+            d=0.1,
+        ).start(self)
 
     def _update_theme_style(self, instance, color):
+        """Called when the application theme style changes (White/Black)."""
+
         if not self.active:
-            self._current_color = self.theme_cls.disabled_hint_text_color
+            self._text_color_normal = (
+                color
+                if self.text_color_normal == [1, 1, 1, 1]
+                else self.text_color_normal
+            )
 
 
 class MDTab(Screen, ThemableBehavior):
@@ -423,7 +457,7 @@ class MDBottomNavigationItem(MDTab):
     header = ObjectProperty()
     """
     :attr:`header` is an :class:`~MDBottomNavigationHeader`
-    and defaults to `Nome`.
+    and defaults to `None`.
     """
 
     def on_tab_press(self, *args):
@@ -434,7 +468,9 @@ class MDBottomNavigationItem(MDTab):
                 par.previous_tab.header
             )
             Animation(
-                _current_color=par.previous_tab.header.theme_cls.disabled_hint_text_color,
+                _text_color_normal=par.previous_tab.header.text_color_normal
+                if par.previous_tab.header.text_color_normal != [1, 1, 1, 1]
+                else self.theme_cls.disabled_hint_text_color,
                 d=0.1,
             ).start(par.previous_tab.header)
             par.previous_tab.header.active = False
@@ -483,26 +519,51 @@ class MDBottomNavigation(TabbedPanelBase):
     first_widget = ObjectProperty()
     """
     :attr:`first_widget` is an :class:`~MDBottomNavigationItem`
-    and defaults to `Nome`.
+    and defaults to `None`.
     """
 
     tab_header = ObjectProperty()
     """
     :attr:`tab_header` is an :class:`~MDBottomNavigationHeader`
-    and defaults to `Nome`.
+    and defaults to `None`.
     """
 
-    def on_panel_color(self, instance, value):
-        self.tab_header.panel_color = value
+    text_color_normal = ListProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is not selected.
+
+    :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    text_color_active = ListProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is selected.
+
+    :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.previous_tab = None
         self.widget_index = 0
-        self._refresh_tabs()
-
         Window.bind(on_resize=self.on_resize)
-        Clock.schedule_once(lambda x: self.on_resize(), 2)
+        Clock.schedule_once(lambda x: self.on_resize(), 0)
+
+    def on_panel_color(self, instance, value):
+        self.tab_header.panel_color = value
+
+    def on_text_color_normal(self, instance, value):
+        for tab in self.ids.tab_bar.children:
+            if not tab.active:
+                tab._text_color_normal = value
+
+    def on_text_color_active(self, instance, value):
+        for tab in self.ids.tab_bar.children:
+            tab.text_color_active = value
+            if tab.active:
+                tab._text_color_normal = value
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""
@@ -521,7 +582,7 @@ class MDBottomNavigation(TabbedPanelBase):
             numbers_screens.index(count_index_screen)
         ].dispatch("on_press")
 
-    def _refresh_tabs(self):
+    def refresh_tabs(self):
         """Refresh all tabs."""
 
         if not self.ids:
@@ -536,58 +597,42 @@ class MDBottomNavigation(TabbedPanelBase):
             tab.header = self.tab_header
             tab_bar.add_widget(self.tab_header)
             if tab is self.first_widget:
-                self.tab_header._current_color = self.theme_cls.primary_color
+                self.tab_header._text_color_normal = (
+                    self.theme_cls.primary_color
+                )
                 self.tab_header._label_font_size = sp(14)
                 self.tab_header.active = True
             else:
                 self.tab_header._label_font_size = sp(12)
-        self.on_resize()
 
     def on_resize(self, instance=None, width=None, do_again=True):
+        """Called when the application window is resized."""
+
         full_width = 0
         for tab in self.ids.tab_manager.screens:
             full_width += tab.header.width
+            tab.header.text_color_normal = self.text_color_normal
         self.ids.tab_bar.width = full_width
         if do_again:
             Clock.schedule_once(lambda x: self.on_resize(do_again=False), 0.1)
 
     def add_widget(self, widget, **kwargs):
-        """Add tabs to the screen or the layout.
-
-        :param widget: The widget to add.
-        """
-
         if isinstance(widget, MDBottomNavigationItem):
             self.widget_index += 1
             widget.index = self.widget_index
             widget.parent_widget = self
-            tab_header = MDBottomNavigationHeader(
-                tab=widget, panel=self, height=widget.height
-            )
-            self.ids.tab_bar.add_widget(tab_header)
-            widget.header = tab_header
             self.ids.tab_manager.add_widget(widget)
             if self.widget_index == 1:
                 self.previous_tab = widget
-                tab_header._current_color = self.theme_cls.primary_color
-                tab_header._label_font_size = sp(14)
-                tab_header.active = True
                 self.first_widget = widget
-            else:
-                tab_header._label_font_size = sp(12)
-            self._refresh_tabs()
+            self.refresh_tabs()
         else:
             super().add_widget(widget)
 
     def remove_widget(self, widget):
-        """Remove tabs from the screen or the layout.
-
-        :param widget: The widget to remove.
-        """
-
         if isinstance(widget, MDBottomNavigationItem):
             self.ids.tab_manager.remove_widget(widget)
-            self._refresh_tabs()
+            self.refresh_tabs()
         else:
             super().remove_widget(widget)
 
@@ -599,7 +644,3 @@ class MDBottomNavigationBar(
     RectangularElevationBehavior,
 ):
     pass
-
-
-class MDBottomNavigationErrorCache:
-    last_size_warning = 0

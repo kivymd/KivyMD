@@ -1,4 +1,25 @@
-<KitchenSinkCDialogs>
+<KitchenSinkItemConfirm>
+    on_release: root.set_icon(check)
+
+    CheckboxLeftWidget:
+        id: check
+        group: "check"
+
+
+<KitchenSinkDialogsCustomContent>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        hint_text: "City"
+
+    MDTextField:
+        hint_text: "Street"
+
+
+<KitchenSinkDialogs>
     name: 'dialogs'
     app: app
 
@@ -7,33 +28,22 @@
         pos_hint: {"top": 1}
 
     MDRaisedButton:
-        text: "Open lengthy dialog"
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
+        text: "ALERT"
         pos_hint: {'center_x': .5, 'center_y': .8}
-        opposite_colors: True
-        on_release: root.show_example_long_dialog()
-
-    MDRaisedButton:
-        text: "Open input dialog"
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .6}
-        opposite_colors: True
-        on_release: root.show_example_input_dialog()
-
-    MDRaisedButton:
-        text: "Open Alert Dialog"
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .4}
-        opposite_colors: True
         on_release: root.show_example_alert_dialog()
 
     MDRaisedButton:
-        text: "Open Ok Cancel Dialog"
-        size_hint: None, None
-        size: 3 * dp(48), dp(48)
+        text: "SIMPLE"
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        on_release: root.show_example_simple_dialog()
+
+    MDRaisedButton:
+        text: "CONFIRMATION"
+        pos_hint: {'center_x': .5, 'center_y': .4}
+        on_release: root.show_example_confirmation_dialog()
+
+    MDRaisedButton:
+        text: "CUSTOM"
         pos_hint: {'center_x': .5, 'center_y': .2}
         opposite_colors: True
-        on_release: root.show_example_ok_cancel_dialog()
+        on_release: root.show_example_custom_dialog()

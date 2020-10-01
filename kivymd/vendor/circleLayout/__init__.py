@@ -18,19 +18,19 @@ difference between the outer and the inner circle's radii. To make the
 widgets bigger you can just decrease inner_radius_hint.
 """
 
-from math import sin, cos, pi, radians
+__all__ = ("CircularLayout",)
 
-from kivy.uix.layout import Layout
+from math import cos, pi, radians, sin
+
 from kivy.properties import (
-    NumericProperty,
-    ReferenceListProperty,
-    OptionProperty,
-    BoundedNumericProperty,
-    VariableListProperty,
     AliasProperty,
+    BoundedNumericProperty,
+    NumericProperty,
+    OptionProperty,
+    ReferenceListProperty,
+    VariableListProperty,
 )
-
-__all__ = "CircularLayout"
+from kivy.uix.layout import Layout
 
 try:
     xrange(1, 2)

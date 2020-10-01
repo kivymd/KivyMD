@@ -1,13 +1,20 @@
-import sys
-from setuptools import setup
-from os.path import join, dirname
+import os
 import re
+import subprocess
+import sys
+from datetime import datetime
+from time import time
+
+from setuptools import find_packages, setup
 
 assert sys.version_info >= (3, 6, 0), "KivyMD requires Python 3.6+"
 
 
 def get_version() -> str:
-    version_file = join(dirname(__file__), "kivymd/__init__.py")
+    """Get __version__ from __init__.py file."""
+    version_file = os.path.join(
+        os.path.dirname(__file__), "kivymd", "__init__.py"
+    )
     version_file_data = open(version_file, "rt", encoding="utf-8").read()
     version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
     try:
@@ -17,39 +24,68 @@ def get_version() -> str:
         raise ValueError(f"Unable to find version string in {version_file}.")
 
 
+def write_version_info():
+    """Create _version.py file with git revision and date."""
+    filename = os.path.join(os.path.dirname(__file__), "kivymd", "_version.py")
+    version = get_version()
+    epoch = int(os.environ.get("SOURCE_DATE_EPOCH", time()))
+    date = datetime.utcfromtimestamp(epoch).strftime("%Y-%m-%d")
+    try:
+        git_revision = (
+            subprocess.check_output(["git", "rev-parse", "HEAD"])
+            .strip()
+            .decode("ascii")
+        )
+    except (
+        subprocess.CalledProcessError,
+        OSError,
+        IOError,
+        FileNotFoundError,
+    ) as e:
+        # CalledProcessError has no errno
+        errno = getattr(e, "errno", None)
+        if errno != 2 and "CalledProcessError" not in repr(e):
+            raise
+        git_revision = "Unknown"
+
+    version_info = (
+        f"# THIS FILE IS GENERATED FROM KIVYMD SETUP.PY\n"
+        f'__version__ = "{version}"\n'
+        f'__hash__ = "{git_revision}"\n'
+        f'__short_hash__ = "{git_revision[:7]}"\n'
+        f'__date__ = "{date}"\n'
+    )
+
+    open(filename, "wt", encoding="utf-8").write(version_info)
+
+
 if __name__ == "__main__":
     # Static strings are in setup.cfg
+    write_version_info()
     setup(
         version=get_version(),
-        packages=["kivymd"],
+        packages=find_packages(
+            include=["kivymd*"], exclude=["kivymd.tools.release"]
+        ),
         package_dir={"kivymd": "kivymd"},
         package_data={
-            "kivymd": [
-                "uix/*.py",
-                "uix/behaviors/*.py",
-                "utils/*.py",
-                "tools/*.py",
-                "tools/packaging/*.py",
-                "tools/packaging/pyinstaller/*.py",
-                "toast/*.py",
-                "toast/kivytoast/*.py",
-                "toast/androidtoast/*.py",
-                "stiffscroll/*.py",
-                "vendor/*.py",
-                "vendor/circleLayout/*.py",
-                "vendor/circularTimePicker/*.py",
-                "vendor/navigationdrawer/*.py",
-                "images/*.png",
-                "images/*.jpg",
-                "images/*.atlas",
-                "fonts/*.ttf",
-            ]
+            "kivymd": ["images/*.png", "images/*.atlas", "fonts/*.ttf"]
         },
         extras_require={
-            "dev": ["black", "pre-commit"],
+            "dev": [
+                "pre-commit",
+                "black",
+                "isort[pyproject]",
+                "flake8",
+                "pytest",
+                "pytest-cov",
+                "pytest_asyncio",
+                "pytest-timeout",
+                "coveralls",
+            ],
             "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],
         },
-        install_requires=["kivy", "pillow", "requests"],
+        install_requires=["kivy>=1.10.1"],
         setup_requires=[],
         python_requires=">=3.6",
     )

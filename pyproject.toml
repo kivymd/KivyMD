@@ -1,3 +1,4 @@
+# Format Python
 [tool.black]
 line-length = 80
 target-version = ['py35', 'py36', 'py37', 'py38']
@@ -19,3 +20,15 @@ exclude = '''
   | buildozer\.spec
 )
 '''
+
+# Sort imports
+# Settings to fit Black formatting
+# Taken from https://github.com/timothycrosley/isort/issues/694
+[tool.isort]
+line_length = 80
+include_trailing_comma = true
+multi_line_output = 3
+use_parantheses = true
+force_grid_wrap = 0
+ensure_newline_before_comments = true
+known_third_party = ["setuptools", "kivy", "requests", "PIL", "android", "jnius", "watchdog", "sphinx", "docutils", "autoapi", "unidecode"]

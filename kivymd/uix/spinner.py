@@ -40,12 +40,45 @@ Usage
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/spinner.gif
     :align: center
+
+Spinner palette
+---------------
+
+.. code-block:: kv
+
+    MDSpinner:
+        # The number of color values ​​can be any.
+        palette:
+            [0.28627450980392155, 0.8431372549019608, 0.596078431372549, 1], \
+            [0.3568627450980392, 0.3215686274509804, 0.8666666666666667, 1], \
+            [0.8862745098039215, 0.36470588235294116, 0.592156862745098, 1], \
+            [0.8784313725490196, 0.9058823529411765, 0.40784313725490196, 1],
+
+.. code-block:: python
+
+    MDSpinner(
+        size_hint=(None, None),
+        size=(dp(46), dp(46)),
+        pos_hint={'center_x': .5, 'center_y': .5},
+        active=True,
+        palette=[
+            [0.28627450980392155, 0.8431372549019608, 0.596078431372549, 1],
+            [0.3568627450980392, 0.3215686274509804, 0.8666666666666667, 1],
+            [0.8862745098039215, 0.36470588235294116, 0.592156862745098, 1],
+            [0.8784313725490196, 0.9058823529411765, 0.40784313725490196, 1],
+        ]
+    )
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/spinner-palette.gif
+    :align: center
 """
 
-from kivy.lang import Builder
-from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty, ListProperty, BooleanProperty
+__all__ = ("MDSpinner",)
+
 from kivy.animation import Animation
+from kivy.lang import Builder
+from kivy.properties import BooleanProperty, ListProperty, NumericProperty
+from kivy.uix.widget import Widget
 
 from kivymd.theming import ThemableBehavior
 
@@ -86,12 +119,16 @@ class MDSpinner(ThemableBehavior, Widget):
 
     determinate = BooleanProperty(False)
     """
+    Determinate value.
+
     :attr:`determinate` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
     determinate_time = NumericProperty(2)
     """
+    Determinate time value.
+
     :attr:`determinate_time` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `2`.
     """
@@ -105,14 +142,25 @@ class MDSpinner(ThemableBehavior, Widget):
 
     color = ListProperty([0, 0, 0, 0])
     """
+    Spinner color.
+
     :attr:`color` is a :class:`~kivy.properties.ListProperty`
     and defaults to ``self.theme_cls.primary_color``.
+    """
+
+    palette = ListProperty()
+    """
+    A set of colors. Changes with each completed spinner cycle.
+
+    :attr:`palette` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     _alpha = NumericProperty(0)
     _rotation_angle = NumericProperty(360)
     _angle_start = NumericProperty(0)
-    _angle_end = NumericProperty(8)
+    _angle_end = NumericProperty(0)
+    _palette = []
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -176,16 +224,31 @@ class MDSpinner(ThemableBehavior, Widget):
             if not self.determinate:
                 _rot_anim = Animation(_rotation_angle=0, duration=2)
                 _rot_anim.start(self)
+        elif self._rotation_angle == 360:
+            if self._palette:
+                try:
+                    Animation(color=next(self._palette), duration=2).start(self)
+                except StopIteration:
+                    self._palette = iter(self.palette)
+                    Animation(color=next(self._palette), duration=2).start(self)
 
     def _reset(self, *args):
         Animation.cancel_all(
-            self, "_angle_start", "_rotation_angle", "_angle_end", "_alpha"
+            self,
+            "_angle_start",
+            "_rotation_angle",
+            "_angle_end",
+            "_alpha",
+            "color",
         )
         self._angle_start = 0
-        self._angle_end = 8
+        self._angle_end = 0
         self._rotation_angle = 360
         self._alpha = 0
         self.active = False
+
+    def on_palette(self, instance, value):
+        self._palette = iter(value)
 
     def on_active(self, *args):
         if not self.active:

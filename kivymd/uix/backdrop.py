@@ -65,7 +65,7 @@ Example
 
     <MyBackdropBackLayer@Image>
         size_hint: .8, .8
-        source: f"{images_path}/kivymd_logo.png"
+        source: f"{images_path}/kivymd.png"
         pos_hint: {"center_x": .5, "center_y": .6}
     '''
     )
@@ -110,7 +110,7 @@ Example
     :width: 280 px
     :align: center
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Backdrop>`_
+.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Backdrop>`_
 """
 
 __all__ = (
@@ -125,9 +125,9 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     ListProperty,
     NumericProperty,
-    BooleanProperty,
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout

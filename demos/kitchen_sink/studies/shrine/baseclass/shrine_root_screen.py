@@ -6,6 +6,7 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 
 from kivymd.theming import ThemableBehavior
+
 from .box_bottom_sheet import PreviousImage
 from .product_gallery import ProductsBox
 

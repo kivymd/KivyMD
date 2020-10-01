@@ -3,7 +3,7 @@ import os
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_color_from_hex, get_hex_from_color
 
-from kivymd.color_definitions import palette, colors
+from kivymd.color_definitions import colors, palette
 from kivymd.theming import ThemableBehavior
 
 

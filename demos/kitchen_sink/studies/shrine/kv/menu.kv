@@ -1,8 +1,7 @@
 <ShrineItemMenu>
     orientation: 'vertical'
     spacing: '3dp'
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
 
     Label:
         id: name_item
@@ -26,8 +25,7 @@
 
 
 <ShrineMenu>
-    size_hint: None, None
-    size: self.minimum_size
+    adaptive_size: True
     orientation: "vertical"
     pos_hint: {"center_x": .5, "center_y": .7}
     spacing: "10dp"

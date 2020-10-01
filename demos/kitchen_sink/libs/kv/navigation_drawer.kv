@@ -1,4 +1,4 @@
-#:import images_path kivymd.images_path
+#:import environ os.environ
 #:import version kivymd.__version__
 
 
@@ -26,7 +26,7 @@
                 pos_hint: {"top": 1}
 
                 FitImage:
-                    source: f"{images_path}kivymd_alpha.png"
+                    source: f"{environ['KITCHEN_SINK_ASSETS']}kivymd.png"
 
             MDIconButton:
                 icon: "close"
@@ -45,11 +45,10 @@
         ScrollView:
             pos_hint: {"top": 1}
 
-            GridLayout:
+            MDGridLayout:
                 id: box_item
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
 
 
 <KitchenSinkNavigationDrawer>:
@@ -71,8 +70,20 @@
                         left_action_items: [['menu', lambda x: nav_drawer.set_state("toggle")]]
                         right_action_items: [['arrow-left', lambda x: app.back_to_home_screen()]]
 
-                    Widget:
+                    BoxLayout:
+                        orientation: "vertical"
+                        padding: dp(16)
+                        spacing: dp(8)
 
+                        MDRaisedButton:
+                            text: "MDNavigationDrawer.type = " + nav_drawer.type
+                            on_release: nav_drawer.type = "standard" if nav_drawer.type == "modal" else "modal"
+
+                        MDRaisedButton:
+                            text: "MDNavigationDrawer.anchor = " + nav_drawer.anchor
+                            on_release: nav_drawer.anchor = "right" if nav_drawer.anchor == "left" else "left"
+
+                        Widget:
 
         MDNavigationDrawer:
             id: nav_drawer

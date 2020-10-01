@@ -1,6 +1,3 @@
-#:import images_path kivymd.images_path
-
-
 <KitchenSinkMDIcons>
     name: 'md icons'
     app: app
@@ -18,9 +15,8 @@
             spacing: dp(10)
             padding: dp(20)
 
-            BoxLayout:
-                size_hint_y: None
-                height: self.minimum_height
+            MDBoxLayout:
+                adaptive_height: True
 
                 MDIconButton:
                     icon: 'magnify'

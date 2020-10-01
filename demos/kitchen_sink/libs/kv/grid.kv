@@ -1,15 +1,18 @@
 #:import environ os.environ
 
 
+<KitchenSinkTileStar@SmartTileWithStar>
+    size_hint_y: None
+    height: "240dp"
+
+
+<KitchenSinkTileLabel@SmartTileWithLabel>
+    size_hint_y: None
+    height: "240dp"
+
+
 <KitchenSinkGrid>
     name: 'grid'
-    on_enter:
-        root.crop_image_for_tile(tile_1, tile_1.size, f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280_tile_crop.png')
-        root.crop_image_for_tile(tile_2, tile_2.size, f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280_tile_crop.png')
-        root.crop_image_for_tile(tile_3, tile_3.size, f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280_tile_crop.png')
-        root.crop_image_for_tile(tile_4, tile_4.size, f'{environ["KITCHEN_SINK_ASSETS"]}robin-944887_1280_tile_crop.png')
-        root.crop_image_for_tile(tile_5, tile_5.size, f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280_tile_crop.png')
-        root.crop_image_for_tile(tile_6, tile_6.size, f'{environ["KITCHEN_SINK_ASSETS"]}light-bulb-1042480_1280_tile_crop.png')
 
     BoxLayout:
         orientation: "vertical"
@@ -21,40 +24,42 @@
         ScrollView:
             do_scroll_x: False
 
-            GridLayout:
+            MDGridLayout:
                 cols: 2
-                row_default_height: (self.width - self.cols*self.spacing[0])/self.cols
-                row_force_default: True
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
                 padding: dp(4), dp(4)
                 spacing: dp(4)
 
-                SmartTileWithStar:
-                    id: tile_2
+                KitchenSinkTileStar:
+                    mipmap: True
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}guitar-1139397_1280.png'
+                    stars: 3
+
+                KitchenSinkTileStar:
                     mipmap: True
                     stars: 3
-                SmartTileWithStar:
-                    id: tile_3
-                    mipmap: True
-                    stars: 3
-                SmartTileWithLabel:
-                    id: tile_1
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}african-lion-951778_1280.png'
+
+                KitchenSinkTileLabel:
                     mipmap: True
                     text: "Beautiful\n[size=12]beautiful-931152_1280.png[/size]"
                     font_style: 'Subtitle1'
-                SmartTileWithLabel:
-                    id: tile_4
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}beautiful-931152_1280.png'
+
+                KitchenSinkTileLabel:
                     mipmap: True
                     text: "Robin\n[size=12]robin-944887_1280.png[/size]"
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}robin-944887_1280.png'
                     font_style: 'Subtitle1'
-                SmartTileWithLabel:
-                    id: tile_5
+
+                KitchenSinkTileLabel:
                     mipmap: True
                     text: "Kitten\n[size=12]kitten-1049129_1280.png[/size]"
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}kitten-1049129_1280.png'
                     font_style: 'Subtitle1'
-                SmartTileWithLabel:
-                    id: tile_6
+
+                KitchenSinkTileLabel:
                     mipmap: True
                     text: "Light-Bulb\n[size=12]light-bulb-1042480_1280.png[/size]"
+                    source: f'{environ["KITCHEN_SINK_ASSETS"]}light-bulb-1042480_1280.png'
                     font_style: 'Subtitle1'

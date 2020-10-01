@@ -30,7 +30,7 @@ from time import time
 
 from kivy.animation import AnimationTransition
 from kivy.effects.kinetic import KineticEffect
-from kivy.properties import ObjectProperty, NumericProperty
+from kivy.properties import NumericProperty, ObjectProperty
 from kivy.uix.widget import Widget
 
 
@@ -156,10 +156,10 @@ class StiffScrollEffect(KineticEffect):
     def on_value(self, *args):
         """Prevent moving beyond my bounds, and update ``self.scroll``"""
 
-        if self.value < self.min:
+        if self.value > self.min:
             self.velocity = 0
             self.scroll = self.min
-        elif self.value > self.max:
+        elif self.value < self.max:
             self.velocity = 0
             self.scroll = self.max
         else:

@@ -1,7 +1,6 @@
 from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 
-from libs.baseclass.list_items import KitchenSinkOneLineIconListItem
 from kivymd.icon_definitions import md_icons
 
 

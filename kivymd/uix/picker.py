@@ -159,42 +159,38 @@ MDThemePicker
     :align: center
 """
 
-__all__ = (
-    "MDTimePicker",
-    "MDDatePicker",
-    "MDThemePicker",
-)
+__all__ = ("MDTimePicker", "MDDatePicker", "MDThemePicker")
 
-import datetime
 import calendar
+import datetime
 from datetime import date
 
+from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.modalview import ModalView
-from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import (
-    StringProperty,
-    NumericProperty,
-    ObjectProperty,
     BooleanProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.clock import Clock
-from kivy.core.window import Window
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.modalview import ModalView
 from kivy.utils import get_color_from_hex
 
-from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDIconButton
+from kivymd.color_definitions import colors, palette
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    SpecificBackgroundColorBehavior,
     CircularRippleBehavior,
     RectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
 )
-from kivymd.color_definitions import colors, palette
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.label import MDLabel
 
 Builder.load_string(
     """
@@ -302,7 +298,6 @@ Builder.load_string(
         size_hint: (None, None)
         size: root.width, dp(30)
         pos: root.pos
-        theme_text_color: 'Primary'
         pos_hint:
             {'center_x': .5, 'center_y': .75}\
             if self.theme_cls.device_orientation == 'portrait'\
@@ -622,7 +617,7 @@ class MDDatePicker(
         self.cal_list = cal_list
 
     def change_month(self, operation):
-        op = 1 if operation is "next" else -1
+        op = 1 if operation == "next" else -1
         sl, sy = self.month, self.year
         m = 12 if sl + op == 0 else 1 if sl + op == 13 else sl + op
         y = sy - 1 if sl + op == 0 else sy + 1 if sl + op == 13 else sy

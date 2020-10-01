@@ -34,10 +34,10 @@ A simple example:
 
 .. code-block:: python
 
+    from kivy.lang import Builder
     from kivy.uix.boxlayout import BoxLayout
 
     from kivymd.app import MDApp
-    from kivy.lang import Builder
 
     KV = '''
     Screen:
@@ -60,6 +60,7 @@ A simple example:
 
 
             MDNavigationDrawer:
+                id: nav_drawer
 
                 ContentNavigationDrawer:
     '''
@@ -124,7 +125,7 @@ Top of ``ContentNavigationDrawer`` and ``DrawerList`` for menu items:
                 id: avatar
                 size_hint: None, None
                 size: "56dp", "56dp"
-                source: "kivymd_logo.png"
+                source: "kivymd.png"
 
         MDLabel:
             text: "KivyMD library"
@@ -265,27 +266,40 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 
     TestNavigationDrawer().run()
 
+NavigationDrawer with type ``standard``
+---------------------------------------
+
+You can use the ``standard`` behavior type for the NavigationDrawer:
+
+.. code-block:: kv
+
+    MDNavigationDrawer:
+        type: "standard"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-standard.gif
+    :align: center
+
 .. seealso::
 
-    `Full example of Components-Navigation-Drawer <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Navigation-Drawer>`_
+    `Full example of Components-Navigation-Drawer <https://github.com/kivymd/KivyMD/wiki/Components-Navigation-Drawer>`_
 """
 
 __all__ = ("NavigationLayout", "MDNavigationDrawer")
 
-from kivy.core.window import Window
-from kivy.logger import Logger
 from kivy.animation import Animation, AnimationTransition
+from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.properties import (
-    NumericProperty,
-    StringProperty,
-    OptionProperty,
+    AliasProperty,
     BooleanProperty,
     ListProperty,
+    NumericProperty,
     ObjectProperty,
-    AliasProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
@@ -306,6 +320,17 @@ Builder.load_string(
         if self.anchor == "left" \
         else (Window.width - self.width * self.open_progress)
     elevation: 10
+
+    canvas:
+        Clear
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: root.background
+            radius: root._radius
+    md_bg_color: self.theme_cls.bg_light
 """
 )
 
@@ -317,6 +342,34 @@ class NavigationDrawerContentError(Exception):
 class NavigationLayout(FloatLayout):
     _scrim_color = ObjectProperty(None)
     _scrim_rectangle = ObjectProperty(None)
+
+    _screen_manager = ObjectProperty(None)
+    _navigation_drawer = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(width=self.update_pos)
+
+    def update_pos(self, *args):
+        drawer = self._navigation_drawer
+        manager = self._screen_manager
+        if not drawer or not manager:
+            return
+        if drawer.type == "standard":
+            manager.size_hint_x = None
+            if drawer.anchor == "left":
+                manager.x = drawer.width + drawer.x
+                manager.width = self.width - manager.x
+            else:
+                manager.x = 0
+                manager.width = drawer.x
+        elif drawer.type == "modal":
+            manager.size_hint_x = None
+            manager.x = 0
+            if drawer.anchor == "left":
+                manager.width = self.width - manager.x
+            else:
+                manager.width = self.width
 
     def add_scrim(self, widget):
         with widget.canvas.after:
@@ -346,7 +399,13 @@ class NavigationLayout(FloatLayout):
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
+            self._screen_manager = widget
             self.add_scrim(widget)
+        if isinstance(widget, MDNavigationDrawer):
+            self._navigation_drawer = widget
+            widget.bind(
+                x=self.update_pos, width=self.update_pos, anchor=self.update_pos
+            )
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
                 "The NavigationLayout must contain "
@@ -356,6 +415,17 @@ class NavigationLayout(FloatLayout):
 
 
 class MDNavigationDrawer(MDCard):
+    type = OptionProperty("modal", options=("standard", "modal"))
+    """
+    Type of drawer. Modal type will be on top of screen. Standard type will be
+    at left or right of screen. Also it automatically disables
+    :attr:`close_on_click` and :attr:`enable_swiping` to prevent closing
+    drawer for standard type.
+
+    :attr:`type` is a :class:`~kivy.properties.OptionProperty`
+    and defaults to `modal`.
+    """
+
     anchor = OptionProperty("left", options=("left", "right"))
     """
     Anchoring screen edge for drawer. Set it to `'right'` for right-to-left
@@ -367,7 +437,8 @@ class MDNavigationDrawer(MDCard):
 
     close_on_click = BooleanProperty(True)
     """
-    Close when click on scrim or keyboard escape.
+    Close when click on scrim or keyboard escape. It automatically sets to
+    False for "standard" type.
 
     :attr:`close_on_click` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -377,7 +448,7 @@ class MDNavigationDrawer(MDCard):
     """
     Indicates if panel closed or opened. Sets after :attr:`status` change.
     Available options are: `'close'`, `'open'`.
-    
+
     :attr:`state` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """
@@ -413,6 +484,15 @@ class MDNavigationDrawer(MDCard):
     and defaults to `0.0`.
     """
 
+    enable_swiping = BooleanProperty(True)
+    """
+    Allow to open or close navigation drawer with swipe. It automatically
+    sets to False for "standard" type.
+
+    :attr:`enable_swiping` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     swipe_distance = NumericProperty(10)
     """
     The distance of the swipe with which the movement of navigation drawer
@@ -441,9 +521,16 @@ class MDNavigationDrawer(MDCard):
     and defaults to `[0, 0, 0, 0.5]`.
     """
 
+    _radius = ListProperty([0, 0, 0, 0])
+
     def _get_scrim_alpha(self):
-        _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
-        if isinstance(self.parent, NavigationLayout):
+        _scrim_alpha = 0
+        if self.type == "modal":
+            _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
+        if (
+            isinstance(self.parent, NavigationLayout)
+            and self.parent._scrim_color
+        ):
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
                 self.scrim_color[3] * _scrim_alpha
             ]
@@ -577,6 +664,12 @@ class MDNavigationDrawer(MDCard):
             "closing_with_animation",
         ):
             pass
+        if self.status == "closed":
+            self._elevation = 0
+            self._update_shadow(self, self._elevation)
+        else:
+            self._elevation = self.elevation
+            self._update_shadow(self, self._elevation)
 
     def get_dist_from_side(self, x):
         if self.anchor == "left":
@@ -590,21 +683,32 @@ class MDNavigationDrawer(MDCard):
             for child in self.children[:]:
                 if child.dispatch("on_touch_down", touch):
                     return True
+        if self.type == "standard" and not self.collide_point(
+            touch.ox, touch.oy
+        ):
+            return False
         return True
 
     def on_touch_move(self, touch):
-        if self.status == "closed":
-            if (
-                self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
-                and abs(touch.x - touch.ox) > self.swipe_distance
-            ):
-                self.status = "opening_with_swipe"
-        elif self.status == "opened":
-            self.status = "closing_with_swipe"
+        if self.enable_swiping:
+            if self.status == "closed":
+                if (
+                    self.get_dist_from_side(touch.ox) <= self.swipe_edge_width
+                    and abs(touch.x - touch.ox) > self.swipe_distance
+                ):
+                    self.status = "opening_with_swipe"
+            elif self.status == "opened":
+                self.status = "closing_with_swipe"
 
         if self.status in ("opening_with_swipe", "closing_with_swipe"):
             self.open_progress = max(
-                min(self.open_progress + touch.dx / self.width, 1), 0
+                min(
+                    self.open_progress
+                    + (touch.dx if self.anchor == "left" else -touch.dx)
+                    / self.width,
+                    1,
+                ),
+                0,
             )
             return True
         return super().on_touch_move(touch)
@@ -621,14 +725,28 @@ class MDNavigationDrawer(MDCard):
             else:
                 self.set_state("open", animation=True)
         elif self.status == "opened":
-            if (
-                self.close_on_click
-                and self.get_dist_from_side(touch.ox) > self.width
+            if self.close_on_click and not self.collide_point(
+                touch.ox, touch.oy
             ):
                 self.set_state("close", animation=True)
+            elif self.type == "standard" and not self.collide_point(
+                touch.ox, touch.oy
+            ):
+                return False
         elif self.status == "closed":
             return False
         return True
+
+    def on_radius(self, instance, value):
+        self._radius = value
+
+    def on_type(self, *args):
+        if self.type == "standard":
+            self.enable_swiping = False
+            self.close_on_click = False
+        else:
+            self.enable_swiping = True
+            self.close_on_click = True
 
     def _handle_keyboard(self, window, key, *largs):
         if key == 27 and self.status == "opened" and self.close_on_click:

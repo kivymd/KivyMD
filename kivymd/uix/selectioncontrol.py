@@ -150,21 +150,22 @@ MDSwitch
     :class:`~MDCheckbox`.
 """
 
-__all__ = (
-    "MDCheckbox",
-    "MDSwitch",
-)
+__all__ = ("MDCheckbox", "MDSwitch")
 
-from kivy.lang import Builder
-from kivy.properties import StringProperty, ListProperty, NumericProperty
-from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import AliasProperty, BooleanProperty
-from kivy.metrics import dp, sp
 from kivy.animation import Animation
-from kivy.utils import get_color_from_hex
-from kivy.uix.behaviors import ButtonBehavior
+from kivy.lang import Builder
+from kivy.metrics import dp, sp
+from kivy.properties import (
+    AliasProperty,
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    StringProperty,
+)
+from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.widget import Widget
+from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
@@ -244,7 +245,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     """
     Background icon of the checkbox used for the default graphical
     representation when the checkbox is not pressed.
-    
+
     :attr:`checkbox_icon_normal` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-outline'`.
     """
@@ -327,8 +328,12 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             disabled=self.update_color,
             state=self.update_color,
         )
+        self.theme_cls.bind(primary_color=self.update_primary_color)
         self.update_icon()
         self.update_color()
+
+    def update_primary_color(self, instance, value):
+        self.selected_color = value
 
     def update_icon(self, *args):
         if self.state == "down":
@@ -355,6 +360,8 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
             self.update_icon()
+            if self.group:
+                self._release_group(self)
             self.active = True
         else:
             self.check_anim_in.cancel(self)

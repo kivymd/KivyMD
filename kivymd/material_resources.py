@@ -4,12 +4,13 @@ Material Resources
 """
 
 import os
-from kivy.utils import platform
+
 from kivy.core.window import Window
 from kivy.metrics import dp
+from kivy.utils import platform
 
 if "KIVY_DOC_INCLUDE" in os.environ:
-    dp = lambda x: x
+    dp = lambda x: x  # NOQA: F811
 
 # Feel free to override this const if you're designing for a device such as
 # a GNU/Linux tablet.

@@ -22,26 +22,27 @@ attribute, with which you control the material properties of your application.
 """
 
 from kivy.app import App
-from kivy.core.window import Window
+from kivy.atlas import Atlas
 from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.event import EventDispatcher
 from kivy.metrics import dp
 from kivy.properties import (
-    OptionProperty,
     AliasProperty,
-    ObjectProperty,
-    StringProperty,
-    ListProperty,
     BooleanProperty,
     DictProperty,
+    ListProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
-from kivy.event import EventDispatcher
 from kivy.utils import get_color_from_hex
-from kivy.atlas import Atlas
 
-from kivymd.color_definitions import colors, palette, hue
-from kivymd.font_definitions import theme_font_styles  # Fonts will be loaded
-from kivymd.material_resources import DEVICE_TYPE, DEVICE_IOS
 from kivymd import images_path
+from kivymd.color_definitions import colors, hue, palette
+from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
+
+from kivymd.font_definitions import theme_font_styles  # NOQA: F401
 
 
 class ThemeManager(EventDispatcher):
@@ -895,13 +896,13 @@ class ThemableBehavior(EventDispatcher):
                     raise ValueError(
                         "KivyMD: App object must be inherited from "
                         "`kivymd.app.MDApp`. See "
-                        "https://github.com/HeaTTheatR/KivyMD/blob/master/README.md#api-breaking-changes"
+                        "https://github.com/kivymd/KivyMD/blob/master/README.md#api-breaking-changes"
                     )
             except AttributeError:
                 raise ValueError(
                     "KivyMD: App object must be initialized before loading "
                     "root widget. See "
-                    "https://github.com/HeaTTheatR/KivyMD/wiki/Modules-Material-App#exceptions"
+                    "https://github.com/kivymd/KivyMD/wiki/Modules-Material-App#exceptions"
                 )
             self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)

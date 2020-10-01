@@ -1,4 +1,4 @@
-#:import images_path kivymd.images_path
+#:import environ os.environ
 
 
 <KitchenSinkTapTargetView>
@@ -7,7 +7,7 @@
 
     Image:
         id: logo
-        source: f"{images_path}kivymd_alpha.png"
+        source: f"{environ['KITCHEN_SINK_ASSETS']}kivymd.png"
 
     CustomToolbar:
         id: toolbar
@@ -61,6 +61,7 @@
         opacity: 0
         font_size: "24sp"
         halign: "center"
+        theme_text_color: "Primary"
 
     MDFloatingActionButton:
         id: add_btn

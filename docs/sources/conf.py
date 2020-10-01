@@ -8,18 +8,16 @@ import sys
 sys.path.insert(0, os.path.abspath("_extensions"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 
-import kivymd
-import autoapi_kivymd  # from _extensions
+import autoapi_kivymd  # NOQA. from _extensions
+import kivymd  # NOQA
 
 
 # Project information
 project = "KivyMD"
-copyright = "2020, Andrés Rodríguez, Ivanov Yuri, Artem S. Bulgakov and KivyMD contributors"
-author = (
-    "Andrés Rodríguez, Ivanov Yuri, Artem S. Bulgakov and KivyMD contributors"
-)
+copyright = "2020, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
+author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 version = kivymd.__version__
-reelase = kivymd.__version__
+release = kivymd.__version__
 
 
 # General configuration

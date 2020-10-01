@@ -1,7 +1,7 @@
 #:import toast kivymd.toast.toast
 
 
-<MDDropItem@Screen>
+<MDDropItem>
     name: "drop item"
 
     Toolbar:
@@ -10,9 +10,10 @@
 
     MDDropDownItem:
         id: dropdown_item
+        text: "Item 0"
         pos_hint: {'center_x': 0.5, 'center_y': 0.6}
-        items: [f"Item {i}" for i in range(50)]
         dropdown_bg: [1, 1, 1, 1]
+        on_release: root.menu.open()
 
     MDRaisedButton:
         pos_hint: {'center_x': 0.5, 'center_y': 0.3}

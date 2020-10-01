@@ -186,7 +186,7 @@ You can use labels to display material design icons using the
 
     `Material Design Icons <https://materialdesignicons.com/>`_
 
-    `Material Design Icon Names <https://github.com/HeaTTheatR/KivyMD/blob/master/kivymd/icon_definitions.py>`_
+    `Material Design Icon Names <https://github.com/kivymd/KivyMD/blob/master/kivymd/icon_definitions.py>`_
 
 The :class:`~MDIcon` class is inherited from
 :class:`~MDLabel` and has the same parameters.
@@ -204,23 +204,20 @@ The :class:`~MDIcon` class is inherited from
     :align: center
 """
 
-__all__ = (
-    "MDLabel",
-    "MDIcon",
-)
+__all__ = ("MDLabel", "MDIcon")
 
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (
-    OptionProperty,
-    ListProperty,
-    BooleanProperty,
-    StringProperty,
     AliasProperty,
+    BooleanProperty,
+    ListProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.label import Label
 
-from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 
@@ -250,15 +247,15 @@ Builder.load_string(
 
 
 class MDLabel(ThemableBehavior, Label):
-    font_style = OptionProperty("Body1", options=theme_font_styles)
+    font_style = StringProperty("Body1")
     """
     Label font style.
-    
-    Available options are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`, `'H6'`,
+
+    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`, `'H6'`,
     `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
-    :attr:`font_style` is an :class:`~kivy.properties.OptionProperty`
+    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 
@@ -278,7 +275,7 @@ class MDLabel(ThemableBehavior, Label):
     """Text of the label."""
 
     theme_text_color = OptionProperty(
-        None,
+        "Primary",
         allownone=True,
         options=[
             "Primary",
@@ -314,6 +311,7 @@ class MDLabel(ThemableBehavior, Label):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
         self.bind(
             font_style=self.update_font_style,
             can_capitalize=self.update_font_style,
@@ -322,14 +320,27 @@ class MDLabel(ThemableBehavior, Label):
         self.update_font_style()
         self.on_opposite_colors(None, self.opposite_colors)
 
-    def update_font_style(self, *args):
-        font_info = self.theme_cls.font_styles[self.font_style]
-        self.font_name = font_info[0]
-        self.font_size = sp(font_info[1])
-        if font_info[2] and self.can_capitalize:
-            self._capitalizing = True
+        Clock.schedule_once(self.check_font_styles)
+
+    def check_font_styles(self, *dt):
+        if self.font_style not in list(self.theme_cls.font_styles.keys()):
+            raise ValueError(
+                f"MDLabel.font_style is set to an invalid option '{self.font_style}'."
+                f"Must be one of: {list(self.theme_cls.font_styles)}"
+            )
         else:
-            self._capitalizing = False
+            return True
+
+    def update_font_style(self, *args):
+        if self.check_font_styles() is True:
+            font_info = self.theme_cls.font_styles[self.font_style]
+            self.font_name = font_info[0]
+            self.font_size = sp(font_info[1])
+            if font_info[2] and self.can_capitalize:
+                self._capitalizing = True
+            else:
+                self._capitalizing = False
+
         # TODO: Add letter spacing change
         # self.letter_spacing = font_info[3]
 

@@ -1,36 +1,59 @@
-import os
-
-from kivy.uix.modalview import ModalView
 from kivy.uix.screenmanager import Screen
+
+from kivymd.uix.boxlayout import MDBoxLayout
+
+
+class KitchenSinkFileFileManagerTypeDialog(MDBoxLayout):
+    """ Choose file manager type and selection type """
+
+    allow_multiple_selection = False
+
+    def set_selection_type(self, checkbox, value):
+        self.allow_multiple_selection = value
 
 
 class KitchenSinkFileManager(Screen):
     manager_open = False
+    file_manager = None
 
     def file_manager_open(self):
+        from kivymd.app import MDApp
+
         from kivymd.uix.filemanager import MDFileManager
         from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.button import MDFlatButton
 
-        def open_file_manager(text_item, dialog):
-            previous = False if text_item == "List" else True
-            self.manager = ModalView(size_hint=(1, 1), auto_dismiss=False)
-            self.file_manager = MDFileManager(
-                exit_manager=self.exit_manager,
-                select_path=self.select_path,
-                previous=previous,
+        def open_file_manager(text_item):
+            preview = False if text_item == "List" else True
+            if not self.file_manager:
+                self.file_manager = MDFileManager(
+                    exit_manager=self.exit_manager,
+                    select_path=self.select_path,
+                    preview=preview,
+                )
+            self.file_manager.preview = preview
+            self.file_manager.multiselect = (
+                manager_type_dialog.allow_multiple_selection
             )
-            self.manager.add_widget(self.file_manager)
-            self.file_manager.show(os.environ["KITCHEN_SINK_ASSETS"])
+            self.file_manager.show(MDApp.get_running_app().user_data_dir)
             self.manager_open = True
-            self.manager.open()
+
+        manager_type_dialog = KitchenSinkFileFileManagerTypeDialog()
 
         MDDialog(
             title="Kitchen Sink",
+            type="custom",
             size_hint=(0.8, 0.4),
-            text_button_ok="List",
-            text="Open manager with 'list' or 'previous' mode?",
-            text_button_cancel="Previous",
-            events_callback=open_file_manager,
+            content_cls=manager_type_dialog,
+            buttons=[
+                MDFlatButton(
+                    text="List", on_release=lambda x: open_file_manager("List")
+                ),
+                MDFlatButton(
+                    text="Preview",
+                    on_release=lambda x: open_file_manager("Preview"),
+                ),
+            ],
         ).open()
 
     def select_path(self, path):
@@ -44,10 +67,13 @@ class KitchenSinkFileManager(Screen):
         from kivymd.toast import toast
 
         self.exit_manager()
-        toast(path)
+        if type(path) == str:
+            toast(path)
+        else:
+            toast(",".join(path))
 
     def exit_manager(self, *args):
         """Called when the user reaches the root of the directory tree."""
 
-        self.manager.dismiss()
         self.manager_open = False
+        self.file_manager.close()

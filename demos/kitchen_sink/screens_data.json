@@ -15,6 +15,15 @@
       'object': 0,
       'icon': 'picture-in-picture-bottom-right'
   },
+  'Data Tables': {
+      'kv_string': 'data_tables',
+      'Factory': 'KitchenSinkDataTables()',
+      'Import': 'from libs.baseclass.data_tables import KitchenSinkDataTables',
+      'name_screen': 'data tables',
+      'source_code': 'Components-Data-Tables.md',
+      'object': 0,
+      'icon': 'table-large'
+  },
   'Bottom Sheets': {
       'kv_string': 'bottom_sheet',
       'Factory': 'KitchenSinkBottomSheet()',
@@ -22,11 +31,12 @@
       'name_screen': 'bottom sheet',
       'source_code': 'Components-Bottom-Sheet.md',
       'object': 0,
-      'icon': 'file-document-box-outline'
+      'icon': 'text-box-outline'
   },
   'Dropdown Item': {
       'kv_string': 'drop_item',
-      'Factory': 'Factory.MDDropItem()',
+      'Factory': 'MDDropItem()',
+      'Import': 'from libs.baseclass.drop_item import MDDropItem',
       'name_screen': 'drop item',
       'source_code': 'Components-DropDownItem.md',
       'object': 0,
@@ -87,14 +97,6 @@
       'object': 0,
       'icon': 'dock-window'
   },
-  'Download File': {
-      'kv_string': 'download_file',
-      'Import': 'from libs.baseclass.download_file import KitchenSinkDownloadFile',
-      'Factory': 'KitchenSinkDownloadFile()',
-      'name_screen': 'download file',
-      'object': 0,
-      'icon': 'download'
-  },
   'User Animation Card': {
       'kv_string': 'user_animation_card',
       'Import': 'from libs.baseclass.user_animation_card import KitchenSinkUserCard',
@@ -133,8 +135,8 @@
   },
   'Dialogs': {
       'kv_string': 'dialogs',
-      'Import': 'from libs.baseclass.dialogs import KitchenSinkCDialogs',
-      'Factory': 'KitchenSinkCDialogs()',
+      'Import': 'from libs.baseclass.dialogs import KitchenSinkDialogs',
+      'Factory': 'KitchenSinkDialogs()',
       'name_screen': 'dialogs',
       'source_code': 'Components-Dialog.md',
       'object': 0,
@@ -242,6 +244,15 @@
       'Factory': 'KitchenSinkBottomAppBar()',
       'name_screen': 'bottom app bar',
       'source_code': 'Components-Bottom-App-Bar.md',
+      'object': 0,
+      'icon': 'dock-bottom'
+  },
+  'Toggle Button': {
+      'kv_string': 'toggle_button',
+      'Import': 'from libs.baseclass.toggle_button import KitchenSinkToggleButtons',
+      'Factory': 'KitchenSinkToggleButtons()',
+      'name_screen': 'toggle button',
+      'source_code': 'Components-Toggle-Button.md',
       'object': 0,
       'icon': 'dock-bottom'
   },

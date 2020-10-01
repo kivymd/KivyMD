@@ -1,15 +1,15 @@
 <StyleLabel@MDLabel>:
     size_hint_y: None
     height: self.texture_size[1]
+    theme_text_color: "Primary"
 
 
-<StyleItemCheck@BoxLayout>:
+<StyleItemCheck@MDBoxLayout>:
     group: ""
     text: ""
     _parent: None
     active: False
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
 
     MDCheckbox:
         group: root.group
@@ -37,9 +37,8 @@
 
         ScrollView:
 
-            GridLayout:
-                size_hint_y: None
-                height: self.minimum_height
+            MDGridLayout:
+                adaptive_height: True
                 cols: 1
                 padding: "10dp"
                 spacing: "10dp"

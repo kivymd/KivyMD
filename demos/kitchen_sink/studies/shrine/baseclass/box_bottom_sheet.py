@@ -2,11 +2,11 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.recycleview import RecycleView
 
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDCustomRoundIconButton, MDIconButton
 from kivymd.uix.list import TwoLineAvatarIconListItem
 
@@ -15,11 +15,11 @@ class BoxBottomSheetProductList(RecycleView):
     pass
 
 
-class TotalPriceForBoxBottomSheetProductList(BoxLayout):
+class TotalPriceForBoxBottomSheetProductList(MDBoxLayout):
     pass
 
 
-class ToolbarForBoxBottomSheetProductList(BoxLayout):
+class ToolbarForBoxBottomSheetProductList(MDBoxLayout):
     pass
 
 
@@ -32,7 +32,7 @@ class PreviousImage(MDCustomRoundIconButton):
     _root = ObjectProperty()
 
 
-class BoxBottomSheet(ThemableBehavior, BoxLayout):
+class BoxBottomSheet(ThemableBehavior, MDBoxLayout):
     open_sheet_box = False
 
     def clear_box(self):

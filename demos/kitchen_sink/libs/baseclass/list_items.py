@@ -1,14 +1,19 @@
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import ListProperty, StringProperty
 from kivy.uix.widget import Widget
 
 from kivymd.uix.list import (
-    OneLineAvatarListItem,
     ILeftBody,
-    TwoLineAvatarListItem,
     IRightBodyTouch,
+    OneLineAvatarListItem,
     OneLineIconListItem,
+    TwoLineAvatarListItem,
 )
 from kivymd.uix.selectioncontrol import MDCheckbox
+
+
+class KitchenSinkOneLineLeftAvatarItem(OneLineAvatarListItem):
+    divider = None
+    source = StringProperty()
 
 
 class KitchenSinkTwoLineLeftAvatarItem(TwoLineAvatarListItem):

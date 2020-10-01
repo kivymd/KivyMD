@@ -6,340 +6,598 @@ Components/Dialog
 
     `Material Design spec, Dialogs <https://material.io/components/dialogs>`_
 
-Example
--------
+
+.. rubric:: Dialogs inform users about a task and can contain critical
+    information, require decisions, or involve multiple tasks.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialogs.png
+    :align: center
+
+Usage
+-----
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
-    from kivy.factory import Factory
-    from kivy.utils import get_hex_from_color
 
-    from kivymd.uix.dialog import MDInputDialog, MDDialog
-    from kivymd.theming import ThemeManager
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDFlatButton
+    from kivymd.uix.dialog import MDDialog
 
+    KV = '''
+    FloatLayout:
 
-    Builder.load_string('''
-    <ExampleDialogs@BoxLayout>
-        orientation: 'vertical'
-        spacing: dp(5)
-
-        MDToolbar:
-            id: toolbar
-            title: app.title
-            left_action_items: [['menu', lambda x: None]]
-            elevation: 10
-            md_bg_color: app.theme_cls.primary_color
-
-        FloatLayout:
-            MDRectangleFlatButton:
-                text: "Open input dialog"
-                pos_hint: {'center_x': .5, 'center_y': .7}
-                opposite_colors: True
-                on_release: app.show_example_input_dialog()
-
-            MDRectangleFlatButton:
-                text: "Open Ok Cancel dialog"
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                opposite_colors: True
-                on_release: app.show_example_okcancel_dialog()
-    ''')
+        MDFlatButton:
+            text: "ALERT DIALOG"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_alert_dialog()
+    '''
 
 
     class Example(MDApp):
-        title = "Dialogs"
+        dialog = None
 
         def build(self):
-            return Factory.ExampleDialogs()
+            return Builder.load_string(KV)
 
-        def callback_for_menu_items(self, *args):
-            from kivymd.toast.kivytoast import toast
-            toast(args[0])
-
-        def show_example_input_dialog(self):
-            dialog = MDInputDialog(
-                title='Title', hint_text='Hint text', size_hint=(.8, .4),
-                text_button_ok='Yes',
-                events_callback=self.callback_for_menu_items)
-            dialog.open()
-
-        def show_example_okcancel_dialog(self):
-            dialog = MDDialog(
-                title='Title', size_hint=(.8, .3), text_button_ok='Yes',
-                text="Your [color=%s][b]text[/b][/color] dialog" % get_hex_from_color(
-                    self.theme_cls.primary_color),
-                text_button_cancel='Cancel',
-                events_callback=self.callback_for_menu_items)
-            dialog.open()
+        def show_alert_dialog(self):
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    text="Discard draft?",
+                    buttons=[
+                        MDFlatButton(
+                            text="CANCEL", text_color=self.theme_cls.primary_color
+                        ),
+                        MDFlatButton(
+                            text="DISCARD", text_color=self.theme_cls.primary_color
+                        ),
+                    ],
+                )
+            self.dialog.open()
 
 
     Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/alert-dialog.png
+    :align: center
 """
 
+__all__ = ("MDDialog",)
+
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
 from kivy.metrics import dp
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import (
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
+)
 from kivy.uix.modalview import ModalView
 
-from kivymd.uix.card import MDCard
-from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDTextButton
-from kivymd.uix.textfield import MDTextField, MDTextFieldRect
+from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
-from kivymd import images_path
-from kivymd.material_resources import DEVICE_IOS
-
+from kivymd.uix.button import BaseButton
+from kivymd.uix.card import MDSeparator
+from kivymd.uix.list import BaseListItem
 
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
 
 
-<ContentInputDialog>
-    orientation: 'vertical'
-    padding: dp(15)
-    spacing: dp(10)
+<BaseDialog>
+    background: '{}/transparent.png'.format(images_path)
+    canvas.before:
+        PushMatrix
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+        Scale:
+            origin: self.center
+            x: root._scale_x
+            y: root._scale_y
+    canvas.after:
+        PopMatrix
 
-    MDLabel:
-        font_style: 'H6'
-        text: root.title
-        halign: 'left' if not root.device_ios else 'center'
+<MDDialog>
 
-    BoxLayout:
-        id: box_input
-        size_hint: 1, None
-
-    Widget:
-    Widget:
-
-    MDSeparator:
-        id: sep
-
-    BoxLayout:
-        id: box_buttons
+    MDCard:
+        id: container
+        orientation: "vertical"
         size_hint_y: None
-        height: dp(20)
-        padding: dp(20), 0, dp(20), 0
-
-
-<ContentMDDialog>
-    orientation: 'vertical'
-    padding: dp(15)
-    spacing: dp(10)
-
-    text_button_ok: ''
-    text_button_cancel: ''
-
-    MDLabel:
-        id: title
-        text: root.title
-        font_style: 'H6'
-        halign: 'left' if not root.device_ios else 'center'
-        valign: 'top'
-        size_hint_y: None
-        text_size: self.width, None
-        height: self.texture_size[1]
-
-    ScrollView:
-        id: scroll
-        size_hint_y: None
-        height:
-            root.height - (box_buttons.height + title.height + dp(48)\
-            + sep.height)
+        height: self.minimum_height
+        elevation: 4
+        md_bg_color: 0, 0, 0, 0
+        padding: "24dp", "24dp", "8dp", "8dp"
 
         canvas:
-            Rectangle:
+            Color:
+                rgba: root.md_bg_color
+            RoundedRectangle:
                 pos: self.pos
                 size: self.size
-                #source: f'{images_path}dialog_in_fade.png'
-                source: f'{images_path}transparent.png'
+                radius: root.radius
 
         MDLabel:
-            text: '\\n' + root.text + '\\n'
+            id: title
+            text: root.title
+            font_style: "H6"
+            bold: True
+            markup: True
             size_hint_y: None
             height: self.texture_size[1]
-            valign: 'top'
-            halign: 'left' if not root.device_ios else 'center'
+            valign: "top"
+
+        BoxLayout:
+            id: spacer_top_box
+            size_hint_y: None
+            height: root._spacer_top
+
+        MDLabel:
+            id: text
+            text: root.text
+            font_style: "Body1"
+            theme_text_color: "Custom"
+            text_color: root.theme_cls.disabled_hint_text_color
+            size_hint_y: None
+            height: self.texture_size[1]
             markup: True
 
-    MDSeparator:
-        id: sep
+        ScrollView:
+            id: scroll
+            size_hint_y: None
+            height: root._scroll_height
 
-    BoxLayout:
-        id: box_buttons
-        size_hint_y: None
-        height: dp(20)
-        padding: dp(20), 0, dp(20), 0
+            MDGridLayout:
+                id: box_items
+                adaptive_height: True
+                cols: 1
+
+        BoxLayout:
+            id: spacer_bottom_box
+            size_hint_y: None
+            height: self.minimum_height
+
+        AnchorLayout:
+            id: root_button_box
+            size_hint_y: None
+            height: "52dp"
+            anchor_x: "right"
+
+            MDBoxLayout:
+                id: button_box
+                adaptive_size: True
+                spacing: "8dp"
 """
 )
 
-if DEVICE_IOS:
-    Heir = BoxLayout
-else:
-    Heir = MDCard
 
-
-# FIXME: Not work themes for iOS.
 class BaseDialog(ThemableBehavior, ModalView):
-    def set_content(self, instance_content_dialog):
-        def _events_callback(result_press):
-            self.dismiss()
-            if result_press and self.events_callback:
-                self.events_callback(result_press, self)
-
-        if self.device_ios:  # create buttons for iOS
-            self.background = self._background
-
-            if isinstance(instance_content_dialog, ContentInputDialog):
-                self.text_field = MDTextFieldRect(
-                    pos_hint={"center_x": 0.5},
-                    size_hint=(1, None),
-                    multiline=False,
-                    height=dp(33),
-                    cursor_color=self.theme_cls.primary_color,
-                    hint_text=instance_content_dialog.hint_text,
-                )
-                instance_content_dialog.ids.box_input.height = dp(33)
-                instance_content_dialog.ids.box_input.add_widget(
-                    self.text_field
-                )
-
-            if self.text_button_cancel != "":
-                anchor = "left"
-            else:
-                anchor = "center"
-            box_button_ok = AnchorLayout(anchor_x=anchor)
-            box_button_ok.add_widget(
-                MDTextButton(
-                    text=self.text_button_ok,
-                    font_size="18sp",
-                    on_release=lambda x: _events_callback(self.text_button_ok),
-                )
-            )
-            instance_content_dialog.ids.box_buttons.add_widget(box_button_ok)
-
-            if self.text_button_cancel != "":
-                box_button_ok.anchor_x = "left"
-                box_button_cancel = AnchorLayout(anchor_x="right")
-                box_button_cancel.add_widget(
-                    MDTextButton(
-                        text=self.text_button_cancel,
-                        font_size="18sp",
-                        on_release=lambda x: _events_callback(
-                            self.text_button_cancel
-                        ),
-                    )
-                )
-                instance_content_dialog.ids.box_buttons.add_widget(
-                    box_button_cancel
-                )
-
-        else:  # create buttons for Android
-            if isinstance(instance_content_dialog, ContentInputDialog):
-                self.text_field = MDTextField(
-                    size_hint=(1, None),
-                    height=dp(48),
-                    hint_text=instance_content_dialog.hint_text,
-                )
-                instance_content_dialog.ids.box_input.height = dp(48)
-                instance_content_dialog.ids.box_input.add_widget(
-                    self.text_field
-                )
-                instance_content_dialog.ids.box_buttons.remove_widget(
-                    instance_content_dialog.ids.sep
-                )
-
-            box_buttons = AnchorLayout(
-                anchor_x="right", size_hint_y=None, height=dp(30)
-            )
-            box = BoxLayout(size_hint_x=None, spacing=dp(5))
-            box.bind(minimum_width=box.setter("width"))
-            button_ok = MDRaisedButton(
-                text=self.text_button_ok,
-                on_release=lambda x: _events_callback(self.text_button_ok),
-            )
-            box.add_widget(button_ok)
-
-            if self.text_button_cancel != "":
-                button_cancel = MDFlatButton(
-                    text=self.text_button_cancel,
-                    theme_text_color="Custom",
-                    text_color=self.theme_cls.primary_color,
-                    on_release=lambda x: _events_callback(
-                        self.text_button_cancel
-                    ),
-                )
-                box.add_widget(button_cancel)
-
-            box_buttons.add_widget(box)
-            instance_content_dialog.ids.box_buttons.add_widget(box_buttons)
-            instance_content_dialog.ids.box_buttons.height = button_ok.height
-            instance_content_dialog.remove_widget(
-                instance_content_dialog.ids.sep
-            )
-
-
-class MDInputDialog(BaseDialog):
-    title = StringProperty("Title")
-    hint_text = StringProperty()
-    text_button_ok = StringProperty("Ok")
-    text_button_cancel = StringProperty()
-    events_callback = ObjectProperty()
-    _background = StringProperty(f"{images_path}ios_bg_mod.png")
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
-        self.content_dialog = ContentInputDialog(
-            title=self.title,
-            hint_text=self.hint_text,
-            text_button_ok=self.text_button_ok,
-            text_button_cancel=self.text_button_cancel,
-            device_ios=self.device_ios,
-        )
-        self.add_widget(self.content_dialog)
-        self.set_content(self.content_dialog)
-        Clock.schedule_once(self.set_field_focus, 0.5)
-
-    def set_field_focus(self, interval):
-        self.text_field.focus = True
+    _scale_x = NumericProperty(1)
+    _scale_y = NumericProperty(1)
 
 
 class MDDialog(BaseDialog):
-    title = StringProperty("Title")
-    text = StringProperty("Text dialog")
-    text_button_cancel = StringProperty()
-    text_button_ok = StringProperty("Ok")
-    events_callback = ObjectProperty()
-    _background = StringProperty(f"{images_path}ios_bg_mod.png")
+    title = StringProperty()
+    """
+    Title dialog.
+
+    .. code-block:: python
+
+        self.dialog = MDDialog(
+            title="Reset settings?",
+            buttons=[
+                MDFlatButton(
+                    text="CANCEL", text_color=self.theme_cls.primary_color
+                ),
+                MDFlatButton(
+                    text="ACCEPT", text_color=self.theme_cls.primary_color
+                ),
+            ],
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-title.png
+        :align: center
+
+    :attr:`title` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    text = StringProperty()
+    """
+    Text dialog.
+
+    .. code-block:: python
+
+        self.dialog = MDDialog(
+            title="Reset settings?",
+            text="This will reset your device to its default factory settings.",
+            buttons=[
+                MDFlatButton(
+                    text="CANCEL", text_color=self.theme_cls.primary_color
+                ),
+                MDFlatButton(
+                    text="ACCEPT", text_color=self.theme_cls.primary_color
+                ),
+            ],
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-text.png
+        :align: center
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    radius = ListProperty([7, 7, 7, 7])
+    """
+    Dialog corners rounding value.
+
+    .. code-block:: python
+
+        self.dialog = MDDialog(
+            text="Oops! Something seems to have gone wrong!",
+            radius=[20, 7, 20, 7],
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-radius.png
+        :align: center
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[7, 7, 7, 7]`.
+    """
+
+    buttons = ListProperty()
+    """
+    List of button objects for dialog.
+    Objects must be inherited from :class:`~kivymd.uix.button.BaseButton` class.
+
+    .. code-block:: python
+
+        self.dialog = MDDialog(
+            text="Discard draft?",
+            buttons=[
+                MDFlatButton(text="CANCEL"), MDRaisedButton(text="DISCARD"),
+            ],
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-buttons.png
+        :align: center
+
+    :attr:`buttons` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    items = ListProperty()
+    """
+    List of items objects for dialog.
+    Objects must be inherited from :class:`~kivymd.uix.list.BaseListItem` class.
+
+    With type 'simple'
+    -----------------
+
+    .. code-block:: python
+
+        from kivy.lang import Builder
+        from kivy.properties import StringProperty
+
+        from kivymd.app import MDApp
+        from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.list import OneLineAvatarListItem
+
+        KV = '''
+        <Item>
+
+            ImageLeftWidget:
+                source: root.source
+
+
+        FloatLayout:
+
+            MDFlatButton:
+                text: "ALERT DIALOG"
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_release: app.show_simple_dialog()
+        '''
+
+
+        class Item(OneLineAvatarListItem):
+            divider = None
+            source = StringProperty()
+
+
+        class Example(MDApp):
+            dialog = None
+
+            def build(self):
+                return Builder.load_string(KV)
+
+            def show_simple_dialog(self):
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        title="Set backup account",
+                        type="simple",
+                        items=[
+                            Item(text="user01@gmail.com", source="user-1.png"),
+                            Item(text="user02@gmail.com", source="user-2.png"),
+                            Item(text="Add account", source="add-icon.png"),
+                        ],
+                    )
+                self.dialog.open()
+
+
+        Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-items.png
+        :align: center
+
+    With type 'confirmation'
+    -----------------------
+
+    .. code-block:: python
+
+        from kivy.lang import Builder
+
+        from kivymd.app import MDApp
+        from kivymd.uix.button import MDFlatButton
+        from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.list import OneLineAvatarIconListItem
+
+        KV = '''
+        <ItemConfirm>
+            on_release: root.set_icon(check)
+
+            CheckboxLeftWidget:
+                id: check
+                group: "check"
+
+
+        FloatLayout:
+
+            MDFlatButton:
+                text: "ALERT DIALOG"
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_release: app.show_confirmation_dialog()
+        '''
+
+
+        class ItemConfirm(OneLineAvatarIconListItem):
+            divider = None
+
+            def set_icon(self, instance_check):
+                instance_check.active = True
+                check_list = instance_check.get_widgets(instance_check.group)
+                for check in check_list:
+                    if check != instance_check:
+                        check.active = False
+
+
+        class Example(MDApp):
+            dialog = None
+
+            def build(self):
+                return Builder.load_string(KV)
+
+            def show_confirmation_dialog(self):
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        title="Phone ringtone",
+                        type="confirmation",
+                        items=[
+                            ItemConfirm(text="Callisto"),
+                            ItemConfirm(text="Luna"),
+                            ItemConfirm(text="Night"),
+                            ItemConfirm(text="Solo"),
+                            ItemConfirm(text="Phobos"),
+                            ItemConfirm(text="Diamond"),
+                            ItemConfirm(text="Sirena"),
+                            ItemConfirm(text="Red music"),
+                            ItemConfirm(text="Allergio"),
+                            ItemConfirm(text="Magic"),
+                            ItemConfirm(text="Tic-tac"),
+                        ],
+                        buttons=[
+                            MDFlatButton(
+                                text="CANCEL", text_color=self.theme_cls.primary_color
+                            ),
+                            MDFlatButton(
+                                text="OK", text_color=self.theme_cls.primary_color
+                            ),
+                        ],
+                    )
+                self.dialog.open()
+
+
+        Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-confirmation.png
+        :align: center
+
+    :attr:`items` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    type = OptionProperty(
+        "alert", options=["alert", "simple", "confirmation", "custom"]
+    )
+    """
+    Dialog type.
+    Available option are `'alert'`, `'simple'`, `'confirmation'`, `'custom'`.
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'alert'`.
+    """
+
+    content_cls = ObjectProperty()
+    """
+    Custom content class.
+
+    .. code-block::
+
+        from kivy.lang import Builder
+        from kivy.uix.boxlayout import BoxLayout
+
+        from kivymd.app import MDApp
+        from kivymd.uix.button import MDFlatButton
+        from kivymd.uix.dialog import MDDialog
+
+        KV = '''
+        <Content>
+            orientation: "vertical"
+            spacing: "12dp"
+            size_hint_y: None
+            height: "120dp"
+
+            MDTextField:
+                hint_text: "City"
+
+            MDTextField:
+                hint_text: "Street"
+
+
+        FloatLayout:
+
+            MDFlatButton:
+                text: "ALERT DIALOG"
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_release: app.show_confirmation_dialog()
+        '''
+
+
+        class Content(BoxLayout):
+            pass
+
+
+        class Example(MDApp):
+            dialog = None
+
+            def build(self):
+                return Builder.load_string(KV)
+
+            def show_confirmation_dialog(self):
+                if not self.dialog:
+                    self.dialog = MDDialog(
+                        title="Address:",
+                        type="custom",
+                        content_cls=Content(),
+                        buttons=[
+                            MDFlatButton(
+                                text="CANCEL", text_color=self.theme_cls.primary_color
+                            ),
+                            MDFlatButton(
+                                text="OK", text_color=self.theme_cls.primary_color
+                            ),
+                        ],
+                    )
+                self.dialog.open()
+
+
+        Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-custom.png
+        :align: center
+
+    :attr:`content_cls` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `'None'`.
+    """
+
+    md_bg_color = ListProperty()
+    """
+    Background color in the format (r, g, b, a).
+
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    _scroll_height = NumericProperty("28dp")
+    _spacer_top = NumericProperty("24dp")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        content_dialog = ContentMDDialog(
-            title=self.title,
-            text=self.text,
-            text_button_ok=self.text_button_ok,
-            text_button_cancel=self.text_button_cancel,
-            device_ios=self.device_ios,
+
+        self.md_bg_color = (
+            self.theme_cls.bg_dark if not self.md_bg_color else self.md_bg_color
         )
-        self.add_widget(content_dialog)
-        self.set_content(content_dialog)
 
+        if self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
+            self.size_hint = (None, None)
+            self.width = dp(280)
+        elif self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
+            self.size_hint = (None, None)
+            self.width = dp(560)
 
-class ContentInputDialog(Heir):
-    title = StringProperty()
-    hint_text = StringProperty()
-    text_button_ok = StringProperty()
-    text_button_cancel = StringProperty()
-    device_ios = BooleanProperty()
+        if not self.title:
+            self._spacer_top = 0
 
+        if not self.buttons:
+            self.ids.root_button_box.height = 0
+        else:
+            self.create_buttons()
 
-class ContentMDDialog(Heir):
-    title = StringProperty()
-    text = StringProperty()
-    text_button_cancel = StringProperty()
-    text_button_ok = StringProperty()
-    device_ios = BooleanProperty()
+        update_height = False
+        if self.type in ("simple", "confirmation"):
+            if self.type == "confirmation":
+                self.ids.spacer_top_box.add_widget(MDSeparator())
+                self.ids.spacer_bottom_box.add_widget(MDSeparator())
+            self.create_items()
+        if self.type == "custom":
+            if self.content_cls:
+                self.ids.container.remove_widget(self.ids.scroll)
+                self.ids.container.remove_widget(self.ids.text)
+                self.ids.spacer_top_box.add_widget(self.content_cls)
+                self.ids.spacer_top_box.padding = (0, "24dp", "16dp", 0)
+                update_height = True
+        if self.type == "alert":
+            self.ids.scroll.bar_width = 0
+
+        if update_height:
+            Clock.schedule_once(self.update_height)
+
+    def update_height(self, *_):
+        self._spacer_top = self.content_cls.height + dp(24)
+
+    def on_open(self):
+        # TODO: Add scrolling text.
+        self.height = self.ids.container.height
+
+    def set_normal_height(self):
+        self.size_hint_y = 0.8
+
+    def get_normal_height(self):
+        return (
+            (Window.height * 80 / 100)
+            - self._spacer_top
+            - dp(52)
+            - self.ids.container.padding[1]
+            - self.ids.container.padding[-1]
+            - 100
+        )
+
+    def edit_padding_for_item(self, instance_item):
+        instance_item.ids._left_container.x = 0
+        instance_item._txt_left_pad = "56dp"
+
+    def create_items(self):
+        self.ids.container.remove_widget(self.ids.text)
+        height = 0
+
+        for item in self.items:
+            if issubclass(item.__class__, BaseListItem):
+                height += item.height  # calculate height contents
+                self.edit_padding_for_item(item)
+                self.ids.box_items.add_widget(item)
+
+        if height > Window.height:
+            self.set_normal_height()
+            self.ids.scroll.height = self.get_normal_height()
+        else:
+            self.ids.scroll.height = height
+
+    def create_buttons(self):
+        for button in self.buttons:
+            if issubclass(button.__class__, BaseButton):
+                self.ids.button_box.add_widget(button)

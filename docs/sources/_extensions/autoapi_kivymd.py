@@ -13,15 +13,15 @@ It patches :func:`autoapi.mappers.python.objects.PythonPythonMapper.include_dir`
 import os
 import re
 
+import autoapi
 import sphinx
+import unidecode
+from autoapi.extension import LOGGER
+from autoapi.extension import setup as autoapi_setup
+from autoapi.mappers.python.mapper import PythonSphinxMapper
+from autoapi.mappers.python.objects import PythonPythonMapper
 from sphinx.util.console import bold, darkgreen
 from sphinx.util.osutil import ensuredir
-
-import unidecode
-import autoapi
-from autoapi.extension import setup as autoapi_setup, LOGGER
-from autoapi.mappers.python.objects import PythonPythonMapper
-from autoapi.mappers.python.mapper import PythonSphinxMapper
 
 
 def PythonPythonMapper_include_dir(self: PythonPythonMapper, root):

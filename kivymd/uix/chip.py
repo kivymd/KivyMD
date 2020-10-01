@@ -94,24 +94,24 @@ Choose chip
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-shoose-icon.gif
     :align: center
 
-.. Note:: `See full example <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Chip>`_
+.. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Chip>`_
 """
 
 from kivy.animation import Animation
+from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    StringProperty,
-    ListProperty,
-    ObjectProperty,
     BooleanProperty,
+    ListProperty,
     NumericProperty,
+    ObjectProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.lang import Builder
-from kivy.uix.stacklayout import StackLayout
 
-from kivymd.uix.button import MDIconButton
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.stacklayout import MDStackLayout
 
 Builder.load_string(
     """
@@ -119,8 +119,7 @@ Builder.load_string(
 
 
 <MDChooseChip>
-    size_hint_y: None
-    height: self.minimum_height
+    adaptive_height: True
     spacing: "5dp"
 
 
@@ -140,15 +139,13 @@ Builder.load_string(
             size: self.size
             radius: [root.radius]
 
-    BoxLayout:
+    MDBoxLayout:
         id: box_check
-        size_hint: None, None
-        size: self.minimum_size
+        adaptive_size: True
         pos_hint: {'center_y': .5}
 
-    BoxLayout:
-        size_hint_x: None
-        width: self.minimum_width
+    MDBoxLayout:
+        adaptive_width: True
         padding: dp(10)
 
         Label:
@@ -156,6 +153,7 @@ Builder.load_string(
             text: root.label
             size_hint_x: None
             width: self.texture_size[0]
+            color: root.text_color if root.text_color else (root.theme_cls.text_color)
 
     MDIconButton:
         id: icon
@@ -165,6 +163,7 @@ Builder.load_string(
         pos_hint: {"center_y": .5}
         user_font_size: "20dp"
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
 """
 )
 
@@ -188,6 +187,13 @@ class MDChip(BoxLayout, ThemableBehavior):
     """Chip color in ``rgba`` format.
 
     :attr:`color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    text_color = ListProperty()
+    """Chip's text color in ``rgba`` format.
+
+    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -263,7 +269,7 @@ class MDChip(BoxLayout, ThemableBehavior):
                 self.callback(self, self.label)
 
 
-class MDChooseChip(StackLayout):
+class MDChooseChip(MDStackLayout):
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDChip):
             return super().add_widget(widget)

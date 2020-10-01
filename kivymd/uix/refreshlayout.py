@@ -44,10 +44,9 @@ Example
                 refresh_callback: app.refresh_callback
                 root_layout: root
 
-                GridLayout:
+                MDGridLayout:
                     id: box
-                    size_hint_y: None
-                    height: self.minimum_height
+                    adaptive_height: True
                     cols: 1
     ''')
 
@@ -102,13 +101,13 @@ Example
 """
 
 from kivy.animation import Animation
+from kivy.core.window import Window
 from kivy.effects.dampedscroll import DampedScrollEffect
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import NumericProperty, ObjectProperty, ListProperty
+from kivy.properties import ListProperty, NumericProperty, ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
-from kivy.core.window import Window
 
 from kivymd.theming import ThemableBehavior
 

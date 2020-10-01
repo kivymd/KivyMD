@@ -16,16 +16,14 @@
                 text: 'Python'
                 icon: 'language-python'
 
-                BoxLayout:
+                MDBoxLayout:
                     orientation: 'vertical'
-                    size_hint_y: None
-                    height: self.minimum_height
+                    adaptive_height: True
                     spacing: dp(10)
                     pos_hint: {'center_x': .5, 'center_y': .5}
 
                     MDLabel:
                         font_style: 'Body1'
-                        theme_text_color: 'Primary'
                         text: 'Toggle to set custom panel color'
                         halign: 'center'
 
@@ -45,7 +43,6 @@
 
                 MDLabel:
                     font_style: 'Body1'
-                    theme_text_color: 'Primary'
                     text: 'I programming of C++'
                     halign: 'center'
 
@@ -56,6 +53,5 @@
 
                 MDLabel:
                     font_style: 'Body1'
-                    theme_text_color: 'Primary'
                     text: 'Oh god JS again'
                     halign: 'center'

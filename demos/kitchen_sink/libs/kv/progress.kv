@@ -1,20 +1,50 @@
 <Progress@Screen>
     name: 'progress'
+    on_enter:
+        progress_determinate.start()
+        progress_indeterminate.start()
+    on_leave:
+        progress_determinate.stop()
+        progress_indeterminate.stop()
+        spinner.active = False
 
-    Toolbar:
-        id: toolbar
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_height: True
         pos_hint: {"top": 1}
+        spacing: "20dp"
 
-    MDCheckbox:
-        id: chkbox
-        size_hint: None, None
-        size: dp(48), dp(48)
-        pos_hint: {'center_x': .5, 'center_y': .4}
-        active: True
+        Toolbar:
+            id: toolbar
 
-    MDSpinner:
-        id: spinner
-        size_hint: None, None
-        size: dp(46), dp(46)
-        pos_hint: {'center_x': .5, 'center_y': .5}
-        active: True if chkbox.active else False
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+
+            MDToolbar:
+                title: "Determinate progressbar"
+                md_bg_color: app.theme_cls.bg_light
+                specific_text_color: app.theme_cls.text_color
+
+            MDProgressBar:
+                id: progress_determinate
+                type: "determinate"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+
+            MDToolbar:
+                title: "Indeterminate progressbar"
+                md_bg_color: app.theme_cls.bg_light
+                specific_text_color: app.theme_cls.text_color
+
+            MDProgressBar:
+                id: progress_indeterminate
+                type: "indeterminate"
+
+        MDSpinner:
+            id: spinner
+            size_hint: None, None
+            size: "46dp", "46dp"
+            pos_hint: {'center_x': .5}

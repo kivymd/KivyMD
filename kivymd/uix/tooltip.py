@@ -28,7 +28,7 @@ In Python code:
     class TooltipMDIconButton(MDIconButton, MDTooltip):
         pass
 
-.. Warning:: :class:`~MDTooltip` only works correctly with button classes.
+.. Warning:: :class:`~MDTooltip` only works correctly with button and label classes.
 
 .. code-block:: python
 
@@ -61,24 +61,27 @@ In Python code:
 
 .. Note:: The behavior of tooltips on desktop and mobile devices is different.
     For more detailed information,
-    `click here <https://github.com/HeaTTheatR/KivyMD/wiki/Components-Tooltips>`_.
+    `click here <https://github.com/kivymd/KivyMD/wiki/Components-Tooltips>`_.
 """
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")
 
-from functools import partial
-
-from kivy.clock import Clock
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.metrics import dp
 from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.properties import (
+    BoundedNumericProperty,
+    ListProperty,
+    NumericProperty,
+    StringProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ListProperty, StringProperty, NumericProperty
 
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import HoverBehavior
 from kivymd.material_resources import DEVICE_TYPE
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import HoverBehavior, TouchBehavior
 
 Builder.load_string(
     """
@@ -90,12 +93,6 @@ Builder.load_string(
     width: self.minimum_width
     height: self.minimum_height + root.padding[1]
     opacity: 0
-
-    padding:
-        dp(8) if DEVICE_TYPE == "desktop" else dp(16), \
-        dp(4), \
-        dp(8) if DEVICE_TYPE == "desktop" else dp(16), \
-        dp(4)
 
     canvas.before:
         PushMatrix
@@ -114,7 +111,6 @@ Builder.load_string(
     canvas.after:
         PopMatrix
 
-
     Label:
         id: label_tooltip
         text: root.tooltip_text
@@ -130,54 +126,51 @@ Builder.load_string(
 )
 
 
-class MDTooltip(ThemableBehavior, HoverBehavior, BoxLayout):
+class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, BoxLayout):
     tooltip_bg_color = ListProperty()
-    """Tooltip background color in ``rgba`` format.
-    
+    """
+    Tooltip background color in ``rgba`` format.
+
     :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     tooltip_text_color = ListProperty()
-    """Tooltip text color in ``rgba`` format.
+    """
+    Tooltip text color in ``rgba`` format.
 
     :attr:`tooltip_text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     tooltip_text = StringProperty()
-    """Tooltip text.
+    """
+    Tooltip text.
 
     :attr:`tooltip_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
-    duration_long_touch = NumericProperty(0.4)
-    """Time for a long touch until a tooltip appears.
-    Used only on mobile devices.
+    tooltip_display_delay = BoundedNumericProperty(0, min=0, max=4)
+    """
+    Tooltip dsiplay delay.
 
-    :attr:`duration_long_touch` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.4`.
+    :attr:`tooltip_display_delay` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0`, min of `0` & max of `4`. This property only works on desktop.
+    """
+
+    shift_y = NumericProperty()
+    """
+    Y-offset of tooltip text.
+
+    :attr:`shift_y` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `0`.
     """
 
     _tooltip = None
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.bind(
-            on_touch_down=self.create_clock, on_touch_up=self.delete_clock
-        )
-
-    # Methods `create_clock` and `delete_clock` taken from this source -
-    # https://github.com/kivy/kivy/wiki/Menu-on-long-touch
-    def create_clock(self, widget, touch, *args):
-        if self.collide_point(touch.x, touch.y):
-            callback = partial(self.on_long_touch, touch)
-            Clock.schedule_once(callback, self.duration_long_touch)
-            touch.ud["event"] = callback
-
     def delete_clock(self, widget, touch, *args):
-        if self.collide_point(touch.x, touch.y):
+        if self.collide_point(touch.x, touch.y) and touch.grab_current:
             try:
                 Clock.unschedule(touch.ud["event"])
             except KeyError:
@@ -212,10 +205,21 @@ class MDTooltip(ThemableBehavior, HoverBehavior, BoxLayout):
         Window.add_widget(self._tooltip)
         pos = self.to_window(self.center_x, self.center_y)
         x = pos[0] - self._tooltip.width / 2
-        y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
+
+        if not self.shift_y:
+            y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
+        else:
+            y = pos[1] - self._tooltip.height / 2 - self.height + self.shift_y
+
         x, y = self.adjust_tooltip_position(x, y)
         self._tooltip.pos = (x, y)
-        Clock.schedule_once(self.animation_tooltip_show, 0)
+
+        if DEVICE_TYPE == "desktop":
+            Clock.schedule_once(
+                self.animation_tooltip_show, self.tooltip_display_delay
+            )
+        else:
+            Clock.schedule_once(self.animation_tooltip_show, 0)
 
     def animation_tooltip_show(self, interval):
         if not self._tooltip:
@@ -281,3 +285,12 @@ class MDTooltipViewClass(ThemableBehavior, BoxLayout):
 
     _scale_x = NumericProperty(0)
     _scale_y = NumericProperty(0)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.padding = [
+            dp(8) if DEVICE_TYPE == "desktop" else dp(16),
+            dp(4),
+            dp(8) if DEVICE_TYPE == "desktop" else dp(16),
+            dp(4),
+        ]

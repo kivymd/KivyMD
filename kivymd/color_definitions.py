@@ -327,9 +327,9 @@ colors = {
     },
     "Dark": {
         "StatusBar": "000000",
-        "AppBar": "212121",
-        "Background": "303030",
-        "CardsDialogs": "424242",
+        "AppBar": "1f1f1f",
+        "Background": "121212",
+        "CardsDialogs": "212121",
         "FlatButtonDown": "999999",
     },
 }
@@ -344,7 +344,7 @@ To demonstrate the shades of the palette, you can run the following code:
     from kivy.uix.boxlayout import BoxLayout
     from kivy.utils import get_color_from_hex
     from kivy.properties import ListProperty, StringProperty
-    
+
     from kivymd.color_definitions import colors
     from kivymd.uix.tab import MDTabsBase
 

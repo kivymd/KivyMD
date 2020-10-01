@@ -39,15 +39,14 @@
         ScrollView:
             bar_width: 0
 
-            GridLayout:
+            MDGridLayout:
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
                 padding: "10dp"
 
                 KitchenSinkTwoLineLeftAvatarItem:
                     icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}andre-rodriges.png'
-                    secondary_text: "https://twitter.com/mixedCase_?s=20"
+                    secondary_text: "https://twitter.com/mixedCase_"
                     text: "Andrés Rodríguez"
 
                 KitchenSinkTwoLineLeftAvatarItem:
@@ -56,9 +55,9 @@
                     text: "Ivanov Yuri"
 
                 KitchenSinkTwoLineLeftAvatarItem:
-                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}mountaino.png'
-                    secondary_text: "https://github.com/Mountaino"
-                    text: "Artem S. Bulgakov"
+                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}artemsbulgakov.png'
+                    secondary_text: "https://github.com/ArtemSBulgakov"
+                    text: "Artem Bulgakov"
 
 
 <KitchenSinkDialogLicense>:
@@ -86,10 +85,9 @@
         ScrollView:
             bar_width: 0
 
-            GridLayout:
+            MDGridLayout:
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
                 padding: "10dp"
 
                 MDLabel:

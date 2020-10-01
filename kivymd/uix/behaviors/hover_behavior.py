@@ -11,14 +11,14 @@ In `KV file`:
 
 .. code-block:: kv
 
-    <MenuItem@MDLabel+HoverBehavior>
+    <HoverItem@MDBoxLayout+ThemableBehavior+HoverBehavior>
 
 In `python file`:
 
 .. code-block:: python
 
-    class MenuItem(MDLabel, HoverBehavior):
-        '''Custom menu item implementing hover behavior.'''
+    class HoverItem(MDBoxLayout, ThemableBehavior, HoverBehavior):
+        '''Custom item implementing hover behavior.'''
 
 After creating a class, you must define two methods for it:
 :attr:`HoverBehavior.on_enter` and :attr:`HoverBehavior.on_leave`, which will be automatically called
@@ -27,57 +27,46 @@ the widget.
 
 .. code-block:: python
 
-    from kivy.factory import Factory
     from kivy.lang import Builder
 
     from kivymd.app import MDApp
-    from kivymd.uix.label import MDLabel
     from kivymd.uix.behaviors import HoverBehavior
+    from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.theming import ThemableBehavior
 
-    Builder.load_string('''
-    #:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+    KV = '''
+    Screen
 
-
-    <HoverBehaviorExample@Screen>
-
-        MDRaisedButton:
-            text: "Open menu"
+        MDBoxLayout:
+            id: box
             pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
-    ''')
+            size_hint: .8, .8
+            md_bg_color: app.theme_cls.bg_darkest
+    '''
 
 
-    class MenuItem(MDLabel, HoverBehavior):
-        '''Custom menu item implementing hover behavior.'''
+    class HoverItem(MDBoxLayout, ThemableBehavior, HoverBehavior):
+        '''Custom item implementing hover behavior.'''
 
         def on_enter(self, *args):
             '''The method will be called when the mouse cursor
             is within the borders of the current widget.'''
 
-            self.text_color = [1, 1, 1, 1]
+            self.md_bg_color = (1, 1, 1, 1)
 
         def on_leave(self, *args):
             '''The method will be called when the mouse cursor goes beyond
             the borders of the current widget.'''
 
-            self.text_color = [0, 0, 0, 1]
+            self.md_bg_color = self.theme_cls.bg_darkest
 
 
     class Test(MDApp):
-        menu_items = []
-
         def build(self):
-            self.menu_items = [
-                {
-                    "viewclass": "MenuItem",
-                    "text": "Example item %d" % i,
-                    "theme_text_color": "Custom",
-                    "text_color": [0, 0, 0, 1],
-                    "halign": "center",
-                }
-                for i in range(5)
-            ]
-            return Factory.HoverBehaviorExample()
+            self.screen = Builder.load_string(KV)
+            for i in range(5):
+                self.screen.ids.box.add_widget(HoverItem())
+            return self.screen
 
 
     Test().run()
@@ -87,17 +76,20 @@ the widget.
    :align: center
 """
 
-from kivy.properties import BooleanProperty, ObjectProperty
+__all__ = ("HoverBehavior",)
+
 from kivy.core.window import Window
+from kivy.factory import Factory
+from kivy.properties import BooleanProperty, ObjectProperty
 
 
 class HoverBehavior(object):
     """
     :Events:
         :attr:`on_enter`
-            Fired when mouse enter the bbox of the widget.
+            Call when mouse enter the bbox of the widget.
         :attr:`on_leave`
-            Fired when the mouse exit the widget.
+            Call when the mouse exit the widget.
     """
 
     hovered = BooleanProperty(False)
@@ -140,12 +132,10 @@ class HoverBehavior(object):
             self.dispatch("on_leave")
 
     def on_enter(self):
-        """Fired when mouse enter the bbox of the widget."""
+        """Call when mouse enter the bbox of the widget."""
 
     def on_leave(self):
-        """Fired when the mouse exit the widget."""
+        """Call when the mouse exit the widget."""
 
-
-from kivy.factory import Factory
 
 Factory.register("HoverBehavior", HoverBehavior)

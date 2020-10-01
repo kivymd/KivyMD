@@ -1,8 +1,8 @@
 from kivy.properties import (
-    StringProperty,
-    NumericProperty,
     ListProperty,
+    NumericProperty,
     ObjectProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 

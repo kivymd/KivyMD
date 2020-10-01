@@ -11,9 +11,11 @@ Referene - https://gist.github.com/benni12er/95a45eb168fc33a4fcd2d545af692dad
 Example:
 ========
 
+.. code-block:: kv
+
     BoxLayout:
         size_hint_y: None
-        height: dp(200)
+        height: "200dp"
         orientation: 'vertical'
 
         FitImage:
@@ -23,18 +25,92 @@ Example:
         FitImage:
             size_hint_y: 1
             source: 'images/img2.jpg'
+
+Example with round corners:
+==========================
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
+    :align: center
+
+.. code-block:: python
+
+    from kivy.uix.modalview import ModalView
+    from kivy.lang import Builder
+
+    from kivymd import images_path
+    from kivymd.app import MDApp
+    from kivymd.uix.card import MDCard
+
+    Builder.load_string(
+        '''
+    <Card>:
+        elevation: 10
+        radius: [36, ]
+
+        FitImage:
+            id: bg_image
+            source: "images/bg.png"
+            size_hint_y: .35
+            pos_hint: {"top": 1}
+            radius: [36, 36, 0, 0, ]
+    ''')
+
+
+    class Card(MDCard):
+        pass
+
+
+    class Example(MDApp):
+        def build(self):
+            modal = ModalView(
+                size_hint=(0.4, 0.8),
+                background=f"{images_path}/transparent.png",
+                overlay_color=(0, 0, 0, 0),
+            )
+            modal.add_widget(Card())
+            modal.open()
+
+
+    Example().run()
 """
 
+__all__ = ("FitImage",)
+
+from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import StringProperty, Clock
+from kivy.lang import Builder
+from kivy.properties import ListProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.image import Image
+from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
+
+Builder.load_string(
+    """
+<FitImage>
+    canvas.before:
+        StencilPush
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: root.radius
+        StencilUse
+
+    canvas.after:
+        StencilUnUse
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: root.radius
+        StencilPop
+"""
+)
 
 
 class FitImage(BoxLayout):
-    source = StringProperty()
+    source = ObjectProperty()
+    container = ObjectProperty()
+    radius = ListProperty([0, 0, 0, 0])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -42,16 +118,32 @@ class FitImage(BoxLayout):
 
     def _late_init(self, *args):
         self.container = Container(self.source)
+        self.bind(source=self.container.setter("source"))
         self.add_widget(self.container)
 
 
 class Container(Widget):
+    source = ObjectProperty()
+    image = ObjectProperty()
+
     def __init__(self, source, **kwargs):
         super().__init__(**kwargs)
+        self.image = AsyncImage()
+        self.image.bind(on_load=self.adjust_size)
+        self.source = source
         self.bind(size=self.adjust_size, pos=self.adjust_size)
-        self.image = Image(source=source)
+
+    def on_source(self, instance, value):
+        if isinstance(value, str):
+            self.image.source = value
+        else:
+            self.image.texture = value
+        self.adjust_size()
 
     def adjust_size(self, *args):
+        if not self.parent or not self.image.texture:
+            return
+
         (par_x, par_y) = self.parent.size
 
         if par_x == 0 or par_y == 0:
@@ -60,7 +152,6 @@ class Container(Widget):
             return
 
         par_scale = par_x / par_y
-
         (img_x, img_y) = self.image.texture.size
         img_scale = img_x / img_y
 

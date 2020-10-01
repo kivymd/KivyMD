@@ -138,6 +138,7 @@ which will be used as an icon to the left of the item:
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.factory import Factory
 
     from kivymd.uix.bottomsheet import MDCustomBottomSheet
     from kivymd.app import MDApp
@@ -161,10 +162,9 @@ which will be used as an icon to the left of the item:
 
         ScrollView:
 
-            GridLayout:
+            MDGridLayout:
                 cols: 1
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
 
                 ItemForCustomBottomSheet:
                     icon: "page-previous"
@@ -234,12 +234,12 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
-    NumericProperty,
-    ListProperty,
     BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
     OptionProperty,
+    StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -248,11 +248,11 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.scrollview import ScrollView
 
+from kivymd import images_path
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import BackgroundColorBehavior
 from kivymd.uix.label import MDIcon
-from kivymd.uix.list import OneLineListItem, ILeftBody, OneLineIconListItem
-from kivymd.theming import ThemableBehavior
-from kivymd import images_path
+from kivymd.uix.list import ILeftBody, OneLineIconListItem, OneLineListItem
 
 Builder.load_string(
     """
@@ -261,11 +261,10 @@ Builder.load_string(
 
 <SheetList>:
 
-    GridLayout:
+    MDGridLayout:
         id: box_sheet_list
         cols: 1
-        size_hint_y: None
-        height: self.minimum_height
+        adaptive_height: True
         padding: 0, 0, 0, "96dp"
 
 
@@ -275,11 +274,9 @@ Builder.load_string(
     _gl_content: _gl_content
     _position_content: Window.height
 
-    BoxLayout:
-        size_hint_y: None
+    MDBoxLayout:
         orientation: "vertical"
         padding: 0, 1, 0, 0
-        height: self.minimum_height
 
         BsPadding:
             id: _upper_padding
@@ -469,7 +466,7 @@ class MDListBottomSheet(MDBottomSheet):
         """
         :arg text: element text;
         :arg callback: function that will be called when clicking on an item;
-        :arg icon_src: which will be used as an icon to the left of the item;
+        :arg icon: which will be used as an icon to the left of the item;
         """
 
         if icon:

@@ -73,7 +73,7 @@ SmartTileWithLabel
     from kivy.lang import Builder
 
     KV = '''
-    <MyTile@SmartTileWithStar>
+    <MyTile@SmartTileWithLabel>
         size_hint_y: None
         height: "240dp"
 

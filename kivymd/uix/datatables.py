@@ -314,7 +314,7 @@ class CellRow(
     index = None
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
-
+    
     def on_table(self, instance, table):
         """Sets padding/spacing to zero if no checkboxes are used for rows."""
 
@@ -412,6 +412,9 @@ class CellRow(
                         self.table._rows_number
                     ].remove(self.index)
         self.table.get_select_row(self.index)
+    
+    def get_selected_row(self):
+        return self.table.recycle_data[self.index]
 
 
 class CellHeader(MDTooltip, BoxLayout):

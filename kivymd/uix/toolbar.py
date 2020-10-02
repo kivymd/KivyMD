@@ -403,9 +403,7 @@ class MDToolbar(
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    anchor_title = OptionProperty(
-        "left", options=["left", "center", "right"]
-    )
+    anchor_title = OptionProperty("left", options=["left", "center", "right"])
     """Position toolbar title.
     Available options are: `'left'`, `'center'`, `'right'`.
 

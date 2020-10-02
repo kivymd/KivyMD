@@ -657,7 +657,12 @@ import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem
+from kivymd.uix.list import (
+    IRightBodyTouch,
+    OneLineAvatarIconListItem,
+    OneLineListItem,
+    OneLineRightIconListItem,
+)
 
 Builder.load_string(
     """
@@ -735,13 +740,9 @@ class RightContent(IRightBodyTouch, MDBoxLayout):
     """
 
 
-class MDMenuItemIcon(HoverBehavior, OneLineAvatarIconListItem):
-    icon = StringProperty()
+class MDMenuItemBase(HoverBehavior):
     """
-    Icon item.
-
-    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
+    Base class for MenuItem
     """
 
     def on_enter(self):
@@ -750,6 +751,26 @@ class MDMenuItemIcon(HoverBehavior, OneLineAvatarIconListItem):
 
     def on_leave(self):
         self.parent.parent.drop_cls.dispatch("on_leave", self)
+
+
+class MDMenuItemIcon(MDMenuItemBase, OneLineAvatarIconListItem):
+    icon = StringProperty()
+    """
+    Icon item.
+
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+
+class MDMenuItem(MDMenuItemBase, OneLineListItem):
+
+    pass
+
+
+class MDMenuItemRight(MDMenuItemBase, OneLineRightIconListItem):
+
+    pass
 
 
 class MDMenu(ScrollView):
@@ -923,18 +944,45 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         """Creates menu items."""
 
         for data in self.items:
-            item = MDMenuItemIcon(
-                text=data.get("text", ""),
-                divider=data.get("divider", "Full"),
-                _txt_top_pad=data.get("top_pad", "20dp"),
-                _txt_bot_pad=data.get("bot_pad", "20dp"),
-            )
+            if data.get("icon") and data.get("right_content_cls", None):
+
+                item = MDMenuItemIcon(
+                    text=data.get("text", ""),
+                    divider=data.get("divider", "Full"),
+                    _txt_top_pad=data.get("top_pad", "20dp"),
+                    _txt_bot_pad=data.get("bot_pad", "20dp"),
+                )
+
+            elif data.get("icon"):
+                item = MDMenuItemIcon(
+                    text=data.get("text", ""),
+                    divider=data.get("divider", "Full"),
+                    _txt_top_pad=data.get("top_pad", "20dp"),
+                    _txt_bot_pad=data.get("bot_pad", "20dp"),
+                )
+
+            elif data.get("right_content_cls", None):
+                item = MDMenuItemRight(
+                    text=data.get("text", ""),
+                    divider=data.get("divider", "Full"),
+                    _txt_top_pad=data.get("top_pad", "20dp"),
+                    _txt_bot_pad=data.get("bot_pad", "20dp"),
+                )
+
+            else:
+
+                item = MDMenuItem(
+                    text=data.get("text", ""),
+                    divider=data.get("divider", "Full"),
+                    _txt_top_pad=data.get("top_pad", "20dp"),
+                    _txt_bot_pad=data.get("bot_pad", "20dp"),
+                )
+
             # Set height item.
             if data.get("height", ""):
                 item.height = data.get("height")
-            # Remove left icon.
+            # Compensate icon area by some left padding.
             if not data.get("icon"):
-                item.remove_widget(item.ids._left_container)
                 item._txt_left_pad = data.get("left_pad", "32dp")
             # Set left icon.
             else:

@@ -706,7 +706,7 @@ class BaseListItem(
     tertiary_text_color = ListProperty(None)
     """
     Text color in ``rgba`` format used for tertiary text
-    if :attr:`~secondary_theme_text_color` is set to 'Custom'.
+    if :attr:`~tertiary_theme_text_color` is set to 'Custom'.
 
     :attr:`tertiary_text_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `None`.

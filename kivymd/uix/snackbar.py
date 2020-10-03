@@ -345,9 +345,9 @@ class BaseSnackbar(MDCard):
 
     .. code-block:: python
 
-    `size_hint_z = (
-        Window.width - (snackbar_x * 2)
-    ) / Window.width`
+        size_hint_z = (
+            Window.width - (snackbar_x * 2)
+        ) / Window.width
     """
 
     duration = NumericProperty(3)

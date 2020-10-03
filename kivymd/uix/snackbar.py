@@ -325,6 +325,12 @@ Builder.load_string(
 
 class BaseSnackbar(MDCard):
     """
+    :Events:
+        :attr:`on_open`
+            Called when a dialog is opened.
+        :attr:`on_dismiss`
+            When the front layer rises.
+
     Abstract base class for all Snackbars.
     This class handles sizing, positioning, shape and events for Snackbars
 
@@ -337,15 +343,11 @@ class BaseSnackbar(MDCard):
 
     Set size_hint_x like below:
 
+    .. code-block:: python
+
     `size_hint_z = (
         Window.width - (snackbar_x * 2)
     ) / Window.width`
-
-    :Events:
-        :attr:`on_open`
-            Called when a dialog is opened.
-        :attr:`on_dismiss`
-            When the front layer rises.
     """
 
     duration = NumericProperty(3)

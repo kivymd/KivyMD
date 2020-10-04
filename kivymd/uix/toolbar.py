@@ -403,12 +403,18 @@ class MDToolbar(
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    anchor_title = StringProperty("left")
+    anchor_title = OptionProperty("left", options=["left", "center", "right"])
+    """Position toolbar title.
+    Available options are: `'left'`, `'center'`, `'right'`.
+
+    :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'left'`.
+    """
 
     mode = OptionProperty(
         "center", options=["free-end", "free-center", "end", "center"]
     )
-    """Floating button position. Onle for :class:`~MDBottomAppBar` class.
+    """Floating button position. Only for :class:`~MDBottomAppBar` class.
     Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
 
     :attr:`mode` is an :class:`~kivy.properties.OptionProperty`

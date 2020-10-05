@@ -79,6 +79,8 @@ Example
             id: backdrop
             left_action_items: [['menu', lambda x: self.open()]]
             title: "Example Backdrop"
+            radius_left: "25dp"
+            radius_right: "0dp"
             header_text: "Menu:"
 
             MDBackdropBackLayer:
@@ -182,8 +184,8 @@ Builder.load_string(
                 size: self.size
                 radius:
                     [
-                    (root.radius, root.radius),
-                    (0, 0),
+                    (root.radius_left, root.radius_left),
+                    (root.radius_right, root.radius_right),
                     (0, 0),
                     (0, 0)
                     ]
@@ -248,12 +250,20 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     and defaults to `[]`.
     """
 
-    radius = NumericProperty(25)
+    radius_left = NumericProperty("16dp")
     """The value of the rounding radius of the upper left corner
     of the front layer.
 
-    :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `25`.
+    :attr:`radius_left` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `16dp`.
+    """
+
+    radius_right = NumericProperty("16dp")
+    """The value of the rounding radius of the upper right corner
+    of the front layer.
+
+    :attr:`radius_right` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `16dp`.
     """
 
     header = BooleanProperty(True)

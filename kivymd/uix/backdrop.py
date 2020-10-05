@@ -79,6 +79,7 @@ Example
             id: backdrop
             left_action_items: [['menu', lambda x: self.open()]]
             title: "Example Backdrop"
+            radius_right: "25dp"
             radius_right: "0dp"
             header_text: "Menu:"
 

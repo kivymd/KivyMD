@@ -43,7 +43,6 @@ Example
         '''
     #:import Window kivy.core.window.Window
     #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
-    #:import images_path kivymd.images_path
 
 
     <ItemBackdropFrontLayer@TwoLineAvatarListItem>
@@ -65,7 +64,7 @@ Example
 
     <MyBackdropBackLayer@Image>
         size_hint: .8, .8
-        source: f"{images_path}/kivymd.png"
+        source: "data/logo/kivy-icon-512.png"
         pos_hint: {"center_x": .5, "center_y": .6}
     '''
     )

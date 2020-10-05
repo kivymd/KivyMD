@@ -254,7 +254,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """The value of the rounding radius of the upper left corner
     of the front layer.
 
-    :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`radius_left` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `16dp`.
     """
 
@@ -262,7 +262,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """The value of the rounding radius of the upper right corner
     of the front layer.
 
-    :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`radius_right` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `16dp`.
     """
 

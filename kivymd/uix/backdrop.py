@@ -124,7 +124,6 @@ __all__ = (
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ListProperty,
@@ -331,7 +330,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         if open_up_to:
             y = open_up_to
         else:
-            y = dp(120) - self.height
+            y = self.ids.header_button.height - self.ids._front_layer.height
         Animation(y=y, d=0.2, t="out_quad").start(self.ids._front_layer)
         self._front_layer_open = True
         self.dispatch("on_open")

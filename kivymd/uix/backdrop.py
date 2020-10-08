@@ -327,8 +327,8 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         if self._front_layer_open:
             self.close()
             return
+
         if open_up_to:
-            # added open_up_to check
             if open_up_to < (
                 self.ids.header_button.height - self.ids._front_layer.height
             ):
@@ -339,6 +339,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
                 y = open_up_to
         else:
             y = self.ids.header_button.height - self.ids._front_layer.height
+
         Animation(y=y, d=0.2, t="out_quad").start(self.ids._front_layer)
         self._front_layer_open = True
         self.dispatch("on_open")

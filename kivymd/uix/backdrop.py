@@ -176,7 +176,7 @@ Builder.load_string(
 
         canvas:
             Color:
-                rgba: root.theme_cls.bg_normal
+                rgba: root.theme_cls.surface_color
             RoundedRectangle:
                 pos: self.pos
                 size: self.size

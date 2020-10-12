@@ -689,6 +689,52 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
+    surface_light_color = StringProperty(colors["Light"]["Surface"])
+    """
+    The surface color of the light style of the theme. Has to be the hex value
+    of the color. Default `FFFFFF`
+
+    :attr:`surface_light_color`
+    is an :class:`~kivy.properties.StringProperty` and has to be in a hex value
+    format.
+    """
+
+    surface_dark_color = StringProperty(colors["Dark"]["Surface"])
+    """
+    The surface color of the light style of the theme. Has to be the hex value
+    of the color. Default `212121`
+
+    :attr:`surface_dark_color`
+    is an :class:`~kivy.properties.StringProperty` and has to be in a hex value
+    format.
+    """
+
+    def _get_surface_color(self, opposite=False):
+        theme_style = self._get_theme_style(opposite)
+        if theme_style == "Light":
+            try:
+                color = get_color_from_hex(self.surface_light_color)
+            except Exception:
+                color = get_color_from_hex(colors["Light"]["Surface"])
+        elif theme_style == "Dark":
+            try:
+                color = get_color_from_hex(self.surface_dark_color)
+            except Exception:
+                color = get_color_from_hex(colors["Dark"]["Surface"])
+        return color
+
+    surface_color = AliasProperty(
+        _get_surface_color,
+        bind=["theme_style", "surface_light_color", "surface_dark_color"],
+    )
+    """
+    Color of the surface using in the theme.
+
+    :attr:`surface_color` is an :class:`~kivy.properties.AliasProperty` that
+    returns the value in ``rgba`` format for :attr:`surface_color`,
+    property is readonly.
+    """
+
     # Hardcoded because muh standard
     def _get_error_color(self):
         return get_color_from_hex(colors["Red"]["A700"])

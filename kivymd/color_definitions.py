@@ -324,13 +324,6 @@ colors = {
         "Background": "FAFAFA",
         "CardsDialogs": "FFFFFF",
         "FlatButtonDown": "cccccc",
-        "Surface": "FFFFFF",
-        "Error": "B00020",
-        "On_Primaray": "FFFFFF",
-        "On_Secondary": "000000",
-        "On_Background": "000000",
-        "On_Surface": "000000",
-        "On_Error": "FFFFFF",
     },
     "Dark": {
         "StatusBar": "000000",
@@ -338,13 +331,6 @@ colors = {
         "Background": "121212",
         "CardsDialogs": "212121",
         "FlatButtonDown": "999999",
-        "Surface": "212121",
-        "Error": "B00020",
-        "On_Primaray": "FFFFFF",
-        "On_Secondary": "000000",
-        "On_Background": "FFFFFF",
-        "On_Surface": "FFFFFF",
-        "On_Error": "FFFFFF",
     },
 }
 """Color palette. Taken from `2014 Material Design color palettes

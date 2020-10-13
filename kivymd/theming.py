@@ -152,6 +152,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_primary_color(self):
+        self.theme["Light"]["Primary"] = get_color_from_hex(
+            colors[self.primary_palette][self.primary_hue]
+        )
+        self.theme["Dark"]["Primary"] = get_color_from_hex(
+            colors[self.primary_palette][self.primary_hue]
+        )
         return get_color_from_hex(
             colors[self.primary_palette][self.primary_hue]
         )
@@ -167,6 +173,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_primary_light(self):
+        self.theme["Light"]["Primary_Light"] = get_color_from_hex(
+            colors[self.primary_palette][self.primary_light_hue]
+        )
+        self.theme["Dark"]["Primary_Light"] = get_color_from_hex(
+            colors[self.primary_palette][self.primary_light_hue]
+        )
         return get_color_from_hex(
             colors[self.primary_palette][self.primary_light_hue]
         )
@@ -221,6 +233,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_primary_dark(self):
+        self.theme["Light"]["Primary_Dark"] = get_color_from_hex(
+            colors[self.primary_palette][self.primary_dark_hue]
+        )
+        self.theme["Dark"]["Primary_Dark"] = get_color_from_hex(
+            colors[self.primary_palette][self.primary_dark_hue]
+        )
         return get_color_from_hex(
             colors[self.primary_palette][self.primary_dark_hue]
         )
@@ -276,6 +294,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_accent_color(self):
+        self.theme["Light"]["Secondary"] = get_color_from_hex(
+            colors[self.accent_palette][self.accent_hue]
+        )
+        self.theme["Dark"]["Secondary"] = get_color_from_hex(
+            colors[self.accent_palette][self.accent_hue]
+        )
         return get_color_from_hex(colors[self.accent_palette][self.accent_hue])
 
     accent_color = AliasProperty(
@@ -290,6 +314,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_accent_light(self):
+        self.theme["Light"]["Secondary_Light"] = get_color_from_hex(
+            colors[self.accent_palette][self.accent_light_hue]
+        )
+        self.theme["Dark"]["Secondary_Light"] = get_color_from_hex(
+            colors[self.accent_palette][self.accent_light_hue]
+        )
         return get_color_from_hex(
             colors[self.accent_palette][self.accent_light_hue]
         )
@@ -306,6 +336,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_accent_dark(self):
+        self.theme["Light"]["Secondary_Dark"] = get_color_from_hex(
+            colors[self.accent_palette][self.accent_dark_hue]
+        )
+        self.theme["Dark"]["Secondary_Dark"] = get_color_from_hex(
+            colors[self.accent_palette][self.accent_dark_hue]
+        )
         return get_color_from_hex(
             colors[self.accent_palette][self.accent_dark_hue]
         )
@@ -461,6 +497,12 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_bg_normal(self, opposite=False):
+        self.theme["Light"]["Background"] = get_color_from_hex(
+            colors["Light"]["Background"]
+        )
+        self.theme["Dark"]["Background"] = get_color_from_hex(
+            colors["Dark"]["Background"]
+        )
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             return get_color_from_hex(colors["Light"]["Background"])
@@ -689,38 +731,38 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    surface_light_color = StringProperty(colors["Light"]["Surface"])
+    def on_surface_light_color(self, *args):
+        self.theme["Light"]["Surface"] = self.surface_light_color
+
+    surface_light_color = ListProperty(
+        get_color_from_hex(colors["Light"]["CardsDialogs"])
+    )
     """
-    The surface color of the light style of the theme. Has to be the hex value
-    of the color. Default `FFFFFF`
+    The surface color of the light style of the theme.
 
     :attr:`surface_light_color`
-    is an :class:`~kivy.properties.StringProperty` and has to be in a hex value
-    format.
+    is an :class:`~kivy.properties.ListProperty`
     """
 
-    surface_dark_color = StringProperty(colors["Dark"]["Surface"])
+    def on_surface_dark_color(self, *args):
+        self.theme["Dark"]["Surface"] = self.surface_dark_color
+
+    surface_dark_color = ListProperty(
+        get_color_from_hex(colors["Dark"]["CardsDialogs"])
+    )
     """
-    The surface color of the light style of the theme. Has to be the hex value
-    of the color. Default `212121`
+    The surface color of the light style of the theme.
 
     :attr:`surface_dark_color`
-    is an :class:`~kivy.properties.StringProperty` and has to be in a hex value
-    format.
+    is an :class:`~kivy.properties.ListProperty`
     """
 
     def _get_surface_color(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
-            try:
-                color = get_color_from_hex(self.surface_light_color)
-            except Exception:
-                color = get_color_from_hex(colors["Light"]["Surface"])
+            color = self.surface_light_color
         elif theme_style == "Dark":
-            try:
-                color = get_color_from_hex(self.surface_dark_color)
-            except Exception:
-                color = get_color_from_hex(colors["Dark"]["Surface"])
+            color = self.surface_dark_color
         return color
 
     surface_color = AliasProperty(
@@ -734,6 +776,46 @@ class ThemeManager(EventDispatcher):
     returns the value in ``rgba`` format for :attr:`surface_color`,
     property is readonly.
     """
+
+    # empty values are generated in the init
+    theme = DictProperty(
+        {
+            "Light": {
+                "Primary": "",
+                "Primary_Light": "",
+                "Primary_Dark": "",
+                "Secondary": "",
+                "Secondary_Light": "",
+                "Secondary_Dark": "",
+                "Background": "",
+                "Surface": "",
+                "Error": "B00020",
+                "On_Primary": "FFFFFF",
+                "On_Secondary": "000000",
+                "On_Background": "000000",
+                "On_Surface": "000000",
+                "On_Error": "FFFFFF",
+            },
+            "Dark": {
+                "Primary": "",
+                "Primary_Light": "",
+                "Primary_Dark": "",
+                "Secondary": "",
+                "Secondary_Light": "",
+                "Secondary_Dark": "",
+                "Background": "",
+                "Surface": "",
+                "Error": "B00020",
+                "On_Primary": "FFFFFF",
+                "On_Secondary": "000000",
+                "On_Background": "FFFFFF",
+                "On_Surface": "FFFFFF",
+                "On_Error": "FFFFFF",
+            },
+        }
+    )
+    """:attr:`theme` is an :class:`~kivy.properties.DictProperty`. that returns
+    the overall app theme for Light and Dark theme styles"""
 
     # Hardcoded because muh standard
     def _get_error_color(self):
@@ -910,6 +992,26 @@ class ThemeManager(EventDispatcher):
         self.round_shadow = Atlas(f"{images_path}round_shadow.atlas")
         Clock.schedule_once(lambda x: self.on_theme_style(0, self.theme_style))
         self._determine_device_orientation(None, Window.size)
+        self.theme["Light"]["Primary"] = self.primary_color
+        self.theme["Dark"]["Primary"] = self.primary_color
+        self.theme["Light"]["Primary_Light"] = self.primary_light
+        self.theme["Dark"]["Primary_Light"] = self.primary_light
+        self.theme["Light"]["Primary_Dark"] = self.primary_dark
+        self.theme["Dark"]["Primary_Dark"] = self.primary_dark
+        self.theme["Light"]["Secondary"] = self.accent_color
+        self.theme["Dark"]["Secondary"] = self.accent_color
+        self.theme["Light"]["Secondary_Light"] = self.accent_light
+        self.theme["Dark"]["Secondary_Light"] = self.accent_light
+        self.theme["Light"]["Secondary_Dark"] = self.accent_dark
+        self.theme["Dark"]["Secondary_Dark"] = self.accent_dark
+        self.theme["Light"]["Background"] = get_color_from_hex(
+            colors["Light"]["Background"]
+        )
+        self.theme["Dark"]["Background"] = get_color_from_hex(
+            colors["Dark"]["Background"]
+        )
+        self.theme["Light"]["Surface"] = self.surface_light_color
+        self.theme["Dark"]["Surface"] = self.surface_dark_color
         Window.bind(size=self._determine_device_orientation)
 
 

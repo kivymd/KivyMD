@@ -1,7 +1,7 @@
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, NumericProperty, StringProperty
+from kivy.properties import BooleanProperty, NumericProperty
 from kivy.uix.image import AsyncImage
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.label import MDLabel
@@ -115,7 +115,7 @@ class MDImageLoader(ThemableBehavior, AsyncImage):
         self.start_anim = None
 
     def _check_source(self, source):
-        if source == False or len(source.strip()) == 0:
+        if not source or len(source.strip()) == 0:
             self.source = " "
             return False
         else:
@@ -134,13 +134,16 @@ class MDImageLoader(ThemableBehavior, AsyncImage):
         self.start_anim.start(self)
 
     def _stop_animate(self):
-        duration = 0.8
 
         self.color = [1, 1, 1, 1]
         if self.start_anim:
             self.start_anim.cancel_all(self)
-            self.stop_anim = Animation(fr_rec_opacity=0, t="out_quad", duration=0.1)
-            self.stop_anim &= Animation(bg_rec_opacity=0, t="out_quad", duration=0.1)
+            self.stop_anim = Animation(
+                fr_rec_opacity=0, t="out_quad", duration=0.1
+            )
+            self.stop_anim &= Animation(
+                bg_rec_opacity=0, t="out_quad", duration=0.1
+            )
             self.stop_anim.start(self)
 
     def on_source(self, *args):

@@ -3,6 +3,7 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty, NumericProperty
 from kivy.uix.image import AsyncImage
+
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.label import MDLabel
 

@@ -1129,8 +1129,7 @@ class MDTextField(ThemableBehavior, TextInput):
         if not self._better_texture_size:
             self._better_texture_size = self._hint_lbl.texture_size[0]
         return (
-            self._better_texture_size
-            - self._better_texture_size / 100 * dp(18)
+            self._better_texture_size - self._better_texture_size / 100 * dp(18)
             if DEVICE_TYPE == "desktop"
             else dp(10)
         )

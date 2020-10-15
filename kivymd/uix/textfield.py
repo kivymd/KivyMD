@@ -405,8 +405,8 @@ With right icon
 
 __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
-import sys
 import re
+import sys
 
 from kivy.animation import Animation
 from kivy.lang import Builder

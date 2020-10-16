@@ -526,10 +526,10 @@ class MDDialog(BaseDialog):
 
         if self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
             self.size_hint = (None, None)
-            self.width = dp(280)
+            self.width = min(dp(280), Window.width - dp(48))
         elif self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
             self.size_hint = (None, None)
-            self.width = dp(560)
+            self.width = min(dp(560), Window.width - dp(48))
 
         if not self.title:
             self._spacer_top = 0

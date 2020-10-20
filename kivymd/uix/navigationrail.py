@@ -499,7 +499,10 @@ class MDNavigationRail(MDCard):
         Animation(width=self.width / 4, d=0.2).start(self)
         if self.floating_action_button:
             Animation(
-                _canvas_width=0, _padding_right=0, d=0.2, _alpha=0,
+                _canvas_width=0,
+                _padding_right=0,
+                d=0.2,
+                _alpha=0,
             ).start(self.floating_action_button)
         self.dispatch("on_close")
 
@@ -556,7 +559,8 @@ class MDNavigationRail(MDCard):
     def on_use_action_button(self, instance, value):
         if value:
             rail_box = BaseNavigationRailBoxItem(
-                size_hint=(None, None), width=self.width,
+                size_hint=(None, None),
+                width=self.width,
             )
             self.floating_action_button = BaseNavigationRailFloatingButton(
                 pos_hint={"top": 1},

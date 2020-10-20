@@ -405,6 +405,7 @@ With right icon
 
 __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
+import re
 import sys
 
 from kivy.animation import Animation
@@ -847,6 +848,7 @@ class MDTextField(ThemableBehavior, TextInput):
             accent_color=self._update_accent_color,
         )
         self.has_had_text = False
+        self._better_texture_size = None
 
     def set_objects_labels(self):
         """Creates labels objects for the parameters
@@ -991,6 +993,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 Animation(_line_width=0, duration=0.2, t="out_quad").start(self)
 
     def on_text(self, instance, text):
+        self.text = re.sub("\n", " ", text) if not self.multiline else text
         if len(text) > 0:
             self.has_had_text = True
         if self.max_text_length is not None:
@@ -1125,9 +1128,10 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def _get_line_blank_space_right_point(self):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_line_blank_space_right_point.png
+        if not self._better_texture_size:
+            self._better_texture_size = self._hint_lbl.texture_size[0]
         return (
-            self._hint_lbl.texture_size[0]
-            - self._hint_lbl.texture_size[0] / 100 * dp(18)
+            self._better_texture_size - self._better_texture_size / 100 * dp(18)
             if DEVICE_TYPE == "desktop"
             else dp(10)
         )

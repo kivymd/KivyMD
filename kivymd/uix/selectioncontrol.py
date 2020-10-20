@@ -256,7 +256,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     representation when the checkbox is pressed.
 
     :attr:`checkbox_icon_down` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-marked-outline'`.
+    and defaults to `'checkbox-marked'`.
     """
 
     radio_icon_normal = StringProperty("checkbox-blank-circle-outline")
@@ -274,7 +274,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     the default graphical representation when the checkbox is pressed.
 
     :attr:`radio_icon_down` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-marked-circle-outline'`.
+    and defaults to `'checkbox-marked-circle'`.
     """
 
     selected_color = ListProperty()

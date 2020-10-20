@@ -250,7 +250,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     and defaults to `'checkbox-blank-outline'`.
     """
 
-    checkbox_icon_down = StringProperty("checkbox-marked-outline")
+    checkbox_icon_down = StringProperty("checkbox-marked")
     """
     Background icon of the checkbox used for the default graphical
     representation when the checkbox is pressed.
@@ -268,7 +268,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     and defaults to `'checkbox-blank-circle-outline'`.
     """
 
-    radio_icon_down = StringProperty("checkbox-marked-circle-outline")
+    radio_icon_down = StringProperty("checkbox-marked-circle")
     """
     Background icon (when using the ``group`` option) of the checkbox used for
     the default graphical representation when the checkbox is pressed.
@@ -365,7 +365,8 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             self.active = True
         else:
             self.check_anim_in.cancel(self)
-            self.check_anim_out.start(self)
+            if not self.group:
+                self.check_anim_out.start(self)
             self.update_icon()
             self.active = False
 

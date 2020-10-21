@@ -518,6 +518,7 @@ class MDDialog(BaseDialog):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Window.bind(on_resize=self.update_width)
 
         self.md_bg_color = (
             self.theme_cls.bg_dark if not self.md_bg_color else self.md_bg_color
@@ -556,6 +557,15 @@ class MDDialog(BaseDialog):
 
         if update_height:
             Clock.schedule_once(self.update_height)
+
+    def update_width(self, *args):
+        self.width = max(
+            self.height + dp(48),
+            min(
+                dp(560) if DEVICE_TYPE == "desktop" else dp(280),
+                Window.width - dp(48),
+            ),
+        )
 
     def update_height(self, *_):
         self._spacer_top = self.content_cls.height + dp(24)

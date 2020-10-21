@@ -1,5 +1,6 @@
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.screenmanager import Screen
 
@@ -41,13 +42,32 @@ class KitchenSinkSnackBar(Screen):
                 )
             ]
             snack.open()
-        elif snack_type == "verylong":
+        elif snack_type == "left":
             Snackbar(
-                text="This is a very very very very very very very "
-                "long snackbar!"
+                text="Snackbar coming from the left!",
+                snackbar_animation_dir="Left",
+                size_hint_x=0.9,
             ).open()
-        elif snack_type == "padding":
-            snack = Snackbar(text="This is a snackbar!", padding="20dp")
+        elif snack_type == "xy":
+            snack = Snackbar(
+                text="This is a snackbar!", snackbar_x="20dp", snackbar_y="20dp"
+            )
+            snack.size_hint_x = (
+                Window.width - (snack.snackbar_x * 2)
+            ) / Window.width
+            snack.buttons = [
+                MDFlatButton(
+                    text="ACTION",
+                    text_color=(1, 1, 1, 1),
+                    on_release=callback,
+                )
+            ]
+            snack.open()
+        elif snack_type == "top":
+            snack = Snackbar(
+                text="This is a snackbar from the top!",
+                snackbar_animation_dir="Top",
+            )
             snack.buttons = [
                 MDFlatButton(
                     text="ACTION",

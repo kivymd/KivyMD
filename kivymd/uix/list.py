@@ -446,7 +446,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
-from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.button import MDIconButton
@@ -662,11 +661,11 @@ class BaseListItem(
     and defaults to `None`.
     """
 
-    font_style = OptionProperty("Subtitle1", options=theme_font_styles)
+    font_style = StringProperty("Subtitle1")
     """
     Text font style. See ``kivymd.font_definitions.py``.
 
-    :attr:`font_style` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Subtitle1'`.
     """
 
@@ -706,7 +705,7 @@ class BaseListItem(
     tertiary_text_color = ListProperty(None)
     """
     Text color in ``rgba`` format used for tertiary text
-    if :attr:`~secondary_theme_text_color` is set to 'Custom'.
+    if :attr:`~tertiary_theme_text_color` is set to 'Custom'.
 
     :attr:`tertiary_text_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `None`.
@@ -728,19 +727,19 @@ class BaseListItem(
     and defaults to `'Secondary'`.
     """
 
-    secondary_font_style = OptionProperty("Body1", options=theme_font_styles)
+    secondary_font_style = StringProperty("Body1")
     """
     Font style for secondary line. See ``kivymd.font_definitions.py``.
 
-    :attr:`secondary_font_style` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`secondary_font_style` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 
-    tertiary_font_style = OptionProperty("Body1", options=theme_font_styles)
+    tertiary_font_style = StringProperty("Body1")
     """
     Font style for tertiary line. See ``kivymd.font_definitions.py``.
 
-    :attr:`tertiary_font_style` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`tertiary_font_style` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 

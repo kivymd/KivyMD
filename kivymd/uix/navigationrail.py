@@ -232,10 +232,6 @@ Builder.load_string(
 __all__ = ("MDNavigationRail",)
 
 
-class BaseNavigationRailTitle(MDBoxLayout):
-    pass
-
-
 class BaseNavigationRailBoxItem(MDBoxLayout):
     """The base class to which the menu items will be added
     (:class:`~MDNavigationRailItem` classes)."""

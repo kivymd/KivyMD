@@ -1,18 +1,26 @@
 """
 Components/MDSwiper
-============================
+===================
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mdswiper-preview.gif
+    :align: center
 
 Usage
------
+=====
+
 .. code-block:: kv
 
     MDSwiper:
+
         MDSwiperItem:
+
         MDSwiperItem:
+
         MDSwiperItem:
 
 Example
--------
+=======
+
 .. code-block:: python
 
     from kivymd.app import MDApp
@@ -20,42 +28,44 @@ Example
 
     kv = '''
     <MySwiper@MDSwiperItem>
-        orientation: 'vertical'
-        padding: dp(20)
-        canvas.before:
-            Color:
-                rgba: app.theme_cls.bg_darkest
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
 
-        MDLabel:
-            text: 'Swiper Item'
-            halign: 'center'
-            valign: 'center'
+        FitImage:
+            source: "guitar.png"
+            radius: [20,]
 
-    Screen:
+    MDScreen:
+
+        MDToolbar:
+            id: toolbar
+            title: "MDSwiper"
+            elevation: 10
+            pos_hint: {"top": 1}
+
         MDSwiper:
             size_hint_y: None
-            height: dp(400)
-            pos_hint: {'center_y': 0.5}
+            height: root.height - toolbar.height - dp(40)
+            y: root.height - self.height - toolbar.height - dp(20)
 
             MySwiper:
-            MySwiper:
-            MySwiper:
-            MySwiper:
+
             MySwiper:
 
+            MySwiper:
 
+            MySwiper:
+
+            MySwiper:
     '''
 
 
     class Main(MDApp):
-
         def build(self):
             return Builder.load_string(kv)
 
     Main().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mdswiper-example.gif
+    :align: center
 
 .. warning::
     The width of :class:`MDSwiperItem` is adjusted automatically. Consider changing
@@ -80,18 +90,20 @@ Example
 .. code-block:: kv
 
     MDSwiper:
-        on_swipe: print('on_swipe')
-        on_pre_swipe: print('on_pre_swipe')
-        on_overswipe_right: print('on_overswipe_right')
-        on_overswipe_left: print('on_overswipe_left')
-        on_swipe_left: print('on_swipe_left')
-        on_swipe_right: print('on_swipe_right')
+        on_swipe: print("on_swipe")
+        on_pre_swipe: print("on_pre_swipe")
+        on_overswipe_right: print("on_overswipe_right")
+        on_overswipe_left: print("on_overswipe_left")
+        on_swipe_left: print("on_swipe_left")
+        on_swipe_right: print("on_swipe_right")
 
 How to automatically switch a SwiperItem?
-----------------------------------
+=========================================
+
 Use method :attr:`~MDSwiper.set_current` which takes the index of :class:`MDSwiperItem` as argument.
 
-`Example`
+Example
+=======
 
 .. code-block:: kv
 
@@ -103,9 +115,8 @@ Use method :attr:`~MDSwiper.set_current` which takes the index of :class:`MDSwip
         MDSwiperItem: # Second widget with index 1
 
     MDRaisedButton:
-        text: 'Go to Second'
+        text: "Go to Second"
         on_release: swiper.set_current(1)
-
 """
 
 from kivy.animation import Animation
@@ -138,15 +149,16 @@ Builder.load_string(
         id: anchor_scroll
         padding: [root.items_spacing, 0 ]
 
+
 <MDSwiperItem>
     size_hint: None, None
 
+
 <_ItemsBox>
     size_hint: None, None
-    anchor_x: 'center'
-    anchor_y: 'center'
-
-    """
+    anchor_x: "center"
+    anchor_y: "center"
+"""
 )
 
 
@@ -176,7 +188,10 @@ class _ItemsBox(AnchorLayout):
 
 
 class MDSwiperItem(BoxLayout):
-    """:class:`MDSwiperItem` is a :class:`BoxLayout` but it's size is adjusted automatically."""
+    """
+    :class:`MDSwiperItem` is a :class:`BoxLayout` but it's size is adjusted
+    automatically.
+    """
 
     _root = ObjectProperty()
     _selected = False
@@ -217,60 +232,68 @@ class MDSwiperItem(BoxLayout):
 
 
 class MDSwiper(ScrollView, EventDispatcher):
-
     items_spacing = NumericProperty("20dp")
-    """The space between each :class:`MDSwiperItem`
+    """
+    The space between each :class:`MDSwiperItem`.
 
     :attr:`items_spacing` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `20dp`.
     """
 
     transition_duration = NumericProperty(0.2)
-    """Duration of switching between :class:`MDSwiperItem`
+    """
+    Duration of switching between :class:`MDSwiperItem`.
 
     :attr:`transition_duration` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
     """
 
     size_duration = NumericProperty(0.2)
-    """Duration of changing the size of :class:`MDSwiperItem`
+    """
+    Duration of changing the size of :class:`MDSwiperItem`.
 
     :attr:`transition_duration` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
     """
 
     size_transition = StringProperty("out_quad")
-    """The type of animation used for changing the size of :class:`MDSwiperItem`
+    """
+    The type of animation used for changing the size of :class:`MDSwiperItem`.
 
     :attr:`size_transition` is an :class:`~kivy.properties.StringProperty`
     and defaults to `out_quad`.
     """
 
     swipe_transition = StringProperty("out_quad")
-    """The type of animation used for swiping
+    """
+    The type of animation used for swiping.
 
     :attr:`swipe_transition` is an :class:`~kivy.properties.StringProperty`
     and defaults to `out_quad`.
     """
 
     swipe_distance = NumericProperty("70dp")
-    """Distance to move before swiping the :class:`MDSwiperItem`
+    """
+    Distance to move before swiping the :class:`MDSwiperItem`.
 
     :attr:`swipe_distance` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `70dp`.
     """
 
     width_mult = NumericProperty(3)
-    """This number is multiplied by :attr:`items_spacing` *2 and
-    then subtracted from the width of window to specify the width of :class:`MDSwiperItem`.
-    So by decreasing the :attr:`width_mult` the width of :class:`MDSwiperItem` increases and vice versa.
+    """
+    This number is multiplied by :attr:`items_spacing` *2 and
+    then subtracted from the width of window to specify the width of
+    :class:`MDSwiperItem`. So by decreasing the :attr:`width_mult` the width
+    of :class:`MDSwiperItem` increases and vice versa.
 
     :attr:`width_mult` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `3`.
     """
 
     swipe_on_scroll = BooleanProperty(True)
-    """Wheter to swipe on mouse wheel scrolling or not.
+    """
+    Wheter to swipe on mouse wheel scrolling or not.
 
     :attr:`swipe_on_scroll` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -300,8 +323,6 @@ class MDSwiper(ScrollView, EventDispatcher):
         self.effect_cls = _ScrollViewHardStop
 
     def add_widget(self, widget, index=0):
-        """ """
-
         if issubclass(widget.__class__, MDSwiperItem):
             widget._root = self
             items_box = _ItemsBox(_root=self)
@@ -312,8 +333,6 @@ class MDSwiper(ScrollView, EventDispatcher):
             return super().add_widget(widget, index=index)
 
     def remove_widget(self, widget):
-        """ """
-
         if not issubclass(widget.__class__, MDSwiperItem):
             return
 
@@ -322,7 +341,7 @@ class MDSwiper(ScrollView, EventDispatcher):
                 return self.ids.anchor_scroll.remove_widget(item_box)
 
     def set_current(self, index):
-        """Switch to given :class:`MDSwiperItem` index"""
+        """Switch to given :class:`MDSwiperItem` index."""
 
         self._selected = index
         self.dispatch("on_pre_swipe")
@@ -330,23 +349,24 @@ class MDSwiper(ScrollView, EventDispatcher):
         self.dispatch("on_swipe")
 
     def get_current_index(self):
-        """Returns the current :class:`MDSwiperItem` index"""
+        """Returns the current :class:`MDSwiperItem` index."""
 
         return self._selected
 
     def get_current_item(self):
-        """Returns the current :class:`MDSwiperItem` instance"""
+        """Returns the current :class:`MDSwiperItem` instance."""
 
         return list(reversed(self.ids.anchor_scroll.children))[
             self._selected
         ].children[0]
 
     def get_items(self):
-        """Returns the list of :class:`MDSwiperItem` children
+        """Returns the list of :class:`MDSwiperItem` children.
 
         .. note::
 
-            Use `get_items()` to get the list of children instead of `MDSwiper.children`
+            Use `get_items()` to get the list of children instead of
+            `MDSwiper.children`.
 
         """
 
@@ -410,7 +430,6 @@ class MDSwiper(ScrollView, EventDispatcher):
             self.dispatch("on_swipe_right")
 
     def on_touch_down(self, touch):
-        """ """
         super().on_touch_down(touch)
 
         if not self.collide_point(touch.pos[0], touch.pos[1]):
@@ -427,8 +446,6 @@ class MDSwiper(ScrollView, EventDispatcher):
             self._start_touch_x = touch.pos[0]
 
     def on_touch_up(self, touch):
-        """ """
-
         super().on_touch_up(touch)
         if not self._start_touch_x:
             return

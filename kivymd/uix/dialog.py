@@ -436,7 +436,7 @@ class MDDialog(BaseDialog):
     """
     Custom content class.
 
-    .. code-block::
+    .. code-block:: python
 
         from kivy.lang import Builder
         from kivy.uix.boxlayout import BoxLayout

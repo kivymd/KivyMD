@@ -339,9 +339,13 @@ class CellRow(
     table = ObjectProperty()  # <TableData object>
     index = None
     icon = StringProperty()
+    icon_copy = icon
     icon_color = ListProperty()
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
+
+    def on_icon(self, instance, value):
+        self.icon_copy = value
 
     def on_table(self, instance, table):
         """Sets padding/spacing to zero if no checkboxes are used for rows."""
@@ -380,6 +384,15 @@ class CellRow(
 
         self.selected = is_selected
 
+        # fixes cloning of icons
+        ic = table_data.recycle_data[index].get("icon", None)
+        cell_row_obj = table_data.view_adapter.get_visible_view(index)
+
+        if not ic:
+            cell_row_obj.icon = ""
+        else:
+            cell_row_obj.icon = cell_row_obj.icon_copy
+
         # Set checkboxes.
         if table_data.check:
             if self.text in table_data.data_first_cells:
@@ -392,6 +405,7 @@ class CellRow(
                 self.ids.check.opacity = 0
                 self.ids.box.spacing = 0
                 self.ids.box.padding[0] = 0
+
         # Set checkboxes state.
         if table_data._rows_number in table_data.current_selection_check:
             for index in table_data.current_selection_check[
@@ -559,7 +573,7 @@ class TableData(RecycleView):
         self.total_col_headings = len(table_header.col_headings)
         self.cols_minimum = table_header.cols_minimum
         self.set_row_data()
-        # Clock.schedule_once(self.set_default_first_row, 0)
+        Clock.schedule_once(self.set_default_first_row, 0)
 
     def get_select_row(self, index):
         """Returns the current row with all elements."""
@@ -569,7 +583,7 @@ class TableData(RecycleView):
             if index in data["range"]:
                 row.append(data["text"])
         self._parent.dispatch("on_check_press", row)
-        self._get_row_checks()
+        self._get_row_checks()  # update the dict
 
     def set_default_first_row(self, dt):
         """Set default first row as selected."""
@@ -828,32 +842,39 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
+        from kivy.uix.anchorlayout import AnchorLayout
 
 
         class Example(MDApp):
             def build(self):
+                a = AnchorLayout()
                 self.data_tables = MDDataTable(
-                    size_hint=(0.9, 0.6),
+                    size_hint=(0.7, 0.6),
                     use_pagination=True,
                     check=True,
                     column_data=[
                         ("No.", dp(30)),
-                        ("Column 1", dp(30)),
-                        ("Column 2", dp(30)),
-                        ("Column 3", dp(30)),
-                        ("Column 4", dp(30)),
-                        ("Column 5", dp(30)),
+                        ("Status", dp(30)),
+                        ("Signal Name", dp(60)),
+                        ("Severity", dp(30)),
+                        ("Stage", dp(30)),
+                        ("Schedule", dp(30), lambda *args: print("Sorted using Schedule")),
+                        ("Team Lead", dp(30)),
                     ],
                     row_data=[
-                        (f"{i + 1}", "2.23", "3.65", "44.1", "0.45", "62.5")
-                        for i in range(50)
+                        ("1", ("alert", [255/256,165/256,0,1], "No Signal"), "Astrid: NE shared managed", "Medium", "Triaged", "0:33", "Chase Nguyen"),
+                        ("2", ("alert-circle", [1,0,0,1], "Offline"), "Cosmo: prod shared ares", "Huge", "Triaged", "0:39", "Brie Furman"),
+                        ("3", ("checkbox-marked-circle", [39/256,174/256,96/256,1], "Online"), "Phoenix: prod shared lyra-lists", "Minor", "Not Triaged", "3:12", "Jeremy lake"),
+                        ("4", ("checkbox-marked-circle", [39/256,174/256,96/256,1], "Online"), "Sirius: NW prod shared locations", "Negligible", "Triaged", "13:18", "Angelica Howards"),
+                        ("5", ("checkbox-marked-circle", [39/256,174/256,96/256,1], "Online"), "Sirius: prod independent account", "Negligible", "Triaged", "22:06", "Diane Okuma"),
+
                     ],
+                    elevation = 2
                 )
                 self.data_tables.bind(on_row_press=self.on_row_press)
                 self.data_tables.bind(on_check_press=self.on_check_press)
-
-            def on_start(self):
-                self.data_tables.open()
+                a.add_widget(self.data_tables)
+                return a
 
             def on_row_press(self, instance_table, instance_row):
                 '''Called when a table row is clicked.'''
@@ -879,25 +900,30 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
+        from kivy.uix.anchorlayout import AnchorLayout
 
 
         class Example(MDApp):
             def build(self):
+                a = AnchorLayout()
                 self.data_tables = MDDataTable(
-                    size_hint=(0.9, 0.6),
-                    # name column, width column
+                    size_hint=(0.7, 0.6),
+                    use_pagination=True,
+                    check=True,
+
+                    # name column, width column, sorting function column(optional)
                     column_data=[
-                        ("Column 1", dp(30)),
-                        ("Column 2", dp(30)),
-                        ("Column 3", dp(30)),
-                        ("Column 4", dp(30)),
-                        ("Column 5", dp(30)),
-                        ("Column 6", dp(30)),
+                        ("No.", dp(30)),
+                        ("Status", dp(30)),
+                        ("Signal Name", dp(60)),
+                        ("Severity", dp(30)),
+                        ("Stage", dp(30)),
+                        ("Schedule", dp(30), lambda *args: print("Sorted using Schedule")),
+                        ("Team Lead", dp(30)),
                     ],
                 )
-
-            def on_start(self):
-                self.data_tables.open()
+                a.add_widget(self.data_tables)
+                return a
 
 
         Example().run()
@@ -911,7 +937,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     row_data = ListProperty()
     """
-    Data for rows.
+    Data for rows. To add icon in addition to a row data, include a tuple with ("icon-name", [icon-color], "row-data"). See example below.
 
     .. code-block:: python
 
@@ -924,7 +950,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         class Example(MDApp):
             def build(self):
                 self.data_tables = MDDataTable(
-                    size_hint=(0.9, 0.6),
                     column_data=[
                         ("Column 1", dp(30)),
                         ("Column 2", dp(30)),
@@ -932,12 +957,18 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                         ("Column 4", dp(30)),
                         ("Column 5", dp(30)),
                         ("Column 6", dp(30)),
+                        ("Column 7", dp(30)),
                     ],
                     row_data=[
                         # The number of elements must match the length
                         # of the `column_data` list.
-                        ("1", "2", "3", "4", "5", "6"),
-                        ("1", "2", "3", "4", "5", "6"),
+
+                        ("1", ("alert", [255/256,165/256,0,1], "No Signal"), "Astrid: NE shared managed", "Medium", "Triaged", "0:33", "Chase Nguyen"),
+                        ("2", ("alert-circle", [1,0,0,1], "Offline"), "Cosmo: prod shared ares", "Huge", "Triaged", "0:39", "Brie Furman"),
+                        ("3", ("checkbox-marked-circle", [39/256,174/256,96/256,1], "Online"), "Phoenix: prod shared lyra-lists", "Minor", "Not Triaged", "3:12", "Jeremy lake"),
+                        ("4", ("checkbox-marked-circle", [39/256,174/256,96/256,1], "Online"), "Sirius: NW prod shared locations", "Negligible", "Triaged", "13:18", "Angelica Howards"),
+                        ("5", ("checkbox-marked-circle", [39/256,174/256,96/256,1], "Online"), "Sirius: prod independent account", "Negligible", "Triaged", "22:06", "Diane Okuma"),
+
                     ],
                 )
 

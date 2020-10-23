@@ -506,6 +506,10 @@ class MDSwiper(ScrollView, EventDispatcher):
             self.dispatch("on_swipe_right")
 
     def on_scroll_start(self, touch, check_children=True):
+
+        if platform in ["ios", "android"]:
+            return super().on_scroll_start(touch)
+
         # on touch pad events
         if touch.button == "scrollright":
             self.swipe_left()

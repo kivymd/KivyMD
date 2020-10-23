@@ -175,6 +175,15 @@
       'object': 0,
       'icon': 'tab'
   },
+  'NavigationRail': {
+      'kv_string': 'navigation_rail',
+      'Import': 'from libs.baseclass.navigation_rail import KitchenSinkNavigationRail',
+      'Factory': 'KitchenSinkNavigationRail()',
+      'name_screen': 'navigation rail',
+      'source_code': 'Navigation-Rail.md',
+      'object': 0,
+      'icon': 'microsoft-xbox-controller-menu'
+  },
   'Labels': {
       'kv_string': 'labels',
       'Factory': 'Factory.KitchenSinkLabels()',

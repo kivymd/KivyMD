@@ -201,6 +201,7 @@ class CommonRipple(object):
     _finishing_ripple = BooleanProperty(False)
     _fading_out = BooleanProperty(False)
     _no_ripple_effect = BooleanProperty(False)
+    _canvas_after_loaded = False
 
     def lay_canvas_instructions(self):
         raise NotImplementedError
@@ -247,7 +248,6 @@ class CommonRipple(object):
         self._doing_ripple = False
         self._finishing_ripple = False
         self._fading_out = False
-        self.canvas.after.clear()
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
@@ -316,6 +316,10 @@ class RectangularRippleBehavior(CommonRipple):
     def lay_canvas_instructions(self):
         if self._no_ripple_effect:
             return
+
+        if self._canvas_after_loaded:
+            return
+
         with self.canvas.after:
             StencilPush()
             Rectangle(pos=self.pos, size=self.size)
@@ -332,6 +336,7 @@ class RectangularRippleBehavior(CommonRipple):
             Rectangle(pos=self.pos, size=self.size)
             StencilPop()
         self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
+        self._canvas_after_loaded = True
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
@@ -355,6 +360,10 @@ class CircularRippleBehavior(CommonRipple):
     def lay_canvas_instructions(self):
         if self._no_ripple_effect:
             return
+
+        if self._canvas_after_loaded:
+            return
+
         with self.canvas.after:
             StencilPush()
             self.stencil = Ellipse(
@@ -382,6 +391,7 @@ class CircularRippleBehavior(CommonRipple):
             self.bind(
                 ripple_color=self._set_color, _ripple_rad=self._set_ellipse
             )
+        self._canvas_after_loaded = True
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)

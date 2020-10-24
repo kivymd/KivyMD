@@ -95,13 +95,14 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [5]
+            radius: root.radius
         Scale:
             origin: self.center
             x: root._scale_x
             y: root._scale_y
     canvas.after:
         PopMatrix
+
 
 <MDDialog>
 
@@ -177,6 +178,24 @@ Builder.load_string(
 
 
 class BaseDialog(ThemableBehavior, ModalView):
+    radius = ListProperty([7, 7, 7, 7])
+    """
+    Dialog corners rounding value.
+
+    .. code-block:: python
+
+        self.dialog = MDDialog(
+            text="Oops! Something seems to have gone wrong!",
+            radius=[20, 7, 20, 7],
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-radius.png
+        :align: center
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[7, 7, 7, 7]`.
+    """
+
     _scale_x = NumericProperty(1)
     _scale_y = NumericProperty(1)
 
@@ -231,24 +250,6 @@ class MDDialog(BaseDialog):
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
-    """
-
-    radius = ListProperty([7, 7, 7, 7])
-    """
-    Dialog corners rounding value.
-
-    .. code-block:: python
-
-        self.dialog = MDDialog(
-            text="Oops! Something seems to have gone wrong!",
-            radius=[20, 7, 20, 7],
-        )
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-radius.png
-        :align: center
-
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[7, 7, 7, 7]`.
     """
 
     buttons = ListProperty()

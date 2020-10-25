@@ -22,7 +22,6 @@ Components/DataTables
 
 __all__ = ("MDDataTable",)
 
-from kivy import Logger
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -130,14 +129,15 @@ Builder.load_string(
     MDSeparator:
         id: separator
 
-
-<SortButton>
+<SortButton>:
+    id: sort_btn
     icon: "arrow-up"
     pos_hint: {"center_y": 0.5}
     #ripple_scale: .65
-    size: "24dp", "24dp"
+    size: [dp(24), dp(0)]
     theme_text_color: "Custom"
     text_color: self.theme_cls.secondary_text_color
+    opacity: 0
 
 <TableHeader>
     bar_width: 0
@@ -166,14 +166,6 @@ Builder.load_string(
                     size: 0, 0
                     opacity: 0
                     on_release: root.table_data.select_all(self.state)
-                    #disabled: True
-
-                # MDIconButton:
-                #    id: sort_button
-                #    icon: "menu-up"
-                #    pos_hint: {"center_y": 1}
-                #    ripple_scale: .65
-                #    on_release: root.table_data.sort_by_name()
 
                 CellHeader:
                     id: first_cell
@@ -477,6 +469,9 @@ class CellHeader(MDTooltip, BoxLayout):
     text = StringProperty()  # column text
 
     sort_action = ObjectProperty()
+    table_data = ObjectProperty()
+    is_sorted = BooleanProperty(False)
+    sorted_order = StringProperty()
 
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
@@ -484,22 +479,114 @@ class CellHeader(MDTooltip, BoxLayout):
         if self.sort_action:
             box = self.ids.box
             ib = SortButton()
+            ib.bind(on_release=self._sort_release)
 
-            ib.bind(on_release=self.sort_release)
+            if self.is_sorted:
+                ib.icon = (
+                    "arrow-down" if self.sorted_order == "ASC" else "arrow-up"
+                )
+                ib.size = [dp(24), dp(24)]
+                ib.opacity = 1
+
+            else:
+                self.bind(on_enter=self.set_sort_btn)
+                self.bind(on_leave=self.set_sort_btn)
+
             box.add_widget(ib, index=1)
 
-    def sort_release(self, inst):
+    def _sort_release(self, inst):
         inst.icon = "arrow-down" if inst.icon == "arrow-up" else "arrow-up"
-        self.sort_action()
+
+        if not self.parent.parent.col_with_sort:
+            c = self.parent.children
+            col_with_sort = [
+                each
+                for each in c
+                if each.ids.get("box", None) and len(each.ids.box.children) == 2
+            ]
+            self.parent.parent.col_with_sort = col_with_sort
+        else:
+            col_with_sort = self.parent.parent.col_with_sort
+
+        for each in col_with_sort:
+            if each == self:
+                self.unbind(on_enter=self.set_sort_btn)
+                self.unbind(on_leave=self.set_sort_btn)
+            else:
+                btn = each.ids.box.children[-1]
+                btn.size = [dp(24), dp(0)]
+                btn.opacity = 0
+                each.bind(on_enter=each.set_sort_btn)
+                each.bind(on_leave=each.set_sort_btn)
+
+        if self.sort_action:
+            tmp = []
+
+            if not self.table_data:
+                th = self.parent.parent
+                self.table_data = th.table_data
+
+            # row_checks_prev = self.table_data._get_row_checks()
+
+            for i in range(
+                0,
+                len(self.table_data.recycle_data),
+                self.table_data.total_col_headings,
+            ):
+
+                row = []
+                for j in range(
+                    self.table_data.recycle_data[i]["range"][0],
+                    self.table_data.recycle_data[i]["range"][1] + 1,
+                ):
+                    data = self.table_data.recycle_data[j]
+                    if data.get("icon", None):
+                        inner_data = [data["icon"]]
+                        if data.get("icon_color", None):
+                            inner_data.append(data["icon_color"])
+
+                        inner_data.append(data["text"])
+                        row.append(inner_data)
+
+                    else:
+                        row.append(self.table_data.recycle_data[j]["text"])
+                tmp.append(row)
+            sorted_data = self.sort_action(tmp)
+
+            if sorted_data:
+                self.table_data.row_data = (
+                    sorted_data
+                    if inst.icon == "arrow-down"
+                    else sorted_data[::-1]
+                )
+                self.table_data.on_rows_num(self, self.table_data.rows_num)
+                self.table_data.set_row_data()
+                self.table_data.select_all("normal")
+                self.table_data.cell_row_obj_dict = {}
+                self.table_data.table_header.ids.check.state = "normal"
+
+                # TODO: Restore checked rows after sorting
+
+    def set_sort_btn(self, instance):
+        btn = instance.ids.box.children[-1]
+        if btn.opacity:
+            btn.size = [dp(24), dp(0)]
+            btn.opacity = 0
+
+        else:
+            btn.size = [dp(24), dp(24)]
+            btn.opacity = 1
 
 
 class TableHeader(ScrollView):
     table_data = ObjectProperty()  # <TableData object>
     column_data = ListProperty()  # MDDataTable.column_data
     col_headings = ListProperty()  # column names list
-    sort = BooleanProperty(False)  # MDDataTable.sort
+    sorted_on = StringProperty()
+    sorted_order = StringProperty()
     # kivy.uix.gridlayout.GridLayout.cols_minimum
     cols_minimum = DictProperty()
+    col_with_sort = []  # store cols which contain sort functions
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -514,10 +601,15 @@ class TableHeader(ScrollView):
                             text=col_heading[0],
                             sort_action=col_heading[2],
                             width=self.cols_minimum[i],
+                            table_data=self.table_data,
+                            is_sorted=(col_heading[0] == self.sorted_on),
+                            sorted_order=self.sorted_order,
                         )
                         if len(col_heading) == 3
                         else CellHeader(
-                            text=col_heading[0], width=self.cols_minimum[i]
+                            text=col_heading[0],
+                            width=self.cols_minimum[i],
+                            table_data=self.table_data,
                         )
                     )
                 )
@@ -537,14 +629,6 @@ class TableHeader(ScrollView):
             self.ids.box.padding[0] = 0
             self.ids.box.spacing = 0
 
-    def on_sort(self, instance, value):
-        """Rows sorting method."""
-
-        Logger.info("TableData: Sorting table items is not implemented")
-        # if not self.sort:
-        #    self.ids.sort_button.size = (0, 0)
-        #    self.ids.sort_button.opacity = 0
-
 
 class TableData(RecycleView):
     recycle_data = ListProperty()  # kivy.uix.recycleview.RecycleView.data
@@ -562,7 +646,6 @@ class TableData(RecycleView):
     pagination_menu_open = BooleanProperty(False)
     # List of indexes of marked checkboxes.
     current_selection_check = DictProperty()
-    sort = BooleanProperty()
     cell_row_obj_dict = {}
 
     _parent = ObjectProperty()
@@ -594,11 +677,6 @@ class TableData(RecycleView):
         """Set default first row as selected."""
 
         self.ids.row_controller.select_next(self)
-
-    def sort_by_name(self):
-        """Sorts table data."""
-
-        # TODO: implement a rows sorting method.
 
     def set_row_data(self):
         data = []
@@ -851,12 +929,11 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                     column_data=[
                         ("No.", dp(30)),
                         ("Status", dp(30)),
-                        ("Signal Name", dp(60)),
+                        ("Signal Name", dp(60), self.sort_on_signal),
                         ("Severity", dp(30)),
                         ("Stage", dp(30)),
-                        ("Schedule", dp(30),
-                         lambda *args: print("Sorted using Schedule")),
-                        ("Team Lead", dp(30)),
+                        ("Schedule", dp(30), self.sort_on_schedule),
+                        ("Team Lead", dp(30), self.sort_on_team)
                     ],
                     row_data=[
                         ("1", ("alert", [255 / 256, 165 / 256, 0, 1], "No Signal"),
@@ -884,7 +961,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                          "Triaged", "22:06", "Diane Okuma"),
 
                     ],
-                    elevation=2,
+                    sorted_on="Schedule",
+                    sorted_order="ASC",
+                    elevation=2
                 )
                 self.data_tables.bind(on_row_press=self.on_row_press)
                 self.data_tables.bind(on_check_press=self.on_check_press)
@@ -901,6 +980,14 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
                 print(instance_table, current_row)
 
+            def sort_on_signal(self, data):
+                return sorted(data, key=lambda l: l[2])
+
+            def sort_on_schedule(self, data):
+                return sorted(data, key=lambda l: sum([int(l[-2].split(":")[0])*60, int(l[-2].split(":")[1])]))
+
+            def sort_on_team(self, data):
+                return sorted(data, key=lambda l: l[-1])
 
         Example().run()
     """
@@ -948,6 +1035,21 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     :attr:`column_data` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
+    .. note::
+        The functions which will be called for sorting must accept a data argument and return the sorted data.
+
+        Incoming data format will be similar to the provided row_data except that it'll be all list instead of tuple like below.
+        Any icon provided initially will also be there in this data so handle accordingly.
+        [
+            ['1', ['icon', No Signal'], 'Astrid: NE shared managed', 'Medium', 'Triaged', '0:33', 'Chase Nguyen'],
+            ['2', 'Offline', 'Cosmo: prod shared ares', 'Huge', 'Triaged', '0:39', 'Brie Furman'],
+            ['3', 'Online', 'Phoenix: prod shared lyra-lists', 'Minor', 'Not Triaged', '3:12', 'Jeremy lake'],
+            ['4', 'Online', 'Sirius: NW prod shared locations', 'Negligible', 'Triaged', '13:18', 'Angelica Howards'],
+            ['5', 'Online', 'Sirius: prod independent account', 'Negligible', 'Triaged', '22:06', 'Diane Okuma']
+        ]
+
+        You must sort inner lists in ascending order and return the sorted data in the same format.
     """
 
     row_data = ListProperty()
@@ -1053,12 +1155,24 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `[]`.
     """
 
-    sort = BooleanProperty(False)
+    sorted_on = StringProperty()
     """
-    Whether to display buttons for sorting table items.
+    Column name upon which the data is already sorted.
 
-    :attr:`sort` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
+    If the table data is showing an already sorted data then this can be used
+    to indicate upon which column the data is sorted.
+
+    :attr:`sorted_on` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    sorted_order = OptionProperty("ASC", options=["ASC", "DSC"])
+    """
+    Order of already sorted data. Must be one of `'ASC'` for ascending or
+    `'DSC'` for descending order.
+
+    :attr:`sorted_order` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'ASC'`.
     """
 
     check = BooleanProperty(False)
@@ -1185,7 +1299,11 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         super().__init__(**kwargs)
         self.register_event_type("on_row_press")
         self.register_event_type("on_check_press")
-        self.header = TableHeader(column_data=self.column_data, sort=self.sort)
+        self.header = TableHeader(
+            column_data=self.column_data,
+            sorted_on=self.sorted_on,
+            sorted_order=self.sorted_order,
+        )
         self.table_data = TableData(
             self.header,
             row_data=self.row_data,

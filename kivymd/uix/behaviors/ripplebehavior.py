@@ -353,6 +353,8 @@ class CircularRippleBehavior(CommonRipple):
     """
 
     def lay_canvas_instructions(self):
+        if self._no_ripple_effect:
+            return
         with self.canvas.after:
             StencilPush()
             self.stencil = Ellipse(

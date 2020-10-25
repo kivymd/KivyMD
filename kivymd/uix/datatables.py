@@ -101,6 +101,7 @@ Builder.load_string(
                 id: label
                 text: " " + root.text
                 color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+                markup: True
 
     MDSeparator:
 
@@ -123,6 +124,7 @@ Builder.load_string(
             size_hint_y: None
             height: self.texture_size[1]
             bold: True
+            markup: True
             color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     MDSeparator:

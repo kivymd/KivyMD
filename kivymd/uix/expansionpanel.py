@@ -271,6 +271,9 @@ class MDExpansionPanel(RelativeLayout):
     and defaults to `None`.
     """
 
+    _state = "close"
+    _anim_playing = False
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_open")
@@ -358,14 +361,28 @@ class MDExpansionPanel(RelativeLayout):
     def close_panel(self, instance_panel):
         """Method closes the panel."""
 
-        Animation(
+        if self._anim_playing:
+            return
+
+        self._anim_playing = True
+        self._state = "close"
+
+        anim = Animation(
             height=self.panel_cls.height,
             d=self.closing_time,
             t=self.closing_transition,
-        ).start(instance_panel)
+        )
+        anim.bind(on_complete=self._disable_anim)
+        anim.start(instance_panel)
 
     def open_panel(self, *args):
         """Method opens a panel."""
+
+        if self._anim_playing:
+            return
+
+        self._anim_playing = True
+        self._state = "open"
 
         anim = Animation(
             height=self.content.height + self.height,
@@ -373,7 +390,12 @@ class MDExpansionPanel(RelativeLayout):
             t=self.opening_transition,
         )
         anim.bind(on_complete=self._add_content)
+        anim.bind(on_complete=self._disable_anim)
         anim.start(self)
+
+    def get_state(self):
+        """Returns the state of panel. Can be `close` or `open` ."""
+        return self._state
 
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(
@@ -386,6 +408,9 @@ class MDExpansionPanel(RelativeLayout):
         ):
             self.height = widget.height
         return super().add_widget(widget)
+
+    def _disable_anim(self, *args):
+        self._anim_playing = False
 
     def _add_content(self, *args):
         if self.content:

@@ -209,7 +209,7 @@ Builder.load_string(
 
     canvas:
         Color:
-            rgb: app.theme_cls.bg_normal
+            rgb: app.theme_cls.primary_color
         RoundedRectangle:
             size:
                 (dp(328), dp(96))\

@@ -206,7 +206,6 @@ Builder.load_string(
         (dp(328), dp(484)) if self.theme_cls.device_orientation == 'portrait'\
         else (dp(512), dp(304))
     pos_hint: {'center_x': .5, 'center_y': .5}
-
     canvas:
         Color:
             rgb: app.theme_cls.primary_color
@@ -219,9 +218,9 @@ Builder.load_string(
                 (root.pos[0], root.pos[1] + root.height - dp(96))\
                 if self.theme_cls.device_orientation == 'portrait'\
                 else (root.pos[0], root.pos[1] + root.height - dp(304))
-            radius: [root.cal_radius, root.cal_radius, dp(0), dp(0)] \
+            radius: [root.radius[0], root.radius[1], dp(0), dp(0)] \
                     if self.theme_cls.device_orientation == 'portrait'\
-                    else [root.cal_radius, dp(0), dp(0), root.cal_radius]
+                    else [root.radius[0], dp(0), dp(0), root.radius[3]]
         Color:
             rgb: app.theme_cls.bg_normal
 
@@ -234,9 +233,9 @@ Builder.load_string(
                 (root.pos[0], root.pos[1] + root.height - dp(96) - (dp(484) - dp(96)))\
                 if self.theme_cls.device_orientation == 'portrait'\
                 else (root.pos[0] + dp(168), root.pos[1])
-            radius: [dp(0), dp(0), root.cal_radius, root.cal_radius] \
+            radius: [dp(0), dp(0), root.radius[2], root.radius[3]] \
                     if self.theme_cls.device_orientation == 'portrait'\
-                    else [dp(0), root.cal_radius, root.cal_radius, dp(0)]
+                    else [dp(0), root.radius[1], root.radius[2], dp(0)]
 
     MDLabel:
         id: label_full_date
@@ -456,7 +455,6 @@ class MDDatePicker(
     _sel_day_widget = ObjectProperty()
     cal_list = None
     cal_layout = ObjectProperty()
-    cal_radius = NumericProperty(0)
     sel_year = NumericProperty()
     sel_month = NumericProperty()
     sel_day = NumericProperty()

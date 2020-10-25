@@ -645,14 +645,16 @@ Builder.load_string(
     canvas:
         Color:
             rgba: self.theme_cls.bg_light
-        Rectangle:
+        RoundedRectangle:
             size: (dp(270), dp(335))
             pos: (root.pos[0], root.pos[1] + root.height - dp(335) - dp(95))
+            radius: [dp(0), dp(0), root.radius[2], root.radius[3]]
         Color:
             rgba: self.theme_cls.primary_color
-        Rectangle:
+        RoundedRectangle:
             size: (dp(270), dp(95))
             pos: (root.pos[0], root.pos[1] + root.height - dp(95))
+            radius: [root.radius[0], root.radius[1], dp(0), dp(0)]
         Color:
             rgba: self.theme_cls.bg_dark
         Ellipse:
@@ -691,6 +693,7 @@ class MDTimePicker(
     ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
 ):
     time = ObjectProperty()
+    radius = ListProperty([0, 0, 0, 0])
     """
     Users method. Must take two parameters:
 
@@ -771,15 +774,16 @@ Builder.load_string(
     canvas:
         Color:
             rgb: app.theme_cls.primary_color
-        Rectangle:
+        RoundedRectangle:
             size: self.width, dp(120)
             pos: root.pos[0], root.pos[1] + root.height - dp(120)
+            radius: [root.radius[0], root.radius[1], dp(0), dp(0)]
         Color:
             rgb: app.theme_cls.bg_normal
-        Rectangle:
+        RoundedRectangle:
             size: self.width, dp(290)
             pos: root.pos[0], root.pos[1] + root.height - (dp(120) + dp(290))
-
+            radius: [dp(0), dp(0), root.radius[2], root.radius[3]]
 
     MDFlatButton:
         id: close_button

@@ -248,7 +248,6 @@ ACTIVITY_MANAGER = """
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
-                orientation: "vertical"
 
 
 <ModifiedOneLineIconListItem>

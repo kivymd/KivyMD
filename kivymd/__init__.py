@@ -51,6 +51,11 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
 """Path to images directory."""
 
+kivymd_home_dir = os.path.join(os.path.expanduser("~"), ".kivymd")
+if not os.path.exists(kivymd_home_dir):
+    os.mkdir(kivymd_home_dir)
+"""KivyMD user-home storage directory."""
+
 _log_message = (
     "KivyMD:"
     + (" Release" if release else "")

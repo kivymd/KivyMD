@@ -224,7 +224,7 @@ Builder.load_string(
                     else [root.cal_radius,dp(0),dp(0),root.cal_radius]
         Color:
             rgb: app.theme_cls.bg_normal
-            
+
         RoundedRectangle:
             size:
                 (dp(328), dp(484) - dp(96))\

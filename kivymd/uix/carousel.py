@@ -5,6 +5,9 @@ from kivy.uix.carousel import Carousel
 
 
 class MDCarousel(Carousel):
+
+    _scrolling = False
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_slide_progress")
@@ -44,7 +47,10 @@ class MDCarousel(Carousel):
                     skip_next = True
             if _current:
                 _current.pos = (xoff, y)
-                self.dispatch("on_slide_progress", (xoff, y))
+
+                if self._scrolling:
+                    self.dispatch("on_slide_progress", (xoff, y))
+
             if skip_next:
                 return
             if _next:
@@ -77,6 +83,14 @@ class MDCarousel(Carousel):
                     _offset > 0 and direction[0] == "b"
                 ):
                     first_slide.pos = (x, y_next[direction[0]])
+
+    def on_touch_down(self, touch):
+        self._scrolling = True
+        return super().on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        self._scrolling = False
+        return super().on_touch_up(touch)
 
     def _start_animation(self, *args, **kwargs):
         # compute target offset for ease back, next or prev

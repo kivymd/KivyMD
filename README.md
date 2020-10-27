@@ -196,7 +196,9 @@ pre-commit will format modified files with Black and sort imports with isort.
 
 ## Sister projects
 
-- [Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
+<img align="left" width="128" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/logo-kivymd-components.png"/>
+
+[KivyMD Components](https://github.com/kivymd-components) - Additional components for the KivyMD library
 
 ## License
 

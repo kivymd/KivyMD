@@ -31,7 +31,6 @@ without asking too.
 import os
 
 from kivy import platform
-from kivy.app import App
 from kivy.logger import Logger
 
 __version__ = "0.104.2.dev0"
@@ -57,9 +56,13 @@ kivymd_home_dir = ""
 if platform in ("win", "linux", "macosx"):
     kivymd_home_dir = os.path.join(os.path.expanduser("~"), ".kivymd")
 elif platform == "android":
-    kivymd_home_dir = os.path.join(
-        App.get_running_app().user_data_dir, ".kivymd"
-    )
+    from jnius import autoclass, cast
+
+    PythonActivity = autoclass("org.kivy.android.PythonActivity")
+    context = cast("android.content.Context", PythonActivity.mActivity)
+    file_p = cast("java.io.File", context.getFilesDir())
+    data_dir = file_p.getAbsolutePath()
+    kivymd_home_dir = os.path.join(data_dir, ".kivymd")
 elif platform == "ios":
     kivymd_home_dir = os.path.join(os.path.expanduser("~"), "Documents")
 

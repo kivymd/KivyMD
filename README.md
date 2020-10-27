@@ -200,6 +200,7 @@ pre-commit will format modified files with Black and sort imports with isort.
 
 [KivyMD Components](https://github.com/kivymd-components) - Additional components for the KivyMD library
 
+
 ## License
 
 KivyMD is released under the terms of the [MIT License](https://github.com/kivymd/KivyMD/blob/master/LICENSE), same as [Kivy](https://github.com/kivy/kivy/blob/master/LICENSE).

@@ -30,6 +30,8 @@ without asking too.
 
 import os
 
+from kivy import platform
+from kivy.app import App
 from kivy.logger import Logger
 
 __version__ = "0.104.2.dev0"
@@ -51,8 +53,17 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
 """Path to images directory."""
 
-kivymd_home_dir = os.path.join(os.path.expanduser("~"), ".kivymd")
-if not os.path.exists(kivymd_home_dir):
+kivymd_home_dir = ""
+if platform in ("win", "linux", "macosx"):
+    kivymd_home_dir = os.path.join(os.path.expanduser("~"), ".kivymd")
+elif platform == "android":
+    kivymd_home_dir = os.path.join(
+        App.get_running_app().user_data_dir(), ".kivymd"
+    )
+elif platform == "ios":
+    kivymd_home_dir = os.path.join(os.path.expanduser("~"), "Documents")
+
+if not os.path.exists(kivymd_home_dir) and kivymd_home_dir != "":
     os.mkdir(kivymd_home_dir)
 """KivyMD user-home storage directory."""
 

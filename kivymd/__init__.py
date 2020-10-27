@@ -58,7 +58,7 @@ if platform in ("win", "linux", "macosx"):
     kivymd_home_dir = os.path.join(os.path.expanduser("~"), ".kivymd")
 elif platform == "android":
     kivymd_home_dir = os.path.join(
-        App.get_running_app().user_data_dir(), ".kivymd"
+        App.get_running_app().user_data_dir, ".kivymd"
     )
 elif platform == "ios":
     kivymd_home_dir = os.path.join(os.path.expanduser("~"), "Documents")

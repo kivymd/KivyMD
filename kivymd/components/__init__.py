@@ -72,6 +72,7 @@ if getattr(sys, "frozen", False) and getattr(sys, "_MEIPASS", False):
     components_app_dir = sys._MEIPASS
 else:
     components_app_dir = realpath(dirname(sys.argv[0]))
+components_app_dir = join(components_app_dir, "libs")
 
 # Fixes issue #4030 in kivy where components path is incorrect on iOS.
 if platform == "ios":

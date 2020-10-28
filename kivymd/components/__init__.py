@@ -45,7 +45,7 @@ Packaging
 
 If you want to include components in your application, you can add `--app`
 to the `install` command. This will create a `libs/components` directory in your
-current directory which will be used by `kivyma.components`.
+current directory which will be used by `kivymd.components`.
 
 For example::
 

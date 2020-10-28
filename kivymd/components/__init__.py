@@ -12,7 +12,7 @@ All the components packages are centralized on the `kivymd-components Github
     hosted in the component organization repositories - we do not actively
     monitor these repos. Please use at your own risk.
 
-Legacy garden tool instructions
+Legacy components tool instructions
 -------------------------------
 
 Component is now distributed as a separate Python module, kivymd-components.

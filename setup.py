@@ -86,7 +86,7 @@ if __name__ == "__main__":
             ],
             "docs": [
                 "sphinx",
-                "sphinx-autoapi",
+                "sphinx-autoapi==1.4.0",
                 "sphinx_rtd_theme",
                 "sphinx-notfound-page",
             ],

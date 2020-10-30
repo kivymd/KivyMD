@@ -241,6 +241,7 @@ Builder.load_string(
         icon: "chevron-right"
         user_font_size: "20sp"
         pos_hint: {'center_y': .5}
+        disabled: True
         on_release: root.table_data.set_next_row_data_parts("forward")
 
 
@@ -888,6 +889,10 @@ class TableData(RecycleView):
         self._row_data_parts = list(
             self._split_list_into_equal_parts(self.row_data, value)
         )
+
+    def on_pagination(self, instance, value):
+        if self._to_value < len(self.row_data):
+            self.pagination.ids.button_forward.disabled = False
 
     # def on_pagination(self, instance_table, instance_pagination):
     #    if len(self._row_data_parts) <= self._to_value:

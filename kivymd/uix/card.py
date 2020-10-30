@@ -423,7 +423,7 @@ End full code
     :align: center
 
 Focus behavior
--------------
+--------------
 
 .. code-block:: kv
 

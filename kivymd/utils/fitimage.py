@@ -27,7 +27,7 @@ Example:
             source: 'images/img2.jpg'
 
 Example with round corners:
-==========================
+===========================
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
     :align: center

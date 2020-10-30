@@ -13,7 +13,7 @@ All the components packages are centralized on the `kivymd-components Github
     monitor these repos. Please use at your own risk.
 
 Legacy components tool instructions
--------------------------------
+-----------------------------------
 
 Component is now distributed as a separate Python module, kivymd-components.
 You can install it with pip::

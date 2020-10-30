@@ -67,7 +67,7 @@ Persistent helper text mode
     :align: center
 
 Helper text mode `'on_error'`
-----------------------------
+-----------------------------
 
 To display an error in a text field when using the
 ``helper_text_mode: "on_error"`` parameter, set the `"error"` text field
@@ -114,7 +114,7 @@ parameter to `True`:
     :align: center
 
 Helper text mode `'on_error'` (with required)
---------------------------------------------
+---------------------------------------------
 
 .. code-block:: kv
 

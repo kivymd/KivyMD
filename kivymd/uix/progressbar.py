@@ -4,7 +4,7 @@ Components/Progress Bar
 
 .. seealso::
 
-    `Material Design spec, Progress indicators https://material.io/components/progress-indicators`_
+    `Material Design spec, Progress indicators <https://material.io/components/progress-indicators>`_
 
 .. rubric:: Progress indicators express an unspecified wait time or display
     the length of a process.
@@ -288,9 +288,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
         )
         self.running_anim.bind(on_complete=self.catching_up)
         self.catching_anim = Animation(
-            opacity=0,
-            t=self.catching_transition,
-            d=self.catching_duration,
+            opacity=0, t=self.catching_transition, d=self.catching_duration,
         )
         self.catching_anim.bind(on_complete=self.running_away)
 

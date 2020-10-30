@@ -358,7 +358,7 @@ class MDSwiper(ScrollView, EventDispatcher):
 
     width_mult = NumericProperty(3)
     """
-    This number is multiplied by :attr:`items_spacing` *2 and
+    This number is multiplied by :attr:`items_spacing` x2 and
     then subtracted from the width of window to specify the width of
     :class:`MDSwiperItem`. So by decreasing the :attr:`width_mult` the width
     of :class:`MDSwiperItem` increases and vice versa.

@@ -1,10 +1,10 @@
 """
-Components/NavigationRail
-=========================
+Components/Navigation Rail
+==========================
 
 .. seealso::
 
-    `Material Design spec, NavigationRail <https://material.io/components/navigation-rail>`_
+    `Material Design spec, Navigation rail <https://material.io/components/navigation-rail>`_
 
 .. rubric:: Navigation rails provide ergonomic movement between primary destinations in apps.
 
@@ -589,7 +589,7 @@ class MDNavigationRail(MDCard):
     Available options are: `'Selected'`, `'Persistent'`, `'Unlabeled'`.
 
     Persistent
-    ==========
+    ~~~~~~~~~~
 
     .. code-block:: kv
 
@@ -600,7 +600,7 @@ class MDNavigationRail(MDCard):
         :align: center
 
     Selected
-    ========
+    ~~~~~~~~
 
     .. code-block:: kv
 
@@ -611,7 +611,7 @@ class MDNavigationRail(MDCard):
         :align: center
 
     Unlabeled
-    =========
+    ~~~~~~~~~
 
     .. code-block:: kv
 
@@ -753,10 +753,7 @@ class MDNavigationRail(MDCard):
                 )
             if self.floating_action_button:
                 Animation(
-                    _canvas_width=0,
-                    _padding_right=0,
-                    d=0.2,
-                    _alpha=0,
+                    _canvas_width=0, _padding_right=0, d=0.2, _alpha=0,
                 ).start(self.floating_action_button)
             self.dispatch("on_close")
 
@@ -813,9 +810,7 @@ class MDNavigationRail(MDCard):
     def on_use_action_button(self, instance, value):
         if value:
             rail_box = BaseNavigationRailBoxItem(
-                size_hint=(None, None),
-                width=self.width,
-                padding=dp(8),
+                size_hint=(None, None), width=self.width, padding=dp(8),
             )
             self.floating_action_button = BaseNavigationRailFloatingButton(
                 pos_hint={"top": 1},

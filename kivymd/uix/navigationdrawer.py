@@ -186,7 +186,7 @@ Create a menu list for ``ContentNavigationDrawer``:
     :align: center
 
 Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 .. code-block:: python
 

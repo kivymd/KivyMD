@@ -113,7 +113,7 @@ Example
     :align: center
 
 Two events are available for :class:`~MDExpansionPanel`
-------------------------------------------------------
+-------------------------------------------------------
 
 - :attr:`~MDExpansionPanel.on_open`
 - :attr:`~MDExpansionPanel.on_close`

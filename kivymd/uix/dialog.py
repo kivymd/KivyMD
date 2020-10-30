@@ -279,7 +279,7 @@ class MDDialog(BaseDialog):
     Objects must be inherited from :class:`~kivymd.uix.list.BaseListItem` class.
 
     With type 'simple'
-    -----------------
+    ~~~~~~~~~~~~~~~~~~
 
     .. code-block:: python
 
@@ -337,7 +337,7 @@ class MDDialog(BaseDialog):
         :align: center
 
     With type 'confirmation'
-    -----------------------
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
     .. code-block:: python
 

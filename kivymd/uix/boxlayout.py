@@ -1,6 +1,6 @@
 """
-Components/BoxLayout
-====================
+Components/Box Layout
+=====================
 
 :class:`~kivy.uix.boxlayout.BoxLayout` class equivalent. Simplifies working
 with some widget properties. For example:
@@ -31,7 +31,7 @@ MDBoxLayout
         md_bg_color: app.theme_cls.primary_color
 
 Available options are:
----------------------
+----------------------
 
 - adaptive_height_
 - adaptive_width_

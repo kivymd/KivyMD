@@ -31,7 +31,7 @@ MDStackLayout
         md_bg_color: app.theme_cls.primary_color
 
 Available options are:
----------------------
+----------------------
 
 - adaptive_height_
 - adaptive_width_

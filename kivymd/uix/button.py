@@ -221,7 +221,7 @@ button :class:`~MDRaisedButton`:
 
 .. MDRectangleFlatIconButton:
 MDRectangleFlatIconButton
----------------------
+-------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
     :align: center
@@ -324,7 +324,7 @@ button :class:`~MDRaisedButton`.
 
 .. MDFillRoundFlatIconButton:
 MDFillRoundFlatIconButton
----------------------
+-------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-fill-round-flat-icon-button.png
     :align: center

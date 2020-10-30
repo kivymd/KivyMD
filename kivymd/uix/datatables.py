@@ -1046,13 +1046,16 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         Incoming data format will be similar to the provided row_data except that it'll be all list instead of tuple like below.
         Any icon provided initially will also be there in this data so handle accordingly.
-        [
-            ['1', ['icon', No Signal'], 'Astrid: NE shared managed', 'Medium', 'Triaged', '0:33', 'Chase Nguyen'],
-            ['2', 'Offline', 'Cosmo: prod shared ares', 'Huge', 'Triaged', '0:39', 'Brie Furman'],
-            ['3', 'Online', 'Phoenix: prod shared lyra-lists', 'Minor', 'Not Triaged', '3:12', 'Jeremy lake'],
-            ['4', 'Online', 'Sirius: NW prod shared locations', 'Negligible', 'Triaged', '13:18', 'Angelica Howards'],
-            ['5', 'Online', 'Sirius: prod independent account', 'Negligible', 'Triaged', '22:06', 'Diane Okuma']
-        ]
+
+        .. code-block:: python
+
+            [
+                ['1', ['icon', 'No Signal'], 'Astrid: NE shared managed', 'Medium', 'Triaged', '0:33', 'Chase Nguyen'],
+                ['2', 'Offline', 'Cosmo: prod shared ares', 'Huge', 'Triaged', '0:39', 'Brie Furman'],
+                ['3', 'Online', 'Phoenix: prod shared lyra-lists', 'Minor', 'Not Triaged', '3:12', 'Jeremy lake'],
+                ['4', 'Online', 'Sirius: NW prod shared locations', 'Negligible', 'Triaged', '13:18', 'Angelica Howards'],
+                ['5', 'Online', 'Sirius: prod independent account', 'Negligible', 'Triaged', '22:06', 'Diane Okuma']
+            ]
 
         You must sort inner lists in ascending order and return the sorted data in the same format.
     """

@@ -9,8 +9,8 @@ sys.path.insert(0, os.path.abspath("_extensions"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 
 import autoapi_kivymd  # NOQA. from _extensions
-import kivymd  # NOQA
 
+import kivymd  # NOQA
 
 # Project information
 project = "KivyMD"

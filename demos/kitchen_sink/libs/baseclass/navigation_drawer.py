@@ -1,6 +1,5 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
-
 from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
 
 

@@ -18,10 +18,9 @@ class KitchenSinkFileManager(Screen):
 
     def file_manager_open(self):
         from kivymd.app import MDApp
-
-        from kivymd.uix.filemanager import MDFileManager
-        from kivymd.uix.dialog import MDDialog
         from kivymd.uix.button import MDFlatButton
+        from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.filemanager import MDFileManager
 
         def open_file_manager(text_item):
             preview = False if text_item == "List" else True

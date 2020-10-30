@@ -7,16 +7,15 @@ from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.loader import Loader
+from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
+from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
+from libs.baseclass.list_items import (  # NOQA: F401
+    KitchenSinkOneLineLeftIconItem,
+)
 
 from kivymd import images_path
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
-from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
-from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
-
-from libs.baseclass.list_items import (  # NOQA: F401
-    KitchenSinkOneLineLeftIconItem,
-)
 
 os.environ["KIVY_PROFILE_LANG"] = "1"
 
@@ -146,10 +145,10 @@ class KitchenSinkApp(MDApp):
             anim.bind(on_complete=lambda *x: add_screen_shrine(MDShrine))
             anim.start(box)
 
-        from kivy.uix.boxlayout import BoxLayout
-        from kivy.metrics import dp
-        from kivy.uix.image import Image
         from kivy.clock import Clock
+        from kivy.metrics import dp
+        from kivy.uix.boxlayout import BoxLayout
+        from kivy.uix.image import Image
 
         box = BoxLayout(
             orientation="vertical",

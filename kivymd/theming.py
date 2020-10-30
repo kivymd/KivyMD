@@ -40,9 +40,8 @@ from kivy.utils import get_color_from_hex
 
 from kivymd import images_path
 from kivymd.color_definitions import colors, hue, palette
-from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
-
 from kivymd.font_definitions import theme_font_styles  # NOQA: F401
+from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
 
 
 class ThemeManager(EventDispatcher):

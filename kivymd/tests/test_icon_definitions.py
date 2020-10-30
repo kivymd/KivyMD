@@ -1,6 +1,7 @@
 def test_icons_have_size():
-    from kivymd.icon_definitions import md_icons
     from kivy.core.text import Label
+
+    from kivymd.icon_definitions import md_icons
 
     lbl = Label(font_name="Icons")
     for icon_name, icon_value in md_icons.items():

@@ -1,24 +1,25 @@
 # Pre-commit hooks.
-# python3 -m pip install pre-commit
+# python -m pip install pre-commit
 # pre-commit install
+# pre-commit run --all-files
 
 repos:
 
   # Format Python
   - repo: https://github.com/psf/black
-    rev: stable
+    rev: 20.8b1
     hooks:
       - id: black
 
   # Sort imports
   - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21
+    rev: 5.6.4
     hooks:
       - id: isort
         additional_dependencies: ["toml"]
 
   # Lint Python
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.3
+    rev: 3.8.4
     hooks:
       - id: flake8

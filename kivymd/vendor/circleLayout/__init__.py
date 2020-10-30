@@ -200,8 +200,9 @@ class CircularLayout(Layout):
 
 
 if __name__ == "__main__":
-    from kivymd.app import MDApp
     from kivy.uix.button import Button
+
+    from kivymd.app import MDApp
 
     class CircLayoutApp(MDApp):
         def build(self):

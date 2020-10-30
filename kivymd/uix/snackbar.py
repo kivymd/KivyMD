@@ -391,7 +391,8 @@ class BaseSnackbar(MDCard):
     """
 
     snackbar_animation_dir = OptionProperty(
-        "Bottom", options=["Top", "Bottom", "Left", "Right"],
+        "Bottom",
+        options=["Top", "Bottom", "Left", "Right"],
     )
     """
     Snackbar animation direction.

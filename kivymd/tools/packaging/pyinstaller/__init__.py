@@ -48,7 +48,10 @@ Example of .spec file
 
 __all__ = ("hooks_path", "get_hook_dirs", "get_pyinstaller_tests")
 
+import os
 from pathlib import Path
+
+import kivymd
 
 hooks_path = str(Path(__file__).absolute().parent)
 """Path to hook directory to use with PyInstaller.
@@ -60,4 +63,10 @@ def get_hook_dirs():
 
 
 def get_pyinstaller_tests():
-    return [hooks_path]
+    return [os.path.join(kivymd.path, "tests", "pyinstaller")]
+
+
+if __name__ == "__main__":
+    print(hooks_path)
+    print(get_hook_dirs())
+    print(get_pyinstaller_tests())

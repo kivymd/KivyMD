@@ -65,7 +65,7 @@ __import__("kivymd.uix.button")
 __import__("kivymd.uix.list")
 __import__("kivymd.uix.navigationdrawer")
 
-print(os.listdir(os.path.dirname(kivymd.uix.__path__)))
+print(os.listdir(os.path.dirname(kivymd.uix.__path__[0])))
 """
     )
     pyi_main.run(

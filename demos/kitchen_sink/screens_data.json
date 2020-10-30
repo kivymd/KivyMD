@@ -175,6 +175,24 @@
       'object': 0,
       'icon': 'tab'
   },
+  'Navigation Rail': {
+      'kv_string': 'navigation_rail',
+      'Import': 'from libs.baseclass.navigation_rail import KitchenSinkNavigationRail',
+      'Factory': 'KitchenSinkNavigationRail()',
+      'name_screen': 'navigation rail',
+      'source_code': 'Navigation-Rail.md',
+      'object': 0,
+      'icon': 'microsoft-xbox-controller-menu'
+  },
+  'Swiper': {
+      'kv_string': 'swiper',
+      'Import': 'from libs.baseclass.swiper import KitchenSinkSwiper',
+      'Factory': 'KitchenSinkSwiper()',
+      'name_screen': 'swiper',
+      'source_code': 'Swiper.md',
+      'object': 0,
+      'icon': 'view-carousel-outline'
+  },
   'Labels': {
       'kv_string': 'labels',
       'Factory': 'Factory.KitchenSinkLabels()',

@@ -31,3 +31,15 @@ Unreleased
 * Added the feature to set the `font_name` property for the `MDTabsLabel` class
 * Add `MDCarousel` class
 * Delete `kivymd/uix/useranimationcard.py`
+* Added usage types for `MDNavigationDrawer` class: `modal/standard`
+* Added stencil instructions to the `FitImage` class canvas
+* Added `on_ref_press` and `switch_tab` methods to `MDTabs` class
+* Added `on_release` method for menu item events instead of callback method to `MDDropdownMenu` class
+* Added `palette` attribute - the ability to change the color of the `MDSpinner` when changing rotation cycles
+* Added the feature to change the border color of the `MDRectangleFlatIconButton` class
+* Add `MDRelativeLayout` class
+* Added the feature to use radius for `MDNavigationDrawer` corners
+* Removed `UserAnimationCard` class
+* Added feature to set background color for `MDDialog` class
+* Added `MDNavigationRail` component
+* Added `MDSwiper` component

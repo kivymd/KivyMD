@@ -248,7 +248,6 @@ ACTIVITY_MANAGER = """
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
-                orientation: "vertical"
 
 
 <ModifiedOneLineIconListItem>
@@ -392,12 +391,14 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `False`.
     """
 
-    multiselect = BooleanProperty(False)
+    selector = OptionProperty("any", options=["any", "file", "folder", "multi"])
     """
-    Determines whether the user is able to select multiple files or not.
+    It can take the values 'any' 'file' 'folder' 'multi'
+    By default, any.
+    Available options are: `'any'`, `'file'`, `'folder'`, `'multi'`.
 
-    :attr:`multiselect` is a :class:`~kivy.properties.BooleanProperty` and defaults to
-    False.
+    :attr:`selector` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `any`.
     """
 
     selection = ListProperty([])
@@ -417,13 +418,18 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
 
-        self.add_widget(
-            FloatButton(
-                callback=self.select_directory_on_press_button,
-                md_bg_color=self.theme_cls.primary_color,
-                icon=self.icon,
+        if (
+            self.selector == "any"
+            or self.selector == "multi"
+            or self.selector == "folder"
+        ):
+            self.add_widget(
+                FloatButton(
+                    callback=self.select_directory_on_press_button,
+                    md_bg_color=self.theme_cls.primary_color,
+                    icon=self.icon,
+                )
             )
-        )
 
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
@@ -619,7 +625,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(os.path.join(self.current_path, path)):
-            if self.multiselect:
+            if self.selector == "multi":
                 file_path = os.path.join(self.current_path, path)
                 if file_path in self.selection:
                     widget._selected = False
@@ -627,6 +633,8 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                 else:
                     widget._selected = True
                     self.selection.append(file_path)
+            elif self.selector == "folder":
+                return
             else:
                 self.select_path(os.path.join(self.current_path, path))
 
@@ -649,10 +657,12 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def select_directory_on_press_button(self, *args):
         """Called when a click on a floating button."""
 
-        if len(self.selection) > 0:
-            self.select_path(self.selection)
+        if self.selector == "multi":
+            if len(self.selection) > 0:
+                self.select_path(self.selection)
         else:
-            self.select_path(self.current_path)
+            if self.selector == "folder" or self.selector == "any":
+                self.select_path(self.current_path)
 
 
 Builder.load_string(ACTIVITY_MANAGER)

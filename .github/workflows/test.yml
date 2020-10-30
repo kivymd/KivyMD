@@ -80,6 +80,9 @@ jobs:
     - name: Test
       run: python -m pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
 
+    - name: Test packaging with PyInstaller
+      run: python -m PyInstaller.utils.run_tests --include_only kivymd.
+
     # Only from Ubuntu
     - name: Upload coverage report
       if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'kivymd/KivyMD' && startswith(matrix.os, 'ubuntu')

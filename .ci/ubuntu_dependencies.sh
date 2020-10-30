@@ -20,7 +20,7 @@ python -m pip install --upgrade pip setuptools wheel
 python -m pip install --upgrade \
   cython \
   pytest pytest-cov pytest_asyncio pytest-timeout coveralls \
-  pillow docutils pygments pyinstaller \
+  pillow docutils pygments pyinstaller[hook_testing] \
   sphinx sphinxcontrib-blockdiag sphinxcontrib-seqdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag
 python -m pip install --upgrade kivy==$KIVY_VERSION
 

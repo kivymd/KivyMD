@@ -65,7 +65,7 @@ cd KivyMD
 pip install .
 ```
 
-**_Speed Tip_**: If you don't need full commit history (about 1.1 GiB), you can
+**_Speed Tip_**: If you don't need full commit history (about 160 MiB), you can
 use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 

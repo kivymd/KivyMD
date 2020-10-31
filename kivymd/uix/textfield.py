@@ -931,9 +931,11 @@ class MDTextField(ThemableBehavior, TextInput):
             )
             if not self.text:
                 self._anim_lbl_font_size(dp(14), sp(12))
-            Animation(_line_width=self.width, duration=(0.2 if self.line_anim else 0), t="out_quad").start(
-                self
-            )
+            Animation(
+                _line_width=self.width,
+                duration=(0.2 if self.line_anim else 0),
+                t="out_quad",
+            ).start(self)
             if self._get_has_error():
                 self._anim_current_error_color(self.error_color)
                 if self.helper_text_mode == "on_error" and (
@@ -998,7 +1000,11 @@ class MDTextField(ThemableBehavior, TextInput):
                     self._anim_current_error_color(disabled_hint_text_color)
                 elif self.helper_text_mode == "on_focus":
                     self._anim_current_error_color((0, 0, 0, 0))
-                Animation(_line_width=0, duration=(0.2 if self.line_anim else 0), t="out_quad").start(self)
+                Animation(
+                    _line_width=0,
+                    duration=(0.2 if self.line_anim else 0),
+                    t="out_quad",
+                ).start(self)
 
     def on_text(self, instance, text):
         self.text = re.sub("\n", " ", text) if not self.multiline else text

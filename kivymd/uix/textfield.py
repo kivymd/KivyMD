@@ -1036,7 +1036,7 @@ class MDTextField(ThemableBehavior, TextInput):
         if self.color_mode == "custom":
             self._update_colors(self.line_color_focus)
 
-    def on__hint_text(self, instance, value):
+    def on_hint_text(self, instance, value):
         pass
 
     def _anim_get_has_error_color(self, color=None):

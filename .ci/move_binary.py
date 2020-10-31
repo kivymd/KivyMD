@@ -86,6 +86,6 @@ new_commit_hash = (
     .strip()
 )
 print(
-    f"Binary file: {env['GITHUB_SERVER_URL']}/{env['GITHUB_REPOSITORY']}/blob/"
+    f"Binary file: {env['GITHUB_SERVER_URL']}/kivymd/storage/blob/"
     f"{new_commit_hash}/{directory}/{filename}"
 )

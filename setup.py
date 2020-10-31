@@ -65,7 +65,7 @@ if __name__ == "__main__":
     setup(
         version=get_version(),
         packages=find_packages(
-            include=["kivymd*"], exclude=["kivymd.tools.release"]
+            include=["kivymd", "kivymd.*"], exclude=["kivymd.tools.release"]
         ),
         package_dir={"kivymd": "kivymd"},
         package_data={

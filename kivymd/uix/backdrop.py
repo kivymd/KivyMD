@@ -144,8 +144,8 @@ Builder.load_string(
     canvas:
         Color:
             rgba:
-                root.theme_cls.primary_color if not root.background_color \
-                else root.background_color
+                root.theme_cls.primary_color if not root.back_layer_color \
+                else root.back_layer_color
         Rectangle:
             pos: self.pos
             size: self.size
@@ -155,8 +155,8 @@ Builder.load_string(
         title: root.title
         elevation: 0
         md_bg_color:
-            root.theme_cls.primary_color if not root.background_color \
-            else root.background_color
+            root.theme_cls.primary_color if not root.back_layer_color \
+            else root.back_layer_color
         left_action_items: root.left_action_items
         right_action_items: root.right_action_items
         pos_hint: {'top': 1}
@@ -176,7 +176,9 @@ Builder.load_string(
 
         canvas:
             Color:
-                rgba: root.theme_cls.bg_normal
+                rgba:
+                    root.theme_cls.bg_normal if not root.front_layer_color \
+                    else root.front_layer_color
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
@@ -241,10 +243,17 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     and defaults to `''`.
     """
 
-    background_color = ListProperty()
+    back_layer_color = ListProperty()
     """Background color of back layer.
 
-    :attr:`background_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`back_layer_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
+    front_layer_color = ListProperty()
+    """Background color of front layer.
+
+    :attr:`front_layer_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 

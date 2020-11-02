@@ -197,13 +197,13 @@ pre-commit will format modified files with Black and sort imports with isort.
 
 ## Sister projects
 
-<img align="left" width="128" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/logo-kivymd-components.png"/>
+<img align="left" width="128" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_extensions.png"/>
 
-## KivyMD Components
+## KivyMD Extensions
 
-Additional components for the KivyMD library.
+Additional extensions for the KivyMD library.
 
-https://github.com/kivymd-components
+https://github.com/kivymd-extensions
 
 
 ## License

@@ -9,10 +9,14 @@ from kivymd.uix.tab import MDTabsBase
 
 
 class KitchenSinkThemingColors(Screen):
+    tabs_created = BooleanProperty(False)
+
     def on_enter(self):
-        for color in _colors.keys():
-            tab_widget = KitchenSinkThemeTab(text=str(color))
-            self.ids.tabs_manager.add_widget(tab_widget)
+        if not self.tabs_created:
+            for color in _colors.keys():
+                tab_widget = KitchenSinkThemeTab(text=str(color))
+                self.tabs_manager.add_widget(tab_widget)
+            self.tabs_created = True
 
     def on_tab_switch(
         self,

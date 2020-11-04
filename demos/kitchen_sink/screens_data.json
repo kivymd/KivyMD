@@ -79,6 +79,14 @@
       'object': 0,
       'icon': 'refresh'
   },
+  'Theming Colors': {
+    'kv_string': 'theming_colors',
+    'Import': 'from libs.baseclass.theming_colors import KitchenSinkThemingColors',
+    'Factory': 'KitchenSinkThemingColors()',
+    'name_screen': 'theming colors',
+    'object': 0,
+    'icon': 'format-color-fill'
+  },
   'Button Speed Dial': {
       'kv_string': 'stack_buttons',
       'Import': 'from libs.baseclass.stack_buttons import KitchenSinkStackButtons',

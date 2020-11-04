@@ -1022,7 +1022,6 @@ class MDTextField(ThemableBehavior, TextInput):
     def on_disabled(self, *args):
         if self.disabled:
             self._update_colors(self.theme_cls.disabled_hint_text_color)
-            print(self.disabled)
         elif not self.disabled:
             if self.color_mode == "primary":
                 self._update_primary_color()

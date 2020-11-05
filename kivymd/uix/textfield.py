@@ -650,7 +650,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
 
     line_anim = BooleanProperty(True)
     """
-    If True, then text field shows animated line.
+    If True, then text field shows animated line when on focus.
 
     :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -768,7 +768,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     line_anim = BooleanProperty(True)
     """
-    If True, then text field shows animated line.
+    If True, then text field shows animated line when on focus.
 
     :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.

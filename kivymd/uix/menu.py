@@ -877,7 +877,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     opening_time = NumericProperty(0.2)
     """
-    Menu window opening animation time.
+    Menu window opening animation time and you can set it to 0
+    if you don't want animation of menu opening.
 
     :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.

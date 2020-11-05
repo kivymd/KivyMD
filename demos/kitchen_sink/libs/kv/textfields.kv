@@ -78,6 +78,10 @@
                     helper_text_mode: "on_focus"
 
                 MDTextField:
+                	hint_text: 'line_anim = False'
+                	line_anim: False                    
+
+                MDTextField:
                     hint_text: "Persistent helper text"
                     helper_text: "Text is always here"
                     helper_text_mode: "persistent"
@@ -123,6 +127,13 @@
                     disabled: True
 
                 MDTextFieldRect:
+                    size_hint: None, None
+                    size: Window.width - dp(40), dp(30)
+                    pos_hint: {'center_y': .5, 'center_x': .5}
+
+                MDTextFieldRect:
+                	hint_text: 'line_anim = False'
+                	line_anim: False
                     size_hint: None, None
                     size: Window.width - dp(40), dp(30)
                     pos_hint: {'center_y': .5, 'center_x': .5}

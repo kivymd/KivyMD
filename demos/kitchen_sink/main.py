@@ -150,6 +150,7 @@ class KitchenSinkApp(MDApp):
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.image import Image
 
+        self.theme_cls.theme_style = "Light"
         box = BoxLayout(
             orientation="vertical",
             size_hint=(0.4, 0.6),

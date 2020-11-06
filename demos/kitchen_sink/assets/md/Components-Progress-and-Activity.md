@@ -1,0 +1,59 @@
+from kivymd.app import MDApp
+from kivy.lang import Builder
+
+
+KV = """
+
+MDBoxLayout:
+    orientation: "vertical"
+    adaptive_height: True
+    pos_hint: {"top": 1}
+    spacing: "20dp"
+
+    MDToolbar:
+        pos_hint: {'top': 1}
+        title: 'Progress and Activity'
+
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_height: True
+
+        MDLabel:
+            text: "Determinate progressbar"
+            halign: 'center'
+
+        MDProgressBar:
+            id: bar_1
+            type: "determinate"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_height: True
+
+        MDLabel:
+            text: "Indeterminate progressbar"
+            halign: 'center'
+
+        MDProgressBar:
+            id: bar_2
+            type: "indeterminate"
+
+    MDSpinner:
+        size_hint: None, None
+        size: "46dp", "46dp"
+        pos_hint: {'center_x': .5}
+"""
+
+
+class Example(MDApp):
+
+    def build(self):
+        return Builder.load_string(KV)
+
+    def on_start(self):
+        self.root.ids.bar_1.start()
+        self.root.ids.bar_2.start()
+
+
+if __name__ == "__main__":
+    Example().run()

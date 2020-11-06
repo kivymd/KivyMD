@@ -1,51 +1,25 @@
-![useranimationcard.gif](https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/dropdownitem.gif)
-
-## Example of using MDDropDownItem:
-
-```python
-from kivy.app import App
-from kivy.factory import Factory
 from kivy.lang import Builder
-from kivymd.theming import ThemeManager
 
-Builder.load_string(
-    '''
-#:import toast kivymd.toast.toast
+from kivymd.app import MDApp
 
+KV = '''
+Screen
 
-<MyRoot@BoxLayout>
-    orientation: 'vertical'
-
-    MDToolbar:
-        title: "Test MDDropDownItem"
-        md_bg_color: app.theme_cls.primary_color
-        elevation: 10
-        left_action_items: [['menu', lambda x: x]]
-
-    FloatLayout:
-
-        MDDropDownItem:
-            id: dropdown_item
-            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
-            items: app.items
-            dropdown_bg: [1, 1, 1, 1]
-
-        MDRaisedButton:
-            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
-            text: 'Chek Item'
-            on_release: toast(dropdown_item.current_item)
-''')
+    MDDropDownItem:
+        id: drop_item
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        text: 'Item'
+        on_release: self.set_item("New Item")
+'''
 
 
-class Test(App):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = "BlueGray"
+class Test(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.screen = Builder.load_string(KV)
 
     def build(self):
-        self.items = [f"Item {i}" for i in range(50)]
-        return Factory.MyRoot()
+        return self.screen
 
 
-if __name__ == "__main__":
-    Test().run()
-```
+Test().run()

@@ -1,9 +1,4 @@
-![useranimationcard.gif](https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/refesh-layout.gif)
-
-## Example of using a class MDScrollViewRefreshLayout:
-
-```python
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.factory import Factory
@@ -13,6 +8,7 @@ from kivymd.uix.button import MDIconButton
 from kivymd.icon_definitions import md_icons
 from kivymd.uix.list import ILeftBodyTouch, OneLineIconListItem
 from kivymd.theming import ThemeManager
+from kivymd.utils import asynckivy
 
 Builder.load_string('''
 <ItemForList>
@@ -39,10 +35,9 @@ Builder.load_string('''
             refresh_callback: app.refresh_callback
             root_layout: root
 
-            GridLayout:
+            MDGridLayout:
                 id: box
-                size_hint_y: None
-                height: self.minimum_height
+                adaptive_height: True
                 cols: 1
 ''')
 
@@ -55,9 +50,8 @@ class ItemForList(OneLineIconListItem):
     icon = StringProperty()
 
 
-class Example(App):
+class Example(MDApp):
     title = 'Example Refresh Layout'
-    theme_cls = ThemeManager()
     screen = None
     x = 0
     y = 15
@@ -69,14 +63,17 @@ class Example(App):
         return self.screen
 
     def set_list(self):
-        names_icons_list = list(md_icons.keys())[self.x:self.y]
-        for name_icon in names_icons_list:
-            self.screen.ids.box.add_widget(
-                ItemForList(icon=name_icon, text=name_icon))
+        async def set_list():
+            names_icons_list = list(md_icons.keys())[self.x:self.y]
+            for name_icon in names_icons_list:
+                await asynckivy.sleep(0)
+                self.screen.ids.box.add_widget(
+                    ItemForList(icon=name_icon, text=name_icon))
+        asynckivy.start(set_list())
 
     def refresh_callback(self, *args):
-        """A method that updates the state of your application
-        while the spinner remains on the screen."""
+        '''A method that updates the state of your application
+        while the spinner remains on the screen.'''
 
         def refresh_callback(interval):
             self.screen.ids.box.clear_widgets()
@@ -91,6 +88,4 @@ class Example(App):
         Clock.schedule_once(refresh_callback, 1)
 
 
-if __name__ == "__main__":
-    Example().run()
-```
+Example().run()

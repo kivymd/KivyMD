@@ -16,16 +16,18 @@
 
 
 <KitchenSinkColorWidget>:
+    size_hint_y: None
+    height: dp(300)
     padding: dp(15)
     md_bg_color: root.rgba_color
 
     KitchenSinkColorLabel:
-        text: root.hue_color
+        text: root.hue_code
         halign: 'left'
         text_color: root.text_color
 
     KitchenSinkColorLabel:
-        text: '#' + root.hex_color
+        text: '#' + root.hex_value
         halign: 'right'
         text_color: root.text_color
 
@@ -33,6 +35,7 @@
 <KitchenSinkColorLabel@MDLabel>
     pos_hint: {'center_y': .3}
     theme_text_color: 'Custom'
+
 
 <KitchenSinkThemeTab>:
     rv: rv
@@ -45,3 +48,4 @@
             size_hint_y: None
             height: self.minimum_height
             default_size_hint: 1, None
+            default_size_y: dp(26)

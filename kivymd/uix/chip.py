@@ -249,7 +249,7 @@ class MDChip(BoxLayout, ThemableBehavior):
             if issubclass(md_choose_chip.__class__, MDChooseChip):
                 for chip in md_choose_chip.children:
                     if chip is not self:
-                        chip.color = self.theme_cls.primary_color
+                        chip.color = self.color
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(

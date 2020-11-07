@@ -2,7 +2,10 @@
 #:import Window kivy.core.window.Window
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import images_path kivymd.images_path
-
+#:import Clipboard kivy.core.clipboard.Clipboard
+#:import PythonLexer pygments.lexers.python.PythonLexer
+#:import webbrowser webbrowser
+#:import toast kivymd.toast.toast
 
 <KitchenSinkBaseDialog>:
     background: f"{images_path}/transparent.png"
@@ -133,3 +136,54 @@
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: 'vertical'
+
+<KitchenSinkUsageCode>:
+    size_hint: (.9, .9)
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        pos_hint: {'center_x': .5}
+        padding: dp(10)
+        spacing: dp(15)
+
+        MDBoxLayout:
+            adaptive_height: True
+
+            MDLabel:
+                text: "Usage of " + root.title
+                size_hint: (None, None)
+                size: self.texture_size
+                text_size: (None, self.font_size)
+                pos_hint: {'center_y': .5}
+                theme_text_color: "Primary"
+                font_style: 'H6'
+
+            Widget:
+
+            MDIconButton:
+                icon: 'content-copy'
+                pos_hint: {'center_y': .5}
+                on_press:
+                    Clipboard.copy(code_input.text)
+                    toast('Copied to Clipboard')
+
+        ScrollView:
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+
+                CodeInput:
+                    id: code_input
+                    text: root.code
+                    style_name: 'monokai' if app.theme_cls.theme_style == 'Dark' else 'colorful'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    background_normal: f'{images_path}transparent.png'
+                    readonly: True
+                    on_focus: self.focus = False
+
+                MDTextButton:
+                    text: 'Want to know more about this component?'
+                    pos_hint: {'center_x': .5}
+                    on_release: webbrowser.open(root.website)

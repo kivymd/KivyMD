@@ -605,6 +605,9 @@ class MDBottomNavigation(TabbedPanelBase):
             else:
                 self.tab_header._label_font_size = sp(12)
 
+    def on_size(self, *args):
+        self.on_resize()
+
     def on_resize(self, instance=None, width=None, do_again=True):
         """Called when the application window is resized."""
 

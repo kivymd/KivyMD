@@ -82,7 +82,8 @@
         "name_screen": "theming colors",
         "source_code": "Components-Theming-Colors.md",
         "object": 0,
-        "icon": "format-color-fill"
+        "icon": "format-color-fill",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/themes/color-definitions/"
     },
     "Button Speed Dial": {
         "kv_string": "stack_buttons",

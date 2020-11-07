@@ -5,15 +5,16 @@ from kivymd.app import MDApp
 KV = '''
 Screen:
 
-    MDIconButton:
-        icon: "language-python"
+    MDCard:
+        size_hint: None, None
+        size: "280dp", "180dp"
         pos_hint: {"center_x": .5, "center_y": .5}
 '''
 
 
-class Example(MDApp):
+class TestCard(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
 
-Example().run()
+TestCard().run()

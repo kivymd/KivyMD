@@ -647,6 +647,15 @@ Builder.load_string(
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
+
+    line_anim = BooleanProperty(True)
+    """
+    If True, then text field shows animated line when on focus.
+
+    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     _primary_color = ListProperty((0, 0, 0, 0))
 
     def __init__(self, **kwargs):
@@ -664,8 +673,12 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
             d_line = 0.05
             d_color = 0.05
 
-        Animation(points=points, d=d_line, t="out_cubic").start(instance_line)
-        Animation(a=alpha, d=d_color).start(instance_color)
+        Animation(
+            points=points, d=(d_line if self.line_anim else 0), t="out_cubic"
+        ).start(instance_line)
+        Animation(a=alpha, d=(d_color if self.line_anim else 0)).start(
+            instance_color
+        )
 
     def _update_primary_color(self, *args):
         self._primary_color = self.theme_cls.primary_color
@@ -755,7 +768,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     line_anim = BooleanProperty(True)
     """
-    If True, then text field shows animated line.
+    If True, then text field shows animated line when on focus.
 
     :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -1005,6 +1018,17 @@ class MDTextField(ThemableBehavior, TextInput):
                     duration=(0.2 if self.line_anim else 0),
                     t="out_quad",
                 ).start(self)
+
+    def on_disabled(self, *args):
+        if self.disabled:
+            self._update_colors(self.theme_cls.disabled_hint_text_color)
+        elif not self.disabled:
+            if self.color_mode == "primary":
+                self._update_primary_color()
+            elif self.color_mode == "accent":
+                self._update_accent_color()
+            elif self.color_mode == "custom":
+                self._update_colors(self.line_color_focus)
 
     def on_text(self, instance, text):
         self.text = re.sub("\n", " ", text) if not self.multiline else text

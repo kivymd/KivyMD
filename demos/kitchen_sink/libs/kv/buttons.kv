@@ -6,24 +6,18 @@
 
     BoxLayout:
         orientation: "vertical"
-        spacing: "10dp"
+        spacing: dp(10)
 
         Toolbar:
             id: toolbar
 
         ScrollView:
-            size_hint_x: None
-            width: box.width
-            # pos_hint: {'center_x': .5}
-            width: self.parent.width
+            pos_hint: {'center_x': .5}
             bar_width: 0
 
-            MDGridLayout:
-                size_hint_y: None
-                height: self.minimum_height
-                cols: 3
-
-                Widget:
+            MDBoxLayout:
+                adaptive_height: True
+                orientation: 'vertical'
 
                 MDBoxLayout:
                     id: box
@@ -34,10 +28,10 @@
                     pos_hint: {'center_x': .5}
 
                     MDBoxLayout:
-                        size_hint_y: None
                         adaptive_width: True
+                        size_hint_y: None
                         height: dp(56)
-                        spacing: '10dp'
+                        spacing: dp(10)
                         pos_hint: {'center_x': .5}
 
                         MDIconButton:
@@ -102,7 +96,7 @@
 
                     MDBoxLayout:
                         orientation: 'vertical'
-                        spacing: '10dp'
+                        spacing: dp(10)
                         adaptive_size: True
                         pos_hint: {'center_x': .5}
 
@@ -111,7 +105,7 @@
                         Label:
                             text: 'Disabled buttons'
                             color: app.theme_cls.text_color
-                            font_size: '20sp'
+                            font_size: sp(20)
                             size_hint: None, None
                             size: self.texture_size
 
@@ -122,10 +116,10 @@
                     ########################################
 
                     MDBoxLayout:
-                        size_hint_y: None
                         adaptive_width: True
+                        size_hint_y: None
                         height: dp(56)
-                        spacing: '10dp'
+                        spacing: dp(10)
                         pos_hint: {'center_x': .5}
 
                         MDIconButton:
@@ -198,7 +192,7 @@
 
                     MDBoxLayout:
                         orientation: 'vertical'
-                        spacing: '10dp'
+                        spacing: dp(10)
                         adaptive_size: True
                         pos_hint: {'center_x': .5}
 
@@ -207,44 +201,45 @@
                         Label:
                             text: 'Button customization'
                             color: app.theme_cls.text_color
-                            font_size: '20sp'
+                            font_size: sp(20)
                             size_hint: None, None
                             size: self.texture_size
+                            pos_hint: {"center_x": .5}
 
                         MDSeparator:
 
-                    ########################################
-                    #         CUSTOMIZATION BUTTONS
-                    ########################################
+                ########################################
+                #         CUSTOMIZATION BUTTONS
+                ########################################
 
-                    MDRaisedButton:
-                        text: "MDRaisedButton"
-                        elevation: 8
-                        text_color: get_color_from_hex("#001975")
-                        md_bg_color: get_color_from_hex("#D40078")
-                        pos_hint: {'center_x': .5}
+                        MDRaisedButton:
+                            text: "MDRaisedButton"
+                            elevation: 8
+                            text_color: get_color_from_hex("#001975")
+                            md_bg_color: get_color_from_hex("#D40078")
+                            pos_hint: {'center_x': .5}
 
-                    MDRectangleFlatButton:
-                        text: "MDRectangleFlatButton"
-                        pos_hint: {'center_x': .5}
-                        text_color: get_color_from_hex("#C37C4C")
+                        MDRectangleFlatButton:
+                            text: "MDRectangleFlatButton"
+                            pos_hint: {'center_x': .5}
+                            text_color: get_color_from_hex("#C37C4C")
 
-                    MDRoundFlatButton:
-                        text: "MDRoundFlatButton"
-                        pos_hint: {'center_x': .5}
-                        text_color: get_color_from_hex("#A23651")
-                        md_bg_color: get_color_from_hex("#366EA1")
+                        MDRoundFlatButton:
+                            text: "MDRoundFlatButton"
+                            pos_hint: {'center_x': .5}
+                            text_color: get_color_from_hex("#A23651")
+                            md_bg_color: get_color_from_hex("#366EA1")
 
-                    MDFillRoundFlatIconButton:
-                        text: "MDFillRoundFlatIconButton"
-                        icon: "language-python"
-                        pos_hint: {'center_x': .5}
-                        text_color: 1, 1, 0, 1
-                        md_bg_color: get_color_from_hex("#552A7D")
+                        MDFillRoundFlatIconButton:
+                            text: "MDFillRoundFlatIconButton"
+                            icon: "language-python"
+                            pos_hint: {'center_x': .5}
+                            text_color: 1, 1, 0, 1
+                            md_bg_color: get_color_from_hex("#552A7D")
 
                     MDBoxLayout:
                         orientation: 'vertical'
-                        spacing: '10dp'
+                        spacing: dp(10)
                         adaptive_size: True
                         pos_hint: {'center_x': .5}
 
@@ -253,7 +248,7 @@
                         Label:
                             text: 'MDIconButton customization'
                             color: app.theme_cls.text_color
-                            font_size: '20sp'
+                            font_size: sp(20)
                             size_hint: None, None
                             size: self.texture_size
                             pos_hint: {"center_x": .5}
@@ -261,28 +256,26 @@
                         MDSeparator:
 
                         MDBoxLayout:
+                            spacing: dp(10)
                             adaptive_size: True
-                            padding: "10dp"
                             pos_hint: {"center_x": .5, "center_y": .5}
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "15sp"
+                                user_font_size: sp(15)
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "20sp"
+                                user_font_size: sp(20)
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "24sp"
+                                user_font_size: sp(24)
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "36sp"
+                                user_font_size: sp(36)
 
                             MDIconButton:
                                 icon: "language-python"
-                                user_font_size: "48sp"
-                                
-                Widget:
+                                user_font_size: sp(48)

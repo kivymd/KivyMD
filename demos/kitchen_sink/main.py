@@ -7,6 +7,8 @@ from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.loader import Loader
+from kivy.properties import StringProperty
+from kivy.uix.modalview import ModalView
 from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
 from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import (  # NOQA: F401
@@ -68,6 +70,7 @@ class KitchenSinkApp(MDApp):
         ) as read_file:
             self.data_screens = ast.literal_eval(read_file.read())
             data_screens = list(self.data_screens.keys())
+            print(len(data_screens))
             data_screens.sort()
         for name_item_example in data_screens:
             self.root.ids.backdrop_front_layer.data.append(
@@ -97,6 +100,11 @@ class KitchenSinkApp(MDApp):
             if "toolbar" in screen_object.ids:
                 screen_object.ids.toolbar.title = name_screen
             manager.add_widget(screen_object)
+        code_file = f"{os.environ['KITCHEN_SINK_ROOT']}/assets/md/{self.data_screens[name_screen]['source_code']}"
+        with open(code_file, "r") as f:
+            self.sample_code = f.read()
+            self.screen_name = name_screen
+            self.website = self.data_screens[name_screen]["more_info"]
         manager.current = self.data_screens[name_screen]["name_screen"]
 
     def back_to_home_screen(self):
@@ -112,6 +120,15 @@ class KitchenSinkApp(MDApp):
         from kivymd.toast import toast
 
         toast(args[0])
+
+    def show_code(self):
+        if self.theme_cls.device_orientation == "landscape":
+            code = KitchenSinkSampleCode(
+                code=self.sample_code,
+                title=self.screen_name,
+                website=self.website,
+            )
+            code.open()
 
     def show_demo_shrine(self, instance):
         """
@@ -150,6 +167,7 @@ class KitchenSinkApp(MDApp):
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.image import Image
 
+        self.theme_cls.theme_style = "Light"
         box = BoxLayout(
             orientation="vertical",
             size_hint=(0.4, 0.6),
@@ -178,6 +196,12 @@ class KitchenSinkApp(MDApp):
                 panel_cls=MDExpansionPanelOneLine(text="KivyMD 0.104.1"),
             )
         )
+
+
+class KitchenSinkSampleCode(ModalView):
+    code = StringProperty()
+    title = StringProperty()
+    website = StringProperty()
 
 
 KitchenSinkApp().run()

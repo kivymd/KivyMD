@@ -32,6 +32,7 @@ demo = """
         MDLabel:
             text: 'Content'
             halign: 'center'
+            theme_text_color: 'Primary'
             font_style: 'H6'
 
 

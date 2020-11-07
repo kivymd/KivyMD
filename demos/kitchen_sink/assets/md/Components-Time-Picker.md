@@ -28,6 +28,7 @@ KV = """
 
         MDLabel:
             id: time_picker_label
+            theme_text_color: 'Primary'
             halign: 'center'
 
         BoxLayout:
@@ -36,6 +37,7 @@ KV = """
             pos_hint: {'center_x': .5}
 
             Label:
+                theme_text_color: 'Primary'
                 text: "Start on previous date"
                 size_hint_x: None#, None
                 width: self.texture_size[0]

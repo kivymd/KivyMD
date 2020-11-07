@@ -96,7 +96,7 @@ class Example(App):
                     tile_font_style="H5",
                     text_post="This is my favorite cat. He's only six months "
                               "old. He loves milk and steals sausages :) "
-                              "And he likes to play in the garden.",
+                              "And he likes to play in the components.",
                     with_image=True, swipe=True, callback=callback,
                     buttons=buttons))
 

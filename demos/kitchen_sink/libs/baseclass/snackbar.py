@@ -2,12 +2,12 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.uix.screenmanager import Screen
 
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.screen import MDScreen
 
 
-class KitchenSinkSnackBar(Screen):
+class KitchenSinkSnackBar(MDScreen):
     snackbar = None
     _interval = 0
 

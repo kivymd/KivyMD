@@ -16,14 +16,14 @@
 
 <Toolbar>
     md_bg_color: app.theme_cls.primary_color
-    background_palette: 'Primary'
-    background_hue: '500'
+    background_palette: "Primary"
+    background_hue: "500"
     elevation: 10
-    right_action_items: [['brightness-6', lambda x: app.switch_theme_style()], ['file-code' if self.theme_cls.device_orientation == "landscape" else "dots-vertical", lambda x: app.show_code()]]
+    right_action_items: [["brightness-6", lambda x: app.switch_theme_style()], ["file-code" if self.theme_cls.device_orientation == "landscape" else "dots-vertical", lambda x: app.show_code()]]
     left_action_items: [["arrow-left", lambda x: app.back_to_home_screen()]]
 
 
-BoxLayout:
+MDBoxLayout:
     orientation: "vertical"
 
     BoxLayout:
@@ -45,7 +45,7 @@ BoxLayout:
                 on_close:
                     backlayer.ids.screen_manager.current = "settings"
                     home.closing_animation_backdrop_components(backdrop, backlayer)
-                left_action_items: [['menu', lambda x: self.open()]]
+                left_action_items: [["menu", lambda x: self.open()]]
                 title: "Kitchen Sink"
                 header_text: "Menu:"
 
@@ -64,7 +64,7 @@ BoxLayout:
                         backdrop: backdrop
                         backlayer: backlayer
 
-        Screen:
+        MDScreen:
             name: "shrine demo"
             on_enter: app.show_demo_shrine(self)
             on_leave:
@@ -75,15 +75,15 @@ BoxLayout:
 <KitchenSinkBackdropFrontLayer@RecycleView>
     backdrop: None
     backlayer: None
-    key_viewclass: 'viewclass'
-    key_size: 'height'
+    key_viewclass: "viewclass"
+    key_size: "height"
 
     RecycleBoxLayout:
         default_size: None, dp(48)
         default_size_hint: 1, None
         size_hint_y: None
         height: self.minimum_height
-        orientation: 'vertical'
+        orientation: "vertical"
 
 
 <KitchenSinkBackdropBackLayer@FloatLayout>
@@ -110,7 +110,7 @@ BoxLayout:
         id: screen_manager
         transition: FadeTransition(duration=.2, clearcolor=(0, 0, 0, 0))
 
-        Screen:
+        MDScreen:
             name: "settings"
 
             ScrollView:
@@ -140,7 +140,7 @@ BoxLayout:
                             MDCheckbox:
                                 group: "style"
                                 size_hint: None, None
-                                size: "48dp", '48dp'
+                                size: "48dp", "48dp"
                                 active: True
                                 on_active: if self.active: app.switch_theme_style()
 
@@ -151,7 +151,7 @@ BoxLayout:
                             MDCheckbox:
                                 group: "style"
                                 size_hint: None, None
-                                size: "48dp", '48dp'
+                                size: "48dp", "48dp"
                                 on_active: if self.active: app.switch_theme_style()
 
                             Label:
@@ -216,7 +216,7 @@ BoxLayout:
                         size_hint_y: None
                         height: app.theme_cls.standard_increment
 
-        Screen:
+        MDScreen:
             name: "stuidies list"
 
             Image:

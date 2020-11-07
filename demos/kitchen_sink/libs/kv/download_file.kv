@@ -2,7 +2,7 @@
 
 
 <KitchenSinkDownloadFile>
-    name: 'download file'
+    name: "download file"
 
     Toolbar:
         id: toolbar
@@ -15,6 +15,6 @@
             text: "Download file"
             size_hint: None, None
             size: 3 * dp(48), dp(48)
-            pos_hint: {'center_x': .5, 'center_y': .5}
+            pos_hint: {"center_x": .5, "center_y": .5}
             opposite_colors: True
             on_release: Clock.schedule_once(root.show_example_download_file, .1)

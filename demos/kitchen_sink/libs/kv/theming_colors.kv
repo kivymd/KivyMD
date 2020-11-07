@@ -1,5 +1,5 @@
 <KitchenSinkThemingColors>:
-    name: 'theming colors'
+    name: "theming colors"
     tabs_manager: tabs_manager
 
     BoxLayout:
@@ -17,24 +17,24 @@
 
 <KitchenSinkColorWidget>:
     size_hint_y: None
-    height: dp(300)
-    padding: dp(15)
+    height: "300dp"
+    padding: "15dp"
     md_bg_color: root.rgba_color
 
     KitchenSinkColorLabel:
         text: root.hue_code
-        halign: 'left'
+        halign: "left"
         text_color: root.text_color
 
     KitchenSinkColorLabel:
-        text: '#' + root.hex_value
-        halign: 'right'
+        text: "#" + root.hex_value
+        halign: "right"
         text_color: root.text_color
 
 
 <KitchenSinkColorLabel@MDLabel>
-    pos_hint: {'center_y': .3}
-    theme_text_color: 'Custom'
+    pos_hint: {"center_y": .3}
+    theme_text_color: "Custom"
 
 
 <KitchenSinkThemeTab>:
@@ -44,7 +44,7 @@
         viewclass: "KitchenSinkColorWidget"
 
         RecycleBoxLayout:
-            orientation: 'vertical'
+            orientation: "vertical"
             size_hint_y: None
             height: self.minimum_height
             default_size_hint: 1, None

@@ -5,7 +5,7 @@
 <KitchenSinkContentNavigationDrawer>
 
     BoxLayout:
-        orientation: 'vertical'
+        orientation: "vertical"
 
         FloatLayout:
             size_hint_y: None
@@ -61,19 +61,19 @@
             Screen:
 
                 BoxLayout:
-                    orientation: 'vertical'
+                    orientation: "vertical"
 
                     MDToolbar:
                         title: "Navigation Drawer"
                         md_bg_color: app.theme_cls.primary_color
                         elevation: 10
-                        left_action_items: [['menu', lambda x: nav_drawer.set_state("toggle")]]
-                        right_action_items: [['arrow-left', lambda x: app.back_to_home_screen()]]
+                        left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+                        right_action_items: [["arrow-left", lambda x: app.back_to_home_screen()]]
 
                     BoxLayout:
                         orientation: "vertical"
-                        padding: dp(16)
-                        spacing: dp(8)
+                        padding: "16dp"
+                        spacing: "8dp"
 
                         MDRaisedButton:
                             text: "MDNavigationDrawer.type = " + nav_drawer.type

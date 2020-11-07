@@ -1,9 +1,9 @@
 <KitchenSinkLabelForChips@MDLabel>
-    theme_text_color: 'Primary'
+    theme_text_color: "Primary"
 
 
 <KitchenSinkChips>
-    name: 'chips'
+    name: "chips"
 
     BoxLayout:
         orientation: "vertical"
@@ -15,122 +15,122 @@
         ScrollView:
 
             MDGridLayout:
-                padding: dp(10)
-                spacing: dp(10)
+                padding: "10dp"
+                spacing: "10dp"
                 cols: 1
                 adaptive_height: True
 
                 Widget:
                     size_hint_y: None
-                    height: dp(5)
+                    height: "5dp"
 
                 KitchenSinkLabelForChips:
-                    text: 'Chips with color:'
+                    text: "Chips with color:"
 
                 MDSeparator:
 
                 MDStackLayout:
                     adaptive_height: True
-                    spacing: dp(5)
+                    spacing: "5dp"
 
                     MDChip:
-                        label: 'Coffee'
+                        label: "Coffee"
                         color: .4470588235118, .1960787254902, 0, 1
-                        icon: 'coffee'
+                        icon: "coffee"
                         callback: root.callback_for_menu_items
 
                     MDChip:
-                        label: 'Duck'
+                        label: "Duck"
                         color: .9215686274509803, 0, 0, 1
-                        icon: 'duck'
+                        icon: "duck"
                         callback: root.callback_for_menu_items
 
                     MDChip:
-                        label: 'Earth'
+                        label: "Earth"
                         color: .21176470535294, .098039627451, 1, 1
-                        icon: 'earth'
+                        icon: "earth"
                         callback: root.callback_for_menu_items
 
                     MDChip:
-                        label: 'Face'
+                        label: "Face"
                         color: .2039215698, .4823117606, .435295883, 1
-                        icon: 'face'
+                        icon: "face"
                         callback: root.callback_for_menu_items
 
                     MDChip:
-                        label: 'Facebook'
+                        label: "Facebook"
                         color: .56078431302, .482352906, .435294883, 1
-                        icon: 'facebook'
+                        icon: "facebook"
                         callback: root.callback_for_menu_items
 
                 Widget:
                     size_hint_y: None
-                    height: dp(5)
+                    height: "5dp"
 
                 KitchenSinkLabelForChips:
-                    text: 'Chip without icon:'
+                    text: "Chip without icon:"
 
                 MDSeparator:
 
                 MDStackLayout:
                     adaptive_height: True
-                    spacing: dp(5)
+                    spacing: "5dp"
 
                     MDChip:
-                        label: 'Without icon'
-                        icon: ''
+                        label: "Without icon"
+                        icon: ""
                         callback: root.callback_for_menu_items
 
                 Widget:
                     size_hint_y: None
-                    height: dp(5)
+                    height: "5dp"
 
                 KitchenSinkLabelForChips:
-                    text: 'Chips with check:'
+                    text: "Chips with check:"
 
                 MDSeparator:
 
                 MDStackLayout:
                     adaptive_height: True
-                    spacing: dp(5)
+                    spacing: "5dp"
 
                     MDChip:
-                        label: 'Check'
-                        icon: ''
+                        label: "Check"
+                        icon: ""
                         check: True
                         callback: root.callback_for_menu_items
 
                     MDChip:
-                        label: 'Check with icon'
-                        icon: 'city'
+                        label: "Check with icon"
+                        icon: "city"
                         check: True
                         callback: root.callback_for_menu_items
 
                 Widget:
                     size_hint_y: None
-                    height: dp(5)
+                    height: "5dp"
 
                 KitchenSinkLabelForChips:
-                    text: 'Choose chip:'
+                    text: "Choose chip:"
 
                 MDSeparator:
 
                 MDChooseChip:
 
                     MDChip:
-                        label: 'Earth'
-                        icon: 'earth'
+                        label: "Earth"
+                        icon: "earth"
                         callback: root.callback_for_menu_items
                         selected_chip_color: .21176470535294, .098039627451, 1, 1
 
                     MDChip:
-                        label: 'Face'
-                        icon: 'face'
+                        label: "Face"
+                        icon: "face"
                         callback: root.callback_for_menu_items
                         selected_chip_color: .21176470535294, .098039627451, 1, 1
 
                     MDChip:
-                        label: 'Facebook'
-                        icon: 'facebook'
+                        label: "Facebook"
+                        icon: "facebook"
                         callback: root.callback_for_menu_items
                         selected_chip_color: .21176470535294, .098039627451, 1, 1

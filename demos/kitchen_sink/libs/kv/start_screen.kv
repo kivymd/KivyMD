@@ -6,9 +6,7 @@
 #:import KitchenSinkDialogDev libs.baseclass.dialog_change_theme.KitchenSinkDialogDev
 #:import Toolbar libs.baseclass.toolbar.Toolbar
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
-#:import images_path kivymd.images_path
-#:import PythonLexer pygments.lexers.python.PythonLexer
-#:import webbrowser webbrowser
+
 
 <ShrinePresplashTile@Label>
     color: app.theme_cls.text_color
@@ -24,48 +22,6 @@
     right_action_items: [['brightness-6', lambda x: app.switch_theme_style()], ['file-code' if self.theme_cls.device_orientation == "landscape" else "dots-vertical", lambda x: app.show_code()]]
     left_action_items: [["arrow-left", lambda x: app.back_to_home_screen()]]
 
-<KitchenSinkSampleCode>:
-    background: f"{images_path}/transparent.png"
-    size_hint: (.9, .9)
-
-    canvas:
-        Color:
-            rgba: app.theme_cls.bg_dark
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [20,]
-
-    MDBoxLayout:
-        orientation: 'vertical'
-        padding: dp(10)
-        spacing: dp(15)
-
-        Label:
-            text: 'Sample Code of ' + root.title
-            size_hint: (None, None)
-            size: self.texture_size
-            pos_hint: {'center_x': .5}
-            color: app.theme_cls.text_color
-            bold: True
-
-        ScrollView:
-
-            MDBoxLayout:
-                orientation: 'vertical'
-                adaptive_height: True
-                CodeInput:
-                    text: root.code
-                    style_name: 'monokai' if app.theme_cls.theme_style == 'Dark' else 'colorful'
-                    size_hint_y: None
-                    height: self.minimum_height
-                    background_normal: f'{images_path}transparent.png'
-                    on_focus: self.focus = False
-
-                MDTextButton:
-                    text: 'Want to know more about this component?'
-                    pos_hint: {'center_x': .5}
-                    on_release: webbrowser.open(root.website)
 
 BoxLayout:
     orientation: "vertical"

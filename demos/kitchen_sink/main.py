@@ -7,9 +7,10 @@ from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.loader import Loader
-from kivy.properties import StringProperty
-from kivy.uix.modalview import ModalView
-from libs.baseclass.dialog_change_theme import KitchenSinkDialogChangeTheme
+from libs.baseclass.dialog_change_theme import (
+    KitchenSinkDialogChangeTheme,
+    KitchenSinkUsageCode,
+)
 from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import (  # NOQA: F401
     KitchenSinkOneLineLeftIconItem,
@@ -123,7 +124,7 @@ class KitchenSinkApp(MDApp):
 
     def show_code(self):
         if self.theme_cls.device_orientation == "landscape":
-            code = KitchenSinkSampleCode(
+            code = KitchenSinkUsageCode(
                 code=self.sample_code,
                 title=self.screen_name,
                 website=self.website,
@@ -196,12 +197,6 @@ class KitchenSinkApp(MDApp):
                 panel_cls=MDExpansionPanelOneLine(text="KivyMD 0.104.1"),
             )
         )
-
-
-class KitchenSinkSampleCode(ModalView):
-    code = StringProperty()
-    title = StringProperty()
-    website = StringProperty()
 
 
 KitchenSinkApp().run()

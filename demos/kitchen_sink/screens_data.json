@@ -75,7 +75,7 @@
         "icon": "refresh",
         "more_info": "https://kivymd.readthedocs.io/en/latest/components/refresh-layout/"
     },
-    "Theming Colors": {
+    "MDTheming Colors": {
         "kv_string": "theming_colors",
         "Import": "from libs.baseclass.theming_colors import KitchenSinkThemingColors",
         "Factory": "KitchenSinkThemingColors()",

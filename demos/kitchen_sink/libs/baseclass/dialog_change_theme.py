@@ -1,5 +1,6 @@
 import os
 
+from kivy.properties import StringProperty
 from kivy.uix.modalview import ModalView
 from kivy.utils import get_color_from_hex, get_hex_from_color
 
@@ -13,6 +14,12 @@ class KitchenSinkBaseDialog(ThemableBehavior, ModalView):
 
 class KitchenSinkDialogDev(KitchenSinkBaseDialog):
     pass
+
+
+class KitchenSinkUsageCode(KitchenSinkBaseDialog):
+    code = StringProperty()
+    title = StringProperty()
+    website = StringProperty()
 
 
 class KitchenSinkDialogLicense(KitchenSinkBaseDialog):

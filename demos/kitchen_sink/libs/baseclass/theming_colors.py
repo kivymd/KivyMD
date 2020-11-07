@@ -47,8 +47,8 @@ class KitchenSinkThemingColors(Screen):
 class KitchenSinkColorWidget(MDBoxLayout):
     rgba_color = ColorProperty()
     text_color = ColorProperty()
-    hex_color = StringProperty()
-    hue_color = StringProperty()
+    hex_value = StringProperty()
+    hue_code = StringProperty()
 
 
 class KitchenSinkThemeTab(MDBoxLayout, MDTabsBase):

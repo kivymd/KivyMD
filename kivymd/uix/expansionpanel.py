@@ -340,7 +340,7 @@ class MDExpansionPanel(RelativeLayout):
                     panel.remove_widget(panel.children[0])
                     chevron = panel.children[0].children[0].children[0]
                     self.set_chevron_up(chevron)
-                    self.close_panel(panel)
+                    self.close_panel(panel, press_current_panel)
                     self.dispatch("on_close")
                     break
         if not press_current_panel:
@@ -358,13 +358,15 @@ class MDExpansionPanel(RelativeLayout):
 
         Animation(_angle=0, d=self.closing_time).start(instance_chevron)
 
-    def close_panel(self, instance_panel):
+    def close_panel(self, instance_panel, press_current_panel):
         """Method closes the panel."""
 
         if self._anim_playing:
             return
 
-        self._anim_playing = True
+        if press_current_panel:
+            self._anim_playing = True
+
         self._state = "close"
 
         anim = Animation(

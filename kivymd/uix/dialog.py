@@ -421,7 +421,7 @@ class MDDialog(BaseDialog):
     :attr:`items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
-    
+
     width_offset = NumericProperty(dp(48))
     """
     Dialog offset from device width.

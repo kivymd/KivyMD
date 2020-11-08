@@ -624,8 +624,8 @@ class MDCard(
     BackgroundColorBehavior,
     RectangularElevationBehavior,
     FocusBehavior,
-    RectangularRippleBehavior,
     BoxLayout,
+    RectangularRippleBehavior,
 ):
     background = StringProperty()
     """

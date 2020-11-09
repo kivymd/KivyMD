@@ -71,7 +71,6 @@ class KitchenSinkApp(MDApp):
         ) as read_file:
             self.data_screens = ast.literal_eval(read_file.read())
             data_screens = list(self.data_screens.keys())
-            print(len(data_screens))
             data_screens.sort()
         for name_item_example in data_screens:
             self.root.ids.backdrop_front_layer.data.append(

@@ -250,6 +250,7 @@ class CommonRipple(object):
         self.canvas.after.clear()
 
     def on_touch_down(self, touch):
+        super().on_touch_down(touch)
         if touch.is_mouse_scrolling:
             return False
         if not self.collide_point(touch.x, touch.y):
@@ -280,7 +281,6 @@ class CommonRipple(object):
             self.lay_canvas_instructions()
             self.finish_rad = max(self.width, self.height) * self.ripple_scale
             self.start_ripple()
-        return super().on_touch_down(touch)
 
     def on_touch_move(self, touch, *args):
         if not self.collide_point(touch.x, touch.y):

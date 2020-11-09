@@ -422,6 +422,14 @@ class MDDialog(BaseDialog):
     and defaults to `[]`.
     """
 
+    width_offset = NumericProperty(dp(48))
+    """
+    Dialog offset from device width.
+
+    :attr:`width_offset` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(48)`.
+    """
+
     type = OptionProperty(
         "alert", options=["alert", "simple", "confirmation", "custom"]
     )
@@ -527,10 +535,10 @@ class MDDialog(BaseDialog):
 
         if self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
             self.size_hint = (None, None)
-            self.width = min(dp(280), Window.width - dp(48))
+            self.width = min(dp(280), Window.width - self.width_offset)
         elif self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
             self.size_hint = (None, None)
-            self.width = min(dp(560), Window.width - dp(48))
+            self.width = min(dp(560), Window.width - self.width_offset)
 
         if not self.title:
             self._spacer_top = 0
@@ -561,10 +569,10 @@ class MDDialog(BaseDialog):
 
     def update_width(self, *args):
         self.width = max(
-            self.height + dp(48),
+            self.height + self.width_offset,
             min(
                 dp(560) if DEVICE_TYPE == "desktop" else dp(280),
-                Window.width - dp(48),
+                Window.width - self.width_offset,
             ),
         )
 

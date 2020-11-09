@@ -189,7 +189,6 @@ Builder.load_string(
         size_hint: None, None
         height: self.minimum_height
         width: self.minimum_width
-        orientation: "vertical"
         multiselect: True
         touch_multiselect: True
 

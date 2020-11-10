@@ -36,8 +36,8 @@ class KitchenSinkThemingColors(Screen):
                     text_color = text_colors[tab_label_text][hue]
                 color_widget = {
                     "rgba_color": rgba(color),
-                    "hex_color": color,
-                    "hue_color": hue,
+                    "hex_value": color,
+                    "hue_code": hue,
                     "text_color": text_color,
                 }
                 instance_android_tabs.rv.data.append(color_widget)

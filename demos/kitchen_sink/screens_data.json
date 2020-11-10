@@ -25,7 +25,7 @@
         "source_code": "Components-Data-Tables.md",
         "object": 0,
         "icon": "table-large",
-        "more_info": "https://kivymd.readthedocs.io/en/latest/components/bottom-navigation/"
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/datatables/"
     },
     "Bottom Sheets": {
         "kv_string": "bottom_sheet",
@@ -82,7 +82,8 @@
         "name_screen": "theming colors",
         "source_code": "Components-Theming-Colors.md",
         "object": 0,
-        "icon": "format-color-fill"
+        "icon": "format-color-fill",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/themes/color-definitions/"
     },
     "Button Speed Dial": {
         "kv_string": "stack_buttons",

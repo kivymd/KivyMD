@@ -8,6 +8,10 @@ from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.loader import Loader
+from kivymd import images_path
+from kivymd.app import MDApp
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+
 from libs.baseclass.dialog_change_theme import (
     KitchenSinkDialogChangeTheme,
     KitchenSinkUsageCode,
@@ -16,10 +20,6 @@ from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import (  # NOQA: F401
     KitchenSinkOneLineLeftIconItem,
 )
-
-from kivymd import images_path
-from kivymd.app import MDApp
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 
 os.environ["KIVY_PROFILE_LANG"] = "1"
 
@@ -191,6 +191,7 @@ class KitchenSinkApp(MDApp):
     def on_key(self, window, key, *args):
         if key == 27:  # the back key
             Clock.schedule_once(self.back_to_home_screen)
+            return True
 
     def add_expansion_panel(self, card):
         content = KitchenSinkExpansionPanelContent()

@@ -3,6 +3,7 @@ import os
 import sys
 from pathlib import Path
 
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.lang import Builder
@@ -15,7 +16,6 @@ from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import (  # NOQA: F401
     KitchenSinkOneLineLeftIconItem,
 )
-from kivy.clock import Clock
 
 from kivymd import images_path
 from kivymd.app import MDApp
@@ -187,7 +187,6 @@ class KitchenSinkApp(MDApp):
         box.add_widget(Factory.ShrinePresplashTile(text="SHRINE"))
         instance.add_widget(box)
         Clock.schedule_once(show_demo_shrine, 1)
-
 
     def on_key(self, window, key, *args):
         if key == 27:  # the back key

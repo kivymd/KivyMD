@@ -15,6 +15,7 @@ from libs.baseclass.expansionpanel import KitchenSinkExpansionPanelContent
 from libs.baseclass.list_items import (  # NOQA: F401
     KitchenSinkOneLineLeftIconItem,
 )
+from kivy.clock import Clock
 
 from kivymd import images_path
 from kivymd.app import MDApp
@@ -42,6 +43,7 @@ class KitchenSinkApp(MDApp):
         self.toolbar = None
         self.data_screens = {}
         Loader.loading_image = f"{images_path}transparent.png"
+        Window.bind(on_keyboard=self.on_key)
 
     def build(self):
         Builder.load_file(
@@ -107,7 +109,7 @@ class KitchenSinkApp(MDApp):
             self.website = self.data_screens[name_screen]["more_info"]
         manager.current = self.data_screens[name_screen]["name_screen"]
 
-    def back_to_home_screen(self):
+    def back_to_home_screen(self, *args):
         self.root.ids.screen_manager.current = "home"
 
     def switch_theme_style(self):
@@ -162,7 +164,6 @@ class KitchenSinkApp(MDApp):
             anim.bind(on_complete=lambda *x: add_screen_shrine(MDShrine))
             anim.start(box)
 
-        from kivy.clock import Clock
         from kivy.metrics import dp
         from kivy.uix.boxlayout import BoxLayout
         from kivy.uix.image import Image
@@ -186,6 +187,11 @@ class KitchenSinkApp(MDApp):
         box.add_widget(Factory.ShrinePresplashTile(text="SHRINE"))
         instance.add_widget(box)
         Clock.schedule_once(show_demo_shrine, 1)
+
+
+    def on_key(self, window, key, *args):
+        if key == 27:  # the back key
+            Clock.schedule_once(self.back_to_home_screen)
 
     def add_expansion_panel(self, card):
         content = KitchenSinkExpansionPanelContent()

@@ -197,13 +197,10 @@ Builder.load_string(
     adaptive_height: True
     spacing: "8dp"
 
-    Widget:
-
     MDLabel:
         text: "Rows per page"
-        size_hint: None, 1
-        width: self.texture_size[0]
-        text_size: None, None
+        shorten: True
+        halign: "right"
         font_style: "Caption"
         color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
@@ -216,21 +213,23 @@ Builder.load_string(
 
     Widget:
         size_hint_x: None
-        width: "32dp"
+        width: "32dp" if DEVICE_TYPE != "mobile" else "8dp"
 
     MDLabel:
         id: label_rows_per_page
         text: f"1-{root.table_data.rows_num} of {len(root.table_data.row_data)}"
-        size_hint: None, 1
-        #width: self.texture_size[0]
-        text_size: None, None
+        size_hint: None, None
+        size: self.texture_size
+        -text_size: None, None
+        pos_hint: {"center_y": .5}
         font_style: "Caption"
         color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     MDIconButton:
         id: button_back
         icon: "chevron-left"
-        user_font_size: "20sp"
+        user_font_size: "20sp" if DEVICE_TYPE != "mobile" else "16dp"
+        ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
         pos_hint: {'center_y': .5}
         disabled: True
         on_release: root.table_data.set_next_row_data_parts("back")
@@ -238,7 +237,8 @@ Builder.load_string(
     MDIconButton:
         id: button_forward
         icon: "chevron-right"
-        user_font_size: "20sp"
+        user_font_size: "20sp" if DEVICE_TYPE != "mobile" else "16dp"
+        ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
         pos_hint: {'center_y': .5}
         disabled: True
         on_release: root.table_data.set_next_row_data_parts("forward")

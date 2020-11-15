@@ -1,0 +1,194 @@
+#:import environ os.environ
+#:import get_hex_from_color kivy.utils.get_hex_from_color
+#:import Animation kivy.animation.Animation
+#:import Home libs.baseclass.home.Home
+#:import KitchenSinkDialogLicense libs.baseclass.dialog_change_theme.KitchenSinkDialogLicense
+#:import KitchenSinkDialogDev libs.baseclass.dialog_change_theme.KitchenSinkDialogDev
+#:import Toolbar libs.baseclass.toolbar.Toolbar
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+
+<ShrinePresplashTile@Label>
+    color: app.theme_cls.text_color
+    font_size: "24sp"
+    size_hint_y: None
+    height: self.texture_size[1]
+
+<Toolbar>
+    md_bg_color: app.theme_cls.primary_color
+    background_palette: "Primary"
+    background_hue: "500"
+    elevation: 10
+    right_action_items: [["brightness-6", lambda x: app.switch_theme_style()], ["file-code" if self.theme_cls.device_orientation == "landscape" else "dots-vertical", lambda x: app.show_code()]]
+    left_action_items: [["arrow-left", lambda x: app.back_to_home_screen()]]
+
+
+MDBoxLayout:
+    orientation: "vertical"
+
+    BoxLayout:
+        id: toolbar_box
+        size_hint_y: None
+        height: self.minimum_height
+
+    ScreenManager:
+        id: screen_manager
+        transition: FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
+
+        Home:
+            id: home
+            name: "home"
+
+            MDBackdrop:
+                id: backdrop
+                on_open: home.opening_animation_backdrop_components(backdrop, backlayer)
+                on_close:
+                    backlayer.ids.screen_manager.current = "settings"
+                    home.closing_animation_backdrop_components(backdrop, backlayer)
+                left_action_items: [["menu", lambda x: self.open()]]
+                title: "Kitchen Sink"
+                header_text: "Menu:"
+
+                MDBackdropBackLayer:
+
+                    KitchenSinkBackdropBackLayer:
+                        id: backlayer
+                        backdrop: backdrop
+                        root_screen_manager: screen_manager
+
+                MDBackdropFrontLayer:
+                    id: front_layer
+
+                    KitchenSinkBackdropFrontLayer:
+                        id: backdrop_front_layer
+                        backdrop: backdrop
+                        backlayer: backlayer
+
+
+<KitchenSinkBackdropFrontLayer@RecycleView>
+    backdrop: None
+    backlayer: None
+    key_viewclass: "viewclass"
+    key_size: "height"
+
+    RecycleBoxLayout:
+        default_size: None, dp(48)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: "vertical"
+
+
+<KitchenSinkBackdropBackLayer@FloatLayout>
+    scale_x: 0
+    scale_y: 0
+    backdrop: None
+    root_screen_manager: None
+
+    Image:
+        canvas.before:
+            PushMatrix
+            Scale:
+                origin: self.center
+                x: root.scale_x
+                y: root.scale_y
+        canvas.after:
+            PopMatrix
+
+        opacity: .2
+        source: f"{environ['KITCHEN_SINK_ASSETS']}kivymd.png"
+        pos_hint: {"center_y": .55}
+
+    ScreenManager:
+        id: screen_manager
+        transition: FadeTransition(duration=.2, clearcolor=(0, 0, 0, 0))
+
+        MDScreen:
+            name: "settings"
+
+            ScrollView:
+
+                MDGridLayout:
+                    adaptive_height: True
+                    cols: 1
+                    padding: "10dp"
+                    spacing: "10dp"
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        adaptive_height: True
+                        padding: "5dp"
+                        spacing: "10dp"
+
+                        MDLabel:
+                            text: "Change Style"
+                            bold: True
+                            theme_text_color: "Primary"
+
+                        MDBoxLayout:
+                            size_hint: None, None
+                            adaptive_size: True
+                            spacing: "30dp"
+
+                            MDCheckbox:
+                                group: "style"
+                                size_hint: None, None
+                                size: "48dp", "48dp"
+                                active: True
+                                on_active: if self.active: app.switch_theme_style()
+
+                            Label:
+                                text: "Light"
+                                color: app.theme_cls.text_color
+
+                            MDCheckbox:
+                                group: "style"
+                                size_hint: None, None
+                                size: "48dp", "48dp"
+                                on_active: if self.active: app.switch_theme_style()
+
+                            Label:
+                                text: "Dark"
+                                color: app.theme_cls.text_color
+
+                    MDSeparator:
+
+                    MDLabel:
+                        id: label_theme
+                        text: "Current theme: {}".format(app.theme_cls.primary_palette)
+                        bold: True
+                        theme_text_color: "Primary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                    KitchenSinkOneLineIconListItem:
+                        text: "Change Theme"
+                        icon: "palette-outline"
+                        divider: None
+                        on_release: app.show_dialog_change_theme()
+
+                    MDSeparator:
+
+                    MDLabel:
+                        id: label_theme
+                        text: "About Us"
+                        bold: True
+                        theme_text_color: "Primary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                    KitchenSinkOneLineIconListItem:
+                        text: "Developers"
+                        icon: "dev-to"
+                        divider: None
+                        on_release: KitchenSinkDialogDev().open()
+
+                    KitchenSinkOneLineIconListItem:
+                        text: "License"
+                        icon: "license"
+                        divider: None
+                        on_release: KitchenSinkDialogLicense().open()
+
+                    Widget:
+                        size_hint_y: None
+                        height: app.theme_cls.standard_increment

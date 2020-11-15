@@ -1,6 +1,6 @@
 """
-    This module had getted in
-        https://github.com/kivymd-extensions/akivymd 
+    This module had taken in
+        https://github.com/kivymd-extensions/akivymd
 """
 
 

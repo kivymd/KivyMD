@@ -4,9 +4,10 @@ import sys
 from pathlib import Path
 
 from kivy.core.window import Window
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.loader import Loader
-from kivymd import images_path
+from kivymd import __version__, images_path
 from kivymd.app import MDApp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from libs.baseclass.dialog_change_theme import (
@@ -134,7 +135,7 @@ class KitchenSinkApp(MDApp):
             MDExpansionPanel(
                 icon=f"{os.environ['KITCHEN_SINK_ASSETS']}avatar.png",
                 content=content,
-                panel_cls=MDExpansionPanelOneLine(text="KivyMD 0.104.1"),
+                panel_cls=MDExpansionPanelOneLine(text=f"KivyMD {__version__}"),
             )
         )
 

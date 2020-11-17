@@ -536,7 +536,9 @@ class MDDialog(BaseDialog):
         if self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
             self.size_hint = (None, None)
             self.width = min(dp(560), Window.width - self.width_offset)
-        else:  # This catches mobile & tablet
+        elif self.size_hint == [1, 1] and (
+            DEVICE_TYPE == "mobile" or DEVICE_TYPE == "tablet"
+        ):
             self.size_hint = (None, None)
             self.width = min(dp(280), Window.width - self.width_offset)
 

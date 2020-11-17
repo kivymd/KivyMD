@@ -533,12 +533,12 @@ class MDDialog(BaseDialog):
             self.theme_cls.bg_dark if not self.md_bg_color else self.md_bg_color
         )
 
-        if self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
-            self.size_hint = (None, None)
-            self.width = min(dp(280), Window.width - self.width_offset)
-        elif self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
+        if self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
             self.size_hint = (None, None)
             self.width = min(dp(560), Window.width - self.width_offset)
+        else:  # This catches mobile & tablet
+            self.size_hint = (None, None)
+            self.width = min(dp(280), Window.width - self.width_offset)
 
         if not self.title:
             self._spacer_top = 0

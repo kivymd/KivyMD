@@ -127,6 +127,7 @@ class MDDropDownItem(
 
     def on_text(self, instance, value):
         self.ids.label_item.text = value
+        self.current_item = value
 
     def set_item(self, name_item):
         """Sets new text for an item."""

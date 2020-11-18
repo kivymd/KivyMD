@@ -49,6 +49,7 @@ class MDFortnightly(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.title = "Fortnightly"
+        self.icon = f"{os.environ['FORTNIGHTLY_ROOT']}/assets/images/logo.png"
 
     def build(self):
         FONT_PATH = f"{os.environ['FORTNIGHTLY_ROOT']}/assets/fonts/"

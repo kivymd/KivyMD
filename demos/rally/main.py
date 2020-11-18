@@ -52,6 +52,7 @@ class MDRally(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.title = "Rally"
+        self.icon = f"{os.environ['RALLY_ROOT']}/assets/images/logo.png"
 
     def build(self):
         self.theme_cls.primary_palette = "Green"

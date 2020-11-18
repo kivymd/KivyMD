@@ -1413,7 +1413,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     right_pad = BooleanProperty(True)
     """
-    If `True`, the button will increase on the right side by 2.5 piesels
+    If `True`, the button will increase on the right side by 2.5 pixels
     if the :attr:`~hint_animation` parameter equal to `True`.
 
     .. rubric:: False

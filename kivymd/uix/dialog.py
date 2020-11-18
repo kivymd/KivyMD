@@ -533,12 +533,12 @@ class MDDialog(BaseDialog):
             self.theme_cls.bg_dark if not self.md_bg_color else self.md_bg_color
         )
 
-        if self.size_hint == [1, 1] and DEVICE_TYPE == "desktop":
+        if self.size_hint == [1, 1] and (
+            DEVICE_TYPE == "desktop" or DEVICE_TYPE == "tablet"
+        ):
             self.size_hint = (None, None)
             self.width = min(dp(560), Window.width - self.width_offset)
-        elif self.size_hint == [1, 1] and (
-            DEVICE_TYPE == "mobile" or DEVICE_TYPE == "tablet"
-        ):
+        elif self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
             self.size_hint = (None, None)
             self.width = min(dp(280), Window.width - self.width_offset)
 
@@ -573,7 +573,7 @@ class MDDialog(BaseDialog):
         self.width = max(
             self.height + self.width_offset,
             min(
-                dp(560) if DEVICE_TYPE == "desktop" else dp(280),
+                dp(560) if DEVICE_TYPE != "mobile" else dp(280),
                 Window.width - self.width_offset,
             ),
         )

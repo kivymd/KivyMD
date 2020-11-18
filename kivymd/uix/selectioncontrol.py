@@ -135,7 +135,7 @@ MDSwitch
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch.gif
     :align: center
 
-.. Note:: For :class:`~MDCheckbox` size is not required. By default it is
+.. Note:: For :class:`~MDSwitch` size is not required. By default it is
     ``(dp(36), dp(48))``, but you can increase the width if you want.
 
 .. code-block:: kv

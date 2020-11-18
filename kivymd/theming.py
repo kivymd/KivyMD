@@ -246,7 +246,7 @@ class ThemeManager(EventDispatcher):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/accent-palette.png
 
-    :attr:`primary_hue` is an :class:`~kivy.properties.OptionProperty`
+    :attr:`accent_palette` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Amber'`.
     """
 

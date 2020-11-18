@@ -1,7 +1,7 @@
 # Rally
 <img src="https://github.com/Kulothungan16/KivyMD/raw/master/demos/rally/assets/images/logo.png" align="left"/>
 
-[Rally](https://material.io/design/material-studies/rally.html) is a personal finance app that uses Material Design components and Material Theming to create an on-brand experience with a data-driven aesthetic. It is designed to display a large amount of densely organized information in a manageable way.
+[Rally](https://material.io/design/material-studies/rally.html) is a personal finance app that uses **KivyMD** components and Material Theming to create an on-brand experience with a data-driven aesthetic. It is designed to display a large amount of densely organized information in a manageable way.
 
 <br></br>
 

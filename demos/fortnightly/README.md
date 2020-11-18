@@ -1,7 +1,6 @@
-# Fortnightly
-<img src="https://github.com/Kulothungan16/KivyMD/raw/master/demos/fortnightly/assets/images/title.png"/>
+# <img src="https://github.com/Kulothungan16/KivyMD/raw/master/demos/fortnightly/assets/images/title.png"/>
 
-[Fortnightly](https://material.io/design/material-studies/fortnightly.html) is a news app that uses Material Design components and Material Theming to create an on-brand, content-focused experience.
+[Fortnightly](https://material.io/design/material-studies/fortnightly.html) is a news app that uses **KivyMD** components and Material Theming to create an on-brand, content-focused experience.
 
 ### Content-focused
 Fortnightly’s aesthetic puts focus on content by using a grayscale color palette to allow photography to stand out, and by using a typographic scale that makes headlines bold, and long body copy easy to read.

@@ -1267,9 +1267,9 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     _color_active = ListProperty()
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self._lbl_icon_left = MDIcon(theme_text_color="Custom")
         self._lbl_icon_right = MDIcon(theme_text_color="Custom")
+        super().__init__(**kwargs)
         self.cursor_color = self.theme_cls.primary_color
 
         if not self.normal_color:

@@ -82,6 +82,7 @@ class Toast(ModalView):
         self.size_hint = (None, None)
         self.pos_hint = {"center_x": 0.5, "center_y": 0.1}
         self.background_color = [0, 0, 0, 0]
+        self.overlay_color = [0, 0, 0, 0]
         self.background = f"{images_path}transparent.png"
         self.opacity = 0
         self.auto_dismiss = True

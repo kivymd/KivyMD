@@ -392,7 +392,7 @@ class CellRow(
 
         # Set checkboxes.
         if table_data.check:
-            if self.text in table_data.data_first_cells:
+            if self.index in table_data.data_first_cells:
                 self.ids.check.size = (dp(32), dp(32))
                 self.ids.check.opacity = 1
                 self.ids.box.spacing = dp(16)
@@ -695,11 +695,11 @@ class TableData(RecycleView):
 
             for j, x in enumerate(data):
                 if x[0] == x[1]:
-                    self.data_first_cells.append(x[0])
+                    self.data_first_cells.append(x[2][0])
                     self.recycle_data.append(
                         {
                             "text": str(x[0]),
-                            "Index": str(x[1]),
+                            "Index": str(j),
                             "range": x[2],
                             "selectable": True,
                             "viewclass": "CellRow",
@@ -708,7 +708,7 @@ class TableData(RecycleView):
                     )
                 else:
                     r_data = {
-                        "Index": str(x[1]),
+                        "Index": str(j),
                         "range": x[2],
                         "selectable": True,
                         "viewclass": "CellRow",

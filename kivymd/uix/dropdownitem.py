@@ -61,9 +61,9 @@ Builder.load_string(
         Triangle:
             points:
                 [ \
-                self.right-14, self.y+7, \
-                self.right-7, self.y+7, \
-                self.right-7, self.y+14 \
+                self.right-dp(14), self.y+dp(7), \
+                self.right-dp(7), self.y+dp(7), \
+                self.right-dp(7), self.y+dp(14) \
                 ]
 
 

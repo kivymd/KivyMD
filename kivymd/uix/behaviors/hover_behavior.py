@@ -79,7 +79,6 @@ the widget.
 __all__ = ("HoverBehavior",)
 
 from kivy.core.window import Window
-from kivy.factory import Factory
 from kivy.properties import BooleanProperty, ObjectProperty
 
 
@@ -136,6 +135,3 @@ class HoverBehavior(object):
 
     def on_leave(self):
         """Call when the mouse exit the widget."""
-
-
-Factory.register("HoverBehavior", HoverBehavior)

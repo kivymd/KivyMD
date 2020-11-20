@@ -1,0 +1,86 @@
+#:import gch kivy.utils.get_color_from_hex
+#:import IconRightWidget kivymd.uix.list.IconRightWidget
+
+
+<TotalPriceForBoxBottomSheetProductList>
+    adaptive_height: True
+    spacing: "10dp"
+    total_price: ""
+
+    MDLabel:
+        text: "TOTAL"
+        halign: "right"
+
+    Widget:
+
+    MDLabel:
+        bold: True
+        text: "$ {}".format(root.total_price)
+        halign: "left"
+
+
+<ToolbarForBoxBottomSheetProductList>
+    adaptive_height: True
+    spacing: "10dp"
+    callback: lambda x: x
+    count_item: 0
+
+    MDIconButton:
+        icon: "chevron-down"
+        on_release: root.callback()
+
+    MDLabel:
+        markup: True
+        text: "[b]CART[/b]    {} ITEMS".format(str(root.count_item))
+
+
+<ItemForBoxBottomSheetProductList>
+    path_to_image: ""
+    description: ""
+    text: root.description.split("\n")[0] if root.description else ""
+    secondary_text: root.description.split("\n")[1] if root.description else ""
+
+    ImageLeftWidget:
+        source: root.path_to_image
+
+    IconRightWidget:
+        icon: "close"
+
+
+<BoxBottomSheetProductList>
+    key_viewclass: 'viewclass'
+    key_size: 'height'
+    opacity: 0
+
+    RecycleBoxLayout:
+        padding: dp(10)
+        default_size: None, dp(48)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: 'vertical'
+
+
+<BoxBottomSheet>
+    md_bg_color: gch(colors[root.theme_cls.primary_palette]["50"])
+    radius: [(25, 25), (0, 0), (0, 0), (0, 0)]
+    size_hint: None, None
+    width: "68dp"
+    height: "68dp"
+    padding: "10dp"
+    pos_hint: {"bottom": 1, "right": 1}
+
+    MDBoxLayout:
+        id: previous_box
+        adaptive_size: True
+        spacing: "10dp"
+        pos_hint: {"center_y": .5}
+
+        MDIconButton:
+            id: cart_icon
+            icon: "cart"
+            on_release:
+                #root.do_open_bottom_sheet()
+                root.ids.previous_box.size = (0, 0)
+                root.ids.previous_box.opacity = 0
+                root.open_bottom_sheet() if not root.open_sheet_box else root.hide_bottom_sheet()

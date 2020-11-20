@@ -128,9 +128,8 @@ class Toast(BaseDialog):
 def toast(text="", background=None, duration=2.5):
     """Displays a toast.
 
-
     :attr duration: the amount of time (in seconds) that the toast is visible on the screen
-    :type duration: str
+    :type duration: float
 
     :attr background: color ``rgba`` in Kivy format
     :type background: list

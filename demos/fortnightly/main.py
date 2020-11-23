@@ -35,13 +35,12 @@ KV = """
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 #:import FortnightlyRootScreen libs.baseclass.root_screen.FortnightlyRootScreen
 
+
 ScreenManager:
     transition: FadeTransition()
 
-
     FortnightlyRootScreen:
         name: "fortnightly root screen"
-
 """
 
 

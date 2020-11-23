@@ -1,6 +1,11 @@
-from kivy.properties import (ListProperty, NumericProperty, ObjectProperty,
-                             StringProperty)
+from kivy.properties import (
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
+)
 from kivy.uix.boxlayout import BoxLayout
+
 from kivymd.theming import ThemableBehavior
 
 

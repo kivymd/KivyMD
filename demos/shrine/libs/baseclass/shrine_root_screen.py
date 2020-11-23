@@ -3,6 +3,7 @@ import os
 from kivy.animation import Animation
 from kivy.metrics import dp
 from kivy.properties import StringProperty
+
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.screen import MDScreen
 
@@ -58,7 +59,9 @@ class ShrineRootScreen(ThemableBehavior, MDScreen):
 
         return products_list, products_description
 
-    def add_products_box_to_image_list(self, products_list, products_description):
+    def add_products_box_to_image_list(
+        self, products_list, products_description
+    ):
         for i, paths_to_images in enumerate(products_list):
             self.ids.product_gallery.add_widget(
                 ProductsBox(

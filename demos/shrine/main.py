@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 from kivy.lang import Builder
+
 from kivymd.app import MDApp
 
 if getattr(sys, "frozen", False):  # bundle mode with PyInstaller

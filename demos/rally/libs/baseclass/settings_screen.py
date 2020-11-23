@@ -1,4 +1,5 @@
 from kivy.properties import BooleanProperty
+
 from kivymd.uix.list import OneLineListItem
 from kivymd.uix.screen import MDScreen
 

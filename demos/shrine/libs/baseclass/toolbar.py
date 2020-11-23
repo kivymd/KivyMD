@@ -5,6 +5,7 @@ from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.boxlayout import BoxLayout
+
 from kivymd.theming import ThemableBehavior
 
 
@@ -26,7 +27,9 @@ class ShrineToolbar(ThemableBehavior, BoxLayout):
 
         def set_new_text(*args):
             self.ids.title.text = text
-            Animation(color=self.theme_cls.text_color, d=0.2).start(self.ids.title)
+            Animation(color=self.theme_cls.text_color, d=0.2).start(
+                self.ids.title
+            )
 
         anim = Animation(color=(0, 0, 0, 0), d=0.2)
         anim.bind(on_complete=set_new_text)

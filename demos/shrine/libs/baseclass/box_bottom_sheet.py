@@ -4,6 +4,7 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.properties import BooleanProperty, ObjectProperty, StringProperty
 from kivy.uix.recycleview import RecycleView
+
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDCustomRoundIconButton, MDIconButton
@@ -95,7 +96,9 @@ class BoxBottomSheet(ThemableBehavior, MDBoxLayout):
             }
         )
 
-        Animation(opacity=1, d=0.2).start(self.parent.ids.box_bottom_sheet_product_list)
+        Animation(opacity=1, d=0.2).start(
+            self.parent.ids.box_bottom_sheet_product_list
+        )
         self.show_clear_button()
 
     def show_clear_button(self):
@@ -114,7 +117,9 @@ class BoxBottomSheet(ThemableBehavior, MDBoxLayout):
     def hide_bottom_sheet(self, *args):
         Animation.stop_all(self)
         self.hide_clear_button()
-        Animation(opacity=0, d=0.2).start(self.parent.ids.box_bottom_sheet_product_list)
+        Animation(opacity=0, d=0.2).start(
+            self.parent.ids.box_bottom_sheet_product_list
+        )
         animation = Animation(
             height=Window.height // 3, width=Window.width // 2, d=0.1
         ) + Animation(height=dp(68), width=dp(68), d=0.2)

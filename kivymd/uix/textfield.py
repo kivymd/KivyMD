@@ -529,7 +529,7 @@ Builder.load_string(
             radius: (10, 10, 0, 0, 0)
 
     font_name: "Roboto" if not root.font_name else root.font_name
-    foreground_color: app.theme_cls.text_color
+    foreground_color: self.theme_cls.text_color
     font_size: "16sp"
     bold: False
     padding:

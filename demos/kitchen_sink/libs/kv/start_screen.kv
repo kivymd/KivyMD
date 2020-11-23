@@ -64,13 +64,6 @@ MDBoxLayout:
                         backdrop: backdrop
                         backlayer: backlayer
 
-        MDScreen:
-            name: "shrine demo"
-            on_enter: app.show_demo_shrine(self)
-            on_leave:
-                backlayer.ids.screen_manager.current = "settings"
-                self.clear_widgets()
-
 
 <KitchenSinkBackdropFrontLayer@RecycleView>
     backdrop: None
@@ -178,22 +171,6 @@ MDBoxLayout:
 
                     MDLabel:
                         id: label_theme
-                        text: "Showcase"
-                        bold: True
-                        theme_text_color: "Primary"
-                        size_hint_y: None
-                        height: self.texture_size[1]
-
-                    KitchenSinkOneLineIconListItem:
-                        text: "Demo apps"
-                        icon: "application"
-                        divider: None
-                        on_release: screen_manager.current = "stuidies list"
-
-                    MDSeparator:
-
-                    MDLabel:
-                        id: label_theme
                         text: "About Us"
                         bold: True
                         theme_text_color: "Primary"
@@ -215,14 +192,3 @@ MDBoxLayout:
                     Widget:
                         size_hint_y: None
                         height: app.theme_cls.standard_increment
-
-        MDScreen:
-            name: "stuidies list"
-
-            Image:
-                source: f"{environ['KITCHEN_SINK_ASSETS']}shrine.png"
-                size_hint: None, None
-                width: screen_manager.width
-                height: screen_manager.height - dp(10)
-                y: app.theme_cls.standard_increment - dp(20)
-                on_touch_down: if self.collide_point(*args[1].pos): root.root_screen_manager.current = "shrine demo"

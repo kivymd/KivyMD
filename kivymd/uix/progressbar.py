@@ -91,7 +91,7 @@ Indeterminate
             type: "indeterminate"
 
         MDRaisedButton:
-            text: "START"
+            text: "STOP" if app.state == "start" else "START"
             pos_hint: {"center_x": .5, "center_y": .45}
             on_press: app.state = "stop" if app.state == "start" else "start"
     '''

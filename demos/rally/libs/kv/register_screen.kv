@@ -3,7 +3,12 @@
 
 
 <RallyRegisterScreen>
-    md_bg_color: gch("33333d")
+    canvas:
+        Color:
+            rgba: gch("33333d")
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     MDBoxLayout:
         adaptive_height: True

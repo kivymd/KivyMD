@@ -23,7 +23,8 @@
                 RoundedRectangle:
                     size: self.width, self.height + 20
                     pos: self.x, self.y - 10
-                    radius: [15]
+                    radius: [15,]
+
         MDIconButton:
             icon: "cart-plus"
             x: "10dp"
@@ -40,8 +41,7 @@
 
 
 <ProductsBox>
-    size_hint: None, None
-    size: self.minimum_size
+    adaptive_size: True
     spacing: "30dp"
 
     BoxLayout:
@@ -51,7 +51,7 @@
         height: root.box_height
         width: root.box_width
 
-        BoxLayout:
+        MDBoxLayout:
 
             Widget:
                 size_hint_x: None
@@ -77,7 +77,7 @@
         size_hint: None, None
         size: root.box_width * 60 / 100, 100
 
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
         spacing: "20dp"
         size_hint: None, None

@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 from kivy.lang import Builder
+
 from kivymd.app import MDApp
 
 if getattr(sys, "frozen", False):  # bundle mode with PyInstaller
@@ -36,13 +37,15 @@ KV = """
 #:import ShrineRegisterScreen libs.baseclass.register_screen.ShrineRegisterScreen
 #:import ShrineRootScreen libs.baseclass.shrine_root_screen.ShrineRootScreen
 
+
 ScreenManager:
     transition: FadeTransition()
+
     ShrineRegisterScreen:
         name: "register screen"
+
     ShrineRootScreen:
         name: "shrine root screen"
-
 """
 
 

@@ -13,17 +13,11 @@
 <MagicButton@MagicBehavior+MDRaisedButton>
 
 
-<ShrineRootScreen>:
+<ShrineRootScreen>
+    md_bg_color: gch(colors[root.theme_cls.primary_palette]["50"])
     on_enter:
         products_list, products_description = root.set_products_list()
         root.add_products_box_to_image_list(products_list, products_description)
-
-    canvas:
-        Color:
-            rgba: gch(colors[root.theme_cls.primary_palette]["50"])
-        Rectangle:
-            pos: self.pos
-            size: self.size
 
     ShrineToolbar:
         id: toolbar
@@ -40,25 +34,16 @@
         id: image_list
         size_hint_y: None
         height: root.height - toolbar.height
-        md_bg_color: 0, 0, 0, 0
         elevation: 10
-
-        canvas:
-            Color:
-                rgba: 1, 1, 1, 1
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: [(45, 45), (0, 0), (0, 0), (0, 0)]
+        radius: [(45, 45), (0, 0), (0, 0), (0, 0)]
 
         ScrollView:
 
-            GridLayout:
+            MDGridLayout:
                 id: product_gallery
                 rows: 1
                 spacing: 10
-                size_hint_x: None
-                width: self.minimum_width
+                adaptive_width: True
 
     BoxBottomSheet:
         id: box_bottom_sheet

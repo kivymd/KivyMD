@@ -1,13 +1,17 @@
-from kivy.properties import (ListProperty, NumericProperty, ObjectProperty,
-                             StringProperty)
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import (
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
+)
+
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 
 
-class ProductsBox(BoxLayout):
+class ProductsBox(MDBoxLayout):
     box_height = NumericProperty()
     box_width = NumericProperty()
-    _root = ObjectProperty()
     paths_to_images = ListProperty()
     """List of paths to images. It should be as follows:
 
@@ -23,9 +27,10 @@ class ProductsBox(BoxLayout):
     ]
     """
     callback = ObjectProperty()
+    _root = ObjectProperty()
 
 
-class ImageProduct(ThemableBehavior, BoxLayout):
+class ImageProduct(ThemableBehavior, MDBoxLayout):
     path_to_image = StringProperty()
     products_description = StringProperty()
     callback = ObjectProperty()

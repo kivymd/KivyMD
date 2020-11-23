@@ -3,14 +3,13 @@
     spacing: '3dp'
     adaptive_height: True
 
-    Label:
+    MDLabel:
         id: name_item
         markup: True
         text: '[ref={NAME_ITEM}]{NAME_ITEM}[/ref]'.format(NAME_ITEM=root.text)
         pos_hint: {'center_x': .5}
         color: root.color_text if root.color_text else color_grey
-        size_hint: None, None
-        size: self.texture_size
+        adaptive_size: True
         color: root.theme_cls.text_color
         on_ref_press: root.parent.press_on_item_menu(root)
 

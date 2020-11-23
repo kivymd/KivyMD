@@ -13,7 +13,7 @@
     adaptive_size: True
     on_touch_down: if self.collide_point(*args[1].pos): root.press_on_plan(root)
 
-    BoxLayout:
+    MDBoxLayout:
         size_hint: None, None
         size: "40dp", "40dp"
 
@@ -31,16 +31,15 @@
             valign: 'middle'
             text: root.text_item
             markup: True
-            color: (0, 0, 0, 1)
+            color: 0, 0, 0, 1
 
 
-<MoreInformation>:
+<MoreInformation>
     padding: "25dp"
     adaptive_height: True
 
-    Label:
-        size_hint: None, None
-        size: self.texture_size
+    MDLabel:
+        adaptive_size: True
         markup: True
         color: root.theme_cls.text_color
         text:
@@ -84,8 +83,7 @@
                 MDLabel:
                     text: "Chronomart"
                     font_style: "H6"
-                    size_hint_y: None
-                    height: self.texture_size[1]
+                    adaptive_height: True
 
                 Widget:
                     size_hint_x: .1
@@ -93,8 +91,7 @@
                 MDLabel:
                     text: "$380"
                     halign: "right"
-                    size_hint_y: None
-                    height: self.texture_size[1]
+                    adaptive_height: True
 
             MDBoxLayout:
                 adaptive_height: True
@@ -104,8 +101,7 @@
                     text:
                         "FEYERT Logo Office Lady Fashion Small Dial Stainless " \
                         "Steel Leather Strap Wrist Watch"
-                    size_hint_y: None
-                    height: self.texture_size[1]
+                    adaptive_height: True
 
             MDBoxLayout:
                 id: expansion_panel_box
@@ -117,8 +113,7 @@
 
                 MDLabel:
                     text: "Select size"
-                    size_hint_y: None
-                    height: self.texture_size[1]
+                    adaptive_height: True
                     font_style: "H6"
 
             BoxLayout:
@@ -128,6 +123,7 @@
 
                 ScrollView
                     bar_width: 0
+
                     MDGridLayout:
                         id: box
                         rows: 1

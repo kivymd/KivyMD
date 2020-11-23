@@ -33,14 +33,12 @@
             root.parent.ids.box_bottom_sheet.restore_width_bottom_sheet()
             root.parent.ids.box_bottom_sheet.restore_opacity_bottom_sheet()
 
-    Label:
+    MDLabel:
         id: title
         text: root.title
         bold: True
         color: root.theme_cls.text_color
-        size_hint_x: None
-        width: self.texture_size[0]
-        color: root.theme_cls.text_color
+        adaptive_width: True
 
     Widget:
         size_hint_x: None

@@ -1,5 +1,5 @@
 # Shrine
-<img src="https://github.com/Kulothungan16/KivyMD/raw/master/demos/shrine/assets/images/logo.png" align="left" height=100 width=100/>
+<img src="https://github.com/kivymd/KivyMD/raw/master/demos/shrine/assets/images/logo.png" align="left" height=100 width=100/>
 
 [Shrine](https://material.io/design/material-studies/shrine.html) is a retail app that uses **KivyMD** components and Material Theming to express branding for a variety of fashion and lifestyle items.
 

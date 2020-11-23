@@ -1,4 +1,4 @@
-# <img src="https://github.com/Kulothungan16/KivyMD/raw/master/demos/fortnightly/assets/images/title.png"/>
+# <img src="https://github.com/kivymd/KivyMD/raw/master/demos/fortnightly/assets/images/title.png"/>
 
 [Fortnightly](https://material.io/design/material-studies/fortnightly.html) is a news app that uses **KivyMD** components and Material Theming to create an on-brand, content-focused experience.
 

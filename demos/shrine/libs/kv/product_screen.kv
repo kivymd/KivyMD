@@ -13,7 +13,7 @@
     adaptive_size: True
     on_touch_down: if self.collide_point(*args[1].pos): root.press_on_plan(root)
 
-    MDBoxLayout:
+    BoxLayout:
         size_hint: None, None
         size: "40dp", "40dp"
 
@@ -25,23 +25,19 @@
                 size: self.size
                 source: f"{environ['SHRINE_ROOT']}/assets/images/border.png"
 
-        Label:
-            text_size: self.size
+        MDLabel:
+            text: root.text_item
             halign: 'center'
             valign: 'middle'
-            text: root.text_item
-            markup: True
-            color: 0, 0, 0, 1
 
 
-<MoreInformation>
+<MoreInformation>:
     padding: "25dp"
     adaptive_height: True
 
     MDLabel:
         adaptive_size: True
         markup: True
-        color: root.theme_cls.text_color
         text:
             "- Beautiful 3D Design Dial, with '7' marking\n" \
             "- Comfortable Soft Leather Watch Band\n" \
@@ -83,7 +79,8 @@
                 MDLabel:
                     text: "Chronomart"
                     font_style: "H6"
-                    adaptive_height: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
 
                 Widget:
                     size_hint_x: .1
@@ -91,7 +88,8 @@
                 MDLabel:
                     text: "$380"
                     halign: "right"
-                    adaptive_height: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
 
             MDBoxLayout:
                 adaptive_height: True
@@ -101,7 +99,8 @@
                     text:
                         "FEYERT Logo Office Lady Fashion Small Dial Stainless " \
                         "Steel Leather Strap Wrist Watch"
-                    adaptive_height: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
 
             MDBoxLayout:
                 id: expansion_panel_box
@@ -113,7 +112,8 @@
 
                 MDLabel:
                     text: "Select size"
-                    adaptive_height: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
                     font_style: "H6"
 
             BoxLayout:
@@ -123,7 +123,6 @@
 
                 ScrollView
                     bar_width: 0
-
                     MDGridLayout:
                         id: box
                         rows: 1

@@ -137,9 +137,10 @@ MDBoxLayout:
                                 active: True
                                 on_active: if self.active: app.switch_theme_style()
 
-                            Label:
+                            MDLabel:
                                 text: "Light"
-                                color: app.theme_cls.text_color
+                                pos_hint: {"center_y": .5}
+                                adaptive_size: True
 
                             MDCheckbox:
                                 group: "style"
@@ -147,9 +148,10 @@ MDBoxLayout:
                                 size: "48dp", "48dp"
                                 on_active: if self.active: app.switch_theme_style()
 
-                            Label:
+                            MDLabel:
                                 text: "Dark"
-                                color: app.theme_cls.text_color
+                                pos_hint: {"center_y": .5}
+                                adaptive_size: True
 
                     MDSeparator:
 

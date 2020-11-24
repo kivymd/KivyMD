@@ -1,5 +1,5 @@
 """
-    This module had taken in
+    This module had taken from
         https://github.com/kivymd-extensions/akivymd
 """
 

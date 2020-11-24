@@ -3,7 +3,8 @@
 #:import environ os.environ
 
 
-<ShrineRegisterScreen>
+<ShrineRegisterScreen>:
+
     canvas:
         Color:
             rgba: root.theme_cls.bg_dark
@@ -11,7 +12,7 @@
             pos: self.pos
             size: self.size
 
-    MDBoxLayout:
+    BoxLayout:
         id: box_1
         orientation: "vertical"
         size_hint: .2, .2
@@ -26,7 +27,8 @@
 
         MDLabel:
             text: "SHRINE"
-            adaptive_size: True
+            size_hint: (None, None)
+            size: self.texture_size
             text_size: None, self.font_size
             theme_text_color: "Primary"
             font_style: "H6"

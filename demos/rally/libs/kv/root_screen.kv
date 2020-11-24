@@ -13,22 +13,23 @@
 #: import RallySettingsScreen libs.baseclass.settings_screen.RallySettingsScreen
 
 
-<RallyRootScreen>
-    md_bg_color: gch("#33333d")
-
-    MDBoxLayout:
+<RallyRootScreen>:
+    canvas:
+        Color:
+            rgba: gch("#33333d")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
         orientation: 'vertical'
-
         NavigationBar:
             id: nav_bar
-
             NavigationItem:
                 text: "OVERVIEW"
                 icon: "chart-pie"
                 on_release:
                     scr_manager.transition.direction = "right"
                     scr_manager.current = "OVERVIEW"
-
             NavigationItem:
                 text: "ACCOUNTS"
                 icon: "currency-usd"
@@ -37,7 +38,6 @@
                     if scr_manager.current in ["BILLS", "BUDGETS", "SETTINGS"] \
                     else "left"
                     scr_manager.current = "ACCOUNTS"
-
             NavigationItem:
                 text: "BILLS"
                 icon: "currency-usd-off"
@@ -46,7 +46,6 @@
                     if scr_manager.current in ["BUDGETS", "SETTINGS"] \
                     else "left"
                     scr_manager.current = "BILLS"
-
             NavigationItem:
                 text: "BUDGETS"
                 icon: "shopping"
@@ -55,7 +54,6 @@
                     if scr_manager.current in ["OVERVIEW", "ACCOUNTS", "BILLS"] \
                     else "right"
                     scr_manager.current = "BUDGETS"
-
             NavigationItem:
                 text: "SETTINGS"
                 icon: "cog"
@@ -65,42 +63,36 @@
 
         ScreenManager:
             id: scr_manager
-
             RallyOverviewScreen:
                 name: "OVERVIEW"
-
             RallyAccountsScreen:
                 name: "ACCOUNTS"
-
             RallyBillsScreen:
                 name: "BILLS"
-
             RallyBudgetsScreen:
                 name: "BUDGETS"
-
             RallySettingsScreen:
                 name: "SETTINGS"
 
-
-<ScrollView>
+<ScrollView>:
     bar_width: 0
     effect_cls: StiffScrollEffect
 
 
-<RallyLabel@MDLabel>
+<RallyLabel@MDLabel>:
     adaptive_height: True
 
 
-<RallyListItem>
+<RallyListItem>:
     size_hint_y: None
     height: dp(60)
-
     canvas:
         Color:
             rgba:
                 self.theme_cls.divider_color
         Line:
             points: (root.x+dp(16), root.y, root.x+self.width-dp(16)-0, root.y)
+
     canvas.before:
         Color:
             rgba: gch("#31313b")
@@ -119,7 +111,6 @@
             pos_hint: {"center_y": .5}
             theme_text_color: "Custom"
             text_color: root.bar_color
-
             canvas.before:
                 PushMatrix
                 Rotate:

@@ -80,7 +80,6 @@
             id: cart_icon
             icon: "cart"
             on_release:
-                #root.do_open_bottom_sheet()
                 root.ids.previous_box.size = (0, 0)
                 root.ids.previous_box.opacity = 0
                 root.open_bottom_sheet() if not root.open_sheet_box else root.hide_bottom_sheet()

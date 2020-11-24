@@ -2,7 +2,7 @@
 #: import gch kivy.utils.get_color_from_hex
 
 
-<RallyRegisterScreen>
+<RallyRegisterScreen>:
     canvas:
         Color:
             rgba: gch("33333d")
@@ -17,7 +17,6 @@
         padding: dp(30)
 
 	    FloatLayout:
-
 		    Image:
 		        source: f"{environ['RALLY_ROOT']}/assets/images/logo.png"
 		        pos_hint: {"center_x": .5, "center_y": 5}
@@ -50,14 +49,15 @@
 	        	pos_hint: {"center_x": .5}
 	        	user_font_size: dp(62)
 	        	_no_ripple_effect: True
-	        	on_release: root.parent.current = "rally root screen"
+	        	on_release:
+	        		root.parent.current = "rally root screen"
 
 	        MDTextButton:
 	        	text: "Or Login with Touch ID"
 	        	pos_hint: {"center_x": .5}
 
 
-<RallyTextField@MDTextField>
+<RallyTextField@MDTextField>:
     mode: 'fill'
     line_anim: False
     fill_color: (0, 0, 0, .4)

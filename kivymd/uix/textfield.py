@@ -1228,6 +1228,10 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
 
     _color_active = ListProperty()
 
+    _icon_left_color_copy = ListProperty()
+
+    _icon_right_color_copy = ListProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._lbl_icon_left = MDIcon(theme_text_color="Custom")
@@ -1246,20 +1250,28 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
             self.icon_left_color = self.theme_cls.primary_color
             self.icon_right_color = self.theme_cls.primary_color
         else:
-            self.icon_left_color = self.theme_cls.text_color
-            self.icon_right_color = self.theme_cls.text_color
+            self.icon_left_color = (
+                self._icon_left_color_copy or self.theme_cls.text_color
+            )
+            self.icon_right_color = (
+                self._icon_right_color_copy or self.theme_cls.text_color
+            )
 
     def on_icon_left(self, instance, value):
         self._lbl_icon_left.icon = value
 
     def on_icon_left_color(self, instance, value):
         self._lbl_icon_left.text_color = value
+        if not self._icon_left_color_copy:
+            self._icon_left_color_copy = value
 
     def on_icon_right(self, instance, value):
         self._lbl_icon_right.icon = value
 
     def on_icon_right_color(self, instance, value):
         self._lbl_icon_right.text_color = value
+        if not self._icon_right_color_copy:
+            self._icon_right_color_copy = value
 
     def on_color_active(self, instance, value):
         if value != [0, 0, 0, 0.5]:

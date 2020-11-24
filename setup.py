@@ -65,7 +65,7 @@ if __name__ == "__main__":
     setup(
         version=get_version(),
         packages=find_packages(
-            include=["kivymd*"], exclude=["kivymd.tools.release"]
+            include=["kivymd", "kivymd.*"], exclude=["kivymd.tools.release"]
         ),
         package_dir={"kivymd": "kivymd"},
         package_data={
@@ -82,10 +82,22 @@ if __name__ == "__main__":
                 "pytest_asyncio",
                 "pytest-timeout",
                 "coveralls",
+                "pyinstaller[hook_testing]",
             ],
-            "docs": ["sphinx", "sphinx-autoapi", "sphinx_rtd_theme"],
+            "docs": [
+                "sphinx",
+                "sphinx-autoapi==1.4.0",
+                "sphinx_rtd_theme",
+                "sphinx-notfound-page",
+            ],
         },
         install_requires=["kivy>=1.10.1"],
         setup_requires=[],
         python_requires=">=3.6",
+        entry_points={
+            "pyinstaller40": [
+                "hook-dirs = kivymd.tools.packaging.pyinstaller:get_hook_dirs",
+                "tests = kivymd.tools.packaging.pyinstaller:get_pyinstaller_tests",
+            ]
+        },
     )

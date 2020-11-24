@@ -67,7 +67,7 @@ Persistent helper text mode
     :align: center
 
 Helper text mode `'on_error'`
-----------------------------
+-----------------------------
 
 To display an error in a text field when using the
 ``helper_text_mode: "on_error"`` parameter, set the `"error"` text field
@@ -114,7 +114,7 @@ parameter to `True`:
     :align: center
 
 Helper text mode `'on_error'` (with required)
---------------------------------------------
+---------------------------------------------
 
 .. code-block:: kv
 
@@ -529,7 +529,7 @@ Builder.load_string(
             radius: (10, 10, 0, 0, 0)
 
     font_name: "Roboto" if not root.font_name else root.font_name
-    foreground_color: app.theme_cls.text_color
+    foreground_color: self.theme_cls.text_color
     font_size: "16sp"
     bold: False
     padding:
@@ -647,6 +647,15 @@ Builder.load_string(
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
+
+    line_anim = BooleanProperty(True)
+    """
+    If True, then text field shows animated line when on focus.
+
+    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     _primary_color = ListProperty((0, 0, 0, 0))
 
     def __init__(self, **kwargs):
@@ -664,8 +673,12 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
             d_line = 0.05
             d_color = 0.05
 
-        Animation(points=points, d=d_line, t="out_cubic").start(instance_line)
-        Animation(a=alpha, d=d_color).start(instance_color)
+        Animation(
+            points=points, d=(d_line if self.line_anim else 0), t="out_cubic"
+        ).start(instance_line)
+        Animation(a=alpha, d=(d_color if self.line_anim else 0)).start(
+            instance_color
+        )
 
     def _update_primary_color(self, *args):
         self._primary_color = self.theme_cls.primary_color
@@ -751,6 +764,14 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`line_color_focus` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+    """
+
+    line_anim = BooleanProperty(True)
+    """
+    If True, then text field shows animated line when on focus.
+
+    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
     """
 
     error_color = ListProperty()
@@ -923,9 +944,11 @@ class MDTextField(ThemableBehavior, TextInput):
             )
             if not self.text:
                 self._anim_lbl_font_size(dp(14), sp(12))
-            Animation(_line_width=self.width, duration=0.2, t="out_quad").start(
-                self
-            )
+            Animation(
+                _line_width=self.width,
+                duration=(0.2 if self.line_anim else 0),
+                t="out_quad",
+            ).start(self)
             if self._get_has_error():
                 self._anim_current_error_color(self.error_color)
                 if self.helper_text_mode == "on_error" and (
@@ -990,7 +1013,22 @@ class MDTextField(ThemableBehavior, TextInput):
                     self._anim_current_error_color(disabled_hint_text_color)
                 elif self.helper_text_mode == "on_focus":
                     self._anim_current_error_color((0, 0, 0, 0))
-                Animation(_line_width=0, duration=0.2, t="out_quad").start(self)
+                Animation(
+                    _line_width=0,
+                    duration=(0.2 if self.line_anim else 0),
+                    t="out_quad",
+                ).start(self)
+
+    def on_disabled(self, *args):
+        if self.disabled:
+            self._update_colors(self.theme_cls.disabled_hint_text_color)
+        elif not self.disabled:
+            if self.color_mode == "primary":
+                self._update_primary_color()
+            elif self.color_mode == "accent":
+                self._update_accent_color()
+            elif self.color_mode == "custom":
+                self._update_colors(self.line_color_focus)
 
     def on_text(self, instance, text):
         self.text = re.sub("\n", " ", text) if not self.multiline else text
@@ -1233,10 +1271,12 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     _icon_right_color_copy = ListProperty()
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self._lbl_icon_left = MDIcon(theme_text_color="Custom")
         self._lbl_icon_right = MDIcon(theme_text_color="Custom")
+        super().__init__(**kwargs)
         self.cursor_color = self.theme_cls.primary_color
+        self.icon_left_color = self.theme_cls.text_color
+        self.icon_right_color = self.theme_cls.text_color
 
         if not self.normal_color:
             self.normal_color = self.theme_cls.primary_light

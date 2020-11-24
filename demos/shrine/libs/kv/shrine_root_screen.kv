@@ -1,0 +1,73 @@
+#:import colors kivymd.color_definitions.colors
+#:import gch kivy.utils.get_color_from_hex
+#:import ShrineToolbar libs.baseclass.toolbar.ShrineToolbar
+#:import ShrineMenu libs.baseclass.menu.ShrineMenu
+#:import BoxBottomSheet libs.baseclass.box_bottom_sheet.BoxBottomSheet
+#:import BoxBottomSheetProductList libs.baseclass.box_bottom_sheet.BoxBottomSheetProductList
+#:import MagicBehavior kivymd.uix.behaviors.MagicBehavior
+#:import ProductScreen libs.baseclass.product_screen.ProductScreen
+#:import Clock kivy.clock.Clock
+#:import environ os.environ
+
+
+<MagicButton@MagicBehavior+MDRaisedButton>
+
+
+<ShrineRootScreen>
+    md_bg_color: gch(colors[root.theme_cls.primary_palette]["50"])
+    on_enter:
+        products_list, products_description = root.set_products_list()
+        root.add_products_box_to_image_list(products_list, products_description)
+
+    ShrineToolbar:
+        id: toolbar
+        title: "SHRINE"
+        pos_hint: {"top": 1}
+        path_to_icon_menu:
+            f"{environ['SHRINE_ROOT']}/studies/shrine/data/images/menu.png"
+        path_to_icon_logo:
+            f"{environ['SHRINE_ROOT']}/assets/images/logo.png"
+
+    ShrineMenu:
+
+    MDCard:
+        id: image_list
+        size_hint_y: None
+        height: root.height - toolbar.height
+        elevation: 10
+        radius: [(45, 45), (0, 0), (0, 0), (0, 0)]
+
+        ScrollView:
+
+            MDGridLayout:
+                id: product_gallery
+                rows: 1
+                spacing: 10
+                adaptive_width: True
+
+    BoxBottomSheet:
+        id: box_bottom_sheet
+
+        BoxBottomSheetProductList:
+            id: box_bottom_sheet_product_list
+
+    MagicButton:
+        id: clear_button
+        text: "CLEAR CART"
+        increment_width: dp(150)
+        elevation: 10
+        opacity: 0
+        disabled: True
+        pos_hint: {"center_x": .5, "center_y": .1}
+        md_bg_color: gch(colors[root.theme_cls.primary_palette]["200"])
+        on_press:
+            box_bottom_sheet_product_list.data = []
+            box_bottom_sheet.clear_box()
+        on_release:
+            Clock.schedule_once(box_bottom_sheet.hide_clear_button, .2)
+            Clock.schedule_once(box_bottom_sheet.hide_bottom_sheet, .2)
+            self.grow()
+
+    ProductScreen:
+        id: product_screen
+        y: -root.height

@@ -16,14 +16,14 @@
 
 <Toolbar>
     md_bg_color: app.theme_cls.primary_color
-    background_palette: 'Primary'
-    background_hue: '500'
+    background_palette: "Primary"
+    background_hue: "500"
     elevation: 10
-    right_action_items: [['brightness-6', lambda x: app.switch_theme_style()], ['dots-vertical', lambda x: x]]
+    right_action_items: [["brightness-6", lambda x: app.switch_theme_style()], ["file-code" if self.theme_cls.device_orientation == "landscape" else "dots-vertical", lambda x: app.show_code()]]
     left_action_items: [["arrow-left", lambda x: app.back_to_home_screen()]]
 
 
-BoxLayout:
+MDBoxLayout:
     orientation: "vertical"
 
     BoxLayout:
@@ -45,7 +45,7 @@ BoxLayout:
                 on_close:
                     backlayer.ids.screen_manager.current = "settings"
                     home.closing_animation_backdrop_components(backdrop, backlayer)
-                left_action_items: [['menu', lambda x: self.open()]]
+                left_action_items: [["menu", lambda x: self.open()]]
                 title: "Kitchen Sink"
                 header_text: "Menu:"
 
@@ -64,26 +64,19 @@ BoxLayout:
                         backdrop: backdrop
                         backlayer: backlayer
 
-        Screen:
-            name: "shrine demo"
-            on_enter: app.show_demo_shrine(self)
-            on_leave:
-                backlayer.ids.screen_manager.current = "settings"
-                self.clear_widgets()
-
 
 <KitchenSinkBackdropFrontLayer@RecycleView>
     backdrop: None
     backlayer: None
-    key_viewclass: 'viewclass'
-    key_size: 'height'
+    key_viewclass: "viewclass"
+    key_size: "height"
 
     RecycleBoxLayout:
         default_size: None, dp(48)
         default_size_hint: 1, None
         size_hint_y: None
         height: self.minimum_height
-        orientation: 'vertical'
+        orientation: "vertical"
 
 
 <KitchenSinkBackdropBackLayer@FloatLayout>
@@ -110,7 +103,7 @@ BoxLayout:
         id: screen_manager
         transition: FadeTransition(duration=.2, clearcolor=(0, 0, 0, 0))
 
-        Screen:
+        MDScreen:
             name: "settings"
 
             ScrollView:
@@ -140,7 +133,7 @@ BoxLayout:
                             MDCheckbox:
                                 group: "style"
                                 size_hint: None, None
-                                size: "48dp", '48dp'
+                                size: "48dp", "48dp"
                                 active: True
                                 on_active: if self.active: app.switch_theme_style()
 
@@ -151,7 +144,7 @@ BoxLayout:
                             MDCheckbox:
                                 group: "style"
                                 size_hint: None, None
-                                size: "48dp", '48dp'
+                                size: "48dp", "48dp"
                                 on_active: if self.active: app.switch_theme_style()
 
                             Label:
@@ -178,22 +171,6 @@ BoxLayout:
 
                     MDLabel:
                         id: label_theme
-                        text: "Showcase"
-                        bold: True
-                        theme_text_color: "Primary"
-                        size_hint_y: None
-                        height: self.texture_size[1]
-
-                    KitchenSinkOneLineIconListItem:
-                        text: "Demo apps"
-                        icon: "application"
-                        divider: None
-                        on_release: screen_manager.current = "stuidies list"
-
-                    MDSeparator:
-
-                    MDLabel:
-                        id: label_theme
                         text: "About Us"
                         bold: True
                         theme_text_color: "Primary"
@@ -215,14 +192,3 @@ BoxLayout:
                     Widget:
                         size_hint_y: None
                         height: app.theme_cls.standard_increment
-
-        Screen:
-            name: "stuidies list"
-
-            Image:
-                source: f"{environ['KITCHEN_SINK_ASSETS']}shrine.png"
-                size_hint: None, None
-                width: screen_manager.width
-                height: screen_manager.height - dp(10)
-                y: app.theme_cls.standard_increment - dp(20)
-                on_touch_down: if self.collide_point(*args[1].pos): root.root_screen_manager.current = "shrine demo"

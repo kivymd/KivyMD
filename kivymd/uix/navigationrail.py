@@ -1,10 +1,10 @@
 """
-Components/NavigationRail
-=========================
+Components/Navigation Rail
+==========================
 
 .. seealso::
 
-    `Material Design spec, NavigationRail <https://material.io/components/navigation-rail>`_
+    `Material Design spec, Navigation rail <https://material.io/components/navigation-rail>`_
 
 .. rubric:: Navigation rails provide ergonomic movement between primary destinations in apps.
 
@@ -133,8 +133,8 @@ Builder.load_string(
         icon: root.icon
         pos_hint: {"center_x": .5, "center_y": .5}
         on_release:
-            root.navigation_rail.state = "open" \
-            if root.navigation_rail.state == "close" else "close"
+            root.navigation_rail.rail_state = "open" \
+            if root.navigation_rail.rail_state == "close" else "close"
 
     MDLabel:
         id: lbl_title
@@ -467,10 +467,10 @@ class MDNavigationRail(MDCard):
                 return Builder.load_string(KV)
 
             def rail_open(self):
-                if self.root.ids.rail.state == "open":
-                    self.root.ids.rail.state = "close"
+                if self.root.ids.rail.rail_state == "open":
+                    self.root.ids.rail.rail_state = "close"
                 else:
-                    self.root.ids.rail.state = "open"
+                    self.root.ids.rail.rail_state = "open"
 
             def on_start(self):
                 for i in range(9):
@@ -589,7 +589,7 @@ class MDNavigationRail(MDCard):
     Available options are: `'Selected'`, `'Persistent'`, `'Unlabeled'`.
 
     Persistent
-    ==========
+    ~~~~~~~~~~
 
     .. code-block:: kv
 
@@ -600,7 +600,7 @@ class MDNavigationRail(MDCard):
         :align: center
 
     Selected
-    ========
+    ~~~~~~~~
 
     .. code-block:: kv
 
@@ -611,7 +611,7 @@ class MDNavigationRail(MDCard):
         :align: center
 
     Unlabeled
-    =========
+    ~~~~~~~~~
 
     .. code-block:: kv
 
@@ -641,11 +641,11 @@ class MDNavigationRail(MDCard):
     and defaults to `0.2`.
     """
 
-    state = OptionProperty("close", options=("close", "open"))
+    rail_state = OptionProperty("close", options=("close", "open"))
     """
     Closed or open rails.
 
-    :attr:`state` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`rail_state` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """
 
@@ -760,7 +760,7 @@ class MDNavigationRail(MDCard):
                 ).start(self.floating_action_button)
             self.dispatch("on_close")
 
-    def on_state(self, instance, value):
+    def on_rail_state(self, instance, value):
         if value == "open":
             self.open()
         elif value == "close":

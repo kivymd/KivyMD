@@ -1,0 +1,4 @@
+# Directories and files that cannot be commited to git
+
+/assets/*crop.*
+/assets/sasha-round.png

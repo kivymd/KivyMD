@@ -20,7 +20,7 @@
 
 
 <KitchenSinkDialogs>
-    name: 'dialogs'
+    name: "dialogs"
     app: app
 
     Toolbar:
@@ -29,21 +29,21 @@
 
     MDRaisedButton:
         text: "ALERT"
-        pos_hint: {'center_x': .5, 'center_y': .8}
+        pos_hint: {"center_x": .5, "center_y": .8}
         on_release: root.show_example_alert_dialog()
 
     MDRaisedButton:
         text: "SIMPLE"
-        pos_hint: {'center_x': .5, 'center_y': .6}
+        pos_hint: {"center_x": .5, "center_y": .6}
         on_release: root.show_example_simple_dialog()
 
     MDRaisedButton:
         text: "CONFIRMATION"
-        pos_hint: {'center_x': .5, 'center_y': .4}
+        pos_hint: {"center_x": .5, "center_y": .4}
         on_release: root.show_example_confirmation_dialog()
 
     MDRaisedButton:
         text: "CUSTOM"
-        pos_hint: {'center_x': .5, 'center_y': .2}
+        pos_hint: {"center_x": .5, "center_y": .2}
         opposite_colors: True
         on_release: root.show_example_custom_dialog()

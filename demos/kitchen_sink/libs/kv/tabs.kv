@@ -1,8 +1,8 @@
 <KitchenSinkTabs>
-    name: 'tabs'
+    name: "tabs"
 
-    BoxLayout:
-        orientation: 'vertical'
+    MDBoxLayout:
+        orientation: "vertical"
 
         Toolbar:
             id: toolbar
@@ -14,18 +14,18 @@
 
         BoxLayout:
             size_hint_y: None
-            height: dp(58)
-            spacing: dp(5)
-            padding: dp(5)
+            height: "58dp"
+            spacing: "5dp"
+            padding: "5dp"
 
             MDCheckbox:
                 size_hint: None, None
-                size: dp(48), dp(48)
+                size: "48dp", "48dp"
                 on_state:
-                    root.switch_tabs_to_text(android_tabs) if self.state == 'down' \
+                    root.switch_tabs_to_text(android_tabs) if self.state == "down" \
                     else root.switch_tabs_to_icon(android_tabs)
             MDLabel:
-                text: 'Use text tabs'
+                text: "Use text tabs"
 
             Widget:
 
@@ -35,6 +35,6 @@
     FloatLayout:
 
         MDLabel:
-            text: 'Content'
-            halign: 'center'
-            font_style: 'H6'
+            text: "Content"
+            halign: "center"
+            font_style: "H6"

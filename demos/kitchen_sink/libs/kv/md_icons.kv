@@ -1,5 +1,5 @@
 <KitchenSinkMDIcons>
-    name: 'md icons'
+    name: "md icons"
     app: app
     on_enter: if not len(rv.data): root.set_list_md_icons()
 
@@ -11,30 +11,30 @@
             id: toolbar
 
         BoxLayout:
-            orientation: 'vertical'
-            spacing: dp(10)
-            padding: dp(20)
+            orientation: "vertical"
+            spacing: "10dp"
+            padding: "20dp"
 
             MDBoxLayout:
                 adaptive_height: True
 
                 MDIconButton:
-                    icon: 'magnify'
+                    icon: "magnify"
 
                 MDTextField:
                     id: search_field
-                    hint_text: 'Search icon'
+                    hint_text: "Search icon"
                     on_text: root.set_list_md_icons(self.text, True)
 
             RecycleView:
                 id: rv
-                key_viewclass: 'viewclass'
-                key_size: 'height'
+                key_viewclass: "viewclass"
+                key_size: "height"
 
                 RecycleBoxLayout:
-                    padding: dp(10)
+                    padding: "10dp"
                     default_size: None, dp(48)
                     default_size_hint: 1, None
                     size_hint_y: None
                     height: self.minimum_height
-                    orientation: 'vertical'
+                    orientation: "vertical"

@@ -91,6 +91,7 @@ __all__ = ("MagicBehavior",)
 from kivy.animation import Animation
 from kivy.factory import Factory
 from kivy.lang import Builder
+from kivy.properties import NumericProperty
 
 Builder.load_string(
     """
@@ -120,53 +121,76 @@ Builder.load_string(
 
 
 class MagicBehavior:
+
+    magic_speed = NumericProperty(1)
+    """
+    Animation playback speed.
+
+    :attr:`magic_speed` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
     def grow(self):
         """Grow effect animation."""
 
-        Animation.stop_all(self)
         (
-            Animation(scale_x=1.2, scale_y=1.2, t="out_quad", d=0.03)
-            + Animation(scale_x=1, scale_y=1, t="out_elastic", d=0.4)
+            Animation(
+                scale_x=1.2,
+                scale_y=1.2,
+                t="out_quad",
+                d=0.03 / self.magic_speed,
+            )
+            + Animation(
+                scale_x=1, scale_y=1, t="out_elastic", d=0.4 / self.magic_speed
+            )
         ).start(self)
 
     def shake(self):
         """Shake effect animation."""
 
-        Animation.stop_all(self)
         (
-            Animation(translate_x=50, t="out_quad", d=0.02)
-            + Animation(translate_x=0, t="out_elastic", d=0.5)
+            Animation(translate_x=50, t="out_quad", d=0.02 / self.magic_speed)
+            + Animation(
+                translate_x=0, t="out_elastic", d=0.5 / self.magic_speed
+            )
         ).start(self)
 
     def wobble(self):
         """Wobble effect animation."""
 
-        Animation.stop_all(self)
         (
             (
-                Animation(scale_y=0.7, t="out_quad", d=0.03)
-                & Animation(scale_x=1.4, t="out_quad", d=0.03)
+                Animation(scale_y=0.7, t="out_quad", d=0.03 / self.magic_speed)
+                & Animation(
+                    scale_x=1.4, t="out_quad", d=0.03 / self.magic_speed
+                )
             )
             + (
-                Animation(scale_y=1, t="out_elastic", d=0.5)
-                & Animation(scale_x=1, t="out_elastic", d=0.4)
+                Animation(scale_y=1, t="out_elastic", d=0.5 / self.magic_speed)
+                & Animation(
+                    scale_x=1, t="out_elastic", d=0.4 / self.magic_speed
+                )
             )
         ).start(self)
 
     def twist(self):
         """Twist effect animation."""
 
-        Animation.stop_all(self)
         (
-            Animation(rotate=25, t="out_quad", d=0.05)
-            + Animation(rotate=0, t="out_elastic", d=0.5)
+            Animation(rotate=25, t="out_quad", d=0.05 / self.magic_speed)
+            + Animation(rotate=0, t="out_elastic", d=0.5 / self.magic_speed)
         ).start(self)
 
     def shrink(self):
         """Shrink effect animation."""
 
+        Animation(
+            scale_x=0.95, scale_y=0.95, t="out_quad", d=0.1 / self.magic_speed
+        ).start(self)
+
+    def on_touch_up(self, *args):
         Animation.stop_all(self)
-        Animation(scale_x=0.95, scale_y=0.95, t="out_quad", d=0.1).start(self)
+        return super().on_touch_up(*args)
 
 
 Factory.register("MagicBehavior", cls=MagicBehavior)

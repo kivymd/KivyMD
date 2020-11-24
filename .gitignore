@@ -55,7 +55,7 @@ env
 .env
 .python-version
 
-#  Temp / Cache
+# Temp / Cache
 cache
 .cache
 temp
@@ -63,9 +63,6 @@ temp
 .pytest_cache
 .coverage
 
-docs/sources/api
-demos/kitchen_sink/assets/*crop.*
-demos/kitchen_sink/assets/sasha-round.png
-kivymd/tools/release/*.zip
-kivymd/tools/release/temp
-kivymd/_version.py
+/kivymd/tools/release/*.zip
+/kivymd/tools/release/temp
+/kivymd/_version.py

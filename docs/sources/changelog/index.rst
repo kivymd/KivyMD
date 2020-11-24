@@ -1,5 +1,5 @@
-Change Log
-==========
+Changelog
+=========
 
 .. include:: /changelog/unreleased.rst
 .. include:: /changelog/0.104.1.rst

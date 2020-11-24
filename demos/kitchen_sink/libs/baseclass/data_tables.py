@@ -1,13 +1,16 @@
 from kivy.metrics import dp
-from kivy.uix.screenmanager import Screen
+from kivy.uix.widget import Widget
 
+from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.datatables import MDDataTable
+from kivymd.uix.screen import MDScreen
 
 
-class KitchenSinkDataTables(Screen):
+class KitchenSinkDataTables(MDScreen):
     def open_table(self, use_checkbox_state, use_pagination_state):
         data_tables = MDDataTable(
-            size_hint=(0.9, 0.9),
+            size_hint=(0.9, 0.7),
+            pos_hint={"center_x": 0.5, "center_y": 0.5},
             use_pagination=use_pagination_state,
             check=use_checkbox_state,
             rows_num=10,
@@ -56,4 +59,14 @@ class KitchenSinkDataTables(Screen):
                 ("Donut", "215", "2.4", "43", "2.0", "24", "1%", "0.3%"),
             ],
         )
-        data_tables.open()
+        data_tables.ids.container.add_widget(
+            Widget(size_hint_y=None, height="5dp")
+        )
+        data_tables.ids.container.add_widget(
+            MDRaisedButton(
+                text="CLOSE",
+                pos_hint={"right": 1},
+                on_release=lambda x: self.remove_widget(data_tables),
+            )
+        )
+        self.add_widget(data_tables)

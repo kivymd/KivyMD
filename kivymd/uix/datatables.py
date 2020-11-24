@@ -22,7 +22,6 @@ Components/DataTables
 
 __all__ = ("MDDataTable",)
 
-from kivy import Logger
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -35,6 +34,7 @@ from kivy.properties import (
     OptionProperty,
     StringProperty,
 )
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.recyclegridlayout import RecycleGridLayout
@@ -46,7 +46,7 @@ from kivy.uix.scrollview import ScrollView
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.dialog import BaseDialog
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.tooltip import MDTooltip
 
@@ -67,6 +67,7 @@ Builder.load_string(
         Rectangle:
             pos: self.pos
             size: self.size
+
     on_press: if DEVICE_TYPE != "desktop": root.table.on_mouse_select(self)
     on_enter: if DEVICE_TYPE == "desktop": root.table.on_mouse_select(self)
 
@@ -81,11 +82,25 @@ Builder.load_string(
             size: 0, 0
             opacity: 0
             on_active: root.select_check(self.active)
+            on_release: root._check_all(self.state)
 
-        MDLabel:
-            id: label
-            text: " " + root.text
-            color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+        MDBoxLayout:
+            id: inner_box
+
+            MDIcon:
+                id: icon
+                size_hint: None, None
+                pos_hint: {"center_y": 0.5}
+                size: ("24dp", "24dp") if root.icon else (0, 0)
+                icon: root.icon if root.icon else ""
+                theme_text_color: "Custom"
+                text_color: root.icon_color if root.icon_color else root.theme_cls.primary_color
+
+            MDLabel:
+                id: label
+                text: " " + root.text
+                color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+                markup: True
 
     MDSeparator:
 
@@ -97,16 +112,32 @@ Builder.load_string(
     spacing: "4dp"
     tooltip_text: root.text
 
-    MDLabel:
-        text: " " + root.text
+    BoxLayout:
+        id: box
         size_hint_y: None
-        height: self.texture_size[1]
-        bold: True
-        color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+        height: lbl.height
+
+        MDLabel:
+            id: lbl
+            text: " " + root.text
+            size_hint_y: None
+            height: self.texture_size[1]
+            bold: True
+            markup: True
+            color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     MDSeparator:
         id: separator
 
+<SortButton>:
+    id: sort_btn
+    icon: "arrow-up"
+    pos_hint: {"center_y": 0.5}
+    #ripple_scale: .65
+    size: [dp(24), dp(0)]
+    theme_text_color: "Custom"
+    text_color: self.theme_cls.secondary_text_color
+    opacity: 0
 
 <TableHeader>
     bar_width: 0
@@ -134,15 +165,7 @@ Builder.load_string(
                     size_hint: None, None
                     size: 0, 0
                     opacity: 0
-                    on_active: root.table_data.select_all(self.state)
-                    disabled: True
-
-                #MDIconButton:
-                #    id: sort_button
-                #    icon: "menu-up"
-                #    pos_hint: {"center_y": 1}
-                #    ripple_scale: .65
-                #    on_release: root.table_data.sort_by_name()
+                    on_release: root.table_data.select_all(self.state)
 
                 CellHeader:
                     id: first_cell
@@ -154,7 +177,7 @@ Builder.load_string(
     data: root.recycle_data
     data_first_cells: root.data_first_cells
     key_viewclass: "viewclass"
-    effect_cls: StiffScrollEffect
+    #effect_cls: StiffScrollEffect
 
     TableRecycleGridLayout:
         id: row_controller
@@ -166,7 +189,6 @@ Builder.load_string(
         size_hint: None, None
         height: self.minimum_height
         width: self.minimum_width
-        orientation: "vertical"
         multiselect: True
         touch_multiselect: True
 
@@ -175,13 +197,10 @@ Builder.load_string(
     adaptive_height: True
     spacing: "8dp"
 
-    Widget:
-
     MDLabel:
         text: "Rows per page"
-        size_hint: None, 1
-        width: self.texture_size[0]
-        text_size: None, None
+        shorten: True
+        halign: "right"
         font_style: "Caption"
         color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
@@ -194,21 +213,23 @@ Builder.load_string(
 
     Widget:
         size_hint_x: None
-        width: "32dp"
+        width: "32dp" if DEVICE_TYPE != "mobile" else "8dp"
 
     MDLabel:
         id: label_rows_per_page
         text: f"1-{root.table_data.rows_num} of {len(root.table_data.row_data)}"
-        size_hint: None, 1
-        #width: self.texture_size[0]
-        text_size: None, None
+        size_hint: None, None
+        size: self.texture_size
+        -text_size: None, None
+        pos_hint: {"center_y": .5}
         font_style: "Caption"
         color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
 
     MDIconButton:
         id: button_back
         icon: "chevron-left"
-        user_font_size: "20sp"
+        user_font_size: "20sp" if DEVICE_TYPE != "mobile" else "16dp"
+        ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
         pos_hint: {'center_y': .5}
         disabled: True
         on_release: root.table_data.set_next_row_data_parts("back")
@@ -216,8 +237,10 @@ Builder.load_string(
     MDIconButton:
         id: button_forward
         icon: "chevron-right"
-        user_font_size: "20sp"
+        user_font_size: "20sp" if DEVICE_TYPE != "mobile" else "16dp"
+        ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
         pos_hint: {'center_y': .5}
+        disabled: True
         on_release: root.table_data.set_next_row_data_parts("forward")
 
 
@@ -226,7 +249,7 @@ Builder.load_string(
     MDCard:
         id: container
         orientation: "vertical"
-        elevation: 14
+        elevation: root.elevation
         md_bg_color: 0, 0, 0, 0
         padding: "24dp", "24dp", "8dp", "8dp"
 
@@ -312,8 +335,14 @@ class CellRow(
     text = StringProperty()  # row text
     table = ObjectProperty()  # <TableData object>
     index = None
+    icon = StringProperty()
+    icon_copy = icon
+    icon_color = ListProperty()
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
+
+    def on_icon(self, instance, value):
+        self.icon_copy = value
 
     def on_table(self, instance, table):
         """Sets padding/spacing to zero if no checkboxes are used for rows."""
@@ -352,9 +381,18 @@ class CellRow(
 
         self.selected = is_selected
 
+        # Fixes cloning of icons.
+        ic = table_data.recycle_data[index].get("icon", None)
+        cell_row_obj = table_data.view_adapter.get_visible_view(index)
+
+        if not ic:
+            cell_row_obj.icon = ""
+        else:
+            cell_row_obj.icon = cell_row_obj.icon_copy
+
         # Set checkboxes.
         if table_data.check:
-            if self.text in table_data.data_first_cells:
+            if self.index in table_data.data_first_cells:
                 self.ids.check.size = (dp(32), dp(32))
                 self.ids.check.opacity = 1
                 self.ids.box.spacing = dp(16)
@@ -364,6 +402,7 @@ class CellRow(
                 self.ids.check.opacity = 0
                 self.ids.box.spacing = 0
                 self.ids.box.padding[0] = 0
+
         # Set checkboxes state.
         if table_data._rows_number in table_data.current_selection_check:
             for index in table_data.current_selection_check[
@@ -380,6 +419,14 @@ class CellRow(
                     self.ids.check.state = "normal"
         else:
             self.ids.check.state = "normal"
+
+    def _check_all(self, state):
+        """Checks if all checkboxes are in same state"""
+
+        if state == "down" and self.table.check_all(state):
+            self.table.table_header.ids.check.state = "down"
+        else:
+            self.table.table_header.ids.check.state = "normal"
 
     def select_check(self, active):
         """Called upon activation/deactivation of the checkbox."""
@@ -414,17 +461,132 @@ class CellRow(
         self.table.get_select_row(self.index)
 
 
+class SortButton(MDIconButton):
+    pass
+
+
 class CellHeader(MDTooltip, BoxLayout):
     text = StringProperty()  # column text
+
+    sort_action = ObjectProperty()
+    table_data = ObjectProperty()
+    is_sorted = BooleanProperty(False)
+    sorted_order = StringProperty()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(**kwargs)
+
+        if self.sort_action:
+            box = self.ids.box
+            ib = SortButton()
+            ib.bind(on_release=self._sort_release)
+
+            if self.is_sorted:
+                ib.icon = (
+                    "arrow-down" if self.sorted_order == "ASC" else "arrow-up"
+                )
+                ib.size = [dp(24), dp(24)]
+                ib.opacity = 1
+
+            else:
+                self.bind(on_enter=self.set_sort_btn)
+                self.bind(on_leave=self.set_sort_btn)
+
+            box.add_widget(ib, index=1)
+
+    def _sort_release(self, inst):
+        inst.icon = "arrow-down" if inst.icon == "arrow-up" else "arrow-up"
+
+        if not self.parent.parent.col_with_sort:
+            c = self.parent.children
+            col_with_sort = [
+                each
+                for each in c
+                if each.ids.get("box", None) and len(each.ids.box.children) == 2
+            ]
+            self.parent.parent.col_with_sort = col_with_sort
+        else:
+            col_with_sort = self.parent.parent.col_with_sort
+
+        for each in col_with_sort:
+            if each == self:
+                self.unbind(on_enter=self.set_sort_btn)
+                self.unbind(on_leave=self.set_sort_btn)
+            else:
+                btn = each.ids.box.children[-1]
+                btn.size = [dp(24), dp(0)]
+                btn.opacity = 0
+                each.bind(on_enter=each.set_sort_btn)
+                each.bind(on_leave=each.set_sort_btn)
+
+        if self.sort_action:
+            tmp = []
+
+            if not self.table_data:
+                th = self.parent.parent
+                self.table_data = th.table_data
+
+            # row_checks_prev = self.table_data._get_row_checks()
+
+            for i in range(
+                0,
+                len(self.table_data.recycle_data),
+                self.table_data.total_col_headings,
+            ):
+
+                row = []
+                for j in range(
+                    self.table_data.recycle_data[i]["range"][0],
+                    self.table_data.recycle_data[i]["range"][1] + 1,
+                ):
+                    data = self.table_data.recycle_data[j]
+                    if data.get("icon", None):
+                        inner_data = [data["icon"]]
+                        if data.get("icon_color", None):
+                            inner_data.append(data["icon_color"])
+
+                        inner_data.append(data["text"])
+                        row.append(inner_data)
+
+                    else:
+                        row.append(self.table_data.recycle_data[j]["text"])
+                tmp.append(row)
+            sorted_data = self.sort_action(tmp)
+
+            if sorted_data:
+                self.table_data.row_data = (
+                    sorted_data
+                    if inst.icon == "arrow-down"
+                    else sorted_data[::-1]
+                )
+                self.table_data.on_rows_num(self, self.table_data.rows_num)
+                self.table_data.set_row_data()
+                self.table_data.select_all("normal")
+                self.table_data.cell_row_obj_dict = {}
+                self.table_data.table_header.ids.check.state = "normal"
+
+                # TODO: Restore checked rows after sorting
+
+    def set_sort_btn(self, instance):
+        btn = instance.ids.box.children[-1]
+        if btn.opacity:
+            btn.size = [dp(24), dp(0)]
+            btn.opacity = 0
+
+        else:
+            btn.size = [dp(24), dp(24)]
+            btn.opacity = 1
 
 
 class TableHeader(ScrollView):
     table_data = ObjectProperty()  # <TableData object>
     column_data = ListProperty()  # MDDataTable.column_data
     col_headings = ListProperty()  # column names list
-    sort = BooleanProperty(False)  # MDDataTable.sort
+    sorted_on = StringProperty()
+    sorted_order = StringProperty()
     # kivy.uix.gridlayout.GridLayout.cols_minimum
     cols_minimum = DictProperty()
+    col_with_sort = []  # store cols which contain sort functions
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -434,7 +596,22 @@ class TableHeader(ScrollView):
             self.col_headings.append(col_heading[0])
             if i:
                 self.ids.header.add_widget(
-                    CellHeader(text=col_heading[0], width=self.cols_minimum[i])
+                    (
+                        CellHeader(
+                            text=col_heading[0],
+                            sort_action=col_heading[2],
+                            width=self.cols_minimum[i],
+                            table_data=self.table_data,
+                            is_sorted=(col_heading[0] == self.sorted_on),
+                            sorted_order=self.sorted_order,
+                        )
+                        if len(col_heading) == 3
+                        else CellHeader(
+                            text=col_heading[0],
+                            width=self.cols_minimum[i],
+                            table_data=self.table_data,
+                        )
+                    )
                 )
             else:
                 # Sets the text in the first cell.
@@ -451,14 +628,6 @@ class TableHeader(ScrollView):
         else:
             self.ids.box.padding[0] = 0
             self.ids.box.spacing = 0
-
-    def on_sort(self, instance, value):
-        """Rows sorting method."""
-
-        Logger.info("TableData: Sorting table items is not implemented")
-        # if not self.sort:
-        #    self.ids.sort_button.size = (0, 0)
-        #    self.ids.sort_button.opacity = 0
 
 
 class TableData(RecycleView):
@@ -477,7 +646,7 @@ class TableData(RecycleView):
     pagination_menu_open = BooleanProperty(False)
     # List of indexes of marked checkboxes.
     current_selection_check = DictProperty()
-    sort = BooleanProperty()
+    cell_row_obj_dict = {}
 
     _parent = ObjectProperty()
     _rows_number = NumericProperty(0)
@@ -502,16 +671,12 @@ class TableData(RecycleView):
             if index in data["range"]:
                 row.append(data["text"])
         self._parent.dispatch("on_check_press", row)
+        self._get_row_checks()  # update the dict
 
     def set_default_first_row(self, dt):
         """Set default first row as selected."""
 
         self.ids.row_controller.select_next(self)
-
-    def sort_by_name(self):
-        """Sorts table data."""
-
-        # TODO: implement a rows sorting method.
 
     def set_row_data(self):
         data = []
@@ -530,17 +695,47 @@ class TableData(RecycleView):
 
             for j, x in enumerate(data):
                 if x[0] == x[1]:
-                    self.data_first_cells.append(x[0])
-                self.recycle_data.append(
-                    {
-                        "text": str(x[0]),
-                        "Index": str(x[1]),
+                    self.data_first_cells.append(x[2][0])
+                    self.recycle_data.append(
+                        {
+                            "text": str(x[0]),
+                            "Index": str(j),
+                            "range": x[2],
+                            "selectable": True,
+                            "viewclass": "CellRow",
+                            "table": self,
+                        }
+                    )
+                else:
+                    r_data = {
+                        "Index": str(j),
                         "range": x[2],
                         "selectable": True,
                         "viewclass": "CellRow",
                         "table": self,
                     }
-                )
+
+                    if (
+                        isinstance(x[0], tuple) or isinstance(x[0], list)
+                    ) and len(x[0]) == 3:
+                        r_data["icon"] = x[0][0]
+                        r_data["icon_color"] = x[0][1]
+                        r_data["text"] = str(x[0][2])
+
+                        self.recycle_data.append(r_data)
+
+                    elif (
+                        isinstance(x[0], tuple) or isinstance(x[0], list)
+                    ) and len(x[0]) == 2:
+                        r_data["icon"] = x[0][0]
+                        r_data["text"] = str(x[0][1])
+
+                        self.recycle_data.append(r_data)
+
+                    else:
+                        r_data["text"] = str(x[0])
+                        self.recycle_data.append(r_data)
+
             if not self.table_header.column_data:
                 raise ValueError("Set value for column_data in class TableData")
             self.data_first_cells.append(self.table_header.column_data[0][0])
@@ -578,15 +773,60 @@ class TableData(RecycleView):
     def select_all(self, state):
         """Sets the checkboxes of all rows to the active/inactive position."""
 
-        # FIXME: fix the work of selecting all cells..
-        for i, data in enumerate(self.recycle_data):
-            opts = self.layout_manager.view_opts
-            cell_row_obj = self.view_adapter.get_view(
-                i, self.data[i], opts[i]["viewclass"]
-            )
-            cell_row_obj.ids.check.state = state
+        for i in range(0, len(self.recycle_data), self.total_col_headings):
+
+            if self.cell_row_obj_dict.get(i, None):
+                cell_row_obj = self.cell_row_obj_dict[i]
+            else:
+                cell_row_obj = (
+                    cell_row_obj
+                ) = self.view_adapter.get_visible_view(i)
+                self.cell_row_obj_dict[i] = cell_row_obj
+
             self.on_mouse_select(cell_row_obj)
-            cell_row_obj.select_check(True if state == "down" else False)
+            cell_row_obj.ids.check.state = state
+
+    def check_all(self, state):
+        """Checks if checkboxes of all rows are in the same state"""
+
+        tmp = []
+        for i in range(0, len(self.recycle_data), self.total_col_headings):
+            if self.cell_row_obj_dict.get(i, None):
+                cell_row_obj = self.cell_row_obj_dict[i]
+            else:
+                cell_row_obj = (
+                    cell_row_obj
+                ) = self.view_adapter.get_visible_view(i)
+                self.cell_row_obj_dict[i] = cell_row_obj
+
+            tmp.append(cell_row_obj.ids.check.state == state)
+
+        return all(tmp)
+
+    def _get_row_checks(self):
+        """
+        Returns all rows that are checked
+        """
+
+        tmp = []
+        for i in range(0, len(self.recycle_data), self.total_col_headings):
+            if self.cell_row_obj_dict.get(i, None):
+                cell_row_obj = self.cell_row_obj_dict[i]
+            else:
+                cell_row_obj = (
+                    cell_row_obj
+                ) = self.view_adapter.get_visible_view(i)
+                self.cell_row_obj_dict[i] = cell_row_obj
+
+            if cell_row_obj.ids.check.state == "down":
+                idx = cell_row_obj.index
+                row = []
+                for data in self.recycle_data:
+                    if idx in data["range"]:
+                        row.append(data["text"])
+
+                tmp.append(row)
+        return tmp
 
     def close_pagination_menu(self, *args):
         """Called when the pagination menu window is closed."""
@@ -633,7 +873,7 @@ class TableData(RecycleView):
             yield lst[i : i + parts]
 
     def on_mouse_select(self, instance):
-        """Called on the ``on_enter`` event of the :class:`~CellRow` class"""
+        """Called on the ``on_enter`` event of the :class:`~CellRow` class."""
 
         if not self.pagination_menu_open:
             if self.ids.row_controller.selected_row != instance.index:
@@ -649,6 +889,10 @@ class TableData(RecycleView):
             self._split_list_into_equal_parts(self.row_data, value)
         )
 
+    def on_pagination(self, instance, value):
+        if self._to_value < len(self.row_data):
+            self.pagination.ids.button_forward.disabled = False
+
     # def on_pagination(self, instance_table, instance_pagination):
     #    if len(self._row_data_parts) <= self._to_value:
     #        instance_pagination.ids.button_forward.disabled = True
@@ -660,7 +904,7 @@ class TablePagination(ThemableBehavior, MDBoxLayout):
     table_data = ObjectProperty()  # <TableData object>
 
 
-class MDDataTable(BaseDialog):
+class MDDataTable(ThemableBehavior, AnchorLayout):
     """
     :Events:
         :attr:`on_row_press`
@@ -673,6 +917,7 @@ class MDDataTable(BaseDialog):
     .. code-block:: python
 
         from kivy.metrics import dp
+        from kivy.uix.anchorlayout import AnchorLayout
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
@@ -680,28 +925,54 @@ class MDDataTable(BaseDialog):
 
         class Example(MDApp):
             def build(self):
+                layout = AnchorLayout()
                 self.data_tables = MDDataTable(
-                    size_hint=(0.9, 0.6),
+                    size_hint=(0.7, 0.6),
                     use_pagination=True,
                     check=True,
                     column_data=[
                         ("No.", dp(30)),
-                        ("Column 1", dp(30)),
-                        ("Column 2", dp(30)),
-                        ("Column 3", dp(30)),
-                        ("Column 4", dp(30)),
-                        ("Column 5", dp(30)),
+                        ("Status", dp(30)),
+                        ("Signal Name", dp(60), self.sort_on_signal),
+                        ("Severity", dp(30)),
+                        ("Stage", dp(30)),
+                        ("Schedule", dp(30), self.sort_on_schedule),
+                        ("Team Lead", dp(30), self.sort_on_team)
                     ],
                     row_data=[
-                        (f"{i + 1}", "2.23", "3.65", "44.1", "0.45", "62.5")
-                        for i in range(50)
+                        ("1", ("alert", [255 / 256, 165 / 256, 0, 1], "No Signal"),
+                         "Astrid: NE shared managed", "Medium", "Triaged", "0:33",
+                         "Chase Nguyen"),
+                        ("2", ("alert-circle", [1, 0, 0, 1], "Offline"),
+                         "Cosmo: prod shared ares", "Huge", "Triaged", "0:39",
+                         "Brie Furman"),
+                        ("3", (
+                            "checkbox-marked-circle",
+                            [39 / 256, 174 / 256, 96 / 256, 1],
+                            "Online"), "Phoenix: prod shared lyra-lists", "Minor",
+                         "Not Triaged", "3:12", "Jeremy lake"),
+                        ("4", (
+                            "checkbox-marked-circle",
+                            [39 / 256, 174 / 256, 96 / 256, 1],
+                            "Online"), "Sirius: NW prod shared locations",
+                         "Negligible",
+                         "Triaged", "13:18", "Angelica Howards"),
+                        ("5", (
+                            "checkbox-marked-circle",
+                            [39 / 256, 174 / 256, 96 / 256, 1],
+                            "Online"), "Sirius: prod independent account",
+                         "Negligible",
+                         "Triaged", "22:06", "Diane Okuma"),
+
                     ],
+                    sorted_on="Schedule",
+                    sorted_order="ASC",
+                    elevation=2
                 )
                 self.data_tables.bind(on_row_press=self.on_row_press)
                 self.data_tables.bind(on_check_press=self.on_check_press)
-
-            def on_start(self):
-                self.data_tables.open()
+                layout.add_widget(self.data_tables)
+                return layout
 
             def on_row_press(self, instance_table, instance_row):
                 '''Called when a table row is clicked.'''
@@ -713,6 +984,14 @@ class MDDataTable(BaseDialog):
 
                 print(instance_table, current_row)
 
+            def sort_on_signal(self, data):
+                return sorted(data, key=lambda l: l[2])
+
+            def sort_on_schedule(self, data):
+                return sorted(data, key=lambda l: sum([int(l[-2].split(":")[0])*60, int(l[-2].split(":")[1])]))
+
+            def sort_on_team(self, data):
+                return sorted(data, key=lambda l: l[-1])
 
         Example().run()
     """
@@ -727,25 +1006,30 @@ class MDDataTable(BaseDialog):
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
+        from kivy.uix.anchorlayout import AnchorLayout
 
 
         class Example(MDApp):
             def build(self):
+                layout = AnchorLayout()
                 self.data_tables = MDDataTable(
-                    size_hint=(0.9, 0.6),
-                    # name column, width column
+                    size_hint=(0.7, 0.6),
+                    use_pagination=True,
+                    check=True,
+
+                    # name column, width column, sorting function column(optional)
                     column_data=[
-                        ("Column 1", dp(30)),
-                        ("Column 2", dp(30)),
-                        ("Column 3", dp(30)),
-                        ("Column 4", dp(30)),
-                        ("Column 5", dp(30)),
-                        ("Column 6", dp(30)),
+                        ("No.", dp(30)),
+                        ("Status", dp(30)),
+                        ("Signal Name", dp(60)),
+                        ("Severity", dp(30)),
+                        ("Stage", dp(30)),
+                        ("Schedule", dp(30), lambda *args: print("Sorted using Schedule")),
+                        ("Team Lead", dp(30)),
                     ],
                 )
-
-            def on_start(self):
-                self.data_tables.open()
+                layout.add_widget(self.data_tables)
+                return layout
 
 
         Example().run()
@@ -755,15 +1039,35 @@ class MDDataTable(BaseDialog):
 
     :attr:`column_data` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
+
+    .. note::
+        The functions which will be called for sorting must accept a data argument and return the sorted data.
+
+        Incoming data format will be similar to the provided row_data except that it'll be all list instead of tuple like below.
+        Any icon provided initially will also be there in this data so handle accordingly.
+
+        .. code-block:: python
+
+            [
+                ['1', ['icon', 'No Signal'], 'Astrid: NE shared managed', 'Medium', 'Triaged', '0:33', 'Chase Nguyen'],
+                ['2', 'Offline', 'Cosmo: prod shared ares', 'Huge', 'Triaged', '0:39', 'Brie Furman'],
+                ['3', 'Online', 'Phoenix: prod shared lyra-lists', 'Minor', 'Not Triaged', '3:12', 'Jeremy lake'],
+                ['4', 'Online', 'Sirius: NW prod shared locations', 'Negligible', 'Triaged', '13:18', 'Angelica Howards'],
+                ['5', 'Online', 'Sirius: prod independent account', 'Negligible', 'Triaged', '22:06', 'Diane Okuma']
+            ]
+
+        You must sort inner lists in ascending order and return the sorted data in the same format.
     """
 
     row_data = ListProperty()
     """
-    Data for rows.
+    Data for rows. To add icon in addition to a row data, include a tuple with
+    ("icon-name", [icon-color], "row-data"). See example below.
 
     .. code-block:: python
 
         from kivy.metrics import dp
+        from kivy.uix.anchorlayout import AnchorLayout
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
@@ -771,26 +1075,82 @@ class MDDataTable(BaseDialog):
 
         class Example(MDApp):
             def build(self):
-                self.data_tables = MDDataTable(
+                layout = AnchorLayout()
+                data_tables = MDDataTable(
                     size_hint=(0.9, 0.6),
                     column_data=[
-                        ("Column 1", dp(30)),
+                        ("Column 1", dp(20)),
                         ("Column 2", dp(30)),
-                        ("Column 3", dp(30)),
+                        ("Column 3", dp(50)),
                         ("Column 4", dp(30)),
                         ("Column 5", dp(30)),
                         ("Column 6", dp(30)),
+                        ("Column 7", dp(30)),
                     ],
                     row_data=[
                         # The number of elements must match the length
                         # of the `column_data` list.
-                        ("1", "2", "3", "4", "5", "6"),
-                        ("1", "2", "3", "4", "5", "6"),
+                        (
+                            "1",
+                            ("alert", [255 / 256, 165 / 256, 0, 1], "No Signal"),
+                            "Astrid: NE shared managed",
+                            "Medium",
+                            "Triaged",
+                            "0:33",
+                            "Chase Nguyen",
+                        ),
+                        (
+                            "2",
+                            ("alert-circle", [1, 0, 0, 1], "Offline"),
+                            "Cosmo: prod shared ares",
+                            "Huge",
+                            "Triaged",
+                            "0:39",
+                            "Brie Furman",
+                        ),
+                        (
+                            "3",
+                            (
+                                "checkbox-marked-circle",
+                                [39 / 256, 174 / 256, 96 / 256, 1],
+                                "Online",
+                            ),
+                            "Phoenix: prod shared lyra-lists",
+                            "Minor",
+                            "Not Triaged",
+                            "3:12",
+                            "Jeremy lake",
+                        ),
+                        (
+                            "4",
+                            (
+                                "checkbox-marked-circle",
+                                [39 / 256, 174 / 256, 96 / 256, 1],
+                                "Online",
+                            ),
+                            "Sirius: NW prod shared locations",
+                            "Negligible",
+                            "Triaged",
+                            "13:18",
+                            "Angelica Howards",
+                        ),
+                        (
+                            "5",
+                            (
+                                "checkbox-marked-circle",
+                                [39 / 256, 174 / 256, 96 / 256, 1],
+                                "Online",
+                            ),
+                            "Sirius: prod independent account",
+                            "Negligible",
+                            "Triaged",
+                            "22:06",
+                            "Diane Okuma",
+                        ),
                     ],
                 )
-
-            def on_start(self):
-                self.data_tables.open()
+                layout.add_widget(data_tables)
+                return layout
 
 
         Example().run()
@@ -802,12 +1162,24 @@ class MDDataTable(BaseDialog):
     and defaults to `[]`.
     """
 
-    sort = BooleanProperty(False)
+    sorted_on = StringProperty()
     """
-    Whether to display buttons for sorting table items.
+    Column name upon which the data is already sorted.
 
-    :attr:`sort` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
+    If the table data is showing an already sorted data then this can be used
+    to indicate upon which column the data is sorted.
+
+    :attr:`sorted_on` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    sorted_order = OptionProperty("ASC", options=["ASC", "DSC"])
+    """
+    Order of already sorted data. Must be one of `'ASC'` for ascending or
+    `'DSC'` for descending order.
+
+    :attr:`sorted_order` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'ASC'`.
     """
 
     check = BooleanProperty(False)
@@ -827,13 +1199,17 @@ class MDDataTable(BaseDialog):
 
     .. code-block:: python
 
+        from kivy.metrics import dp
+        from kivy.uix.anchorlayout import AnchorLayout
+
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
 
 
         class Example(MDApp):
             def build(self):
-                self.data_tables = MDDataTable(
+                layout = AnchorLayout()
+                data_tables = MDDataTable(
                     size_hint=(0.9, 0.6),
                     use_pagination=True,
                     column_data=[
@@ -848,9 +1224,8 @@ class MDDataTable(BaseDialog):
                         (f"{i + 1}", "1", "2", "3", "4", "5") for i in range(50)
                     ],
                 )
-
-            def on_start(self):
-                self.data_tables.open()
+                layout.add_widget(data_tables)
+                return layout
 
 
         Example().run()
@@ -860,6 +1235,14 @@ class MDDataTable(BaseDialog):
 
     :attr:`use_pagination` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
+    """
+
+    elevation = NumericProperty(8)
+    """
+    Table elevation.
+
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `8`.
     """
 
     rows_num = NumericProperty(5)
@@ -915,6 +1298,53 @@ class MDDataTable(BaseDialog):
     Background color in the format (r, g, b, a).
     See :attr:`~kivy.uix.modalview.ModalView.background_color`.
 
+    Use markup strings
+    ------------------
+
+    .. code-block:: python
+
+        from kivy.metrics import dp
+        from kivy.uix.anchorlayout import AnchorLayout
+
+        from kivymd.app import MDApp
+        from kivymd.uix.datatables import MDDataTable
+
+
+        class Example(MDApp):
+            def build(self):
+                layout = AnchorLayout()
+                data_tables = MDDataTable(
+                    size_hint=(0.9, 0.6),
+                    use_pagination=True,
+                    column_data=[
+                        ("No.", dp(30)),
+                        ("Column 1", dp(30)),
+                        ("[color=#52251B]Column 2[/color]", dp(30)),
+                        ("Column 3", dp(30)),
+                        ("[size=24][color=#C042B8]Column 4[/color][/size]", dp(30)),
+                        ("Column 5", dp(30)),
+                    ],
+                    row_data=[
+                        (
+                            f"{i + 1}",
+                            "[color=#297B50]1[/color]",
+                            "[color=#C552A1]2[/color]",
+                            "[color=#6C9331]3[/color]",
+                            "4",
+                            "5",
+                        )
+                        for i in range(50)
+                    ],
+                )
+                layout.add_widget(data_tables)
+                return layout
+
+
+        Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/datatables-use-markup-strings.png
+        :align: center
+
     :attr:`background_color` is a :class:`~kivy.properties.ListProperty` and
     defaults to [0, 0, 0, .7].
     """
@@ -923,7 +1353,11 @@ class MDDataTable(BaseDialog):
         super().__init__(**kwargs)
         self.register_event_type("on_row_press")
         self.register_event_type("on_check_press")
-        self.header = TableHeader(column_data=self.column_data, sort=self.sort)
+        self.header = TableHeader(
+            column_data=self.column_data,
+            sorted_on=self.sorted_on,
+            sorted_order=self.sorted_order,
+        )
         self.table_data = TableData(
             self.header,
             row_data=self.row_data,
@@ -946,6 +1380,11 @@ class MDDataTable(BaseDialog):
 
     def on_check_press(self, *args):
         """Called when the check box in the table row is checked."""
+
+    def get_row_checks(self):
+        """Returns all rows that are checked."""
+
+        return self.table_data._get_row_checks()
 
     def _scroll_with_header(self, instance, value):
         self.header.scroll_x = value

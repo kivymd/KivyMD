@@ -98,12 +98,12 @@ from kivy.animation import Animation
 from kivy.graphics import (
     Color,
     Ellipse,
-    Rectangle,
     StencilPop,
     StencilPush,
     StencilUnUse,
     StencilUse,
 )
+from kivy.graphics.vertex_instructions import RoundedRectangle
 from kivy.properties import (
     BooleanProperty,
     ListProperty,
@@ -201,6 +201,7 @@ class CommonRipple(object):
     _finishing_ripple = BooleanProperty(False)
     _fading_out = BooleanProperty(False)
     _no_ripple_effect = BooleanProperty(False)
+    _round_rad = ListProperty([0, 0, 0, 0])
 
     def lay_canvas_instructions(self):
         raise NotImplementedError
@@ -250,6 +251,7 @@ class CommonRipple(object):
         self.canvas.after.clear()
 
     def on_touch_down(self, touch):
+        super().on_touch_down(touch)
         if touch.is_mouse_scrolling:
             return False
         if not self.collide_point(touch.x, touch.y):
@@ -280,7 +282,6 @@ class CommonRipple(object):
             self.lay_canvas_instructions()
             self.finish_rad = max(self.width, self.height) * self.ripple_scale
             self.start_ripple()
-        return super().on_touch_down(touch)
 
     def on_touch_move(self, touch, *args):
         if not self.collide_point(touch.x, touch.y):
@@ -317,8 +318,12 @@ class RectangularRippleBehavior(CommonRipple):
         if self._no_ripple_effect:
             return
         with self.canvas.after:
+            if hasattr(self, "radius"):
+                self._round_rad = self.radius
             StencilPush()
-            Rectangle(pos=self.pos, size=self.size)
+            RoundedRectangle(
+                pos=self.pos, size=self.size, radius=self._round_rad
+            )
             StencilUse()
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
@@ -329,7 +334,9 @@ class RectangularRippleBehavior(CommonRipple):
                 ),
             )
             StencilUnUse()
-            Rectangle(pos=self.pos, size=self.size)
+            RoundedRectangle(
+                pos=self.pos, size=self.size, radius=self._round_rad
+            )
             StencilPop()
         self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
@@ -353,6 +360,8 @@ class CircularRippleBehavior(CommonRipple):
     """
 
     def lay_canvas_instructions(self):
+        if self._no_ripple_effect:
+            return
         with self.canvas.after:
             StencilPush()
             self.stencil = Ellipse(

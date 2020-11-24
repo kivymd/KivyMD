@@ -1,6 +1,6 @@
 # KivyMD [0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
-<img align="left" width="256" src="https://github.com/kivymd/internal/raw/master/logo/kivymd.png"/>
+<img align="center" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_small_gray.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
@@ -31,55 +31,22 @@ If you wish to become a project developer (permission to create branches on the 
 [![Test workflow](https://github.com/kivymd/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ATest)
 [![Build demos workflow](https://github.com/kivymd/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3A"Build+demos")
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
-
-## Documentation
-
-See documentation at https://kivymd.readthedocs.io
-
-Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wiki
-
-[Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [data branch](https://github.com/kivymd/KivyMD/tree/data/demo_kitchen_sink).
-
-### Tutorials on YouTube
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
-    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch KivyMD Tutorials on YouTube">
-  </a>
-</p>
-
-[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
-
-### Comparison of Flutter & KivyMD
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM">
-    <img width="600" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" title="Click to watch it on YouTube">
-  </a>
-</p>
-
-## Support
-
-If you need assistance or you have a question, you can ask for help on our mailing list:
-
-- **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
-- _StackOverflow tag:_ [kivymd](https://stackoverflow.com/tags/kivymd)
-- _Email:_ kivydevelopment@gmail.com
+[![Documentation status](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)
 
 ## Installation
-
-### Dependencies:
-
-- [Kivy](https://github.com/kivy/kivy) >= 1.10.1 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
-- [Python 3.6+](https://www.python.org/) _(Python 2 not supported)_
-
-### How to install
 
 ```bash
 pip install kivymd==0.104.1
 ```
 
-Command above will install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
+### Dependencies:
+
+- [Kivy](https://github.com/kivy/kivy) >= 1.10.1 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
+- [Python 3.6+](https://www.python.org/)
+
+### How to install
+
+Command [above](#installation) will install latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
 
 If you want to install development version from [master](https://github.com/kivymd/KivyMD/tree/master/)
 branch, you should specify link to zip archive:
@@ -99,7 +66,7 @@ cd KivyMD
 pip install .
 ```
 
-**_Speed Tip_**: If you don't need full commit history (about 1.1 GiB), you can
+**_Speed Tip_**: If you don't need full commit history (about 160 MiB), you can
 use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
@@ -140,6 +107,41 @@ Install VirtualBox and follow steps from [here](https://github.com/kivymd/KivyMD
 Use [ArtemSBulgakov/buildozer-action@v1](https://github.com/ArtemSBulgakov/buildozer-action)
 to build your packages automatically on push or pull request.
 See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#full-workflow).
+
+
+## Documentation
+
+See documentation at https://kivymd.readthedocs.io
+
+Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wiki
+
+[Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [kivymd/storage (binaries branch)](https://github.com/kivymd/storage/tree/binaries/demo_kitchen_sink).
+
+### Tutorials on YouTube
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
+    <img width="400" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" title="Click to watch KivyMD Tutorials on YouTube">
+  </a>
+</p>
+
+[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
+
+### Comparison of Flutter & KivyMD
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM">
+    <img width="600" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" title="Click to watch it on YouTube">
+  </a>
+</p>
+
+## Support
+
+If you need assistance or you have a question, you can ask for help on our mailing list:
+
+- **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
+- _StackOverflow tag:_ [kivymd](https://stackoverflow.com/tags/kivymd)
+- _Email:_ kivydevelopment@gmail.com
 
 ## Settings
 
@@ -196,7 +198,14 @@ pre-commit will format modified files with Black and sort imports with isort.
 
 ## Sister projects
 
-- [Creator Kivy Project](https://github.com/HeaTTheatR/CreatorKivyProject) - Wizard for creating a new project for applications written using the Kivy framework
+<img align="left" width="128" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_extensions.png"/>
+
+## KivyMD Extensions
+
+Additional extensions for the KivyMD library.
+
+https://github.com/kivymd-extensions
+
 
 ## License
 

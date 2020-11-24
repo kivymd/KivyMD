@@ -1,290 +1,331 @@
 {
-  'Banner': {
-      'kv_string': 'banner',
-      'Factory': 'Factory.KitchenSinkBanner()',
-      'name_screen': 'banner',
-      'source_code': 'Components-Banner.md',
-      'object': 0,
-      'icon': 'message-alert-outline'
-  },
-  'Bottom Navigation': {
-      'kv_string': 'bottom_navigation',
-      'Factory': 'Factory.BottomNavigation()',
-      'name_screen': 'bottom navigation',
-      'source_code': 'Components-Bottom-Navigation.md',
-      'object': 0,
-      'icon': 'picture-in-picture-bottom-right'
-  },
-  'Data Tables': {
-      'kv_string': 'data_tables',
-      'Factory': 'KitchenSinkDataTables()',
-      'Import': 'from libs.baseclass.data_tables import KitchenSinkDataTables',
-      'name_screen': 'data tables',
-      'source_code': 'Components-Data-Tables.md',
-      'object': 0,
-      'icon': 'table-large'
-  },
-  'Bottom Sheets': {
-      'kv_string': 'bottom_sheet',
-      'Factory': 'KitchenSinkBottomSheet()',
-      'Import': 'from libs.baseclass.bottom_sheet import KitchenSinkBottomSheet',
-      'name_screen': 'bottom sheet',
-      'source_code': 'Components-Bottom-Sheet.md',
-      'object': 0,
-      'icon': 'text-box-outline'
-  },
-  'Dropdown Item': {
-      'kv_string': 'drop_item',
-      'Factory': 'MDDropItem()',
-      'Import': 'from libs.baseclass.drop_item import MDDropItem',
-      'name_screen': 'drop item',
-      'source_code': 'Components-DropDownItem.md',
-      'object': 0,
-      'icon': 'arrow-down-drop-circle'
-  },
-  #'Dropdown Item List': {
-  #    'kv_string': 'drop_item_list',
-  #    'Factory': 'Factory.DropItemList()',
-  #    'name_screen': 'drop item list',
-  #    'source_code': 'Components-DropDownItem-with-ScrollView.md',
-  #    'object': 0
-  #},
-  #'Popup Screen': {
-  #    'kv_string': 'popup_screen',
-  #    'Factory': 'Factory.ContentForPopupScreen()',
-  #    'name_screen': 'popup screen',
-  #    'source_code': 'Components-Progress-Loader.md',
-  #    'object': 0
-  #},
-  'Progress and Slider': {
-      'kv_string': 'progress_bar',
-      'Factory': 'Factory.ProgressBars()',
-      'name_screen': 'progress bar',
-      'object': 0,
-      'icon': 'percent'
-  },
-  'Progress & activity': {
-      'kv_string': 'progress',
-      'Factory': 'Factory.Progress()',
-      'name_screen': 'progress',
-      'object': 0,
-      'icon': 'progress-check'
-  },
-  'Refresh Layout': {
-      'kv_string': 'refresh_layout',
-      'Import': 'from libs.baseclass.refresh_layout import KitchenSinkRefreshLayout',
-      'Factory': 'KitchenSinkRefreshLayout()',
-      'name_screen': 'refresh layout',
-      'source_code': 'Components-Refresh-Layout.md',
-      'object': 0,
-      'icon': 'refresh'
-  },
-  'Button Speed Dial': {
-      'kv_string': 'stack_buttons',
-      'Import': 'from libs.baseclass.stack_buttons import KitchenSinkStackButtons',
-      'Factory': 'KitchenSinkStackButtons()',
-      'name_screen': 'stack buttons',
-      'source_code': 'Components-Stack-Floating-Buttons.md',
-      'object': 0,
-      'icon': 'format-float-right'
-  },
-  'Snackbars': {
-      'kv_string': 'snackbar',
-      'Import': 'from libs.baseclass.snackbar import KitchenSinkSnackBar',
-      'Factory': 'KitchenSinkSnackBar()',
-      'name_screen': 'snackbar',
-      'source_code': 'Components-Snackbar.md',
-      'object': 0,
-      'icon': 'dock-window'
-  },
-  'User Animation Card': {
-      'kv_string': 'user_animation_card',
-      'Import': 'from libs.baseclass.user_animation_card import KitchenSinkUserCard',
-      'Factory': 'KitchenSinkUserCard()',
-      'name_screen': 'user animation card',
-      'source_code': 'Components-User-Animation-Card.md',
-      'object': 0,
-      'icon': 'animation'
-  },
-  'Pickers': {
-      'kv_string': 'pickers',
-      'Import': 'from libs.baseclass.pickers import KitchenSinkPickers',
-      'Factory': 'KitchenSinkPickers()',
-      'name_screen': 'pickers',
-      'source_code': 'Components-Date-Picker.md',
-      'object': 0,
-      'icon': 'calendar'
-  },
-  'TapTargetView': {
-      'kv_string': 'taptargetview',
-      'Import': 'from libs.baseclass.taptargetview import KitchenSinkTapTargetView',
-      'Factory': 'KitchenSinkTapTargetView()',
-      'name_screen': 'taptargetview',
-      'source_code': 'Components-TapTargetView.md',
-      'object': 0,
-      'icon': 'calendar'
-  },
-  'Cards': {
-      'kv_string': 'cards',
-      'Import': 'from libs.baseclass.cards import KitchenSinkCards',
-      'Factory': 'KitchenSinkCards()',
-      'name_screen': 'cards',
-      'source_code': 'Components-Card-Post.md',
-      'object': 0,
-      'icon': 'cards-variant'
-  },
-  'Dialogs': {
-      'kv_string': 'dialogs',
-      'Import': 'from libs.baseclass.dialogs import KitchenSinkDialogs',
-      'Factory': 'KitchenSinkDialogs()',
-      'name_screen': 'dialogs',
-      'source_code': 'Components-Dialog.md',
-      'object': 0,
-      'icon': 'message-processing'
-  },
-  'Toolbars': {
-      'kv_string': 'toolbars',
-      'Factory': 'Factory.Toolbars()',
-      'name_screen': 'toolbars',
-      'object': 0,
-      'icon': 'set-top-box'
-  },
-  'Buttons': {
-      'kv_string': 'buttons',
-      'Factory': 'Factory.Buttons()',
-      'name_screen': 'buttons',
-      'source_code': 'Components-Button.md',
-      'object': 0,
-      'icon': 'rectangle'
-  },
-  'Files Manager': {
-      'kv_string': 'file_manager',
-      'Import': 'from libs.baseclass.filemanager import KitchenSinkFileManager',
-      'Factory': 'KitchenSinkFileManager()',
-      'name_screen': 'file manager',
-      'source_code': 'Components-File-Manager.md',
-      'object': 0,
-      'icon': 'file-tree'
-  },
-  'Tabs': {
-      'kv_string': 'tabs',
-      'Import': 'from libs.baseclass.tabs import KitchenSinkTabs',
-      'Factory': 'KitchenSinkTabs()',
-      'name_screen': 'tabs',
-      'source_code': 'Components-Tabs.md',
-      'object': 0,
-      'icon': 'tab'
-  },
-  'Labels': {
-      'kv_string': 'labels',
-      'Factory': 'Factory.KitchenSinkLabels()',
-      'name_screen': 'labels',
-      'object': 0,
-      'icon': 'label'
-  },
-  'Chips': {
-      'kv_string': 'chips',
-      'Import': 'from libs.baseclass.chips import KitchenSinkChips',
-      'Factory': 'KitchenSinkChips()',
-      'name_screen': 'chips',
-      'source_code': 'Components-Chip.md',
-      'object': 0,
-      'icon': 'label-variant'
-  },
-  'Lists': {
-      'kv_string': 'lists',
-      'Factory': 'Factory.KitchenSinkLists()',
-      'name_screen': 'lists',
-      'object': 0,
-      'icon': 'format-list-bulleted'
-  },
-  'Expansion Panel': {
-      'kv_string': 'expansion_panel',
-      'Factory': 'Factory.KitchenSinkExpansionPanel()',
-      'name_screen': 'expansion panel',
-      'source_code': 'Components-Expansion-Panel.md',
-      'object': 0,
-      'icon': 'arrow-expand-vertical'
-  },
-  'Grid lists': {
-      'kv_string': 'grid',
-      'Import': 'from libs.baseclass.grid import KitchenSinkGrid',
-      'Factory': 'KitchenSinkGrid()',
-      'name_screen': 'grid',
-      'source_code': 'Components-SmartTileWithStar.md',
-      'object': 0,
-      'icon': 'grid'
-  },
-  'Selection controls': {
-      'kv_string': 'selection_controls',
-      'Factory': 'Factory.KitchenSinkSelectionControls()',
-      'name_screen': 'selection controls',
-      'object': 0,
-      'icon': 'checkbox-marked-circle-outline'
-  },
-  'Menus': {
-      'kv_string': 'menu',
-      'Import': 'from libs.baseclass.menu import KitchenSinkMenu',
-      'Factory': 'KitchenSinkMenu()',
-      'name_screen': 'menu',
-      'object': 0,
-      'icon': 'menu'
-  },
-  'MD Icons': {
-      'kv_string': 'md_icons',
-      'Import': 'from libs.baseclass.md_icons import KitchenSinkMDIcons',
-      'Factory': 'KitchenSinkMDIcons()',
-      'name_screen': 'md icons',
-      'object': 0,
-      'icon': 'material-design'
-  },
-  'Bottom App Bar': {
-      'kv_string': 'bottom_app_bar',
-      'Import': 'from libs.baseclass.bottom_app_bar import KitchenSinkBottomAppBar',
-      'Factory': 'KitchenSinkBottomAppBar()',
-      'name_screen': 'bottom app bar',
-      'source_code': 'Components-Bottom-App-Bar.md',
-      'object': 0,
-      'icon': 'dock-bottom'
-  },
-  'Toggle Button': {
-      'kv_string': 'toggle_button',
-      'Import': 'from libs.baseclass.toggle_button import KitchenSinkToggleButtons',
-      'Factory': 'KitchenSinkToggleButtons()',
-      'name_screen': 'toggle button',
-      'source_code': 'Components-Toggle-Button.md',
-      'object': 0,
-      'icon': 'dock-bottom'
-  },
-  #'Source code': {
-  #    'kv_string': 'source_code_viewer',
-  #    'Factory': 'Factory.CodeInputScreen()',
-  #    'name_screen': 'code viewer',
-  #    'object': 0
-  #},
-  'Text fields': {
-      'kv_string': 'textfields',
-      'Import': 'from libs.baseclass.textfields import KitchenSinkTextFields',
-      'Factory': 'KitchenSinkTextFields()',
-      'name_screen': 'textfields',
-      'source_code': 'Components-Text-Field.md',
-      'object': 0,
-      'icon': 'signature-text'
-  },
-  'Tooltips': {
-      'kv_string': 'tooltips',
-      'Factory': 'Factory.KitchenSinkTooltips()',
-      'name_screen': 'tooltips',
-      'source_code': 'Components-Tooltips.md',
-      'object': 0,
-      'icon': 'tooltip-text-outline'
-  },
-  'Navigation Drawer': {
-      'kv_string': 'navigation_drawer',
-      'Import': 'from libs.baseclass.navigation_drawer import KitchenSinkNavigationDrawer',
-      'Factory': 'KitchenSinkNavigationDrawer()',
-      'name_screen': 'navigation drawer',
-      'object': 0,
-      'icon': 'dock-left'
-  }
+    "Banner": {
+        "kv_string": "banner",
+        "Factory": "Factory.KitchenSinkBanner()",
+        "name_screen": "banner",
+        "source_code": "Components-Banner.md",
+        "object": 0,
+        "icon": "message-alert-outline",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/banner/"
+    },
+    "Bottom Navigation": {
+        "kv_string": "bottom_navigation",
+        "Factory": "Factory.BottomNavigation()",
+        "name_screen": "bottom navigation",
+        "source_code": "Components-Bottom-Navigation.md",
+        "object": 0,
+        "icon": "picture-in-picture-bottom-right",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/bottom-navigation/"
+    },
+    "Data Tables": {
+        "kv_string": "data_tables",
+        "Factory": "KitchenSinkDataTables()",
+        "Import": "from libs.baseclass.data_tables import KitchenSinkDataTables",
+        "name_screen": "data tables",
+        "source_code": "Components-Data-Tables.md",
+        "object": 0,
+        "icon": "table-large",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/datatables/"
+    },
+    "Bottom Sheets": {
+        "kv_string": "bottom_sheet",
+        "Factory": "KitchenSinkBottomSheet()",
+        "Import": "from libs.baseclass.bottom_sheet import KitchenSinkBottomSheet",
+        "name_screen": "bottom sheet",
+        "source_code": "Components-Bottom-Sheet.md",
+        "object": 0,
+        "icon": "text-box-outline",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/bottom-sheet/"
+    },
+    "Dropdown Item": {
+        "kv_string": "drop_item",
+        "Factory": "MDDropItem()",
+        "Import": "from libs.baseclass.drop_item import MDDropItem",
+        "name_screen": "drop item",
+        "source_code": "Components-DropDownItem.md",
+        "object": 0,
+        "icon": "arrow-down-drop-circle",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/dropdown-item/"
+    },
+    "Progress and Slider": {
+        "kv_string": "progress_bar",
+        "Factory": "Factory.ProgressBars()",
+        "name_screen": "progress bar",
+        "source_code": "Components-Progress-and-Slider.md",
+        "object": 0,
+        "icon": "percent",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/progress-bar/#mdprogressbar"
+    },
+    "Progress & activity": {
+        "kv_string": "progress",
+        "Factory": "Factory.Progress()",
+        "name_screen": "progress",
+        "source_code": "Components-Progress-and-Activity.md",
+        "object": 0,
+        "icon": "progress-check",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/spinner/"
+    },
+    "Refresh Layout": {
+        "kv_string": "refresh_layout",
+        "Import": "from libs.baseclass.refresh_layout import KitchenSinkRefreshLayout",
+        "Factory": "KitchenSinkRefreshLayout()",
+        "name_screen": "refresh layout",
+        "source_code": "Components-Refresh-Layout.md",
+        "object": 0,
+        "icon": "refresh",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/refresh-layout/"
+    },
+    "MDTheming Colors": {
+        "kv_string": "theming_colors",
+        "Import": "from libs.baseclass.theming_colors import KitchenSinkThemingColors",
+        "Factory": "KitchenSinkThemingColors()",
+        "name_screen": "theming colors",
+        "source_code": "Components-Theming-Colors.md",
+        "object": 0,
+        "icon": "format-color-fill",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/themes/color-definitions/"
+    },
+    "Button Speed Dial": {
+        "kv_string": "stack_buttons",
+        "Import": "from libs.baseclass.stack_buttons import KitchenSinkStackButtons",
+        "Factory": "KitchenSinkStackButtons()",
+        "name_screen": "stack buttons",
+        "source_code": "Components-Floating-Action-Speedial-Button.md",
+        "object": 0,
+        "icon": "format-float-right",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/button/#mdfloatingactionbuttonspeeddial"
+    },
+    "Snackbars": {
+        "kv_string": "snackbar",
+        "Import": "from libs.baseclass.snackbar import KitchenSinkSnackBar",
+        "Factory": "KitchenSinkSnackBar()",
+        "name_screen": "snackbar",
+        "source_code": "Components-Snackbar.md",
+        "object": 0,
+        "icon": "dock-window",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/snackbar/"
+    },
+    "Pickers": {
+        "kv_string": "pickers",
+        "Import": "from libs.baseclass.pickers import KitchenSinkPickers",
+        "Factory": "KitchenSinkPickers()",
+        "name_screen": "pickers",
+        "source_code": "Components-Pickers.md",
+        "object": 0,
+        "icon": "calendar",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/pickers/"
+    },
+    "TapTargetView": {
+        "kv_string": "taptargetview",
+        "Import": "from libs.baseclass.taptargetview import KitchenSinkTapTargetView",
+        "Factory": "KitchenSinkTapTargetView()",
+        "name_screen": "taptargetview",
+        "source_code": "Components-TapTargetView.md",
+        "object": 0,
+        "icon": "calendar",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/taptargetview/"
+    },
+    "Cards": {
+        "kv_string": "cards",
+        "Import": "from libs.baseclass.cards import KitchenSinkCards",
+        "Factory": "KitchenSinkCards()",
+        "name_screen": "cards",
+        "source_code": "Components-Card.md",
+        "object": 0,
+        "icon": "cards-variant",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/card/"
+    },
+    "Dialogs": {
+        "kv_string": "dialogs",
+        "Import": "from libs.baseclass.dialogs import KitchenSinkDialogs",
+        "Factory": "KitchenSinkDialogs()",
+        "name_screen": "dialogs",
+        "source_code": "Components-Dialog.md",
+        "object": 0,
+        "icon": "message-processing",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/dialog/"
+    },
+    "Toolbars": {
+        "kv_string": "toolbars",
+        "Factory": "Factory.Toolbars()",
+        "name_screen": "toolbars",
+        "source_code": "Components-Toolbar.md",
+        "object": 0,
+        "icon": "set-top-box",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/toolbar/"
+    },
+    "Buttons": {
+        "kv_string": "buttons",
+        "Factory": "Factory.Buttons()",
+        "name_screen": "buttons",
+        "source_code": "Components-Button.md",
+        "object": 0,
+        "icon": "rectangle",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/button/"
+    },
+    "Files Manager": {
+        "kv_string": "file_manager",
+        "Import": "from libs.baseclass.filemanager import KitchenSinkFileManager",
+        "Factory": "KitchenSinkFileManager()",
+        "name_screen": "file manager",
+        "source_code": "Components-File-Manager.md",
+        "object": 0,
+        "icon": "file-tree",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/file-manager/"
+    },
+    "Tabs": {
+        "kv_string": "tabs",
+        "Import": "from libs.baseclass.tabs import KitchenSinkTabs",
+        "Factory": "KitchenSinkTabs()",
+        "name_screen": "tabs",
+        "source_code": "Components-Tabs.md",
+        "object": 0,
+        "icon": "tab",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/tabs/"
+    },
+    "Navigation Rail": {
+        "kv_string": "navigation_rail",
+        "Import": "from libs.baseclass.navigation_rail import KitchenSinkNavigationRail",
+        "Factory": "KitchenSinkNavigationRail()",
+        "name_screen": "navigation rail",
+        "source_code": "Components-Navigation-Rail.md",
+        "object": 0,
+        "icon": "microsoft-xbox-controller-menu",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/navigation-rail/"
+    },
+    "Swiper": {
+        "kv_string": "swiper",
+        "Import": "from libs.baseclass.swiper import KitchenSinkSwiper",
+        "Factory": "KitchenSinkSwiper()",
+        "name_screen": "swiper",
+        "source_code": "Components-Swiper.md",
+        "object": 0,
+        "icon": "view-carousel-outline",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/mdswiper/"
+    },
+    "Labels": {
+        "kv_string": "labels",
+        "Factory": "Factory.KitchenSinkLabels()",
+        "name_screen": "labels",
+        "source_code": "Components-Label.md",
+        "object": 0,
+        "icon": "label",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/label/"
+    },
+    "Chips": {
+        "kv_string": "chips",
+        "Import": "from libs.baseclass.chips import KitchenSinkChips",
+        "Factory": "KitchenSinkChips()",
+        "name_screen": "chips",
+        "source_code": "Components-Chip.md",
+        "object": 0,
+        "icon": "label-variant",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/chip/"
+    },
+    "Lists": {
+        "kv_string": "lists",
+        "Factory": "Factory.KitchenSinkLists()",
+        "name_screen": "lists",
+        "source_code": "Components-Lists.md",
+        "object": 0,
+        "icon": "format-list-bulleted",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/list/"
+    },
+    "Expansion Panel": {
+        "kv_string": "expansion_panel",
+        "Factory": "Factory.KitchenSinkExpansionPanel()",
+        "name_screen": "expansion panel",
+        "source_code": "Components-Expansion-Panel.md",
+        "object": 0,
+        "icon": "arrow-expand-vertical",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/expansion-panel/"
+    },
+    "Image lists": {
+        "kv_string": "grid",
+        "Import": "from libs.baseclass.grid import KitchenSinkGrid",
+        "Factory": "KitchenSinkGrid()",
+        "name_screen": "grid",
+        "source_code": "Components-Image-List.md",
+        "object": 0,
+        "icon": "grid",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/image-list/"
+    },
+    "Selection controls": {
+        "kv_string": "selection_controls",
+        "Factory": "Factory.KitchenSinkSelectionControls()",
+        "name_screen": "selection controls",
+        "source_code": "Components-Selection-Controls.md",
+        "object": 0,
+        "icon": "checkbox-marked-circle-outline",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/selection-controls/"
+    },
+    "Menus": {
+        "kv_string": "menu",
+        "Import": "from libs.baseclass.menu import KitchenSinkMenu",
+        "Factory": "KitchenSinkMenu()",
+        "name_screen": "menu",
+        "source_code": "Components-Menu.md",
+        "object": 0,
+        "icon": "menu",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/menu/"
+    },
+    "MD Icons": {
+        "kv_string": "md_icons",
+        "Import": "from libs.baseclass.md_icons import KitchenSinkMDIcons",
+        "Factory": "KitchenSinkMDIcons()",
+        "name_screen": "md icons",
+        "source_code": "Components-Icons.md",
+        "object": 0,
+        "icon": "material-design",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/themes/icon-definitions/"
+    },
+    "Bottom App Bar": {
+        "kv_string": "bottom_app_bar",
+        "Import": "from libs.baseclass.bottom_app_bar import KitchenSinkBottomAppBar",
+        "Factory": "KitchenSinkBottomAppBar()",
+        "name_screen": "bottom app bar",
+        "source_code": "Components-Bottom-App-Bar.md",
+        "object": 0,
+        "icon": "dock-bottom",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/toolbar/#bottom"
+    },
+    "Toggle Button": {
+        "kv_string": "toggle_button",
+        "Import": "from libs.baseclass.toggle_button import KitchenSinkToggleButtons",
+        "Factory": "KitchenSinkToggleButtons()",
+        "name_screen": "toggle button",
+        "source_code": "Components-Toggle-Button.md",
+        "object": 0,
+        "icon": "dock-bottom",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/behaviors/togglebutton/"
+    },
+    "Text fields": {
+        "kv_string": "textfields",
+        "Import": "from libs.baseclass.textfields import KitchenSinkTextFields",
+        "Factory": "KitchenSinkTextFields()",
+        "name_screen": "textfields",
+        "source_code": "Components-Text-Field.md",
+        "object": 0,
+        "icon": "signature-text",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/text-field/"
+    },
+    "Tooltips": {
+        "kv_string": "tooltips",
+        "Factory": "Factory.KitchenSinkTooltips()",
+        "name_screen": "tooltips",
+        "source_code": "Components-Tooltips.md",
+        "object": 0,
+        "icon": "tooltip-text-outline",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/tooltip/"
+    },
+    "Navigation Drawer": {
+        "kv_string": "navigation_drawer",
+        "Import": "from libs.baseclass.navigation_drawer import KitchenSinkNavigationDrawer",
+        "Factory": "KitchenSinkNavigationDrawer()",
+        "name_screen": "navigation drawer",
+        "source_code": "Components-Navigation-Drawer.md",
+        "object": 0,
+        "icon": "dock-left",
+        "more_info": "https://kivymd.readthedocs.io/en/latest/components/navigation-drawer/"
+    }
 }

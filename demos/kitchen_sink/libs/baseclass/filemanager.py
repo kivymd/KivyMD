@@ -18,10 +18,9 @@ class KitchenSinkFileManager(Screen):
 
     def file_manager_open(self):
         from kivymd.app import MDApp
-
-        from kivymd.uix.filemanager import MDFileManager
-        from kivymd.uix.dialog import MDDialog
         from kivymd.uix.button import MDFlatButton
+        from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.filemanager import MDFileManager
 
         def open_file_manager(text_item):
             preview = False if text_item == "List" else True
@@ -32,9 +31,12 @@ class KitchenSinkFileManager(Screen):
                     preview=preview,
                 )
             self.file_manager.preview = preview
-            self.file_manager.multiselect = (
-                manager_type_dialog.allow_multiple_selection
-            )
+
+            if manager_type_dialog.allow_multiple_selection:
+                self.file_manager.selector = "multi"
+            else:
+                self.file_manager.selector = "any"
+
             self.file_manager.show(MDApp.get_running_app().user_data_dir)
             self.manager_open = True
 
@@ -70,7 +72,7 @@ class KitchenSinkFileManager(Screen):
         if type(path) == str:
             toast(path)
         else:
-            toast(",".join(path))
+            toast(", ".join(path))
 
     def exit_manager(self, *args):
         """Called when the user reaches the root of the directory tree."""

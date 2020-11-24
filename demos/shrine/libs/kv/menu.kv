@@ -1,0 +1,43 @@
+<ShrineItemMenu>
+    orientation: 'vertical'
+    spacing: '3dp'
+    adaptive_height: True
+
+    MDLabel:
+        id: name_item
+        markup: True
+        text: '[ref={NAME_ITEM}]{NAME_ITEM}[/ref]'.format(NAME_ITEM=root.text)
+        pos_hint: {'center_x': .5}
+        color: root.color_text if root.color_text else color_grey
+        adaptive_size: True
+        color: root.theme_cls.text_color
+        on_ref_press: root.parent.press_on_item_menu(root)
+
+    MDSeparator:
+        id: separator
+        custom_divider: [0, 0, 0, 0]
+        color: root.color
+        size_hint_x: None
+        width: name_item.texture_size[0]
+        height: '3dp'
+        pos_hint: {'center_x': .5}
+
+
+<ShrineMenu>
+    adaptive_size: True
+    orientation: "vertical"
+    pos_hint: {"center_x": .5, "center_y": .7}
+    spacing: "10dp"
+
+    ShrineItemMenu:
+        text: "ALL"
+        color: root.theme_cls.primary_color
+
+    ShrineItemMenu:
+        text: "ACCESSORIES"
+
+    ShrineItemMenu:
+        text: "CLOTHING"
+
+    ShrineItemMenu:
+        text: "EXIT"

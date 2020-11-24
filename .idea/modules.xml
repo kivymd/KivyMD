@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/KivyMD.iml" filepath="$PROJECT_DIR$/.idea/KivyMD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demos/kitchen_sink/.idea/kitchen_sink.iml" filepath="$PROJECT_DIR$/demos/kitchen_sink/.idea/kitchen_sink.iml" />
     </modules>
   </component>
 </project>

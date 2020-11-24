@@ -3,11 +3,12 @@ import os
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from libs.baseclass.list_items import KitchenSinkOneLineLeftAvatarItem
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineAvatarIconListItem
-from libs.baseclass.list_items import KitchenSinkOneLineLeftAvatarItem
 
 
 class KitchenSinkDialogsCustomContent(BoxLayout):
@@ -25,7 +26,7 @@ class KitchenSinkItemConfirm(OneLineAvatarIconListItem):
                 check.active = False
 
 
-class KitchenSinkDialogs(Screen):
+class KitchenSinkDialogs(ThemableBehavior, Screen):
     app = ObjectProperty()
     simple_dialog = None
     alert_dialog = None
@@ -60,6 +61,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.confirmation_dialog.md_bg_color = self.theme_cls.bg_dark
         self.confirmation_dialog.open()
 
     def show_example_simple_dialog(self):
@@ -82,6 +84,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.simple_dialog.md_bg_color = self.theme_cls.bg_dark
         self.simple_dialog.open()
 
     def show_example_custom_dialog(self):
@@ -100,6 +103,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.custom_dialog.md_bg_color = self.theme_cls.bg_dark
         self.custom_dialog.open()
 
     def show_example_alert_dialog(self):
@@ -118,4 +122,5 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.alert_dialog.md_bg_color = self.theme_cls.bg_dark
         self.alert_dialog.open()

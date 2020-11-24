@@ -1,10 +1,10 @@
-<StyleLabel@MDLabel>:
+<StyleLabel@MDLabel>
     size_hint_y: None
     height: self.texture_size[1]
     theme_text_color: "Primary"
 
 
-<StyleItemCheck@MDBoxLayout>:
+<StyleItemCheck@MDBoxLayout>
     group: ""
     text: ""
     _parent: None
@@ -15,7 +15,7 @@
         group: root.group
         active: root.active
         size_hint: None, None
-        size: dp(48), dp(48)
+        size: "48dp", "48dp"
         pos_hint: {"center_y": .5}
         on_active:
             if root._parent: root._parent.callback_for_bottom_app_bar(app, root.text, self.active)
@@ -26,11 +26,11 @@
 
 
 <KitchenSinkBottomAppBar>
-    name: 'bottom app bar'
+    name: "bottom app bar"
 
     BoxLayout:
-        spacing: dp(10)
-        orientation: 'vertical'
+        spacing: "10dp"
+        orientation: "vertical"
 
         Toolbar:
             id: toolbar
@@ -49,13 +49,13 @@
                     text: "Notch"
 
                 StyleItemCheck:
-                    group: 'notch'
+                    group: "notch"
                     text: "On"
                     active: True
                     _parent: root
 
                 StyleItemCheck:
-                    group: 'notch'
+                    group: "notch"
                     text: "Off"
                     _parent: root
 
@@ -65,23 +65,23 @@
                     text: "Position"
 
                 StyleItemCheck:
-                    group: 'pos'
+                    group: "pos"
                     text: "Attached - Center"
                     active: True
                     _parent: root
 
                 StyleItemCheck:
-                    group: 'pos'
+                    group: "pos"
                     text: "Attached - End"
                     _parent: root
 
                 StyleItemCheck:
-                    group: 'pos'
+                    group: "pos"
                     text: "Free - Center"
                     _parent: root
 
                 StyleItemCheck:
-                    group: 'pos'
+                    group: "pos"
                     text: "Free - End"
                     _parent: root
 

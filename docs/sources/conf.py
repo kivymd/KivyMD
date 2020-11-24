@@ -9,8 +9,8 @@ sys.path.insert(0, os.path.abspath("_extensions"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 
 import autoapi_kivymd  # NOQA. from _extensions
-import kivymd  # NOQA
 
+import kivymd  # NOQA
 
 # Project information
 project = "KivyMD"
@@ -37,11 +37,13 @@ html_theme_options = {
     "canonical_url": "https://kivymd.readthedocs.io/en/latest/",
     "navigation_depth": 2,
     "collapse_navigation": False,
+    "titles_only": True,
 }
 
 
 # Extensions
 extensions = [
+    "notfound.extension",
     "sphinx.ext.autodoc",
     "autoapi_kivymd",
     "sphinx.ext.intersphinx",
@@ -52,7 +54,7 @@ extensions = [
 # AutoAPI configuration
 autoapi_dirs = ["../../kivymd"]
 autoapi_template_dir = os.path.abspath("_templates")
-autoapi_ignore = []
+autoapi_ignore = ["**/kivymd/tests/**"]
 autoapi_type = "python"
 autoapi_file_patterns = ["*.py"]
 autoapi_generate_api_docs = True

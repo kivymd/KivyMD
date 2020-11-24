@@ -220,6 +220,7 @@ from kivy.uix.label import Label
 
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
+from kivymd.uix import MDAdaptiveWidget
 
 Builder.load_string(
     """
@@ -246,7 +247,7 @@ Builder.load_string(
 )
 
 
-class MDLabel(ThemableBehavior, Label):
+class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     font_style = StringProperty("Body1")
     """
     Label font style.

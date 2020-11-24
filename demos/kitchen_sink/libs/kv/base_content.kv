@@ -1,24 +1,24 @@
 <KitchenSinkBaseContent@MDBoxLayout>
     id: box
-    orientation: 'vertical'
-    padding: dp(10)
-    spacing: dp(10)
+    orientation: "vertical"
+    padding: "10dp"
+    spacing: "10dp"
     adaptive_height: True
     md_bg_color: app.theme_cls.bg_dark
 
     KitchenSinkOneLineLeftIconItem:
         text: "Video call"
-        icon: 'camera-front-variant'
+        icon: "camera-front-variant"
         on_press: app.callback_for_menu_items(self.text)
 
     KitchenSinkTwoLineLeftIconItem:
         text: "Call Viber Out"
         secondary_text: "Advantageous rates for calls[/color]"
-        icon: 'phone'
+        icon: "phone"
         on_press: app.callback_for_menu_items(self.text)
 
     KitchenSinkTwoLineLeftIconItem:
         text: "Call over mobile network"
         secondary_text: "Operator's tariffs apply"
-        icon: 'remote'
+        icon: "remote"
         on_press: app.callback_for_menu_items(self.text)

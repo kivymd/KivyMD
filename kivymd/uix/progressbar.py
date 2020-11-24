@@ -4,7 +4,7 @@ Components/Progress Bar
 
 .. seealso::
 
-    `Material Design spec, Progress indicators https://material.io/components/progress-indicators`_
+    `Material Design spec, Progress indicators <https://material.io/components/progress-indicators>`_
 
 .. rubric:: Progress indicators express an unspecified wait time or display
     the length of a process.
@@ -91,7 +91,7 @@ Indeterminate
             type: "indeterminate"
 
         MDRaisedButton:
-            text: "START"
+            text: "STOP" if app.state == "start" else "START"
             pos_hint: {"center_x": .5, "center_y": .45}
             on_press: app.state = "stop" if app.state == "start" else "start"
     '''

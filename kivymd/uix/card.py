@@ -216,7 +216,7 @@ Binding a swipe to one of the sides of the screen
     :align: center
 
 
-.. None:: You cannot use the left and right swipe at the same time.
+.. Note:: You cannot use the left and right swipe at the same time.
 
 Swipe behavior
 --------------
@@ -423,7 +423,7 @@ End full code
     :align: center
 
 Focus behavior
--------------
+--------------
 
 .. code-block:: kv
 
@@ -624,8 +624,8 @@ class MDCard(
     BackgroundColorBehavior,
     RectangularElevationBehavior,
     FocusBehavior,
-    BoxLayout,
     RectangularRippleBehavior,
+    BoxLayout,
 ):
     background = StringProperty()
     """

@@ -2,6 +2,7 @@ Welcome to KivyMD's documentation!
 ==================================
 
 .. autoapimodule:: kivymd
+   :noindex:
 
 Contents
 --------
@@ -9,7 +10,7 @@ Contents
 .. toctree::
    :hidden:
 
-   Home <self>
+   Welcome <self>
 
 .. toctree::
    :maxdepth: 1
@@ -25,7 +26,7 @@ Contents
    :maxdepth: 1
    :titlesonly:
 
-   Unincluded API </unincluded/kivymd/index>
+   API </api/kivymd/index>
 
 Indices and tables
 ------------------

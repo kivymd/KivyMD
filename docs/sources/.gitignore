@@ -1,0 +1,3 @@
+# Directories and files that cannot be commited to git
+
+/api

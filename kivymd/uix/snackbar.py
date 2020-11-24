@@ -45,7 +45,7 @@ Usage
     :align: center
 
 Usage with snackbar_x, snackbar_y
-------------------
+---------------------------------
 
 .. code-block:: python
 
@@ -122,7 +122,7 @@ Usage with button
     :align: center
 
 Using a button with custom color
--------------------------------
+--------------------------------
 
 .. code-block:: python
 
@@ -392,12 +392,7 @@ class BaseSnackbar(MDCard):
 
     snackbar_animation_dir = OptionProperty(
         "Bottom",
-        options=[
-            "Top",
-            "Bottom",
-            "Left",
-            "Right",
-        ],
+        options=["Top", "Bottom", "Left", "Right"],
     )
     """
     Snackbar animation direction.

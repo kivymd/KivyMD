@@ -1,6 +1,6 @@
 # KivyMD [0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
-<img align="center" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_small_gray.png"/>
+<img align="center" src="https://github.com/kivymd/internal/raw/main/logo/github_social_preview.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 

@@ -4,12 +4,12 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.properties import StringProperty
-from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 
 from kivymd.theming import ThemableBehavior
 
 
-class ShrineToolbar(ThemableBehavior, BoxLayout):
+class ShrineToolbar(ThemableBehavior, MDBoxLayout):
     """`Toolbar` for `ShrineRootScreen` screen."""
 
     bottom_manu_open = False

@@ -1,6 +1,6 @@
 #: import gch kivy.utils.get_color_from_hex
 
-<RallyOverviewScreen>:
+<RallyOverviewScreen>
     ScrollView:
         MDList:
             spacing: dp(5)
@@ -28,13 +28,8 @@
                 bar_color: [gch("#FFCF44"), gch("#FF6859"), gch("#F8BBD0")]
 
 
-<OverviewBox>:
-    # title: ""
-    # money: ""
-    # text: ["", "", ""]
-    # secondary_text: ["", "", ""]
-    # tertiary_text: ["", "", ""]
-    # bar_color: [(0, 0, 0, 0), (0, 0, 0, 0), (0, 0, 0, 0)]
+<OverviewBox>
+
     adaptive_height: True
     orientation: 'vertical'
     canvas.before:
@@ -82,7 +77,7 @@
             font_style: "Button"
 
 
-<AlertBox@MDBoxLayout>:
+<AlertBox@MDBoxLayout>
     adaptive_height: True
     padding: dp(10)
 

@@ -13,17 +13,20 @@
 #: import RallySettingsScreen libs.baseclass.settings_screen.RallySettingsScreen
 
 
-<RallyRootScreen>:
+<RallyRootScreen>
     canvas:
         Color:
             rgba: gch("#33333d")
         Rectangle:
             pos: self.pos
             size: self.size
+
     BoxLayout:
         orientation: 'vertical'
+
         NavigationBar:
             id: nav_bar
+
             NavigationItem:
                 text: "OVERVIEW"
                 icon: "chart-pie"
@@ -74,16 +77,16 @@
             RallySettingsScreen:
                 name: "SETTINGS"
 
-<ScrollView>:
+<ScrollView>
     bar_width: 0
     effect_cls: StiffScrollEffect
 
 
-<RallyLabel@MDLabel>:
+<RallyLabel@MDLabel>
     adaptive_height: True
 
 
-<RallyListItem>:
+<RallyListItem>
     size_hint_y: None
     height: dp(60)
     canvas:

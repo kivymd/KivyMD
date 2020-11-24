@@ -3,6 +3,7 @@
 #: import StiffScrollEffect kivymd.stiffscroll.StiffScrollEffect
 
 <FortnightlyRootScreen>:
+
     MDBoxLayout:
         orientation: 'vertical'
 
@@ -10,6 +11,7 @@
 
         ScrollView:
             effect_cls: StiffScrollEffect
+
             MDList:
 
                 HeadlineNews:
@@ -43,7 +45,7 @@
                     image: f"{environ['FORTNIGHTLY_ROOT']}/assets/images/fabrics.png"
 
 
-<HeadlineNews@MDBoxLayout>:
+<HeadlineNews@MDBoxLayout>
     orientation: 'vertical'
     spacing: dp(10)
     adaptive_height: True
@@ -63,7 +65,7 @@
             font_style: "H5"
 
 
-<FortnightlyListItem>:
+<FortnightlyListItem>
     size_hint_y: None
     height: dp(100)
     canvas:
@@ -97,5 +99,5 @@
             size_hint: (None, None)
 
 
-<FortnightlyLabel@MDLabel>:
+<FortnightlyLabel@MDLabel>
     adaptive_height: True

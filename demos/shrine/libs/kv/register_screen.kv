@@ -12,7 +12,7 @@
             pos: self.pos
             size: self.size
 
-    BoxLayout:
+    MDBoxLayout:
         id: box_1
         orientation: "vertical"
         size_hint: .2, .2
@@ -27,9 +27,7 @@
 
         MDLabel:
             text: "SHRINE"
-            size_hint: (None, None)
-            size: self.texture_size
-            text_size: None, self.font_size
+            adaptive_size: True
             theme_text_color: "Primary"
             font_style: "H6"
             pos_hint: {'center_x': .5, 'center_y': .5}

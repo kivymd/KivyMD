@@ -38,7 +38,6 @@ KV = """
 ScreenManager:
     transition: FadeTransition()
 
-
     FortnightlyRootScreen:
         name: "fortnightly root screen"
 

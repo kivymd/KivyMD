@@ -4,12 +4,12 @@ from kivy.properties import (
     ObjectProperty,
     StringProperty,
 )
-from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 
 from kivymd.theming import ThemableBehavior
 
 
-class ProductsBox(BoxLayout):
+class ProductsBox(MDBoxLayout):
     box_height = NumericProperty()
     box_width = NumericProperty()
     _root = ObjectProperty()
@@ -30,7 +30,7 @@ class ProductsBox(BoxLayout):
     callback = ObjectProperty()
 
 
-class ImageProduct(ThemableBehavior, BoxLayout):
+class ImageProduct(ThemableBehavior, MDBoxLayout):
     path_to_image = StringProperty()
     products_description = StringProperty()
     callback = ObjectProperty()

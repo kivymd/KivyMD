@@ -53,12 +53,11 @@
 
         ScrollView:
 
-            GridLayout:
+            MDGridLayout:
                 id: product_gallery
                 rows: 1
-                spacing: 10
-                size_hint_x: None
-                width: self.minimum_width
+                spacing: dp(10)
+                adaptive_width: True
 
     BoxBottomSheet:
         id: box_bottom_sheet

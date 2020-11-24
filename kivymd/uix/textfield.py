@@ -1266,7 +1266,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
 
     _color_active = ListProperty()
 
-     _icon_left_color_copy = ListProperty()
+    _icon_left_color_copy = ListProperty()
 
     _icon_right_color_copy = ListProperty()
 

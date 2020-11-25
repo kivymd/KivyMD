@@ -1302,7 +1302,11 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
 
     def on_icon_left_color(self, instance, value):
         self._lbl_icon_left.text_color = value
-        if not self._icon_left_color_copy:
+        if (
+            not self._icon_left_color_copy
+            and value != self.theme_cls.text_color
+            and value != self.theme_cls.primary_color
+        ):
             self._icon_left_color_copy = value
 
     def on_icon_right(self, instance, value):
@@ -1310,7 +1314,11 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
 
     def on_icon_right_color(self, instance, value):
         self._lbl_icon_right.text_color = value
-        if not self._icon_right_color_copy:
+        if (
+            not self._icon_right_color_copy
+            and value != self.theme_cls.text_color
+            and value != self.theme_cls.primary_color
+        ):
             self._icon_right_color_copy = value
 
     def on_color_active(self, instance, value):

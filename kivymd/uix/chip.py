@@ -20,14 +20,14 @@ Usage
         label: 'Coffee'
         color: .4470588235118, .1960787254902, 0, 1
         icon: 'coffee'
-        callback: app.callback_for_menu_items
+        on_release: app.callback_for_menu_items(self)
 
 The user function takes two arguments - the object and the text of the chip:
 
 .. code-block:: python
 
-    def callback_for_menu_items(self, instance, value):
-        print(instance, value)
+    def callback_for_menu_items(self, instance):
+        print(instance)
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ordinary-chip.png
     :align: center
@@ -98,15 +98,16 @@ Choose chip
 """
 
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ListProperty,
     NumericProperty,
-    ObjectProperty,
     StringProperty,
 )
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.theming import ThemableBehavior
@@ -168,7 +169,7 @@ Builder.load_string(
 )
 
 
-class MDChip(BoxLayout, ThemableBehavior):
+class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     label = StringProperty()
     """Chip text.
 
@@ -205,13 +206,6 @@ class MDChip(BoxLayout, ThemableBehavior):
     and defaults to `False`.
     """
 
-    callback = ObjectProperty()
-    """Custom method.
-
-    :attr:`callback` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `None`.
-    """
-
     radius = NumericProperty("12dp")
     """Corner radius values.
 
@@ -226,10 +220,17 @@ class MDChip(BoxLayout, ThemableBehavior):
     and defaults to `[]`.
     """
 
+    _color = ListProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        Clock.schedule_once(self.set_color)
+
+    def set_color(self, interval):
         if not self.color:
             self.color = self.theme_cls.primary_color
+        else:
+            self._color = self.color
 
     def on_icon(self, instance, value):
         if value == "":
@@ -238,7 +239,10 @@ class MDChip(BoxLayout, ThemableBehavior):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
+            self.dispatch("on_press")
+            self.dispatch("on_release")
             md_choose_chip = self.parent
+
             if self.selected_chip_color:
                 Animation(
                     color=self.theme_cls.primary_dark
@@ -246,10 +250,18 @@ class MDChip(BoxLayout, ThemableBehavior):
                     else self.selected_chip_color,
                     d=0.3,
                 ).start(self)
+
             if issubclass(md_choose_chip.__class__, MDChooseChip):
                 for chip in md_choose_chip.children:
                     if chip is not self:
+                        chip.color = (
+                            self.theme_cls.primary_color
+                            if not chip._color
+                            else chip._color
+                        )
+                    else:
                         chip.color = self.theme_cls.primary_color
+
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
@@ -265,8 +277,6 @@ class MDChip(BoxLayout, ThemableBehavior):
                 else:
                     check = self.ids.box_check.children[0]
                     self.ids.box_check.remove_widget(check)
-            if self.callback:
-                self.callback(self, self.label)
 
 
 class MDChooseChip(MDStackLayout):

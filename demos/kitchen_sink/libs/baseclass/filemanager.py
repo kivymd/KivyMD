@@ -1,6 +1,11 @@
 from kivy.uix.screenmanager import Screen
 
+from kivymd.app import MDApp
+from kivymd.toast import toast
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.filemanager import MDFileManager
 
 
 class KitchenSinkFileFileManagerTypeDialog(MDBoxLayout):
@@ -17,11 +22,6 @@ class KitchenSinkFileManager(Screen):
     file_manager = None
 
     def file_manager_open(self):
-        from kivymd.app import MDApp
-        from kivymd.uix.button import MDFlatButton
-        from kivymd.uix.dialog import MDDialog
-        from kivymd.uix.filemanager import MDFileManager
-
         def open_file_manager(text_item):
             preview = False if text_item == "List" else True
             if not self.file_manager:
@@ -65,8 +65,6 @@ class KitchenSinkFileManager(Screen):
         :param path: path to the selected directory or file;
 
         """
-
-        from kivymd.toast import toast
 
         self.exit_manager()
         if type(path) == str:

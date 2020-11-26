@@ -11,19 +11,19 @@ MDChooseChip:
         label: 'Earth'
         icon: 'earth'
         selected_chip_color: .21176470535294, .098039627451, 1, 1
-        callback: app.callback_for_menu_items
+        on_release: app.callback_for_menu_items(self)
 
     MDChip:
         label: 'Face'
         icon: 'face'
         selected_chip_color: .21176470535294, .098039627451, 1, 1
-        callback: app.callback_for_menu_items
+        on_release: app.callback_for_menu_items(self)
 
     MDChip:
         label: 'Facebook'
         icon: 'facebook'
         selected_chip_color: .21176470535294, .098039627451, 1, 1
-        callback: app.callback_for_menu_items
+        on_release: app.callback_for_menu_items(self)
 """
 
 
@@ -32,8 +32,9 @@ class MyApp(MDApp):
     def build(self):
         return Builder.load_string(kv)
 
-    def callback_for_menu_items(self, instance, value):
-        toast(value)
+    def callback_for_menu_items(self, instance):
+        toast(instance.label)
+
 
 if __name__ == "__main__":
     MyApp().run()

@@ -506,7 +506,7 @@ Builder.load_string(
 
         # "rectangle" mode
         Color:
-            rgba: self._current_line_color
+            rgba: self._current_line_color if not self.text_color else self.text_color
         Line:
             width: dp(1) if root.mode == "rectangle" else dp(0.00001)
             points:
@@ -827,6 +827,13 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`icon_right_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `(0, 0, 0, 1)`.
+    """
+
+    text_color = ListProperty()
+    """Text color in ``rgba`` format.
+
+    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     _text_len_error = BooleanProperty(False)

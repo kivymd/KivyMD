@@ -1,4 +1,4 @@
-<KitchenSinkThemingColors>:
+<KitchenSinkThemingColors>
     name: "theming colors"
     tabs_manager: tabs_manager
 
@@ -15,7 +15,7 @@
             on_tab_switch: root.on_tab_switch(*args)
 
 
-<KitchenSinkColorWidget>:
+<KitchenSinkColorWidget>
     size_hint_y: None
     height: "300dp"
     padding: "15dp"
@@ -37,8 +37,9 @@
     theme_text_color: "Custom"
 
 
-<KitchenSinkThemeTab>:
+<KitchenSinkThemeTab>
     rv: rv
+
     RecycleView:
         id: rv
         viewclass: "KitchenSinkColorWidget"

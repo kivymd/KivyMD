@@ -466,7 +466,7 @@ Switching the tab by name
 __all__ = ("MDTabs", "MDTabsBase")
 
 from kivy.clock import Clock
-from kivy.graphics import Rectangle
+from kivy.graphics import RoundedRectangle
 from kivy.lang import Builder
 from kivy.properties import (
     AliasProperty,
@@ -475,6 +475,7 @@ from kivy.properties import (
     ListProperty,
     NumericProperty,
     ObjectProperty,
+    OptionProperty,
     StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
@@ -588,12 +589,13 @@ Builder.load_string(
                 adaptive_width: True
                 on_width: tab_bar._trigger_update_tab_bar()
 
-                canvas.after:
+                canvas.before:
                     Color:
                         rgba: root.theme_cls.accent_color if not root.color_indicator else root.color_indicator
-                    Rectangle:
+                    RoundedRectangle:
                         pos: self.pos
                         size: 0, root.tab_indicator_height
+                        radius: [0,]
 """
 )
 
@@ -761,12 +763,12 @@ class MDTabsScrollView(ScrollView):
 class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     """
     This class is just a boxlayout that contains the scroll view for tabs.
-    He is also responsible for resizing the tab shortcut when necessary.
+    It is also responsible for resizing the tab shortcut when necessary.
     """
 
     target = ObjectProperty(None, allownone=True)
     """
-    Is the carousel reference of the next tab / slide.
+    It is the carousel reference of the next tab / slide.
     When you go from `'Tab A'` to `'Tab B'`, `'Tab B'` will be the
     target tab / slide of the carousel.
 
@@ -775,13 +777,13 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     """
 
     def get_rect_instruction(self):
-        for i in self.layout.canvas.after.children:
-            if isinstance(i, Rectangle):
+        for i in self.layout.canvas.before.children:
+            if isinstance(i, RoundedRectangle):
                 return i
 
     indicator = AliasProperty(get_rect_instruction, cache=True)
     """
-    Is the Rectangle instruction reference of the tab indicator.
+    It is the RoundedRectangle instruction reference of the tab indicator.
 
     :attr:`indicator` is an :class:`~kivy.properties.AliasProperty`.
     """
@@ -828,10 +830,12 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
                     else width / len(tabs)
                 )
 
-    def update_indicator(self, x, w):
+    def update_indicator(self, x, w, radius=None):
         # update position and size of the indicator
         self.indicator.pos = (x, 0)
         self.indicator.size = (w, self.indicator.size[1])
+        if radius:
+            self.indicator.radius = radius
 
     def tab_bar_autoscroll(self, target, step):
         # automatic scroll animation of the tab bar.
@@ -968,6 +972,17 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     :attr:`tab_indicator_height` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `'2dp'`.
+    """
+
+    tab_indicator_type = OptionProperty(
+        "line", options=["line", "fill", "round"]
+    )
+    """
+    Type of tab indicator. Available options are: `'line'`, `'fill'`,
+    `'round'`.
+
+    :attr:`tab_indicator_type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'line'`.
     """
 
     anim_duration = NumericProperty(0.2)
@@ -1130,9 +1145,38 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             if current_tab_label.state == "normal":
                 current_tab_label._do_press()
                 current_tab_label.dispatch("on_release")
-            self.tab_bar.update_indicator(
-                current_tab_label.x, current_tab_label.width
-            )
+
+            if self.tab_indicator_type == "round":
+                self.tab_indicator_height = self.tab_bar_height
+                if index == 0:
+                    radius = [
+                        0,
+                        self.tab_bar_height / 2,
+                        self.tab_bar_height / 2,
+                        0,
+                    ]
+                    self.tab_bar.update_indicator(
+                        current_tab_label.x, current_tab_label.width, radius
+                    )
+                elif index == len(self.get_tab_list()) - 1:
+                    radius = [
+                        self.tab_bar_height / 2,
+                        0,
+                        0,
+                        self.tab_bar_height / 2,
+                    ]
+                    self.tab_bar.update_indicator(
+                        current_tab_label.x, current_tab_label.width, radius
+                    )
+                else:
+                    radius = [
+                        self.tab_bar_height / 2,
+                    ]
+                    self.tab_bar.update_indicator(
+                        current_tab_label.x, current_tab_label.width, radius
+                    )
+            elif self.tab_indicator_type == "fill":
+                self.tab_indicator_height = self.tab_bar_height
 
     def on_ref_press(self, *args):
         """The method will be called when the ``on_ref_press`` event

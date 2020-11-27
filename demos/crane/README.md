@@ -1,5 +1,5 @@
 # Crane
-<img src="https://github.com/Kulothungan16/KivyMD/raw/master/demos/crane/assets/images/logo.png" align="left"/>
+<img src="https://github.com/kivymd/KivyMD/raw/master/demos/crane/assets/images/logo.png" align="left"/>
 
 [Crane](https://material.io/design/material-studies/crane.html) is a travel app that uses **KivyMD** components and Material Theming to create a personalized, on-brand experience.
 

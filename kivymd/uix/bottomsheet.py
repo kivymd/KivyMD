@@ -487,7 +487,7 @@ Builder.load_string(
     size: dp(64), dp(96)
 
     AnchorLayout:
-        anchoor_x: "center"
+        anchor_x: "center"
 
         MDIconButton:
             icon: root.source

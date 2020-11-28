@@ -39,7 +39,6 @@ ScreenManager:
 
     CraneRootScreen:
         name: "crane root screen"
-
 """
 
 

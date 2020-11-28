@@ -106,7 +106,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [5]
+            radius: root.tooltip_radius
         Scale:
             origin: self.center
             x: root._scale_x
@@ -166,6 +166,18 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
 
     :attr:`tooltip_font_style` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Caption'`.
+    """
+
+    tooltip_radius = ListProperty(
+        [
+            5,
+        ]
+    )
+    """
+    Corner radius values.
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[5,]`.
     """
 
     tooltip_display_delay = BoundedNumericProperty(0, min=0, max=4)
@@ -270,6 +282,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
                 tooltip_text_color=self.tooltip_text_color,
                 tooltip_text=self.tooltip_text,
                 tooltip_font_style=self.tooltip_font_style,
+                tooltip_radius=self.tooltip_radius,
             )
             Clock.schedule_once(self.display_tooltip, -1)
 
@@ -304,6 +317,11 @@ class MDTooltipViewClass(ThemableBehavior, BoxLayout):
     tooltip_font_style = OptionProperty("Caption", options=theme_font_styles)
     """
     See :attr:`~MDTooltip.tooltip_font_style`.
+    """
+
+    tooltip_radius = ListProperty()
+    """
+    See :attr:`~MDTooltip.tooltip_radius`.
     """
 
     _scale_x = NumericProperty(0)

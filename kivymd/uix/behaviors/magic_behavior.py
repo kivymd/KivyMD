@@ -89,7 +89,6 @@ Example:
 __all__ = ("MagicBehavior",)
 
 from kivy.animation import Animation
-from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import NumericProperty
 
@@ -191,6 +190,3 @@ class MagicBehavior:
     def on_touch_up(self, *args):
         Animation.stop_all(self)
         return super().on_touch_up(*args)
-
-
-Factory.register("MagicBehavior", cls=MagicBehavior)

@@ -555,6 +555,11 @@ Builder.load_string(
     text_color_normal: self.specific_secondary_text_color
     text_color_active: self.specific_text_color
 
+    _line_x: 0
+    _line_width: 0
+    _line_height: 0
+    _line_radius: 0
+
     MDTabsMain:
         padding: 0, tab_bar.height, 0, 0
 
@@ -596,6 +601,9 @@ Builder.load_string(
                         pos: self.pos
                         size: 0, root.tab_indicator_height
                         radius: [0,]
+                    Line:
+                        rounded_rectangle: [root._line_x, self.pos[1], root._line_width, root._line_height, root._line_radius]
+                        width: dp(2)
 """
 )
 
@@ -832,10 +840,20 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
 
     def update_indicator(self, x, w, radius=None):
         # update position and size of the indicator
-        self.indicator.pos = (x, 0)
-        self.indicator.size = (w, self.indicator.size[1])
-        if radius:
-            self.indicator.radius = radius
+        if self.parent.tab_indicator_type == "line-round":
+            self.parent._line_x = x
+            self.parent._line_width = w
+            self.parent._line_height = self.parent.tab_indicator_height
+            self.parent._line_radius = self.parent.tab_indicator_height / 2
+        elif self.parent.tab_indicator_type == "line-rect":
+            self.parent._line_x = x
+            self.parent._line_width = w
+            self.parent._line_height = self.parent.tab_indicator_height
+        else:
+            self.indicator.pos = (x, 0)
+            self.indicator.size = (w, self.parent.tab_indicator_height)
+            if radius:
+                self.indicator.radius = radius
 
     def tab_bar_autoscroll(self, target, step):
         # automatic scroll animation of the tab bar.
@@ -975,11 +993,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
 
     tab_indicator_type = OptionProperty(
-        "line", options=["line", "fill", "round"]
+        "line", options=["line", "fill", "round", "line-round", "line-rect"]
     )
     """
     Type of tab indicator. Available options are: `'line'`, `'fill'`,
-    `'round'`.
+    `'round'`, `'line-rect'` and `'line-round'`.
 
     :attr:`tab_indicator_type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'line'`.
@@ -1175,7 +1193,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     self.tab_bar.update_indicator(
                         current_tab_label.x, current_tab_label.width, radius
                     )
-            elif self.tab_indicator_type == "fill":
+            elif (
+                self.tab_indicator_type == "fill"
+                or self.tab_indicator_type == "line-round"
+                or self.tab_indicator_type == "line-rect"
+            ):
                 self.tab_indicator_height = self.tab_bar_height
 
     def on_ref_press(self, *args):

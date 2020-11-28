@@ -106,7 +106,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [5]
+            radius: [5,]
         Scale:
             origin: self.center
             x: root._scale_x

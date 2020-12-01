@@ -1,7 +1,7 @@
 # See https://github.com/kivy/kivy/blob/master/.github/workflows/test_ubuntu_python.yml
 
 # Environment variables
-echo "::set-env name=DISPLAY:::99.0"
+echo "DISPLAY=:99.0" >> $GITHUB_ENV
 
 # System dependencies
 sudo apt-get update

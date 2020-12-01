@@ -1,8 +1,8 @@
 # See https://github.com/kivy/kivy/blob/master/.github/workflows/test_windows_python.yml
 
 # Environment variables
-echo "::set-env name=GST_REGISTRY::~/registry.bin"
-echo "::set-env name=KIVY_GL_BACKEND::angle_sdl2"
+echo "GST_REGISTRY=~/registry.bin" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+echo "KIVY_GL_BACKEND=angle_sdl2" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
 # Pip dependencies
 python -m pip install --upgrade pip setuptools wheel

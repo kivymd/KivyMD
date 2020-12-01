@@ -31,7 +31,7 @@ If you wish to become a project developer (permission to create branches on the 
 [![Test workflow](https://github.com/kivymd/KivyMD/workflows/Test/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ATest)
 [![Build demos workflow](https://github.com/kivymd/KivyMD/workflows/Build%20demos/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3A"Build+demos")
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
-[![Documentation status](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)
+[![Repository size](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)](https://github.com/kivymd/KivyMD)
 
 ## Installation
 

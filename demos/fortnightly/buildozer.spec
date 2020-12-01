@@ -7,7 +7,7 @@ title = Fortnightly
 package.name = fortnightly
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = com.kivymd
+package.domain = org.kivymd
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -18,8 +18,9 @@ source.include_exts = py,png,jpg,jpeg,ttf,md,kv,json
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*
 
-# (str) Application versioning (method 1)
-version = 0.1
+# (str) Application versioning (method 2)
+version.regex = __version__ = ['"](.*)['"]
+version.filename = %(source.dir)s/../../kivymd/__init__.py
 
 android.numeric_version = 1
 

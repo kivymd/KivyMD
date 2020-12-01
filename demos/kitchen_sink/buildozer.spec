@@ -7,7 +7,7 @@ title = KivyMD Kitchen Sink
 package.name = kitchen_sink
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = com.heattheatr
+package.domain = org.kivymd
 
 # (str) Source code where the main.py live
 source.dir = .

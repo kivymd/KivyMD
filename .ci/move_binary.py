@@ -63,9 +63,13 @@ subprocess.check_call(["git", "pull", "origin", data_repository, "--ff-only"])
 for i in range(3):
     shutil.copy(binary_filename, os.path.join(directory, filename))
     subprocess.check_call(["git", "add", os.path.join(directory, filename)])
-    subprocess.check_call(["git", "commit", "--amend", "-m", new_commit_message])
+    subprocess.check_call(
+        ["git", "commit", "--amend", "-m", new_commit_message]
+    )
     try:
-        subprocess.check_call(["git", "push", "origin", data_repository, "--force"])
+        subprocess.check_call(
+            ["git", "push", "origin", data_repository, "--force"]
+        )
     except subprocess.CalledProcessError:  # There is changes in repository
         # Undo local changes
         subprocess.check_call(

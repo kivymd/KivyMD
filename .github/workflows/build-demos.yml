@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        demo-name: [kitchen_sink]
+        demo-name: [kitchen_sink, crane, fortnightly, rally, shrine]
     runs-on: ubuntu-latest
     env:
       PYTHONUNBUFFERED: 1

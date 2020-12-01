@@ -115,7 +115,11 @@ See documentation at https://kivymd.readthedocs.io
 
 Wiki with examples of using KivyMD widgets: https://github.com/kivymd/KivyMD/wiki
 
+### Demos
+
 [Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) app demonstrates every KivyMD widget. You can see how to use widget in code of app. You can download apk for your smartphone (Android 6.0 and higher): [kivymd/storage (binaries branch)](https://github.com/kivymd/storage/tree/binaries/demo_kitchen_sink).
+
+Also we have Material Studies: [Crane](https://github.com/kivymd/KivyMD/tree/master/demos/crane), [Fortnightly](https://github.com/kivymd/KivyMD/tree/master/demos/fortnightly), [Rally](https://github.com/kivymd/KivyMD/tree/master/demos/rally), [Shrine](https://github.com/kivymd/KivyMD/tree/master/demos/shrine). You can download apks for your smartphone: [kivymd/storage (binaries branch)](https://github.com/kivymd/storage/tree/binaries).
 
 ### Tutorials on YouTube
 

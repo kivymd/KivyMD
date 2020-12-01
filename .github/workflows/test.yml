@@ -10,6 +10,7 @@ on:
     branches-ignore:
       - data
       - gh-pages
+  workflow_dispatch:
 
 jobs:
 

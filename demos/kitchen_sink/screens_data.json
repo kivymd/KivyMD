@@ -271,7 +271,7 @@
     },
     "MD Icons": {
         "kv_string": "md_icons",
-        "Import": "from libs.baseclass.txt_icons import KitchenSinkMDIcons",
+        "Import": "from libs.baseclass.md_icons import KitchenSinkMDIcons",
         "Factory": "KitchenSinkMDIcons()",
         "name_screen": "md icons",
         "source_code": "Components-Icons.txt",

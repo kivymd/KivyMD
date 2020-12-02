@@ -693,7 +693,7 @@ class MDTimePicker(
     ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
 ):
     time = ObjectProperty()
-    radius = ListProperty([0, 0, 0, 0])
+
     """
     Users method. Must take two parameters:
 
@@ -711,6 +711,14 @@ class MDTimePicker(
 
     :attr:`time` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
+    """
+
+    radius = ListProperty([0, 0, 0, 0])
+    """
+    Corner radius values.
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `'[0, 0, 0, 0]'`.
     """
 
     def __init__(self, **kwargs):

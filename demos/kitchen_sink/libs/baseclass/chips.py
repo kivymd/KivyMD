@@ -5,4 +5,4 @@ from kivymd.toast import toast
 
 class KitchenSinkChips(Screen):
     def callback_for_menu_items(self, instance):
-        toast(instance.label)
+        toast(instance.text)

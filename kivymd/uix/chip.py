@@ -223,7 +223,11 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     and defaults to `False`.
     """
 
-    radius = ListProperty([12,])
+    radius = ListProperty(
+        [
+            12,
+        ]
+    )
     """Corner radius values.
 
     :attr:`radius` is an :class:`~kivy.properties.ListProperty`

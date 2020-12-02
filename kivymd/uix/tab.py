@@ -596,7 +596,7 @@ Builder.load_string(
 
                 canvas.before:
                     Color:
-                        rgba: root.theme_cls.accent_color if not root.color_indicator else root.color_indicator
+                        rgba: root.theme_cls.accent_color if not root.indicator_color else root.indicator_color
                     RoundedRectangle:
                         pos: self.pos
                         size: 0, root.tab_indicator_height
@@ -1065,11 +1065,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `0`.
     """
 
-    color_indicator = ListProperty()
+    indicator_color = ListProperty()
     """
     Color indicator in ``rgba`` format.
 
-    :attr:`color_indicator` is an :class:`~kivy.properties.ListProperty`
+    :attr:`indicator_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 

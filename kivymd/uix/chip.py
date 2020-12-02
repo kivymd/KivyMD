@@ -101,12 +101,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import (
-    BooleanProperty,
-    ListProperty,
-    NumericProperty,
-    StringProperty,
-)
+from kivy.properties import BooleanProperty, ListProperty, StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 

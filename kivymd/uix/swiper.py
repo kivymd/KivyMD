@@ -221,8 +221,8 @@ Builder.load_string(
     bar_width: 0
 
     MDBoxLayout:
-        adaptive_width: True
         id: anchor_scroll
+        adaptive_width: True
         padding: [root.items_spacing, 0 ]
 
 

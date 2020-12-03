@@ -709,7 +709,7 @@ Builder.load_string(
             RoundedRectangle:
                 size: self.size
                 pos: self.pos
-                radius: [root.radius,]
+                radius: root.radius
 
         MDMenu:
             id: md_menu
@@ -901,12 +901,16 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `'auto'`.
     """
 
-    radius = NumericProperty(7)
+    radius = ListProperty(
+        [
+            "7dp",
+        ]
+    )
     """
     Menu radius.
 
-    :attr:`radius` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `'7'`.
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `'["7dp",]'`.
     """
 
     _start_coords = []

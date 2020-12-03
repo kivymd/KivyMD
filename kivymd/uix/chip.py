@@ -17,7 +17,7 @@ Usage
 .. code-block:: kv
 
     MDChip:
-        label: 'Coffee'
+        text: 'Coffee'
         color: .4470588235118, .1960787254902, 0, 1
         icon: 'coffee'
         on_release: app.callback_for_menu_items(self)
@@ -38,7 +38,7 @@ Use custom icon
 .. code-block:: kv
 
     MDChip:
-        label: 'Kivy'
+        text: 'Kivy'
         icon: 'data/logo/kivy-icon-256.png'
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-custom-icon.png
@@ -50,7 +50,7 @@ Use without icon
 .. code-block:: kv
 
     MDChip:
-        label: 'Without icon'
+        text: 'Without icon'
         icon: ''
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-without-icon.png
@@ -62,7 +62,7 @@ Chips with check
 .. code-block:: kv
 
     MDChip:
-        label: 'Check with icon'
+        text: 'Check with icon'
         icon: 'city'
         check: True
 
@@ -77,17 +77,17 @@ Choose chip
     MDChooseChip:
 
         MDChip:
-            label: 'Earth'
+            text: 'Earth'
             icon: 'earth'
             selected_chip_color: .21176470535294, .098039627451, 1, 1
 
         MDChip:
-            label: 'Face'
+            text: 'Face'
             icon: 'face'
             selected_chip_color: .21176470535294, .098039627451, 1, 1
 
         MDChip:
-            label: 'Facebook'
+            text: 'Facebook'
             icon: 'facebook'
             selected_chip_color: .21176470535294, .098039627451, 1, 1
 
@@ -101,12 +101,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import (
-    BooleanProperty,
-    ListProperty,
-    NumericProperty,
-    StringProperty,
-)
+from kivy.properties import BooleanProperty, ListProperty, StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
@@ -138,7 +133,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [root.radius]
+            radius: root.radius
 
     MDBoxLayout:
         id: box_check
@@ -149,12 +144,13 @@ Builder.load_string(
         adaptive_width: True
         padding: dp(10)
 
-        Label:
+        MDLabel:
             id: label
-            text: root.label
-            size_hint_x: None
-            width: self.texture_size[0]
-            color: root.text_color if root.text_color else (root.theme_cls.text_color)
+            text: root.text
+            adaptive_width: True
+            theme_text_color: "Custom"
+            font_style: root.font_style
+            text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
 
     MDIconButton:
         id: icon
@@ -164,17 +160,26 @@ Builder.load_string(
         pos_hint: {"center_y": .5}
         user_font_size: "20dp"
         disabled: True
+        theme_text_color: "Custom"
+        text_color: root.icon_color if root.icon_color else (root.theme_cls.text_color)
         md_bg_color_disabled: 0, 0, 0, 0
 """
 )
 
 
 class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
-    label = StringProperty()
+    text = StringProperty()
     """Chip text.
 
-    :attr:`label` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+    """
+
+    font_style = StringProperty("Body1")
+    """Chip text font style.
+
+    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `Body1`.
     """
 
     icon = StringProperty("checkbox-blank-circle")
@@ -198,6 +203,13 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     and defaults to `[]`.
     """
 
+    icon_color = ListProperty()
+    """Chip's icon color in ``rgba`` format.
+
+    :attr:`icon_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     check = BooleanProperty(False)
     """
     If True, a checkmark is added to the left when touch to the chip.
@@ -206,11 +218,15 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     and defaults to `False`.
     """
 
-    radius = NumericProperty("12dp")
+    radius = ListProperty(
+        [
+            "12dp",
+        ]
+    )
     """Corner radius values.
 
-    :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `'12dp'`.
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `'["12dp",]'`.
     """
 
     selected_chip_color = ListProperty()

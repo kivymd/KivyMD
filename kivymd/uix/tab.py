@@ -466,7 +466,6 @@ Switching the tab by name
 __all__ = ("MDTabs", "MDTabsBase")
 
 from kivy.clock import Clock
-from kivy.graphics import RoundedRectangle
 from kivy.lang import Builder
 from kivy.properties import (
     AliasProperty,
@@ -534,6 +533,8 @@ Builder.load_string(
     color:
         self.text_color_active if self.state == 'down' \
         else self.text_color_normal
+    on_x: self._trigger_update_tab_indicator()
+    on_width: self._trigger_update_tab_indicator()
 
 
 <MDTabsScrollView>
@@ -557,6 +558,10 @@ Builder.load_string(
     _line_width: 0
     _line_height: 0
     _line_radius: 0
+    _rr_width: 0
+    _rr_radius: [0,]
+    _rr_height: 0
+    _rr_x: 0
 
     MDTabsMain:
         padding: 0, tab_bar.height, 0, 0
@@ -596,9 +601,9 @@ Builder.load_string(
                     Color:
                         rgba: root.theme_cls.accent_color if not root.indicator_color else root.indicator_color
                     RoundedRectangle:
-                        pos: self.pos
-                        size: 0, root.tab_indicator_height
-                        radius: [0,]
+                        pos: root._rr_x, 0
+                        size: root._rr_width, root._rr_height
+                        radius: root._rr_radius
                     Line:
                         rounded_rectangle: [root._line_x, self.pos[1], root._line_width, root._line_height, root._line_radius]
                         width: dp(2)
@@ -634,6 +639,12 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
         if texture:
             self.width = texture.width
             self.min_space = self.width
+
+    def _trigger_update_tab_indicator(self):
+        # update the position and size of the indicator
+        # when the label changes size or position
+        if self.state == "down":
+            self.tab_bar.update_indicator(self.x, self.width)
 
 
 class MDTabsBase(Widget):
@@ -776,18 +787,6 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     and default to `None`.
     """
 
-    def get_rect_instruction(self):
-        for i in self.layout.canvas.before.children:
-            if isinstance(i, RoundedRectangle):
-                return i
-
-    indicator = AliasProperty(get_rect_instruction, cache=True)
-    """
-    It is the RoundedRectangle instruction reference of the tab indicator.
-
-    :attr:`indicator` is an :class:`~kivy.properties.AliasProperty`.
-    """
-
     def get_last_scroll_x(self):
         return self.scrollview.scroll_x
 
@@ -842,10 +841,11 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
             self.parent._line_width = w
             self.parent._line_height = self.parent.tab_indicator_height
         else:
-            self.indicator.pos = (x, 0)
-            self.indicator.size = (w, self.parent.tab_indicator_height)
+            self.parent._rr_x = x
+            self.parent._rr_width = w
+            self.parent._rr_height = self.parent.tab_indicator_height
             if radius:
-                self.indicator.radius = radius
+                self.parent._rr_radius = radius
 
     def tab_bar_autoscroll(self, target, step):
         # automatic scroll animation of the tab bar.
@@ -1087,7 +1087,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self.register_event_type("on_ref_press")
         self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._carousel_bind, 1)
-        Clock.schedule_once(lambda x: self._update_indicator(None), 2)
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""
@@ -1157,6 +1156,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 current_tab_label._do_press()
                 current_tab_label.dispatch("on_release")
 
+            radius = None
             if self.tab_indicator_type == "round":
                 self.tab_indicator_height = self.tab_bar_height
                 if index == 0:
@@ -1166,9 +1166,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                         self.tab_bar_height / 2,
                         0,
                     ]
-                    self.tab_bar.update_indicator(
-                        current_tab_label.x, current_tab_label.width, radius
-                    )
                 elif index == len(self.get_tab_list()) - 1:
                     radius = [
                         self.tab_bar_height / 2,
@@ -1176,29 +1173,20 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                         0,
                         self.tab_bar_height / 2,
                     ]
-                    self.tab_bar.update_indicator(
-                        current_tab_label.x, current_tab_label.width, radius
-                    )
                 else:
                     radius = [
                         self.tab_bar_height / 2,
                     ]
-                    self.tab_bar.update_indicator(
-                        current_tab_label.x, current_tab_label.width, radius
-                    )
             elif (
                 self.tab_indicator_type == "fill"
                 or self.tab_indicator_type == "line-round"
                 or self.tab_indicator_type == "line-rect"
             ):
                 self.tab_indicator_height = self.tab_bar_height
-                self.tab_bar.update_indicator(
-                    current_tab_label.x, current_tab_label.width
-                )
-            else:
-                self.tab_bar.update_indicator(
-                    current_tab_label.x, current_tab_label.width
-                )
+
+            self.tab_bar.update_indicator(
+                current_tab_label.x, current_tab_label.width, radius
+            )
 
     def on_ref_press(self, *args):
         """The method will be called when the ``on_ref_press`` event
@@ -1207,18 +1195,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     def on_tab_switch(self, *args):
         """Called when switching tabs."""
 
-    def on_size(self, *args):
-        self._update_indicator(self.carousel.current_slide.tab_label)
-
     def _carousel_bind(self, i):
         self.carousel.bind(on_slide_progress=self._on_slide_progress)
 
     def _on_slide_progress(self, *args):
         self.dispatch("on_slide_progress", args)
-
-    def _update_indicator(self, current_tab_label):
-        if not current_tab_label:
-            current_tab_label = self.tab_bar.layout.children[-1]
-        self.tab_bar.update_indicator(
-            current_tab_label.x, current_tab_label.width
-        )

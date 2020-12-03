@@ -151,13 +151,6 @@ If you need assistance or you have a question, you can ask for help on our maili
 
 #### [Syntax highlighting and auto-completion for Kivy/KivyMD .kv files in PyCharm/Intellij IDEA](https://github.com/noembryo/KV4Jetbrains)
 
-## API Breaking changes
-
-- [Changed MDExpansionPanel panel creation](https://kivymd.readthedocs.io/en/latest/components/expansion-panel/index.html)
-- [Changed the use of the MDDropdownMenu](https://kivymd.readthedocs.io/en/latest/components/menu/index.html)
-- [Changed the use of the MDDropDownItem](https://kivymd.readthedocs.io/en/latest/components/dropdown-item/index.html)
-- [Changed the use of the MDDialog](https://kivymd.readthedocs.io/en/latest/components/dialog/index.html)
-
 ## Video preview
 
 <p align="center">

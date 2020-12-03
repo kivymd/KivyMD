@@ -1,0 +1,47 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
+KV = """
+MDBoxLayout:
+    orientation:'vertical'
+
+    MDToolbar:
+        title: 'Bottom Navigation'
+
+    MDBottomNavigation:
+
+        MDBottomNavigationItem:
+            name: 'screen 1'
+            text: 'Python'
+            icon: 'language-python'
+
+            MDLabel:
+                text: 'Python'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 2'
+            text: 'C++'
+            icon: 'language-cpp'
+
+            MDLabel:
+                text: 'I programming of C++'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 3'
+            text: 'JS'
+            icon: 'language-javascript'
+
+            MDLabel:
+                text: 'JS'
+                halign: 'center'
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

@@ -1,3 +1,8 @@
+<KitchenSinkSelectionControlsCheckbox@MDCheckbox>
+    size_hint: None, None
+    size: "48dp", "48dp"
+
+
 <KitchenSinkSelectionControls@MDScreen>
     name: "selection controls"
 
@@ -5,37 +10,37 @@
         id: toolbar
         pos_hint: {"top": 1}
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         pos_hint: {"center_x": .4, "center_y": .8}
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         pos_hint: {"center_x": .6, "center_y": .8}
         disabled: True
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         pos_hint: {"center_x": .4, "center_y": .7}
         active: True
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         pos_hint: {"center_x": .6, "center_y": .7}
         active: True
         disabled: True
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         group: "test"
         pos_hint: {"center_x": .4, "center_y": .6}
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         group: "test"
         pos_hint: {"center_x": .6, "center_y": .6}
         disabled: True
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         group: "test"
         pos_hint: {"center_x": .4, "center_y": .5}
         active: True
 
-    MDCheckbox:
+    KitchenSinkSelectionControlsCheckbox:
         group: "test"
         pos_hint: {"center_x": .6, "center_y": .5}
         active: True

@@ -534,6 +534,7 @@ Builder.load_string(
     color:
         self.text_color_active if self.state == 'down' \
         else self.text_color_normal
+    on_width: root.tab_bar.parent._update_indicator(self)
 
 
 <MDTabsScrollView>
@@ -1087,7 +1088,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self.register_event_type("on_ref_press")
         self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._carousel_bind, 1)
-        Clock.schedule_once(lambda x: self._update_indicator(None), 2)
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""

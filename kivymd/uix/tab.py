@@ -1195,8 +1195,18 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     def on_tab_switch(self, *args):
         """Called when switching tabs."""
 
+    def on_size(self, *args):
+        self._update_indicator(self.carousel.current_slide.tab_label)
+
     def _carousel_bind(self, i):
         self.carousel.bind(on_slide_progress=self._on_slide_progress)
 
     def _on_slide_progress(self, *args):
         self.dispatch("on_slide_progress", args)
+
+    def _update_indicator(self, current_tab_label):
+        if not current_tab_label:
+            current_tab_label = self.tab_bar.layout.children[-1]
+        self.tab_bar.update_indicator(
+            current_tab_label.x, current_tab_label.width
+        )

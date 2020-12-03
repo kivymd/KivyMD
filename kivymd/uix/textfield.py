@@ -640,8 +640,9 @@ Builder.load_string(
 
         Color:
             rgba:
-                root.theme_cls.disabled_hint_text_color if not self.focus \
-                else root.foreground_color
+                (root.theme_cls.disabled_hint_text_color if not self.focus else root.foreground_color) \
+                if not self.hint_text_color else \
+                (self.hint_text_color if not self.focus else root.foreground_color)
 """
 )
 

@@ -100,7 +100,7 @@ class KitchenSinkApp(MDApp):
             if "toolbar" in screen_object.ids:
                 screen_object.ids.toolbar.title = name_screen
             manager.add_widget(screen_object)
-        code_file = f"{os.environ['KITCHEN_SINK_ROOT']}/assets/md/{self.data_screens[name_screen]['source_code']}"
+        code_file = f"{os.environ['KITCHEN_SINK_ROOT']}/assets/usage/{self.data_screens[name_screen]['source_code']}"
         with open(code_file, "r") as f:
             self.sample_code = f.read()
             self.screen_name = name_screen

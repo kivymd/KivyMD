@@ -220,13 +220,13 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
 
     radius = ListProperty(
         [
-            "12dp",
+            dp(12),
         ]
     )
     """Corner radius values.
 
     :attr:`radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `'["12dp",]'`.
+    and defaults to `'[dp(12),]'`.
     """
 
     selected_chip_color = ListProperty()

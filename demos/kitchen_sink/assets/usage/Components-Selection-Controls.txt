@@ -1,0 +1,26 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
+KV = """
+MDScreen:
+
+    MDToolbar:
+        title: 'Selection Controls'
+        pos_hint: {'top': 1}
+
+    MDCheckbox:
+        active: True
+        size_hint: (None, None)
+        pos_hint: {'center_x': .5, 'center_y': .4}
+
+    MDSwitch:
+        pos_hint: {'center_x': .5, 'center_y': .6}
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

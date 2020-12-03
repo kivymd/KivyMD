@@ -1,0 +1,42 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
+from kivymd.uix.button import MDRectangleFlatButton
+
+KV = """
+MDBoxLayout:
+    orientation: 'vertical'
+    adaptive_size: True
+    spacing: dp(15)
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+    MyToggleButton:
+        text: "Show ads"
+        group: "x"
+        pos_hint: {"center_x": .5}
+
+    MyToggleButton:
+        text: "Do not show ads"
+        group: "x"
+        pos_hint: {"center_x": .5}
+
+    MyToggleButton:
+        text: "Does not matter"
+        group: "x"
+        pos_hint: {"center_x": .5}
+"""
+
+
+class MyToggleButton(MDRectangleFlatButton, MDToggleButton):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._no_ripple_effect = True
+        self.background_down = self.theme_cls.primary_light
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

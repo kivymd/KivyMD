@@ -41,14 +41,13 @@ To preview the icons and their names, you can use the following application:
 
     <PreviousMDIcons>:
 
-        BoxLayout:
+        MDBoxLayout:
             orientation: 'vertical'
             spacing: dp(10)
             padding: dp(20)
 
-            BoxLayout:
-                size_hint_y: None
-                height: self.minimum_height
+            MDBoxLayout:
+                adaptive_height: True
 
                 MDIconButton:
                     icon: 'magnify'

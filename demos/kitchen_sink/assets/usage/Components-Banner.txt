@@ -1,0 +1,42 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
+KV = """
+<ExampleBanner@MDScreen>
+
+    MDBanner:
+        id: banner
+        text: ["One line string text example without actions."]
+        # The widget that is under the banner.
+        # It will be shifted down to the height of the banner.
+        over_widget: screen
+        vertical_pad: toolbar.height
+
+    MDToolbar:
+        id: toolbar
+        title: "Example Banner"
+        elevation: 10
+        pos_hint: {'top': 1}
+
+    BoxLayout:
+        id: screen
+        orientation: "vertical"
+        size_hint_y: None
+        height: Window.height - toolbar.height
+
+        OneLineListItem:
+            text: "Banner without actions"
+            on_release: banner.show()
+
+        Widget:
+
+ExampleBanner:
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

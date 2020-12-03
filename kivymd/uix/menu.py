@@ -903,14 +903,14 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     radius = ListProperty(
         [
-            "7dp",
+            dp(7),
         ]
     )
     """
     Menu radius.
 
     :attr:`radius` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `'["7dp",]'`.
+    and defaults to `'[dp(7),]'`.
     """
 
     _start_coords = []

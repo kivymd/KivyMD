@@ -1,0 +1,37 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+from kivymd.toast import toast
+
+KV = """
+MDChooseChip:
+    pos_hint: {'center_x': .5, 'center_y': .5}
+
+    MDChip:
+        text: 'Earth'
+        icon: 'earth'
+        selected_chip_color: .21176470535294, .098039627451, 1, 1
+        on_release: app.callback_for_menu_items(self)
+
+    MDChip:
+        text: 'Face'
+        icon: 'face'
+        selected_chip_color: .21176470535294, .098039627451, 1, 1
+        on_release: app.callback_for_menu_items(self)
+
+    MDChip:
+        text: 'Facebook'
+        icon: 'facebook'
+        selected_chip_color: .21176470535294, .098039627451, 1, 1
+        on_release: app.callback_for_menu_items(self)
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+    def callback_for_menu_items(self, instance):
+        toast(instance.label)
+
+
+Example().run()

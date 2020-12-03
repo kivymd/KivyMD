@@ -534,8 +534,6 @@ Builder.load_string(
     color:
         self.text_color_active if self.state == 'down' \
         else self.text_color_normal
-    on_x: self._trigger_update_tab_indicator()
-    on_width: self._trigger_update_tab_indicator()
 
 
 <MDTabsScrollView>
@@ -636,12 +634,6 @@ class MDTabsLabel(ToggleButtonBehavior, Label):
         if texture:
             self.width = texture.width
             self.min_space = self.width
-
-    def _trigger_update_tab_indicator(self):
-        # update the position and size of the indicator
-        # when the label changes size or position
-        if self.state == "down":
-            self.tab_bar.update_indicator(self.x, self.width)
 
 
 class MDTabsBase(Widget):
@@ -1095,6 +1087,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self.register_event_type("on_ref_press")
         self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._carousel_bind, 1)
+        Clock.schedule_once(lambda x: self._update_indicator(None), 2)
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""
@@ -1199,6 +1192,13 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 or self.tab_indicator_type == "line-rect"
             ):
                 self.tab_indicator_height = self.tab_bar_height
+                self.tab_bar.update_indicator(
+                    current_tab_label.x, current_tab_label.width
+                )
+            else:
+                self.tab_bar.update_indicator(
+                    current_tab_label.x, current_tab_label.width
+                )
 
     def on_ref_press(self, *args):
         """The method will be called when the ``on_ref_press`` event
@@ -1207,8 +1207,18 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     def on_tab_switch(self, *args):
         """Called when switching tabs."""
 
+    def on_size(self, *args):
+        self._update_indicator(self.carousel.current_slide.tab_label)
+
     def _carousel_bind(self, i):
         self.carousel.bind(on_slide_progress=self._on_slide_progress)
 
     def _on_slide_progress(self, *args):
         self.dispatch("on_slide_progress", args)
+
+    def _update_indicator(self, current_tab_label):
+        if not current_tab_label:
+            current_tab_label = self.tab_bar.layout.children[-1]
+        self.tab_bar.update_indicator(
+            current_tab_label.x, current_tab_label.width
+        )

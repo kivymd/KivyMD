@@ -170,14 +170,14 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
 
     tooltip_radius = ListProperty(
         [
-            "5dp",
+            dp(7),
         ]
     )
     """
     Corner radius values.
 
     :attr:`radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `["5dp",]`.
+    and defaults to `[dp(7),]`.
     """
 
     tooltip_display_delay = BoundedNumericProperty(0, min=0, max=4)

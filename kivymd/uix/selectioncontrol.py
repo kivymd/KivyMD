@@ -216,7 +216,7 @@ Builder.load_string(
             pos: self.x + dp(8), self.center_y - dp(8)
             radius: [dp(7)]
 
-    on_release: thumb.trigger_action()
+    # on_release: thumb.trigger_action()
 
     Thumb:
         id: thumb

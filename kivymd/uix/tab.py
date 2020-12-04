@@ -490,7 +490,7 @@ from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
-    SpecificBackgroundColorBehavior,
+    SpecificBackgroundColorBehavior, RectangularRippleBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.carousel import MDCarousel
@@ -611,7 +611,7 @@ class MDTabsException(Exception):
     pass
 
 
-class MDTabsLabel(ToggleButtonBehavior, Label):
+class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, Label):
     """This class it represent the label of each tab."""
 
     text_color_normal = ListProperty((1, 1, 1, 1))

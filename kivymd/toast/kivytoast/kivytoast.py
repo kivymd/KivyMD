@@ -63,7 +63,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [15,]
+            radius: root.radius
 """
 )
 

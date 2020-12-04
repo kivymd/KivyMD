@@ -144,13 +144,13 @@ Builder.load_string(
         adaptive_width: True
         padding: dp(10)
 
-        MDLabel:
+        Label:
             id: label
             text: root.text
-            adaptive_width: True
-            theme_text_color: "Custom"
-            font_style: root.font_style
-            text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
+            size_hint_x: None
+            width: self.texture_size[0]
+            color: root.text_color if root.text_color else (root.theme_cls.text_color)
+            markup: True
 
     MDIconButton:
         id: icon
@@ -173,13 +173,6 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
-    """
-
-    font_style = StringProperty("Body1")
-    """Chip text font style.
-
-    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `Body1`.
     """
 
     icon = StringProperty("checkbox-blank-circle")

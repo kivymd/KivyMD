@@ -521,12 +521,12 @@ class GridBottomSheetItem(ButtonBehavior, BoxLayout):
     and defaults to `''`.
     """
 
-    icon_size = StringProperty("32sp")
+    icon_size = NumericProperty("24sp")
     """
     Icon size.
 
     :attr:`caption` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'32sp'`.
+    and defaults to `'24sp'`.
     """
 
 

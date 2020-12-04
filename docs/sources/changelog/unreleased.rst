@@ -43,3 +43,4 @@ Unreleased
 * Added feature to set background color for `MDDialog` class
 * Added `MDNavigationRail` component
 * Added `MDSwiper` component
+* Added ripple effect to `MDTabs` class

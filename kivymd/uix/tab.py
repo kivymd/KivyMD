@@ -1083,6 +1083,22 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `'Roboto'`.
     """
 
+    ripple_duration = NumericProperty(2)
+    """
+    Ripple duration when long touching to tab.
+
+    :attr:`ripple_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `2`.
+    """
+
+    no_ripple_effect = BooleanProperty(True)
+    """
+    Whether to use the ripple effect when tapping on a tab.
+
+    :attr:`no_ripple_effect` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_tab_switch")
@@ -1107,6 +1123,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
+                widget.tab_label.ripple_duration_in_slow = self.ripple_duration
+                widget.tab_label._no_ripple_effect = self.no_ripple_effect
                 widget.tab_label.group = str(self)
                 widget.tab_label.tab_bar = self.tab_bar
                 widget.tab_label.text_color_normal = self.text_color_normal

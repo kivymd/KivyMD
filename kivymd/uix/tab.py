@@ -490,7 +490,8 @@ from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
-    SpecificBackgroundColorBehavior, RectangularRippleBehavior,
+    RectangularRippleBehavior,
+    SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.carousel import MDCarousel

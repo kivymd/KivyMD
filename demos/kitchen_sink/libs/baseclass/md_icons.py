@@ -1,12 +1,9 @@
-from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 
 from kivymd.icon_definitions import md_icons
 
 
 class KitchenSinkMDIcons(Screen):
-    app = ObjectProperty()
-
     def set_list_md_icons(self, text="", search=False):
         """Builds a list of icons for the screen MDIcons."""
 
@@ -16,7 +13,6 @@ class KitchenSinkMDIcons(Screen):
                     "viewclass": "KitchenSinkOneLineIconListItem",
                     "icon": name_icon,
                     "text": name_icon,
-                    "callback": self.app.callback_for_menu_items,
                 }
             )
 

@@ -233,6 +233,7 @@
     },
     "Expansion Panel": {
         "kv_string": "expansion_panel",
+        "Import": "from libs.baseclass.expansion_panel import KitchenSinkExpansionPanel",
         "Factory": "Factory.KitchenSinkExpansionPanel()",
         "name_screen": "expansion panel",
         "source_code": "Components-Expansion-Panel.txt",

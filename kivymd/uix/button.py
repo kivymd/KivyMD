@@ -366,7 +366,7 @@ MDFloatingActionButtonSpeedDial
 
         MDFloatingActionButtonSpeedDial:
             data: app.data
-            rotation_root_button: True
+            root_button_anim: True
     '''
 
 
@@ -407,7 +407,7 @@ Or without KV Language:
             screen = Screen()
             speed_dial = MDFloatingActionButtonSpeedDial()
             speed_dial.data = self.data
-            speed_dial.rotation_root_button = True
+            speed_dial.root_button_anim = True
             screen.add_widget(speed_dial)
             return screen
 
@@ -1430,12 +1430,12 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `False`.
     """
 
-    rotation_root_button = BooleanProperty(False)
+    root_button_anim = BooleanProperty(False)
     """
     If ``True`` then the root button will rotate 45 degrees when the stack
     is opened.
 
-    :attr:`rotation_root_button` is a :class:`~kivy.properties.BooleanProperty`
+    :attr:`root_button_anim` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -1759,7 +1759,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                         )
                 elif (
                     isinstance(widget, MDFloatingRootButton)
-                    and self.rotation_root_button
+                    and self.root_button_anim
                 ):
                     # Rotates the root button 45 degrees.
                     Animation(
@@ -1814,7 +1814,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 Animation(opacity=0, d=0.1).start(widget)
             elif (
                 isinstance(widget, MDFloatingRootButton)
-                and self.rotation_root_button
+                and self.root_button_anim
             ):
                 Animation(
                     _angle=0,

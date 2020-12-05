@@ -23,9 +23,9 @@
         icon: "email"
 
 
-<KitchenSinkExpansionPanel@MDScreen>
+<KitchenSinkExpansionPanel>
     name: "expansion panel"
-    on_enter: if len(card.children) <= 1: app.add_expansion_panel(card)
+    on_enter: if len(card.children) <= 1: self.add_expansion_panel()
 
     Toolbar:
         id: toolbar

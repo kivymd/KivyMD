@@ -39,17 +39,20 @@ class KitchenSinkDialogs(ThemableBehavior, Screen):
                 title="Phone ringtone",
                 type="confirmation",
                 items=[
-                    KitchenSinkItemConfirm(text="Callisto"),
-                    KitchenSinkItemConfirm(text="Luna"),
-                    KitchenSinkItemConfirm(text="Night"),
-                    KitchenSinkItemConfirm(text="Solo"),
-                    KitchenSinkItemConfirm(text="Phobos"),
-                    KitchenSinkItemConfirm(text="Diamond"),
-                    KitchenSinkItemConfirm(text="Sirena"),
-                    KitchenSinkItemConfirm(text="Red music"),
-                    KitchenSinkItemConfirm(text="Allergio"),
-                    KitchenSinkItemConfirm(text="Magic"),
-                    KitchenSinkItemConfirm(text="Tic-tac"),
+                    KitchenSinkItemConfirm(text=i)
+                    for i in [
+                        "Callisto",
+                        "Luna",
+                        "Night",
+                        "Solo",
+                        "Phobos",
+                        "Diamond",
+                        "Sirena",
+                        "Red music",
+                        "Allergio",
+                        "Magic",
+                        "Tic-tac",
+                    ]
                 ],
                 buttons=[
                     MDFlatButton(

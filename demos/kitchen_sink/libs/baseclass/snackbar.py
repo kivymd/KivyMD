@@ -3,6 +3,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
 
+from kivymd.toast import toast
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.screen import MDScreen
 
@@ -15,7 +16,6 @@ class KitchenSinkSnackBar(MDScreen):
         """Create and show instance Snackbar."""
 
         def callback(instance):
-            from kivymd.toast import toast
 
             toast(instance.text)
 

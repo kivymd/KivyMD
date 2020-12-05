@@ -94,7 +94,7 @@ Similarly, create a three-line banner:
     MDBanner:
         type: "three-line"
         text:
-            ["One line string text example without actions.", "This is the second line of the banner message." "and this is the third line of the banner message."]
+            ["One line string text example without actions.", "This is the second line of the banner message.", "and this is the third line of the banner message."]
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/banner-three-line.png
     :align: center

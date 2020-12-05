@@ -13,7 +13,7 @@ package.domain = org.kivymd
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,jpeg,ttf,md,kv,json,txt
+source.include_exts = py,png,jpg,jpeg,ttf,kv,json,txt
 
 # (list) List of inclusions using pattern matching
 source.include_patterns = assets/*
@@ -26,7 +26,7 @@ android.numeric_version = 1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.0.0rc3,https://github.com/kivymd/KivyMD/archive/master.zip,pygments,sdl2_ttf==2.0.15
+requirements = python3,kivy==2.0.0rc4,https://github.com/kivymd/KivyMD/archive/master.zip,pygments,sdl2_ttf==2.0.15
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -48,7 +48,7 @@ fullscreen = 0
 android.presplash_color = #FFFFFF
 
 # (list) Permissions
-android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE
+android.permissions = WRITE_EXTERNAL_STORAGE
 
 # (int) Target Android API, should be as high as possible.
 android.api = 28

@@ -18,7 +18,7 @@ should look like this:
 
     Root:
 
-        NavigationLayout:
+        MDNavigationLayout:
 
             ScreenManager:
 
@@ -42,7 +42,7 @@ A simple example:
     KV = '''
     Screen:
 
-        NavigationLayout:
+        MDNavigationLayout:
 
             ScreenManager:
 
@@ -225,7 +225,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
             title: "MDNavigationDrawer"
             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
-        NavigationLayout:
+        MDNavigationLayout:
             x: toolbar.height
 
             ScreenManager:
@@ -284,14 +284,13 @@ You can use the ``standard`` behavior type for the NavigationDrawer:
     `Full example of Components-Navigation-Drawer <https://github.com/kivymd/KivyMD/wiki/Components-Navigation-Drawer>`_
 """
 
-__all__ = ("NavigationLayout", "MDNavigationDrawer")
+__all__ = ("MDNavigationLayout", "MDNavigationDrawer")
 
 from kivy.animation import Animation, AnimationTransition
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -339,7 +338,7 @@ class NavigationDrawerContentError(Exception):
     pass
 
 
-class NavigationLayout(FloatLayout):
+class MDNavigationLayout(FloatLayout):
     _scrim_color = ObjectProperty(None)
     _scrim_rectangle = ObjectProperty(None)
 
@@ -395,7 +394,7 @@ class NavigationLayout(FloatLayout):
             widget, (MDNavigationDrawer, ScreenManager, MDToolbar)
         ):
             raise NavigationDrawerContentError(
-                "The NavigationLayout must contain "
+                "The MDNavigationLayout must contain "
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
@@ -408,7 +407,7 @@ class NavigationLayout(FloatLayout):
             )
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
-                "The NavigationLayout must contain "
+                "The MDNavigationLayout must contain "
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         return super().add_widget(widget)
@@ -528,7 +527,7 @@ class MDNavigationDrawer(MDCard):
         if self.type == "modal":
             _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
         if (
-            isinstance(self.parent, NavigationLayout)
+            isinstance(self.parent, MDNavigationLayout)
             and self.parent._scrim_color
         ):
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
@@ -637,13 +636,6 @@ class MDNavigationDrawer(MDCard):
                 ).start(self)
             else:
                 self.open_progress = 0
-
-    def toggle_nav_drawer(self):
-        Logger.warning(
-            "KivyMD: The 'toggle_nav_drawer' method is deprecated, "
-            "use 'set_state' instead."
-        )
-        self.set_state("toggle", animation=True)
 
     def update_status(self, *_):
         status = self.status

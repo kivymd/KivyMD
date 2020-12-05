@@ -331,6 +331,7 @@ Builder.load_string(
             shorten: True
             shorten_from: 'right'
             halign: root.anchor_title
+            markup: True
 
     BoxLayout:
         id: right_actions

@@ -7,13 +7,17 @@ from kivy.uix.screenmanager import Screen
 from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
 
 from kivymd.icon_definitions import md_icons
+from kivymd.uix.bottomsheet import (
+    MDCustomBottomSheet,
+    MDGridBottomSheet,
+    MDListBottomSheet,
+)
 
 
 class KitchenSinkBottomSheet(Screen):
     app = ObjectProperty()
 
     def show_example_bottom_sheet(self):
-        from kivymd.uix.bottomsheet import MDListBottomSheet
 
         bs_menu_1 = MDListBottomSheet()
         bs_menu_1.add_item(
@@ -37,7 +41,6 @@ class KitchenSinkBottomSheet(Screen):
         bs_menu_1.open()
 
     def show_example_grid_bottom_sheet(self):
-        from kivymd.uix.bottomsheet import MDGridBottomSheet
 
         bs_menu = MDGridBottomSheet()
         bs_menu.add_item(
@@ -70,7 +73,6 @@ class KitchenSinkBottomSheet(Screen):
     def show_example_custom_bottom_sheet(
         self, type, corner=None, animation=True
     ):
-        from kivymd.uix.bottomsheet import MDCustomBottomSheet
 
         if type == "custom":
             custom_screen_for_bottom_sheet = Factory.KitchenSinkBaseContent()

@@ -126,9 +126,18 @@ Builder.load_string(
         min: 13
         max: 25
         size_hint: None, None
-        size: [min(am.width - (am.padding[0] + am.padding[2]), am.height - (am.padding[1] + am.padding[3])) / 2.0* root.scale* root.inner_clock_percent,\
-            min(am.width - (am.padding[0] + am.padding[2]), am.height - (am.padding[1] + am.padding[3])) / 2.0* root.inner_clock_percent* root.scale]
-        pos: root.pos[0]+(root.width-self.width)/2 , root.pos[1]+(root.height-self.height)/2
+        size:
+            [\
+            min(am.width - (am.padding[0] + am.padding[2]), am.height \
+            - (am.padding[1] + am.padding[3])) / 2.0 * root.scale \
+            * root.inner_clock_percent, \
+            min(am.width - (am.padding[0] + am.padding[2]), am.height \
+            - (am.padding[1] + am.padding[3])) / 2.0 \
+            * root.inner_clock_percent * root.scale \
+            ]
+        pos:
+            root.pos[0] + (root.width - self.width) / 2, \
+            root.pos[1] + (root.height - self.height) / 2
         selector_color: root.selector_color
         color: root.color
 
@@ -163,7 +172,7 @@ Builder.load_string(
             spacing: "10dp"
             size_hint_x: None
             width: self.minimum_width
-            pos_hint: {'center_x': .5, 'center_y': .5}
+            pos_hint: {"center_x": .5, "center_y": .5}
 
             Label:
                 id: timelabel
@@ -178,7 +187,7 @@ Builder.load_string(
 
             Label:
                 id: ampmlabel
-                text: root.ampm_text if not root.military else ''
+                text: root.ampm_text if not root.military else ""
                 markup: True
                 halign: "left"
                 valign: "middle"
@@ -665,15 +674,16 @@ class CircularTimePicker(BoxLayout, ThemableBehavior):
     """
 
     time_format = StringProperty(
-        "[color={hours_color}][ref=hours]{hours}[/ref][/color][color={primary_dark}][ref=colon]:[/ref][/color]\
-[color={minutes_color}][ref=minutes]{minutes:02d}[/ref][/color]"
+        "[color={hours_color}][ref=hours]{hours}[/ref][/color]"
+        "[color={primary_dark}][ref=colon]:[/ref][/color]"
+        "[color={minutes_color}][ref=minutes]{minutes:02d}[/ref][/color]"
     )
     """String that will be formatted with the time and shown in the time label.
     Can be anything supported by :meth:`str.format`. Make sure you don't
     remove the refs. See the default for the arguments passed to format.
     :attr:`time_format` is a :class:`~kivy.properties.StringProperty` and
-    defaults to "[color={hours_color}][ref=hours]{hours}[/ref][/color]:[color={minutes_color}][ref=minutes]\
-        {minutes:02d}[/ref][/color]".
+    defaults to "[color={hours_color}][ref=hours]{hours}[/ref][/color]:
+    [color={minutes_color}][ref=minutes]{minutes:02d}[/ref][/color]".
     """
 
     ampm_format = StringProperty(

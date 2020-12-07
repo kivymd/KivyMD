@@ -267,6 +267,14 @@ class CircularMilitaryHourPicker(FloatLayout):
         self._grabed_clock = None
         return super().on_touch_up(touch)
 
+    def on_touch_move(self, touch):
+        if self.pm.collide_point(*touch.pos):
+            self._select_pm(touch)
+            self.am.selected += 1
+        else:
+            self._select_am(touch)
+            self.am.selected -= 1
+
 
 class CircularNumberPicker(CircularLayout):
     """A circular number picker based on CircularLayout. A selector will

@@ -668,6 +668,7 @@ Builder.load_string(
         pos: (dp(270) / 2) - (self.width / 2), root.height - self.height
         size_hint: (.8, .8)
         pos_hint: {'center_x': .5, 'center_y': .585}
+        military: root.military
 
     MDFlatButton:
         width: dp(32)
@@ -719,6 +720,14 @@ class MDTimePicker(
 
     :attr:`radius` is an :class:`~kivy.properties.ListProperty`
     and defaults to `'[0, 0, 0, 0]'`.
+    """
+
+    military = BooleanProperty(False)
+    """
+    24H Mode.
+
+    :attr:`military` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     def __init__(self, **kwargs):

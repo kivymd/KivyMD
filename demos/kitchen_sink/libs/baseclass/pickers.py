@@ -11,9 +11,8 @@ class KitchenSinkPickers(Screen):
         self.ids.time_picker_label.text = str(time)
         self.previous_time = time
 
-    def show_example_time_picker(self):
-
-        time_dialog = MDTimePicker()
+    def show_example_time_picker(self, military):
+        time_dialog = MDTimePicker(military=military)
         time_dialog.bind(time=self.get_time_picker_date)
 
         if self.ids.time_picker_use_previous_time.active:

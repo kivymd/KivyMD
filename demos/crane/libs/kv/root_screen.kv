@@ -20,42 +20,32 @@
 			spacing: dp(10)
 
 			Image:
-				source: f"{environ['CRANE_ROOT']}/assets/images/logo.png"
+				source: f"{environ['CRANE_ROOT']}/assets/images/logo_light.png"
 				size_hint: (None, None)
 				size: dp(40), dp(40)
 
 			MDBoxLayout:
+				id: tab
 
 				CraneNavigationLabel:
 					text: "FLY"
 					state: "down"
-					pos_hint: {"center_y": .5}
-					on_press:
-						scr.transition.direction = "right"
-						scr.current = "fly"
+					on_press: carousel.index = 0
 				CraneNavigationLabel:
 					text: "SLEEP"
-					pos_hint: {"center_y": .5}
-					on_press:
-						scr.transition.direction = "left" if scr.current == "fly" else "right"
-						scr.current = "sleep"
+					on_press: carousel.index = 1
 				CraneNavigationLabel:
 					text: "EAT"
-					pos_hint: {"center_y": .5}
-					on_press:
-						scr.transition.direction = "left"
-						scr.current = "eat"
-				Widget:
+					on_press: carousel.index = 2
 
-		ScreenManager:
-			id: scr
+		MDCarousel:
+			id: carousel
+			on_slide_complete: root.on_slide_complete(*args)			
 
 			CraneFlyScreen:
 				name: "fly"
-
 			CraneSleepScreen:
 				name: "sleep"
-
 			CraneEatScreen:
 				name: "eat"
 
@@ -64,6 +54,8 @@
 	effect_cls: StiffScrollEffect
 
 <CraneNavigationLabel>
+	pos_hint: {"center_x": .5, "center_y": .5}
+
 	canvas.before:
 		Color:
 			rgba: (1, 1, 1, 1)

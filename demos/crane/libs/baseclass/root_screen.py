@@ -8,7 +8,14 @@ from kivymd.uix.screen import MDScreen
 
 
 class CraneRootScreen(ThemableBehavior, MDScreen):
-    pass
+    def on_slide_complete(
+        self, instance_carousel, previous_slide, current_slide, next_slide
+    ):
+        for i in self.ids.tab.children:
+            if i.text == current_slide.name.upper():
+                i.state = "down"
+            else:
+                i.state = "normal"
 
 
 class CraneNavigationLabel(ToggleButtonBehavior, MDLabel):

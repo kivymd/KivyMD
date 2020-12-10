@@ -19,15 +19,7 @@ class CraneRootScreen(ThemableBehavior, MDScreen):
 
 
 class CraneNavigationLabel(ToggleButtonBehavior, MDLabel):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.group = "nav-bar"
-        self.font_style = "Button"
-        self.adaptive_size = True
-        self.halign = "center"
-        self.theme_text_color = "Custom"
-        self.text_color = (1, 1, 1, 1)
-        self.allow_no_selection = False
+    pass
 
 
 class CraneListItem(ThemableBehavior, MDBoxLayout):

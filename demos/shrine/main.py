@@ -26,7 +26,7 @@ else:
     os.environ["SHRINE_ROOT"] = str(Path(__file__).parent)
 
 
-KV_DIR = f"{os.path.dirname(__file__)}/libs/kv"
+KV_DIR = f"{os.environ['SHRINE_ROOT']}/libs/kv"
 
 for kv_file in os.listdir(KV_DIR):
     with open(os.path.join(KV_DIR, kv_file), encoding="utf-8") as kv:

@@ -23,12 +23,12 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: [3.7]
         architecture: [x64]
-        kivy-version: [1.11.1]
+        kivy-version: [2.0.0]
         include:
           - os: windows-latest
             python-version: 3.7
             architecture: x86
-            kivy-version: 1.11.1
+            kivy-version: 2.0.0
     runs-on: ${{ matrix.os }}
     env:
       PYTHONUNBUFFERED: 1

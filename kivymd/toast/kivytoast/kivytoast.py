@@ -86,6 +86,7 @@ class Toast(BaseDialog):
         self.background = f"{images_path}transparent.png"
         self.opacity = 0
         self.auto_dismiss = True
+        self.overlay_color = [0, 0, 0, 0]
         self.label_toast = Label(size_hint=(None, None), opacity=0)
         self.label_toast.bind(texture_size=self.label_check_texture_size)
         self.add_widget(self.label_toast)

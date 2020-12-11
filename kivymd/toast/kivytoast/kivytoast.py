@@ -58,7 +58,7 @@ Builder.load_string(
 <Toast>:
     canvas:
         Color:
-            rgba: root._md_bg_color
+            rgba: [0.2, 0.2, 0.2, 1]
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -122,16 +122,11 @@ class Toast(BaseDialog):
         return True
 
 
-def toast(text="", background=None, duration=2.5):
+def toast(text="", duration=2.5):
     """Displays a toast.
 
     :attr duration: the amount of time (in seconds) that the toast is visible on the screen
     :type duration: float
-
-    :attr background: color ``rgba`` in Kivy format
-    :type background: list
     """
 
-    if not background:
-        background = [0.2, 0.2, 0.2, 1]
-    Toast(duration=duration, _md_bg_color=background).toast(text)
+    Toast(duration=duration).toast(text)

@@ -104,10 +104,11 @@ class Toast(BaseDialog):
         Clock.schedule_once(self.fade_out, self.duration)
 
     def fade_in(self):
-        Animation(opacity=1, duration=0.4).start(self.label_toast)
-        Animation(opacity=1, duration=0.4).start(self)
+        anim = Animation(opacity=1, duration=0.4)
+        anim.start(self.label_toast)
+        anim.start(self)
 
-    def fade_out(self, interval):
+    def fade_out(self, *args):
         Animation(opacity=0, duration=0.4).start(self.label_toast)
         anim_body = Animation(opacity=0, duration=0.4)
         anim_body.bind(on_complete=lambda *x: self.dismiss())
@@ -116,7 +117,7 @@ class Toast(BaseDialog):
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
             if self.auto_dismiss:
-                self.dismiss()
+                self.fade_out()
                 return False
         super().on_touch_down(touch)
         return True

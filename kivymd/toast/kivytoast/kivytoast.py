@@ -48,10 +48,9 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ListProperty, NumericProperty
+from kivy.properties import NumericProperty
 from kivy.uix.label import Label
 
-from kivymd import images_path
 from kivymd.uix.dialog import BaseDialog
 
 Builder.load_string(
@@ -77,12 +76,10 @@ class Toast(BaseDialog):
     and defaults to `2.5`.
     """
 
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint = (None, None)
         self.pos_hint = {"center_x": 0.5, "center_y": 0.1}
-        self.background = f"{images_path}transparent.png"
         self.opacity = 0
         self.auto_dismiss = True
         self.overlay_color = [0, 0, 0, 0]

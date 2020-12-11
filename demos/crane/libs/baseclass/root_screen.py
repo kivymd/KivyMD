@@ -12,7 +12,7 @@ class CraneRootScreen(ThemableBehavior, MDScreen):
         self, instance_carousel, previous_slide, current_slide, next_slide
     ):
         for i in self.ids.tab.children:
-            if i.text == current_slide.name.upper():
+            if i.text == current_slide.name:
                 i.state = "down"
             else:
                 i.state = "normal"

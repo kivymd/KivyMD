@@ -42,28 +42,29 @@
 
 		MDCarousel:
 			id: carousel
+			ignore_perpendicular_swipes: True
 			on_slide_complete: root.on_slide_complete(*args)			
 
 			CraneFlyScreen:
-				name: "fly"
+				name: "FLY"
 
 			CraneSleepScreen:
-				name: "sleep"
+				name: "SLEEP"
 
 			CraneEatScreen:
-				name: "eat"
+				name: "EAT"
 
 <ScrollView>
 	bar_width: 0
 	effect_cls: StiffScrollEffect
 
 <CraneNavigationLabel>
-    group: "nav-bar"
-    font_style: "Button"
-    adaptive_size: True
-    halign: "center"
-    opposite_colors: True
-    allow_no_selection: False
+	group: "nav-bar"
+	font_style: "Button"
+	adaptive_size: True
+	halign: "center"
+	opposite_colors: True
+	allow_no_selection: False
 	pos_hint: {"center_y": .5}
 
 	canvas.before:

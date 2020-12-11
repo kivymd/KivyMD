@@ -894,8 +894,7 @@ class ThemableBehavior(EventDispatcher):
                 ):
                     raise ValueError(
                         "KivyMD: App object must be inherited from "
-                        "`kivymd.app.MDApp`. See "
-                        "https://github.com/kivymd/KivyMD/blob/master/README.md#api-breaking-changes"
+                        "`kivymd.app.MDApp`"
                     )
             except AttributeError:
                 raise ValueError(

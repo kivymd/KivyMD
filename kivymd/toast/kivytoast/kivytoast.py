@@ -77,7 +77,6 @@ class Toast(BaseDialog):
     and defaults to `2.5`.
     """
 
-    _md_bg_color = ListProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

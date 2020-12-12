@@ -17,7 +17,7 @@ kv = """
 
 MDBoxLayout:
     orientation: 'vertical'
-    spacing: "8dp"
+    spacing: '8dp'
 
     MDToolbar:
         id: toolbar

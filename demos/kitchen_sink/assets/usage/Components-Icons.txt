@@ -53,8 +53,6 @@ class CustomOneLineIconListItem(OneLineIconListItem):
 
 
 class Example(MDApp):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
 
     def build(self):
         return Builder.load_string(KV)

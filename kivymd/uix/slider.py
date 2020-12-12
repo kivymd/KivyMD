@@ -80,6 +80,7 @@ from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.selectioncontrol import Thumb
 
 Builder.load_string(
     """

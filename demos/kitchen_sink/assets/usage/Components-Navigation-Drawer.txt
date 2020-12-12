@@ -15,7 +15,7 @@ MDScreen:
                     orientation: 'vertical'
 
                     MDToolbar:
-                        title: "Navigation Drawer"
+                        title: 'Navigation Drawer'
                         elevation: 10
                         left_action_items: [['menu', lambda x: nav_drawer.set_state('toggle')]]
 

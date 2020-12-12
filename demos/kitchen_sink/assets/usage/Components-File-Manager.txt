@@ -7,12 +7,12 @@ KV = """
 MDScreen:
 
     MDToolbar:
-        title: "MDFileManager"
+        title: 'MDFileManager'
         pos_hint: {"top": 1}
 
     MDRoundFlatIconButton:
-        text: "Open manager"
-        icon: "folder"
+        text: 'Open manager'
+        icon: 'folder'
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release: app.file_manager_open()
 """

@@ -5,8 +5,8 @@ KV = """
 MDScreen:
 
     MDToolbar:
-        title: "MDFloatingActionButtonSpeedDial"
-        pos_hint: {"top": 1}
+        title: 'MDFloatingActionButtonSpeedDial'
+        pos_hint: {'top': 1}
 
     MDFloatingActionButtonSpeedDial:
         data: app.data

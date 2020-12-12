@@ -1,15 +1,16 @@
+import random
+
 from kivy.clock import Clock
-from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import StringProperty
+
 from kivymd.app import MDApp
 from kivymd.icon_definitions import md_icons
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import ILeftBodyTouch, OneLineIconListItem
 from kivymd.utils import asynckivy
 
-Builder.load_string(
-    """
+KV = """
 <ItemForList>
     text: root.text
 
@@ -17,13 +18,13 @@ Builder.load_string(
         icon: root.icon
 
 
-<Example@FloatLayout>
+MDFloatLayout:
 
-    BoxLayout:
+    MDBoxLayout:
         orientation: 'vertical'
 
         MDToolbar:
-            title: app.title
+            title: 'Refresh Layout'
             md_bg_color: app.theme_cls.primary_color
             background_palette: 'Primary'
             elevation: 10
@@ -39,7 +40,6 @@ Builder.load_string(
                 adaptive_height: True
                 cols: 1
 """
-)
 
 
 class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
@@ -51,23 +51,17 @@ class ItemForList(OneLineIconListItem):
 
 
 class Example(MDApp):
-    title = "Example Refresh Layout"
-    screen = None
-    x = 0
-    y = 15
-
     def build(self):
-        self.screen = Factory.Example()
         self.set_list()
-
-        return self.screen
+        return Builder.load_string(KV)
 
     def set_list(self):
         async def set_list():
-            names_icons_list = list(md_icons.keys())[self.x : self.y]
+            ran = random.randint(0, 100)
+            names_icons_list = list(md_icons.keys())[ran : ran + 20]
             for name_icon in names_icons_list:
                 await asynckivy.sleep(0)
-                self.screen.ids.box.add_widget(
+                self.root.ids.box.add_widget(
                     ItemForList(icon=name_icon, text=name_icon)
                 )
 
@@ -78,14 +72,9 @@ class Example(MDApp):
         while the spinner remains on the screen."""
 
         def refresh_callback(interval):
-            self.screen.ids.box.clear_widgets()
-            if self.x == 0:
-                self.x, self.y = 15, 30
-            else:
-                self.x, self.y = 0, 15
+            self.root.ids.box.clear_widgets()
             self.set_list()
-            self.screen.ids.refresh_layout.refresh_done()
-            self.tick = 0
+            self.root.ids.refresh_layout.refresh_done()
 
         Clock.schedule_once(refresh_callback, 1)
 

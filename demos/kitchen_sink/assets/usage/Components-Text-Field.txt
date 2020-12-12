@@ -4,20 +4,20 @@ from kivymd.app import MDApp
 KV = """
 MDBoxLayout:
     orientation: 'vertical'
-    padding: dp(48)
-    spacing: dp(15)
+    padding: '48dp'
+    spacing: '15dp'
 
     MDTextField:
-        hint_text: "Line"
+        hint_text: 'Line'
 
     MDTextField:
-        hint_text: "Fill"
-        mode: "fill"
+        hint_text: 'Fill'
+        mode: 'fill'
         fill_color: 0, 0, 0, .4
 
     MDTextField:
-        hint_text: "Rectangle"
-        mode: "rectangle"
+        hint_text: 'Rectangle'
+        mode: 'rectangle'
 
     MDTextFieldRect:
 

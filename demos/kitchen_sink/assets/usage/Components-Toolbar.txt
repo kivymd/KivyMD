@@ -3,16 +3,16 @@ from kivymd.app import MDApp
 
 KV = """
 BoxLayout:
-    orientation: "vertical"
+    orientation: 'vertical'
 
     MDToolbar:
-        title: "MDToolbar"
-        left_action_items: [["menu", lambda x: x]]
-        right_action_items: [["dots-vertical", lambda x: x]]
+        title: 'MDToolbar'
+        left_action_items: [['menu', lambda x: x]]
+        right_action_items: [['dots-vertical', lambda x: x]]
 
     MDLabel:
-        text: "Content"
-        halign: "center"
+        text: 'Content'
+        halign: 'center'
 """
 
 

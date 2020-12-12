@@ -17,11 +17,11 @@ kv = """
 
 MDBoxLayout:
     orientation: 'vertical'
-    spacing: dp(8)
+    spacing: "8dp"
 
     MDToolbar:
         id: toolbar
-        title: "MDSwiper"
+        title: 'MDSwiper'
         elevation: 10
 
     MDSwiper:

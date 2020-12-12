@@ -3,6 +3,7 @@ from kivy.lang import Builder
 from kivy.properties import ListProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.utils import get_color_from_hex
+
 from kivymd.app import MDApp
 from kivymd.color_definitions import colors
 from kivymd.uix.tab import MDTabsBase
@@ -17,7 +18,7 @@ KV = """
     MDTabs:
         id: android_tabs
         size_hint_y: None
-        height: "48dp"
+        height: '48dp'
         tab_indicator_anim: False
         on_tab_switch: app.on_tab_switch(*args)
 
@@ -28,7 +29,7 @@ KV = """
 
 <ItemColor>:
     size_hint_y: None
-    height: "42dp"
+    height: '42dp'
 
     canvas:
         Color:
@@ -39,7 +40,7 @@ KV = """
 
     MDLabel:
         text: root.text
-        halign: "center"
+        halign: 'center'
 """
 
 
@@ -64,7 +65,9 @@ class Example(MDApp):
             self.screen.ids.android_tabs.add_widget(tab)
         return self.screen
 
-    def on_tab_switch(self, instance_tabs, instance_tab, instance_tabs_label, tab_text):
+    def on_tab_switch(
+        self, instance_tabs, instance_tab, instance_tabs_label, tab_text
+    ):
         self.screen.ids.box.clear_widgets()
         for value_color in colors[tab_text]:
             self.screen.ids.box.add_widget(

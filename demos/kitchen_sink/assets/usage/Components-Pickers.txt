@@ -1,4 +1,5 @@
 from kivy.lang import Builder
+
 from kivymd.app import MDApp
 from kivymd.uix.picker import MDDatePicker, MDThemePicker, MDTimePicker
 
@@ -8,7 +9,7 @@ MDBoxLayout:
 
     MDToolbar:
         id: toolbar
-        pos_hint: {"top": 1}
+        pos_hint: {'top': 1}
         title: 'Pickers'
 
     MDBoxLayout:
@@ -21,7 +22,7 @@ MDBoxLayout:
             orientation: 'vertical'
 
             MDRaisedButton:
-                text: "Open time picker"
+                text: 'Open time picker'
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 on_release: app.show_example_time_picker()
 
@@ -35,7 +36,7 @@ MDBoxLayout:
             orientation: 'vertical'
 
             MDRaisedButton:
-                text: "Open theme picker"
+                text: 'Open theme picker'
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 on_release: app.show_example_theme_picker()
 
@@ -43,7 +44,7 @@ MDBoxLayout:
             orientation: 'vertical'
 
             MDRaisedButton:
-                text: "Open date picker"
+                text: 'Open date picker'
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 on_release: app.show_example_date_picker()
 

@@ -126,6 +126,9 @@ def toast(text="", background=[0.2, 0.2, 0.2, 1], duration=2.5):
 
     :attr duration: the amount of time (in seconds) that the toast is visible on the screen
     :type duration: float
+
+    :attr background: color ``rgba`` in Kivy format
+    :type background: list
     """
 
     Toast(duration=duration, _md_bg_color=background).toast(text)

@@ -12,22 +12,18 @@ KivyToast
     from kivymd.toast import toast
 
     KV = '''
-    BoxLayout:
-        orientation:'vertical'
+    MDScreen:
 
         MDToolbar:
-            id: toolbar
             title: 'Test Toast'
+            pos_hint: {'top': 1}
             md_bg_color: app.theme_cls.primary_color
-            left_action_items: [['menu', lambda x: '']]
+            left_action_items: [['menu', lambda x: x]]
 
-        FloatLayout:
-
-            MDRaisedButton:
-                text: 'TEST KIVY TOAST'
-                on_release: app.show_toast()
-                pos_hint: {'center_x': .5, 'center_y': .5}
-
+        MDRaisedButton:
+            text: 'TEST KIVY TOAST'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_toast()
     '''
 
 
@@ -48,7 +44,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import NumericProperty
+from kivy.properties import ListProperty, NumericProperty
 from kivy.uix.label import Label
 
 from kivymd.uix.dialog import BaseDialog
@@ -56,9 +52,14 @@ from kivymd.uix.dialog import BaseDialog
 Builder.load_string(
     """
 <Toast>:
+    size_hint: (None, None)
+    pos_hint: {"center_x": 0.5, "center_y": 0.1}
+    opacity: 0
+    auto_dismiss: True
+    overlay_color: [0, 0, 0, 0]
     canvas:
         Color:
-            rgba: [0.2, 0.2, 0.2, 1]
+            rgba: root._md_bg_color
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -76,13 +77,10 @@ class Toast(BaseDialog):
     and defaults to `2.5`.
     """
 
+    _md_bg_color = ListProperty()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (None, None)
-        self.pos_hint = {"center_x": 0.5, "center_y": 0.1}
-        self.opacity = 0
-        self.auto_dismiss = True
-        self.overlay_color = [0, 0, 0, 0]
         self.label_toast = Label(size_hint=(None, None), opacity=0)
         self.label_toast.bind(texture_size=self.label_check_texture_size)
         self.add_widget(self.label_toast)
@@ -109,10 +107,10 @@ class Toast(BaseDialog):
         anim.start(self)
 
     def fade_out(self, *args):
-        Animation(opacity=0, duration=0.4).start(self.label_toast)
-        anim_body = Animation(opacity=0, duration=0.4)
-        anim_body.bind(on_complete=lambda *x: self.dismiss())
-        anim_body.start(self)
+        anim = Animation(opacity=0, duration=0.4)
+        anim.bind(on_complete=lambda *x: self.dismiss())
+        anim.start(self.label_toast)
+        anim.start(self)
 
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
@@ -123,11 +121,11 @@ class Toast(BaseDialog):
         return True
 
 
-def toast(text="", duration=2.5):
+def toast(text="", background=[0.2, 0.2, 0.2, 1], duration=2.5):
     """Displays a toast.
 
     :attr duration: the amount of time (in seconds) that the toast is visible on the screen
     :type duration: float
     """
 
-    Toast(duration=duration).toast(text)
+    Toast(duration=duration, _md_bg_color=background).toast(text)

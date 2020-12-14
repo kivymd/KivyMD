@@ -9,70 +9,28 @@
 <CraneRootScreen>
 
 	MDBoxLayout:
-		orientation: "vertical"
 		md_bg_color: gch("#5D1049")
 
-		MDBoxLayout:
-			size_hint_y: None
-			height: root.theme_cls.standard_increment
-			md_bg_color: gch("#5D1049")
-			padding: dp(10)
-			spacing: dp(10)
-
-			Image:
-				source: f"{environ['CRANE_ROOT']}/assets/images/logo.png"
-				size_hint: (None, None)
-				size: dp(40), dp(40)
-
-			MDBoxLayout:
-
-				CraneNavigationLabel:
-					text: "FLY"
-					state: "down"
-					pos_hint: {"center_y": .5}
-					on_press:
-						scr.transition.direction = "right"
-						scr.current = "fly"
-				CraneNavigationLabel:
-					text: "SLEEP"
-					pos_hint: {"center_y": .5}
-					on_press:
-						scr.transition.direction = "left" if scr.current == "fly" else "right"
-						scr.current = "sleep"
-				CraneNavigationLabel:
-					text: "EAT"
-					pos_hint: {"center_y": .5}
-					on_press:
-						scr.transition.direction = "left"
-						scr.current = "eat"
-				Widget:
-
-		ScreenManager:
-			id: scr
+		MDTabs:
+			id: tab
+			background_color: gch("#5D1049")
+			text_color_normal: 1., 1., 1., .5
+			text_color_active: 1, 1, 1, 1
+			indicator_color: 1, 1, 1, 1
+			tab_indicator_type: 'line-round'
+			tab_indicator_anim: True
 
 			CraneFlyScreen:
-				name: "fly"
-
+				text: "[b]FLY[/b]"
 			CraneSleepScreen:
-				name: "sleep"
-
+				text: "[b]SLEEP[/b]"
 			CraneEatScreen:
-				name: "eat"
+				text: "[b]EAT[/b]"
 
 <ScrollView>
 	bar_width: 0
 	effect_cls: StiffScrollEffect
 
-<CraneNavigationLabel>
-	canvas.before:
-		Color:
-			rgba: (1, 1, 1, 1)
-		Line:
-			width: dp(1.2) if self.state == "down" else 0.0001
-			rounded_rectangle:
-				(self.x - dp(2), self.y - dp(5), self.width + dp(3), self.height + dp(10),\
-				dp(15), dp(15), dp(15), dp(15),\
-				self.height)
 
 <CraneTextField@MDTextFieldRound>
 	size_hint_y: None

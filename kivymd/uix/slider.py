@@ -84,6 +84,7 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
+#:import Thumb kivymd.uix.selectioncontrol.Thumb
 
 
 <MDSlider>

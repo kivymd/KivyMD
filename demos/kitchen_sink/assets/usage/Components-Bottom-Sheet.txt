@@ -4,15 +4,15 @@ from kivymd.toast import toast
 from kivymd.uix.bottomsheet import MDListBottomSheet
 
 KV = """
-Screen:
+MDScreen:
 
     MDToolbar:
-        title: "Example BottomSheet"
-        pos_hint: {"top": 1}
+        title: 'Example BottomSheet'
+        pos_hint: {'top': 1}
         elevation: 10
 
     MDRaisedButton:
-        text: "Open list bottom sheet"
+        text: 'Open list bottom sheet'
         on_release: app.show_example_list_bottom_sheet()
         pos_hint: {"center_x": .5, "center_y": .5}
 """

@@ -4,12 +4,12 @@ from kivymd.app import MDApp
 KV = """
 #: import Snackbar kivymd.uix.snackbar.Snackbar
 
-Screen:
+MDScreen:
 
     MDRaisedButton:
-        text: "Create simple snackbar"
-        pos_hint: {"center_x": .5, "center_y": .5}
-        on_release: Snackbar(text="This is a snackbar!").open()
+        text: 'Create simple snackbar'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: Snackbar(text='This is a snackbar!').open()
 """
 
 

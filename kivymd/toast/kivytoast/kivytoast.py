@@ -12,22 +12,17 @@ KivyToast
     from kivymd.toast import toast
 
     KV = '''
-    BoxLayout:
-        orientation:'vertical'
+    MDScreen:
 
         MDToolbar:
-            id: toolbar
             title: 'Test Toast'
-            md_bg_color: app.theme_cls.primary_color
-            left_action_items: [['menu', lambda x: '']]
+            pos_hint: {'top': 1}
+            left_action_items: [['menu', lambda x: x]]
 
-        FloatLayout:
-
-            MDRaisedButton:
-                text: 'TEST KIVY TOAST'
-                on_release: app.show_toast()
-                pos_hint: {'center_x': .5, 'center_y': .5}
-
+        MDRaisedButton:
+            text: 'TEST KIVY TOAST'
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_toast()
     '''
 
 
@@ -51,12 +46,16 @@ from kivy.metrics import dp
 from kivy.properties import ListProperty, NumericProperty
 from kivy.uix.label import Label
 
-from kivymd import images_path
 from kivymd.uix.dialog import BaseDialog
 
 Builder.load_string(
     """
 <Toast>:
+    size_hint: (None, None)
+    pos_hint: {"center_x": 0.5, "center_y": 0.1}
+    opacity: 0
+    auto_dismiss: True
+    overlay_color: [0, 0, 0, 0]
     canvas:
         Color:
             rgba: root._md_bg_color
@@ -81,11 +80,6 @@ class Toast(BaseDialog):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint = (None, None)
-        self.pos_hint = {"center_x": 0.5, "center_y": 0.1}
-        self.background = f"{images_path}transparent.png"
-        self.opacity = 0
-        self.auto_dismiss = True
         self.label_toast = Label(size_hint=(None, None), opacity=0)
         self.label_toast.bind(texture_size=self.label_check_texture_size)
         self.add_widget(self.label_toast)
@@ -107,25 +101,26 @@ class Toast(BaseDialog):
         Clock.schedule_once(self.fade_out, self.duration)
 
     def fade_in(self):
-        Animation(opacity=1, duration=0.4).start(self.label_toast)
-        Animation(opacity=1, duration=0.4).start(self)
+        anim = Animation(opacity=1, duration=0.4)
+        anim.start(self.label_toast)
+        anim.start(self)
 
-    def fade_out(self, interval):
-        Animation(opacity=0, duration=0.4).start(self.label_toast)
-        anim_body = Animation(opacity=0, duration=0.4)
-        anim_body.bind(on_complete=lambda *x: self.dismiss())
-        anim_body.start(self)
+    def fade_out(self, *args):
+        anim = Animation(opacity=0, duration=0.4)
+        anim.bind(on_complete=lambda *x: self.dismiss())
+        anim.start(self.label_toast)
+        anim.start(self)
 
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos):
             if self.auto_dismiss:
-                self.dismiss()
+                self.fade_out()
                 return False
         super().on_touch_down(touch)
         return True
 
 
-def toast(text="", background=None, duration=2.5):
+def toast(text="", background=[0.2, 0.2, 0.2, 1], duration=2.5):
     """Displays a toast.
 
     :attr duration: the amount of time (in seconds) that the toast is visible on the screen
@@ -135,6 +130,4 @@ def toast(text="", background=None, duration=2.5):
     :type background: list
     """
 
-    if not background:
-        background = [0.2, 0.2, 0.2, 1]
     Toast(duration=duration, _md_bg_color=background).toast(text)

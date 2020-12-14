@@ -73,7 +73,7 @@ to save time. If you need full commit history, then remove `--depth 1`.
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini
-requirements = kivy==1.11.1, kivymd==0.104.1
+requirements = kivy==2.0.0, kivymd==0.104.1
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
@@ -82,7 +82,7 @@ If you want to use development version from [master](https://github.com/kivymd/K
 branch, you should specify link to zip archive:
 
 ```ini
-requirements = kivy==1.11.1, https://github.com/kivymd/KivyMD/archive/master.zip
+requirements = kivy==2.0.0, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 Do not forget to run `buildozer android clean` or remove `.buildozer` directory

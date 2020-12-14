@@ -3,21 +3,23 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
 
-KV = '''
-Screen:
+KV = """
+MDScreen:
 
-    BoxLayout:
+    MDBoxLayout:
         id: box
-        orientation: "vertical"
+        orientation: 'vertical'
 
         MDToolbar:
-            title: "MDLabel"
-'''
+            title: 'MDLabel'
+"""
 
 
 class Example(MDApp):
     def build(self):
-        screen = Builder.load_string(KV)
+        return Builder.load_string(KV)
+
+    def on_start(self):
         # Names of standard color themes.
         for name_theme in [
             "Primary",
@@ -26,14 +28,13 @@ class Example(MDApp):
             "Error",
             "ContrastParentBackground",
         ]:
-            screen.ids.box.add_widget(
+            self.root.ids.box.add_widget(
                 MDLabel(
                     text=name_theme,
                     halign="center",
                     theme_text_color=name_theme,
                 )
             )
-        return screen
 
 
 Example().run()

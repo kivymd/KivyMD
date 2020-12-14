@@ -47,7 +47,7 @@ class MDCrane(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.title = "Crane"
-        self.icon = f"{os.environ['CRANE_ROOT']}/assets/images/logo.png"
+        self.icon = f"{os.environ['CRANE_ROOT']}/assets/images/logo_light.png"
         self.theme_cls.primary_palette = "Gray"
         self.theme_cls.primary_hue = "100"
 

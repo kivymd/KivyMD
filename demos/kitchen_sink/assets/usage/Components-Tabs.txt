@@ -1,14 +1,15 @@
 from kivy.lang import Builder
-from kivy.uix.floatlayout import FloatLayout
+
 from kivymd.app import MDApp
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.tab import MDTabsBase
 
 KV = """
-BoxLayout:
-    orientation: "vertical"
+MDBoxLayout:
+    orientation: 'vertical'
 
     MDToolbar:
-        title: "Example Tabs"
+        title: 'Example Tabs'
 
     MDTabs:
         id: tabs
@@ -19,12 +20,12 @@ BoxLayout:
 
     MDLabel:
         id: label
-        text: "Tab 0"
-        halign: "center"
+        text: 'Tab 0'
+        halign: 'center'
 """
 
 
-class Tab(FloatLayout, MDTabsBase):
+class Tab(MDFloatLayout, MDTabsBase):
     """Class implementing content for a tab."""
 
 
@@ -36,7 +37,9 @@ class Example(MDApp):
         for i in range(20):
             self.root.ids.tabs.add_widget(Tab(text=f"Tab {i}"))
 
-    def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
+    def on_tab_switch(
+        self, instance_tabs, instance_tab, instance_tab_label, tab_text
+    ):
         """Called when switching tabs.
 
         :type instance_tabs: <kivymd.uix.tab.MDTabs object>;

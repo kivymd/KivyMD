@@ -1,16 +1,17 @@
 from kivy.lang import Builder
+
 from kivymd.app import MDApp
 
 KV = """
-<ExampleBanner@MDScreen>
+MDScreen:
 
     MDBanner:
         id: banner
         over_widget: scroll
 
     BoxLayout:
-        orientation: "vertical"
-        spacing: "10dp"
+        orientation: 'vertical'
+        spacing: '10dp'
 
         MDToolbar:
             title: 'Banner'
@@ -18,103 +19,97 @@ KV = """
         ScrollView:
             id: scroll
 
-            MDGridLayout:
-                adaptive_height: True
-                cols: 1
-                padding: "10dp"
-                spacing: "10dp"
+            MDList:
 
                 OneLineListItem:
-                    text: "ThreeLineBanner"
+                    text: 'ThreeLineBanner'
                     on_release:
                         banner.type = "three-line"
                         banner.text = \
                         [\
-                        "Three line string text example with two actions.", \
-                        "This is the second line of the banner message,", \
-                        "and this is the third line of the banner message.",
+                        'Three line string text example with two actions.', \
+                        'This is the second line of the banner message,', \
+                        'and this is the third line of the banner message.',
                         ]
-                        banner.left_action = ["CANCEL", lambda x: None]
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
 
                 OneLineListItem:
                     text: "TwoLineBanner"
                     on_release:
-                        banner.type = "two-line"
+                        banner.type = 'two-line'
                         banner.text = \
                         [\
-                        "One line string text example with two actions.", \
-                        "This is the second line of the banner message.", \
+                        'One line string text example with two actions.', \
+                        'This is the second line of the banner message.', \
                         ]
-                        banner.left_action = ["CANCEL", lambda x: None]
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
 
                 OneLineListItem:
                     text: "OneLineBanner"
                     on_release:
-                        banner.type = "one-line"
-                        banner.text = ["One line string text example with two actions."]
-                        banner.left_action = ["CANCEL", lambda x: None]
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.type = 'one-line'
+                        banner.text = ['One line string text example with two actions.']
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
 
                 OneLineListItem:
                     text: "ThreeLineIconBanner"
                     on_release:
-                        banner.type = "three-line-icon"
+                        banner.type = 'three-line-icon'
                         banner.text = \
                         [\
-                        "Three line string text example with two actions.", \
-                        "This is the second line of the banner message,", \
-                        "and this is the third line of the banner message.",
+                        'Three line string text example with two actions.', \
+                        'This is the second line of the banner message,', \
+                        'and this is the third line of the banner message.',
                         ]
-                        banner.left_action = ["CANCEL", lambda x: None]
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
 
                 OneLineListItem:
-                    text: "TwoLineIconBanner"
+                    text: 'TwoLineIconBanner'
                     on_release:
-                        banner.type = "two-line-icon"
+                        banner.type = 'two-line-icon'
                         banner.text = \
                         [\
-                        "One line string text example with two actions.", \
-                        "This is the second line of the banner message.", \
+                        'One line string text example with two actions.', \
+                        'This is the second line of the banner message.', \
                         ]
-                        banner.left_action = ["CANCEL", lambda x: None]
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
 
                 OneLineListItem:
                     text: "OneLineIconBanner"
                     on_release:
-                        banner.type = "one-line-icon"
-                        banner.text = ["One line string text example with two actions."]
-                        banner.left_action = ["CANCEL", lambda x: None]
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.type = 'one-line-icon'
+                        banner.text = ['One line string text example with two actions.']
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
 
                 OneLineListItem:
-                    text: "Banner without actions"
+                    text: 'Banner without actions'
                     on_release:
-                        banner.type = "one-line-icon"
-                        banner.text = ["One line string text example without actions."]
+                        banner.type = 'one-line-icon'
+                        banner.text = ['One line string text example without actions.']
                         banner.left_action = []
                         banner.right_action = []
                         banner.show()
 
                 OneLineListItem:
-                    text: "Banner with one actions"
+                    text: 'Banner with one actions'
                     on_release:
-                        banner.type = "one-line-icon"
-                        banner.text = ["One line string text example without actions."]
+                        banner.type = 'one-line-icon'
+                        banner.text = ['One line string text example without actions.']
                         banner.left_action = []
-                        banner.right_action = ["CLOSE", lambda x: banner.hide()]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
                         banner.show()
-
-ExampleBanner:
 """
 
 

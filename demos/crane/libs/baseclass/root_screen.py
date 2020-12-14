@@ -1,26 +1,26 @@
+from os import environ
+
+from kivy.clock import Clock
 from kivy.properties import StringProperty
-from kivy.uix.behaviors import ToggleButtonBehavior
+from kivy.uix.image import Image
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
 
 
 class CraneRootScreen(ThemableBehavior, MDScreen):
-    pass
-
-
-class CraneNavigationLabel(ToggleButtonBehavior, MDLabel):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.group = "nav-bar"
-        self.font_style = "Button"
-        self.adaptive_size = True
-        self.halign = "center"
-        self.theme_text_color = "Custom"
-        self.text_color = (1, 1, 1, 1)
-        self.allow_no_selection = False
+        Clock.schedule_once(self._late_init)
+
+    def _late_init(self, i):
+        self.image = Image(
+            source=f"{environ['CRANE_ROOT']}/assets/images/logo_light.png",
+            size_hint=(None, None),
+            size=("40dp", "40dp"),
+        )
+        self.ids.tab.tab_bar.add_widget(self.image, index=1)
 
 
 class CraneListItem(ThemableBehavior, MDBoxLayout):

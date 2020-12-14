@@ -1,4 +1,5 @@
 from kivy.lang import Builder
+
 from kivymd.app import MDApp
 
 KV = """
@@ -7,7 +8,7 @@ MDBoxLayout:
 
     MDToolbar:
         id: toolbar
-        pos_hint: {"top": 1}
+        pos_hint: {'top': 1}
         title: 'Progress and Slider'
 
     MDBoxLayout:

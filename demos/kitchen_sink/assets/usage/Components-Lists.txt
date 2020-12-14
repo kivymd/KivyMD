@@ -3,12 +3,12 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.uix.list import OneLineListItem
 
-KV = '''
+KV = """
 ScrollView:
 
     MDList:
         id: container
-'''
+"""
 
 
 class Example(MDApp):
@@ -20,5 +20,6 @@ class Example(MDApp):
             self.root.ids.container.add_widget(
                 OneLineListItem(text=f"Single-line item {i}")
             )
+
 
 Example().run()

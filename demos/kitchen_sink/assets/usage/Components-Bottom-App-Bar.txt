@@ -8,10 +8,10 @@ MDBoxLayout:
     MDBottomAppBar:
 
         MDToolbar:
-            title: "Title"
-            icon: "git"
-            type: "bottom"
-            left_action_items: [["menu", lambda x: x]]
+            title: 'Title'
+            icon: 'git'
+            type: 'bottom'
+            left_action_items: [['menu', lambda x: x]]
 """
 
 

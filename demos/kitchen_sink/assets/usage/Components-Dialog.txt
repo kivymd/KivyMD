@@ -7,7 +7,7 @@ KV = """
 MDScreen:
 
     MDFlatButton:
-        text: "Open Dialog"
+        text: 'Open Dialog'
         pos_hint: {'center_x': .5, 'center_y': .5}
         on_release: app.show_alert_dialog()
 """

@@ -17,7 +17,6 @@ KivyToast
         MDToolbar:
             title: 'Test Toast'
             pos_hint: {'top': 1}
-            md_bg_color: app.theme_cls.primary_color
             left_action_items: [['menu', lambda x: x]]
 
         MDRaisedButton:

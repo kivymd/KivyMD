@@ -205,7 +205,7 @@ from kivy.uix.screenmanager import Screen, ScreenManagerException
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularElevationBehavior
-from kivymd.uix.behaviors.backgroundcolorbehavior import (
+from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )

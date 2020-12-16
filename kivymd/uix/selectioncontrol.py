@@ -153,6 +153,7 @@ MDSwitch
 __all__ = ("MDCheckbox", "MDSwitch")
 
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
@@ -160,6 +161,7 @@ from kivy.properties import (
     BooleanProperty,
     ListProperty,
     NumericProperty,
+    OptionProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
@@ -492,6 +494,24 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and property is readonly.
     """
 
+    theme_thumb_color = OptionProperty("Primary", options=["Primary", "Custom"])
+    """
+    Thumb color scheme name
+
+    :attr:`theme_thumb_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `Primary`.
+    """
+
+    theme_thumb_down_color = OptionProperty(
+        "Primary", options=["Primary", "Custom"]
+    )
+    """
+    Thumb Down color scheme name
+
+    :attr:`theme_thumb_down_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `Primary`.
+    """
+
     _track_color_active = ListProperty()
     _track_color_normal = ListProperty()
     _track_color_disabled = ListProperty()
@@ -505,28 +525,46 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             primary_palette=self._set_colors,
         )
         self.bind(active=self._update_thumb_pos)
-        self._set_colors()
+        Clock.schedule_once(self._set_colors)
         self.size_hint = (None, None)
         self.size = (dp(36), dp(48))
 
     def _set_colors(self, *args):
         self._track_color_normal = self.theme_cls.disabled_hint_text_color
         if self.theme_cls.theme_style == "Dark":
-            self._track_color_active = self.theme_cls.primary_color
+
+            if self.theme_thumb_down_color == "Primary":
+                self._track_color_active = self.theme_cls.primary_color
+            else:
+                self._track_color_active = self.thumb_color_down
+
             self._track_color_active[3] = 0.5
             self._track_color_disabled = get_color_from_hex("FFFFFF")
             self._track_color_disabled[3] = 0.1
-            self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
-            self.thumb_color_down = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]["200"]
-            )
+
+            if self.theme_thumb_color == "Primary":
+                self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
+
+            if self.theme_thumb_down_color == "Primary":
+                self.thumb_color_down = get_color_from_hex(
+                    colors[self.theme_cls.primary_palette]["200"]
+                )
         else:
-            self._track_color_active = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]["200"]
-            )
+            if self.theme_thumb_down_color == "Primary":
+                self._track_color_active = get_color_from_hex(
+                    colors[self.theme_cls.primary_palette]["200"]
+                )
+            else:
+                self._track_color_active = self.thumb_color_down
+
             self._track_color_active[3] = 0.5
             self._track_color_disabled = self.theme_cls.disabled_hint_text_color
-            self.thumb_color_down = self.theme_cls.primary_color
+
+            if self.theme_thumb_down_color == "Primary":
+                self.thumb_color_down = self.theme_cls.primary_color
+
+            if self.theme_thumb_color == "Primary":
+                self.thumb_color = get_color_from_hex(colors["Gray"]["50"])
 
     def _update_thumb_pos(self, *args, animation=True):
         if self.active:

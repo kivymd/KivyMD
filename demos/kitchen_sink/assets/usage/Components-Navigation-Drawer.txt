@@ -1,17 +1,18 @@
 from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
+
 from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = """
 MDScreen:
 
-    NavigationLayout:
+    MDNavigationLayout:
 
         ScreenManager:
 
-            Screen:
+            MDScreen:
 
-                BoxLayout:
+                MDBoxLayout:
                     orientation: 'vertical'
 
                     MDToolbar:
@@ -28,7 +29,7 @@ MDScreen:
 """
 
 
-class ContentNavigationDrawer(BoxLayout):
+class ContentNavigationDrawer(MDBoxLayout):
     pass
 
 

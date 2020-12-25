@@ -54,7 +54,7 @@ A simple example:
                         MDToolbar:
                             title: "Navigation Drawer"
                             elevation: 10
-                            left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+                            left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
 
                         Widget:
 
@@ -690,7 +690,8 @@ class MDNavigationDrawer(MDCard):
                 ):
                     self.status = "opening_with_swipe"
             elif self.status == "opened":
-                self.status = "closing_with_swipe"
+                if abs(touch.x - touch.ox) > self.swipe_distance:
+                    self.status = "closing_with_swipe"
 
         if self.status in ("opening_with_swipe", "closing_with_swipe"):
             self.open_progress = max(

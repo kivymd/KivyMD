@@ -580,6 +580,7 @@ Builder.load_string(
     height: self.line_height + dp(10)
     background_active: f'{images_path}transparent.png'
     background_normal: f'{images_path}transparent.png'
+    hint_text_color: self.theme_cls.disabled_hint_text_color
     padding:
         self._lbl_icon_left.texture_size[1] + dp(10) if self.icon_left else dp(15), \
         (self.height / 2) - (self.line_height / 2), \
@@ -640,9 +641,7 @@ Builder.load_string(
 
         Color:
             rgba:
-                (root.theme_cls.disabled_hint_text_color if (not self.focus or self.focus) else root.foreground_color) \
-                if not self.hint_text_color else \
-                (self.hint_text_color if (not self.focus or self.focus) and not self.text else root.foreground_color)
+                self.hint_text_color if not self.text else root.foreground_color
 """
 )
 

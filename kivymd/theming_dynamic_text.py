@@ -67,6 +67,7 @@ def get_contrast_text_color(color, use_color_brightness=True):
 
 if __name__ == "__main__":
     from kivy.utils import get_color_from_hex
+
     from kivymd.color_definitions import colors, text_colors
 
     for c in colors.items():

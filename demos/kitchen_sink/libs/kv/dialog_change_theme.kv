@@ -2,9 +2,12 @@
 #:import Window kivy.core.window.Window
 #:import get_hex_from_color kivy.utils.get_hex_from_color
 #:import images_path kivymd.images_path
+#:import Clipboard kivy.core.clipboard.Clipboard
+#:import PythonLexer pygments.lexers.python.PythonLexer
+#:import webbrowser webbrowser
+#:import toast kivymd.toast.toast
 
-
-<KitchenSinkBaseDialog>:
+<KitchenSinkBaseDialog>
     background: f"{images_path}/transparent.png"
     canvas:
         Color:
@@ -15,7 +18,7 @@
             radius: [15,]
 
 
-<KitchenSinkDialogDev>:
+<KitchenSinkDialogDev>
     size_hint: None, None
     height: Window.height * 60 / 100
     width: Window.width * 90 / 100
@@ -45,22 +48,22 @@
                 padding: "10dp"
 
                 KitchenSinkTwoLineLeftAvatarItem:
-                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}andre-rodriges.png'
+                    icon: f"{os.environ['KITCHEN_SINK_ASSETS']}andre-rodriges.png"
                     secondary_text: "https://twitter.com/mixedCase_"
                     text: "Andrés Rodríguez"
 
                 KitchenSinkTwoLineLeftAvatarItem:
-                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}heattheatr.png'
+                    icon: f"{os.environ['KITCHEN_SINK_ASSETS']}heattheatr.png"
                     secondary_text: "https://github.com/HeaTTheatR"
                     text: "Ivanov Yuri"
 
                 KitchenSinkTwoLineLeftAvatarItem:
-                    icon: f'{os.environ["KITCHEN_SINK_ASSETS"]}artemsbulgakov.png'
+                    icon: f"{os.environ['KITCHEN_SINK_ASSETS']}artemsbulgakov.png"
                     secondary_text: "https://github.com/ArtemSBulgakov"
                     text: "Artem Bulgakov"
 
 
-<KitchenSinkDialogLicense>:
+<KitchenSinkDialogLicense>
     size_hint: None, None
     height: Window.height * 90 / 100
     width: Window.width * 90 / 100
@@ -98,7 +101,7 @@
                     font_style: "Caption"
 
 
-<KitchenSinkDialogChangeTheme>:
+<KitchenSinkDialogChangeTheme>
     size_hint: None, None
     height: Window.height * 80 / 100
     width: Window.width * 80 / 100
@@ -124,12 +127,65 @@
 
         RecycleView:
             id: rv
-            key_viewclass: 'viewclass'
-            key_size: 'height'
+            key_viewclass: "viewclass"
+            key_size: "height"
 
             RecycleBoxLayout:
                 default_size: None, dp(48)
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
-                orientation: 'vertical'
+                orientation: "vertical"
+
+
+<KitchenSinkUsageCode>
+    size_hint: .9, .9
+
+    MDBoxLayout:
+        orientation: "vertical"
+        pos_hint: {"center_x": .5}
+        padding: "10dp"
+        spacing: "15dp"
+
+        MDBoxLayout:
+            adaptive_height: True
+            padding: "15dp", 0, "15dp", 0
+
+            MDLabel:
+                text: "Usage of " + root.title
+                size_hint: None, None
+                size: self.texture_size
+                text_size: None, self.font_size
+                pos_hint: {"center_y": .5}
+                theme_text_color: "Primary"
+                font_style: "H6"
+
+            Widget:
+
+            MDIconButton:
+                icon: "content-copy"
+                pos_hint: {"center_y": .5}
+                on_press:
+                    Clipboard.copy(code_input.text)
+                    toast("Copied to Clipboard")
+
+        ScrollView:
+
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+
+                CodeInput:
+                    id: code_input
+                    text: root.code
+                    style_name: "monokai" if app.theme_cls.theme_style == "Dark" else "colorful"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    background_normal: f"{images_path}transparent.png"
+                    readonly: True
+                    on_focus: self.focus = False
+
+                MDTextButton:
+                    text: "Want to know more about this component?"
+                    pos_hint: {"center_x": .5}
+                    on_release: webbrowser.open(root.website)

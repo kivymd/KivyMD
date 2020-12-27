@@ -1,0 +1,41 @@
+from kivy.lang import Builder
+
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
+
+KV = """
+MDScreen:
+
+    MDNavigationLayout:
+
+        ScreenManager:
+
+            MDScreen:
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        title: 'Navigation Drawer'
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.set_state('toggle')]]
+
+                    Widget:
+
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+"""
+
+
+class ContentNavigationDrawer(MDBoxLayout):
+    pass
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

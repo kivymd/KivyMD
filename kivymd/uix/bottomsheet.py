@@ -466,7 +466,7 @@ class MDListBottomSheet(MDBottomSheet):
         """
         :arg text: element text;
         :arg callback: function that will be called when clicking on an item;
-        :arg icon_src: which will be used as an icon to the left of the item;
+        :arg icon: which will be used as an icon to the left of the item;
         """
 
         if icon:
@@ -487,7 +487,7 @@ Builder.load_string(
     size: dp(64), dp(96)
 
     AnchorLayout:
-        anchoor_x: "center"
+        anchor_x: "center"
 
         MDIconButton:
             icon: root.source
@@ -521,12 +521,12 @@ class GridBottomSheetItem(ButtonBehavior, BoxLayout):
     and defaults to `''`.
     """
 
-    icon_size = StringProperty("32sp")
+    icon_size = NumericProperty("24sp")
     """
     Icon size.
 
     :attr:`caption` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'32sp'`.
+    and defaults to `'24sp'`.
     """
 
 

@@ -46,18 +46,27 @@ Example of .spec file
     )
 """
 
-__all__ = ("hooks_path", "datas", "hiddenimports")
+__all__ = ("hooks_path", "get_hook_dirs", "get_pyinstaller_tests")
 
-from os.path import abspath, basename, dirname, join
+import os
+from pathlib import Path
 
 import kivymd
 
-hooks_path = dirname(abspath(__file__))
+hooks_path = str(Path(__file__).absolute().parent)
 """Path to hook directory to use with PyInstaller.
 See :mod:`kivymd.tools.packaging.pyinstaller` for more information."""
 
-datas = [
-    (kivymd.fonts_path, join("kivymd", basename(dirname(kivymd.fonts_path)))),
-    (kivymd.images_path, join("kivymd", basename(dirname(kivymd.images_path)))),
-]
-hiddenimports = ["PIL"]
+
+def get_hook_dirs():
+    return [hooks_path]
+
+
+def get_pyinstaller_tests():
+    return [os.path.join(kivymd.path, "tests", "pyinstaller")]
+
+
+if __name__ == "__main__":
+    print(hooks_path)
+    print(get_hook_dirs())
+    print(get_pyinstaller_tests())

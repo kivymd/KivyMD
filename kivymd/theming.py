@@ -40,9 +40,8 @@ from kivy.utils import get_color_from_hex
 
 from kivymd import images_path
 from kivymd.color_definitions import colors, hue, palette
-from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
-
 from kivymd.font_definitions import theme_font_styles  # NOQA: F401
+from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
 
 
 class ThemeManager(EventDispatcher):
@@ -247,7 +246,7 @@ class ThemeManager(EventDispatcher):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/accent-palette.png
 
-    :attr:`primary_hue` is an :class:`~kivy.properties.OptionProperty`
+    :attr:`accent_palette` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Amber'`.
     """
 
@@ -783,12 +782,9 @@ class ThemeManager(EventDispatcher):
     def set_clearcolor_by_theme_style(self, theme_style):
         if not self.set_clearcolor:
             return
-        if theme_style == "Light":
-            Window.clearcolor = get_color_from_hex(
-                colors["Light"]["Background"]
-            )
-        elif theme_style == "Dark":
-            Window.clearcolor = get_color_from_hex(colors["Dark"]["Background"])
+        Window.clearcolor = get_color_from_hex(
+            colors[theme_style]["Background"]
+        )
 
     # font name, size (sp), always caps, letter spacing (sp)
     font_styles = DictProperty(
@@ -895,8 +891,7 @@ class ThemableBehavior(EventDispatcher):
                 ):
                     raise ValueError(
                         "KivyMD: App object must be inherited from "
-                        "`kivymd.app.MDApp`. See "
-                        "https://github.com/kivymd/KivyMD/blob/master/README.md#api-breaking-changes"
+                        "`kivymd.app.MDApp`"
                     )
             except AttributeError:
                 raise ValueError(

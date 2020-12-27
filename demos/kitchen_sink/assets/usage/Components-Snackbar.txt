@@ -1,0 +1,21 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
+KV = """
+#: import Snackbar kivymd.uix.snackbar.Snackbar
+
+MDScreen:
+
+    MDRaisedButton:
+        text: 'Create simple snackbar'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        on_release: Snackbar(text='This is a snackbar!').open()
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

@@ -151,12 +151,14 @@ ACTIVITY_MANAGER = """
     background_normal: ""
     background_down: ""
     dir_or_file_name: ""
+    _selected: False
     events_callback: lambda x: None
     orientation: "vertical"
 
     ModifiedOneLineIconListItem:
         text: root.dir_or_file_name
-        on_release: root.events_callback(root.path)
+        bg_color: self.theme_cls.bg_darkest if root._selected else self.theme_cls.bg_normal
+        on_release: root.events_callback(root.path, root)
 
         IconLeftWidget:
             icon: root.icon
@@ -181,6 +183,7 @@ ACTIVITY_MANAGER = """
     realpath: ""
     type: "folder"
     events_callback: lambda x: None
+    _selected: False
     orientation: "vertical"
     size_hint_y: None
     hright: root.height
@@ -189,10 +192,11 @@ ACTIVITY_MANAGER = """
     IconButton:
         mipmap: True
         source: root.path
+        bg_color: app.theme_cls.bg_darkest if root._selected else app.theme_cls.bg_normal
         on_release:
             root.events_callback(\
             os.path.join(root.path if root.type != "folder" else root.realpath, \
-            root.name))
+            root.name), root)
 
     LabelContent:
         text: root.name
@@ -244,7 +248,6 @@ ACTIVITY_MANAGER = """
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
-                orientation: "vertical"
 
 
 <ModifiedOneLineIconListItem>
@@ -259,8 +262,7 @@ ACTIVITY_MANAGER = """
 
 
 class BodyManagerWithPreview(MDBoxLayout):
-    """Base class for folder icons and thumbnails images in ``preview`` mode.
-    """
+    """Base class for folder icons and thumbnails images in ``preview`` mode."""
 
 
 class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
@@ -389,6 +391,24 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     and defaults to `False`.
     """
 
+    selector = OptionProperty("any", options=["any", "file", "folder", "multi"])
+    """
+    It can take the values 'any' 'file' 'folder' 'multi'
+    By default, any.
+    Available options are: `'any'`, `'file'`, `'folder'`, `'multi'`.
+
+    :attr:`selector` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `any`.
+    """
+
+    selection = ListProperty([])
+    """
+    Contains the list of files that are currently selected.
+
+    :attr:`selection` is a read-only :class:`~kivy.properties.ListProperty` and
+    defaults to [].
+    """
+
     _window_manager = None
     _window_manager_open = False
 
@@ -398,13 +418,18 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
 
-        self.add_widget(
-            FloatButton(
-                callback=self.select_directory_on_press_button,
-                md_bg_color=self.theme_cls.primary_color,
-                icon=self.icon,
+        if (
+            self.selector == "any"
+            or self.selector == "multi"
+            or self.selector == "folder"
+        ):
+            self.add_widget(
+                FloatButton(
+                    callback=self.select_directory_on_press_button,
+                    md_bg_color=self.theme_cls.primary_color,
+                    icon=self.icon,
+                )
             )
-        )
 
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
@@ -457,6 +482,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         """
 
         self.current_path = path
+        self.selection = []
         dirs, files = self.get_content()
         manager_list = []
 
@@ -476,6 +502,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "name": name_dir,
                         "events_callback": self.select_dir_or_file,
                         "height": dp(150),
+                        "_selected": False,
                     }
                 )
             for name_file in self.__sort_files(files):
@@ -491,6 +518,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                             "type": "files",
                             "events_callback": self.select_dir_or_file,
                             "height": dp(150),
+                            "_selected": False,
                         }
                     )
         else:
@@ -509,6 +537,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "icon": icon,
                         "dir_or_file_name": name,
                         "events_callback": self.select_dir_or_file,
+                        "_selected": False,
                     }
                 )
             for name in self.__sort_files(files):
@@ -522,6 +551,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
                         "icon": "file-outline",
                         "dir_or_file_name": os.path.split(name)[1],
                         "events_callback": self.select_dir_or_file,
+                        "_selected": False,
                     }
                 )
         self.ids.rv.data = manager_list
@@ -591,11 +621,22 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         self._window_manager.dismiss()
         self._window_manager_open = False
 
-    def select_dir_or_file(self, path):
+    def select_dir_or_file(self, path, widget):
         """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(os.path.join(self.current_path, path)):
-            self.select_path(os.path.join(self.current_path, path))
+            if self.selector == "multi":
+                file_path = os.path.join(self.current_path, path)
+                if file_path in self.selection:
+                    widget._selected = False
+                    self.selection.remove(file_path)
+                else:
+                    widget._selected = True
+                    self.selection.append(file_path)
+            elif self.selector == "folder":
+                return
+            else:
+                self.select_path(os.path.join(self.current_path, path))
 
         else:
             self.current_path = path
@@ -616,7 +657,12 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     def select_directory_on_press_button(self, *args):
         """Called when a click on a floating button."""
 
-        self.select_path(self.current_path)
+        if self.selector == "multi":
+            if len(self.selection) > 0:
+                self.select_path(self.selection)
+        else:
+            if self.selector == "folder" or self.selector == "any":
+                self.select_path(self.current_path)
 
 
 Builder.load_string(ACTIVITY_MANAGER)

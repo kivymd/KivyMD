@@ -18,7 +18,7 @@ should look like this:
 
     Root:
 
-        NavigationLayout:
+        MDNavigationLayout:
 
             ScreenManager:
 
@@ -42,7 +42,7 @@ A simple example:
     KV = '''
     Screen:
 
-        NavigationLayout:
+        MDNavigationLayout:
 
             ScreenManager:
 
@@ -186,7 +186,7 @@ Create a menu list for ``ContentNavigationDrawer``:
     :align: center
 
 Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
----------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -225,7 +225,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
             title: "MDNavigationDrawer"
             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
-        NavigationLayout:
+        MDNavigationLayout:
             x: toolbar.height
 
             ScreenManager:
@@ -284,14 +284,13 @@ You can use the ``standard`` behavior type for the NavigationDrawer:
     `Full example of Components-Navigation-Drawer <https://github.com/kivymd/KivyMD/wiki/Components-Navigation-Drawer>`_
 """
 
-__all__ = ("NavigationLayout", "MDNavigationDrawer")
+__all__ = ("MDNavigationLayout", "MDNavigationDrawer")
 
 from kivy.animation import Animation, AnimationTransition
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -320,6 +319,17 @@ Builder.load_string(
         if self.anchor == "left" \
         else (Window.width - self.width * self.open_progress)
     elevation: 10
+
+    canvas:
+        Clear
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: root.background
+            radius: root._radius
+    md_bg_color: self.theme_cls.bg_light
 """
 )
 
@@ -328,7 +338,7 @@ class NavigationDrawerContentError(Exception):
     pass
 
 
-class NavigationLayout(FloatLayout):
+class MDNavigationLayout(FloatLayout):
     _scrim_color = ObjectProperty(None)
     _scrim_rectangle = ObjectProperty(None)
 
@@ -344,7 +354,7 @@ class NavigationLayout(FloatLayout):
         manager = self._screen_manager
         if not drawer or not manager:
             return
-        if drawer.type == "standard" or manager.width < self.width:
+        if drawer.type == "standard":
             manager.size_hint_x = None
             if drawer.anchor == "left":
                 manager.x = drawer.width + drawer.x
@@ -352,6 +362,13 @@ class NavigationLayout(FloatLayout):
             else:
                 manager.x = 0
                 manager.width = drawer.x
+        elif drawer.type == "modal":
+            manager.size_hint_x = None
+            manager.x = 0
+            if drawer.anchor == "left":
+                manager.width = self.width - manager.x
+            else:
+                manager.width = self.width
 
     def add_scrim(self, widget):
         with widget.canvas.after:
@@ -377,7 +394,7 @@ class NavigationLayout(FloatLayout):
             widget, (MDNavigationDrawer, ScreenManager, MDToolbar)
         ):
             raise NavigationDrawerContentError(
-                "The NavigationLayout must contain "
+                "The MDNavigationLayout must contain "
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         if isinstance(widget, ScreenManager):
@@ -390,7 +407,7 @@ class NavigationLayout(FloatLayout):
             )
         if len(self.children) > 3:
             raise NavigationDrawerContentError(
-                "The NavigationLayout must contain "
+                "The MDNavigationLayout must contain "
                 "only `MDNavigationDrawer` and `ScreenManager`"
             )
         return super().add_widget(widget)
@@ -503,12 +520,14 @@ class MDNavigationDrawer(MDCard):
     and defaults to `[0, 0, 0, 0.5]`.
     """
 
+    _radius = ListProperty([0, 0, 0, 0])
+
     def _get_scrim_alpha(self):
         _scrim_alpha = 0
         if self.type == "modal":
             _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
         if (
-            isinstance(self.parent, NavigationLayout)
+            isinstance(self.parent, MDNavigationLayout)
             and self.parent._scrim_color
         ):
             self.parent._scrim_color.rgba = self.scrim_color[:3] + [
@@ -578,14 +597,6 @@ class MDNavigationDrawer(MDCard):
     and defaults to `0.2`.
     """
 
-    def on_type(self, *args):
-        if self.type == "standard":
-            self.enable_swiping = False
-            self.close_on_click = False
-        else:
-            self.enable_swiping = True
-            self.close_on_click = True
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
@@ -625,13 +636,6 @@ class MDNavigationDrawer(MDCard):
                 ).start(self)
             else:
                 self.open_progress = 0
-
-    def toggle_nav_drawer(self):
-        Logger.warning(
-            "KivyMD: The 'toggle_nav_drawer' method is deprecated, "
-            "use 'set_state' instead."
-        )
-        self.set_state("toggle", animation=True)
 
     def update_status(self, *_):
         status = self.status
@@ -690,7 +694,13 @@ class MDNavigationDrawer(MDCard):
 
         if self.status in ("opening_with_swipe", "closing_with_swipe"):
             self.open_progress = max(
-                min(self.open_progress + touch.dx / self.width, 1), 0
+                min(
+                    self.open_progress
+                    + (touch.dx if self.anchor == "left" else -touch.dx)
+                    / self.width,
+                    1,
+                ),
+                0,
             )
             return True
         return super().on_touch_move(touch)
@@ -718,6 +728,17 @@ class MDNavigationDrawer(MDCard):
         elif self.status == "closed":
             return False
         return True
+
+    def on_radius(self, instance, value):
+        self._radius = value
+
+    def on_type(self, *args):
+        if self.type == "standard":
+            self.enable_swiping = False
+            self.close_on_click = False
+        else:
+            self.enable_swiping = True
+            self.close_on_click = True
 
     def _handle_keyboard(self, window, key, *largs):
         if key == 27 and self.status == "opened" and self.close_on_click:

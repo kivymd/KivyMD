@@ -67,7 +67,7 @@ Persistent helper text mode
     :align: center
 
 Helper text mode `'on_error'`
-----------------------------
+-----------------------------
 
 To display an error in a text field when using the
 ``helper_text_mode: "on_error"`` parameter, set the `"error"` text field
@@ -114,7 +114,7 @@ parameter to `True`:
     :align: center
 
 Helper text mode `'on_error'` (with required)
---------------------------------------------
+---------------------------------------------
 
 .. code-block:: kv
 
@@ -405,6 +405,7 @@ With right icon
 
 __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
+import re
 import sys
 
 from kivy.animation import Animation
@@ -505,7 +506,7 @@ Builder.load_string(
 
         # "rectangle" mode
         Color:
-            rgba: self._current_line_color
+            rgba: self._current_line_color if not self.text_color else self.text_color
         Line:
             width: dp(1) if root.mode == "rectangle" else dp(0.00001)
             points:
@@ -528,7 +529,7 @@ Builder.load_string(
             radius: (10, 10, 0, 0, 0)
 
     font_name: "Roboto" if not root.font_name else root.font_name
-    foreground_color: app.theme_cls.text_color
+    foreground_color: self.theme_cls.text_color
     font_size: "16sp"
     bold: False
     padding:
@@ -639,13 +640,23 @@ Builder.load_string(
 
         Color:
             rgba:
-                root.theme_cls.disabled_hint_text_color if not self.focus \
-                else root.foreground_color
+                (root.theme_cls.disabled_hint_text_color if not self.focus else root.foreground_color) \
+                if not self.hint_text_color else \
+                (self.hint_text_color if not self.focus and not self.text else root.foreground_color)
 """
 )
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
+
+    line_anim = BooleanProperty(True)
+    """
+    If True, then text field shows animated line when on focus.
+
+    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     _primary_color = ListProperty((0, 0, 0, 0))
 
     def __init__(self, **kwargs):
@@ -663,8 +674,12 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
             d_line = 0.05
             d_color = 0.05
 
-        Animation(points=points, d=d_line, t="out_cubic").start(instance_line)
-        Animation(a=alpha, d=d_color).start(instance_color)
+        Animation(
+            points=points, d=(d_line if self.line_anim else 0), t="out_cubic"
+        ).start(instance_line)
+        Animation(a=alpha, d=(d_color if self.line_anim else 0)).start(
+            instance_color
+        )
 
     def _update_primary_color(self, *args):
         self._primary_color = self.theme_cls.primary_color
@@ -752,6 +767,14 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `[]`.
     """
 
+    line_anim = BooleanProperty(True)
+    """
+    If True, then text field shows animated line when on focus.
+
+    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     error_color = ListProperty()
     """
     Error color in ``rgba`` format for ``required = True``.
@@ -807,6 +830,13 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `(0, 0, 0, 1)`.
     """
 
+    text_color = ListProperty()
+    """Text color in ``rgba`` format.
+
+    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_point = NumericProperty(0)
@@ -847,6 +877,7 @@ class MDTextField(ThemableBehavior, TextInput):
             accent_color=self._update_accent_color,
         )
         self.has_had_text = False
+        self._better_texture_size = None
 
     def set_objects_labels(self):
         """Creates labels objects for the parameters
@@ -906,23 +937,26 @@ class MDTextField(ThemableBehavior, TextInput):
             )
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1
-            Animation(
-                _line_blank_space_right_point=self._line_blank_space_right_point,
-                _line_blank_space_left_point=self._hint_lbl.x - dp(5),
-                _current_hint_text_color=self.line_color_focus,
-                fill_color=_fill_color,
-                duration=0.2,
-                t="out_quad",
-            ).start(self)
+            if not self._get_has_error():
+                Animation(
+                    _line_blank_space_right_point=self._line_blank_space_right_point,
+                    _line_blank_space_left_point=self._hint_lbl.x - dp(5),
+                    _current_hint_text_color=self.line_color_focus,
+                    fill_color=_fill_color,
+                    duration=0.2,
+                    t="out_quad",
+                ).start(self)
             self.has_had_text = True
             Animation.cancel_all(
                 self, "_line_width", "_hint_y", "_hint_lbl_font_size"
             )
             if not self.text:
                 self._anim_lbl_font_size(dp(14), sp(12))
-            Animation(_line_width=self.width, duration=0.2, t="out_quad").start(
-                self
-            )
+            Animation(
+                _line_width=self.width,
+                duration=(0.2 if self.line_anim else 0),
+                t="out_quad",
+            ).start(self)
             if self._get_has_error():
                 self._anim_current_error_color(self.error_color)
                 if self.helper_text_mode == "on_error" and (
@@ -939,9 +973,9 @@ class MDTextField(ThemableBehavior, TextInput):
                     self._anim_current_error_color(disabled_hint_text_color)
             else:
                 self._anim_current_right_lbl_color(disabled_hint_text_color)
-                Animation(duration=0.2, color=self.line_color_focus).start(
-                    self._hint_lbl
-                )
+                Animation(
+                    duration=0.2, _current_hint_text_color=self.line_color_focus
+                ).start(self)
                 if self.helper_text_mode == "on_error":
                     self._anim_current_error_color((0, 0, 0, 0))
                 if self.helper_text_mode in ("persistent", "on_focus"):
@@ -987,9 +1021,25 @@ class MDTextField(ThemableBehavior, TextInput):
                     self._anim_current_error_color(disabled_hint_text_color)
                 elif self.helper_text_mode == "on_focus":
                     self._anim_current_error_color((0, 0, 0, 0))
-                Animation(_line_width=0, duration=0.2, t="out_quad").start(self)
+                Animation(
+                    _line_width=0,
+                    duration=(0.2 if self.line_anim else 0),
+                    t="out_quad",
+                ).start(self)
+
+    def on_disabled(self, *args):
+        if self.disabled:
+            self._update_colors(self.theme_cls.disabled_hint_text_color)
+        elif not self.disabled:
+            if self.color_mode == "primary":
+                self._update_primary_color()
+            elif self.color_mode == "accent":
+                self._update_accent_color()
+            elif self.color_mode == "custom":
+                self._update_colors(self.line_color_focus)
 
     def on_text(self, instance, text):
+        self.text = re.sub("\n", " ", text) if not self.multiline else text
         if len(text) > 0:
             self.has_had_text = True
         if self.max_text_length is not None:
@@ -1124,9 +1174,10 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def _get_line_blank_space_right_point(self):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_line_blank_space_right_point.png
+        if not self._better_texture_size:
+            self._better_texture_size = self._hint_lbl.texture_size[0]
         return (
-            self._hint_lbl.texture_size[0]
-            - self._hint_lbl.texture_size[0] / 100 * dp(18)
+            self._better_texture_size - self._better_texture_size / 100 * dp(18)
             if DEVICE_TYPE == "desktop"
             else dp(10)
         )
@@ -1223,11 +1274,17 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
 
     _color_active = ListProperty()
 
+    _icon_left_color_copy = ListProperty()
+
+    _icon_right_color_copy = ListProperty()
+
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
         self._lbl_icon_left = MDIcon(theme_text_color="Custom")
         self._lbl_icon_right = MDIcon(theme_text_color="Custom")
+        super().__init__(**kwargs)
         self.cursor_color = self.theme_cls.primary_color
+        self.icon_left_color = self.theme_cls.text_color
+        self.icon_right_color = self.theme_cls.text_color
 
         if not self.normal_color:
             self.normal_color = self.theme_cls.primary_light
@@ -1241,20 +1298,36 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
             self.icon_left_color = self.theme_cls.primary_color
             self.icon_right_color = self.theme_cls.primary_color
         else:
-            self.icon_left_color = self.theme_cls.text_color
-            self.icon_right_color = self.theme_cls.text_color
+            self.icon_left_color = (
+                self._icon_left_color_copy or self.theme_cls.text_color
+            )
+            self.icon_right_color = (
+                self._icon_right_color_copy or self.theme_cls.text_color
+            )
 
     def on_icon_left(self, instance, value):
         self._lbl_icon_left.icon = value
 
     def on_icon_left_color(self, instance, value):
         self._lbl_icon_left.text_color = value
+        if (
+            not self._icon_left_color_copy
+            and value != self.theme_cls.text_color
+            and value != self.theme_cls.primary_color
+        ):
+            self._icon_left_color_copy = value
 
     def on_icon_right(self, instance, value):
         self._lbl_icon_right.icon = value
 
     def on_icon_right_color(self, instance, value):
         self._lbl_icon_right.text_color = value
+        if (
+            not self._icon_right_color_copy
+            and value != self.theme_cls.text_color
+            and value != self.theme_cls.primary_color
+        ):
+            self._icon_right_color_copy = value
 
     def on_color_active(self, instance, value):
         if value != [0, 0, 0, 0.5]:

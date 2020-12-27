@@ -1,0 +1,39 @@
+<PieChartLine>
+    size_hint: (1, None)
+    height: dp(270)
+
+    canvas:
+        Color:
+            rgba: root.line_color[0]
+        Line:
+            width: dp(2)
+            circle:
+                (self.center_x, self.center_y, min(self.width, self.height)
+                / 2, root.angle_start[0], root.angle_end[0])
+        Color:
+            rgba: root.line_color[1]
+        Line:
+            width: dp(2)
+            circle:
+                (self.center_x, self.center_y, min(self.width, self.height)
+                / 2, root.angle_start[1], root.angle_end[1])
+        Color:
+            rgba: root.line_color[2]
+        Line:
+            width: dp(2)
+            circle:
+                (self.center_x, self.center_y, min(self.width, self.height)
+                / 2, root.angle_start[2], root.angle_end[2])
+        Color:
+            rgba: root.line_color[3]
+        Line:
+            width: dp(2)
+            circle:
+                (self.center_x, self.center_y, min(self.width, self.height)
+                / 2, root.angle_start[3], root.angle_end[3])
+    MDLabel:
+        text: root.text
+        font_style: "Button"
+        halign: "center"
+        font_size: sp(20)
+        center: root.center

@@ -2,8 +2,8 @@
 #:import IconRightSampleWidget libs.baseclass.list_items.IconRightSampleWidget
 
 
-<KitchenSinkLists@Screen>
-    name: 'lists'
+<KitchenSinkLists@MDScreen>
+    name: "lists"
 
     BoxLayout:
         orientation: "vertical"
@@ -33,14 +33,14 @@
                 OneLineAvatarListItem:
                     text: "Single-line item with avatar"
                     ImageLeftWidget:
-                        source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}avatar.png"
 
                 TwoLineAvatarListItem:
                     type: "two-line"
                     text: "Two-line item..."
                     secondary_text: "with avatar"
                     ImageLeftWidget:
-                        source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}avatar.png"
 
                 ThreeLineAvatarListItem:
                     type: "three-line"
@@ -48,20 +48,20 @@
                     secondary_text: "...with avatar..."
                     tertiary_text: "and third line!"
                     ImageLeftWidget:
-                        source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}avatar.png"
 
                 OneLineIconListItem:
                     text: "Single-line item with left icon"
                     IconLeftWidget:
                         id: li_icon_1
-                        icon: 'star-circle'
+                        icon: "star-circle"
 
                 TwoLineIconListItem:
                     text: "Two-line item..."
                     secondary_text: "...with left icon"
                     IconLeftWidget:
                         id: li_icon_2
-                        icon: 'comment-text'
+                        icon: "comment-text"
 
                 ThreeLineIconListItem:
                     text: "Three-line item..."
@@ -69,19 +69,19 @@
                     tertiary_text: "and third line!"
                     IconLeftWidget:
                         id: li_icon_3
-                        icon: 'sd'
+                        icon: "sd"
 
                 OneLineAvatarIconListItem:
                     text: "Single-line + avatar&icon"
                     ImageLeftWidget:
-                        source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}avatar.png"
                     IconRightSampleWidget:
 
                 TwoLineAvatarIconListItem:
                     text: "Two-line item..."
                     secondary_text: "...with avatar&icon"
                     ImageLeftWidget:
-                        source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}avatar.png"
                     IconRightSampleWidget:
 
                 ThreeLineAvatarIconListItem:
@@ -89,5 +89,5 @@
                     secondary_text: "...with avatar&icon..."
                     tertiary_text: "and third line!"
                     ImageLeftWidget:
-                        source: f'{environ["KITCHEN_SINK_ASSETS"]}avatar.png'
+                        source: f"{environ['KITCHEN_SINK_ASSETS']}avatar.png"
                     IconRightSampleWidget:

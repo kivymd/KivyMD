@@ -7,7 +7,7 @@ Modules and classes implementing various behaviors for buttons etc.
 
 # flake8: NOQA
 from .hover_behavior import HoverBehavior  # isort:skip
-from .backgroundcolorbehavior import (
+from .backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
@@ -18,5 +18,5 @@ from .elevation import (
 )
 from .focus_behavior import FocusBehavior
 from .magic_behavior import MagicBehavior
-from .ripplebehavior import CircularRippleBehavior, RectangularRippleBehavior
+from .ripple_behavior import CircularRippleBehavior, RectangularRippleBehavior
 from .touch_behavior import TouchBehavior

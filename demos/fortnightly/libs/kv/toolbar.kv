@@ -1,0 +1,25 @@
+#: import environ os.environ
+#: import gch kivy.utils.get_color_from_hex
+
+
+<FortnightlyToolbar>
+    size_hint_y: None
+    height: self.theme_cls.standard_increment
+    padding: dp(10)
+    spacing: dp(12)
+
+    canvas.before:
+        Color:
+            rgba: gch("#FFFFFF")
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    Image:
+        source: f"{environ['FORTNIGHTLY_ROOT']}/assets/images/title.png"
+
+    Widget:
+
+    MDIconButton:
+        icon: "magnify"
+        pos_hint: {"center_y": .5}

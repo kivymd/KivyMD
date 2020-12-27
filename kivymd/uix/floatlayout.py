@@ -1,6 +1,6 @@
 """
-Components/FloatLayout
-======================
+Components/Float Layout
+=======================
 
 :class:`~kivy.uix.floatlayout.FloatLayout` class equivalent. Simplifies working
 with some widget properties. For example:

@@ -1,0 +1,66 @@
+#:import colors kivymd.color_definitions.colors
+#:import gch kivy.utils.get_color_from_hex
+#:import environ os.environ
+
+
+<ShrineRegisterScreen>
+    canvas:
+        Color:
+            rgba: root.theme_cls.bg_dark
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDBoxLayout:
+        id: box_1
+        orientation: "vertical"
+        size_hint: .2, .2
+        pos_hint: {"center_x": .5, "center_y": .7}
+        spacing: "10dp"
+
+        Image:
+            source:
+                f"{environ['SHRINE_ROOT']}/assets/images/logo.png"
+            size_hint_x: .8
+            pos_hint: {"center_x": .5}
+
+        MDLabel:
+            text: "SHRINE"
+            adaptive_size: True
+            text_size: None, self.font_size
+            theme_text_color: "Primary"
+            font_style: "H6"
+            pos_hint: {'center_x': .5, 'center_y': .5}
+
+    MDBoxLayout:
+        id: box_2
+        adaptive_height: True
+        orientation: "vertical"
+        spacing: "10dp"
+        padding: "30dp"
+        pos_hint: {"center_y": .3}
+
+        MDTextField:
+            hint_text: "Username"
+
+        MDTextField:
+            hint_text: "Password"
+
+        Widget:
+            size_hint_y: None
+            height: "40dp"
+
+        BoxLayout:
+            spacing: "10dp"
+
+            Widget:
+
+            MDFlatButton:
+                id: button_cancel
+                text: "CANCEL"
+
+            MDFillRoundFlatButton:
+                id: button_next
+                text: "NEXT"
+                on_release: root.parent.current = "shrine root screen"
+                md_bg_color: gch(colors[root.theme_cls.primary_palette]["200"])

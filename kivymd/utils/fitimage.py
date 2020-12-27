@@ -27,7 +27,7 @@ Example:
             source: 'images/img2.jpg'
 
 Example with round corners:
-==========================
+===========================
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
     :align: center
@@ -80,7 +80,7 @@ from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
-from kivy.properties import ListProperty, ObjectProperty
+from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
@@ -111,13 +111,14 @@ class FitImage(BoxLayout):
     source = ObjectProperty()
     container = ObjectProperty()
     radius = ListProperty([0, 0, 0, 0])
+    mipmap = BooleanProperty(False)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
-        self.container = Container(self.source)
+        self.container = Container(self.source, self.mipmap)
         self.bind(source=self.container.setter("source"))
         self.add_widget(self.container)
 
@@ -126,9 +127,9 @@ class Container(Widget):
     source = ObjectProperty()
     image = ObjectProperty()
 
-    def __init__(self, source, **kwargs):
+    def __init__(self, source, mipmap, **kwargs):
         super().__init__(**kwargs)
-        self.image = AsyncImage()
+        self.image = AsyncImage(mipmap=mipmap)
         self.image.bind(on_load=self.adjust_size)
         self.source = source
         self.bind(size=self.adjust_size, pos=self.adjust_size)

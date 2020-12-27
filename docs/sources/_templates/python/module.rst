@@ -5,7 +5,7 @@
 {% endif %}
 
 {# Write last word in summary #}
-{% set unincluded = obj.include_dir("").startswith("/unincluded") %}
+{% set unincluded = obj.include_dir("").startswith("/api") %}
 {% set summary_split = obj.summary.split("/") %}
 {% set name = summary_split[-1] %}
 {% if name %}
@@ -60,7 +60,7 @@ Submodules
    :maxdepth: 1
 
 {% for submodule in visible_submodules %}
-{% if unincluded == submodule.include_dir("").startswith("/unincluded") %}
+{% if unincluded == submodule.include_dir("").startswith("/api") %}
    {{ submodule.name }} <{{ submodule.include_dir("") }}/index>
 {% endif %}
 {% endfor %}
@@ -72,7 +72,7 @@ Submodules
    :maxdepth: 3
 
 {% for subpackage in visible_subpackages %}
-{% if unincluded == subpackage.include_dir("").startswith("/unincluded") %}
+{% if unincluded == subpackage.include_dir("").startswith("/api") %}
    {{ subpackage.name }} <{{ subpackage.include_dir("") }}/index>
 {% endif %}
 {% endfor %}

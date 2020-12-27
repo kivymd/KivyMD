@@ -64,7 +64,7 @@ Without custom color
         max: 100
         value: 40
         hint: False
-        humb_color_down: app.theme_cls.accent_color
+        color: app.theme_cls.accent_color
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-3.png
     :align: center
@@ -74,12 +74,7 @@ __all__ = ("MDSlider",)
 
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import (
-    AliasProperty,
-    BooleanProperty,
-    ListProperty,
-    NumericProperty,
-)
+from kivy.properties import BooleanProperty, ListProperty, NumericProperty
 from kivy.uix.slider import Slider
 from kivy.utils import get_color_from_hex
 
@@ -89,6 +84,7 @@ from kivymd.theming import ThemableBehavior
 Builder.load_string(
     """
 #:import images_path kivymd.images_path
+#:import Thumb kivymd.uix.selectioncontrol.Thumb
 
 
 <MDSlider>
@@ -128,7 +124,7 @@ Builder.load_string(
         Color:
             rgba:
                 (0, 0, 0, 0) if self._is_off \
-                else (self.thumb_color_down if not self.disabled \
+                else (self.color if not self.disabled \
                 else self._track_color_disabled)
         Rectangle:
             size:
@@ -153,7 +149,7 @@ Builder.load_string(
             slider.value_pos[1] - dp(8))
         color:
             (0, 0, 0, 0) if slider._is_off else (root._track_color_disabled \
-            if root.disabled else root.thumb_color_down)
+            if root.disabled else root.color)
         elevation:
             0 if slider._is_off else (4 if root.active else 2)
 
@@ -180,7 +176,7 @@ Builder.load_string(
             halign: "center"
             theme_text_color: "Custom"
             text_color:
-                (root.thumb_color_down if root.active else (0, 0, 0, 0)) \
+                (root.color if root.active else (0, 0, 0, 0)) \
                 if not slider.hint_text_color else slider.hint_text_color
 """
 )
@@ -235,85 +231,25 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    # Internal state of ring
-    _is_off = BooleanProperty(False)
-
-    # Internal adjustment to reposition sliders for ring
-    _offset = ListProperty((0, 0))
-
-    _thumb_color = ListProperty(get_color_from_hex(colors["Gray"]["50"]))
-
-    def _get_thumb_color(self):
-        return self._thumb_color
-
-    def _set_thumb_color(self, color, alpha=None):
-        if len(color) == 2:
-            self._thumb_color = get_color_from_hex(colors[color[0]][color[1]])
-            if alpha:
-                self._thumb_color[3] = alpha
-        elif len(color) == 4:
-            self._thumb_color = color
-
-    thumb_color = AliasProperty(
-        _get_thumb_color, _set_thumb_color, bind=["_thumb_color"]
-    )
-    """
-    Current color slider in ``rgba`` format.
-
-    :attr:`thumb_color` is an :class:`~kivy.properties.AliasProperty` that
-    returns the value of the current color slider, property is readonly.
-    """
-
-    _thumb_color_down = ListProperty([1, 1, 1, 1])
-
-    def _get_thumb_color_down(self):
-        return self._thumb_color_down
-
-    def _set_thumb_color_down(self, color, alpha=None):
-        if len(color) == 2:
-            self._thumb_color_down = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
-            if alpha:
-                self._thumb_color_down[3] = alpha
-            else:
-                self._thumb_color_down[3] = 1
-        elif len(color) == 4:
-            self._thumb_color_down = color
-
-    _thumb_color_disabled = ListProperty(
-        get_color_from_hex(colors["Gray"]["400"])
-    )
-
-    def _get_thumb_color_disabled(self):
-        return self._thumb_color_disabled
-
-    def _set_thumb_color_disabled(self, color, alpha=None):
-        if len(color) == 2:
-            self._thumb_color_disabled = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
-            if alpha:
-                self._thumb_color_disabled[3] = alpha
-        elif len(color) == 4:
-            self._thumb_color_disabled = color
-
-    thumb_color_down = AliasProperty(
-        _get_thumb_color_disabled,
-        _set_thumb_color_disabled,
-        bind=["_thumb_color_disabled"],
-    )
+    color = ListProperty()
     """
     Color slider in ``rgba`` format.
 
-    :attr:`thumb_color_down` is an :class:`~kivy.properties.AliasProperty`
-    that returns and set the value of color slider.
+    :attr:`color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     _track_color_active = ListProperty()
     _track_color_normal = ListProperty()
     _track_color_disabled = ListProperty()
     _thumb_pos = ListProperty([0, 0])
+    _thumb_color_disabled = ListProperty(
+        get_color_from_hex(colors["Gray"]["400"])
+    )
+    # Internal state of ring
+    _is_off = BooleanProperty(False)
+    # Internal adjustment to reposition sliders for ring
+    _offset = ListProperty((0, 0))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -328,28 +264,6 @@ class MDSlider(ThemableBehavior, Slider):
         if not value:
             self.remove_widget(self.ids.hint_box)
 
-    def _set_colors(self, *args):
-        if self.theme_cls.theme_style == "Dark":
-            self._track_color_normal = get_color_from_hex("FFFFFF")
-            self._track_color_normal[3] = 0.3
-            self._track_color_active = self._track_color_normal
-            self._track_color_disabled = self._track_color_normal
-            self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
-            self.thumb_color_down = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]["200"]
-            )
-            self.thumb_color_disabled = get_color_from_hex(
-                colors["Gray"]["800"]
-            )
-        else:
-            self._track_color_normal = get_color_from_hex("000000")
-            self._track_color_normal[3] = 0.26
-            self._track_color_active = get_color_from_hex("000000")
-            self._track_color_active[3] = 0.38
-            self._track_color_disabled = get_color_from_hex("000000")
-            self._track_color_disabled[3] = 0.26
-            self.thumb_color_down = self.theme_cls.primary_color
-
     def on_value_normalized(self, *args):
         """When the ``value == min`` set it to `'off'` state and make slider
         a ring.
@@ -360,14 +274,19 @@ class MDSlider(ThemableBehavior, Slider):
     def on_show_off(self, *args):
         self._update_is_off()
 
-    def _update_is_off(self):
-        self._is_off = self.show_off and (self.value_normalized == 0)
-
     def on__is_off(self, *args):
         self._update_offset()
 
     def on_active(self, *args):
         self._update_offset()
+
+    def on_touch_down(self, touch):
+        if super().on_touch_down(touch):
+            self.active = True
+
+    def on_touch_up(self, touch):
+        if super().on_touch_up(touch):
+            self.active = False
 
     def _update_offset(self):
         """Offset is used to shift the sliders so the background color
@@ -377,10 +296,28 @@ class MDSlider(ThemableBehavior, Slider):
         d = 2 if self.active else 0
         self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
 
-    def on_touch_down(self, touch):
-        if super().on_touch_down(touch):
-            self.active = True
+    def _update_is_off(self):
+        self._is_off = self.show_off and (self.value_normalized == 0)
 
-    def on_touch_up(self, touch):
-        if super().on_touch_up(touch):
-            self.active = False
+    def _set_colors(self, *args):
+        if self.theme_cls.theme_style == "Dark":
+            self._track_color_normal = get_color_from_hex("FFFFFF")
+            self._track_color_normal[3] = 0.3
+            self._track_color_active = self._track_color_normal
+            self._track_color_disabled = self._track_color_normal
+            if not self.color:
+                self.color = get_color_from_hex(
+                    colors[self.theme_cls.primary_palette]["200"]
+                )
+            self.thumb_color_disabled = get_color_from_hex(
+                colors["Gray"]["800"]
+            )
+        else:
+            self._track_color_normal = get_color_from_hex("000000")
+            self._track_color_normal[3] = 0.26
+            self._track_color_active = get_color_from_hex("000000")
+            self._track_color_active[3] = 0.38
+            self._track_color_disabled = get_color_from_hex("000000")
+            self._track_color_disabled[3] = 0.26
+            if not self.color:
+                self.color = self.theme_cls.primary_color

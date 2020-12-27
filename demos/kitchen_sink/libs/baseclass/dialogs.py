@@ -3,11 +3,12 @@ import os
 from kivy.properties import ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
+from libs.baseclass.list_items import KitchenSinkOneLineLeftAvatarItem
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.list import OneLineAvatarIconListItem
-from libs.baseclass.list_items import KitchenSinkOneLineLeftAvatarItem
 
 
 class KitchenSinkDialogsCustomContent(BoxLayout):
@@ -25,7 +26,7 @@ class KitchenSinkItemConfirm(OneLineAvatarIconListItem):
                 check.active = False
 
 
-class KitchenSinkDialogs(Screen):
+class KitchenSinkDialogs(ThemableBehavior, Screen):
     app = ObjectProperty()
     simple_dialog = None
     alert_dialog = None
@@ -38,17 +39,20 @@ class KitchenSinkDialogs(Screen):
                 title="Phone ringtone",
                 type="confirmation",
                 items=[
-                    KitchenSinkItemConfirm(text="Callisto"),
-                    KitchenSinkItemConfirm(text="Luna"),
-                    KitchenSinkItemConfirm(text="Night"),
-                    KitchenSinkItemConfirm(text="Solo"),
-                    KitchenSinkItemConfirm(text="Phobos"),
-                    KitchenSinkItemConfirm(text="Diamond"),
-                    KitchenSinkItemConfirm(text="Sirena"),
-                    KitchenSinkItemConfirm(text="Red music"),
-                    KitchenSinkItemConfirm(text="Allergio"),
-                    KitchenSinkItemConfirm(text="Magic"),
-                    KitchenSinkItemConfirm(text="Tic-tac"),
+                    KitchenSinkItemConfirm(text=i)
+                    for i in [
+                        "Callisto",
+                        "Luna",
+                        "Night",
+                        "Solo",
+                        "Phobos",
+                        "Diamond",
+                        "Sirena",
+                        "Red music",
+                        "Allergio",
+                        "Magic",
+                        "Tic-tac",
+                    ]
                 ],
                 buttons=[
                     MDFlatButton(
@@ -60,6 +64,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.confirmation_dialog.md_bg_color = self.theme_cls.bg_dark
         self.confirmation_dialog.open()
 
     def show_example_simple_dialog(self):
@@ -82,6 +87,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.simple_dialog.md_bg_color = self.theme_cls.bg_dark
         self.simple_dialog.open()
 
     def show_example_custom_dialog(self):
@@ -100,6 +106,7 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.custom_dialog.md_bg_color = self.theme_cls.bg_dark
         self.custom_dialog.open()
 
     def show_example_alert_dialog(self):
@@ -118,4 +125,5 @@ class KitchenSinkDialogs(Screen):
                     ),
                 ],
             )
+        self.alert_dialog.md_bg_color = self.theme_cls.bg_dark
         self.alert_dialog.open()

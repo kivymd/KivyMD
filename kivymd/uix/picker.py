@@ -199,129 +199,137 @@ Builder.load_string(
 
 
 <MDDatePicker>
+    background: "{}/transparent.png".format(images_path)
     cal_layout: cal_layout
     size_hint: (None, None)
     size:
-        (dp(328), dp(484)) if self.theme_cls.device_orientation == 'portrait'\
+        (dp(328), dp(484)) \
+        if self.theme_cls.device_orientation == "portrait" \
         else (dp(512), dp(304))
-    pos_hint: {'center_x': .5, 'center_y': .5}
-
+    pos_hint: {"center_x": .5, "center_y": .5}
     canvas:
         Color:
             rgb: app.theme_cls.primary_color
-        Rectangle:
+        RoundedRectangle:
             size:
-                (dp(328), dp(96))\
-                if self.theme_cls.device_orientation == 'portrait'\
+                (dp(328), dp(96)) \
+                if self.theme_cls.device_orientation == "portrait" \
                 else (dp(168), dp(304))
             pos:
-                (root.pos[0], root.pos[1] + root.height - dp(96))\
-                if self.theme_cls.device_orientation == 'portrait'\
+                (root.pos[0], root.pos[1] + root.height - dp(96)) \
+                if self.theme_cls.device_orientation == "portrait" \
                 else (root.pos[0], root.pos[1] + root.height - dp(304))
+            radius: [root.radius[0], root.radius[1], dp(0), dp(0)] \
+                    if self.theme_cls.device_orientation == "portrait" \
+                    else [root.radius[0], dp(0), dp(0), root.radius[3]]
         Color:
             rgb: app.theme_cls.bg_normal
-        Rectangle:
+
+        RoundedRectangle:
             size:
-                (dp(328), dp(484) - dp(96))\
-                if self.theme_cls.device_orientation == 'portrait'\
+                (dp(328), dp(484) - dp(96)) \
+                if self.theme_cls.device_orientation == "portrait" \
                 else [dp(344), dp(304)]
             pos:
-                (root.pos[0], root.pos[1] + root.height - dp(96) - (dp(484) - dp(96)))\
-                if self.theme_cls.device_orientation == 'portrait'\
+                (root.pos[0], root.pos[1] + root.height - dp(96) - (dp(484) - dp(96))) \
+                if self.theme_cls.device_orientation == "portrait" \
                 else (root.pos[0] + dp(168), root.pos[1])
+            radius: [dp(0), dp(0), root.radius[2], root.radius[3]] \
+                    if self.theme_cls.device_orientation == "portrait" \
+                    else [dp(0), root.radius[1], root.radius[2], dp(0)]
 
     MDLabel:
         id: label_full_date
-        font_style: 'H4'
+        font_style: "H4"
         text_color: root.specific_text_color
-        theme_text_color: 'Custom'
+        theme_text_color: "Custom"
         size_hint: (None, None)
         size:
-            (root.width, dp(30))\
-            if root.theme_cls.device_orientation == 'portrait'\
+            (root.width, dp(30)) \
+            if root.theme_cls.device_orientation == "portrait" \
             else (dp(168), dp(30))
         pos:
-            (root.pos[0] + dp(23), root.pos[1] + root.height - dp(74))\
-            if root.theme_cls.device_orientation == 'portrait'\
+            (root.pos[0] + dp(23), root.pos[1] + root.height - dp(74)) \
+            if root.theme_cls.device_orientation == "portrait" \
             else (root.pos[0] + dp(3), root.pos[1] + dp(214))
         line_height: .84
-        valign: 'middle'
+        valign: "middle"
         text_size:
-            (root.width, None)\
-            if root.theme_cls.device_orientation == 'portrait'\
+            (root.width, None) \
+            if root.theme_cls.device_orientation == "portrait" \
             else (dp(149), None)
         bold: True
         text:
-            root.fmt_lbl_date(root.sel_year, root.sel_month, root.sel_day,\
+            root.fmt_lbl_date(root.sel_year, root.sel_month, root.sel_day, \
             root.theme_cls.device_orientation)
 
     MDLabel:
         id: label_year
-        font_style: 'Subtitle1'
+        font_style: "Subtitle1"
         text_color: root.specific_text_color
-        theme_text_color: 'Custom'
+        theme_text_color: "Custom"
         size_hint: (None, None)
         size: root.width, dp(30)
         pos:
-            (root.pos[0] + dp(23), root.pos[1] + root.height - dp(40))\
-            if root.theme_cls.device_orientation == 'portrait'\
+            (root.pos[0] + dp(23), root.pos[1] + root.height - dp(40)) \
+            if root.theme_cls.device_orientation == "portrait" \
             else (root.pos[0] + dp(16), root.pos[1] + root.height - dp(41))
-        valign: 'middle'
+        valign: "middle"
         text: str(root.sel_year)
 
     GridLayout:
         id: cal_layout
         cols: 7
         size:
-            (dp(44 * 7), dp(40 * 7))\
-            if root.theme_cls.device_orientation == 'portrait'\
+            (dp(44 * 7), dp(40 * 7)) \
+            if root.theme_cls.device_orientation == "portrait" \
             else (dp(46 * 7), dp(32 * 7))
         col_default_width:
-            dp(42) if root.theme_cls.device_orientation == 'portrait'\
+            dp(42) if root.theme_cls.device_orientation == "portrait" \
             else dp(39)
         size_hint: (None, None)
         padding:
-            (dp(2), 0) if root.theme_cls.device_orientation == 'portrait'\
+            (dp(2), 0) if root.theme_cls.device_orientation == "portrait" \
             else (dp(7), 0)
         spacing:
-            (dp(2), 0) if root.theme_cls.device_orientation == 'portrait'\
+            (dp(2), 0) if root.theme_cls.device_orientation == "portrait" \
             else (dp(7), 0)
         pos:
-            (root.pos[0] + dp(10), root.pos[1] + dp(60))\
-            if root.theme_cls.device_orientation == 'portrait'\
+            (root.pos[0] + dp(10), root.pos[1] + dp(60)) \
+            if root.theme_cls.device_orientation == "portrait" \
             else (root.pos[0] + dp(168) + dp(8), root.pos[1] + dp(48))
 
     MDLabel:
         id: label_month_selector
-        font_style: 'Body2'
-        text: calendar.month_name[root.month].capitalize() + ' ' + str(root.year)
+        font_style: "Body2"
+        text: calendar.month_name[root.month].capitalize() + " " + str(root.year)
         size_hint: (None, None)
         size: root.width, dp(30)
         pos: root.pos
         pos_hint:
-            {'center_x': .5, 'center_y': .75}\
-            if self.theme_cls.device_orientation == 'portrait'\
-            else {'center_x': .67, 'center_y': .915}
+            {"center_x": .5, "center_y": .75} \
+            if self.theme_cls.device_orientation == "portrait" \
+            else {"center_x": .67, "center_y": .915}
         valign: "middle"
         halign: "center"
 
     MDIconButton:
-        icon: 'chevron-left'
-        theme_text_color: 'Secondary'
+        icon: "chevron-left"
+        theme_text_color: "Secondary"
         pos_hint:
-            {'center_x': .08, 'center_y': .745}\
-            if root.theme_cls.device_orientation == 'portrait'\
-            else {'center_x': .39, 'center_y': .925}
-        on_release: root.change_month('prev')
+            {"center_x": .08, "center_y": .745} \
+            if root.theme_cls.device_orientation == "portrait" \
+            else {"center_x": .39, "center_y": .925}
+        on_release: root.change_month("prev")
 
     MDIconButton:
-        icon: 'chevron-right'
-        theme_text_color: 'Secondary'
+        icon: "chevron-right"
+        theme_text_color: "Secondary"
         pos_hint:
-            {'center_x': .92, 'center_y': .745}\
-            if root.theme_cls.device_orientation == 'portrait'\
-            else {'center_x': .94, 'center_y': .925}
-        on_release: root.change_month('next')
+            {"center_x": .92, "center_y": .745} \
+            if root.theme_cls.device_orientation == "portrait" \
+            else {"center_x": .94, "center_y": .925}
+        on_release: root.change_month("next")
 
     MDFlatButton:
         width: dp(32)
@@ -340,39 +348,39 @@ Builder.load_string(
 <DayButton>
     size_hint: None, None
     size:
-        (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
+        (dp(40), dp(40)) if root.theme_cls.device_orientation == "portrait" \
         else (dp(32), dp(32))
 
     MDLabel:
-        font_style: 'Caption'
-        theme_text_color: 'Custom' if root.is_today and not root.is_selected else 'Primary'
+        font_style: "Caption"
+        theme_text_color: "Custom" if root.is_today and not root.is_selected else "Primary"
         text_color: root.theme_cls.primary_color
         opposite_colors:
-            root.is_selected if root.owner.sel_month == root.owner.month\
-            and root.owner.sel_year == root.owner.year\
+            root.is_selected if root.owner.sel_month == root.owner.month \
+            and root.owner.sel_year == root.owner.year \
             and str(self.text) == str(root.owner.sel_day) else False
         size_hint_x: None
-        valign: 'middle'
-        halign: 'center'
+        valign: "middle"
+        halign: "center"
         text: root.text
 
 
 <WeekdayLabel>
-    font_style: 'Caption'
-    theme_text_color: 'Secondary'
-    size: (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
+    font_style: "Caption"
+    theme_text_color: "Secondary"
+    size: (dp(40), dp(40)) if root.theme_cls.device_orientation == "portrait" \
         else (dp(32), dp(32))
     size_hint: None, None
     text_size: self.size
     valign:
-        'middle' if root.theme_cls.device_orientation == 'portrait'\
-        else 'bottom'
-    halign: 'center'
+        "middle" if root.theme_cls.device_orientation == "portrait" \
+        else "bottom"
+    halign: "center"
 
 
 <DaySelector>
     size:
-        (dp(40), dp(40)) if root.theme_cls.device_orientation == 'portrait'\
+        (dp(40), dp(40)) if root.theme_cls.device_orientation == "portrait" \
         else (dp(32), dp(32))
     size_hint: (None, None)
 
@@ -381,11 +389,11 @@ Builder.load_string(
             rgba: self.theme_cls.primary_color if self.shown else [0, 0, 0, 0]
         Ellipse:
             size:
-                (dp(40), dp(40))\
-                if root.theme_cls.device_orientation == 'portrait'\
+                (dp(40), dp(40)) \
+                if root.theme_cls.device_orientation == "portrait" \
                 else (dp(32), dp(32))
             pos:
-                self.pos if root.theme_cls.device_orientation == 'portrait'\
+                self.pos if root.theme_cls.device_orientation == "portrait" \
                 else (self.pos[0], self.pos[1])
 """
 )
@@ -633,38 +641,41 @@ Builder.load_string(
 <MDTimePicker>
     size_hint: (None, None)
     size: (dp(270), dp(335) + dp(95))
-    pos_hint: {'center_x': .5, 'center_y': .5}
+    pos_hint: {"center_x": .5, "center_y": .5}
 
     canvas:
         Color:
             rgba: self.theme_cls.bg_light
-        Rectangle:
+        RoundedRectangle:
             size: (dp(270), dp(335))
             pos: (root.pos[0], root.pos[1] + root.height - dp(335) - dp(95))
+            radius: [dp(0), dp(0), root.radius[2], root.radius[3]]
         Color:
             rgba: self.theme_cls.primary_color
-        Rectangle:
+        RoundedRectangle:
             size: (dp(270), dp(95))
             pos: (root.pos[0], root.pos[1] + root.height - dp(95))
+            radius: [root.radius[0], root.radius[1], dp(0), dp(0)]
         Color:
             rgba: self.theme_cls.bg_dark
         Ellipse:
             size: (dp(220), dp(220))
             pos:
-                root.pos[0] + dp(270) / 2 - dp(220) / 2, root.pos[1]\
+                root.pos[0] + dp(270) / 2 - dp(220) / 2, root.pos[1] \
                 + root.height - (dp(335) / 2 + dp(95)) - dp(220) / 2 + dp(35)
 
     CircularTimePicker:
         id: time_picker
         pos: (dp(270) / 2) - (self.width / 2), root.height - self.height
         size_hint: (.8, .8)
-        pos_hint: {'center_x': .5, 'center_y': .585}
+        pos_hint: {"center_x": .5, "center_y": .585}
+        military: root.military
 
     MDFlatButton:
         width: dp(32)
         id: ok_button
         pos:
-            root.pos[0] + root.size[0] - self.width - dp(10),\
+            root.pos[0] + root.size[0] - self.width - dp(10), \
             root.pos[1] + dp(10)
         text: "OK"
         on_release: root.close_ok()
@@ -672,7 +683,7 @@ Builder.load_string(
     MDFlatButton:
         id: cancel_button
         pos:
-            root.pos[0] + root.size[0] - self.width - ok_button.width\
+            root.pos[0] + root.size[0] - self.width - ok_button.width \
             - dp(10), root.pos[1] + dp(10)
         text: "Cancel"
         on_release: root.close_cancel()
@@ -684,6 +695,7 @@ class MDTimePicker(
     ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
 ):
     time = ObjectProperty()
+
     """
     Users method. Must take two parameters:
 
@@ -701,6 +713,22 @@ class MDTimePicker(
 
     :attr:`time` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
+    """
+
+    radius = ListProperty([0, 0, 0, 0])
+    """
+    Corner radius values.
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `'[0, 0, 0, 0]'`.
+    """
+
+    military = BooleanProperty(False)
+    """
+    24H Mode.
+
+    :attr:`military` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     def __init__(self, **kwargs):
@@ -759,20 +787,21 @@ Builder.load_string(
 <MDThemePicker>
     size_hint: (None, None)
     size: dp(284), dp(120) + dp(290)
-    pos_hint: {'center_x': .5, 'center_y': .5}
+    pos_hint: {"center_x": .5, "center_y": .5}
 
     canvas:
         Color:
             rgb: app.theme_cls.primary_color
-        Rectangle:
+        RoundedRectangle:
             size: self.width, dp(120)
             pos: root.pos[0], root.pos[1] + root.height - dp(120)
+            radius: [root.radius[0], root.radius[1], dp(0), dp(0)]
         Color:
             rgb: app.theme_cls.bg_normal
-        Rectangle:
+        RoundedRectangle:
             size: self.width, dp(290)
             pos: root.pos[0], root.pos[1] + root.height - (dp(120) + dp(290))
-
+            radius: [dp(0), dp(0), root.radius[2], root.radius[3]]
 
     MDFlatButton:
         id: close_button
@@ -786,14 +815,14 @@ Builder.load_string(
         text: "Change theme"
         size_hint: (None, None)
         size: dp(160), dp(50)
-        pos_hint: {'center_x': .5, 'center_y': .9}
-        theme_text_color: 'Custom'
+        pos_hint: {"center_x": .5, "center_y": .9}
+        theme_text_color: "Custom"
         text_color: root.specific_text_color
 
     MDTabs:
         size_hint: (None, None)
         size: root.width, root.height - dp(135)
-        pos_hint: {'center_x': .5, 'center_y': .475}
+        pos_hint: {"center_x": .5, "center_y": .475}
         id: tab_panel
 
         Tab:
@@ -805,112 +834,112 @@ Builder.load_string(
                 padding: dp(4)
                 size_hint: (None, None)
                 size: dp(270), root.height  # -dp(120)
-                pos_hint: {'center_x': .532, 'center_y': .89}
-                orientation: 'vertical'
+                pos_hint: {"center_x": .532, "center_y": .89}
+                orientation: "vertical"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    halign: 'center'
-                    orientation: 'horizontal'
+                    halign: "center"
+                    orientation: "horizontal"
 
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Red'
+                            color_name: "Red"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Pink'
+                            color_name: "Pink"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Purple'
+                            color_name: "Purple"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'DeepPurple'
+                            color_name: "DeepPurple"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    halign: 'center'
-                    orientation: 'horizontal'
+                    halign: "center"
+                    orientation: "horizontal"
 
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Indigo'
+                            color_name: "Indigo"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Blue'
+                            color_name: "Blue"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'LightBlue'
+                            color_name: "LightBlue"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Cyan'
+                            color_name: "Cyan"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    halign: 'center'
-                    orientation: 'horizontal'
+                    halign: "center"
+                    orientation: "horizontal"
                     padding: 0, 0, 0, dp(1)
 
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Teal'
+                            color_name: "Teal"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Green'
+                            color_name: "Green"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'LightGreen'
+                            color_name: "LightGreen"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Lime'
+                            color_name: "Lime"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    orientation: 'horizontal'
-                    halign: 'center'
+                    orientation: "horizontal"
+                    halign: "center"
                     padding: 0, 0, 0, dp(1)
 
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Yellow'
+                            color_name: "Yellow"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Amber'
+                            color_name: "Amber"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Orange'
+                            color_name: "Orange"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'DeepOrange'
+                            color_name: "DeepOrange"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     #pos: self.pos
-                    orientation: 'horizontal'
+                    orientation: "horizontal"
                     padding: 0, 0, 0, dp(1)
 
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Brown'
+                            color_name: "Brown"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'Gray'
+                            color_name: "Gray"
                     BoxLayout:
                         PrimaryColorSelector:
-                            color_name: 'BlueGray'
+                            color_name: "BlueGray"
                     BoxLayout:
                         MDIconButton:
                             size: dp(40), dp(40)
@@ -932,112 +961,112 @@ Builder.load_string(
                 padding: dp(4)
                 size_hint: (None, None)
                 size: dp(270), root.height  # -dp(120)
-                pos_hint: {'center_x': .532, 'center_y': .89}
-                orientation: 'vertical'
+                pos_hint: {"center_x": .532, "center_y": .89}
+                orientation: "vertical"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    halign: 'center'
-                    orientation: 'horizontal'
+                    halign: "center"
+                    orientation: "horizontal"
 
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Red'
+                            color_name: "Red"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Pink'
+                            color_name: "Pink"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Purple'
+                            color_name: "Purple"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'DeepPurple'
+                            color_name: "DeepPurple"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    halign: 'center'
-                    orientation: 'horizontal'
+                    halign: "center"
+                    orientation: "horizontal"
 
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Indigo'
+                            color_name: "Indigo"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Blue'
+                            color_name: "Blue"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'LightBlue'
+                            color_name: "LightBlue"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Cyan'
+                            color_name: "Cyan"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    halign: 'center'
-                    orientation: 'horizontal'
+                    halign: "center"
+                    orientation: "horizontal"
                     padding: 0, 0, 0, dp(1)
 
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Teal'
+                            color_name: "Teal"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Green'
+                            color_name: "Green"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'LightGreen'
+                            color_name: "LightGreen"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Lime'
+                            color_name: "Lime"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     pos: self.pos
-                    orientation: 'horizontal'
-                    halign: 'center'
+                    orientation: "horizontal"
+                    halign: "center"
                     padding: 0, 0, 0, dp(1)
 
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Yellow'
+                            color_name: "Yellow"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Amber'
+                            color_name: "Amber"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Orange'
+                            color_name: "Orange"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'DeepOrange'
+                            color_name: "DeepOrange"
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     size: dp(230), dp(40)
                     #pos: self.pos
-                    orientation: 'horizontal'
+                    orientation: "horizontal"
                     padding: 0, 0, 0, dp(1)
 
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Brown'
+                            color_name: "Brown"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'Gray'
+                            color_name: "Gray"
                     BoxLayout:
                         AccentColorSelector:
-                            color_name: 'BlueGray'
+                            color_name: "BlueGray"
                     BoxLayout:
                         MDIconButton:
                             size: dp(40), dp(40)
@@ -1060,9 +1089,9 @@ Builder.load_string(
 
                 BoxLayout:
                     size_hint: (None, None)
-                    pos_hint: {'center_x': .5, 'center_y': .6}
-                    halign: 'center'
-                    valign: 'center'
+                    pos_hint: {"center_x": .5, "center_y": .6}
+                    halign: "center"
+                    valign: "center"
                     spacing: dp(10)
                     width: dp(210)
                     height: dp(100)
@@ -1081,7 +1110,7 @@ Builder.load_string(
                             Line:
                                 width: 1.
                                 circle: (self.center_x, self.center_y, dp(50))
-                        on_release: app.theme_cls.theme_style = 'Light'
+                        on_release: app.theme_cls.theme_style = "Light"
                     MDIconButton:
                         size: dp(100), dp(100)
                         pos: self.pos
@@ -1092,7 +1121,7 @@ Builder.load_string(
                             Ellipse:
                                 size: self.size
                                 pos: self.pos
-                        on_release: app.theme_cls.theme_style = 'Dark'
+                        on_release: app.theme_cls.theme_style = "Dark"
 """
 )
 

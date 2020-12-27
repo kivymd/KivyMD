@@ -205,7 +205,7 @@ from kivy.uix.screenmanager import Screen, ScreenManagerException
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularElevationBehavior
-from kivymd.uix.behaviors.backgroundcolorbehavior import (
+from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
@@ -604,6 +604,9 @@ class MDBottomNavigation(TabbedPanelBase):
                 self.tab_header.active = True
             else:
                 self.tab_header._label_font_size = sp(12)
+
+    def on_size(self, *args):
+        self.on_resize()
 
     def on_resize(self, instance=None, width=None, do_again=True):
         """Called when the application window is resized."""

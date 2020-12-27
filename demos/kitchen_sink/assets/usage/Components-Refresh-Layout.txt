@@ -1,0 +1,82 @@
+import random
+
+from kivy.clock import Clock
+from kivy.lang import Builder
+from kivy.properties import StringProperty
+
+from kivymd.app import MDApp
+from kivymd.icon_definitions import md_icons
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.list import ILeftBodyTouch, OneLineIconListItem
+from kivymd.utils import asynckivy
+
+KV = """
+<ItemForList>
+    text: root.text
+
+    IconLeftSampleWidget:
+        icon: root.icon
+
+
+MDFloatLayout:
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDToolbar:
+            title: 'Refresh Layout'
+            md_bg_color: app.theme_cls.primary_color
+            background_palette: 'Primary'
+            elevation: 10
+            right_action_items: [['dots-vertical', lambda x: x]]
+
+        MDScrollViewRefreshLayout:
+            id: refresh_layout
+            refresh_callback: app.refresh_callback
+            root_layout: root
+
+            MDGridLayout:
+                id: box
+                adaptive_height: True
+                cols: 1
+"""
+
+
+class IconLeftSampleWidget(ILeftBodyTouch, MDIconButton):
+    pass
+
+
+class ItemForList(OneLineIconListItem):
+    icon = StringProperty()
+
+
+class Example(MDApp):
+    def build(self):
+        self.set_list()
+        return Builder.load_string(KV)
+
+    def set_list(self):
+        async def set_list():
+            ran = random.randint(0, 100)
+            names_icons_list = list(md_icons.keys())[ran : ran + 20]
+            for name_icon in names_icons_list:
+                await asynckivy.sleep(0)
+                self.root.ids.box.add_widget(
+                    ItemForList(icon=name_icon, text=name_icon)
+                )
+
+        asynckivy.start(set_list())
+
+    def refresh_callback(self, *args):
+        """A method that updates the state of your application
+        while the spinner remains on the screen."""
+
+        def refresh_callback(interval):
+            self.root.ids.box.clear_widgets()
+            self.set_list()
+            self.root.ids.refresh_layout.refresh_done()
+
+        Clock.schedule_once(refresh_callback, 1)
+
+
+Example().run()

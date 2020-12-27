@@ -1,0 +1,105 @@
+#: import gch kivy.utils.get_color_from_hex
+
+
+<RallyOverviewScreen>
+
+    ScrollView:
+
+        MDList:
+            spacing: dp(5)
+
+            AlertBox:
+
+            OverviewBox:
+                title: "Accounts"
+                money: "$ 12,134.49"
+                text: ["Current", "Home savings", "Car savings"]
+                secondary_text: ["••••••1234", "••••••5678", "••••••9012"]
+                tertiary_text: ["$ 2,215.13", "$ 8,678.88", "$ 987.48"]
+                bar_color: [gch("#045D56"), gch("#1EB980"), gch("#1EB580")]
+
+            OverviewBox:
+                title: "Budgets"
+                money: "$ 480.00"
+                text: ["Coffee shops", "Groceries", "Restaurants"]
+                secondary_text: ["$ 45.69 / $ 70.00", "$ 16.45 / $ 170.00", "$ 45.69 / $ 70.00"]
+                tertiary_text: ["$ 24.51", "$ 153.55", "$ 46.75"]
+                bar_color: [gch("#BBDEFB"), gch("#BA68C8"), gch("#64B5F6")]
+
+            OverviewBox:
+                title: "Bills"
+                money: "$ 1,732.69"
+                text: ["RedPay Credit", "Rent", "TabFine Credit"]
+                secondary_text: ["29 Jan", "9 Feb", "22 Feb"]
+                tertiary_text: ["$ 45.36", "$ 1,200.00", "$ 87.33"]
+                bar_color: [gch("#FFCF44"), gch("#FF6859"), gch("#F8BBD0")]
+
+
+<OverviewBox>
+    adaptive_height: True
+    orientation: 'vertical'
+
+    canvas.before:
+        Color:
+            rgba: gch("#35353f")
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    MDBoxLayout:
+        padding: dp(10)
+        orientation: 'vertical'
+        adaptive_height: True
+
+        RallyLabel:
+            text: root.title
+            font_style: "Body2"
+
+        RallyLabel:
+            text: root.money
+            font_style: "Money"
+
+    MDList:
+
+        RallyListItem:
+            text: root.text[0]
+            secondary_text: root.secondary_text[0]
+            tertiary_text: root.tertiary_text[0]
+            bar_color: root.bar_color[0]
+
+        RallyListItem:
+            text: root.text[1]
+            secondary_text: root.secondary_text[1]
+            tertiary_text: root.tertiary_text[1]
+            bar_color: root.bar_color[1]
+
+        RallyListItem:
+            text: root.text[2]
+            secondary_text: root.secondary_text[2]
+            tertiary_text: root.tertiary_text[2]
+            bar_color: root.bar_color[2]
+
+    RallySeeAllButton:
+        padding: dp(5)
+        adaptive_height: True
+
+        RallyLabel:
+            text: "SEE ALL"
+            halign: "center"
+            font_style: "Button"
+
+
+<AlertBox@MDBoxLayout>
+    adaptive_height: True
+    padding: dp(10)
+
+    canvas.before:
+        Color:
+            rgba: gch("#35353f")
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    RallyLabel:
+        text: "Alerts\nBeware: you've used up 90% of your shopping budget for this month."
+        font_style: "Subtitle1"

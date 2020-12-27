@@ -1,7 +1,7 @@
 # See https://github.com/kivy/kivy/blob/master/.github/workflows/test_ubuntu_python.yml
 
 # Environment variables
-echo "::set-env name=DISPLAY:::99.0"
+echo "DISPLAY=:99.0" >> $GITHUB_ENV
 
 # System dependencies
 sudo apt-get update
@@ -20,7 +20,7 @@ python -m pip install --upgrade pip setuptools wheel
 python -m pip install --upgrade \
   cython \
   pytest pytest-cov pytest_asyncio pytest-timeout coveralls \
-  pillow docutils pygments pyinstaller \
+  pillow docutils pygments pyinstaller[hook_testing] \
   sphinx sphinxcontrib-blockdiag sphinxcontrib-seqdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag
 python -m pip install --upgrade kivy==$KIVY_VERSION
 

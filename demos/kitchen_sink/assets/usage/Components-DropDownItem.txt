@@ -1,0 +1,45 @@
+from kivy.lang import Builder
+from kivymd.app import MDApp
+from kivymd.uix.menu import MDDropdownMenu
+
+KV = """
+#:import toast kivymd.toast.toast
+
+MDScreen:
+
+    MDDropDownItem:
+        id: dropdown_item
+        text: 'Item 0'
+        pos_hint: {'center_x': .5, 'center_y': .6}
+        current_item: 'Item 0'
+        on_release: app.menu.open()
+
+    MDRaisedButton:
+        pos_hint: {'center_x': .5, 'center_y': .3}
+        text: 'Check Item'
+        on_release: toast(dropdown_item.current_item)
+"""
+
+
+class Example(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.screen = Builder.load_string(KV)
+        menu_items = [{"text": f"Item {i}"} for i in range(5)]
+        self.menu = MDDropdownMenu(
+            caller=self.screen.ids.dropdown_item,
+            items=menu_items,
+            position="center",
+            width_mult=4,
+        )
+        self.menu.bind(on_release=self.set_item)
+
+    def set_item(self, instance_menu, instance_menu_item):
+        self.screen.ids.dropdown_item.set_item(instance_menu_item.text)
+        instance_menu.dismiss()
+
+    def build(self):
+        return self.screen
+
+
+Example().run()

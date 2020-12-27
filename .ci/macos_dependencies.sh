@@ -1,12 +1,12 @@
 # See https://github.com/kivy/kivy/blob/master/.github/workflows/test_osx_python.yml
 
 # Environment variables
-echo "::set-env name=KIVY_GL_BACKEND::mock"
-echo "::set-env name=CC::clang"
-echo "::set-env name=CXX::clang"
-echo "::set-env name=FFLAGS::-ff2c"
-echo "::set-env name=USE_SDL2::1"
-echo "::set-env name=USE_GSTREAMER::1"
+echo "KIVY_GL_BACKEND=mock" >> $GITHUB_ENV
+echo "CC=clang" >> $GITHUB_ENV
+echo "CXX=clang" >> $GITHUB_ENV
+echo "FFLAGS=-ff2c" >> $GITHUB_ENV
+echo "USE_SDL2=1" >> $GITHUB_ENV
+echo "USE_GSTREAMER=1" >> $GITHUB_ENV
 
 # System dependencies
 source .ci/macos_versions.sh
@@ -75,6 +75,6 @@ python -m pip install --upgrade pip setuptools wheel
 python -m pip install --upgrade \
   cython \
   pytest pytest-cov pytest_asyncio pytest-timeout coveralls \
-  pillow docutils pygments pyinstaller \
+  pillow docutils pygments pyinstaller[hook_testing] \
   sphinx sphinxcontrib-blockdiag sphinxcontrib-seqdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag
 python -m pip install --upgrade kivy==$KIVY_VERSION

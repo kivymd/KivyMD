@@ -1,0 +1,121 @@
+from kivy.lang import Builder
+
+from kivymd.app import MDApp
+
+KV = """
+MDScreen:
+
+    MDBanner:
+        id: banner
+        over_widget: scroll
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: '10dp'
+
+        MDToolbar:
+            title: 'Banner'
+
+        ScrollView:
+            id: scroll
+
+            MDList:
+
+                OneLineListItem:
+                    text: 'ThreeLineBanner'
+                    on_release:
+                        banner.type = "three-line"
+                        banner.text = \
+                        [\
+                        'Three line string text example with two actions.', \
+                        'This is the second line of the banner message,', \
+                        'and this is the third line of the banner message.',
+                        ]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+
+                OneLineListItem:
+                    text: "TwoLineBanner"
+                    on_release:
+                        banner.type = 'two-line'
+                        banner.text = \
+                        [\
+                        'One line string text example with two actions.', \
+                        'This is the second line of the banner message.', \
+                        ]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+
+                OneLineListItem:
+                    text: "OneLineBanner"
+                    on_release:
+                        banner.type = 'one-line'
+                        banner.text = ['One line string text example with two actions.']
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+
+                OneLineListItem:
+                    text: "ThreeLineIconBanner"
+                    on_release:
+                        banner.type = 'three-line-icon'
+                        banner.text = \
+                        [\
+                        'Three line string text example with two actions.', \
+                        'This is the second line of the banner message,', \
+                        'and this is the third line of the banner message.',
+                        ]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+
+                OneLineListItem:
+                    text: 'TwoLineIconBanner'
+                    on_release:
+                        banner.type = 'two-line-icon'
+                        banner.text = \
+                        [\
+                        'One line string text example with two actions.', \
+                        'This is the second line of the banner message.', \
+                        ]
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+
+                OneLineListItem:
+                    text: "OneLineIconBanner"
+                    on_release:
+                        banner.type = 'one-line-icon'
+                        banner.text = ['One line string text example with two actions.']
+                        banner.left_action = ['CANCEL', lambda x: None]
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+
+                OneLineListItem:
+                    text: 'Banner without actions'
+                    on_release:
+                        banner.type = 'one-line-icon'
+                        banner.text = ['One line string text example without actions.']
+                        banner.left_action = []
+                        banner.right_action = []
+                        banner.show()
+
+                OneLineListItem:
+                    text: 'Banner with one actions'
+                    on_release:
+                        banner.type = 'one-line-icon'
+                        banner.text = ['One line string text example without actions.']
+                        banner.left_action = []
+                        banner.right_action = ['CLOSE', lambda x: banner.hide()]
+                        banner.show()
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

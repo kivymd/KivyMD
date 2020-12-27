@@ -1,5 +1,7 @@
 from kivy.uix.screenmanager import Screen
 
+from kivymd.uix.picker import MDDatePicker, MDTimePicker
+
 
 class KitchenSinkPickers(Screen):
     previous_date = None
@@ -9,10 +11,8 @@ class KitchenSinkPickers(Screen):
         self.ids.time_picker_label.text = str(time)
         self.previous_time = time
 
-    def show_example_time_picker(self):
-        from kivymd.uix.picker import MDTimePicker
-
-        time_dialog = MDTimePicker()
+    def show_example_time_picker(self, military):
+        time_dialog = MDTimePicker(military=military)
         time_dialog.bind(time=self.get_time_picker_date)
 
         if self.ids.time_picker_use_previous_time.active:
@@ -27,7 +27,6 @@ class KitchenSinkPickers(Screen):
         self.ids.date_picker_label.text = str(date_obj)
 
     def show_example_date_picker(self):
-        from kivymd.uix.picker import MDDatePicker
 
         if self.ids.date_picker_use_previous_date.active:
             pd = self.previous_date

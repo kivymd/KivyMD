@@ -8,6 +8,7 @@ version: 2
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
   configuration: docs/sources/conf.py
+  builder: dirhtml
 
 # Optionally build your docs in additional formats such as PDF and ePub
 formats: all
@@ -20,3 +21,11 @@ python:
       path: .
       extra_requirements:
         - docs
+
+search:
+   ranking:
+     # Components are more important
+     components/*: 2
+
+     # Unincluded API isn't very important
+     api/*: -2

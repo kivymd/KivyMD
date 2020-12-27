@@ -163,7 +163,8 @@ def update_icons(make_commit: bool = False):
 
 def main():
     make_commit = "--commit" in sys.argv
-    sys.argv.remove("--commit")
+    if "--commit" in sys.argv:
+        sys.argv.remove("--commit")
     update_icons(make_commit=make_commit)
 
 

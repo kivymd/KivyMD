@@ -10,6 +10,7 @@ on:
     branches-ignore:
       - data
       - gh-pages
+  workflow_dispatch:
 
 jobs:
   # Build job. Builds every demo app for Android with Buildozer
@@ -18,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        demo-name: [kitchen_sink]
+        demo-name: [kitchen_sink, crane, fortnightly, rally, shrine]
     runs-on: ubuntu-latest
     env:
       PYTHONUNBUFFERED: 1
@@ -48,12 +49,13 @@ jobs:
         name: package ${{ matrix.demo-name }}
         path: ${{ steps.buildozer.outputs.filename }}
 
-    - name: Checkout data branch
+    - name: Checkout kivymd/storage repository (binaries branch)
       uses: actions/checkout@v2
       if: github.event_name == 'push'
       with:
-        path: data
-        ref: data # Branch name
+        path: binaries
+        repository: kivymd/storage
+        ref: binaries # Branch name
         persist-credentials: false
 
     - name: Set up Python
@@ -63,13 +65,13 @@ jobs:
         python-version: 3.7
         architecture: x64
 
-    - name: Push binary to data branch
+    - name: Push binary to kivymd/storage repository (binaries branch)
       if: github.event_name == 'push'
       run: |
         # Use personal token to push (when using GITHUB_TOKEN, it will not allow pushes from PR)
-        cd data && \
+        cd binaries && \
           git config user.name "KivyMD Bot" && \
           git config user.email 69076719+KivyMD-Bot@users.noreply.github.com && \
-          git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }} && \
+          git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/kivymd/storage && \
           cd ..
-        python master/.ci/move_binary.py "${{ steps.buildozer.outputs.filename }}" master data ${{ matrix.demo-name }}
+        python master/.ci/move_binary.py "${{ steps.buildozer.outputs.filename }}" master binaries ${{ matrix.demo-name }}

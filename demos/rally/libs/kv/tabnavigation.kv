@@ -1,0 +1,35 @@
+<NavigationItem>
+    size_hint: None, None
+    size: (dp(40), dp(40))
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+    MDIcon:
+        id: _icon
+        icon: root.icon
+        halign: "center"
+        size_hint: (None, None)
+        size: (root.height, root.height)
+        theme_text_color: "Custom"
+        text_color: root.icon_color
+
+    FloatLayout:
+        size_hint_x: None
+        width: root.width - _icon.width
+
+        MDLabel:
+            id: _label
+            text: root.text
+            opacity: 0
+            halign: "center"
+            bold: True
+            font_style: "Button"
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+
+<NavigationBar>:
+    size_hint: (None, None)
+    height: dp(65)
+
+    BoxLayout:
+        id: _button_box

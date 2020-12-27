@@ -38,7 +38,7 @@ __version__ = "0.104.2.dev0"
 release = False
 
 try:
-    from kivymd._version import __hash__, __short_hash__, __date__
+    from kivymd._version import __date__, __hash__, __short_hash__
 except ImportError:
     __hash__ = __short_hash__ = __date__ = ""
 

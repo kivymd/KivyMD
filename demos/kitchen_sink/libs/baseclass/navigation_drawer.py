@@ -1,6 +1,5 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
-
 from libs.baseclass.list_items import KitchenSinkOneLineLeftIconItem
 
 
@@ -10,7 +9,7 @@ class KitchenSinkNavigationDrawer(Screen):
             for items in {
                 "home-circle-outline": "Home",
                 "update": "Check for Update",
-                "settings-outline": "Settings",
+                "cog-outline": "Settings",
                 "exit-to-app": "Exit",
             }.items():
                 self.ids.content_drawer.ids.box_item.add_widget(

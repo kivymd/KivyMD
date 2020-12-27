@@ -1,0 +1,50 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+<KitchenSinkNavigationRailTile@SmartTileWithStar>
+    size_hint_y: None
+    height: "240dp"
+
+
+<KitchenSinkNavigationRail>
+    name: "navigation rail"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        Toolbar:
+            id: toolbar
+            pos_hint: {"top": 1}
+
+        MDBoxLayout:
+
+            MDNavigationRail:
+                id: rail
+                md_bg_color: app.theme_cls.primary_color
+                use_resizeable: True
+                use_title: True
+                icon_title: "menu"
+                text_title: "[b]Example[/b]"
+                on_item_switch: root.sort_tiles(*args)
+
+                MDNavigationRailItem:
+                    icon: "dog-side"
+                    text: "[size=11][b]Animals[/b][/size]"
+
+                MDNavigationRailItem:
+                    icon: "human"
+                    text: "[size=11][b]Humans[/b][/size]"
+
+                MDNavigationRailItem:
+                    icon: "head-lightbulb"
+                    text: "[size=11][b]Lightbulb[/b][/size]"
+
+            MDBoxLayout:
+                padding: "24dp"
+
+                ScrollView:
+
+                    MDList:
+                        id: box
+                        cols: 3
+                        spacing: "12dp"

@@ -1,0 +1,52 @@
+<KitchenSinkThemingColors>
+    name: "theming colors"
+    tabs_manager: tabs_manager
+
+    BoxLayout:
+        orientation: "vertical"
+
+        Toolbar:
+            id: toolbar
+
+        MDTabs:
+            id: tabs_manager
+            tab_indicator_anim: True
+            background_color: self.theme_cls.primary_color
+            on_tab_switch: root.on_tab_switch(*args)
+
+
+<KitchenSinkColorWidget>
+    size_hint_y: None
+    height: "300dp"
+    padding: "15dp"
+    md_bg_color: root.rgba_color
+
+    KitchenSinkColorLabel:
+        text: root.hue_code
+        halign: "left"
+        text_color: root.text_color
+
+    KitchenSinkColorLabel:
+        text: "#" + root.hex_value
+        halign: "right"
+        text_color: root.text_color
+
+
+<KitchenSinkColorLabel@MDLabel>
+    pos_hint: {"center_y": .3}
+    theme_text_color: "Custom"
+
+
+<KitchenSinkThemeTab>
+    rv: rv
+
+    RecycleView:
+        id: rv
+        viewclass: "KitchenSinkColorWidget"
+
+        RecycleBoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            default_size_hint: 1, None
+            default_size_y: dp(26)

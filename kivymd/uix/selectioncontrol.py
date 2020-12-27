@@ -135,7 +135,7 @@ MDSwitch
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch.gif
     :align: center
 
-.. Note:: For :class:`~MDCheckbox` size is not required. By default it is
+.. Note:: For :class:`~MDSwitch` size is not required. By default it is
     ``(dp(36), dp(48))``, but you can increase the width if you want.
 
 .. code-block:: kv
@@ -153,6 +153,7 @@ MDSwitch
 __all__ = ("MDCheckbox", "MDSwitch")
 
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
@@ -160,6 +161,7 @@ from kivy.properties import (
     BooleanProperty,
     ListProperty,
     NumericProperty,
+    OptionProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
@@ -216,7 +218,7 @@ Builder.load_string(
             pos: self.x + dp(8), self.center_y - dp(8)
             radius: [dp(7)]
 
-    on_release: thumb.trigger_action()
+    # on_release: thumb.trigger_action()
 
     Thumb:
         id: thumb
@@ -250,13 +252,13 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     and defaults to `'checkbox-blank-outline'`.
     """
 
-    checkbox_icon_down = StringProperty("checkbox-marked-outline")
+    checkbox_icon_down = StringProperty("checkbox-marked")
     """
     Background icon of the checkbox used for the default graphical
     representation when the checkbox is pressed.
 
     :attr:`checkbox_icon_down` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-marked-outline'`.
+    and defaults to `'checkbox-marked'`.
     """
 
     radio_icon_normal = StringProperty("checkbox-blank-circle-outline")
@@ -268,13 +270,13 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     and defaults to `'checkbox-blank-circle-outline'`.
     """
 
-    radio_icon_down = StringProperty("checkbox-marked-circle-outline")
+    radio_icon_down = StringProperty("checkbox-marked-circle")
     """
     Background icon (when using the ``group`` option) of the checkbox used for
     the default graphical representation when the checkbox is pressed.
 
     :attr:`radio_icon_down` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-marked-circle-outline'`.
+    and defaults to `'checkbox-marked-circle'`.
     """
 
     selected_color = ListProperty()
@@ -329,11 +331,18 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             state=self.update_color,
         )
         self.theme_cls.bind(primary_color=self.update_primary_color)
+        self.theme_cls.bind(theme_style=self.update_primary_color)
         self.update_icon()
         self.update_color()
 
     def update_primary_color(self, instance, value):
-        self.selected_color = value
+        if value in ("Dark", "Light"):
+            if not self.disabled:
+                self.color = self.theme_cls.primary_color
+            else:
+                self.color = self.disabled_color
+        else:
+            self.selected_color = value
 
     def update_icon(self, *args):
         if self.state == "down":
@@ -365,7 +374,8 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             self.active = True
         else:
             self.check_anim_in.cancel(self)
-            self.check_anim_out.start(self)
+            if not self.group:
+                self.check_anim_out.start(self)
             self.update_icon()
             self.active = False
 
@@ -484,6 +494,24 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and property is readonly.
     """
 
+    theme_thumb_color = OptionProperty("Primary", options=["Primary", "Custom"])
+    """
+    Thumb color scheme name
+
+    :attr:`theme_thumb_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `Primary`.
+    """
+
+    theme_thumb_down_color = OptionProperty(
+        "Primary", options=["Primary", "Custom"]
+    )
+    """
+    Thumb Down color scheme name
+
+    :attr:`theme_thumb_down_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `Primary`.
+    """
+
     _track_color_active = ListProperty()
     _track_color_normal = ListProperty()
     _track_color_disabled = ListProperty()
@@ -497,28 +525,46 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             primary_palette=self._set_colors,
         )
         self.bind(active=self._update_thumb_pos)
-        self._set_colors()
+        Clock.schedule_once(self._set_colors)
         self.size_hint = (None, None)
         self.size = (dp(36), dp(48))
 
     def _set_colors(self, *args):
         self._track_color_normal = self.theme_cls.disabled_hint_text_color
         if self.theme_cls.theme_style == "Dark":
-            self._track_color_active = self.theme_cls.primary_color
+
+            if self.theme_thumb_down_color == "Primary":
+                self._track_color_active = self.theme_cls.primary_color
+            else:
+                self._track_color_active = self.thumb_color_down
+
             self._track_color_active[3] = 0.5
             self._track_color_disabled = get_color_from_hex("FFFFFF")
             self._track_color_disabled[3] = 0.1
-            self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
-            self.thumb_color_down = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]["200"]
-            )
+
+            if self.theme_thumb_color == "Primary":
+                self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
+
+            if self.theme_thumb_down_color == "Primary":
+                self.thumb_color_down = get_color_from_hex(
+                    colors[self.theme_cls.primary_palette]["200"]
+                )
         else:
-            self._track_color_active = get_color_from_hex(
-                colors[self.theme_cls.primary_palette]["200"]
-            )
+            if self.theme_thumb_down_color == "Primary":
+                self._track_color_active = get_color_from_hex(
+                    colors[self.theme_cls.primary_palette]["200"]
+                )
+            else:
+                self._track_color_active = self.thumb_color_down
+
             self._track_color_active[3] = 0.5
             self._track_color_disabled = self.theme_cls.disabled_hint_text_color
-            self.thumb_color_down = self.theme_cls.primary_color
+
+            if self.theme_thumb_down_color == "Primary":
+                self.thumb_color_down = self.theme_cls.primary_color
+
+            if self.theme_thumb_color == "Primary":
+                self.thumb_color = get_color_from_hex(colors["Gray"]["50"])
 
     def _update_thumb_pos(self, *args, animation=True):
         if self.active:

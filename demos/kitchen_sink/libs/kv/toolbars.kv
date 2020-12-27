@@ -3,8 +3,8 @@
 #:import colors kivymd.color_definitions.colors
 
 
-<Toolbars@Screen>
-    name: 'toolbars'
+<Toolbars@MDScreen>
+    name: "toolbars"
 
     Toolbar:
         id: toolbar
@@ -12,32 +12,32 @@
 
     MDToolbar:
         title: "Simple toolbar"
-        pos_hint: {'center_x': .5, 'center_y': .75}
-        md_bg_color: get_color_from_hex(colors['Teal']['500'])
-        background_palette: 'Teal'
-        background_hue: '500'
+        pos_hint: {"center_x": .5, "center_y": .75}
+        md_bg_color: get_color_from_hex(colors["Teal"]["500"])
+        background_palette: "Teal"
+        background_hue: "500"
 
     MDToolbar:
         title: "MDToolbar with right buttons"
-        pos_hint: {'center_x': .5, 'center_y': .55}
-        md_bg_color: get_color_from_hex(colors['Amber']['700'])
-        background_palette: 'Amber'
-        background_hue: '700'
-        right_action_items: [['content-copy', lambda x: x]]
+        pos_hint: {"center_x": .5, "center_y": .55}
+        md_bg_color: get_color_from_hex(colors["Amber"]["700"])
+        background_palette: "Amber"
+        background_hue: "700"
+        right_action_items: [["content-copy", lambda x: x]]
 
     MDToolbar:
         title: "MDToolbar with left and right buttons"
-        pos_hint: {'center_x': .5, 'center_y': .35}
-        md_bg_color: get_color_from_hex(colors['DeepPurple']['A400'])
-        background_palette: 'DeepPurple'
-        background_hue: 'A400'
-        left_action_items: [['arrow-left', lambda x: x]]
-        right_action_items: [['lock', lambda x: x], ['camera', lambda x: x], ['play', lambda x: x]]
+        pos_hint: {"center_x": .5, "center_y": .35}
+        md_bg_color: get_color_from_hex(colors["DeepPurple"]["A400"])
+        background_palette: "DeepPurple"
+        background_hue: "A400"
+        left_action_items: [["arrow-left", lambda x: x]]
+        right_action_items: [["lock", lambda x: x], ["camera", lambda x: x], ["play", lambda x: x]]
 
     MDToolbar:
         title: "MDToolbar with custom right image button"
-        pos_hint: {'center_x': .5, 'center_y': .15}
-        md_bg_color: get_color_from_hex(colors['Red']['A400'])
-        background_palette: 'Red'
-        background_hue: 'A400'
+        pos_hint: {"center_x": .5, "center_y": .15}
+        md_bg_color: get_color_from_hex(colors["Red"]["A400"])
+        background_palette: "Red"
+        background_hue: "A400"
         left_action_items: [[f"{environ['KITCHEN_SINK_ASSETS']}kivymd.png", lambda x: x]]

@@ -7,9 +7,10 @@
 
 
 <KitchenSinkIconButtonTooltips@MDIconButton+MDTooltip>
+    icon: random.choice(ICONS)
+    tooltip_text: self.icon
 
-
-<KitchenSinkTooltips@Screen>
+<KitchenSinkTooltips@MDScreen>
     name: "tooltips"
 
     Toolbar:
@@ -23,20 +24,8 @@
         pos_hint: {'center_x': .5, "center_y": .5}
 
         KitchenSinkIconButtonTooltips:
-            icon: random.choice(ICONS)
-            tooltip_text: "MDIconButton"
         KitchenSinkIconButtonTooltips:
-            icon: random.choice(ICONS)
-            tooltip_text: "MDIconButton"
         KitchenSinkIconButtonTooltips:
-            icon: random.choice(ICONS)
-            tooltip_text: "MDIconButton"
         KitchenSinkIconButtonTooltips:
-            icon: random.choice(ICONS)
-            tooltip_text: "MDIconButton"
         KitchenSinkIconButtonTooltips:
-            icon: random.choice(ICONS)
-            tooltip_text: "MDIconButton"
         KitchenSinkIconButtonTooltips:
-            icon: random.choice(ICONS)
-            tooltip_text: "MDIconButton"

@@ -1,0 +1,33 @@
+from kivy.lang import Builder
+
+from kivymd.app import MDApp
+
+KV = """
+MDBoxLayout:
+    orientation: 'vertical'
+
+    MDToolbar:
+        id: toolbar
+        pos_hint: {'top': 1}
+        title: 'Progress and Slider'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: dp(8)
+
+        MDProgressBar:
+            min: 0
+            max: 100
+            value: slider.value
+
+        MDSlider:
+            id: slider
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

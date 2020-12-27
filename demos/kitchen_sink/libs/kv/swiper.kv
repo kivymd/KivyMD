@@ -1,0 +1,52 @@
+#:import os os
+
+
+<KitchenSinkSwiperMagicButton@MagicBehavior+MDIconButton>
+
+
+<KitchenSinkSwiperItem>
+
+    RelativeLayout:
+
+        FitImage:
+            id: image
+            source: root.source
+            radius: [20,]
+
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: "12dp"
+            md_bg_color: 0, 0, 0, .4
+            radius: [0, 0, image.radius[0], image.radius[0]]
+
+            KitchenSinkSwiperMagicButton:
+                id: icon
+                icon: "weather-sunny"
+                user_font_size: "56sp"
+                opposite_colors: True
+
+            MDLabel:
+                text: os.path.split(root.source)[1]
+                font_style: "H5"
+                size_hint_y: None
+                height: self.texture_size[1]
+                pos_hint: {"center_y": .5}
+                opposite_colors: True
+                shorten: True
+
+
+<KitchenSinkSwiper>
+    name: "swiper"
+
+    Toolbar:
+        id: toolbar
+        title: "MDSwiper"
+        elevation: 10
+        pos_hint: {"top": 1}
+
+    MDSwiper:
+        id: swiper
+        size_hint_y: None
+        height: root.height - toolbar.height - dp(40)
+        y: root.height - self.height - toolbar.height - dp(20)
+        on_swipe: self.get_current_item().ids.icon.shake()

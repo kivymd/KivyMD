@@ -1,0 +1,42 @@
+from kivy.lang import Builder
+
+from kivymd.app import MDApp
+
+KV = """
+#: import random random
+#: import md_icons kivymd.icon_definitions.md_icons
+
+#: set ICONS list(md_icons.keys())
+
+<IconButtonTooltips@MDIconButton+MDTooltip>
+    icon: random.choice(ICONS)
+    tooltip_text: self.icon
+
+MDScreen:
+
+    MDToolbar:
+        title: "Example Tooltips"
+        pos_hint: {'top': 1}
+
+    MDBoxLayout:
+        adaptive_size: True
+        padding: '10dp'
+        spacing: '10dp'
+        pos_hint: {'center_x': .5, "center_y": .5}
+
+        IconButtonTooltips:
+        IconButtonTooltips:
+        IconButtonTooltips:
+        IconButtonTooltips:
+        IconButtonTooltips:
+        IconButtonTooltips:
+
+"""
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

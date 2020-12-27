@@ -1,5 +1,5 @@
 <KitchenSinkToggleButtons>
-    name: 'toggle button'
+    name: "toggle button"
 
     Toolbar:
         id: toolbar
@@ -14,7 +14,7 @@
         MDBoxLayout:
             adaptive_size: True
             pos_hint: {"center_x": .5, "center_y": .5}
-            spacing: 12
+            spacing: "12dp"
             orientation: "vertical"
 
             RoundFlatToggleButton:
@@ -31,3 +31,26 @@
                 text: "Does not matter"
                 group: "z"
                 pos_hint: {"center_x": .5}
+
+        MDSeparator:
+
+        MDBoxLayout:
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+            spacing: "12dp"
+            orientation: "vertical"
+
+            FlatToggleButton:
+                text: "Show ads"
+                group: "x"
+                pos_hint: {"center_x": .5}
+
+            FlatToggleButton:
+                text: "Do not show ads"
+                group: "x"
+                pos_hint: {"center_x": .5}
+
+            FlatToggleButton:
+                text: "Does not matter"
+                group: "x"
+                pos_hint: {"center_x": .5} 

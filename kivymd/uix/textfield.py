@@ -663,6 +663,9 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
         super().__init__(**kwargs)
         self._update_primary_color()
         self.theme_cls.bind(primary_color=self._update_primary_color)
+        self._currently_bound_properties.append(
+            {"primary_color": self._update_primary_color}
+        )
 
     def anim_rect(self, points, alpha):
         instance_line = self.canvas.children[-1].children[-1]
@@ -875,6 +878,13 @@ class MDTextField(ThemableBehavior, TextInput):
             primary_color=self._update_primary_color,
             theme_style=self._update_theme_style,
             accent_color=self._update_accent_color,
+        )
+        self._currently_bound_properties.extend(
+            [
+                {"primary_color": self._update_primary_color},
+                {"theme_style": self._update_theme_style},
+                {"accent_color": self._update_accent_color},
+            ]
         )
         self.has_had_text = False
         self._better_texture_size = None

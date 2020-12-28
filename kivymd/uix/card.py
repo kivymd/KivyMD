@@ -668,6 +668,9 @@ class MDCard(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(theme_style=self.update_md_bg_color)
+        self._currently_bound_properties.append(
+            {"theme_style": self.update_md_bg_color}
+        )
         Clock.schedule_once(lambda x: self._on_elevation(self.elevation))
         Clock.schedule_once(
             lambda x: self._on_ripple_behavior(self.ripple_behavior)

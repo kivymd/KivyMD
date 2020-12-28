@@ -881,6 +881,7 @@ class ThemableBehavior(EventDispatcher):
     opposite_colors = BooleanProperty(False)
 
     def __init__(self, **kwargs):
+        self._currently_bound_properties = []
         if self.theme_cls is not None:
             pass
         else:
@@ -901,3 +902,8 @@ class ThemableBehavior(EventDispatcher):
                 )
             self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)
+
+    def dec_disabled(self, *args, **kwargs):
+        for p in self._currently_bound_properties:
+            self.theme_cls.unbind(**p)
+        super().dec_disabled(*args, **kwargs)

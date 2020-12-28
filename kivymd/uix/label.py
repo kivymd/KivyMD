@@ -306,8 +306,6 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
 
     parent_background = ListProperty(None, allownone=True)
 
-    _currently_bound_property = {}
-
     can_capitalize = BooleanProperty(True)
 
     def __init__(self, **kwargs):
@@ -349,7 +347,6 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         t = self.theme_cls
         op = self.opposite_colors
         setter = self.setter("color")
-        t.unbind(**self._currently_bound_property)
         attr_name = {
             "Primary": "text_color" if not op else "opposite_text_color",
             "Secondary": "secondary_text_color"
@@ -363,7 +360,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         if attr_name:
             c = {attr_name: setter}
             t.bind(**c)
-            self._currently_bound_property = c
+            self._currently_bound_properties.append(c)
             self.color = getattr(t, attr_name)
         else:
             # 'Custom' and 'ContrastParentBackground' lead here, as well as the

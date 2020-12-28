@@ -138,10 +138,17 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
         super().__init__(**kwargs)
         if hasattr(self, "theme_cls"):
             self.theme_cls.bind(
-                primary_palette=self._update_specific_text_color
+                primary_palette=self._update_specific_text_color,
+                accent_palette=self._update_specific_text_color,
+                theme_style=self._update_specific_text_color,
             )
-            self.theme_cls.bind(accent_palette=self._update_specific_text_color)
-            self.theme_cls.bind(theme_style=self._update_specific_text_color)
+            self._currently_bound_properties.extend(
+                [
+                    {"primary_palette": self._update_specific_text_color},
+                    {"accent_palette": self._update_specific_text_color},
+                    {"theme_style": self._update_specific_text_color},
+                ]
+            )
         self.bind(background_hue=self._update_specific_text_color)
         self.bind(background_palette=self._update_specific_text_color)
         self._update_specific_text_color(None, None)

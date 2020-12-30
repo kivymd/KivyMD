@@ -876,9 +876,6 @@ class BaseButton(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
-        self._currently_bound_properties.append(
-            {"primary_palette": self.update_md_bg_color}
-        )
         Clock.schedule_once(self.check_current_button_color)
 
     def update_md_bg_color(self, instance, value):

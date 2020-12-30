@@ -258,13 +258,6 @@ class MDSlider(ThemableBehavior, Slider):
             primary_color=self._set_colors,
             primary_palette=self._set_colors,
         )
-        self._currently_bound_properties.extend(
-            [
-                {"theme_style": self._set_colors},
-                {"primary_color": self._set_colors},
-                {"primary_palette": self._set_colors},
-            ]
-        )
         self._set_colors()
 
     def on_hint(self, instance, value):

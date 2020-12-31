@@ -318,7 +318,7 @@ Builder.load_string(
         (self.width * (self.open_progress - 1)) \
         if self.anchor == "left" \
         else (Window.width - self.width * self.open_progress)
-    elevation: 10
+    elevation: root.elevation
 
     canvas:
         Clear

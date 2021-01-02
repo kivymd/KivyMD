@@ -235,11 +235,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -324,14 +324,24 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """Private attribute."""
 
     duration_opening = NumericProperty(0.15)
-    """The duration of the bottom sheet dialog opening animation.
+    """
+    The duration of the bottom sheet dialog opening animation.
 
     :attr:`duration_opening` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.15`.
     """
 
+    duration_closing = NumericProperty(0.15)
+    """
+    The duration of the bottom sheet dialog closing animation.
+
+    :attr:`duration_closing` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
     radius = NumericProperty(25)
-    """The value of the rounding of the corners of the dialog.
+    """
+    The value of the rounding of the corners of the dialog.
 
     :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `25`.
@@ -349,7 +359,8 @@ class MDBottomSheet(ThemableBehavior, ModalView):
         ],
         allownone=True,
     )
-    """Sets which corners to cut from the dialog. Available options are:
+    """
+    Sets which corners to cut from the dialog. Available options are:
     (`"top_left"`, `"top_right"`, `"top"`, `"bottom_right"`, `"bottom_left"`, `"bottom"`).
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottomsheet-radius-from.png
@@ -360,23 +371,26 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
 
     animation = BooleanProperty(False)
-    """Whether to use animation for opening and closing of the bottomsheet or not.
+    """
+    Whether to use animation for opening and closing of the bottomsheet or not.
 
     :attr:`animation` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
-    bg_color = ListProperty()
-    """Dialog background color in ``rgba`` format.
+    bg_color = ColorProperty()
+    """
+    Dialog background color in ``rgba`` format.
 
-    :attr:`bg_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
-    value_transparent = ListProperty([0, 0, 0, 0.8])
-    """Background transparency value when opening a dialog.
+    value_transparent = ColorProperty([0, 0, 0, 0.8])
+    """
+    Background transparency value when opening a dialog.
 
-    :attr:`value_transparent` is an :class:`~kivy.properties.ListProperty`
+    :attr:`value_transparent` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.8]`.
     """
 
@@ -384,32 +398,25 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     _gl_content = ObjectProperty()
     _position_content = NumericProperty()
 
-    def open(self, *largs):
-        super().open(*largs)
+    def open(self, *args):
+        super().open(*args)
 
     def add_widget(self, widget, index=0, canvas=None):
         super().add_widget(widget, index, canvas)
 
-    def on_dismiss(self):
+    def dismiss(self, *args, **kwargs):
+        def dismiss(*args):
+            self.dispatch("on_pre_dismiss")
+            self._gl_content.clear_widgets()
+            self._real_remove_widget()
+            self.dispatch("on_dismiss")
 
         if self.animation:
-            layout = self.screen
-            content = self._gl_content
-
-            if not layout.ids.get("box_sheet_list"):
-                _layout = layout
-            else:
-                _layout = layout.ids.box_sheet_list
-
-            height = 0
-
-            Animation(height=height, d=self.duration_opening).start(_layout)
-            a = Animation(height=height, d=self.duration_opening)
-            a.bind(on_complete=lambda *args: self._gl_content.clear_widgets())
-            a.start(content)
-
+            a = Animation(height=0, d=self.duration_closing)
+            a.bind(on_complete=dismiss)
+            a.start(self._gl_content)
         else:
-            self._gl_content.clear_widgets()
+            dismiss()
 
     def resize_content_layout(self, content, layout, interval=0):
         if not layout.ids.get("box_sheet_list"):

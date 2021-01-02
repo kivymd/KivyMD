@@ -425,7 +425,7 @@ class MDToolbar(
     """
     Color toolbar.
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
@@ -470,7 +470,7 @@ class MDToolbar(
     """
     Color action button. Onle for :class:`~MDBottomAppBar` class.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
@@ -634,7 +634,7 @@ class MDBottomAppBar(FloatLayout):
     """
     Color toolbar.
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 

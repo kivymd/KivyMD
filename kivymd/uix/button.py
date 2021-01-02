@@ -470,12 +470,12 @@ from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
     BoundedNumericProperty,
+    ColorProperty,
     DictProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior

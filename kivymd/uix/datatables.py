@@ -27,12 +27,13 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     DictProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, ColorProperty,
+    StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior, FocusBehavior

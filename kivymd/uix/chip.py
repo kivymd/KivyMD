@@ -101,7 +101,8 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import BooleanProperty, ListProperty, StringProperty
+from kivy.properties import BooleanProperty, ListProperty, StringProperty, \
+    ColorProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
@@ -129,7 +130,7 @@ Builder.load_string(
 
     canvas:
         Color:
-            rgba: root.color
+            rgba: root.theme_cls.primary_color if not root.color else root.color
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -169,38 +170,43 @@ Builder.load_string(
 
 class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     text = StringProperty()
-    """Chip text.
+    """
+    Chip text.
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
     icon = StringProperty("checkbox-blank-circle")
-    """Chip icon.
+    """
+    Chip icon.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
 
-    color = ListProperty()
-    """Chip color in ``rgba`` format.
+    color = ColorProperty(None)
+    """
+    Chip color in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    text_color = ListProperty()
-    """Chip's text color in ``rgba`` format.
+    text_color = ColorProperty(None)
+    """
+    Chip's text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    icon_color = ListProperty()
-    """Chip's icon color in ``rgba`` format.
+    icon_color = ColorProperty(None)
+    """
+    Chip's icon color in ``rgba`` format.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     check = BooleanProperty(False)
@@ -216,20 +222,22 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
             dp(12),
         ]
     )
-    """Corner radius values.
+    """
+    Corner radius values.
 
     :attr:`radius` is an :class:`~kivy.properties.ListProperty`
     and defaults to `'[dp(12),]'`.
     """
 
-    selected_chip_color = ListProperty()
-    """The color of the chip that is currently selected in ``rgba`` format.
+    selected_chip_color = ColorProperty(None)
+    """
+    The color of the chip that is currently selected in ``rgba`` format.
 
-    :attr:`selected_chip_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`selected_chip_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    _color = ListProperty()
+    _color = ColorProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

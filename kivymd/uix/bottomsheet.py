@@ -378,7 +378,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     and defaults to `False`.
     """
 
-    bg_color = ColorProperty()
+    bg_color = ColorProperty(None)
     """
     Dialog background color in ``rgba`` format.
 

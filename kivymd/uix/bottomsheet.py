@@ -360,7 +360,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
 
     animation = BooleanProperty(False)
-    """To use animation of opening of dialogue of the bottom sheet or not.
+    """Whether to use animation for opening and closing of the bottomsheet or not.
 
     :attr:`animation` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -391,7 +391,25 @@ class MDBottomSheet(ThemableBehavior, ModalView):
         super().add_widget(widget, index, canvas)
 
     def on_dismiss(self):
-        self._gl_content.clear_widgets()
+
+        if self.animation:
+            layout = self.screen
+            content = self._gl_content
+
+            if not layout.ids.get("box_sheet_list"):
+                _layout = layout
+            else:
+                _layout = layout.ids.box_sheet_list
+
+            height = 0
+
+            Animation(height=height, d=self.duration_opening).start(_layout)
+            a = Animation(height=height, d=self.duration_opening)
+            a.bind(on_complete=lambda *args: self._gl_content.clear_widgets())
+            a.start(content)
+
+        else:
+            self._gl_content.clear_widgets()
 
     def resize_content_layout(self, content, layout, interval=0):
         if not layout.ids.get("box_sheet_list"):

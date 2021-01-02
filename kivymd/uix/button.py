@@ -471,11 +471,11 @@ from kivy.properties import (
     BooleanProperty,
     BoundedNumericProperty,
     DictProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
@@ -724,7 +724,7 @@ Builder.load_string(
     size: self.texture_size
     color:
         root.theme_cls.primary_color \
-        if not len(root.custom_color) else root.custom_color
+        if not root.custom_color else root.custom_color
     background_down: f'{images_path}transparent.png'
     background_normal: f'{images_path}transparent.png'
     opacity: 1
@@ -826,11 +826,11 @@ class BaseButton(
     and defaults to `'Primary'`.
     """
 
-    text_color = ListProperty()
+    text_color = ColorProperty(None)
     """
     Text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `''`.
     """
 
@@ -857,10 +857,10 @@ class BaseButton(
     and defaults to `0`.
     """
 
-    md_bg_color_disabled = ListProperty()
+    md_bg_color_disabled = ColorProperty(None)
     """Color disabled.
 
-    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ListProperty`
+    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ColorProperty`
     and defaults to ``.
     """
 
@@ -868,10 +868,10 @@ class BaseButton(
 
     opposite_colors = BooleanProperty(False)
 
-    _current_button_color = ListProperty([0.0, 0.0, 0.0, 0.0])
-    _current_text_color = ListProperty([1.0, 1.0, 1.0, 1])
-    _md_bg_color_down = ListProperty([0.0, 0.0, 0.0, 0.1])
-    _md_bg_color_disabled = ListProperty([0.0, 0.0, 0.0, 0.0])
+    _current_button_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+    _current_text_color = ColorProperty([1.0, 1.0, 1.0, 1])
+    _md_bg_color_down = ColorProperty([0.0, 0.0, 0.0, 0.1])
+    _md_bg_color_disabled = ColorProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1197,10 +1197,10 @@ class MDRoundFlatButton(MDFlatButton):
 
 
 class MDTextButton(ThemableBehavior, Button):
-    custom_color = ListProperty()
+    custom_color = ColorProperty(None)
     """Custom user button color in ``rgba`` format.
 
-    :attr:`custom_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`custom_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
@@ -1286,10 +1286,10 @@ class MDFillRoundFlatButton(CircularElevationBehavior, MDRoundFlatButton):
 
 
 class MDRectangleFlatIconButton(BaseFlatIconButton):
-    line_color = ListProperty()
+    line_color = ColorProperty(None)
     """Button border color in ``rgba`` format.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
@@ -1299,7 +1299,7 @@ class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
 
 
 class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
-    text_color = ListProperty((1, 1, 1, 1))
+    text_color = ColorProperty((1, 1, 1, 1))
 
     def on_md_bg_color(self, instance, value):
         if value != [0.0, 0.0, 0.0, 0.0]:
@@ -1323,15 +1323,15 @@ class BaseFloatingRootButton(MDFloatingActionButton):
 class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
     _canvas_width = NumericProperty(0)
     _padding_right = NumericProperty(0)
-    _bg_color = ListProperty()
+    _bg_color = ColorProperty(None)
 
 
 class BaseFloatingLabel(
     ThemableBehavior, RectangularElevationBehavior, BoxLayout
 ):
     text = StringProperty()
-    text_color = ListProperty()
-    bg_color = ListProperty()
+    text_color = ColorProperty(None)
+    bg_color = ColorProperty(None)
 
 
 class MDFloatingBottomButton(BaseFloatingBottomButton):
@@ -1390,11 +1390,11 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `None`.
     """
 
-    label_text_color = ListProperty([0, 0, 0, 1])
+    label_text_color = ColorProperty([0, 0, 0, 1])
     """
     Floating text color in ``rgba`` format.
 
-    :attr:`label_text_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`label_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 1]`.
     """
 
@@ -1516,43 +1516,43 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `'close'`.
     """
 
-    bg_color_root_button = ListProperty()
+    bg_color_root_button = ColorProperty(None)
     """
     Root button color in ``rgba`` format.
 
-    :attr:`bg_color_root_button` is a :class:`~kivy.properties.ListProperty`
+    :attr:`bg_color_root_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
-    bg_color_stack_button = ListProperty()
+    bg_color_stack_button = ColorProperty(None)
     """
     The color of the buttons in the stack ``rgba`` format.
 
-    :attr:`bg_color_stack_button` is a :class:`~kivy.properties.ListProperty`
+    :attr:`bg_color_stack_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
-    color_icon_stack_button = ListProperty()
+    color_icon_stack_button = ColorProperty(None)
     """
     The color icon of the buttons in the stack ``rgba`` format.
 
-    :attr:`color_icon_stack_button` is a :class:`~kivy.properties.ListProperty`
+    :attr:`color_icon_stack_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
-    color_icon_root_button = ListProperty()
+    color_icon_root_button = ColorProperty(None)
     """
     The color icon of the root button ``rgba`` format.
 
-    :attr:`color_icon_root_button` is a :class:`~kivy.properties.ListProperty`
+    :attr:`color_icon_root_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
-    bg_hint_color = ListProperty()
+    bg_hint_color = ColorProperty(None)
     """
     Background color for the text of the buttons in the stack ``rgba`` format.
 
-    :attr:`bg_hint_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`bg_hint_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 

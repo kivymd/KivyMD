@@ -27,7 +27,7 @@ Top
     from kivymd.app import MDApp
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -138,7 +138,7 @@ Usage
     from kivymd.app import MDApp
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
 
         # Will always be at the bottom of the screen.
         MDBottomAppBar:
@@ -215,6 +215,24 @@ Mode:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-10.png
     :align: center
 
+Custom color
+------------
+
+.. code-block:: kv
+
+    MDBottomAppBar:
+        md_bg_color: 0, 1, 0, 1
+
+        MDToolbar:
+            title: "Title"
+            icon: "git"
+            type: "bottom"
+            left_action_items: [["menu", lambda x: x]]
+            icon_color: 0, 1, 0, 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-11.png
+    :align: center
+
 .. seealso::
 
     `Components-Bottom-App-Bar <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-App-Bar>`_
@@ -230,6 +248,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -246,7 +265,7 @@ Builder.load_string(
 #:import m_res kivymd.material_resources
 
 
-<MDActionBottomAppBarButton>:
+<MDActionBottomAppBarButton>
     md_bg_color: self.theme_cls.primary_color
 
     canvas.before:
@@ -265,11 +284,13 @@ Builder.load_string(
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
     opposite_colors: True
     elevation: root.elevation
-    md_bg_color: self.theme_cls.primary_color if root.type != "bottom" else [0, 0, 0, 0]
 
     canvas:
         Color:
-            rgba: root.theme_cls.primary_color
+            rgba:
+                (root.theme_cls.primary_color if root.md_bg_color == [0, 0, 0, 0] else root.md_bg_color) \
+                if root.type == "top" else \
+                (root.theme_cls.primary_color if root.parent.md_bg_color == [0, 0, 0, 0] else root.parent.md_bg_color)
         RoundedRectangle:
             pos:
                 self.pos \
@@ -314,7 +335,7 @@ Builder.load_string(
 
     BoxLayout:
         id: left_actions
-        orientation: 'horizontal'
+        orientation: "horizontal"
         size_hint_x: None
         padding: [0, (self.height - dp(48))/2]
 
@@ -323,19 +344,19 @@ Builder.load_string(
 
         MDLabel:
             id: label_title
-            font_style: 'H6'
+            font_style: "H6"
             opposite_colors: root.opposite_colors
-            theme_text_color: 'Custom'
+            theme_text_color: "Custom"
             text_color: root.specific_text_color
             text: root.title
             shorten: True
-            shorten_from: 'right'
+            shorten_from: "right"
             halign: root.anchor_title
             markup: True
 
     BoxLayout:
         id: right_actions
-        orientation: 'horizontal'
+        orientation: "horizontal"
         size_hint_x: None
         padding: [0, (self.height - dp(48)) / 2]
 """
@@ -368,7 +389,8 @@ class MDToolbar(
     """
 
     left_action_items = ListProperty()
-    """The icons on the left of the toolbar.
+    """
+    The icons on the left of the toolbar.
     To add one, append a list like the following:
 
     .. code-block:: kv
@@ -383,7 +405,8 @@ class MDToolbar(
     """
 
     right_action_items = ListProperty()
-    """The icons on the left of the toolbar.
+    """
+    The icons on the left of the toolbar.
     Works the same way as :attr:`left_action_items`.
 
     :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
@@ -391,21 +414,24 @@ class MDToolbar(
     """
 
     title = StringProperty()
-    """Text toolbar.
+    """
+    Text toolbar.
 
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
-    md_bg_color = ListProperty([0, 0, 0, 0])
-    """Color toolbar.
+    md_bg_color = ColorProperty([0, 0, 0, 0])
+    """
+    Color toolbar.
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
     anchor_title = OptionProperty("left", options=["left", "center", "right"])
-    """Position toolbar title.
+    """
+    Position toolbar title.
     Available options are: `'left'`, `'center'`, `'right'`.
 
     :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
@@ -415,7 +441,8 @@ class MDToolbar(
     mode = OptionProperty(
         "center", options=["free-end", "free-center", "end", "center"]
     )
-    """Floating button position. Only for :class:`~MDBottomAppBar` class.
+    """
+    Floating button position. Only for :class:`~MDBottomAppBar` class.
     Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
 
     :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
@@ -439,7 +466,7 @@ class MDToolbar(
     and defaults to `'android'`.
     """
 
-    icon_color = ListProperty()
+    icon_color = ColorProperty()
     """
     Color action button. Onle for :class:`~MDBottomAppBar` class.
 
@@ -603,11 +630,19 @@ class MDToolbar(
 
 
 class MDBottomAppBar(FloatLayout):
+    md_bg_color = ColorProperty([0, 0, 0, 0])
+    """
+    Color toolbar.
+
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.size_hint_y = None
 
     def add_widget(self, widget, index=0, canvas=None):
-        if widget.__class__ is MDToolbar:
+        if isinstance(widget, MDToolbar):
             super().add_widget(widget)
             return super().add_widget(widget.action_button)

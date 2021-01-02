@@ -129,6 +129,7 @@ from kivy.properties import (
     ListProperty,
     NumericProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -214,14 +215,16 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
 
     padding = ListProperty([0, 0, 0, 0])
-    """Padding for contents of the front layer.
+    """
+    Padding for contents of the front layer.
 
     :attr:`padding` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
     left_action_items = ListProperty()
-    """The icons and methods left of the :class:`kivymd.uix.toolbar.MDToolbar`
+    """
+    The icons and methods left of the :class:`kivymd.uix.toolbar.MDToolbar`
     in back layer. For more information, see the :class:`kivymd.uix.toolbar.MDToolbar` module
     and :attr:`left_action_items` parameter.
 
@@ -230,35 +233,40 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
 
     right_action_items = ListProperty()
-    """Works the same way as :attr:`left_action_items`.
+    """
+    Works the same way as :attr:`left_action_items`.
 
     :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     title = StringProperty()
-    """See the :class:`kivymd.uix.toolbar.MDToolbar.title` parameter.
+    """
+    See the :class:`kivymd.uix.toolbar.MDToolbar.title` parameter.
 
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
-    back_layer_color = ListProperty()
-    """Background color of back layer.
+    back_layer_color = ColorProperty(None)
+    """
+    Background color of back layer.
 
-    :attr:`back_layer_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`back_layer_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    front_layer_color = ListProperty()
-    """Background color of front layer.
+    front_layer_color = ColorProperty(None)
+    """
+    Background color of front layer.
 
-    :attr:`front_layer_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`front_layer_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     radius_left = NumericProperty("16dp")
-    """The value of the rounding radius of the upper left corner
+    """
+    The value of the rounding radius of the upper left corner
     of the front layer.
 
     :attr:`radius_left` is an :class:`~kivy.properties.NumericProperty`
@@ -266,7 +274,8 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
 
     radius_right = NumericProperty("16dp")
-    """The value of the rounding radius of the upper right corner
+    """
+    The value of the rounding radius of the upper right corner
     of the front layer.
 
     :attr:`radius_right` is an :class:`~kivy.properties.NumericProperty`
@@ -274,21 +283,24 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
 
     header = BooleanProperty(True)
-    """Whether to use a header above the contents of the front layer.
+    """
+    Whether to use a header above the contents of the front layer.
 
     :attr:`header` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
     header_text = StringProperty("Header")
-    """Text of header.
+    """
+    Text of header.
 
     :attr:`header_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Header'`.
     """
 
     close_icon = StringProperty("close")
-    """The name of the icon that will be installed on the toolbar
+    """
+    The name of the icon that will be installed on the toolbar
     on the left when opening the front layer.
 
     :attr:`close_icon` is an :class:`~kivy.properties.StringProperty`

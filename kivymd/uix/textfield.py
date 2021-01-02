@@ -864,7 +864,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
         self.bind(
             helper_text=self._set_msg,
-            hint_text=self._set_hint,
+            hint_text=self.on_hint_text,
             _hint_lbl_font_size=self._hint_lbl.setter("font_size"),
             helper_text_mode=self._set_message_mode,
             max_text_length=self._set_max_text_length,
@@ -1084,6 +1084,10 @@ class MDTextField(ThemableBehavior, TextInput):
     def on__hint_text(self, instance, value):
         pass
 
+    def on_hint_text(self, instance, value):
+        self._hint_lbl.text = value
+        self._hint_lbl.font_size = sp(12)
+
     def _anim_get_has_error_color(self, color=None):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_get_has_error.png
         if not color:
@@ -1198,9 +1202,6 @@ class MDTextField(ThemableBehavior, TextInput):
             self._text_len_error = True
         else:
             self._text_len_error = False
-
-    def _set_hint(self, instance, text):
-        self._hint_lbl.text = text
 
     def _set_msg(self, instance, text):
         self._msg_lbl.text = text

@@ -511,9 +511,7 @@ class MDToolbar(
         Clock.schedule_once(
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
-        Clock.schedule_once(
-            lambda x: self.set_md_bg_color(0, self.md_bg_color)
-        )
+        Clock.schedule_once(lambda x: self.set_md_bg_color(0, self.md_bg_color))
 
     def on_action_button(self, *args):
         pass

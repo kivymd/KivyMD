@@ -69,12 +69,12 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    ColorProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.modalview import ModalView
 

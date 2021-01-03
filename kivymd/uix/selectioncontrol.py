@@ -163,6 +163,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
@@ -279,31 +280,31 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     and defaults to `'checkbox-marked-circle'`.
     """
 
-    selected_color = ListProperty()
+    selected_color = ColorProperty(None)
     """
     Selected color in ``rgba`` format.
 
-    :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    unselected_color = ListProperty()
+    unselected_color = ColorProperty(None)
     """
     Unelected color in ``rgba`` format.
 
-    :attr:`unselected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`unselected_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    disabled_color = ListProperty()
+    disabled_color = ColorProperty(None)
     """
     Disabled color in ``rgba`` format.
 
-    :attr:`disabled_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`disabled_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    _current_color = ListProperty([0.0, 0.0, 0.0, 0.0])
+    _current_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(font_size=0, duration=0.1, t="out_quad")
@@ -417,7 +418,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and defaults to `False`.
     """
 
-    _thumb_color = ListProperty(get_color_from_hex(colors["Gray"]["50"]))
+    _thumb_color = ColorProperty(get_color_from_hex(colors["Gray"]["50"]))
 
     def _get_thumb_color(self):
         return self._thumb_color
@@ -440,7 +441,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and property is readonly.
     """
 
-    _thumb_color_down = ListProperty([1, 1, 1, 1])
+    _thumb_color_down = ColorProperty([1, 1, 1, 1])
 
     def _get_thumb_color_down(self):
         return self._thumb_color_down
@@ -457,7 +458,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         elif len(color) == 4:
             self._thumb_color_down = color
 
-    _thumb_color_disabled = ListProperty(
+    _thumb_color_disabled = ColorProperty(
         get_color_from_hex(colors["Gray"]["400"])
     )
 
@@ -512,9 +513,9 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and defaults to `Primary`.
     """
 
-    _track_color_active = ListProperty()
-    _track_color_normal = ListProperty()
-    _track_color_disabled = ListProperty()
+    _track_color_active = ColorProperty(None)
+    _track_color_normal = ColorProperty(None)
+    _track_color_disabled = ColorProperty(None)
     _thumb_pos = ListProperty([0, 0])
 
     def __init__(self, **kwargs):

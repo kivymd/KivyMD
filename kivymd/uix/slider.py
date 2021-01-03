@@ -74,7 +74,12 @@ __all__ = ("MDSlider",)
 
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import BooleanProperty, ListProperty, NumericProperty
+from kivy.properties import (
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ColorProperty,
+)
 from kivy.uix.slider import Slider
 from kivy.utils import get_color_from_hex
 
@@ -199,20 +204,20 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    hint_bg_color = ListProperty()
+    hint_bg_color = ColorProperty(None)
     """
     Hint rectangle color in ``rgba`` format.
 
-    :attr:`hint_bg_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`hint_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    hint_text_color = ListProperty()
+    hint_text_color = ColorProperty(None)
     """
     Hint text color in ``rgba`` format.
 
-    :attr:`hint_text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`hint_text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     hint_radius = NumericProperty(4)
@@ -231,19 +236,19 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    color = ListProperty()
+    color = ColorProperty(None)
     """
     Color slider in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    _track_color_active = ListProperty()
-    _track_color_normal = ListProperty()
-    _track_color_disabled = ListProperty()
+    _track_color_active = ColorProperty(None)
+    _track_color_normal = ColorProperty(None)
+    _track_color_disabled = ColorProperty(None)
     _thumb_pos = ListProperty([0, 0])
-    _thumb_color_disabled = ListProperty(
+    _thumb_color_disabled = ColorProperty(
         get_color_from_hex(colors["Gray"]["400"])
     )
     # Internal state of ring

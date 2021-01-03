@@ -274,11 +274,11 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 
 from kivymd.uix.button import BaseButton

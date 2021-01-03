@@ -65,13 +65,14 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
+    ColorProperty,
     DictProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     ReferenceListProperty,
-    StringProperty, ColorProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout

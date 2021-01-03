@@ -30,10 +30,11 @@ from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
+    ColorProperty,
     DictProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, ColorProperty,
+    StringProperty,
 )
 from kivy.utils import get_color_from_hex
 

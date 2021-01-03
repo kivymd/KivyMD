@@ -106,10 +106,10 @@ from kivy.graphics import (
 from kivy.graphics.vertex_instructions import RoundedRectangle
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
     StringProperty,
-    ColorProperty,
 )
 
 

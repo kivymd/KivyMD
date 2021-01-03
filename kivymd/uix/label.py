@@ -212,9 +212,9 @@ from kivy.metrics import sp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
+    ColorProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.label import Label
 

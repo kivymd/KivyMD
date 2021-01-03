@@ -76,9 +76,9 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
-    ColorProperty,
 )
 from kivy.uix.slider import Slider
 from kivy.utils import get_color_from_hex

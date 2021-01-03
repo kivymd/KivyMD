@@ -413,11 +413,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput

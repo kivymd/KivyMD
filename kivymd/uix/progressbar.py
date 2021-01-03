@@ -137,10 +137,10 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.progressbar import ProgressBar
 

@@ -76,7 +76,7 @@ import os
 
 from kivy.clock import Clock, mainthread
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, StringProperty, ColorProperty
+from kivy.properties import BooleanProperty, ColorProperty, StringProperty
 from kivy.uix.scrollview import ScrollView
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer

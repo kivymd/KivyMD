@@ -73,11 +73,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BoundedNumericProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget

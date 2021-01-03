@@ -118,11 +118,11 @@ __all__ = ("SmartTile", "SmartTileWithLabel", "SmartTileWithStar")
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 

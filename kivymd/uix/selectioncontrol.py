@@ -159,11 +159,11 @@ from kivy.metrics import dp, sp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
 from kivy.uix.floatlayout import FloatLayout

@@ -10,10 +10,10 @@ __all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 from kivy.lang import Builder
 from kivy.properties import (
     BoundedNumericProperty,
+    ColorProperty,
     ListProperty,
     OptionProperty,
     ReferenceListProperty,
-    ColorProperty,
 )
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex

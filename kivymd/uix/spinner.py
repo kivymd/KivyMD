@@ -79,9 +79,9 @@ from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
-    ColorProperty,
 )
 from kivy.uix.widget import Widget
 

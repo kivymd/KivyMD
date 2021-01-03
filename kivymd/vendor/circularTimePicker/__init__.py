@@ -71,7 +71,7 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     ReferenceListProperty,
-    StringProperty,
+    StringProperty, ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -221,7 +221,7 @@ class CircularMilitaryHourPicker(FloatLayout):
     inner_clock_percent = NumericProperty(1)
     selected = NumericProperty(12)
     selector_alpha = NumericProperty(0.3)
-    selector_color = ListProperty([1, 1, 1, 1])
+    selector_color = ColorProperty([1, 1, 1, 1])
     color = ListProperty([0, 0, 0])
     scale = NumericProperty(1)
 

@@ -105,7 +105,7 @@ from kivy.core.window import Window
 from kivy.effects.dampedscroll import DampedScrollEffect
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ListProperty, NumericProperty, ObjectProperty
+from kivy.properties import NumericProperty, ObjectProperty, ColorProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
 
@@ -192,7 +192,7 @@ class MDScrollViewRefreshLayout(ScrollView):
 
 
 class RefreshSpinner(ThemableBehavior, FloatLayout):
-    spinner_color = ListProperty([1, 1, 1, 1])
+    spinner_color = ColorProperty([1, 1, 1, 1])
 
     _refresh_layout = ObjectProperty()
     """kivymd.refreshlayout.MDScrollViewRefreshLayout object."""

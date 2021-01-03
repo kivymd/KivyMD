@@ -299,6 +299,7 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
@@ -510,13 +511,13 @@ class MDNavigationDrawer(MDCard):
     and defaults to `20`.
     """
 
-    scrim_color = ListProperty([0, 0, 0, 0.5])
+    scrim_color = ColorProperty([0, 0, 0, 0.5])
     """
     Color for scrim. Alpha channel will be multiplied with
     :attr:`_scrim_alpha`. Set fourth channel to 0 if you want to disable
     scrim.
 
-    :attr:`scrim_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.5]`.
     """
 

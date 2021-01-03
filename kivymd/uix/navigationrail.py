@@ -103,11 +103,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 
@@ -314,14 +314,14 @@ class MDNavigationRailItem(
     and defaults to `None`.
     """
 
-    color_normal = ListProperty()
+    color_normal = ColorProperty(None)
     """See :attr:`~MDNavigationRail.color_normal` attribute."""
 
-    color_active = ListProperty()
+    color_active = ColorProperty(None)
     """See :attr:`~MDNavigationRail.color_active` attribute."""
 
-    _color_normal = ListProperty()
-    _color_active = ListProperty()
+    _color_normal = ColorProperty(None)
+    _color_active = ColorProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -395,7 +395,7 @@ class MDNavigationRail(MDCard):
     and defaults to `False`.
     """
 
-    hover_bg = ListProperty()
+    hover_bg = ColorProperty(None)
     """
     The background color for the menu item.
     Used when :attr:`use_hover_behavior` parameter is `True`.
@@ -557,28 +557,28 @@ class MDNavigationRail(MDCard):
     and defaults to `''`.
     """
 
-    action_color_button = ListProperty()
+    action_color_button = ColorProperty(None)
     """
     Text of :attr:`~use_action_button`.
 
-    :attr:`action_color_button` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`action_color_button` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    color_normal = ListProperty()
+    color_normal = ColorProperty(None)
     """
     Color normal of item menu.
 
-    :attr:`color_normal` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`color_normal` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    color_active = ListProperty()
+    color_active = ColorProperty(None)
     """
     Color active of item menu.
 
-    :attr:`color_active` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`color_active` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     visible = OptionProperty(

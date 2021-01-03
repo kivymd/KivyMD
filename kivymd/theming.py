@@ -31,10 +31,9 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     DictProperty,
-    ListProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty,
+    StringProperty, ColorProperty,
 )
 from kivy.utils import get_color_from_hex
 
@@ -708,7 +707,7 @@ class ThemeManager(EventDispatcher):
     def _set_ripple_color(self, value):
         self._ripple_color = value
 
-    _ripple_color = ListProperty(get_color_from_hex(colors["Gray"]["400"]))
+    _ripple_color = ColorProperty(get_color_from_hex(colors["Gray"]["400"]))
     """Private value."""
 
     ripple_color = AliasProperty(

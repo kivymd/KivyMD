@@ -934,8 +934,11 @@ class MDTextField(ThemableBehavior, TextInput):
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1
             if not self._get_has_error():
+
                 def on_progress(*args):
-                    self._line_blank_space_right_point = self._hint_lbl.width + dp(5)
+                    self._line_blank_space_right_point = (
+                        self._hint_lbl.width + dp(5)
+                    )
 
                 animation = Animation(
                     _line_blank_space_left_point=self._hint_lbl.x - dp(5),

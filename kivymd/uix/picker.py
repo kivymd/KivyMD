@@ -175,6 +175,7 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
@@ -464,7 +465,7 @@ class MDDatePicker(
     year = NumericProperty()
     today = date.today()
     callback = ObjectProperty()
-    background_color = ListProperty([0, 0, 0, 0.7])
+    background_color = ColorProperty([0, 0, 0, 0.7])
 
     class SetDateError(Exception):
         pass

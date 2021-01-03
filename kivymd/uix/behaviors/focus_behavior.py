@@ -65,7 +65,7 @@ Color change at focus/defocus
 __all__ = ("FocusBehavior",)
 
 from kivy.app import App
-from kivy.properties import BooleanProperty, ListProperty
+from kivy.properties import BooleanProperty, ColorProperty
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd.uix.behaviors import HoverBehavior
@@ -81,20 +81,20 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
     and defaults to `False`.
     """
 
-    focus_color = ListProperty()
+    focus_color = ColorProperty(None)
     """
     The color of the widget when the mouse enters the bbox of the widget.
 
-    :attr:`focus_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`focus_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    unfocus_color = ListProperty()
+    unfocus_color = ColorProperty(None)
     """
     The color of the widget when the mouse exits the bbox widget.
 
-    :attr:`unfocus_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`unfocus_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     def on_enter(self):

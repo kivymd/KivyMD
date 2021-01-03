@@ -413,17 +413,16 @@ from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 
 from kivymd.font_definitions import theme_font_styles
-from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.label import MDIcon
 
@@ -656,7 +655,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
     and defaults to `True`.
     """
 
-    _primary_color = ListProperty((0, 0, 0, 0))
+    _primary_color = ColorProperty((0, 0, 0, 0))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -750,20 +749,20 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `'line'`.
     """
 
-    line_color_normal = ListProperty()
+    line_color_normal = ColorProperty(None)
     """
     Line color normal in ``rgba`` format.
 
-    :attr:`line_color_normal` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`line_color_normal` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    line_color_focus = ListProperty()
+    line_color_focus = ColorProperty(None)
     """
     Line color focus in ``rgba`` format.
 
-    :attr:`line_color_focus` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`line_color_focus` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     line_anim = BooleanProperty(True)
@@ -774,20 +773,20 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `True`.
     """
 
-    error_color = ListProperty()
+    error_color = ColorProperty(None)
     """
     Error color in ``rgba`` format for ``required = True``.
 
-    :attr:`error_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`error_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    fill_color = ListProperty((0, 0, 0, 0))
+    fill_color = ColorProperty((0, 0, 0, 0))
     """
     The background color of the fill in rgba format when the ``mode`` parameter
     is "fill".
 
-    :attr:`fill_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`fill_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 0)`.
     """
 
@@ -807,12 +806,12 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `False`.
     """
 
-    current_hint_text_color = ListProperty()
+    current_hint_text_color = ColorProperty(None)
     """
     ``hint_text`` text color.
 
-    :attr:`current_hint_text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`current_hint_text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     icon_right = StringProperty()
@@ -822,18 +821,18 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `''`.
     """
 
-    icon_right_color = ListProperty((0, 0, 0, 1))
+    icon_right_color = ColorProperty((0, 0, 0, 1))
     """Color of right icon in ``rgba`` format.
 
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
-    text_color = ListProperty()
+    text_color = ColorProperty(None)
     """Text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     _text_len_error = BooleanProperty(False)
@@ -842,10 +841,10 @@ class MDTextField(ThemableBehavior, TextInput):
     _line_blank_space_left_point = NumericProperty(0)
     _hint_y = NumericProperty("38dp")
     _line_width = NumericProperty(0)
-    _current_line_color = ListProperty((0, 0, 0, 0))
-    _current_error_color = ListProperty((0, 0, 0, 0))
-    _current_hint_text_color = ListProperty((0, 0, 0, 0))
-    _current_right_lbl_color = ListProperty((0, 0, 0, 0))
+    _current_line_color = ColorProperty((0, 0, 0, 0))
+    _current_error_color = ColorProperty((0, 0, 0, 0))
+    _current_hint_text_color = ColorProperty((0, 0, 0, 0))
+    _current_right_lbl_color = ColorProperty((0, 0, 0, 0))
 
     _msg_lbl = None
     _right_msg_lbl = None
@@ -1218,59 +1217,64 @@ class MDTextField(ThemableBehavior, TextInput):
 
 class MDTextFieldRound(ThemableBehavior, TextInput):
     icon_left = StringProperty()
-    """Left icon.
+    """
+    Left icon.
 
     :attr:`icon_left` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
-    icon_left_color = ListProperty((0, 0, 0, 1))
-    """Color of left icon in ``rgba`` format.
+    icon_left_color = ColorProperty((0, 0, 0, 1))
+    """
+    Color of left icon in ``rgba`` format.
 
-    :attr:`icon_left_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`icon_left_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
     icon_right = StringProperty()
-    """Right icon.
+    """
+    Right icon.
 
     :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
-    icon_right_color = ListProperty((0, 0, 0, 1))
-    """Color of right icon.
+    icon_right_color = ColorProperty((0, 0, 0, 1))
+    """
+    Color of right icon.
 
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
-    line_color = ListProperty()
-    """Field line color.
+    line_color = ColorProperty(None)
+    """
+    Field line color.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    normal_color = ListProperty()
-    """Field color if `focus` is `False`.
+    normal_color = ColorProperty(None)
+    """
+    Field color if `focus` is `False`.
 
-    :attr:`normal_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`normal_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    color_active = ListProperty()
-    """Field color if `focus` is `True`.
+    color_active = ColorProperty(None)
+    """
+    Field color if `focus` is `True`.
 
-    :attr:`color_active` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`color_active` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    _color_active = ListProperty()
-
-    _icon_left_color_copy = ListProperty()
-
-    _icon_right_color_copy = ListProperty()
+    _color_active = ColorProperty(None)
+    _icon_left_color_copy = ColorProperty(None)
+    _icon_right_color_copy = ColorProperty(None)
 
     def __init__(self, **kwargs):
         self._lbl_icon_left = MDIcon(theme_text_color="Custom")

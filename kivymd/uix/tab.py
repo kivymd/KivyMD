@@ -472,11 +472,11 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior
@@ -569,9 +569,10 @@ Builder.load_string(
             ignore_perpendicular_swipes: True
             anim_move_duration: root.anim_duration
             on_index: root.on_carousel_index(*args)
-            on__offset: tab_bar.android_animation(*args)
-            on_slides: self.index = root.default_tab
-            on_slides: root.on_carousel_index(self, 0)
+            on__offset: tab_bar.android_animation(*args)            
+            on_slides:
+                self.index = root.default_tab
+                root.on_carousel_index(self, 0)
 
     MDTabsBar:
         id: tab_bar
@@ -615,8 +616,8 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, Label):
     """This class it represent the label of each tab."""
 
-    text_color_normal = ListProperty((1, 1, 1, 1))
-    text_color_active = ListProperty((1, 1, 1, 1))
+    text_color_normal = ColorProperty((1, 1, 1, 1))
+    text_color_active = ColorProperty((1, 1, 1, 1))
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
     font_name = StringProperty("Roboto")
@@ -938,6 +939,7 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
                         else ind_width
                     )
             self.update_indicator(x_step, w_step)
+            print(x_step, w_step)
 
 
 class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
@@ -1023,27 +1025,27 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `True`.
     """
 
-    background_color = ListProperty()
+    background_color = ColorProperty(None)
     """
     Background color of tabs in ``rgba`` format.
 
-    :attr:`background_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`background_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    text_color_normal = ListProperty((1, 1, 1, 1))
+    text_color_normal = ColorProperty((1, 1, 1, 1))
     """
     Text color of the label when it is not selected.
 
-    :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(1, 1, 1, 1)`.
     """
 
-    text_color_active = ListProperty((1, 1, 1, 1))
+    text_color_active = ColorProperty((1, 1, 1, 1))
     """
     Text color of the label when it is selected.
 
-    :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color_active` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(1, 1, 1, 1)`.
     """
 
@@ -1059,12 +1061,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `0`.
     """
 
-    indicator_color = ListProperty()
+    indicator_color = ColorProperty(None)
     """
     Color indicator in ``rgba`` format.
 
-    :attr:`indicator_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`indicator_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     lock_swiping = BooleanProperty(False)
@@ -1123,12 +1125,13 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         # You can add only subclass of MDTabsBase.
         if len(self.children) >= 2:
             try:
-                widget.tab_label.ripple_duration_in_slow = self.ripple_duration
+                # FIXME: Can't set the value of the `no_ripple_effect`
+                #  and `ripple_duration` properties for widget.tab_label.
                 widget.tab_label._no_ripple_effect = self.no_ripple_effect
+                widget.tab_label.ripple_duration_in_slow = self.ripple_duration
+
                 widget.tab_label.group = str(self)
                 widget.tab_label.tab_bar = self.tab_bar
-                widget.tab_label.text_color_normal = self.text_color_normal
-                widget.tab_label.text_color_active = self.text_color_active
                 self.bind(
                     text_color_normal=widget.tab_label.setter(
                         "text_color_normal"
@@ -1156,7 +1159,9 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         # The last tab is not deleted.
         if len(self.tab_bar.layout.children) == 1:
             return
+
         self.tab_bar.layout.remove_widget(widget)
+
         for tab in self.carousel.slides:
             if tab.text == widget.text:
                 self.carousel.remove_widget(tab)
@@ -1168,12 +1173,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     def on_carousel_index(self, carousel, index):
         """Called when the carousel index changes."""
 
-        # when the index of the carousel change, update
-        # tab indicator, select the current tab and reset threshold data.
+        # When the index of the carousel change, update tab indicator,
+        # select the current tab and reset threshold data.
         if carousel.current_slide:
             current_tab_label = carousel.current_slide.tab_label
             if current_tab_label.state == "normal":
-                current_tab_label._do_press()
+                # current_tab_label._do_press()
                 current_tab_label.dispatch("on_release")
 
             if self.tab_indicator_type == "round":

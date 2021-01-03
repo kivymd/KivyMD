@@ -212,9 +212,9 @@ from kivy.metrics import sp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
-    ListProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.label import Label
 
@@ -297,14 +297,14 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     and defaults to `None`.
     """
 
-    text_color = ListProperty(None, allownone=True)
+    text_color = ColorProperty(None)
     """Label text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    parent_background = ListProperty(None, allownone=True)
+    parent_background = ColorProperty(None)
 
     _currently_bound_property = {}
 

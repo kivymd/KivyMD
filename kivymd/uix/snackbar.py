@@ -278,6 +278,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 
 from kivymd.uix.button import BaseButton
@@ -366,12 +367,12 @@ class BaseSnackbar(MDCard):
     and defaults to `'True'`.
     """
 
-    bg_color = ListProperty()
+    bg_color = ColorProperty(None)
     """
     Snackbar background.
 
-    :attr:`bg_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `'[]'`.
+    :attr:`bg_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     buttons = ListProperty()

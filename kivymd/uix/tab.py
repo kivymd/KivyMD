@@ -472,11 +472,11 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     BoundedNumericProperty,
+    ColorProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior

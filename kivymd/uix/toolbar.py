@@ -421,14 +421,6 @@ class MDToolbar(
     and defaults to `''`.
     """
 
-    md_bg_color = ColorProperty([0, 0, 0, 0])
-    """
-    Color toolbar.
-
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0]`.
-    """
-
     anchor_title = OptionProperty("left", options=["left", "center", "right"])
     """
     Position toolbar title.
@@ -519,6 +511,9 @@ class MDToolbar(
         Clock.schedule_once(
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
+        Clock.schedule_once(
+            lambda x: self.set_md_bg_color(0, self.md_bg_color)
+        )
 
     def on_action_button(self, *args):
         pass
@@ -532,6 +527,10 @@ class MDToolbar(
 
     def on_right_action_items(self, instance, value):
         self.update_action_bar(self.ids["right_actions"], value)
+
+    def set_md_bg_color(self, instance, value):
+        if value == [1.0, 1.0, 1.0, 0.0]:
+            self.md_bg_color = self.theme_cls.primary_color
 
     def update_action_bar(self, action_bar, action_bar_items):
         action_bar.clear_widgets()

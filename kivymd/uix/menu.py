@@ -649,6 +649,7 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
@@ -798,11 +799,11 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             The method that will be called when you click menu items.
     """
 
-    selected_color = ListProperty()
+    selected_color = ColorProperty(None)
     """Custom color (``rgba`` format) for list item when hover behavior occurs.
 
-    :attr:`selected_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     items = ListProperty()
@@ -859,12 +860,12 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `None`.
     """
 
-    background_color = ListProperty()
+    background_color = ColorProperty(None)
     """
     Color of the background of the menu.
 
-    :attr:`background_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`background_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     opening_transition = StringProperty("out_cubic")

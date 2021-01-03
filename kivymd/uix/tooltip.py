@@ -77,6 +77,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
@@ -134,20 +135,20 @@ Builder.load_string(
 
 
 class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
-    tooltip_bg_color = ListProperty()
+    tooltip_bg_color = ColorProperty(None)
     """
     Tooltip background color in ``rgba`` format.
 
-    :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    tooltip_text_color = ListProperty()
+    tooltip_text_color = ColorProperty(None)
     """
     Tooltip text color in ``rgba`` format.
 
-    :attr:`tooltip_text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`tooltip_text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     tooltip_text = StringProperty()
@@ -299,12 +300,12 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):
-    tooltip_bg_color = ListProperty()
+    tooltip_bg_color = ColorProperty(None)
     """
     See :attr:`~MDTooltip.tooltip_bg_color`.
     """
 
-    tooltip_text_color = ListProperty()
+    tooltip_text_color = ColorProperty(None)
     """
     See :attr:`~MDTooltip.tooltip_text_color`.
     """

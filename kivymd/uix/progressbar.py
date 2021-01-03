@@ -137,10 +137,10 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.progressbar import ProgressBar
 
@@ -199,12 +199,12 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     and defaults to `'horizontal'`.
     """
 
-    color = ListProperty()
+    color = ColorProperty(None)
     """
     Progress bar color in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `[]`.
+    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     running_transition = StringProperty("in_cubic")

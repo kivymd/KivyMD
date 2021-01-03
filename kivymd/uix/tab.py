@@ -939,7 +939,6 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
                         else ind_width
                     )
             self.update_indicator(x_step, w_step)
-            print(x_step, w_step)
 
 
 class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):

@@ -440,6 +440,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
@@ -652,12 +653,12 @@ class BaseListItem(
     and defaults to `''`.
     """
 
-    text_color = ListProperty(None)
+    text_color = ColorProperty(None)
     """
     Text color in ``rgba`` format used if :attr:`~theme_text_color` is set
     to `'Custom'`.
 
-    :attr:`text_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -693,21 +694,21 @@ class BaseListItem(
     and defaults to `''`.
     """
 
-    secondary_text_color = ListProperty(None)
+    secondary_text_color = ColorProperty(None)
     """
     Text color in ``rgba`` format used for secondary text
     if :attr:`~secondary_theme_text_color` is set to `'Custom'`.
 
-    :attr:`secondary_text_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`secondary_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    tertiary_text_color = ListProperty(None)
+    tertiary_text_color = ColorProperty(None)
     """
     Text color in ``rgba`` format used for tertiary text
     if :attr:`~tertiary_theme_text_color` is set to 'Custom'.
 
-    :attr:`tertiary_text_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`tertiary_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -754,12 +755,12 @@ class BaseListItem(
     and defaults to `'Full'`.
     """
 
-    bg_color = ListProperty()
+    bg_color = ColorProperty(None)
     """
     Background color for menu item.
 
-    :attr:`bg_color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`bg_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     _txt_left_pad = NumericProperty("16dp")

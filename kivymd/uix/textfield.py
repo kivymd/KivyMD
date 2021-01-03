@@ -931,20 +931,21 @@ class MDTextField(ThemableBehavior, TextInput):
         self._set_text_len_error()
 
         if self.focus:
-            self._line_blank_space_right_point = (
-                self._get_line_blank_space_right_point()
-            )
             _fill_color = self.fill_color
             _fill_color[3] = self.fill_color[3] - 0.1
             if not self._get_has_error():
-                Animation(
-                    _line_blank_space_right_point=self._line_blank_space_right_point,
+                def on_progress(*args):
+                    self._line_blank_space_right_point = self._hint_lbl.width + dp(5)
+
+                animation = Animation(
                     _line_blank_space_left_point=self._hint_lbl.x - dp(5),
                     _current_hint_text_color=self.line_color_focus,
                     fill_color=_fill_color,
                     duration=0.2,
                     t="out_quad",
-                ).start(self)
+                )
+                animation.bind(on_progress=on_progress)
+                animation.start(self)
             self.has_had_text = True
             Animation.cancel_all(
                 self, "_line_width", "_hint_y", "_hint_lbl_font_size"
@@ -1086,7 +1087,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def on_hint_text(self, instance, value):
         self._hint_lbl.text = value
-        self._hint_lbl.font_size = sp(12)
+        self._hint_lbl.font_size = sp(16)
 
     def _anim_get_has_error_color(self, color=None):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_get_has_error.png
@@ -1174,16 +1175,6 @@ class MDTextField(ThemableBehavior, TextInput):
             else:
                 has_error = False
         return has_error
-
-    def _get_line_blank_space_right_point(self):
-        # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_line_blank_space_right_point.png
-        if not self._better_texture_size:
-            self._better_texture_size = self._hint_lbl.texture_size[0]
-        return (
-            self._better_texture_size - self._better_texture_size / 100 * dp(18)
-            if DEVICE_TYPE == "desktop"
-            else dp(10)
-        )
 
     def _get_max_text_length(self):
         """Returns the maximum number of characters that can be entered in a

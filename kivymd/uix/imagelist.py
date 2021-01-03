@@ -118,11 +118,11 @@ __all__ = ("SmartTile", "SmartTileWithLabel", "SmartTileWithStar")
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 
@@ -207,11 +207,11 @@ class SmartTile(
     as a header or a footer, as described in the Material Design specs.
     """
 
-    box_color = ListProperty((0, 0, 0, 0.5))
+    box_color = ColorProperty((0, 0, 0, 0.5))
     """
     Sets the color and opacity for the information box.
 
-    :attr:`box_color` is a :class:`~kivy.properties.ListProperty`
+    :attr:`box_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 0.5)`.
     """
 
@@ -267,11 +267,11 @@ class SmartTileWithLabel(SmartTile):
     and defaults to `'Caption'`.
     """
 
-    tile_text_color = ListProperty((1, 1, 1, 1))
+    tile_text_color = ColorProperty((1, 1, 1, 1))
     """
     Tile text color in ``rgba`` format.
 
-    :attr:`tile_text_color` is a :class:`~kivy.properties.StringProperty`
+    :attr:`tile_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(1, 1, 1, 1)`.
     """
 

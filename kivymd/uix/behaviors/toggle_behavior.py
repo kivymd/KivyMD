@@ -84,7 +84,7 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 
 __all__ = ("MDToggleButton",)
 
-from kivy.properties import BooleanProperty, ListProperty
+from kivy.properties import BooleanProperty, ColorProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
 from kivymd.uix.button import (
@@ -100,35 +100,35 @@ from kivymd.uix.button import (
 
 
 class MDToggleButton(ToggleButtonBehavior):
-    background_normal = ListProperty()
+    background_normal = ColorProperty(None)
     """
     Color of the button in ``rgba`` format for the 'normal' state.
 
-    :attr:`background_normal` is a :class:`~kivy.properties.ListProperty`
-    and is defaults to `[]`.
+    :attr:`background_normal` is a :class:`~kivy.properties.ColorProperty`
+    and is defaults to `None`.
     """
 
-    background_down = ListProperty()
+    background_down = ColorProperty(None)
     """
     Color of the button in ``rgba`` format for the 'down' state.
 
-    :attr:`background_down` is a :class:`~kivy.properties.ListProperty`
-    and is defaults to `[]`.
+    :attr:`background_down` is a :class:`~kivy.properties.ColorProperty`
+    and is defaults to `None`.
     """
 
-    font_color_normal = ListProperty()
+    font_color_normal = ColorProperty(None)
     """
     Color of the font's button in ``rgba`` format for the 'normal' state.
 
-    :attr:`font_color_normal` is a :class:`~kivy.properties.ListProperty`
-    and is defaults to `[]`.
+    :attr:`font_color_normal` is a :class:`~kivy.properties.ColorProperty`
+    and is defaults to `None`.
     """
 
-    font_color_down = ListProperty([1, 1, 1, 1])
+    font_color_down = ColorProperty([1, 1, 1, 1])
     """
     Color of the font's button in ``rgba`` format for the 'down' state.
 
-    :attr:`font_color_down` is a :class:`~kivy.properties.ListProperty`
+    :attr:`font_color_down` is a :class:`~kivy.properties.ColorProperty`
     and is defaults to `[1, 1, 1, 1]`.
     """
 

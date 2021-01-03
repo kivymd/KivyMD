@@ -76,7 +76,7 @@ import os
 
 from kivy.clock import Clock, mainthread
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ListProperty, StringProperty
+from kivy.properties import BooleanProperty, StringProperty, ColorProperty
 from kivy.uix.scrollview import ScrollView
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -108,12 +108,12 @@ class HotReloadErrorText(ThemableBehavior, ScrollView):
     and defaults to `''`.
     """
 
-    errors_text_color = ListProperty()
+    errors_text_color = ColorProperty(None)
     """
     Error text color.
 
-    :attr:`errors_text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`errors_text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
 
@@ -149,20 +149,20 @@ class HotReloadViewer(ThemableBehavior, MDBoxLayout):
     and defaults to `False`.
     """
 
-    errors_background_color = ListProperty()
+    errors_background_color = ColorProperty(None)
     """
     Error background color.
 
-    :attr:`errors_background_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`errors_background_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    errors_text_color = ListProperty()
+    errors_text_color = ColorProperty(None)
     """
     Error text color.
 
-    :attr:`errors_text_color` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :attr:`errors_text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     _temp_widget = None

@@ -758,14 +758,15 @@ Builder.load_string(
     theme_text_color: "Custom"
     md_bg_color: self.theme_cls.primary_color
 
-    canvas.before:
-        PushMatrix
-        Rotate:
-            angle: self._angle
-            axis: (0, 0, 1)
-            origin: self.center
-    canvas.after:
-        PopMatrix
+    # FIXME: https://github.com/kivymd/KivyMD/issues/336
+    # canvas.before:
+    #     PushMatrix
+    #     Rotate:
+    #         angle: self._angle
+    #         axis: (0, 0, 1)
+    #         origin: self.center
+    # canvas.after:
+    #     PopMatrix
 
 
 <BaseFloatingLabel>

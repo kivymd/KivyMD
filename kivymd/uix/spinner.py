@@ -77,7 +77,12 @@ __all__ = ("MDSpinner",)
 
 from kivy.animation import Animation
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ListProperty, NumericProperty
+from kivy.properties import (
+    BooleanProperty,
+    ListProperty,
+    NumericProperty,
+    ColorProperty,
+)
 from kivy.uix.widget import Widget
 
 from kivymd.theming import ThemableBehavior
@@ -140,12 +145,12 @@ class MDSpinner(ThemableBehavior, Widget):
     and defaults to `True`.
     """
 
-    color = ListProperty([0, 0, 0, 0])
+    color = ColorProperty([0, 0, 0, 0])
     """
     Spinner color.
 
-    :attr:`color` is a :class:`~kivy.properties.ListProperty`
-    and defaults to ``self.theme_cls.primary_color``.
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     palette = ListProperty()

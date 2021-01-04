@@ -529,7 +529,6 @@ Builder.load_string(
 
     font_name: "Roboto" if not root.font_name else root.font_name
     foreground_color: self.theme_cls.text_color
-    font_size: "16sp"
     bold: False
     padding:
         0 if root.mode != "fill" else "8dp", \
@@ -815,24 +814,35 @@ class MDTextField(ThemableBehavior, TextInput):
     """
 
     icon_right = StringProperty()
-    """Right icon.
+    """
+    Right icon.
 
     :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
     icon_right_color = ColorProperty((0, 0, 0, 1))
-    """Color of right icon in ``rgba`` format.
+    """
+    Color of right icon in ``rgba`` format.
 
     :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
     text_color = ColorProperty(None)
-    """Text color in ``rgba`` format.
+    """
+    Text color in ``rgba`` format.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
+    """
+
+    font_size = NumericProperty("16sp")
+    """
+    Font size of the text in pixels.
+
+    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty` and
+    defaults to `'16sp'`.
     """
 
     _text_len_error = BooleanProperty(False)
@@ -845,7 +855,6 @@ class MDTextField(ThemableBehavior, TextInput):
     _current_error_color = ColorProperty((0, 0, 0, 0))
     _current_hint_text_color = ColorProperty((0, 0, 0, 0))
     _current_right_lbl_color = ColorProperty((0, 0, 0, 0))
-
     _msg_lbl = None
     _right_msg_lbl = None
     _hint_lbl = None

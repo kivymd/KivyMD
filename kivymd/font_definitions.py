@@ -13,13 +13,6 @@ from kivymd import fonts_path
 
 fonts = [
     {
-        "name": "Roboto",
-        "fn_regular": fonts_path + "Roboto-Regular.ttf",
-        "fn_bold": fonts_path + "Roboto-Bold.ttf",
-        "fn_italic": fonts_path + "Roboto-Italic.ttf",
-        "fn_bolditalic": fonts_path + "Roboto-BoldItalic.ttf",
-    },
-    {
         "name": "RobotoThin",
         "fn_regular": fonts_path + "Roboto-Thin.ttf",
         "fn_italic": fonts_path + "Roboto-ThinItalic.ttf",

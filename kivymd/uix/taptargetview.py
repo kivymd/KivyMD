@@ -275,7 +275,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     and defaults to `dp(200)`.
     """
 
-    outer_circle_color = ColorProperty(None)
+    outer_circle_color = ListProperty()
     """
     Color for the outer circle in ``rgb`` format.
 
@@ -289,8 +289,8 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tap-target-view-widget-outer-circle-color.png
         :align: center
 
-    :attr:`outer_circle_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
+    :attr:`outer_circle_color` is an :class:`~kivy.properties.ListProperty`
+    and defaults to ``theme_cls.primary_color``.
     """
 
     outer_circle_alpha = NumericProperty(0.96)
@@ -346,11 +346,11 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     and defaults to `dp(25)`.
     """
 
-    title_text_color = ColorProperty([1, 1, 1, 1])
+    title_text_color = ListProperty([1, 1, 1, 1])
     """
     Text color for title.
 
-    :attr:`title_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`title_text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 
@@ -378,11 +378,11 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     and defaults to `dp(20)`.
     """
 
-    description_text_color = ColorProperty([0.9, 0.9, 0.9, 1])
+    description_text_color = ListProperty([0.9, 0.9, 0.9, 1])
     """
     Text size for description text.
 
-    :attr:`description_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`description_text_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0.9, 0.9, 0.9, 1]`.
     """
 

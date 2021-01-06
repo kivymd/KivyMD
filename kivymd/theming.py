@@ -274,7 +274,9 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_accent_color(self):
-        return get_color_from_hex(self.colors[self.accent_palette][self.accent_hue])
+        return get_color_from_hex(
+            self.colors[self.accent_palette][self.accent_hue]
+        )
 
     accent_color = AliasProperty(
         _get_accent_color, bind=["accent_palette", "accent_hue"]

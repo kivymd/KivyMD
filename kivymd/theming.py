@@ -861,6 +861,7 @@ class ThemeManager(EventDispatcher):
         Clock.schedule_once(lambda x: self.on_theme_style(0, self.theme_style))
         self._determine_device_orientation(None, Window.size)
         Window.bind(size=self._determine_device_orientation)
+        self.colors = colors
 
 
 class ThemableBehavior(EventDispatcher):

@@ -236,7 +236,7 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    color = ColorProperty(None)
+    color = ColorProperty([0, 0, 0, 0])
     """
     Color slider in ``rgba`` format.
 
@@ -244,9 +244,9 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `None`.
     """
 
-    _track_color_active = ColorProperty(None)
-    _track_color_normal = ColorProperty(None)
-    _track_color_disabled = ColorProperty(None)
+    _track_color_active = ColorProperty([0, 0, 0, 0])
+    _track_color_normal = ColorProperty([0, 0, 0, 0])
+    _track_color_disabled = ColorProperty([0, 0, 0, 0])
     _thumb_pos = ListProperty([0, 0])
     _thumb_color_disabled = ColorProperty(
         get_color_from_hex(colors["Gray"]["400"])
@@ -310,7 +310,7 @@ class MDSlider(ThemableBehavior, Slider):
             self._track_color_normal[3] = 0.3
             self._track_color_active = self._track_color_normal
             self._track_color_disabled = self._track_color_normal
-            if not self.color:
+            if self.color == [0, 0, 0, 0]:
                 self.color = get_color_from_hex(
                     colors[self.theme_cls.primary_palette]["200"]
                 )
@@ -324,5 +324,5 @@ class MDSlider(ThemableBehavior, Slider):
             self._track_color_active[3] = 0.38
             self._track_color_disabled = get_color_from_hex("000000")
             self._track_color_disabled[3] = 0.26
-            if not self.color:
+            if self.color == [0, 0, 0, 0]:
                 self.color = self.theme_cls.primary_color

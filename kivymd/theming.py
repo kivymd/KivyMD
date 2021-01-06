@@ -152,7 +152,7 @@ class ThemeManager(EventDispatcher):
 
     def _get_primary_color(self):
         return get_color_from_hex(
-            colors[self.primary_palette][self.primary_hue]
+            self.colors[self.primary_palette][self.primary_hue]
         )
 
     primary_color = AliasProperty(
@@ -167,7 +167,7 @@ class ThemeManager(EventDispatcher):
 
     def _get_primary_light(self):
         return get_color_from_hex(
-            colors[self.primary_palette][self.primary_light_hue]
+            self.colors[self.primary_palette][self.primary_light_hue]
         )
 
     primary_light = AliasProperty(
@@ -221,7 +221,7 @@ class ThemeManager(EventDispatcher):
 
     def _get_primary_dark(self):
         return get_color_from_hex(
-            colors[self.primary_palette][self.primary_dark_hue]
+            self.colors[self.primary_palette][self.primary_dark_hue]
         )
 
     primary_dark = AliasProperty(
@@ -275,7 +275,7 @@ class ThemeManager(EventDispatcher):
     """
 
     def _get_accent_color(self):
-        return get_color_from_hex(colors[self.accent_palette][self.accent_hue])
+        return get_color_from_hex(self.colors[self.accent_palette][self.accent_hue])
 
     accent_color = AliasProperty(
         _get_accent_color, bind=["accent_palette", "accent_hue"]
@@ -290,7 +290,7 @@ class ThemeManager(EventDispatcher):
 
     def _get_accent_light(self):
         return get_color_from_hex(
-            colors[self.accent_palette][self.accent_light_hue]
+            self.colors[self.accent_palette][self.accent_light_hue]
         )
 
     accent_light = AliasProperty(
@@ -306,7 +306,7 @@ class ThemeManager(EventDispatcher):
 
     def _get_accent_dark(self):
         return get_color_from_hex(
-            colors[self.accent_palette][self.accent_dark_hue]
+            self.colors[self.accent_palette][self.accent_dark_hue]
         )
 
     accent_dark = AliasProperty(
@@ -362,9 +362,9 @@ class ThemeManager(EventDispatcher):
     def _get_bg_darkest(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
-            return get_color_from_hex(colors["Light"]["StatusBar"])
+            return get_color_from_hex(self.colors["Light"]["StatusBar"])
         elif theme_style == "Dark":
-            return get_color_from_hex(colors["Dark"]["StatusBar"])
+            return get_color_from_hex(self.colors["Dark"]["StatusBar"])
 
     bg_darkest = AliasProperty(_get_bg_darkest, bind=["theme_style"])
     """
@@ -433,9 +433,9 @@ class ThemeManager(EventDispatcher):
     def _get_bg_dark(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
-            return get_color_from_hex(colors["Light"]["AppBar"])
+            return get_color_from_hex(self.colors["Light"]["AppBar"])
         elif theme_style == "Dark":
-            return get_color_from_hex(colors["Dark"]["AppBar"])
+            return get_color_from_hex(self.colors["Dark"]["AppBar"])
 
     bg_dark = AliasProperty(_get_bg_dark, bind=["theme_style"])
     """
@@ -462,9 +462,9 @@ class ThemeManager(EventDispatcher):
     def _get_bg_normal(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
-            return get_color_from_hex(colors["Light"]["Background"])
+            return get_color_from_hex(self.colors["Light"]["Background"])
         elif theme_style == "Dark":
-            return get_color_from_hex(colors["Dark"]["Background"])
+            return get_color_from_hex(self.colors["Dark"]["Background"])
 
     bg_normal = AliasProperty(_get_bg_normal, bind=["theme_style"])
     """
@@ -491,9 +491,9 @@ class ThemeManager(EventDispatcher):
     def _get_bg_light(self, opposite=False):
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
-            return get_color_from_hex(colors["Light"]["CardsDialogs"])
+            return get_color_from_hex(self.colors["Light"]["CardsDialogs"])
         elif theme_style == "Dark":
-            return get_color_from_hex(colors["Dark"]["CardsDialogs"])
+            return get_color_from_hex(self.colors["Dark"]["CardsDialogs"])
 
     bg_light = AliasProperty(_get_bg_light, bind=["theme_style"])
     """"
@@ -690,7 +690,7 @@ class ThemeManager(EventDispatcher):
 
     # Hardcoded because muh standard
     def _get_error_color(self):
-        return get_color_from_hex(colors["Red"]["A700"])
+        return get_color_from_hex(self.colors["Red"]["A700"])
 
     error_color = AliasProperty(_get_error_color)
     """
@@ -783,7 +783,7 @@ class ThemeManager(EventDispatcher):
         if not self.set_clearcolor:
             return
         Window.clearcolor = get_color_from_hex(
-            colors[theme_style]["Background"]
+            self.colors[theme_style]["Background"]
         )
 
     # font name, size (sp), always caps, letter spacing (sp)

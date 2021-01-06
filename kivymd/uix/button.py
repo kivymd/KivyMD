@@ -480,12 +480,11 @@ from kivy.properties import (
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
+from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
-from kivymd import images_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CircularElevationBehavior,
@@ -722,13 +721,7 @@ Builder.load_string(
 <MDTextButton>
     size_hint: None, None
     size: self.texture_size
-    color:
-        root.theme_cls.primary_color \
-        if not root.custom_color else root.custom_color
-    background_down: f'{images_path}transparent.png'
-    background_normal: f'{images_path}transparent.png'
-    opacity: 1
-
+    color: root.theme_cls.primary_color
 
 # SpeedDial classes
 
@@ -1197,14 +1190,7 @@ class MDRoundFlatButton(MDFlatButton):
         self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
 
-class MDTextButton(ThemableBehavior, Button):
-    custom_color = ColorProperty(None)
-    """Custom user button color in ``rgba`` format.
-
-    :attr:`custom_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[]`.
-    """
-
+class MDTextButton(ThemableBehavior, ButtonBehavior, Label):
     def animation_label(self):
         def set_default_state_label(*args):
             Animation(opacity=1, d=0.1, t="in_out_cubic").start(self)
@@ -1219,8 +1205,7 @@ class MDTextButton(ThemableBehavior, Button):
 
     def on_disabled(self, instance, value):
         if value:
-            self.disabled_color = self.theme_cls.disabled_hint_text_color
-            self.background_disabled_normal = f"{images_path}transparent.png"
+            self.color = self.theme_cls.disabled_hint_text_color
 
 
 class MDCustomRoundIconButton(CircularRippleBehavior, ButtonBehavior, Image):

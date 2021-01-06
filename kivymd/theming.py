@@ -30,6 +30,7 @@ from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
+    ColorProperty,
     DictProperty,
     ObjectProperty,
     OptionProperty,

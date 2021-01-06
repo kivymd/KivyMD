@@ -513,9 +513,9 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and defaults to `Primary`.
     """
 
-    _track_color_active = ColorProperty(None)
-    _track_color_normal = ColorProperty(None)
-    _track_color_disabled = ColorProperty(None)
+    _track_color_active = ColorProperty([0, 0, 0, 0])
+    _track_color_normal = ColorProperty([0, 0, 0, 0])
+    _track_color_disabled = ColorProperty([0, 0, 0, 0])
     _thumb_pos = ListProperty([0, 0])
 
     def __init__(self, **kwargs):

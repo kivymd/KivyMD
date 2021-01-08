@@ -212,6 +212,39 @@ Fill mode
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-mode.gif
     :align: center
 
+Maximum height
+--------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    MDScreen
+
+        MDTextField:
+            size_hint_x: .5
+            hint_text: "multiline=True"
+            max_height: "200dp"
+            mode: "fill"
+            fill_color: 0, 0, 0, .4
+            multiline: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-mode-multiline-max-height.gif
+    :align: center
+
 .. MDTextFieldRect:
 MDTextFieldRect
 ---------------
@@ -845,6 +878,16 @@ class MDTextField(ThemableBehavior, TextInput):
     defaults to `'16sp'`.
     """
 
+    # TODO: Add minimum allowed height. Otherwise, if the value is,
+    #  for example, 20, the text field will simply be lessened.
+    max_height = NumericProperty(0)
+    """
+    Maximum height of the text box when `multiline = True`.
+
+    :attr:`max_height` is a :class:`~kivy.properties.NumericProperty` and
+    defaults to `0`.
+    """
+
     _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_point = NumericProperty(0)
@@ -1099,6 +1142,10 @@ class MDTextField(ThemableBehavior, TextInput):
     def on_hint_text(self, instance, value):
         self._hint_lbl.text = value
         self._hint_lbl.font_size = sp(16)
+
+    def on_height(self, instance, value):
+        if value >= self.max_height and self.max_height:
+            self.height = self.max_height
 
     def _anim_get_has_error_color(self, color=None):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_get_has_error.png

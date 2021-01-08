@@ -38,15 +38,6 @@ MDIconButton
 
 .. code-block:: python
 
-.. MDIconButton:
-MDIconButton
-------------
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button.gif
-    :align: center
-
-.. code-block:: python
-
     from kivy.lang import Builder
 
     from kivymd.app import MDApp
@@ -154,6 +145,7 @@ To change the text color of: class:`~MDFlatButton` use the ``text_color`` parame
 
     MDFlatButton:
         text: "MDFLATBUTTON"
+        theme_text_color: "Custom"
         text_color: 0, 0, 1, 1
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-flat-button-text-color.png
@@ -165,7 +157,6 @@ Or use markup:
 
     MDFlatButton:
         text: "[color=#00ffcc]MDFLATBUTTON[/color]"
-        markup: True
 
 To specify the font size and font name, use the parameters as in the usual
 `Kivy` buttons:
@@ -204,17 +195,12 @@ MDRectangleFlatButton
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button.gif
     :align: center
 
-Button parameters :class:`~MDRectangleFlatButton` are the same as
-button :class:`~MDRaisedButton`:
-
 .. code-block:: kv
 
     MDRectangleFlatButton:
         text: "MDRECTANGLEFLATBUTTON"
-        text_color: 0, 0, 1, 1
-        md_bg_color: 1, 1, 0, 1
-
-.. note:: Note that the frame color will be the same as the text color.
+        text_color: 1, 0, 1, 1
+        line_color = 0, 0, 1, 1
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button-md-bg-color.png
     :align: center
@@ -234,21 +220,27 @@ button :class:`~MDRectangleFlatButton`:
     MDRectangleFlatIconButton:
         icon: "android"
         text: "MDRECTANGLEFLATICONBUTTON"
+        theme_text_color: "Custom"
+        text_color: 0, 0, 1, 1
+        line_color: 1, 0, 1, 1
+        icon_color: 1, 0, 0, 1
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button-custom.png
+    :align: center
 
 Without border
 --------------
 
 .. code-block:: python
 
-    from kivy.uix.screenmanager import Screen
-
     from kivymd.app import MDApp
+    from kivymd.uix.screen import MDScreen
     from kivymd.uix.button import MDRectangleFlatIconButton
 
 
     class Example(MDApp):
         def build(self):
-            screen = Screen()
+            screen = MDScreen()
             screen.add_widget(
                 MDRectangleFlatIconButton(
                     text="MDRectangleFlatIconButton",
@@ -273,19 +265,6 @@ Without border
 .. MDRoundFlatButton:
 MDRoundFlatButton
 -----------------
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-button.png
-    :align: center
-
-Button parameters :class:`~MDRoundFlatButton` are the same as
-button :class:`~MDRectangleFlatButton`:
-
-.. code-block:: kv
-
-    MDRoundFlatButton:
-        text: "MDROUNDFLATBUTTON"
-
-.. warning:: The border color does change when using ``text_color`` parameter.
 
 .. code-block:: kv
 
@@ -451,134 +430,111 @@ __all__ = (
     "MDFillRoundFlatButton",
     "MDFillRoundFlatIconButton",
     "MDTextButton",
-    "MDFloatingActionButtonSpeedDial",
 )
 
+from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
+from kivy.graphics.vertex_instructions import RoundedRectangle, Ellipse
 from kivy.graphics.stencil_instructions import (
-    StencilPop,
     StencilPush,
-    StencilUnUse,
     StencilUse,
+    StencilUnUse,
+    StencilPop,
 )
-from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
-from kivy.lang import Builder
-from kivy.metrics import dp, sp
 from kivy.properties import (
-    BooleanProperty,
-    BoundedNumericProperty,
-    ColorProperty,
-    DictProperty,
-    NumericProperty,
-    ObjectProperty,
-    OptionProperty,
     StringProperty,
+    NumericProperty,
+    ColorProperty,
+    OptionProperty,
+    BooleanProperty,
+    ObjectProperty,
+    DictProperty,
+    BoundedNumericProperty,
 )
+from kivy.lang import Builder
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image
-from kivy.uix.widget import Widget
 
-from kivymd import images_path
+from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    CircularElevationBehavior,
-    CircularRippleBehavior,
+    RectangularRippleBehavior,
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     RectangularElevationBehavior,
-    RectangularRippleBehavior,
-    SpecificBackgroundColorBehavior,
+    CircularRippleBehavior,
+    CircularElevationBehavior,
 )
+from kivymd.uix.label import MDLabel
 from kivymd.uix.tooltip import MDTooltip
 
 Builder.load_string(
     """
-#:import images_path kivymd.images_path
-#:import md_icons kivymd.icon_definitions.md_icons
-
-
 <BaseButton>
-    size_hint: (None, None)
-    anchor_x: 'center'
-    anchor_y: 'center'
+    canvas:
+        Clear
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [root._radius, ]
 
+    lbl_txt: lbl_txt
+    size_hint: None, None
+    height: dp(20) + root.lbl_txt.texture_size[1]
+    width: lbl_txt.texture_size[0] + dp(24)
 
-<BaseFlatButton>
-
-
-<BaseRaisedButton>
+    MDLabel:
+        id: lbl_txt
+        text: root.text
+        font_size: root.font_size
+        font_style: root.font_style
+        adaptive_size: True
+        theme_text_color: root.theme_text_color
+        text_color: root.text_color
+        markup: True
+        disabled: root.disabled
+        opposite_colors: root.opposite_colors
+        font_name: root.font_name if root.font_name else self.font_name
 
 
 <BaseRoundButton>
     canvas:
         Clear
         Color:
-            rgba: self._current_button_color if root.icon in md_icons else (0, 0, 0, 0)
+            rgba:
+                (self.md_bg_color if root.icon in md_icons else (0, 0, 0, 0)) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
         Ellipse:
             size: self.size
             pos: self.pos
             source: self.source if hasattr(self, "source") else ""
 
-    size:
-        (dp(48), dp(48)) \
-        if not root.user_font_size \
-        else (dp(root.user_font_size + 23), dp(root.user_font_size + 23))
+    size: "48dp", "48dp"
     lbl_txt: lbl_txt
-    padding: (dp(12), dp(12), dp(12), dp(12)) if root.icon in md_icons else (0, 0, 0, 0)
+    padding: "12dp" if root.icon in md_icons else (0, 0, 0, 0)
 
     MDIcon:
         id: lbl_txt
         icon: root.icon
-        font_size:
-            root.user_font_size \
-            if root.user_font_size \
-            else self.font_size
+        font_size: root.user_font_size if root.user_font_size else self.font_size
         font_name: root.font_name if root.font_name else self.font_name
         theme_text_color: root.theme_text_color
-        text_color: root.text_color
+        text_color:
+            root.text_color if not root.disabled else \
+            (root.md_bg_color_disabled if root.md_bg_color_disabled \
+            else root.theme_cls.disabled_hint_text_color)
         disabled: root.disabled
-        valign: 'middle'
-        halign: 'center'
-        opposite_colors: root.opposite_colors
-
-
-<BaseRectangularButton>
-    canvas:
-        Clear
-        Color:
-            rgba: self._current_button_color
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius: (root._radius, )
-
-    lbl_txt: lbl_txt
-    height: dp(22) + sp(root.font_size)
-    width: lbl_txt.texture_size[0] + dp(24)
-    padding: (dp(8), 0)  # For MDRectangleFlatIconButton
-    theme_text_color: 'Primary' if not root.text_color else 'Custom'
-    markup: False
-
-    MDLabel:
-        id: lbl_txt
-        text: root.text if root.button_label else ''
-        font_size: sp(root.font_size)
-        font_name: root.font_name if root.font_name else self.font_name
-        size_hint_x: None
-        text_size: (None, root.height)
-        height: self.texture_size[1]
-        theme_text_color: root.theme_text_color
-        text_color: root._current_text_color
-        markup: root.markup
-        disabled: root.disabled
-        valign: 'middle'
-        halign: 'center'
+        valign: "middle"
+        halign: "center"
         opposite_colors: root.opposite_colors
 
 
@@ -586,8 +542,10 @@ Builder.load_string(
     canvas.before:
         Color:
             rgba:
-                (root.theme_cls.primary_color if not root.text_color else root.text_color) \
-                if not root.disabled else root.theme_cls.disabled_hint_text_color
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
         Line:
             width: root.line_width
             rounded_rectangle:
@@ -595,28 +553,38 @@ Builder.load_string(
                 root._radius, root._radius, root._radius, root._radius,\
                 self.height)
 
-    theme_text_color: 'Custom'
-    text_color:
-        (root.theme_cls.primary_color if not root.text_color else root.text_color) \
-        if not root.disabled else root.theme_cls.disabled_hint_text_color
-
 
 <MDFillRoundFlatButton>
     canvas.before:
         Color:
             rgba:
-                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] else root.md_bg_color) \
-                if not root.disabled else root.theme_cls.disabled_hint_text_color
+                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root.md_bg_color) if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
         RoundedRectangle:
             size: self.size
             pos: self.pos
             radius: [root._radius, ]
 
+    text_color: 1, 1, 1, 1
+    line_width: 0.001
+
 
 <MDFillRoundFlatIconButton>
-    md_bg_color:
-        root.theme_cls.primary_color if root._current_button_color == [0.0, 0.0, 0.0, 0.0] \
-        else root._current_button_color
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [root._radius, ]
+
+    text_color: 1, 1, 1, 1
     line_width: 0.001
 
 
@@ -624,188 +592,143 @@ Builder.load_string(
     canvas.before:
         Color:
             rgba:
-                root.theme_cls.primary_color if not root.text_color else root.text_color
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
         Line:
             width: root.line_width
             rectangle: (self.x, self.y, self.width, self.height)
-
-    theme_text_color: 'Custom'
-    text_color: root.theme_cls.primary_color if not root.text_color else root.text_color
 
 
 <MDRectangleFlatIconButton>
     canvas.before:
         Color:
             rgba:
-                root.line_color if root.line_color else \
-                (root.theme_cls.primary_color if not root.text_color else root.text_color) \
-                if not root.disabled else root.theme_cls.disabled_hint_text_color
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
         Line:
-            width: 1
+            width: root.line_width
             rectangle: (self.x, self.y, self.width, self.height)
 
     size_hint_x: None
-    width: lbl_txt.texture_size[0] + lbl_ic.texture_size[0] + box.spacing * 3
-    markup: False
+    width: root.lbl_txt.width + lbl_ic.width * 2 + box.spacing
 
-    BoxLayout:
+    MDBoxLayout:
         id: box
-        spacing: dp(10)
+        size_hint: None, None
+        size: root.size
+        padding: "10dp", 0, 0, 0
+        spacing: "8dp"
 
         MDIcon:
             id: lbl_ic
             icon: root.icon
-            theme_text_color: 'Custom'
+            theme_text_color: "Custom"
             text_color:
-                (root.theme_cls.primary_color if not root.text_color else root.text_color) \
-                if not root.disabled else root.theme_cls.disabled_hint_text_color
+                (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
             size_hint_x: None
             width: self.texture_size[0]
 
-        Label:
-            id: lbl_txt
+        MDLabel:
+            id: lbl
             text: root.text
-            font_size: sp(root.font_size)
+            font_size: root.font_size
+            font_style: root.font_style
+            adaptive_size: True
+            theme_text_color: root.theme_text_color
+            text_color: root.text_color
+            markup: True
+            disabled: root.disabled
+            opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
-            shorten: True
-            width: self.texture_size[0]
-            color:
-                (root.theme_cls.primary_color if not root.text_color else root.text_color) \
-                if not root.disabled else root.theme_cls.disabled_hint_text_color
-            markup: root.markup
+            pos_hint: {"center_y": .5}
 
 
 <MDRoundFlatIconButton>
-    size_hint_x: None
-    width: lbl_txt.texture_size[0] + lbl_ic.texture_size[0] + box.spacing * 3
-    markup: False
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        Line:
+            width: root.line_width
+            rounded_rectangle:
+                (self.x, self.y, self.width, self.height,\
+                root._radius, root._radius, root._radius, root._radius,\
+                self.height)
 
-    BoxLayout:
+    size_hint_x: None
+    width: root.lbl_txt.width + lbl_ic.width * 2 + box.spacing
+
+    MDBoxLayout:
         id: box
-        spacing: dp(10)
+        size_hint: None, None
+        size: root.size
+        padding: "10dp", 0, 0, 0
+        spacing: "8dp"
 
         MDIcon:
             id: lbl_ic
             icon: root.icon
-            theme_text_color: 'Custom'
             text_color:
-                root.theme_cls.primary_color \
-                if not root.text_color else root.text_color
+                (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
             size_hint_x: None
             width: self.texture_size[0]
+            opposite_colors: root.opposite_colors
 
-        Label:
-            id: lbl_txt
+        MDLabel:
+            id: lbl
             text: root.text
-            font_size: sp(root.font_size)
+            font_size: root.font_size
+            font_style: root.font_style
+            adaptive_size: True
+            theme_text_color: root.theme_text_color
+            text_color: root.text_color
+            markup: True
+            disabled: root.disabled
+            opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
-            shorten: True
-            size_hint_x: None
-            width: self.texture_size[0]
-            color: root.theme_cls.primary_color if not root.text_color else root.text_color
-            markup: root.markup
+            pos_hint: {"center_y": .5}
 
 
-<MDRaisedButton>
-    md_bg_color: root.theme_cls.primary_color
-    theme_text_color: 'Custom'
-    text_color: root.specific_text_color
+<MDIconButton>
+    on_size: root.set_size(0)
 
 
 <MDFloatingActionButton>
-    # Defaults to 56-by-56 and a background of the accent color according to
-    # guidelines
-    size: (dp(56), dp(56))
-    theme_text_color: 'Custom'
+    theme_text_color: "Custom"
+    opposite_colors: True  # root.opposite_colors
+    on_size: root.set_size(0)
 
 
 <MDTextButton>
-    size_hint: None, None
-    size: self.texture_size
-    color:
-        root.theme_cls.primary_color \
-        if not root.custom_color else root.custom_color
-    background_down: f'{images_path}transparent.png'
-    background_normal: f'{images_path}transparent.png'
+    adaptive_size: True
+    color: root.theme_cls.primary_color if not root.color else root.color
     opacity: 1
-
-
-# SpeedDial classes
-
-
-<BaseFloatingBottomButton>
-    size_hint: None, None
-    size: dp(46), dp(46)
-    theme_text_color: "Custom"
-    md_bg_color: self.theme_cls.primary_color
-
-    canvas.before:
-        Color:
-            rgba:
-                self.theme_cls.primary_color \
-                if not self._bg_color else self._bg_color
-        RoundedRectangle:
-            pos:
-                (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
-                self.y - self._padding_right / 2 + dp(1.5)
-            size:
-                self.width + self._canvas_width - dp(3), \
-                self.height + self._padding_right - dp(3)
-            radius: [self.height / 2]
-
-
-<BaseFloatingRootButton>
-    theme_text_color: "Custom"
-    md_bg_color: self.theme_cls.primary_color
-
-    # FIXME: https://github.com/kivymd/KivyMD/issues/336
-    # canvas.before:
-    #     PushMatrix
-    #     Rotate:
-    #         angle: self._angle
-    #         axis: (0, 0, 1)
-    #         origin: self.center
-    # canvas.after:
-    #     PopMatrix
-
-
-<BaseFloatingLabel>
-    size_hint: None, None
-    padding: "8dp", "4dp", "8dp", "4dp"
-    height: label.texture_size[1] + self.padding[1] * 2
-    width: label.texture_size[0] + self.padding[0] * 2
-    elevation: 10
-
-    canvas:
-        Color:
-            rgba: self.theme_cls.primary_color if not root.bg_color else root.bg_color
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [5]
-
-    Label:
-        id: label
-        markup: True
-        text: root.text
-        size_hint: None, None
-        size: self.texture_size
-        color: root.theme_cls.text_color if not root.text_color else root.text_color
 """
 )
 
 
-class BaseButton(
-    ThemableBehavior,
-    ButtonBehavior,
-    SpecificBackgroundColorBehavior,
-    AnchorLayout,
-    Widget,
-):
+class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
+    """Base class for all buttons."""
+
+    text = StringProperty(" ")
     """
-    Abstract base class for all MD buttons. This class handles the button's
-    colors (disabled/down colors handled in children classes as those depend on
-    type of button) as well as the disabled state.
+    Button text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `' '`.
     """
 
     theme_text_color = OptionProperty(
@@ -829,97 +752,118 @@ class BaseButton(
 
     text_color = ColorProperty(None)
     """
-    Text color in ``rgba`` format.
+    Button text color in (r, g, b, a) format.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `''`.
+    and defaults to `None`.
     """
 
     font_name = StringProperty()
     """
-    Font name.
+    Button text font name.
 
     :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
-    font_size = NumericProperty(14)
+    font_size = NumericProperty("14sp")
     """
-    Font size.
+    Button text font size.
 
     :attr:`font_size` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `14`.
+    and defaults to `14sp`.
     """
 
-    user_font_size = NumericProperty()
-    """Custom font size for :class:`~MDIconButton`.
+    user_font_size = NumericProperty(0)
+    """
+    Custom font size for :class:`~MDIconButton`.
 
     :attr:`user_font_size` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
-    md_bg_color_disabled = ColorProperty(None)
-    """Color disabled.
+    font_style = OptionProperty("Body1", options=theme_font_styles)
+    """
+    Button text font style.
 
-    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to ``.
+    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`,
+    `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
+    `'Caption'`, `'Overline'`, `'Icon'`.
+
+    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Body1'`.
     """
 
-    line_width = NumericProperty(1)
+    md_bg_color = ColorProperty([1.0, 1.0, 1.0, 0])
+    """
+    Button background color.
 
-    opposite_colors = BooleanProperty(False)
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1.0, 1.0, 1.0, 0]`.
+    """
 
-    _current_button_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
-    _current_text_color = ColorProperty([1.0, 1.0, 1.0, 1])
-    _md_bg_color_down = ColorProperty([0.0, 0.0, 0.0, 0.1])
-    _md_bg_color_disabled = ColorProperty([0.0, 0.0, 0.0, 0.0])
+    md_bg_color_disabled = ColorProperty(None)
+    """
+    Disabled button text color.
+
+    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _radius = NumericProperty(0)
+    _md_bg_color = ColorProperty(None)  # last current button color
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        if not self.md_bg_color_disabled:
+            self.md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
-        Clock.schedule_once(self.check_current_button_color)
+        Clock.schedule_once(self.set_md_bg_color)
+
+    def set_md_bg_color(self, interval):
+        """Checks if a value is set for the `md_bg_color` parameter."""
+
+        if self.md_bg_color == [1.0, 1.0, 1.0, 0]:
+            self.md_bg_color = self.theme_cls.primary_color
+        if not self.md_bg_color_disabled:
+            self.md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
 
     def update_md_bg_color(self, instance, value):
         """Called when the application color palette changes."""
 
-    def check_current_button_color(self, interval):
-        if self.md_bg_color_disabled:
-            self._md_bg_color_disabled = self.md_bg_color_disabled
-        else:
-            self._md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
-        self.on_disabled(self, self.disabled)
-        if self._current_button_color == [0.0, 0.0, 0.0, 0.0]:
-            self._current_button_color = self.md_bg_color
-
-    def on_text_color(self, instance, value):
-        if value not in ([0, 0, 0, 0.87], [1.0, 1.0, 1.0, 1]):
-            self._current_text_color = value
-
-    def on_md_bg_color(self, instance, value):
-        if value != self.theme_cls.primary_color:
-            self._current_button_color = value
+        self.md_bg_color = self.theme_cls._get_primary_color()
 
     def on_disabled(self, instance, value):
-        if self.disabled:
-            self._current_button_color = self._md_bg_color_disabled
+        """
+        Sets the color of the button at the moment of setting the parameter
+        `disabled`.
+        """
+
+        # Sets button background color (disabled).
+        if value:
+            if not self.md_bg_color_disabled:
+                self.md_bg_color_disabled = (
+                    self.theme_cls.disabled_hint_text_color
+                )
+            self.md_bg_color = self.md_bg_color_disabled
+        # Sets last current button background color.
         else:
-            self._current_button_color = self.md_bg_color
+            self.md_bg_color = self._md_bg_color
 
-    def on_font_size(self, instance, value):
-        def _on_font_size(interval):
-            if "lbl_ic" in instance.ids:
-                instance.ids.lbl_ic.font_size = sp(value)
+    def on_md_bg_color(self, instance, value):
+        """Sets last current button background color."""
 
-        Clock.schedule_once(_on_font_size)
+        if self.md_bg_color != self.md_bg_color_disabled:
+            self._md_bg_color = value
 
 
 class BasePressedButton(BaseButton):
     """
-    Abstract base class for those button which fade to a background color on
-    press.
+    Base class for those button which fade to a background color on press.
     """
 
-    _fade_bg = None
+    animation_fade_bg = None
+    current_md_bg_color = ColorProperty(None)
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
@@ -931,39 +875,91 @@ class BasePressedButton(BaseButton):
         elif self.disabled:
             return False
         else:
-            # Button dimming animation.
             if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
-                self._fade_bg = Animation(
-                    duration=0.5, _current_button_color=self._md_bg_color_down
+                self.current_md_bg_color = self.md_bg_color
+                self.animation_fade_bg = Animation(
+                    duration=0.5, md_bg_color=[0.0, 0.0, 0.0, 0.1]
                 )
-                self._fade_bg.start(self)
+                self.animation_fade_bg.start(self)
             return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
-        if touch.grab_current is self and self._fade_bg:
-            self._fade_bg.stop_property(self, "_current_button_color")
+        if (
+            self.collide_point(touch.x, touch.y)
+            and self.animation_fade_bg
+            and not self.disabled
+        ):
+            self.animation_fade_bg.stop_property(self, "md_bg_color")
             Animation(
-                duration=0.05, _current_button_color=self.md_bg_color
+                duration=0.05, md_bg_color=self.current_md_bg_color
             ).start(self)
         return super().on_touch_up(touch)
 
 
-class BaseFlatButton(BaseButton):
+class BaseRectangularButton(
+    RectangularRippleBehavior,
+    RectangularElevationBehavior,
+    BackgroundColorBehavior,
+    BasePressedButton,
+    BaseButton,
+):
+    """Base class for all rectangular buttons."""
+
+    width = BoundedNumericProperty(
+        88, min=88, max=None, errorhandler=lambda x: 88
+    )
+
+
+class BaseFlatButton(BaseRectangularButton):
+    def update_md_bg_color(self, instance, value):
+        """Called when the application color palette changes."""
+
+        self.text_color = self.theme_cls.primary_color
+
+    def set_text_color(self, interval):
+        """Sets the text color if no custom value is specified."""
+
+        if not self.text_color:
+            self.theme_text_color = "Custom"
+            self.text_color = self.theme_cls.primary_color
+
+    def on_md_bg_color(self, instance, value):
+        """
+        We override this method, thus prohibiting setting the background color
+        for the button.
+
+        Allows to set the background color only in the rangefrom
+        [0.0, 0.0, 0.0, 0.0] to [0.0, 0.0, 0.0, 0.1]. This color is set in
+        the :class:`BasePressedButton` class when the button is pressed and
+        Ignore other custom colors.
+        """
+
+        if value[:-1] != [0.0, 0.0, 0.0]:
+            self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
+
+    def on_disabled(self, instance, value):
+        if value:
+            self.md_bg_color = (
+                self.md_bg_color_disabled
+                if self.md_bg_color_disabled
+                else self.theme_cls.disabled_hint_text_color
+            )
+        else:
+            self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
+
+    def on_elevation(self, instance, value):
+        """
+        We are overriding this method to not allow set the `elevation` value
+        for this type of button.
+        """
+
+        self._elevation = 0
+        self._update_shadow(instance, 0)
+
+
+class BaseElevationButton(CommonElevationBehavior, BaseButton):
     """
-    Abstract base class for flat buttons which do not elevate from material.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.md_bg_color = (0.0, 0.0, 0.0, 0.0)
-
-
-class BaseRaisedButton(CommonElevationBehavior, BaseButton):
-    """
-    Abstract base class for raised buttons which elevate from material.
-    Raised buttons are to be used sparingly to emphasise primary/important
-    actions.
-
+    Base class for raised buttons.
     Implements elevation behavior as well as the recommended down/disabled
     colors for raised buttons.
     """
@@ -972,19 +968,16 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
     _elevation_raised = NumericProperty(0)
     _anim_raised = None
 
-    def update_md_bg_color(self, instance, value):
-        """Called when the application color palette changes."""
-
-        self._current_button_color = self.theme_cls._get_primary_color()
-
     def on_elevation(self, instance, value):
         self._elevation_normal = self.elevation
         self._elevation_raised = self.elevation
-        self._anim_raised = Animation(_elevation=value + 2, d=0.2)
+        self._anim_raised = Animation(_elevation=value + 2, d=0.5)
         self._anim_raised.bind(on_progress=self._do_anim_raised)
         self._update_elevation(instance, value)
 
     def on_disabled(self, instance, value):
+        # FIXME: If a button has a default `disabled` parameter of `True`,
+        #  the `elevation` value is not cleared.
         if self.disabled:
             self._elevation = 0
             self._update_shadow(instance, 0)
@@ -1007,12 +1000,17 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
     def on_touch_up(self, touch):
         if not self.disabled:
             if touch.grab_current is not self:
+                if isinstance(self, MDFloatingActionButton):
+                    self.stop_elevation_anim()
                 return super().on_touch_up(touch)
-            Animation.cancel_all(self, "_elevation")
-            self._elevation = self._elevation_raised
-            self._elevation_normal = self._elevation_raised
-            self._update_shadow(self, self._elevation)
+            self.stop_elevation_anim()
         return super().on_touch_up(touch)
+
+    def stop_elevation_anim(self):
+        Animation.cancel_all(self, "_elevation")
+        self._elevation = self._elevation_raised
+        self._elevation_normal = self._elevation_raised
+        self._update_shadow(self, self._elevation)
 
     def _do_anim_raised(self, animation, instance, value):
         self._elevation += value
@@ -1020,61 +1018,70 @@ class BaseRaisedButton(CommonElevationBehavior, BaseButton):
             self._update_shadow(instance, self._elevation)
 
 
+class BaseCircularElevationButton(
+    CircularElevationBehavior, BaseElevationButton, BaseButton
+):
+    pass
+
+
 class BaseRoundButton(CircularRippleBehavior, BaseButton):
     """
-    Abstract base class for all round buttons, bringing in the appropriate
+    Base class for all round buttons, bringing in the appropriate
     on-touch behavior
     """
 
-
-class BaseRectangularButton(RectangularRippleBehavior, BaseButton):
-    """
-    Abstract base class for all rectangular buttons, bringing in the
-    appropriate on-touch behavior. Also maintains the correct minimum width
-    as stated in guidelines.
-    """
-
-    width = BoundedNumericProperty(
-        88, min=88, max=None, errorhandler=lambda x: 88
-    )
-    text = StringProperty("")
-    """Button text.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    button_label = BooleanProperty(True)
-    """
-    If ``False`` the text on the button will not be displayed.
-
-    :attr:`button_label` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `True`.
-    """
-
-    _radius = NumericProperty("2dp")
-    _height = NumericProperty(0)
-
-
-class MDIconButton(BaseRoundButton, BaseFlatButton, BasePressedButton):
-    icon = StringProperty("checkbox-blank-circle")
-    """
-    Button icon.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank-circle'`.
-    """
+    md_bg_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.md_bg_color_disabled = (0, 0, 0, 0)
+        Clock.schedule_once(self.set_text)
+        Clock.schedule_once(self.set_text_color)
+
+    def set_text_color(self, interval):
+        if not self.text_color:
+            self.text_color = self.theme_cls._get_text_color()
+
+    def set_text(self, interval):
+        self.text = ""
 
 
-class MDFlatButton(BaseRectangularButton, BaseFlatButton, BasePressedButton):
+class BaseRectangleFlatButton(BaseFlatButton, BaseElevationButton):
+    line_width = NumericProperty(1)
+    """
+    Line width for button border.
+
+    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    line_color = ColorProperty(None)
+    """
+    Line color for button border.
+
+    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    md_bg_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.set_text_color)
+
+
+class MDRaisedButton(BaseRectangularButton, BaseElevationButton):
+    opposite_colors = BooleanProperty(True)
+
+
+class MDFlatButton(BaseFlatButton):
+    md_bg_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+
+
+class MDRectangleFlatButton(BaseRectangleFlatButton):
     pass
 
 
-class BaseFlatIconButton(MDFlatButton):
+class MDRectangleFlatIconButton(BaseRectangleFlatButton):
     icon = StringProperty("android")
     """
     Button icon.
@@ -1083,96 +1090,51 @@ class BaseFlatIconButton(MDFlatButton):
     and defaults to `'android'`.
     """
 
-    text = StringProperty("")
-    """Button text.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
+    icon_color = ColorProperty(None)
     """
+    Button icon color.
 
-    button_label = BooleanProperty(False)
-
-    def update_md_bg_color(self, instance, value):
-        self.text_color = self.theme_cls._get_primary_color()
-
-
-class MDRaisedButton(
-    BaseRectangularButton,
-    RectangularElevationBehavior,
-    BaseRaisedButton,
-    BasePressedButton,
-):
-    pass
-
-
-class MDFloatingActionButton(
-    BaseRoundButton, CircularElevationBehavior, BaseRaisedButton
-):
-    icon = StringProperty("android")
-    """
-    Button icon.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'android'`.
-    """
-
-    background_palette = StringProperty("Accent")
-    """
-    The name of the palette used for the background color of the button.
-
-    :attr:`background_palette` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'Accent'`.
+    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if self.md_bg_color == [1.0, 1.0, 1.0, 0.0]:
-            self.md_bg_color = self.theme_cls.accent_color
+        Clock.schedule_once(self.remove_label)
+        Clock.schedule_once(self.set_icon_color)
 
-    def on_md_bg_color(self, instance, value):
-        if value != self.theme_cls.accent_color:
-            self._current_button_color = value
+    def set_icon_color(self, interval):
+        """Sets the icon color if no custom value is specified."""
 
+        if not self.icon_color:
+            self.icon_color = self.theme_cls.primary_color
 
-class MDRoundImageButton(MDFloatingActionButton):
-    source = StringProperty()
-    """Path to button image.
-
-    :attr:`source` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    _current_button_color = [1, 1, 1, 1]
-
-    def on_source(self, instance, value):
-        self.source = value
-
-    def on_size(self, instance, value):
+    def remove_label(self, interval):
         self.remove_widget(self.ids.lbl_txt)
 
 
-class MDRectangleFlatButton(MDFlatButton):
-    def update_md_bg_color(self, instance, value):
-        self.text_color = self.theme_cls._get_primary_color()
-
-    def on_disabled(self, instance, value):
-        if self.disabled:
-            self.line_width = 0.001
-            self._current_button_color = (
-                self.theme_cls.disabled_hint_text_color
-                if not self.md_bg_color_disabled
-                else self.md_bg_color_disabled
-            )
-        else:
-            self._current_button_color = self.md_bg_color
-            self.line_width = 1
-
-
 class MDRoundFlatButton(MDFlatButton):
-    _radius = NumericProperty("18dp")
+    line_width = NumericProperty(1)
+    """
+    Line width for button border.
 
-    def update_md_bg_color(self, instance, value):
-        self.text_color = self.theme_cls._get_primary_color()
+    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    line_color = ColorProperty(None)
+    """
+    Line color for button border.
+
+    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _radius = NumericProperty(18)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.set_text_color)
 
     def lay_canvas_instructions(self):
         with self.canvas.after:
@@ -1197,13 +1159,158 @@ class MDRoundFlatButton(MDFlatButton):
         self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
 
-class MDTextButton(ThemableBehavior, Button):
-    custom_color = ColorProperty(None)
-    """Custom user button color in ``rgba`` format.
-
-    :attr:`custom_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[]`.
+class MDRoundFlatIconButton(MDRoundFlatButton):
+    icon = StringProperty("android")
     """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
+
+    icon_color = ColorProperty(None)
+    """
+    Button icon color.
+
+    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.remove_label)
+        Clock.schedule_once(self.set_icon_color)
+
+    def set_icon_color(self, interval):
+        """Sets the icon color if no custom value is specified."""
+
+        if not self.icon_color:
+            self.ids.lbl_ic.theme_text_color = "Custom"
+            self.icon_color = self.theme_cls.primary_color
+
+    # From Python code.
+    def on_icon_color(self, instance, value):
+        def set_icon_color(interval):
+            self.ids.lbl_ic.theme_text_color = "Custom"
+            self.icon_color = value
+
+        Clock.schedule_once(set_icon_color)
+
+    def remove_label(self, interval):
+        self.remove_widget(self.ids.lbl_txt)
+
+
+class MDFillRoundFlatButton(MDRoundFlatButton):
+    opposite_colors = BooleanProperty(True)
+
+    def __init__(self, **kwargs):
+        # Some blatant shit :(
+        super().__init__(**kwargs)
+        self.md_bg_color = self.theme_cls.primary_color
+        super().__init__(**kwargs)
+
+    def update_md_bg_color(self, instance, value):
+        pass
+
+    def on_md_bg_color(self, instance, value):
+        pass
+
+
+class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
+    opposite_colors = BooleanProperty(True)
+
+    def update_md_bg_color(self, instance, value):
+        self.md_bg_color = self.theme_cls._get_primary_color()
+
+    def on_md_bg_color(self, instance, value):
+        self.md_bg_color = value
+        if self.md_bg_color != self.md_bg_color_disabled:
+            self._md_bg_color = value
+
+    def on_disabled(self, instance, value):
+        if value:
+            if not self.md_bg_color_disabled:
+                self.md_bg_color_disabled = (
+                    self.theme_cls.disabled_hint_text_color
+                )
+            self.md_bg_color = self.md_bg_color_disabled
+        else:
+            self.md_bg_color = self._md_bg_color
+
+
+class MDIconButton(BaseRoundButton, BasePressedButton):
+    icon = StringProperty("checkbox-blank-circle")
+    """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-circle'`.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        Clock.schedule_once(self.set_size)
+        self.on_md_bg_color(self, [0.0, 0.0, 0.0, 0.0])
+
+    def set_size(self, interval):
+        """
+        Sets the custom icon size if the value of the `user_font_size`
+        attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
+        """
+
+        self.width = "48dp" if not self.user_font_size else dp(
+            self.user_font_size + 23)
+        self.height = "48dp" if not self.user_font_size else dp(
+            self.user_font_size + 23)
+
+
+class MDFloatingActionButton(
+    BaseRoundButton, BasePressedButton, BaseCircularElevationButton
+):
+    icon = StringProperty("android")
+    """
+    Button icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
+
+    # FIXME: The `opposite_colors` parameter does not work for this type
+    #  of buttons
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        Clock.schedule_once(self.set_md_bg_color)
+        Clock.schedule_once(self.set_size)
+
+    def set_md_bg_color(self, interval):
+        if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
+            self.md_bg_color = self.theme_cls.primary_color
+
+    def set_size(self, interval):
+        self.width = "56dp"
+        self.height = "56dp"
+
+
+class MDTextButton(ButtonBehavior, MDLabel):
+    color = ColorProperty(None)
+    """
+    Button color in (r, g, b, a) format.
+
+    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    color_disabled = ColorProperty(None)
+    """
+    Button color disabled in (r, g, b, a) format.
+
+    :attr:`color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _color = ColorProperty(None)  # last current button text color
 
     def animation_label(self):
         def set_default_state_label(*args):
@@ -1217,97 +1324,19 @@ class MDTextButton(ThemableBehavior, Button):
         self.animation_label()
         return super().on_press(*args)
 
-    def on_disabled(self, instance, value):
-        if value:
-            self.disabled_color = self.theme_cls.disabled_hint_text_color
-            self.background_disabled_normal = f"{images_path}transparent.png"
-
-
-class MDCustomRoundIconButton(CircularRippleBehavior, ButtonBehavior, Image):
-    pass
-
-
-class MDFillRoundFlatButton(CircularElevationBehavior, MDRoundFlatButton):
-    _elevation_normal = NumericProperty()
-
-    def __init__(self, **kwargs):
-        self.text_color = (1, 1, 1, 1)
-        self.line_width = 0.001
-        super().__init__(**kwargs)
-
-    def update_md_bg_color(self, instance, value):
-        self.text_color = self.text_color
-        self.md_bg_color = self.theme_cls._get_primary_color()
-
     def on_md_bg_color(self, instance, value):
-        if value != [0.0, 0.0, 0.0, 0.0]:
-            self._current_button_color = value
-
-    def on_elevation(self, instance, value):
-        if value:
-            self._elevation_normal = value
+        self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
 
     def on_disabled(self, instance, value):
-        # FIXME:The elevation parameter is not restored.
-        '''
-        from kivy.lang import Builder
-
-        from kivymd.app import MDApp
-
-        root_kv = """
-        Screen:
-
-            MDFillRoundFlatButton:
-                id: btn
-                text: "Click me!"
-                pos_hint: {"center_x": .5, "center_y": .6}
-                elevation: 8
-                on_press: self.disabled = True
-
-            MDFillRoundFlatButton:
-                text: "UNDISABLED"
-                pos_hint: {"center_x": .5, "center_y": .4}
-                on_press: btn.disabled = False
-        """
-
-        class MainApp(MDApp):
-            def build(self):
-                self.root = Builder.load_string(root_kv)
-
-        MainApp().run()
-        '''
-
-        if self.disabled:
-            self.elevation = 0
-            self._update_shadow(instance, 0)
+        if value:
+            if not self.color_disabled:
+                self.color_disabled = (
+                    self.theme_cls.disabled_hint_text_color
+                )
+                self._color = self.color
+            self.text_color = self.color_disabled
         else:
-            self.elevation = self._elevation_normal
-            self._update_elevation(instance, self.elevation)
-        super().on_disabled(instance, value)
-
-
-class MDRectangleFlatIconButton(BaseFlatIconButton):
-    line_color = ColorProperty(None)
-    """Button border color in ``rgba`` format.
-
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[]`.
-    """
-
-
-class MDRoundFlatIconButton(MDRoundFlatButton, BaseFlatIconButton):
-    pass
-
-
-class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
-    text_color = ColorProperty((1, 1, 1, 1))
-
-    def on_md_bg_color(self, instance, value):
-        if value != [0.0, 0.0, 0.0, 0.0]:
-            self._current_button_color = value
-
-    def update_md_bg_color(self, instance, value):
-        self._current_button_color = self.theme_cls.primary_color
+            self.text_color = self._color
 
 
 # SpeedDial classes
@@ -1393,7 +1422,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     label_text_color = ColorProperty([0, 0, 0, 1])
     """
-    Floating text color in ``rgba`` format.
+    Floating text color in (r, g, b, a) format.
 
     :attr:`label_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 1]`.
@@ -1519,7 +1548,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     bg_color_root_button = ColorProperty(None)
     """
-    Root button color in ``rgba`` format.
+    Root button color in (r, g, b, a) format.
 
     :attr:`bg_color_root_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1527,7 +1556,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     bg_color_stack_button = ColorProperty(None)
     """
-    The color of the buttons in the stack ``rgba`` format.
+    The color of the buttons in the stack (r, g, b, a) format.
 
     :attr:`bg_color_stack_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1535,7 +1564,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     color_icon_stack_button = ColorProperty(None)
     """
-    The color icon of the buttons in the stack ``rgba`` format.
+    The color icon of the buttons in the stack (r, g, b, a) format.
 
     :attr:`color_icon_stack_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1543,7 +1572,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     color_icon_root_button = ColorProperty(None)
     """
-    The color icon of the root button ``rgba`` format.
+    The color icon of the root button (r, g, b, a) format.
 
     :attr:`color_icon_root_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1551,10 +1580,10 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     bg_hint_color = ColorProperty(None)
     """
-    Background color for the text of the buttons in the stack ``rgba`` format.
+    Background color for the text of the buttons in the stack (r, g, b, a) format.
 
     :attr:`bg_hint_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[]`.
+    and defaults to `None`.
     """
 
     hint_animation = BooleanProperty(False)

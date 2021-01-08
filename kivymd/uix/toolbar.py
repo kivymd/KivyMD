@@ -346,8 +346,8 @@ Builder.load_string(
             id: label_title
             font_style: "H6"
             opposite_colors: root.opposite_colors
-            theme_text_color: "Custom"
-            text_color: root.specific_text_color
+            theme_text_color: "Primary"
+            # text_color: root.specific_text_color
             text: root.title
             shorten: True
             shorten_from: "right"
@@ -540,8 +540,6 @@ class MDToolbar(
                     icon=item[0],
                     on_release=item[1],
                     opposite_colors=True,
-                    text_color=self.specific_text_color,
-                    theme_text_color="Custom",
                 )
             )
         action_bar.width = new_width

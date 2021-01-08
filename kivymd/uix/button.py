@@ -432,29 +432,29 @@ __all__ = (
     "MDTextButton",
 )
 
-from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
-from kivy.graphics.vertex_instructions import RoundedRectangle, Ellipse
 from kivy.graphics.stencil_instructions import (
-    StencilPush,
-    StencilUse,
-    StencilUnUse,
     StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
 )
-from kivy.properties import (
-    StringProperty,
-    NumericProperty,
-    ColorProperty,
-    OptionProperty,
-    BooleanProperty,
-    ObjectProperty,
-    DictProperty,
-    BoundedNumericProperty,
-)
+from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.properties import (
+    BooleanProperty,
+    BoundedNumericProperty,
+    ColorProperty,
+    DictProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
+)
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -463,12 +463,12 @@ from kivy.uix.floatlayout import FloatLayout
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    RectangularRippleBehavior,
     BackgroundColorBehavior,
+    CircularElevationBehavior,
+    CircularRippleBehavior,
     CommonElevationBehavior,
     RectangularElevationBehavior,
-    CircularRippleBehavior,
-    CircularElevationBehavior,
+    RectangularRippleBehavior,
 )
 from kivymd.uix.label import MDLabel
 from kivymd.uix.tooltip import MDTooltip
@@ -1259,10 +1259,12 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
         attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
         """
 
-        self.width = "48dp" if not self.user_font_size else dp(
-            self.user_font_size + 23)
-        self.height = "48dp" if not self.user_font_size else dp(
-            self.user_font_size + 23)
+        self.width = (
+            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
+        )
+        self.height = (
+            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
+        )
 
 
 class MDFloatingActionButton(
@@ -1330,9 +1332,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
     def on_disabled(self, instance, value):
         if value:
             if not self.color_disabled:
-                self.color_disabled = (
-                    self.theme_cls.disabled_hint_text_color
-                )
+                self.color_disabled = self.theme_cls.disabled_hint_text_color
                 self._color = self.color
             self.text_color = self.color_disabled
         else:

@@ -727,7 +727,7 @@ class ThemeManager(EventDispatcher):
         elif window_size[1] >= window_size[0]:
             self.device_orientation = "portrait"
 
-    device_orientation = StringProperty("")
+    device_orientation = StringProperty()
     """
     Device orientation.
 

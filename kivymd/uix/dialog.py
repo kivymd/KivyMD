@@ -181,7 +181,11 @@ Builder.load_string(
 
 
 class BaseDialog(ThemableBehavior, ModalView):
-    radius = ListProperty([7, 7, 7, 7])
+    radius = ListProperty(
+        [
+            dp(7),
+        ]
+    )
     """
     Dialog corners rounding value.
 
@@ -196,7 +200,7 @@ class BaseDialog(ThemableBehavior, ModalView):
         :align: center
 
     :attr:`radius` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[7, 7, 7, 7]`.
+    and defaults to `[dp(7),]`.
     """
 
     _scale_x = NumericProperty(1)

@@ -142,7 +142,8 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
 from kivymd.utils.fitimage import FitImage
 
-ACTIVITY_MANAGER = """
+Builder.load_string(
+    """
 #:import os os
 
 
@@ -260,6 +261,7 @@ ACTIVITY_MANAGER = """
         y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 """
+)
 
 
 class BodyManagerWithPreview(MDBoxLayout):
@@ -664,6 +666,3 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         else:
             if self.selector == "folder" or self.selector == "any":
                 self.select_path(self.current_path)
-
-
-Builder.load_string(ACTIVITY_MANAGER)

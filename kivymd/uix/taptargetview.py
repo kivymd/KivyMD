@@ -479,6 +479,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     state = OptionProperty("close", options=["close", "open"])
     """
     State of :class:`~MDTapTargetView`.
+    Available options are `'close'` `'open'`.
 
     :attr:`state` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.

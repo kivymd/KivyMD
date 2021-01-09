@@ -640,8 +640,9 @@ Builder.load_string(
             pos: self.pos
             size: self.size
 
+    canvas.after:
         Color:
-            rgba: self.line_color
+            rgba: self.line_color if self.focus else self.theme_cls.disabled_hint_text_color
         Line:
             points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
         Line:

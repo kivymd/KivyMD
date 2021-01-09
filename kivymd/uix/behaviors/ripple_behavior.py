@@ -253,9 +253,7 @@ class CommonRipple(object):
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
-        if touch.is_mouse_scrolling:
-            return False
-        if not self.collide_point(touch.x, touch.y):
+        if touch.is_mouse_scrolling or not self.collide_point(touch.x, touch.y):
             return False
 
         if not self.disabled:

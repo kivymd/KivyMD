@@ -422,7 +422,7 @@ class MDNavigationDrawer(MDCard):
     :attr:`close_on_click` and :attr:`enable_swiping` to prevent closing
     drawer for standard type.
 
-    :attr:`type` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `modal`.
     """
 
@@ -431,7 +431,7 @@ class MDNavigationDrawer(MDCard):
     Anchoring screen edge for drawer. Set it to `'right'` for right-to-left
     languages. Available options are: `'left'`, `'right'`.
 
-    :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`anchor` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `left`.
     """
 
@@ -449,7 +449,7 @@ class MDNavigationDrawer(MDCard):
     Indicates if panel closed or opened. Sets after :attr:`status` change.
     Available options are: `'close'`, `'open'`.
 
-    :attr:`state` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`state` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """
 
@@ -470,7 +470,7 @@ class MDNavigationDrawer(MDCard):
     `'opening_with_swipe'`, `'opening_with_animation'`, `'opened'`,
     `'closing_with_swipe'`, `'closing_with_animation'`.
 
-    :attr:`status` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`status` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'closed'`.
     """
 

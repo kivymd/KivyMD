@@ -177,7 +177,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     Chip text.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -185,7 +185,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     Chip icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
 
@@ -193,7 +193,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     Chip color in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -201,7 +201,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     Chip's text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -209,7 +209,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     Chip's icon color in ``rgba`` format.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -217,7 +217,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     If True, a checkmark is added to the left when touch to the chip.
 
-    :attr:`check` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`check` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -229,7 +229,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     Corner radius values.
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
     and defaults to `'[dp(12),]'`.
     """
 
@@ -237,7 +237,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     """
     The color of the chip that is currently selected in ``rgba`` format.
 
-    :attr:`selected_chip_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`selected_chip_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 

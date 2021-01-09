@@ -264,7 +264,7 @@ class MDBanner(MDCard):
     """
     Indent the banner at the top of the screen.
 
-    :attr:`vertical_pad` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`vertical_pad` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(68)`.
     """
 
@@ -272,14 +272,14 @@ class MDBanner(MDCard):
     """
     The name of the animation transition.
 
-    :attr:`opening_transition` is an :class:`~kivy.properties.StringProperty`
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'in_quad'`.
     """
 
     icon = StringProperty("data/logo/kivy-icon-128.png")
     """Icon banner.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'data/logo/kivy-icon-128.png'`.
     """
 
@@ -297,7 +297,7 @@ class MDBanner(MDCard):
     Must contain no more than three lines for a
     `'one-line'`, `'two-line'` and `'three-line'` banner, respectively.
 
-    :attr:`text` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -308,14 +308,14 @@ class MDBanner(MDCard):
     where `'name_action'` is a string that corresponds to an action name and
     ``callback`` is the function called on a touch release event.
 
-    :attr:`left_action` is an :class:`~kivy.properties.ListProperty`
+    :attr:`left_action` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     right_action = ListProperty()
     """Works the same way as :attr:`left_action`.
 
-    :attr:`right_action` is an :class:`~kivy.properties.ListProperty`
+    :attr:`right_action` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 

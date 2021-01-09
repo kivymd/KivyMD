@@ -244,7 +244,7 @@ class BaseNavigationRailFloatingButton(MDFloatingActionButton):
     """
     The text will be placed to the left of the button icon..
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -270,7 +270,7 @@ class NavigationRailTitle(MDBoxLayout):
     """
     Icon item.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'blank'`.
     """
 
@@ -278,7 +278,7 @@ class NavigationRailTitle(MDBoxLayout):
     """
     Text title.
 
-    :attr:`title` is an :class:`~kivy.properties.StringProperty`
+    :attr:`title` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Rail'`.
     """
 
@@ -294,7 +294,7 @@ class MDNavigationRailItem(
     """
     Icon item.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank'`.
     """
 
@@ -302,7 +302,7 @@ class MDNavigationRailItem(
     """
     Text item.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -391,7 +391,7 @@ class MDNavigationRail(MDCard):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-hover-behavior.gif
         :align: center
 
-    :attr:`use_hover_behavior` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`use_hover_behavior` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -503,7 +503,7 @@ class MDNavigationRail(MDCard):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-use-title.gif
         :align: center
 
-    :attr:`use_title` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`use_title` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -511,7 +511,7 @@ class MDNavigationRail(MDCard):
     """
     Icon (name or path to `png` file) for :class:`~NavigationRailTitle` class.
 
-    :attr:`icon_title` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon_title` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'menu'`.
     """
 
@@ -519,7 +519,7 @@ class MDNavigationRail(MDCard):
     """
     Text title  for :class:`~NavigationRailTitle` class.
 
-    :attr:`text_title` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text_title` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Rail'`.
     """
 
@@ -537,7 +537,7 @@ class MDNavigationRail(MDCard):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-use-action-button.gif
         :align: center
 
-    :attr:`use_action_button` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`use_action_button` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -545,7 +545,7 @@ class MDNavigationRail(MDCard):
     """
     Icon of :attr:`~use_action_button`.
 
-    :attr:`action_icon_button` is an :class:`~kivy.properties.StringProperty`
+    :attr:`action_icon_button` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'plus'`.
     """
 
@@ -553,7 +553,7 @@ class MDNavigationRail(MDCard):
     """
     Text of :attr:`~use_action_button`.
 
-    :attr:`action_text_button` is an :class:`~kivy.properties.StringProperty`
+    :attr:`action_text_button` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -561,7 +561,7 @@ class MDNavigationRail(MDCard):
     """
     Text of :attr:`~use_action_button`.
 
-    :attr:`action_color_button` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`action_color_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -569,7 +569,7 @@ class MDNavigationRail(MDCard):
     """
     Color normal of item menu.
 
-    :attr:`color_normal` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color_normal` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -577,7 +577,7 @@ class MDNavigationRail(MDCard):
     """
     Color active of item menu.
 
-    :attr:`color_active` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color_active` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -645,7 +645,7 @@ class MDNavigationRail(MDCard):
     """
     Closed or open rails.
 
-    :attr:`rail_state` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`rail_state` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """
 

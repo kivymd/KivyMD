@@ -220,7 +220,7 @@ class SmartTile(
     Determines wether the information box acts as a header or footer to the
     image. Available are options: `'footer'`, `'header'`.
 
-    :attr:`box_position` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`box_position` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'footer'`.
     """
 
@@ -229,7 +229,7 @@ class SmartTile(
     Number of lines in the `header/footer`. As per `Material Design specs`,
     only 1 and 2 are valid values. Available are options: ``1``, ``2``.
 
-    :attr:`lines` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`lines` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `1`.
     """
 

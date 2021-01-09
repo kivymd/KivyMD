@@ -720,7 +720,7 @@ class MDTimePicker(
     """
     Corner radius values.
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
     and defaults to `'[0, 0, 0, 0]'`.
     """
 
@@ -728,7 +728,7 @@ class MDTimePicker(
     """
     24H Mode.
 
-    :attr:`military` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`military` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 

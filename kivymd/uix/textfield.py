@@ -683,7 +683,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
     """
     If True, then text field shows animated line when on focus.
 
-    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`line_anim` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -731,7 +731,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Text for ``helper_text`` mode.
 
-    :attr:`helper_text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`helper_text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'This field is required'`.
     """
 
@@ -750,7 +750,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Maximum allowed value of characters in a text field.
 
-    :attr:`max_text_length` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`max_text_length` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.
     """
 
@@ -758,7 +758,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Required text. If True then the text field requires text.
 
-    :attr:`required` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`required` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -785,7 +785,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Line color normal in ``rgba`` format.
 
-    :attr:`line_color_normal` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`line_color_normal` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -793,7 +793,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Line color focus in ``rgba`` format.
 
-    :attr:`line_color_focus` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`line_color_focus` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -801,7 +801,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     If True, then text field shows animated line when on focus.
 
-    :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`line_anim` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -809,7 +809,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Error color in ``rgba`` format for ``required = True``.
 
-    :attr:`error_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`error_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -818,7 +818,7 @@ class MDTextField(ThemableBehavior, TextInput):
     The background color of the fill in rgba format when the ``mode`` parameter
     is "fill".
 
-    :attr:`fill_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`fill_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 0)`.
     """
 
@@ -826,7 +826,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Show active line or not.
 
-    :attr:`active_line` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`active_line` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -834,7 +834,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     If True, then the text field goes into ``error`` mode.
 
-    :attr:`error` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`error` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -842,7 +842,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     ``hint_text`` text color.
 
-    :attr:`current_hint_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`current_hint_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -850,7 +850,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Right icon.
 
-    :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon_right` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -858,7 +858,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Color of right icon in ``rgba`` format.
 
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_right_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
@@ -866,7 +866,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1276,7 +1276,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Left icon.
 
-    :attr:`icon_left` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon_left` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -1284,7 +1284,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Color of left icon in ``rgba`` format.
 
-    :attr:`icon_left_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_left_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
@@ -1292,7 +1292,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Right icon.
 
-    :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon_right` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -1300,7 +1300,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Color of right icon.
 
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_right_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(0, 0, 0, 1)`.
     """
 
@@ -1308,7 +1308,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Field line color.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`line_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1316,7 +1316,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Field color if `focus` is `False`.
 
-    :attr:`normal_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`normal_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1324,7 +1324,7 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
     """
     Field color if `focus` is `True`.
 
-    :attr:`color_active` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color_active` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 

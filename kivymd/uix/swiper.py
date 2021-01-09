@@ -312,7 +312,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     The space between each :class:`MDSwiperItem`.
 
-    :attr:`items_spacing` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`items_spacing` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `20dp`.
     """
 
@@ -320,7 +320,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     Duration of switching between :class:`MDSwiperItem`.
 
-    :attr:`transition_duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`transition_duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
     """
 
@@ -328,7 +328,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     Duration of changing the size of :class:`MDSwiperItem`.
 
-    :attr:`transition_duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`transition_duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
     """
 
@@ -336,7 +336,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     The type of animation used for changing the size of :class:`MDSwiperItem`.
 
-    :attr:`size_transition` is an :class:`~kivy.properties.StringProperty`
+    :attr:`size_transition` is a :class:`~kivy.properties.StringProperty`
     and defaults to `out_quad`.
     """
 
@@ -344,7 +344,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     The type of animation used for swiping.
 
-    :attr:`swipe_transition` is an :class:`~kivy.properties.StringProperty`
+    :attr:`swipe_transition` is a :class:`~kivy.properties.StringProperty`
     and defaults to `out_quad`.
     """
 
@@ -352,7 +352,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     Distance to move before swiping the :class:`MDSwiperItem`.
 
-    :attr:`swipe_distance` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`swipe_distance` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `70dp`.
     """
 
@@ -363,7 +363,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     :class:`MDSwiperItem`. So by decreasing the :attr:`width_mult` the width
     of :class:`MDSwiperItem` increases and vice versa.
 
-    :attr:`width_mult` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`width_mult` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `3`.
     """
 
@@ -371,7 +371,7 @@ class MDSwiper(ScrollView, EventDispatcher):
     """
     Wheter to swipe on mouse wheel scrolling or not.
 
-    :attr:`swipe_on_scroll` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`swipe_on_scroll` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 

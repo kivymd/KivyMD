@@ -270,7 +270,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tap-target-view-widget-outer-radius.png
         :align: center
 
-    :attr:`outer_radius` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`outer_radius` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(200)`.
     """
 
@@ -288,7 +288,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tap-target-view-widget-outer-circle-color.png
         :align: center
 
-    :attr:`outer_circle_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`outer_circle_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to ``theme_cls.primary_color``.
     """
 
@@ -296,7 +296,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Alpha value for outer circle.
 
-    :attr:`outer_circle_alpha` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`outer_circle_alpha` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.96`.
     """
 
@@ -307,7 +307,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tap-target-view-widget-target-radius.png
         :align: center
 
-    :attr:`target_radius` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`target_radius` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(45)`.
     """
 
@@ -325,7 +325,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tap-target-view-widget-target-circle-color.png
         :align: center
 
-    :attr:`target_circle_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`target_circle_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1]`.
     """
 
@@ -333,7 +333,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Title to be shown on the view.
 
-    :attr:`title_text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`title_text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -341,7 +341,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Text size for title.
 
-    :attr:`title_text_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`title_text_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(25)`.
     """
 
@@ -349,7 +349,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Text color for title.
 
-    :attr:`title_text_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`title_text_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 
@@ -357,7 +357,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Whether title should be bold.
 
-    :attr:`title_text_bold` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`title_text_bold` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -365,7 +365,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Description to be shown below the title (keep it short).
 
-    :attr:`description_text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`description_text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -373,7 +373,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Text size for description text.
 
-    :attr:`description_text_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`description_text_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(20)`.
     """
 
@@ -381,7 +381,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Text size for description text.
 
-    :attr:`description_text_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`description_text_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[0.9, 0.9, 0.9, 1]`.
     """
 
@@ -389,7 +389,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Whether description should be bold.
 
-    :attr:`description_text_bold` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`description_text_bold` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -397,7 +397,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Whether to show shadow.
 
-    :attr:`draw_shadow` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`draw_shadow` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -405,7 +405,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Whether clicking outside the outer circle dismisses the view.
 
-    :attr:`cancelable` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`cancelable` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -464,7 +464,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Whether clicking on outer circle stops the animation.
 
-    :attr:`stop_on_outer_touch` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`stop_on_outer_touch` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -472,7 +472,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     """
     Whether clicking on target circle should stop the animation.
 
-    :attr:`stop_on_target_touch` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`stop_on_target_touch` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 

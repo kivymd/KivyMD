@@ -224,7 +224,7 @@ class MDExpansionPanel(RelativeLayout):
     Icon Should be either be a path to an image or
     a logo name in :class:`~kivymd.icon_definitions.md_icons`
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -267,7 +267,7 @@ class MDExpansionPanel(RelativeLayout):
     :class:`~MDExpansionPanelOneLine`, :class:`~MDExpansionPanelTwoLine` or
     :class:`~MDExpansionPanelThreeLine`.
 
-    :attr:`panel_cls` is a :class:`~kivy.properties.ObjectProperty`
+    :attr:`panel_cls` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 

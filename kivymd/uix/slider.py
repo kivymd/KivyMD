@@ -192,7 +192,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     If the slider is clicked.
 
-    :attr:`active` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -200,7 +200,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     If True, then the current value is displayed above the slider.
 
-    :attr:`hint` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`hint` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -208,7 +208,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Hint rectangle color in ``rgba`` format.
 
-    :attr:`hint_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`hint_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -216,7 +216,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Hint text color in ``rgba`` format.
 
-    :attr:`hint_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`hint_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -224,7 +224,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Hint radius.
 
-    :attr:`hint_radius` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`hint_radius` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `4`.
     """
 
@@ -232,7 +232,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Show the `'off'` ring when set to minimum value.
 
-    :attr:`show_off` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`show_off` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -240,7 +240,7 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Color slider in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 

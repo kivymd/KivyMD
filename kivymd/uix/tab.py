@@ -650,7 +650,7 @@ class MDTabsBase(Widget):
     """
     It will be the label text of the tab.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -691,7 +691,7 @@ class MDTabsCarousel(MDCarousel):
     """
     If True - disable switching tabs by swipe.
 
-    :attr:`lock_swiping` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`lock_swiping` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -959,7 +959,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Index of the default tab.
 
-    :attr:`default_tab` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`default_tab` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
@@ -967,7 +967,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Height of the tab bar.
 
-    :attr:`tab_bar_height` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`tab_bar_height` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `'48dp'`.
     """
 
@@ -975,7 +975,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Tab indicator animation. If you want use animation set it to ``True``.
 
-    :attr:`tab_indicator_anim` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`tab_indicator_anim` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -983,7 +983,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Height of the tab indicator.
 
-    :attr:`tab_indicator_height` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`tab_indicator_height` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `'2dp'`.
     """
 
@@ -1002,7 +1002,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Duration of the slide animation.
 
-    :attr:`anim_duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`anim_duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.2`.
     """
 
@@ -1012,7 +1012,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Animation threshold allow you to change the tab indicator animation effect.
 
-    :attr:`anim_threshold` is an :class:`~kivy.properties.BoundedNumericProperty`
+    :attr:`anim_threshold` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `0.8`.
     """
 
@@ -1020,7 +1020,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     If False - tabs will not stretch to full screen.
 
-    :attr:`allow_stretch` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`allow_stretch` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -1028,7 +1028,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Background color of tabs in ``rgba`` format.
 
-    :attr:`background_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`background_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1036,7 +1036,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Text color of the label when it is not selected.
 
-    :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color_normal` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(1, 1, 1, 1)`.
     """
 
@@ -1044,7 +1044,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Text color of the label when it is selected.
 
-    :attr:`text_color_active` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color_active` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `(1, 1, 1, 1)`.
     """
 
@@ -1056,7 +1056,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
         `Behaviors/Elevation <https://kivymd.readthedocs.io/en/latest/behaviors/elevation/index.html>`_
 
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`elevation` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
@@ -1064,7 +1064,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Color indicator in ``rgba`` format.
 
-    :attr:`indicator_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`indicator_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1072,7 +1072,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     If True - disable switching tabs by swipe.
 
-    :attr:`lock_swiping` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`lock_swiping` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -1080,7 +1080,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Font name for tab text.
 
-    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    :attr:`font_name` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Roboto'`.
     """
 
@@ -1088,7 +1088,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Ripple duration when long touching to tab.
 
-    :attr:`ripple_duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `2`.
     """
 
@@ -1096,7 +1096,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
     Whether to use the ripple effect when tapping on a tab.
 
-    :attr:`no_ripple_effect` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`no_ripple_effect` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 

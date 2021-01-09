@@ -292,7 +292,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     The icon that will be used on the directory selection button.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `check`.
     """
 
@@ -300,7 +300,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     The icon that will be used for folder icons when using ``preview = True``.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `check`.
     """
 
@@ -326,7 +326,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     For example, `['.py', '.kv']` - will filter out all files,
     except python scripts and Kv Language.
 
-    :attr:`ext` is an :class:`~kivy.properties.ListProperty`
+    :attr:`ext` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -344,7 +344,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     Current directory.
 
-    :attr:`current_path` is an :class:`~kivy.properties.StringProperty`
+    :attr:`current_path` is a :class:`~kivy.properties.StringProperty`
     and defaults to `/`.
     """
 
@@ -352,7 +352,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     Show access to files and directories.
 
-    :attr:`use_access` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`use_access` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -360,7 +360,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     Shows only image previews.
 
-    :attr:`preview` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`preview` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -368,7 +368,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     Shows hidden files.
 
-    :attr:`show_hidden_files` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`show_hidden_files` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -388,7 +388,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
     """
     Sort by descending.
 
-    :attr:`sort_by_desc` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`sort_by_desc` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 

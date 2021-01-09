@@ -655,7 +655,7 @@ class MDCard(
     """
     Elevation value.
 
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`elevation` is a :class:`~kivy.properties.NumericProperty`
     and defaults to 1.
     """
 
@@ -731,7 +731,7 @@ class MDCardSwipe(RelativeLayout):
     """
     Anchoring screen edge for card. Available options are: `'left'`, `'right'`.
 
-    :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`anchor` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `left`.
     """
 
@@ -757,7 +757,7 @@ class MDCardSwipe(RelativeLayout):
     Detailed state. Sets before :attr:`state`. Bind to :attr:`state` instead
     of :attr:`status`. Available options are: `'closed'`,  `'opened'`.
 
-    :attr:`status` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`status` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'closed'`.
     """
 
@@ -786,7 +786,7 @@ class MDCardSwipe(RelativeLayout):
     a set position :attr:`~max_opened_x`. Available options are:
     `'auto'`, `'hand'`.
 
-    :attr:`type_swipe` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`type_swipe` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `auto`.
     """
 

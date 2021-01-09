@@ -309,19 +309,19 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     panel_color = ListProperty([1, 1, 1, 0])
     """Panel color of bottom navigation.
 
-    :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`panel_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 0]`.
     """
 
     tab = ObjectProperty()
     """
-    :attr:`tab` is an :class:`~MDBottomNavigationItem`
+    :attr:`tab` is a :class:`~MDBottomNavigationItem`
     and defaults to `None`.
     """
 
     panel = ObjectProperty()
     """
-    :attr:`panel` is an :class:`~MDBottomNavigation`
+    :attr:`panel` is a :class:`~MDBottomNavigation`
     and defaults to `None`.
     """
 
@@ -329,7 +329,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
 
     text = StringProperty()
     """
-    :attr:`text` is an :class:`~MDTab.text`
+    :attr:`text` is a :class:`~MDTab.text`
     and defaults to `''`.
     """
 
@@ -337,7 +337,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     """
     Text color of the label when it is not selected.
 
-    :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color_normal` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 
@@ -345,7 +345,7 @@ class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
     """
     Text color of the label when it is selected.
 
-    :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color_active` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 
@@ -406,14 +406,14 @@ class MDTab(Screen, ThemableBehavior):
     text = StringProperty()
     """Tab header text.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
     icon = StringProperty("checkbox-blank-circle")
     """Tab header icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
 
@@ -456,7 +456,7 @@ class MDTab(Screen, ThemableBehavior):
 class MDBottomNavigationItem(MDTab):
     header = ObjectProperty()
     """
-    :attr:`header` is an :class:`~MDBottomNavigationHeader`
+    :attr:`header` is a :class:`~MDBottomNavigationHeader`
     and defaults to `None`.
     """
 
@@ -493,19 +493,19 @@ class TabbedPanelBase(
     current = StringProperty(None)
     """Current tab name.
 
-    :attr:`current` is an :class:`~kivy.properties.StringProperty`
+    :attr:`current` is a :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
     """
 
     previous_tab = ObjectProperty()
     """
-    :attr:`previous_tab` is an :class:`~MDTab` and defaults to `None`.
+    :attr:`previous_tab` is a :class:`~MDTab` and defaults to `None`.
     """
 
     panel_color = ListProperty()
     """Panel color of bottom navigation.
 
-    :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
+    :attr:`panel_color` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -518,13 +518,13 @@ class MDBottomNavigation(TabbedPanelBase):
 
     first_widget = ObjectProperty()
     """
-    :attr:`first_widget` is an :class:`~MDBottomNavigationItem`
+    :attr:`first_widget` is a :class:`~MDBottomNavigationItem`
     and defaults to `None`.
     """
 
     tab_header = ObjectProperty()
     """
-    :attr:`tab_header` is an :class:`~MDBottomNavigationHeader`
+    :attr:`tab_header` is a :class:`~MDBottomNavigationHeader`
     and defaults to `None`.
     """
 
@@ -532,7 +532,7 @@ class MDBottomNavigation(TabbedPanelBase):
     """
     Text color of the label when it is not selected.
 
-    :attr:`text_color_normal` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color_normal` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 
@@ -540,7 +540,7 @@ class MDBottomNavigation(TabbedPanelBase):
     """
     Text color of the label when it is selected.
 
-    :attr:`text_color_active` is an :class:`~kivy.properties.ListProperty`
+    :attr:`text_color_active` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 

@@ -327,7 +327,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
     The duration of the bottom sheet dialog opening animation.
 
-    :attr:`duration_opening` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`duration_opening` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.15`.
     """
 
@@ -335,7 +335,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
     The duration of the bottom sheet dialog closing animation.
 
-    :attr:`duration_closing` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`duration_closing` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.15`.
     """
 
@@ -343,7 +343,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
     The value of the rounding of the corners of the dialog.
 
-    :attr:`radius` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`radius` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `25`.
     """
 
@@ -374,7 +374,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
     Whether to use animation for opening and closing of the bottomsheet or not.
 
-    :attr:`animation` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`animation` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -382,7 +382,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
     Dialog background color in ``rgba`` format.
 
-    :attr:`bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
@@ -390,7 +390,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
     """
     Background transparency value when opening a dialog.
 
-    :attr:`value_transparent` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`value_transparent` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.8]`.
     """
 
@@ -534,7 +534,7 @@ class GridBottomSheetItem(ButtonBehavior, BoxLayout):
     Icon path if you use a local image or icon name
     if you use icon names from a file ``kivymd/icon_definitions.py``.
 
-    :attr:`source` is an :class:`~kivy.properties.StringProperty`
+    :attr:`source` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -542,7 +542,7 @@ class GridBottomSheetItem(ButtonBehavior, BoxLayout):
     """
     Item text.
 
-    :attr:`caption` is an :class:`~kivy.properties.StringProperty`
+    :attr:`caption` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -550,7 +550,7 @@ class GridBottomSheetItem(ButtonBehavior, BoxLayout):
     """
     Icon size.
 
-    :attr:`caption` is an :class:`~kivy.properties.StringProperty`
+    :attr:`caption` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'24sp'`.
     """
 

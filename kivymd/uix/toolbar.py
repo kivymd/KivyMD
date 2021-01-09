@@ -384,7 +384,7 @@ class MDToolbar(
     """
     Elevation value.
 
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`elevation` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `6`.
     """
 
@@ -400,7 +400,7 @@ class MDToolbar(
     where `'icon_name'` is a string that corresponds to an icon definition and
     ``callback`` is the function called on a touch release event.
 
-    :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
+    :attr:`left_action_items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -409,7 +409,7 @@ class MDToolbar(
     The icons on the left of the toolbar.
     Works the same way as :attr:`left_action_items`.
 
-    :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
+    :attr:`right_action_items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -417,7 +417,7 @@ class MDToolbar(
     """
     Text toolbar.
 
-    :attr:`title` is an :class:`~kivy.properties.StringProperty`
+    :attr:`title` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -446,7 +446,7 @@ class MDToolbar(
     Rounding the corners at the notch for a button.
     Onle for :class:`~MDBottomAppBar` class.
 
-    :attr:`round` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`round` is a:class:`~kivy.properties.NumericProperty`
     and defaults to `'10dp'`.
     """
 
@@ -454,7 +454,7 @@ class MDToolbar(
     """
     Floating button. Onle for :class:`~MDBottomAppBar` class.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
     """
 
@@ -462,7 +462,7 @@ class MDToolbar(
     """
     Color action button. Onle for :class:`~MDBottomAppBar` class.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
     """
 
@@ -629,7 +629,7 @@ class MDBottomAppBar(FloatLayout):
     """
     Color toolbar.
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`md_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 

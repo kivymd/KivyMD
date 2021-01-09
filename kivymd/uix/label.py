@@ -256,7 +256,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
-    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
+    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 
@@ -300,7 +300,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     text_color = ColorProperty(None)
     """Label text color in ``rgba`` format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -385,7 +385,7 @@ class MDIcon(MDLabel):
     """
     Label icon name.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
     """
 
@@ -393,6 +393,6 @@ class MDIcon(MDLabel):
     """
     Path to icon.
 
-    :attr:`source` is an :class:`~kivy.properties.StringProperty`
+    :attr:`source` is a :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
     """

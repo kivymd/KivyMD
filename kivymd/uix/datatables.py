@@ -1038,7 +1038,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-column-data.png
         :align: center
 
-    :attr:`column_data` is an :class:`~kivy.properties.ListProperty`
+    :attr:`column_data` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
 
     .. note::
@@ -1159,7 +1159,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-row-data.png
         :align: center
 
-    :attr:`row_data` is an :class:`~kivy.properties.ListProperty`
+    :attr:`row_data` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -1170,7 +1170,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     If the table data is showing an already sorted data then this can be used
     to indicate upon which column the data is sorted.
 
-    :attr:`sorted_on` is an :class:`~kivy.properties.StringProperty`
+    :attr:`sorted_on` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -1190,7 +1190,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-check.gif
         :align: center
 
-    :attr:`check` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`check` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -1234,7 +1234,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-use-pagination.png
         :align: center
 
-    :attr:`use_pagination` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`use_pagination` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -1242,7 +1242,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     """
     Table elevation.
 
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`elevation` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `8`.
     """
 
@@ -1253,7 +1253,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-use-pagination.gif
         :align: center
 
-    :attr:`rows_num` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`rows_num` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `10`.
     """
 
@@ -1290,7 +1290,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-menu-height-240.png
         :align: center
 
-    :attr:`pagination_menu_height` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`pagination_menu_height` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `'140dp'`.
     """
 

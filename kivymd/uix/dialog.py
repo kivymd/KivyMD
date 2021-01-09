@@ -195,7 +195,7 @@ class BaseDialog(ThemableBehavior, ModalView):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-radius.png
         :align: center
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[7, 7, 7, 7]`.
     """
 
@@ -225,7 +225,7 @@ class MDDialog(BaseDialog):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-title.png
         :align: center
 
-    :attr:`title` is an :class:`~kivy.properties.StringProperty`
+    :attr:`title` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -251,7 +251,7 @@ class MDDialog(BaseDialog):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-text.png
         :align: center
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -272,7 +272,7 @@ class MDDialog(BaseDialog):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-buttons.png
         :align: center
 
-    :attr:`buttons` is an :class:`~kivy.properties.ListProperty`
+    :attr:`buttons` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -421,7 +421,7 @@ class MDDialog(BaseDialog):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-confirmation.png
         :align: center
 
-    :attr:`items` is an :class:`~kivy.properties.ListProperty`
+    :attr:`items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -429,7 +429,7 @@ class MDDialog(BaseDialog):
     """
     Dialog offset from device width.
 
-    :attr:`width_offset` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`width_offset` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(48)`.
     """
 
@@ -521,7 +521,7 @@ class MDDialog(BaseDialog):
     """
     Background color in the format (r, g, b, a).
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`md_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 

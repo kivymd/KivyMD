@@ -212,7 +212,7 @@ MDRectangleFlatIconButton
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
     :align: center
 
-Button parameters :class:`~MDRectangleFlatButton` are the same as
+Button parameters :class:`~MDRectangleFlatIconButton` are the same as
 button :class:`~MDRectangleFlatButton`:
 
 .. code-block:: kv
@@ -727,7 +727,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Button text.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `' '`.
     """
 
@@ -754,7 +754,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Button text color in (r, g, b, a) format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -762,7 +762,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Button text font name.
 
-    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    :attr:`font_name` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -770,7 +770,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Button text font size.
 
-    :attr:`font_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `14sp`.
     """
 
@@ -778,7 +778,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Custom font size for :class:`~MDIconButton`.
 
-    :attr:`user_font_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`user_font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
@@ -790,7 +790,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
-    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
+    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 
@@ -798,7 +798,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Button background color.
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`md_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1.0, 1.0, 1.0, 0]`.
     """
 
@@ -806,7 +806,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
     Disabled button text color.
 
-    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1050,7 +1050,7 @@ class BaseRectangleFlatButton(BaseFlatButton, BaseElevationButton):
     """
     Line width for button border.
 
-    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`line_width` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
     """
 
@@ -1058,7 +1058,7 @@ class BaseRectangleFlatButton(BaseFlatButton, BaseElevationButton):
     """
     Line color for button border.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`line_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1086,7 +1086,7 @@ class MDRectangleFlatIconButton(BaseRectangleFlatButton):
     """
     Button icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
     """
 
@@ -1094,7 +1094,7 @@ class MDRectangleFlatIconButton(BaseRectangleFlatButton):
     """
     Button icon color.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1118,7 +1118,7 @@ class MDRoundFlatButton(MDFlatButton):
     """
     Line width for button border.
 
-    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`line_width` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
     """
 
@@ -1126,7 +1126,7 @@ class MDRoundFlatButton(MDFlatButton):
     """
     Line color for button border.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`line_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1164,7 +1164,7 @@ class MDRoundFlatIconButton(MDRoundFlatButton):
     """
     Button icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
     """
 
@@ -1172,7 +1172,7 @@ class MDRoundFlatIconButton(MDRoundFlatButton):
     """
     Button icon color.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1243,7 +1243,7 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
     """
     Button icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
 
@@ -1274,7 +1274,7 @@ class MDFloatingActionButton(
     """
     Button icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
     """
 
@@ -1300,7 +1300,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
     """
     Button color in (r, g, b, a) format.
 
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1308,7 +1308,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
     """
     Button color disabled in (r, g, b, a) format.
 
-    :attr:`color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1380,9 +1380,9 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     """
     :Events:
         :attr:`on_open`
-            Called when a stack is opened.
+            Called when stack is opened.
         :attr:`on_close`
-            Called when a stack is closed.
+            Called when stack is closed.
     """
 
     icon = StringProperty("plus")
@@ -1397,7 +1397,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     """
     Stack anchor. Available options are: `'right'`.
 
-    :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`anchor` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'right'`.
     """
 
@@ -1416,7 +1416,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             print(instance.icon)
 
 
-    :attr:`callback` is a :class:`~kivy.properties.ObjectProperty`
+    :attr:`callback` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 
@@ -1435,7 +1435,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     .. code-block:: python
 
         {
-            'name-icon': 'Text label',
+            'icon-name': 'Text label',
             ...,
             ...,
         }
@@ -1542,7 +1542,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     Indicates whether the stack is closed or open.
     Available options are: `'close'`, `'open'`.
 
-    :attr:`state` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`state` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """
 

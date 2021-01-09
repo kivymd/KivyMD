@@ -139,7 +139,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
     """
     Tooltip background color in ``rgba`` format.
 
-    :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`tooltip_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -147,7 +147,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
     """
     Tooltip text color in ``rgba`` format.
 
-    :attr:`tooltip_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`tooltip_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -155,7 +155,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
     """
     Tooltip text.
 
-    :attr:`tooltip_text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`tooltip_text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -177,7 +177,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
     """
     Corner radius values.
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[dp(7),]`.
     """
 
@@ -185,7 +185,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
     """
     Tooltip dsiplay delay.
 
-    :attr:`tooltip_display_delay` is an :class:`~kivy.properties.BoundedNumericProperty`
+    :attr:`tooltip_display_delay` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `0`, min of `0` & max of `4`. This property only works on desktop.
     """
 
@@ -193,7 +193,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
     """
     Y-offset of tooltip text.
 
-    :attr:`shift_y` is an :class:`~kivy.properties.StringProperty`
+    :attr:`shift_y` is a :class:`~kivy.properties.StringProperty`
     and defaults to `0`.
     """
 

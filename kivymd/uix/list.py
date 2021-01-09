@@ -751,7 +751,7 @@ class BaseListItem(
     Divider mode. Available options are: `'Full'`, `'Inset'`
     and default to `'Full'`.
 
-    :attr:`divider` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`divider` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Full'`.
     """
 

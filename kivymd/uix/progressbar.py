@@ -185,7 +185,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     reversed = BooleanProperty(False)
     """Reverse the direction the progressbar moves.
 
-    :attr:`reversed` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`reversed` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -203,35 +203,35 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     """
     Progress bar color in ``rgba`` format.
 
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
     running_transition = StringProperty("in_cubic")
     """Running transition.
 
-    :attr:`running_transition` is an :class:`~kivy.properties.StringProperty`
+    :attr:`running_transition` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'in_cubic'`.
     """
 
     catching_transition = StringProperty("out_quart")
     """Catching transition.
 
-    :attr:`catching_transition` is an :class:`~kivy.properties.StringProperty`
+    :attr:`catching_transition` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'out_quart'`.
     """
 
     running_duration = NumericProperty(0.5)
     """Running duration.
 
-    :attr:`running_duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`running_duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.5`.
     """
 
     catching_duration = NumericProperty(0.8)
     """Catching duration.
 
-    :attr:`running_duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`running_duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.8`.
     """
 

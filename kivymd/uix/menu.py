@@ -847,7 +847,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     Where the menu will grow vertically to when opening. Set to None to let
     the widget pick for you. Available options are: `'up'`, `'down'`.
 
-    :attr:`ver_growth` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`ver_growth` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
     """
 
@@ -856,7 +856,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     Where the menu will grow horizontally to when opening. Set to None to let
     the widget pick for you. Available options are: `'left'`, `'right'`.
 
-    :attr:`hor_growth` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`hor_growth` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
     """
 
@@ -889,7 +889,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
     The widget object that caller the menu window.
 
-    :attr:`caller` is a :class:`~kivy.properties.ObjectProperty`
+    :attr:`caller` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 
@@ -898,7 +898,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     Menu window position relative to parent element.
     Available options are: `'auto'`, `'center'`, `'bottom'`.
 
-    :attr:`position` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`position` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'auto'`.
     """
 

@@ -218,7 +218,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     Padding for contents of the front layer.
 
-    :attr:`padding` is an :class:`~kivy.properties.ListProperty`
+    :attr:`padding` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
@@ -228,7 +228,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     in back layer. For more information, see the :class:`kivymd.uix.toolbar.MDToolbar` module
     and :attr:`left_action_items` parameter.
 
-    :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
+    :attr:`left_action_items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -236,7 +236,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     Works the same way as :attr:`left_action_items`.
 
-    :attr:`right_action_items` is an :class:`~kivy.properties.ListProperty`
+    :attr:`right_action_items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
@@ -244,7 +244,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     See the :class:`kivymd.uix.toolbar.MDToolbar.title` parameter.
 
-    :attr:`title` is an :class:`~kivy.properties.StringProperty`
+    :attr:`title` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -252,7 +252,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     Background color of back layer.
 
-    :attr:`back_layer_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`back_layer_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -260,7 +260,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     Background color of front layer.
 
-    :attr:`front_layer_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`front_layer_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -269,7 +269,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     The value of the rounding radius of the upper left corner
     of the front layer.
 
-    :attr:`radius_left` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`radius_left` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `16dp`.
     """
 
@@ -278,7 +278,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     The value of the rounding radius of the upper right corner
     of the front layer.
 
-    :attr:`radius_right` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`radius_right` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `16dp`.
     """
 
@@ -286,7 +286,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     Whether to use a header above the contents of the front layer.
 
-    :attr:`header` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`header` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
@@ -294,7 +294,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     Text of header.
 
-    :attr:`header_text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`header_text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Header'`.
     """
 
@@ -303,7 +303,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     The name of the icon that will be installed on the toolbar
     on the left when opening the front layer.
 
-    :attr:`close_icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`close_icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'close'`.
     """
 

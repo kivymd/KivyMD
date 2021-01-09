@@ -302,7 +302,8 @@ class MDExpansionPanel(RelativeLayout):
                 if self.icon in md_icons.keys():
                     self.panel_cls.add_widget(
                         IconLeftWidget(
-                            icon=self.icon, pos_hint={"center_y": 0.5},
+                            icon=self.icon,
+                            pos_hint={"center_y": 0.5},
                         )
                     )
                 else:

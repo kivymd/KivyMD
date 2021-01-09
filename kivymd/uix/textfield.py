@@ -541,7 +541,9 @@ Builder.load_string(
 
         # "rectangle" mode
         Color:
-            rgba: self._current_line_color if not self.text_color else self.text_color
+            rgba:
+                (self._current_line_color if not self.text_color else self.text_color) \
+                if self.focus else self._current_hint_text_color
         Line:
             width: dp(1) if root.mode == "rectangle" else dp(0.00001)
             points:

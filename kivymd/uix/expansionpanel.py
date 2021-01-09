@@ -164,8 +164,9 @@ from kivymd.uix.list import (
 Builder.load_string(
     """
 <MDExpansionChevronRight>:
-    icon: 'chevron-right'
+    icon: "chevron-right"
     disabled: True
+    md_bg_color_disabled: 0, 0, 0, 0
 
     canvas.before:
         PushMatrix
@@ -179,7 +180,7 @@ Builder.load_string(
 
 <MDExpansionPanel>
     size_hint_y: None
-    #height: dp(68)
+    # height: dp(68)
 """
 )
 
@@ -212,14 +213,16 @@ class MDExpansionPanel(RelativeLayout):
     """
 
     content = ObjectProperty()
-    """Content of panel. Must be `Kivy` widget.
+    """
+    Content of panel. Must be `Kivy` widget.
 
     :attr:`content` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 
     icon = StringProperty()
-    """Icon of panel.
+    """
+    Icon of panel.
 
     Icon Should be either be a path to an image or
     a logo name in :class:`~kivymd.icon_definitions.md_icons`
@@ -246,7 +249,8 @@ class MDExpansionPanel(RelativeLayout):
     """
 
     closing_transition = StringProperty("out_sine")
-    """The name of the animation transition type to use when animating to
+    """
+    The name of the animation transition type to use when animating to
     the :attr:`state` 'close'.
 
     :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
@@ -298,7 +302,7 @@ class MDExpansionPanel(RelativeLayout):
                 if self.icon in md_icons.keys():
                     self.panel_cls.add_widget(
                         IconLeftWidget(
-                            icon=self.icon, pos_hint={"center_y": 0.5}
+                            icon=self.icon, pos_hint={"center_y": 0.5},
                         )
                     )
                 else:

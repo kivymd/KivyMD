@@ -471,7 +471,10 @@ Builder.load_string(
 
         # Disabled line.
         Color:
-            rgba: self.line_color_normal if root.mode == "line" else (0, 0, 0, 0)
+            rgba:
+                (self.line_color_normal \
+                if self.line_color_normal else self.theme_cls.divider_color) \
+                if root.mode == "line" else (0, 0, 0, 0)
         Line:
             points: self.x, self.y + dp(16), self.x + self.width, self.y + dp(16)
             width: 1

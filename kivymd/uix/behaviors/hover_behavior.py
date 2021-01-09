@@ -95,7 +95,7 @@ class HoverBehavior(object):
     """
     `True`, if the mouse cursor is within the borders of the widget.
 
-    :attr:`hovered` is an :class:`~kivy.properties.BooleanProperty`
+    :attr:`hovered` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 

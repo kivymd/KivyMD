@@ -62,7 +62,7 @@ class TouchBehavior:
     """
     Time for a long touch.
 
-    :attr:`duration_long_touch` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`duration_long_touch` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.4`.
     """
 

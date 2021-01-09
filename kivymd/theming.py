@@ -731,7 +731,7 @@ class ThemeManager(EventDispatcher):
     """
     Device orientation.
 
-    :attr:`device_orientation` is an :class:`~kivy.properties.StringProperty`.
+    :attr:`device_orientation` is a :class:`~kivy.properties.StringProperty`.
     """
 
     def _get_standard_increment(self):
@@ -848,7 +848,7 @@ class ThemeManager(EventDispatcher):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/font-styles.png
 
-    :attr:`font_styles` is an :class:`~kivy.properties.DictProperty`.
+    :attr:`font_styles` is a :class:`~kivy.properties.DictProperty`.
     """
 
     def __init__(self, **kwargs):
@@ -874,7 +874,7 @@ class ThemableBehavior(EventDispatcher):
     """
     ``True`` if device is ``iOS``.
 
-    :attr:`device_ios` is an :class:`~kivy.properties.BooleanProperty`.
+    :attr:`device_ios` is a :class:`~kivy.properties.BooleanProperty`.
     """
 
     opposite_colors = BooleanProperty(False)

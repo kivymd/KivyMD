@@ -72,7 +72,7 @@ class Toast(BaseDialog):
     """
     The amount of time (in seconds) that the toast is visible on the screen.
 
-    :attr:`duration` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`duration` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `2.5`.
     """
 

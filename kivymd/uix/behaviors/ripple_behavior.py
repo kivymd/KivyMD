@@ -123,7 +123,7 @@ class CommonRipple(object):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-rad-default.gif
        :align: center
 
-    :attr:`ripple_rad_default` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_rad_default` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
     """
 
@@ -131,7 +131,7 @@ class CommonRipple(object):
     """
     Ripple color in ``rgba`` format.
 
-    :attr:`ripple_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`ripple_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -139,7 +139,7 @@ class CommonRipple(object):
     """
     Alpha channel values for ripple effect.
 
-    :attr:`ripple_alpha` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_alpha` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.5`.
     """
 
@@ -150,7 +150,7 @@ class CommonRipple(object):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-scale-1.gif
        :align: center
 
-    :attr:`ripple_scale` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_scale` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.
     """
 
@@ -158,7 +158,7 @@ class CommonRipple(object):
     """
     Ripple duration when touching to widget.
 
-    :attr:`ripple_duration_in_fast` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_duration_in_fast` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.3`.
     """
 
@@ -166,7 +166,7 @@ class CommonRipple(object):
     """
     Ripple duration when long touching to widget.
 
-    :attr:`ripple_duration_in_slow` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_duration_in_slow` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `2`.
     """
 
@@ -177,7 +177,7 @@ class CommonRipple(object):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-duration-out.gif
        :align: center
 
-    :attr:`ripple_duration_out` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_duration_out` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0.3`.
     """
 
@@ -185,7 +185,7 @@ class CommonRipple(object):
     """
     Type of animation for ripple in effect.
 
-    :attr:`ripple_func_in` is an :class:`~kivy.properties.StringProperty`
+    :attr:`ripple_func_in` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'out_quad'`.
     """
 
@@ -193,7 +193,7 @@ class CommonRipple(object):
     """
     Type of animation for ripple out effect.
 
-    :attr:`ripple_func_in` is an :class:`~kivy.properties.StringProperty`
+    :attr:`ripple_func_in` is anaclass:`~kivy.properties.StringProperty`
     and defaults to `'ripple_func_out'`.
     """
 
@@ -309,7 +309,7 @@ class RectangularRippleBehavior(CommonRipple):
     """
     See :class:`~CommonRipple.ripple_scale`.
 
-    :attr:`ripple_scale` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_scale` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `2.75`.
     """
 
@@ -354,7 +354,7 @@ class CircularRippleBehavior(CommonRipple):
     """
     See :class:`~CommonRipple.ripple_scale`.
 
-    :attr:`ripple_scale` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`ripple_scale` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
     """
 

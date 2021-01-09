@@ -41,28 +41,28 @@ class BackgroundColorBehavior(Widget):
     r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
     """The value of ``red`` in the ``rgba`` palette.
 
-    :attr:`r` is an :class:`~kivy.properties.BoundedNumericProperty`
+    :attr:`r` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
     g = BoundedNumericProperty(1.0, min=0.0, max=1.0)
     """The value of ``green`` in the ``rgba`` palette.
 
-    :attr:`g` is an :class:`~kivy.properties.BoundedNumericProperty`
+    :attr:`g` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
     b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
     """The value of ``blue`` in the ``rgba`` palette.
 
-    :attr:`b` is an :class:`~kivy.properties.BoundedNumericProperty`
+    :attr:`b` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
     a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
     """The value of ``alpha channel`` in the ``rgba`` palette.
 
-    :attr:`a` is an :class:`~kivy.properties.BoundedNumericProperty`
+    :attr:`a` is a :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `0.0`.
     """
 
@@ -76,7 +76,7 @@ class BackgroundColorBehavior(Widget):
             md_bg_color: app.theme_cls.primary_color
             radius: [25, 0, 0, 0]
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
@@ -103,7 +103,7 @@ class BackgroundColorBehavior(Widget):
         <MyWidget@BackgroundColorBehavior>
             md_bg_color: 0, 1, 1, 1
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ReferenceListProperty`
+    :attr:`md_bg_color` is a :class:`~kivy.properties.ReferenceListProperty`
     and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
     """
 
@@ -126,12 +126,12 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
     """
 
     specific_text_color = ColorProperty([0, 0, 0, 0.87])
-    """:attr:`specific_text_color` is an :class:`~kivy.properties.ColorProperty`
+    """:attr:`specific_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.87]`.
     """
 
     specific_secondary_text_color = ColorProperty([0, 0, 0, 0.87])
-    """:attr:`specific_secondary_text_color`is an :class:`~kivy.properties.ColorProperty`
+    """:attr:`specific_secondary_text_color`is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.87]`.
     """
 

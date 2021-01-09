@@ -178,7 +178,7 @@ class CommonElevationBehavior(object):
     """
     Elevation value.
 
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`elevation` is a :class:`~kivy.properties.NumericProperty`
     and defaults to 1.
     """
 

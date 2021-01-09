@@ -1217,11 +1217,6 @@ class MDFillRoundFlatButton(MDRoundFlatButton):
 
 
 class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
-    opposite_colors = BooleanProperty(True)
-
-    def update_md_bg_color(self, instance, value):
-        self.md_bg_color = self.theme_cls._get_primary_color()
-
     def on_md_bg_color(self, instance, value):
         self.md_bg_color = value
         if self.md_bg_color != self.md_bg_color_disabled:
@@ -1236,6 +1231,9 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
             self.md_bg_color = self.md_bg_color_disabled
         else:
             self.md_bg_color = self._md_bg_color
+
+    def set_icon_color(self, interval):
+        pass
 
 
 class MDIconButton(BaseRoundButton, BasePressedButton):
@@ -1263,6 +1261,10 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
             self.user_font_size + 23)
         self.height = "48dp" if not self.user_font_size else dp(
             self.user_font_size + 23)
+
+    def update_md_bg_color(self, instance, value):
+        if self.md_bg_color != [0.0, 0.0, 0.0, 0.0]:
+            self.md_bg_color = self.theme_cls._get_primary_color()
 
 
 class MDFloatingActionButton(

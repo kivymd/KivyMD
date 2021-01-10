@@ -819,6 +819,8 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
             self.md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
         Clock.schedule_once(self.set_md_bg_color)
+        if not self.text_color:
+            self.text_color = self.theme_cls.text_color
 
     def set_md_bg_color(self, interval):
         """Checks if a value is set for the `md_bg_color` parameter."""

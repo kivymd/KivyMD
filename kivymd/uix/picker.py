@@ -197,6 +197,7 @@ Builder.load_string(
     """
 #:import calendar calendar
 #:import platform platform
+#:import images_path kivymd.images_path
 
 
 <MDDatePicker>

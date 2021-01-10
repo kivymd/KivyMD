@@ -233,6 +233,7 @@ Builder.load_string(
         ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
         pos_hint: {'center_y': .5}
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
         on_release: root.table_data.set_next_row_data_parts("back")
 
     MDIconButton:
@@ -242,7 +243,9 @@ Builder.load_string(
         ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
         pos_hint: {'center_y': .5}
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
         on_release: root.table_data.set_next_row_data_parts("forward")
+        on_text_color: print(args)
 
 
 <MDDataTable>

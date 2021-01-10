@@ -40,8 +40,8 @@ AndroidToast
 
 all = ("toast",)
 
-from jnius import autoclass
 from android.runnable import run_on_ui_thread
+from jnius import autoclass
 
 activity = autoclass("org.kivy.android.PythonActivity").mActivity
 Toast = autoclass("android.widget.Toast")

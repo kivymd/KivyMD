@@ -245,7 +245,6 @@ Builder.load_string(
         disabled: True
         md_bg_color_disabled: 0, 0, 0, 0
         on_release: root.table_data.set_next_row_data_parts("forward")
-        on_text_color: print(args)
 
 
 <MDDataTable>

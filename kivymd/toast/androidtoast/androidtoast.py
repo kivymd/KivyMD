@@ -1,68 +1,72 @@
 """
-AndroidToast
-============
 
-.. rubric:: Native implementation of toast for Android devices.
-
-.. code-block:: python
-
-    from kivymd.app import MDApp
-    # Will be automatically used native implementation of the toast
-    # if your application is running on an Android device.
-    # Otherwise, will be used toast implementation
-    # from the kivymd/toast/kivytoast package.
-    from kivymd.toast import toast
-
-    KV = '''
-    BoxLayout:
-        orientation:'vertical'
-
-        MDToolbar:
-            id: toolbar
-            title: 'Test Toast'
-            md_bg_color: app.theme_cls.primary_color
-            left_action_items: [['menu', lambda x: '']]
-
-        FloatLayout:
-
-            MDRaisedButton:
-                text: 'TEST KIVY TOAST'
-                on_release: app.show_toast()
-                pos_hint: {'center_x': .5, 'center_y': .5}
-
-    '''
-
-
-    class Test(MDApp):
-        def show_toast(self):
-            '''Displays a toast on the screen.'''
-
-            toast('Test Kivy Toast')
-
-        def build(self):
-            return Builder.load_string(KV)
-
-    Test().run()
+ # Will be automatically used native implementation of the toast
+ # if your application is running on an Android device.
+ # Otherwise, will be used toast implementation
+ # from the kivymd/toast/kivytoast package.
+    
+ from kivymd.toast import toast
+ from kivymd.app import MDApp
+ from kivy.lang import Builder
+ from kivy.uix.screenmanager import ScreenManager
+ from kivymd.uix.screen import MDScreen
+    
+    
+    
+    
+ Builder.load_string('''
+ <Example>
+ 
+     MDFlatButton:
+         text:"My Toast"
+         pos_hint:{"center_x": .5, "center_y": .05}
+         on_press:root.show_toast()
+ ''')
+ 
+    
+ class Example(MDScreen):     
+     def show_toast(self):
+         toast("hello world", True, 80, 200, 0) 
+                        
+            
+        	
+ class Iniciar(MDApp):     
+     def build(self):
+         pantalla = ScreenManager()
+         screen = Example(name="one")
+         pantalla.add_widget(screen)
+         return pantalla
+    
+ Iniciar().run() 
 """
-
 __all__ = ("toast",)
 
-from android.runnable import run_on_ui_thread
-from jnius import autoclass, cast
-
-Toast = autoclass("android.widget.Toast")
-context = autoclass("org.kivy.android.PythonActivity").mActivity
-
-
-@run_on_ui_thread
-def toast(text, length_long=False):
-    """Displays a toast.
-
-    :length_long: The amount of time (in seconds) that the toast is visible on the screen.
+from jnius import autoclass    
+from android.runnable import run_on_ui_thread as run_thread
+      
+__activity = autoclass( 'org.kivy.android.PythonActivity').mActivity
+__Toast = autoclass('android.widget.Toast')
+__String = autoclass('java.lang.String')
+    
+@run_thread
+def toast(text, short_duration=True, gravity=0, y=0, x=0):
     """
+        :param text: text to be displayed in the toast;
+        :param short_duration:  duration of the toast, if `True` the toast
+               will last 2.3s but if it is `False` the toast will last 3.9s;
+        :param gravity: refers to the toast position, if it is 80the toast will
+               be shown below, if it is 40 the toast will be displayed above;
+        :param y: refers to the vertical position of the toast;
+        :param x: refers to the horizontal position of the toast;
 
-    duration = Toast.LENGTH_LONG if length_long else Toast.LENGTH_SHORT
-    String = autoclass("java.lang.String")
-    c = cast("java.lang.CharSequence", String(text))
-    t = Toast.makeText(context, c, duration)
-    t.show()
+        Important: if only the text value is specified and the value of
+        the `gravity`, `y`, `x` parameters is not specified, their values ​​will
+        be 0 which means that the toast will be shown in the center.
+        """
+  
+    duration = __Toast.LENGTH_SHORT if short_duration else __Toast.LENGTH_LONG        
+    toast = __Toast.makeText(__activity, __String(text), duration)        	
+    toast.setGravity(gravity, x, y)
+    toast.show()
+    
+

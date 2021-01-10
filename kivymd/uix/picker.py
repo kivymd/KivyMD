@@ -133,8 +133,8 @@ that are not included in this range will have the status `disabled`.
 .. code-block:: python
 
     def show_date_picker(self):
-        min_date = datetime.strptime("2020:02:15", '%Y:%m:%d').date()
-        max_date = datetime.strptime("2020:02:20", '%Y:%m:%d').date()
+        min_date = datetime.strptime("2021:02:15", '%Y:%m:%d').date()
+        max_date = datetime.strptime("2021:02:20", '%Y:%m:%d').date()
         date_dialog = MDDatePicker(
             callback=self.get_date,
             min_date=min_date,

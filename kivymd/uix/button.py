@@ -850,7 +850,11 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
             self.md_bg_color = self.md_bg_color_disabled
         # Sets last current button background color.
         else:
-            self.md_bg_color = self._md_bg_color
+            self.md_bg_color = (
+                self._md_bg_color
+                if self._md_bg_color
+                else self.theme_cls.primary_color
+            )
 
     def on_md_bg_color(self, instance, value):
         """Sets last current button background color."""

@@ -500,7 +500,7 @@ Builder.load_string(
 
         # Texture of right Icon.
         Color:
-            rgba: self.icon_right_color
+            rgba: self.icon_right_color if self.focus else self._current_hint_text_color
         Rectangle:
             texture: self._lbl_icon_right.texture
             size: self._lbl_icon_right.texture_size if self.icon_right else (0, 0)
@@ -654,7 +654,9 @@ Builder.load_string(
 
         # Texture of left Icon.
         Color:
-            rgba: self.icon_left_color
+            rgba:
+                self.icon_left_color \
+                if self.focus else self.theme_cls.disabled_hint_text_color
         Rectangle:
             texture: self._lbl_icon_left.texture
             size:
@@ -666,7 +668,9 @@ Builder.load_string(
 
         # Texture of right Icon.
         Color:
-            rgba: self.icon_right_color
+            rgba:
+                self.icon_right_color \
+                if self.focus else self.theme_cls.disabled_hint_text_color
         Rectangle:
             texture: self._lbl_icon_right.texture
             size:

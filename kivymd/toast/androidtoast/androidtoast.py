@@ -37,7 +37,6 @@ AndroidToast
 
     Test().run()
 """
-
 all = ("toast",)
 
 from android.runnable import run_on_ui_thread

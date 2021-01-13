@@ -32,8 +32,8 @@ However, if you do need to change the standard colors, for instance to meet bran
 guidelines, you can do this by overloading the `color_definitions.py` object.
 
 * Create a custom copy of `color_definitions.py`,
-* Change the color codes in `colors` object in your custum `color_definitions.py`
-file as required. Note that you *cannot* change the names of the colors, you can only
+* Change the color codes in the `colors` object in your custum `color_definitions.py`
+file as required. Note that you *can not* change the names of the colors, you can only
 change the values. That is say, for instance, you cannot change the name of `Blue` and
 you cannot add `NavyBlue` but you change the value of the color blue to meet your
 requirements.

@@ -35,9 +35,9 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
 * Change the color codes in `colors` object in your custum `color_definitions.py`
 file as required. Note that you *cannot* change the names of the colors, you can only
 change the values. That is say, for instance, you cannot change the name of `Blue` and
-you cannot add `NavyBlue` but you change the value of the color blue to meet your 
+you cannot add `NavyBlue` but you change the value of the color blue to meet your
 requirements.
-* Import the custom colors into your module and do something like this (where the custom 
+* Import the custom colors into your module and do something like this (where the custom
 version of `color_defintions.py` is called `custom_palette.py`):
 
 .. code-block:: python

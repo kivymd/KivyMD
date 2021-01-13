@@ -569,7 +569,7 @@ Builder.load_string(
             ignore_perpendicular_swipes: True
             anim_move_duration: root.anim_duration
             on_index: root.on_carousel_index(*args)
-            on__offset: tab_bar.android_animation(*args)            
+            on__offset: tab_bar.android_animation(*args)
             on_slides:
                 self.index = root.default_tab
                 root.on_carousel_index(self, 0)
@@ -872,6 +872,9 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
 
         elif not scroll_is_late and target.center_x < bound_right:
             x = lsx - dst
+
+        else:
+            return
 
         x = boundary(x, 0.0, 1.0)
         self.scrollview.goto(x, None)

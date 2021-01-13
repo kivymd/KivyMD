@@ -852,7 +852,17 @@ class ThemeManager(EventDispatcher):
     :attr:`font_styles` is an :class:`~kivy.properties.DictProperty`.
     """
 
-    def set_colors(self, primary_palette, primary_hue, primary_light_hue, primary_dark_hue, accent_palette, accent_hue, accent_light_hue, accent_dark_hue):
+    def set_colors(
+        self,
+        primary_palette,
+        primary_hue,
+        primary_light_hue,
+        primary_dark_hue,
+        accent_palette,
+        accent_hue,
+        accent_light_hue,
+        accent_dark_hue,
+    ):
         self.primary_palette = primary_palette
         self.primary_hue = primary_hue
         self.primary_light_hue = primary_light_hue

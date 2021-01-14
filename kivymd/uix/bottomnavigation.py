@@ -199,6 +199,8 @@ from kivy.properties import (
     ObjectProperty,
     StringProperty,
 )
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
@@ -209,7 +211,6 @@ from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivymd.uix.button import BaseFlatButton, BasePressedButton
 
 Builder.load_string(
     """
@@ -219,7 +220,7 @@ Builder.load_string(
 
 <MDBottomNavigation>
     id: panel
-    orientation: 'vertical'
+    orientation: "vertical"
     height: dp(56)  # Spec
 
     ScreenManager:
@@ -236,7 +237,7 @@ Builder.load_string(
 
         BoxLayout:
             id: tab_bar
-            pos_hint: {'center_x': .5, 'center_y': .5}
+            pos_hint: {"center_x": .5, "center_y": .5}
             height: dp(56)
             size_hint: None, None
 
@@ -245,23 +246,21 @@ Builder.load_string(
     canvas:
         Color:
             rgba: root.panel_color
-            #rgba: self.panel.theme_cls.bg_dark if not root.panel_color else root.panel_color
         Rectangle:
             size: self.size
             pos: self.pos
 
     width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens)\
+        root.panel.width / len(root.panel.ids.tab_manager.screens) \
         if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
     padding: (dp(12), dp(12))
-    on_press:
-        self.tab.dispatch('on_tab_press')
-    on_release: self.tab.dispatch('on_tab_release')
-    on_touch_down: self.tab.dispatch('on_tab_touch_down',*args)
-    on_touch_move: self.tab.dispatch('on_tab_touch_move',*args)
-    on_touch_up: self.tab.dispatch('on_tab_touch_up',*args)
+    on_press: self.tab.dispatch("on_tab_press")
+    on_release: self.tab.dispatch("on_tab_release")
+    on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
+    on_touch_move: self.tab.dispatch("on_tab_touch_move", *args)
+    on_touch_up: self.tab.dispatch("on_tab_touch_up", *args)
 
-    FloatLayout:
+    RelativeLayout:
         id: item_container
 
         MDIcon:
@@ -270,29 +269,27 @@ Builder.load_string(
             size_hint_x: None
             text_size: (None, root.height)
             height: self.texture_size[1]
-            theme_text_color: 'Custom'
+            theme_text_color: "Custom"
             text_color: root._text_color_normal
-            valign: 'middle'
-            halign: 'center'
             opposite_colors: root.opposite_colors
             pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
-            pos_hint: {'center_x': .5, 'center_y': .7}
+            pos_hint: {"center_x": .5}
+            y: "8dp"
 
         MDLabel:
             id: _label
             text: root.tab.text
-            font_style: 'Button'
+            font_style: "Button"
             size_hint_x: None
-            text_size: (None, root.height)
-            height: self.texture_size[1]
-            theme_text_color: 'Custom'
+            text_size: None, root.height
+            adaptive_height: True
+            theme_text_color: "Custom"
             text_color: root._text_color_normal
-            valign: 'bottom'
-            halign: 'center'
             opposite_colors: root.opposite_colors
             font_size: root._label_font_size
-            pos_hint: {'center_x': .5, 'center_y': .6}
+            pos_hint: {"center_x": .5}
+            y: item_container.y + _label_icon.y
 
 
 <MDTab>
@@ -305,7 +302,9 @@ Builder.load_string(
 )
 
 
-class MDBottomNavigationHeader(BaseFlatButton, BasePressedButton):
+class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
+    opposite_colors = BooleanProperty(True)
+
     panel_color = ListProperty([1, 1, 1, 0])
     """Panel color of bottom navigation.
 

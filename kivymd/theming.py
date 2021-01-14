@@ -31,7 +31,7 @@ We do not recommend that you change this.
 However, if you do need to change the standard colors, for instance to meet branding
 guidelines, you can do this by overloading the `color_definitions.py` object.
 
-* Create a custom color defintion object. This should have the format of the `colors 
+* Create a custom color defintion object. This should have the format of the `colors
 <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#module-kivymd.color_definitions>`_
 object in `color_definitions.py` and contain definitions for at least the primary color, the accent
 color and the Light and Dark backgrounds. *Note* - your custom colors *must* use the names of the

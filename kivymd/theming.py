@@ -852,6 +852,71 @@ class ThemeManager(EventDispatcher):
     :attr:`font_styles` is an :class:`~kivy.properties.DictProperty`.
     """
 
+    def set_colors(
+        self,
+        primary_palette,
+        primary_hue,
+        primary_light_hue,
+        primary_dark_hue,
+        accent_palette,
+        accent_hue,
+        accent_light_hue,
+        accent_dark_hue,
+    ):
+        self.primary_palette = primary_palette
+        self.primary_hue = primary_hue
+        self.primary_light_hue = primary_light_hue
+        self.primary_dark_hue = primary_dark_hue
+        self.accent_palette = accent_palette
+        self.accent_hue = accent_hue
+        self.accent_light_hue = accent_light_hue
+        self.accent_dark_hue = accent_dark_hue
+
+    """
+    Courtesy method to allow all of the theme color attributes to be set in one call.
+
+    :attr:`set_colors` allows all of the following to be set in one method call:
+
+    * primary palette color,
+    * primary hue,
+    * primary light hue,
+    * primary dark hue,
+    * accent palette color,
+    * accent hue,
+    * accent ligth hue, and
+    * accent dark hue.
+
+    Note that all values *must* be provided. If you only want to set one or two values
+    use the appropriate method call for that.
+
+    .. code-block:: python
+
+        from kivy.uix.screenmanager import Screen
+
+        from kivymd.app import MDApp
+        from kivymd.uix.button import MDRectangleFlatButton
+
+
+        class MainApp(MDApp):
+            def build(self):
+                self.theme_cls.set_colors(
+                    "Blue", "600", "50", "800", "Teal", "600", "100", "800"
+                )
+
+                screen = Screen()
+                screen.add_widget(
+                    MDRectangleFlatButton(
+                        text="Hello, World",
+                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                    )
+                )
+                return screen
+
+
+        MainApp().run()
+
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.rec_shadow = Atlas(f"{images_path}rec_shadow.atlas")

@@ -275,7 +275,8 @@ Builder.load_string(
             pos: [self.pos[0], self.pos[1]]
             font_size: dp(24)
             pos_hint: {"center_x": .5}
-            y: "8dp"
+            y: item_container.height - dp(8)
+
 
         MDLabel:
             id: _label
@@ -289,7 +290,7 @@ Builder.load_string(
             opposite_colors: root.opposite_colors
             font_size: root._label_font_size
             pos_hint: {"center_x": .5}
-            y: item_container.y + _label_icon.y
+            y: -dp(8)
 
 
 <MDTab>

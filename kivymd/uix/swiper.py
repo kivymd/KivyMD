@@ -231,7 +231,7 @@ Builder.load_string(
 
 
 <_ItemsBox>
-    size_hint: None, None
+    size_hint_x: None
     anchor_x: "center"
     anchor_y: "center"
 """

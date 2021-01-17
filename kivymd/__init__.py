@@ -30,12 +30,14 @@ without asking too.
 
 import os
 
+import kivy
 from kivy.logger import Logger
 
 __version__ = "0.104.2.dev0"
 """KivyMD version."""
 
 release = False
+kivy.require("2.0.0")
 
 try:
     from kivymd._version import __date__, __hash__, __short_hash__

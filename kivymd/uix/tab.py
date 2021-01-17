@@ -866,13 +866,10 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
 
         if not dst:
             return
-
         if scroll_is_late and target.center_x > bound_left:
             x = lsx + dst
-
         elif not scroll_is_late and target.center_x < bound_right:
             x = lsx - dst
-
         else:
             return
 
@@ -1131,19 +1128,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 #  and `ripple_duration` properties for widget.tab_label.
                 widget.tab_label._no_ripple_effect = self.no_ripple_effect
                 widget.tab_label.ripple_duration_in_slow = self.ripple_duration
-
                 widget.tab_label.group = str(self)
                 widget.tab_label.tab_bar = self.tab_bar
-                self.bind(
-                    text_color_normal=widget.tab_label.setter(
-                        "text_color_normal"
-                    )
-                )
-                self.bind(
-                    text_color_active=widget.tab_label.setter(
-                        "text_color_active"
-                    )
-                )
+                widget.tab_label.text_color_normal = self.text_color_normal
+                widget.tab_label.text_color_active = self.text_color_active
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)

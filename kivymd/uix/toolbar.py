@@ -249,10 +249,12 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    BooleanProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 
+from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
@@ -282,7 +284,7 @@ Builder.load_string(
     size_hint_y: None
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
-    opposite_colors: True
+    # opposite_colors: False
     elevation: root.elevation
 
     canvas:
@@ -346,8 +348,8 @@ Builder.load_string(
             id: label_title
             font_style: "H6"
             opposite_colors: root.opposite_colors
-            theme_text_color: "Primary"
-            # text_color: root.specific_text_color
+            theme_text_color: "Custom" if not root.opposite_colors else "Primary"
+            text_color: root.specific_text_color
             text: root.title
             shorten: True
             shorten_from: "right"
@@ -484,6 +486,8 @@ class MDToolbar(
     and defaults to `'top'`.
     """
 
+    opposite_colors = BooleanProperty(False)
+
     _shift = NumericProperty("3.5dp")
     _angle_start = NumericProperty(90)
     _angle_end = NumericProperty(270)
@@ -505,6 +509,8 @@ class MDToolbar(
             self.icon_color = self.theme_cls.primary_color
         Window.bind(on_resize=self._on_resize)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
+        # self.bind(opposite_colors=self.update_opposite_colors)
+        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items)
         )
@@ -539,22 +545,27 @@ class MDToolbar(
                 MDIconButton(
                     icon=item[0],
                     on_release=item[1],
-                    opposite_colors=True,
+                    theme_text_color="Custom"
+                    if not self.opposite_colors
+                    else "Primary",
+                    text_color=self.specific_text_color,
+                    opposite_colors=self.opposite_colors,
                 )
             )
         action_bar.width = new_width
 
-    def update_action_bar_text_colors(self, instance, value):
+    def update_md_bg_color(self, *args):
+        self.md_bg_color = self.theme_cls._get_primary_color()
+
+    def update_opposite_colors(self, instance, value):
+        if value:
+            self.ids.label_title.theme_text_color = ""
+
+    def update_action_bar_text_colors(self, *args):
         for child in self.ids["left_actions"].children:
             child.text_color = self.specific_text_color
         for child in self.ids["right_actions"].children:
             child.text_color = self.specific_text_color
-
-    def _on_resize(self, instance, width, height):
-        if self.mode == "center":
-            self.action_button.x = width / 2 - self.action_button.width / 2
-        else:
-            self.action_button.x = width - self.action_button.width * 2
 
     def on_icon(self, instance, value):
         self.action_button.icon = value
@@ -622,6 +633,22 @@ class MDToolbar(
     def set_shadow(self, *args):
         self.action_button._hard_shadow_size = (dp(112), dp(112))
         self.action_button._soft_shadow_size = (dp(112), dp(112))
+
+    def _on_resize(self, instance, width, height):
+        if self.mode == "center":
+            self.action_button.x = width / 2 - self.action_button.width / 2
+        else:
+            self.action_button.x = width - self.action_button.width * 2
+
+    def _update_specific_text_color(self, instance, value):
+        if self.specific_text_color in (
+            [0.0, 0.0, 0.0, 0.87],
+            [0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ):
+            self.specific_text_color = text_colors[
+                self.theme_cls.primary_palette
+            ][self.theme_cls.primary_hue]
 
 
 class MDBottomAppBar(FloatLayout):

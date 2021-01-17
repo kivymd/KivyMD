@@ -516,22 +516,6 @@ Builder.load_string(
         self.tab, \
         self.tab_bar, \
         self.tab_bar.parent.carousel)
-    text_color_normal:
-        (\
-        (0, 0, 0, .5) \
-        if app.theme_cls.theme_style == 'Dark' and not self.text_color_normal \
-        else (1, 1, 1, .6) \
-        if app.theme_cls.theme_style == 'Light' and not self.text_color_normal \
-        else self.text_color_normal \
-        )
-    text_color_active:
-        (\
-        (0, 0, 0, .75) \
-        if app.theme_cls.theme_style == 'Dark' and not self.text_color_active \
-        else (1, 1, 1, 1) \
-        if app.theme_cls.theme_style == 'Light' and not self.text_color_normal \
-        else self.text_color_active
-        )
     color:
         self.text_color_active if self.state == 'down' \
         else self.text_color_normal
@@ -552,8 +536,6 @@ Builder.load_string(
     tab_bar: tab_bar
     anchor_y: 'top'
     background_palette: "Primary"
-    text_color_normal: self.specific_secondary_text_color
-    text_color_active: self.specific_text_color
 
     _line_x: 0
     _line_width: 0
@@ -616,8 +598,8 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, Label):
     """This class it represent the label of each tab."""
 
-    text_color_normal = ColorProperty((1, 1, 1, 1))
-    text_color_active = ColorProperty((1, 1, 1, 1))
+    text_color_normal = ColorProperty((0, 0, 0, 0))
+    text_color_active = ColorProperty((0, 0, 0, 0))
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
     font_name = StringProperty("Roboto")
@@ -1032,20 +1014,20 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `None`.
     """
 
-    text_color_normal = ColorProperty((1, 1, 1, 1))
+    text_color_normal = ColorProperty(None)
     """
     Text color of the label when it is not selected.
 
     :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `(1, 1, 1, 1)`.
+    and defaults to `None`.
     """
 
-    text_color_active = ColorProperty((1, 1, 1, 1))
+    text_color_active = ColorProperty(None)
     """
     Text color of the label when it is selected.
 
     :attr:`text_color_active` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `(1, 1, 1, 1)`.
+    and defaults to `None`.
     """
 
     elevation = NumericProperty(0)
@@ -1106,6 +1088,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self.register_event_type("on_ref_press")
         self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._carousel_bind, 1)
+        self.theme_cls.bind(primary_palette=self.update_icon_color)
+
+    def update_icon_color(self, instance, value):
+        for tab_label in self.get_tab_list():
+            if not self.text_color_normal:
+                tab_label.text_color_normal = self.specific_secondary_text_color
+            if not self.text_color_active:
+                tab_label.text_color_active = self.specific_text_color
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""
@@ -1130,8 +1120,16 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 widget.tab_label.ripple_duration_in_slow = self.ripple_duration
                 widget.tab_label.group = str(self)
                 widget.tab_label.tab_bar = self.tab_bar
-                widget.tab_label.text_color_normal = self.text_color_normal
-                widget.tab_label.text_color_active = self.text_color_active
+                widget.tab_label.text_color_normal = (
+                    self.text_color_normal
+                    if self.text_color_normal
+                    else self.specific_secondary_text_color
+                )
+                widget.tab_label.text_color_active = (
+                    self.text_color_active
+                    if self.text_color_active
+                    else self.specific_text_color
+                )
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)

@@ -43,10 +43,14 @@ class KitchenSinkApp(MDApp):
 
     def build(self):
         Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/list_items.kv"
+            os.path.join(
+                os.environ["KITCHEN_SINK_ROOT"], "libs", "kv", "list_items.kv"
+            )
         )
         return Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/start_screen.kv"
+            os.path.join(
+                os.environ["KITCHEN_SINK_ROOT"], "libs", "kv", "start_screen.kv"
+            )
         )
 
     def show_dialog_change_theme(self):
@@ -58,11 +62,16 @@ class KitchenSinkApp(MDApp):
     def on_start(self):
         """Creates a list of items with examples on start screen."""
         Builder.load_file(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/dialog_change_theme.kv",
+            os.path.join(
+                os.environ["KITCHEN_SINK_ROOT"],
+                "libs",
+                "kv",
+                "dialog_change_theme.kv",
+            )
         )
 
         with open(
-            f"{os.environ['KITCHEN_SINK_ROOT']}/screens_data.json"
+            os.path.join(os.environ["KITCHEN_SINK_ROOT"], "screens_data.json")
         ) as read_file:
             self.data_screens = ast.literal_eval(read_file.read())
             data_screens = list(self.data_screens.keys())
@@ -86,7 +95,12 @@ class KitchenSinkApp(MDApp):
         ):
             name_kv_file = self.data_screens[name_screen]["kv_string"]
             Builder.load_file(
-                f"{os.environ['KITCHEN_SINK_ROOT']}/libs/kv/{name_kv_file}.kv",
+                os.path.join(
+                    os.environ["KITCHEN_SINK_ROOT"],
+                    "libs",
+                    "kv",
+                    f"{name_kv_file}.kv",
+                )
             )
             if "Import" in self.data_screens[name_screen]:
                 exec(self.data_screens[name_screen]["Import"])
@@ -95,7 +109,12 @@ class KitchenSinkApp(MDApp):
             if "toolbar" in screen_object.ids:
                 screen_object.ids.toolbar.title = name_screen
             manager.add_widget(screen_object)
-        code_file = f"{os.environ['KITCHEN_SINK_ROOT']}/assets/usage/{self.data_screens[name_screen]['source_code']}"
+        code_file = os.path.join(
+            os.environ["KITCHEN_SINK_ROOT"],
+            "assets",
+            "usage",
+            self.data_screens[name_screen]["source_code"],
+        )
         with open(code_file, "r") as f:
             self.sample_code = f.read()
             self.screen_name = name_screen

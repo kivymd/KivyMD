@@ -459,7 +459,9 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.utils import get_hex_from_color
 
+from kivymd.color_definitions import text_colors, colors
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
@@ -479,7 +481,10 @@ Builder.load_string(
     canvas:
         Clear
         Color:
-            rgba: self.md_bg_color
+            rgba:
+                self.md_bg_color if not self.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -540,6 +545,7 @@ Builder.load_string(
 
 <MDRoundFlatButton>
     canvas.before:
+        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -553,9 +559,12 @@ Builder.load_string(
                 root._radius, root._radius, root._radius, root._radius,\
                 self.height)
 
+    theme_text_color: "Custom"
+
 
 <MDFillRoundFlatButton>
     canvas.before:
+        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
@@ -567,16 +576,17 @@ Builder.load_string(
             pos: self.pos
             radius: [root._radius, ]
 
-    text_color: 1, 1, 1, 1
     line_width: 0.001
+    theme_text_color: "Custom"
 
 
 <MDFillRoundFlatIconButton>
     canvas.before:
+        Clear
         Color:
             rgba:
-                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
-                if not root.disabled else \
+                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root.md_bg_color) if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
         RoundedRectangle:
@@ -584,12 +594,13 @@ Builder.load_string(
             pos: self.pos
             radius: [root._radius, ]
 
-    text_color: 1, 1, 1, 1
     line_width: 0.001
+    theme_text_color: "Custom"
 
 
 <MDRectangleFlatButton>
     canvas.before:
+        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -600,9 +611,12 @@ Builder.load_string(
             width: root.line_width
             rectangle: (self.x, self.y, self.width, self.height)
 
+    theme_text_color: "Custom"
+
 
 <MDRectangleFlatIconButton>
     canvas.before:
+        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -641,7 +655,7 @@ Builder.load_string(
             font_size: root.font_size
             font_style: root.font_style
             adaptive_size: True
-            theme_text_color: root.theme_text_color
+            theme_text_color: "Custom"
             text_color: root.text_color
             markup: True
             disabled: root.disabled
@@ -652,6 +666,7 @@ Builder.load_string(
 
 <MDRoundFlatIconButton>
     canvas.before:
+        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -678,6 +693,7 @@ Builder.load_string(
         MDIcon:
             id: lbl_ic
             icon: root.icon
+            theme_text_color: "Custom"
             text_color:
                 (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
                 if not root.disabled else \
@@ -685,7 +701,6 @@ Builder.load_string(
                 else root.theme_cls.disabled_hint_text_color)
             size_hint_x: None
             width: self.texture_size[0]
-            opposite_colors: root.opposite_colors
 
         MDLabel:
             id: lbl
@@ -708,7 +723,8 @@ Builder.load_string(
 
 <MDFloatingActionButton>
     theme_text_color: "Custom"
-    opposite_colors: True  # root.opposite_colors
+    # theme_text_color: root.theme_text_color
+    # opposite_colors: root.opposite_colors
     on_size: root.set_size(0)
 
 
@@ -818,9 +834,13 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         if not self.md_bg_color_disabled:
             self.md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        self.theme_cls.bind(theme_style=self.update_text_color)
         Clock.schedule_once(self.set_md_bg_color)
         if not self.text_color:
             self.text_color = self.theme_cls.text_color
+
+    def update_text_color(self, instance, value):
+        pass
 
     def set_md_bg_color(self, interval):
         """Checks if a value is set for the `md_bg_color` parameter."""
@@ -834,6 +854,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         """Called when the application color palette changes."""
 
         self.md_bg_color = self.theme_cls._get_primary_color()
+        self.update_text_color(instance, value)
 
     def on_disabled(self, instance, value):
         """
@@ -925,7 +946,7 @@ class BaseFlatButton(BaseRectangularButton):
     def set_text_color(self, interval):
         """Sets the text color if no custom value is specified."""
 
-        if not self.text_color:
+        if self.text_color in ([0.0, 0.0, 0.0, 0.87], [1, 0, 1, 1]):
             self.theme_text_color = "Custom"
             self.text_color = self.theme_cls.primary_color
 
@@ -1076,7 +1097,21 @@ class BaseRectangleFlatButton(BaseFlatButton, BaseElevationButton):
 
 
 class MDRaisedButton(BaseRectangularButton, BaseElevationButton):
-    opposite_colors = BooleanProperty(True)
+    theme_text_color = StringProperty("Custom")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.update_text_color)
+
+    def update_text_color(self, *args):
+        if self.text_color in (
+            [0.0, 0.0, 0.0, 0.87],
+            [0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ):
+            self.text_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
 
 
 class MDFlatButton(BaseFlatButton):
@@ -1084,6 +1119,10 @@ class MDFlatButton(BaseFlatButton):
 
 
 class MDRectangleFlatButton(BaseRectangleFlatButton):
+    # TODO: If the user has set a custom text color, then when the application
+    #  color palette changes, the text color will also change to the current
+    #  color of the color scheme. Do need to preserve custom text colors when
+    #  changing the application palette?
     pass
 
 
@@ -1108,6 +1147,10 @@ class MDRectangleFlatIconButton(BaseRectangleFlatButton):
         super().__init__(**kwargs)
         Clock.schedule_once(self.remove_label)
         Clock.schedule_once(self.set_icon_color)
+
+    def update_md_bg_color(self, instance, value):
+        self.text_color = self.theme_cls.primary_color
+        self.icon_color = self.theme_cls.primary_color
 
     def set_icon_color(self, interval):
         """Sets the icon color if no custom value is specified."""
@@ -1191,13 +1234,15 @@ class MDRoundFlatIconButton(MDRoundFlatButton):
         """Sets the icon color if no custom value is specified."""
 
         if not self.icon_color:
-            self.ids.lbl_ic.theme_text_color = "Custom"
             self.icon_color = self.theme_cls.primary_color
+
+    def update_md_bg_color(self, instance, value):
+        self.text_color = self.theme_cls.primary_color
+        self.icon_color = self.theme_cls.primary_color
 
     # From Python code.
     def on_icon_color(self, instance, value):
         def set_icon_color(interval):
-            self.ids.lbl_ic.theme_text_color = "Custom"
             self.icon_color = value
 
         Clock.schedule_once(set_icon_color)
@@ -1214,19 +1259,73 @@ class MDFillRoundFlatButton(MDRoundFlatButton):
         super().__init__(**kwargs)
         self.md_bg_color = self.theme_cls.primary_color
         super().__init__(**kwargs)
+        Clock.schedule_once(self.set_text_color)
+
+    def set_text_color(self, interval):
+        if self.text_color in (
+            [0.0, 0.0, 0.0, 0.87],
+            [0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ):
+            self.text_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
 
     def update_md_bg_color(self, instance, value):
-        pass
+        self.md_bg_color = self.theme_cls.primary_color
+        self.set_text_color(0)
 
     def on_md_bg_color(self, instance, value):
-        pass
+        self.set_text_color(0)
 
 
 class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.update_text_color)
+        Clock.schedule_once(self.update_icon_color)
+
+    def set_md_bg_color(self, interval):
+        if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
+            self.md_bg_color = self.theme_cls.primary_color
+
     def on_md_bg_color(self, instance, value):
         self.md_bg_color = value
         if self.md_bg_color != self.md_bg_color_disabled:
             self._md_bg_color = value
+
+    def update_md_bg_color(self, instance, value):
+        """Called when the application color palette changes."""
+
+        self.md_bg_color = self.theme_cls._get_primary_color()
+        self.update_text_color(instance, value)
+        if self.icon_color in (
+            [0.0, 0.0, 0.0, 0.87],
+            [0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ):
+            self.icon_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
+
+    def update_text_color(self, *args):
+        if self.text_color in (
+            [0.0, 0.0, 0.0, 0.87],
+            [0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ):
+            self.text_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
+
+    def set_text_color(self, interval):
+        pass
+
+    def update_icon_color(self, interval):
+        if not self.icon_color:
+            self.icon_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
 
     def on_disabled(self, instance, value):
         if value:
@@ -1293,6 +1392,17 @@ class MDFloatingActionButton(
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
         Clock.schedule_once(self.set_md_bg_color)
         Clock.schedule_once(self.set_size)
+        Clock.schedule_once(self.update_text_color)
+
+    def update_text_color(self, *args):
+        if self.text_color in (
+            [0.0, 0.0, 0.0, 0.87],
+            [0.0, 0.0, 0.0, 1.0],
+            [1.0, 1.0, 1.0, 1.0],
+        ):
+            self.text_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
 
     def set_md_bg_color(self, interval):
         if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:

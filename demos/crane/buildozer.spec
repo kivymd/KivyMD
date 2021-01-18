@@ -33,7 +33,7 @@ requirements = python3,kivy==2.0.0,https://github.com/kivymd/KivyMD/archive/mast
 requirements.source.kivymd = ../../kivymd
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/assets/images/logo_light.png
+presplash.filename = %(source.dir)s/assets/images/presplash.png
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/assets/images/logo_light.png
@@ -45,7 +45,7 @@ orientation = portrait
 fullscreen = 0
 
 # (string) Presplash background color (for new android toolchain)
-android.presplash_color = #FFFFFF
+android.presplash_color = #ebcfe1
 
 # (list) Permissions
 #android.permissions = INTERNET

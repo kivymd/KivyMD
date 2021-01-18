@@ -15,17 +15,12 @@
         orientation: "vertical"
         spacing: dp(80)
         padding: dp(30)
+        pos_hint: {"center_x": .5}
 
-	    FloatLayout:
-
-		    Image:
-		        source: f"{environ['RALLY_ROOT']}/assets/images/logo.png"
-		        pos_hint: {"center_x": .5, "center_y": 5}
-		        size_hint: (None, None)
-
-		Widget:
-			size_hint_y: None
-			height: dp(20)
+	    Image:
+            source: f"{environ['RALLY_ROOT']}/assets/images/logo.png"
+            pos_hint: {"center_x": .5}
+            size_hint: (None, None)
 
 	    MDBoxLayout:
 	        adaptive_height: True

@@ -168,9 +168,6 @@ To specify the font size and font name, use the parameters as in the usual
         font_size: "18sp"
         font_name: "path/to/font"
 
-.. warning:: You cannot use the ``size_hint_x`` parameter for `KivyMD` buttons
-    (the width of the buttons is set automatically)!
-
 .. MDRaisedButton:
 MDRaisedButton
 --------------
@@ -199,8 +196,9 @@ MDRectangleFlatButton
 
     MDRectangleFlatButton:
         text: "MDRECTANGLEFLATBUTTON"
-        text_color: 1, 0, 1, 1
-        line_color = 0, 0, 1, 1
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        line_color: 0, 0, 1, 1
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button-md-bg-color.png
     :align: center

@@ -1104,6 +1104,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             if instance_tab.text == name_tab:
                 self.tab_bar.parent.carousel.load_slide(instance_tab)
                 break
+        for tab_label in self.get_tab_list():
+            if name_tab == tab_label.text:
+                self.ids.scrollview.scroll_to(tab_label)
+                break
 
     def get_tab_list(self):
         """Returns a list of tab objects."""

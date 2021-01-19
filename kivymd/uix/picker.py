@@ -167,6 +167,7 @@ from datetime import date
 
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
@@ -190,7 +191,9 @@ from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.dialog import BaseDialog
 from kivymd.uix.label import MDLabel
 
 Builder.load_string(
@@ -763,13 +766,10 @@ class MDTimePicker(
 
 Builder.load_string(
     """
-<Tab@BoxLayout+MDTabsBase>
+<Tab@MDFloatLayout+MDTabsBase>
 
 
 <ColorSelector>
-    size: dp(40), dp(40)
-    pos: self.pos
-    size_hint: (None, None)
     canvas:
         Color:
             rgba: root.rgb_hex(root.color_name)
@@ -787,320 +787,65 @@ Builder.load_string(
 
 
 <MDThemePicker>
-    size_hint: (None, None)
-    size: dp(284), dp(120) + dp(290)
-    pos_hint: {"center_x": .5, "center_y": .5}
+    size_hint: None, None
+    size: "284dp", "400dp"
+    md_bg_color: app.theme_cls.bg_normal
 
-    canvas:
-        Color:
-            rgb: app.theme_cls.primary_color
-        RoundedRectangle:
-            size: self.width, dp(120)
-            pos: root.pos[0], root.pos[1] + root.height - dp(120)
-            radius: [root.radius[0], root.radius[1], dp(0), dp(0)]
-        Color:
-            rgb: app.theme_cls.bg_normal
-        RoundedRectangle:
-            size: self.width, dp(290)
-            pos: root.pos[0], root.pos[1] + root.height - (dp(120) + dp(290))
-            radius: [dp(0), dp(0), root.radius[2], root.radius[3]]
+    MDBoxLayout:
+        orientation: "vertical"
 
-    MDFlatButton:
-        id: close_button
-        pos: root.pos[0] + root.size[0] - self.width - dp(10), root.pos[1] + dp(10)
-        text: "Close"
-        on_release: root.dismiss()
+        MDToolbar:
+            title: "Change theme"
+    
+        MDTabs:
+            on_tab_switch: root.on_tab_switch(*args)
+    
+            Tab:
+                id: theme_tab
+                text: "Theme"
+    
+                MDGridLayout:
+                    id: primary_box
+                    adaptive_size: True
+                    spacing: "8dp"
+                    padding: "12dp"
+                    pos_hint: {"center_x": .5, "top": 1}
+                    cols: 5
+                    rows: 4
 
-    MDLabel:
-        id: title
-        font_style: "H5"
-        text: "Change theme"
-        size_hint: (None, None)
-        size: dp(160), dp(50)
-        pos_hint: {"center_x": .5, "center_y": .9}
-        theme_text_color: "Custom"
-        text_color: root.specific_text_color
+                MDFlatButton:
+                    text: "CLOSE"
+                    pos: root.width - self.width - 10, 10
+                    on_release: root.dismiss()
 
-    MDTabs:
-        size_hint: (None, None)
-        size: root.width, root.height - dp(135)
-        pos_hint: {"center_x": .5, "center_y": .475}
-        id: tab_panel
+            Tab:
+                text: "Accent"
+    
+                MDGridLayout:
+                    id: accent_box
+                    adaptive_size: True
+                    spacing: "8dp"
+                    padding: "12dp"
+                    pos_hint: {"center_x": .5, "top": 1}
+                    cols: 5
+                    rows: 4    
 
-        Tab:
-            id: theme_tab
-            text: "Theme"
+                MDFlatButton:
+                    text: "CLOSE"
+                    pos: root.width - self.width - 10, 10
+                    on_release: root.dismiss()
 
-            BoxLayout:
-                spacing: dp(4)
-                padding: dp(4)
-                size_hint: (None, None)
-                size: dp(270), root.height  # -dp(120)
-                pos_hint: {"center_x": .532, "center_y": .89}
-                orientation: "vertical"
+            Tab:
+                text: "Style"
 
-                BoxLayout:
-                    size_hint: (None, None)
+                MDGridLayout:
+                    adaptive_size: True
+                    spacing: "8dp"
                     pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    halign: "center"
-                    orientation: "horizontal"
-
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Red"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Pink"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Purple"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "DeepPurple"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    halign: "center"
-                    orientation: "horizontal"
-
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Indigo"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Blue"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "LightBlue"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Cyan"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    halign: "center"
-                    orientation: "horizontal"
-                    padding: 0, 0, 0, dp(1)
-
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Teal"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Green"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "LightGreen"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Lime"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    orientation: "horizontal"
-                    halign: "center"
-                    padding: 0, 0, 0, dp(1)
-
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Yellow"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Amber"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Orange"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "DeepOrange"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    #pos: self.pos
-                    orientation: "horizontal"
-                    padding: 0, 0, 0, dp(1)
-
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Brown"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "Gray"
-                    BoxLayout:
-                        PrimaryColorSelector:
-                            color_name: "BlueGray"
-                    BoxLayout:
-                        MDIconButton:
-                            size: dp(40), dp(40)
-                            size_hint: (None, None)
-                            canvas:
-                                Color:
-                                    rgba: app.theme_cls.bg_normal
-                                Ellipse:
-                                    size: self.size
-                                    pos: self.pos
-                            disabled: True
-
-        Tab:
-            id: accent_tab
-            text: "Accent"
-
-            BoxLayout:
-                spacing: dp(4)
-                padding: dp(4)
-                size_hint: (None, None)
-                size: dp(270), root.height  # -dp(120)
-                pos_hint: {"center_x": .532, "center_y": .89}
-                orientation: "vertical"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    halign: "center"
-                    orientation: "horizontal"
-
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Red"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Pink"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Purple"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "DeepPurple"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    halign: "center"
-                    orientation: "horizontal"
-
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Indigo"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Blue"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "LightBlue"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Cyan"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    halign: "center"
-                    orientation: "horizontal"
-                    padding: 0, 0, 0, dp(1)
-
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Teal"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Green"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "LightGreen"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Lime"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    pos: self.pos
-                    orientation: "horizontal"
-                    halign: "center"
-                    padding: 0, 0, 0, dp(1)
-
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Yellow"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Amber"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Orange"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "DeepOrange"
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .5}
-                    size: dp(230), dp(40)
-                    #pos: self.pos
-                    orientation: "horizontal"
-                    padding: 0, 0, 0, dp(1)
-
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Brown"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "Gray"
-                    BoxLayout:
-                        AccentColorSelector:
-                            color_name: "BlueGray"
-                    BoxLayout:
-                        MDIconButton:
-                            size: dp(40), dp(40)
-                            size_hint: (None, None)
-                            canvas:
-                                Color:
-                                    rgba: app.theme_cls.bg_normal
-                                Ellipse:
-                                    size: self.size
-                                    pos: self.pos
-                            disabled: True
-
-        Tab:
-            id: style_tab
-            text: "Style"
-
-            FloatLayout:
-                size: self.size
-                pos: self.pos
-
-                BoxLayout:
-                    size_hint: (None, None)
-                    pos_hint: {"center_x": .5, "center_y": .6}
-                    halign: "center"
-                    valign: "center"
-                    spacing: dp(10)
-                    width: dp(210)
-                    height: dp(100)
+                    cols: 2
+                    rows: 1
 
                     MDIconButton:
-                        size: dp(100), dp(100)
-                        size_hint: (None, None)
                         canvas:
                             Color:
                                 rgba: 1, 1, 1, 1
@@ -1111,19 +856,26 @@ Builder.load_string(
                                 rgba: 0, 0, 0, 1
                             Line:
                                 width: 1.
-                                circle: (self.center_x, self.center_y, dp(50))
+                                circle: (self.center_x, self.center_y, sp(62))
+    
+                        user_font_size: "100sp"
                         on_release: app.theme_cls.theme_style = "Light"
+    
                     MDIconButton:
-                        size: dp(100), dp(100)
-                        pos: self.pos
-                        size_hint: (None, None)
                         canvas:
                             Color:
                                 rgba: 0, 0, 0, 1
                             Ellipse:
                                 size: self.size
                                 pos: self.pos
+    
                         on_release: app.theme_cls.theme_style = "Dark"
+                        user_font_size: "100sp"
+
+                MDFlatButton:
+                    text: "CLOSE"
+                    pos: root.width - self.width - 10, 10
+                    on_release: root.dismiss()
 """
 )
 
@@ -1136,10 +888,25 @@ class ColorSelector(MDIconButton):
 
 
 class MDThemePicker(
-    ThemableBehavior,
-    FloatLayout,
-    ModalView,
+    BaseDialog,
     SpecificBackgroundColorBehavior,
     RectangularElevationBehavior,
 ):
-    pass
+    def on_open(self):
+        self.on_tab_switch(None, self.ids.theme_tab, None, None)
+
+    def on_tab_switch(
+        self, instance_tabs, instance_tab, instance_tab_label, tab_text
+    ):
+        if instance_tab.text == "Theme":
+            if not self.ids.primary_box.children:
+                for name_palette in palette:
+                    self.ids.primary_box.add_widget(
+                        Factory.PrimaryColorSelector(color_name=name_palette)
+                    )
+        if instance_tab.text == "Accent":
+            if not self.ids.accent_box.children:
+                for name_palette in palette:
+                    self.ids.accent_box.add_widget(
+                        Factory.AccentColorSelector(color_name=name_palette)
+                    )

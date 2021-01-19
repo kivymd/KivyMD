@@ -191,7 +191,6 @@ from kivymd.uix.behaviors import (
     RectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.dialog import BaseDialog
 from kivymd.uix.label import MDLabel

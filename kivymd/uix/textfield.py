@@ -640,18 +640,6 @@ Builder.load_string(
             pos: self.pos
             size: self.size
 
-    canvas.after:
-        Color:
-            rgba: self.line_color if self.focus else self.theme_cls.disabled_hint_text_color
-        Line:
-            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
-        Line:
-            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
-        Line:
-            ellipse: self.pos[0] - self.size[1] / 2, self.pos[1], self.size[1], self.size[1], 180, 360
-        Line:
-            ellipse: self.size[0] + self.pos[0] - self.size[1] / 2.0, self.pos[1], self.size[1], self.size[1], 360, 540
-
         # Texture of left Icon.
         Color:
             rgba:
@@ -683,6 +671,18 @@ Builder.load_string(
         Color:
             rgba:
                 self.hint_text_color if not self.text else root.foreground_color
+
+    canvas.after:
+        Color:
+            rgba: self.line_color if self.focus else self.theme_cls.disabled_hint_text_color
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+        Line:
+            ellipse: self.pos[0] - self.size[1] / 2, self.pos[1], self.size[1], self.size[1], 180, 360
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1] / 2.0, self.pos[1], self.size[1], self.size[1], 360, 540
 """
 )
 

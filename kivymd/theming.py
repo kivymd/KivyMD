@@ -31,14 +31,14 @@ We do not recommend that you change this.
 However, if you do need to change the standard colors, for instance to meet branding
 guidelines, you can do this by overloading the `color_definitions.py` object.
 
-* Create a custom color defintion object. This should have the format of the `colors
-<https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#module-kivymd.color_definitions>`_
-object in `color_definitions.py` and contain definitions for at least the primary color, the accent
-color and the Light and Dark backgrounds. *Note* - your custom colors *must* use the names of the
-`existing colors as defined in the palette
-<https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
-You can have `Blue` but you cannot have `NavyBlue`. An example is shown in the code snippet
-below.
+* Create a custom color defintion object. This should have the same format as the `colors <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#module-kivymd.color_definitions>`_ object in `color_definitions.py` and contain definitions for at least the primary color, the accent color and the Light and Dark backgrounds.
+
+.. note:: 
+
+    Your custom colors *must* use the names of the `existing colors as 
+    defined in the palette <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
+    e.g. You can have `Blue` but you cannot have `NavyBlue`.
+
 
 * Add the custom theme to the MDApp as shown in the following snippet.
 
@@ -140,7 +140,6 @@ below.
                 self.root.ids.tabs.add_widget(tab)
 
     Example().run()
-```
 
 This will change the theme colors to your custom defintion. In all other respects,
 the theming stays as documented.
@@ -991,6 +990,50 @@ class ThemeManager(EventDispatcher):
         accent_light_hue,
         accent_dark_hue,
     ):
+        """
+        Courtesy method to allow all of the theme color attributes to be set in one call.
+
+        :attr:`set_colors` allows all of the following to be set in one method call:
+
+        * primary palette color,
+        * primary hue,
+        * primary light hue,
+        * primary dark hue,
+        * accent palette color,
+        * accent hue,
+        * accent ligth hue, and
+        * accent dark hue.
+
+        Note that all values *must* be provided. If you only want to set one or two values
+        use the appropriate method call for that.
+
+        .. code-block:: python
+
+            from kivy.uix.screenmanager import Screen
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDRectangleFlatButton
+
+
+            class MainApp(MDApp):
+                def build(self):
+                    self.theme_cls.set_colors(
+                        "Blue", "600", "50", "800", "Teal", "600", "100", "800"
+                    )
+
+                    screen = Screen()
+                    screen.add_widget(
+                        MDRectangleFlatButton(
+                            text="Hello, World",
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        )
+                    )
+                    return screen
+
+
+            MainApp().run()
+
+        """
         self.primary_palette = primary_palette
         self.primary_hue = primary_hue
         self.primary_light_hue = primary_light_hue
@@ -999,51 +1042,6 @@ class ThemeManager(EventDispatcher):
         self.accent_hue = accent_hue
         self.accent_light_hue = accent_light_hue
         self.accent_dark_hue = accent_dark_hue
-
-    """
-    Courtesy method to allow all of the theme color attributes to be set in one call.
-
-    :attr:`set_colors` allows all of the following to be set in one method call:
-
-    * primary palette color,
-    * primary hue,
-    * primary light hue,
-    * primary dark hue,
-    * accent palette color,
-    * accent hue,
-    * accent ligth hue, and
-    * accent dark hue.
-
-    Note that all values *must* be provided. If you only want to set one or two values
-    use the appropriate method call for that.
-
-    .. code-block:: python
-
-        from kivy.uix.screenmanager import Screen
-
-        from kivymd.app import MDApp
-        from kivymd.uix.button import MDRectangleFlatButton
-
-
-        class MainApp(MDApp):
-            def build(self):
-                self.theme_cls.set_colors(
-                    "Blue", "600", "50", "800", "Teal", "600", "100", "800"
-                )
-
-                screen = Screen()
-                screen.add_widget(
-                    MDRectangleFlatButton(
-                        text="Hello, World",
-                        pos_hint={"center_x": 0.5, "center_y": 0.5},
-                    )
-                )
-                return screen
-
-
-        MainApp().run()
-
-    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -63,7 +63,7 @@ Add left menu
 
 .. note::
 
-    The callback is optional. ``left_action_items: [["menu"]]`` would also work
+    The callback is optional. ``left_action_items: [["menu"]]`` would also work for a button that does nothing.
 
 Add right menu
 --------------
@@ -414,6 +414,7 @@ class MDActionBottomAppBarButton(MDFloatingActionButton):
 class MDActionTopAppBarButton(MDIconButton, MDTooltip):
     pass
 
+
 class MDToolbar(
     ThemableBehavior,
     RectangularElevationBehavior,
@@ -441,10 +442,13 @@ class MDToolbar(
 
     .. code-block:: kv
 
-        left_action_items: [`'icon_name'`, callback]
+        left_action_items: [`'icon_name'`, callback, tooltip text]
 
-    where `'icon_name'` is a string that corresponds to an icon definition and
-    ``callback`` is the function called on a touch release event.
+    where `'icon_name'` is a string that corresponds to an icon definition,
+    ``callback`` is the function called on a touch release event and
+    ``tooltip text` is the text to be displayed in the tooltip. Both the
+    ``callback`` and ``tooltip text`` are optional but the order must be
+    preserved.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.

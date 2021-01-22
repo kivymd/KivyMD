@@ -33,9 +33,9 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
 
 * Create a custom color defintion object. This should have the same format as the `colors <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#module-kivymd.color_definitions>`_ object in `color_definitions.py` and contain definitions for at least the primary color, the accent color and the Light and Dark backgrounds.
 
-.. note:: 
+.. note::
 
-    Your custom colors *must* use the names of the `existing colors as 
+    Your custom colors *must* use the names of the `existing colors as
     defined in the palette <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
     e.g. You can have `Blue` but you cannot have `NavyBlue`.
 

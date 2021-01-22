@@ -80,7 +80,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import Widget
 
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_TYPE

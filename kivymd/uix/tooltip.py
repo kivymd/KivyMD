@@ -134,7 +134,7 @@ Builder.load_string(
 )
 
 
-class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior, Widget):
+class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
     tooltip_bg_color = ColorProperty(None)
     """
     Tooltip background color in ``rgba`` format.

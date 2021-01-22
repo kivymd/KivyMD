@@ -795,14 +795,14 @@ Builder.load_string(
 
         MDToolbar:
             title: "Change theme"
-    
+
         MDTabs:
             on_tab_switch: root.on_tab_switch(*args)
-    
+
             Tab:
                 id: theme_tab
                 text: "Theme"
-    
+
                 MDGridLayout:
                     id: primary_box
                     adaptive_size: True
@@ -819,7 +819,7 @@ Builder.load_string(
 
             Tab:
                 text: "Accent"
-    
+
                 MDGridLayout:
                     id: accent_box
                     adaptive_size: True
@@ -827,7 +827,7 @@ Builder.load_string(
                     padding: "12dp"
                     pos_hint: {"center_x": .5, "top": 1}
                     cols: 5
-                    rows: 4    
+                    rows: 4
 
                 MDFlatButton:
                     text: "CLOSE"
@@ -856,10 +856,10 @@ Builder.load_string(
                             Line:
                                 width: 1.
                                 circle: (self.center_x, self.center_y, sp(62))
-    
+
                         user_font_size: "100sp"
                         on_release: app.theme_cls.theme_style = "Light"
-    
+
                     MDIconButton:
                         canvas:
                             Color:
@@ -867,7 +867,7 @@ Builder.load_string(
                             Ellipse:
                                 size: self.size
                                 pos: self.pos
-    
+
                         on_release: app.theme_cls.theme_style = "Dark"
                         user_font_size: "100sp"
 

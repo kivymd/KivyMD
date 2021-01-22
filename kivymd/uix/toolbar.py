@@ -61,6 +61,10 @@ Add left menu
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-2.png
     :align: center
 
+.. note::
+
+    The callback is optional. ``left_action_items: [["menu"]]`` would also work for a button that does nothing.
+
 Add right menu
 --------------
 
@@ -233,6 +237,42 @@ Custom color
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-11.png
     :align: center
 
+Tooltips
+--------
+
+You can add MDTooltips to the Toolbar icons by ading a text string to the toolbar item, as shown below
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.snackbar import Snackbar
+
+    KV = '''
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "MDToolbar"
+            left_action_items: [["menu", "This is the navigation"]]
+            right_action_items: [["dots-vertical", lambda x: app.callback(x), "this is the More Actions"]]
+
+        MDLabel:
+            text: "Content"
+            halign: "center"
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def callback(self, button):
+            Snackbar(text="Hello World").open()
+
+    Test().run()
+
 .. seealso::
 
     `Components-Bottom-App-Bar <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-App-Bar>`_
@@ -261,6 +301,7 @@ from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
+from kivymd.uix.tooltip import MDTooltip
 
 Builder.load_string(
     """
@@ -370,6 +411,10 @@ class MDActionBottomAppBarButton(MDFloatingActionButton):
     _scale_y = NumericProperty(1)
 
 
+class MDActionTopAppBarButton(MDIconButton, MDTooltip):
+    pass
+
+
 class MDToolbar(
     ThemableBehavior,
     RectangularElevationBehavior,
@@ -397,10 +442,13 @@ class MDToolbar(
 
     .. code-block:: kv
 
-        left_action_items: [`'icon_name'`, callback]
+        left_action_items: [`'icon_name'`, callback, tooltip text]
 
-    where `'icon_name'` is a string that corresponds to an icon definition and
-    ``callback`` is the function called on a touch release event.
+    where `'icon_name'` is a string that corresponds to an icon definition,
+    ``callback`` is the function called on a touch release event and
+    ``tooltip text` is the text to be displayed in the tooltip. Both the
+    ``callback`` and ``tooltip text`` are optional but the order must be
+    preserved.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
@@ -541,10 +589,20 @@ class MDToolbar(
         new_width = 0
         for item in action_bar_items:
             new_width += dp(48)
+            if len(item) == 1:
+                item.append(lambda x: None)
+            if len(item) > 1 and not item[1]:
+                item[1] = lambda x: None
+            if len(item) == 2:
+                if type(item[1]) is str:
+                    item.insert(1, lambda x: None)
+                else:
+                    item.append("")
             action_bar.add_widget(
-                MDIconButton(
+                MDActionTopAppBarButton(
                     icon=item[0],
                     on_release=item[1],
+                    tooltip_text=item[2],
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",

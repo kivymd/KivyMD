@@ -204,9 +204,8 @@ class CommonElevationBehavior(object):
         raise NotImplementedError
 
     def _update_elevation(self, instance, value):
-        if not self._elevation:
-            self._elevation = value
-            self._update_shadow(instance, value)
+        self._elevation = value
+        self._update_shadow(instance, value)
 
 
 class RectangularElevationBehavior(CommonElevationBehavior):

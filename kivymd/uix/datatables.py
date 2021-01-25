@@ -797,12 +797,11 @@ class TableData(RecycleView):
             if self.cell_row_obj_dict.get(i, None):
                 cell_row_obj = self.cell_row_obj_dict[i]
             else:
-                cell_row_obj = (
-                    cell_row_obj
-                ) = self.view_adapter.get_visible_view(i)
-                self.cell_row_obj_dict[i] = cell_row_obj
-
-            tmp.append(cell_row_obj.ids.check.state == state)
+                cell_row_obj = self.view_adapter.get_visible_view(i)
+                if cell_row_obj:
+                    self.cell_row_obj_dict[i] = cell_row_obj
+            if cell_row_obj:
+                tmp.append(cell_row_obj.ids.check.state == state)
 
         return all(tmp)
 
@@ -816,12 +815,11 @@ class TableData(RecycleView):
             if self.cell_row_obj_dict.get(i, None):
                 cell_row_obj = self.cell_row_obj_dict[i]
             else:
-                cell_row_obj = (
-                    cell_row_obj
-                ) = self.view_adapter.get_visible_view(i)
-                self.cell_row_obj_dict[i] = cell_row_obj
+                cell_row_obj = self.view_adapter.get_visible_view(i)
+                if cell_row_obj:
+                    self.cell_row_obj_dict[i] = cell_row_obj
 
-            if cell_row_obj.ids.check.state == "down":
+            if cell_row_obj and cell_row_obj.ids.check.state == "down":
                 idx = cell_row_obj.index
                 row = []
                 for data in self.recycle_data:

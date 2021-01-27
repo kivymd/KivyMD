@@ -1202,8 +1202,7 @@ class MDRoundFlatButton(MDFlatButton):
                 size=self.size, pos=self.pos, radius=[self._radius]
             )
             StencilPop()
-        self.bind(ripple_color=self._set_color,
-                  _ripple_rad=self._set_ellipse)
+        self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
 
 class MDRoundFlatIconButton(MDRoundFlatButton):
@@ -1361,12 +1360,10 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
         """
 
         self.width = (
-            "48dp" if not self.user_font_size else dp(
-                self.user_font_size + 23)
+            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
         )
         self.height = (
-            "48dp" if not self.user_font_size else dp(
-                self.user_font_size + 23)
+            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
         )
 
     def update_md_bg_color(self, instance, value):
@@ -1883,8 +1880,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         if self.anchor == "right":
             if self.state != "open":
                 instance.y = instance.height / 2
-            instance.x = Window.width - \
-                (instance.height + instance.width / 2)
+            instance.x = Window.width - (instance.height + instance.width / 2)
 
     def open_stack(self, instance):
         """Opens a button stack."""

@@ -1409,6 +1409,21 @@ class MDFloatingActionButton(
         self.width = "56dp"
         self.height = "56dp"
 
+    def on_touch_down(self, touch):
+        super(MDFloatingActionButton, self).on_touch_down(touch)
+        if self.collide_point(touch.x, touch.y):
+            return True
+
+    def on_touch_move(self, touch):
+        super(MDFloatingActionButton, self).on_touch_move(touch)
+        if self.collide_point(touch.x, touch.y):
+            return True
+
+    def on_touch_up(self, touch):
+        super(MDFloatingActionButton, self).on_touch_up(touch)
+        if self.collide_point(touch.x, touch.y):
+            return True
+
 
 class MDTextButton(ButtonBehavior, MDLabel):
     color = ColorProperty(None)

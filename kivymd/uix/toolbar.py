@@ -278,6 +278,8 @@ You can add MDTooltips to the Toolbar icons by ading a text string to the toolba
     `Components-Bottom-App-Bar <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-App-Bar>`_
 """
 
+from math import cos, radians, sin
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -320,8 +322,7 @@ Builder.load_string(
     canvas.after:
         PopMatrix
 
-
-<MDToolbar>
+<NotchedBox>
     size_hint_y: None
     height: root.theme_cls.standard_increment
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
@@ -334,47 +335,28 @@ Builder.load_string(
                 (root.theme_cls.primary_color if root.md_bg_color == [0, 0, 0, 0] else root.md_bg_color) \
                 if root.type == "top" else \
                 (root.theme_cls.primary_color if root.parent.md_bg_color == [0, 0, 0, 0] else root.parent.md_bg_color)
+        Mesh:
+            vertices: root._vertices_left
+            indices: root._indices_left
+            mode: "triangle_fan"
+
+        Mesh:
+            vertices: root._vertices_right
+            indices: root._indices_right
+            mode: "triangle_fan"
+
         RoundedRectangle:
-            pos:
-                self.pos \
-                if root.mode == "center" else \
-                (self.width - root.action_button.width + dp(6), self.y)
-            size:
-                (((self.width - root.action_button.width) / 2 - dp(6), self.height) \
-                if root.mode == "center" else \
-                (root.action_button.width - dp(6), self.height)) if root.type == "bottom" else (0, 0)
-            radius:
-                (0, root.round, 0, 0) if root.mode == "center" else (root.round, 0, 0, 0)
-        Rectangle:
-            pos:
-                ((self.width / 2 - root.action_button.width / 2) - dp(6), self.y - root._shift) \
-                if root.mode == "center" else \
-                (self.width - root.action_button.width * 2 - dp(6), self.y - root._shift)
-            size:
-                (root.action_button.width + dp(6) * 2, self.height - root._shift * 2) \
-                if root.type == "bottom" else (0, 0)
+            pos: root._rectangle_left_pos
+            size: root._rectangle_left_width, root._rounded_rectangle_height
+            radius: [0,] if root.mode=="normal" else [0,root.notch_radius*0.5,0,0]
+
         RoundedRectangle:
-            pos:
-                ((self.width + root.action_button.width) / 2 + dp(6), self.y) \
-                if root.mode == "center" else self.pos
-            size:
-                (((self.width - root.action_button.width) / 2 + dp(6), self.height) \
-                if root.mode == "center" else \
-                ((self.width - root.action_button.width * 2 - dp(6)), self.height)) \
-                if root.type == "bottom" else (0, 0)
-            radius: (root.round, 0, 0, 0) if root.mode == "center" else (0, root.round, 0, 0)
-        Color:
-            rgba: 1, 1, 1, 1
-        Ellipse:
-            pos:
-                (self.center[0] - root.action_button.width / 2 - dp(6), self.center[1] - root._shift * 2) \
-                if root.mode == "center" else \
-                (self.width - root.action_button.width * 2 - dp(6), self.center[1] - root._shift * 2)
-            size:
-                (root.action_button.width + dp(6) * 2, root.action_button.width) \
-                if root.type == "bottom" else (0, 0)
-            angle_start: root._angle_start
-            angle_end: root._angle_end
+            pos: root._rectangle_right_pos
+            size: root._rectangle_right_width, root._rounded_rectangle_height
+            radius: [0,] if root.mode=="normal" else [root.notch_radius*0.5,0,0,0]
+
+
+<MDToolbar>
 
     BoxLayout:
         id: left_actions
@@ -415,17 +397,23 @@ class MDActionTopAppBarButton(MDIconButton, MDTooltip):
     pass
 
 
-class MDToolbar(
+class NotchedBox(
     ThemableBehavior,
     RectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):
-    """
-    :Events:
-        `on_action_button`
-            Method for the button used for the :class:`~MDBottomAppBar` class.
-    """
+    _indices_right = ListProperty()
+    _vertices_right = ListProperty()
+    _indices_left = ListProperty()
+    _vertices_left = ListProperty()
+    notch_radius = NumericProperty()
+    notch_center_x = NumericProperty("100dp")
+    _rounded_rectangle_height = NumericProperty("20dp")
+    _rectangle_left_pos = ListProperty([0, 0])
+    _rectangle_left_width = NumericProperty()
+    _rectangle_right_pos = ListProperty([0, 0])
+    _rectangle_right_width = NumericProperty()
 
     elevation = NumericProperty(6)
     """
@@ -433,6 +421,132 @@ class MDToolbar(
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `6`.
+    """
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.bind(
+            size=self._update_canvas,
+            pos=self._update_canvas,
+            notch_radius=self._update_canvas,
+            notch_center_x=self._update_canvas,
+        )
+        Clock.schedule_once(self._update_canvas)
+
+    def _update_canvas(self, *args):
+        pos = self.pos
+        size = [
+            self.width,
+            self.size[1] - self._rounded_rectangle_height / 2,
+        ]
+        notch_center_x = self.notch_center_x
+
+        circle_radius = self.notch_radius
+        notch_center_x += pos[0]
+        circle_center = [notch_center_x, pos[1] + size[1]]
+        left_circle_pos = self._points_on_circle(
+            circle_center, circle_radius, 200, 271
+        )
+
+        self._rectangle_left_pos = [
+            pos[0],
+            pos[1] + size[1] - self._rounded_rectangle_height / 2,
+        ]
+        self._rectangle_left_width = left_circle_pos[0][0] - self.pos[0]
+
+        right_circle_pos = self._points_on_circle(
+            circle_center, circle_radius, -20, -91
+        )
+
+        self._rectangle_right_pos = [
+            right_circle_pos[0][0],
+            pos[1] + size[1] - self._rounded_rectangle_height / 2,
+        ]
+        self._rectangle_right_width = pos[0] + size[0] - right_circle_pos[0][0]
+
+        raw_vertices_left = self._make_vertices(
+            pos, [notch_center_x - pos[0], size[1]], "left", left_circle_pos
+        )
+        raw_vertices_right = self._make_vertices(
+            [notch_center_x, pos[1]],
+            [size[0] - notch_center_x, size[1]],
+            "right",
+            right_circle_pos,
+        )
+
+        left_vertices, left_indices = self._make_vertices_indices(
+            raw_vertices_left
+        )
+        right_vertices, right_indices = self._make_vertices_indices(
+            raw_vertices_right
+        )
+
+        self._update_mesh(left_vertices, left_indices, "left")
+        self._update_mesh(right_vertices, right_indices, "right")
+
+    def _update_mesh(self, vertices, indices, mode):
+        if mode == "left":
+            self._indices_left = indices
+            self._vertices_left = vertices
+        else:
+            self._indices_right = indices
+            self._vertices_right = vertices
+        return True
+
+    @staticmethod
+    def _make_vertices_indices(points_list):
+        vertices = []
+        indices = []
+        for index, point in enumerate(points_list):
+            indices.append(index)
+            vertices.extend([point[0], point[1], 0, 0])
+
+        return [vertices, indices]
+
+    @staticmethod
+    def _make_vertices(rectangle_pos, rectangle_size, mode, notch_points=[]):
+        x = rectangle_pos[0]
+        y = rectangle_pos[1]
+        w = rectangle_size[0]
+        h = rectangle_size[1]
+
+        if mode == "left":
+            rectangle_vertices = [[x, y], [x, y + h]]
+        elif mode == "right":
+            rectangle_vertices = [[x + w, y], [x + w, y + h]]
+        rectangle_vertices.extend(notch_points)
+        if mode == "left":
+            rectangle_vertices.extend([[x + w, y]])
+        elif mode == "right":
+            rectangle_vertices.extend([[x, y]])
+
+        return rectangle_vertices
+
+    @staticmethod
+    def _points_on_circle(center, radius, start_angle, end_angle):
+        points = []
+        y_diff = None
+        step = 1 if end_angle > 0 else -1
+        for degree in range(start_angle, end_angle, step):
+
+            angle = radians(degree)
+            x = center[0] + (radius * cos(angle))
+            y = center[1] + (radius * sin(angle))
+
+            if not y_diff:
+                y_diff = abs(y - center[1])
+
+            y += y_diff
+            points.append([x, y])
+
+        return points
+
+
+class MDToolbar(NotchedBox):
+    """
+    :Events:
+        `on_action_button`
+            Method for the button used for the :class:`~MDBottomAppBar` class.
     """
 
     left_action_items = ListProperty()
@@ -537,13 +651,12 @@ class MDToolbar(
     opposite_colors = BooleanProperty(False)
 
     _shift = NumericProperty("3.5dp")
-    _angle_start = NumericProperty(90)
-    _angle_end = NumericProperty(270)
 
     def __init__(self, **kwargs):
         self.action_button = MDActionBottomAppBarButton()
         super().__init__(**kwargs)
         self.register_event_type("on_action_button")
+        self.action_button.bind(center_x=self.setter("notch_center_x"))
         self.action_button.bind(
             on_release=lambda x: self.dispatch("on_action_button")
         )
@@ -566,6 +679,7 @@ class MDToolbar(
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
         Clock.schedule_once(lambda x: self.set_md_bg_color(0, self.md_bg_color))
+        Clock.schedule_once(lambda x: self.on_mode(None, self.mode))
 
     def on_action_button(self, *args):
         pass
@@ -668,21 +782,23 @@ class MDToolbar(
             x = Window.width / 2 - self.action_button.width / 2
             y = self.action_button.height + self.action_button.height / 2
         self.remove_shadow()
-        anim = Animation(_scale_x=0, _scale_y=0, d=0.05)
+        anim = Animation(_scale_x=0, _scale_y=0, d=0.1)
         anim.bind(on_complete=set_button_pos)
         anim.start(self.action_button)
 
     def remove_notch(self):
-        self._angle_start = 0
-        self._angle_end = 0
-        self.round = 0
-        self._shift = 0
+        anim = Animation(d=0.1) + Animation(
+            notch_radius=0,
+            d=0.1,
+        )
+        anim.start(self)
 
     def set_notch(self):
-        self._angle_start = 90
-        self._angle_end = 270
-        self.round = dp(10)
-        self._shift = dp(3.5)
+        anim = Animation(d=0.1) + Animation(
+            notch_radius=self.action_button.width / 2 + dp(12),
+            d=0.1,
+        )
+        anim.start(self)
 
     def remove_shadow(self):
         self.action_button._hard_shadow_size = (0, 0)

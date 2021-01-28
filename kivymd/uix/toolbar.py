@@ -348,12 +348,12 @@ Builder.load_string(
         RoundedRectangle:
             pos: root._rectangle_left_pos
             size: root._rectangle_left_width, root._rounded_rectangle_height
-            radius: [0,] if root.mode=="normal" else [0,root.notch_radius*0.5,0,0]
+            radius: [0,] if root.mode=="normal" else [0,root.notch_radius*root._rounding_percentage,0,0]
 
         RoundedRectangle:
             pos: root._rectangle_right_pos
             size: root._rectangle_right_width, root._rounded_rectangle_height
-            radius: [0,] if root.mode=="normal" else [root.notch_radius*0.5,0,0,0]
+            radius: [0,] if root.mode=="normal" else [root.notch_radius*root._rounding_percentage,0,0,0]
 
 
 <MDToolbar>
@@ -409,11 +409,12 @@ class NotchedBox(
     _vertices_left = ListProperty()
     notch_radius = NumericProperty()
     notch_center_x = NumericProperty("100dp")
-    _rounded_rectangle_height = NumericProperty("20dp")
+    _rounded_rectangle_height = NumericProperty("15dp")
     _rectangle_left_pos = ListProperty([0, 0])
     _rectangle_left_width = NumericProperty()
     _rectangle_right_pos = ListProperty([0, 0])
     _rectangle_right_width = NumericProperty()
+    _rounding_percentage = NumericProperty(0.2)
 
     elevation = NumericProperty(6)
     """
@@ -445,7 +446,7 @@ class NotchedBox(
         notch_center_x += pos[0]
         circle_center = [notch_center_x, pos[1] + size[1]]
         left_circle_pos = self._points_on_circle(
-            circle_center, circle_radius, 200, 271
+            circle_center, circle_radius, 190, 271
         )
 
         self._rectangle_left_pos = [
@@ -455,7 +456,7 @@ class NotchedBox(
         self._rectangle_left_width = left_circle_pos[0][0] - self.pos[0]
 
         right_circle_pos = self._points_on_circle(
-            circle_center, circle_radius, -20, -91
+            circle_center, circle_radius, -10, -91
         )
 
         self._rectangle_right_pos = [

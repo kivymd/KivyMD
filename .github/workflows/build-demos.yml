@@ -74,4 +74,4 @@ jobs:
           git config user.email 69076719+KivyMD-Bot@users.noreply.github.com && \
           git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/kivymd/storage && \
           cd ..
-        python master/.ci/move_binary.py "${{ steps.buildozer.outputs.filename }}" master binaries ${{ matrix.demo-name }}
+        python master/.ci/move_binary.py "${{ steps.buildozer.outputs.filename }}" master binaries "demo_${{ matrix.demo-name }}"

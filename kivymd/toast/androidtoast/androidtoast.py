@@ -37,7 +37,7 @@ AndroidToast
 
     Test().run()
 """
-all = ("toast",)
+__all__ = ("toast",)
 
 from android.runnable import run_on_ui_thread
 from jnius import autoclass

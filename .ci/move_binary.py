@@ -65,7 +65,7 @@ for i in range(3):
             "fetch",
             f"origin/{data_repository}",
             "--depth=0",
-            "--hard",
+            "--force",
         ]
     )
     subprocess.check_call(

@@ -55,22 +55,25 @@ else:
 # Prepare for pushing
 os.chdir(data_repository_directory)
 os.makedirs(directory, exist_ok=True)
-# Ensure that there are no changes
-subprocess.check_call(
-    [
-        "git",
-        "pull",
-        "origin",
-        data_repository,
-        "--ff-only",
-        "--allow-unrelated-histories",
-    ]
-)
 
 # Try to push several times
 for i in range(3):
-    shutil.copy(binary_filename, os.path.join(directory, filename))
+    # Ensure that there are no changes
+    subprocess.check_call(
+        [
+            "git",
+            "fetch",
+            f"origin/{data_repository}",
+            "--depth=0",
+            "--hard",
+        ]
+    )
+    subprocess.check_call(
+        ["git", "reset", f"origin/{data_repository}", "--hard"]
+    )
+
     # Push changes
+    shutil.copy(binary_filename, os.path.join(directory, filename))
     subprocess.check_call(["git", "add", os.path.join(directory, filename)])
     subprocess.check_call(
         ["git", "commit", "--amend", "-m", new_commit_message]
@@ -79,23 +82,8 @@ for i in range(3):
         subprocess.check_call(
             ["git", "push", "origin", data_repository, "--force"]
         )
-    except subprocess.CalledProcessError:  # There are changes in repository
-        # Undo local changes
-        subprocess.check_call(
-            ["git", "reset", f"origin/{data_repository}", "--hard"]
-        )
-        # Pull new changes
-        subprocess.check_call(
-            [
-                "git",
-                "pull",
-                "origin",
-                data_repository,
-                "--force",
-                "--ff-only",
-                "--allow-unrelated-histories",
-            ]
-        )
+    except subprocess.CalledProcessError:
+        pass  # There are changes in repository
     else:
         break  # Exit loop if there is no errors
 else:

@@ -5,6 +5,9 @@
 import os
 import sys
 
+# Don't allow Kivy to handle args
+os.environ["KIVY_NO_ARGS"] = "true"
+
 sys.path.insert(0, os.path.abspath("_extensions"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 

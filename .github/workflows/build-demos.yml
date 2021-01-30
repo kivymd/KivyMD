@@ -13,13 +13,47 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Generate matrix job. Detects changed files and runs only relevant builds
+  generate-matrix:
+    name: Generate matrix for build
+    runs-on: ubuntu-latest
+    env:
+      PYTHONUNBUFFERED: 1
+    outputs:
+      matrix-android: ${{ steps.set-matrix.outputs.matrix-android }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check changed files
+        id: diff
+        run: |
+          # See https://github.community/t/check-pushed-file-changes-with-git-diff-tree-in-github-actions/17220/10
+          if [ $GITHUB_BASE_REF ]; then
+            # Pull Request
+            git fetch origin $GITHUB_BASE_REF --depth=1
+            export DIFF=$( git diff --name-only origin/$GITHUB_BASE_REF $GITHUB_SHA )
+            echo "Diff between origin/$GITHUB_BASE_REF and $GITHUB_SHA"
+          else
+            # Push
+            git fetch origin ${{ github.event.before }} --depth=1
+            export DIFF=$( git diff --name-only ${{ github.event.before }} $GITHUB_SHA )
+            echo "Diff between ${{ github.event.before }} and $GITHUB_SHA"
+          fi
+          echo "$DIFF"
+          # Escape newlines (replace \n with %0A)
+          echo "::set-output name=diff::$( echo "$DIFF" | sed ':a;N;$!ba;s/\n/%0A/g' )"
+      - name: Set matrix for build
+        id: set-matrix
+        run: |
+          echo "${{ steps.diff.outputs.diff }}"
+          python3 .ci/generate_matrix.py "${{ steps.diff.outputs.diff }}"
+
   # Build job. Builds every demo app for Android with Buildozer
   build-android:
     name: Build Android [${{ matrix.demo-name }}]
+    needs: generate-matrix
     strategy:
       fail-fast: false
-      matrix:
-        demo-name: [kitchen_sink, crane, fortnightly, rally, shrine]
+      matrix: ${{fromJson(needs.generate-matrix.outputs.matrix-android)}}
     runs-on: ubuntu-latest
     env:
       PYTHONUNBUFFERED: 1

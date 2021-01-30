@@ -21,6 +21,7 @@ jobs:
       PYTHONUNBUFFERED: 1
     outputs:
       matrix-android: ${{ steps.set-matrix.outputs.matrix-android }}
+      empty-matrix-android: ${{ steps.set-matrix.outputs.empty-matrix-android }}
     steps:
       - uses: actions/checkout@v2
       - name: Check changed files
@@ -51,6 +52,7 @@ jobs:
   build-android:
     name: Build Android [${{ matrix.demo-name }}]
     needs: generate-matrix
+    if: ${{ needs.generate-matrix.outputs.empty-matrix-android == 'false' }}
     strategy:
       fail-fast: false
       matrix: ${{fromJson(needs.generate-matrix.outputs.matrix-android)}}

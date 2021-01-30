@@ -32,3 +32,4 @@ for demo_name in demos_android:
 
 print("matrix-android:", json.dumps(matrix_android))
 print("::set-output name=matrix-android::" + json.dumps(matrix_android))
+print("::set-output name=empty-matrix-android::" + str(len(demos_android) == 0))

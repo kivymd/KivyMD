@@ -409,12 +409,13 @@ class NotchedBox(
     _vertices_left = ListProperty()
     notch_radius = NumericProperty()
     notch_center_x = NumericProperty("100dp")
-    _rounded_rectangle_height = NumericProperty("15dp")
+    _rounded_rectangle_height = NumericProperty("6dp")
+    _total_angle = NumericProperty(180)
     _rectangle_left_pos = ListProperty([0, 0])
     _rectangle_left_width = NumericProperty()
     _rectangle_right_pos = ListProperty([0, 0])
     _rectangle_right_width = NumericProperty()
-    _rounding_percentage = NumericProperty(0.2)
+    _rounding_percentage = NumericProperty(0.15)
 
     elevation = NumericProperty(6)
     """
@@ -444,9 +445,10 @@ class NotchedBox(
 
         circle_radius = self.notch_radius
         notch_center_x += pos[0]
+        degree_diff = int((180 - self._total_angle) / 2)
         circle_center = [notch_center_x, pos[1] + size[1]]
         left_circle_pos = self._points_on_circle(
-            circle_center, circle_radius, 190, 271
+            circle_center, circle_radius, 180 + degree_diff, 270
         )
 
         self._rectangle_left_pos = [
@@ -456,7 +458,7 @@ class NotchedBox(
         self._rectangle_left_width = left_circle_pos[0][0] - self.pos[0]
 
         right_circle_pos = self._points_on_circle(
-            circle_center, circle_radius, -10, -91
+            circle_center, circle_radius, -degree_diff, -90
         )
 
         self._rectangle_right_pos = [
@@ -526,15 +528,23 @@ class NotchedBox(
     @staticmethod
     def _points_on_circle(center, radius, start_angle, end_angle):
         points = []
-        y_diff = None
-        step = 1 if end_angle > 0 else -1
+        y_diff = False
+        if end_angle >= 180:
+            step = 1
+            end_angle += 1
+        elif end_angle <= 0:
+            step = -1
+            end_angle -= 1
+        else:
+            raise Exception("Invalid value for start angle")
+
         for degree in range(start_angle, end_angle, step):
 
             angle = radians(degree)
             x = center[0] + (radius * cos(angle))
             y = center[1] + (radius * sin(angle))
 
-            if not y_diff:
+            if y_diff is False:
                 y_diff = abs(y - center[1])
 
             y += y_diff
@@ -749,7 +759,7 @@ class MDToolbar(NotchedBox):
     def on_mode(self, instance, value):
         def set_button_pos(*args):
             self.action_button.x = x
-            self.action_button.y = y
+            self.action_button.y = y - self._rounded_rectangle_height / 2
             self.action_button._hard_shadow_size = (0, 0)
             self.action_button._soft_shadow_size = (0, 0)
             anim = Animation(_scale_x=1, _scale_y=1, d=0.05)
@@ -796,7 +806,7 @@ class MDToolbar(NotchedBox):
 
     def set_notch(self):
         anim = Animation(d=0.1) + Animation(
-            notch_radius=self.action_button.width / 2 + dp(12),
+            notch_radius=self.action_button.width / 2 + dp(8),
             d=0.1,
         )
         anim.start(self)

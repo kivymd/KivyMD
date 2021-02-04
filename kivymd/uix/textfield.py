@@ -448,10 +448,11 @@ from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
+    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, ListProperty,
+    StringProperty,
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput

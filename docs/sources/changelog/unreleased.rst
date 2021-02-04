@@ -35,7 +35,7 @@ Unreleased
 * Added stencil instructions to the `FitImage` class canvas
 * Added `on_ref_press` and `switch_tab` methods to `MDTabs` class
 * Added `on_release` method for menu item events instead of callback method to `MDDropdownMenu` class
-* Added `palette` attribute - the ability to change the color of the `MDSpinner` when changing rotation cycles
+* Added `palette` attribute - the feature to change the color of the `MDSpinner` when changing rotation cycles
 * Added the feature to change the border color of the `MDRectangleFlatIconButton` class
 * Add `MDRelativeLayout` class
 * Added the feature to use radius for `MDNavigationDrawer` corners
@@ -44,3 +44,7 @@ Unreleased
 * Added `MDNavigationRail` component
 * Added `MDSwiper` component
 * Added ripple effect to `MDTabs` class
+* Added the feature to set toast positions on an `Android` device
+* Added of tooltips to `MDToolbar` icons
+* Fixed `MDBottomAppBar` notch transparency
+* Updated `MDDatePicker` class to material design specification.

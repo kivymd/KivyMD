@@ -442,6 +442,7 @@ import re
 import sys
 
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
@@ -450,7 +451,7 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty,
+    StringProperty, ListProperty,
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -563,7 +564,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.x, self.y
             size: self.width, self.height + dp(8)
-            radius: (10, 10, 0, 0, 0)
+            radius: root.radius
 
     font_name: "Roboto" if not root.font_name else root.font_name
     foreground_color: self.theme_cls.text_color
@@ -823,7 +824,7 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `None`.
     """
 
-    fill_color = ColorProperty((0, 0, 0, 0))
+    fill_color = ColorProperty([0, 0, 0, 0])
     """
     The background color of the fill in rgba format when the ``mode`` parameter
     is "fill".
@@ -898,6 +899,14 @@ class MDTextField(ThemableBehavior, TextInput):
     defaults to `0`.
     """
 
+    radius = ListProperty([10, 10, 0, 0])
+    """
+    The corner radius for a text field in `fill` mode.
+
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty` and
+    defaults to `[10, 10, 0, 0]`.
+    """
+
     _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_point = NumericProperty(0)
@@ -929,7 +938,6 @@ class MDTextField(ThemableBehavior, TextInput):
             _hint_lbl_font_size=self._hint_lbl.setter("font_size"),
             helper_text_mode=self._set_message_mode,
             max_text_length=self._set_max_text_length,
-            text=self.on_text,
         )
         self.theme_cls.bind(
             primary_color=self._update_primary_color,
@@ -938,6 +946,10 @@ class MDTextField(ThemableBehavior, TextInput):
         )
         self.has_had_text = False
         self._better_texture_size = None
+        Clock.schedule_once(self.check_text)
+
+    def check_text(self, interval):
+        self.set_text(self, self.text)
 
     def set_objects_labels(self):
         """Creates labels objects for the parameters
@@ -1102,7 +1114,7 @@ class MDTextField(ThemableBehavior, TextInput):
             elif self.color_mode == "custom":
                 self._update_colors(self.line_color_focus)
 
-    def on_text(self, instance, text):
+    def set_text(self, instance, text):
         self.text = re.sub("\n", " ", text) if not self.multiline else text
         if len(text) > 0:
             self.has_had_text = True
@@ -1161,7 +1173,11 @@ class MDTextField(ThemableBehavior, TextInput):
         # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_get_has_error.png
         if not color:
             line_color = self.line_color_focus
-            hint_text_color = self.theme_cls.disabled_hint_text_color
+            hint_text_color = (
+                self.theme_cls.disabled_hint_text_color
+                if not self.current_hint_text_color
+                else self.current_hint_text_color
+            )
             right_lbl_color = (0, 0, 0, 0)
         else:
             line_color = color

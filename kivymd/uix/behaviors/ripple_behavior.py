@@ -193,7 +193,7 @@ class CommonRipple(object):
     """
     Type of animation for ripple out effect.
 
-    :attr:`ripple_func_in` is an :class:`~kivy.properties.StringProperty`
+    :attr:`ripple_func_out` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'ripple_func_out'`.
     """
 

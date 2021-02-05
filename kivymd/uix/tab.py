@@ -480,7 +480,6 @@ from kivy.properties import (
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.utils import boundary
@@ -495,6 +494,7 @@ from kivymd.uix.behaviors import (
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.carousel import MDCarousel
+from kivymd.uix.label import MDLabel
 
 Builder.load_string(
     """
@@ -606,7 +606,7 @@ class MDTabsException(Exception):
     pass
 
 
-class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, Label):
+class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
     """This class it represent the label of each tab."""
 
     text_color_normal = ColorProperty((0, 0, 0, 0))

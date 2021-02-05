@@ -534,6 +534,8 @@ Builder.load_string(
                 (0, 0, 0, 1) \
                 if not root.text_color else root.text_color
 
+        # TODO: Replace the GridLayout with a RecycleView
+        # if it improves performance.
         GridLayout:
             id: _calendar_layout
             cols: 7

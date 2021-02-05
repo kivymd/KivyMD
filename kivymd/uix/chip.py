@@ -100,7 +100,7 @@ Choose chip
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
@@ -111,7 +111,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.button import MDIconButton
+from kivymd.uix.label import MDIcon
 from kivymd.uix.stacklayout import MDStackLayout
 
 Builder.load_string(
@@ -127,7 +127,7 @@ Builder.load_string(
 <MDChip>
     size_hint: None,  None
     height: "26dp"
-    padding: 0, 0, "5dp", 0
+    padding: 0, 0, "8dp", 0
     width:
         self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
         if root.icon != 'checkbox-blank-circle' else self.minimum_width
@@ -144,6 +144,7 @@ Builder.load_string(
         id: box_check
         adaptive_size: True
         pos_hint: {'center_y': .5}
+        padding: "8dp", 0, 0, 0
 
     MDBoxLayout:
         adaptive_width: True
@@ -157,17 +158,14 @@ Builder.load_string(
             color: root.text_color if root.text_color else (root.theme_cls.text_color)
             markup: True
 
-    MDIconButton:
+    MDIcon:
         id: icon
         icon: root.icon
-        size_hint_y: None
-        height: "20dp"
-        pos_hint: {"center_y": .5}
-        user_font_size: "20dp"
-        disabled: True
+        size_hint: None, None
+        size: "26dp", "26dp"
+        font_size: "20sp"
         theme_text_color: "Custom"
         text_color: root.icon_color if root.icon_color else (root.theme_cls.text_color)
-        md_bg_color_disabled: 0, 0, 0, 0
 """
 )
 
@@ -286,13 +284,11 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
             if self.check:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
-                        MDIconButton(
+                        MDIcon(
                             icon="check",
-                            size_hint_y=None,
-                            height=dp(20),
-                            disabled=True,
-                            user_font_size=dp(20),
-                            pos_hint={"center_y": 0.5},
+                            size_hint=(None, None),
+                            size=("26dp", "26dp"),
+                            font_size=sp(20),
                         )
                     )
                 else:

@@ -428,6 +428,7 @@ __all__ = (
     "MDFillRoundFlatButton",
     "MDFillRoundFlatIconButton",
     "MDTextButton",
+    "MDFloatingActionButtonSpeedDial",
 )
 
 from kivy.animation import Animation
@@ -729,6 +730,65 @@ Builder.load_string(
     adaptive_size: True
     color: root.theme_cls.primary_color if not root.color else root.color
     opacity: 1
+
+
+<BaseFloatingBottomButton>
+    theme_text_color: "Custom"
+    md_bg_color: self.theme_cls.primary_color
+
+    canvas.before:
+        Color:
+            rgba:
+                self.theme_cls.primary_color \
+                if not self._bg_color else self._bg_color
+        RoundedRectangle:
+            pos:
+                (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
+                self.y - self._padding_right / 2 + dp(1.5)
+            size:
+                self.width + self._canvas_width - dp(3), \
+                self.height + self._padding_right - dp(3)
+            radius: [self.height / 2]
+
+
+<BaseFloatingRootButton>
+    theme_text_color: "Custom"
+    md_bg_color: self.theme_cls.primary_color
+
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self._angle
+            axis: (0, 0, 1)
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+
+<BaseFloatingLabel>
+    size_hint: None, None
+    padding: "8dp", "4dp", "8dp", "4dp"
+    height: label.texture_size[1] + self.padding[1] * 2
+    width: label.texture_size[0] + self.padding[0] * 2
+    elevation: 10
+
+    canvas:
+        Color:
+            rgba:
+                self.theme_cls.primary_color \
+                if not root.bg_color else root.bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+
+    Label:
+        id: label
+        markup: True
+        text: root.text
+        size_hint: None, None
+        size: self.texture_size
+        color: root.theme_cls.text_color if not root.text_color else root.text_color
 """
 )
 
@@ -1484,6 +1544,10 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
     _canvas_width = NumericProperty(0)
     _padding_right = NumericProperty(0)
     _bg_color = ColorProperty(None)
+
+    def set_size(self, interval):
+        self.width = "46dp"
+        self.height = "46dp"
 
 
 class BaseFloatingLabel(

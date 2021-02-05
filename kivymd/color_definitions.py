@@ -6,7 +6,7 @@ Themes/Color Definitions
 
    `Material Design spec, The color system <https://material.io/design/color/the-color-system.html>`_
 
-   `Material Design spec, The color system <https://material.io/resources/color/#!/?view.left=0&view.right=0>`_
+   `Material Design spec, The color tool <https://material.io/resources/color/#!/?view.left=0&view.right=0>`_
 
 Material colors palette to use in :class:`kivymd.theming.ThemeManager`.
 :data:`~colors` is a dict-in-dict where the first key is a value from

@@ -1156,7 +1156,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
-                self._update_indicator(widget)
                 return
             except AttributeError:
                 pass

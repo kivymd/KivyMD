@@ -502,6 +502,7 @@ Builder.load_string(
 
 
 <MDTabsLabel>
+    _set_start_tab: False
     size_hint: None, 1
     halign: "center"
     padding: "12dp", 0
@@ -509,6 +510,11 @@ Builder.load_string(
     font: root.font_name
     allow_no_selection: False
     markup: True
+    on_width:
+        if not self._set_start_tab: \
+        self.tab_bar.parent._update_indicator( \
+        self.tab_bar.parent.carousel.current_slide.tab_label); \
+        self._set_start_tab = True
     on_tab_bar:
         self.text_size = (None, None) \
         if self.tab_bar.parent.allow_stretch else (self.width, None) 
@@ -522,9 +528,6 @@ Builder.load_string(
     color:
         self.text_color_active if self.state == "down" \
         else self.text_color_normal
-    on_width:
-        self.tab_bar.parent._update_indicator(self)
-
 
 
 <MDTabsScrollView>
@@ -1153,6 +1156,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
+                self._update_indicator(widget)
                 return
             except AttributeError:
                 pass
@@ -1168,11 +1172,22 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         if len(self.tab_bar.layout.children) == 1:
             return
 
-        self.tab_bar.layout.remove_widget(widget)
+        # Search object next tab.
+        next_tab = None
+        for i, tab in enumerate(self.tab_bar.layout.children):
+            if tab == widget:
+                next_tab = self.tab_bar.layout.children[i-1]
+                break
 
-        for tab in self.carousel.slides:
-            if tab.text == widget.text:
-                self.carousel.remove_widget(tab)
+        self.tab_bar.layout.remove_widget(widget)
+        # After deleting the tab, it updates the indicator width
+        # on the next tab.
+        if next_tab:
+            self._update_indicator(next_tab)
+
+        for slide in self.carousel.slides:
+            if slide.text == widget.text:
+                self.carousel.remove_widget(slide)
                 break
 
     def on_slide_progress(self, *args):
@@ -1250,8 +1265,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self.dispatch("on_slide_progress", args)
 
     def _update_indicator(self, current_tab_label):
+        def update_indicator(interval):
+            self.tab_bar.update_indicator(
+                current_tab_label.x, current_tab_label.width
+            )
+
         if not current_tab_label:
             current_tab_label = self.tab_bar.layout.children[-1]
-        self.tab_bar.update_indicator(
-            current_tab_label.x, current_tab_label.width
-        )
+        Clock.schedule_once(update_indicator)

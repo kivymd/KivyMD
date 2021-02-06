@@ -1175,7 +1175,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         next_tab = None
         for i, tab in enumerate(self.tab_bar.layout.children):
             if tab == widget:
-                next_tab = self.tab_bar.layout.children[i-1]
+                next_tab = self.tab_bar.layout.children[i - 1]
                 break
 
         self.tab_bar.layout.remove_widget(widget)

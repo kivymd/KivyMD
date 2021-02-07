@@ -444,7 +444,6 @@ class NotchedBox(
         notch_center_x = self.notch_center_x
 
         circle_radius = self.notch_radius
-        notch_center_x += pos[0]
         degree_diff = int((180 - self._total_angle) / 2)
         circle_center = [notch_center_x, pos[1] + size[1]]
         left_circle_pos = self._points_on_circle(
@@ -472,7 +471,7 @@ class NotchedBox(
         )
         raw_vertices_right = self._make_vertices(
             [notch_center_x, pos[1]],
-            [size[0] - notch_center_x, size[1]],
+            [size[0] + pos[0] - notch_center_x, size[1]],
             "right",
             right_circle_pos,
         )

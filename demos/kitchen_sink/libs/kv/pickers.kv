@@ -20,7 +20,7 @@
             MDRaisedButton:
                 text: "Open time picker"
                 -width: box_time.width
-                on_release: root.show_example_time_picker(root.military)
+                on_release: root.show_example_time_picker()
 
             MDLabel:
                 id: time_picker_label
@@ -41,19 +41,6 @@
                     id: time_picker_use_previous_time
                     size_hint: None, None
                     size: "48dp", "48dp"
-
-            MDBoxLayout:
-                adaptive_size: True
-
-                MDLabel:
-                    text: "Use military mode"
-                    adaptive_size: True
-                    pos_hint: {"center_y": .5}
-
-                MDCheckbox:
-                    size_hint: None, None
-                    size: "48dp", "48dp"
-                    on_active: root.military = 1 if self.active else 0
 
         MDBoxLayout:
             orientation: "vertical"

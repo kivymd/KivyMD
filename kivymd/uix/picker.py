@@ -1998,7 +1998,7 @@ class MDDatePicker(BaseDialogPicker):
 Builder.load_string(
     """
 <TimeInputLabel@MDLabel>:
-    theme_text_color:"Custom"
+    theme_text_color: "Custom"
     font_size: dp(10)
     halign: "left"
     valign: "bottom"
@@ -2020,55 +2020,59 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [root.border_radius,]
+            radius: [root.border_radius, ]
 
         #AM
         Color:
             rgba: root._am_bg_color
         RoundedRectangle:
-            pos: [\
-                self.pos[0]+root.border_width,\
-                self.pos[1]+self.height/2+self.border_width*0.5\
-                ] if self.orientation=="vertical" else\
-                [\
-                self.pos[0]+root.border_width,\
-                self.pos[1]+root.border_width\
+            pos:
+                [ \
+                self.pos[0] + root.border_width, \
+                self.pos[1] + self.height/2 + self.border_width * 0.5 \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.pos[0] + root.border_width, \
+                self.pos[1] + root.border_width \
                 ]
-            size: [\
-                self.size[0]-root.border_width*2,\
-                self.size[1]/2-self.border_width*1.5\
-                ] if self.orientation=="vertical" else\
-                [\
-                self.size[0]/2-root.border_width*1.5,\
-                self.size[1]-root.border_width*2\
+            size:
+                [ \
+                self.size[0] - root.border_width * 2, \
+                self.size[1] / 2 - self.border_width * 1.5 \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.size[0] / 2 - root.border_width * 1.5, \
+                self.size[1] - root.border_width * 2 \
                 ]
-            radius: [root.border_radius,root.border_radius,0,0]\
-                if self.orientation=="vertical" else\
-                [root.border_radius,0,0,root.border_radius]
+            radius: [root.border_radius, root.border_radius, 0, 0] \
+                if self.orientation == "vertical" else \
+                [root.border_radius, 0, 0, root.border_radius]
 
         #PM
         Color:
             rgba: root._pm_bg_color
         RoundedRectangle:
-            pos: [\
-                self.pos[0]+root.border_width,\
-                self.pos[1]+self.border_width\
-                ] if self.orientation=="vertical" else\
-                [\
-                self.pos[0]+root.size[0]/2+root.border_width/2,\
-                self.pos[1]+root.border_width\
+            pos:
+                [ \
+                self.pos[0] + root.border_width, \
+                self.pos[1] + self.border_width \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.pos[0] + root.size[0] / 2 + root.border_width / 2, \
+                self.pos[1] + root.border_width \
                 ]
-            size: [\
-                self.size[0]-root.border_width*2,\
-                self.size[1]/2-self.border_width*1.5\
-                ] if self.orientation=="vertical" else\
-                [\
-                self.size[0]/2-root.border_width*1.5,\
-                self.size[1]-root.border_width*2\
+            size:
+                [ \
+                self.size[0] - root.border_width * 2, \
+                self.size[1] / 2 - self.border_width * 1.5 \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.size[0] / 2 - root.border_width * 1.5, \
+                self.size[1] - root.border_width * 2 \
                 ]
-            radius: [0,0,root.border_radius,root.border_radius]\
-                if self.orientation=="vertical" else\
-                [0,root.border_radius,root.border_radius,0]
+            radius: [0, 0, root.border_radius, root.border_radius] \
+                if self.orientation == "vertical" else \
+                [0 ,root.border_radius, root.border_radius, 0]
 
     # AM
     AM_PM_Selector_Label:
@@ -2088,9 +2092,9 @@ Builder.load_string(
     mode: "fill"
     active_line: False
     font_size: dp(56)
-    line_color_normal: 0,0,0,0
+    line_color_normal: 0, 0, 0, 0
     on_text: root.on_text
-    radius: [dp(10),]
+    radius: [dp(10), ]
 
 
 <TimeInput>
@@ -2102,13 +2106,13 @@ Builder.load_string(
         id: hour
         num_type: "hour"
         pos: 0, 0
-        fill_color: [*root.bg_color_active[:3],0.5] if root.state=="hour" else [*root.bg_color[:3],0.5]
+        fill_color: [*root.bg_color_active[:3], 0.5] if root.state == "hour" else [*root.bg_color[:3], 0.5]
         text_color: root.text_color
         disabled: root.disabled
         on_text: root.dispatch("on_time_input")
         on_select:
             root.dispatch("on_hour_select")
-            root.state="hour"
+            root.state = "hour"
         radius: root.hour_radius
 
     MDLabel:
@@ -2118,7 +2122,7 @@ Builder.load_string(
         halign: "center"
         valign: "center"
         font_size: dp(50)
-        pos: dp(96),0
+        pos: dp(96), 0
         theme_text_color: "Custom"
         text_color: root.text_color
 
@@ -2126,19 +2130,19 @@ Builder.load_string(
         id: minute
         num_type: "minute"
         pos: dp(120), 0
-        fill_color: [*root.bg_color_active[:3],0.5] if root.state=="minute" else [*root.bg_color[:3],0.5]
+        fill_color: [*root.bg_color_active[:3], 0.5] if root.state == "minute" else [*root.bg_color[:3], 0.5]
         text_color: root.text_color
         disabled: root.disabled
         on_text: root.dispatch("on_time_input")
         on_select:
             root.dispatch("on_minute_select")
-            root.state="minute"
+            root.state = "minute"
         radius: root.minute_radius
 
 
 <CircularSelector>
     circular_padding: dp(28)
-    size_hint: None,None
+    size_hint: None, None
     row_spacing: dp(40)
 
     canvas.before:
@@ -2151,16 +2155,18 @@ Builder.load_string(
         Scale:
             origin: self.center
             x: root.scale
-            y:root.scale
+            y: root.scale
         Color:
             rgb: root.selector_color
-            a: 0 if self.selector_pos==[0,0] else 1
+            a: 0 if self.selector_pos == [0, 0] else 1
         Ellipse:
             size: self.selector_size, self.selector_size
-            pos: [self.selector_pos[0]- self.selector_size/2, self.selector_pos[1]-self.selector_size/2]
+            pos:
+                [self.selector_pos[0] -  self.selector_size / 2, \
+                self.selector_pos[1] - self.selector_size / 2]
         Ellipse:
             size: dp(10), dp(10)
-            pos: [self.center[0]- dp(5), self.center[1]-dp(5)]
+            pos: [self.center[0] - dp(5), self.center[1] - dp(5)]
         Line:
             points: [self.center, self.selector_pos]
             width: dp(1)
@@ -2170,7 +2176,7 @@ Builder.load_string(
 
 <SelectorLabel>
     halign: "center"
-    valign:"center"
+    valign: "center"
     adaptive_size: True
     theme_text_color: "Custom"
 
@@ -2180,7 +2186,7 @@ Builder.load_string(
     size_hint: None , None
     _time_input: _time_input
     _selector: _selector
-    _am_pm_selector:_am_pm_selector
+    _am_pm_selector: _am_pm_selector
     _minute_label: _minute_label
     _hour_label: _hour_label
 
@@ -2188,8 +2194,9 @@ Builder.load_string(
 
         canvas.before:
             Color:
-                rgba: root.primary_color\
-                    if root.primary_color\
+                rgba:
+                    root.primary_color \
+                    if root.primary_color \
                     else root.theme_cls.bg_normal
 
             RoundedRectangle:
@@ -2207,14 +2214,21 @@ Builder.load_string(
             text: root.title
             font_name: root.font_name
             pos: (dp(24), root.height - self.height - dp(18))
-            text_color: root.text_toolbar_color if root.text_toolbar_color\
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color \
                 else root.theme_cls.text_color
 
         TimeInput:
             id: _time_input
-            bg_color: root.accent_color if root.accent_color  else  root.theme_cls.primary_light
-            bg_color_active: root.selector_color if root.selector_color  else  root.theme_cls.primary_color
-            text_color: root.input_field_text_color if root.input_field_text_color else root.theme_cls.text_color
+            bg_color:
+                root.accent_color if root.accent_color else \
+                root.theme_cls.primary_light
+            bg_color_active:
+                root.selector_color if root.selector_color \
+                else root.theme_cls.primary_color
+            text_color:
+                root.input_field_text_color if root.input_field_text_color else \
+                root.theme_cls.text_color
             on_time_input: root._on_time_input(self.get_time())
             on_hour_select: _selector.switch_mode("hour")
             on_minute_select: _selector.switch_mode("minute")
@@ -2225,31 +2239,47 @@ Builder.load_string(
             id: _hour_label
             text: "Hour"
             opacity: 0
-            text_color: root.text_toolbar_color if root.text_toolbar_color else\
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color else \
                 root.theme_cls.secondary_text_color
 
         TimeInputLabel:
             id: _minute_label
             text: "Minute"
             opacity: 0
-            text_color: root.text_toolbar_color if root.text_toolbar_color else\
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color else \
                 root.theme_cls.secondary_text_color
 
         AM_PM_Selector:
             id: _am_pm_selector
-            border_color: root.accent_color if root.accent_color else root.theme_cls.primary_color
+            border_color:
+                root.accent_color if root.accent_color else \
+                root.theme_cls.primary_color
             border_radius: root.am_pm_radius
-            bg_color: root.primary_color if root.primary_color else root.theme_cls.bg_normal
+            bg_color:
+                root.primary_color if root.primary_color else \
+                root.theme_cls.bg_normal
             border_width: root.am_pm_border_width
-            bg_color_active: root.selector_color if root.selector_color else root.theme_cls.primary_light
-            text_color: root.input_field_text_color if root.input_field_text_color else root.theme_cls.text_color
+            bg_color_active:
+                root.selector_color if root.selector_color else \
+                root.theme_cls.primary_light
+            text_color:
+                root.input_field_text_color if root.input_field_text_color else \
+                root.theme_cls.text_color
             on_selected: root._set_am_pm(self.selected)
 
         CircularSelector:
             id: _selector
-            text_color: root.text_color if root.text_color  else root.theme_cls.text_color
-            bg_color: root.accent_color if root.accent_color else root.theme_cls.primary_light
-            selector_color: root.selector_color if root.selector_color else root.theme_cls.primary_color
+            text_color:
+                root.text_color if root.text_color else \
+                root.theme_cls.text_color
+            bg_color:
+                root.accent_color if root.accent_color else \
+                root.theme_cls.primary_light
+            selector_color:
+                root.selector_color if root.selector_color else \
+                root.theme_cls.primary_color
             font_name: root.font_name
             on_selector_change: root._set_dial_time(_selector)
 
@@ -2260,7 +2290,8 @@ Builder.load_string(
             theme_text_color: "Custom"
             user_font_size: "24dp"
             on_release: root._switch_input()
-            text_color: root.text_toolbar_color if root.text_toolbar_color else\
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color else \
                 root.theme_cls.secondary_text_color
 
         MDFlatButton:

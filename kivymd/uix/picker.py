@@ -247,11 +247,13 @@ __all__ = ("MDTimePicker", "MDDatePicker", "MDThemePicker", "BaseDialogPicker")
 
 import calendar
 import datetime
+import re
 from datetime import date
 
 from kivy import Logger
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.event import EventDispatcher
 from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -266,12 +268,11 @@ from kivy.properties import (
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.modalview import ModalView
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.utils import get_color_from_hex
+from kivy.vector import Vector
 
 from kivymd.color_definitions import colors, palette
 from kivymd.theming import ThemableBehavior
@@ -283,8 +284,10 @@ from kivymd.uix.behaviors import (
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.circularlayout import MDCircularLayout
 from kivymd.uix.dialog import BaseDialog
 from kivymd.uix.label import MDLabel
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.tooltip import MDTooltip
 
@@ -320,7 +323,7 @@ Builder.load_string(
     MDRelativeLayout:
         id: container
         background: os.path.join(images_path, "transparent.png")
-    
+
         canvas:
             Color:
                 rgb:
@@ -356,7 +359,7 @@ Builder.load_string(
                     (dp(0), dp(0), root.radius[2], root.radius[3]) \
                     if root.theme_cls.device_orientation == "portrait" \
                     else (dp(0), root.radius[1], root.radius[2], dp(0))
-    
+
         MDLabel:
             id: label_title
             font_style: "Body2"
@@ -557,7 +560,7 @@ Builder.load_string(
                 (dp(10), dp(56)) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else (dp(168) + dp(20), dp(44))
-    
+
             canvas.before:
                 PushMatrix
                 Scale:
@@ -566,7 +569,7 @@ Builder.load_string(
                     origin: self.center
             canvas.after:
                 PopMatrix
-    
+
         MDFlatButton:
             id: ok_button
             width: dp(32)
@@ -583,7 +586,7 @@ Builder.load_string(
                 date(root.sel_year, root.sel_month, root.sel_day), \
                 root._date_range \
                 )
-    
+
         MDFlatButton:
             id: cancel_button
             text: "CANCEL"
@@ -802,8 +805,8 @@ Builder.load_string(
         dp(24) if root.owner.theme_cls.device_orientation == "portrait" \
         else dp(168) + dp(24)
 
- 
-<DatePickerEnterDataField> 
+
+<DatePickerEnterDataField>
     mode: "fill"
     opacity: 0
     hint_text: "dd/mm/yyyy"
@@ -1153,11 +1156,11 @@ class DatePickerEnterDataField(MDTextField):
             # check there is a day number in the month
             if cursor == 1:
                 days_of_month = []
-                for date in self.owner.calendar.itermonthdates(
+                for _date in self.owner.calendar.itermonthdates(
                     self.owner.sel_year, self.owner.sel_month
                 ):
-                    if date.month == self.owner.sel_month:
-                        days_of_month.append(date.day)
+                    if _date.month == self.owner.sel_month:
+                        days_of_month.append(_date.day)
                 if not int(self._date[:2]) in days_of_month:
                     self._date = self._date[:-1]
                     return
@@ -1994,129 +1997,879 @@ class MDDatePicker(BaseDialogPicker):
 
 Builder.load_string(
     """
-#:import CircularTimePicker kivymd.vendor.circularTimePicker.CircularTimePicker
-#:import dp kivy.metrics.dp
+<TimeInputLabel@MDLabel>:
+    theme_text_color: "Custom"
+    font_size: dp(10)
+    halign: "left"
+    valign: "bottom"
+    adaptive_size: True
+
+
+<AM_PM_Selector_Label>
+    halign: "center"
+    valign: "center"
+    theme_text_color: "Custom"
+
+
+<AM_PM_Selector>
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba: root.border_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [root.border_radius, ]
+
+        #AM
+        Color:
+            rgba: root._am_bg_color
+        RoundedRectangle:
+            pos:
+                [ \
+                self.pos[0] + root.border_width, \
+                self.pos[1] + self.height/2 + self.border_width * 0.5 \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.pos[0] + root.border_width, \
+                self.pos[1] + root.border_width \
+                ]
+            size:
+                [ \
+                self.size[0] - root.border_width * 2, \
+                self.size[1] / 2 - self.border_width * 1.5 \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.size[0] / 2 - root.border_width * 1.5, \
+                self.size[1] - root.border_width * 2 \
+                ]
+            radius: [root.border_radius, root.border_radius, 0, 0] \
+                if self.orientation == "vertical" else \
+                [root.border_radius, 0, 0, root.border_radius]
+
+        #PM
+        Color:
+            rgba: root._pm_bg_color
+        RoundedRectangle:
+            pos:
+                [ \
+                self.pos[0] + root.border_width, \
+                self.pos[1] + self.border_width \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.pos[0] + root.size[0] / 2 + root.border_width / 2, \
+                self.pos[1] + root.border_width \
+                ]
+            size:
+                [ \
+                self.size[0] - root.border_width * 2, \
+                self.size[1] / 2 - self.border_width * 1.5 \
+                ] if self.orientation == "vertical" else \
+                [ \
+                self.size[0] / 2 - root.border_width * 1.5, \
+                self.size[1] - root.border_width * 2 \
+                ]
+            radius: [0, 0, root.border_radius, root.border_radius] \
+                if self.orientation == "vertical" else \
+                [0 ,root.border_radius, root.border_radius, 0]
+
+    # AM
+    AM_PM_Selector_Label:
+        text: "AM"
+        on_release: root.selected = "am"
+        text_color: root.text_color
+
+    AM_PM_Selector_Label:
+        text: "PM"
+        on_release: root.selected = "pm"
+        text_color: root.text_color
+
+
+<TimeInputTextField>
+    size_hint: None, 1
+    width: dp(96)
+    mode: "fill"
+    active_line: False
+    font_size: dp(56)
+    line_color_normal: 0, 0, 0, 0
+    on_text: root.on_text
+    radius: [dp(10), ]
+
+
+<TimeInput>
+    size_hint: None, None
+    _hour: hour
+    _minute: minute
+
+    TimeInputTextField:
+        id: hour
+        num_type: "hour"
+        pos: 0, 0
+        fill_color: [*root.bg_color_active[:3], 0.5] if root.state == "hour" else [*root.bg_color[:3], 0.5]
+        text_color: root.text_color
+        disabled: root.disabled
+        on_text: root.dispatch("on_time_input")
+        on_select:
+            root.dispatch("on_hour_select")
+            root.state = "hour"
+        radius: root.hour_radius
+
+    MDLabel:
+        text: ":"
+        size_hint: None, None
+        size: dp(24), dp(80)
+        halign: "center"
+        valign: "center"
+        font_size: dp(50)
+        pos: dp(96), 0
+        theme_text_color: "Custom"
+        text_color: root.text_color
+
+    TimeInputTextField:
+        id: minute
+        num_type: "minute"
+        pos: dp(120), 0
+        fill_color: [*root.bg_color_active[:3], 0.5] if root.state == "minute" else [*root.bg_color[:3], 0.5]
+        text_color: root.text_color
+        disabled: root.disabled
+        on_text: root.dispatch("on_time_input")
+        on_select:
+            root.dispatch("on_minute_select")
+            root.state = "minute"
+        radius: root.minute_radius
+
+
+<CircularSelector>
+    circular_padding: dp(28)
+    size_hint: None, None
+    row_spacing: dp(40)
+
+    canvas.before:
+        Color:
+            rgba: root.bg_color
+        Ellipse:
+            size: self.size
+            pos: self.pos
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: root.scale
+            y: root.scale
+        Color:
+            rgb: root.selector_color
+            a: 0 if self.selector_pos == [0, 0] else 1
+        Ellipse:
+            size: self.selector_size, self.selector_size
+            pos:
+                [self.selector_pos[0] -  self.selector_size / 2, \
+                self.selector_pos[1] - self.selector_size / 2]
+        Ellipse:
+            size: dp(10), dp(10)
+            pos: [self.center[0] - dp(5), self.center[1] - dp(5)]
+        Line:
+            points: [self.center, self.selector_pos]
+            width: dp(1)
+    canvas.after:
+        PopMatrix
+
+
+<SelectorLabel>
+    halign: "center"
+    valign: "center"
+    adaptive_size: True
+    theme_text_color: "Custom"
 
 
 <MDTimePicker>
-    size_hint: (None, None)
-    size: (dp(270), dp(335) + dp(95))
-    pos_hint: {"center_x": .5, "center_y": .5}
+    auto_dismiss: False
+    size_hint: None , None
+    _time_input: _time_input
+    _selector: _selector
+    _am_pm_selector: _am_pm_selector
+    _minute_label: _minute_label
+    _hour_label: _hour_label
 
-    canvas:
-        Color:
-            rgba: self.theme_cls.bg_light
-        RoundedRectangle:
-            size: (dp(270), dp(335))
-            pos: (root.pos[0], root.pos[1] + root.height - dp(335) - dp(95))
-            radius: [dp(0), dp(0), root.radius[2], root.radius[3]]
-        Color:
-            rgba: self.theme_cls.primary_color
-        RoundedRectangle:
-            size: (dp(270), dp(95))
-            pos: (root.pos[0], root.pos[1] + root.height - dp(95))
-            radius: [root.radius[0], root.radius[1], dp(0), dp(0)]
-        Color:
-            rgba: self.theme_cls.bg_dark
-        Ellipse:
-            size: (dp(220), dp(220))
-            pos:
-                root.pos[0] + dp(270) / 2 - dp(220) / 2, root.pos[1] \
-                + root.height - (dp(335) / 2 + dp(95)) - dp(220) / 2 + dp(35)
+    MDRelativeLayout:
 
-    CircularTimePicker:
-        id: time_picker
-        pos: (dp(270) / 2) - (self.width / 2), root.height - self.height
-        size_hint: (.8, .8)
-        pos_hint: {"center_x": .5, "center_y": .585}
-        military: root.military
+        canvas.before:
+            Color:
+                rgba:
+                    root.primary_color \
+                    if root.primary_color \
+                    else root.theme_cls.bg_normal
 
-    MDFlatButton:
-        width: dp(32)
-        id: ok_button
-        pos:
-            root.pos[0] + root.size[0] - self.width - dp(10), \
-            root.pos[1] + dp(10)
-        text: "OK"
-        on_release: root.close_ok()
+            RoundedRectangle:
+                size: self.size
+                radius: root.radius
 
-    MDFlatButton:
-        id: cancel_button
-        pos:
-            root.pos[0] + root.size[0] - self.width - ok_button.width \
-            - dp(10), root.pos[1] + dp(10)
-        text: "Cancel"
-        on_release: root.close_cancel()
+        MDLabel:
+            id: label_title
+            font_style: "Body2"
+            bold: True
+            theme_text_color: "Custom"
+            size_hint_x: None
+            width: root.width
+            adaptive_height: True
+            text: root.title
+            font_name: root.font_name
+            pos: (dp(24), root.height - self.height - dp(18))
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color \
+                else root.theme_cls.text_color
+
+        TimeInput:
+            id: _time_input
+            bg_color:
+                root.accent_color if root.accent_color else \
+                root.theme_cls.primary_light
+            bg_color_active:
+                root.selector_color if root.selector_color \
+                else root.theme_cls.primary_color
+            text_color:
+                root.input_field_text_color if root.input_field_text_color else \
+                root.theme_cls.text_color
+            on_time_input: root._on_time_input(self.get_time())
+            on_hour_select: _selector.switch_mode("hour")
+            on_minute_select: _selector.switch_mode("minute")
+            minute_radius: root.minute_radius
+            hour_radius: root.hour_radius
+
+        TimeInputLabel:
+            id: _hour_label
+            text: "Hour"
+            opacity: 0
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color else \
+                root.theme_cls.secondary_text_color
+
+        TimeInputLabel:
+            id: _minute_label
+            text: "Minute"
+            opacity: 0
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color else \
+                root.theme_cls.secondary_text_color
+
+        AM_PM_Selector:
+            id: _am_pm_selector
+            border_color:
+                root.accent_color if root.accent_color else \
+                root.theme_cls.primary_color
+            border_radius: root.am_pm_radius
+            bg_color:
+                root.primary_color if root.primary_color else \
+                root.theme_cls.bg_normal
+            border_width: root.am_pm_border_width
+            bg_color_active:
+                root.selector_color if root.selector_color else \
+                root.theme_cls.primary_light
+            text_color:
+                root.input_field_text_color if root.input_field_text_color else \
+                root.theme_cls.text_color
+            on_selected: root._set_am_pm(self.selected)
+
+        CircularSelector:
+            id: _selector
+            text_color:
+                root.text_color if root.text_color else \
+                root.theme_cls.text_color
+            bg_color:
+                root.accent_color if root.accent_color else \
+                root.theme_cls.primary_light
+            selector_color:
+                root.selector_color if root.selector_color else \
+                root.theme_cls.primary_color
+            font_name: root.font_name
+            on_selector_change: root._set_dial_time(_selector)
+
+        MDIconButton:
+            id: input_clock_switch
+            icon: "keyboard"
+            pos: dp(12), dp(8)
+            theme_text_color: "Custom"
+            user_font_size: "24dp"
+            on_release: root._switch_input()
+            text_color:
+                root.text_toolbar_color if root.text_toolbar_color else \
+                root.theme_cls.secondary_text_color
+
+        MDFlatButton:
+            id: cancel_button
+            text: "CANCEL"
+            on_release: root.dispatch("on_cancel", None)
+            theme_text_color: "Custom"
+            pos: root.width - self.width - ok_button.width - dp(10), dp(10)
+            font_name: root.font_name
+            text_color:
+                root.theme_cls.primary_color \
+                if not root.text_button_color else root.text_button_color
+
+        MDFlatButton:
+            id: ok_button
+            width: dp(32)
+            pos: root.width - self.width, dp(10)
+            text: "OK"
+            theme_text_color: "Custom"
+            font_name: root.font_name
+            text_color:
+                root.theme_cls.primary_color \
+                if not root.text_button_color else root.text_button_color
+            on_release: root.dispatch("on_save", root._get_data())
+
 """
 )
 
 
-class MDTimePicker(
-    ThemableBehavior, FloatLayout, ModalView, RectangularElevationBehavior
-):
-    time = ObjectProperty()
+class AM_PM_Selector_Label(ButtonBehavior, MDLabel):
+    pass
 
+
+class AM_PM_Selector(ThemableBehavior, MDBoxLayout, EventDispatcher):
+    border_radius = NumericProperty()
+    border_color = ColorProperty()
+    bg_color = ColorProperty()
+    bg_color_active = ColorProperty()
+    border_width = NumericProperty()
+    am = ObjectProperty()
+    pm = ObjectProperty()
+    text_color = ColorProperty()
+    selected = StringProperty()
+    _am_bg_color = ColorProperty()
+    _pm_bg_color = ColorProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(selected=self._upadte_color)
+        Clock.schedule_once(self._upadte_color)
+
+    def _upadte_color(self, *args):
+        bg_color = self.bg_color_active
+        if self.selected == "am":
+            self._am_bg_color = bg_color
+            self._pm_bg_color = self.bg_color
+        elif self.selected == "pm":
+            self._am_bg_color = self.bg_color
+            self._pm_bg_color = bg_color
+
+
+class TimeInputTextField(MDTextField):
+    num_type = OptionProperty("hour", options=["hour", "minute"])
+    hour_regx = "^[0-9]$|^1[0-2]$"
+    minute_regx = "^[0-9]$|^[1-5][0-9]$"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.on_text)
+        self.register_event_type("on_select")
+        self.bind(text_color=self.setter("_current_hint_text_color"))
+        self.bind(text_color=self.setter("current_hint_text_color"))
+
+    def on_text(self, *args):
+        """
+        texts should be center aligned. now we are setting the
+        padding of text to somehow make them aligned.
+        """
+
+        # cursor gets off centered when there is no text
+        if not self.text and self.focus:
+            self.text = " "
+
+        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
+        reg_result = re.match(reg, self.text.strip())
+        if not reg_result:
+            text = self.text[:-1]
+            if text:
+                self.text = text
+
+        self._refresh_text(self.text)
+        max_size = max(self._lines_rects, key=lambda r: r.size[0]).size
+        dx = (self.width - max_size[0]) / 2.0
+        dy = (self.height - max_size[1]) / 2.0
+        # self.padding = [dx, -0.5, dx, -0.5]
+        self.padding = [dx, dy, dx, dy]
+
+        if len(self.text) > 1:
+            self.text = self.text.replace(" ", "")
+
+    def on_focus(self, *args):
+        super().on_focus(*args)
+        self.on_text()
+
+    def on_select(self, *args):
+        pass
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.dispatch("on_select")
+            super().on_touch_down(touch)
+
+
+class TimeInput(MDRelativeLayout, EventDispatcher):
+    bg_color = ColorProperty()
+    bg_color_active = ColorProperty()
+    text_color = ColorProperty()
+    disabled = BooleanProperty(True)
+    minute_radius = ListProperty([0, 0, 0, 0])
+    hour_radius = ListProperty([0, 0, 0, 0])
+    state = StringProperty("hour")
+    _hour = ObjectProperty()
+    _minute = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_time_input")
+        self.register_event_type("on_hour_select")
+        self.register_event_type("on_minute_select")
+
+    def set_time(self, time_list):
+        self._hour.text = time_list[0]
+        self._minute.text = time_list[1]
+
+    def get_time(self):
+        return [self._hour.text, self._minute.text]
+
+    def _update_padding(self, *args):
+        self._hour.on_text()
+        self._minute.on_text()
+
+    def on_time_input(self, *args):
+        pass
+
+    def on_minute_select(self, *args):
+        pass
+
+    def on_hour_select(self, *args):
+        pass
+
+
+class SelectorLabel(MDLabel):
+    pass
+
+
+class CircularSelector(MDCircularLayout, EventDispatcher):
+    mode = OptionProperty("hour", options=["hour", "minute"])  # and military
+    text_color = ColorProperty()
+    selected_hour = StringProperty("12")
+    selected_minute = StringProperty("0")
+    selector_size = NumericProperty("48dp")
+    selector_pos = ListProperty([0, 0])
+    selector_color = ColorProperty()
+    bg_color = ColorProperty()
+    font_name = StringProperty()
+    _centers_pos = ListProperty()
+    scale = NumericProperty(1)
+    t = StringProperty("out_quad")
+    d = NumericProperty(0.2)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(
+            mode=self._update_labels,
+            selected_hour=self.update_time,
+            selected_minute=self.update_time,
+        )
+        Clock.schedule_once(lambda x: self._update_labels(animate=False))
+        self.register_event_type("on_selector_change")
+
+    def do_layout(self, *largs, **kwargs):
+        self.update_time()
+        return super().do_layout(*largs, **kwargs)
+
+    def _update_labels(self, animate=True, *args):
+        """
+        This method builds the selector based on current mode which currently can
+        be hour or minute.
+        """
+
+        if self.mode == "hour":
+            param = (1, 12)
+            self.degree_spacing = 30
+            self.start_from = 60
+        elif self.mode == "minute":
+            param = (0, 59, 5)
+            self.degree_spacing = 6
+            self.start_from = 90
+        elif self.mode == "military":
+            param = (1, 24)
+            self.degree_spacing = 30
+            self.start_from = 90
+        if animate:
+            anim = Animation(scale=0, t=self.t, d=self.d)
+            anim.bind(on_complete=lambda *args: self._add_items(*param))
+            anim.start(self)
+        else:
+            self._add_items(*param)
+
+    def _add_items(self, start, end, step=1):
+        """
+        adds all number in range [start,end+1] to the circular layout with the specified step.
+        step means that all widgets will be added to layout but sets the opacity for skipped widgets to 0
+        because we are using the label's text as a refrence to the selected number so we have to add these to layout.
+        """
+
+        self.clear_widgets()
+        i = 0
+        for x in range(start, end + 1):
+            label = SelectorLabel(
+                text=f"{x}",
+            )
+            if i % step != 0:
+                label.opacity = 0
+            self.bind(
+                text_color=label.setter("text_color"),
+                font_name=label.setter("font_name"),
+            )
+            self.add_widget(label)
+            i += 1
+        Clock.schedule_once(self.update_time)
+        Clock.schedule_once(self._get_centers, 0.1)
+        anim = Animation(scale=1, t=self.t, d=self.d)
+        anim.start(self)
+
+    def _get_centers(self, *args):
+        """
+        returns a list of all center. we use this for positioning the selector indicator
+        """
+
+        self._centers_pos = []
+        for child in self.children:
+            self._centers_pos.append(child.center)
+
+    def _get_closest_widget(self, pos):
+        """
+        returns the nearest widget to the given position. we use this to create the magnetic effect.
+        """
+
+        distance = [Vector(pos).distance(point) for point in self._centers_pos]
+        if not distance:
+            return False
+        index = distance.index(min(distance))
+        return self.children[index]
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            touch.grab(self)
+            closest_wid = self._get_closest_widget(touch.pos)
+            self.set_time(closest_wid.text)
+            return True
+
+    def on_touch_move(self, touch):
+        if touch.grab_current == self:
+            closest_wid = self._get_closest_widget(touch.pos)
+            self.set_time(closest_wid.text)
+
+    def on_touch_up(self, touch):
+        if touch.grab_current is self:
+            touch.ungrab(self)
+            return True
+
+    def set_selector(self, selected):
+        """
+        sets the selector's position towards the given text.
+        """
+
+        widget = None
+        for wid in self.children:
+            wid.text_color = self.text_color
+            if wid.text == selected:
+                widget = wid
+        if not widget:
+            return False
+        self.selector_pos = widget.center
+        widget.text_color = [1, 1, 1, 1]
+        self.dispatch("on_selector_change")
+        return True
+
+    def set_time(self, selected):
+        if self.mode == "hour":
+            self.selected_hour = selected
+        elif self.mode == "minute":
+            self.selected_minute = selected
+
+    def update_time(self, *args):
+        if self.mode == "hour":
+            self.set_selector(self.selected_hour)
+        elif self.mode == "minute":
+            self.set_selector(self.selected_minute)
+
+    def get_selected(self):
+        return self.selected
+
+    def on_selector_change(self, *args):
+        pass
+
+    def switch_mode(self, mode):
+        if mode != self.mode:
+            self.mode = mode
+
+
+class MDTimePicker(BaseDialogPicker):
+    hour = StringProperty("12")
     """
-    Users method. Must take two parameters:
+    Current hour
 
-    .. code-block:: python
+    :attr:`hour` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `12`.
+    """
 
-        def get_time(self, instance, time):
-            '''
-            The method returns the set time.
+    minute = StringProperty("0")
+    """
+    Current minute
 
-            :type instance: <kivymd.uix.picker.MDTimePicker object>
-            :type time: <class 'datetime.time'>
-            '''
+    :attr:`minute` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `0`.
+    """
 
-            return time
+    minute_radius = ListProperty(
+        [
+            dp(5),
+        ]
+    )
+    """
+    Radius of the minute input field.
+
+    :attr:`minute_radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(5),]`.
+    """
+
+    hour_radius = ListProperty(
+        [
+            dp(5),
+        ]
+    )
+    """
+    Radius of the hour input field.
+
+    :attr:`hour_radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(5),]`.
+    """
+
+    am_pm_radius = NumericProperty("5dp")
+    """
+    Radius of the AM/PM selector.
+
+    :attr:`am_pm_radius` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(5)`.
+    """
+
+    am_pm_border_width = NumericProperty("1dp")
+    """
+    Width of the AM/PM selector's borders.
+
+    :attr:`am_pm_border_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(1)`.
+    """
+
+    am_pm = OptionProperty("am", options=["am", "pm"])
+    """
+    Current AM/PM mode.
+
+    :attr:`am_pm` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `am`.
+    """
+
+    animation_duration = NumericProperty(0.2)
+    """
+    Duration of the animations.
+
+    :attr:`animation_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    animation_transition = StringProperty("out_quad")
+    """
+    Transition type of the animations.
+
+    :attr:`animation_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `out_quad`.
+    """
+
+    time = ObjectProperty()
+    """
+    Returns the current time object.
 
     :attr:`time` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 
-    radius = ListProperty([0, 0, 0, 0])
-    """
-    Corner radius values.
-
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `'[0, 0, 0, 0]'`.
-    """
-
-    military = BooleanProperty(False)
-    """
-    24H Mode.
-
-    :attr:`military` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
+    _state = StringProperty()
+    _selector = ObjectProperty()
+    _time_input = ObjectProperty()
+    _am_pm_selector = ObjectProperty()
+    _hour_label = ObjectProperty()
+    _minute_label = ObjectProperty()
+    _anim_playing = BooleanProperty(False)
 
     def __init__(self, **kwargs):
+        Clock.schedule_once(self._update_time, 0.1)
         super().__init__(**kwargs)
-        self.current_time = self.ids.time_picker.time
+        self.bind(
+            hour=self._update_time,
+            minute=self._update_time,
+            am_pm=self._update_time,
+        )
+        self.bind(pos=self._check_orienation)
+        self.title = "SELECT TIME"
 
-    def set_time(self, time):
+    def _set_dial_time(self, instance):
+        mode = instance.mode
+        if mode == "hour":
+            self.hour = instance.selected_hour
+        elif mode == "minute":
+            self.minute = instance.selected_minute
+        else:
+            raise
+
+    def _update_time(self, *args):
         """
-        Sets user time.
-
-        :type time: <class 'datetime.time'>
+        Updates TimeInput and CircularSelector based on current hour and minute
         """
 
-        try:
-            self.ids.time_picker.set_time(time)
-        except AttributeError:
-            raise TypeError(
-                "MDTimePicker._set_time must receive a datetime object, "
-                'not a "' + type(time).__name__ + '"'
-            )
+        self._time_input.set_time([self.hour, self.minute])
+        self._selector.selected_minute = self.minute
+        self._selector.selected_hour = self.hour
+        self._am_pm_selector.mode = self.am_pm
+        self._am_pm_selector.selected = self.am_pm
+        if self.hour.strip() and self.minute.strip():
+            self.time = self._get_data()
 
-    def close_cancel(self):
-        self.dismiss()
+    def set_time(self, time_obj):
+        """
+        Manually set time dialog with the specified time.
+        """
 
-    def close_ok(self):
-        self.current_time = self.ids.time_picker.time
-        self.time = self.current_time
-        self.dismiss()
+        hour = time_obj.hour
+        minute = time_obj.minute
+        if hour >= 12:
+            hour -= 12
+            mode = "pm"
+        else:
+            mode = "am"
+        self.hour = str(hour)
+        self.minute = str(minute)
+        self.am_pm = mode
+
+    def get_state(self):
+        """
+        Returns the current state of TimePicker. Can be one of `portrait`, `landscape` or `input`
+        """
+
+        return self._state
+
+    def _on_time_input(self, time):
+        self.hour = time[0]
+        self.minute = time[1]
+
+    def _set_am_pm(self, selected):
+        self.am_pm = selected
+
+    def _get_data(self):
+        return datetime.datetime.strptime(
+            f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
+            "%I:%M %p",
+        ).time()
+
+    def _check_orienation(self, *args, do_anim=False):
+        orientation = self.theme_cls.device_orientation
+        if self._state != "input" and orientation != self._state:
+            self._update_pos_size(orientation, anim=do_anim)
+
+    def _update_pos_size(self, orientation, anim=False):
+        d = self.animation_duration if anim else 0
+        _time_input = Animation(
+            pos=[dp(24), dp(368)]
+            if orientation == "portrait"
+            else (
+                [dp(24), dp(178)]
+                if orientation == "landscape"
+                else [dp(24), dp(96)]
+            ),
+            d=d,
+            t=self.animation_transition,  # 80 - 8,
+        )
+        self._time_input.disabled = False if orientation == "input" else True
+        _time_input.start(self._time_input)
+        self._time_input.size = (
+            [dp(216), dp(62)] if orientation == "input" else [dp(216), dp(72)]
+        )
+        Clock.schedule_once(self._time_input._update_padding, 0.15)
+
+        # Circular Selector
+        Animation(
+            pos=[dp(36), dp(76)]
+            if orientation == "portrait"
+            else [dp(304), dp(76)],
+            size=[0, 0] if orientation == "input" else [dp(256), dp(256)],
+            opacity=0 if orientation == "input" else 1,
+            d=d,
+            t=self.animation_transition,
+        ).start(self._selector)
+
+        # AM/PM Selector
+        Animation(
+            pos=[dp(252), dp(368)]
+            if orientation == "portrait"
+            else (
+                [dp(24), dp(126)]
+                if orientation == "landscape"
+                else [dp(252), dp(96)]
+            ),
+            size=[dp(52), dp(80)]
+            if orientation == "portrait"
+            else (
+                [dp(216), dp(40)]
+                if orientation == "landscape"
+                else [dp(48), dp(70)]
+            ),
+            d=d,
+            t=self.animation_transition,
+        ).start(self._am_pm_selector)
+        self._am_pm_selector.orientation = (
+            "horizontal" if orientation == "landscape" else "vertical"
+        )
+
+        # MDTimePicker
+        Animation(
+            size=[dp(328), dp(500)]
+            if orientation == "portrait"
+            else (
+                [dp(584), dp(368)]
+                if orientation == "landscape"
+                else [dp(324), dp(218)]
+            ),
+            d=d,
+            t=self.animation_transition,
+        ).start(self)
+
+        # Minute Label
+        Animation(
+            pos=[dp(144), dp(76)],
+            opacity=1 if orientation == "input" else 0,
+            d=d,
+            t=self.animation_transition,
+        ).start(self._minute_label)
+
+        # Hour Label
+        Animation(
+            pos=[dp(24), dp(76)],
+            opacity=1 if orientation == "input" else 0,
+            d=d,
+            t=self.animation_transition,
+        ).start(self._hour_label)
+
+        self._state = orientation
+        self.ids.input_clock_switch.icon = (
+            "clock-time-four-outline" if orientation == "input" else "keyboard"
+        )
+
+    def _switch_input(self):
+        self._update_pos_size(
+            self.theme_cls.device_orientation
+            if self._state == "input"
+            else "input",
+            anim=True,
+        )
 
 
 Builder.load_string(

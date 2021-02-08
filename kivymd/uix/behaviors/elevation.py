@@ -90,6 +90,7 @@ Similarly, create a button with a circular elevation effect:
     #:import images_path kivymd.images_path
     #:import Animation kivy.animation.Animation
 
+
     <CircularElevationButton>:
         size_hint: None, None
         size: "100dp", "100dp"
@@ -97,6 +98,7 @@ Similarly, create a button with a circular elevation effect:
         anima:Animation
         radius: self.size[0]/2
         elevation:10
+
         MDIcon:
             icon:"hand-heart"
             halign:"center"
@@ -108,8 +110,7 @@ Similarly, create a button with a circular elevation effect:
             text_color:[1]*4
 
 
-    Screen:
-
+    MDScreen:
         # With elevation effect
         CircularElevationButton:
             pos_hint: {"center_x": .5, "center_y": .6}
@@ -185,38 +186,41 @@ from PIL import Image, ImageDraw, ImageFilter
 Builder.load_string(
     """
 #:import InstructionGroup kivy.graphics.instructions.InstructionGroup
+
+
 <CommonElevationBehavior>
     canvas.before:
         # SOFT SHADOW
-        PushMatrix:
+        PushMatrix
         Rotate:
-            angle:self.angle
+            angle: self.angle
             origin: self._shadow_origin
         Color:
-            group:"soft_shadow"
-            rgba:root.soft_shadow_cl
+            group: "soft_shadow"
+            rgba: root.soft_shadow_cl
         Rectangle:
-            group:"soft_shadow"
+            group: "soft_shadow"
             texture: self._soft_shadow_texture
             size: self.soft_shadow_size
             pos: self.soft_shadow_pos
         PopMatrix:
+
         # HARD SHADOW
-        PushMatrix:
+        PushMatrix
         Rotate:
-            angle:self.angle
+            angle: self.angle
             origin: self.center
         Color:
-            group:"hard_shadow"
-            rgba:root.hard_shadow_cl
+            group: "hard_shadow"
+            rgba: root.hard_shadow_cl
         Rectangle:
-            group:"hard_shadow"
+            group: "hard_shadow"
             texture: self.hard_shadow_texture
             size: self.hard_shadow_size
             pos: self.hard_shadow_pos
-        PopMatrix:
+        PopMatrix
         Color:
-            group:"shadow"
+            group: "shadow"
             a: 1
 """,
     filename="CommonElevationBehavior.kv",
@@ -253,7 +257,7 @@ class CommonElevationBehavior(Widget):
 
             MDScreen:
 
-                RectangularRippleButton:
+                CircularRippleButton:
                     size_hint: None, None
                     size: "50dp", "50dp"
                     md_bg_color: .2, .2, .2, 1
@@ -263,7 +267,7 @@ class CommonElevationBehavior(Widget):
             '''
 
 
-            class RectangularRippleButton(
+            class CircularRippleButton(
                 CircularElevationBehavior,
                 CircularRippleBehavior,
                 ButtonBehavior,
@@ -339,7 +343,7 @@ class CommonElevationBehavior(Widget):
     _shadow_origin_x = NumericProperty(0)
     """
     Shadow origin x position for the rotation origin.
-    Managed by :attr:`kivymd.uix.behaviors.CommonElevationBehavior._shadow_origin`.
+    Managed by `_shadow_origin`.
 
     :attr:`_shadow_origin_x` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
@@ -351,7 +355,7 @@ class CommonElevationBehavior(Widget):
     _shadow_origin_y = NumericProperty(0)
     """
     Shadow origin y position for the rotation origin.
-    Managed by :attr:`kivymd.uix.behaviors.CommonElevationBehavior._shadow_origin`.
+    Managed by `_shadow_origin`.
 
     :attr:`_shadow_origin_y` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
@@ -405,9 +409,8 @@ class CommonElevationBehavior(Widget):
     """
     Widget's shadow Group.
     By default every widget with a shadow is saved inside the memory
-    :attr:`kivymd.uix.behaviors.CommonElevationBehavior.__shadow_groups` as a
-    weakref. this means that you can have multiple light sources, one for every
-    shadow group.
+    `__shadow_groups` as a weakref. This means that you can have multiple light
+    sources, one for every shadow group.
 
     To fake a light source use force_shadow_pos.
 
@@ -550,9 +553,9 @@ class CommonElevationBehavior(Widget):
     You can use the source for this clases as example of how to draw over
     with the context:
 
-    #. "RectangularElevationBehavior"
-    #. "CircularElevationBehavior"
-    #. "RoundedRectangularElevationBehavior"
+        #. "RectangularElevationBehavior"
+        #. "CircularElevationBehavior"
+        #. "RoundedRectangularElevationBehavior"
 
     :attr:`draw_shadow` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to None.
@@ -578,8 +581,8 @@ class CommonElevationBehavior(Widget):
             def __draw_shadow__(self, origin, end, context=None):
                 context.draw(...)
 
-    Context is a Pillow `ImageDraw` class.
-    for more information check the Pillow official documentation.
+    Context is a Pillow `ImageDraw` class. For more information check the
+    [Pillow official documentation](https://github.com/python-pillow/Pillow/).
     """
 
     def __init__(self, **kwargs):

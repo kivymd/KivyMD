@@ -1,5 +1,5 @@
-from kivymd.uix.screen import MDScreen
 from kivymd.uix.picker import MDDatePicker, MDTimePicker
+from kivymd.uix.screen import MDScreen
 
 
 class KitchenSinkPickers(MDScreen):
@@ -12,7 +12,9 @@ class KitchenSinkPickers(MDScreen):
         time_dialog.open()
 
     def set_previous_date(self, instance, value, date_rang):
-        self.ids.date_picker_label.text = f"{value.day}.{value.month}.{value.year}"
+        self.ids.date_picker_label.text = (
+            f"{value.day}.{value.month}.{value.year}"
+        )
 
     def show_example_date_picker(self):
         dialog = MDDatePicker()

@@ -1,0 +1,77 @@
+from kivy.lang import Builder
+from kivy.animation import Animation
+from kivy.uix.image import Image
+from kivy.uix.behaviors import ButtonBehavior
+from kivymd.uix.label import  MDIcon
+from kivymd.app import MDApp
+from kivymd.uix.behaviors import (
+    CircularRippleBehavior,
+    CircularElevationBehavior,
+    SpecificBackgroundColorBehavior
+)
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ObjectProperty
+
+KV = '''
+#:import images_path kivymd.images_path
+#:import Animation kivy.animation.Animation
+
+<CircularElevationButton>:
+    size_hint: None, None
+    size: "100dp", "100dp"
+    source: f"{images_path}/kivymd.png"
+    anima:Animation
+    radius: self.size[0]/2
+    elevation:10
+    MDIcon:
+        icon:"hand-heart"
+        halign:"center"
+        valign:"center"
+        size:root.size
+        pos:root.pos
+        font_size:root.size[0]*0.6
+        theme_text_color:"Custom"
+        text_color:[1]*4
+
+
+Screen:
+
+    # With elevation effect
+    CircularElevationButton:
+        pos_hint: {"center_x": .5, "center_y": .6}
+        elevation: 5
+
+    # Without elevation effect
+    CircularElevationButton:
+        pos_hint: {"center_x": .5, "center_y": .4}
+        elevation: 0
+'''
+
+
+class CircularElevationButton(
+    CircularElevationBehavior,
+    CircularRippleBehavior,
+    SpecificBackgroundColorBehavior,
+    ButtonBehavior,
+    BoxLayout,
+):
+    md_bg_color = [0, 0, 1, 1]
+    shadow_animation=ObjectProperty()
+
+    def on_press(self,*dt):
+        if self.shadow_animation:
+            Animation.cancel(self.shadow_animation)
+        Animation(_elevation=30, d=0.2).start(self)
+
+    def on_release(self,*dt):
+        if self.shadow_animation:
+            Animation.cancel(self.shadow_animation)
+        Animation(_elevation=self.elevation, d=0.2).start(self)
+
+
+class Example(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Example().run()

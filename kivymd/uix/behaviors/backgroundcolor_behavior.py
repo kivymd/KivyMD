@@ -12,8 +12,10 @@ from kivy.properties import (
     BoundedNumericProperty,
     ColorProperty,
     ListProperty,
+    NumericProperty,
     OptionProperty,
     ReferenceListProperty,
+    VariableListProperty,
 )
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
@@ -27,17 +29,33 @@ Builder.load_string(
 
 <BackgroundColorBehavior>
     canvas:
+        PushMatrix:
+        Rotate:
+            angle: self.angle
+            origin: self._background_origin
         Color:
             rgba: self.md_bg_color
         RoundedRectangle:
+            group:"Background_instruction"
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             radius: root.radius
-"""
+        PopMatrix:
+""",
+    filename="BackgroundColorBehavior.kv",
 )
 
 
 class BackgroundColorBehavior(Widget):
+    angle = NumericProperty(0)
+    _background_x = NumericProperty(0)
+    _background_y = NumericProperty(0)
+    _background_origin = ReferenceListProperty(
+        _background_x,
+        _background_y,
+    )
+    background_origin = ListProperty(None)
+
     r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
     """The value of ``red`` in the ``rgba`` palette.
 
@@ -66,7 +84,7 @@ class BackgroundColorBehavior(Widget):
     and defaults to `0.0`.
     """
 
-    radius = ListProperty([0, 0, 0, 0])
+    radius = VariableListProperty([0], length=4)
     """Canvas radius.
 
     .. code-block:: python
@@ -76,7 +94,7 @@ class BackgroundColorBehavior(Widget):
             md_bg_color: app.theme_cls.primary_color
             radius: [25, 0, 0, 0]
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
@@ -106,6 +124,16 @@ class BackgroundColorBehavior(Widget):
     :attr:`md_bg_color` is an :class:`~kivy.properties.ReferenceListProperty`
     and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
     """
+
+    def __init__(self, **kwarg):
+        super().__init__(**kwarg)
+        self.bind(pos=self.update_background_origin)
+
+    def update_background_origin(self, *dt):
+        if self.background_origin:
+            self._background_origin = self.background_origin
+        else:
+            self._background_origin = self.center
 
 
 class SpecificBackgroundColorBehavior(BackgroundColorBehavior):

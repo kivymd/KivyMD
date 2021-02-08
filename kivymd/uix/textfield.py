@@ -939,6 +939,7 @@ class MDTextField(ThemableBehavior, TextInput):
             _hint_lbl_font_size=self._hint_lbl.setter("font_size"),
             helper_text_mode=self._set_message_mode,
             max_text_length=self._set_max_text_length,
+            text=self.set_text,
         )
         self.theme_cls.bind(
             primary_color=self._update_primary_color,

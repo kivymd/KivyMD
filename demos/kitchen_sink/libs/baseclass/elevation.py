@@ -1,21 +1,24 @@
-from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty, BooleanProperty
-from kivy.uix.behaviors import (ButtonBehavior)
-from kivymd.uix.behaviors import (
-    RectangularElevationBehavior,
-    CircularElevationBehavior,
-    RoundedRectangularElevationBehavior,
-    CircularRippleBehavior,
-    SpecificBackgroundColorBehavior
-)
+from kivy.clock import Clock
+from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
-from kivy.clock import  Clock
-class ElevationScreen(Screen):
-    Filled=BooleanProperty(False)
-    clean_event=ObjectProperty()
 
-    def on_enter(self,*dt):
+from kivymd.uix.behaviors import (
+    CircularElevationBehavior,
+    CircularRippleBehavior,
+    RectangularElevationBehavior,
+    RoundedRectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+)
+
+
+class ElevationScreen(Screen):
+    Filled = BooleanProperty(False)
+    clean_event = ObjectProperty()
+
+    def on_enter(self, *dt):
         # optimized code to allow a faster comeback
         if self.clean_event:
             self.clean_event.cancel()
@@ -23,37 +26,32 @@ class ElevationScreen(Screen):
             for i in range(32):
                 self.ids.container_box_1.add_widget(
                     Elevation_Example_Box(
-                        elevation=i,
-                        size=[60,60],
-                        size_hint=[None,None]
+                        elevation=i, size=[60, 60], size_hint=[None, None]
                     )
                 )
                 self.ids.container_box_2.add_widget(
                     Elevation_Example_Circle(
-                        elevation=i,
-                        size=[60,60],
-                        size_hint=[None,None]
+                        elevation=i, size=[60, 60], size_hint=[None, None]
                     )
                 )
                 self.ids.container_box_3.add_widget(
                     Elevation_Example_Rounded(
-                        elevation=i,
-                        size=[70,40],
-                        size_hint=[None,None]
+                        elevation=i, size=[70, 40], size_hint=[None, None]
                     )
                 )
-            self.Filled=True
+            self.Filled = True
 
-    def on_leave(self,*dt):
-        self.clean_event = Clock.schedule_once(self.clear_screen,10)
+    def on_leave(self, *dt):
+        self.clean_event = Clock.schedule_once(self.clear_screen, 10)
 
-    def clear_screen(self,*dt):
+    def clear_screen(self, *dt):
         self.ids.container_box_1.clear_widgets()
         self.ids.container_box_2.clear_widgets()
         self.ids.container_box_3.clear_widgets()
-        self.Filled=False
+        self.Filled = False
 
     pass
+
 
 class Elevation_Example_Box(
     RectangularElevationBehavior,
@@ -62,8 +60,9 @@ class Elevation_Example_Box(
     BoxLayout,
     # BoxLayout
 ):
-    animation=ObjectProperty()
-    md_bg_color=[1]*4
+    animation = ObjectProperty()
+    md_bg_color = [1] * 4
+
 
 class Elevation_Example_Circle(
     CircularElevationBehavior,
@@ -72,10 +71,12 @@ class Elevation_Example_Circle(
     ButtonBehavior,
     BoxLayout,
 ):
-    animation=ObjectProperty()
-    md_bg_color=[1]*4
+    animation = ObjectProperty()
+    md_bg_color = [1] * 4
+
     def on_size(self, *dt):
-        self.radius=[self.size[0]/2]
+        self.radius = [self.size[0] / 2]
+
 
 class Elevation_Example_Rounded(
     RoundedRectangularElevationBehavior,
@@ -83,5 +84,5 @@ class Elevation_Example_Rounded(
     ButtonBehavior,
     BoxLayout,
 ):
-    animation=ObjectProperty()
-    md_bg_color=[1]*4
+    animation = ObjectProperty()
+    md_bg_color = [1] * 4

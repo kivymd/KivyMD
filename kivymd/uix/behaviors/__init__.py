@@ -15,6 +15,7 @@ from .elevation import (
     CircularElevationBehavior,
     CommonElevationBehavior,
     RectangularElevationBehavior,
+    RoundedRectangularElevationBehavior,
 )
 from .focus_behavior import FocusBehavior
 from .magic_behavior import MagicBehavior

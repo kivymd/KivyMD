@@ -1,0 +1,94 @@
+#: import RectangularElevationBehavior kivymd.uix.behaviors.RectangularElevationBehavior
+#: import CircularRippleBehavior kivymd.uix.behaviors.CircularRippleBehavior
+#: import RoundedRectangularElevationBehavior kivymd.uix.behaviors.RoundedRectangularElevationBehavior
+#: import Animation kivy.animation.Animation
+
+<Elevation_Example_Box>:
+    on_press:
+        Animation.cancel_all(self)
+        self.animation_=Animation(_elevation = self.elevation+10, d=0.2).start(self)
+    on_release:
+        Animation.cancel_all(self)
+        self.animation_=Animation(_elevation = self.elevation, d=0.2).start(self)
+
+    MDLabel:
+        text:str(root.elevation)
+        size:root.size
+        halign:"center"
+        valign:"center"
+
+<Elevation_Example_Circle>:
+    on_press:
+        Animation.cancel_all(self)
+        self.animation_=Animation(_elevation = self.elevation+10, d=0.2).start(self)
+    on_release:
+        Animation.cancel_all(self)
+        self.animation_=Animation(_elevation = self.elevation, d=0.2).start(self)
+
+    MDLabel:
+        text:str(root.elevation)
+        size:root.size
+        halign:"center"
+        valign:"center"
+
+<Elevation_Example_Rounded>:
+    on_press:
+        Animation.cancel_all(self)
+        self.animation_=Animation(_elevation = self.elevation+10, d=0.2, radius=[self.size[1]/2]*4).start(self)
+    on_release:
+        Animation.cancel_all(self)
+        self.animation_=Animation(_elevation = self.elevation, d=0.2, radius=[0]*4).start(self)
+
+    MDLabel:
+        text:str(root.elevation)
+        size:root.size
+        halign:"center"
+        valign:"center"
+
+
+<ElevationScreen>:
+    name:"ElevationScreen"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+        Toolbar:
+            id: toolbar
+        ScrollView:
+            do_scroll_y:True
+            do_scroll_x:False
+            MDGridLayout:
+                padding: dp(8)
+                spacing: dp(32)
+                size_hint_y:None
+                cols:1
+                size:self.minimum_size
+                # on_children:
+                #     self.size=self.minimum_size
+                MDGridLayout:
+                    cols:6
+                    id: container_box_1
+                    spacing: dp(40)
+                    padding: dp(40)
+                    size:self.minimum_size
+                    size_hint_y: None
+                    # on_children:
+                    #     self.size=self.minimum_size
+                MDGridLayout:
+                    cols:6
+                    id: container_box_2
+                    spacing: dp(40)
+                    padding: dp(40)
+                    size:self.minimum_size
+                    size_hint_y: None
+                    # on_children:
+                    #     self.size=self.minimum_size
+                MDGridLayout:
+                    cols:6
+                    id: container_box_3
+                    spacing: dp(40)
+                    padding: dp(40)
+                    size:self.minimum_size
+                    size_hint_y: None
+                    # on_children:
+                    #     self.size=self.minimum_size

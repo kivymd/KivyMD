@@ -14,7 +14,7 @@ class KitchenSinkStackButtons(Screen):
                 toast(instance_button.icon)
 
             button_speed_dial = MDFloatingActionButtonSpeedDial()
-            button_speed_dial.rotation_root_button = True
+            button_speed_dial.root_button_anim = True
             button_speed_dial.data = {
                 "language-python": "Python",
                 "language-php": "PHP",

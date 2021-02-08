@@ -2143,9 +2143,15 @@ Builder.load_string(
 <CircularSelector>
     circular_padding: dp(28)
     size_hint: None, None
+    size: [dp(256), dp(256)]
     row_spacing: dp(40)
 
     canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.scale_origin
+            x: root.scale
+            y: root.scale
         Color:
             rgba: root.bg_color
         Ellipse:
@@ -2154,8 +2160,8 @@ Builder.load_string(
         PushMatrix
         Scale:
             origin: self.center
-            x: root.scale
-            y: root.scale
+            x: root.content_scale
+            y: root.content_scale
         Color:
             rgb: root.selector_color
             a: 0 if self.selector_pos == [0, 0] else 1
@@ -2172,6 +2178,7 @@ Builder.load_string(
             width: dp(1)
     canvas.after:
         PopMatrix
+        PopMatrix
 
 
 <SelectorLabel>
@@ -2182,7 +2189,7 @@ Builder.load_string(
 
 
 <MDTimePicker>
-    auto_dismiss: False
+    auto_dismiss: True
     size_hint: None , None
     _time_input: _time_input
     _selector: _selector
@@ -2229,7 +2236,7 @@ Builder.load_string(
             text_color:
                 root.input_field_text_color if root.input_field_text_color else \
                 root.theme_cls.text_color
-            on_time_input: root._on_time_input(self.get_time())
+            on_time_input: root._get_time_input(*self.get_time())
             on_hour_select: _selector.switch_mode("hour")
             on_minute_select: _selector.switch_mode("minute")
             minute_radius: root.minute_radius
@@ -2267,7 +2274,7 @@ Builder.load_string(
             text_color:
                 root.input_field_text_color if root.input_field_text_color else \
                 root.theme_cls.text_color
-            on_selected: root._set_am_pm(self.selected)
+            on_selected: root._get_am_pm(self.selected)
 
         CircularSelector:
             id: _selector
@@ -2281,7 +2288,7 @@ Builder.load_string(
                 root.selector_color if root.selector_color else \
                 root.theme_cls.primary_color
             font_name: root.font_name
-            on_selector_change: root._set_dial_time(_selector)
+            on_selector_change: root._get_dial_time(_selector)
 
         MDIconButton:
             id: input_clock_switch
@@ -2355,8 +2362,8 @@ class AM_PM_Selector(ThemableBehavior, MDBoxLayout, EventDispatcher):
 
 class TimeInputTextField(MDTextField):
     num_type = OptionProperty("hour", options=["hour", "minute"])
-    hour_regx = "^[0-9]$|^1[0-2]$"
-    minute_regx = "^[0-9]$|^[1-5][0-9]$"
+    hour_regx = "^[1-9]$|^1[0-2]$"
+    minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -2365,28 +2372,27 @@ class TimeInputTextField(MDTextField):
         self.bind(text_color=self.setter("_current_hint_text_color"))
         self.bind(text_color=self.setter("current_hint_text_color"))
 
+    def insert_text(self, s, from_undo=False):
+        text = self.text.strip()
+        current_string = "".join([text, s])
+        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
+        reg_result = re.match(reg, current_string)
+        if not reg_result:
+            s = ""
+        return super().insert_text(s, from_undo=from_undo)
+
     def on_text(self, *args):
         """
         texts should be center aligned. now we are setting the
         padding of text to somehow make them aligned.
         """
-
-        # cursor gets off centered when there is no text
-        if not self.text and self.focus:
+        if not self.text:
             self.text = " "
-
-        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
-        reg_result = re.match(reg, self.text.strip())
-        if not reg_result:
-            text = self.text[:-1]
-            if text:
-                self.text = text
 
         self._refresh_text(self.text)
         max_size = max(self._lines_rects, key=lambda r: r.size[0]).size
         dx = (self.width - max_size[0]) / 2.0
         dy = (self.height - max_size[1]) / 2.0
-        # self.padding = [dx, -0.5, dx, -0.5]
         self.padding = [dx, dy, dx, dy]
 
         if len(self.text) > 1:
@@ -2394,7 +2400,7 @@ class TimeInputTextField(MDTextField):
 
     def on_focus(self, *args):
         super().on_focus(*args)
-        self.on_text()
+        # self.on_text()
 
     def on_select(self, *args):
         pass
@@ -2423,11 +2429,14 @@ class TimeInput(MDRelativeLayout, EventDispatcher):
         self.register_event_type("on_minute_select")
 
     def set_time(self, time_list):
-        self._hour.text = time_list[0]
-        self._minute.text = time_list[1]
+        hour, minute = time_list
+        self._hour.text = hour
+        self._minute.text = minute
 
     def get_time(self):
-        return [self._hour.text, self._minute.text]
+        hour = self._hour.text.strip()
+        minute = self._minute.text.strip()
+        return [hour, minute]
 
     def _update_padding(self, *args):
         self._hour.on_text()
@@ -2459,8 +2468,10 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
     font_name = StringProperty()
     _centers_pos = ListProperty()
     scale = NumericProperty(1)
+    content_scale = NumericProperty(1)
     t = StringProperty("out_quad")
     d = NumericProperty(0.2)
+    scale_origin = ListProperty([100, 100])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -2495,7 +2506,7 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
             self.degree_spacing = 30
             self.start_from = 90
         if animate:
-            anim = Animation(scale=0, t=self.t, d=self.d)
+            anim = Animation(content_scale=0, t=self.t, d=self.d)
             anim.bind(on_complete=lambda *args: self._add_items(*param))
             anim.start(self)
         else:
@@ -2524,7 +2535,7 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
             i += 1
         Clock.schedule_once(self.update_time)
         Clock.schedule_once(self._get_centers, 0.1)
-        anim = Animation(scale=1, t=self.t, d=self.d)
+        anim = Animation(content_scale=1, t=self.t, d=self.d)
         anim.start(self)
 
     def _get_centers(self, *args):
@@ -2669,7 +2680,7 @@ class MDTimePicker(BaseDialogPicker):
     and defaults to `am`.
     """
 
-    animation_duration = NumericProperty(0.2)
+    animation_duration = NumericProperty(0.3)
     """
     Duration of the animations.
 
@@ -2702,73 +2713,80 @@ class MDTimePicker(BaseDialogPicker):
     _anim_playing = BooleanProperty(False)
 
     def __init__(self, **kwargs):
-        Clock.schedule_once(self._update_time, 0.1)
         super().__init__(**kwargs)
         self.bind(
-            hour=self._update_time,
-            minute=self._update_time,
-            am_pm=self._update_time,
+            pos=self._check_orienation,
+            hour=self._set_current_time,
+            minute=self._set_current_time,
+            am_pm=self._set_current_time,
         )
-        self.bind(pos=self._check_orienation)
         self.title = "SELECT TIME"
+        # default time
+        self.set_time(datetime.time(hour=12, minute=0))
 
-    def _set_dial_time(self, instance):
+    def _get_dial_time(self, instance):
         mode = instance.mode
         if mode == "hour":
             self.hour = instance.selected_hour
         elif mode == "minute":
             self.minute = instance.selected_minute
         else:
-            raise
+            raise Exception("invalid mode for MDTimePicker: " % mode)
+        self._set_time_input(self.hour, self.minute)
 
-    def _update_time(self, *args):
-        """
-        Updates TimeInput and CircularSelector based on current hour and minute
-        """
+    def _set_dial_time(self, hour, minute):
+        self._selector.selected_minute = minute
+        self._selector.selected_hour = hour
 
-        self._time_input.set_time([self.hour, self.minute])
-        self._selector.selected_minute = self.minute
-        self._selector.selected_hour = self.hour
+    def _get_time_input(self, hour, minute):
+        if hour:
+            self.hour = f"{int(hour):01d}"
+        if minute:
+            self.minute = f"{int(minute):01d}"
+        self._set_dial_time(self.hour, self.minute)
+
+    def _set_time_input(self, hour, minute):
+        hour = f"{int(hour):02d}"
+        minute = f"{int(minute):02d}"
+        if self._state != "input":
+            self._time_input.set_time([hour, minute])
+
+    def _get_am_pm(self, selected):
+        self.am_pm = selected
+
+    def _set_am_pm(self, selected):
         self._am_pm_selector.mode = self.am_pm
         self._am_pm_selector.selected = self.am_pm
-        if self.hour.strip() and self.minute.strip():
-            self.time = self._get_data()
 
     def set_time(self, time_obj):
         """
         Manually set time dialog with the specified time.
         """
-
         hour = time_obj.hour
         minute = time_obj.minute
-        if hour >= 12:
+        if hour > 12:
             hour -= 12
             mode = "pm"
         else:
             mode = "am"
-        self.hour = str(hour)
-        self.minute = str(minute)
-        self.am_pm = mode
+        hour = str(hour)
+        minute = str(minute)
+        self._set_time_input(hour, minute)
+        self._set_dial_time(hour, minute)
+        self._set_am_pm(mode)
 
     def get_state(self):
         """
         Returns the current state of TimePicker. Can be one of `portrait`, `landscape` or `input`
         """
-
         return self._state
 
-    def _on_time_input(self, time):
-        self.hour = time[0]
-        self.minute = time[1]
-
-    def _set_am_pm(self, selected):
-        self.am_pm = selected
-
     def _get_data(self):
-        return datetime.datetime.strptime(
+        result = datetime.datetime.strptime(
             f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
             "%I:%M %p",
         ).time()
+        return result
 
     def _check_orienation(self, *args, do_anim=False):
         orientation = self.theme_cls.device_orientation
@@ -2796,11 +2814,21 @@ class MDTimePicker(BaseDialogPicker):
         Clock.schedule_once(self._time_input._update_padding, 0.15)
 
         # Circular Selector
+        if orientation == "input":
+            if self.theme_cls.device_orientation == "portrait":
+                selector_pos = [dp(34), dp(-256)]
+                self._selector.scale_origin = [dp(162), dp(200)]
+            else:
+                selector_pos = [dp(324), dp(-19)]
+                self._selector.scale_origin = [dp(292), dp(109)]
+        elif orientation == "portrait":
+            self._selector.pos = selector_pos = [dp(36), dp(76)]
+        else:
+            self._selector.pos = selector_pos = [dp(304), dp(76)]
+
         Animation(
-            pos=[dp(36), dp(76)]
-            if orientation == "portrait"
-            else [dp(304), dp(76)],
-            size=[0, 0] if orientation == "input" else [dp(256), dp(256)],
+            pos=selector_pos,
+            scale=0 if orientation == "input" else 1,
             opacity=0 if orientation == "input" else 1,
             d=d,
             t=self.animation_transition,
@@ -2862,6 +2890,9 @@ class MDTimePicker(BaseDialogPicker):
         self.ids.input_clock_switch.icon = (
             "clock-time-four-outline" if orientation == "input" else "keyboard"
         )
+
+    def _set_current_time(self, *args):
+        self.time = self._get_data()
 
     def _switch_input(self):
         self._update_pos_size(

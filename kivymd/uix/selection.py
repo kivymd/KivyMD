@@ -152,11 +152,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    ObjectProperty,
-    NumericProperty,
-    StringProperty,
+    ColorProperty,
     ListProperty,
-    ColorProperty
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
 )
 
 from kivymd.theming import ThemableBehavior

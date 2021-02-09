@@ -2732,6 +2732,7 @@ class MDTimePicker(BaseDialogPicker):
             minute=self._set_current_time,
             am_pm=self._set_current_time,
         )
+        self.theme_cls.bind(device_orientation=self._check_orienation)
         self.title = "SELECT TIME"
         # default time
         self.set_time(datetime.time(hour=12, minute=0))

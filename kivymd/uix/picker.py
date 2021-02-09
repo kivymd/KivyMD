@@ -2360,7 +2360,7 @@ class AmPmSelector(ThemableBehavior, MDBoxLayout, EventDispatcher):
 
 class TimeInputTextField(MDTextField):
     num_type = OptionProperty("hour", options=["hour", "minute"])
-    hour_regx = "^[1-9]$|^1[0-2]$"
+    hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
     minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
 
     def __init__(self, **kwargs):
@@ -2370,12 +2370,14 @@ class TimeInputTextField(MDTextField):
         self.bind(text_color=self.setter("_current_hint_text_color"))
         self.bind(text_color=self.setter("current_hint_text_color"))
 
+    def validate_time(self, s):
+        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
+        return re.match(reg, s)
+
     def insert_text(self, s, from_undo=False):
         text = self.text.strip()
         current_string = "".join([text, s])
-        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
-        reg_result = re.match(reg, current_string)
-        if not reg_result:
+        if not self.validate_time(current_string):
             s = ""
         return super().insert_text(s, from_undo=from_undo)
 
@@ -2399,7 +2401,15 @@ class TimeInputTextField(MDTextField):
 
     def on_focus(self, *args):
         super().on_focus(*args)
-        # self.on_text()
+        if self.text.strip():
+            if (
+                not self.focus
+                and int(self.text) == 0
+                and self.num_type == "hour"
+            ):
+                self.text = "12"
+        else:
+            self.text = " 12" if self.num_type == "hour" else " 00"
 
     def on_select(self, *args):
         pass
@@ -2699,7 +2709,7 @@ class MDTimePicker(BaseDialogPicker):
     and defaults to `out_quad`.
     """
 
-    time = ObjectProperty()
+    time = ObjectProperty(allownone=True)
     """
     Returns the current time object.
 
@@ -2718,7 +2728,6 @@ class MDTimePicker(BaseDialogPicker):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
-            pos=self._check_orienation,
             hour=self._set_current_time,
             minute=self._set_current_time,
             am_pm=self._set_current_time,
@@ -2726,6 +2735,7 @@ class MDTimePicker(BaseDialogPicker):
         self.title = "SELECT TIME"
         # default time
         self.set_time(datetime.time(hour=12, minute=0))
+        self._check_orienation()
 
     def _get_dial_time(self, instance):
         mode = instance.mode
@@ -2785,11 +2795,15 @@ class MDTimePicker(BaseDialogPicker):
         return self._state
 
     def _get_data(self):
-        result = datetime.datetime.strptime(
-            f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
-            "%I:%M %p",
-        ).time()
-        return result
+        try:
+            result = datetime.datetime.strptime(
+                f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
+                "%I:%M %p",
+            ).time()
+            return result
+        except ValueError:
+            # hour is zero
+            return None
 
     def _check_orienation(self, *args, do_anim=False):
         orientation = self.theme_cls.device_orientation
@@ -2797,24 +2811,32 @@ class MDTimePicker(BaseDialogPicker):
             self._update_pos_size(orientation, anim=do_anim)
 
     def _update_pos_size(self, orientation, anim=False):
-        d = self.animation_duration if anim else 0
-        _time_input = Animation(
-            pos=[dp(24), dp(368)]
+        d = self.animation_duration
+        # Time Input
+        time_input_pos = (
+            [dp(24), dp(368)]
             if orientation == "portrait"
             else (
                 [dp(24), dp(178)]
                 if orientation == "landscape"
                 else [dp(24), dp(96)]
-            ),
-            d=d,
-            t=self.animation_transition,  # 80 - 8,
+            )
         )
+        if anim:
+            _time_input = Animation(
+                pos=time_input_pos,
+                d=d,
+                t=self.animation_transition,  # 80 - 8,
+            )
+            _time_input.start(self._time_input)
+        else:
+            self._time_input.pos = time_input_pos
+
         self._time_input.disabled = False if orientation == "input" else True
-        _time_input.start(self._time_input)
         self._time_input.size = (
             [dp(216), dp(62)] if orientation == "input" else [dp(216), dp(72)]
         )
-        Clock.schedule_once(self._time_input._update_padding, 0.15)
+        Clock.schedule_once(self._time_input._update_padding)
 
         # Circular Selector
         if orientation == "input":
@@ -2838,40 +2860,57 @@ class MDTimePicker(BaseDialogPicker):
         ).start(self._selector)
 
         # AM/PM Selector
-        Animation(
-            pos=[dp(252), dp(368)]
+        am_pm_pos = (
+            [dp(252), dp(368)]
             if orientation == "portrait"
             else (
                 [dp(24), dp(126)]
                 if orientation == "landscape"
                 else [dp(252), dp(96)]
-            ),
-            size=[dp(52), dp(80)]
+            )
+        )
+        am_pm_size = (
+            [dp(52), dp(80)]
             if orientation == "portrait"
             else (
                 [dp(216), dp(40)]
                 if orientation == "landscape"
                 else [dp(48), dp(70)]
-            ),
-            d=d,
-            t=self.animation_transition,
-        ).start(self._am_pm_selector)
+            )
+        )
+        if anim:
+            Animation(
+                pos=am_pm_pos,
+                size=am_pm_size,
+                d=d,
+                t=self.animation_transition,
+            ).start(self._am_pm_selector)
+        else:
+            self._am_pm_selector.pos = am_pm_pos
+            self._am_pm_selector.size = am_pm_size
+
         self._am_pm_selector.orientation = (
             "horizontal" if orientation == "landscape" else "vertical"
         )
 
         # MDTimePicker
-        Animation(
-            size=[dp(328), dp(500)]
+        time_picker_size = (
+            [dp(328), dp(500)]
             if orientation == "portrait"
             else (
                 [dp(584), dp(368)]
                 if orientation == "landscape"
                 else [dp(324), dp(218)]
-            ),
-            d=d,
-            t=self.animation_transition,
-        ).start(self)
+            )
+        )
+        if anim:
+            Animation(
+                size=time_picker_size,
+                d=d,
+                t=self.animation_transition,
+            ).start(self)
+        else:
+            self.size = time_picker_size
 
         # Minute Label
         Animation(

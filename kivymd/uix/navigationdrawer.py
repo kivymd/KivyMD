@@ -657,7 +657,7 @@ class MDNavigationDrawer(MDCard):
         ):
             pass
         if self.status == "closed":
-            self.opacity=0
+            self.opacity = 0
         else:
             self.opacity = 1
 

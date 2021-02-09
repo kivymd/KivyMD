@@ -227,8 +227,8 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
-    BoundedNumericProperty,
     BooleanProperty,
+    BoundedNumericProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
@@ -238,6 +238,7 @@ from kivy.properties import (
 )
 from kivy.uix.widget import Widget
 from PIL import Image, ImageDraw, ImageFilter
+
 from kivymd.app import MDApp
 
 Builder.load_string(
@@ -606,7 +607,7 @@ class CommonElevationBehavior(Widget):
     Context is a Pillow `ImageDraw` class.
     for more information check the Pillow official documentation.
     """
-    _fake_elevation =BooleanProperty(False)
+    _fake_elevation = BooleanProperty(False)
 
     def __init__(self, **kwargs):
         if self.draw_shadow is None:
@@ -1051,17 +1052,20 @@ class RoundedRectangularElevationBehavior(CommonElevationBehavior):
                     fill=(255,) * 4,
                 )
 
+
 class ObservableShadow(CommonElevationBehavior):
     """
     ObservableShadow is real time shadow render that it's intended to only
     render a partial shadow of widgets, this is meant to improve the performance
     of rectangular casted shadows.
     """
+
     def __init__(self, **kwargs):
         # self._shadow = MDApp.get_running_app().theme_cls.round_shadow
         # self._fake_elevation=True
         raise NotImplementedError("This class is in current development")
         super().__init__(**kwargs)
+
 
 class FakeRectangularElevationBehavior(CommonElevationBehavior):
     """
@@ -1070,6 +1074,7 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
 
     This class cast a fake Rectangular shadow behaind the widget.
     """
+
     def __init__(self, **kwargs):
         # self._shadow = MDApp.get_running_app().theme_cls.round_shadow
         self.draw_shadow = WeakMethod(self.__draw_shadow__)
@@ -1095,9 +1100,7 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
                 width = soft_width = self.width * 1.9
                 height = self.height + dp(ratio)
                 soft_height = (
-                    self.height
-                    + dp(ratio)
-                    + dp(self._elevation) * 0.5
+                    self.height + dp(ratio) + dp(self._elevation) * 0.5
                 )
             else:
                 self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
@@ -1109,32 +1112,27 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
             # Set ``soft_shadow`` parameters.
             self.hard_shadow_pos = self.soft_shadow_pos = (
                 self.center_x - soft_width / 2,
-                self.center_y
-                - soft_height / 2
-                - dp(self._elevation * 0.5),
+                self.center_y - soft_height / 2 - dp(self._elevation * 0.5),
             )
             # Set transparency
             self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
             self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
             t = int(round(self._elevation))
             if 0 < t <= 23:
-                self._soft_shadow_texture = self._hard_shadow_texture = (
-                    self._shadow.textures[
-                        str(t)
-                    ]
-                )
+                self._soft_shadow_texture = (
+                    self._hard_shadow_texture
+                ) = self._shadow.textures[str(t)]
             else:
-                self._soft_shadow_texture = self._hard_shadow_texture = (
-                    self._shadow.textures[
-                        "23"
-                    ]
-                )
+                self._soft_shadow_texture = (
+                    self._hard_shadow_texture
+                ) = self._shadow.textures["23"]
         else:
             self._soft_shadow_a = 0
             self._hard_shadow_a = 0
 
-    def __draw_shadow__(self,  origin, end, context=None):
+    def __draw_shadow__(self, origin, end, context=None):
         pass
+
 
 class FakeCircularElevationBehavior(CommonElevationBehavior):
     """
@@ -1143,6 +1141,7 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
 
     This class cast a fake elliptic shadow behaind the widget.
     """
+
     def __init__(self, **kwargs):
         self._shadow = MDApp.get_running_app().theme_cls.round_shadow
         self.draw_shadow = WeakMethod(self.__draw_shadow__)
@@ -1160,39 +1159,30 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             self.soft_shadow_size = (width, height)
             self.hard_shadow_size = (width, height)
             # Set ``soft_shadow`` parameters.
-            y = (self.center_y
-                - height/2
-                - dp(0.5 * self._elevation)
-            )
+            y = self.center_y - height / 2 - dp(0.5 * self._elevation)
             self.soft_shadow_pos = (x, y)
 
             # Set ``hard_shadow`` parameters.
-            y = (self.center_y
-                - height/2
-                - dp( 0.5*self._elevation )
-            )
+            y = self.center_y - height / 2 - dp(0.5 * self._elevation)
             self.hard_shadow_pos = (x, y)
 
             # Shadow transparency
             self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
             self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
-            t=int(round(self._elevation))
-            if 0 < t <=23:
+            t = int(round(self._elevation))
+            if 0 < t <= 23:
                 if hasattr(self, "_shadow"):
-                    self._soft_shadow_texture = self._hard_shadow_texture = (
-                        self._shadow.textures[
-                            str(t)
-                            ]
-                        )
+                    self._soft_shadow_texture = (
+                        self._hard_shadow_texture
+                    ) = self._shadow.textures[str(t)]
             else:
-                self._soft_shadow_texture = self._hard_shadow_texture = (
-                    self._shadow.textures[
-                        "23"
-                        ]
-                    )
+                self._soft_shadow_texture = (
+                    self._hard_shadow_texture
+                ) = self._shadow.textures["23"]
         else:
             self._soft_shadow_a = 0
             self._hard_shadow_a = 0
+
     #
-    def __draw_shadow__(self,  origin, end, context=None):
+    def __draw_shadow__(self, origin, end, context=None):
         pass

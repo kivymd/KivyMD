@@ -14,11 +14,11 @@ from .backgroundcolor_behavior import (
 from .elevation import (
     CircularElevationBehavior,
     CommonElevationBehavior,
+    FakeCircularElevationBehavior,
+    FakeRectangularElevationBehavior,
+    ObservableShadow,
     RectangularElevationBehavior,
     RoundedRectangularElevationBehavior,
-    ObservableShadow,
-    FakeRectangularElevationBehavior,
-    FakeCircularElevationBehavior,
 )
 from .focus_behavior import FocusBehavior
 from .magic_behavior import MagicBehavior

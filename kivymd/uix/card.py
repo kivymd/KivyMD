@@ -560,8 +560,8 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     FocusBehavior,
-    RoundedRectangularElevationBehavior,
     RectangularRippleBehavior,
+    RoundedRectangularElevationBehavior,
 )
 
 Builder.load_string(

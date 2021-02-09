@@ -1,27 +1,27 @@
+from kivy.clock import Clock
+from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty, BooleanProperty
-from kivy.uix.behaviors import (ButtonBehavior)
+
 from kivymd.uix.behaviors import (
-    RectangularElevationBehavior,
     CircularElevationBehavior,
-    RoundedRectangularElevationBehavior,
-    ObservableShadow,
+    CircularRippleBehavior,
     FakeCircularElevationBehavior,
     FakeRectangularElevationBehavior,
-    CircularRippleBehavior,
+    ObservableShadow,
+    RectangularElevationBehavior,
     RectangularRippleBehavior,
+    RoundedRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import Widget
-from kivy.clock import  Clock
-from functools import partial
+
 
 class ElevationScreen(Screen):
-    Filled=BooleanProperty(False)
-    clean_event=ObjectProperty()
+    Filled = BooleanProperty(False)
+    clean_event = ObjectProperty()
 
-    def on_enter(self,*dt):
+    def on_enter(self, *dt):
         # optimized code to allow a faster comeback
         if self.clean_event:
             self.clean_event.cancel()
@@ -29,37 +29,27 @@ class ElevationScreen(Screen):
             for i in range(32):
                 self.ids.container_box_1.add_widget(
                     Elevation_Example_Box(
-                        elevation=i,
-                        size=[60,60],
-                        size_hint=[None,None]
+                        elevation=i, size=[60, 60], size_hint=[None, None]
                     )
                 )
                 self.ids.container_box_2.add_widget(
                     Elevation_Example_Circle(
-                        elevation=i,
-                        size=[60,60],
-                        size_hint=[None,None]
+                        elevation=i, size=[60, 60], size_hint=[None, None]
                     )
                 )
                 self.ids.container_box_3.add_widget(
                     Elevation_Example_Rounded(
-                        elevation=i,
-                        size=[70,40],
-                        size_hint=[None,None]
+                        elevation=i, size=[70, 40], size_hint=[None, None]
                     )
                 )
                 self.ids.container_box_4.add_widget(
                     Fake_Elevation_Example_Box(
-                        elevation=i,
-                        size=[60,60],
-                        size_hint=[None,None]
+                        elevation=i, size=[60, 60], size_hint=[None, None]
                     )
                 )
                 self.ids.container_box_5.add_widget(
                     Fake_Elevation_Example_Circle(
-                        elevation=i,
-                        size=[60,60],
-                        size_hint=[None,None]
+                        elevation=i, size=[60, 60], size_hint=[None, None]
                     )
                 )
                 # self.ids.container_box_6.add_widget(
@@ -69,18 +59,19 @@ class ElevationScreen(Screen):
                 #         size_hint=[None,None]
                 #     )
                 # )
-            self.Filled=True
+            self.Filled = True
 
-    def on_leave(self,*dt):
-        self.clean_event = Clock.schedule_once(self.clear_screen,10)
+    def on_leave(self, *dt):
+        self.clean_event = Clock.schedule_once(self.clear_screen, 10)
 
-    def clear_screen(self,*dt):
+    def clear_screen(self, *dt):
         self.ids.container_box_1.clear_widgets()
         self.ids.container_box_2.clear_widgets()
         self.ids.container_box_3.clear_widgets()
-        self.Filled=False
+        self.Filled = False
 
     pass
+
 
 class Elevation_Example_Box(
     RectangularElevationBehavior,
@@ -90,8 +81,9 @@ class Elevation_Example_Box(
     BoxLayout,
     # BoxLayout
 ):
-    animation=ObjectProperty()
-    md_bg_color=[1]*4
+    animation = ObjectProperty()
+    md_bg_color = [1] * 4
+
 
 class Elevation_Example_Circle(
     CircularElevationBehavior,
@@ -100,10 +92,12 @@ class Elevation_Example_Circle(
     ButtonBehavior,
     BoxLayout,
 ):
-    animation=ObjectProperty()
-    md_bg_color=[1]*4
+    animation = ObjectProperty()
+    md_bg_color = [1] * 4
+
     def on_size(self, *dt):
-        self.radius=[self.size[0]/2]
+        self.radius = [self.size[0] / 2]
+
 
 class Elevation_Example_Rounded(
     RoundedRectangularElevationBehavior,
@@ -112,41 +106,44 @@ class Elevation_Example_Rounded(
     ButtonBehavior,
     BoxLayout,
 ):
-    animation=ObjectProperty()
+    animation = ObjectProperty()
     # md_bg_color=[0,1,1,1]
-    md_bg_color = [1]*4
+    md_bg_color = [1] * 4
+
 
 class Fake_Elevation_Example_Box(
-        FakeRectangularElevationBehavior,
-        SpecificBackgroundColorBehavior,
-        RectangularRippleBehavior,
-        ButtonBehavior,
-        BoxLayout,
+    FakeRectangularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+    RectangularRippleBehavior,
+    ButtonBehavior,
+    BoxLayout,
 ):
-    animation=ObjectProperty()
+    animation = ObjectProperty()
     # md_bg_color=[1,0,1,1]
-    md_bg_color = [1]*4
+    md_bg_color = [1] * 4
+
 
 class Fake_Elevation_Example_Circle(
-        FakeCircularElevationBehavior,
-        SpecificBackgroundColorBehavior,
-        CircularRippleBehavior,
-        ButtonBehavior,
-        BoxLayout,
+    FakeCircularElevationBehavior,
+    SpecificBackgroundColorBehavior,
+    CircularRippleBehavior,
+    ButtonBehavior,
+    BoxLayout,
 ):
     animation = ObjectProperty()
     # md_bg_color=[1,1,0,1]
-    md_bg_color = [1]*4
+    md_bg_color = [1] * 4
 
     def on_size(self, *dt):
-        self.radius=[self.size[0]/2]
+        self.radius = [self.size[0] / 2]
 
-class Fake_Elevation_Example_Rounded(
-        # RoundedRectangularElevationBehavior,
-        SpecificBackgroundColorBehavior,
-        RectangularRippleBehavior,
-        ButtonBehavior,
-        BoxLayout,
+
+class Fake_Elevation_Example_Observable(
+    ObservableShadow,
+    SpecificBackgroundColorBehavior,
+    RectangularRippleBehavior,
+    ButtonBehavior,
+    BoxLayout,
 ):
     animation = ObjectProperty()
-    md_bg_color=[1,0,0,.1]
+    md_bg_color = [1, 0, 0, 0.1]

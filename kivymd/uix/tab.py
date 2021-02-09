@@ -517,7 +517,7 @@ Builder.load_string(
         self._set_start_tab = True
     on_tab_bar:
         self.text_size = (None, None) \
-        if self.tab_bar.parent.allow_stretch else (self.width, None) 
+        if self.tab_bar.parent.allow_stretch else (self.width, None)
     on_ref_press:
         self.tab_bar.parent.dispatch(\
         "on_ref_press",

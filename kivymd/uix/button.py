@@ -1095,6 +1095,7 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
         self._elevation_normal = self._elevation_raised
         self._update_shadow(self, self._elevation)
 
+
 class BaseCircularElevationButton(
     CircularElevationBehavior, BaseElevationButton, BaseButton
 ):

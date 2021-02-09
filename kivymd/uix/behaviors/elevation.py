@@ -245,6 +245,7 @@ from kivy.properties import (
 )
 from kivy.uix.widget import Widget
 from PIL import Image, ImageDraw, ImageFilter
+
 from kivymd.app import MDApp
 
 Builder.load_string(
@@ -793,7 +794,6 @@ class CommonElevationBehavior(Widget):
         value = 0 if value < 0 else (1 if value > 1 else value)
         self.hard_shadow_cl[-1] = value
         return True
-
 
     def _get_soft_shadow_a(self):
         return self.soft_shadow_cl[-1]

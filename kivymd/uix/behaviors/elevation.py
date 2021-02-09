@@ -146,6 +146,66 @@ Similarly, create a button with a circular elevation effect:
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-effect.gif
     :align: center
+
+Animtating the elevation
+-------------------------
+
+The best way to accomplis this would be to use the widget `_elevation` property.
+This will allow the developer to change dynamically the shadow and be able to
+come back to the deffault elevation with widget.elevation.
+
+The work `elevation` and `_elevation` works is that `elevation` is the developer
+setting for the widget elevation, while `_elevation` is the current elevation
+of the widget.
+
+if the developer sets `elevation` the behavior will parse this value to
+`_elevation` as a copy of this value. then if `_elevation` was different to the
+new `elevation`, kivy will launch a drawing instruction update, that will
+render both, position and size of the shadows.
+
+Remember that Real time classes as RectangularElevationButton,
+CircularElevationBehavior and RoundedRectangularElevationBehavior will take a
+great toll in the app performance. this is caused because the textures and
+image filters that are used will be generated for each shadow, soft and hard
+shadows of the widget.
+
+We got 2 clases that can fake a shadow, while is not as stetic as the RTC (Real
+Time Classes), it allows a smaller rendering time, thus allowing a more fluid
+UX.
+
+These clases are:
+
+    #. `FakeRectangularElevationBehavior`
+    #. `FakeCircularElevationBehavior`
+
+for example:
+
+..code-block:: python
+    Elevated_Widget(
+        RectangularElevationBehavior,    # Draws the shadow
+        SpecificBackgroundColorBehavior, # Draws the Background Color
+        RectangularRippleBehavior,       # Draws the Ripple and it's animation.
+    ):
+    shadow_animation=ObjectProperty()
+
+    def on_press(self,*dt):
+        if self.shadow_animation:
+            Animation.cancel(self.shadow_animation)
+        self.shadow_animation = Animation(
+            _elevation = self.elevation + 10,
+            d = 0.1
+        )
+        self.shadow_animation.start(self)
+
+    def on_release(self,*dt):
+        if self.shadow_animation:
+            Animation.cancel(self.shadow_animation)
+        self.shadow_animation = Animation(
+            _elevation = self.elevation,
+            d = 0.1
+        )
+        self.shadow_animation.start(self)
+
 """
 
 __all__ = (
@@ -217,7 +277,6 @@ Builder.load_string(
             group:"shadow"
             a: 1
 
-<FakeRectangularElevationBehavior>:
 """,
     filename="CommonElevationBehavior.kv",
 )
@@ -509,9 +568,16 @@ class CommonElevationBehavior(Widget):
     You can use the source for this clases as example of how to draw over
     with the context:
 
-    #. "RectangularElevationBehavior"
-    #. "CircularElevationBehavior"
-    #. "RoundedRectangularElevationBehavior"
+    Real time Shadows:
+        #. `RectangularElevationBehavior`
+        #. `CircularElevationBehavior`
+        #. `RoundedRectangularElevationBehavior`
+        #. `ObservableShadow`
+
+
+    Fake Shadows (dont use this property):
+        #. `FakeRectangularElevationBehavior`
+        #. `FakeCircularElevationBehavior`
 
     :attr:`draw_shadow` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to None.
@@ -1050,19 +1116,22 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
             # Set transparency
             self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
             self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
-
-            if 0 < self._elevation <= 23:
+            t = int(round(self._elevation))
+            if 0 < t <= 23:
                 self._soft_shadow_texture = self._hard_shadow_texture = (
                     self._shadow.textures[
-                        str(int(round(self._elevation)))
+                        str(t)
                     ]
                 )
             else:
                 self._soft_shadow_texture = self._hard_shadow_texture = (
                     self._shadow.textures[
-                        str(23)
+                        "23"
                     ]
                 )
+        else:
+            self._soft_shadow_a = 0
+            self._hard_shadow_a = 0
 
     def __draw_shadow__(self,  origin, end, context=None):
         pass
@@ -1107,17 +1176,22 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             # Shadow transparency
             self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
             self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
-            if self.elevation <=23:
+            t=int(round(self._elevation))
+            if 0 < t <=23:
+                print(f"t={t}\n"
+                f"self._soft_shadow_a {self._soft_shadow_a}\n"
+                f"self._hard_shadow_a {self._hard_shadow_a}\n"
+                )
                 if hasattr(self, "_shadow"):
                     self._soft_shadow_texture = self._hard_shadow_texture = (
                         self._shadow.textures[
-                            str(int(round(self._elevation)))
+                            str(t)
                             ]
                         )
             else:
                 self._soft_shadow_texture = self._hard_shadow_texture = (
                     self._shadow.textures[
-                        str(23)
+                        "23"
                         ]
                     )
         else:

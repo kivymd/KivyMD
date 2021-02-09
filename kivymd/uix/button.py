@@ -1055,8 +1055,7 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
     def on_elevation(self, instance, value):
         self._elevation_normal = self.elevation
         self._elevation_raised = self.elevation
-        self._anim_raised = Animation(_elevation=value + 2, d=0.5)
-        self._anim_raised.bind(on_progress=self._do_anim_raised)
+        self._anim_raised = Animation(_elevation=value + 6, d=0.1)
         self._update_elevation(instance, value)
 
     def on_disabled(self, instance, value):
@@ -1095,12 +1094,6 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
         self._elevation = self._elevation_raised
         self._elevation_normal = self._elevation_raised
         self._update_shadow(self, self._elevation)
-
-    def _do_anim_raised(self, animation, instance, value):
-        self._elevation += value
-        if self._elevation < self._elevation_raised + 2:
-            self._update_shadow(instance, self._elevation)
-
 
 class BaseCircularElevationButton(
     CircularElevationBehavior, BaseElevationButton, BaseButton

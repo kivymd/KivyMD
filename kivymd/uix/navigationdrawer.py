@@ -319,7 +319,6 @@ Builder.load_string(
         (self.width * (self.open_progress - 1)) \
         if self.anchor == "left" \
         else (Window.width - self.width * self.open_progress)
-    elevation: root.elevation
 
     canvas:
         Clear
@@ -658,11 +657,9 @@ class MDNavigationDrawer(MDCard):
         ):
             pass
         if self.status == "closed":
-            self._elevation = 0
-            self._update_shadow(self, self._elevation)
+            self.opacity = 0
         else:
-            self._elevation = self.elevation
-            self._update_shadow(self, self._elevation)
+            self.opacity = 1
 
     def get_dist_from_side(self, x):
         if self.anchor == "left":

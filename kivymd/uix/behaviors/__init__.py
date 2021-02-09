@@ -14,6 +14,9 @@ from .backgroundcolor_behavior import (
 from .elevation import (
     CircularElevationBehavior,
     CommonElevationBehavior,
+    FakeCircularElevationBehavior,
+    FakeRectangularElevationBehavior,
+    ObservableShadow,
     RectangularElevationBehavior,
     RoundedRectangularElevationBehavior,
 )

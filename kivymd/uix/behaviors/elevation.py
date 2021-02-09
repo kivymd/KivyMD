@@ -1178,10 +1178,6 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
             t=int(round(self._elevation))
             if 0 < t <=23:
-                print(f"t={t}\n"
-                f"self._soft_shadow_a {self._soft_shadow_a}\n"
-                f"self._hard_shadow_a {self._hard_shadow_a}\n"
-                )
                 if hasattr(self, "_shadow"):
                     self._soft_shadow_texture = self._hard_shadow_texture = (
                         self._shadow.textures[

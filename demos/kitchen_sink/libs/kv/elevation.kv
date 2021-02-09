@@ -1,233 +1,92 @@
-#: import RectangularElevationBehavior kivymd.uix.behaviors.RectangularElevationBehavior
-#: import CircularRippleBehavior kivymd.uix.behaviors.CircularRippleBehavior
-#: import RoundedRectangularElevationBehavior kivymd.uix.behaviors.RoundedRectangularElevationBehavior
-#: import Animation kivy.animation.Animation
-
-<Elevation_Example_Box>:
-    animation_: None
-    on_press:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation+10, d=0.2).start(self)
-    on_release:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation, d=0.2).start(self)
+<KitchenSinkElevationExampleCard@MDCard>
+    size_hint: None, None
+    size: "60dp", "60dp"
+    md_bg_color: app.theme_cls.bg_normal
 
     MDLabel:
         text: str(root.elevation)
-        size: root.size
         halign: "center"
         valign: "center"
 
-<Elevation_Example_Circle>:
-    animation_: None
-    on_press:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation+10, d=0.2).start(self)
-    on_release:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation, d=0.2).start(self)
+
+<KitchenSinkElevationExampleCircle>
+    size_hint: None, None
+    size: "60dp", "60dp"
+    md_bg_color: app.theme_cls.bg_normal
 
     MDLabel:
         text: str(root.elevation)
-        size: root.size
         halign: "center"
         valign: "center"
 
-<Elevation_Example_Rounded>:
-    animation_: None
-    on_press:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation+10, d=0.2, radius=[self.size[1]/2]*4).start(self)
-    on_release:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation, d=0.2, radius=[0]*4).start(self)
 
-    MDLabel:
-        text: str(root.elevation)
-        size: root.size
-        halign: "center"
-        valign: "center"
-#
-<Fake_Elevation_Example_Box>:
-    animation_: None
-    on_press:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation+10, d=0.2).start(self)
-    on_release:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation, d=0.2).start(self)
+<KitchenSinkElevationScreen>
+    name: "elevation"
 
-    MDLabel:
-        text: str(root.elevation)
-        size: root.size
-        halign: "center"
-        valign: "center"
-
-<Fake_Elevation_Example_Circle>:
-    animation_: None
-    on_press:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation+10, d=0.2).start(self)
-    on_release:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation, d=0.2).start(self)
-
-    MDLabel:
-        text: str(root.elevation)
-        size: root.size
-        halign: "center"
-        valign: "center"
-
-<Fake_Elevation_Example_Rounded>:
-    animation_: None
-    on_press:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation+10, d=0.2, radius=[self.size[1]/2]*4).start(self)
-    on_release:
-        if self.animation_: (
-        Animation.cancel(self.animation_)
-        )
-        self.animation_=Animation(_elevation = self.elevation, d=0.2, radius=[0]*4).start(self)
-
-    MDLabel:
-        text: str(root.elevation)
-        size: root.size
-        halign: "center"
-        valign: "center"
-#
-
-
-<ElevationScreen>:
-    name: "ElevationScreen"
-    ScrollView:
-        MDGridLayout:
-            padding: dp(8),dp(48)
-            spacing: dp(32)
-            size_hint_y: None
-            cols: 1
-            size: self.minimum_size
-            spacing:dp(8)
-            # on_children:
-            #     self.size=self.minimum_size
-            Widget:
-                size_hint_y: None
-                height:dp(48)
-            MDLabel:
-                text: "Rectangular Elevation"
-                font_style: "H5"
-
-            MDSeparator:
-
-            MDGridLayout:
-                cols: 6
-                id: container_box_1
-                spacing: dp(40)
-                padding: dp(40)
-                size: self.minimum_size
-                size_hint_y: None
-                # on_children:
-                #     self.size=self.minimum_size
-
-            MDLabel:
-                text: "Circular Elevation"
-                font_style: "H5"
-
-            MDSeparator:
-
-            MDGridLayout:
-                cols: 6
-                id: container_box_2
-                spacing: dp(40)
-                padding: dp(40)
-                size: self.minimum_size
-                size_hint_y: None
-                # on_children:
-                #     self.size=self.minimum_size
-
-            MDLabel:
-                text: "Rounded Rectangular Elevation"
-                font_style: "H5"
-
-            MDSeparator:
-
-            MDGridLayout:
-                cols: 6
-                id: container_box_3
-                spacing: dp(40)
-                padding: dp(40)
-                size: self.minimum_size
-                size_hint_y: None
-                # on_children:
-                #     self.size=self.minimum_size
-
-            MDLabel:
-                text: "Fake Rectangular Elevation"
-                font_style: "H5"
-
-            MDSeparator:
-
-            MDGridLayout:
-                cols: 6
-                id: container_box_4
-                spacing: dp(40)
-                padding: dp(40)
-                size: self.minimum_size
-                size_hint_y: None
-                # on_children:
-                #     self.size=self.minimum_size
-            MDLabel:
-                text: "Fake Circular Elevation"
-                font_style: "H5"
-
-            MDSeparator:
-
-            MDGridLayout:
-                cols: 6
-                id: container_box_5
-                spacing: dp(40)
-                padding: dp(40)
-                size: self.minimum_size
-                size_hint_y: None
-                # on_children:
-                #     self.size=self.minimum_size
-
-            MDLabel:
-                text: "This is a text"
-                font_style: "H5"
-
-            MDSeparator:
-
-            MDGridLayout:
-                cols: 6
-                id: container_box_6
-                spacing: dp(40)
-                padding: dp(40)
-                size: self.minimum_size
-                size_hint_y: None
-                # on_children:
-                #     self.size=self.minimum_size
     Toolbar:
         id: toolbar
-        pos_hint:{"top":1}
+        pos_hint: {"top": 1}
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: "32dp"
+        spacing: "24dp"
+        adaptive_size: True
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDLabel:
+            text: "Elevation value"
+            font_style: "H5"
+            adaptive_size: True
+            pos_hint: {"center_x": .5}
+
+        MDSeparator:
+
+        MDBoxLayout:
+            spacing: "32dp"
+            adaptive_size: True
+
+            KitchenSinkElevationExampleCard:
+                elevation: 6
+
+            KitchenSinkElevationExampleCard:
+                elevation: 12
+
+            KitchenSinkElevationExampleCard:
+                elevation: 24
+
+            KitchenSinkElevationExampleCard:
+                elevation: 36
+
+        MDSeparator:
+
+        MDBoxLayout:
+            spacing: "32dp"
+            adaptive_size: True
+
+            KitchenSinkElevationExampleCircle:
+                elevation: 6
+
+            KitchenSinkElevationExampleCircle:
+                elevation: 12
+
+            KitchenSinkElevationExampleCircle:
+                elevation: 24
+
+            KitchenSinkElevationExampleCircle:
+                elevation: 36
+
+        MDSeparator:
+
+        MDScreen:
+            size_hint: None, None
+            size: "120dp", "120dp"
+            pos_hint: {"center_x": .5}
+
+            KitchenSinkElevationExampleCard:
+                elevation: 6
+
+            KitchenSinkElevationExampleCard:
+                elevation: 36
+                x: 36
+                y: 36

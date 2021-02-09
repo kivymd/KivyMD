@@ -153,6 +153,9 @@ __all__ = (
     "RectangularElevationBehavior",
     "CircularElevationBehavior",
     "RoundedRectangularElevationBehavior",
+    "ObservableShadow",
+    "FakeRectangularElevationBehavior",
+    "FakeCircularElevationBehavior",
 )
 
 from io import BytesIO
@@ -165,6 +168,7 @@ from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
     BoundedNumericProperty,
+    BooleanProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
@@ -174,6 +178,7 @@ from kivy.properties import (
 )
 from kivy.uix.widget import Widget
 from PIL import Image, ImageDraw, ImageFilter
+from kivymd.app import MDApp
 
 Builder.load_string(
     """
@@ -211,6 +216,8 @@ Builder.load_string(
         Color:
             group:"shadow"
             a: 1
+
+<FakeRectangularElevationBehavior>:
 """,
     filename="CommonElevationBehavior.kv",
 )
@@ -262,7 +269,7 @@ class CommonElevationBehavior(Widget):
     """
     radius = VariableListProperty([0])
     """
-    Radious of the Corners of the shadow.
+    Radius of the Corners of the shadow.
     this values represents each corner of the shadow, starting from top-left
     corner and going clockwise.
 
@@ -533,6 +540,7 @@ class CommonElevationBehavior(Widget):
     Context is a Pillow `ImageDraw` class.
     for more information check the Pillow official documentation.
     """
+    _fake_elevation =BooleanProperty(False)
 
     def __init__(self, **kwargs):
         if self.draw_shadow is None:
@@ -551,7 +559,6 @@ class CommonElevationBehavior(Widget):
         self.bind(
             pos=self._update_shadow,
             size=self._update_shadow,
-            radius=self._update_shadow,
         )
         super().__init__(**kwargs)
 
@@ -632,7 +639,8 @@ class CommonElevationBehavior(Widget):
         """
         if self.elevation is None:
             self.elevation = 10
-        self._update_shadow(self, self.elevation)
+        if self._fake_elevation is False:
+            self._update_shadow(self, self.elevation)
         self.bind(
             pos=self._update_shadow,
             size=self._update_shadow,
@@ -691,36 +699,37 @@ class CommonElevationBehavior(Widget):
         self._update_shadow(instance, value)
 
     def _update_shadow_pos(self, instance, value):
-        self.hard_shadow_pos = [
-            self.x - dp(self.hard_shadow_offset),  # + self.shadow_pos[0],
-            self.y - dp(self.hard_shadow_offset),  # + self.shadow_pos[1],
-        ]
-        if self.shadow_pos == [0, 0]:
-            self.soft_shadow_pos = [
-                self.x
-                + self._shadow_pos[0]
-                - self._elevation
-                - dp(self.soft_shadow_offset),
-                self.y
-                + self._shadow_pos[1]
-                - self._elevation
-                - dp(self.soft_shadow_offset),
+        if self._elevation > 0:
+            self.hard_shadow_pos = [
+                self.x - dp(self.hard_shadow_offset),  # + self.shadow_pos[0],
+                self.y - dp(self.hard_shadow_offset),  # + self.shadow_pos[1],
             ]
-        else:
-            self.soft_shadow_pos = [
-                self.x
-                + self.shadow_pos[0]
-                - self._elevation
-                - dp(self.soft_shadow_offset),
-                self.y
-                + self.shadow_pos[1]
-                - self._elevation
-                - dp(self.soft_shadow_offset),
+            if self.shadow_pos == [0, 0]:
+                self.soft_shadow_pos = [
+                    self.x
+                    + self._shadow_pos[0]
+                    - self._elevation
+                    - dp(self.soft_shadow_offset),
+                    self.y
+                    + self._shadow_pos[1]
+                    - self._elevation
+                    - dp(self.soft_shadow_offset),
+                ]
+            else:
+                self.soft_shadow_pos = [
+                    self.x
+                    + self.shadow_pos[0]
+                    - self._elevation
+                    - dp(self.soft_shadow_offset),
+                    self.y
+                    + self.shadow_pos[1]
+                    - self._elevation
+                    - dp(self.soft_shadow_offset),
+                ]
+            self._shadow_origin = [
+                self.soft_shadow_pos[0] + self.soft_shadow_size[0] / 2,
+                self.soft_shadow_pos[1] + self.soft_shadow_size[1] / 2,
             ]
-        self._shadow_origin = [
-            self.soft_shadow_pos[0] + self.soft_shadow_size[0] / 2,
-            self.soft_shadow_pos[1] + self.soft_shadow_size[1] / 2,
-        ]
 
     def on__shadow_pos(self, ins, val):
         """
@@ -740,10 +749,11 @@ class CommonElevationBehavior(Widget):
 
     def _update_shadow(self, instance, value):
         self._update_shadow_pos(instance, value)
-        if self._elevation > 0:
+        if self._elevation > 0 and self._fake_elevation is False:
             # dynamic elecation position for the shadow
             if self.shadow_pos == [0, 0]:
                 self._shadow_pos = [0, -self._elevation * 0.4]
+
             # HARD Shadow
             offset = int(dp(self.hard_shadow_offset))
             size = [
@@ -775,34 +785,35 @@ class CommonElevationBehavior(Widget):
             self.hard_shadow_texture = CoreImage(im, ext="png").texture
 
             # soft shadow
-            offset = dp(self.soft_shadow_offset)
-            size = [
-                int(self.size[0] + dp(self._elevation * 2) + (offset * 2)),
-                int(self.size[1] + dp(self._elevation * 2) + (offset * 2)),
-                # ((self._elevation)*2) + x + (offset*2)) for x in self.size
-            ]
-            im = BytesIO()
-            img = Image.new("RGBA", tuple(size), color=((0,) * 4))
-            shadow = ImageDraw.Draw(img)
-            _offset = int(dp(self._elevation + offset))
-            self.draw_shadow()(
-                [
-                    _offset,
-                    _offset,
-                ],
-                [int(size[0] - _offset - 1), int(size[1] - _offset - 1)],
-                context=shadow
-                # context=ref(shadow)
-            )
-            img = img.filter(
-                ImageFilter.GaussianBlur(radius=self._elevation // 2)
-            )
-            shadow = ImageDraw.Draw(img)
-            #
-            img.save(im, format="png")
-            im.seek(0)
-            self.soft_shadow_size = size
-            self._soft_shadow_texture = CoreImage(im, ext="png").texture
+            if self.soft_shadow_cl[-1] > 0:
+                offset = dp(self.soft_shadow_offset)
+                size = [
+                    int(self.size[0] + dp(self._elevation * 2) + (offset * 2)),
+                    int(self.size[1] + dp(self._elevation * 2) + (offset * 2)),
+                    # ((self._elevation)*2) + x + (offset*2)) for x in self.size
+                ]
+                im = BytesIO()
+                img = Image.new("RGBA", tuple(size), color=((0,) * 4))
+                shadow = ImageDraw.Draw(img)
+                _offset = int(dp(self._elevation + offset))
+                self.draw_shadow()(
+                    [
+                        _offset,
+                        _offset,
+                    ],
+                    [int(size[0] - _offset - 1), int(size[1] - _offset - 1)],
+                    context=shadow
+                    # context=ref(shadow)
+                )
+                img = img.filter(
+                    ImageFilter.GaussianBlur(radius=self._elevation // 2)
+                )
+                shadow = ImageDraw.Draw(img)
+                #
+                img.save(im, format="png")
+                im.seek(0)
+                self.soft_shadow_size = size
+                self._soft_shadow_texture = CoreImage(im, ext="png").texture
         else:
             im = BytesIO()
             Image.new("RGBA", (4, 4), color=(0, 0, 0, 0)).save(im, format="png")
@@ -855,6 +866,9 @@ class RoundedRectangularElevationBehavior(CommonElevationBehavior):
     """
 
     def __init__(self, **kwargs):
+        self.bind(
+            radius=self._update_shadow,
+        )
         self.draw_shadow = WeakMethod(self.__draw_shadow__)
         super().__init__(**kwargs)
 
@@ -970,3 +984,145 @@ class RoundedRectangularElevationBehavior(CommonElevationBehavior):
                     ],
                     fill=(255,) * 4,
                 )
+
+class ObservableShadow(CommonElevationBehavior):
+    """
+    ObservableShadow is real time shadow render that it's intended to only
+    render a partial shadow of widgets, this is meant to improve the performance
+    of rectangular casted shadows.
+    """
+    def __init__(self, **kwargs):
+        # self._shadow = MDApp.get_running_app().theme_cls.round_shadow
+        # self._fake_elevation=True
+        raise NotImplementedError("This class is in current development")
+        super().__init__(**kwargs)
+
+class FakeRectangularElevationBehavior(CommonElevationBehavior):
+    """
+    FakeRectangularElevationBehavior is a shadow mockup for widgets. imptoves
+    performance using cached images inside kivymd.images dir
+
+    This class cast a fake Rectangular shadow behaind the widget.
+    """
+    def __init__(self, **kwargs):
+        # self._shadow = MDApp.get_running_app().theme_cls.round_shadow
+        self.draw_shadow = WeakMethod(self.__draw_shadow__)
+        self._fake_elevation = True
+        self._update_shadow(self, self.elevation)
+        super().__init__(**kwargs)
+
+    def _update_shadow(self, *args):
+        if self._elevation > 0:
+            # Set shadow size.
+            ratio = self.width / (self.height if self.height != 0 else 1)
+            if -2 < ratio < 2:
+                self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
+                width = soft_width = self.width * 1.9
+                height = soft_height = self.height * 1.9
+            elif ratio <= -2:
+                self._shadow = MDApp.get_running_app().theme_cls.rec_st_shadow
+                ratio = abs(ratio)
+                if ratio > 5:
+                    ratio = ratio * 22
+                else:
+                    ratio = ratio * 11.5
+                width = soft_width = self.width * 1.9
+                height = self.height + dp(ratio)
+                soft_height = (
+                    self.height
+                    + dp(ratio)
+                    + dp(self._elevation) * 0.5
+                )
+            else:
+                self._shadow = MDApp.get_running_app().theme_cls.quad_shadow
+                width = soft_width = self.width * 1.8
+                height = soft_height = self.height * 1.8
+
+            self.soft_shadow_size = (soft_width, soft_height)
+            self.hard_shadow_size = (width, height)
+            # Set ``soft_shadow`` parameters.
+            self.hard_shadow_pos = self.soft_shadow_pos = (
+                self.center_x - soft_width / 2,
+                self.center_y
+                - soft_height / 2
+                - dp(self._elevation * 0.5),
+            )
+            # Set transparency
+            self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
+            self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
+
+            if 0 < self._elevation <= 23:
+                self._soft_shadow_texture = self._hard_shadow_texture = (
+                    self._shadow.textures[
+                        str(int(round(self._elevation)))
+                    ]
+                )
+            else:
+                self._soft_shadow_texture = self._hard_shadow_texture = (
+                    self._shadow.textures[
+                        str(23)
+                    ]
+                )
+
+    def __draw_shadow__(self,  origin, end, context=None):
+        pass
+
+class FakeCircularElevationBehavior(CommonElevationBehavior):
+    """
+    FakeCircularElevationBehavior is a shadow mockup for widgets. imptoves
+    performance using cached images inside kivymd.images dir
+
+    This class cast a fake elliptic shadow behaind the widget.
+    """
+    def __init__(self, **kwargs):
+        self._shadow = MDApp.get_running_app().theme_cls.round_shadow
+        self.draw_shadow = WeakMethod(self.__draw_shadow__)
+        self._fake_elevation = True
+        self._update_shadow(self, self.elevation)
+        super().__init__(**kwargs)
+
+    def _update_shadow(self, *args):
+        if self.elevation > 0:
+            # Set shadow size.
+            width = self.width * 2
+            height = self.height * 2
+
+            x = self.center_x - width / 2
+            self.soft_shadow_size = (width, height)
+            self.hard_shadow_size = (width, height)
+            # Set ``soft_shadow`` parameters.
+            y = (self.center_y
+                - height/2
+                - dp(0.5 * self._elevation)
+            )
+            self.soft_shadow_pos = (x, y)
+
+            # Set ``hard_shadow`` parameters.
+            y = (self.center_y
+                - height/2
+                - dp( 0.5*self._elevation )
+            )
+            self.hard_shadow_pos = (x, y)
+
+            # Shadow transparency
+            self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
+            self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
+            if self.elevation <=23:
+                if hasattr(self, "_shadow"):
+                    self._soft_shadow_texture = self._hard_shadow_texture = (
+                        self._shadow.textures[
+                            str(int(round(self._elevation)))
+                            ]
+                        )
+            else:
+                self._soft_shadow_texture = self._hard_shadow_texture = (
+                    self._shadow.textures[
+                        str(23)
+                        ]
+                    )
+        else:
+            self._soft_shadow_a = 0
+            self._hard_shadow_a = 0
+    #
+    def __draw_shadow__(self,  origin, end, context=None):
+        pass

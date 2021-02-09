@@ -16,6 +16,9 @@ from .elevation import (
     CommonElevationBehavior,
     RectangularElevationBehavior,
     RoundedRectangularElevationBehavior,
+    ObservableShadow,
+    FakeRectangularElevationBehavior,
+    FakeCircularElevationBehavior,
 )
 from .focus_behavior import FocusBehavior
 from .magic_behavior import MagicBehavior

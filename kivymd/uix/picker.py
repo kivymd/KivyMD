@@ -2005,13 +2005,13 @@ Builder.load_string(
     adaptive_size: True
 
 
-<AM_PM_Selector_Label>
+<AmPmSelectorLabel>
     halign: "center"
     valign: "center"
     theme_text_color: "Custom"
 
 
-<AM_PM_Selector>
+<AmPmSelector>
     size_hint: None, None
 
     canvas.before:
@@ -2075,12 +2075,12 @@ Builder.load_string(
                 [0 ,root.border_radius, root.border_radius, 0]
 
     # AM
-    AM_PM_Selector_Label:
+    AmPmSelectorLabel:
         text: "AM"
         on_release: root.selected = "am"
         text_color: root.text_color
 
-    AM_PM_Selector_Label:
+    AmPmSelectorLabel:
         text: "PM"
         on_release: root.selected = "pm"
         text_color: root.text_color
@@ -2190,7 +2190,7 @@ Builder.load_string(
 
 <MDTimePicker>
     auto_dismiss: True
-    size_hint: None , None
+    size_hint: None, None
     _time_input: _time_input
     _selector: _selector
     _am_pm_selector: _am_pm_selector
@@ -2198,7 +2198,6 @@ Builder.load_string(
     _hour_label: _hour_label
 
     MDRelativeLayout:
-
         canvas.before:
             Color:
                 rgba:
@@ -2258,7 +2257,7 @@ Builder.load_string(
                 root.text_toolbar_color if root.text_toolbar_color else \
                 root.theme_cls.secondary_text_color
 
-        AM_PM_Selector:
+        AmPmSelector:
             id: _am_pm_selector
             border_color:
                 root.accent_color if root.accent_color else \
@@ -2323,16 +2322,15 @@ Builder.load_string(
                 root.theme_cls.primary_color \
                 if not root.text_button_color else root.text_button_color
             on_release: root.dispatch("on_save", root._get_data())
-
 """
 )
 
 
-class AM_PM_Selector_Label(ButtonBehavior, MDLabel):
+class AmPmSelectorLabel(ButtonBehavior, MDLabel):
     pass
 
 
-class AM_PM_Selector(ThemableBehavior, MDBoxLayout, EventDispatcher):
+class AmPmSelector(ThemableBehavior, MDBoxLayout, EventDispatcher):
     border_radius = NumericProperty()
     border_color = ColorProperty()
     bg_color = ColorProperty()
@@ -2383,9 +2381,10 @@ class TimeInputTextField(MDTextField):
 
     def on_text(self, *args):
         """
-        texts should be center aligned. now we are setting the
-        padding of text to somehow make them aligned.
+        Texts should be center aligned. now we are setting the padding of text
+        to somehow make them aligned.
         """
+
         if not self.text:
             self.text = " "
 
@@ -2489,8 +2488,8 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
     def _update_labels(self, animate=True, *args):
         """
-        This method builds the selector based on current mode which currently can
-        be hour or minute.
+        This method builds the selector based on current mode which currently
+        can be hour or minute.
         """
 
         if self.mode == "hour":
@@ -2514,9 +2513,11 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
     def _add_items(self, start, end, step=1):
         """
-        adds all number in range [start,end+1] to the circular layout with the specified step.
-        step means that all widgets will be added to layout but sets the opacity for skipped widgets to 0
-        because we are using the label's text as a refrence to the selected number so we have to add these to layout.
+        Adds all number in range `[start, end + 1]` to the circular layout with
+        the specified step. Step means that all widgets will be added to layout
+        but sets the opacity for skipped widgets to `0` because we are using
+        the label's text as a refrence to the selected number so we have to add
+        these to layout.
         """
 
         self.clear_widgets()
@@ -2540,7 +2541,8 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
     def _get_centers(self, *args):
         """
-        returns a list of all center. we use this for positioning the selector indicator
+        Returns a list of all center. we use this for positioning the selector
+        indicator.
         """
 
         self._centers_pos = []
@@ -2549,7 +2551,8 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
     def _get_closest_widget(self, pos):
         """
-        returns the nearest widget to the given position. we use this to create the magnetic effect.
+        Returns the nearest widget to the given position. we use this to create
+        the magnetic effect.
         """
 
         distance = [Vector(pos).distance(point) for point in self._centers_pos]
@@ -2577,7 +2580,7 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
     def set_selector(self, selected):
         """
-        sets the selector's position towards the given text.
+        Sets the selector's position towards the given text.
         """
 
         widget = None

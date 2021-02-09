@@ -48,3 +48,5 @@ Unreleased
 * Added of tooltips to `MDToolbar` icons
 * Fixed `MDBottomAppBar` notch transparency
 * Updated `MDDatePicker` class to material design specification.
+* Elevation behavior redesign to comply with the material design specification.
+* Removed the `vendor` package.

@@ -19,6 +19,9 @@ Usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/file-manager.png
     :align: center
 
+.. warning:: Be careful! To use the `/` path on Android devices, you need
+    special permissions. Therefore, you are likely to get an error.
+
 Or with ``preview`` mode:
 
 .. code-block:: python
@@ -240,10 +243,11 @@ ACTIVITY_MANAGER = """
             key_size: "height"
             bar_width: dp(4)
             bar_color: root.theme_cls.primary_color
-            #on_scroll_stop: root._update_list_images()
+            # on_scroll_stop: root._update_list_images()
 
             RecycleGridLayout:
-                padding: dp(10)
+                padding: "10dp"
+                spacing: "2dp"
                 cols: 3 if root.preview else 1
                 default_size: None, dp(48)
                 default_size_hint: 1, None

@@ -48,44 +48,49 @@ Builder.load_string(
 
 class BackgroundColorBehavior(Widget):
     angle = NumericProperty(0)
+    background_origin = ListProperty(None)
     _background_x = NumericProperty(0)
     _background_y = NumericProperty(0)
     _background_origin = ReferenceListProperty(
         _background_x,
         _background_y,
     )
-    background_origin = ListProperty(None)
 
     r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    """The value of ``red`` in the ``rgba`` palette.
+    """
+    The value of ``red`` in the ``rgba`` palette.
 
     :attr:`r` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
     g = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    """The value of ``green`` in the ``rgba`` palette.
+    """
+    The value of ``green`` in the ``rgba`` palette.
 
     :attr:`g` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
     b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    """The value of ``blue`` in the ``rgba`` palette.
+    """
+    The value of ``blue`` in the ``rgba`` palette.
 
     :attr:`b` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `1.0`.
     """
 
     a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
-    """The value of ``alpha channel`` in the ``rgba`` palette.
+    """
+    The value of ``alpha channel`` in the ``rgba`` palette.
 
     :attr:`a` is an :class:`~kivy.properties.BoundedNumericProperty`
     and defaults to `0.0`.
     """
 
     radius = VariableListProperty([0], length=4)
-    """Canvas radius.
+    """
+    Canvas radius.
 
     .. code-block:: python
 
@@ -99,7 +104,8 @@ class BackgroundColorBehavior(Widget):
     """
 
     md_bg_color = ReferenceListProperty(r, g, b, a)
-    """The background color of the widget (:class:`~kivy.uix.widget.Widget`)
+    """
+    The background color of the widget (:class:`~kivy.uix.widget.Widget`)
     that will be inherited from the :attr:`BackgroundColorBehavior` class.
 
     For example:
@@ -129,7 +135,7 @@ class BackgroundColorBehavior(Widget):
         super().__init__(**kwarg)
         self.bind(pos=self.update_background_origin)
 
-    def update_background_origin(self, *dt):
+    def update_background_origin(self, *args):
         if self.background_origin:
             self._background_origin = self.background_origin
         else:
@@ -140,26 +146,30 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
     background_palette = OptionProperty(
         "Primary", options=["Primary", "Accent", *palette]
     )
-    """See :attr:`kivymd.color_definitions.palette`.
+    """
+    See :attr:`kivymd.color_definitions.palette`.
 
     :attr:`background_palette` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Primary'`.
     """
 
     background_hue = OptionProperty("500", options=hue)
-    """See :attr:`kivymd.color_definitions.hue`.
+    """
+    See :attr:`kivymd.color_definitions.hue`.
 
     :attr:`background_hue` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'500'`.
     """
 
     specific_text_color = ColorProperty([0, 0, 0, 0.87])
-    """:attr:`specific_text_color` is an :class:`~kivy.properties.ColorProperty`
+    """
+    :attr:`specific_text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.87]`.
     """
 
     specific_secondary_text_color = ColorProperty([0, 0, 0, 0.87])
-    """:attr:`specific_secondary_text_color`is an :class:`~kivy.properties.ColorProperty`
+    """
+    :attr:`specific_secondary_text_color`is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.87]`.
     """
 

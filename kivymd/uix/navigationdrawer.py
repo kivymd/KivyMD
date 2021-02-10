@@ -304,6 +304,7 @@ from kivy.properties import (
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivymd.uix.toolbar import MDToolbar
 
@@ -413,7 +414,7 @@ class MDNavigationLayout(FloatLayout):
         return super().add_widget(widget)
 
 
-class MDNavigationDrawer(MDCard):
+class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
     type = OptionProperty("modal", options=("standard", "modal"))
     """
     Type of drawer. Modal type will be on top of screen. Standard type will be

@@ -258,8 +258,8 @@ from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import (
     Ellipse,
-    SmoothLine,
     RoundedRectangle,
+    SmoothLine,
 )
 from kivy.lang import Builder
 from kivy.metrics import dp

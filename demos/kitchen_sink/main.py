@@ -61,6 +61,7 @@ class KitchenSinkApp(MDApp):
 
     def on_start(self):
         """Creates a list of items with examples on start screen."""
+
         Builder.load_file(
             os.path.join(
                 os.environ["KITCHEN_SINK_ROOT"],

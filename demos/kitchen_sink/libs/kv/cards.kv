@@ -1,104 +1,65 @@
 <KitchenSinkCards>
-    radius:[1]*4
-    elevation:1
+    radius: [1] * 4
+    elevation: 1
     name: "cards"
-    BoxLayout:
-        pos_hint: {"bottom": 0}
-        size_hint_y: None
-        height:root.height-toolbar_1.height
-        orientation:"vertical"
-        ScrollView:
-            size_hint_x: None
-            width: card_cont.minimum_width
-            MDGridLayout:
-                id: card_cont
-                cols:2
-                padding:dp(74)
-                spacing:dp(74)
-                size_hint_y: None
-                height:self.minimum_height
 
-                MDCard:
-                    size_hint: None, None
-                    size: "280dp", "180dp"
-                    pos_hint: {"center_x": .5, "center_y": .65}
-                    radius:root.radius
-                    elevation:root.elevation
-
-                MDCard:
-                    size_hint: None, None
-                    size: "280dp", "180dp"
-                    # pos_hint: {"center_x": .5, "center_y": .65}
-                    radius:root.radius
-                    elevation:root.elevation
-
-                MDCard:
-                    orientation: "vertical"
-                    padding: "8dp"
-                    size_hint: None, None
-                    size: "280dp", "180dp"
-                    # pos_hint: {"center_x": .5, "center_y": .25}
-                    radius:root.radius
-                    elevation:root.elevation
-
-                    MDLabel:
-                        text: "Title"
-                        theme_text_color: "Secondary"
-                        size_hint_y: None
-                        height: self.texture_size[1]
-
-                    MDSeparator:
-                        height: "1dp"
-
-                    MDLabel:
-                        text: "Body"
-
-        MDGridLayout:
-            id:container_1
-            pos_hint:{"bottom":0}
-            cols:2
-            size_hint_y:None
-            # height:dp(64)
-            height:self.minimum_height
-            padding:dp(8)
-            MDLabel:
-                id: label_000
-                text: "Radius"
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                size_hint_y: None
-                height: self.texture_size[1]
-                shorten: False
-                shorten_from: 'left'
-
-            MDLabel:
-                id: label_001
-                text: "Elevation"
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                size_hint_y: None
-                height: self.texture_size[1]
-                shorten: False
-                shorten_from: 'left'
-
-            MDSlider:
-                size_hint_y:None
-                height:dp(48)
-                min: 0
-                max: 90
-                value: 0
-                on_value:
-                    root.radius=[self.value]*4
-
-            MDSlider:
-                size_hint_y:None
-                height:dp(48)
-                min: 0
-                max: 90
-                value: 0
-                on_value:
-                    root.elevation=self.value
     Toolbar:
+        id: toolbar
         title: "MDCard"
         pos_hint: {"top": 1}
-        id:toolbar_1
+
+    MDBoxLayout:
+        pos_hint: {"center_x": .5, "center_y": .5}
+        adaptive_size: True
+        spacing: "56dp"
+        padding: "56dp"
+
+        MDCard:
+            size_hint: None, None
+            size: root.width / 2 - dp(56), "180dp"
+            radius: root.radius
+            elevation: root.elevation
+
+        MDCard:
+            size_hint: None, None
+            size: root.width / 2 - dp(56), "180dp"
+            radius: root.radius
+            elevation: root.elevation
+
+    MDGridLayout:
+        cols: 2
+        adaptive_height: True
+        padding: "8dp"
+        spacing: "8dp"
+
+        MDLabel:
+            text: "Radius"
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
+            size_hint_y: None
+            height: self.texture_size[1]
+            shorten: False
+            shorten_from: "left"
+
+        MDLabel:
+            text: "Elevation"
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
+            adaptive_height: True
+            shorten_from: "left"
+
+        MDSlider:
+            size_hint_y: None
+            height: "48dp"
+            min: 0
+            max: 12
+            value: 0
+            on_value: root.radius = [self.value] * 4
+
+        MDSlider:
+            size_hint_y: None
+            height: "48dp"
+            min: 0
+            max: 90
+            value: 0
+            on_value: root.elevation = self.value

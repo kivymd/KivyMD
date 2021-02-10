@@ -43,8 +43,8 @@ Events
     def on_unselected(self, instance_selection_list, instance_selection_item):
         '''Called when a list item is unselected.'''
 
-Example
--------
+Example with TwoLineAvatarListItem
+----------------------------------
 
 .. code-block:: python
 
@@ -143,11 +143,124 @@ Example
 
 
     Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/selection-example-with-listItem.gif
+    :align: center
+
+Example with FitImage
+---------------------
+
+.. code-block:: python
+
+    from kivy.animation import Animation
+    from kivy.lang import Builder
+    from kivy.utils import get_color_from_hex
+
+    from kivymd.app import MDApp
+    from kivymd.utils.fitimage import FitImage
+
+    KV = '''
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: app.theme_cls.bg_light
+
+        MDToolbar:
+            id: toolbar
+            title: "Inbox"
+            left_action_items: [["menu"]]
+            right_action_items: [["magnify"], ["dots-vertical"]]
+            md_bg_color: app.theme_cls.bg_light
+            specific_text_color: 0, 0, 0, 1
+
+        MDBoxLayout:
+            padding: "24dp", "8dp", 0, "8dp"
+            adaptive_size: True
+
+            MDLabel:
+                text: "Today"
+                adaptive_size: True
+
+        ScrollView:
+
+            MDSelectionList:
+                id: selection_list
+                padding: "24dp", 0, "24dp", "24dp"
+                cols: 3
+                spacing: "12dp"
+                overlay_color: app.overlay_color[:-1] + [.2]
+                icon_bg_color: app.overlay_color
+                progress_round_color: app.progress_round_color
+                on_selected: app.on_selected(*args)
+                on_unselected: app.on_unselected(*args)
+                on_selected_mode: app.set_selection_mode(*args)
+    '''
+
+
+    class Example(MDApp):
+        overlay_color = get_color_from_hex("#6042e4")
+        progress_round_color = get_color_from_hex("#ef514b")
+
+        def build(self):
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for i in range(10):
+                self.root.ids.selection_list.add_widget(
+                    FitImage(
+                        source="image.png",
+                        size_hint_y=None,
+                        height="240dp",
+                    )
+                )
+
+        def set_selection_mode(self, instance_selection_list, mode):
+            if mode:
+                md_bg_color = self.overlay_color
+                left_action_items = [
+                    [
+                        "close",
+                        lambda x: self.root.ids.selection_list.unselected_all(),
+                    ]
+                ]
+                right_action_items = [["trash-can"], ["dots-vertical"]]
+            else:
+                md_bg_color = (1, 1, 1, 1)
+                left_action_items = [["menu"]]
+                right_action_items = [["magnify"], ["dots-vertical"]]
+                self.root.ids.toolbar.title = "Inbox"
+
+            Animation(md_bg_color=md_bg_color, d=0.2).start(self.root.ids.toolbar)
+            self.root.ids.toolbar.left_action_items = left_action_items
+            self.root.ids.toolbar.right_action_items = right_action_items
+
+        def on_selected(self, instance_selection_list, instance_selection_item):
+            self.root.ids.toolbar.title = str(
+                len(instance_selection_list.get_selected_list_items())
+            )
+
+        def on_unselected(self, instance_selection_list, instance_selection_item):
+            if instance_selection_list.get_selected_list_items():
+                self.root.ids.toolbar.title = str(
+                    len(instance_selection_list.get_selected_list_items())
+                )
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/selection-example-with-fitimage.gif
+    :align: center
 """
 
 __all__ = ("MDSelectionList",)
 
 from kivy.animation import Animation
+from kivy.clock import Clock
+from kivy.graphics.context_instructions import Color
+from kivy.graphics.vertex_instructions import (
+    Ellipse,
+    RoundedRectangle,
+    SmoothLine,
+)
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -184,41 +297,13 @@ Builder.load_string(
 
 <SelectionItem>
     md_bg_color: root.overlay_color if root.selected else (0, 0, 0, 0)
-
-    canvas:
-        Color:
-            rgba:
-                ( \
-                self.theme_cls.primary_color \
-                if not root.selected_round_color \
-                else root.selected_round_color \
-                ) \
-                if root._progress_animation else \
-                (0, 0, 0, 0)
-        Ellipse:
-            size: self.selected_round_size, self.selected_round_size
-            pos:
-                self.instance_item.center_x - self.selected_round_size / 2, \
-                self.instance_item.center_y - self.selected_round_size / 2
-        Color:
-            rgba:
-                self.theme_cls.primary_color[:-1] + [.3] \
-                if not root.selected_round_color \
-                else root.selected_round_color[:-1] + [.3]
-        SmoothLine:
-            width: dp(4)
-            circle:
-                self.instance_item.center_x, \
-                self.instance_item.center_y, \
-                self.selected_round_size * 0.58, \
-                0, root._progress_line_end
 """
 )
 
 
 class SelectionIconCheck(MDIconButton):
     scale = NumericProperty(0)
-    icon_check_color = ColorProperty([1, 1, 1, 1])
+    icon_check_color = ColorProperty([0, 0, 0, 1])
 
 
 class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
@@ -227,28 +312,137 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
     instance_item = ObjectProperty()
     instance_icon = ObjectProperty()
     overlay_color = ColorProperty([0, 0, 0, 0.2])
-    selected_round_size = NumericProperty(dp(46))
-    selected_round_color = ColorProperty(None)
+    progress_round_size = NumericProperty(dp(46))
+    progress_round_color = ColorProperty(None)
 
     _progress_round = NumericProperty(0)
     _progress_line_end = NumericProperty(0)
     _progress_animation = BooleanProperty(False)
     _touch_long = BooleanProperty(False)
+    _instance_progress_inner_circle_color = ObjectProperty()
+    _instance_progress_inner_circle_ellipse = ObjectProperty()
+    _instance_progress_inner_outer_color = ObjectProperty()
+    _instance_progress_inner_outer_line = ObjectProperty()
+    _instance_overlay_color = ObjectProperty()
+    _instance_overlay_rounded_rec = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self.set_progress_round)
+
+    def set_progress_round(self, interval):
+        with self.canvas.after:
+            self._instance_progress_inner_circle_color = Color(
+                rgba=(0, 0, 0, 0)
+            )
+            self._instance_progress_inner_circle_ellipse = Ellipse(
+                size=self.get_progress_round_size(),
+                pos=self.get_progress_round_pos(),
+            )
+            self.bind(
+                pos=self.update_progress_inner_circle_ellipse,
+                size=self.update_progress_inner_circle_ellipse,
+            )
+            # FIXME: Radius value is not displayed.
+            self._instance_overlay_color = Color(rgba=(0, 0, 0, 0))
+            self._instance_overlay_rounded_rec = RoundedRectangle(
+                size=self.size,
+                pos=self.pos,
+                radius=self.instance_item.radius
+                if hasattr(self.instance_item, "radius")
+                else [
+                    0,
+                ],
+            )
+            self.bind(
+                pos=self.update_overlay_rounded_rec,
+                size=self.update_overlay_rounded_rec,
+            )
+            self._instance_progress_inner_outer_color = Color(rgba=(0, 0, 0, 0))
+            self._instance_progress_inner_outer_line = SmoothLine(
+                width=dp(4),
+                circle=[
+                    self.center_x,
+                    self.center_y,
+                    self.progress_round_size * 0.58,
+                    0,
+                    0,
+                ],
+            )
 
     def do_selected_item(self, *args):
         Animation(scale=1, d=0.2).start(self.instance_icon)
         self.selected = True
         self._progress_animation = False
+        self._instance_overlay_color.rgba = self.get_overlay_color()
         self.owner.dispatch("on_selected", self)
 
     def do_unselected_item(self):
         Animation(scale=0, d=0.2).start(self.instance_icon)
         self.selected = False
+        self._instance_overlay_color.rgba = self.get_overlay_color()
         self.owner.dispatch("on_unselected", self)
+
+    def do_animation_progress_line(self, animation, instance, value):
+        self._instance_progress_inner_outer_line.circle = (
+            self.center_x,
+            self.center_y,
+            self.progress_round_size * 0.58,
+            0,
+            360 * value,
+        )
+
+    def update_overlay_rounded_rec(self, *args):
+        self._instance_overlay_rounded_rec.size = self.size
+        self._instance_overlay_rounded_rec.pos = self.pos
+
+    def update_progress_inner_circle_ellipse(self, *args):
+        self._instance_progress_inner_circle_ellipse.size = (
+            self.get_progress_round_size()
+        )
+        self._instance_progress_inner_circle_ellipse.pos = (
+            self.get_progress_round_pos()
+        )
 
     def reset_progress_animation(self):
         Animation.cancel_all(self)
         self._progress_animation = False
+        self._instance_progress_inner_circle_color.rgba = (0, 0, 0, 0)
+        self._instance_progress_inner_outer_color.rgba = (0, 0, 0, 0)
+        self._instance_progress_inner_outer_line.circle = [
+            self.center_x,
+            self.center_y,
+            self.progress_round_size * 0.58,
+            0,
+            0,
+        ]
+        self._progress_line_end = 0
+
+    def get_overlay_color(self):
+        return self.overlay_color if self.selected else (0, 0, 0, 0)
+
+    def get_progress_round_pos(self):
+        return (
+            self.center_x - self.progress_round_size / 2,
+            self.center_y - self.progress_round_size / 2,
+        )
+
+    def get_progress_round_size(self):
+        return self.progress_round_size, self.progress_round_size
+
+    def get_progress_round_color(self):
+        return (
+            self.theme_cls.primary_color
+            if not self.progress_round_color
+            else self.progress_round_color
+        )
+
+    def get_progress_line_color(self):
+        return (
+            self.theme_cls.primary_color[:-1] + [0.5]
+            if not self.progress_round_color
+            else self.progress_round_color[:-1] + [0.5]
+        )
 
     def on_long_touch(self, *args):
         if not self.owner.get_selected():
@@ -277,10 +471,19 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
     def on__progress_animation(self, instance, value):
         if value:
             anim = Animation(_progress_line_end=360, d=1, t="in_out_quad")
-            anim.bind(on_complete=self.do_selected_item)
+            anim.bind(
+                on_progress=self.do_animation_progress_line,
+                on_complete=self.do_selected_item,
+            )
             anim.start(self)
+            self._instance_progress_inner_outer_color.rgba = (
+                self.get_progress_line_color()
+            )
+            self._instance_progress_inner_circle_color.rgba = (
+                self.get_progress_round_color()
+            )
         else:
-            self._progress_line_end = 0
+            self.reset_progress_animation()
 
 
 class MDSelectionList(MDList):
@@ -325,7 +528,7 @@ class MDSelectionList(MDList):
     and defaults to `[1, 1, 1, 1]`.
     """
 
-    icon_check_color = ColorProperty([1, 1, 1, 1])
+    icon_check_color = ColorProperty([0, 0, 0, 1])
     """
     Color of the icon that will mark the selected list item.
 
@@ -341,19 +544,19 @@ class MDSelectionList(MDList):
     and defaults to `[0, 0, 0, 0.2]]`.
     """
 
-    selected_round_size = NumericProperty(dp(46))
+    progress_round_size = NumericProperty(dp(46))
     """
     Size of the spinner for switching of `selected_mode` mode.
 
-    :attr:`selected_round_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`progress_round_size` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(46)`.
     """
 
-    selected_round_color = ColorProperty(None)
+    progress_round_color = ColorProperty(None)
     """
     Color of the spinner for switching of `selected_mode` mode.
 
-    :attr:`selected_round_color` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`progress_round_color` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.
     """
 
@@ -374,11 +577,12 @@ class MDSelectionList(MDList):
             instance_item=widget,
             instance_icon=selection_icon,
             overlay_color=self.overlay_color,
-            selected_round_size=self.selected_round_size,
-            selected_round_color=self.selected_round_color,
+            progress_round_size=self.progress_round_size,
+            progress_round_color=self.progress_round_color,
             owner=self,
         )
         container.add_widget(widget)
+
         if not self.icon_pos:
             pos = (
                 dp(12),

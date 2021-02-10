@@ -948,6 +948,7 @@ class MDTextField(ThemableBehavior, TextInput):
         self.has_had_text = False
         self._better_texture_size = None
         Clock.schedule_once(self.check_text)
+        self._set_msg(self, self.helper_text)
 
     def check_text(self, interval):
         self.set_text(self, self.text)

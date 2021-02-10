@@ -158,28 +158,33 @@ Similarly, create a button with a circular elevation effect:
 Animating the elevation
 -----------------------
 
-The best way to accomplis this would be to use the widget `_elevation` property.
+The best way to accomplis this would be to use the widget
+:attr:`~CommonElevationBehavior._elevation` property.
 This will allow the developer to change dynamically the shadow and be able to
 come back to the default elevation with widget.elevation.
 
-The work `elevation` and `_elevation` works is that `elevation` is the developer
-setting for the widget elevation, while `_elevation` is the current elevation
-of the widget.
+The work :attr:`~CommonElevationBehavior.elevation`
+and :attr:`~CommonElevationBehavior._elevation` works is that
+:attr:`~CommonElevationBehavior.elevation` is the developer
+setting for the widget elevation, while :attr:`~CommonElevationBehavior._elevation`
+is the current elevation of the widget.
 
-If the developer sets `elevation` the behavior will parse this value to
-`_elevation` as a copy of this value. then if `_elevation` was different to the
-new `elevation`, kivy will launch a drawing instruction update, that will
-render both, position and size of the shadows.
+If the developer sets :attr:`~CommonElevationBehavior.elevation` the behavior
+will parse this value to :attr:`~CommonElevationBehavior._elevation` as a copy
+of this value. then if :attr:`~CommonElevationBehavior._elevation` was
+different to the new :attr:`~CommonElevationBehavior.elevation`, kivy will
+launch a drawing instruction update, that will render both, position and size
+of the shadows.
 
-Remember that Real time classes as :class:`~RectangularElevationButton`,
+Remember that real time classes as :class:`~RectangularElevationButton`,
 :class:`~CircularElevationBehavior` and :class:`~RoundedRectangularElevationBehavior`
-will take a great toll in the app performance. this is caused because the textures and
-image filters that are used will be generated for each shadow, soft and hard
-shadows of the widget.
+will take a great toll in the app performance. this is caused because the
+textures and image filters that are used will be generated for each shadow,
+soft and hard shadows of the widget.
 
-We got 2 classes that can fake a shadow, while is not as static as the RTC (Real
-Time Classes), it allows a smaller rendering time, thus allowing a more fluid
-UX.
+We got 2 classes that can fake a shadow, while is not as static as the RTC
+(Real Time Classes), it allows a smaller rendering time, thus allowing a more
+fluid UX.
 
 These classes are:
 
@@ -188,7 +193,7 @@ These classes are:
 
 for example:
 
-..code-block:: python
+.. code-block:: python
 
     class ElevatedWidget(
         RectangularElevationBehavior,    # Draws the shadow

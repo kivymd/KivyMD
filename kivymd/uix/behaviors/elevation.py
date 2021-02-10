@@ -94,9 +94,8 @@ Similarly, create a button with a circular elevation effect:
         size_hint: None, None
         size: "100dp", "100dp"
         source: f"{images_path}/kivymd.png"
-        anima:Animation
-        radius: self.size[0]/2
-        elevation:10
+        radius: self.size[0] / 2
+        elevation: 10
 
         MDIcon:
             icon: "hand-heart"
@@ -106,7 +105,7 @@ Similarly, create a button with a circular elevation effect:
             pos: root.pos
             font_size: root.size[0]*0.6
             theme_text_color: "Custom"
-            text_color: [1]*4
+            text_color: [1] * 4
 
 
     MDScreen:
@@ -132,15 +131,17 @@ Similarly, create a button with a circular elevation effect:
         md_bg_color = [0, 0, 1, 1]
         shadow_animation = ObjectProperty()
 
-        def on_press(self,*dt):
+        def on_press(self, *args):
             if self.shadow_animation:
                 Animation.cancel(self.shadow_animation)
-            Animation(_elevation=30, d=0.2).start(self)
+            self.shadow_animation=Animation(_elevation=30, d=0.2)
+            self.shadow_animation.start(self)
 
-        def on_release(self,*dt):
+        def on_release(self, *args):
             if self.shadow_animation:
                 Animation.cancel(self.shadow_animation)
-            Animation(_elevation=self.elevation, d=0.2).start(self)
+            self.shadow_animation=Animation(_elevation=self.elevation, d=0.2)
+            self.shadow_animation.start(self)
 
 
     class Example(MDApp):
@@ -157,20 +158,24 @@ Similarly, create a button with a circular elevation effect:
 Animtating the elevation
 -------------------------
 
-The best way to accomplish this would be to use the widget `_elevation`
-property.
+The best way to accomplis this would be to use the widget
+:attr:`~CommonElevationBehavior._elevation` property.
 
 This will allow the developer to change dynamically the shadow and be able to
 come back to the default elevation with widget.elevation.
 
-The work `elevation` and `_elevation` works is that `elevation` is the
-developer setting for the widget elevation, while `_elevation` is the current
-elevation of the widget.
+The way that :attr:`~CommonElevationBehavior.elevation`
+and :attr:`~CommonElevationBehavior._elevation` works is that
+:attr:`~CommonElevationBehavior.elevation` is the developer setting for the
+widget elevation, while :attr:`~CommonElevationBehavior._elevation` is the
+current elevation of the widget.
 
-if the developer sets `elevation` the behavior will parse this value to
-`_elevation` as a copy of this value. Then if `_elevation` was different from
-the new `elevation`, kivy will launch a drawing instruction update, that will
-render both, position and size of the shadows.
+If the developer sets :attr:`~CommonElevationBehavior.elevation`
+the behavior will parse this value to
+:attr:`~CommonElevationBehavior._elevation` as a copy of this value. Then if
+:attr:`~CommonElevationBehavior._elevation` was different from the new
+:attr:`~CommonElevationBehavior.elevation`, kivy will launch a drawing
+instruction update, that will render both, position and size of the shadows.
 
 for example:
 
@@ -182,9 +187,9 @@ for example:
         RectangularRippleBehavior,       # Sets the Ripple and it's animation.
     ):
 
-    shadow_animation=ObjectProperty() # Daffault to None
+    shadow_animation = ObjectProperty() # Daffault to None
 
-    def on_press(self,*dt):
+    def on_press(self, *args):
         # If the animation is set, stop it if it's running.
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
@@ -195,7 +200,7 @@ for example:
         )
         self.shadow_animation.start(self)
 
-    def on_release(self,*dt):
+    def on_release(self, *args):
         # If the animation is set, stop it if it's running.
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
@@ -206,11 +211,10 @@ for example:
         )
         self.shadow_animation.start(self)
 
-.. note:: About Performance:
-
-    Remember that Real-time classes like, RectangularElevationButton,
-    CircularElevationBehavior and RoundedRectangularElevationBehavior, will take
-    a great toll in the app performance.
+.. note:: Remember that real-time classes like,
+    :class:`~RectangularElevationButton`, :class:`~CircularElevationBehavior`
+    and :class:`~RoundedRectangularElevationBehavior`, will take a great toll
+    in the app performance.
 
     This is caused because the textures and image filters that are used will
     generate a new texture for each elevation step, for both, Soft and hard
@@ -219,13 +223,13 @@ for example:
 
 How to improve the performance
 -------------------------------
-We got 2 classes that can fake a shadow, while is not as static as the RTC
+We got 2 classes that can fake a shadow, while is not as aesthetic as the RTC
 (Real-Time Classes), it allows a smaller rendering time, thus allowing a more
 fluid UX.
 
-These clases are:
-    #. `FakeRectangularElevationBehavior`
-    #. `FakeCircularElevationBehavior`
+These classes are:
+    #. :class:`~FakeRectangularElevationBehavior`
+    #. :class:`~FakeCircularElevationBehavior`
 
 By deffault, the kivyMD widgets use RTC elevation behaviors to cast shadows
 behind the widgets. However, if you need to cast a shadow regardless of
@@ -243,12 +247,10 @@ for example:
     ):
         [...]
 
-.. warning::
-    Remember that the Fake elevation behavior needs to be at the end of the
+.. warning:: Remember that the Fake elevation behavior needs to be at the end of the
     inheritance list, otherwise, it will be overwritten by the base class.
 
-.. note::
-    If you need more information about how this behaviors works, you can always
+.. note:: If you need more information about how this behaviors works, you can always
     take a look at the source code.
 """
 
@@ -340,8 +342,9 @@ class CommonElevationBehavior(Widget):
     .. note::
 
         Although, this value does not represent the current elevation of the
-        widget. `_elevation` can be used to animate the current elevation and
-        come back using the `elevation` property directly.
+        widget. :attr:`~CommonElevationBehavior._elevation` can be used to
+        animate the current elevation and come back using the
+        :attr:`~CommonElevationBehavior.elevation` property directly.
 
         For example:
 
@@ -351,22 +354,41 @@ class CommonElevationBehavior(Widget):
             from kivy.uix.behaviors import ButtonBehavior
 
             from kivymd.app import MDApp
-            from kivymd.uix.behaviors import CircularElevationBehavior, CircularRippleBehavior
+            from kivymd.uix.behaviors import (
+                CircularElevationBehavior,
+                CircularRippleBehavior,
+            )
             from kivymd.uix.boxlayout import MDBoxLayout
 
             KV = '''
-            #:import Animation kivy.animation.Animation
+            #: import Animation kivy.animation.Animation
 
             <Widget_with_shadow>:
-                animation_:None
+                size_hint: [None, None]
+                elevation: 6
+                animation_: None
+                md_bg_color: [1] * 4
+                on_size:
+                    self.radius = [self.height / 2] * 4
                 on_press:
-                    if self.animation_:(
-                    Animation.cancel(self.animation_))
-                    self.animation_=Animation(_elevation = 10, d=1).start(self)
+                    if self.animation_: self.animation_.cancel(self)
+                    self.animation_=Animation(
+                    _elevation = self.elevation+6,
+                    d=0.08
+                    )
+                    self.animation_.start(self)
                 on_release:
-                    if self.animation_:(
-                    Animation.cancel(self.animation_))
-                    self.animation_=Animation(_elevation = self.elevation).start(self)
+                    if self.animation_: self.animation_.cancel(self)
+                    self.animation_ = Animation(
+                    _elevation = self.elevation,
+                    d=0.08
+                    )
+                    self.animation_.start(self)
+
+            FloatLayout:
+                Widget_with_shadow:
+                    size:[root.size[1] / 2] * 2
+                    pos_hint:{"center": [0.5, 0.5]}
             '''
 
 
@@ -376,9 +398,10 @@ class CommonElevationBehavior(Widget):
                 ButtonBehavior,
                 MDBoxLayout,
             ):
-                def __init__(self, **kv):
-                    super().__init__(**kv)
-                    self.elevation = 6
+                def __init__(self, **kwargs):
+                    # always set the elevation before the super().__init__ call
+                    # self.elevation = 6
+                    super().__init__(**kwargs)
 
                 def on_size(self, *args):
                     self.radius = [self.size[0] / 2]
@@ -391,6 +414,7 @@ class CommonElevationBehavior(Widget):
 
             Example().run()
 
+
     """
 
     # Shadow rendering porpoerties
@@ -402,10 +426,38 @@ class CommonElevationBehavior(Widget):
     This value is shared across different widgets.
 
     .. note::
-
         This value will affect both, hard and soft shadows.
         Each shadow has his own origin point that's computed every time the
         elevation changes.
+
+    .. warning::
+        Do not add PushMatrix inside the canvas before and add PopMatrix
+        in the next layer, this will cause visuall errors, because the stack
+        used will clip the push and pop matrix already inside the canvas.before
+        canvas layer.
+
+        Incorrect:
+
+        .. code-block:: kv
+
+            <Tilted_Widget>
+                canvas.before:
+                    PushMatrix:
+                    [...]
+                canvas:
+                    PopMatrix:
+
+        Correct:
+
+        .. code-block:: kv
+
+            <Tilted_Widget>
+                canvas.before:
+                    PushMatrix:
+                    [...]
+                    PopMatrix:
+
+
 
     :attr:`angle` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
@@ -677,7 +729,7 @@ class CommonElevationBehavior(Widget):
         #. `FakeCircularElevationBehavior`
 
     :attr:`draw_shadow` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to None.
+    and defaults to `None`.
 
     .. note:: If this property is left to None the CommonElevationBehavior will
         set to a function that will raise a `NotImplementedError` inside
@@ -792,7 +844,7 @@ class CommonElevationBehavior(Widget):
             setattr(widget, property_name, value)
         del group
 
-    def shadow_preset(self, *dt):
+    def shadow_preset(self, *args):
         """
         This function is meant to set the default configuration of the
         elevation.

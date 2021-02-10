@@ -157,47 +157,38 @@ Similarly, create a button with a circular elevation effect:
 Animtating the elevation
 -------------------------
 
-The best way to accomplis this would be to use the widget `_elevation` property.
-This will allow the developer to change dynamically the shadow and be able to
-come back to the deffault elevation with widget.elevation.
+The best way to accomplish this would be to use the widget `_elevation`
+property.
 
-The work `elevation` and `_elevation` works is that `elevation` is the developer
-setting for the widget elevation, while `_elevation` is the current elevation
-of the widget.
+This will allow the developer to change dynamically the shadow and be able to
+come back to the default elevation with widget.elevation.
+
+The work `elevation` and `_elevation` works is that `elevation` is the
+developer setting for the widget elevation, while `_elevation` is the current
+elevation of the widget.
 
 if the developer sets `elevation` the behavior will parse this value to
-`_elevation` as a copy of this value. then if `_elevation` was different to the
-new `elevation`, kivy will launch a drawing instruction update, that will
+`_elevation` as a copy of this value. Then if `_elevation` was different from
+the new `elevation`, kivy will launch a drawing instruction update, that will
 render both, position and size of the shadows.
-
-Remember that Real time classes as RectangularElevationButton,
-CircularElevationBehavior and RoundedRectangularElevationBehavior will take a
-great toll in the app performance. this is caused because the textures and
-image filters that are used will be generated for each shadow, soft and hard
-shadows of the widget.
-
-We got 2 clases that can fake a shadow, while is not as stetic as the RTC (Real
-Time Classes), it allows a smaller rendering time, thus allowing a more fluid
-UX.
-
-These clases are:
-
-    #. `FakeRectangularElevationBehavior`
-    #. `FakeCircularElevationBehavior`
 
 for example:
 
-..code-block:: python
+.. code-block:: python
     Elevated_Widget(
-        RectangularElevationBehavior,    # Draws the shadow
+        ThemableBehavior,                # Include the Theming API.
+        RectangularElevationBehavior,    # Cast the shadow
         SpecificBackgroundColorBehavior, # Draws the Background Color
-        RectangularRippleBehavior,       # Draws the Ripple and it's animation.
+        RectangularRippleBehavior,       # Sets the Ripple and it's animation.
     ):
-    shadow_animation=ObjectProperty()
+
+    shadow_animation=ObjectProperty() # Daffault to None
 
     def on_press(self,*dt):
+        # If the animation is set, stop it if it's running.
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
+        # Set and run the new animation.
         self.shadow_animation = Animation(
             _elevation = self.elevation + 10,
             d = 0.1
@@ -205,14 +196,58 @@ for example:
         self.shadow_animation.start(self)
 
     def on_release(self,*dt):
+        # If the animation is set, stop it if it's running.
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
+        # Set and run the new animation.
         self.shadow_animation = Animation(
             _elevation = self.elevation,
             d = 0.1
         )
         self.shadow_animation.start(self)
 
+.. note:: About Performance:
+
+    Remember that Real-time classes like, RectangularElevationButton,
+    CircularElevationBehavior and RoundedRectangularElevationBehavior, will take
+    a great toll in the app performance.
+
+    This is caused because the textures and image filters that are used will
+    generate a new texture for each elevation step, for both, Soft and hard
+    shadows. Blocking the python GIL while processing the images.
+
+
+How to improve the performance
+-------------------------------
+We got 2 classes that can fake a shadow, while is not as static as the RTC
+(Real-Time Classes), it allows a smaller rendering time, thus allowing a more
+fluid UX.
+
+These clases are:
+    #. `FakeRectangularElevationBehavior`
+    #. `FakeCircularElevationBehavior`
+
+By deffault, the kivyMD widgets use RTC elevation behaviors to cast shadows
+behind the widgets. However, if you need to cast a shadow regardless of
+how aesthetic or precise it is (for larger widgets and improved performance)
+you can always overwrite the instruction simply by adding any of the fake
+elevation behavior.
+
+for example:
+.. code-block:: python
+
+    class Custom_Circular_Card(
+        MDCard,
+        FakeCircularElevationBehavior
+    ):
+        [...]
+.. warning::
+    Remember that the Fake elevation behavior needs to be at the end of the
+    inheritance list, otherwise, it will be overwritten by the base class.
+
+.. note::
+    If you need more information about how this behaviors works, you can always
+    take a look at the source code.
 """
 
 __all__ = (
@@ -811,7 +846,7 @@ class CommonElevationBehavior(Widget):
     def on_disabled(self, instance, value):
         """
         This function hides the shadow when the widget is disabled.
-        it sets the shadow to 0.
+        It sets the shadow to 0.
         """
 
         if self.disabled is True:
@@ -1119,14 +1154,21 @@ class RoundedRectangularElevationBehavior(CommonElevationBehavior):
 class ObservableShadow(CommonElevationBehavior):
     """
     ObservableShadow is real time shadow render that it's intended to only
-    render a partial shadow of widgets, this is meant to improve the performance
-    of rectangular casted shadows.
+    render a partial shadow of widgets based upon on the window obserbable
+    area, this is meant to improve the performance of bigger widgets.
+
+    .. warning::
+        This is an empty class, the name has been reserved for future use.
+        if you include this clas in your object, you wil get a
+        NotImplementedError.
     """
 
     def __init__(self, **kwargs):
         # self._shadow = MDApp.get_running_app().theme_cls.round_shadow
         # self._fake_elevation=True
-        raise NotImplementedError("This class is in current development")
+        raise NotImplementedError(
+            "ObservableShadow:\n\t" "This class is in current development"
+        )
         super().__init__(**kwargs)
 
 
@@ -1136,6 +1178,49 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
     performance using cached images inside kivymd.images dir
 
     This class cast a fake Rectangular shadow behaind the widget.
+
+    You can either use this behavior to overwrite the elevation of a prefab
+    widget, or use it directly inside a new widget class definition.
+
+    Use this class as follows for new widgets:
+
+    .. code-block:: python
+
+        class NewWidget(
+            # Adds the theme behavior for the widget
+            ThemableBehavior,
+            # Add the elevation behavior mockup
+            FakeCircularElevationBehavior,
+            # Adds the background
+            SpecificBackgroundColorBehavior,
+            # here you add the other front end classes for the widget
+            front_end,
+        ):
+            [...]
+
+    With this method each class can draw it's content in the canvas in the
+    correct order, avoiding some visual errors.
+
+    FakeCircularElevationBehavior will load prefabricated textures to optimize
+    loading times.
+
+    Also, this class allows you to overwrite Real Time Shadows, in the sence that
+    if you are using a standard widget, like a button, MDCard or Toolbar, you can
+    include this class afther the base class to optimize the loading times.
+
+    As an example of this flexibility:
+
+    .. code-block:: python
+
+        class Custom_rectangular_Card(
+            MDCard,
+            FakeRectangularElevationBehavior
+        ):
+            [...]
+
+    .. note:: About Rounded Corners:
+        Be careful, since this behavior is a mockup and will not draw any
+        rounded corners.
     """
 
     def __init__(self, **kwargs):
@@ -1203,6 +1288,49 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
     performance using cached images inside kivymd.images dir
 
     This class cast a fake elliptic shadow behaind the widget.
+
+    You can either use this behavior to overwrite the elevation of a prefab
+    widget, or use it directly inside a new widget class definition.
+
+    Use this class as follows for new widgets:
+
+    .. code-block:: python
+
+        class NewWidget(
+            # Adds the theme behavior for the widget
+            ThemableBehavior,
+            # Add the elevation behavior mockup
+            FakeCircularElevationBehavior,
+            # Adds the background
+            SpecificBackgroundColorBehavior,
+            # here you add the other front end classes for the widget
+            front_end,
+        ):
+            [...]
+
+    With this method each class can draw it's content in the canvas in the
+    correct order, avoiding some visual errors.
+
+    FakeCircularElevationBehavior will load prefabricated textures to optimize
+    loading times.
+
+    Also, this class allows you to overwrite Real Time Shadows, in the sence that
+    if you are using a standard widget, like a button, MDCard or Toolbar, you can
+    include this class afther the base class to optimize the loading times.
+
+    As an example of this flexibility:
+
+    .. code-block:: python
+
+        class Custom_Circular_Card(
+            MDCard,
+            FakeCircularElevationBehavior
+        ):
+            [...]
+
+    .. note:: About Rounded Corners:
+        Be careful, since this behavior is a mockup and will not draw any rounded
+        corners. only perfect ellipses.
     """
 
     def __init__(self, **kwargs):

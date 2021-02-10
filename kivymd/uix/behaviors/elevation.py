@@ -76,15 +76,16 @@ Similarly, create a button with a circular elevation effect:
     from kivy.animation import Animation
     from kivy.uix.image import Image
     from kivy.uix.behaviors import ButtonBehavior
+    from kivy.uix.boxlayout import BoxLayout
+    from kivy.properties import ObjectProperty
+
     from kivymd.uix.label import  MDIcon
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import (
         CircularRippleBehavior,
         CircularElevationBehavior,
-        SpecificBackgroundColorBehavior
+        SpecificBackgroundColorBehavior,
     )
-    from kivy.uix.boxlayout import BoxLayout
-    from kivy.properties import ObjectProperty
 
     KV = '''
     #:import images_path kivymd.images_path
@@ -94,9 +95,9 @@ Similarly, create a button with a circular elevation effect:
         size_hint: None, None
         size: "100dp", "100dp"
         source: f"{images_path}/kivymd.png"
-        anima:Animation
-        radius: self.size[0]/2
-        elevation:10
+        anima: Animation
+        radius: self.size[0] / 2
+        elevation: 10
 
         MDIcon:
             icon: "hand-heart"
@@ -104,9 +105,9 @@ Similarly, create a button with a circular elevation effect:
             valign: "center"
             size: root.size
             pos: root.pos
-            font_size: root.size[0]*0.6
+            font_size: root.size[0] * 0.6
             theme_text_color: "Custom"
-            text_color: [1]*4
+            text_color: [1] * 4
 
 
     MDScreen:
@@ -132,7 +133,7 @@ Similarly, create a button with a circular elevation effect:
         md_bg_color = [0, 0, 1, 1]
         shadow_animation = ObjectProperty()
 
-        def on_press(self,*dt):
+        def on_press(self, *args):
             if self.shadow_animation:
                 Animation.cancel(self.shadow_animation)
             Animation(_elevation=30, d=0.2).start(self)
@@ -154,53 +155,53 @@ Similarly, create a button with a circular elevation effect:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-effect.gif
     :align: center
 
-Animtating the elevation
--------------------------
+Animating the elevation
+-----------------------
 
 The best way to accomplis this would be to use the widget `_elevation` property.
 This will allow the developer to change dynamically the shadow and be able to
-come back to the deffault elevation with widget.elevation.
+come back to the default elevation with widget.elevation.
 
 The work `elevation` and `_elevation` works is that `elevation` is the developer
 setting for the widget elevation, while `_elevation` is the current elevation
 of the widget.
 
-if the developer sets `elevation` the behavior will parse this value to
+If the developer sets `elevation` the behavior will parse this value to
 `_elevation` as a copy of this value. then if `_elevation` was different to the
 new `elevation`, kivy will launch a drawing instruction update, that will
 render both, position and size of the shadows.
 
-Remember that Real time classes as RectangularElevationButton,
-CircularElevationBehavior and RoundedRectangularElevationBehavior will take a
-great toll in the app performance. this is caused because the textures and
+Remember that Real time classes as :class:`~RectangularElevationButton`,
+:class:`~CircularElevationBehavior` and :class:`~RoundedRectangularElevationBehavior`
+will take a great toll in the app performance. this is caused because the textures and
 image filters that are used will be generated for each shadow, soft and hard
 shadows of the widget.
 
-We got 2 clases that can fake a shadow, while is not as stetic as the RTC (Real
+We got 2 classes that can fake a shadow, while is not as static as the RTC (Real
 Time Classes), it allows a smaller rendering time, thus allowing a more fluid
 UX.
 
-These clases are:
+These classes are:
 
-    #. `FakeRectangularElevationBehavior`
-    #. `FakeCircularElevationBehavior`
+    #. :class:`~FakeRectangularElevationBehavior`
+    #. :class:`~FakeCircularElevationBehavior`
 
 for example:
 
 ..code-block:: python
-    Elevated_Widget(
+
+    class ElevatedWidget(
         RectangularElevationBehavior,    # Draws the shadow
         SpecificBackgroundColorBehavior, # Draws the Background Color
         RectangularRippleBehavior,       # Draws the Ripple and it's animation.
     ):
-    shadow_animation=ObjectProperty()
+        shadow_animation=ObjectProperty()
 
-    def on_press(self,*dt):
+    def on_press(self, *args):
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
         self.shadow_animation = Animation(
-            _elevation = self.elevation + 10,
-            d = 0.1
+            _elevation=self.elevation + 10, d=0.1
         )
         self.shadow_animation.start(self)
 
@@ -208,11 +209,9 @@ for example:
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
         self.shadow_animation = Animation(
-            _elevation = self.elevation,
-            d = 0.1
+            _elevation=self.elevation, d=0.1
         )
         self.shadow_animation.start(self)
-
 """
 
 __all__ = (
@@ -252,9 +251,9 @@ Builder.load_string(
     """
 #:import InstructionGroup kivy.graphics.instructions.InstructionGroup
 
+
 <CommonElevationBehavior>
     canvas.before:
-
         # SOFT SHADOW
         PushMatrix
         Rotate:
@@ -287,7 +286,6 @@ Builder.load_string(
         Color:
             group: "shadow"
             a: 1
-
 """,
     filename="CommonElevationBehavior.kv",
 )
@@ -320,20 +318,21 @@ class CommonElevationBehavior(Widget):
             KV = '''
             #:import Animation kivy.animation.Animation
 
-            <Widget_with_shadow>:
-                animation_:None
+
+            <WidgetShadow>:
+                animation_: None
                 on_press:
-                    if self.animation_:(
-                    Animation.cancel(self.animation_))
-                    self.animation_=Animation(_elevation = 10, d=1).start(self)
+                    if self.animation_: \
+                        Animation.cancel(self.animation_); \
+                        self.animation_ = Animation(_elevation=10, d=1).start(self)
                 on_release:
-                    if self.animation_:(
-                    Animation.cancel(self.animation_))
-                    self.animation_=Animation(_elevation = self.elevation).start(self)
+                    if self.animation_:
+                        Animation.cancel(self.animation_); \
+                        self.animation_=Animation(_elevation=self.elevation).start(self)
             '''
 
 
-            class Widget_with_shadow(
+            class WidgetShadow(
                 CircularElevationBehavior,
                 CircularRippleBehavior,
                 ButtonBehavior,
@@ -353,12 +352,10 @@ class CommonElevationBehavior(Widget):
 
 
             Example().run()
-
     """
 
-    # Shadow rendering porpoerties
-    # Shadow rotation meomry - SHARED ACROSS OTHER CLASSES
-
+    # Shadow rendering properties.
+    # Shadow rotation memory - SHARED ACROSS OTHER CLASSES.
     angle = NumericProperty(0)
     """
     Angle of rotation in degrees of the current shadow.
@@ -371,7 +368,7 @@ class CommonElevationBehavior(Widget):
         elevation changes.
 
     :attr:`angle` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to 0.
+    and defaults to `0`.
     """
 
     radius = VariableListProperty([0])
@@ -393,22 +390,20 @@ class CommonElevationBehavior(Widget):
 
     .. code-block:: python
 
-        widget.radius=[0] # Translates to [0,0,0,0]
-        widget.radius=[10,3] # Translates to [10,3,10,3]
-        widget.radius=[7.0,8.7,1.5,3.0] # Translates to [7,8,1,3]
-
+        widget.radius = [0]  # Translates to [0, 0, 0, 0]
+        widget.radius = [10, 3]  # Translates to [10, 3, 10, 3]
+        widget.radius = [7.0, 8.7, 1.5, 3.0]  # Translates to [7, 8, 1, 3]
 
     .. note::
-
         This value will affect both, hard and soft shadows.
-        this value only affects RoundedRectangularElevationBehavior for now,
-        but can be stored and used by custom shadow Draw functions.
+        This value only affects :class:`~RoundedRectangularElevationBehavior`
+        for now, but can be stored and used by custom shadow Draw functions.
 
     :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to [0, 0, 0, 0].
+    and defaults to `[0, 0, 0, 0]`.
     """
 
-    # Position of the shadow
+    # Position of the shadow.
     _shadow_origin_x = NumericProperty(0)
     """
     Shadow origin x position for the rotation origin.
@@ -419,8 +414,7 @@ class CommonElevationBehavior(Widget):
     and defaults to `0`.
 
     .. note::
-
-        This property is automatically processed. by _shadow_origin
+        This property is automatically processed. by `_shadow_origin`
     """
 
     _shadow_origin_y = NumericProperty(0)
@@ -444,7 +438,6 @@ class CommonElevationBehavior(Widget):
     and defaults to `[0, 0]`.
 
     .. note::
-
         This property is automatically processed and relative to the canvas center.
     """
 
@@ -465,7 +458,7 @@ class CommonElevationBehavior(Widget):
     Custom shadow Origin point. if this property is set, _shadow_pos will be
     ommited.
 
-    This property allows userts to fake light source.
+    This property allows users to fake light source.
 
     :attr:`shadow_pos` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0]`.
@@ -474,7 +467,7 @@ class CommonElevationBehavior(Widget):
         this value overwrite the _shadow_pos processing
     """
 
-    # Shadow Group shared memory
+    # Shadow Group shared memory.
     __shadow_groups = {"global": []}
 
     shadow_group = StringProperty("global")
@@ -487,7 +480,7 @@ class CommonElevationBehavior(Widget):
     To fake a light source use force_shadow_pos.
 
     :attr:`shadow_group` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `"global"`.
+    and defaults to `'global'`.
     """
 
     _elevation = NumericProperty(0)
@@ -625,25 +618,25 @@ class CommonElevationBehavior(Widget):
     To set a different drawing instruction function, set this property before the
     `super(),__init__` call inside the `__init__` definition of the new class.
 
-    You can use the source for this clases as example of how to draw over
+    You can use the source for this classes as example of how to draw over
     with the context:
 
     Real time Shadows:
-        #. `RectangularElevationBehavior`
-        #. `CircularElevationBehavior`
-        #. `RoundedRectangularElevationBehavior`
-        #. `ObservableShadow`
+        #. :class:`~RectangularElevationBehavior`
+        #. :class:`~CircularElevationBehavior`
+        #. :class:`~RoundedRectangularElevationBehavior`
+        #. :class:`~ObservableShadow`
 
 
-    Fake Shadows (dont use this property):
-        #. `FakeRectangularElevationBehavior`
-        #. `FakeCircularElevationBehavior`
+    Fake Shadows (d`ont use this property):
+        #. :class:`~FakeRectangularElevationBehavior`
+        #. :class:`~FakeCircularElevationBehavior`
 
     :attr:`draw_shadow` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to None.
 
-    .. note:: If this property is left to None the CommonElevationBehavior will
-        set to a function that will raise a `NotImplementedError` inside
+    .. note:: If this property is left to None the :class:`~CommonElevationBehavior`
+        will set to a function that will raise a `NotImplementedError` inside
         `super().__init__`.
 
     Follow the next example to set a new draw instruction for the class
@@ -667,8 +660,8 @@ class CommonElevationBehavior(Widget):
     Context is a Pillow `ImageDraw` class. For more information check the
     [Pillow official documentation](https://github.com/python-pillow/Pillow/).
     """
-    # All clases that uses a fake shadow shall set this value as True
-    # for perfornmance
+    # All classes that uses a fake shadow shall set this value as `True`
+    # for performance.
     _fake_elevation = BooleanProperty(False)
 
     def __init__(self, **kwargs):
@@ -684,7 +677,6 @@ class CommonElevationBehavior(Widget):
         ).texture
         Clock.schedule_once(self.shadow_preset, -1)
         self.on_shadow_group(self, self.shadow_group)
-
         self.bind(
             pos=self._update_shadow,
             size=self._update_shadow,
@@ -695,7 +687,7 @@ class CommonElevationBehavior(Widget):
     def on_shadow_group(self, instance, value):
         """
         This function controls the shadow group of the widget.
-        Do not use Directly to change the group. instead, use the shadow_group
+        Do not use Directly to change the group. instead, use the `shadow_group`
         :attr:`property`.
         """
 
@@ -779,7 +771,7 @@ class CommonElevationBehavior(Widget):
 
     def on_elevation(self, instance, value):
         """
-        Elevation event that sets the current elevation value to _elevation
+        Elevation event that sets the current elevation value to `_elevation`.
         """
 
         if value is not None:
@@ -811,7 +803,7 @@ class CommonElevationBehavior(Widget):
     def on_disabled(self, instance, value):
         """
         This function hides the shadow when the widget is disabled.
-        it sets the shadow to 0.
+        it sets the shadow to `0`.
         """
 
         if self.disabled is True:
@@ -867,6 +859,7 @@ class CommonElevationBehavior(Widget):
 
         Call this function every time you need to force a shadow update.
         """
+
         self._update_shadow_pos(ins, val)
 
     def on_shadow_pos(self, ins, val):
@@ -875,6 +868,7 @@ class CommonElevationBehavior(Widget):
 
         Call this function every time you need to force a shadow update.
         """
+
         self._update_shadow_pos(ins, val)
 
     def _update_shadow(self, instance, value):
@@ -1132,10 +1126,10 @@ class ObservableShadow(CommonElevationBehavior):
 
 class FakeRectangularElevationBehavior(CommonElevationBehavior):
     """
-    FakeRectangularElevationBehavior is a shadow mockup for widgets. imptoves
-    performance using cached images inside kivymd.images dir
+    :class:`~FakeRectangularElevationBehavior` is a shadow mockup for widgets.
+    Improves performance using cached images inside `kivymd.images` dir.
 
-    This class cast a fake Rectangular shadow behaind the widget.
+    This class cast a fake Rectangular shadow behind the widget.
     """
 
     def __init__(self, **kwargs):
@@ -1199,10 +1193,10 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
 
 class FakeCircularElevationBehavior(CommonElevationBehavior):
     """
-    FakeCircularElevationBehavior is a shadow mockup for widgets. imptoves
-    performance using cached images inside kivymd.images dir
+    :class:`FakeCircularElevationBehavior` is a shadow mockup for widgets.
+    Improves performance using cached images inside `kivymd.images` dir.
 
-    This class cast a fake elliptic shadow behaind the widget.
+    This class cast a fake elliptic shadow behind the widget.
     """
 
     def __init__(self, **kwargs):
@@ -1246,6 +1240,5 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             self._soft_shadow_a = 0
             self._hard_shadow_a = 0
 
-    #
     def __draw_shadow__(self, origin, end, context=None):
         pass

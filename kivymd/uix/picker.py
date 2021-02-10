@@ -55,7 +55,7 @@ MDTimePicker
 
     Test().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDTimePicker.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDTimePicker.png
     :align: center
 
 Binding method returning set time
@@ -95,8 +95,8 @@ Use the :attr:`~MDTimePicker.set_time` method of the
         time_dialog.set_time(previous_time)
         time_dialog.open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/previous-time.png
-    :align: center
+.. note:: For customization of the :class:`~MDTimePicker` class, see the
+    documentation in the :class:`~BaseDialogPicker` class.
 
 .. MDDatePicker:
 MDDatePicker

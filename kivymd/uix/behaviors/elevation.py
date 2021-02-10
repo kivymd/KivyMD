@@ -406,7 +406,7 @@ class CommonElevationBehavior(Widget):
         elevation changes.
 
     :attr:`angle` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to 0.
+    and defaults to `0`.
     """
 
     radius = VariableListProperty([0])
@@ -440,7 +440,7 @@ class CommonElevationBehavior(Widget):
         but can be stored and used by custom shadow Draw functions.
 
     :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to [0, 0, 0, 0].
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     # Position of the shadow
@@ -846,7 +846,7 @@ class CommonElevationBehavior(Widget):
     def on_disabled(self, instance, value):
         """
         This function hides the shadow when the widget is disabled.
-        It sets the shadow to 0.
+        It sets the shadow to `0`.
         """
 
         if self.disabled is True:

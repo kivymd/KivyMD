@@ -577,6 +577,8 @@ Builder.load_string(
 
 <MDCard>
     canvas.before:
+        Color:
+            rgba: self.md_bg_color
         RoundedRectangle:
             size: self.size
             pos: self.pos

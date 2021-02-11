@@ -1070,6 +1070,36 @@ class ThemableBehavior(EventDispatcher):
     :attr:`device_ios` is an :class:`~kivy.properties.BooleanProperty`.
     """
 
+    widget_style = OptionProperty(
+        "android", options=["android", "ios", "desktop"]
+    )
+    """
+    Allows to set one of the three style properties for the widget:
+    `'android'`, `'ios'`, `'desktop'`.
+
+    For example, for the class :class:`~kivymd.uix.selectioncontrol.MDSwitch`
+    has two styles - `'android'` and `'ios'`:
+
+    .. code-block:: kv
+
+        MDSwitch:
+            widget_style: "ios"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-ios.gif
+        :align: center
+
+    .. code-block:: kv
+
+        MDSwitch:
+            widget_style: "android"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-android.gif
+        :align: center
+
+    :attr:`widget_style` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'android'`.
+    """
+
     opposite_colors = BooleanProperty(False)
 
     def __init__(self, **kwargs):

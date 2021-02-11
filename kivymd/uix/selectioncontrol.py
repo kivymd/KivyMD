@@ -28,7 +28,7 @@ MDCheckbox
 
 
     KV = '''
-    FloatLayout:
+    MDFloatLayout:
 
         MDCheckbox:
             size_hint: None, None
@@ -86,7 +86,7 @@ MDCheckbox with group
         size: dp(48), dp(48)
 
 
-    FloatLayout:
+    MDFloatLayout:
 
         Check:
             active: True
@@ -118,7 +118,7 @@ MDSwitch
     from kivymd.app import MDApp
 
     KV = '''
-    FloatLayout:
+    MDFloatLayout:
 
         MDSwitch:
             pos_hint: {'center_x': .5, 'center_y': .5}
@@ -211,15 +211,38 @@ Builder.load_string(
     canvas.before:
         Color:
             rgba:
-                self._track_color_disabled if self.disabled else\
-                (self._track_color_active if self.active\
-                else self._track_color_normal)
+                self._track_color_disabled if self.disabled else \
+                ( \
+                self._track_color_active \
+                if self.active else self._track_color_normal \
+                )
         RoundedRectangle:
-            size: self.width - dp(8), dp(16)
-            pos: self.x + dp(8), self.center_y - dp(8)
-            radius: [dp(7)]
-
-    # on_release: thumb.trigger_action()
+            size:
+                (self.width + dp(14), dp(28)) \
+                if root.widget_style == "ios" else \
+                (self.width - dp(8), dp(16))
+            pos:
+                (self.x - dp(2), self.center_y - dp(14)) \
+                if root.widget_style == "ios" else \
+                (self.x + dp(8), self.center_y - dp(8))
+            radius:
+                [dp(14)] if root.widget_style == "ios" else [dp(7)]
+        Color:
+            rgba:
+                ( \
+                self.theme_cls.disabled_hint_text_color[:-1] + [.2] \
+                if not root.active else (0, 0, 0, 0) \
+                ) \
+                if root.widget_style == "ios" else (0, 0, 0, 0)
+        Line:
+            width: 1 if root.widget_style == "ios" else 0.001
+            rounded_rectangle:
+                ( \
+                self.x - dp(2), self.center_y - dp(14), self.width + dp(14), \
+                dp(28), dp(14), dp(14), dp(14), dp(14), dp(28) \
+                ) \
+                if root.widget_style == "ios" else \
+                (0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     Thumb:
         id: thumb
@@ -227,10 +250,10 @@ Builder.load_string(
         size: dp(24), dp(24)
         pos: root.pos[0] + root._thumb_pos[0], root.pos[1] + root._thumb_pos[1]
         color:
-            root.thumb_color_disabled if root.disabled else\
+            root.thumb_color_disabled if root.disabled else \
             (root.thumb_color_down if root.active else root.thumb_color)
-        elevation: 4 if root.active else 2
-        on_release: setattr(root, 'active', not root.active)
+        elevation: 8 if root.active else 5
+        on_release: setattr(root, "active", not root.active)
 """
 )
 
@@ -569,7 +592,7 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
 
     def _update_thumb_pos(self, *args, animation=True):
         if self.active:
-            _thumb_pos = (self.width - dp(12), self.height / 2 - dp(12))
+            _thumb_pos = (self.width - dp(14), self.height / 2 - dp(12))
         else:
             _thumb_pos = (0, self.height / 2 - dp(12))
         Animation.cancel_all(self, "_thumb_pos")

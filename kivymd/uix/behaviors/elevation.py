@@ -36,7 +36,7 @@ For example, let's create an button with a rectangular elevation effect:
         size: "250dp", "50dp"
 
 
-    Screen:
+    MDScreen:
 
         # With elevation effect
         RectangularElevationButton:
@@ -76,6 +76,7 @@ Similarly, create a button with a circular elevation effect:
     from kivy.animation import Animation
     from kivy.uix.image import Image
     from kivy.uix.behaviors import ButtonBehavior
+
     from kivymd.uix.label import  MDIcon
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import (
@@ -155,14 +156,14 @@ Similarly, create a button with a circular elevation effect:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-effect.gif
     :align: center
 
-Animtating the elevation
--------------------------
+Animating the elevation
+-----------------------
 
 The best way to accomplis this would be to use the widget
 :attr:`~CommonElevationBehavior._elevation` property.
 
 This will allow the developer to change dynamically the shadow and be able to
-come back to the default elevation with widget.elevation.
+come back to the default elevation with `widget.elevation`.
 
 The way that :attr:`~CommonElevationBehavior.elevation`
 and :attr:`~CommonElevationBehavior._elevation` works is that
@@ -177,27 +178,24 @@ the behavior will parse this value to
 :attr:`~CommonElevationBehavior.elevation`, kivy will launch a drawing
 instruction update, that will render both, position and size of the shadows.
 
-for example:
+For example:
 
 .. code-block:: python
-    Elevated_Widget(
-        ThemableBehavior,                # Include the Theming API.
-        RectangularElevationBehavior,    # Cast the shadow
-        SpecificBackgroundColorBehavior, # Draws the Background Color
-        RectangularRippleBehavior,       # Sets the Ripple and it's animation.
-    ):
 
-    shadow_animation = ObjectProperty() # Daffault to None
+    class ElevatedWidget(
+        ThemableBehavior,                 # Include the Theming API.
+        RectangularElevationBehavior,     # Cast the shadow
+        SpecificBackgroundColorBehavior,  # Draws the Background Color
+        RectangularRippleBehavior,        # Sets the Ripple and it's animation.
+    ):
+        shadow_animation = ObjectProperty()  # default to None
 
     def on_press(self, *args):
         # If the animation is set, stop it if it's running.
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
         # Set and run the new animation.
-        self.shadow_animation = Animation(
-            _elevation = self.elevation + 10,
-            d = 0.1
-        )
+        self.shadow_animation = Animation(_elevation = self.elevation+10, d=0.1)
         self.shadow_animation.start(self)
 
     def on_release(self, *args):
@@ -205,10 +203,7 @@ for example:
         if self.shadow_animation:
             Animation.cancel(self.shadow_animation)
         # Set and run the new animation.
-        self.shadow_animation = Animation(
-            _elevation = self.elevation,
-            d = 0.1
-        )
+        self.shadow_animation = Animation(_elevation=self.elevation, d=0.1)
         self.shadow_animation.start(self)
 
 .. note:: Remember that real-time classes like,
@@ -223,7 +218,8 @@ for example:
 
 How to improve the performance
 -------------------------------
-We got 2 classes that can fake a shadow, while is not as aesthetic as the RTC
+
+We got 2 classes that can fake a shadow, while is not as aesthetic as the `RTC`
 (Real-Time Classes), it allows a smaller rendering time, thus allowing a more
 fluid UX.
 
@@ -231,7 +227,7 @@ These classes are:
     #. :class:`~FakeRectangularElevationBehavior`
     #. :class:`~FakeCircularElevationBehavior`
 
-By deffault, the kivyMD widgets use RTC elevation behaviors to cast shadows
+By default, the `KivyMD` widgets use `RTC` elevation behaviors to cast shadows
 behind the widgets. However, if you need to cast a shadow regardless of
 how aesthetic or precise it is (for larger widgets and improved performance)
 you can always overwrite the instruction simply by adding any of the fake
@@ -247,11 +243,12 @@ for example:
     ):
         [...]
 
-.. warning:: Remember that the Fake elevation behavior needs to be at the end of the
-    inheritance list, otherwise, it will be overwritten by the base class.
+.. warning:: Remember that the fake elevation behavior needs to be at the end
+    of the inheritance list, otherwise, it will be overwritten by the base
+    class.
 
-.. note:: If you need more information about how this behaviors works, you can always
-    take a look at the source code.
+.. note:: If you need more information about how this behaviors works, you can
+    always take a look at the source code.
 """
 
 __all__ = (
@@ -291,6 +288,7 @@ Builder.load_string(
     """
 #:import InstructionGroup kivy.graphics.instructions.InstructionGroup
 
+
 <CommonElevationBehavior>
     canvas.before:
         # SOFT SHADOW
@@ -306,7 +304,7 @@ Builder.load_string(
             texture: self._soft_shadow_texture
             size: self.soft_shadow_size
             pos: self.soft_shadow_pos
-        PopMatrix:
+        PopMatrix
 
         # HARD SHADOW
         PushMatrix

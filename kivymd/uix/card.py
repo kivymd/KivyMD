@@ -567,7 +567,7 @@ from kivymd.uix.behaviors import (
 Builder.load_string(
     """
 <MDCardSwipeLayerBox>:
-    canvas:
+    canvas.before:
         Color:
             rgba: app.theme_cls.divider_color
         Rectangle:
@@ -576,11 +576,13 @@ Builder.load_string(
 
 
 <MDCard>
-    canvas:
+    canvas.before:
         RoundedRectangle:
             size: self.size
             pos: self.pos
+            radius: root.radius
             source: root.background
+
 
 
 <MDSeparator>
@@ -623,17 +625,10 @@ class MDCard(
     ThemableBehavior,
     RoundedRectangularElevationBehavior,
     BackgroundColorBehavior,
-    FocusBehavior,
     RectangularRippleBehavior,
+    FocusBehavior,
     BoxLayout,
 ):
-    background = StringProperty()
-    """
-    Background image path.
-
-    :attr:`background` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
 
     focus_behavior = BooleanProperty(False)
     """

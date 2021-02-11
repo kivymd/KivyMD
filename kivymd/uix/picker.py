@@ -2340,7 +2340,8 @@ Builder.load_string(
                 root.theme_cls.primary_color \
                 if not root.text_button_color else root.text_button_color
             on_release: root.dispatch("on_save", root._get_data())
-"""
+""",
+filename="picker.kv"
 )
 
 

@@ -1070,7 +1070,9 @@ class ThemableBehavior(EventDispatcher):
     :attr:`device_ios` is an :class:`~kivy.properties.BooleanProperty`.
     """
 
-    widget_style = OptionProperty("android", options=["android", "ios", "desktop"])
+    widget_style = OptionProperty(
+        "android", options=["android", "ios", "desktop"]
+    )
     """
     Allows to set one of the three style properties for the widget:
     `'android'`, `'ios'`, `'desktop'`.

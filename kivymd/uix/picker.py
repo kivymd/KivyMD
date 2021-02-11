@@ -2120,14 +2120,17 @@ Builder.load_string(
         id: hour
         num_type: "hour"
         pos: 0, 0
-        fill_color: [*root.bg_color_active[:3], 0.5] if root.state == "hour" else [*root.bg_color[:3], 0.5]
         text_color: root.text_color
         disabled: root.disabled
         on_text: root.dispatch("on_time_input")
+        radius: root.hour_radius
         on_select:
             root.dispatch("on_hour_select")
             root.state = "hour"
-        radius: root.hour_radius
+        fill_color:
+            [*root.bg_color_active[:3], 0.5] \
+            if root.state == "hour" else [*root.bg_color[:3], 0.5]
+
 
     MDLabel:
         text: ":"
@@ -2144,14 +2147,16 @@ Builder.load_string(
         id: minute
         num_type: "minute"
         pos: dp(120), 0
-        fill_color: [*root.bg_color_active[:3], 0.5] if root.state == "minute" else [*root.bg_color[:3], 0.5]
         text_color: root.text_color
         disabled: root.disabled
         on_text: root.dispatch("on_time_input")
+        radius: root.minute_radius
         on_select:
             root.dispatch("on_minute_select")
             root.state = "minute"
-        radius: root.minute_radius
+        fill_color:
+            [*root.bg_color_active[:3], 0.5] \
+            if root.state == "minute" else [*root.bg_color[:3], 0.5]
 
 
 <CircularSelector>
@@ -2541,8 +2546,8 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
         Adds all number in range `[start, end + 1]` to the circular layout with
         the specified step. Step means that all widgets will be added to layout
         but sets the opacity for skipped widgets to `0` because we are using
-        the label's text as a refrence to the selected number so we have to add
-        these to layout.
+        the label's text as a reference to the selected number so we have to
+        add these to layout.
         """
 
         self.clear_widgets()
@@ -2649,7 +2654,7 @@ class MDTimePicker(BaseDialogPicker):
     Current hour
 
     :attr:`hour` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `12`.
+    and defaults to `'12'`.
     """
 
     minute = StringProperty("0")
@@ -2705,7 +2710,7 @@ class MDTimePicker(BaseDialogPicker):
     Current AM/PM mode.
 
     :attr:`am_pm` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `am`.
+    and defaults to `'am'`.
     """
 
     animation_duration = NumericProperty(0.3)
@@ -2721,7 +2726,7 @@ class MDTimePicker(BaseDialogPicker):
     Transition type of the animations.
 
     :attr:`animation_transition` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `out_quad`.
+    and defaults to `'out_quad'`.
     """
 
     time = ObjectProperty(allownone=True)
@@ -2791,6 +2796,7 @@ class MDTimePicker(BaseDialogPicker):
         """
         Manually set time dialog with the specified time.
         """
+
         hour = time_obj.hour
         minute = time_obj.minute
         if hour > 12:
@@ -2806,8 +2812,10 @@ class MDTimePicker(BaseDialogPicker):
 
     def get_state(self):
         """
-        Returns the current state of TimePicker. Can be one of `portrait`, `landscape` or `input`
+        Returns the current state of TimePicker.
+        Can be one of `portrait`, `landscape` or `input`.
         """
+
         return self._state
 
     def _get_data(self):
@@ -2818,8 +2826,7 @@ class MDTimePicker(BaseDialogPicker):
             ).time()
             return result
         except ValueError:
-            # hour is zero
-            return None
+            return None  # hour is zero
 
     def _check_orienation(self, *args, do_anim=False):
         orientation = self.theme_cls.device_orientation
@@ -2828,7 +2835,7 @@ class MDTimePicker(BaseDialogPicker):
 
     def _update_pos_size(self, orientation, anim=False):
         d = self.animation_duration
-        # Time Input
+        # time input
         time_input_pos = (
             [dp(24), dp(368)]
             if orientation == "portrait"
@@ -2854,7 +2861,7 @@ class MDTimePicker(BaseDialogPicker):
         )
         Clock.schedule_once(self._time_input._update_padding)
 
-        # Circular Selector
+        # circular selector
         if orientation == "input":
             if self.theme_cls.device_orientation == "portrait":
                 selector_pos = [dp(34), dp(-256)]
@@ -2875,7 +2882,7 @@ class MDTimePicker(BaseDialogPicker):
             t=self.animation_transition,
         ).start(self._selector)
 
-        # AM/PM Selector
+        # AM/PM selector
         am_pm_pos = (
             [dp(252), dp(368)]
             if orientation == "portrait"
@@ -2928,7 +2935,7 @@ class MDTimePicker(BaseDialogPicker):
         else:
             self.size = time_picker_size
 
-        # Minute Label
+        # minute label
         Animation(
             pos=[dp(144), dp(76)],
             opacity=1 if orientation == "input" else 0,
@@ -2936,7 +2943,7 @@ class MDTimePicker(BaseDialogPicker):
             t=self.animation_transition,
         ).start(self._minute_label)
 
-        # Hour Label
+        # hour label
         Animation(
             pos=[dp(24), dp(76)],
             opacity=1 if orientation == "input" else 0,

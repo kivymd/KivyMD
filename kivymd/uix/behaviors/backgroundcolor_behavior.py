@@ -15,8 +15,8 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     ReferenceListProperty,
-    VariableListProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex

@@ -112,7 +112,7 @@ Builder.load_string(
         orientation: "vertical"
         size_hint_y: None
         height: self.minimum_height
-        elevation: 4
+        elevation: 24
         md_bg_color: 0, 0, 0, 0
         padding: "24dp", "24dp", "8dp", "8dp"
 
@@ -187,10 +187,12 @@ class BaseDialog(ThemableBehavior, ModalView):
 
     .. code-block:: python
 
-        self.dialog = MDDialog(
-            text="Oops! Something seems to have gone wrong!",
-            radius=[20, 7, 20, 7],
-        )
+        [...]
+            self.dialog = MDDialog(
+                text="Oops! Something seems to have gone wrong!",
+                radius=[20, 7, 20, 7],
+            )
+            [...]
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-radius.png
         :align: center
@@ -210,17 +212,19 @@ class MDDialog(BaseDialog):
 
     .. code-block:: python
 
-        self.dialog = MDDialog(
-            title="Reset settings?",
-            buttons=[
-                MDFlatButton(
-                    text="CANCEL", text_color=self.theme_cls.primary_color
-                ),
-                MDFlatButton(
-                    text="ACCEPT", text_color=self.theme_cls.primary_color
-                ),
-            ],
-        )
+        [...]
+            self.dialog = MDDialog(
+                title="Reset settings?",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCEL", text_color=self.theme_cls.primary_color
+                    ),
+                    MDFlatButton(
+                        text="ACCEPT", text_color=self.theme_cls.primary_color
+                    ),
+                ],
+            )
+            [...]
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-title.png
         :align: center
@@ -235,18 +239,20 @@ class MDDialog(BaseDialog):
 
     .. code-block:: python
 
-        self.dialog = MDDialog(
-            title="Reset settings?",
-            text="This will reset your device to its default factory settings.",
-            buttons=[
-                MDFlatButton(
-                    text="CANCEL", text_color=self.theme_cls.primary_color
-                ),
-                MDFlatButton(
-                    text="ACCEPT", text_color=self.theme_cls.primary_color
-                ),
-            ],
-        )
+        [...]
+            self.dialog = MDDialog(
+                title="Reset settings?",
+                text="This will reset your device to its default factory settings.",
+                buttons=[
+                    MDFlatButton(
+                        text="CANCEL", text_color=self.theme_cls.primary_color
+                    ),
+                    MDFlatButton(
+                        text="ACCEPT", text_color=self.theme_cls.primary_color
+                    ),
+                ],
+            )
+            [...]
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-text.png
         :align: center
@@ -262,12 +268,14 @@ class MDDialog(BaseDialog):
 
     .. code-block:: python
 
-        self.dialog = MDDialog(
-            text="Discard draft?",
-            buttons=[
-                MDFlatButton(text="CANCEL"), MDRaisedButton(text="DISCARD"),
-            ],
-        )
+        [...]
+            self.dialog = MDDialog(
+                text="Discard draft?",
+                buttons=[
+                    MDFlatButton(text="CANCEL"), MDRaisedButton(text="DISCARD"),
+                ],
+            )
+            [...]
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-buttons.png
         :align: center
@@ -606,8 +614,11 @@ class MDDialog(BaseDialog):
         instance_item._txt_left_pad = "56dp"
 
     def create_items(self):
-        self.ids.container.remove_widget(self.ids.text)
-        height = 0
+        if not self.text:
+            self.ids.container.remove_widget(self.ids.text)
+            height = 0
+        else:
+            height = self.ids.text.height
 
         for item in self.items:
             if issubclass(item.__class__, BaseListItem):

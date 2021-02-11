@@ -1062,23 +1062,16 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
         if self.elevation == 0:
             self.elevation = 2
         super().__init__(**kwargs)
-        self.on_elevation(self,self.elevation)
+        self.on_elevation(self, self.elevation)
 
     def on_elevation(self, instance, value):
         super().on_elevation(instance, value)
         self._elevation_raised = self.elevation + 6
-        self._anim_raised = Animation(
-            _elevation = self._elevation_raised,
-            d=0.15
-        )
+        self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
 
     def on__elevation_raised(self, instance, value):
         Animation.cancel_all(self, "_elevation")
-        self._anim_raised = Animation(
-            _elevation = self._elevation_raised,
-            d=0.15
-        )
-
+        self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
 
     def on_disabled(self, instance, value):
         if self.disabled is True:

@@ -1085,7 +1085,7 @@ class ThemableBehavior(EventDispatcher):
         MDSwitch:
             widget_style: "ios"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-ios.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-ios.gif
         :align: center
 
     .. code-block:: kv
@@ -1093,7 +1093,7 @@ class ThemableBehavior(EventDispatcher):
         MDSwitch:
             widget_style: "android"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-android.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-android.gif
         :align: center
 
     :attr:`widget_style` is an :class:`~kivy.properties.OptionProperty`

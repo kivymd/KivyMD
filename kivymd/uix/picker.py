@@ -1802,10 +1802,9 @@ class MDDatePicker(BaseDialogPicker):
         choose and a string like "Feb 15 - Mar 23" or "Feb 15,\nMar 23" for
         a date range.
         """
-        if 12<int(month)<0:
+        if 12 < int(month) < 0:
             raise ValueError(
-                "set_text_full_date:\n\t"
-                f"Month [{month}] out of range."
+                "set_text_full_date:\n\t" f"Month [{month}] out of range."
             )
         if int(day) > calendar.monthrange(int(year), (month))[1]:
             raise ValueError(
@@ -2003,14 +2002,11 @@ class MDDatePicker(BaseDialogPicker):
         )
         self.update_calendar(year, month)
         if self.sel_day:
-            x = calendar.monthrange(year,month)[1]
+            x = calendar.monthrange(year, month)[1]
             if x < self.sel_day:
                 self.sel_day = (
-                    x
-                    if year <= self.sel_year and month <= self.sel_year
-                    else 1
+                    x if year <= self.sel_year and month <= self.sel_year else 1
                 )
-
 
 
 Builder.load_string(
@@ -2341,7 +2337,7 @@ Builder.load_string(
                 if not root.text_button_color else root.text_button_color
             on_release: root.dispatch("on_save", root._get_data())
 """,
-filename="picker.kv"
+    filename="picker.kv",
 )
 
 

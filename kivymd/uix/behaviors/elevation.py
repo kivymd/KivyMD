@@ -182,29 +182,58 @@ For example:
 
 .. code-block:: python
 
+    from kivy.animation import Animation
+    from kivy.lang import Builder
+    from kivy.properties import ObjectProperty
+    from kivy.uix.behaviors import ButtonBehavior
+
+    from kivymd.app import MDApp
+    from kivymd.theming import ThemableBehavior
+    from kivymd.uix.behaviors import RectangularElevationBehavior, RectangularRippleBehavior
+    from kivymd.uix.boxlayout import MDBoxLayout
+
+    KV = '''
+    MDFloatLayout:
+
+        ElevatedWidget:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            size_hint: None, None
+            size: 100, 100
+            md_bg_color: 0, 0, 1, 1
+    '''
+
+
     class ElevatedWidget(
-        ThemableBehavior,                 # Include the Theming API.
-        RectangularElevationBehavior,     # Cast the shadow
-        SpecificBackgroundColorBehavior,  # Draws the Background Color
-        RectangularRippleBehavior,        # Sets the Ripple and it's animation.
+        ThemableBehavior,
+        RectangularElevationBehavior,
+        RectangularRippleBehavior,
+        ButtonBehavior,
+        MDBoxLayout,
     ):
-        shadow_animation = ObjectProperty()  # default to None
+        shadow_animation = ObjectProperty()
 
-    def on_press(self, *args):
-        # If the animation is set, stop it if it's running.
-        if self.shadow_animation:
-            Animation.cancel(self.shadow_animation)
-        # Set and run the new animation.
-        self.shadow_animation = Animation(_elevation = self.elevation+10, d=0.1)
-        self.shadow_animation.start(self)
+        def on_press(self, *args):
+            if self.shadow_animation:
+                Animation.cancel_all(self, "_elevation")
+            self.shadow_animation = Animation(_elevation=self.elevation + 10, d=0.4)
+            self.shadow_animation.start(self)
 
-    def on_release(self, *args):
-        # If the animation is set, stop it if it's running.
-        if self.shadow_animation:
-            Animation.cancel(self.shadow_animation)
-        # Set and run the new animation.
-        self.shadow_animation = Animation(_elevation=self.elevation, d=0.1)
-        self.shadow_animation.start(self)
+        def on_release(self, *args):
+            if self.shadow_animation:
+                Animation.cancel_all(self, "_elevation")
+            self.shadow_animation = Animation(_elevation=self.elevation, d=0.1)
+            self.shadow_animation.start(self)
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-animation-effect.gif
+    :align: center
 
 .. note:: Remember that real-time classes like,
     :class:`~RectangularElevationButton`, :class:`~CircularElevationBehavior`
@@ -237,11 +266,40 @@ for example:
 
 .. code-block:: python
 
-    class Custom_Circular_Card(
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.behaviors import FakeCircularElevationBehavior
+    from kivymd.uix.card import MDCard
+
+    KV = '''
+    MDScreen:
+
+        CustomCircularCard:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            size_hint: None, None
+            size: 100, 100
+            radius: 50
+            elevation: 25
+    '''
+
+
+    class CustomCircularCard(
         MDCard,
-        FakeCircularElevationBehavior
+        FakeCircularElevationBehavior,
     ):
-        [...]
+        pass
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation.png
+    :align: center
 
 .. warning:: Remember that the fake elevation behavior needs to be at the end
     of the inheritance list, otherwise, it will be overwritten by the base

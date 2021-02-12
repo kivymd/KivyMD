@@ -15,6 +15,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     ReferenceListProperty,
+    StringProperty,
     VariableListProperty,
 )
 from kivy.uix.widget import Widget
@@ -28,7 +29,7 @@ Builder.load_string(
 
 
 <BackgroundColorBehavior>
-    canvas:
+    canvas.before:
         PushMatrix:
         Rotate:
             angle: self.angle
@@ -40,6 +41,7 @@ Builder.load_string(
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             radius: root.radius
+            source: root.background
         PopMatrix:
 """,
     filename="BackgroundColorBehavior.kv",
@@ -55,6 +57,13 @@ class BackgroundColorBehavior(Widget):
         _background_x,
         _background_y,
     )
+    background = StringProperty()
+    """
+    Background image path.
+
+    :attr:`background` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `None`.
+    """
 
     r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
     """

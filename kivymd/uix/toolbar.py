@@ -356,14 +356,14 @@ Builder.load_string(
             pos: root._rectangle_left_pos
             size: root._rectangle_left_width, root._rounded_rectangle_height
             radius:
-                [0,] if root.mode=="normal" \
-                else [0,root.notch_radius*root._rounding_percentage,0,0]
+                [0,] if root.mode == "normal" \
+                else [0, root.notch_radius * root._rounding_percentage, 0, 0]
         RoundedRectangle:
             pos: root._rectangle_right_pos
             size: root._rectangle_right_width, root._rounded_rectangle_height
             radius:
-                [0,] if root.mode=="normal" \
-                else [root.notch_radius*root._rounding_percentage,0,0,0]
+                [0,] if root.mode == "normal" \
+                else [root.notch_radius * root._rounding_percentage, 0, 0, 0]
 
 
 <MDToolbar>
@@ -372,7 +372,7 @@ Builder.load_string(
         id: left_actions
         orientation: "horizontal"
         size_hint_x: None
-        padding: [0, (self.height - dp(48))/2]
+        padding: [0, (self.height - dp(48)) / 2]
 
     BoxLayout:
         padding: dp(12), 0
@@ -413,20 +413,6 @@ class NotchedBox(
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):
-    _indices_right = ListProperty()
-    _vertices_right = ListProperty()
-    _indices_left = ListProperty()
-    _vertices_left = ListProperty()
-    notch_radius = NumericProperty()
-    notch_center_x = NumericProperty("100dp")
-    _rounded_rectangle_height = NumericProperty("6dp")
-    _total_angle = NumericProperty(180)
-    _rectangle_left_pos = ListProperty([0, 0])
-    _rectangle_left_width = NumericProperty()
-    _rectangle_right_pos = ListProperty([0, 0])
-    _rectangle_right_width = NumericProperty()
-    _rounding_percentage = NumericProperty(0.15)
-
     elevation = NumericProperty(6)
     """
     Elevation value.
@@ -434,6 +420,21 @@ class NotchedBox(
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `6`.
     """
+
+    notch_radius = NumericProperty()
+    notch_center_x = NumericProperty("100dp")
+
+    _indices_right = ListProperty()
+    _vertices_right = ListProperty()
+    _indices_left = ListProperty()
+    _vertices_left = ListProperty()
+    _rounded_rectangle_height = NumericProperty("6dp")
+    _total_angle = NumericProperty(180)
+    _rectangle_left_pos = ListProperty([0, 0])
+    _rectangle_left_width = NumericProperty()
+    _rectangle_right_pos = ListProperty([0, 0])
+    _rectangle_right_width = NumericProperty()
+    _rounding_percentage = NumericProperty(0.15)
 
     def __init__(self, **kw):
         super().__init__(**kw)

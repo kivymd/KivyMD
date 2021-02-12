@@ -1,12 +1,13 @@
 from os import environ
 
-from kivy.uix.screenmanager import Screen
-
+from kivymd.uix.screen import MDScreen
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.card import MDCard
 
 
-class KitchenSinkExpansionPanel(Screen):
+class KitchenSinkExpansionPanel(MDScreen):
     def add_expansion_panel(self):
         content = KitchenSinkExpansionPanelContent()
         self.ids.card.add_widget(
@@ -16,6 +17,10 @@ class KitchenSinkExpansionPanel(Screen):
                 panel_cls=MDExpansionPanelOneLine(text="KivyMD 0.104.2.dev0"),
             )
         )
+
+
+class KitchenSinkExpansionPanelCard(MDCard, FakeRectangularElevationBehavior):
+    pass
 
 
 class KitchenSinkExpansionPanelContent(MDBoxLayout):

@@ -23,6 +23,9 @@
         icon: "email"
 
 
+<KitchenSinkExpansionPanelCard>
+
+
 <KitchenSinkExpansionPanel>
     name: "expansion panel"
     on_enter: if len(card.children) <= 1: self.add_expansion_panel()
@@ -31,12 +34,13 @@
         id: toolbar
         pos_hint: {"top": 1}
 
-    MDCard:
+    KitchenSinkExpansionPanelCard:
         id: card
         orientation: "vertical"
         size_hint: .9, None
         height: self.minimum_height
         pos_hint: {"center_x": .5, "center_y": .5}
+        elevation: 24
 
         BoxLayout:
             id: box

@@ -696,11 +696,13 @@ class MDToolbar(NotchedBox):
             self.action_button.bind(
                 on_release=lambda x: self.dispatch("on_action_button")
             )
-            self.action_button.x = Window.width / 2 - self.action_button.width / 2
+            self.action_button.x = (
+                Window.width / 2 - self.action_button.width / 2
+            )
             self.action_button.y = (
-                    (self.center[1] - self.height / 2)
-                    + self.theme_cls.standard_increment / 2
-                    + self._shift
+                (self.center[1] - self.height / 2)
+                + self.theme_cls.standard_increment / 2
+                + self._shift
             )
             self.on_mode(None, self.mode)
 

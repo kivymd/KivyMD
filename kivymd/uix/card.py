@@ -554,7 +554,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.utils import get_color_from_hex
 
-from kivymd import images_path
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
@@ -584,7 +583,6 @@ Builder.load_string(
             pos: self.pos
             radius: root.radius
             source: root.background
-
 
 
 <MDSeparator>
@@ -674,10 +672,6 @@ class MDCard(
     def update_md_bg_color(self, instance, value):
         if self.md_bg_color in self._bg_color_map:
             self.md_bg_color = get_color_from_hex(colors[value]["CardsDialogs"])
-
-    def on_radius(self, instance, value):
-        if self.radius != [0, 0, 0, 0]:
-            self.background = f"{images_path}/transparent.png"
 
     def on_ripple_behavior(self, instance, value):
         self._no_ripple_effect = False if value else True

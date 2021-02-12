@@ -772,6 +772,8 @@ class MDToolbar(NotchedBox):
         self.action_button.md_bg_color = value
 
     def on_mode(self, instance, value):
+        if self.type == 'top':
+            return
         def set_button_pos(*args):
             self.action_button.x = x
             self.action_button.y = y - self._rounded_rectangle_height / 2
@@ -827,12 +829,10 @@ class MDToolbar(NotchedBox):
         anim.start(self)
 
     def remove_shadow(self):
-        self.action_button._hard_shadow_size = (0, 0)
-        self.action_button._soft_shadow_size = (0, 0)
+        self.action_button._elevation = 0
 
     def set_shadow(self, *args):
-        self.action_button._hard_shadow_size = (dp(112), dp(112))
-        self.action_button._soft_shadow_size = (dp(112), dp(112))
+        self.action_button._elevation = self.action_button.elevation
 
     def _on_resize(self, instance, width, height):
         if self.mode == "center":

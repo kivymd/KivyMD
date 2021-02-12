@@ -1,10 +1,10 @@
 from os import environ
 
-from kivymd.uix.screen import MDScreen
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+from kivymd.uix.screen import MDScreen
 
 
 class KitchenSinkExpansionPanel(MDScreen):

@@ -1036,9 +1036,9 @@ class BaseFlatButton(BaseRectangularButton):
         We are overriding this method to not allow set the `elevation` value
         for this type of button.
         """
-
+        self.elevation = 0
         self._elevation = 0
-        self._update_shadow(instance, 0)
+        super().on_elevation(instance, value)
 
 
 class BaseElevationButton(CommonElevationBehavior, BaseButton):
@@ -1046,26 +1046,36 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
     Base class for raised buttons.
     Implements elevation behavior as well as the recommended down/disabled
     colors for raised buttons.
+
+    The minimum elevation for any raised button is `"1dp"`,
+    by default, set to `"2dp"`.
+
+    the _elevation_raised is automatically computed and is set to
+    self.elevation + 6 each time self.elevation is updated.
+
     """
 
-    _elevation_normal = NumericProperty(0)
-    _elevation_raised = NumericProperty(0)
+    _elevation_raised = NumericProperty()
     _anim_raised = None
 
+    def __init__(self, **kwargs):
+        if self.elevation == 0:
+            self.elevation = 2
+        super().__init__(**kwargs)
+        self.on_elevation(self, self.elevation)
+
     def on_elevation(self, instance, value):
-        self._elevation_normal = self.elevation
-        self._elevation_raised = self.elevation
-        self._anim_raised = Animation(_elevation=value + 6, d=0.1)
-        self._update_elevation(instance, value)
+        super().on_elevation(instance, value)
+        self._elevation_raised = self.elevation + 6
+        self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
+
+    def on__elevation_raised(self, instance, value):
+        Animation.cancel_all(self, "_elevation")
+        self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
 
     def on_disabled(self, instance, value):
-        # FIXME: If a button has a default `disabled` parameter of `True`,
-        #  the `elevation` value is not cleared.
-        if self.disabled:
-            self._elevation = 0
-            self._update_shadow(instance, 0)
-        else:
-            self._update_elevation(instance, self._elevation_normal)
+        if self.disabled is True:
+            Animation.cancel_all(self, "_elevation")
         super().on_disabled(instance, value)
 
     def on_touch_down(self, touch):
@@ -1091,9 +1101,7 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
 
     def stop_elevation_anim(self):
         Animation.cancel_all(self, "_elevation")
-        self._elevation = self._elevation_raised
-        self._elevation_normal = self._elevation_raised
-        self._update_shadow(self, self._elevation)
+        self._elevation = self.elevation
 
 
 class BaseCircularElevationButton(
@@ -1386,7 +1394,8 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
                 )
             self.md_bg_color = self.md_bg_color_disabled
         else:
-            self.md_bg_color = self._md_bg_color
+            if self._md_bg_color:
+                self.md_bg_color = self._md_bg_color
 
     def set_icon_color(self, interval):
         pass
@@ -1824,7 +1833,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         if self.state == "open":
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
-                    widget.elevation = 0
+                    widget._elevation = 0
                     if self.data[instance.icon] == widget.text:
                         Animation(
                             _canvas_width=widget.width + dp(24),

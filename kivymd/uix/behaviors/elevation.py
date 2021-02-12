@@ -425,7 +425,7 @@ Builder.load_string(
 class CommonElevationBehavior(Widget):
     """Common base class for rectangular and circular elevation behavior."""
 
-    elevation = BoundedNumericProperty(0, min=0)
+    elevation = BoundedNumericProperty(0, min=0, errorvalue=0)
     """
     Elevation of the widget.
 
@@ -656,7 +656,7 @@ class CommonElevationBehavior(Widget):
     and defaults to `"global"`.
     """
 
-    _elevation = NumericProperty(0)
+    _elevation = BoundedNumericProperty(0, min=0, errorvalue=0)
     """
     Current elevation of the widget.
 

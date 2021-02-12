@@ -152,7 +152,6 @@ Similarly, create a button with a circular elevation effect:
 
     Example().run()
 
-
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-effect.gif
     :align: center
 
@@ -244,6 +243,43 @@ For example:
     generate a new texture for each elevation step, for both, Soft and hard
     shadows. Blocking the python GIL while processing the images.
 
+
+Lighting position
+-----------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    MDScreen:
+
+        MDCard:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            size_hint: None, None
+            size: 100, 100
+            shadow_pos: -10 + slider.value, -10 + slider.value
+            elevation: 24
+
+        MDSlider:
+            id: slider
+            max: 20
+            size_hint_x: .6
+            pos_hint: {'center_x': .5, 'center_y': .3}
+    '''
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-pos.gif
+    :align: center
 
 How to improve the performance
 -------------------------------
@@ -463,9 +499,8 @@ class CommonElevationBehavior(Widget):
             Example().run()
     """
 
-    # Shadow rendering porpoerties
-    # Shadow rotation meomry - SHARED ACROSS OTHER CLASSES
-
+    # Shadow rendering properties.
+    # Shadow rotation memory - SHARED ACROSS OTHER CLASSES.
     angle = NumericProperty(0)
     """
     Angle of rotation in degrees of the current shadow.
@@ -541,7 +576,7 @@ class CommonElevationBehavior(Widget):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    # Position of the shadow
+    # Position of the shadow.
     _shadow_origin_x = NumericProperty(0)
     """
     Shadow origin `x` position for the rotation origin.
@@ -593,7 +628,7 @@ class CommonElevationBehavior(Widget):
 
     shadow_pos = ListProperty([0, 0])  # bottom left corner
     """
-    Custom shadow origin point. if this property is set, :attr:`_shadow_pos`
+    Custom shadow origin point. If this property is set, :attr:`_shadow_pos`
     will be ommited.
 
     This property allows users to fake light source.
@@ -637,7 +672,7 @@ class CommonElevationBehavior(Widget):
     # soft shadow
     _soft_shadow_texture = ObjectProperty()
     """
-    Texture of the Soft Shadow texture for the canvas.
+    Texture of the soft shadow texture for the canvas.
 
     :attr:`_soft_shadow_texture` is an :class:`~kivy.core.image.Image`
     and defaults to `None`.
@@ -800,7 +835,7 @@ class CommonElevationBehavior(Widget):
     """
 
     # All classes that uses a fake shadow shall set this value as `True`
-    # for perfornmance
+    # for performance.
     _fake_elevation = BooleanProperty(False)
 
     def __init__(self, **kwargs):
@@ -810,7 +845,7 @@ class CommonElevationBehavior(Widget):
         im = BytesIO()
         Image.new("RGBA", (4, 4), color=(0, 0, 0, 0)).save(im, format="png")
         im.seek(0)
-        # Setting a Empty image as texture, improves performance.
+        # Setting a empty image as texture, improves performance.
         self._soft_shadow_texture = self.hard_shadow_texture = CoreImage(
             im, ext="png"
         ).texture

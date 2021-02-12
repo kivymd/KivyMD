@@ -30,33 +30,25 @@ Builder.load_string(
 
 <BackgroundColorBehavior>
     canvas.before:
-        PushMatrix:
+        PushMatrix
         Rotate:
             angle: self.angle
             origin: self._background_origin
         Color:
             rgba: self.md_bg_color
         RoundedRectangle:
-            group:"Background_instruction"
+            group: "Background_instruction"
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             radius: root.radius
             source: root.background
-        PopMatrix:
+        PopMatrix
 """,
     filename="BackgroundColorBehavior.kv",
 )
 
 
 class BackgroundColorBehavior(Widget):
-    angle = NumericProperty(0)
-    background_origin = ListProperty(None)
-    _background_x = NumericProperty(0)
-    _background_y = NumericProperty(0)
-    _background_origin = ReferenceListProperty(
-        _background_x,
-        _background_y,
-    )
     background = StringProperty()
     """
     Background image path.
@@ -139,6 +131,16 @@ class BackgroundColorBehavior(Widget):
     :attr:`md_bg_color` is an :class:`~kivy.properties.ReferenceListProperty`
     and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
     """
+
+    angle = NumericProperty(0)
+    background_origin = ListProperty(None)
+
+    _background_x = NumericProperty(0)
+    _background_y = NumericProperty(0)
+    _background_origin = ReferenceListProperty(
+        _background_x,
+        _background_y,
+    )
 
     def __init__(self, **kwarg):
         super().__init__(**kwarg)

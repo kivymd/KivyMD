@@ -772,8 +772,9 @@ class MDToolbar(NotchedBox):
         self.action_button.md_bg_color = value
 
     def on_mode(self, instance, value):
-        if self.type == 'top':
+        if self.type == "top":
             return
+
         def set_button_pos(*args):
             self.action_button.x = x
             self.action_button.y = y - self._rounded_rectangle_height / 2

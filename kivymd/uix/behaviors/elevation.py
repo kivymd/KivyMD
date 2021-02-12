@@ -458,15 +458,15 @@ class CommonElevationBehavior(Widget):
                 on_size:
                     self.radius = [self.height / 2] * 4
                 on_press:
-                    if self.animation_:
-                        self.animation_.cancel(self); \
-                        self.animation_ = Animation(_elevation=self.elevation + 6, d=0.08); \
-                        self.animation_.start(self)
+                    if self.animation_: \
+                    self.animation_.cancel(self); \
+                    self.animation_ = Animation(_elevation=self.elevation + 6, d=0.08); \
+                    self.animation_.start(self)
                 on_release:
-                    if self.animation_:
-                        self.animation_.cancel(self); \
-                        self.animation_ = Animation(_elevation = self.elevationd=0.08); \
-                        self.animation_.start(self)
+                    if self.animation_: \
+                    self.animation_.cancel(self); \
+                    self.animation_ = Animation(_elevation = self.elevation, d=0.08); \
+                    self.animation_.start(self)
 
             MDFloatLayout:
 

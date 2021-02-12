@@ -521,22 +521,22 @@ class CommonElevationBehavior(Widget):
 
         .. code-block:: kv
 
-            <Tilted_Widget>
+            <TiltedWidget>
                 canvas.before:
-                    PushMatrix:
+                    PushMatrix
                     [...]
                 canvas:
-                    PopMatrix:
+                    PopMatrix
 
         Correct:
 
         .. code-block:: kv
 
-            <Tilted_Widget>
+            <TiltedWidget>
                 canvas.before:
-                    PushMatrix:
+                    PushMatrix
                     [...]
-                    PopMatrix:
+                    PopMatrix
 
 
 
@@ -1319,9 +1319,9 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
     .. code-block:: python
 
         class NewWidget(
-            ThemableBehavior,  # adds the theme behavior for the widget
-            FakeCircularElevationBehavior,  # adds the elevation behavior mockup
-            SpecificBackgroundColorBehavior,  # adds the background
+            ThemableBehavior,
+            FakeCircularElevationBehavior,
+            SpecificBackgroundColorBehavior,
             # here you add the other front end classes for the widget front_end,
         ):
             [...]
@@ -1425,9 +1425,9 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
     .. code-block:: python
 
         class NewWidget(
-            ThemableBehavior,  # adds the theme behavior for the widget
-            FakeCircularElevationBehavior,  # adds the elevation behavior mockup
-            SpecificBackgroundColorBehavior,  # adds the background
+            ThemableBehavior,
+            FakeCircularElevationBehavior,
+            SpecificBackgroundColorBehavior,
             # here you add the other front end classes for the widget front_end,
         ):
             [...]

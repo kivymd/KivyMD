@@ -526,8 +526,15 @@ Builder.load_string(
         self.tab_bar, \
         self.tab_bar.parent.carousel)
     color:
-        self.text_color_active if self.state == "down" \
-        else self.text_color_normal
+        ( \
+        self.text_color_active \
+        if self.text_color_active else self.specific_secondary_text_color\
+        ) \
+        if self.state == "down" else \
+        ( \
+        self.text_color_normal \
+        if self.text_color_normal else self.theme_cls.text_color \
+        )
 
 
 <MDTabsScrollView>
@@ -580,11 +587,12 @@ Builder.load_string(
             id: scrollview
             on_width: tab_bar._trigger_update_tab_bar()
 
-            MDGridLayout:
+            GridLayout:
                 id: layout
                 rows: 1
                 size_hint_y: 1
-                adaptive_width: True
+                size_hint_x: None
+                width: self.minimum_width
                 on_width: tab_bar._trigger_update_tab_bar()
 
                 canvas.before:
@@ -605,7 +613,7 @@ Builder.load_string(
                             root._line_width, \
                             root._line_height, \
                             root._line_radius \
-                            ]
+                            ]                            
 """
 )
 
@@ -617,8 +625,8 @@ class MDTabsException(Exception):
 class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
     """This class it represent the label of each tab."""
 
-    text_color_normal = ColorProperty((0, 0, 0, 0))
-    text_color_active = ColorProperty((0, 0, 0, 0))
+    text_color_normal = ColorProperty(None)
+    text_color_active = ColorProperty(None)
     tab = ObjectProperty()
     tab_bar = ObjectProperty()
     font_name = StringProperty("Roboto")
@@ -781,9 +789,9 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     """
 
     def get_rect_instruction(self):
-        for i in self.layout.canvas.before.children:
-            if isinstance(i, RoundedRectangle):
-                return i
+        for canvas_instruction in self.layout.canvas.before.children:
+            if isinstance(canvas_instruction, RoundedRectangle):
+                return canvas_instruction
 
     indicator = AliasProperty(get_rect_instruction, cache=True)
     """
@@ -944,7 +952,7 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
 
 class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     """
-    You can use this class to create your own tabbed panel..
+    You can use this class to create your own tabbed panel.
 
     :Events:
         `on_tab_switch`
@@ -1108,13 +1116,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._carousel_bind, 1)
         self.theme_cls.bind(primary_palette=self.update_icon_color)
+        self.theme_cls.bind(theme_style=self.update_icon_color)
 
     def update_icon_color(self, instance, value):
         for tab_label in self.get_tab_list():
             if not self.text_color_normal:
-                tab_label.text_color_normal = self.specific_secondary_text_color
+                tab_label.text_color_normal = self.theme_cls.text_color
             if not self.text_color_active:
-                tab_label.text_color_active = self.specific_text_color
+                tab_label.text_color_active = self.specific_secondary_text_color
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""
@@ -1135,7 +1144,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.
-        if len(self.children) >= 2:
+        if issubclass(widget.__class__, MDTabsBase):
             try:
                 # FIXME: Can't set the value of the `no_ripple_effect`
                 #  and `ripple_duration` properties for widget.tab_label.
@@ -1146,20 +1155,23 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 widget.tab_label.text_color_normal = (
                     self.text_color_normal
                     if self.text_color_normal
-                    else self.specific_secondary_text_color
+                    else self.theme_cls.text_color
                 )
                 widget.tab_label.text_color_active = (
                     self.text_color_active
                     if self.text_color_active
-                    else self.specific_text_color
+                    else self.specific_secondary_text_color
                 )
                 self.bind(font_name=widget.tab_label.setter("font_name"))
+                self.bind(text_color_active=widget.tab_label.setter("text_color_active"))
+                self.bind(text_color_normal=widget.tab_label.setter("text_color_normal"))
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
                 return
             except AttributeError:
                 pass
-        return super().add_widget(widget)
+        if isinstance(widget, (MDTabsMain, MDTabsBar)):
+            return super().add_widget(widget)
 
     def remove_widget(self, widget):
         # You can remove only subclass of MDTabsLabel.

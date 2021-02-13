@@ -1163,8 +1163,16 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     else self.specific_secondary_text_color
                 )
                 self.bind(font_name=widget.tab_label.setter("font_name"))
-                self.bind(text_color_active=widget.tab_label.setter("text_color_active"))
-                self.bind(text_color_normal=widget.tab_label.setter("text_color_normal"))
+                self.bind(
+                    text_color_active=widget.tab_label.setter(
+                        "text_color_active"
+                    )
+                )
+                self.bind(
+                    text_color_normal=widget.tab_label.setter(
+                        "text_color_normal"
+                    )
+                )
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
                 return

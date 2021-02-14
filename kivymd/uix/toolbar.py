@@ -237,6 +237,25 @@ Custom color
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-11.png
     :align: center
 
+MDToolbar with Menus
+--------------------
+
+A Toolbar without Menus is not particularly useful. However, the
+:class:`~MDDropdownMenu` works well with the standard
+:class:`~kivymd.uix.toolbar.MDToolbar` to provide this functionality,
+as shown in the image below.
+
+.. seealso::
+
+    See the
+    `MDDropdownMenu documentation
+    <https://kivymd.readthedocs.io/en/latest/components/menu/#menu-with-mdtoolbar>`_
+    for details of how to implement this.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-menu.gif
+    :align: center
+
+
 Tooltips
 --------
 

@@ -240,15 +240,15 @@ Custom color
 MDToolbar with Menus
 --------------------
 
-A Toolbar without Menus is not particularly useful. However, the 
+A Toolbar without Menus is not particularly useful. However, the
 :class:`~MDDropdownMenu` works well with the standard
-:class:`~kivymd.uix.toolbar.MDToolbar` to provide this functionality, 
-as shown in the image below. 
+:class:`~kivymd.uix.toolbar.MDToolbar` to provide this functionality,
+as shown in the image below.
 
 .. seealso::
 
-    See the 
-    `MDDropdownMenu documentation 
+    See the
+    `MDDropdownMenu documentation
     <https://kivymd.readthedocs.io/en/latest/components/menu/#menu-with-mdtoolbar>`_
     for details of how to implement this.
 

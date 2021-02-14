@@ -613,7 +613,7 @@ Builder.load_string(
                             root._line_width, \
                             root._line_height, \
                             root._line_radius \
-                            ]                            
+                            ]
 """
 )
 

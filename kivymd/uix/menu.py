@@ -446,7 +446,7 @@ the callback using `lambda x: app.callback(x)`.
 
 .. note::
 
-    This example uses drop down menus for both the righthand and lefthand menus (i.e 
+    This example uses drop down menus for both the righthand and lefthand menus (i.e
     both the 'triple bar' and 'triple dot' menus) to illustrate that it is possible.
     A better solution for the 'triple bar' menu would probably have been
     :class:`~kivymd.uix.MDNavigationDrawer`.
@@ -484,11 +484,11 @@ the callback using `lambda x: app.callback(x)`.
             )
             self.menu.bind(on_release=self.menu_callback)
             return Builder.load_string(KV)
-        
+
         def callback(self, button):
             self.menu.caller = button
             self.menu.open()
-            
+
         def menu_callback(self, menu, item):
             self.menu.dismiss()
             Snackbar(text=item.text).open()

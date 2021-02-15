@@ -593,7 +593,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
 
         # It needs a better implementation.
         if self.anim_ripple is not None:
-        	self.anim_ripple.unbind(on_complete=self._repeat_ripple)
+            self.anim_ripple.unbind(on_complete=self._repeat_ripple)
         self.core_title_text.opacity = 0
         self.core_description_text.opacity = 0
         anim = Animation(

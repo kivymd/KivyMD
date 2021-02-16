@@ -108,11 +108,11 @@ class HoverBehavior(object):
     and defaults to `False`.
     """
 
-    visible = BooleanProperty(False)
+    hover_visible = BooleanProperty(False)
     """
     `True` if hovering is True AND is the current widget is visible
 
-    :attr:`visible` is a :class:`~kivy.properties.BooleanProperty`
+    :attr:`hover_visible` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
@@ -151,8 +151,8 @@ class HoverBehavior(object):
         if not self.collide_point(*self.to_widget(*pos)):
             self.hovering = False
             self.enter_point = None
-            if self.visible:
-                self.visible = False
+            if self.hover_visible:
+                self.hover_visible = False
                 self.dispatch("on_leave")
             return
 
@@ -169,7 +169,7 @@ class HoverBehavior(object):
             return
 
         #
-        # Otherewise - set the hovering attribute
+        # Otherwise - set the hovering attribute
         #
         self.hovering = True
 
@@ -183,7 +183,7 @@ class HoverBehavior(object):
         #   covering the Widget
         #
 
-        self.visible = True
+        self.hover_visible = True
         if self.detect_visible:
             widget: Widget = self
             while True:
@@ -196,7 +196,7 @@ class HoverBehavior(object):
                     # The collide_point will error when you reach the root Window
                     break
                 if not pinside:
-                    self.visible = False
+                    self.hover_visible = False
                     break
                 # Iterate upwards
                 widget = parent
@@ -219,9 +219,9 @@ class HoverBehavior(object):
                     break
                 if child.collide_point(*pos):
                     #  this means that the current widget is covered by a modal or popup
-                    self.visible = False
+                    self.hover_visible = False
                     break
-        if self.visible:
+        if self.hover_visible:
             self.enter_point = pos
             self.dispatch("on_enter")
 

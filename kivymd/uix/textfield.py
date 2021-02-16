@@ -939,6 +939,7 @@ class MDTextField(ThemableBehavior, TextInput):
             _hint_lbl_font_size=self._hint_lbl.setter("font_size"),
             helper_text_mode=self._set_message_mode,
             max_text_length=self._set_max_text_length,
+            text=self.set_text,
         )
         self.theme_cls.bind(
             primary_color=self._update_primary_color,
@@ -1124,22 +1125,22 @@ class MDTextField(ThemableBehavior, TextInput):
             self._right_msg_lbl.text = f"{len(text)}/{self.max_text_length}"
         self._set_text_len_error()
         if self.error or self._text_len_error:
-            if self.focus:
-                self._anim_current_line_color(self.error_color)
-                if self.helper_text_mode == "on_error" and (
-                    self.error or self._text_len_error
-                ):
-                    self._anim_current_error_color(self.error_color)
-                if self._text_len_error:
-                    self._anim_current_right_lbl_color(self.error_color)
+            self._anim_current_line_color(self.error_color)
+            if self.helper_text_mode == "on_error" and (
+                self.error or self._text_len_error
+            ):
+                self._anim_current_error_color(self.error_color)
+            if self._text_len_error:
+                self._anim_current_right_lbl_color(self.error_color)
         else:
-            if self.focus:
-                self._anim_current_right_lbl_color(
-                    self.theme_cls.disabled_hint_text_color
-                )
-                self._anim_current_line_color(self.line_color_focus)
-                if self.helper_text_mode == "on_error":
-                    self._anim_current_error_color((0, 0, 0, 0))
+            self._anim_current_right_lbl_color(
+                self.theme_cls.disabled_hint_text_color
+            )
+            self._anim_current_line_color(self.line_color_focus)
+            if self.helper_text_mode == "on_error":
+                self._anim_current_error_color((0, 0, 0, 0))
+            self.on_focus(self, self.focus)
+
         if len(self.text) != 0 and not self.focus:
             self._hint_y = dp(14)
             self._hint_lbl_font_size = sp(12)

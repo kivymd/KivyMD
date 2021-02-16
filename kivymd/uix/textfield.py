@@ -939,6 +939,7 @@ class MDTextField(ThemableBehavior, TextInput):
             _hint_lbl_font_size=self._hint_lbl.setter("font_size"),
             helper_text_mode=self._set_message_mode,
             max_text_length=self._set_max_text_length,
+            text=self.set_text,
         )
         self.theme_cls.bind(
             primary_color=self._update_primary_color,
@@ -951,7 +952,7 @@ class MDTextField(ThemableBehavior, TextInput):
         self._set_msg(self, self.helper_text)
 
     def check_text(self, interval):
-        self.on_text(self, self.text)
+        self.set_text(self, self.text)
 
     def set_objects_labels(self):
         """Creates labels objects for the parameters
@@ -1116,7 +1117,7 @@ class MDTextField(ThemableBehavior, TextInput):
             elif self.color_mode == "custom":
                 self._update_colors(self.line_color_focus)
 
-    def on_text(self, instance, text):
+    def set_text(self, instance, text):
         self.text = re.sub("\n", " ", text) if not self.multiline else text
         if len(text) > 0:
             self.has_had_text = True

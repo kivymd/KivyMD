@@ -235,14 +235,14 @@ Builder.load_string(
                 ) \
                 if root.widget_style == "ios" else (0, 0, 0, 0)
         Line:
-            width: 1 if root.widget_style == "ios" else 0.001
+            width: 1
             rounded_rectangle:
                 ( \
                 self.x - dp(2), self.center_y - dp(14), self.width + dp(14), \
                 dp(28), dp(14), dp(14), dp(14), dp(14), dp(28) \
                 ) \
                 if root.widget_style == "ios" else \
-                (0, 0, 0, 0, 0, 0, 0, 0, 0)
+                (1, 1, 1, 1, 1, 1, 1, 1, 1)
 
     Thumb:
         id: thumb

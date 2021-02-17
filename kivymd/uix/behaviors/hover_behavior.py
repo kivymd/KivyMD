@@ -93,9 +93,9 @@ class HoverBehavior(object):
     """
     :Events:
         :attr:`on_enter`
-            Call when mouse enters the bbox of the widget AND the widget is visible
+            Called when mouse enters the bbox of the widget AND the widget is visible
         :attr:`on_leave`
-            Call when the mouse exit the widget AND the widget is visible
+            Called when the mouse exits the widget AND the widget is visible
     """
 
     hovering = BooleanProperty(False)
@@ -191,7 +191,10 @@ class HoverBehavior(object):
                 parent = widget.parent
                 try:
                     # See if the mouse point collides with the parent
-                    pinside = parent.collide_point(*pos)
+                    # using both local and glabal coordinates to cover absoluet and relative layouts
+                    pinside = parent.collide_point(
+                        *parent.to_widget(*pos)
+                    ) or parent.collide_point(*pos)
                 except Exception:
                     # The collide_point will error when you reach the root Window
                     break
@@ -226,7 +229,7 @@ class HoverBehavior(object):
             self.dispatch("on_enter")
 
     def on_enter(self):
-        """Call when mouse enter the bbox of the widget."""
+        """Called when mouse enters the bbox of the widget AND the widget is visible."""
 
     def on_leave(self):
-        """Call when the mouse exit the widget."""
+        """Called when the mouse exits the widget AND the widget is visible."""

@@ -193,7 +193,8 @@ class HoverBehavior(object):
                     # See if the mouse point collides with the parent
                     # using both local and glabal coordinates to cover absoluet and relative layouts
                     pinside = parent.collide_point(
-                        *parent.to_widget(*pos)) or parent.collide_point(*pos)
+                        *parent.to_widget(*pos)
+                    ) or parent.collide_point(*pos)
                 except Exception:
                     # The collide_point will error when you reach the root Window
                     break

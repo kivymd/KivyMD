@@ -516,8 +516,7 @@ Builder.load_string(
         self.tab_bar.parent.carousel.current_slide.tab_label); \
         self._set_start_tab = True
     on_tab_bar:
-        self.text_size = (None, None) \
-        if self.tab_bar.parent.allow_stretch else (self.width, None)
+        self.text_size = (None, None)
     on_ref_press:
         self.tab_bar.parent.dispatch(\
         "on_ref_press",

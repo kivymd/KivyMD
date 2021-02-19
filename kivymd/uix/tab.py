@@ -588,14 +588,12 @@ Builder.load_string(
 
         MDTabsScrollView:
             id: scrollview
-            # on_width: tab_bar._trigger_update_tab_bar()
 
             MDGridLayout:
                 id: layout
                 rows: 1
                 size_hint_y: 1
                 adaptive_width: True
-                # on_width: tab_bar._trigger_update_tab_bar()
 
                 canvas.before:
                     Color:

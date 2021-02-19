@@ -660,6 +660,7 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
             self.text_size = (None, None)
         else:
             self.text_size = (self.width, None)
+        Clock.schedule_once(self.tab_bar._label_request_indicator_update, 0)
 
 
 class MDTabsBase(Widget):
@@ -999,6 +1000,10 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
                 x_step = a.x - gap_x * step
             w_step = a.width + (gap_w * step)
             self.update_indicator(x_step, w_step)
+
+    def _label_request_indicator_update(self, *args):
+        widget = self.carousel.current_slide.tab_label
+        self.update_indicator(widget.x, widget.width)
 
 
 class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):

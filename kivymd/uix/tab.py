@@ -1357,10 +1357,15 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 break
 
     def on_slide_progress(self, *args):
-        """Called while the slide is scrolling."""
+        """
+        This event is deployed every available frame while the tab is scrolling.
+        """
 
     def on_carousel_index(self, carousel, index):
-        """Called when the carousel index changes."""
+        """Called when the Tab index have changed.
+
+        This event is deployed by the built in carousel of the class.
+        """
 
         # When the index of the carousel change, update tab indicator,
         # select the current tab and reset threshold data.
@@ -1416,11 +1421,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 )
 
     def on_ref_press(self, *args):
-        """The method will be called when the ``on_ref_press`` event
-        occurs when you, for example, use markup text for tabs."""
+        """This event will be launched every time the user press a markup enabled
+        label with a link or reference inside."""
 
     def on_tab_switch(self, *args):
-        """Called when switching tabs."""
+        """This event is launched every time the current tab changes."""
 
     def on_size(self, *args):
         if self.carousel.current_slide:

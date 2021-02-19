@@ -466,7 +466,6 @@ Switching the tab by name
 __all__ = ("MDTabs", "MDTabsBase")
 
 from kivy.clock import Clock
-from kivy.graphics import RoundedRectangle
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.metrics import dp, sp
@@ -598,12 +597,13 @@ Builder.load_string(
                 adaptive_width: True
                 # on_width: tab_bar._trigger_update_tab_bar()
 
-                canvas:
+                canvas.before:
                     Color:
                         rgba:
                             root.theme_cls.accent_color \
                             if not root.indicator_color else root.indicator_color
                     RoundedRectangle:
+                        group: "Indicator_line"
                         pos: self.pos
                         size: 0, root.tab_indicator_height
                         radius: [0,]
@@ -894,9 +894,10 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     """
 
     def get_rect_instruction(self):
-        for canvas_instruction in self.layout.canvas.before.children:
-            if isinstance(canvas_instruction, RoundedRectangle):
-                return canvas_instruction
+        canvas_instructions = self.layout.canvas.before.get_group(
+            "Indicator_line"
+        )
+        return canvas_instructions[0]
 
     indicator = AliasProperty(get_rect_instruction, cache=True)
     """

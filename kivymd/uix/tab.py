@@ -921,32 +921,7 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
     """
 
     def __init__(self, **kwargs):
-        # self._trigger_update_tab_bar = Clock.schedule_once(
-        #     self._update_tab_bar, 0
-        # )
         super().__init__(**kwargs)
-
-    # def _update_tab_bar(self, *args):
-    #     if self.parent.allow_stretch:
-    #         # update width of the labels when it is needed
-    #         width, tabs = self.scrollview.width, self.layout.children
-    #         tabs_widths = [t.min_space for t in tabs if t.min_space]
-    #         tabs_space = float(sum(tabs_widths))
-    #
-    #         if not tabs_space:
-    #             return
-    #
-    #         ratio = width / tabs_space
-    #         use_ratio = True in (width / len(tabs) < w for w in tabs_widths)
-    #
-    #         for t in tabs:
-    #             t.width = (
-    #                 t.min_space
-    #                 if tabs_space > width
-    #                 else t.min_space * ratio
-    #                 if use_ratio is True
-    #                 else width / len(tabs)
-    #             )
 
     def update_indicator(self, x, w, radius=None):
         # update position and size of the indicator
@@ -1425,7 +1400,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         label with a link or reference inside."""
 
     def on_tab_switch(self, *args):
-        """This event is launched every time the current tab changes."""
+        """This event is launched every time the current tab is changed."""
 
     def on_size(self, *args):
         if self.carousel.current_slide:

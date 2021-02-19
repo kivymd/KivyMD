@@ -971,11 +971,6 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
             forward = offset < 0
             offset = abs(offset)
             step = offset / float(carousel.width)
-            distance = abs(offset - carousel.width)
-            threshold = self.parent.anim_threshold
-            breakpoint = carousel.width - (carousel.width * threshold)
-            traveled = distance / breakpoint if breakpoint else 0
-            break_step = 1.0 - traveled
             indicator_animation = self.parent.tab_indicator_anim
 
             skip_slide = (
@@ -995,38 +990,16 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
             b = self.target.tab_label
             self.tab_bar_autoscroll(b, step)
 
-            if not indicator_animation:
+            # avoids the animation if `indicator_animation` is True
+            if indicator_animation is False:
                 return
-
-            if step <= threshold:
-                if forward:
-                    gap_w = abs((a.x + a.width) - (b.x + b.width))
-                    w_step = a.width + (gap_w * step)
-                    x_step = a.x
-                else:
-                    gap = abs((a.x - b.x))
-                    x_step = a.x - gap * step
-                    w_step = a.width + gap * step
+            gap_x = abs((a.x) - (b.x))
+            gap_w = (b.width) - (a.width)
+            if forward:
+                x_step = a.x + (gap_x * step)
             else:
-                if forward:
-                    x_step = a.x + abs((a.x - b.x)) * break_step
-                    gap_w = abs((a.x + a.width) - (b.x + b.width))
-                    ind_width = a.width + gap_w * threshold
-                    gap_w = ind_width - b.width
-                    w_step = ind_width - (gap_w * break_step)
-                else:
-                    x_step = a.x - abs((a.x - b.x)) * threshold
-                    x_step = x_step - abs(x_step - b.x) * break_step
-                    ind_width = (
-                        (a.x + a.width) - x_step if threshold else a.width
-                    )
-                    gap_w = ind_width - b.width
-                    w_step = ind_width - (gap_w * break_step)
-                    w_step = (
-                        w_step
-                        if w_step + x_step <= a.x + a.width
-                        else ind_width
-                    )
+                x_step = a.x - gap_x * step
+            w_step = a.width + (gap_w * step)
             self.update_indicator(x_step, w_step)
 
 

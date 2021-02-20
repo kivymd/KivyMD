@@ -649,9 +649,16 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
 
     def on_texture(self, widget, texture):
         # just save the minimum width of the label based of the content
-        if texture and int(self.width) != int(texture.width):
-            self.width = texture.width
-            self.min_space = self.width
+        if texture:
+            max_width = dp(150)
+            min_width = dp(90)
+            if texture.width > max_width:
+                self.width = max_width
+                self.text_size = (max_width, None)
+            elif texture.width < min_width:
+                self.width = min_width
+            else:
+                self.width = texture.width
 
     def _update_text_size(self, *args):
         if not self.tab_bar:
@@ -659,6 +666,7 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
         if self.tab_bar.parent.allow_stretch is True:
             self.text_size = (None, None)
         else:
+            self.width = self.tab_bar.parent.fixed_tab_label_width
             self.text_size = (self.width, None)
         Clock.schedule_once(self.tab_bar._label_request_indicator_update, 0)
 
@@ -1090,6 +1098,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `True`.
     """
 
+    fixed_tab_label_width = NumericProperty("140dp")
+    """
+    If `allow_stretch` is `False`, the class will set this value as the width
+    to all the tabs title label.
+    :attr:`allow_stretch` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `100dp`.
+    """
+
     background_color = ColorProperty(None)
     """
     Background color of tabs in ``rgba`` format.
@@ -1259,6 +1275,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     if self.text_color_active
                     else self.specific_text_color
                 )
+                self.bind(allow_stretch = widget.tab_label._update_text_size)
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.bind(
                     text_color_active=widget.tab_label.setter(
@@ -1270,10 +1287,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                         "text_color_normal"
                     )
                 )
+                Clock.schedule_once(widget.tab_label._update_text_size, 0)
                 self.tab_bar.layout.add_widget(widget.tab_label)
                 self.carousel.add_widget(widget)
                 if self.force_title_icon_mode is True:
                     widget.title_icon_mode = self.title_icon_mode
+                Clock.schedule_once(self.tab_bar._label_request_indicator_update,0)
                 return
             except AttributeError:
                 pass

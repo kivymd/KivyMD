@@ -788,18 +788,6 @@ class MDTabsBase(Widget):
     def on_text(self, widget, text):
         self.tab_label.text = self.text
 
-    #     # # Set the icon
-    #     # if text in md_icons:
-    #     #     self.tab_label.font_name = (
-    #     #         fonts_path + "materialdesignicons-webfont.ttf"
-    #     #     )
-    #     #     self.tab_label.text = md_icons[self.text]
-    #     #     self.tab_label.font_size = "24sp"
-    #     # # Set the label text
-    #     # else:
-    #     #     self.tab_label.text = self.text
-
-
 class MDTabsMain(MDBoxLayout):
     """
     This class is just a boxlayout that contain the carousel.

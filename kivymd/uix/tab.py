@@ -775,8 +775,7 @@ class MDTabsBase(Widget):
                         f"Title\t= '{self.title}'\n\t"
                     )
 
-        self.tab_label.font_size = sp(14)
-        self.tab_label.padding = dp(16), dp(12 if x is True else 17)
+        self.tab_label.padding = dp(16),0
         if self.title:
             if x is True:
                 self.tab_label.height = dp(48)

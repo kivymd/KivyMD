@@ -1292,6 +1292,18 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             raise MDTabsException(
                 "MDTabs can remove only subclass of MDTabsLabel"
             )
+        self.unbind(allow_stretch = widget.tab_label._update_text_size)
+        self.unbind(font_name=widget.tab_label.setter("font_name"))
+        self.unbind(
+            text_color_active=widget.tab_label.setter(
+                "text_color_active"
+            )
+        )
+        self.unbind(
+            text_color_normal=widget.tab_label.setter(
+                "text_color_normal"
+            )
+        )
         # The last tab is not deleted.
         if len(self.tab_bar.layout.children) == 1:
             return

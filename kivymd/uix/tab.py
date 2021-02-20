@@ -631,10 +631,12 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
     font_name = StringProperty("Roboto")
 
     def __init__(self, **kwargs):
+        self.split_str=" ,-"
         super().__init__(**kwargs)
+        self.max_lines = 2
         self.size_hint_x = None
         self.size_hint_min_x = dp(90)
-        self.min_space = 0
+        self.min_space = dp(98)
         self.bind(
             text=self._update_text_size,
         )

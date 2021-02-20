@@ -506,7 +506,6 @@ Builder.load_string(
     size_hint: None, 1
     halign: "center"
     valign: "center"
-    padding: "12dp", 0
     group: "tabs"
     font: root.font_name
     allow_no_selection: False
@@ -516,8 +515,6 @@ Builder.load_string(
         self.tab_bar.parent._update_indicator( \
         self.tab_bar.parent.carousel.current_slide.tab_label); \
         self._set_start_tab = True
-        if self.width < dp(90): \
-        self.width = dp(90)
     on_tab_bar:
         self.text_size = (None, None) \
         if self.tab_bar.parent.allow_stretch else (self.width, None)

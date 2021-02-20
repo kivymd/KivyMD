@@ -746,7 +746,7 @@ class MDTabsBase(Widget):
                 self.text = (
                     self.text
                     + (" " if self.title_icon_mode == "Lead" else "\n")
-                    + f"[b]{self.title.upper()}[/b]"
+                    + self.title.upper()
                 )
         else:
             if self.icon:
@@ -755,7 +755,8 @@ class MDTabsBase(Widget):
                     f"Icon '{self.icon}' not found in md_icons"
                 )
             if self.title:
-                self.text = f"[b]{self.title.upper()}[/b]"
+
+                self.text = self.title.upper()
             else:
                 if not self.text:
                     raise ValueError(

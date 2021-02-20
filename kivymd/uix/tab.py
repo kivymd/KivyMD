@@ -585,13 +585,14 @@ Builder.load_string(
 
         MDTabsScrollView:
             id: scrollview
+            do_scroll_x: False if layout.width <= self.width else True
 
             MDGridLayout:
                 id: layout
                 rows: 1
                 size_hint_y: 1
                 adaptive_width: True
-
+                padding: dp(0 if self.width <= scrollview.width else 52),0
                 canvas.before:
                     Color:
                         rgba:

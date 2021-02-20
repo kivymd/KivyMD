@@ -650,7 +650,7 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
     def on_texture(self, widget, texture):
         # just save the minimum width of the label based of the content
         if texture:
-            max_width = dp(150)
+            max_width = dp(360)
             min_width = dp(90)
             if texture.width > max_width:
                 self.width = max_width

@@ -485,7 +485,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.utils import boundary
 
-from kivymd.font_definitions import fonts
+from kivymd.font_definitions import fonts, theme_font_styles
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
@@ -732,10 +732,32 @@ class MDTabsBase(Widget):
     and defaults to `None`.
     """
 
+    def _get_label_font_style(self):
+        if self.tab_label:
+            return self.tab_label.font_style
+    def _set_label_font_style(self,value):
+        if self.tab_label:
+            if value in theme_font_styles:
+                self.tab_label.font_style = value
+            else:
+                raise ValueError(
+                    "tab_label_font_style:\n\t"
+                    "font_style not found in theme_font_styles\n\t"
+                    f"font_style = {value}"
+                )
+        else:
+            Clock.schedule_once(lambda x:self._set_label_font_style(value))
+            return True
+
+    tab_label_font_style = AliasProperty(
+        _get_label_font_style,
+        _set_label_font_style,
+        cache=True,
+        )
+
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
         super().__init__(**kwargs)
-        self.font_style = "Button"
         self.bind(
             icon=self._update_text,
             title=self._update_text,
@@ -1262,7 +1284,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     if self.text_color_active
                     else self.specific_text_color
                 )
-                self.bind(allow_stretch = widget.tab_label._update_text_size)
+                self.bind(
+                    allow_stretch = widget.tab_label._update_text_size,
+                    fixed_tab_label_width = widget.tab_label._update_text_size
+                )
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.bind(
                     text_color_active=widget.tab_label.setter(
@@ -1292,7 +1317,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             raise MDTabsException(
                 "MDTabs can remove only subclass of MDTabsLabel"
             )
-        self.unbind(allow_stretch = widget.tab_label._update_text_size)
+        self.unbind(
+            allow_stretch = widget.tab_label._update_text_size,
+            fixed_tab_label_width = widget.tab_label._update_text_size,
+        )
         self.unbind(font_name=widget.tab_label.setter("font_name"))
         self.unbind(
             text_color_active=widget.tab_label.setter(

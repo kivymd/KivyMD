@@ -24,24 +24,29 @@
                 size: "48dp", "48dp"
                 state:"down"
                 on_state:
-                    root.switch_tabs_to_text(android_tabs) if self.state == "down" \
+                    root.switch_tabs_to_text(android_tabs) \
+                    if self.state == "down" \
                     else root.switch_tabs_to_icon(android_tabs)
+
             MDLabel:
                 text: "Use text tabs"
+
             MDRaisedButton:
                 text:'Use Icon+Label'
-                elevation:4
+                elevation: 4
                 on_release: root.new_update_label(android_tabs)
+
             MDRaisedButton:
                 text:'Toggle Title Icon Mode Lead|Top'
-                elevation:4
+                elevation: 4
                 on_release: root.update_mode(android_tabs)
 
             Widget:
 
 
 <KitchenSinkTabItem@BoxLayout+MDTabsBase>
-    allow_stretch:False
+    allow_stretch: False
+
     FloatLayout:
 
         MDLabel:

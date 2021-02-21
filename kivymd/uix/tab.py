@@ -23,12 +23,12 @@ content for the tab.
 
 .. code-block:: python
 
-    class Tab(FloatLayout, MDTabsBase):
+    class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
 
 .. code-block:: kv
 
-    <Tab>:
+    <Tab>
 
         MDLabel:
             text: "Content"
@@ -56,14 +56,14 @@ Example with tab icon
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
 
     from kivymd.app import MDApp
     from kivymd.uix.tab import MDTabsBase
+    from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.icon_definitions import md_icons
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -74,7 +74,7 @@ Example with tab icon
             on_tab_switch: app.on_tab_switch(*args)
 
 
-    <Tab>:
+    <Tab>
 
         MDIconButton:
             id: icon
@@ -84,7 +84,7 @@ Example with tab icon
     '''
 
 
-    class Tab(FloatLayout, MDTabsBase):
+    class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
 
 
@@ -96,12 +96,13 @@ Example with tab icon
 
         def on_start(self):
             for name_tab in self.icons:
-                self.root.ids.tabs.add_widget(Tab(text=name_tab))
+                self.root.ids.tabs.add_widget(Tab(icon=name_tab))
 
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
         ):
-            '''Called when switching tabs.
+            '''
+            Called when switching tabs.
 
             :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
             :param instance_tab: <__main__.Tab object>;
@@ -109,7 +110,7 @@ Example with tab icon
             :param tab_text: text or name icon of tab;
             '''
 
-            count_icon = [k for k, v in md_icons.items() if v == tab_text]
+            count_icon = [k for k, v in md_icons.items() if v in tab_text]
             instance_tab.ids.icon.icon = count_icon[0]
 
 
@@ -130,13 +131,13 @@ Example with tab text
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
 
     from kivymd.app import MDApp
+    from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.uix.tab import MDTabsBase
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -147,7 +148,7 @@ Example with tab text
             on_tab_switch: app.on_tab_switch(*args)
 
 
-    <Tab>:
+    <Tab>
 
         MDLabel:
             id: label
@@ -156,7 +157,7 @@ Example with tab text
     '''
 
 
-    class Tab(FloatLayout, MDTabsBase):
+    class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
 
 
@@ -193,15 +194,14 @@ Example with tab icon and text
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
 
     from kivymd.app import MDApp
     from kivymd.uix.tab import MDTabsBase
-    from kivymd.font_definitions import fonts
+    from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.icon_definitions import md_icons
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -212,7 +212,7 @@ Example with tab icon and text
     '''
 
 
-    class Tab(FloatLayout, MDTabsBase):
+    class Tab(MDFloatLayout, MDTabsBase):
         pass
 
 
@@ -222,11 +222,7 @@ Example with tab icon and text
 
         def on_start(self):
             for name_tab in list(md_icons.keys())[15:30]:
-                self.root.ids.tabs.add_widget(
-                    Tab(
-                        text=f"[size=20][font={fonts[-1]['fn_regular']}]{md_icons[name_tab]}[/size][/font] {name_tab}"
-                    )
-                )
+                self.root.ids.tabs.add_widget(Tab(icon=name_tab, title=name_tab))
 
 
     Example().run()
@@ -246,7 +242,7 @@ Dynamic tab management
     from kivymd.uix.tab import MDTabsBase
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -256,7 +252,7 @@ Dynamic tab management
             id: tabs
 
 
-    <Tab>:
+    <Tab>
 
         MDList:
 
@@ -321,15 +317,15 @@ method accordingly:
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
 
     from kivymd.app import MDApp
+    from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.font_definitions import fonts
     from kivymd.uix.tab import MDTabsBase
     from kivymd.icon_definitions import md_icons
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -340,7 +336,7 @@ method accordingly:
             on_ref_press: app.on_ref_press(*args)
 
 
-    <Tab>:
+    <Tab>
 
         MDIconButton:
             id: icon
@@ -350,7 +346,7 @@ method accordingly:
     '''
 
 
-    class Tab(FloatLayout, MDTabsBase):
+    class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
 
 
@@ -405,14 +401,14 @@ Switching the tab by name
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
 
     from kivymd.app import MDApp
+    from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.uix.tab import MDTabsBase
     from kivymd.icon_definitions import md_icons
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
 
         MDToolbar:
@@ -422,7 +418,7 @@ Switching the tab by name
             id: tabs
 
 
-    <Tab>:
+    <Tab>
 
         MDIconButton:
             id: icon
@@ -433,7 +429,7 @@ Switching the tab by name
     '''
 
 
-    class Tab(FloatLayout, MDTabsBase):
+    class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
 
 

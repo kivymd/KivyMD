@@ -566,9 +566,6 @@ Builder.load_string(
             anim_move_duration: root.anim_duration
             on_index: root.on_carousel_index(*args)
             on__offset: tab_bar.android_animation(*args)
-            on_slides:
-                self.index = root.default_tab
-                root.on_carousel_index(self, 0)
 
     MDTabsBar:
         id: tab_bar

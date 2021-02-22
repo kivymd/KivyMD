@@ -1255,7 +1255,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     def get_tab_list(self):
         """Returns a list of tab objects."""
 
-        return self.tab_bar.layout.children
+        return self.tab_bar.layout.children[::-1]
 
     def get_slides(self):
         return self.carousel.slides

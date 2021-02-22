@@ -711,7 +711,7 @@ class MDTabsBase(Widget):
     text = StringProperty()
     """
     This property is the actual title of the tab.
-    use the property :att:`icon` and :attr:`title` to set this property
+    use the property :attr:`icon` and :attr:`title` to set this property
     correctly.
 
     This property is kept public for specific and backward compatibility

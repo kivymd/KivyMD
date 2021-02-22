@@ -1313,47 +1313,38 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             return super().add_widget(widget)
 
     def remove_widget(self, widget):
-        # You can remove only subclass of MDTabsLabel.
-        if not issubclass(widget.__class__, MDTabsLabel):
-            raise MDTabsException(
-                "MDTabs can remove only subclass of MDTabsLabel"
-            )
-        self.unbind(
-            allow_stretch = widget.tab_label._update_text_size,
-            fixed_tab_label_width = widget.tab_label._update_text_size,
-        )
-        self.unbind(font_name=widget.tab_label.setter("font_name"))
-        self.unbind(
-            text_color_active=widget.tab_label.setter(
-                "text_color_active"
-            )
-        )
-        self.unbind(
-            text_color_normal=widget.tab_label.setter(
-                "text_color_normal"
-            )
-        )
-        # The last tab is not deleted.
-        if len(self.tab_bar.layout.children) == 1:
+        if len(self.carousel.slides) < 2:
             return
-
+        # You can remove only subclass of MDTabsLabel or MDTabsBase.
+        if not issubclass(widget.__class__, (MDTabsLabel, MDTabsBase)):
+            raise MDTabsException(
+                "MDTabs can remove only subclass of MDTabsLabel or MDTabsBase"
+            )
+        # if the widget is an instance of MDTabsBase, then the widget is
+        # set as the widget's tab_label object
+        if issubclass(widget.__class__, MDTabsBase):
+            slide = widget
+            title_label = widget.tab_label
+        else:
+            # we already got the label, so we set the slide reference
+            slide = widget.tab
+            title_label = widget
+        # set memory.
         # Search object next tab.
-        next_tab = None
-        for i, tab in enumerate(self.tab_bar.layout.children):
-            if tab == widget:
-                next_tab = self.tab_bar.layout.children[i - 1]
-                break
-
-        self.tab_bar.layout.remove_widget(widget)
-        # After deleting the tab, it updates the indicator width
-        # on the next tab.
-        if next_tab:
-            self._update_indicator(next_tab)
-
-        for slide in self.carousel.slides:
-            if slide.text == widget.text:
-                self.carousel.remove_widget(slide)
-                break
+        # Clean all bindings to allow the widget to be collected.
+        self.unbind(
+            allow_stretch=title_label._update_text_size,
+            fixed_tab_label_width=title_label._update_text_size,
+            font_name=title_label.setter("font_name"),
+            text_color_active=title_label.setter("text_color_active"),
+            text_color_normal=title_label.setter("text_color_normal"),
+        )
+        self.carousel.remove_widget(slide)
+        self.tab_bar.layout.remove_widget(title_label)
+        # clean the references
+        slide = None
+        title_label = None
+        widget = None
 
     def on_slide_progress(self, *args):
         """

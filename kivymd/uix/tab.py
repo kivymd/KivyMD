@@ -553,6 +553,9 @@ Builder.load_string(
     _line_height: 0
     _line_radius: 0
 
+    on_size:
+        root._update_padding(layout)
+
     MDTabsMain:
         padding: 0, tab_bar.height, 0, 0
 
@@ -588,7 +591,8 @@ Builder.load_string(
                 rows: 1
                 size_hint_y: 1
                 adaptive_width: True
-                padding: dp(0 if self.width <= scrollview.width else 52),0
+                on_size:
+                    root._update_padding(layout)
                 canvas.before:
                     Color:
                         rgba:
@@ -1441,3 +1445,17 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         if not current_tab_label:
             current_tab_label = self.tab_bar.layout.children[-1]
         Clock.schedule_once(update_indicator)
+
+    def _update_padding(self, layout, *args):
+        padding = [0,0]
+        # this is more efficient than to use sum([layout.children])
+        width = layout.width - (layout.padding[0]*2)
+        # Forcess the padding of the tab_bar when the tab_bar is scrollable
+        if width > self.width:
+            padding = [dp(52),0]
+        # set the new padding
+        layout.padding = padding
+        # Update the indicator
+        if self.carousel.current_slide:
+            self._update_indicator(self.carousel.current_slide.tab_label)
+        return True

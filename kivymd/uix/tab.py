@@ -793,7 +793,7 @@ class MDTabsBase(Widget):
                 self.text = (
                     self.text
                     + (" " if self.title_icon_mode == "Lead" else "\n")
-                    + self.title.upper()
+                    + self.title
                 )
         else:
             if self.icon:
@@ -802,10 +802,9 @@ class MDTabsBase(Widget):
                     f"Icon '{self.icon}' not found in md_icons"
                 )
             if self.title:
-
-                self.text = self.title.upper()
+                self.text = self.title
             else:
-                if not self.text:
+                if not self.tab_label_text:
                     raise ValueError(
                         f"{self}: [UID] = [{self.uid}]:\n\t"
                         "No valid Icon was found.\n\t"
@@ -826,7 +825,7 @@ class MDTabsBase(Widget):
 
     def update_label_text(self, widget, value):
         self.tab_label.text = self.tab_label_text
-        
+
     def on_text(self, widget, text):
         self.tab_label_text = self.text
 

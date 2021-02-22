@@ -628,7 +628,7 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
     font_name = StringProperty("Roboto")
 
     def __init__(self, **kwargs):
-        self.split_str=" ,-"
+        self.split_str = " ,-"
         super().__init__(**kwargs)
         self.max_lines = 2
         self.size_hint_x = None
@@ -733,7 +733,7 @@ class MDTabsBase(Widget):
         if self.tab_label:
             return self.tab_label.font_style
 
-    def _set_label_font_style(self,value):
+    def _set_label_font_style(self, value):
         if self.tab_label:
             if value in theme_font_styles:
                 self.tab_label.font_style = value
@@ -744,14 +744,14 @@ class MDTabsBase(Widget):
                     f"font_style = {value}"
                 )
         else:
-            Clock.schedule_once(lambda x:self._set_label_font_style(value))
+            Clock.schedule_once(lambda x: self._set_label_font_style(value))
             return True
 
     tab_label_font_style = AliasProperty(
         _get_label_font_style,
         _set_label_font_style,
         cache=True,
-        )
+    )
 
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
@@ -761,7 +761,9 @@ class MDTabsBase(Widget):
             title=self._update_text,
             title_icon_mode=self._update_text,
         )
-        Clock.schedule_once(self._update_text) # This will ensure the text is correct
+        Clock.schedule_once(
+            self._update_text
+        )  # This will ensure the text is correct
 
     def _update_text(self, *args):
         x = False
@@ -795,7 +797,7 @@ class MDTabsBase(Widget):
                         f"Title\t= '{self.title}'\n\t"
                     )
 
-        self.tab_label.padding = dp(16),0
+        self.tab_label.padding = dp(16), 0
         if self.title:
             if x is True:
                 self.tab_label.height = dp(48)
@@ -807,6 +809,7 @@ class MDTabsBase(Widget):
 
     def on_text(self, widget, text):
         self.tab_label.text = self.text
+
 
 class MDTabsMain(MDBoxLayout):
     """
@@ -1283,8 +1286,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     else self.specific_text_color
                 )
                 self.bind(
-                    allow_stretch = widget.tab_label._update_text_size,
-                    fixed_tab_label_width = widget.tab_label._update_text_size
+                    allow_stretch=widget.tab_label._update_text_size,
+                    fixed_tab_label_width=widget.tab_label._update_text_size,
                 )
                 self.bind(font_name=widget.tab_label.setter("font_name"))
                 self.bind(
@@ -1302,7 +1305,9 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 self.carousel.add_widget(widget)
                 if self.force_title_icon_mode is True:
                     widget.title_icon_mode = self.title_icon_mode
-                Clock.schedule_once(self.tab_bar._label_request_indicator_update,0)
+                Clock.schedule_once(
+                    self.tab_bar._label_request_indicator_update, 0
+                )
                 return
             except AttributeError:
                 pass
@@ -1435,12 +1440,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         Clock.schedule_once(update_indicator)
 
     def _update_padding(self, layout, *args):
-        padding = [0,0]
+        padding = [0, 0]
         # this is more efficient than to use sum([layout.children])
-        width = layout.width - (layout.padding[0]*2)
+        width = layout.width - (layout.padding[0] * 2)
         # Forcess the padding of the tab_bar when the tab_bar is scrollable
         if width > self.width:
-            padding = [dp(52),0]
+            padding = [dp(52), 0]
         # set the new padding
         layout.padding = padding
         # Update the indicator

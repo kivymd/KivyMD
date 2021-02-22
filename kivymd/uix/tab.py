@@ -699,10 +699,14 @@ class MDTabsBase(Widget):
         As a side note.
 
         All tabs have set `markup = True`.
-        Thanks to this, you can use the kivy markup languaje to set colorful
+        Thanks to this, you can use the kivy markup languaje to set a colorful
         and fully customizable tabs titles.
 
+    .. warning::
 
+        The material design requires that every title label is written in
+        capital letters, because of this, the `string.upper()` will be applied
+        to it's contents.
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
@@ -767,6 +771,15 @@ class MDTabsBase(Widget):
         _set_label_font_style,
         cache=True,
     )
+    """
+    :attr:`tab_label_font_style` is an :class:`~kivy.properties.AliasProperty`
+    that behavies similar to an :class:`~kivy.properties.OptionProperty`
+    This property behaviors allows the developer to use any new label style
+    registered to the app.
+
+    this property will affect the Tab's Title Label widget.
+
+    """
 
     def __init__(self, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)

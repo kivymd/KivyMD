@@ -708,8 +708,10 @@ class MDTabsBase(Widget):
     and defaults to `''`.
     """
 
-    text = StringProperty()
+    text = StringProperty(deprecated=True)
     """
+    This property is deprecated, use :attr:`tab_label_text` instead,
+
     This property is the actual title of the tab.
     use the property :attr:`icon` and :attr:`title` to set this property
     correctly.
@@ -718,6 +720,19 @@ class MDTabsBase(Widget):
     purposes.
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    tab_label_text = StringProperty()
+    """
+    This property is the actual title's Label of the tab.
+    use the property :attr:`icon` and :attr:`title` to set this property
+    correctly.
+
+    This property is kept public for specific and backward compatibility
+    purposes.
+
+    :attr:`tab_label_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -760,6 +775,8 @@ class MDTabsBase(Widget):
             icon=self._update_text,
             title=self._update_text,
             title_icon_mode=self._update_text,
+            text=self.update_label_text,
+            tab_label_text=self.update_label_text,
         )
         Clock.schedule_once(
             self._update_text
@@ -805,10 +822,13 @@ class MDTabsBase(Widget):
                 self.tab_label.height = dp(72)
         else:
             self.tab_label.height = dp(48)
-        self.on_text(None, None)
+        self.update_label_text(None, self.tab_label_text)
 
+    def update_label_text(self, widget, value):
+        self.tab_label.text = self.tab_label_text
+        
     def on_text(self, widget, text):
-        self.tab_label.text = self.text
+        self.tab_label_text = self.text
 
 
 class MDTabsMain(MDBoxLayout):

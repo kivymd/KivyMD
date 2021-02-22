@@ -731,6 +731,7 @@ class MDTabsBase(Widget):
     def _get_label_font_style(self):
         if self.tab_label:
             return self.tab_label.font_style
+
     def _set_label_font_style(self,value):
         if self.tab_label:
             if value in theme_font_styles:
@@ -759,7 +760,7 @@ class MDTabsBase(Widget):
             title=self._update_text,
             title_icon_mode=self._update_text,
         )
-        self._update_text()
+        Clock.schedule_once(self._update_text) # This will ensure the text is correct
 
     def _update_text(self, *args):
         x = False

@@ -751,6 +751,14 @@ class MDTabsBase(Widget):
     and defaults to `''`.
     """
 
+    title_is_capital = BooleanProperty(False)
+    """
+    This value contros wether if the title property should be converted to
+    captial letters.
+    :attr:`title_is_capital` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     text = StringProperty(deprecated=True)
     """
     This property is the actual title of the tab.
@@ -831,6 +839,7 @@ class MDTabsBase(Widget):
             title_icon_mode=self._update_text,
             text=self.update_label_text,
             tab_label_text=self.update_label_text,
+            title_is_capital=self.update_label_text,
         )
         Clock.schedule_once(
             self._update_text
@@ -838,7 +847,7 @@ class MDTabsBase(Widget):
 
     def _update_text(self, *args):
         # ensures that the title is in capital letters.
-        if self.title:
+        if self.title and self.title_is_capital is True:
             if self.title != self.title.upper():
                 self.title = self.title.upper()
                 # Avoids event recursion.

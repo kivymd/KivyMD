@@ -129,9 +129,12 @@ Example with tab text
 
 .. Note:: The :class:`~MDTabsBase` class has an icon parameter and, by default,
     tries to find the name of the icon in the file
-    ``kivymd/icon_definitions.py``. If the name of the icon is not found,
-    The class will send a message stating that the icon could not be found.
-    if the tab has no icon,title or tab_label_text, the class will raise a
+    ``kivymd/icon_definitions.py``.
+
+    If the name of the icon is not found, the class will send a message
+    stating that the icon could not be found.
+
+    if the tab has no icon, title or tab_label_text, the class will raise a
     ValueError.
 
 .. code-block:: python
@@ -407,11 +410,10 @@ Switching the tab by name
 .. code-block:: python
 
     from kivy.lang import Builder
-
     from kivymd.app import MDApp
+    from kivymd.icon_definitions import md_icons
     from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.uix.tab import MDTabsBase
-    from kivymd.icon_definitions import md_icons
 
     KV = '''
     MDBoxLayout:
@@ -425,13 +427,26 @@ Switching the tab by name
 
 
     <Tab>
-
-        MDIconButton:
-            id: icon
-            icon: "arrow-right"
-            user_font_size: "48sp"
+        MDBoxLayout:
+            orientation: "vertical"
             pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.switch_tab()
+            size_hint: None, None
+            spacing: dp(48)
+            MDIconButton:
+                id: icon
+                icon: "arrow-right"
+                user_font_size: "48sp"
+
+                on_release:
+                    app.switch_tab_by_name()
+
+            MDIconButton:
+                id: icon2
+                icon: "page-next"
+                user_font_size: "48sp"
+
+                on_release:
+                    app.switch_tab_by_object()
     '''
 
 
@@ -443,19 +458,37 @@ Switching the tab by name
         icons = list(md_icons.keys())[15:30]
 
         def build(self):
-            self.iter_list = iter(list(self.icons))
-            return Builder.load_string(KV)
+            self.iter_list_names = iter(list(self.icons))
+            root = Builder.load_string(KV)
+            return root
 
         def on_start(self):
             for name_tab in list(self.icons):
-                self.root.ids.tabs.add_widget(Tab(text=name_tab))
+                self.root.ids.tabs.add_widget(Tab(tab_label_text=name_tab))
+            self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
 
-        def switch_tab(self):
+        def switch_tab_by_object(self):
+            try:
+                x = next(self.iter_list_objects)
+                print(f"Switch slide by object, \n\tnex element to show: [{x}]")
+                self.root.ids.tabs.switch_tab(x)
+            except StopIteration:
+                # reset the iterator an begin again.
+                self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
+                self.switch_tab_by_object()
+                pass
+
+        def switch_tab_by_name(self):
             '''Switching the tab by name.'''
 
             try:
-                self.root.ids.tabs.switch_tab(next(self.iter_list))
+                x = next(self.iter_list_names)
+                print(f"Switch slide by name, \n\tnex element to show: [{x}]")
+                self.root.ids.tabs.switch_tab(x)
             except StopIteration:
+                # reset the iterator an begin again.
+                self.iter_list_names = iter(list(self.icons))
+                self.switch_tab_by_name()
                 pass
 
 

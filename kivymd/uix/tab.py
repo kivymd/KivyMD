@@ -1174,7 +1174,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     allow_stretch = BooleanProperty(True)
     """
-    If False - tabs will not stretch to full screen.
+    If `True`, The tab will update dynamically to it's content width, and wrap
+    any text if the widget is bigger than `"360dp"`.
+
+    If `False`, the tab won't update to it's maximum texture width.
+    this means that the `fixed_tab_label_width` will be used as the label
+    width.
 
     :attr:`allow_stretch` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.

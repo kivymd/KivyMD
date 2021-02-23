@@ -747,14 +747,12 @@ class MDTabsBase(Widget):
         capital letters, because of this, the `string.upper()` will be applied
         to it's contents.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
     text = StringProperty(deprecated=True)
     """
-    This property is deprecated, use :attr:`tab_label_text` instead,
-
     This property is the actual title of the tab.
     use the property :attr:`icon` and :attr:`title` to set this property
     correctly.
@@ -764,6 +762,9 @@ class MDTabsBase(Widget):
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+
+    .. warning::
+        This property is deprecated, use :attr:`tab_label_text` instead,
     """
 
     tab_label_text = StringProperty()
@@ -812,11 +813,12 @@ class MDTabsBase(Widget):
     )
     """
     :attr:`tab_label_font_style` is an :class:`~kivy.properties.AliasProperty`
-    that behavies similar to an :class:`~kivy.properties.OptionProperty`
-    This property behaviors allows the developer to use any new label style
+    that behavies similar to an :class:`~kivy.properties.OptionProperty`.
+
+    This property's behavior allows the developer to use any new label style
     registered to the app.
 
-    this property will affect the Tab's Title Label widget.
+    This property will affect the Tab's Title Label widget.
 
     """
 
@@ -877,7 +879,7 @@ class MDTabsBase(Widget):
         self.update_label_text(None, self.tab_label_text)
 
     def update_label_text(self, widget, value):
-        self.tab_label.text = self.tab_label_text
+        self.tab_label.text = self.text = self.tab_label_text
 
     def on_text(self, widget, text):
         self.tab_label_text = self.text
@@ -1175,11 +1177,11 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     allow_stretch = BooleanProperty(True)
     """
     If `True`, The tab will update dynamically to it's content width, and wrap
-    any text if the widget is bigger than `"360dp"`.
+    any text if the widget is wider than `"360dp"`.
 
     If `False`, the tab won't update to it's maximum texture width.
     this means that the `fixed_tab_label_width` will be used as the label
-    width.
+    width. this will wrap any text inside to fit the fixed value.
 
     :attr:`allow_stretch` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.

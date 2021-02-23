@@ -25,16 +25,17 @@ content for the tab.
 
     class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
+        content_text = StringProperty("")
 
 .. code-block:: kv
 
     <Tab>
-
+        content_text
         MDLabel:
-            text: "Content"
+            text: root.content_text
             pos_hint: {"center_x": .5, "center_y": .5}
 
-Tabs must be placed in the :class:`~MDTabs` container:
+All tabs must be contained inside a :class:`~MDTabs` widget:
 
 .. code-block:: kv
 
@@ -43,10 +44,12 @@ Tabs must be placed in the :class:`~MDTabs` container:
         MDTabs:
 
             Tab:
-                text: "Tab 1"
+                title: "Tab 1"
+                content_text: f"This is an example text for {self.title}"
 
             Tab:
-                text: "Tab 1"
+                title: "Tab 2"
+                content_text: f"This is an example text for {self.title}"
 
             ...
 
@@ -78,7 +81,7 @@ Example with tab icon
 
         MDIconButton:
             id: icon
-            icon: app.icons[0]
+            icon: root.icon
             user_font_size: "48sp"
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
@@ -95,8 +98,8 @@ Example with tab icon
             return Builder.load_string(KV)
 
         def on_start(self):
-            for name_tab in self.icons:
-                self.root.ids.tabs.add_widget(Tab(icon=name_tab))
+            for tab_name in self.icons:
+                self.root.ids.tabs.add_widget(Tab(icon=tab_name))
 
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
@@ -109,12 +112,14 @@ Example with tab icon
             :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
             :param tab_text: text or name icon of tab;
             '''
-
-            count_icon = [k for k, v in md_icons.items() if v in tab_text]
-            instance_tab.ids.icon.icon = count_icon[0]
+            # get the tab icon.
+            count_icon = instance_tab.icon
+            # print it on shell/bash.
+            print(f"Welcome to {count_icon}' tab'")
 
 
     Example().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example.gif
     :align: center
@@ -125,8 +130,9 @@ Example with tab text
 .. Note:: The :class:`~MDTabsBase` class has an icon parameter and, by default,
     tries to find the name of the icon in the file
     ``kivymd/icon_definitions.py``. If the name of the icon is not found,
-    then the name of the tab will be plain text, if found, the tab will look
-    like the corresponding icon.
+    The class will send a message stating that the icon could not be found.
+    if the tab has no icon,title or tab_label_text, the class will raise a
+    ValueError.
 
 .. code-block:: python
 
@@ -167,7 +173,7 @@ Example with tab text
 
         def on_start(self):
             for i in range(20):
-                self.root.ids.tabs.add_widget(Tab(text=f"Tab {i}"))
+                self.root.ids.tabs.add_widget(Tab(title=f"Tab {i}"))
 
         def on_tab_switch(
             self, instance_tabs, instance_tab, instance_tab_label, tab_text
@@ -299,7 +305,7 @@ Dynamic tab management
             if self.index > 1:
                 self.index -= 1
             self.root.ids.tabs.remove_widget(
-                self.root.ids.tabs.get_tab_list()[0]
+                self.root.ids.tabs.get_tab_list()[-1]
             )
 
 

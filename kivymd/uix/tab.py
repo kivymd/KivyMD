@@ -503,7 +503,7 @@ __all__ = ("MDTabs", "MDTabsBase")
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.logger import Logger
-from kivy.metrics import dp, sp
+from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -1339,7 +1339,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         else:
             self.carousel.load_slide(name_tab.tab)
 
-
     def get_tab_list(self):
         """Returns a list of tab objects."""
 
@@ -1539,5 +1538,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         # Update the indicator
         if self.carousel.current_slide:
             self._update_indicator(self.carousel.current_slide.tab_label)
-            Clock.schedule_once(lambda x:setattr(self.carousel.current_slide.tab_label,"state","down"),-1)
+            Clock.schedule_once(
+                lambda x: setattr(
+                    self.carousel.current_slide.tab_label, "state", "down"
+                ),
+                -1,
+            )
         return True

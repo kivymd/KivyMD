@@ -1483,4 +1483,5 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         # Update the indicator
         if self.carousel.current_slide:
             self._update_indicator(self.carousel.current_slide.tab_label)
+            Clock.schedule_once(lambda x:setattr(self.carousel.current_slide.tab_label,"state","down"),-1)
         return True

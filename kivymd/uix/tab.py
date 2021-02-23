@@ -1312,31 +1312,43 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             if not self.text_color_active:
                 tab_label.text_color_active = self.specific_secondary_text_color
 
-    def switch_tab(self, name_tab, search_by="tab_label_text"):
+    def switch_tab(self, name_tab, search_by="text"):
         """This funciont switch between tabs
         name_tab can be either a String or a MDTabsBase.
 
-        search_by will look up through the properties of every tab
+        `search_by` will look up through the properties of every tab.
+
+        search_by options:
+            text : will search by the raw text of the label
+            icon : will search by the `icon` property
+            title : will search by the `title` property
         """
         if isinstance(name_tab, str):
             if search_by == "tab_label_text":
                 for instance_tab in self.tab_bar.parent.carousel.slides:
                     if instance_tab.tab_label_text == name_tab:
                         self.carousel.load_slide(instance_tab)
-                        break
+                        return
+
             # search by icon.
             elif search_by == "icon":
                 for instance_tab in self.tab_bar.parent.carousel.slides:
                     if instance_tab.icon == name_tab:
                         self.carousel.load_slide(instance_tab)
-                        break
+                        return
+
             # search by title
             else:
                 for instance_tab in self.tab_bar.parent.carousel.slides:
-                    if instance_tab.title == name_tab:
+                    if instance_tab.title == name_tab.upper():
                         self.carousel.load_slide(instance_tab)
-                        break
+                        return
 
+            raise ValueError("switch_tab:\n\t"
+                "name_tab not found in the tab list\n\t"
+                f"search_by = {repr(search_by)} \n\t"
+                f"name_tab = {repr(name_tab)} \n\t"
+            )
         else:
             self.carousel.load_slide(name_tab.tab)
 

@@ -837,7 +837,8 @@ class MDTabsBase(Widget):
     def _update_text(self, *args):
         x = False
         if self.title:
-            self.title = self.title.upper()
+            if self.title != self.title.upper():
+                self.title = self.title.upper()
         if self.icon and self.icon in md_icons:
             x = True
             self.text = f"[size=24sp][font={fonts[-1]['fn_regular']}]{md_icons[self.icon]}[/size][/font]"

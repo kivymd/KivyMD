@@ -1351,7 +1351,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                         self.carousel.load_slide(instance_tab)
                         return
 
-            raise ValueError("switch_tab:\n\t"
+            raise ValueError(
+                "switch_tab:\n\t"
                 "name_tab not found in the tab list\n\t"
                 f"search_by = {repr(search_by)} \n\t"
                 f"name_tab = {repr(name_tab)} \n\t"

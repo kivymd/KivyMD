@@ -35,12 +35,13 @@ class Example(MDApp):
 
     def on_start(self):
         for i in range(20):
-            self.root.ids.tabs.add_widget(Tab(text=f"Tab {i}"))
+            # Add a new tab to the MDTabs Layout.
+            self.root.ids.tabs.add_widget(Tab(title=f"Tab {i}"))
 
     def on_tab_switch(
         self, instance_tabs, instance_tab, instance_tab_label, tab_text
     ):
-        """Called when switching tabs.
+        """Called when the tab is switched.
 
         :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
         :param instance_tab: <__main__.Tab object>;
@@ -48,7 +49,7 @@ class Example(MDApp):
         :param tab_text: text or name icon of tab;
         """
 
-        instance_tab.ids.label.text = tab_text
+        instance_tab.ids.label.text = f" This is the content of {tab_text}"
 
 
 Example().run()

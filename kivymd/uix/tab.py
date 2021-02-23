@@ -1311,17 +1311,34 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             if not self.text_color_active:
                 tab_label.text_color_active = self.specific_secondary_text_color
 
-    def switch_tab(self, name_tab):
-        """Switching the tab by name."""
+    def switch_tab(self, name_tab, search_by="tab_label_text"):
+        """This funciont switch between tabs
+        name_tab can be either a String or a MDTabsBase.
 
-        for instance_tab in self.tab_bar.parent.carousel.slides:
-            if instance_tab.text == name_tab:
-                self.tab_bar.parent.carousel.load_slide(instance_tab)
-                break
-        for tab_label in self.get_tab_list():
-            if name_tab == tab_label.text:
-                self.ids.scrollview.scroll_to(tab_label)
-                break
+        search_by will look up through the properties of every tab
+        """
+        if isinstance(name_tab, str):
+            if search_by == "tab_label_text":
+                for instance_tab in self.tab_bar.parent.carousel.slides:
+                    if instance_tab.tab_label_text == name_tab:
+                        self.carousel.load_slide(instance_tab)
+                        break
+            # search by icon.
+            elif search_by == "icon":
+                for instance_tab in self.tab_bar.parent.carousel.slides:
+                    if instance_tab.icon == name_tab:
+                        self.carousel.load_slide(instance_tab)
+                        break
+            # search by title
+            else:
+                for instance_tab in self.tab_bar.parent.carousel.slides:
+                    if instance_tab.title == name_tab:
+                        self.carousel.load_slide(instance_tab)
+                        break
+
+        else:
+            self.carousel.load_slide(name_tab.tab)
+
 
     def get_tab_list(self):
         """Returns a list of tab objects."""

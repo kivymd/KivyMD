@@ -837,19 +837,22 @@ class MDTabsBase(Widget):
         )  # This will ensure the text is correct
 
     def _update_text(self, *args):
-        x = False
+        # ensures that the title is in capital letters.
         if self.title:
             if self.title != self.title.upper():
                 self.title = self.title.upper()
+                # Avoids event recursion.
+                return
+        # Add the icon.
         if self.icon and self.icon in md_icons:
-            x = True
-            self.text = f"[size=24sp][font={fonts[-1]['fn_regular']}]{md_icons[self.icon]}[/size][/font]"
+            self.tab_label_text = f"[size=24sp][font={fonts[-1]['fn_regular']}]{md_icons[self.icon]}[/size][/font]"
             if self.title:
-                self.text = (
+                self.tab_label_text = (
                     self.text
                     + (" " if self.title_icon_mode == "Lead" else "\n")
                     + self.title
                 )
+        # add the title
         else:
             if self.icon:
                 Logger.error(
@@ -857,7 +860,7 @@ class MDTabsBase(Widget):
                     f"Icon '{self.icon}' not found in md_icons"
                 )
             if self.title:
-                self.text = self.title
+                self.tab_label_text = self.title
             else:
                 if not self.tab_label_text:
                     raise ValueError(
@@ -869,13 +872,6 @@ class MDTabsBase(Widget):
                     )
 
         self.tab_label.padding = dp(16), 0
-        if self.title:
-            if x is True:
-                self.tab_label.height = dp(48)
-            else:
-                self.tab_label.height = dp(72)
-        else:
-            self.tab_label.height = dp(48)
         self.update_label_text(None, self.tab_label_text)
 
     def update_label_text(self, widget, value):

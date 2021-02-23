@@ -1321,30 +1321,37 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
         `search_by` will look up through the properties of every tab.
 
+        if the value doesnt match, it will raise a ValueError.
+
         search_by options:
-            text : will search by the raw text of the label
+            text : will search by the raw text of the label (`tab_label_text`)
             icon : will search by the `icon` property
             title : will search by the `title` property
         """
         if isinstance(name_tab, str):
-            if search_by == "tab_label_text":
-                for instance_tab in self.tab_bar.parent.carousel.slides:
-                    if instance_tab.tab_label_text == name_tab:
-                        self.carousel.load_slide(instance_tab)
+            if search_by == "title":
+
+                for tab_instance in self.tab_bar.parent.carousel.slides:
+                    if tab_instance.title_is_capital is True:
+                        _name_tab = name_tab.upper()
+                    else:
+                        _name_tab = name_tab
+                    if tab_instance.title == _name_tab:
+                        self.carousel.load_slide(tab_instance)
                         return
 
             # search by icon.
             elif search_by == "icon":
-                for instance_tab in self.tab_bar.parent.carousel.slides:
-                    if instance_tab.icon == name_tab:
-                        self.carousel.load_slide(instance_tab)
+                for tab_instance in self.tab_bar.parent.carousel.slides:
+                    if tab_instance.icon == name_tab:
+                        self.carousel.load_slide(tab_instance)
                         return
 
             # search by title
             else:
-                for instance_tab in self.tab_bar.parent.carousel.slides:
-                    if instance_tab.title == name_tab.upper():
-                        self.carousel.load_slide(instance_tab)
+                for tab_instance in self.tab_bar.parent.carousel.slides:
+                    if tab_instance.tab_label_text == name_tab:
+                        self.carousel.load_slide(tab_instance)
                         return
 
             raise ValueError(

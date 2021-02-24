@@ -1408,17 +1408,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 self.bind(
                     allow_stretch=widget.tab_label._update_text_size,
                     fixed_tab_label_width=widget.tab_label._update_text_size,
-                )
-                self.bind(font_name=widget.tab_label.setter("font_name"))
-                self.bind(
+                    font_name=widget.tab_label.setter("font_name"),
                     text_color_active=widget.tab_label.setter(
-                        "text_color_active"
-                    )
-                )
-                self.bind(
+                        "text_color_active"),
                     text_color_normal=widget.tab_label.setter(
                         "text_color_normal"
-                    )
+                    ),
                 )
                 Clock.schedule_once(widget.tab_label._update_text_size, 0)
                 self.tab_bar.layout.add_widget(widget.tab_label)

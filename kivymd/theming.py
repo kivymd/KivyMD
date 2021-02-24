@@ -45,10 +45,10 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
     from kivy.properties import ObjectProperty
 
     from kivymd.app import MDApp
+    from kivymd.uix.floatlayout import MDFloatLayout
     from kivymd.uix.tab import MDTabsBase
     from kivymd.icon_definitions import md_icons
 
@@ -103,7 +103,6 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
 
 
     KV = '''
-
     BoxLayout:
         orientation: "vertical"
         MDToolbar:
@@ -112,16 +111,19 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
             id: tabs
 
 
-    <Tab>:
+    <Tab>
 
         MDIconButton:
             id: icon
             icon: root.icon
             user_font_size: "48sp"
             pos_hint: {"center_x": .5, "center_y": .5}
+    '''
 
-    class Tab(FloatLayout, MDTabsBase):
+
+    class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
+
         icon = ObjectProperty()
 
 
@@ -138,6 +140,7 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
             for name_tab in self.icons:
                 tab = Tab(text="This is " + name_tab, icon=name_tab)
                 self.root.ids.tabs.add_widget(tab)
+
 
     Example().run()
 

@@ -1160,6 +1160,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     :attr:`tab_indicator_type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'line'`.
     """
+    tab_hint_x = BooleanProperty(False)
+    """
+    This option affects the size of each child. if it's `True`, the size of
+    each tab will be igonred and will use the size available by the container.
+
+    :attr:`tab_hint_x` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
 
     anim_duration = NumericProperty(0.2)
     """
@@ -1307,6 +1315,16 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             force_title_icon_mode=self._parse_icon_mode,
             title_icon_mode=self._parse_icon_mode,
         )
+        self.bind(tab_hint_x=self._update_tab_hint_x)
+
+    def _update_tab_hint_x(self, *args):
+        if not self.ids.layout.children:
+            return
+        if self.tab_hint_x is True:
+            self.fixed_tab_label_width = self.width//len(self.ids.layout.children)
+            self.allow_stretch = False
+        else:
+            self.allow_stretch = True
 
     def _parse_icon_mode(self, *args):
         if self.force_title_icon_mode is True:
@@ -1555,6 +1573,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         Clock.schedule_once(update_indicator)
 
     def _update_padding(self, layout, *args):
+        if self.tab_hint_x is True:
+            layout.padding = [0, 0]
+            Clock.schedule_once(self._update_tab_hint_x)
+            return True
         padding = [0, 0]
         # this is more efficient than to use sum([layout.children])
         width = layout.width - (layout.padding[0] * 2)

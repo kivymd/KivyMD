@@ -1321,7 +1321,9 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         if not self.ids.layout.children:
             return
         if self.tab_hint_x is True:
-            self.fixed_tab_label_width = self.width//len(self.ids.layout.children)
+            self.fixed_tab_label_width = self.width // len(
+                self.ids.layout.children
+            )
             self.allow_stretch = False
         else:
             self.allow_stretch = True
@@ -1428,7 +1430,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     fixed_tab_label_width=widget.tab_label._update_text_size,
                     font_name=widget.tab_label.setter("font_name"),
                     text_color_active=widget.tab_label.setter(
-                        "text_color_active"),
+                        "text_color_active"
+                    ),
                     text_color_normal=widget.tab_label.setter(
                         "text_color_normal"
                     ),

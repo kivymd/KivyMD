@@ -145,6 +145,7 @@ __all__ = (
 )
 
 from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import NumericProperty, ObjectProperty, StringProperty
@@ -212,14 +213,17 @@ class MDExpansionPanelLabel(TwoLineListItem):
 
     ..warning:: This class is created for use in the
         :class:`~kivymd.uix.stepper.MDStepperVertical` and
-        :class:`~kivymd.uix.stepper.MDStepperHorizontal` classes, and has not
+        :class:`~kivymd.uix.stepper.MDStepper` classes, and has not
         been tested for use outside of these classes.
     """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._height = dp(72)
+        Clock.schedule_once(self.set_paddings)
+
+    def set_paddings(self, interval):
         self._txt_bot_pad = dp(36)
+        self._txt_left_pad = dp(0)
 
 
 class MDExpansionPanel(RelativeLayout):

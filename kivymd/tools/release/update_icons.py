@@ -158,7 +158,7 @@ def update_icons(make_commit: bool = False):
             )
     else:
         print(f"Error: {temp_repo_path} not exists", file=sys.stderr)
-        exit(1)
+        sys.exit(1)
 
 
 def main():

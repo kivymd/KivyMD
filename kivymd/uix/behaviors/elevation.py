@@ -904,7 +904,6 @@ class CommonElevationBehavior(Widget):
             if widget is None:
                 group.remove(wk)
             widget.shadow_pos = shadow_pos
-        del group
 
     def update_group_property(self, property_name, value):
         """
@@ -920,7 +919,6 @@ class CommonElevationBehavior(Widget):
             if widget is None:
                 group.remove(wk)
             setattr(widget, property_name, value)
-        del group
 
     def shadow_preset(self, *args):
         """

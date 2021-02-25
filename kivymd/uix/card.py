@@ -674,7 +674,7 @@ class MDCard(
             self.md_bg_color = get_color_from_hex(colors[value]["CardsDialogs"])
 
     def on_ripple_behavior(self, instance, value):
-        self._no_ripple_effect = False if value else True
+        self._no_ripple_effect = not value
 
     def _on_elevation(self, value):
         if value is None:

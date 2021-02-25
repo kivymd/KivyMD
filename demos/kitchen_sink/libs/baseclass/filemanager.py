@@ -23,7 +23,7 @@ class KitchenSinkFileManager(Screen):
 
     def file_manager_open(self):
         def open_file_manager(text_item):
-            preview = False if text_item == "List" else True
+            preview = not text_item == "List"
             if not self.file_manager:
                 self.file_manager = MDFileManager(
                     exit_manager=self.exit_manager,

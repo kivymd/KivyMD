@@ -2,6 +2,7 @@ from kivy.properties import ListProperty, StringProperty
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
+import sys
 
 
 class ShrineItemMenu(ThemableBehavior, MDBoxLayout):
@@ -17,7 +18,7 @@ class ShrineMenu(ThemableBehavior, MDBoxLayout):
         """Sets the color of the separator for a pressed menu item."""
 
         if instance_item.text == "EXIT":
-            exit()
+            sys.exit()
 
         for widget in self.children:
             if widget.ids.separator.color == self.theme_cls.primary_color:

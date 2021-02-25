@@ -173,7 +173,7 @@ def create_unreleased_changelog(
             "y",
             "yes",
         ):
-            exit(0)
+            sys.exit(0)
     # Generate unreleased changelog
     changelog = f"""Unreleased
 ----------

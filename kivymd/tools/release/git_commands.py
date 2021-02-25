@@ -4,6 +4,7 @@
 # as the Kivy framework.
 
 import subprocess
+import sys
 
 
 def command(cmd: list, capture_output: bool = False) -> str:
@@ -43,7 +44,7 @@ def git_clean(ask: bool = True):
                 break
             elif ans == "n" or ans == "no":
                 print("git clean is required. Exit")
-                exit(0)
+                sys.exit(0)
 
     # Remove all untracked files
     command(["git", "clean", "-dx", "--force"])

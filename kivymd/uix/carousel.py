@@ -1,3 +1,57 @@
+"""
+Components/Carousel
+=====================
+
+:class:`~kivy.uix.boxlayout.Carousel` class equivalent. Simplifies working
+with some widget properties. For example:
+
+
+Carousel
+---------
+
+.. code-block:: python
+
+    kv='''
+        YourCarousel:
+            BoxLayout:
+                [...]
+            BoxLayout:
+                [...]
+            BoxLayout:
+                [...]
+    '''
+    builder.load_string(kv)
+
+    class YourCarousel(Carousel):
+        def __init__(self,*kwargs):
+            self.register_event_type("on_slide_progress")
+            self.register_event_type("on_slide_complete")
+
+        def on_touch_down(self, *args):
+            ["Code to detect when the slide changes"]
+
+        def on_touch_up(self, *args):
+            ["Code to detect when the slide changes"]
+
+        def Calculate_slide_pos(self, *args):
+            ["Code to calculate the current position of the slide"]
+
+        def do_custom_animation(self, *args)
+            ["Code to recreate an animation"]
+
+
+MDCarousel
+-----------
+
+.. code-block:: kv
+
+    MDCarousel:
+        on_slide_progress:
+            do_something()
+        on_slide_complete:
+            do_something()
+
+"""
 # TODO: Add documentation.
 
 from kivy.animation import Animation
@@ -5,6 +59,12 @@ from kivy.uix.carousel import Carousel
 
 
 class MDCarousel(Carousel):
+    """
+    based on kivy's carousel.
+
+    .. seealso::
+        `kivy.uix.carousel.Carousel <https://kivy.org/doc/stable/api-kivy.uix.carousel.html>`_
+    """
 
     _scrolling = False
 
@@ -14,9 +74,17 @@ class MDCarousel(Carousel):
         self.register_event_type("on_slide_complete")
 
     def on_slide_progress(self, *args):
+        """
+        Event launched when the Slide animation is progress.
+        rememebr to bind and unbid to this method.
+        """
         pass
 
     def on_slide_complete(self, *args):
+        """
+        Event launched when the Slide animation is complete.
+        rememebr to bind and unbid to this method.
+        """
         pass
 
     def _position_visible_slides(self, *args):

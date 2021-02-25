@@ -169,6 +169,7 @@ from kivy.utils import get_color_from_hex
 
 from kivymd import images_path
 from kivymd.color_definitions import colors, hue, palette
+from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
 
 
@@ -1055,7 +1056,18 @@ class ThemeManager(EventDispatcher):
         Clock.schedule_once(lambda x: self.on_theme_style(0, self.theme_style))
         self._determine_device_orientation(None, Window.size)
         Window.bind(size=self._determine_device_orientation)
+        self.bind(font_styles=self.sync_theme_styles)
         self.colors = colors
+        Clock.schedule_once(self.sync_theme_styles)
+
+    def sync_theme_styles(self, *args):
+        # Syncs the values from self.font_styles to theme_font_styles
+        # this will ensure continuity when someone registers a new font_style.
+        for num, style in enumerate(theme_font_styles):
+            if style not in self.font_styles:
+                theme_font_styles.pop(num)
+        for style in self.font_styles.keys():
+            theme_font_styles.append(style)
 
 
 class ThemableBehavior(EventDispatcher):

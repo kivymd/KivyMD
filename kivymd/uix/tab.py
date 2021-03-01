@@ -1415,6 +1415,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                 widget.tab_label.ripple_duration_in_slow = self.ripple_duration
                 widget.tab_label.group = str(self)
                 widget.tab_label.tab_bar = self.tab_bar
+                widget.tab_label.font_name = self.font_name
                 widget.tab_label.text_color_normal = (
                     self.text_color_normal
                     if self.text_color_normal

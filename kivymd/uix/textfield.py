@@ -1022,7 +1022,8 @@ class MDTextField(ThemableBehavior, TextInput):
                 animation = Animation(
                     _line_blank_space_left_point=self._hint_lbl.x - dp(5),
                     _current_hint_text_color=self.line_color_focus,
-                    _fill_color=self.fill_color[:-1] + [self.fill_color[-1] - 0.1],
+                    _fill_color=self.fill_color[:-1]
+                    + [self.fill_color[-1] - 0.1],
                     duration=0.2,
                     t="out_quad",
                 )
@@ -1065,7 +1066,8 @@ class MDTextField(ThemableBehavior, TextInput):
         else:
             Animation(
                 _fill_color=self.fill_color[:-1] + [self.fill_color[-1] + 0.1],
-                duration=0.2, t="out_quad",
+                duration=0.2,
+                t="out_quad",
             ).start(self)
             if not self.text:
                 self._anim_lbl_font_size(dp(38), sp(16))

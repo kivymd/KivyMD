@@ -561,7 +561,7 @@ Builder.load_string(
     # "fill" mode.
     canvas.after:
         Color:
-            rgba: root.fill_color if root.mode == "fill" else (0, 0, 0, 0)
+            rgba: root._fill_color if root.mode == "fill" else (0, 0, 0, 0)
         RoundedRectangle:
             pos: self.x, self.y
             size: self.width, self.height + dp(8)
@@ -918,6 +918,7 @@ class MDTextField(ThemableBehavior, TextInput):
     _current_error_color = ColorProperty((0, 0, 0, 0))
     _current_hint_text_color = ColorProperty((0, 0, 0, 0))
     _current_right_lbl_color = ColorProperty((0, 0, 0, 0))
+    _fill_color = ColorProperty((0, 0, 0, 0))
     _msg_lbl = None
     _right_msg_lbl = None
     _hint_lbl = None
@@ -949,10 +950,14 @@ class MDTextField(ThemableBehavior, TextInput):
         self.has_had_text = False
         self._better_texture_size = None
         Clock.schedule_once(self.check_text)
+        Clock.schedule_once(self._set_fill_color)
         self._set_msg(self, self.helper_text)
 
     def check_text(self, interval):
         self.set_text(self, self.text)
+
+    def _set_fill_color(self, interval):
+        self._fill_color = self.fill_color
 
     def set_objects_labels(self):
         """Creates labels objects for the parameters
@@ -1007,8 +1012,6 @@ class MDTextField(ThemableBehavior, TextInput):
         self._set_text_len_error()
 
         if self.focus:
-            _fill_color = self.fill_color
-            _fill_color[3] = self.fill_color[3] - 0.1
             if not self._get_has_error():
 
                 def on_progress(*args):
@@ -1019,7 +1022,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 animation = Animation(
                     _line_blank_space_left_point=self._hint_lbl.x - dp(5),
                     _current_hint_text_color=self.line_color_focus,
-                    fill_color=_fill_color,
+                    _fill_color=self.fill_color[:-1] + [self.fill_color[-1] - 0.1],
                     duration=0.2,
                     t="out_quad",
                 )
@@ -1060,11 +1063,10 @@ class MDTextField(ThemableBehavior, TextInput):
                 if self.helper_text_mode in ("persistent", "on_focus"):
                     self._anim_current_error_color(disabled_hint_text_color)
         else:
-            _fill_color = self.fill_color
-            _fill_color[3] = self.fill_color[3] + 0.1
-            Animation(fill_color=_fill_color, duration=0.2, t="out_quad").start(
-                self
-            )
+            Animation(
+                _fill_color=self.fill_color[:-1] + [self.fill_color[-1] + 0.1],
+                duration=0.2, t="out_quad",
+            ).start(self)
             if not self.text:
                 self._anim_lbl_font_size(dp(38), sp(16))
                 Animation(

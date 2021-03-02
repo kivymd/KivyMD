@@ -25,6 +25,8 @@ class KitchenSinkThemingColors(Screen):
         instance_tab_label,
         tab_label_text,
     ):
+        if not tab_label_text:
+            tab_label_text = "Red"
         if not instance_android_tabs.colors_loaded:
             for hue in _colors[tab_label_text]:
                 color = _colors[tab_label_text][hue]

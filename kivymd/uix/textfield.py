@@ -393,6 +393,39 @@ Clickable icon for MDTextFieldRound
 
     Test().run()
 
+With left icon
+---------------
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Name"
+        text: "left icon, mode fill"
+        mode: "fill"
+        fill_color: 0, 0, 0, .4
+        icon_left: "clock-outline"
+        icon_left_color: app.theme_cls.primary_color
+
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Name"
+        text: "left icon"
+        icon_left: "clock-outline"
+        icon_left_color: app.theme_cls.primary_color
+
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Name"
+        text: "left icon, mode rectangle"
+        mode: "rectangle"
+        icon_left: "clock-outline"
+        icon_left_color: app.theme_cls.primary_color
+
+
 With right icon
 ---------------
 
@@ -512,7 +545,9 @@ Builder.load_string(
                 else (0, 0)
             pos:
                 self.x, \
-                self.center[1] - self._lbl_icon_left.texture_size[1] / 2
+                self.center[1] - self._lbl_icon_left.texture_size[1] / 2 + (dp(8) if root.mode != "fill" else 0) \
+                if root.mode != "rectangle" else \
+                self.center[1] - self._lbl_icon_left.texture_size[1] / 2 - dp(4)
 
         # Texture of right Icon.
         Color:
@@ -547,7 +582,10 @@ Builder.load_string(
         Rectangle:
             texture: self._hint_lbl.texture
             size: self._hint_lbl.texture_size
-            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y + self.height - self._hint_y
+            pos:
+                self.x + ((self._lbl_icon_left.texture_size[1] + dp(20)) if not (self.text or self.focus) or (self.mode == "line" and root.icon_left) else \
+                (dp(8) if root.mode == "fill" else 0)), \
+                self.y + self.height - self._hint_y
 
         Color:
             rgba:

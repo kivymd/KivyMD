@@ -500,6 +500,20 @@ Builder.load_string(
                 self._msg_lbl.texture_size[1] - (dp(3) if root.mode in ("fill", "rectangle") else 0)
             pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y + (dp(3) if root.mode in ("fill", "rectangle") else 0)
 
+        # Texture of left Icon.
+        Color:
+            rgba:
+                self.icon_left_color \
+                if self.focus else self.theme_cls.disabled_hint_text_color
+        Rectangle:
+            texture: self._lbl_icon_left.texture
+            size:
+                self._lbl_icon_left.texture_size if self.icon_left \
+                else (0, 0)
+            pos:
+                self.x, \
+                self.center[1] - self._lbl_icon_left.texture_size[1] / 2
+
         # Texture of right Icon.
         Color:
             rgba: self.icon_right_color if self.focus else self._current_hint_text_color
@@ -571,9 +585,11 @@ Builder.load_string(
     foreground_color: self.theme_cls.text_color
     bold: False
     padding:
-        0 if root.mode != "fill" else "8dp", \
+        0 if root.mode != "fill" and not root.icon_left else \
+        ("14dp" if not root.icon_left else self._lbl_icon_left.texture_size[1] + dp(20)), \
         "16dp" if root.mode != "fill" else "24dp", \
-        0 if root.mode != "fill" and not root.icon_right else ("14dp" if not root.icon_right else self._lbl_icon_right.texture_size[1] + dp(20)), \
+        0 if root.mode != "fill" and not root.icon_right else \
+        ("14dp" if not root.icon_right else self._lbl_icon_right.texture_size[1] + dp(20)), \
         "16dp" if root.mode == "fill" else "10dp"
     multiline: False
     size_hint_y: None
@@ -858,6 +874,22 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `None`.
     """
 
+    icon_left = StringProperty()
+    """
+    Left icon.
+
+    :attr:`icon_left` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    icon_left_color = ColorProperty((0, 0, 0, 1))
+    """
+    Color of left icon in ``rgba`` format.
+
+    :attr:`icon_left_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `(0, 0, 0, 1)`.
+    """
+
     icon_right = StringProperty()
     """
     Right icon.
@@ -922,6 +954,7 @@ class MDTextField(ThemableBehavior, TextInput):
     _msg_lbl = None
     _right_msg_lbl = None
     _hint_lbl = None
+    _lbl_icon_left = None
     _lbl_icon_right = None
 
     def __init__(self, **kwargs):
@@ -984,7 +1017,14 @@ class MDTextField(ThemableBehavior, TextInput):
             font_style="Subtitle1", halign="left", valign="middle", field=self
         )
         # MDIcon object for the icon on the right.
+        self._lbl_icon_left = MDIcon(theme_text_color="Custom")
         self._lbl_icon_right = MDIcon(theme_text_color="Custom")
+
+    def on_icon_left(self, instance, value):
+        self._lbl_icon_left.icon = value
+
+    def on_icon_left_color(self, instance, value):
+        self._lbl_icon_left.text_color = value
 
     def on_icon_right(self, instance, value):
         self._lbl_icon_right.icon = value
@@ -1143,7 +1183,7 @@ class MDTextField(ThemableBehavior, TextInput):
             self._anim_current_line_color(self.line_color_focus)
             if self.helper_text_mode == "on_error":
                 self._anim_current_error_color((0, 0, 0, 0))
-            self.on_focus(self, self.focus)
+                self.on_focus(self, self.focus)
 
         if len(self.text) != 0 and not self.focus:
             self._hint_y = dp(14)

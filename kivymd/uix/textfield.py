@@ -1183,7 +1183,7 @@ class MDTextField(ThemableBehavior, TextInput):
             self._anim_current_line_color(self.line_color_focus)
             if self.helper_text_mode == "on_error":
                 self._anim_current_error_color((0, 0, 0, 0))
-                self.on_focus(self, self.focus)
+            self.on_focus(self, self.focus)
 
         if len(self.text) != 0 and not self.focus:
             self._hint_y = dp(14)

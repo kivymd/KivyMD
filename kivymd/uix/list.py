@@ -444,7 +444,6 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.image import Image
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
@@ -452,6 +451,7 @@ from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.utils.fitimage import FitImage
 
 Builder.load_string(
     """
@@ -1007,11 +1007,11 @@ class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
-class ImageLeftWidget(ILeftBody, Image):
+class ImageLeftWidget(ILeftBody, FitImage):
     pass
 
 
-class ImageRightWidget(IRightBodyTouch, Image):
+class ImageRightWidget(IRightBodyTouch, FitImage):
     pass
 
 

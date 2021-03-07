@@ -2971,6 +2971,7 @@ class MDTimePicker(BaseDialogPicker):
 Builder.load_string(
     """
 <Tab@MDFloatLayout+MDTabsBase>
+    md_bg_color: app.theme_cls.bg_normal
 
 
 <ColorSelector>
@@ -2993,7 +2994,6 @@ Builder.load_string(
 <MDThemePicker>
     size_hint: None, None
     size: "284dp", "400dp"
-    md_bg_color: app.theme_cls.bg_normal
 
     MDBoxLayout:
         orientation: "vertical"

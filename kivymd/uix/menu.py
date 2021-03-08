@@ -625,8 +625,7 @@ from kivy.uix.scrollview import ScrollView
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import HoverBehavior, \
-    FakeRectangularElevationBehavior
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior, HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import (

@@ -82,7 +82,7 @@ from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.button import BaseButton
-from kivymd.uix.card import MDSeparator, MDCard
+from kivymd.uix.card import MDCard, MDSeparator
 from kivymd.uix.list import BaseListItem
 
 Builder.load_string(

@@ -625,8 +625,10 @@ from kivy.uix.scrollview import ScrollView
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import HoverBehavior
+from kivymd.uix.behaviors import HoverBehavior, \
+    FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.card import MDCard
 from kivymd.uix.list import (
     IRightBodyTouch,
     OneLineAvatarIconListItem,
@@ -663,23 +665,15 @@ Builder.load_string(
 
 <MDDropdownMenu>
 
-    MDCard:
+    DropdownMenuFakeCard:
         id: card
         elevation: 10
         size_hint: None, None
         size: md_menu.size
         pos: md_menu.pos
-        md_bg_color: 0, 0, 0, 0
         opacity: md_menu.opacity
-
-        canvas:
-            Clear
-            Color:
-                rgba: root.background_color if root.background_color else root.theme_cls.bg_dark
-            RoundedRectangle:
-                size: self.size
-                pos: self.pos
-                radius: root.radius
+        radius: root.radius
+        md_bg_color: root.background_color if root.background_color else root.theme_cls.bg_dark
 
         MDMenu:
             id: md_menu
@@ -690,6 +684,10 @@ Builder.load_string(
             opacity: 0
 """
 )
+
+
+class DropdownMenuFakeCard(MDCard, FakeRectangularElevationBehavior):
+    pass
 
 
 class RightContent(IRightBodyTouch, MDBoxLayout):

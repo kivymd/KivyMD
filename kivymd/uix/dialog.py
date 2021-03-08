@@ -80,8 +80,9 @@ from kivy.uix.modalview import ModalView
 
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.button import BaseButton
-from kivymd.uix.card import MDSeparator
+from kivymd.uix.card import MDSeparator, MDCard
 from kivymd.uix.list import BaseListItem
 
 Builder.load_string(
@@ -107,24 +108,18 @@ Builder.load_string(
 
 <MDDialog>
 
-    MDCard:
+    DialogFakeCard:
         id: container
         orientation: "vertical"
         size_hint_y: None
         height: self.minimum_height
         elevation: 24
-        md_bg_color: 0, 0, 0, 0
         padding: "24dp", "24dp", "8dp", "8dp"
-
-        canvas:
-            Color:
-                rgba:
-                    root.theme_cls.bg_dark \
-                    if not root.md_bg_color else root.md_bg_color
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
-                radius: root.radius
+        radius: root.radius     
+        md_bg_color:
+            root.theme_cls.bg_dark \
+            if not root.md_bg_color else root.md_bg_color
+           
 
         MDLabel:
             id: title
@@ -203,6 +198,10 @@ class BaseDialog(ThemableBehavior, ModalView):
 
     _scale_x = NumericProperty(1)
     _scale_y = NumericProperty(1)
+
+
+class DialogFakeCard(MDCard, FakeRectangularElevationBehavior):
+    pass
 
 
 class MDDialog(BaseDialog):

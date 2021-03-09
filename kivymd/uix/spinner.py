@@ -213,11 +213,12 @@ class MDSpinner(ThemableBehavior, Widget):
         self.theme_cls.bind(primary_color=self._update_color)
         Clock.schedule_once(self.check_determinate)
 
-    def check_determinate(self, interval):
-        if self.determinate:
-            self._start_determinate()
-        else:
-            self._start_loop()
+    def check_determinate(self, *args):
+        if self.active:
+            if self.determinate:
+                self._start_determinate()
+            else:
+                self._start_loop()
 
     def _update_color(self, *args):
         self.color = self.theme_cls.primary_color
@@ -287,19 +288,11 @@ class MDSpinner(ThemableBehavior, Widget):
         self._angle_end = 0
         self._rotation_angle = 360
         self._alpha = 0
-        self.active = False
-
-        if self.determinate:
-            self._start_determinate()
 
     def on_palette(self, instance, value):
         self._palette = iter(value)
 
     def on_active(self, *args):
-        if not self.active:
-            self._reset()
-        else:
-            if self.determinate:
-                self._start_determinate()
-            else:
-                self._start_loop()
+        self._reset()
+        if self.active:
+            self.check_determinate()

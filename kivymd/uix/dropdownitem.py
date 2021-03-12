@@ -99,7 +99,10 @@ class _Triangle(ThemableBehavior, Widget):
 
 
 class MDDropDownItem(
-    ThemableBehavior, FakeRectangularElevationBehavior, ButtonBehavior, MDBoxLayout
+    ThemableBehavior,
+    FakeRectangularElevationBehavior,
+    ButtonBehavior,
+    MDBoxLayout,
 ):
     text = StringProperty()
     """

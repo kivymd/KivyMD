@@ -11,10 +11,110 @@ Behaviors/Elevation
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/elevation-previous.png
     :align: center
 
-To create a widget with rectangular or circular elevation effect,
-you must create a new class that inherits from the
-:class:`~RectangularElevationBehavior` or :class:`~CircularElevationBehavior`
-class.
+There are 5 classes in KivyMD that can simulate shadow:
+
+     #. :class:`~FakeRectangularElevationBehavior`
+     #. :class:`~FakeCircularElevationBehavior`
+
+     #. :class:`~RectangularElevationBehavior`
+     #. :class:`~CircularElevationBehavior`
+     #. :class:`~RoundedRectangularElevationBehavior`
+
+By default, KivyMD widgets use the elevation behavior implemented in classes
+:class:`~FakeRectangularElevationBehavior` and :class:`~FakeCircularElevationBehavior`
+for cast shadows. These classes use the old method of rendering shadows and it
+doesn't look very aesthetically pleasing. Shadows are harsh, no softness:
+
+The :class:`~RectangularElevationBehavior`, :class:`~CircularElevationBehavior`,
+:class:`~RoundedRectangularElevationBehavior` classes use the new shadow
+rendering algorithm, based on textures creation using the `Pillow` library.
+It looks very aesthetically pleasing and beautiful.
+
+.. warning:: Remember that :class:`~RectangularElevationBehavior`,
+    :class:`~CircularElevationBehavior`, :class:`~RoundedRectangularElevationBehavior`
+    classes require a lot of resources from the device on which your application will run,
+    so you should not use these classes on mobile devices.
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.uix.widget import Widget
+
+    from kivymd.app import MDApp
+    from kivymd.uix.card import MDCard
+    from kivymd.uix.behaviors import RectangularElevationBehavior
+    from kivymd.uix.boxlayout import MDBoxLayout
+
+    KV = '''
+    <Box@MDBoxLayout>
+        adaptive_size: True
+        orientation: "vertical"
+        spacing: "36dp"
+
+
+    <BaseShadowWidget>
+        size_hint: None, None
+        size: 100, 100
+        md_bg_color: 0, 0, 1, 1
+        elevation: 36
+        pos_hint: {'center_x': .5}
+
+
+    MDFloatLayout:
+
+        MDBoxLayout:
+            adaptive_size: True
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            spacing: "56dp"
+
+            Box:
+
+                MDLabel:
+                    text: "Deprecated shadow rendering"
+                    adaptive_size: True
+
+                DeprecatedShadowWidget:
+
+                MDLabel:
+                    text: "Doesn't require a lot of resources"
+                    adaptive_size: True
+
+            Box:
+
+                MDLabel:
+                    text: "New shadow rendering"
+                    adaptive_size: True
+
+                NewShadowWidget:
+
+                MDLabel:
+                    text: "It takes a lot of resources"
+                    adaptive_size: True
+    '''
+
+
+    class BaseShadowWidget(Widget):
+        pass
+
+
+    class DeprecatedShadowWidget(MDCard, BaseShadowWidget):
+        '''Deprecated shadow rendering. Doesn't require a lot of resources.'''
+
+
+    class NewShadowWidget(RectangularElevationBehavior, BaseShadowWidget, MDBoxLayout):
+        '''New shadow rendering. It takes a lot of resources.'''
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/elevation-differential.png
+    :align: center
+
 
 For example, let's create an button with a rectangular elevation effect:
 
@@ -27,7 +127,7 @@ For example, let's create an button with a rectangular elevation effect:
     from kivymd.uix.behaviors import (
         RectangularRippleBehavior,
         BackgroundColorBehavior,
-        RectangularElevationBehavior,
+        FakeRectangularElevationBehavior,
     )
 
     KV = '''
@@ -41,7 +141,7 @@ For example, let's create an button with a rectangular elevation effect:
         # With elevation effect
         RectangularElevationButton:
             pos_hint: {"center_x": .5, "center_y": .6}
-            elevation: 11
+            elevation: 18
 
         # Without elevation effect
         RectangularElevationButton:
@@ -51,7 +151,7 @@ For example, let's create an button with a rectangular elevation effect:
 
     class RectangularElevationButton(
         RectangularRippleBehavior,
-        RectangularElevationBehavior,
+        FakeRectangularElevationBehavior,
         ButtonBehavior,
         BackgroundColorBehavior,
     ):
@@ -68,35 +168,26 @@ For example, let's create an button with a rectangular elevation effect:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/rectangular-elevation-effect.gif
     :align: center
 
-Similarly, create a button with a circular elevation effect:
+Similarly, create a circular button:
 
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.animation import Animation
-    from kivy.uix.image import Image
     from kivy.uix.behaviors import ButtonBehavior
 
-    from kivymd.uix.label import  MDIcon
+    from kivymd.uix.boxlayout import MDBoxLayout
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import (
         CircularRippleBehavior,
-        CircularElevationBehavior,
-        SpecificBackgroundColorBehavior
+        FakeCircularElevationBehavior,
     )
-    from kivy.uix.boxlayout import BoxLayout
-    from kivy.properties import ObjectProperty
 
     KV = '''
-    #:import images_path kivymd.images_path
-    #:import Animation kivy.animation.Animation
-
     <CircularElevationButton>:
         size_hint: None, None
         size: "100dp", "100dp"
-        source: f"{images_path}/kivymd.png"
         radius: self.size[0] / 2
-        elevation: 10
+        md_bg_color: 0, 0, 1, 1
 
         MDIcon:
             icon: "hand-heart"
@@ -104,45 +195,27 @@ Similarly, create a button with a circular elevation effect:
             valign: "center"
             size: root.size
             pos: root.pos
-            font_size: root.size[0]*0.6
+            font_size: root.size[0] * .6
             theme_text_color: "Custom"
             text_color: [1] * 4
 
 
     MDScreen:
-        # With elevation effect
+
         CircularElevationButton:
             pos_hint: {"center_x": .5, "center_y": .6}
-            elevation: 5
-
-        # Without elevation effect
-        CircularElevationButton:
-            pos_hint: {"center_x": .5, "center_y": .4}
-            elevation: 0
+            elevation: 24
     '''
 
 
     class CircularElevationButton(
-        CircularElevationBehavior,
+        FakeCircularElevationBehavior,
         CircularRippleBehavior,
-        SpecificBackgroundColorBehavior,
         ButtonBehavior,
-        BoxLayout,
+        MDBoxLayout,
     ):
-        md_bg_color = [0, 0, 1, 1]
-        shadow_animation = ObjectProperty()
+        pass
 
-        def on_press(self, *args):
-            if self.shadow_animation:
-                Animation.cancel(self.shadow_animation)
-            self.shadow_animation=Animation(_elevation=30, d=0.2)
-            self.shadow_animation.start(self)
-
-        def on_release(self, *args):
-            if self.shadow_animation:
-                Animation.cancel(self.shadow_animation)
-            self.shadow_animation=Animation(_elevation=self.elevation, d=0.2)
-            self.shadow_animation.start(self)
 
 
     class Example(MDApp):
@@ -152,32 +225,11 @@ Similarly, create a button with a circular elevation effect:
 
     Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-effect.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-fake-elevation.png
     :align: center
 
 Animating the elevation
 -----------------------
-
-The best way to accomplis this would be to use the widget
-:attr:`~CommonElevationBehavior._elevation` property.
-
-This will allow the developer to change dynamically the shadow and be able to
-come back to the default elevation with `widget.elevation`.
-
-The way that :attr:`~CommonElevationBehavior.elevation`
-and :attr:`~CommonElevationBehavior._elevation` works is that
-:attr:`~CommonElevationBehavior.elevation` is the developer setting for the
-widget elevation, while :attr:`~CommonElevationBehavior._elevation` is the
-current elevation of the widget.
-
-If the developer sets :attr:`~CommonElevationBehavior.elevation`
-the behavior will parse this value to
-:attr:`~CommonElevationBehavior._elevation` as a copy of this value. Then if
-:attr:`~CommonElevationBehavior._elevation` was different from the new
-:attr:`~CommonElevationBehavior.elevation`, kivy will launch a drawing
-instruction update, that will render both, position and size of the shadows.
-
-For example:
 
 .. code-block:: python
 
@@ -188,7 +240,7 @@ For example:
 
     from kivymd.app import MDApp
     from kivymd.theming import ThemableBehavior
-    from kivymd.uix.behaviors import RectangularElevationBehavior, RectangularRippleBehavior
+    from kivymd.uix.behaviors import FakeRectangularElevationBehavior, RectangularRippleBehavior
     from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''
@@ -204,7 +256,7 @@ For example:
 
     class ElevatedWidget(
         ThemableBehavior,
-        RectangularElevationBehavior,
+        FakeRectangularElevationBehavior,
         RectangularRippleBehavior,
         ButtonBehavior,
         MDBoxLayout,
@@ -231,18 +283,8 @@ For example:
 
     Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation-animation-effect.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/rectangular-elevation-animation-effect.gif
     :align: center
-
-.. note:: Remember that real-time classes like,
-    :class:`~RectangularElevationButton`, :class:`~CircularElevationBehavior`
-    and :class:`~RoundedRectangularElevationBehavior`, will take a great toll
-    in the app performance.
-
-    This is caused because the textures and image filters that are used will
-    generate a new texture for each elevation step, for both, Soft and hard
-    shadows. Blocking the python GIL while processing the images.
-
 
 Lighting position
 -----------------
@@ -252,16 +294,20 @@ Lighting position
     from kivy.lang import Builder
 
     from kivymd.app import MDApp
+    from kivymd.uix.card import MDCard
+    from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.uix.behaviors import RectangularElevationBehavior
 
     KV = '''
     MDScreen:
 
-        MDCard:
+        ShadowCard:
             pos_hint: {'center_x': .5, 'center_y': .5}
             size_hint: None, None
             size: 100, 100
             shadow_pos: -10 + slider.value, -10 + slider.value
             elevation: 24
+            md_bg_color: 1, 1, 1, 1
 
         MDSlider:
             id: slider
@@ -269,6 +315,10 @@ Lighting position
             size_hint_x: .6
             pos_hint: {'center_x': .5, 'center_y': .3}
     '''
+
+
+    class ShadowCard(RectangularElevationBehavior, MDBoxLayout):
+        pass
 
 
     class Example(MDApp):
@@ -280,69 +330,6 @@ Lighting position
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-pos.gif
     :align: center
-
-How to improve the performance
--------------------------------
-
-We got 2 classes that can fake a shadow, while is not as aesthetic as the `RTC`
-(Real-Time Classes), it allows a smaller rendering time, thus allowing a more
-fluid UX.
-
-These classes are:
-    #. :class:`~FakeRectangularElevationBehavior`
-    #. :class:`~FakeCircularElevationBehavior`
-
-By default, the `KivyMD` widgets use `RTC` elevation behaviors to cast shadows
-behind the widgets. However, if you need to cast a shadow regardless of
-how aesthetic or precise it is (for larger widgets and improved performance)
-you can always overwrite the instruction simply by adding any of the fake
-elevation behavior.
-
-for example:
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-    from kivymd.uix.behaviors import FakeCircularElevationBehavior
-    from kivymd.uix.card import MDCard
-
-    KV = '''
-    MDScreen:
-
-        CustomCircularCard:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            size_hint: None, None
-            size: 100, 100
-            radius: 50
-            elevation: 25
-    '''
-
-
-    class CustomCircularCard(
-        MDCard,
-        FakeCircularElevationBehavior,
-    ):
-        pass
-
-
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-
-    Example().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-elevation.png
-    :align: center
-
-.. warning:: Remember that the fake elevation behavior needs to be at the end
-    of the inheritance list, otherwise, it will be overwritten by the base
-    class.
-
-.. note:: If you need more information about how this behaviors works, you can
-    always take a look at the source code.
 """
 
 __all__ = (

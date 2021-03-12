@@ -977,7 +977,9 @@ class MDTabsScrollView(ScrollView):
             _update(self.effect_y, scroll_y)
 
 
-class MDTabsBar(ThemableBehavior, FakeRectangularElevationBehavior, MDBoxLayout):
+class MDTabsBar(
+    ThemableBehavior, FakeRectangularElevationBehavior, MDBoxLayout
+):
     """
     This class is just a boxlayout that contains the scroll view for tabs.
     It is also responsible for resizing the tab shortcut when necessary.

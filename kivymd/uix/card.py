@@ -558,9 +558,9 @@ from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
+    FakeRectangularElevationBehavior,
     FocusBehavior,
     RectangularRippleBehavior,
-    FakeRectangularElevationBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 

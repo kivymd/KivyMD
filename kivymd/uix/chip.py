@@ -252,9 +252,12 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
             self._color = self.color
 
     def on_icon(self, instance, value):
+        def remove_icon(interval):
+            self.remove_widget(self.ids.icon)
+
         if value == "":
             self.icon = "checkbox-blank-circle"
-            self.remove_widget(self.ids.icon)
+            Clock.schedule_once(remove_icon)
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):

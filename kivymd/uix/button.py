@@ -467,7 +467,7 @@ from kivymd.uix.behaviors import (
     CircularElevationBehavior,
     CircularRippleBehavior,
     CommonElevationBehavior,
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.label import MDLabel
@@ -982,7 +982,7 @@ class BasePressedButton(BaseButton):
 
 class BaseRectangularButton(
     RectangularRippleBehavior,
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     BackgroundColorBehavior,
     BasePressedButton,
     BaseButton,
@@ -1554,7 +1554,7 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
 
 
 class BaseFloatingLabel(
-    ThemableBehavior, RectangularElevationBehavior, BoxLayout
+    ThemableBehavior, FakeRectangularElevationBehavior, BoxLayout
 ):
     text = StringProperty()
     text_color = ColorProperty(None)

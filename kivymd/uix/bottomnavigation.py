@@ -206,7 +206,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularElevationBehavior
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
@@ -643,7 +643,7 @@ class MDBottomNavigation(TabbedPanelBase):
 class MDBottomNavigationBar(
     ThemableBehavior,
     BackgroundColorBehavior,
+    FakeRectangularElevationBehavior,
     FloatLayout,
-    RectangularElevationBehavior,
 ):
     pass

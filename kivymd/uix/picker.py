@@ -279,7 +279,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.toast import toast
 from kivymd.uix.behaviors import (
     CircularRippleBehavior,
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -822,7 +822,7 @@ Builder.load_string(
 
 class BaseDialogPicker(
     BaseDialog,
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 ):
     """
@@ -3094,7 +3094,7 @@ class ColorSelector(MDIconButton):
 class MDThemePicker(
     BaseDialog,
     SpecificBackgroundColorBehavior,
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
 ):
     def on_open(self):
         self.on_tab_switch(None, self.ids.theme_tab, None, None)

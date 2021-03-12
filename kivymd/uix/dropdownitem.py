@@ -49,7 +49,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.widget import Widget
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularRippleBehavior
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 
 Builder.load_string(
@@ -99,7 +99,7 @@ class _Triangle(ThemableBehavior, Widget):
 
 
 class MDDropDownItem(
-    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, MDBoxLayout
+    ThemableBehavior, FakeRectangularElevationBehavior, ButtonBehavior, MDBoxLayout
 ):
     text = StringProperty()
     """

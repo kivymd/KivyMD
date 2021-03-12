@@ -318,7 +318,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
@@ -428,7 +428,7 @@ class MDActionTopAppBarButton(MDIconButton, MDTooltip):
 
 class NotchedBox(
     ThemableBehavior,
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):

@@ -560,7 +560,7 @@ from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     FocusBehavior,
     RectangularRippleBehavior,
-    RoundedRectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 
@@ -618,7 +618,7 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
 
 class MDCard(
     ThemableBehavior,
-    RoundedRectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     BackgroundColorBehavior,
     RectangularRippleBehavior,
     FocusBehavior,

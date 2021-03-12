@@ -524,7 +524,7 @@ from kivymd.font_definitions import fonts, theme_font_styles
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    RectangularElevationBehavior,
+    FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
     SpecificBackgroundColorBehavior,
 )
@@ -977,7 +977,7 @@ class MDTabsScrollView(ScrollView):
             _update(self.effect_y, scroll_y)
 
 
-class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
+class MDTabsBar(ThemableBehavior, FakeRectangularElevationBehavior, MDBoxLayout):
     """
     This class is just a boxlayout that contains the scroll view for tabs.
     It is also responsible for resizing the tab shortcut when necessary.

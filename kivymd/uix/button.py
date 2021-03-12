@@ -1022,7 +1022,7 @@ class BaseFlatButton(BaseRectangularButton):
             self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
 
     def on_disabled(self, instance, value):
-        if value:
+        if value and not self.disabled:
             self.md_bg_color = (
                 self.md_bg_color_disabled
                 if self.md_bg_color_disabled

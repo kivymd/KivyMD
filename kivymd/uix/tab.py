@@ -630,9 +630,14 @@ Builder.load_string(
                 rows: 1
                 size_hint_y: 1
                 adaptive_width: True
-                on_size:
-                    root._update_padding(layout)
+                on_size: root._update_padding(layout)
+
                 canvas.before:
+                    Color:
+                        rgba: root.underline_color
+                    Line:
+                        width: dp(2)
+                        rectangle: [0, 0, layout.width, dp(2)]
                     Color:
                         rgba:
                             root.theme_cls.accent_color \
@@ -653,6 +658,8 @@ Builder.load_string(
                             root._line_height, \
                             root._line_radius \
                             ]
+                    Color:
+                        rgba: 0, 0, 1, 1
 """
 )
 
@@ -1227,6 +1234,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     :attr:`background_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
+    """
+
+    underline_color = ColorProperty([0, 0, 0, 0])
+    """
+    Underline color of tabs in ``rgba`` format.
+
+    :attr:`underline_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     text_color_normal = ColorProperty(None)

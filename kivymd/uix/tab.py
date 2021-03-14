@@ -512,7 +512,7 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty,
+    StringProperty, ListProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior
@@ -609,6 +609,7 @@ Builder.load_string(
 
     MDTabsBar:
         id: tab_bar
+        padding: root.tab_padding
         carousel: carousel
         scrollview: scrollview
         layout: layout
@@ -1134,6 +1135,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     :attr:`tab_bar_height` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `'48dp'`.
+    """
+
+    tab_padding = ListProperty([0, 0, 0, 0])
+    """
+    Padding of the tab bar.
+
+    :attr:`tab_padding` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     tab_indicator_anim = BooleanProperty(False)

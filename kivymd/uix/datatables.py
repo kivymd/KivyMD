@@ -50,6 +50,8 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.tooltip import MDTooltip
+from collections import defaultdict
+from math import ceil
 
 Builder.load_string(
     """
@@ -82,8 +84,8 @@ Builder.load_string(
             size_hint: None, None
             size: 0, 0
             opacity: 0
-            on_active: root.select_check(self.active)
-            on_release: root._check_all(self.state)
+            #on_active: root.select_check(self, self.active)
+            #on_release: root._check_all(self.state)
 
         MDBoxLayout:
             id: inner_box
@@ -344,6 +346,14 @@ class CellRow(
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
 
+    def __init__(self, **kwargs):
+        super(CellRow, self).__init__(**kwargs)
+        self.ids.check.bind(active=self.select_check)
+        self.ids.check.bind(active=self.notify_checkbox_click)
+
+    def notify_checkbox_click(self, instance, active):
+        self.table.get_select_row(self.index)
+
     def on_icon(self, instance, value):
         self.icon_copy = value
 
@@ -417,11 +427,20 @@ class CellRow(
                         table_data._rows_number
                     ]
                 ):
-                    self.ids.check.state = "down"
+                    self.change_check_state_no_notif("down")
+                    #self.ids.check.state = "down"
                 else:
-                    self.ids.check.state = "normal"
+                    #self.ids.check.state = "normal"
+                    self.change_check_state_no_notif("normal")
         else:
-            self.ids.check.state = "normal"
+            #self.ids.check.state = "normal"
+            self.change_check_state_no_notif("normal")
+
+    def change_check_state_no_notif(self, new_state):
+        checkbox = self.ids.check
+        checkbox.unbind(active=self.notify_checkbox_click)
+        checkbox.state = new_state
+        checkbox.bind(active=self.notify_checkbox_click)
 
     def _check_all(self, state):
         """Checks if all checkboxes are in same state"""
@@ -431,10 +450,10 @@ class CellRow(
         else:
             self.table.table_header.ids.check.state = "normal"
 
-    def select_check(self, active):
+    def select_check(self, instance, active):
         """Called upon activation/deactivation of the checkbox."""
 
-        if active and self.index not in self.table.current_selection_check:
+        if active:
             if (
                 self.table._rows_number
                 not in self.table.current_selection_check
@@ -461,7 +480,6 @@ class CellRow(
                     self.table.current_selection_check[
                         self.table._rows_number
                     ].remove(self.index)
-        self.table.get_select_row(self.index)
 
 
 class SortButton(MDIconButton):
@@ -523,52 +541,40 @@ class CellHeader(MDTooltip, BoxLayout):
                 each.bind(on_leave=each.set_sort_btn)
 
         if self.sort_action:
-            tmp = []
-
-            if not self.table_data:
-                th = self.parent.parent
+            if not self.table_data:	
+                th = self.parent.parent	
                 self.table_data = th.table_data
 
-            # row_checks_prev = self.table_data._get_row_checks()
+            indices, sorted_data = self.sort_action(self.table_data.row_data)
 
-            for i in range(
-                0,
-                len(self.table_data.recycle_data),
-                self.table_data.total_col_headings,
-            ):
+            if not sorted_data:
+                return
 
-                row = []
-                for j in range(
-                    self.table_data.recycle_data[i]["range"][0],
-                    self.table_data.recycle_data[i]["range"][1] + 1,
-                ):
-                    data = self.table_data.recycle_data[j]
-                    if data.get("icon", None):
-                        inner_data = [data["icon"]]
-                        if data.get("icon_color", None):
-                            inner_data.append(data["icon_color"])
+            if inst.icon == "arrow-down":
+                sorted_data = sorted_data[::-1]
+                indices = indices[::-1]
 
-                        inner_data.append(data["text"])
-                        row.append(inner_data)
+            self.table_data.row_data = sorted_data
+            self.table_data.on_rows_num(self, self.table_data.rows_num)
+            self.restore_checks(dict(zip(indices,range(len(indices)))))
+            self.table_data.set_next_row_data_parts("reset")
+            self.table_data.cell_row_obj_dict = {}
+            self.table_data.table_header.ids.check.state = "normal"
 
-                    else:
-                        row.append(self.table_data.recycle_data[j]["text"])
-                tmp.append(row)
-            sorted_data = self.sort_action(tmp)
+    def restore_checks(self, indices):
+        curr_checks = self.table_data.current_selection_check
 
-            if sorted_data:
-                self.table_data.row_data = (
-                    sorted_data
-                    if inst.icon == "arrow-down"
-                    else sorted_data[::-1]
-                )
-                self.table_data.on_rows_num(self, self.table_data.rows_num)
-                self.table_data.set_row_data()
-                self.table_data.select_all("normal")
-                self.table_data.cell_row_obj_dict = {}
-                self.table_data.table_header.ids.check.state = "normal"
+        rows_num = self.table_data.rows_num
+        columns = self.table_data.total_col_headings
 
-                # TODO: Restore checked rows after sorting
+        new_checks = defaultdict(list)
+        for i, x in enumerate(curr_checks):
+            for j, y in enumerate(curr_checks[x]):
+                new_page = (indices[y // columns + x * rows_num])// rows_num
+                new_indice = ((indices[y // columns + x * rows_num]) % rows_num) * columns
+                new_checks[new_page].append(new_indice)
+
+        self.table_data.current_selection_check = dict(new_checks)
 
     def set_sort_btn(self, instance):
         btn = instance.ids.box.children[-1]
@@ -747,7 +753,10 @@ class TableData(RecycleView):
         """Sets the text of the numbers of displayed pages in table."""
 
         if self.pagination:
-            if direction == "forward":
+            if direction == "reset":
+                self._current_value = 1
+                self._to_value = len(self._row_data_parts[self._rows_number])
+            elif direction == "forward":
                 if (
                     len(self._row_data_parts[self._rows_number])
                     < self._to_value
@@ -777,17 +786,37 @@ class TableData(RecycleView):
         """Sets the checkboxes of all rows to the active/inactive position."""
 
         for i in range(0, len(self.recycle_data), self.total_col_headings):
-
-            if self.cell_row_obj_dict.get(i, None):
-                cell_row_obj = self.cell_row_obj_dict[i]
-            else:
-                cell_row_obj = (
-                    cell_row_obj
-                ) = self.view_adapter.get_visible_view(i)
-                self.cell_row_obj_dict[i] = cell_row_obj
-
-            self.on_mouse_select(cell_row_obj)
+            cell_row_obj = (	
+                cell_row_obj	
+            ) = self.view_adapter.get_visible_view(i)	
+            self.cell_row_obj_dict[i] = cell_row_obj	
+            self.on_mouse_select(cell_row_obj)	
             cell_row_obj.ids.check.state = state
+
+        if state == 'down':
+            # select all checks on all pages
+
+            rows_num = self.rows_num
+            columns = self.total_col_headings
+            full_pages  = len(self.row_data) // self.rows_num
+            left_over_rows = len(self.row_data) % self.rows_num
+
+            new_checks = {}
+            for page in range(full_pages):
+                new_checks[page] = list(
+                    range(0, rows_num * columns, columns)
+                )
+
+            if left_over_rows:
+                new_checks[full_pages] = list(
+                    range(0, left_over_rows * columns, columns)
+                )
+
+            self.current_selection_check = new_checks
+            return
+        
+        # resets all checks on all pages
+        self.current_selection_check = {}
 
     def check_all(self, state):
         """Checks if checkboxes of all rows are in the same state"""
@@ -848,13 +877,16 @@ class TableData(RecycleView):
         """
 
         self.rows_num = int(instance_menu_item.text)
-        self.set_row_data()
-        self.set_text_from_of("increment")
+        self.set_next_row_data_parts("reset")
+        self.set_text_from_of("reset")
 
     def set_next_row_data_parts(self, direction):
         """Called when switching the pages of the table."""
-
-        if direction == "forward":
+        if direction == "reset":
+            self._rows_number = 0
+            self.pagination.ids.button_back.disabled = True
+            self.pagination.ids.button_forward.disabled = False
+        elif direction == "forward":
             self._rows_number += 1
             self.pagination.ids.button_back.disabled = False
         elif direction == "back":

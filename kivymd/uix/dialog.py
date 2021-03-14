@@ -115,11 +115,10 @@ Builder.load_string(
         height: self.minimum_height
         elevation: 24
         padding: "24dp", "24dp", "8dp", "8dp"
-        radius: root.radius     
+        radius: root.radius
         md_bg_color:
             root.theme_cls.bg_dark \
             if not root.md_bg_color else root.md_bg_color
-           
 
         MDLabel:
             id: title

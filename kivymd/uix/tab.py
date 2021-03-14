@@ -659,8 +659,6 @@ Builder.load_string(
                             root._line_height, \
                             root._line_radius \
                             ]
-                    Color:
-                        rgba: 0, 0, 1, 1
 """
 )
 

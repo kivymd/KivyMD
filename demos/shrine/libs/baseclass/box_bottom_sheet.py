@@ -8,10 +8,10 @@ from kivy.uix.image import Image
 from kivy.uix.recycleview import RecycleView
 
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import TwoLineAvatarIconListItem
-from kivymd.uix.behaviors import CircularRippleBehavior
 
 
 class BoxBottomSheetProductList(RecycleView):

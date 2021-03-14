@@ -509,10 +509,11 @@ from kivy.properties import (
     BooleanProperty,
     BoundedNumericProperty,
     ColorProperty,
+    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, ListProperty,
+    StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior

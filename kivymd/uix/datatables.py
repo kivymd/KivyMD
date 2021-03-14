@@ -65,7 +65,11 @@ Builder.load_string(
     canvas.before:
         Color:
             rgba:
-                (root.theme_cls.bg_darkest if root.theme_cls.theme_style == "Light" else root.theme_cls.bg_light) \
+                (\
+                root.theme_cls.bg_darkest \
+                if root.theme_cls.theme_style == "Light" else \
+                root.theme_cls.bg_light \
+                ) \
                 if self.selected else root.theme_cls.bg_normal
         Rectangle:
             pos: self.pos
@@ -95,13 +99,18 @@ Builder.load_string(
                 size: ("24dp", "24dp") if root.icon else (0, 0)
                 icon: root.icon if root.icon else ""
                 theme_text_color: "Custom"
-                text_color: root.icon_color if root.icon_color else root.theme_cls.primary_color
+                text_color:
+                    root.icon_color if root.icon_color else \
+                    root.theme_cls.primary_color
 
             MDLabel:
                 id: label
                 text: " " + root.text
-                color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
                 markup: True
+                color:
+                    (1, 1, 1, 1) \
+                    if root.theme_cls.theme_style == "Dark" else \
+                    (0, 0, 0, 1)
 
     MDSeparator:
 
@@ -125,12 +134,16 @@ Builder.load_string(
             height: self.texture_size[1]
             bold: True
             markup: True
-            color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+            color:
+                (1, 1, 1, 1) \
+                if root.theme_cls.theme_style == "Dark" else \
+                (0, 0, 0, 1)
 
     MDSeparator:
         id: separator
 
-<SortButton>:
+
+<SortButton>
     id: sort_btn
     icon: "arrow-up"
     pos_hint: {"center_y": 0.5}
@@ -139,6 +152,7 @@ Builder.load_string(
     theme_text_color: "Custom"
     text_color: self.theme_cls.secondary_text_color
     opacity: 0
+
 
 <TableHeader>
     bar_width: 0
@@ -178,7 +192,7 @@ Builder.load_string(
     data: root.recycle_data
     data_first_cells: root.data_first_cells
     key_viewclass: "viewclass"
-    #effect_cls: StiffScrollEffect
+    # effect_cls: StiffScrollEffect
 
     TableRecycleGridLayout:
         id: row_controller
@@ -203,7 +217,10 @@ Builder.load_string(
         shorten: True
         halign: "right"
         font_style: "Caption"
-        color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+        color:
+            (1, 1, 1, 1) \
+            if root.theme_cls.theme_style == "Dark" else \
+            (0, 0, 0, 1)
 
     MDDropDownItem:
         id: drop_item
@@ -224,7 +241,10 @@ Builder.load_string(
         -text_size: None, None
         pos_hint: {"center_y": .5}
         font_style: "Caption"
-        color: (1, 1, 1, 1) if root.theme_cls.theme_style == "Dark" else (0, 0, 0, 1)
+        color:
+            (1, 1, 1, 1) \
+            if root.theme_cls.theme_style == "Dark" else \
+            (0, 0, 0, 1)
 
     MDIconButton:
         id: button_back
@@ -253,15 +273,7 @@ Builder.load_string(
         id: container
         orientation: "vertical"
         elevation: root.elevation
-        md_bg_color: 0, 0, 0, 0
         padding: "24dp", "24dp", "8dp", "8dp"
-
-        canvas:
-            Color:
-                rgba: root.theme_cls.bg_normal
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
 """
 )
 

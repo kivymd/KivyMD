@@ -22,6 +22,9 @@ Components/DataTables
 
 __all__ = ("MDDataTable",)
 
+from collections import defaultdict
+from math import ceil
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -50,8 +53,6 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.tooltip import MDTooltip
-from collections import defaultdict
-from math import ceil
 
 Builder.load_string(
     """
@@ -428,12 +429,12 @@ class CellRow(
                     ]
                 ):
                     self.change_check_state_no_notif("down")
-                    #self.ids.check.state = "down"
+                    # self.ids.check.state = "down"
                 else:
-                    #self.ids.check.state = "normal"
+                    # self.ids.check.state = "normal"
                     self.change_check_state_no_notif("normal")
         else:
-            #self.ids.check.state = "normal"
+            # self.ids.check.state = "normal"
             self.change_check_state_no_notif("normal")
 
     def change_check_state_no_notif(self, new_state):
@@ -541,8 +542,8 @@ class CellHeader(MDTooltip, BoxLayout):
                 each.bind(on_leave=each.set_sort_btn)
 
         if self.sort_action:
-            if not self.table_data:	
-                th = self.parent.parent	
+            if not self.table_data:
+                th = self.parent.parent
                 self.table_data = th.table_data
 
             indices, sorted_data = self.sort_action(self.table_data.row_data)
@@ -556,7 +557,7 @@ class CellHeader(MDTooltip, BoxLayout):
 
             self.table_data.row_data = sorted_data
             self.table_data.on_rows_num(self, self.table_data.rows_num)
-            self.restore_checks(dict(zip(indices,range(len(indices)))))
+            self.restore_checks(dict(zip(indices, range(len(indices)))))
             self.table_data.set_next_row_data_parts("reset")
             self.table_data.cell_row_obj_dict = {}
             self.table_data.table_header.ids.check.state = "normal"
@@ -570,8 +571,10 @@ class CellHeader(MDTooltip, BoxLayout):
         new_checks = defaultdict(list)
         for i, x in enumerate(curr_checks):
             for j, y in enumerate(curr_checks[x]):
-                new_page = (indices[y // columns + x * rows_num])// rows_num
-                new_indice = ((indices[y // columns + x * rows_num]) % rows_num) * columns
+                new_page = (indices[y // columns + x * rows_num]) // rows_num
+                new_indice = (
+                    (indices[y // columns + x * rows_num]) % rows_num
+                ) * columns
                 new_checks[new_page].append(new_indice)
 
         self.table_data.current_selection_check = dict(new_checks)
@@ -786,26 +789,22 @@ class TableData(RecycleView):
         """Sets the checkboxes of all rows to the active/inactive position."""
 
         for i in range(0, len(self.recycle_data), self.total_col_headings):
-            cell_row_obj = (	
-                cell_row_obj	
-            ) = self.view_adapter.get_visible_view(i)	
-            self.cell_row_obj_dict[i] = cell_row_obj	
-            self.on_mouse_select(cell_row_obj)	
+            cell_row_obj = cell_row_obj = self.view_adapter.get_visible_view(i)
+            self.cell_row_obj_dict[i] = cell_row_obj
+            self.on_mouse_select(cell_row_obj)
             cell_row_obj.ids.check.state = state
 
-        if state == 'down':
+        if state == "down":
             # select all checks on all pages
 
             rows_num = self.rows_num
             columns = self.total_col_headings
-            full_pages  = len(self.row_data) // self.rows_num
+            full_pages = len(self.row_data) // self.rows_num
             left_over_rows = len(self.row_data) % self.rows_num
 
             new_checks = {}
             for page in range(full_pages):
-                new_checks[page] = list(
-                    range(0, rows_num * columns, columns)
-                )
+                new_checks[page] = list(range(0, rows_num * columns, columns))
 
             if left_over_rows:
                 new_checks[full_pages] = list(
@@ -814,7 +813,7 @@ class TableData(RecycleView):
 
             self.current_selection_check = new_checks
             return
-        
+
         # resets all checks on all pages
         self.current_selection_check = {}
 

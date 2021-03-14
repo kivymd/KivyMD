@@ -110,7 +110,7 @@ It looks very aesthetically pleasing and beautiful.
             return Builder.load_string(KV)
 
 
-Example().run()
+    Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/elevation-differential.png
     :align: center

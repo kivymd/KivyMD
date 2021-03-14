@@ -2,88 +2,88 @@
 #: import gch kivy.utils.get_color_from_hex
 
 <CraneEatScreen>
-	orientation: "vertical"
+    orientation: "vertical"
 
-	MDBoxLayout:
-		adaptive_height: True
-		orientation: "vertical"
-		md_bg_color: gch("#5D1049")
-		spacing: dp(10)
-		padding: [dp(25), 0, dp(25), dp(25)]
+    MDBoxLayout:
+        adaptive_height: True
+        orientation: "vertical"
+        md_bg_color: gch("#5D1049")
+        spacing: dp(10)
+        padding: [dp(25), 0, dp(25), dp(25)]
 
-		CraneTextField:
-			hint_text: "Diners"
-			icon_left: "account"
-		CraneTextField:
-			hint_text: "Select date"
-			icon_left: "calendar-range"
-		CraneTextField:
-			hint_text: "Select time"
-			icon_left: "clock-outline"
-		CraneTextField:
-			hint_text: "Select location"
-			icon_left: "silverware-fork-knife"
+        CraneTextField:
+            hint_text: "Diners"
+            icon_left: "account"
+        CraneTextField:
+            hint_text: "Select date"
+            icon_left: "calendar-range"
+        CraneTextField:
+            hint_text: "Select time"
+            icon_left: "clock-outline"
+        CraneTextField:
+            hint_text: "Select location"
+            icon_left: "silverware-fork-knife"
 
-	MDBoxLayout:
-		canvas.before:
-			Color:
-				rgba: root.theme_cls.bg_normal
-			RoundedRectangle:
-				size: self.size
-				pos: self.pos
-				radius: [20, 20, 0, 0]
+    MDBoxLayout:
+        canvas.before:
+            Color:
+                rgba: root.theme_cls.bg_normal
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [dp(20), dp(20), 0, 0]
 
-		ScrollView:
+        ScrollView:
 
-			MDList:
+            MDList:
 
-				MDBoxLayout:
-					adaptive_height: True
-					padding: dp(15)
+                MDBoxLayout:
+                    adaptive_height: True
+                    padding: dp(15)
 
-					MDLabel:
-						text: "Explore restaurants by destination"
-						font_style: "Subtitle2"
-						theme_text_color: "Hint"
-						adaptive_height: True
+                    MDLabel:
+                        text: "Explore restaurants by destination"
+                        font_style: "Subtitle2"
+                        theme_text_color: "Hint"
+                        adaptive_height: True
 
-				CraneListItem:
-					text: "Dallas, United States"
-					secondary_text: "876 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/0.jpg"
-				CraneListItem:
-					text: "Cordoba, Argentina"
-					secondary_text: "124 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/7.jpg"
-				CraneListItem:
-					text: "Portland, United States"
-					secondary_text: "495 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/13.jpg"
-				CraneListItem:
-					text: "Paris, France"
-					secondary_text: "683 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/11.jpg"
-				CraneListItem:
-					text: "Seoul, South Korea"
-					secondary_text: "786 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/14.jpg"
-				CraneListItem:
-					text: "Seattle, United States"
-					secondary_text: "323 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/8.jpg"
-				CraneListItem:
-					text: "Nashville, United States"
-					secondary_text: "285 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/15.jpg"
-				CraneListItem:
-					text: "Atlanta, United States"
-					secondary_text: "323 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/16.jpg"
-				CraneListItem:
-					text: "Madrid, Spain"
-					secondary_text: "1406 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/17.jpg"
-				CraneListItem:
-					text: "Lisbon, Portugal"
-					secondary_text: "849 restaurants"
-					image: f"{environ['CRANE_ROOT']}/assets/images/18.jpg"
+                CraneListItem:
+                    text: "Dallas, United States"
+                    secondary_text: "876 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/0.jpg"
+                CraneListItem:
+                    text: "Cordoba, Argentina"
+                    secondary_text: "124 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/7.jpg"
+                CraneListItem:
+                    text: "Portland, United States"
+                    secondary_text: "495 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/13.jpg"
+                CraneListItem:
+                    text: "Paris, France"
+                    secondary_text: "683 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/11.jpg"
+                CraneListItem:
+                    text: "Seoul, South Korea"
+                    secondary_text: "786 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/14.jpg"
+                CraneListItem:
+                    text: "Seattle, United States"
+                    secondary_text: "323 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/8.jpg"
+                CraneListItem:
+                    text: "Nashville, United States"
+                    secondary_text: "285 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/15.jpg"
+                CraneListItem:
+                    text: "Atlanta, United States"
+                    secondary_text: "323 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/16.jpg"
+                CraneListItem:
+                    text: "Madrid, Spain"
+                    secondary_text: "1406 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/17.jpg"
+                CraneListItem:
+                    text: "Lisbon, Portugal"
+                    secondary_text: "849 restaurants"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/18.jpg"

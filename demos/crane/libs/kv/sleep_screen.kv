@@ -2,89 +2,89 @@
 #: import gch kivy.utils.get_color_from_hex
 
 <CraneSleepScreen>
-	orientation: "vertical"
+    orientation: "vertical"
 
-	MDBoxLayout:
-		adaptive_height: True
-		orientation: "vertical"
-		md_bg_color: gch("#5D1049")
-		spacing: dp(10)
-		padding: [dp(25), 0, dp(25), dp(25)]
+    MDBoxLayout:
+        adaptive_height: True
+        orientation: "vertical"
+        md_bg_color: gch("#5D1049")
+        spacing: dp(10)
+        padding: [dp(25), 0, dp(25), dp(25)]
 
-		CraneTextField:
-			hint_text: "Travellers"
-			icon_left: "account"
-		CraneTextField:
-			hint_text: "Select dates"
-			icon_left: "calendar-range"
-		CraneTextField:
-			hint_text: "Select location"
-			icon_left: "bed"
+        CraneTextField:
+            hint_text: "Travellers"
+            icon_left: "account"
+        CraneTextField:
+            hint_text: "Select dates"
+            icon_left: "calendar-range"
+        CraneTextField:
+            hint_text: "Select location"
+            icon_left: "bed"
 
-	MDBoxLayout:
-		canvas.before:
-			Color:
-				rgba: root.theme_cls.bg_normal
-			RoundedRectangle:
-				size: self.size
-				pos: self.pos
-				radius: [20, 20, 0, 0]
+    MDBoxLayout:
+        canvas.before:
+            Color:
+                rgba: root.theme_cls.bg_normal
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [dp(20), dp(20), 0, 0]
 
-		ScrollView:
+        ScrollView:
 
-			MDList:
+            MDList:
 
-				MDBoxLayout:
-					adaptive_height: True
-					padding: dp(15)
+                MDBoxLayout:
+                    adaptive_height: True
+                    padding: dp(15)
 
-					MDLabel:
-						text: "Explore properties by destination"
-						font_style: "Subtitle2"
-						theme_text_color: "Hint"
-						adaptive_height: True
+                    MDLabel:
+                        text: "Explore properties by destination"
+                        font_style: "Subtitle2"
+                        theme_text_color: "Hint"
+                        adaptive_height: True
 
-				CraneListItem:
-					text: "Aspen, United States"
-					secondary_text: "876 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/5.jpg"
-				CraneListItem:
-					text: "Machu Picchu, Peru"
-					secondary_text: "1286 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/22.jpg"
-				CraneListItem:
-					text: "Havana, Cuba"
-					secondary_text: "496 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/9.jpg"
-				CraneListItem:
-					text: "Vitznau, Switzerland"
-					secondary_text: "390 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/23.jpg"
-				CraneListItem:
-					text: "Big Sur, United States"
-					secondary_text: "876 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/4.jpg"
-				CraneListItem:
-					text: "Napa, United States"
-					secondary_text: "989 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/6.jpg"
-				CraneListItem:
-					text: "Porto, Portugal"
-					secondary_text: "306 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/24.jpg"
-				CraneListItem:
-					text: "Tulum, Mexico"
-					secondary_text: "385 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/25.jpg"
-				CraneListItem:
-					text: "Lisbon, Portugal"
-					secondary_text: "989 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/2.jpg"
-				CraneListItem:
-					text: "Cairo, Egypt"
-					secondary_text: "1380 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/3.jpg"
-				CraneListItem:
-					text: "Taipei, Taiwan"
-					secondary_text: "1109 available properties"
-					image: f"{environ['CRANE_ROOT']}/assets/images/26.jpg"
+                CraneListItem:
+                    text: "Aspen, United States"
+                    secondary_text: "876 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/5.jpg"
+                CraneListItem:
+                    text: "Machu Picchu, Peru"
+                    secondary_text: "1286 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/22.jpg"
+                CraneListItem:
+                    text: "Havana, Cuba"
+                    secondary_text: "496 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/9.jpg"
+                CraneListItem:
+                    text: "Vitznau, Switzerland"
+                    secondary_text: "390 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/23.jpg"
+                CraneListItem:
+                    text: "Big Sur, United States"
+                    secondary_text: "876 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/4.jpg"
+                CraneListItem:
+                    text: "Napa, United States"
+                    secondary_text: "989 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/6.jpg"
+                CraneListItem:
+                    text: "Porto, Portugal"
+                    secondary_text: "306 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/24.jpg"
+                CraneListItem:
+                    text: "Tulum, Mexico"
+                    secondary_text: "385 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/25.jpg"
+                CraneListItem:
+                    text: "Lisbon, Portugal"
+                    secondary_text: "989 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/2.jpg"
+                CraneListItem:
+                    text: "Cairo, Egypt"
+                    secondary_text: "1380 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/3.jpg"
+                CraneListItem:
+                    text: "Taipei, Taiwan"
+                    secondary_text: "1109 available properties"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/26.jpg"

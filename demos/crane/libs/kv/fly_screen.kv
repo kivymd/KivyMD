@@ -2,100 +2,100 @@
 #: import gch kivy.utils.get_color_from_hex
 
 <CraneFlyScreen>
-	orientation: "vertical"
+    orientation: "vertical"
 
-	MDBoxLayout:
-		adaptive_height: True
-		orientation: "vertical"
-		md_bg_color: gch("#5D1049")
-		spacing: dp(10)
-		padding: [dp(25), 0, dp(25), dp(25)]
+    MDBoxLayout:
+        adaptive_height: True
+        orientation: "vertical"
+        md_bg_color: gch("#5D1049")
+        spacing: dp(10)
+        padding: [dp(25), 0, dp(25), dp(25)]
 
-		CraneTextField:
-			hint_text: "Travellers"
-			icon_left: "account"
-		CraneTextField:
-			hint_text: "Choose Origin"
-			icon_left: "map-marker"
-		CraneTextField:
-			hint_text: "Choose Destination"
-			icon_left: "airplane"
-		CraneTextField:
-			hint_text: "Select dates"
-			icon_left: "calendar-range"
+        CraneTextField:
+            hint_text: "Travellers"
+            icon_left: "account"
+        CraneTextField:
+            hint_text: "Choose Origin"
+            icon_left: "map-marker"
+        CraneTextField:
+            hint_text: "Choose Destination"
+            icon_left: "airplane"
+        CraneTextField:
+            hint_text: "Select dates"
+            icon_left: "calendar-range"
 
-	MDBoxLayout:
-		canvas.before:
-			Color:
-				rgba: root.theme_cls.bg_normal
-			RoundedRectangle:
-				size: self.size
-				pos: self.pos
-				radius: [20, 20, 0, 0]
+    MDBoxLayout:
+        canvas.before:
+            Color:
+                rgba: root.theme_cls.bg_normal
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [dp(20), dp(20), 0, 0]
 
-		ScrollView:
+        ScrollView:
 
-			MDList:
+            MDList:
 
-				MDBoxLayout:
-					adaptive_height: True
-					padding: dp(15)
+                MDBoxLayout:
+                    adaptive_height: True
+                    padding: dp(15)
 
-					MDLabel:
-						text: "Explore flights by destinations"
-						font_style: "Subtitle2"
-						theme_text_color: "Hint"
-						adaptive_height: True
+                    MDLabel:
+                        text: "Explore flights by destinations"
+                        font_style: "Subtitle2"
+                        theme_text_color: "Hint"
+                        adaptive_height: True
 
-				CraneListItem:
-					text: "Bug Sur, United States"
-					secondary_text: "Non-stop • 13h 30m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/4.jpg"
-				CraneListItem:
-					text: "Khumbu Valley, Nepal"
-					secondary_text: "Non-stop • 5h 16m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/10.jpg"
-				CraneListItem:
-					text: "Machu Picchu, Peru"
-					secondary_text: "2 stops • 19h 40m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/22.jpg"
-				CraneListItem:
-					text: "Male, Maldives"
-					secondary_text: "Non-stop • 8h 24m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/6.jpg"
-				CraneListItem:
-					text: "Vitznau, Switzerland"
-					secondary_text: "1 stop • 14h 12m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/23.jpg"
-				CraneListItem:
-					text: "Mexico City, Mexico"
-					secondary_text: "Non-stop • 5h 24m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/19.jpg"
-				CraneListItem:
-					text: "Mount Rushmore, United States"
-					secondary_text: "1 stop • 5h 43m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/12.jpg"
-				CraneListItem:
-					text: "Singapore"
-					secondary_text: "Non-stop • 8h 25m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/20.jpg"
-				CraneListItem:
-					text: "Havana, Cuba"
-					secondary_text: "1 stop • 5h 52m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/9.jpg"
-				CraneListItem:
-					text: "Cairo, Egypt"
-					secondary_text: "Non-stop • 5h 57m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/3.jpg"
-				CraneListItem:
-					text: "Lisbon, Portugal"
-					secondary_text: "1 stop • 13h 24m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/2.jpg"
-				CraneListItem:
-					text: "Napa, United States"
-					secondary_text: "2 stop • 10h 20m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/1.jpg"
-				CraneListItem:
-					text: "Bali, Indonesia"
-					secondary_text: "Non-stop • 7h 15m"
-					image: f"{environ['CRANE_ROOT']}/assets/images/21.jpg"
+                CraneListItem:
+                    text: "Bug Sur, United States"
+                    secondary_text: "Non-stop • 13h 30m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/4.jpg"
+                CraneListItem:
+                    text: "Khumbu Valley, Nepal"
+                    secondary_text: "Non-stop • 5h 16m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/10.jpg"
+                CraneListItem:
+                    text: "Machu Picchu, Peru"
+                    secondary_text: "2 stops • 19h 40m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/22.jpg"
+                CraneListItem:
+                    text: "Male, Maldives"
+                    secondary_text: "Non-stop • 8h 24m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/6.jpg"
+                CraneListItem:
+                    text: "Vitznau, Switzerland"
+                    secondary_text: "1 stop • 14h 12m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/23.jpg"
+                CraneListItem:
+                    text: "Mexico City, Mexico"
+                    secondary_text: "Non-stop • 5h 24m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/19.jpg"
+                CraneListItem:
+                    text: "Mount Rushmore, United States"
+                    secondary_text: "1 stop • 5h 43m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/12.jpg"
+                CraneListItem:
+                    text: "Singapore"
+                    secondary_text: "Non-stop • 8h 25m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/20.jpg"
+                CraneListItem:
+                    text: "Havana, Cuba"
+                    secondary_text: "1 stop • 5h 52m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/9.jpg"
+                CraneListItem:
+                    text: "Cairo, Egypt"
+                    secondary_text: "Non-stop • 5h 57m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/3.jpg"
+                CraneListItem:
+                    text: "Lisbon, Portugal"
+                    secondary_text: "1 stop • 13h 24m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/2.jpg"
+                CraneListItem:
+                    text: "Napa, United States"
+                    secondary_text: "2 stop • 10h 20m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/1.jpg"
+                CraneListItem:
+                    text: "Bali, Indonesia"
+                    secondary_text: "Non-stop • 7h 15m"
+                    image: f"{environ['CRANE_ROOT']}/assets/images/21.jpg"

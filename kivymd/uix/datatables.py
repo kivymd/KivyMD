@@ -22,6 +22,8 @@ Components/DataTables
 
 __all__ = ("MDDataTable",)
 
+from collections import defaultdict
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -50,8 +52,6 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.tooltip import MDTooltip
-from collections import defaultdict
-from math import ceil
 
 Builder.load_string(
     """

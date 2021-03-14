@@ -476,7 +476,7 @@ Builder.load_string(
                 if root.theme_cls.device_orientation == "portrait" \
                 else (dp(168) + dp(24), label_title.y)
             text_color:
-                (0, 0, 0, 1) \
+                app.theme_cls.text_color \
                 if not root.text_color else root.text_color
 
         DatePickerIconTooltipButton:
@@ -485,7 +485,6 @@ Builder.load_string(
             icon: "menu-down"
             ripple_scale: .5
             theme_text_color: "Custom"
-            md_bg_color_disabled: 0, 0, 0, 0
             hint_text: "Choose year"
             on_release:
                 root.transformation_to_dialog_select_year() \
@@ -496,8 +495,9 @@ Builder.load_string(
                 if root.theme_cls.device_orientation == "portrait" \
                 else (dp(180) + label_month_selector.width, label_title.y - dp(14))
             text_color:
-                (0, 0, 0, 1) \
+                app.theme_cls.text_color \
                 if not root.text_color else root.text_color
+            md_bg_color_disabled: 0, 0, 0, 0
 
         DatePickerIconTooltipButton:
             id: chevron_left
@@ -515,7 +515,7 @@ Builder.load_string(
                 if root.theme_cls.device_orientation == "portrait" \
                 else dp(272)
             text_color:
-                (0, 0, 0, 1) \
+                app.theme_cls.text_color \
                 if not root.text_color else root.text_color
 
         DatePickerIconTooltipButton:
@@ -534,7 +534,7 @@ Builder.load_string(
                 if root.theme_cls.device_orientation == "portrait" \
                 else dp(272)
             text_color:
-                (0, 0, 0, 1) \
+                app.theme_cls.text_color \
                 if not root.text_color else root.text_color
 
         # TODO: Replace the GridLayout with a RecycleView
@@ -733,20 +733,21 @@ Builder.load_string(
         font_name: root.owner.font_name
         theme_text_color: "Custom"
         text_color:
-            (\
+            ( \
             root.theme_cls.primary_color \
             if not root.owner.text_current_color \
-            else root.owner.text_current_color\
+            else root.owner.text_current_color \
             ) \
             if root.is_today and not root.is_selected \
             else ( \
             ( \
-            (0, 0, 0, 1) if not root.is_selected or root.owner.mode == "range" \
-            else (1, 1, 1, 1)\
+            root.theme_cls.text_color \
+            if not root.is_selected or root.owner.mode == "range" \
+            else (1, 1, 1, 1) \
             ) \
             if not root.owner.text_color \
             else \
-            (\
+            ( \
             root.owner.text_color \
             if not root.is_selected else (1, 1, 1, 1)) \
             )

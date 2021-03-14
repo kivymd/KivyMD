@@ -84,8 +84,6 @@ Builder.load_string(
             size_hint: None, None
             size: 0, 0
             opacity: 0
-            #on_active: root.select_check(self, self.active)
-            #on_release: root._check_all(self.state)
 
         MDBoxLayout:
             id: inner_box
@@ -428,12 +426,9 @@ class CellRow(
                     ]
                 ):
                     self.change_check_state_no_notif("down")
-                    # self.ids.check.state = "down"
                 else:
-                    # self.ids.check.state = "normal"
                     self.change_check_state_no_notif("normal")
         else:
-            # self.ids.check.state = "normal"
             self.change_check_state_no_notif("normal")
 
     def change_check_state_no_notif(self, new_state):

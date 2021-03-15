@@ -109,10 +109,10 @@ Determinate mode
 
 __all__ = ("MDSpinner",)
 
-from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,

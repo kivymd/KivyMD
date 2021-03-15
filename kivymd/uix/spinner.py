@@ -157,6 +157,11 @@ class MDSpinner(ThemableBehavior, Widget):
 
     Set :attr:`determinate` to **True** to activate determinate mode, and
     :attr:`determinate_time` to set the duration of the animation.
+
+    :Events:
+        `on_determinate_complete`
+            The event is called at the end of the spinner loop in the
+            `determinate = True` mode.
     """
 
     determinate = BooleanProperty(False)
@@ -218,9 +223,41 @@ class MDSpinner(ThemableBehavior, Widget):
         self.color = self.theme_cls.primary_color
         self._alpha_anim_in = Animation(_alpha=1, duration=0.8, t="out_quad")
         self._alpha_anim_out = Animation(_alpha=0, duration=0.3, t="out_quad")
-        self._alpha_anim_out.bind(on_complete=self._reset)
+        self._alpha_anim_out.bind(
+            on_complete=self._reset,
+            on_progress=self._on_determinate_progress,
+        )
         self.theme_cls.bind(primary_color=self._update_color)
+        self.register_event_type("on_determinate_complete")
         Clock.schedule_once(self.check_determinate)
+
+    def on__rotation_angle(self, *args):
+        if self._rotation_angle == 0:
+            self._rotation_angle = 360
+            if not self.determinate:
+                _rot_anim = Animation(_rotation_angle=0, duration=2)
+                _rot_anim.start(self)
+        elif self._rotation_angle == 360:
+            if self._palette:
+                try:
+                    Animation(color=next(self._palette), duration=2).start(self)
+                except StopIteration:
+                    self._palette = iter(self.palette)
+                    Animation(color=next(self._palette), duration=2).start(self)
+
+    def on_palette(self, instance, value):
+        self._palette = iter(value)
+
+    def on_active(self, *args):
+        self._reset()
+        if self.active:
+            self.check_determinate()
+
+    def on_determinate_complete(self, *args):
+        """
+        The event is called at the end of the spinner loop in the
+        `determinate = True` mode.
+        """
 
     def check_determinate(self, *args):
         if self.active:
@@ -270,20 +307,6 @@ class MDSpinner(ThemableBehavior, Widget):
 
         _angle_back_anim.start(self)
 
-    def on__rotation_angle(self, *args):
-        if self._rotation_angle == 0:
-            self._rotation_angle = 360
-            if not self.determinate:
-                _rot_anim = Animation(_rotation_angle=0, duration=2)
-                _rot_anim.start(self)
-        elif self._rotation_angle == 360:
-            if self._palette:
-                try:
-                    Animation(color=next(self._palette), duration=2).start(self)
-                except StopIteration:
-                    self._palette = iter(self.palette)
-                    Animation(color=next(self._palette), duration=2).start(self)
-
     def _reset(self, *args):
         Animation.cancel_all(
             self,
@@ -298,10 +321,8 @@ class MDSpinner(ThemableBehavior, Widget):
         self._rotation_angle = 360
         self._alpha = 0
 
-    def on_palette(self, instance, value):
-        self._palette = iter(value)
-
-    def on_active(self, *args):
-        self._reset()
-        if self.active:
-            self.check_determinate()
+    def _on_determinate_progress(
+        self, instance_animation, instance_spinner, value
+    ):
+        if value == 1:
+            self.dispatch("on_determinate_complete")

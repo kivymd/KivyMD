@@ -109,6 +109,7 @@ Determinate mode
 
 __all__ = ("MDSpinner",)
 
+from kivy.metrics import dp
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -138,7 +139,7 @@ Builder.load_string(
             circle: self.center_x, self.center_y, self.width / 2, \
             self._angle_start, self._angle_end
             cap: 'square'
-            width: dp(2.25)
+            width: root.line_width
     canvas.after:
         PopMatrix
 
@@ -172,6 +173,14 @@ class MDSpinner(ThemableBehavior, Widget):
 
     :attr:`determinate_time` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `2`.
+    """
+
+    line_width = NumericProperty(dp(2.25))
+    """
+    Progress line width of spinner.
+
+    :attr:`line_width` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(2.25)`.
     """
 
     active = BooleanProperty(True)

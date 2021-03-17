@@ -525,7 +525,6 @@ class SortButton(MDIconButton):
 
 class CellHeader(MDTooltip, BoxLayout):
     text = StringProperty()  # column text
-
     sort_action = ObjectProperty()
     table_data = ObjectProperty()
     is_sorted = BooleanProperty(False)
@@ -545,7 +544,6 @@ class CellHeader(MDTooltip, BoxLayout):
                 )
                 ib.size = [dp(24), dp(24)]
                 ib.opacity = 1
-
             else:
                 self.bind(on_enter=self.set_sort_btn)
                 self.bind(on_leave=self.set_sort_btn)
@@ -600,7 +598,6 @@ class CellHeader(MDTooltip, BoxLayout):
 
     def restore_checks(self, indices):
         curr_checks = self.table_data.current_selection_check
-
         rows_num = self.table_data.rows_num
         columns = self.table_data.total_col_headings
 
@@ -612,7 +609,6 @@ class CellHeader(MDTooltip, BoxLayout):
                     (indices[y // columns + x * rows_num]) % rows_num
                 ) * columns
                 new_checks[new_page].append(new_indice)
-
         self.table_data.current_selection_check = dict(new_checks)
 
     def set_sort_btn(self, instance):
@@ -620,7 +616,6 @@ class CellHeader(MDTooltip, BoxLayout):
         if btn.opacity:
             btn.size = [dp(24), dp(0)]
             btn.opacity = 0
-
         else:
             btn.size = [dp(24), dp(24)]
             btn.opacity = 1
@@ -819,7 +814,10 @@ class TableData(RecycleView):
                 self._current_value = 1
                 self._to_value = self.rows_num + self._current_value - 1
 
-            self.pagination.ids.label_rows_per_page.text = f"{self._current_value}-{self._to_value} of {len(self.row_data)}"
+            self.pagination.ids.label_rows_per_page.text = (
+                f"{self._current_value}-{self._to_value} "
+                f"of {len(self.row_data)}"
+            )
 
     def select_all(self, state):
         """Sets the checkboxes of all rows to the active/inactive position."""
@@ -832,7 +830,6 @@ class TableData(RecycleView):
 
         if state == "down":
             # select all checks on all pages
-
             rows_num = self.rows_num
             columns = self.total_col_headings
             full_pages = len(self.row_data) // self.rows_num
@@ -866,7 +863,6 @@ class TableData(RecycleView):
                     self.cell_row_obj_dict[i] = cell_row_obj
             if cell_row_obj:
                 tmp.append(cell_row_obj.ids.check.state == state)
-
         return all(tmp)
 
     def _get_row_checks(self):
@@ -917,6 +913,7 @@ class TableData(RecycleView):
 
     def set_next_row_data_parts(self, direction):
         """Called when switching the pages of the table."""
+
         if direction == "reset":
             self._rows_number = 0
             self.pagination.ids.button_back.disabled = True
@@ -935,10 +932,6 @@ class TableData(RecycleView):
             self.pagination.ids.button_forward.disabled = True
         if self._current_value == 1:
             self.pagination.ids.button_back.disabled = True
-
-    def _split_list_into_equal_parts(self, lst, parts):
-        for i in range(0, len(lst), parts):
-            yield lst[i : i + parts]
 
     def on_mouse_select(self, instance):
         """Called on the ``on_enter`` event of the :class:`~CellRow` class."""
@@ -960,6 +953,10 @@ class TableData(RecycleView):
     def on_pagination(self, instance, value):
         if self._to_value < len(self.row_data):
             self.pagination.ids.button_forward.disabled = False
+
+    def _split_list_into_equal_parts(self, lst, parts):
+        for i in range(0, len(lst), parts):
+            yield lst[i : i + parts]
 
     # def on_pagination(self, instance_table, instance_pagination):
     #    if len(self._row_data_parts) <= self._to_value:
@@ -1580,9 +1577,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         Clock.schedule_once(self.create_pagination_menu, 0.5)
         self.bind(row_data=self.update_row_data)
 
-    #
     def update_row_data(self, instance, value):
-        """Called when a the widget data must be updated.
+        """
+        Called when a the widget data must be updated.
 
         Remember that this is a heavy function. since the whole data set must
         be updated. you can get better results calling this metod with in a
@@ -1594,14 +1591,14 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         # Set cursors to 0
         self.table_data._rows_number = 0
         self.table_data._current_value = 1
-        #
+
         if len(value) < self.table_data.rows_num:
             self.table_data._to_value = len(value)
             self.table_data.pagination.ids.button_forward.disabled = True
         else:
             self.table_data._to_value = self.table_data.rows_num
             self.table_data.pagination.ids.button_forward.disabled = False
-        #
+
         self.table_data.set_next_row_data_parts("")
         self.pagination.ids.button_back.disabled = True
         Clock.schedule_once(self.create_pagination_menu, 0.5)
@@ -1616,9 +1613,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         """Returns all rows that are checked."""
 
         return self.table_data._get_row_checks()
-
-    def _scroll_with_header(self, instance, value):
-        self.header.scroll_x = value
 
     def create_pagination_menu(self, interval):
         menu_items = [
@@ -1639,3 +1633,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             on_dismiss=self.table_data.close_pagination_menu,
         )
         self.table_data.pagination_menu = pagination_menu
+
+    def _scroll_with_header(self, instance, value):
+        self.header.scroll_x = value

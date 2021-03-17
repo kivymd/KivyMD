@@ -1555,8 +1555,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_row_press")
-        self.register_event_type("on_check_press")
         self.header = TableHeader(
             column_data=self.column_data,
             sorted_on=self.sorted_on,
@@ -1569,6 +1567,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             rows_num=self.rows_num,
             _parent=self,
         )
+        self.register_event_type("on_row_press")
+        self.register_event_type("on_check_press")
         self.pagination = TablePagination(table_data=self.table_data)
         self.table_data.pagination = self.pagination
         self.header.table_data = self.table_data
@@ -1577,6 +1577,32 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         self.ids.container.add_widget(self.table_data)
         if self.use_pagination:
             self.ids.container.add_widget(self.pagination)
+        Clock.schedule_once(self.create_pagination_menu, 0.5)
+        self.bind(row_data = self.update_row_data)
+    #
+    def update_row_data(self, instance, value):
+        """Called when a the widget data must be updated.
+
+        Remember that this is a heavy function. since the whole data set must
+        be updated. you can get better results calling this metod with in a
+        coroutine.
+        """
+
+        self.table_data.row_data = value
+        self.table_data.on_rows_num(self, self.table_data.rows_num)
+        # Set cursors to 0
+        self.table_data._rows_number = 0
+        self.table_data._current_value = 1
+        #
+        if len(value) < self.table_data.rows_num:
+            self.table_data._to_value = len(value)
+            self.table_data.pagination.ids.button_forward.disabled = True
+        else:
+            self.table_data._to_value = self.table_data.rows_num
+            self.table_data.pagination.ids.button_forward.disabled = False
+        #
+        self.table_data.set_next_row_data_parts("")
+        self.pagination.ids.button_back.disabled = True
         Clock.schedule_once(self.create_pagination_menu, 0.5)
 
     def on_row_press(self, *args):

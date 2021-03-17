@@ -1578,7 +1578,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         if self.use_pagination:
             self.ids.container.add_widget(self.pagination)
         Clock.schedule_once(self.create_pagination_menu, 0.5)
-        self.bind(row_data = self.update_row_data)
+        self.bind(row_data=self.update_row_data)
+
     #
     def update_row_data(self, instance, value):
         """Called when a the widget data must be updated.

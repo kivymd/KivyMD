@@ -155,8 +155,8 @@ If you need assistance or you have a question, you can ask for help on our maili
 ## Video preview
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=HCa8zij69kY">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png" title='Click to watch video on YouTube'>
+  <a href="https://www.youtube.com/watch?v=crt8wA4Q5eU">
+    <img img width="600" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png" title='Click to watch video on YouTube'>
   </a>
 </p>
 

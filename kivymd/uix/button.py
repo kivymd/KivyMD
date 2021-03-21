@@ -1872,7 +1872,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self._label_pos_y_set = False
 
         # Bottom buttons.
-        for name,name_icon in value.items():
+        for name, name_icon in value.items():
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
                 on_enter=self.on_enter,

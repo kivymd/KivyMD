@@ -349,9 +349,9 @@ MDFloatingActionButtonSpeedDial
 
     class Example(MDApp):
         data = {
-            'language-python': 'Python',
-            'language-php': 'PHP',
-            'language-cpp': 'C++',
+            'Python': 'language-python',
+            'PHP': 'language-php',
+            'C++': 'language-cpp',
         }
 
         def build(self):
@@ -1872,7 +1872,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self._label_pos_y_set = False
 
         # Bottom buttons.
-        for name_icon in value.keys():
+        for name,name_icon in zip(value.keys(),value.values):
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
                 on_enter=self.on_enter,
@@ -1885,7 +1885,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             self.set_pos_bottom_buttons(bottom_button)
             self.add_widget(bottom_button)
             # Labels.
-            floating_text = value[name_icon]
+            floating_text = name
             if floating_text:
                 label = MDFloatingLabel(text=floating_text, opacity=0)
                 label.text_color = self.label_text_color

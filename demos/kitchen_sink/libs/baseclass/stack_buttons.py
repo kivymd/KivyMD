@@ -15,7 +15,6 @@ class KitchenSinkStackButtons(Screen):
 
             button_speed_dial = MDFloatingActionButtonSpeedDial()
             button_speed_dial.root_button_anim = True
-            # {"Text to be displayed" : "Icon name"}
             button_speed_dial.data = {'Python':'language-python' ,
                                       'PHP':'language-php' ,
                                       'C++':'language-cpp' ,

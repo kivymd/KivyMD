@@ -1207,8 +1207,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     allow_stretch = BooleanProperty(True)
     """
-    If `True`, The tab will update dynamically to it's content width, and wrap
-    any text if the widget is wider than `"360dp"`.
+    If `True`, the tab will update dynamically (if :attr:`tab_hint_x` is `True`)
+    to it's content width, and wrap any text if the widget is wider than `"360dp"`.
 
     If `False`, the tab won't update to it's maximum texture width.
     this means that the `fixed_tab_label_width` will be used as the label
@@ -1220,8 +1220,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     fixed_tab_label_width = NumericProperty("140dp")
     """
-    If `allow_stretch` is `False`, the class will set this value as the width
-    to all the tabs title label.
+    If :attr:`allow_stretch` is `False`, the class will set this value as the
+    width to all the tabs title label.
 
     :attr:`fixed_tab_label_width` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `140dp`.

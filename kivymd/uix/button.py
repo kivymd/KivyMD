@@ -374,9 +374,9 @@ Or without KV Language:
 
     class Example(MDApp):
         data = {
-            'language-python': 'Python',
-            'language-php': 'PHP',
-            'language-cpp': 'C++',
+            'Python': 'language-python',
+            'PHP': 'language-php',
+            'C++': 'language-cpp',
         }
 
         def build(self):

@@ -90,6 +90,7 @@ the menu item on the right:
 
     <RightContentCls>
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
 
         MDIconButton:
             icon: root.icon
@@ -138,6 +139,7 @@ Full example
     KV = '''
     <RightContentCls>
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
 
         MDIconButton:
             icon: root.icon
@@ -249,6 +251,7 @@ Mixin items
     KV = '''
     <RightContentCls>
         disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
 
         MDIconButton:
             icon: root.icon

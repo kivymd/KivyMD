@@ -25,7 +25,7 @@ Usage
     from kivymd.uix.dialog import MDDialog
 
     KV = '''
-    FloatLayout:
+    MDFloatLayout:
 
         MDFlatButton:
             text: "ALERT DIALOG"
@@ -80,9 +80,8 @@ from kivy.uix.modalview import ModalView
 
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.button import BaseButton
-from kivymd.uix.card import MDCard, MDSeparator
+from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
 
 Builder.load_string(
@@ -92,6 +91,7 @@ Builder.load_string(
 
 <BaseDialog>
     background: '{}/transparent.png'.format(images_path)
+
     canvas.before:
         PushMatrix
         RoundedRectangle:
@@ -108,18 +108,17 @@ Builder.load_string(
 
 <MDDialog>
 
-    DialogFakeCard:
+    MDCard:
         id: container
         orientation: "vertical"
         size_hint_y: None
         height: self.minimum_height
         elevation: 24
         padding: "24dp", "24dp", "8dp", "8dp"
-        radius: root.radius     
+        radius: root.radius
         md_bg_color:
             root.theme_cls.bg_dark \
             if not root.md_bg_color else root.md_bg_color
-           
 
         MDLabel:
             id: title
@@ -198,10 +197,6 @@ class BaseDialog(ThemableBehavior, ModalView):
 
     _scale_x = NumericProperty(1)
     _scale_y = NumericProperty(1)
-
-
-class DialogFakeCard(MDCard, FakeRectangularElevationBehavior):
-    pass
 
 
 class MDDialog(BaseDialog):
@@ -307,7 +302,7 @@ class MDDialog(BaseDialog):
                 source: root.source
 
 
-        FloatLayout:
+        MDFloatLayout:
 
             MDFlatButton:
                 text: "ALERT DIALOG"
@@ -367,7 +362,7 @@ class MDDialog(BaseDialog):
                 group: "check"
 
 
-        FloatLayout:
+        MDFloatLayout:
 
             MDFlatButton:
                 text: "ALERT DIALOG"
@@ -478,7 +473,7 @@ class MDDialog(BaseDialog):
                 hint_text: "Street"
 
 
-        FloatLayout:
+        MDFloatLayout:
 
             MDFlatButton:
                 text: "ALERT DIALOG"
@@ -588,15 +583,12 @@ class MDDialog(BaseDialog):
             ),
         )
 
-    def update_height(self, *_):
+    def update_height(self, *args):
         self._spacer_top = self.content_cls.height + dp(24)
 
     def on_open(self):
         # TODO: Add scrolling text.
         self.height = self.ids.container.height
-
-    def set_normal_height(self):
-        self.size_hint_y = 0.8
 
     def get_normal_height(self):
         return (
@@ -626,7 +618,6 @@ class MDDialog(BaseDialog):
                 self.ids.box_items.add_widget(item)
 
         if height > Window.height:
-            self.set_normal_height()
             self.ids.scroll.height = self.get_normal_height()
         else:
             self.ids.scroll.height = height

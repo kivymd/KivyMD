@@ -3,11 +3,14 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.properties import BooleanProperty, ObjectProperty, StringProperty
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.image import Image
 from kivy.uix.recycleview import RecycleView
 
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDCustomRoundIconButton, MDIconButton
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import TwoLineAvatarIconListItem
 
 
@@ -27,7 +30,7 @@ class ItemForBoxBottomSheetProductList(TwoLineAvatarIconListItem):
     pass
 
 
-class PreviousImage(MDCustomRoundIconButton):
+class PreviousImage(CircularRippleBehavior, ButtonBehavior, Image):
     description = StringProperty()
     _root = ObjectProperty()
 

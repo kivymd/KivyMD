@@ -43,7 +43,7 @@ MDIconButton
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDIconButton:
             icon: "language-python"
@@ -339,7 +339,7 @@ MDFloatingActionButtonSpeedDial
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDFloatingActionButtonSpeedDial:
             data: app.data
@@ -367,8 +367,7 @@ Or without KV Language:
 
 .. code-block:: python
 
-    from kivy.uix.screenmanager import Screen
-
+    from kivymd.uix.screen import MDScreen
     from kivymd.app import MDApp
     from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
@@ -381,7 +380,7 @@ Or without KV Language:
         }
 
         def build(self):
-            screen = Screen()
+            screen = MDScreen()
             speed_dial = MDFloatingActionButtonSpeedDial()
             speed_dial.data = self.data
             speed_dial.root_button_anim = True
@@ -490,7 +489,7 @@ Builder.load_string(
 
     lbl_txt: lbl_txt
     size_hint: None, None
-    height: dp(20) + root.lbl_txt.texture_size[1]
+    height: dp(20) + lbl_txt.texture_size[1]
     width: lbl_txt.texture_size[0] + dp(24)
 
     MDLabel:
@@ -499,6 +498,7 @@ Builder.load_string(
         font_size: root.font_size
         font_style: root.font_style
         adaptive_size: True
+        -text_size: None, None
         theme_text_color: root.theme_text_color
         text_color: root.text_color
         markup: True
@@ -653,6 +653,7 @@ Builder.load_string(
             font_size: root.font_size
             font_style: root.font_style
             adaptive_size: True
+            -text_size: None, None
             theme_text_color: "Custom"
             text_color: root.text_color
             markup: True
@@ -706,6 +707,7 @@ Builder.load_string(
             font_size: root.font_size
             font_style: root.font_style
             adaptive_size: True
+            -text_size: None, None
             theme_text_color: root.theme_text_color
             text_color: root.text_color
             markup: True

@@ -1,12 +1,12 @@
 # KivyMD [0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
-<img align="center" src="https://github.com/kivymd/internal/raw/main/logo/github_social_preview_small.png"/>
+<img align="center" height=240 src="https://github.com/kivymd/internal/raw/main/logo/github_readme_logo.png"/>
 
 KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
 
 The project's goal is to approximate Google's [Material Design spec](https://material.io/design/introduction/) as close as possible without sacrificing ease of use or application performance.
 
-This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD) the author of which stopped supporting this project three years ago. We found the strength and brought this project to a new level.
+This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD) the author of which stopped supporting this project four years ago. We found the strength and brought this project to a new level.
 
 Currently we're in **beta** status, so things are changing all the time and we cannot promise any kind of API stability. However it is safe to vendor now and make use of what's currently available.
 
@@ -74,7 +74,7 @@ to save time. If you need full commit history, then remove `--depth 1`.
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini
-requirements = kivy==2.0.0, kivymd==0.104.1
+requirements = kivy==2.0.0, kivymd==0.104.1, sdl2_ttf == 2.0.15
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
@@ -155,8 +155,8 @@ If you need assistance or you have a question, you can ask for help on our maili
 ## Video preview
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=HCa8zij69kY">
-    <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png" title='Click to watch video on YouTube'>
+  <a href="https://www.youtube.com/watch?v=crt8wA4Q5eU">
+    <img img width="600" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/prevideo.png" title='Click to watch video on YouTube'>
   </a>
 </p>
 

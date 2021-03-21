@@ -509,6 +509,7 @@ from kivy.properties import (
     BooleanProperty,
     BoundedNumericProperty,
     ColorProperty,
+    ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
@@ -609,6 +610,7 @@ Builder.load_string(
 
     MDTabsBar:
         id: tab_bar
+        padding: root.tab_padding
         carousel: carousel
         scrollview: scrollview
         layout: layout
@@ -629,9 +631,14 @@ Builder.load_string(
                 rows: 1
                 size_hint_y: 1
                 adaptive_width: True
-                on_size:
-                    root._update_padding(layout)
+                on_size: root._update_padding(layout)
+
                 canvas.before:
+                    Color:
+                        rgba: root.underline_color
+                    Line:
+                        width: dp(2)
+                        rectangle: [0, 0, layout.width, dp(2)]
                     Color:
                         rgba:
                             root.theme_cls.accent_color \
@@ -1136,6 +1143,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `'48dp'`.
     """
 
+    tab_padding = ListProperty([0, 0, 0, 0])
+    """
+    Padding of the tab bar.
+
+    :attr:`tab_padding` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
     tab_indicator_anim = BooleanProperty(False)
     """
     Tab indicator animation. If you want use animation set it to ``True``.
@@ -1218,6 +1233,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     :attr:`background_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
+    """
+
+    underline_color = ColorProperty([0, 0, 0, 0])
+    """
+    Underline color of tabs in ``rgba`` format.
+
+    :attr:`underline_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     text_color_normal = ColorProperty(None)

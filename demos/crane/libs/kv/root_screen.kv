@@ -7,77 +7,75 @@
 #: import CraneEatScreen libs.baseclass.eat_screen.CraneEatScreen
 
 <CraneRootScreen>
+    md_bg_color: gch("#5D1049")
 
-	MDBoxLayout:
-		md_bg_color: gch("#5D1049")
+    MDTabs:
+        id: tab
+        background_color: gch("#5D1049")
+        text_color_normal: 1., 1., 1., .5
+        text_color_active: 1, 1, 1, 1
+        indicator_color: 1, 1, 1, 1
+        tab_indicator_type: "line-round"
+        tab_indicator_anim: True
 
-		MDTabs:
-			id: tab
-			background_color: gch("#5D1049")
-			text_color_normal: 1., 1., 1., .5
-			text_color_active: 1, 1, 1, 1
-			indicator_color: 1, 1, 1, 1
-			tab_indicator_type: 'line-round'
-			tab_indicator_anim: True
-
-			CraneFlyScreen:
-				text: "[b]FLY[/b]"
-			CraneSleepScreen:
-				text: "[b]SLEEP[/b]"
-			CraneEatScreen:
-				text: "[b]EAT[/b]"
+        CraneFlyScreen:
+            text: "[b]FLY[/b]"
+        CraneSleepScreen:
+            text: "[b]SLEEP[/b]"
+        CraneEatScreen:
+            text: "[b]EAT[/b]"
 
 <ScrollView>
-	bar_width: 0
-	effect_cls: StiffScrollEffect
+    bar_width: 0
+    effect_cls: StiffScrollEffect
 
 
 <CraneTextField@MDTextFieldRound>
-	size_hint_y: None
-	height: dp(90)
-	icon_left_color: gch("#C79EBE")
-	color_active: gch("#720D5D")
-	normal_color: gch("#720D5D")
-	line_color: (0, 0, 0, 0)
-	foreground_color: gch("#ffffff")
-	font_name: f"{environ['CRANE_ROOT']}/assets/fonts/Raleway-Medium.ttf"
+    size_hint_y: None
+    height: dp(90)
+    icon_left_color: gch("#C79EBE")
+    color_active: gch("#720D5D")
+    normal_color: gch("#720D5D")
+    line_color: (0, 0, 0, 0)
+    foreground_color: gch("#ffffff")
+    font_name: f"{environ['CRANE_ROOT']}/assets/fonts/Raleway-Medium.ttf"
 
 <CraneListItem>
-	size_hint_y: None
-	padding: dp(20)
-	spacing: dp(10)
-	height: dp(80)
+    size_hint_y: None
+    padding: dp(20)
+    spacing: dp(10)
+    height: dp(80)
 
-	canvas:
-		Color:
-			rgba:
-				self.theme_cls.divider_color
-		Line:
-			points: (root.x+dp(16), root.y, root.x+self.width-dp(16)-0, root.y)
+    canvas:
+        Color:
+            rgba:
+                self.theme_cls.divider_color
+        Line:
+            points: (root.x+dp(16), root.y, root.x+self.width-dp(16)-0, root.y)
 
-	MDBoxLayout:
-		adaptive_size: True
-		pos_hint: {"center_x": .5, "center_y": .5}
+    MDBoxLayout:
+        adaptive_size: True
+        pos_hint: {"center_x": .5, "center_y": .5}
 
-		FitImage:
-			source: root.image
-			size_hint: (None, None)
-			size: (dp(70), dp(60))
-			radius: [10,]
+        FitImage:
+            source: root.image
+            size_hint: (None, None)
+            size: (dp(70), dp(60))
+            radius: [dp(10),]
 
-	MDBoxLayout:
-		orientation: 'vertical'
-		adaptive_height: True
-		pos_hint: {"center_x": .5, "center_y": .5}
-		spacing: dp(10)
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_height: True
+        pos_hint: {"center_x": .5, "center_y": .5}
+        spacing: dp(10)
 
-		MDLabel:
-			text: root.text
-			font_style: "Subtitle1"
-			adaptive_height: True
+        MDLabel:
+            text: root.text
+            font_style: "Subtitle1"
+            adaptive_height: True
 
-		MDLabel:
-			text: root.secondary_text
-			font_style: "Caption"
-			theme_text_color: "Hint"
-			adaptive_height: True
+        MDLabel:
+            text: root.secondary_text
+            font_style: "Caption"
+            theme_text_color: "Hint"
+            adaptive_height: True

@@ -413,6 +413,14 @@ You can set your color values ​​for background, text of buttons etc:
 .. seealso::
 
     `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
+
+You can use various types of dismissal on the stack:
+
+.. code-block:: kv
+
+    MDFloatingActionButtonSpeedDial:
+        auto_dismiss: True              #dismisses when clicked out of widget
+        dismiss_on_option_touch: True   #dismisses even when clicked on options
 """
 
 __all__ = (
@@ -1820,6 +1828,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         Window.bind(on_resize=self._update_pos_buttons)
 
     def on_touch_up(self, touch):
+        """Dismisses stack when clicked out of focus or clicked on options"""
         pos = touch.pos
         touch_root = None
         touch_stack = None
@@ -1828,12 +1837,21 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 if isinstance(widget, MDFloatingRootButton):
                     if widget.collide_point(*pos):
                         touch_root = widget.collide_point(*pos)
-                if isinstance(widget, MDFloatingBottomButton) or isinstance(widget, MDFloatingLabel):
-                    if widget.collide_point(*pos) and not self.dismiss_on_option_touch:
-                        if self.state == 'open':
+                if isinstance(widget, MDFloatingBottomButton) or isinstance(
+                    widget, MDFloatingLabel
+                ):
+                    if (
+                        widget.collide_point(*pos)
+                        and not self.dismiss_on_option_touch
+                    ):
+                        if self.state == "open":
                             touch_stack = widget.collide_point(*pos)
             else:
-                if self.collide_point(*pos) and not touch_root and not touch_stack:
+                if (
+                    self.collide_point(*pos)
+                    and not touch_root
+                    and not touch_stack
+                ):
                     self.close_stack()
 
     def on_open(self, *args):

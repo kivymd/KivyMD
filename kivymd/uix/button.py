@@ -1793,6 +1793,22 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `False`.
     """
 
+    auto_dismiss = BooleanProperty(False)
+    """
+    Whether to dismiss stack when clicked out of focus of widget.
+
+    :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    dismiss_on_option_touch = BooleanProperty(False)
+    """
+    Whether to dismiss stack when clicked on one of the options.
+
+    :attr:`dismiss_on_option_touch` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     _label_pos_y_set = False
     _anim_buttons_data = {}
     _anim_labels_data = {}
@@ -1802,6 +1818,23 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self.register_event_type("on_open")
         self.register_event_type("on_close")
         Window.bind(on_resize=self._update_pos_buttons)
+
+    def on_touch_up(self, touch):
+        pos = touch.pos
+        touch_root = None
+        touch_stack = None
+        if self.auto_dismiss:
+            for widget in self.children:
+                if isinstance(widget, MDFloatingRootButton):
+                    if widget.collide_point(*pos):
+                        touch_root = widget.collide_point(*pos)
+                if isinstance(widget, MDFloatingBottomButton) or isinstance(widget, MDFloatingLabel):
+                    if widget.collide_point(*pos) and not self.dismiss_on_option_touch:
+                        if self.state == 'open':
+                            touch_stack = widget.collide_point(*pos)
+            else:
+                if self.collide_point(*pos) and not touch_root and not touch_stack:
+                    self.close_stack()
 
     def on_open(self, *args):
         """Called when a stack is opened."""

@@ -16,9 +16,9 @@ class KitchenSinkStackButtons(Screen):
             button_speed_dial = MDFloatingActionButtonSpeedDial()
             button_speed_dial.root_button_anim = True
             button_speed_dial.data = {
-                "language-python": "Python",
-                "language-php": "PHP",
-                "language-cpp": "C++",
+                "Python": "language-python",
+                "PHP": "language-php",
+                "C++": "language-cpp",
             }
             button_speed_dial.callback = callback
             self.add_widget(button_speed_dial)

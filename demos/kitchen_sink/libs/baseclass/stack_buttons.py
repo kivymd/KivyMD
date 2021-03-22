@@ -15,6 +15,8 @@ class KitchenSinkStackButtons(Screen):
 
             button_speed_dial = MDFloatingActionButtonSpeedDial()
             button_speed_dial.root_button_anim = True
+            button_speed_dial.auto_dismiss = True
+            button_speed_dial.dismiss_on_option_touch = False
             button_speed_dial.data = {
                 "Python": "language-python",
                 "PHP": "language-php",

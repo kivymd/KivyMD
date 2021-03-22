@@ -446,13 +446,14 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
+    AliasProperty,
     BooleanProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, AliasProperty,
+    StringProperty,
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -701,9 +702,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
     """
 
     def get_rect_instruction(self):
-        canvas_instructions = self.canvas.after.get_group(
-            "rectangle"
-        )
+        canvas_instructions = self.canvas.after.get_group("rectangle")
         return canvas_instructions[0]
 
     _rectangle = AliasProperty(get_rect_instruction, cache=True)
@@ -715,9 +714,7 @@ class MDTextFieldRect(ThemableBehavior, TextInput):
     """
 
     def get_color_instruction(self):
-        canvas_instructions = self.canvas.after.get_group(
-            "color"
-        )
+        canvas_instructions = self.canvas.after.get_group("color")
         return canvas_instructions[0]
 
     _rectangle_color = AliasProperty(get_color_instruction, cache=True)

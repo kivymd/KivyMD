@@ -224,7 +224,7 @@ class MDSpinner(ThemableBehavior, Widget):
         if not self.color:
             self.color = self.theme_cls.primary_color
         
-        if self.color == self.theme_cls.primary_color
+        if self.color == self.theme_cls.primary_color:
             self.theme_cls.bind(primary_color=self._update_color)
             
         self._alpha_anim_in = Animation(_alpha=1, duration=0.8, t="out_quad")

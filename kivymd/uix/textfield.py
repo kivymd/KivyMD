@@ -527,7 +527,6 @@ Builder.load_string(
         Rectangle:
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height
- 
         # Hint text.
         Color:
             rgba: self._current_hint_text_color if not self.current_hint_text_color else self.current_hint_text_color

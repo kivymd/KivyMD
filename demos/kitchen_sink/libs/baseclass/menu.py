@@ -30,7 +30,8 @@ class KitchenSinkMenu(Screen):
                 "viewclass": "KitchenSinkMenuRightItem",
                 "height": dp(54),
                 "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-            } for i in range(5)
+            }
+            for i in range(5)
         ]
         self.menu = MDDropdownMenu(
             caller=self.ids.button,

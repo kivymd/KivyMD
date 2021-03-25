@@ -1616,7 +1616,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     def create_pagination_menu(self, interval):
         menu_items = [
-            {"text": f"{i}", "viewclass": "OneLineListItem", "height": dp(56)}
+            {"text": f"{i}"}
             for i in range(
                 self.rows_num, len(self.row_data) // 2, self.rows_num
             )

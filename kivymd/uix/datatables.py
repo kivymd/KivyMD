@@ -1620,7 +1620,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                 "text": f"{i}",
                 "viewclass": "OneLineListItem",
                 "height": dp(56),
-                "on_release": lambda x=f"{i}": self.table_data.set_number_displayed_lines(x),
+                "on_release": lambda x=f"{i}": self.table_data.set_number_displayed_lines(
+                    x
+                ),
             }
             for i in range(
                 self.rows_num, len(self.row_data) // 2, self.rows_num

@@ -1,9 +1,9 @@
 from kivy.metrics import dp
 from kivy.properties import StringProperty
 
-from kivymd.uix.screen import MDScreen
-from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.list import OneLineAvatarIconListItem
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.screen import MDScreen
 
 
 class DropListItem(OneLineAvatarIconListItem):
@@ -21,7 +21,8 @@ class MDDropItem(MDScreen):
                 "height": dp(56),
                 "text": f"Item {i}",
                 "on_release": lambda x=f"Item {i}": self.set_item(x),
-            } for i in range(5)
+            }
+            for i in range(5)
         ]
         self.menu = MDDropdownMenu(
             caller=self.ids.dropdown_item,

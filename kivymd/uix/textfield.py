@@ -523,7 +523,7 @@ Builder.load_string(
         Color:
             rgba:
                 (self._current_line_color if self.focus and not \
-                self._cursor_blink and self.cursor_pos[1] < self.y + self.height - 20 and self.cursor_pos[1] > self.y + 20 else (0, 0, 0, 0))
+                self._cursor_blink and self.cursor_pos[1] < self.y + self.height - 10 and self.cursor_pos[1] > self.y + 10 else (0, 0, 0, 0))
         Rectangle:
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height

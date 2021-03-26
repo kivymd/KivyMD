@@ -3,6 +3,7 @@
     on_enter:
         progress_determinate.start()
         progress_indeterminate.start()
+        spinner.active = True
     on_leave:
         progress_determinate.stop()
         progress_indeterminate.stop()

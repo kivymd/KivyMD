@@ -534,10 +534,6 @@ class MDDialog(BaseDialog):
         super().__init__(**kwargs)
         Window.bind(on_resize=self.update_width)
 
-        self.md_bg_color = (
-            self.theme_cls.bg_dark if not self.md_bg_color else self.md_bg_color
-        )
-
         if self.size_hint == [1, 1] and (
             DEVICE_TYPE == "desktop" or DEVICE_TYPE == "tablet"
         ):

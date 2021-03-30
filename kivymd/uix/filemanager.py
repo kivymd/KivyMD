@@ -143,6 +143,7 @@ from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.fitimage import FitImage
 
 ACTIVITY_MANAGER = """
@@ -226,7 +227,7 @@ ACTIVITY_MANAGER = """
 <MDFileManager>
     md_bg_color: root.theme_cls.bg_normal
 
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
         spacing: dp(5)
 
@@ -243,7 +244,6 @@ ACTIVITY_MANAGER = """
             key_size: "height"
             bar_width: dp(4)
             bar_color: root.theme_cls.primary_color
-            # on_scroll_stop: root._update_list_images()
 
             RecycleGridLayout:
                 padding: "10dp"
@@ -291,7 +291,7 @@ class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):
         self.height = dp(48)
 
 
-class MDFileManager(ThemableBehavior, MDFloatLayout):
+class MDFileManager(ThemableBehavior, MDRelativeLayout):
     icon = StringProperty("check")
     """
     The icon that will be used on the directory selection button.
@@ -419,10 +419,8 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
-
         if (
             self.selector == "any"
             or self.selector == "multi"
@@ -443,34 +441,26 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
         def sort_by_name(files):
             files.sort(key=locale.strxfrm)
             files.sort(key=str.casefold)
-
             return files
 
         if self.sort_by == "name":
             sorted_files = sort_by_name(files)
-
         elif self.sort_by == "date":
             _files = sort_by_name(files)
             _sorted_files = [os.path.join(self.current_path, f) for f in _files]
             _sorted_files.sort(key=os.path.getmtime, reverse=True)
-
             sorted_files = [os.path.basename(f) for f in _sorted_files]
-
         elif self.sort_by == "size":
             _files = sort_by_name(files)
             _sorted_files = [os.path.join(self.current_path, f) for f in _files]
             _sorted_files.sort(key=os.path.getsize, reverse=True)
-
             sorted_files = [os.path.basename(f) for f in _sorted_files]
-
         elif self.sort_by == "type":
             _files = sort_by_name(files)
-
             sorted_files = sorted(
                 _files,
                 key=lambda f: (os.path.splitext(f)[1], os.path.splitext(f)[0]),
             )
-
         else:
             sorted_files = files
 
@@ -563,7 +553,7 @@ class MDFileManager(ThemableBehavior, MDFloatLayout):
 
         if not self._window_manager:
             self._window_manager = ModalView(
-                size_hint=(1, 1), auto_dismiss=False
+                size_hint=self.size_hint, auto_dismiss=False
             )
             self._window_manager.add_widget(self)
         if not self._window_manager_open:

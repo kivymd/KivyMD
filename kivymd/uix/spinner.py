@@ -133,7 +133,7 @@ Builder.load_string(
             origin: self.center
     canvas:
         Color:
-            rgba: self.color
+            rgba: self.color if self.color else self.theme_cls.primary_color
             a: self._alpha
         SmoothLine:
             circle: self.center_x, self.center_y, self.width / 2, \
@@ -196,7 +196,7 @@ class MDSpinner(ThemableBehavior, Widget):
     and defaults to `True`.
     """
 
-    color = ColorProperty([0, 0, 0, 0])
+    color = ColorProperty(None, allownone=True)
     """
     Spinner color.
 
@@ -220,14 +220,20 @@ class MDSpinner(ThemableBehavior, Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.color = self.theme_cls.primary_color
+
+        if not self.color:
+            self.color = self.theme_cls.primary_color
+
+        if self.color == self.theme_cls.primary_color:
+            self.theme_cls.bind(primary_color=self._update_color)
+
         self._alpha_anim_in = Animation(_alpha=1, duration=0.8, t="out_quad")
         self._alpha_anim_out = Animation(_alpha=0, duration=0.3, t="out_quad")
         self._alpha_anim_out.bind(
             on_complete=self._reset,
             on_progress=self._on_determinate_progress,
         )
-        self.theme_cls.bind(primary_color=self._update_color)
+
         self.register_event_type("on_determinate_complete")
         Clock.schedule_once(self.check_determinate)
 

@@ -901,13 +901,13 @@ class TableData(RecycleView):
             self.pagination_menu_open = True
             self.pagination_menu.open()
 
-    def set_number_displayed_lines(self, instance_menu, instance_menu_item):
+    def set_number_displayed_lines(self, text_item):
         """
         Called when the user sets the number of pages displayed
         in the table.
         """
 
-        self.rows_num = int(instance_menu_item.text)
+        self.rows_num = int(text_item)
         self.set_next_row_data_parts("reset")
         self.set_text_from_of("reset")
 
@@ -1616,7 +1616,14 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     def create_pagination_menu(self, interval):
         menu_items = [
-            {"text": f"{i}"}
+            {
+                "text": f"{i}",
+                "viewclass": "OneLineListItem",
+                "height": dp(56),
+                "on_release": lambda x=f"{i}": self.table_data.set_number_displayed_lines(
+                    x
+                ),
+            }
             for i in range(
                 self.rows_num, len(self.row_data) // 2, self.rows_num
             )
@@ -1629,7 +1636,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             width_mult=2,
         )
         pagination_menu.bind(
-            on_release=self.table_data.set_number_displayed_lines,
             on_dismiss=self.table_data.close_pagination_menu,
         )
         self.table_data.pagination_menu = pagination_menu

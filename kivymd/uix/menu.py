@@ -22,7 +22,7 @@ Usage
     from kivymd.uix.menu import MDDropdownMenu
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDRaisedButton:
             id: button
@@ -36,16 +36,21 @@ Usage
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
-            menu_items = [{"text": f"Item {i}"} for i in range(5)]
+            menu_items = [
+                {
+                    "text": f"Item {i}",
+                    "viewclass": "OneLineListItem",
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                } for i in range(5)
+            ]
             self.menu = MDDropdownMenu(
                 caller=self.screen.ids.button,
                 items=menu_items,
                 width_mult=4,
             )
-            self.menu.bind(on_release=self.menu_callback)
 
-        def menu_callback(self, instance_menu, instance_menu_item):
-            print(instance_menu, instance_menu_item)
+        def menu_callback(self, text_item):
+            print(text_item)
 
         def build(self):
             return self.screen
@@ -67,314 +72,52 @@ Wrong
     menu = MDDropdownMenu(caller=self.screen.ids.button, items=menu_items)
     menu.open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-wrong.gif
-    :align: center
-
 Customization of menu item
 --------------------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right.gif
-    :align: center
-
-You must create a new class that inherits from the :class:`~RightContent` class:
-
-.. code-block:: python
-
-    class RightContentCls(RightContent):
-        pass
-
-Now in the KV rule you can create your own elements that will be displayed in
-the menu item on the right:
-
-.. code-block:: kv
-
-    <RightContentCls>
-        disabled: True
-        md_bg_color_disabled: 0, 0, 0, 0
-
-        MDIconButton:
-            icon: root.icon
-            user_font_size: "16sp"
-            pos_hint: {"center_y": .5}
-
-        MDLabel:
-            text: root.text
-            font_style: "Caption"
-            size_hint_x: None
-            width: self.texture_size[0]
-            text_size: None, None
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right-detail.png
-    :align: center
-
-Now create menu items as usual, but add the key ``right_content_cls`` whose
-value is the class ``RightContentCls`` that you created:
-
-.. code-block:: python
-
-    menu_items = [
-        {
-            "right_content_cls": RightContentCls(
-                text=f"R+{i}", icon="apple-keyboard-command",
-            ),
-            "icon": "git",
-            "text": f"Item {i}",
-        }
-        for i in range(5)
-    ]
-    self.menu = MDDropdownMenu(
-        caller=self.screen.ids.button, items=menu_items, width_mult=4
-    )
-
-Full example
-------------
+Menu items are created in the same way as items for the :class:`~kivy.uix.recycleview.RecycleView` class.
 
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.metrics import dp
+    from kivy.properties import StringProperty
 
     from kivymd.app import MDApp
-    from kivymd.uix.menu import MDDropdownMenu, RightContent
-
-    KV = '''
-    <RightContentCls>
-        disabled: True
-        md_bg_color_disabled: 0, 0, 0, 0
-
-        MDIconButton:
-            icon: root.icon
-            user_font_size: "16sp"
-            pos_hint: {"center_y": .5}
-
-        MDLabel:
-            text: root.text
-            font_style: "Caption"
-            size_hint_x: None
-            width: self.texture_size[0]
-            text_size: None, None
-
-
-    Screen:
-
-        MDRaisedButton:
-            id: button
-            text: "PRESS ME"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.menu.open()
-    '''
-
-
-    class RightContentCls(RightContent):
-        pass
-
-
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
-            menu_items = [
-                {
-                    "right_content_cls": RightContentCls(
-                        text=f"R+{i}", icon="apple-keyboard-command",
-                    ),
-                    "icon": "git",
-                    "text": f"Item {i}",
-                }
-                for i in range(5)
-            ]
-            self.menu = MDDropdownMenu(
-                caller=self.screen.ids.button, items=menu_items, width_mult=4
-            )
-            self.menu.bind(on_release=self.menu_callback)
-
-        def menu_callback(self, instance_menu, instance_menu_item):
-            instance_menu.dismiss()
-
-        def build(self):
-            return self.screen
-
-
-    Test().run()
-
-Menu without icons on the left
-------------------------------
-
-If you do not want to use the icons in the menu items on the left,
-then do not use the "icon" key when creating menu items:
-
-.. code-block:: python
-
-        menu_items = [
-            {
-                "right_content_cls": RightContentCls(
-                    text=f"R+{i}", icon="apple-keyboard-command",
-                ),
-                "text": f"Item {i}",
-            }
-            for i in range(5)
-        ]
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-without-icon.png
-    :align: center
-
-Item height adjustment
-----------------------
-
-.. code-block:: python
-
-        menu_items = [
-            {
-                "right_content_cls": RightContentCls(
-                    text=f"R+{i}", icon="apple-keyboard-command",
-                ),
-                "text": f"Item {i}",
-                "height": "36dp",
-                "top_pad": "10dp",
-                "bot_pad": "10dp",
-            }
-            for i in range(5)
-        ]
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-item-pad.png
-    :align: center
-
-Mixin items
------------
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-    from kivymd.uix.menu import MDDropdownMenu, RightContent
-
-    KV = '''
-    <RightContentCls>
-        disabled: True
-        md_bg_color_disabled: 0, 0, 0, 0
-
-        MDIconButton:
-            icon: root.icon
-            user_font_size: "16sp"
-            pos_hint: {"center_y": .5}
-
-        MDLabel:
-            text: root.text
-            font_style: "Caption"
-            size_hint_x: None
-            width: self.texture_size[0]
-            text_size: None, None
-
-
-    Screen:
-
-        MDRaisedButton:
-            id: button
-            text: "PRESS ME"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.menu.open()
-    '''
-
-
-    class RightContentCls(RightContent):
-        pass
-
-
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
-
-            menu_items = []
-            data = [
-                {"": "Open"},
-                {},
-                {"open-in-app": "Open in app >"},
-                {"trash-can-outline": "Move to Trash"},
-                {"rename-box": "Rename"},
-                {"zip-box-outline": "Create zip"},
-                {},
-                {"": "Properties"},
-            ]
-
-            for data_item in data:
-                if data_item:
-                    if list(data_item.items())[0][1].endswith(">"):
-                        menu_items.append(
-                            {
-                                "right_content_cls": RightContentCls(
-                                    icon="menu-right-outline",
-                                ),
-                                "icon": list(data_item.items())[0][0],
-                                "text": list(data_item.items())[0][1][:-2],
-                                "height": "36dp",
-                                "top_pad": "10dp",
-                                "bot_pad": "10dp",
-                                "divider": None,
-                            }
-                        )
-                    else:
-                        menu_items.append(
-                            {
-                                "text": list(data_item.items())[0][1],
-                                "icon": list(data_item.items())[0][0],
-                                "font_style": "Caption",
-                                "height": "36dp",
-                                "top_pad": "10dp",
-                                "bot_pad": "10dp",
-                                "divider": None,
-                            }
-                        )
-                else:
-                    menu_items.append(
-                        {"viewclass": "MDSeparator", "height": 1}
-                    )
-            self.menu = MDDropdownMenu(
-                caller=self.screen.ids.button,
-                items=menu_items,
-                width_mult=4,
-            )
-            self.menu.bind(on_release=self.menu_callback)
-
-        def menu_callback(self, instance_menu, instance_menu_item):
-            print(instance_menu, instance_menu_item
-
-
-        def build(self):
-            return self.screen
-
-
-    Test().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-mixin.png
-    :align: center
-
-Hover Behavior
---------------
-
-.. code-block:: python
-
-    self.menu = MDDropdownMenu(
-        ...,
-        ...,
-        selected_color=self.theme_cls.primary_dark_hue,
-    )
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-with-hover.gif
-    :align: center
-
-Create submenu
---------------
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
+    from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem
     from kivymd.uix.menu import MDDropdownMenu
 
     KV = '''
-    Screen:
+    <RightContentCls>
+        disabled: True
+        adaptive_size: True
+        pos_hint: {"center_y": .5}
+
+        MDIconButton:
+            icon: root.icon
+            user_font_size: "16sp"
+            md_bg_color_disabled: 0, 0, 0, 0
+
+        MDLabel:
+            text: root.text
+            font_style: "Caption"
+            adaptive_size: True
+            pos_hint: {"center_y": .5}
+
+
+    <Item>
+
+        IconLeftWidget:
+            icon: root.left_icon
+
+        RightContentCls:
+            id: container
+            icon: root.right_icon
+            text: root.right_text
+
+
+    MDScreen:
 
         MDRaisedButton:
             id: button
@@ -384,51 +127,40 @@ Create submenu
     '''
 
 
-    class CustomDrop(MDDropdownMenu):
-        def set_bg_color_items(self, instance_selected_item):
-            if self.selected_color and not MDApp.get_running_app().submenu:
-                for item in self.menu.ids.box.children:
-                    if item is not instance_selected_item:
-                        item.bg_color = (0, 0, 0, 0)
-                    else:
-                        instance_selected_item.bg_color = self.selected_color
+    class RightContentCls(IRightBodyTouch, MDBoxLayout):
+        icon = StringProperty()
+        text = StringProperty()
+
+
+    class Item(OneLineAvatarIconListItem):
+        left_icon = StringProperty()
+        right_icon = StringProperty()
+        right_text = StringProperty()
 
 
     class Test(MDApp):
-        submenu = None
-
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
             menu_items = [
                 {
-                    "icon": "git",
-                    "text": f"Item {i}" if i != 3 else "Open submenu",
-                }
-                for i in range(5)
+                    "text": f"Item {i}",
+                    "right_text": f"R+{i}",
+                    "right_icon": "apple-keyboard-command",
+                    "left_icon": "git",
+                    "viewclass": "Item",
+                    "height": dp(54),
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                } for i in range(5)
             ]
-            self.menu = CustomDrop(
+            self.menu = MDDropdownMenu(
                 caller=self.screen.ids.button,
                 items=menu_items,
                 width_mult=4,
-                selected_color=self.theme_cls.bg_darkest
             )
-            self.menu.bind(on_enter=self.check_item)
 
-        def check_item(self, menu, item):
-            if item.text == "Open submenu" and not self.submenu:
-                menu_items = [{"text": f"Item {i}"} for i in range(5)]
-                self.submenu = MDDropdownMenu(
-                    caller=item,
-                    items=menu_items,
-                    width_mult=4,
-                    selected_color=self.theme_cls.bg_darkest,
-                )
-                self.submenu.bind(on_dismiss=self.set_state_submenu)
-                self.submenu.open()
-
-        def set_state_submenu(self, *args):
-            self.submenu = None
+        def menu_callback(self, text_item):
+            print(text_item)
 
         def build(self):
             return self.screen
@@ -436,7 +168,8 @@ Create submenu
 
     Test().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-submenu.gif
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right.gif
     :align: center
 
 Menu with MDToolbar
@@ -447,17 +180,16 @@ The :class:`~MDDropdownMenu` works well with the standard
 by the MDToolbar component, it is necessary to pass the button as an argument to
 the callback using `lambda x: app.callback(x)`.
 
-.. note::
-
-    This example uses drop down menus for both the righthand and lefthand menus (i.e
-    both the 'triple bar' and 'triple dot' menus) to illustrate that it is possible.
-    A better solution for the 'triple bar' menu would probably have been
-    :class:`~kivymd.uix.MDNavigationDrawer`.
+.. note:: This example uses drop down menus for both the righthand and
+    lefthand menus (i.e both the 'triple bar' and 'triple dot' menus) to
+    illustrate that it is possible. A better solution for the 'triple bar' menu
+    would probably have been :class:`~kivymd.uix.MDNavigationDrawer`.
 
 
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.metrics import dp
 
     from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
@@ -480,21 +212,28 @@ the callback using `lambda x: app.callback(x)`.
 
     class Test(MDApp):
         def build(self):
-            menu_items = [{"text": f"Item {i}"} for i in range(5)]
+            menu_items = [
+                {
+                    "viewclass": "OneLineListItem",
+                    "text": f"Item {i}",
+                    "height": dp(56),
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                 } for i in range(5)
+            ]
             self.menu = MDDropdownMenu(
                 items=menu_items,
                 width_mult=4,
             )
-            self.menu.bind(on_release=self.menu_callback)
             return Builder.load_string(KV)
 
         def callback(self, button):
             self.menu.caller = button
             self.menu.open()
 
-        def menu_callback(self, menu, item):
+        def menu_callback(self, text_item):
             self.menu.dismiss()
-            Snackbar(text=item.text).open()
+            Snackbar(text=text_item).open()
+
 
     Test().run()
 
@@ -513,18 +252,18 @@ Bottom position
 
 .. code-block:: python
 
-    from kivy.clock import Clock
     from kivy.lang import Builder
+    from kivy.metrics import dp
 
     from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
 
     KV = '''
-    Screen
+    MDScreen
 
         MDTextField:
             id: field
-            pos_hint: {'center_x': .5, 'center_y': .5}
+            pos_hint: {'center_x': .5, 'center_y': .6}
             size_hint_x: None
             width: "200dp"
             hint_text: "Password"
@@ -536,20 +275,24 @@ Bottom position
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
-            menu_items = [{"icon": "git", "text": f"Item {i}"} for i in range(5)]
+            menu_items = [
+                {
+                    "viewclass": "OneLineIconListItem",
+                    "icon": "git",
+                    "height": dp(56),
+                    "text": f"Item {i}",
+                    "on_release": lambda x=f"Item {i}": self.set_item(x),
+                } for i in range(5)]
             self.menu = MDDropdownMenu(
                 caller=self.screen.ids.field,
                 items=menu_items,
                 position="bottom",
                 width_mult=4,
             )
-            self.menu.bind(on_release=self.set_item)
 
-        def set_item(self, instance_menu, instance_menu_item):
-            def set_item(interval):
-                self.screen.ids.field.text = instance_menu_item.text
-                instance_menu.dismiss()
-            Clock.schedule_once(set_item, 0.5)
+        def set_item(self, text__item):
+            self.screen.ids.field.text = text__item
+            self.menu.dismiss()
 
         def build(self):
             return self.screen
@@ -566,12 +309,13 @@ Center position
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.metrics import dp
 
     from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
 
     KV = '''
-    Screen
+    MDScreen
 
         MDDropDownItem:
             id: drop_item
@@ -585,17 +329,25 @@ Center position
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
-            menu_items = [{"icon": "git", "text": f"Item {i}"} for i in range(5)]
+            menu_items = [
+                {
+                    "viewclass": "OneLineIconListItem",
+                    "icon": "git",
+                    "text": f"Item {i}",
+                    "height": dp(56),
+                    "on_release": lambda x=f"Item {i}": self.set_item(x),
+                } for i in range(5)
+            ]
             self.menu = MDDropdownMenu(
                 caller=self.screen.ids.drop_item,
                 items=menu_items,
                 position="center",
                 width_mult=4,
             )
-            self.menu.bind(on_release=self.set_item)
+            self.menu.bind()
 
-        def set_item(self, instance_menu, instance_menu_item):
-            self.screen.ids.drop_item.set_item(instance_menu_item.text)
+        def set_item(self, text_item):
+            self.screen.ids.drop_item.set_item(text_item)
             self.menu.dismiss()
 
         def build(self):
@@ -608,7 +360,7 @@ Center position
     :align: center
 """
 
-__all__ = ("MDDropdownMenu", "RightContent")
+__all__ = ("MDDropdownMenu",)
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -624,19 +376,10 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.scrollview import ScrollView
+from kivy.uix.recycleview import RecycleView
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior, HoverBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.card import MDCard
-from kivymd.uix.list import (
-    IRightBodyTouch,
-    OneLineAvatarIconListItem,
-    OneLineListItem,
-    OneLineRightIconListItem,
-)
 
 Builder.load_string(
     """
@@ -658,16 +401,21 @@ Builder.load_string(
     size_hint: None, None
     width: root.width_mult * STD_INC
     bar_width: 0
+    key_viewclass: "viewclass"
+    key_size: "height"
 
-    MDGridLayout:
-        id: box
-        cols: 1
-        adaptive_height: True
+    RecycleBoxLayout:
+        padding: 0, "4dp", 0, "4dp"
+        default_size: None, dp(48)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: "vertical"
 
 
 <MDDropdownMenu>
 
-    DropdownMenuFakeCard:
+    MDCard:
         id: card
         elevation: 10
         size_hint: None, None
@@ -675,7 +423,9 @@ Builder.load_string(
         pos: md_menu.pos
         opacity: md_menu.opacity
         radius: root.radius
-        md_bg_color: root.background_color if root.background_color else root.theme_cls.bg_dark
+        md_bg_color:
+            root.background_color \
+            if root.background_color else root.theme_cls.bg_dark
 
         MDMenu:
             id: md_menu
@@ -688,62 +438,7 @@ Builder.load_string(
 )
 
 
-class DropdownMenuFakeCard(MDCard, FakeRectangularElevationBehavior):
-    pass
-
-
-class RightContent(IRightBodyTouch, MDBoxLayout):
-    text = StringProperty()
-    """
-    Text item.
-
-    :attr:`text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    icon = StringProperty()
-    """
-    Icon item.
-
-    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-
-class MDMenuItemBase(HoverBehavior):
-    """
-    Base class for MenuItem
-    """
-
-    def on_enter(self):
-        self.parent.parent.drop_cls.set_bg_color_items(self)
-        self.parent.parent.drop_cls.dispatch("on_enter", self)
-
-    def on_leave(self):
-        self.parent.parent.drop_cls.dispatch("on_leave", self)
-
-
-class MDMenuItemIcon(MDMenuItemBase, OneLineAvatarIconListItem):
-    icon = StringProperty()
-    """
-    Icon item.
-
-    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-
-class MDMenuItem(MDMenuItemBase, OneLineListItem):
-
-    pass
-
-
-class MDMenuItemRight(MDMenuItemBase, OneLineRightIconListItem):
-
-    pass
-
-
-class MDMenu(ScrollView):
+class MDMenu(RecycleView):
     width_mult = NumericProperty(1)
     """
     See :attr:`~MDDropdownMenu.width_mult`.
@@ -758,18 +453,13 @@ class MDMenu(ScrollView):
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
     :Events:
-        :attr:`on_enter`
-            Call when mouse enter the bbox of item menu.
-        :attr:`on_leave`
-            Call when the mouse exit the item menu.
-        :attr:`on_dismiss`
-            Call when closes menu.
-        :attr:`on_release`
+        `on_release`
             The method that will be called when you click menu items.
     """
 
     selected_color = ColorProperty(None)
-    """Custom color (``rgba`` format) for list item when hover behavior occurs.
+    """
+    Custom color (``rgba`` format) for list item when hover behavior occurs.
 
     :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -893,9 +583,6 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         Window.bind(on_maximize=self.set_menu_properties)
         Window.bind(on_restore=self.set_menu_properties)
         self.register_event_type("on_dismiss")
-        self.register_event_type("on_enter")
-        self.register_event_type("on_leave")
-        self.register_event_type("on_release")
         self.menu = self.ids.md_menu
         self.target_height = 0
 
@@ -903,7 +590,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.set_menu_properties(0)
 
     def set_bg_color_items(self, instance_selected_item):
-        """Called when a Hover Behavior event occurs for a list item.
+        """
+        Called when a Hover Behavior event occurs for a list item.
 
         :type instance_selected_item: <kivymd.uix.menu.MDMenuItemIcon object>
         """
@@ -915,73 +603,11 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 else:
                     instance_selected_item.bg_color = self.selected_color
 
-    def create_menu_items(self):
-        """Creates menu items."""
-
-        for data in self.items:
-            if data.get("icon") and data.get("right_content_cls", None):
-
-                item = MDMenuItemIcon(
-                    text=data.get("text", ""),
-                    divider=data.get("divider", "Full"),
-                    _txt_top_pad=data.get("top_pad", "20dp"),
-                    _txt_bot_pad=data.get("bot_pad", "20dp"),
-                )
-
-            elif data.get("icon"):
-                item = MDMenuItemIcon(
-                    text=data.get("text", ""),
-                    divider=data.get("divider", "Full"),
-                    _txt_top_pad=data.get("top_pad", "20dp"),
-                    _txt_bot_pad=data.get("bot_pad", "20dp"),
-                )
-
-            elif data.get("right_content_cls", None):
-                item = MDMenuItemRight(
-                    text=data.get("text", ""),
-                    divider=data.get("divider", "Full"),
-                    _txt_top_pad=data.get("top_pad", "20dp"),
-                    _txt_bot_pad=data.get("bot_pad", "20dp"),
-                )
-
-            else:
-
-                item = MDMenuItem(
-                    text=data.get("text", ""),
-                    divider=data.get("divider", "Full"),
-                    _txt_top_pad=data.get("top_pad", "20dp"),
-                    _txt_bot_pad=data.get("bot_pad", "20dp"),
-                )
-
-            # Set height item.
-            if data.get("height", ""):
-                item.height = data.get("height")
-            # Compensate icon area by some left padding.
-            if not data.get("icon"):
-                item._txt_left_pad = data.get("left_pad", "32dp")
-            # Set left icon.
-            else:
-                item.icon = data.get("icon", "")
-            item.bind(on_release=lambda x=item: self.dispatch("on_release", x))
-            right_content_cls = data.get("right_content_cls", None)
-            # Set right content.
-            if isinstance(right_content_cls, RightContent):
-                item.ids._right_container.width = right_content_cls.width + dp(
-                    20
-                )
-                item.ids._right_container.padding = ("10dp", 0, 0, 0)
-                item.add_widget(right_content_cls)
-            else:
-                if "_right_container" in item.ids:
-                    item.ids._right_container.width = 0
-            self.menu.ids.box.add_widget(item)
-
     def set_menu_properties(self, interval=0):
         """Sets the size and position for the menu window."""
 
         if self.caller:
-            if not self.menu.ids.box.children:
-                self.create_menu_items()
+            self.ids.md_menu.data = self.items
             # We need to pick a starting point, see how big we need to be,
             # and where to grow to.
             self._start_coords = self.caller.to_window(
@@ -998,10 +624,10 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 )
 
             # Set the target_height of the menu depending on the size of
-            # each MDMenuItem or MDMenuItemIcon
+            # each MDMenuItem or MDMenuItemIcon.
             self.target_height = 0
-            for item in self.menu.ids.box.children:
-                self.target_height += item.height
+            for item in self.ids.md_menu.data:
+                self.target_height += item.get("height", dp(72))
 
             # If we're over max_height...
             if 0 < self.max_height < self.target_height:
@@ -1149,15 +775,6 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     def on_touch_up(self, touch):
         super().on_touch_up(touch)
         return True
-
-    def on_enter(self, instance):
-        """Call when mouse enter the bbox of the item of menu."""
-
-    def on_leave(self, instance):
-        """Call when the mouse exit the item of menu."""
-
-    def on_release(self, *args):
-        """The method that will be called when you click menu items."""
 
     def on_dismiss(self):
         """Called when the menu is closed."""

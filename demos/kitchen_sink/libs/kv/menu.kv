@@ -1,18 +1,29 @@
 <RightContentCls>
     disabled: True
+    adaptive_size: True
+    pos_hint: {"center_y": .5}
 
     MDIconButton:
         icon: root.icon
         user_font_size: "16sp"
-        pos_hint: {"center_y": .5}
         md_bg_color_disabled: 0, 0, 0, 0
 
     MDLabel:
         text: root.text
         font_style: "Caption"
-        size_hint_x: None
-        width: self.texture_size[0]
-        text_size: None, None
+        adaptive_size: True
+        pos_hint: {"center_y": .5}
+
+
+<KitchenSinkMenuRightItem>
+
+    IconLeftWidget:
+        icon: root.left_icon
+
+    RightContentCls:
+        id: container
+        icon: root.right_icon
+        text: root.right_text
 
 
 <KitchenSinkMenu>

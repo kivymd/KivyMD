@@ -337,6 +337,11 @@ class MDExpansionPanel(RelativeLayout):
                                 source=self.icon, pos_hint={"center_y": 0.5}
                             )
                         )
+                else:
+                    self.panel_cls.remove_widget(
+                        self.panel_cls.ids._left_container
+                    )
+                    self.panel_cls._txt_left_pad = 0
             else:
                 # if no icon
                 self.panel_cls._txt_left_pad = m_res.HORIZ_MARGINS

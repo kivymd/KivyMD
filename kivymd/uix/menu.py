@@ -457,14 +457,6 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             The method that will be called when you click menu items.
     """
 
-    selected_color = ColorProperty(None)
-    """
-    Custom color (``rgba`` format) for list item when hover behavior occurs.
-
-    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
     items = ListProperty()
     """
     See :attr:`~kivy.uix.recycleview.RecycleView.data`.
@@ -588,20 +580,6 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     def check_position_caller(self, instance, width, height):
         self.set_menu_properties(0)
-
-    def set_bg_color_items(self, instance_selected_item):
-        """
-        Called when a Hover Behavior event occurs for a list item.
-
-        :type instance_selected_item: <kivymd.uix.menu.MDMenuItemIcon object>
-        """
-
-        if self.selected_color:
-            for item in self.menu.ids.box.children:
-                if item is not instance_selected_item:
-                    item.bg_color = (0, 0, 0, 0)
-                else:
-                    instance_selected_item.bg_color = self.selected_color
 
     def set_menu_properties(self, interval=0):
         """Sets the size and position for the menu window."""

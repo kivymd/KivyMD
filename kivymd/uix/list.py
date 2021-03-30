@@ -230,7 +230,7 @@ OneLineIconListItem
 
 .. code-block:: kv
 
-    OneLineAvatarListItem:
+    OneLineIconListItem:
         text: "Single-line item with avatar"
 
         IconLeftWidget:

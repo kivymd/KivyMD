@@ -254,11 +254,19 @@ Bottom position
 
     from kivy.lang import Builder
     from kivy.metrics import dp
+    from kivy.properties import StringProperty
 
+    from kivymd.uix.list import OneLineIconListItem
     from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
 
     KV = '''
+    <IconListItem>
+
+        IconLeftWidget:
+            icon: root.icon
+
+
     MDScreen
 
         MDTextField:
@@ -271,13 +279,17 @@ Bottom position
     '''
 
 
+    class IconListItem(OneLineIconListItem):
+        icon = StringProperty()
+
+
     class Test(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
             menu_items = [
                 {
-                    "viewclass": "OneLineIconListItem",
+                    "viewclass": "IconListItem",
                     "icon": "git",
                     "height": dp(56),
                     "text": f"Item {i}",
@@ -308,13 +320,21 @@ Center position
 
 .. code-block:: python
 
-    from kivy.lang import Builder
+from kivy.lang import Builder
     from kivy.metrics import dp
+    from kivy.properties import StringProperty
 
+    from kivymd.uix.list import OneLineIconListItem
     from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
 
     KV = '''
+    <IconListItem>
+
+        IconLeftWidget:
+            icon: root.icon
+
+
     MDScreen
 
         MDDropDownItem:
@@ -325,13 +345,17 @@ Center position
     '''
 
 
+    class IconListItem(OneLineIconListItem):
+        icon = StringProperty()
+
+
     class Test(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
             menu_items = [
                 {
-                    "viewclass": "OneLineIconListItem",
+                    "viewclass": "IconListItem",
                     "icon": "git",
                     "text": f"Item {i}",
                     "height": dp(56),

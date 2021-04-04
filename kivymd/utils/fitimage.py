@@ -122,6 +122,9 @@ class FitImage(BoxLayout):
         self.bind(source=self.container.setter("source"))
         self.add_widget(self.container)
 
+    def reload(self):
+        self.container.image.reload()
+
 
 class Container(Widget):
     source = ObjectProperty()

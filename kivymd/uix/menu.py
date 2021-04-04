@@ -320,7 +320,7 @@ Center position
 
 .. code-block:: python
 
-from kivy.lang import Builder
+    from kivy.lang import Builder
     from kivy.metrics import dp
     from kivy.properties import StringProperty
 

@@ -932,6 +932,30 @@ class MDTextField(ThemableBehavior, TextInput):
     defaults to `[10, 10, 0, 0]`.
     """
 
+    font_name_helper_text = StringProperty("Roboto")
+    """
+    Font name for helper text.
+
+    :attr:`font_name_helper_text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Roboto'`.
+    """
+
+    font_name_hint_text = StringProperty("Roboto")
+    """
+    Font name for hint text.
+
+    :attr:`font_name_hint_text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Roboto'`.
+    """
+
+    font_name_max_length = StringProperty("Roboto")
+    """
+    Font name for max text length.
+
+    :attr:`font_name_max_length` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Roboto'`.
+    """
+
     _text_len_error = BooleanProperty(False)
     _hint_lbl_font_size = NumericProperty("16sp")
     _line_blank_space_right_point = NumericProperty(0)
@@ -994,6 +1018,7 @@ class MDTextField(ThemableBehavior, TextInput):
             valign="middle",
             text=self.helper_text,
             field=self,
+            font_name=self.font_name_helper_text,
         )
         # Label object for `max_text_length` parameter.
         self._right_msg_lbl = TextfieldLabel(
@@ -1009,6 +1034,15 @@ class MDTextField(ThemableBehavior, TextInput):
         )
         # MDIcon object for the icon on the right.
         self._lbl_icon_right = MDIcon(theme_text_color="Custom")
+
+    def on_font_name_helper_text(self, instance, value):
+        self._msg_lbl.font_name = value
+
+    def on_font_name_hint_text(self, instance, value):
+        self._hint_lbl.font_name = value
+
+    def on_font_name_max_length(self, instance, value):
+        self._right_msg_lbl.font_name = value
 
     def on_icon_right(self, instance, value):
         self._lbl_icon_right.icon = value

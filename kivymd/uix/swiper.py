@@ -454,9 +454,17 @@ class MDSwiper(ScrollView, EventDispatcher):
         children = list(reversed(self.ids.anchor_scroll.children))
         if not children:
             return
+
         child = children[self._selected]
         total_width = self.ids.anchor_scroll.width - Window.width
-        view_x = child.x - self.items_spacing * self.width_mult
+
+        if self.get_current_index() == 0:
+            view_x = child.x - self.items_spacing
+        elif self.get_current_index() == len(children) - 1:
+            view_x = child.x - self.items_spacing * self.width_mult - self.items_spacing * 2
+        else:
+            view_x = child.x - self.items_spacing * self.width_mult
+
         anim = Animation(
             scroll_x=view_x / total_width,
             d=self.transition_duration,
@@ -467,6 +475,7 @@ class MDSwiper(ScrollView, EventDispatcher):
         for widget in children:
             widget.children[0]._dismiss_size()
             widget.children[0]._selected = False
+
         child.children[0]._selected_size()
         child.children[0]._selected = True
 

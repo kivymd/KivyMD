@@ -461,7 +461,11 @@ class MDSwiper(ScrollView, EventDispatcher):
         if self.get_current_index() == 0:
             view_x = child.x - self.items_spacing
         elif self.get_current_index() == len(children) - 1:
-            view_x = child.x - self.items_spacing * self.width_mult - self.items_spacing * 2
+            view_x = (
+                child.x
+                - self.items_spacing * self.width_mult
+                - self.items_spacing * 2
+            )
         else:
             view_x = child.x - self.items_spacing * self.width_mult
 

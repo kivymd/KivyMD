@@ -823,7 +823,7 @@ class ThemeManager(EventDispatcher):
     def _get_error_color(self):
         return get_color_from_hex(self.colors["Red"]["A700"])
 
-    error_color = AliasProperty(_get_error_color)
+    error_color = AliasProperty(_get_error_color, bind=["theme_style"])
     """
     Color of the error text used
     in the :class:`~kivymd.uix.textfield.MDTextField`.

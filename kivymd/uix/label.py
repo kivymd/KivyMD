@@ -222,6 +222,18 @@ from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 from kivymd.uix import MDAdaptiveWidget
 
+__MDLabel_colors__ = {
+    "Primary": "text_color",
+    "Secondary": "secondary_text_color",
+    "Hint": "disabled_hint_text_color",
+    "Error": "error_color",
+    "OP": {
+        "primary": "opposite_text_color",
+        "Secondary": "opposite_secondary_text_color",
+        "Hint": "opposite_disabled_hint_text_color",
+    },
+}
+
 Builder.load_string(
     """
 #:import md_icons kivymd.icon_definitions.md_icons
@@ -303,11 +315,10 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
+    _text_color_str = StringProperty()
 
     parent_background = ColorProperty(None)
     can_capitalize = BooleanProperty(True)
-
-    _currently_bound_property = {}
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -319,6 +330,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         self.update_font_style()
         self.on_opposite_colors(None, self.opposite_colors)
         Clock.schedule_once(self.check_font_styles)
+        self.theme_cls.bind(theme_style=self._do_update_theme_color)
 
     def check_font_styles(self, *dt):
         if self.font_style not in list(self.theme_cls.font_styles.keys()):
@@ -343,34 +355,29 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         # self.letter_spacing = font_info[3]
 
     def on_theme_text_color(self, instance, value):
-        t = self.theme_cls
         op = self.opposite_colors
-        setter = self.setter("color")
-        t.unbind(**self._currently_bound_property)
-        attr_name = {
-            "Primary": "text_color" if not op else "opposite_text_color",
-            "Secondary": "secondary_text_color"
-            if not op
-            else "opposite_secondary_text_color",
-            "Hint": "disabled_hint_text_color"
-            if not op
-            else "opposite_disabled_hint_text_color",
-            "Error": "error_color",
-        }.get(value, None)
-        if attr_name:
-            c = {attr_name: setter}
-            t.bind(**c)
-            self._currently_bound_property = c
-            self.color = getattr(t, attr_name)
+        if op:
+            self._text_color_str = __MDLabel_colors__.get("OP", "").get(
+                value, ""
+            )
+        else:
+            self._text_color_str = __MDLabel_colors__.get(value, "")
+        if self._text_color_str:
+            self._do_update_theme_color()
         else:
             # 'Custom' and 'ContrastParentBackground' lead here, as well as the
             # generic None value it's not yet been set
+            self._text_color_str = ""
             if value == "Custom" and self.text_color:
                 self.color = self.text_color
             elif value == "ContrastParentBackground" and self.parent_background:
                 self.color = get_contrast_text_color(self.parent_background)
             else:
                 self.color = [0, 0, 0, 1]
+
+    def _do_update_theme_color(self, *arguments):
+        if self._text_color_str:
+            self.color = getattr(self.theme_cls, self._text_color_str)
 
     def on_text_color(self, *args):
         if self.theme_text_color == "Custom":

@@ -825,6 +825,7 @@ class MDNavigationRail(MDCard):
             )
             rail_box.height = self.floating_action_button.height + dp(16)
             rail_box.add_widget(self.floating_action_button)
+            self.ids.box.children.reverse()
             self.ids.box.add_widget(rail_box)
             self.ids.box.children.reverse()
 

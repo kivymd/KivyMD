@@ -414,13 +414,12 @@ You can set your color values ​​for background, text of buttons etc:
 
     `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
 
-You can use various types of dismissal on the stack:
+You can use auto dismiss on the stack:
 
 .. code-block:: kv
 
     MDFloatingActionButtonSpeedDial:
         auto_dismiss: True              #dismisses when clicked out of widget
-        dismiss_on_option_touch: True   #dismisses even when clicked on options
 """
 
 __all__ = (
@@ -1572,7 +1571,7 @@ class BaseFloatingLabel(
 
 
 class MDFloatingBottomButton(BaseFloatingBottomButton):
-    ref_name = StringProperty()
+    text = StringProperty()
 
 
 class MDFloatingRootButton(BaseFloatingRootButton):
@@ -1809,14 +1808,6 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `False`.
     """
 
-    dismiss_on_option_touch = BooleanProperty(False)
-    """
-    Whether to dismiss stack when clicked on one of the options.
-
-    :attr:`dismiss_on_option_touch` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
     _label_pos_y_set = False
     _anim_buttons_data = {}
     _anim_labels_data = {}
@@ -1842,7 +1833,6 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                 ):
                     if (
                         widget.collide_point(*pos)
-                        and not self.dismiss_on_option_touch
                     ):
                         if self.state == "open":
                             touch_stack = widget.collide_point(*pos)
@@ -1867,7 +1857,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     Animation.cancel_all(widget)
-                    if instance.ref_name == widget.text:
+                    if instance.text == widget.text:
                         Animation(
                             _canvas_width=0,
                             _padding_right=0,
@@ -1887,7 +1877,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     widget._elevation = 0
-                    if instance.ref_name == widget.text:
+                    if instance.text == widget.text:
                         Animation(
                             _canvas_width=widget.width + dp(24),
                             _padding_right=dp(5) if self.right_pad else 0,
@@ -1926,7 +1916,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         for name, name_icon in value.items():
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
-                ref_name=name,
+                text=name,
                 on_enter=self.on_enter,
                 on_leave=self.on_leave,
                 opacity=0,

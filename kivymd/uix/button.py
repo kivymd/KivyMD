@@ -1564,7 +1564,7 @@ class BaseFloatingLabel(
 
 
 class MDFloatingBottomButton(BaseFloatingBottomButton):
-    pass
+    ref_name = StringProperty()
 
 
 class MDFloatingRootButton(BaseFloatingRootButton):
@@ -1793,6 +1793,22 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `False`.
     """
 
+    auto_dismiss = BooleanProperty(False)
+    """
+    Whether to dismiss stack when clicked out of focus of widget.
+
+    :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    dismiss_on_option_touch = BooleanProperty(False)
+    """
+    Whether to dismiss stack when clicked on one of the options.
+
+    :attr:`dismiss_on_option_touch` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     _label_pos_y_set = False
     _anim_buttons_data = {}
     _anim_labels_data = {}
@@ -1802,6 +1818,33 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self.register_event_type("on_open")
         self.register_event_type("on_close")
         Window.bind(on_resize=self._update_pos_buttons)
+
+    def on_touch_up(self, touch):
+        """Dismisses stack when clicked out of focus or clicked on options"""
+        pos = touch.pos
+        touch_root = None
+        touch_stack = None
+        if self.auto_dismiss:
+            for widget in self.children:
+                if isinstance(widget, MDFloatingRootButton):
+                    if widget.collide_point(*pos):
+                        touch_root = widget.collide_point(*pos)
+                if isinstance(widget, MDFloatingBottomButton) or isinstance(
+                    widget, MDFloatingLabel
+                ):
+                    if (
+                        widget.collide_point(*pos)
+                        and not self.dismiss_on_option_touch
+                    ):
+                        if self.state == "open":
+                            touch_stack = widget.collide_point(*pos)
+            else:
+                if (
+                    self.collide_point(*pos)
+                    and not touch_root
+                    and not touch_stack
+                ):
+                    self.close_stack()
 
     def on_open(self, *args):
         """Called when a stack is opened."""
@@ -1816,7 +1859,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     Animation.cancel_all(widget)
-                    if self.data[instance.icon] == widget.text:
+                    if instance.ref_name == widget.text:
                         Animation(
                             _canvas_width=0,
                             _padding_right=0,
@@ -1836,7 +1879,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     widget._elevation = 0
-                    if self.data[instance.icon] == widget.text:
+                    if instance.ref_name == widget.text:
                         Animation(
                             _canvas_width=widget.width + dp(24),
                             _padding_right=dp(5) if self.right_pad else 0,
@@ -1875,6 +1918,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         for name, name_icon in value.items():
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
+                ref_name=name
                 on_enter=self.on_enter,
                 on_leave=self.on_leave,
                 opacity=0,

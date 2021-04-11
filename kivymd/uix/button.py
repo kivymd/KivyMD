@@ -413,6 +413,14 @@ You can set your color values ​​for background, text of buttons etc:
 .. seealso::
 
     `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Button>`_
+
+You can use various types of dismissal on the stack:
+
+.. code-block:: kv
+
+    MDFloatingActionButtonSpeedDial:
+        auto_dismiss: True              #dismisses when clicked out of widget
+        dismiss_on_option_touch: True   #dismisses even when clicked on options
 """
 
 __all__ = (
@@ -1634,7 +1642,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     .. code-block:: python
 
         {
-            'name-icon': 'Text label',
+            'Text label': 'name-icon',
             ...,
             ...,
         }
@@ -1918,7 +1926,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         for name, name_icon in value.items():
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
-                ref_name=name
+                ref_name=name,
                 on_enter=self.on_enter,
                 on_leave=self.on_leave,
                 opacity=0,

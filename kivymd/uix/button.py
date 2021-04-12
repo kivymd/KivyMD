@@ -210,7 +210,7 @@ MDRectangleFlatIconButton
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
     :align: center
 
-Button parameters :class:`~MDRectangleFlatButton` are the same as
+Button parameters :class:`~MDRectangleFlatIconButton` are the same as
 button :class:`~MDRectangleFlatButton`:
 
 .. code-block:: kv

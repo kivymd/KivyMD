@@ -1957,7 +1957,8 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         for widget in self.children:
             if isinstance(widget, MDFloatingLabel):
                 Animation.cancel_all(widget)
-
+            elif isinstance(widget, MDFloatingBottomButton):
+                Animation.cancel_all(widget)
         if self.state != "open":
             y = 0
             label_position = dp(56)

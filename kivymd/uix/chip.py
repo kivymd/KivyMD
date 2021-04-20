@@ -265,14 +265,6 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
             self.dispatch("on_release")
             md_choose_chip = self.parent
 
-            if self.selected_chip_color:
-                Animation(
-                    color=self.theme_cls.primary_dark
-                    if not self.selected_chip_color
-                    else self.selected_chip_color,
-                    d=0.3,
-                ).start(self)
-
             if issubclass(md_choose_chip.__class__, MDChooseChip):
                 for chip in md_choose_chip.children:
                     if chip is not self:
@@ -282,7 +274,12 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
                             else chip._color
                         )
                     else:
-                        chip.color = self.theme_cls.primary_color
+                        Animation(
+                            color=self.theme_cls.primary_dark
+                            if not self.selected_chip_color
+                            else self.selected_chip_color,
+                            d=0.3,
+                            ).start(chip)
 
             if self.check:
                 if not len(self.ids.box_check.children):

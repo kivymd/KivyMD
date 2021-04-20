@@ -54,7 +54,7 @@ Without value hint
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-2.gif
     :align: center
 
-Without custom color
+With custom color
 --------------------
 
 .. code-block:: kv

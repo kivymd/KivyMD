@@ -106,6 +106,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     StringProperty,
+    OptionProperty
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -129,8 +130,7 @@ Builder.load_string(
     height: "26dp"
     padding: 0, 0, "8dp", 0
     width:
-        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
-        if root.icon != 'checkbox-blank-circle' else self.minimum_width
+        self.minimum_width
 
     canvas:
         Color:
@@ -246,10 +246,29 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
         Clock.schedule_once(self.set_color)
 
     def set_color(self, interval):
-        if not self.color:
-            self.color = self.theme_cls.primary_color
-        else:
-            self._color = self.color
+        md_choose_chip = self.parent
+        self._color = self. self.theme_cls.primary_color \
+                            if not self.color \
+                            else self.color
+        if md_choose_chip.selected:
+            if self.text in md_choose_chip.selected:
+                self.color = self.theme_cls.primary_dark \
+                             if not self.selected_chip_color \
+                             else self.selected_chip_color
+
+                if self.check:
+                    self.ids.box_check.add_widget(
+                        MDIcon(
+                            icon="check",
+                            size_hint=(None, None),
+                            size=("26dp", "26dp"),
+                            font_size=sp(20),
+                        ))
+            else:
+                self.color = self.theme_cls.primary_color \
+                             if not self.color \
+                             else self.color
+
 
     def on_icon(self, instance, value):
         def remove_icon(interval):
@@ -261,27 +280,52 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            self.dispatch("on_press")
-            self.dispatch("on_release")
             md_choose_chip = self.parent
+            if issubclass(md_choose_chip.__class__, MDChipContainer):
+                if md_choose_chip.type == 'choice':
+                    if md_choose_chip.multiple == True:
+                        if self.text in md_choose_chip.selected:
+                            Animation(
+                                color=self.theme_cls.primary_color
+                                if not self._color
+                                else self._color,
+                                d=0.3,
+                                ).start(self)
+                            md_choose_chip.selected.remove(self.text)
+                        else:
+                            Animation(
+                                color=self.theme_cls.primary_dark
+                                if not self.selected_chip_color
+                                else self.selected_chip_color,
+                                d=0.3,
+                                ).start(self)
+                            md_choose_chip.selected.append(self.text)
 
-            if issubclass(md_choose_chip.__class__, MDChooseChip):
-                for chip in md_choose_chip.children:
-                    if chip is not self:
-                        chip.color = (
-                            self.theme_cls.primary_color
-                            if not chip._color
-                            else chip._color
-                        )
                     else:
-                        Animation(
-                            color=self.theme_cls.primary_dark
-                            if not self.selected_chip_color
-                            else self.selected_chip_color,
-                            d=0.3,
-                            ).start(chip)
+                        for chip in md_choose_chip.children:
+                            if chip is not self:
+                                chip.color = (
+                                    self.theme_cls.primary_color
+                                    if not chip._color
+                                    else chip._color
+                                )
+                            else:
+                                Animation(
+                                    color=self.theme_cls.primary_dark
+                                    if not self.selected_chip_color
+                                    else self.selected_chip_color,
+                                    d=0.3,
+                                    ).start(chip)
+                                md_choose_chip.selected = [chip.text,]
 
-            if self.check:
+                elif md_choose_chip.type == 'action':
+                    pass
+
+                self.dispatch("on_press")
+                self.dispatch("on_release")
+
+
+            if self.check and md_choose_chip.multiple:
                 if not len(self.ids.box_check.children):
                     self.ids.box_check.add_widget(
                         MDIcon(
@@ -296,7 +340,33 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
                     self.ids.box_check.remove_widget(check)
 
 
-class MDChooseChip(MDStackLayout):
+
+class MDChipContainer(MDStackLayout):
+
+    type = OptionProperty("choice", options = ["choice", "action"])
+    """
+    Chip type. Available options are: `'choice'`, `'action'`.
+
+    :attr:`type` is an :clas:`~kivy.properties.OptionProperty`
+    and defaults to `'choice'`.
+    """
+
+    multiple = BooleanProperty(False)
+    """
+    Muliple chip selection. If True then multiplre chips can be selected
+
+    attr:`required` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    selected = ListProperty([])
+    """
+    The list of all selected chips.
+
+    :attr:`radius` is a :class:`~kivy.properties.ListProperty` and
+    defaults to `[]`.
+    """
+
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDChip):
             return super().add_widget(widget)

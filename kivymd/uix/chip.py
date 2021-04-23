@@ -105,9 +105,8 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     ListProperty,
-    OptionProperty,
     StringProperty,
-)
+    OptionProperty,)
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
@@ -128,7 +127,7 @@ Builder.load_string(
 <MDChip>
     size_hint: None,  None
     height: "26dp"
-    padding: 0, 0, "8dp", 0
+    padding: 0,0,0, 0
     width:
         self.minimum_width
 
@@ -144,7 +143,7 @@ Builder.load_string(
         id: box_check
         adaptive_size: True
         pos_hint: {'center_y': .5}
-        padding: "8dp", 0, 0, 0
+        padding: 0, 0, 0, 0
 
     MDBoxLayout:
         adaptive_width: True
@@ -239,40 +238,55 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
     and defaults to `None`.
     """
 
+    active = BooleanProperty(False)
+
     _color = ColorProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_color)
 
-    def set_color(self, interval):
-        md_choose_chip = self.parent
-        self._color = (
-            self.self.theme_cls.primary_color if not self.color else self.color
-        )
-        if md_choose_chip.selected:
-            if self.text in md_choose_chip.selected:
-                self.color = (
-                    self.theme_cls.primary_dark
-                    if not self.selected_chip_color
-                    else self.selected_chip_color
-                )
+    def set_color(self, *args):
+        self._color = self. self.theme_cls.primary_color \
+                            if not self.color \
+                            else self.color
+        if self.active:
+            self.color = self.theme_cls.primary_dark \
+                         if not self.selected_chip_color \
+                         else self.selected_chip_color
 
-                if self.check:
-                    self.ids.box_check.add_widget(
-                        MDIcon(
-                            icon="check",
-                            size_hint=(None, None),
-                            size=("26dp", "26dp"),
-                            font_size=sp(20),
-                        )
-                    )
-            else:
-                self.color = (
-                    self.theme_cls.primary_color
-                    if not self.color
-                    else self.color
-                )
+            if self.check and self.parent.multiple:
+                self.ids.box_check.add_widget(
+                    MDIcon(
+                        icon="check",
+                        size_hint=(None, None),
+                        size=("26dp", "26dp"),
+                        font_size=sp(20),
+                    ))
+        else:
+            self.color = self.theme_cls.primary_color \
+                         if not self._color \
+                         else self._color
+
+
+    def update_color(self, *args):
+        if self.active:
+            Animation(
+                color=self.theme_cls.primary_dark \
+                if not self.selected_chip_color \
+                else self.selected_chip_color,
+                d=0.3
+                ).start(self)
+        else:
+            Animation(
+                color=self.theme_cls.primary_color \
+                if not self._color \
+                else self._color,
+                d=0.3
+                ).start(self)
+
+
+
 
     def on_icon(self, instance, value):
         def remove_icon(interval):
@@ -284,70 +298,49 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            md_choose_chip = self.parent
-            if issubclass(md_choose_chip.__class__, MDChipContainer):
-                if md_choose_chip.type == "choice":
-                    if md_choose_chip.multiple == True:
-                        if self.text in md_choose_chip.selected:
-                            Animation(
-                                color=self.theme_cls.primary_color
-                                if not self._color
-                                else self._color,
-                                d=0.3,
-                            ).start(self)
-                            md_choose_chip.selected.remove(self.text)
+            md_chip_container = self.parent
+            if issubclass(md_chip_container.__class__, MDChipContainer):
+                if md_chip_container.type == 'choice':
+                    if md_chip_container.multiple == True:
+                        if not self.active:
+                            self.active = True
+                            md_chip_container.selected.append(self.text)
+                            self.update_color()
                         else:
-                            Animation(
-                                color=self.theme_cls.primary_dark
-                                if not self.selected_chip_color
-                                else self.selected_chip_color,
-                                d=0.3,
-                            ).start(self)
-                            md_choose_chip.selected.append(self.text)
-
+                            md_chip_container.selected.remove(self.text)
+                            self.active = False
+                            self.update_color()
                     else:
-                        for chip in md_choose_chip.children:
-                            if chip is not self:
-                                chip.color = (
-                                    self.theme_cls.primary_color
-                                    if not chip._color
-                                    else chip._color
-                                )
-                            else:
-                                Animation(
-                                    color=self.theme_cls.primary_dark
-                                    if not self.selected_chip_color
-                                    else self.selected_chip_color,
-                                    d=0.3,
-                                ).start(chip)
-                                md_choose_chip.selected = [
-                                    chip.text,
-                                ]
-
-                elif md_choose_chip.type == "action":
-                    pass
-
-                self.dispatch("on_press")
-                self.dispatch("on_release")
-
-            if self.check and md_choose_chip.multiple:
-                if not len(self.ids.box_check.children):
-                    self.ids.box_check.add_widget(
-                        MDIcon(
-                            icon="check",
-                            size_hint=(None, None),
-                            size=("26dp", "26dp"),
-                            font_size=sp(20),
-                        )
-                    )
+                        if not self.active:
+                            self.active = True
+                            self.set_color()
+                            md_chip_container.selected = [self.text,]
+                            for chip in md_chip_container.children:
+                                if chip is not self:
+                                    chip.active = False
+                                    chip.update_color()
                 else:
-                    check = self.ids.box_check.children[0]
-                    self.ids.box_check.remove_widget(check)
+                    self.dispatch('on_press')
+                    self.dispatch('on_release')
 
 
-class MDChipContainer(MDStackLayout):
+            if self.check and md_chip_container.multiple:
+                        if self.active:
+                            self.ids.box_check.add_widget(
+                                MDIcon(
+                                    icon="check",
+                                    size_hint=(None, None),
+                                    size=("26dp", "26dp"),
+                                    font_size=sp(20),
+                                )
+                            )
+                        else:
+                            check = self.ids.box_check.children[0]
+                            self.ids.box_check.remove_widget(check)
 
-    type = OptionProperty("choice", options=["choice", "action"])
+class MDChipContainer(BoxLayout):
+
+    type = OptionProperty("choice", options = ["choice", "action"])
     """
     Chip type. Available options are: `'choice'`, `'action'`.
 
@@ -363,14 +356,13 @@ class MDChipContainer(MDStackLayout):
     and defaults to `False`.
     """
 
-    selected = ListProperty([])
+    selected = ListProperty()
     """
     The list of all selected chips.
 
     :attr:`radius` is a :class:`~kivy.properties.ListProperty` and
     defaults to `[]`.
     """
-
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDChip):
             return super().add_widget(widget)

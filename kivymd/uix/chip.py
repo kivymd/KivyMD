@@ -120,7 +120,7 @@ Builder.load_string(
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
 
 
-<MDChooseChip>
+<MDContainerChip>
     adaptive_height: True
     spacing: "5dp"
 
@@ -128,9 +128,10 @@ Builder.load_string(
 <MDChip>
     size_hint: None,  None
     height: "26dp"
-    padding: 0,0,0, 0
+    padding: 0,"8dp",0, 0
     width:
-        self.minimum_width
+        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
+        if root.icon != 'checkbox-blank-circle' else self.minimum_width
 
     canvas:
         Color:
@@ -144,7 +145,7 @@ Builder.load_string(
         id: box_check
         adaptive_size: True
         pos_hint: {'center_y': .5}
-        padding: 0, 0, 0, 0
+        padding: "8dp", 0, 0, 0
 
     MDBoxLayout:
         adaptive_width: True
@@ -358,11 +359,11 @@ class MDChipContainer(BoxLayout):
     and defaults to `False`.
     """
 
-    selected = ListProperty()
+    selected = ListProperty([])
     """
     The list of all selected chips.
 
-    :attr:`radius` is a :class:`~kivy.properties.ListProperty` and
+    :attr:`selected` is a :class:`~kivy.properties.ListProperty` and
     defaults to `[]`.
     """
 

@@ -1816,18 +1816,20 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     Animation.cancel_all(widget)
-                    if self.data[instance.icon] == widget.text:
-                        Animation(
-                            _canvas_width=0,
-                            _padding_right=0,
-                            d=self.opening_time,
-                            t=self.opening_transition,
-                        ).start(instance)
-                        if self.hint_animation:
+                    for item in self.data.items():
+                        if widget.text in item:
                             Animation(
-                                opacity=0, d=0.1, t=self.opening_transition
-                            ).start(widget)
-                        break
+                                _canvas_width=0,
+                                _padding_right=0,
+                                d=self.opening_time,
+                                t=self.opening_transition,
+                            ).start(instance)
+                            if self.hint_animation:
+                                Animation(
+                                    opacity=0, d=0.1, t=self.opening_transition
+                                ).start(widget)
+                            break
+                    break
 
     def on_enter(self, instance):
         """Called when the mouse cursor is over a button from the stack."""
@@ -1836,20 +1838,22 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     widget._elevation = 0
-                    if self.data[instance.icon] == widget.text:
-                        Animation(
-                            _canvas_width=widget.width + dp(24),
-                            _padding_right=dp(5) if self.right_pad else 0,
-                            d=self.opening_time,
-                            t=self.opening_transition,
-                        ).start(instance)
-                        if self.hint_animation:
+                    for item in self.data.items():
+                        if widget.text in item:
                             Animation(
-                                opacity=1,
+                                _canvas_width=widget.width + dp(24),
+                                _padding_right=dp(5) if self.right_pad else 0,
                                 d=self.opening_time,
                                 t=self.opening_transition,
-                            ).start(widget)
-                        break
+                            ).start(instance)
+                            if self.hint_animation:
+                                Animation(
+                                    opacity=1,
+                                    d=self.opening_time,
+                                    t=self.opening_transition,
+                                ).start(widget)
+                            break
+                    break
 
     def on_data(self, instance, value):
         """Creates a stack of buttons."""

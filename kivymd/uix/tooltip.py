@@ -198,6 +198,10 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
     _tooltip = None
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_show")
+
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y) and touch.grab_current:
             try:
@@ -257,6 +261,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
             Animation(_scale_x=1, _scale_y=1, d=0.1)
             + Animation(opacity=1, d=0.2)
         ).start(self._tooltip)
+        self.dispatch("on_show")
 
     def remove_tooltip(self, *args):
         Window.remove_widget(self._tooltip)
@@ -296,6 +301,9 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         if self._tooltip:
             Window.remove_widget(self._tooltip)
             self._tooltip = None
+
+    def on_show(self):
+        pass
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):

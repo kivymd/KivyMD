@@ -124,6 +124,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.label import MDIcon
 from kivymd.uix.stacklayout import MDStackLayout

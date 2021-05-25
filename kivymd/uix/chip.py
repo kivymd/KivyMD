@@ -124,8 +124,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
-
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.label import MDIcon
 from kivymd.uix.stacklayout import MDStackLayout
@@ -144,9 +142,7 @@ Builder.load_string(
     size_hint: None,  None
     height: "26dp"
     padding: 0,'8dp',0, 0
-    width:
-        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
-        if root.icon != 'checkbox-blank-circle' else self.minimum_width
+    width:self.minimum_width
 
     canvas:
         Color:
@@ -272,7 +268,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
 
     def set_color(self, *args):
         self._color = (
-            self.self.theme_cls.primary_color if not self.color else self.color
+            self.theme_cls.primary_color if not self.color else self.color
         )
         if self.active:
             self.color = (
@@ -361,7 +357,7 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
                     self.ids.box_check.remove_widget(check)
 
 
-class MDChipContainer(BoxLayout):
+class MDChipContainer(MDStackLayout):
 
     type = OptionProperty("choice", options=["choice", "action"])
     """

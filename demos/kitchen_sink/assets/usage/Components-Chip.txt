@@ -1,37 +1,33 @@
-from kivy.lang import Builder
 from kivymd.app import MDApp
+from kivy.lang import Builder
 from kivymd.toast import toast
+kv = '''
 
-KV = """
-MDChooseChip:
-    pos_hint: {'center_x': .5, 'center_y': .5}
-
+MDChipContainer:
+    spacing:'10dp'
+    pos_hint:{'center_x':.5, 'center_y':.5}
+    size_hint:None,None
+    type:'choice'
+    multiple:True
     MDChip:
-        text: 'Earth'
-        icon: 'earth'
-        selected_chip_color: .21176470535294, .098039627451, 1, 1
-        on_release: app.callback_for_menu_items(self)
-
+        text:'Account'
+        icon:'account'
+        on_release:app.show(self)
     MDChip:
-        text: 'Face'
-        icon: 'face'
-        selected_chip_color: .21176470535294, .098039627451, 1, 1
-        on_release: app.callback_for_menu_items(self)
-
+        text:'Account Supervisor'
+        icon:'account-supervisor'
+        on_release:app.show(self)
     MDChip:
-        text: 'Facebook'
-        icon: 'facebook'
-        selected_chip_color: .21176470535294, .098039627451, 1, 1
-        on_release: app.callback_for_menu_items(self)
-"""
+        text:'Account-hard-hat'
+        icon:'account-hard-hat'
+        on_release:app.show(self)
+'''
 
-
-class Example(MDApp):
+class TestApp(MDApp):
     def build(self):
-        return Builder.load_string(KV)
+        return Builder.load_string(kv)
 
-    def callback_for_menu_items(self, instance):
-        toast(instance.label)
+    def show(self,ele):
+        toast(ele.text)
 
-
-Example().run()
+TestApp().run()

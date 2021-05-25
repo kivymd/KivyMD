@@ -13,124 +13,106 @@
             id: toolbar
 
         ScrollView:
+            pos_hint: {"center_x": .5}
+            bar_width: 0
 
-            MDGridLayout:
-                padding: "10dp"
-                spacing: "10dp"
-                cols: 1
+            MDBoxLayout:
                 adaptive_height: True
+                orientation: "vertical"
+                padding:'20dp'
+                spacing:'60dp'
 
-                Widget:
-                    size_hint_y: None
-                    height: "5dp"
-
-                KitchenSinkLabelForChips:
-                    text: "Chips with color:"
-
-                MDSeparator:
-
-                MDStackLayout:
+                MDBoxLayout:
                     adaptive_height: True
-                    spacing: "5dp"
+                    orientation: "vertical"
 
-                    MDChip:
-                        text: "Coffee"
-                        color: .4470588235118, .1960787254902, 0, 1
-                        icon: "coffee"
-                        on_release: root.callback_for_menu_items(self)
+                    MDLabel:
+                        text:"Select Chips (Default)"
 
-                    MDChip:
-                        text: "Duck"
-                        color: .9215686274509803, 0, 0, 1
-                        icon: "duck"
-                        on_release: root.callback_for_menu_items(self)
+                    MDChipContainer:
+                        spacing:'10dp'
+                        pos_hint:{'center_x':.5}
+                        size_hint:None,None
+                        MDChip:
+                            text:'Account'
+                            icon:'account'
+                        MDChip:
+                            text:'Account Supervisor'
+                            icon:'account-supervisor'
+                        MDChip:
+                            text:'Account-hard-hat'
+                            icon:'account-hard-hat'
 
-                    MDChip:
-                        text: "Earth"
-                        color: .21176470535294, .098039627451, 1, 1
-                        icon: "earth"
-                        on_release: root.callback_for_menu_items(self)
 
-                    MDChip:
-                        text: "Face"
-                        color: .2039215698, .4823117606, .435295883, 1
-                        icon: "face"
-                        on_release: root.callback_for_menu_items(self)
-
-                    MDChip:
-                        text: "Facebook"
-                        color: .56078431302, .482352906, .435294883, 1
-                        icon: "facebook"
-                        on_release: root.callback_for_menu_items(self)
-
-                Widget:
-                    size_hint_y: None
-                    height: "5dp"
-
-                KitchenSinkLabelForChips:
-                    text: "Chip without icon:"
-
-                MDSeparator:
-
-                MDStackLayout:
+                MDBoxLayout:
                     adaptive_height: True
-                    spacing: "5dp"
+                    orientation: "vertical"
 
-                    MDChip:
-                        text: "Without icon"
-                        icon: ""
-                        on_release: root.callback_for_menu_items(self)
+                    MDLabel:
+                        text:"Select Multiple Chips"
 
-                Widget:
-                    size_hint_y: None
-                    height: "5dp"
+                    MDChipContainer:
+                        id:multiselect
+                        spacing:'10dp'
+                        pos_hint:{'center_x':.5}
+                        size_hint:None,None
+                        multiple:True
+                        MDChip:
+                            text:'Account'
+                            icon:'account'
+                        MDChip:
+                            text:'Account Supervisor'
+                            icon:'account-supervisor'
+                        MDChip:
+                            text:'Account-hard-hat'
+                            icon:'account-hard-hat'
 
-                KitchenSinkLabelForChips:
-                    text: "Chips with check:"
-
-                MDSeparator:
-
-                MDStackLayout:
+                MDBoxLayout:
                     adaptive_height: True
-                    spacing: "5dp"
+                    orientation: "vertical"
 
-                    MDChip:
-                        text: "Check"
-                        icon: ""
-                        check: True
-                        on_release: root.callback_for_menu_items(self)
+                    MDLabel:
+                        text:"Select Chips with check marks, \n works only in multiple select"
 
-                    MDChip:
-                        text: "Check with icon"
-                        icon: "city"
-                        check: True
-                        on_release: root.callback_for_menu_items(self)
+                    MDChipContainer:
+                        spacing:'10dp'
+                        pos_hint:{'center_x':.5}
+                        size_hint:None,None
+                        multiple:True
+                        MDChip:
+                            text:'Account'
+                            icon:'account'
+                            check:True
+                        MDChip:
+                            text:'Account Supervisor'
+                            icon:'account-supervisor'
+                            check:True
+                        MDChip:
+                            text:'Account-hard-hat'
+                            icon:'account-hard-hat'
+                            check:True
 
-                Widget:
-                    size_hint_y: None
-                    height: "5dp"
+                MDBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
 
-                KitchenSinkLabelForChips:
-                    text: "Choose chip:"
+                    MDLabel:
+                        text:"Action chips"
 
-                MDSeparator:
-
-                MDChooseChip:
-
-                    MDChip:
-                        text: "Earth"
-                        icon: "earth"
-                        on_release: root.callback_for_menu_items(self)
-                        selected_chip_color: (.21176470535294, .098039627451, 1, 1)
-
-                    MDChip:
-                        text: "Face"
-                        icon: "face"
-                        on_release: root.callback_for_menu_items(self)
-                        selected_chip_color: (.21176470535294, .098039627451, 1, 1)
-
-                    MDChip:
-                        text: "Facebook"
-                        icon: "facebook"
-                        on_release: root.callback_for_menu_items(self)
-                        selected_chip_color: (.21176470535294, .098039627451, 1, 1)
+                    MDChipContainer:
+                        spacing:'10dp'
+                        pos_hint:{'center_x':.5}
+                        size_hint:None,None
+                        type:'action'
+                        MDChip:
+                            text:'Account'
+                            icon:'account'
+                            on_release:root.callback_for_menu_items(self)
+                        MDChip:
+                            text:'Account Supervisor'
+                            icon:'account-supervisor'
+                            on_release:root.callback_for_menu_items(self)
+                        MDChip:
+                            text:'Account-hard-hat'
+                            icon:'account-hard-hat'
+                            on_release:root.callback_for_menu_items(self)

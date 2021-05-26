@@ -7,7 +7,6 @@
 
     BoxLayout:
         orientation: "vertical"
-        spacing: "10dp"
 
         Toolbar:
             id: toolbar
@@ -19,100 +18,93 @@
             MDBoxLayout:
                 adaptive_height: True
                 orientation: "vertical"
-                padding:'20dp'
-                spacing:'60dp'
+                padding:'30dp'
+                spacing:'30dp'
 
-                MDBoxLayout:
-                    adaptive_height: True
-                    orientation: "vertical"
+                MDLabel:
+                    text:"Select Chips (Default)"
+                    halign:'center'
 
-                    MDLabel:
-                        text:"Select Chips (Default)"
+                MDChipContainer:
+                    spacing:'10dp'
+                    pos_hint:{'center_x':.5}
+                    size_hint:None,None
+                    MDChip:
+                        text:'Account'
+                        icon:'account'
+                    MDChip:
+                        text:'People'
+                        icon:'account-supervisor'
+                    MDChip:
+                        text:'Work'
+                        icon:'account-hard-hat'
 
-                    MDChipContainer:
-                        spacing:'10dp'
-                        pos_hint:{'center_x':.5}
-                        size_hint:None,None
-                        MDChip:
-                            text:'Account'
-                            icon:'account'
-                        MDChip:
-                            text:'Account Supervisor'
-                            icon:'account-supervisor'
-                        MDChip:
-                            text:'Account-hard-hat'
-                            icon:'account-hard-hat'
+                MDSeparator:
 
+                MDLabel:
+                    text:"Select Multiple Chips"
+                    halign:'center'
 
-                MDBoxLayout:
-                    adaptive_height: True
-                    orientation: "vertical"
+                MDChipContainer:
+                    id:multiselect
+                    spacing:'10dp'
+                    pos_hint:{'center_x':.5}
+                    size_hint:None,None
+                    multiple:True
+                    MDChip:
+                        text:'Account'
+                        icon:'account'
+                    MDChip:
+                        text:'People'
+                        icon:'account-supervisor'
+                    MDChip:
+                        text:'Work'
+                        icon:'account-hard-hat'
 
-                    MDLabel:
-                        text:"Select Multiple Chips"
+                MDSeparator:
 
-                    MDChipContainer:
-                        id:multiselect
-                        spacing:'10dp'
-                        pos_hint:{'center_x':.5}
-                        size_hint:None,None
-                        multiple:True
-                        MDChip:
-                            text:'Account'
-                            icon:'account'
-                        MDChip:
-                            text:'Account Supervisor'
-                            icon:'account-supervisor'
-                        MDChip:
-                            text:'Account-hard-hat'
-                            icon:'account-hard-hat'
+                MDLabel:
+                    text:"Select Chips with check marks,\nworks only in multiple select"
+                    halign:'center'
 
-                MDBoxLayout:
-                    adaptive_height: True
-                    orientation: "vertical"
+                MDChipContainer:
+                    spacing:'10dp'
+                    pos_hint:{'center_x':.5}
+                    size_hint:None,None
+                    multiple:True
+                    MDChip:
+                        text:'Account'
+                        icon:'account'
+                        check:True
+                    MDChip:
+                        text:'People'
+                        icon:'account-supervisor'
+                        check:True
+                    MDChip:
+                        text:'Work'
+                        icon:'account-hard-hat'
+                        check:True
 
-                    MDLabel:
-                        text:"Select Chips with check marks, \n works only in multiple select"
+                MDSeparator:
 
-                    MDChipContainer:
-                        spacing:'10dp'
-                        pos_hint:{'center_x':.5}
-                        size_hint:None,None
-                        multiple:True
-                        MDChip:
-                            text:'Account'
-                            icon:'account'
-                            check:True
-                        MDChip:
-                            text:'Account Supervisor'
-                            icon:'account-supervisor'
-                            check:True
-                        MDChip:
-                            text:'Account-hard-hat'
-                            icon:'account-hard-hat'
-                            check:True
+                MDLabel:
+                    text:"Action chips"
+                    halign:'center'
 
-                MDBoxLayout:
-                    adaptive_height: True
-                    orientation: "vertical"
-
-                    MDLabel:
-                        text:"Action chips"
-
-                    MDChipContainer:
-                        spacing:'10dp'
-                        pos_hint:{'center_x':.5}
-                        size_hint:None,None
-                        type:'action'
-                        MDChip:
-                            text:'Account'
-                            icon:'account'
-                            on_release:root.callback_for_menu_items(self)
-                        MDChip:
-                            text:'Account Supervisor'
-                            icon:'account-supervisor'
-                            on_release:root.callback_for_menu_items(self)
-                        MDChip:
-                            text:'Account-hard-hat'
-                            icon:'account-hard-hat'
-                            on_release:root.callback_for_menu_items(self)
+                MDChipContainer:
+                    spacing:'10dp'
+                    pos_hint:{'center_x':.5}
+                    size_hint:None,None
+                    type:'action'
+                    MDChip:
+                        text:'Account'
+                        icon:'account'
+                        on_release:root.callback_for_menu_items(self)
+                    MDChip:
+                        text:'People'
+                        icon:'account-supervisor'
+                        on_release:root.callback_for_menu_items(self)
+                    MDChip:
+                        text:'Work'
+                        icon:'account-hard-hat'
+                        on_release:root.callback_for_menu_items(self)

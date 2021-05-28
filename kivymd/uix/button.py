@@ -445,7 +445,6 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    BoundedNumericProperty,
     ColorProperty,
     DictProperty,
     NumericProperty,
@@ -991,9 +990,9 @@ class BaseRectangularButton(
 ):
     """Base class for all rectangular buttons."""
 
-    width = BoundedNumericProperty(
-        88, min=88, max=None, errorhandler=lambda x: 88
-    )
+    def on_width(self, *args):
+        if self.width < 88:
+            self.width = 88
 
 
 class BaseFlatButton(BaseRectangularButton):

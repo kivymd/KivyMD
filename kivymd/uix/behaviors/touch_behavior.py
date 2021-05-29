@@ -68,7 +68,9 @@ class TouchBehavior:
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(on_touch_down=self.create_clock, on_touch_up=self.delete_clock)
+        self.bind(
+            on_touch_down=self.create_clock, on_touch_up=self.delete_clock
+        )
 
     def create_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):

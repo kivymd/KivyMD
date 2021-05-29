@@ -68,9 +68,7 @@ class TouchBehavior:
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(
-            on_touch_down=self.create_clock, on_touch_up=self.delete_clock
-        )
+        self.bind(on_touch_down=self.create_clock, on_touch_up=self.delete_clock)
 
     def create_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):
@@ -78,17 +76,17 @@ class TouchBehavior:
             Clock.schedule_once(callback, self.duration_long_touch)
             touch.ud["event"] = callback
 
+        if touch.is_double_tap:
+            self.on_double_tap(touch, *args)
+        if touch.is_triple_tap:
+            self.on_triple_tap(touch, *args)
+
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):
             try:
                 Clock.unschedule(touch.ud["event"])
             except KeyError:
                 pass
-
-            if touch.is_double_tap:
-                self.on_double_tap(touch, *args)
-            if touch.is_triple_tap:
-                self.on_triple_tap(touch, *args)
 
     def on_long_touch(self, touch, *args):
         """Called when the widget is pressed for a long time."""

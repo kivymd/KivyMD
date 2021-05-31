@@ -20,6 +20,8 @@ import zipfile
 
 import requests
 
+os.environ["KIVY_NO_ARGS"] = "1"
+
 from kivymd.tools.release.git_commands import git_commit
 
 # Paths to files in kivymd repository

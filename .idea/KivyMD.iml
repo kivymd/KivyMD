@@ -9,7 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/docs/build" />
       <excludeFolder url="file://$MODULE_DIR$/kivymd.egg-info" />
     </content>
-    <orderEntry type="jdk" jdkName="kivy_venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (KivyMD) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">

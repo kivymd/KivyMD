@@ -11,7 +11,10 @@
     background_palette: "Primary"
     background_hue: "500"
     elevation: 10
-    right_action_items: [["brightness-6", lambda x: app.switch_theme_style()], ["file-code" if self.theme_cls.device_orientation == "landscape" else "dots-vertical", lambda x: app.show_code()]]
+    right_action_items:
+        [["brightness-6", lambda x: app.switch_theme_style()], \
+        ["file-code" if self.theme_cls.device_orientation == "landscape" \
+        else "dots-vertical", lambda x: app.show_code()]]
     left_action_items: [["arrow-left", lambda x: app.back_to_home_screen()]]
 
 
@@ -31,8 +34,7 @@ MDBoxLayout:
                 header_text: "Menu:"
                 left_action_items: [["menu", lambda x: self.open()]]
                 on_open: home.opening_animation_backdrop_components(backdrop, backlayer)
-                on_close:
-                    home.closing_animation_backdrop_components(backdrop, backlayer)
+                on_close: home.closing_animation_backdrop_components(backdrop, backlayer)
 
                 MDBackdropBackLayer:
 
@@ -151,6 +153,7 @@ MDBoxLayout:
             Widget:
                 size_hint_y: None
                 height: app.theme_cls.standard_increment
+
 
 <KitchenSinkThemeStyleCheckbox@MDCheckbox>
     group: "style"

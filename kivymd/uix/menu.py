@@ -172,6 +172,83 @@ Menu items are created in the same way as items for the :class:`~kivy.uix.recycl
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right.gif
     :align: center
 
+Header Menu
+-----------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.metrics import dp
+
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu
+    from kivymd.uix.boxlayout import MDBoxLayout
+
+    KV = '''
+    <MenuHeader>
+        orientation: "vertical"
+        adaptive_size: True
+        padding: "4dp"
+
+        MDBoxLayout:
+            spacing: "12dp"
+            adaptive_size: True
+
+            MDIconButton:
+                icon: "gesture-tap-button"
+                pos_hint: {"center_y": .5}
+
+            MDLabel:
+                text: "Actions"
+                adaptive_size: True
+                pos_hint: {"center_y": .5}
+
+
+    MDScreen:
+
+        MDRaisedButton:
+            id: button
+            text: "PRESS ME"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.menu.open()
+    '''
+
+
+    class MenuHeader(MDBoxLayout):
+        '''An instance of the class that will be added to the menu header.'''
+
+
+    class Test(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = Builder.load_string(KV)
+            menu_items = [
+                {
+                    "text": f"Item {i}",
+                    "viewclass": "OneLineListItem",
+                    "height": dp(56),
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                } for i in range(5)
+            ]
+            self.menu = MDDropdownMenu(
+                header_cls=MenuHeader(),
+                caller=self.screen.ids.button,
+                items=menu_items,
+                width_mult=4,
+            )
+
+        def menu_callback(self, text_item):
+            print(text_item)
+
+        def build(self):
+            return self.screen
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-header.png
+    :align: center
+
 Menu with MDToolbar
 -------------------
 
@@ -441,15 +518,20 @@ Builder.load_string(
 
     MDCard:
         id: card
+        orientation: "vertical"
         elevation: 10
         size_hint: None, None
-        size: md_menu.size
+        size: md_menu.size[0], md_menu.size[1] + content_header.height
         pos: md_menu.pos
         opacity: md_menu.opacity
         radius: root.radius
         md_bg_color:
             root.background_color \
             if root.background_color else root.theme_cls.bg_dark
+
+        MDBoxLayout:
+            id: content_header
+            adaptive_size: True
 
         MDMenu:
             id: md_menu
@@ -479,6 +561,15 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     :Events:
         `on_release`
             The method that will be called when you click menu items.
+    """
+
+    header_cls = ObjectProperty()
+    """
+    An instance of the class (`Kivy` or `KivyMD` widget) that will be added
+    to the menu header.
+
+    :attr:`header_cls` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
     """
 
     items = ListProperty()
@@ -762,6 +853,13 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         if not self._calculate_process:
             self._calculate_process = True
             Clock.schedule_interval(open, 0)
+
+    def on_header_cls(self, instance, value):
+        def add_content_header_cls(interval):
+            self.ids.content_header.clear_widgets()
+            self.ids.content_header.add_widget(value)
+
+        Clock.schedule_once(add_content_header_cls, 1)
 
     def on_touch_down(self, touch):
         if not self.menu.collide_point(*touch.pos):

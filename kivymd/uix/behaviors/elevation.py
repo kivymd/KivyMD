@@ -1108,6 +1108,10 @@ class CommonElevationBehavior(Widget):
             ).texture
             return
 
+    def _get_center(self):
+        center = [self.pos[0] + self.width / 2, self.pos[1] + self.height / 2]
+        return center
+
     def __draw_shadow__(self, origin, end, context=None):
         raise NotImplementedError(
             "KivyMD:\n"
@@ -1373,9 +1377,10 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
             self.soft_shadow_size = (soft_width, soft_height)
             self.hard_shadow_size = (width, height)
             # Set ``soft_shadow`` parameters.
+            center_x, center_y = self._get_center()
             self.hard_shadow_pos = self.soft_shadow_pos = (
-                self.center_x - soft_width / 2,
-                self.center_y - soft_height / 2 - dp(self._elevation * 0.5),
+                center_x - soft_width / 2,
+                center_y - soft_height / 2 - dp(self._elevation * 0.5),
             )
             # Set transparency
             self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
@@ -1456,16 +1461,17 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             # set shadow size
             width = self.width * 2
             height = self.height * 2
+            center_x, center_y = self._get_center()
 
-            x = self.center_x - width / 2
+            x = center_x - width / 2
             self.soft_shadow_size = (width, height)
             self.hard_shadow_size = (width, height)
             # set ``soft_shadow`` parameters
-            y = self.center_y - height / 2 - dp(0.5 * self._elevation)
+            y = center_y - height / 2 - dp(0.5 * self._elevation)
             self.soft_shadow_pos = (x, y)
 
             # set ``hard_shadow`` parameters
-            y = self.center_y - height / 2 - dp(0.5 * self._elevation)
+            y = center_y - height / 2 - dp(0.5 * self._elevation)
             self.hard_shadow_pos = (x, y)
 
             # shadow transparency

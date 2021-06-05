@@ -51,3 +51,4 @@ Unreleased
 * Updated `MDTimePicker` class to material design specification.
 * Elevation behavior redesign to comply with the material design specification.
 * Removed the `vendor` package.
+* Added the feature to use a class instance (`Kivy` or `KivyMD` widget), which will be added to the `MDDropdownMenu` class menu header.

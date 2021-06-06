@@ -298,16 +298,6 @@ and get your logo on our Readme with a link to your website.
 <a href="https://opencollective.com/kivymd/gold-sponsor/17/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/17/avatar.svg?requireActive=false"></a>
 <a href="https://opencollective.com/kivymd/gold-sponsor/18/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/18/avatar.svg?requireActive=false"></a>
 <a href="https://opencollective.com/kivymd/gold-sponsor/19/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/19/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/20/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/20/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/21/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/21/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/22/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/22/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/23/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/23/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/24/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/24/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/25/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/25/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/26/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/26/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/27/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/27/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/28/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/28/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/29/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/29/avatar.svg?requireActive=false"></a>
 
 #### Backers
 

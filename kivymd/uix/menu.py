@@ -568,6 +568,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     An instance of the class (`Kivy` or `KivyMD` widget) that will be added
     to the menu header.
 
+    .. versionadded:: 0.104.2
+
     :attr:`header_cls` is a :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """

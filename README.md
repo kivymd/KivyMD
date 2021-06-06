@@ -313,23 +313,6 @@ and get your logo on our Readme with a link to your website.
 
 [Become a Backer](https://opencollective.com/kivymd/contribute/backer-16159) if you want to help develop this project.
 
-<a href="https://opencollective.com/kivymd/backer/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/0/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/1/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/2/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/3/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/4/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/5/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/6/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/7/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/8/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/9/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/10/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/10/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/11/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/11/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/12/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/12/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/13/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/13/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/14/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/14/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/15/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/15/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/16/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/16/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/17/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/17/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/18/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/18/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/backer/19/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/backer/19/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/kivymd#backers" target="_blank">
+    <img src="https://opencollective.com/kivymd/backers.svg?width=890">
+</a>

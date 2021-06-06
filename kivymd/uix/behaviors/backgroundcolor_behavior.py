@@ -44,11 +44,17 @@ Builder.load_string(
             radius: root.radius
             source: root.background
         Color:
-            rgba: self.line_color
+            rgba: self.line_color if self.line_color else (0, 0, 0, 0)
         Line:
-            rounded_rectangle: (self.x, self.y, self.width, self.height, *self.radius, 100)
-
-            
+            rounded_rectangle:
+                [ \
+                self.x,
+                self.y, \
+                self.width, \
+                self.height, \
+                *self.radius, \
+                100, \
+                ]
         PopMatrix
 """,
     filename="BackgroundColorBehavior.kv",

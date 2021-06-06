@@ -86,7 +86,7 @@ from kivymd.uix.tooltip import MDTooltip
 Builder.load_string(
     """
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
-#:import StiffScrollEffect kivymd.stiffscroll.StiffScrollEffect
+#:import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
 
 
 <CellRow>

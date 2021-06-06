@@ -83,6 +83,8 @@ Equivalent
     size: self.minimum_size
 """
 
+__all__ = ("MDBoxLayout",)
+
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.uix import MDAdaptiveWidget

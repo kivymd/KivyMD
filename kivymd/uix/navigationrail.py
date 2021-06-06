@@ -120,7 +120,7 @@ from kivymd.uix.label import MDLabel
 
 Builder.load_string(
     """
-#:import StiffScrollEffect kivymd.stiffscroll.StiffScrollEffect
+#:import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
 
 
 <NavigationRailTitle>

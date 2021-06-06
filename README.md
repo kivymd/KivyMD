@@ -76,7 +76,7 @@ to save time. If you need full commit history, then remove `--depth 1`.
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini
-requirements = kivy==2.0.0, kivymd==0.104.1, sdl2_ttf == 2.0.15
+requirements = kivy==2.0.0, kivymd==0.104.2, sdl2_ttf == 2.0.15
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).

@@ -63,11 +63,11 @@ for handling or cleaning up choice making.
 
 __all_ = ("RouletteScrollEffect",)
 
-from math import ceil, floor, exp
+from math import ceil, exp, floor
 
 from kivy.animation import Animation
 from kivy.effects.scroll import ScrollEffect
-from kivy.properties import NumericProperty, AliasProperty, ObjectProperty
+from kivy.properties import AliasProperty, NumericProperty, ObjectProperty
 
 
 class RouletteScrollEffect(ScrollEffect):

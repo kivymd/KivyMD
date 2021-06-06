@@ -1,4 +1,4 @@
-# KivyMD [0.104.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
+# KivyMD [0.104.2](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
 <img align="center" height=240 src="https://github.com/kivymd/internal/raw/main/logo/github_readme_logo.png"/>
 
@@ -36,7 +36,7 @@ If you wish to become a project developer (permission to create branches on the 
 ## Installation
 
 ```bash
-pip install kivymd==0.104.1
+pip install kivymd==0.104.2
 ```
 
 ### Dependencies:

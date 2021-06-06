@@ -1,11 +1,11 @@
-Unreleased
-----------
+0.104.2
+--------
 
-    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare 0.104.1/master <https://github.com/kivymd/KivyMD/compare/0.104.1...master>`_
+    See on GitHub: `tag 0.104.2 <https://github.com/kivymd/KivyMD/tree/0.104.2>`_ | `compare 0.104.1/0.104.2 <https://github.com/kivymd/KivyMD/compare/0.104.1...0.104.2>`_
 
     .. code-block:: bash
 
-       pip install https://github.com/kivymd/KivyMD/archive/master.zip
+       pip install kivymd==0.104.2
 
 * Bug fixes and other minor improvements.
 * Add `HotReloadViewer` class

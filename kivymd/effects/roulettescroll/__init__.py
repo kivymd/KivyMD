@@ -10,7 +10,7 @@ Usage
 -----
 
 Here's an example of using :class:`RouletteScrollEffect` for a
-:class:`kivy.uix.scrollview.ScrollView`::
+:class:`kivy.uix.scrollview.ScrollView`:
 
 .. code-block:: python
 

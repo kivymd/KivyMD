@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2020 Artem Bulgakov
+# Copyright (c) 2019-2021 Artem Bulgakov
 #
 # This file is distributed under the terms of the same license,
 # as the Kivy framework.
@@ -8,6 +8,7 @@ import subprocess
 
 def command(cmd: list, capture_output: bool = False) -> str:
     """Run system command."""
+
     print(f"Command: {subprocess.list2cmdline(cmd)}")
     if capture_output:
         out = subprocess.check_output(cmd)
@@ -21,6 +22,7 @@ def command(cmd: list, capture_output: bool = False) -> str:
 
 def get_previous_version() -> str:
     """Returns latest tag in git."""
+
     command(["git", "checkout", "master"])
     old_version = command(
         ["git", "describe", "--abbrev=0", "--tags"], capture_output=True
@@ -31,6 +33,7 @@ def get_previous_version() -> str:
 
 def git_clean(ask: bool = True):
     """Clean git repository from untracked and changed files."""
+
     # Check what files will be removed
     files_to_clean = command(
         ["git", "clean", "-dx", "--force", "--dry-run"], capture_output=True
@@ -52,6 +55,7 @@ def git_clean(ask: bool = True):
 
 def git_commit(message: str, allow_error: bool = False, add_files: list = None):
     """Make commit."""
+
     add_files = add_files if add_files else ["-A"]
     command(["git", "add", *add_files])
     try:
@@ -63,11 +67,13 @@ def git_commit(message: str, allow_error: bool = False, add_files: list = None):
 
 def git_tag(name: str):
     """Create tag."""
+
     command(["git", "tag", name])
 
 
 def git_push(branches_to_push: list, ask: bool = True, push: bool = False):
     """Push all changes."""
+
     if ask:
         push = input("Do you want to push changes? (y)") in (
             "",

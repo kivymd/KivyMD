@@ -43,6 +43,12 @@ Builder.load_string(
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             radius: root.radius
             source: root.background
+        Color:
+            rgba: self.line_color
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, *self.radius, 100)
+
+            
         PopMatrix
 """,
     filename="BackgroundColorBehavior.kv",
@@ -131,6 +137,25 @@ class BackgroundColorBehavior(CommonElevationBehavior):
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ReferenceListProperty`
     and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
+    """
+
+    line_color = ColorProperty([0, 0, 0, 0])
+    """
+    If a custom value is specified for the `line_color parameter`, the border
+    of the specified color will be used to border the widget:
+
+    .. code-block:: kv
+
+        MDBoxLayout:
+            size_hint: .5, .2
+            md_bg_color: 0, 1, 1, .5
+            line_color: 0, 0, 1, 1
+            radius: [24, ]
+
+    .. versionadded:: 0.104.2
+
+    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     angle = NumericProperty(0)

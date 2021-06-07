@@ -501,8 +501,10 @@ from kivy.uix.floatlayout import FloatLayout
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularRippleBehavior, \
-    CircularRippleBehavior
+from kivymd.uix.behaviors import (
+    CircularRippleBehavior,
+    RectangularRippleBehavior,
+)
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
@@ -1075,7 +1077,9 @@ class ImageRightWidget(CircularRippleBehavior, IRightBodyTouch, FitImage):
     pass
 
 
-class ImageRightWidgetWithoutTouch(CircularRippleBehavior, IRightBody, FitImage):
+class ImageRightWidgetWithoutTouch(
+    CircularRippleBehavior, IRightBody, FitImage
+):
     """
     .. versionadded:: 1.0.0
     """

@@ -445,7 +445,7 @@ the event of this icon is triggered:
         IconLeftWidget:
             icon: "language-python"
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-icon-trigger.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-icon-trigger.gif
     :align: center
 
 You can disable the icon event using the `WithoutTouch` classes:
@@ -458,7 +458,7 @@ You can disable the icon event using the `WithoutTouch` classes:
         IconLeftWidgetWithoutTouch:
             icon: "language-python"
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-icon-without-trigger.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-icon-without-trigger.gif
     :align: center
 """
 

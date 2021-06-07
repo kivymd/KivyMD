@@ -430,7 +430,61 @@ Custom list item
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/custom-list-right-container.png
     :align: center
+
+Behavior
+--------
+
+When using the `AvatarListItem` and `IconListItem` classes, when an icon is clicked,
+the event of this icon is triggered:
+
+.. code-block:: kv
+
+    OneLineIconListItem:
+        text: "Single-line item with icon"
+
+        IconLeftWidget:
+            icon: "language-python"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-icon-trigger.png
+    :align: center
+
+You can disable the icon event using the `WithoutTouch` classes:
+
+    OneLineIconListItem:
+        text: "Single-line item with icon"
+
+        IconLeftWidgetWithoutTouch:
+            icon: "language-python"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-icon-without-trigger.png
+    :align: center
 """
+
+__all__ = (
+    "MDList",
+    "ILeftBodyTouch",
+    "IRightBodyTouch",
+    "OneLineListItem",
+    "TwoLineListItem",
+    "ThreeLineListItem",
+    "OneLineAvatarListItem",
+    "TwoLineAvatarListItem",
+    "ThreeLineAvatarListItem",
+    "OneLineIconListItem",
+    "TwoLineIconListItem",
+    "ThreeLineIconListItem",
+    "OneLineRightIconListItem",
+    "TwoLineRightIconListItem",
+    "ThreeLineRightIconListItem",
+    "OneLineAvatarIconListItem",
+    "TwoLineAvatarIconListItem",
+    "ThreeLineAvatarIconListItem",
+    "ImageLeftWidget",
+    "ImageRightWidget",
+    "IconRightWidget",
+    "IconLeftWidget",
+    "CheckboxLeftWidget",
+)
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -447,7 +501,8 @@ from kivy.uix.floatlayout import FloatLayout
 
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import RectangularRippleBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior, \
+    CircularRippleBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
@@ -469,14 +524,18 @@ Builder.load_string(
     canvas:
         Color:
             rgba:
-                self.theme_cls.divider_color if root.divider is not None\
-                else (0, 0, 0, 0)
+                self.theme_cls.divider_color \
+                if root.divider is not None else \
+                (0, 0, 0, 0)
         Line:
-            points: (root.x ,root.y, root.x+self.width, root.y)\
-                    if root.divider == 'Full' else\
-                    (root.x+root._txt_left_pad, root.y,\
-                    root.x+self.width-root._txt_left_pad-root._txt_right_pad,\
-                    root.y)
+            points:
+                ( \
+                root.x ,root.y, root.x + self.width, root.y) \
+                if root.divider == "Full" else \
+                (root.x + root._txt_left_pad, root.y, \
+                root.x + self.width - root._txt_left_pad-root._txt_right_pad, \
+                root.y \
+                )
         Color:
             rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
         Rectangle:
@@ -485,10 +544,10 @@ Builder.load_string(
 
     BoxLayout:
         id: _text_container
-        orientation: 'vertical'
+        orientation: "vertical"
         pos: root.pos
         padding:
-            root._txt_left_pad, root._txt_top_pad,\
+            root._txt_left_pad, root._txt_top_pad, \
             root._txt_right_pad, root._txt_bot_pad
 
         MDLabel:
@@ -500,31 +559,31 @@ Builder.load_string(
             size_hint_y: None
             height: self.texture_size[1]
             markup: True
-            shorten_from: 'right'
+            shorten_from: "right"
             shorten: True
 
         MDLabel:
             id: _lbl_secondary
-            text: '' if root._num_lines == 1 else root.secondary_text
+            text: "" if root._num_lines == 1 else root.secondary_text
             font_style: root.secondary_font_style
             theme_text_color: root.secondary_theme_text_color
             text_color: root.secondary_text_color
             size_hint_y: None
             height: 0 if root._num_lines == 1 else self.texture_size[1]
             shorten: True
-            shorten_from: 'right'
+            shorten_from: "right"
             markup: True
 
         MDLabel:
             id: _lbl_tertiary
-            text: '' if root._num_lines == 1 else root.tertiary_text
+            text: "" if root._num_lines == 1 else root.tertiary_text
             font_style: root.tertiary_font_style
             theme_text_color: root.tertiary_theme_text_color
             text_color: root.tertiary_text_color
             size_hint_y: None
             height: 0 if root._num_lines == 1 else self.texture_size[1]
             shorten: True
-            shorten_from: 'right'
+            shorten_from: "right"
             markup: True
 
 
@@ -534,7 +593,7 @@ Builder.load_string(
         id: _left_container
         size_hint: None, None
         x: root.x + dp(16)
-        y: root.y + root.height/2 - self.height/2
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(40), dp(40)
 
 
@@ -554,7 +613,7 @@ Builder.load_string(
         id: _left_container
         size_hint: None, None
         x: root.x + dp(16)
-        y: root.y + root.height/2 - self.height/2
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 
 
@@ -573,7 +632,7 @@ Builder.load_string(
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height/2 - self.height/2
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 
 
@@ -583,7 +642,7 @@ Builder.load_string(
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height/2 - self.height/2
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 
 
@@ -593,7 +652,7 @@ Builder.load_string(
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height/2 - self.height/2
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 
 
@@ -603,7 +662,7 @@ Builder.load_string(
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height/2 - self.height/2
+        y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 
 
@@ -620,7 +679,8 @@ Builder.load_string(
 
 
 class MDList(MDGridLayout):
-    """ListItem container. Best used in conjunction with a
+    """
+    ListItem container. Best used in conjunction with a
     :class:`kivy.uix.ScrollView`.
 
     When adding (or removing) a widget, it will resize itself to fit its
@@ -779,16 +839,12 @@ class ILeftBody:
     Implements nothing and requires no implementation, for annotation only.
     """
 
-    pass
-
 
 class ILeftBodyTouch:
     """
     Same as :class:`~ILeftBody`, but allows the widget to receive touch
     events instead of triggering the ListItem's ripple effect.
     """
-
-    pass
 
 
 class IRightBody:
@@ -799,16 +855,12 @@ class IRightBody:
     Implements nothing and requires no implementation, for annotation only.
     """
 
-    pass
-
 
 class IRightBodyTouch:
     """
     Same as :class:`~IRightBody`, but allows the widget to receive touch
     events instead of triggering the ``ListItem``'s ripple effect
     """
-
-    pass
 
 
 class ContainerSupport:
@@ -1007,20 +1059,52 @@ class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
-class ImageLeftWidget(ILeftBody, FitImage):
+class ImageLeftWidget(CircularRippleBehavior, ILeftBodyTouch, FitImage):
     pass
 
 
-class ImageRightWidget(IRightBodyTouch, FitImage):
+class ImageLeftWidgetWithoutTouch(CircularRippleBehavior, ILeftBody, FitImage):
+    """
+    .. versionadded:: 1.0.0
+    """
+
+    _no_ripple_effect = True
+
+
+class ImageRightWidget(CircularRippleBehavior, IRightBodyTouch, FitImage):
     pass
+
+
+class ImageRightWidgetWithoutTouch(CircularRippleBehavior, IRightBody, FitImage):
+    """
+    .. versionadded:: 1.0.0
+    """
+
+    _no_ripple_effect = True
 
 
 class IconRightWidget(IRightBodyTouch, MDIconButton):
     pass
 
 
+class IconRightWidgetWithoutTouch(IRightBody, MDIconButton):
+    """
+    .. versionadded:: 1.0.0
+    """
+
+    _no_ripple_effect = True
+
+
 class IconLeftWidget(ILeftBodyTouch, MDIconButton):
     pass
+
+
+class IconLeftWidgetWithoutTouch(ILeftBody, MDIconButton):
+    """
+    .. versionadded:: 1.0.0
+    """
+
+    _no_ripple_effect = True
 
 
 class CheckboxLeftWidget(ILeftBodyTouch, MDCheckbox):

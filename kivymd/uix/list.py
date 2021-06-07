@@ -450,6 +450,8 @@ the event of this icon is triggered:
 
 You can disable the icon event using the `WithoutTouch` classes:
 
+.. code-block:: kv
+
     OneLineIconListItem:
         text: "Single-line item with icon"
 

@@ -115,6 +115,17 @@ Example
 
 
     Example().run()
+
+.. versionadded:: 1.0.0
+
+Added a feature that allows you to show the available disks first, then the
+files contained in them. Works correctly on: `Windows`, `Linux`, `OSX`, `Android`.
+Not tested on `iOS`.
+
+.. code-block:: python
+
+    def file_manager_open(self):
+        self.file_manager.show_disks()
 """
 
 __all__ = ("MDFileManager",)

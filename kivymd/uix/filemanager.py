@@ -120,7 +120,8 @@ Example
 __all__ = ("MDFileManager",)
 
 import locale
-import os, re
+import os
+import re
 import subprocess
 
 from kivy.lang import Builder
@@ -473,17 +474,18 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         return sorted_files
 
     def show_disks(self):
-        if platform == 'win':
-            self.disks = sorted(re.findall(r"[A-Z]+:.*$", os.popen("mountvol /").read(), re.MULTILINE))
-        elif platform == 'linux' or platform == 'android':
-            popen = subprocess.Popen('df', stdout=subprocess.PIPE)
-            for num, line in enumerate(iter(popen.stdout.readline, b'')):
-                if num != 0:
-                    disk = line.decode().split()[-1]
-                    self.disks.append(disk)
-            self.disks = sorted(self.disks)
-        else:
-            return
+        if not self.disks:
+            if platform == "win":
+                self.disks = sorted(re.findall(r"[A-Z]+:.*$", os.popen("mountvol /").read(), re.MULTILINE))
+            elif platform in ["linux", "android", "macosx"]:
+                popen = subprocess.Popen('df', stdout=subprocess.PIPE)
+                for num, line in enumerate(iter(popen.stdout.readline, b'')):
+                    if num != 0:
+                        disk = line.decode().split()[-1]
+                        self.disks.append(disk)
+                self.disks = sorted(self.disks)
+            else:
+                return
 
         self.current_path = ''
         manager_list = []

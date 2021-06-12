@@ -124,6 +124,7 @@ import os
 import re
 import subprocess
 
+from kivy import platform
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -138,7 +139,6 @@ from kivy.properties import (
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.modalview import ModalView
-from kivy import platform
 
 from kivymd import images_path
 from kivymd.theming import ThemableBehavior
@@ -476,10 +476,16 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
     def show_disks(self):
         if not self.disks:
             if platform == "win":
-                self.disks = sorted(re.findall(r"[A-Z]+:.*$", os.popen("mountvol /").read(), re.MULTILINE))
+                self.disks = sorted(
+                    re.findall(
+                        r"[A-Z]+:.*$",
+                        os.popen("mountvol /").read(),
+                        re.MULTILINE,
+                    )
+                )
             elif platform in ["linux", "android", "macosx"]:
-                popen = subprocess.Popen('df', stdout=subprocess.PIPE)
-                for num, line in enumerate(iter(popen.stdout.readline, b'')):
+                popen = subprocess.Popen("df", stdout=subprocess.PIPE)
+                for num, line in enumerate(iter(popen.stdout.readline, b"")):
                     if num != 0:
                         disk = line.decode().split()[-1]
                         self.disks.append(disk)
@@ -487,7 +493,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             else:
                 return
 
-        self.current_path = ''
+        self.current_path = ""
         manager_list = []
         for disk in self.disks:
             access_string = self.get_access_string(disk)

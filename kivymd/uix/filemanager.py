@@ -120,7 +120,8 @@ Example
 __all__ = ("MDFileManager",)
 
 import locale
-import os
+import os, re
+import subprocess
 
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -136,6 +137,7 @@ from kivy.properties import (
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.modalview import ModalView
+from kivy import platform
 
 from kivymd import images_path
 from kivymd.theming import ThemableBehavior
@@ -436,6 +438,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
 
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
+        self.disks = []
 
     def __sort_files(self, files):
         def sort_by_name(files):
@@ -468,6 +471,50 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             sorted_files.reverse()
 
         return sorted_files
+
+    def show_disks(self):
+        if platform == 'win':
+            self.disks = sorted(re.findall(r"[A-Z]+:.*$", os.popen("mountvol /").read(), re.MULTILINE))
+        elif platform == 'linux' or platform == 'android':
+            popen = subprocess.Popen('df', stdout=subprocess.PIPE)
+            for num, line in enumerate(iter(popen.stdout.readline, b'')):
+                if num != 0:
+                    disk = line.decode().split()[-1]
+                    self.disks.append(disk)
+            self.disks = sorted(self.disks)
+        else:
+            return
+
+        self.current_path = ''
+        manager_list = []
+        for disk in self.disks:
+            access_string = self.get_access_string(disk)
+            if "r" not in access_string:
+                icon = "harddisk-remove"
+            else:
+                icon = "harddisk"
+
+            manager_list.append(
+                {
+                    "viewclass": "BodyManager",
+                    "path": disk,
+                    "icon": icon,
+                    "dir_or_file_name": disk,
+                    "events_callback": self.select_dir_or_file,
+                    "_selected": False,
+                }
+            )
+
+        self.ids.rv.data = manager_list
+
+        if not self._window_manager:
+            self._window_manager = ModalView(
+                size_hint=self.size_hint, auto_dismiss=False
+            )
+            self._window_manager.add_widget(self)
+        if not self._window_manager_open:
+            self._window_manager.open()
+            self._window_manager_open = True
 
     def show(self, path):
         """Forms the body of a directory tree.
@@ -642,12 +689,15 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
 
         path, end = os.path.split(self.current_path)
 
-        if not end:
-            self.close()
-            self.exit_manager(1)
-
+        if self.current_path and path == self.current_path:
+            self.show_disks()
         else:
-            self.show(path)
+            if not end:
+                self.close()
+                self.exit_manager(1)
+
+            else:
+                self.show(path)
 
     def select_directory_on_press_button(self, *args):
         """Called when a click on a floating button."""

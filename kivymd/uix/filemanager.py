@@ -122,7 +122,6 @@ __all__ = ("MDFileManager",)
 import locale
 import os
 import re
-import subprocess
 
 from kivy import platform
 from kivy.lang import Builder
@@ -144,7 +143,6 @@ from kivymd import images_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.fitimage import FitImage
@@ -425,9 +423,9 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
         if (
-            self.selector == "any"
-            or self.selector == "multi"
-            or self.selector == "folder"
+                self.selector == "any"
+                or self.selector == "multi"
+                or self.selector == "folder"
         ):
             self.add_widget(
                 FloatButton(
@@ -483,13 +481,20 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                         re.MULTILINE,
                     )
                 )
-            elif platform in ["linux", "android", "macosx"]:
-                popen = subprocess.Popen("df", stdout=subprocess.PIPE)
-                for num, line in enumerate(iter(popen.stdout.readline, b"")):
-                    if num != 0:
-                        disk = line.decode().split()[-1]
-                        self.disks.append(disk)
-                self.disks = sorted(self.disks)
+            elif platform in ["linux", "android"]:
+                self.disks = sorted(
+                    re.findall(
+                        r"on\s(/.*)\stype",
+                        os.popen("mount").read(),
+                    )
+                )
+            elif platform == "macosx":
+                self.disks = sorted(
+                    re.findall(
+                        r"on\s(/.*)\s\(",
+                        os.popen("mount").read(),
+                    )
+                )
             else:
                 return
 
@@ -557,8 +562,8 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                 )
             for name_file in self.__sort_files(files):
                 if (
-                    os.path.splitext(os.path.join(path, name_file))[1]
-                    in self.ext
+                        os.path.splitext(os.path.join(path, name_file))[1]
+                        in self.ext
                 ):
                     manager_list.append(
                         {
@@ -636,7 +641,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                 if os.path.isdir(os.path.join(self.current_path, content)):
                     if self.search == "all" or self.search == "dirs":
                         if (not self.show_hidden_files) and (
-                            content.startswith(".")
+                                content.startswith(".")
                         ):
                             continue
                         else:
@@ -653,8 +658,8 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                                 pass
                         else:
                             if (
-                                not self.show_hidden_files
-                                and content.startswith(".")
+                                    not self.show_hidden_files
+                                    and content.startswith(".")
                             ):
                                 continue
                             else:

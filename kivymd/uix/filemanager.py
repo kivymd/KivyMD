@@ -423,9 +423,9 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
         if (
-                self.selector == "any"
-                or self.selector == "multi"
-                or self.selector == "folder"
+            self.selector == "any"
+            or self.selector == "multi"
+            or self.selector == "folder"
         ):
             self.add_widget(
                 FloatButton(
@@ -562,8 +562,8 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                 )
             for name_file in self.__sort_files(files):
                 if (
-                        os.path.splitext(os.path.join(path, name_file))[1]
-                        in self.ext
+                    os.path.splitext(os.path.join(path, name_file))[1]
+                    in self.ext
                 ):
                     manager_list.append(
                         {
@@ -641,7 +641,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                 if os.path.isdir(os.path.join(self.current_path, content)):
                     if self.search == "all" or self.search == "dirs":
                         if (not self.show_hidden_files) and (
-                                content.startswith(".")
+                            content.startswith(".")
                         ):
                             continue
                         else:
@@ -658,8 +658,8 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                                 pass
                         else:
                             if (
-                                    not self.show_hidden_files
-                                    and content.startswith(".")
+                                not self.show_hidden_files
+                                and content.startswith(".")
                             ):
                                 continue
                             else:

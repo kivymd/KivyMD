@@ -63,7 +63,7 @@ def toast(text, length_long=False, gravity=0, y=0, x=0):
     :param x: refers to the horizontal position of the toast;
 
     Important: if only the text value is specified and the value of
-    the `gravity`, `y`, `x` parameters is not specified, their values ​​will
+    the `gravity`, `y`, `x` parameters is not specified, their values will
     be 0 which means that the toast will be shown in the center.
     """
 

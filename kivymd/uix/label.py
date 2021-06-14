@@ -25,9 +25,9 @@ and default is positioned on the left:
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
-        BoxLayout:
+        MDBoxLayout:
             orientation: "vertical"
 
             MDToolbar:
@@ -74,9 +74,9 @@ and default is positioned on the left:
     from kivymd.uix.label import MDLabel
 
     KV = '''
-    Screen:
+    MDScreen:
 
-        BoxLayout:
+        MDBoxLayout:
             id: box
             orientation: "vertical"
 
@@ -140,9 +140,9 @@ parameter:
 
 
     KV = '''
-    Screen:
+    MDScreen:
 
-        BoxLayout:
+        MDBoxLayout:
             orientation: "vertical"
 
             MDToolbar:

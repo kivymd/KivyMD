@@ -352,7 +352,7 @@ To demonstrate the shades of the palette, you can run the following code:
     from kivymd.uix.tab import MDTabsBase
 
     demo = '''
-    <Root@BoxLayout>
+    <Root@MDBoxLayout>
         orientation: 'vertical'
 
         MDToolbar:
@@ -365,29 +365,29 @@ To demonstrate the shades of the palette, you can run the following code:
             height: "48dp"
             tab_indicator_anim: False
 
-        ScrollView:
+        RecycleView:
+            id: rv
+            key_viewclass: "viewclass"
+            key_size: "height"
 
-            MDList:
-                id: box
+            RecycleBoxLayout:
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
 
 
-    <ItemColor>:
+    <ItemColor>
         size_hint_y: None
         height: "42dp"
-
-        canvas:
-            Color:
-                rgba: root.color
-            Rectangle:
-                size: self.size
-                pos: self.pos
 
         MDLabel:
             text: root.text
             halign: "center"
 
 
-    <Tab>:
+    <Tab>
     '''
 
     from kivy.factory import Factory
@@ -398,7 +398,7 @@ To demonstrate the shades of the palette, you can run the following code:
         pass
 
 
-    class ItemColor(BoxLayout):
+    class ItemColor(MDBoxLayout):
         text = StringProperty()
         color = ListProperty()
 
@@ -416,13 +416,16 @@ To demonstrate the shades of the palette, you can run the following code:
             return self.screen
 
         def on_tab_switch(self, instance_tabs, instance_tab, instance_tabs_label, tab_text):
-            self.screen.ids.box.clear_widgets()
+            self.screen.ids.rv.data = []
+            if not tab_text:
+                tab_text = 'Red'
             for value_color in colors[tab_text]:
-                self.screen.ids.box.add_widget(
-                    ItemColor(
-                        color=get_color_from_hex(colors[tab_text][value_color]),
-                        text=value_color,
-                    )
+                self.screen.ids.rv.data.append(
+                    {
+                        "viewclass": "ItemColor",
+                        "md_bg_color": get_color_from_hex(colors[tab_text][value_color]),
+                        "text": value_color,
+                    }
                 )
 
         def on_start(self):

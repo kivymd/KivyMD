@@ -13,7 +13,7 @@ Example:
 
 .. code-block:: kv
 
-    BoxLayout:
+    MDBoxLayout:
         size_hint_y: None
         height: "200dp"
         orientation: 'vertical'
@@ -52,7 +52,7 @@ Example with round corners:
             source: "images/bg.png"
             size_hint_y: .35
             pos_hint: {"top": 1}
-            radius: [36, 36, 0, 0, ]
+            radius: 36, 36, 0, 0
     ''')
 
 
@@ -80,7 +80,7 @@ from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, ListProperty, ObjectProperty
+from kivy.properties import BooleanProperty, ObjectProperty, VariableListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
@@ -109,21 +109,50 @@ Builder.load_string(
 
 class FitImage(BoxLayout):
     source = ObjectProperty()
-    container = ObjectProperty()
-    radius = ListProperty([0, 0, 0, 0])
+    """
+    Filename/source of your image.
+
+    :attr:`source` is a :class:`~kivy.properties.StringProperty` and
+    defaults to None.
+    """
+
+    radius = VariableListProperty([0], length=4)
+    """
+    Canvas radius.
+
+    .. code-block:: python
+
+        # Top left corner slice.
+        MDBoxLayout:
+            md_bg_color: app.theme_cls.primary_color
+            radius: [25, 0, 0, 0]
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
     mipmap = BooleanProperty(False)
+    """
+    Indicate if you want OpenGL mipmapping to be applied to the texture.
+    Read :ref:`mipmap` for more information.
+
+    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty` and defaults
+    to False.
+    """
+
+    _container = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
-        self.container = Container(self.source, self.mipmap)
-        self.bind(source=self.container.setter("source"))
-        self.add_widget(self.container)
+        self._container = Container(self.source, self.mipmap)
+        self.bind(source=self._container.setter("source"))
+        self.add_widget(self._container)
 
     def reload(self):
-        self.container.image.reload()
+        self._container.image.reload()
 
 
 class Container(Widget):

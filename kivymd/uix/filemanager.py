@@ -472,31 +472,30 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         return sorted_files
 
     def show_disks(self):
-        if not self.disks:
-            if platform == "win":
-                self.disks = sorted(
-                    re.findall(
-                        r"[A-Z]+:.*$",
-                        os.popen("mountvol /").read(),
-                        re.MULTILINE,
-                    )
+        if platform == "win":
+            self.disks = sorted(
+                re.findall(
+                    r"[A-Z]+:.*$",
+                    os.popen("mountvol /").read(),
+                    re.MULTILINE,
                 )
-            elif platform in ["linux", "android"]:
-                self.disks = sorted(
-                    re.findall(
-                        r"on\s(/.*)\stype",
-                        os.popen("mount").read(),
-                    )
+            )
+        elif platform in ["linux", "android"]:
+            self.disks = sorted(
+                re.findall(
+                    r"on\s(/.*)\stype",
+                    os.popen("mount").read(),
                 )
-            elif platform == "macosx":
-                self.disks = sorted(
-                    re.findall(
-                        r"on\s(/.*)\s\(",
-                        os.popen("mount").read(),
-                    )
+            )
+        elif platform == "macosx":
+            self.disks = sorted(
+                re.findall(
+                    r"on\s(/.*)\s\(",
+                    os.popen("mount").read(),
                 )
-            else:
-                return
+            )
+        else:
+            return
 
         self.current_path = ""
         manager_list = []

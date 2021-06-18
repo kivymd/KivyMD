@@ -161,7 +161,6 @@ from kivymd.utils.fitimage import FitImage
 ACTIVITY_MANAGER = """
 #:import os os
 
-
 <BodyManager@BoxLayout>
     icon: "folder"
     path: ""
@@ -174,7 +173,9 @@ ACTIVITY_MANAGER = """
 
     ModifiedOneLineIconListItem:
         text: root.dir_or_file_name
-        bg_color: self.theme_cls.bg_darkest if root._selected else self.theme_cls.bg_normal
+        bg_color:
+            self.theme_cls.bg_darkest \
+            if root._selected else self.theme_cls.bg_normal
         on_release: root.events_callback(root.path, root)
 
         IconLeftWidget:
@@ -209,11 +210,13 @@ ACTIVITY_MANAGER = """
     IconButton:
         mipmap: True
         source: root.path
-        bg_color: app.theme_cls.bg_darkest if root._selected else app.theme_cls.bg_normal
+        bg_color:
+            app.theme_cls.bg_darkest \
+            if root._selected else app.theme_cls.bg_normal
         on_release:
-            root.events_callback(\
-            os.path.join(root.path if root.type != "folder" else root.realpath, \
-            root.name), root)
+            root.events_callback( \
+            os.path.join(root.path if root.type != "folder" \
+            else root.realpath, root.name), root)
 
     LabelContent:
         text: root.name
@@ -510,6 +513,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
 
         self.current_path = ""
         manager_list = []
+
         for disk in self.disks:
             access_string = self.get_access_string(disk)
             if "r" not in access_string:
@@ -527,7 +531,6 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                     "_selected": False,
                 }
             )
-
         self.ids.rv.data = manager_list
 
         if not self._window_manager:

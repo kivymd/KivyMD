@@ -122,7 +122,6 @@ __all__ = ("MDFileManager",)
 import locale
 import os
 import re
-import subprocess
 
 from kivy import platform
 from kivy.lang import Builder
@@ -144,7 +143,6 @@ from kivymd import images_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.fitimage import FitImage
@@ -474,24 +472,30 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         return sorted_files
 
     def show_disks(self):
-        if not self.disks:
-            if platform == "win":
-                self.disks = sorted(
-                    re.findall(
-                        r"[A-Z]+:.*$",
-                        os.popen("mountvol /").read(),
-                        re.MULTILINE,
-                    )
+        if platform == "win":
+            self.disks = sorted(
+                re.findall(
+                    r"[A-Z]+:.*$",
+                    os.popen("mountvol /").read(),
+                    re.MULTILINE,
                 )
-            elif platform in ["linux", "android", "macosx"]:
-                popen = subprocess.Popen("df", stdout=subprocess.PIPE)
-                for num, line in enumerate(iter(popen.stdout.readline, b"")):
-                    if num != 0:
-                        disk = line.decode().split()[-1]
-                        self.disks.append(disk)
-                self.disks = sorted(self.disks)
-            else:
-                return
+            )
+        elif platform in ["linux", "android"]:
+            self.disks = sorted(
+                re.findall(
+                    r"on\s(/.*)\stype",
+                    os.popen("mount").read(),
+                )
+            )
+        elif platform == "macosx":
+            self.disks = sorted(
+                re.findall(
+                    r"on\s(/.*)\s\(",
+                    os.popen("mount").read(),
+                )
+            )
+        else:
+            return
 
         self.current_path = ""
         manager_list = []

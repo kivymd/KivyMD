@@ -5,7 +5,7 @@ Register KivyMD widgets to use without import
 from kivy.factory import Factory
 
 r = Factory.register
-r("MDStepper", module="kivymd.uix.stepper")
+# r("MDStepper", module="kivymd.uix.stepper")
 r("MDNavigationRail", module="kivymd.uix.navigationrail")
 r("MDSwiper", module="kivymd.uix.swiper")
 r("MDCarousel", module="kivymd.uix.carousel")

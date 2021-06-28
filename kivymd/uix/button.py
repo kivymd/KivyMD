@@ -949,6 +949,7 @@ class BasePressedButton(BaseButton):
 
     animation_fade_bg = None
     current_md_bg_color = ColorProperty(None)
+    current_screen = None
 
     def on_touch_down(self, touch):
         if touch.is_mouse_scrolling:
@@ -961,6 +962,9 @@ class BasePressedButton(BaseButton):
             return False
         else:
             if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
+                screen_manager = MDApp.get_running_app().get_screen_manager()
+                if screen_manager:
+                    self.current_screen = screen_manager.current
                 self.current_md_bg_color = self.md_bg_color
                 self.animation_fade_bg = Animation(
                     duration=0.5, md_bg_color=[0.0, 0.0, 0.0, 0.1]
@@ -975,9 +979,13 @@ class BasePressedButton(BaseButton):
             and not self.disabled
         ):
             self.animation_fade_bg.stop_property(self, "md_bg_color")
-            Animation(
-                duration=0.05, md_bg_color=self.current_md_bg_color
-            ).start(self)
+            screen_manager = MDApp.get_running_app().get_screen_manager()
+            if screen_manager and self.current_screen != screen_manager.current:
+                self.md_bg_color = self.current_md_bg_color
+            else:
+                Animation(
+                    duration=0.05, md_bg_color=self.current_md_bg_color
+                ).start(self)
         return super().on_touch_up(touch)
 
 

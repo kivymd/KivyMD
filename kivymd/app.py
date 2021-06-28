@@ -89,3 +89,12 @@ class MDApp(App, FpsMonitoring):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
+
+    """
+    :attr:`get_screen_manager` find the screen manager of the application. If no one exists return None
+    """
+    def get_screen_manager(self):
+        for key, item in self.__dict__.items():
+            if isinstance(item, ScreenManager):
+                return item
+        return None

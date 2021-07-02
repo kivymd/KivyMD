@@ -166,7 +166,8 @@ class Container(Widget):
     def __init__(self, source, mipmap, **kwargs):
         super().__init__(**kwargs)
         self.image = AsyncImage(mipmap=mipmap)
-        self.image.bind(on_load=self.adjust_size)
+        self.loader_clock = Clock.schedule_interval(self.adjust_size, self.image.anim_delay)
+        self.image.bind(on_load=lambda inst: (self.adjust_size(), self.loader_clock.cancel()))
         self.source = source
         self.bind(size=self.adjust_size, pos=self.adjust_size)
 

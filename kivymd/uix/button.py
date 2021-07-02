@@ -1029,6 +1029,9 @@ class BaseFlatButton(BaseRectangularButton):
                 if self.md_bg_color_disabled
                 else self.theme_cls.disabled_hint_text_color
             )
+        else:
+            if self._md_bg_color:
+                self.md_bg_color = self._md_bg_color
 
     def on_elevation(self, instance, value):
         """

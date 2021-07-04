@@ -81,7 +81,6 @@ from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
 from kivy.properties import (
-    BooleanProperty,
     ObjectProperty,
     VariableListProperty,
 )
@@ -135,15 +134,6 @@ class FitImage(BoxLayout):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    mipmap = BooleanProperty(False)
-    """
-    Indicate if you want OpenGL mipmapping to be applied to the texture.
-    Read :ref:`mipmap` for more information.
-
-    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty` and defaults
-    to False.
-    """
-
     _container = ObjectProperty()
 
     def __init__(self, **kwargs):
@@ -151,7 +141,7 @@ class FitImage(BoxLayout):
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
-        self._container = Container(self.source, self.mipmap)
+        self._container = Container(self.source)
         self.bind(source=self._container.setter("source"))
         self.add_widget(self._container)
 
@@ -163,9 +153,9 @@ class Container(Widget):
     source = ObjectProperty()
     image = ObjectProperty()
 
-    def __init__(self, source, mipmap, **kwargs):
+    def __init__(self, source, **kwargs):
         super().__init__(**kwargs)
-        self.image = AsyncImage(mipmap=mipmap)
+        self.image = AsyncImage()
         self.loader_clock = Clock.schedule_interval(
             self.adjust_size, self.image.anim_delay
         )

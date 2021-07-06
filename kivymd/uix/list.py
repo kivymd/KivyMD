@@ -396,26 +396,25 @@ Custom list item
     from kivymd.uix.boxlayout import MDBoxLayout
     from kivymd.uix.list import IRightBodyTouch
 
-    KV = '''
-    OneLineAvatarIconListItem:
-        text: "One-line item with avatar"
-        on_size:
-            self.ids._right_container.width = container.width
-            self.ids._right_container.x = container.width
+    KV = '''    
+    MDBoxLayout:
+        orientation: "vertical"
+        OneLineAvatarIconListItem:
+            id: list_item
+            text: "One-line item with avatar"
 
-        IconLeftWidget:
-            icon: "cog"
+            IconLeftWidget:
+                icon: "cog"
 
-        Container:
-            id: container
+    <Container>:
+        id: container
 
-            MDIconButton:
-                icon: "minus"
+        MDIconButton:
+            icon: "minus"
 
-            MDIconButton:
-                icon: "plus"
+        MDIconButton:
+            icon: "plus"    
     '''
-
 
     class Container(IRightBodyTouch, MDBoxLayout):
         adaptive_width = True
@@ -423,7 +422,14 @@ Custom list item
 
     class MainApp(MDApp):
         def build(self):
-            return Builder.load_string(KV)
+            self.screen = Builder.load_string(KV)
+            return self.screen
+
+        def on_start(self):
+            container_item = Container()
+            self.screen.ids.list_item.add_widget(container_item)        
+            self.screen.ids.list_item.ids._right_container.width = container_item.width
+            self.screen.ids.list_item.ids._right_container.x = container_item.width
 
 
     MainApp().run()

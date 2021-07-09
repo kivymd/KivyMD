@@ -1248,25 +1248,34 @@ class MDRoundFlatButton(MDFlatButton):
 
     def lay_canvas_instructions(self):
         with self.canvas.after:
-            StencilPush()
+            StencilPush(group="round_ripple_behavior")
             RoundedRectangle(
-                size=self.size, pos=self.pos, radius=[self._radius]
+                size=self.size, pos=self.pos, radius=[self._radius], group="round_ripple_behavior"
             )
-            StencilUse()
-            self.col_instruction = Color(rgba=self.ripple_color)
+            StencilUse(group="round_ripple_behavior")
+            self.col_instruction = Color(rgba=self.ripple_color, group="round_ripple_behavior")
             self.ellipse = Ellipse(
                 size=(self._ripple_rad, self._ripple_rad),
                 pos=(
                     self.ripple_pos[0] - self._ripple_rad / 2.0,
                     self.ripple_pos[1] - self._ripple_rad / 2.0,
                 ),
+                group="round_ripple_behavior",
             )
-            StencilUnUse()
+            StencilUnUse(group="round_ripple_behavior")
             RoundedRectangle(
-                size=self.size, pos=self.pos, radius=[self._radius]
+                size=self.size, pos=self.pos, radius=[self._radius], group="round_ripple_behavior"
             )
-            StencilPop()
+            StencilPop(group="round_ripple_behavior")
         self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
+
+    def anim_complete(self, *args):
+        self._doing_ripple = False
+        self._finishing_ripple = False
+        self._fading_out = False
+        self.canvas.after.remove_group("circular_ripple_behavior")
+        self.canvas.after.remove_group("rectangular_ripple_behavior")
+        self.canvas.after.remove_group("round_ripple_behavior")
 
 
 class MDRoundFlatIconButton(MDRoundFlatButton):

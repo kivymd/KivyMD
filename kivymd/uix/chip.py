@@ -286,14 +286,23 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
 
             if self.check:
                 if not len(self.ids.box_check.children):
-                    self.ids.box_check.add_widget(
-                        MDIcon(
+                    if self.icon_color:
+                        icon = MDIcon(
+                            icon="check",
+                            size_hint=(None, None),
+                            size=("26dp", "26dp"),
+                            font_size=sp(20),
+                            theme_text_color="Custom",
+                            text_color=self.icon_color,
+                        )
+                    else:
+                        icon = MDIcon(
                             icon="check",
                             size_hint=(None, None),
                             size=("26dp", "26dp"),
                             font_size=sp(20),
                         )
-                    )
+                    self.ids.box_check.add_widget(icon)
                 else:
                     check = self.ids.box_check.children[0]
                     self.ids.box_check.remove_widget(check)

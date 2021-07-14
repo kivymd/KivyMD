@@ -678,7 +678,7 @@ class MDNavigationRail(MDCard):
             t=self.color_transition,
             d=self.color_change_duration,
         ).start(item)
-        if item.visible == "Selected":
+        if self.visible == "Selected":
             Animation(
                 text_color=(0, 0, 0, 0),
                 t=self.color_transition,
@@ -696,7 +696,7 @@ class MDNavigationRail(MDCard):
             t=self.color_transition,
             d=self.color_change_duration,
         ).start(item)
-        if item.visible == "Selected":
+        if self.visible == "Selected":
             item.ids.lbl_text.text_color = item._color_normal
             Animation(
                 text_color=color,

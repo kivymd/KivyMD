@@ -2971,6 +2971,10 @@ class MDTimePicker(BaseDialogPicker):
 
 Builder.load_string(
     """
+<RoundButton>
+    size_hint: None, None
+
+
 <Tab@MDFloatLayout+MDTabsBase>
     md_bg_color: app.theme_cls.bg_normal
 
@@ -3050,7 +3054,8 @@ Builder.load_string(
                     cols: 2
                     rows: 1
 
-                    MDIconButton:
+                    RoundButton:
+                        size: dp(120), dp(120)
                         canvas:
                             Color:
                                 rgba: 1, 1, 1, 1
@@ -3061,12 +3066,12 @@ Builder.load_string(
                                 rgba: 0, 0, 0, 1
                             Line:
                                 width: 1.
-                                circle: (self.center_x, self.center_y, sp(62))
+                                circle: (self.center_x, self.center_y, dp(60))
 
-                        user_font_size: "100sp"
                         on_release: app.theme_cls.theme_style = "Light"
 
-                    MDIconButton:
+                    RoundButton:
+                        size: dp(120), dp(120)
                         canvas:
                             Color:
                                 rgba: 0, 0, 0, 1
@@ -3075,7 +3080,6 @@ Builder.load_string(
                                 pos: self.pos
 
                         on_release: app.theme_cls.theme_style = "Dark"
-                        user_font_size: "100sp"
 
                 MDFlatButton:
                     text: "CLOSE"
@@ -3083,6 +3087,10 @@ Builder.load_string(
                     on_release: root.dismiss()
 """
 )
+
+
+class RoundButton(CircularRippleBehavior, ButtonBehavior, AnchorLayout):
+    pass
 
 
 class ColorSelector(MDIconButton):

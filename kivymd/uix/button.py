@@ -1240,7 +1240,7 @@ class MDRoundFlatButton(MDFlatButton):
     and defaults to `None`.
     """
 
-    _radius = NumericProperty(18)
+    _radius = NumericProperty("18dp")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

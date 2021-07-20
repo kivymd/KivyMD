@@ -32,6 +32,10 @@ Also you can install manually from sources. Just clone the project and run pip::
 use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
+.. info:: `KivyMD` depends on `Kivy`!
+    Until a stable version of the `KivyMD` library (above version 1.0.0) is available in `PyPi`,
+    we recommend installing the `KivyMD` library from the master branch.
+
 First KivyMD application
 ------------------------
 

@@ -336,7 +336,8 @@ colors = {
         "FlatButtonDown": "999999",
     },
 }
-"""Color palette. Taken from `2014 Material Design color palettes
+"""
+Color palette. Taken from `2014 Material Design color palettes
 <https://material.io/design/color/the-color-system.html>`_.
 
 To demonstrate the shades of the palette, you can run the following code:
@@ -391,6 +392,7 @@ To demonstrate the shades of the palette, you can run the following code:
     '''
 
     from kivy.factory import Factory
+
     from kivymd.app import MDApp
 
 
@@ -415,7 +417,9 @@ To demonstrate the shades of the palette, you can run the following code:
                 self.screen.ids.android_tabs.add_widget(tab)
             return self.screen
 
-        def on_tab_switch(self, instance_tabs, instance_tab, instance_tabs_label, tab_text):
+        def on_tab_switch(
+            self, instance_tabs, instance_tab, instance_tabs_label, tab_text
+        ):
             self.screen.ids.rv.data = []
             if not tab_text:
                 tab_text = 'Red'
@@ -918,7 +922,8 @@ text_colors = {
         "A700": "FFFFFF",
     },
 }
-"""Text colors generated from :data:`~light_colors`. "000000" for light and
+"""
+Text colors generated from :data:`~light_colors`. "000000" for light and
 "FFFFFF" for dark.
 
 How to generate text_colors dict

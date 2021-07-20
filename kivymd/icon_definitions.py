@@ -33,13 +33,13 @@ To preview the icons and their names, you can use the following application:
     #:import images_path kivymd.images_path
 
 
-    <CustomOneLineIconListItem>:
+    <CustomOneLineIconListItem>
 
         IconLeftWidget:
             icon: root.icon
 
 
-    <PreviousMDIcons>:
+    <PreviousMDIcons>
 
         MDBoxLayout:
             orientation: 'vertical'

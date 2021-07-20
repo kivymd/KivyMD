@@ -175,7 +175,7 @@ Builder.load_string(
 
 
 class BaseDialog(ThemableBehavior, ModalView):
-    radius = ListProperty([7, 7, 7, 7])
+    radius = ListProperty([dp(7), dp(7), dp(7), dp(7)])
     """
     Dialog corners rounding value.
 

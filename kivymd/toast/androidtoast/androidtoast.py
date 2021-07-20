@@ -57,7 +57,7 @@ def toast(text, length_long=False, gravity=0, y=0, x=0):
     :param text: text to be displayed in the toast;
     :param short_duration:  duration of the toast, if `True` the toast
            will last 2.3s but if it is `False` the toast will last 3.9s;
-    :param gravity: refers to the toast position, if it is 80the toast will
+    :param gravity: refers to the toast position, if it is 80 the toast will
            be shown below, if it is 40 the toast will be displayed above;
     :param y: refers to the vertical position of the toast;
     :param x: refers to the horizontal position of the toast;

@@ -1477,8 +1477,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             return super().add_widget(widget)
 
     def remove_widget(self, widget):
-        if len(self.carousel.slides) < 2:
-            return
         # You can remove only subclass of MDTabsLabel or MDTabsBase.
         if not issubclass(widget.__class__, (MDTabsLabel, MDTabsBase)):
             raise MDTabsException(

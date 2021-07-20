@@ -16,7 +16,7 @@ Usage
 
 .. code-block:: kv
 
-    <Root>:
+    <Root>
 
         MDBackdrop:
 
@@ -34,8 +34,8 @@ Example
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.screenmanager import Screen
 
+    from kivymd.uix.screen import MDScreen
     from kivymd.app import MDApp
 
     # Your layouts.
@@ -93,7 +93,7 @@ Example
     )
 
 
-    class ExampleBackdrop(Screen):
+    class ExampleBackdrop(MDScreen):
         pass
 
 
@@ -121,6 +121,8 @@ __all__ = (
     "MDBackdrop",
 )
 
+from typing import NoReturn, Union
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -132,36 +134,32 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
-from kivymd.uix.toolbar import MDToolbar
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.toolbar import MDToolbar, MDActionTopAppBarButton
 
 Builder.load_string(
     """
 <MDBackdrop>
-
-    canvas:
-        Color:
-            rgba:
-                root.theme_cls.primary_color if not root.back_layer_color \
-                else root.back_layer_color
-        Rectangle:
-            pos: self.pos
-            size: self.size
+    md_bg_color:
+        root.theme_cls.primary_color \
+        if not root.back_layer_color \
+        else root.back_layer_color
 
     MDBackdropToolbar:
         id: toolbar
         title: root.title
         elevation: 0
-        md_bg_color:
-            root.theme_cls.primary_color if not root.back_layer_color \
-            else root.back_layer_color
         left_action_items: root.left_action_items
         right_action_items: root.right_action_items
-        pos_hint: {'top': 1}
+        pos_hint: {"top": 1}
+        md_bg_color:
+            root.theme_cls.primary_color \
+            if not root.back_layer_color \
+            else root.back_layer_color
 
     _BackLayer:
         id: back_layer
@@ -175,22 +173,13 @@ Builder.load_string(
         size_hint_y: None
         height: root.height - toolbar.height
         padding: root.padding
-
-        canvas:
-            Color:
-                rgba:
-                    root.theme_cls.bg_normal if not root.front_layer_color \
-                    else root.front_layer_color
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
-                radius:
-                    [
-                    (root.radius_left, root.radius_left),
-                    (root.radius_right, root.radius_right),
-                    (0, 0),
-                    (0, 0)
-                    ]
+        md_bg_color:
+            root.theme_cls.bg_normal \
+            if not root.front_layer_color \
+            else root.front_layer_color
+        radius:
+            [root.radius_left, root.radius_left,
+            root.radius_right, root.radius_right]
 
         OneLineListItem:
             id: header_button
@@ -199,14 +188,14 @@ Builder.load_string(
             _no_ripple_effect: True
             on_press: root.open()
 
-        BoxLayout:
+        MDBoxLayout:
             id: front_layer
             padding: 0, 0, 0, "10dp"
 """
 )
 
 
-class MDBackdrop(ThemableBehavior, FloatLayout):
+class MDBackdrop(ThemableBehavior, MDFloatLayout):
     """
     :Events:
         :attr:`on_open`
@@ -226,7 +215,8 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     left_action_items = ListProperty()
     """
     The icons and methods left of the :class:`kivymd.uix.toolbar.MDToolbar`
-    in back layer. For more information, see the :class:`kivymd.uix.toolbar.MDToolbar` module
+    in back layer. For more information, see the
+    :class:`kivymd.uix.toolbar.MDToolbar` module
     and :attr:`left_action_items` parameter.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
@@ -308,6 +298,48 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
     and defaults to `'close'`.
     """
 
+    opening_time = NumericProperty(0.2)
+    """
+    The time taken for the panel to slide to the :attr:`state` `'open'`.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    opening_transition = StringProperty("out_quad")
+    """
+    The name of the animation transition type to use when animating to
+    the :attr:`state` `'open'`.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`opening_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_quad'`.
+    """
+
+    closing_time = NumericProperty(0.2)
+    """
+    The time taken for the panel to slide to the :attr:`state` `'close'`.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`closing_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    closing_transition = StringProperty("out_quad")
+    """
+    The name of the animation transition type to use when animating to
+    the :attr:`state` 'close'.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`closing_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_quad'`.
+    """
+
     _open_icon = ""
     _front_layer_open = False
 
@@ -319,24 +351,24 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
             lambda x: self.on_left_action_items(self, self.left_action_items)
         )
 
-    def on_open(self):
+    def on_open(self) -> NoReturn:
         """When the front layer drops."""
 
-    def on_close(self):
+    def on_close(self) -> NoReturn:
         """When the front layer rises."""
 
-    def on_left_action_items(self, instance, value):
-        if value:
-            self.left_action_items = [value[0]]
+    def on_left_action_items(self, instance_backdrop, menu: list) -> NoReturn:
+        if menu:
+            self.left_action_items = [menu[0]]
         else:
             self.left_action_items = [["menu", lambda x: self.open()]]
         self._open_icon = self.left_action_items[0][0]
 
-    def on_header(self, instance, value):
+    def on_header(self, instance_backdrop, value: bool) -> NoReturn:
         if not value:
             self.ids._front_layer.remove_widget(self.ids.header_button)
 
-    def open(self, open_up_to=0):
+    def open(self, open_up_to: int = 0) -> NoReturn:
         """
         Opens the front layer.
 
@@ -345,7 +377,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
             if equal to zero - falls to the bottom of the screen;
         """
 
-        self.animtion_icon_menu()
+        self.animate_opacity_icon()
         if self._front_layer_open:
             self.close()
             return
@@ -362,30 +394,55 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         else:
             y = self.ids.header_button.height - self.ids._front_layer.height
 
-        Animation(y=y, d=0.2, t="out_quad").start(self.ids._front_layer)
+        Animation(y=y, d=self.opening_time, t=self.opening_transition).start(
+            self.ids._front_layer
+        )
         self._front_layer_open = True
         self.dispatch("on_open")
 
-    def close(self):
+    def close(self) -> NoReturn:
         """Opens the front layer."""
 
-        Animation(y=0, d=0.2, t="out_quad").start(self.ids._front_layer)
+        Animation(y=0, d=self.closing_time, t=self.closing_transition).start(
+            self.ids._front_layer
+        )
         self._front_layer_open = False
         self.dispatch("on_close")
 
-    def animtion_icon_menu(self):
-        icon_menu = self.ids.toolbar.ids.left_actions.children[0]
-        anim = Animation(opacity=0, d=0.2, t="out_quad")
-        anim.bind(on_complete=self.animtion_icon_close)
-        anim.start(icon_menu)
+    def animate_opacity_icon(
+        self,
+        instance_icon_menu: Union[MDActionTopAppBarButton, None] = None,
+        opacity_value: int = 0,
+        call_set_new_icon: bool = True,
+    ) -> NoReturn:
+        """Starts the opacity animation of the icon."""
 
-    def animtion_icon_close(self, instance_animation, instance_icon_menu):
+        if not instance_icon_menu:
+            instance_icon_menu = self.ids.toolbar.ids.left_actions.children[0]
+        anim = Animation(
+            opacity=opacity_value,
+            d=self.opening_time,
+            t=self.opening_transition,
+        )
+        if call_set_new_icon:
+            anim.bind(on_complete=self.set_new_icon)
+        anim.start(instance_icon_menu)
+
+    def set_new_icon(
+        self,
+        instance_animation: Animation,
+        instance_icon_menu: MDActionTopAppBarButton,
+    ) -> NoReturn:
+        """
+        Sets the icon of the button depending on the state of the backdrop.
+        """
+
         instance_icon_menu.icon = (
             self.close_icon
             if instance_icon_menu.icon == self._open_icon
             else self._open_icon
         )
-        Animation(opacity=1, d=0.2).start(instance_icon_menu)
+        self.animate_opacity_icon(instance_icon_menu, 1, False)
 
     def add_widget(self, widget, index=0, canvas=None):
         if widget.__class__ in (MDBackdropToolbar, _BackLayer, _FrontLayer):

@@ -103,10 +103,12 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
 
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: "vertical"
+
         MDToolbar:
             title: "Example Tabs"
+
         MDTabs:
             id: tabs
 
@@ -149,6 +151,7 @@ the theming stays as documented.
 
 
 """
+from typing import NoReturn
 
 from kivy.app import App
 from kivy.atlas import Atlas
@@ -189,17 +192,15 @@ class ThemeManager(EventDispatcher):
 
     .. code-block:: python
 
-        from kivy.uix.screenmanager import Screen
-
         from kivymd.app import MDApp
+        from kivymd.screen import MDScreen
         from kivymd.uix.button import MDRectangleFlatButton
 
 
         class MainApp(MDApp):
             def build(self):
                 self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
-
-                screen = Screen()
+                screen = MDScreen()
                 screen.add_widget(
                     MDRectangleFlatButton(
                         text="Hello, World",
@@ -228,9 +229,8 @@ class ThemeManager(EventDispatcher):
 
     .. code-block:: python
 
-        from kivy.uix.screenmanager import Screen
-
         from kivymd.app import MDApp
+        from kivymd.screen import MDScreen
         from kivymd.uix.button import MDRectangleFlatButton
 
 
@@ -238,8 +238,7 @@ class ThemeManager(EventDispatcher):
             def build(self):
                 self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
                 self.theme_cls.primary_hue = "200"  # "500"
-
-                screen = Screen()
+                screen = MDScreen()
                 screen.add_widget(
                     MDRectangleFlatButton(
                         text="Hello, World",
@@ -279,7 +278,7 @@ class ThemeManager(EventDispatcher):
     and defaults to `'700'`.
     """
 
-    def _get_primary_color(self):
+    def _get_primary_color(self) -> list:
         return get_color_from_hex(
             self.colors[self.primary_palette][self.primary_hue]
         )
@@ -294,7 +293,7 @@ class ThemeManager(EventDispatcher):
     returns the value of the current application theme, property is readonly.
     """
 
-    def _get_primary_light(self):
+    def _get_primary_light(self) -> list:
         return get_color_from_hex(
             self.colors[self.primary_palette][self.primary_light_hue]
         )
@@ -314,7 +313,7 @@ class ThemeManager(EventDispatcher):
 
 
         KV = '''
-        Screen:
+        MDScreen:
 
             MDRaisedButton:
                 text: "primary_light"
@@ -348,7 +347,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_primary_dark(self):
+    def _get_primary_dark(self) -> list:
         return get_color_from_hex(
             self.colors[self.primary_palette][self.primary_dark_hue]
         )
@@ -371,7 +370,7 @@ class ThemeManager(EventDispatcher):
     in the :attr:`MDTabsBar` class and so on...
 
     The image below shows the color schemes with the values
-    ``self.theme_cls.accent_palette = 'Blue'``, ``Red'`` and​​ ``Yellow'``:
+    ``self.theme_cls.accent_palette = 'Blue'``, ``Red'`` and ``Yellow'``:
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/accent-palette.png
 
@@ -380,7 +379,8 @@ class ThemeManager(EventDispatcher):
     """
 
     accent_hue = OptionProperty("500", options=hue)
-    """Similar to :attr:`primary_hue`,
+    """
+    Similar to :attr:`primary_hue`,
     but returns a value for :attr:`accent_palette`.
 
     :attr:`accent_hue` is an :class:`~kivy.properties.OptionProperty`
@@ -403,7 +403,7 @@ class ThemeManager(EventDispatcher):
     and defaults to `'700'`.
     """
 
-    def _get_accent_color(self):
+    def _get_accent_color(self) -> list:
         return get_color_from_hex(
             self.colors[self.accent_palette][self.accent_hue]
         )
@@ -411,15 +411,16 @@ class ThemeManager(EventDispatcher):
     accent_color = AliasProperty(
         _get_accent_color, bind=["accent_palette", "accent_hue"]
     )
-    """Similar to :attr:`primary_color`,
-    but returns a value for :attr:`accent_color`.
+    """
+    Similar to :attr:`primary_color`, but returns a value
+    for :attr:`accent_color`.
 
     :attr:`accent_color` is an :class:`~kivy.properties.AliasProperty` that
     returns the value in ``rgba`` format for :attr:`accent_color`,
     property is readonly.
     """
 
-    def _get_accent_light(self):
+    def _get_accent_light(self) -> list:
         return get_color_from_hex(
             self.colors[self.accent_palette][self.accent_light_hue]
         )
@@ -427,15 +428,16 @@ class ThemeManager(EventDispatcher):
     accent_light = AliasProperty(
         _get_accent_light, bind=["accent_palette", "accent_light_hue"]
     )
-    """Similar to :attr:`primary_light`,
-    but returns a value for :attr:`accent_light`.
+    """
+    Similar to :attr:`primary_light`, but returns a value
+    for :attr:`accent_light`.
 
     :attr:`accent_light` is an :class:`~kivy.properties.AliasProperty` that
     returns the value in ``rgba`` format for :attr:`accent_light`,
     property is readonly.
     """
 
-    def _get_accent_dark(self):
+    def _get_accent_dark(self) -> list:
         return get_color_from_hex(
             self.colors[self.accent_palette][self.accent_dark_hue]
         )
@@ -443,8 +445,9 @@ class ThemeManager(EventDispatcher):
     accent_dark = AliasProperty(
         _get_accent_dark, bind=["accent_palette", "accent_dark_hue"]
     )
-    """Similar to :attr:`primary_dark`,
-    but returns a value for :attr:`accent_dark`.
+    """
+    Similar to :attr:`primary_dark`, but returns a value
+    for :attr:`accent_dark`.
 
     :attr:`accent_dark` is an :class:`~kivy.properties.AliasProperty` that
     returns the value in ``rgba`` format for :attr:`accent_dark`,
@@ -452,21 +455,20 @@ class ThemeManager(EventDispatcher):
     """
 
     theme_style = OptionProperty("Light", options=["Light", "Dark"])
-    """App theme style.
+    """
+    App theme style.
 
     .. code-block:: python
 
-        from kivy.uix.screenmanager import Screen
-
         from kivymd.app import MDApp
+        from kivymd.screen import MDScreen
         from kivymd.uix.button import MDRectangleFlatButton
 
 
         class MainApp(MDApp):
             def build(self):
                 self.theme_cls.theme_style = "Dark"  # "Light"
-
-                screen = Screen()
+                screen = MDScreen()
                 screen.add_widget(
                     MDRectangleFlatButton(
                         text="Hello, World",
@@ -484,13 +486,13 @@ class ThemeManager(EventDispatcher):
     and defaults to `'Light'`.
     """
 
-    def _get_theme_style(self, opposite):
+    def _get_theme_style(self, opposite: bool) -> str:
         if opposite:
             return "Light" if self.theme_style == "Dark" else "Dark"
         else:
             return self.theme_style
 
-    def _get_bg_darkest(self, opposite=False):
+    def _get_bg_darkest(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             return get_color_from_hex(self.colors["Light"]["StatusBar"])
@@ -500,31 +502,24 @@ class ThemeManager(EventDispatcher):
     bg_darkest = AliasProperty(_get_bg_darkest, bind=["theme_style"])
     """
     Similar to :attr:`bg_dark`,
-    but the color values ​​are a tone lower (darker) than :attr:`bg_dark`.
+    but the color values are a tone lower (darker) than :attr:`bg_dark`.
 
     .. code-block:: python
 
         KV = '''
-        <Box@BoxLayout>:
-            bg: 0, 0, 0, 0
+        MDBoxLayout:
 
-            canvas:
-                Color:
-                    rgba: root.bg
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+            MDBoxLayout:
+                md_bg_color: app.theme_cls.bg_light
 
-        BoxLayout:
+            MDBoxLayout:
+                md_bg_color: app.theme_cls.bg_normal
 
-            Box:
-                bg: app.theme_cls.bg_light
-            Box:
-                bg: app.theme_cls.bg_normal
-            Box:
-                bg: app.theme_cls.bg_dark
-            Box:
-                bg: app.theme_cls.bg_darkest
+            MDBoxLayout:
+                md_bg_color: app.theme_cls.bg_dark
+
+            MDBoxLayout:
+                md_bg_color: app.theme_cls.bg_darkest
         '''
 
         from kivy.lang import Builder
@@ -547,7 +542,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_bg_darkest(self):
+    def _get_op_bg_darkest(self) -> list:
         return self._get_bg_darkest(True)
 
     opposite_bg_darkest = AliasProperty(
@@ -561,7 +556,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_bg_dark(self, opposite=False):
+    def _get_bg_dark(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             return get_color_from_hex(self.colors["Light"]["AppBar"])
@@ -571,14 +566,14 @@ class ThemeManager(EventDispatcher):
     bg_dark = AliasProperty(_get_bg_dark, bind=["theme_style"])
     """
     Similar to :attr:`bg_normal`,
-    but the color values ​​are one tone lower (darker) than :attr:`bg_normal`.
+    but the color values are one tone lower (darker) than :attr:`bg_normal`.
 
     :attr:`bg_dark` is an :class:`~kivy.properties.AliasProperty` that
     returns the value in ``rgba`` format for :attr:`bg_dark`,
     property is readonly.
     """
 
-    def _get_op_bg_dark(self):
+    def _get_op_bg_dark(self) -> list:
         return self._get_bg_dark(True)
 
     opposite_bg_dark = AliasProperty(_get_op_bg_dark, bind=["theme_style"])
@@ -590,7 +585,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_bg_normal(self, opposite=False):
+    def _get_bg_normal(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             return get_color_from_hex(self.colors["Light"]["Background"])
@@ -600,14 +595,14 @@ class ThemeManager(EventDispatcher):
     bg_normal = AliasProperty(_get_bg_normal, bind=["theme_style"])
     """
     Similar to :attr:`bg_light`,
-    but the color values ​​are one tone lower (darker) than :attr:`bg_light`.
+    but the color values are one tone lower (darker) than :attr:`bg_light`.
 
     :attr:`bg_normal` is an :class:`~kivy.properties.AliasProperty` that
     returns the value in ``rgba`` format for :attr:`bg_normal`,
     property is readonly.
     """
 
-    def _get_op_bg_normal(self):
+    def _get_op_bg_normal(self) -> list:
         return self._get_bg_normal(True)
 
     opposite_bg_normal = AliasProperty(_get_op_bg_normal, bind=["theme_style"])
@@ -619,7 +614,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_bg_light(self, opposite=False):
+    def _get_bg_light(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             return get_color_from_hex(self.colors["Light"]["CardsDialogs"])
@@ -637,7 +632,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_bg_light(self):
+    def _get_op_bg_light(self) -> list:
         return self._get_bg_light(True)
 
     opposite_bg_light = AliasProperty(_get_op_bg_light, bind=["theme_style"])
@@ -649,7 +644,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_divider_color(self, opposite=False):
+    def _get_divider_color(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             color = get_color_from_hex("000000")
@@ -667,7 +662,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_divider_color(self):
+    def _get_op_divider_color(self) -> list:
         return self._get_divider_color(True)
 
     opposite_divider_color = AliasProperty(
@@ -681,7 +676,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_text_color(self, opposite=False):
+    def _get_text_color(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             color = get_color_from_hex("000000")
@@ -699,7 +694,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_text_color(self):
+    def _get_op_text_color(self) -> list:
         return self._get_text_color(True)
 
     opposite_text_color = AliasProperty(
@@ -713,7 +708,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_secondary_text_color(self, opposite=False):
+    def _get_secondary_text_color(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             color = get_color_from_hex("000000")
@@ -735,7 +730,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_secondary_text_color(self):
+    def _get_op_secondary_text_color(self) -> list:
         return self._get_secondary_text_color(True)
 
     opposite_secondary_text_color = AliasProperty(
@@ -750,7 +745,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_icon_color(self, opposite=False):
+    def _get_icon_color(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             color = get_color_from_hex("000000")
@@ -768,7 +763,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_icon_color(self):
+    def _get_op_icon_color(self) -> list:
         return self._get_icon_color(True)
 
     opposite_icon_color = AliasProperty(
@@ -782,7 +777,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_disabled_hint_text_color(self, opposite=False):
+    def _get_disabled_hint_text_color(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":
             color = get_color_from_hex("000000")
@@ -804,7 +799,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_op_disabled_hint_text_color(self):
+    def _get_op_disabled_hint_text_color(self) -> list:
         return self._get_disabled_hint_text_color(True)
 
     opposite_disabled_hint_text_color = AliasProperty(
@@ -820,7 +815,7 @@ class ThemeManager(EventDispatcher):
     """
 
     # Hardcoded because muh standard
-    def _get_error_color(self):
+    def _get_error_color(self) -> list:
         return get_color_from_hex(self.colors["Red"]["A700"])
 
     error_color = AliasProperty(_get_error_color, bind=["theme_style"])
@@ -833,10 +828,10 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_ripple_color(self):
+    def _get_ripple_color(self) -> list:
         return self._ripple_color
 
-    def _set_ripple_color(self, value):
+    def _set_ripple_color(self, value) -> NoReturn:
         self._ripple_color = value
 
     _ripple_color = ColorProperty(get_color_from_hex(colors["Gray"]["400"]))
@@ -853,7 +848,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _determine_device_orientation(self, _, window_size):
+    def _determine_device_orientation(self, _, window_size) -> NoReturn:
         if window_size[0] > window_size[1]:
             self.device_orientation = "landscape"
         elif window_size[1] >= window_size[0]:
@@ -866,7 +861,7 @@ class ThemeManager(EventDispatcher):
     :attr:`device_orientation` is an :class:`~kivy.properties.StringProperty`.
     """
 
-    def _get_standard_increment(self):
+    def _get_standard_increment(self) -> float:
         if DEVICE_TYPE == "mobile":
             if self.device_orientation == "landscape":
                 return dp(48)
@@ -886,7 +881,7 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def _get_horizontal_margins(self):
+    def _get_horizontal_margins(self) -> float:
         if DEVICE_TYPE == "mobile":
             return dp(16)
         else:
@@ -901,12 +896,12 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
-    def on_theme_style(self, instance, value):
+    def on_theme_style(self, interval: int, theme_style: str) -> NoReturn:
         if (
             hasattr(App.get_running_app(), "theme_cls")
             and App.get_running_app().theme_cls == self
         ):
-            self.set_clearcolor_by_theme_style(value)
+            self.set_clearcolor_by_theme_style(theme_style)
 
     set_clearcolor = BooleanProperty(True)
 
@@ -917,7 +912,7 @@ class ThemeManager(EventDispatcher):
             self.colors[theme_style]["Background"]
         )
 
-    # font name, size (sp), always caps, letter spacing (sp)
+    # Font name, size (sp), always caps, letter spacing (sp).
     font_styles = DictProperty(
         {
             "H1": ["RobotoLight", 96, False, -1.5],
@@ -944,7 +939,7 @@ class ThemeManager(EventDispatcher):
     .. code-block:: python
 
         KV = '''
-        Screen:
+        MDScreen:
 
             MDLabel:
                 text: "JetBrainsMono"
@@ -953,7 +948,6 @@ class ThemeManager(EventDispatcher):
         '''
 
         from kivy.core.text import LabelBase
-
         from kivy.lang import Builder
 
         from kivymd.app import MDApp
@@ -985,15 +979,15 @@ class ThemeManager(EventDispatcher):
 
     def set_colors(
         self,
-        primary_palette,
-        primary_hue,
-        primary_light_hue,
-        primary_dark_hue,
-        accent_palette,
-        accent_hue,
-        accent_light_hue,
-        accent_dark_hue,
-    ):
+        primary_palette: str,
+        primary_hue: str,
+        primary_light_hue: str,
+        primary_dark_hue: str,
+        accent_palette: str,
+        accent_hue: str,
+        accent_light_hue: str,
+        accent_dark_hue: str,
+    ) -> NoReturn:
         """
         Courtesy method to allow all of the theme color attributes to be set in one call.
 
@@ -1013,9 +1007,8 @@ class ThemeManager(EventDispatcher):
 
         .. code-block:: python
 
-            from kivy.uix.screenmanager import Screen
-
             from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
             from kivymd.uix.button import MDRectangleFlatButton
 
 
@@ -1024,8 +1017,7 @@ class ThemeManager(EventDispatcher):
                     self.theme_cls.set_colors(
                         "Blue", "600", "50", "800", "Teal", "600", "100", "800"
                     )
-
-                    screen = Screen()
+                    screen = MDScreen()
                     screen.add_widget(
                         MDRectangleFlatButton(
                             text="Hello, World",
@@ -1060,7 +1052,7 @@ class ThemeManager(EventDispatcher):
         self.colors = colors
         Clock.schedule_once(self.sync_theme_styles)
 
-    def sync_theme_styles(self, *args):
+    def sync_theme_styles(self, *args) -> NoReturn:
         # Syncs the values from self.font_styles to theme_font_styles
         # this will ensure continuity when someone registers a new font_style.
         for num, style in enumerate(theme_font_styles):
@@ -1116,6 +1108,29 @@ class ThemableBehavior(EventDispatcher):
     """
 
     opposite_colors = BooleanProperty(False)
+    """
+    For some widgets, for example, for a widget
+    :class:`~kivymd.uix.toolbar.MDToolbar` changes the color of the label to
+    the color opposite to the main theme.
+
+    .. code-block:: kv
+
+        MDToolbar:
+            title: "MDToolbar"
+            opposite_colors: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-true.png
+        :align: center
+
+    .. code-block:: kv
+
+        MDToolbar:
+            title: "MDToolbar"
+            opposite_colors: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-false.png
+        :align: center
+    """
 
     def __init__(self, **kwargs):
         if self.theme_cls is not None:

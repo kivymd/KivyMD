@@ -4,14 +4,13 @@ Themes/Material App
 
 This module contains :class:`MDApp` class that is inherited from
 :class:`~kivy.app.App`. :class:`MDApp` has some properties needed for ``KivyMD``
-library (like :attr:`~MDApp.theme_cls`).
-
-You can turn on the monitor displaying the current ``FPS`` value in your application:
+library (like :attr:`~MDApp.theme_cls`). You can turn on the monitor displaying
+the current ``FPS`` value in your application:
 
 .. code-block:: python
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDLabel:
             text: "Hello, World!"
@@ -41,6 +40,8 @@ You can turn on the monitor displaying the current ``FPS`` value in your applica
 
 __all__ = ("MDApp",)
 
+from typing import NoReturn
+
 from kivy.app import App
 from kivy.properties import ObjectProperty
 
@@ -48,9 +49,11 @@ from kivymd.theming import ThemeManager
 
 
 class FpsMonitoring:
-    """Adds a monitor to display the current FPS in the toolbar."""
+    """Implements a monitor to display the current FPS in the toolbar."""
 
-    def fps_monitor_start(self):
+    def fps_monitor_start(self) -> NoReturn:
+        """Adds a monitor to the main application window."""
+
         from kivy.core.window import Window
 
         from kivymd.utils.fpsmonitor import FpsMonitor
@@ -61,6 +64,11 @@ class FpsMonitoring:
 
 
 class MDApp(App, FpsMonitoring):
+    """
+    Application class, see :class:`~kivy.app.App` class documentation for more
+    information.
+    """
+
     theme_cls = ObjectProperty()
     """
     Instance of :class:`~ThemeManager` class.

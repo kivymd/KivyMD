@@ -29,7 +29,7 @@ Usage :class:`~MDListBottomSheet`
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDToolbar:
             title: "Example BottomSheet"
@@ -89,7 +89,7 @@ which will be used as an icon to the left of the item:
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDToolbar:
             title: 'Example BottomSheet'
@@ -175,7 +175,7 @@ which will be used as an icon to the left of the item:
                     text: "Exit"
 
 
-    Screen:
+    MDScreen:
 
         MDToolbar:
             title: 'Example BottomSheet'
@@ -558,7 +558,6 @@ class GridBottomSheetItem(ButtonBehavior, BoxLayout):
 class MDGridBottomSheet(MDBottomSheet):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
         self.sheet_list = SheetList(size_hint_y=None)
         self.sheet_list.ids.box_sheet_list.cols = 3
         self.sheet_list.ids.box_sheet_list.padding = (dp(16), 0, dp(16), dp(96))

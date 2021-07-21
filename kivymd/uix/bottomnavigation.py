@@ -188,6 +188,9 @@ __all__ = (
     "MDTab",
 )
 
+from typing import NoReturn, Union
+
+from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -200,19 +203,19 @@ from kivy.properties import (
     ObjectProperty,
     StringProperty,
 )
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import Screen, ScreenManagerException
+from kivy.uix.screenmanager import ScreenManagerException
 
-from kivymd.theming import ThemableBehavior
+from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.screen import MDScreen
 
 Builder.load_string(
     """
@@ -222,7 +225,7 @@ Builder.load_string(
 <MDBottomNavigation>
     id: panel
     orientation: "vertical"
-    height: dp(56)  # Spec
+    height: dp(56)
 
     ScreenManager:
         id: tab_manager
@@ -239,7 +242,7 @@ Builder.load_string(
             if not root.panel_color \
             else root.panel_color
 
-        BoxLayout:
+        MDBoxLayout:
             id: tab_bar
             pos_hint: {"center_x": .5, "center_y": .5}
             height: dp(56)
@@ -254,6 +257,10 @@ Builder.load_string(
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
     on_touch_move: self.tab.dispatch("on_tab_touch_move", *args)
     on_touch_up: self.tab.dispatch("on_tab_touch_up", *args)
+    width:
+        root.panel.width / len(root.panel.ids.tab_manager.screens) \
+        if len(root.panel.ids.tab_manager.screens) != 0 \
+        else root.panel.width
 
     width:
         root.panel.width / len(root.panel.ids.tab_manager.screens) \
@@ -277,7 +284,6 @@ Builder.load_string(
             pos_hint: {"center_x": .5}
             y: item_container.height - dp(8)
 
-
         MDLabel:
             id: _label
             text: root.tab.text
@@ -294,20 +300,19 @@ Builder.load_string(
 
 
 <MDTab>
-    canvas:
-        Color:
-            rgba: root.theme_cls.bg_normal
-        Rectangle:
-            size: root.size
+    md_bg_color: root.theme_cls.bg_normal
 """
 )
 
 
-class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, MDAnchorLayout):
+class MDBottomNavigationHeader(
+    ThemableBehavior, ButtonBehavior, MDAnchorLayout
+):
     opposite_colors = BooleanProperty(True)
 
     panel_color = ListProperty([1, 1, 1, 0])
-    """Panel color of bottom navigation.
+    """
+    Panel color of bottom navigation.
 
     :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[1, 1, 1, 0]`.
@@ -369,7 +374,9 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, MDAnchorLayout)
         self.theme_cls.bind(disabled_hint_text_color=self._update_theme_style)
         self.active = False
 
-    def on_press(self):
+    def on_press(self) -> NoReturn:
+        """Called when clicking on a panel item."""
+
         Animation(_label_font_size=sp(14), d=0.1).start(self)
         Animation(
             _text_color_normal=self.theme_cls.primary_color
@@ -378,7 +385,9 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, MDAnchorLayout)
             d=0.1,
         ).start(self)
 
-    def _update_theme_style(self, instance, color):
+    def _update_theme_style(
+        self, instance_theme_manager: ThemeManager, color: list
+    ):
         """Called when the application theme style changes (White/Black)."""
 
         if not self.active:
@@ -389,9 +398,10 @@ class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, MDAnchorLayout)
             )
 
 
-class MDTab(Screen, ThemableBehavior):
-    """A tab is simply a screen with meta information
-    that defines the content that goes in the tab header.
+class MDTab(MDScreen, ThemableBehavior):
+    """
+    A tab is simply a screen with meta information that defines the content
+    that goes in the tab header.
     """
 
     __events__ = (
@@ -404,14 +414,16 @@ class MDTab(Screen, ThemableBehavior):
     """Events provided."""
 
     text = StringProperty()
-    """Tab header text.
+    """
+    Tab header text.
 
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
     icon = StringProperty("checkbox-blank-circle")
-    """Tab header icon.
+    """
+    Tab header icon.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
@@ -460,7 +472,9 @@ class MDBottomNavigationItem(MDTab):
     and defaults to `None`.
     """
 
-    def on_tab_press(self, *args):
+    def on_tab_press(self, *args) -> NoReturn:
+        """Called when clicking on a panel item."""
+
         par = self.parent_widget
         par.ids.tab_manager.current = self.name
         if par.previous_tab is not self:
@@ -484,14 +498,15 @@ class MDBottomNavigationItem(MDTab):
 class TabbedPanelBase(
     ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
 ):
-    """A class that contains all variables a :class:`~kivy.properties.TabPannel`
+    """
+    A class that contains all variables a :class:`~kivy.properties.TabPannel`
     must have. It is here so I (zingballyhoo) don't get mad about
     the :class:`~kivy.properties.TabbedPannels` not being DRY.
-
     """
 
     current = StringProperty(None)
-    """Current tab name.
+    """
+    Current tab name.
 
     :attr:`current` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
@@ -503,7 +518,8 @@ class TabbedPanelBase(
     """
 
     panel_color = ListProperty()
-    """Panel color of bottom navigation.
+    """
+    Panel color of bottom navigation.
 
     :attr:`panel_color` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
@@ -513,8 +529,10 @@ class TabbedPanelBase(
 
 
 class MDBottomNavigation(TabbedPanelBase):
-    """A bottom navigation that is implemented by delegating
-    all items to a ScreenManager."""
+    """
+    A bottom navigation that is implemented by delegating all items to a
+    :class:`~kivy.uix.screenmanager,ScreenManager`.
+    """
 
     first_widget = ObjectProperty()
     """
@@ -551,21 +569,27 @@ class MDBottomNavigation(TabbedPanelBase):
         Window.bind(on_resize=self.on_resize)
         Clock.schedule_once(lambda x: self.on_resize(), 0)
 
-    def on_panel_color(self, instance, value):
-        self.tab_header.panel_color = value
+    def on_panel_color(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        self.tab_header.panel_color = color
 
-    def on_text_color_normal(self, instance, value):
+    def on_text_color_normal(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
         for tab in self.ids.tab_bar.children:
             if not tab.active:
-                tab._text_color_normal = value
+                tab._text_color_normal = color
 
-    def on_text_color_active(self, instance, value):
+    def on_text_color_active(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
         for tab in self.ids.tab_bar.children:
-            tab.text_color_active = value
+            tab.text_color_active = color
             if tab.active:
-                tab._text_color_normal = value
+                tab._text_color_normal = color
 
-    def switch_tab(self, name_tab):
+    def switch_tab(self, name_tab) -> NoReturn:
         """Switching the tab by name."""
 
         if not self.ids.tab_manager.has_screen(name_tab):
@@ -582,33 +606,37 @@ class MDBottomNavigation(TabbedPanelBase):
             numbers_screens.index(count_index_screen)
         ].dispatch("on_press")
 
-    def refresh_tabs(self):
+    def refresh_tabs(self) -> NoReturn:
         """Refresh all tabs."""
 
-        if not self.ids:
-            return
-        tab_bar = self.ids.tab_bar
-        tab_bar.clear_widgets()
-        tab_manager = self.ids.tab_manager
-        for tab in tab_manager.screens:
-            self.tab_header = MDBottomNavigationHeader(
-                tab=tab, panel=self, height=tab_bar.height
-            )
-            tab.header = self.tab_header
-            tab_bar.add_widget(self.tab_header)
-            if tab is self.first_widget:
-                self.tab_header._text_color_normal = (
-                    self.theme_cls.primary_color
+        if self.ids:
+            tab_bar = self.ids.tab_bar
+            tab_bar.clear_widgets()
+            tab_manager = self.ids.tab_manager
+            for tab in tab_manager.screens:
+                self.tab_header = MDBottomNavigationHeader(
+                    tab=tab, panel=self, height=tab_bar.height
                 )
-                self.tab_header._label_font_size = sp(14)
-                self.tab_header.active = True
-            else:
-                self.tab_header._label_font_size = sp(12)
+                tab.header = self.tab_header
+                tab_bar.add_widget(self.tab_header)
+                if tab is self.first_widget:
+                    self.tab_header._text_color_normal = (
+                        self.theme_cls.primary_color
+                    )
+                    self.tab_header._label_font_size = sp(14)
+                    self.tab_header.active = True
+                else:
+                    self.tab_header._label_font_size = sp(12)
 
-    def on_size(self, *args):
+    def on_size(self, *args) -> NoReturn:
         self.on_resize()
 
-    def on_resize(self, instance=None, width=None, do_again=True):
+    def on_resize(
+        self,
+        instance: Union[WindowSDL, None] = None,
+        width: Union[int, None] = None,
+        do_again: bool = True,
+    ) -> NoReturn:
         """Called when the application window is resized."""
 
         full_width = 0
@@ -642,8 +670,7 @@ class MDBottomNavigation(TabbedPanelBase):
 
 class MDBottomNavigationBar(
     ThemableBehavior,
-    BackgroundColorBehavior,
     FakeRectangularElevationBehavior,
-    FloatLayout,
+    MDFloatLayout,
 ):
     pass

@@ -76,16 +76,14 @@ class MDCarousel(Carousel):
     def on_slide_progress(self, *args):
         """
         Event launched when the Slide animation is progress.
-        rememebr to bind and unbid to this method.
+        remember to bind and unbid to this method.
         """
-        pass
 
     def on_slide_complete(self, *args):
         """
         Event launched when the Slide animation is complete.
-        rememebr to bind and unbid to this method.
+        remember to bind and unbid to this method.
         """
-        pass
 
     def _position_visible_slides(self, *args):
         slides, index = self.slides, self.index

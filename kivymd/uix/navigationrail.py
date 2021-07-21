@@ -96,7 +96,7 @@ Usage
     :align: center
 
 """
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock

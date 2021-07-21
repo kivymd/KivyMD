@@ -99,7 +99,7 @@ Choose chip
 
 __all__ = ("MDChooseChip", "MDChip")
 
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock

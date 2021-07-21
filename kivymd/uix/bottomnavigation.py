@@ -189,10 +189,10 @@ __all__ = (
 
 from typing import NoReturn, Union
 
-from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (

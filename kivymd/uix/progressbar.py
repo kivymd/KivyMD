@@ -29,7 +29,7 @@ MDProgressBar
     from kivymd.app import MDApp
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         padding: "10dp"
 
         MDProgressBar:
@@ -83,7 +83,7 @@ Indeterminate
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDProgressBar:
             id: progress
@@ -131,6 +131,8 @@ Determinate
 """
 
 __all__ = ("MDProgressBar",)
+
+from typing import NoReturn
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -183,7 +185,8 @@ Builder.load_string(
 
 class MDProgressBar(ThemableBehavior, ProgressBar):
     reversed = BooleanProperty(False)
-    """Reverse the direction the progressbar moves.
+    """
+    Reverse the direction the progressbar moves.
 
     :attr:`reversed` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -192,7 +195,8 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     orientation = OptionProperty(
         "horizontal", options=["horizontal", "vertical"]
     )
-    """Orientation of progressbar. Available options are: `'horizontal '`,
+    """
+    Orientation of progressbar. Available options are: `'horizontal '`,
     `'vertical'`.
 
     :attr:`orientation` is an :class:`~kivy.properties.OptionProperty`
@@ -208,28 +212,32 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     """
 
     running_transition = StringProperty("in_cubic")
-    """Running transition.
+    """
+    Running transition.
 
     :attr:`running_transition` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'in_cubic'`.
     """
 
     catching_transition = StringProperty("out_quart")
-    """Catching transition.
+    """
+    Catching transition.
 
     :attr:`catching_transition` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'out_quart'`.
     """
 
     running_duration = NumericProperty(0.5)
-    """Running duration.
+    """
+    Running duration.
 
     :attr:`running_duration` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.5`.
     """
 
     catching_duration = NumericProperty(0.8)
-    """Catching duration.
+    """
+    Catching duration.
 
     :attr:`running_duration` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.8`.
@@ -238,7 +246,8 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     type = OptionProperty(
         None, options=["indeterminate", "determinate"], allownone=True
     )
-    """Type of progressbar. Available options are: `'indeterminate '`,
+    """
+    Type of progressbar. Available options are: `'indeterminate '`,
     `'determinate'`.
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
@@ -252,7 +261,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
         self.running_anim = None
         super().__init__(**kwargs)
 
-    def start(self):
+    def start(self) -> NoReturn:
         """Start animation."""
 
         if self.type in ("indeterminate", "determinate"):
@@ -264,17 +273,17 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
                     self._create_determinate_animations()
             self.running_away()
 
-    def stop(self):
+    def stop(self) -> NoReturn:
         """Stop animation."""
 
         Animation.cancel_all(self)
         self._set_default_value(0)
 
-    def running_away(self, *args):
+    def running_away(self, *args) -> NoReturn:
         self._set_default_value(0)
         self.running_anim.start(self)
 
-    def catching_up(self, *args):
+    def catching_up(self, *args) -> NoReturn:
         if self.type == "indeterminate":
             self.reversed = True
         self.catching_anim.start(self)

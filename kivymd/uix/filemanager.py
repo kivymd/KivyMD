@@ -130,14 +130,13 @@ Not tested on `iOS`.
 
 __all__ = ("MDFileManager",)
 
-from kivy.factory import Factory
-from typing import NoReturn, Union, Tuple, List
-
 import locale
 import os
 import re
+from typing import List, NoReturn, Tuple, Union
 
 from kivy import platform
+from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (

@@ -139,7 +139,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.toolbar import MDToolbar, MDActionTopAppBarButton
+from kivymd.uix.toolbar import MDActionTopAppBarButton, MDToolbar
 
 Builder.load_string(
     """

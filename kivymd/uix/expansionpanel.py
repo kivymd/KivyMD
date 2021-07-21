@@ -144,6 +144,8 @@ __all__ = (
     "MDExpansionPanelLabel",
 )
 
+from typing import Union, NoReturn
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -221,7 +223,7 @@ class MDExpansionPanelLabel(TwoLineListItem):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_paddings)
 
-    def set_paddings(self, interval):
+    def set_paddings(self, interval: Union[int, float]) -> NoReturn:
         self._txt_bot_pad = dp(36)
         self._txt_left_pad = dp(0)
 
@@ -360,7 +362,15 @@ class MDExpansionPanel(RelativeLayout):
     def on_close(self, *args):
         """Called when a panel is closed."""
 
-    def check_open_panel(self, instance):
+    def check_open_panel(
+        self,
+        instance_panel: [
+            MDExpansionPanelThreeLine,
+            MDExpansionPanelTwoLine,
+            MDExpansionPanelThreeLine,
+            MDExpansionPanelLabel,
+        ],
+    ) -> NoReturn:
         """
         Called when you click on the panel. Called methods to open or close
         a panel.
@@ -370,7 +380,7 @@ class MDExpansionPanel(RelativeLayout):
         for panel in self.parent.children:
             if isinstance(panel, MDExpansionPanel):
                 if len(panel.children) == 2:
-                    if instance is panel.children[1]:
+                    if instance_panel is panel.children[1]:
                         press_current_panel = True
                     panel.remove_widget(panel.children[0])
                     if not isinstance(self.panel_cls, MDExpansionPanelLabel):
@@ -382,7 +392,7 @@ class MDExpansionPanel(RelativeLayout):
         if not press_current_panel:
             self.set_chevron_down()
 
-    def set_chevron_down(self):
+    def set_chevron_down(self) -> NoReturn:
         """Sets the chevron down."""
 
         if not isinstance(self.panel_cls, MDExpansionPanelLabel):
@@ -390,13 +400,17 @@ class MDExpansionPanel(RelativeLayout):
         self.open_panel()
         self.dispatch("on_open")
 
-    def set_chevron_up(self, instance_chevron):
+    def set_chevron_up(
+        self, instance_chevron: MDExpansionChevronRight
+    ) -> NoReturn:
         """Sets the chevron up."""
 
         if not isinstance(self.panel_cls, MDExpansionPanelLabel):
             Animation(_angle=0, d=self.closing_time).start(instance_chevron)
 
-    def close_panel(self, instance_panel, press_current_panel):
+    def close_panel(
+        self, instance_expansion_panel, press_current_panel: bool
+    ) -> NoReturn:
         """Method closes the panel."""
 
         if self._anim_playing:
@@ -413,9 +427,9 @@ class MDExpansionPanel(RelativeLayout):
             t=self.closing_transition,
         )
         anim.bind(on_complete=self._disable_anim)
-        anim.start(instance_panel)
+        anim.start(instance_expansion_panel)
 
-    def open_panel(self, *args):
+    def open_panel(self, *args) -> NoReturn:
         """Method opens a panel."""
 
         if self._anim_playing:
@@ -433,8 +447,9 @@ class MDExpansionPanel(RelativeLayout):
         anim.bind(on_complete=self._disable_anim)
         anim.start(self)
 
-    def get_state(self):
+    def get_state(self) -> str:
         """Returns the state of panel. Can be `close` or `open` ."""
+
         return self._state
 
     def add_widget(self, widget, index=0, canvas=None):

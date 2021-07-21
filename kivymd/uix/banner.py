@@ -38,7 +38,7 @@ Usage
             elevation: 10
             pos_hint: {'top': 1}
 
-        BoxLayout:
+        MDBoxLayout:
             id: screen
             orientation: "vertical"
             size_hint_y: None
@@ -139,6 +139,8 @@ add the prefix `'-icon'` to the banner type:
 
 __all__ = ("MDBanner",)
 
+from typing import NoReturn, Union
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -149,9 +151,11 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    BoundedNumericProperty,
 )
 from kivy.uix.widget import Widget
 
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import (
@@ -166,7 +170,6 @@ from kivymd.uix.list import (
 Builder.load_string(
     """
 #:import Window kivy.core.window.Window
-#:import Clock kivy.clock.Clock
 
 
 <ThreeLineIconBanner>
@@ -234,27 +237,23 @@ Builder.load_string(
             pos: self.pos
             size: self.size
 
-    BoxLayout:
+    MDBoxLayout:
         id: container_message
-        size_hint_y: None
-        height: self.minimum_height
+        adaptive_height: True
 
-    BoxLayout:
-        size_hint: None, None
-        size: self.minimum_size
+    MDBoxLayout:
+        adaptive_size: True
         pos_hint: {"right": 1}
         padding: 0, 0, "8dp", "8dp"
         spacing: "8dp"
 
-        BoxLayout:
+        MDBoxLayout:
             id: left_action_box
-            size_hint: None, None
-            size: self.minimum_size
+            adaptive_size: True
 
-        BoxLayout:
+        MDBoxLayout:
             id: right_action_box
-            size_hint: None, None
-            size: self.minimum_size
+            adaptive_size: True
 """
 )
 
@@ -277,7 +276,8 @@ class MDBanner(MDCard):
     """
 
     icon = StringProperty("data/logo/kivy-icon-128.png")
-    """Icon banner.
+    """
+    Icon banner.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'data/logo/kivy-icon-128.png'`.
@@ -293,7 +293,8 @@ class MDBanner(MDCard):
     """
 
     text = ListProperty()
-    """List of lines for banner text.
+    """
+    List of lines for banner text.
     Must contain no more than three lines for a
     `'one-line'`, `'two-line'` and `'three-line'` banner, respectively.
 
@@ -302,7 +303,8 @@ class MDBanner(MDCard):
     """
 
     left_action = ListProperty()
-    """The action of banner.
+    """
+    The action of banner.
 
     To add one action, make a list [`'name_action'`, callback]
     where `'name_action'` is a string that corresponds to an action name and
@@ -313,7 +315,8 @@ class MDBanner(MDCard):
     """
 
     right_action = ListProperty()
-    """Works the same way as :attr:`left_action`.
+    """
+    Works the same way as :attr:`left_action`.
 
     :attr:`right_action` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
@@ -331,17 +334,56 @@ class MDBanner(MDCard):
         ],
         allownone=True,
     )
-    """Banner type. . Available options are: (`"one-line"`, `"two-line"`,
+    """
+    Banner type. . Available options are: (`"one-line"`, `"two-line"`,
     `"three-line"`, `"one-line-icon"`, `"two-line-icon"`, `"three-line-icon"`).
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'one-line'`.
     """
 
+    opening_timeout = BoundedNumericProperty(0.7, min=0.7)
+    """
+    Time interval after which the banner will be shown.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`opening_timeout` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0.7`.
+    """
+
+    opening_time = NumericProperty(0.15)
+    """
+    The time taken for the banner to slide to the :attr:`state` `'open'`.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`opening_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
+    closing_time = NumericProperty(0.15)
+    """
+    The time taken for the banner to slide to the :attr:`state` `'close'`.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`closing_time` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
     _type_message = None
     _progress = False
 
-    def add_actions_buttons(self, box, data):
+    def add_actions_buttons(
+        self, instance_box: MDBoxLayout, data: list
+    ) -> NoReturn:
+        """
+        Adds buttons to the banner.
+
+        :param data: ['NAME BUTTON', <function>];
+        """
+
         if data:
             name_action_button, function_action_button = data
             action_button = MDFlatButton(
@@ -351,15 +393,42 @@ class MDBanner(MDCard):
                 on_release=function_action_button,
             )
             action_button.markup = True
-            box.add_widget(action_button)
+            instance_box.add_widget(action_button)
 
-    def set_left_action(self):
-        self.add_actions_buttons(self.ids.left_action_box, self.left_action)
+    def show(self) -> NoReturn:
+        """Displays a banner on the screen."""
 
-    def set_right_action(self):
-        self.add_actions_buttons(self.ids.right_action_box, self.right_action)
+        def show(interval: Union[int, float]):
+            self.set_type_banner()
+            self.add_actions_buttons(self.ids.left_action_box, self.left_action)
+            self.add_actions_buttons(
+                self.ids.right_action_box, self.right_action
+            )
+            self._add_banner_to_container()
+            Clock.schedule_once(self.animation_display_banner, 0.1)
 
-    def set_type_banner(self):
+        if not self._progress:
+            self._progress = True
+            if self.ids.container_message.children:
+                self.hide()
+            Clock.schedule_once(show, self.opening_timeout)
+
+    def hide(self) -> NoReturn:
+        """Hides the banner from the screen."""
+
+        def hide(interval: Union[int, float]):
+            anim = Animation(banner_y=0, d=self.closing_time)
+            anim.bind(on_complete=self._remove_banner)
+            anim.start(self)
+            Animation(
+                y=self.over_widget.y + self.height, d=self.closing_time
+            ).start(self.over_widget)
+
+        if not self._progress:
+            self._progress = True
+            Clock.schedule_once(hide, 0.5)
+
+    def set_type_banner(self) -> NoReturn:
         self._type_message = {
             "three-line-icon": ThreeLineIconBanner,
             "two-line-icon": TwoLineIconBanner,
@@ -369,63 +438,53 @@ class MDBanner(MDCard):
             "one-line": OneLineBanner,
         }[self.type]
 
-    def add_banner_to_container(self):
-        self.ids.container_message.add_widget(
-            self._type_message(text_message=self.text, icon=self.icon)
-        )
-
-    def show(self):
-        def show(interval):
-            self.set_type_banner()
-            self.set_left_action()
-            self.set_right_action()
-            self.add_banner_to_container()
-            Clock.schedule_once(self.animation_display_banner, 0.1)
-
-        if self._progress:
-            return
-        self._progress = True
-        if self.ids.container_message.children:
-            self.hide()
-        Clock.schedule_once(show, 0.7)
-
-    def animation_display_banner(self, i):
+    def animation_display_banner(self, interval: Union[int, float]) -> NoReturn:
         Animation(
             banner_y=self.height + self.vertical_pad,
-            d=0.15,
+            d=self.opening_time,
             t=self.opening_transition,
         ).start(self)
         anim = Animation(
             y=self.over_widget.y - self.height,
-            d=0.15,
+            d=self.opening_time,
             t=self.opening_transition,
         )
         anim.bind(on_complete=self._reset_progress)
         anim.start(self.over_widget)
 
-    def hide(self):
-        def hide(interval):
-            anim = Animation(banner_y=0, d=0.15)
-            anim.bind(on_complete=self._remove_banner)
-            anim.start(self)
-            Animation(y=self.over_widget.y + self.height, d=0.15).start(
-                self.over_widget
-            )
-
-        Clock.schedule_once(hide, 0.5)
-
     def _remove_banner(self, *args):
         self.ids.container_message.clear_widgets()
         self.ids.left_action_box.clear_widgets()
         self.ids.right_action_box.clear_widgets()
+        self._reset_progress()
 
     def _reset_progress(self, *args):
         self._progress = False
 
+    def _add_banner_to_container(self) -> NoReturn:
+        self.ids.container_message.add_widget(
+            self._type_message(text_message=self.text, icon=self.icon)
+        )
+
 
 class BaseBanner(Widget):
+    """Implements the base banner class."""
+
     text_message = ListProperty(["", "", ""])
+    """
+    List of banner strings. First, second and, respectively, third lines.
+
+    :attr:`text_message` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `['', '', '']`.
+    """
+
     icon = StringProperty()
+    """
+    Icon banner.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
 
     def on_touch_down(self, touch):
         self.parent.parent.hide()

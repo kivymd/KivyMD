@@ -1,6 +1,6 @@
 """
-Components/Refresh Layout
-=========================
+Components/RefreshLayout
+========================
 
 Example
 -------

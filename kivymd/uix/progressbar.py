@@ -1,6 +1,6 @@
 """
-Components/Progress Bar
-=======================
+Components/ProgressBar
+======================
 
 .. seealso::
 

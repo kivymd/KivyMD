@@ -1,6 +1,6 @@
 """
-Components/Navigation Drawer
-============================
+Components/NavigationDrawer
+===========================
 
 .. seealso::
 
@@ -35,18 +35,18 @@ A simple example:
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.boxlayout import BoxLayout
 
+    from kivymd.uix.boxlayout import MDBoxLayout
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDNavigationLayout:
 
             ScreenManager:
 
-                Screen:
+                MDScreen:
 
                     BoxLayout:
                         orientation: 'vertical'
@@ -66,7 +66,7 @@ A simple example:
     '''
 
 
-    class ContentNavigationDrawer(BoxLayout):
+    class ContentNavigationDrawer(MDBoxLayout):
         pass
 
 
@@ -191,10 +191,10 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.boxlayout import BoxLayout
     from kivy.properties import ObjectProperty
 
     from kivymd.app import MDApp
+    from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''
     <ContentNavigationDrawer>:
@@ -216,7 +216,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
                         root.screen_manager.current = "scr 2"
 
 
-    Screen:
+    MDScreen:
 
         MDToolbar:
             id: toolbar
@@ -231,14 +231,14 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
             ScreenManager:
                 id: screen_manager
 
-                Screen:
+                MDScreen:
                     name: "scr 1"
 
                     MDLabel:
                         text: "Screen 1"
                         halign: "center"
 
-                Screen:
+                MDScreen:
                     name: "scr 2"
 
                     MDLabel:
@@ -254,7 +254,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
     '''
 
 
-    class ContentNavigationDrawer(BoxLayout):
+    class ContentNavigationDrawer(MDBoxLayout):
         screen_manager = ObjectProperty()
         nav_drawer = ObjectProperty()
 
@@ -285,6 +285,8 @@ You can use the ``standard`` behavior type for the NavigationDrawer:
 """
 
 __all__ = ("MDNavigationLayout", "MDNavigationDrawer")
+
+from typing import NoReturn
 
 from kivy.animation import Animation, AnimationTransition
 from kivy.core.window import Window
@@ -350,7 +352,7 @@ class MDNavigationLayout(FloatLayout):
         super().__init__(**kwargs)
         self.bind(width=self.update_pos)
 
-    def update_pos(self, *args):
+    def update_pos(self, instance_navigation_drawer, pos_x: float) -> NoReturn:
         drawer = self._navigation_drawer
         manager = self._screen_manager
         if not drawer or not manager:
@@ -371,16 +373,20 @@ class MDNavigationLayout(FloatLayout):
             else:
                 manager.width = self.width
 
-    def add_scrim(self, widget):
-        with widget.canvas.after:
+    def add_scrim(self, instance_manager: ScreenManager) -> NoReturn:
+        with instance_manager.canvas.after:
             self._scrim_color = Color(rgba=[0, 0, 0, 0])
-            self._scrim_rectangle = Rectangle(pos=widget.pos, size=widget.size)
-            widget.bind(
+            self._scrim_rectangle = Rectangle(
+                pos=instance_manager.pos, size=instance_manager.size
+            )
+            instance_manager.bind(
                 pos=self.update_scrim_rectangle,
                 size=self.update_scrim_rectangle,
             )
 
-    def update_scrim_rectangle(self, *args):
+    def update_scrim_rectangle(
+        self, instance_manager: ScreenManager, size: list
+    ) -> NoReturn:
         self._scrim_rectangle.pos = self.pos
         self._scrim_rectangle.size = self.size
 
@@ -607,8 +613,9 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
         )
         Window.bind(on_keyboard=self._handle_keyboard)
 
-    def set_state(self, new_state="toggle", animation=True):
-        """Change state of the side panel.
+    def set_state(self, new_state="toggle", animation=True) -> NoReturn:
+        """
+        Change state of the side panel.
         New_state can be one of `"toggle"`, `"open"` or `"close"`.
         """
 
@@ -638,7 +645,7 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
             else:
                 self.open_progress = 0
 
-    def update_status(self, *_):
+    def update_status(self, *_) -> NoReturn:
         status = self.status
         if status == "closed":
             self.state = "close"
@@ -662,7 +669,7 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
         else:
             self.opacity = 1
 
-    def get_dist_from_side(self, x):
+    def get_dist_from_side(self, x: float) -> NoReturn:
         if self.anchor == "left":
             return 0 if x < 0 else x
         return 0 if x > Window.width else Window.width - x
@@ -729,10 +736,12 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
             return False
         return True
 
-    def on_radius(self, instance, value):
-        self._radius = value
+    def on_radius(
+        self, instance_navigation_drawer, radius_value: list
+    ) -> NoReturn:
+        self._radius = radius_value
 
-    def on_type(self, *args):
+    def on_type(self, instance_navigation_drawer, drawer_type: str) -> NoReturn:
         if self.type == "standard":
             self.enable_swiping = False
             self.close_on_click = False

@@ -463,9 +463,12 @@ Center position
 
 __all__ = ("MDDropdownMenu",)
 
+from typing import NoReturn, Union
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -695,10 +698,16 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu = self.ids.md_menu
         self.target_height = 0
 
-    def check_position_caller(self, instance, width, height):
+    def check_position_caller(
+        self, instance_window: WindowSDL, width: int, height: int
+    ) -> NoReturn:
+        """Called when the application root window is resized."""
+
+        # FIXME: Menu position is not recalculated when changing the size of
+        #  the root application window.
         self.set_menu_properties(0)
 
-    def set_menu_properties(self, interval=0):
+    def set_menu_properties(self, interval: Union[int, float] = 0) -> NoReturn:
         """Sets the size and position for the menu window."""
 
         if self.caller:
@@ -810,7 +819,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 self.tar_x = self._start_coords[0] - self.target_width
             self._calculate_complete = True
 
-    def open(self):
+    def open(self) -> NoReturn:
         """Animate the opening of a menu window."""
 
         def open(interval):
@@ -856,10 +865,12 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             self._calculate_process = True
             Clock.schedule_interval(open, 0)
 
-    def on_header_cls(self, instance, value):
+    def on_header_cls(
+        self, instance_dropdown_menu, instance_user_menu_header
+    ) -> NoReturn:
         def add_content_header_cls(interval):
             self.ids.content_header.clear_widgets()
-            self.ids.content_header.add_widget(value)
+            self.ids.content_header.add_widget(instance_user_menu_header)
 
         Clock.schedule_once(add_content_header_cls, 1)
 
@@ -878,7 +889,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         super().on_touch_up(touch)
         return True
 
-    def on_dismiss(self):
+    def on_dismiss(self) -> NoReturn:
         """Called when the menu is closed."""
 
         Window.remove_widget(self)
@@ -886,7 +897,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.height = 0
         self.menu.opacity = 0
 
-    def dismiss(self):
+    def dismiss(self) -> NoReturn:
         """Closes the menu."""
 
         self.on_dismiss()

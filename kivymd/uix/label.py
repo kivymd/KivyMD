@@ -206,7 +206,7 @@ The :class:`~MDIcon` class is inherited from
 
 __all__ = ("MDLabel", "MDIcon")
 
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy.clock import Clock
 from kivy.lang import Builder

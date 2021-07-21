@@ -1,6 +1,6 @@
 """
 Components/Carousel
-=====================
+===================
 
 :class:`~kivy.uix.boxlayout.Carousel` class equivalent. Simplifies working
 with some widget properties. For example:

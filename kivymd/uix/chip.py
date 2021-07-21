@@ -97,6 +97,10 @@ Choose chip
 .. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Chip>`_
 """
 
+__all__ = ("MDChooseChip", "MDChip")
+
+from typing import Union, NoReturn
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -245,17 +249,17 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_color)
 
-    def set_color(self, interval):
+    def set_color(self, interval: Union[int, float]) -> NoReturn:
         if not self.color:
             self.color = self.theme_cls.primary_color
         else:
             self._color = self.color
 
-    def on_icon(self, instance, value):
+    def on_icon(self, instance_chip, path_to_icon: str) -> NoReturn:
         def remove_icon(interval):
             self.remove_widget(self.ids.icon)
 
-        if value == "":
+        if not path_to_icon:
             self.icon = "checkbox-blank-circle"
             Clock.schedule_once(remove_icon)
 

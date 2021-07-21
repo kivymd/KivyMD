@@ -73,8 +73,7 @@ Add content to card:
             MDLabel:
                 text: "Title"
                 theme_text_color: "Secondary"
-                size_hint_y: None
-                height: self.texture_size[1]
+                adaptive_height: True
 
             MDSeparator:
                 height: "1dp"
@@ -491,13 +490,11 @@ End full code
                         theme_text_color: "Primary"
                         font_style: "H5"
                         bold: True
-                        size_hint_y: None
-                        height: self.texture_size[1]
+                        adaptive_height: True
 
                     MDLabel:
                         text: "July 27, 1984"
-                        size_hint_y: None
-                        height: self.texture_size[1]
+                        adaptive_height: True
                         theme_text_color: "Primary"
 
             MDSeparator:
@@ -509,8 +506,7 @@ End full code
 
                 MDLabel:
                     text: "Rate this album"
-                    size_hint_y: None
-                    height: self.texture_size[1]
+                    adaptive_height: True
                     pos_hint: {"center_y": .5}
                     theme_text_color: "Primary"
 
@@ -538,6 +534,8 @@ __all__ = (
     "MDCardSwipeLayerBox",
     "MDSeparator",
 )
+
+from typing import NoReturn
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -567,12 +565,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 Builder.load_string(
     """
 <MDCardSwipeLayerBox>:
-    canvas.before:
-        Color:
-            rgba: app.theme_cls.divider_color
-        Rectangle:
-            size: self.size
-            pos: self.pos
+    md_bg_color: app.theme_cls.divider_color
 
 
 <MDCard>
@@ -587,7 +580,10 @@ Builder.load_string(
 
 
 <MDSeparator>
-    md_bg_color: self.theme_cls.divider_color if not root.color else root.color
+    md_bg_color:
+        self.theme_cls.divider_color \
+        if not root.color \
+        else root.color
 """
 )
 
@@ -596,7 +592,8 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
     """A separator line."""
 
     color = ColorProperty(None)
-    """Separator color in ``rgba`` format.
+    """
+    Separator color in ``rgba`` format.
 
     :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -606,7 +603,7 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
         super().__init__(**kwargs)
         self.on_orientation()
 
-    def on_orientation(self, *args):
+    def on_orientation(self, *args) -> NoReturn:
         self.size_hint = (
             (1, None) if self.orientation == "horizontal" else (None, 1)
         )
@@ -664,12 +661,18 @@ class MDCard(
         )
         self.update_md_bg_color(self, self.theme_cls.theme_style)
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_card_swipe_front_box, theme_style: str
+    ) -> NoReturn:
         if self.md_bg_color in self._bg_color_map:
-            self.md_bg_color = get_color_from_hex(colors[value]["CardsDialogs"])
+            self.md_bg_color = get_color_from_hex(
+                colors[theme_style]["CardsDialogs"]
+            )
 
-    def on_ripple_behavior(self, instance, value):
-        self._no_ripple_effect = False if value else True
+    def on_ripple_behavior(
+        self, interval: int, value_behavior: bool
+    ) -> NoReturn:
+        self._no_ripple_effect = False if value_behavior else True
 
     def _on_elevation(self, value):
         if value is None:
@@ -783,9 +786,6 @@ class MDCardSwipe(RelativeLayout):
         self.register_event_type("on_swipe_complete")
         super().__init__(**kw)
 
-    def _on_swipe_complete(self, *args):
-        self.dispatch("on_swipe_complete")
-
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, (MDCardSwipeFrontBox, MDCardSwipeLayerBox)):
             return super().add_widget(widget)
@@ -793,17 +793,21 @@ class MDCardSwipe(RelativeLayout):
     def on_swipe_complete(self, *args):
         """Called when a swipe of card is completed."""
 
-    def on_anchor(self, instance, value):
-        if value == "right":
+    def on_anchor(
+        self, instance_swipe_to_delete_item, anchor_value: str
+    ) -> NoReturn:
+        if anchor_value == "right":
             self.open_progress = 1.0
         else:
             self.open_progress = 0.0
 
-    def on_open_progress(self, instance, value):
+    def on_open_progress(
+        self, instance_swipe_to_delete_item, progress_value: float
+    ) -> NoReturn:
         if self.anchor == "left":
-            self.children[0].x = self.width * value
+            self.children[0].x = self.width * progress_value
         else:
-            self.children[0].x = self.width * value - self.width
+            self.children[0].x = self.width * progress_value - self.width
 
     def on_touch_move(self, touch):
         if self.collide_point(touch.x, touch.y):
@@ -835,7 +839,7 @@ class MDCardSwipe(RelativeLayout):
                 self.close_card()
         return super().on_touch_down(touch)
 
-    def complete_swipe(self):
+    def complete_swipe(self) -> NoReturn:
         expr = (
             self.open_progress <= self.max_swipe_x
             if self.anchor == "left"
@@ -846,7 +850,7 @@ class MDCardSwipe(RelativeLayout):
         else:
             self.open_card()
 
-    def open_card(self):
+    def open_card(self) -> NoReturn:
         if self.type_swipe == "hand":
             swipe_x = (
                 self.max_opened_x
@@ -862,11 +866,14 @@ class MDCardSwipe(RelativeLayout):
         anim.start(self.children[0])
         self.state = "opened"
 
-    def close_card(self):
+    def close_card(self) -> NoReturn:
         anim = Animation(x=0, t=self.closing_transition, d=self.opening_time)
         anim.bind(on_complete=self._reset_open_progress)
         anim.start(self.children[0])
         self.state = "closed"
+
+    def _on_swipe_complete(self, *args):
+        self.dispatch("on_swipe_complete")
 
     def _reset_open_progress(self, *args):
         self.open_progress = 0.0 if self.anchor == "left" else 1.0
@@ -878,5 +885,5 @@ class MDCardSwipeFrontBox(MDCard):
     pass
 
 
-class MDCardSwipeLayerBox(BoxLayout):
+class MDCardSwipeLayerBox(MDBoxLayout):
     pass

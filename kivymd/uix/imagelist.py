@@ -1,6 +1,6 @@
 """
-Components/Image List
-=====================
+Components/ImageList
+====================
 
 .. seealso::
 
@@ -22,8 +22,9 @@ SmartTileWithStar
 
 .. code-block::
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
+
+    from kivymd.app import MDApp
 
     KV = '''
     <MyTile@SmartTileWithStar>
@@ -69,8 +70,9 @@ SmartTileWithLabel
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
+
+    from kivymd.app import MDApp
 
     KV = '''
     <MyTile@SmartTileWithLabel>
@@ -114,6 +116,8 @@ SmartTileWithLabel
 """
 
 __all__ = ("SmartTile", "SmartTileWithLabel", "SmartTileWithStar")
+
+from typing import NoReturn
 
 from kivy.lang import Builder
 from kivy.properties import (
@@ -295,7 +299,7 @@ class SmartTileWithStar(SmartTileWithLabel):
     and defaults to `1`.
     """
 
-    def on_stars(self, *args):
+    def on_stars(self, *args) -> NoReturn:
         for star in range(self.stars):
             self.ids.box.add_widget(
                 _Star(

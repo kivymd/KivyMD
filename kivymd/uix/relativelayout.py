@@ -1,6 +1,6 @@
 """
-Components/Relative Layout
-==========================
+Components/RelativeLayout
+=========================
 
 :class:`~kivy.uix.relativelayout.RelativeLayout` class equivalent. Simplifies working
 with some widget properties. For example:

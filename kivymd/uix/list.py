@@ -486,6 +486,10 @@ __all__ = (
     "IconRightWidget",
     "IconLeftWidget",
     "CheckboxLeftWidget",
+    "IconLeftWidgetWithoutTouch",
+    "IconRightWidgetWithoutTouch",
+    "ImageRightWidgetWithoutTouch",
+    "ImageLeftWidgetWithoutTouch",
 )
 
 from kivy.lang import Builder

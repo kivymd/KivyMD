@@ -345,12 +345,12 @@ To demonstrate the shades of the palette, you can run the following code:
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.uix.boxlayout import BoxLayout
     from kivy.utils import get_color_from_hex
     from kivy.properties import ListProperty, StringProperty
 
     from kivymd.color_definitions import colors
     from kivymd.uix.tab import MDTabsBase
+    from kivymd.uix.boxlayout import MDBoxLayout
 
     demo = '''
     <Root@MDBoxLayout>

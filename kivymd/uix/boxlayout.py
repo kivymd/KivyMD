@@ -1,6 +1,6 @@
 """
-Components/Box Layout
-=====================
+Components/BoxLayout
+====================
 
 :class:`~kivy.uix.boxlayout.BoxLayout` class equivalent. Simplifies working
 with some widget properties. For example:

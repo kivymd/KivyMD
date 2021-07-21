@@ -1,6 +1,6 @@
 """
-Components/Selection Controls
-=============================
+Components/SelectionControls
+============================
 
 .. seealso::
 

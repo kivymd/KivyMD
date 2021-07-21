@@ -17,11 +17,12 @@ MDCircularLayout
     from kivymd.app import MDApp
 
     kv = '''
-    Screen:
+    MDScreen:
+
         MDCircularLayout:
             id: container
             pos_hint: {"center_x": .5, "center_y": .5}
-            row_spacing: min(self.size)*0.1
+            row_spacing: min(self.size) * 0.1
     '''
 
 
@@ -38,6 +39,8 @@ MDCircularLayout
 
     Main().run()
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout.png
+    :align: center
 """
 
 __all__ = ("MDCircularLayout",)
@@ -113,13 +116,18 @@ class MDCircularLayout(MDFloatLayout):
             row_spacing=self._update_layout,
         )
 
-    def _update_layout(self, *args):
-        for index, child in enumerate(reversed(self.children)):
-            pos = self._point_on_circle(
-                self._calculate_radius(index),
-                self._calculate_degree(index),
-            )
-            child.center = pos
+    def get_angle(self, pos: tuple) -> float:
+        """Returns the angle of given pos."""
+
+        center = [self.pos[0] + self.width / 2, self.pos[1] + self.height / 2]
+        (dx, dy) = (center[0] - pos[0], center[1] - pos[1])
+        angle = degrees(atan2(float(dy), float(dx)))
+        angle += 180
+        return angle
+
+    def remove_widget(self, widget, **kwargs):
+        super().remove_widget(widget, **kwargs)
+        self._update_layout()
 
     def do_layout(self, *largs, **kwargs):
         self._update_layout()
@@ -128,11 +136,16 @@ class MDCircularLayout(MDFloatLayout):
     def _max_per_row(self):
         return int(self.max_degree / self.degree_spacing)
 
-    def _calculate_radius(self, index):
-        """
-        calculates the radius for given index
+    def _update_layout(self, *args):
+        for index, child in enumerate(reversed(self.children)):
+            pos = self._point_on_circle(
+                self._calculate_radius(index),
+                self._calculate_degree(index),
+            )
+            child.center = pos
 
-        """
+    def _calculate_radius(self, index):
+        """Calculates the radius for given index."""
 
         idx = int(index / self._max_per_row())
 
@@ -150,7 +163,8 @@ class MDCircularLayout(MDFloatLayout):
         return init_radius
 
     def _calculate_degree(self, index):
-        """ calculates the angle for given index"""
+        """Calculates the angle for given index."""
+
         if self.clockwise:
             degree = self.start_from - index * self.degree_spacing
         else:
@@ -158,27 +172,12 @@ class MDCircularLayout(MDFloatLayout):
 
         return degree
 
-    def remove_widget(self, widget, **kwargs):
-        super().remove_widget(widget, **kwargs)
-        self._update_layout()
-
     def _point_on_circle(self, radius, degree):
         angle = radians(degree)
         center = [self.pos[0] + self.width / 2, self.pos[1] + self.height / 2]
         x = center[0] + (radius * cos(angle))
         y = center[1] + (radius * sin(angle))
         return [x, y]
-
-    def get_angle(self, pos):
-        """
-        Returns the angle of given pos
-        """
-
-        center = [self.pos[0] + self.width / 2, self.pos[1] + self.height / 2]
-        (dx, dy) = (center[0] - pos[0], center[1] - pos[1])
-        angle = degrees(atan2(float(dy), float(dx)))
-        angle += 180
-        return angle
 
 
 if __name__ == "__main__":
@@ -188,11 +187,12 @@ if __name__ == "__main__":
     from kivymd.app import MDApp
 
     kv = """
-Screen:
+MDScreen:
+
     MDCircularLayout:
         id: container
         pos_hint: {"center_x": .5, "center_y": .5}
-        row_spacing: min(self.size)*0.1
+        row_spacing: min(self.size) * 0.1
     """
 
     class Main(MDApp):

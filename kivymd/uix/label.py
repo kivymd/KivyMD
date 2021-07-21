@@ -206,6 +206,8 @@ The :class:`~MDIcon` class is inherited from
 
 __all__ = ("MDLabel", "MDIcon")
 
+from typing import Union, NoReturn
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import sp
@@ -264,8 +266,8 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     """
     Label font style.
 
-    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`, `'H6'`,
-    `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
+    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`,
+    `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
     :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
@@ -327,12 +329,12 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
             can_capitalize=self.update_font_style,
         )
         self.on_theme_text_color(None, self.theme_text_color)
-        self.update_font_style()
+        self.update_font_style(None, "")
         self.on_opposite_colors(None, self.opposite_colors)
         Clock.schedule_once(self.check_font_styles)
         self.theme_cls.bind(theme_style=self._do_update_theme_color)
 
-    def check_font_styles(self, *dt):
+    def check_font_styles(self, interval: Union[int, float] = 0) -> bool:
         if self.font_style not in list(self.theme_cls.font_styles.keys()):
             raise ValueError(
                 f"MDLabel.font_style is set to an invalid option '{self.font_style}'."
@@ -341,7 +343,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         else:
             return True
 
-    def update_font_style(self, *args):
+    def update_font_style(self, instance_label, font_style: str) -> NoReturn:
         if self.check_font_styles() is True:
             font_info = self.theme_cls.font_styles[self.font_style]
             self.font_name = font_info[0]
@@ -354,37 +356,42 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         # TODO: Add letter spacing change
         # self.letter_spacing = font_info[3]
 
-    def on_theme_text_color(self, instance, value):
+    def on_theme_text_color(
+        self, instance_label, theme_text_color: str
+    ) -> NoReturn:
         op = self.opposite_colors
         if op:
             self._text_color_str = __MDLabel_colors__.get("OP", "").get(
-                value, ""
+                theme_text_color, ""
             )
         else:
-            self._text_color_str = __MDLabel_colors__.get(value, "")
+            self._text_color_str = __MDLabel_colors__.get(theme_text_color, "")
         if self._text_color_str:
             self._do_update_theme_color()
         else:
             # 'Custom' and 'ContrastParentBackground' lead here, as well as the
             # generic None value it's not yet been set
             self._text_color_str = ""
-            if value == "Custom" and self.text_color:
+            if theme_text_color == "Custom" and self.text_color:
                 self.color = self.text_color
-            elif value == "ContrastParentBackground" and self.parent_background:
+            elif (
+                theme_text_color == "ContrastParentBackground"
+                and self.parent_background
+            ):
                 self.color = get_contrast_text_color(self.parent_background)
             else:
                 self.color = [0, 0, 0, 1]
 
-    def _do_update_theme_color(self, *arguments):
-        if self._text_color_str:
-            self.color = getattr(self.theme_cls, self._text_color_str)
-
-    def on_text_color(self, *args):
+    def on_text_color(self, instance_label, color: list) -> NoReturn:
         if self.theme_text_color == "Custom":
             self.color = self.text_color
 
-    def on_opposite_colors(self, instance, value):
+    def on_opposite_colors(self, *args) -> NoReturn:
         self.on_theme_text_color(self, self.theme_text_color)
+
+    def _do_update_theme_color(self, *args):
+        if self._text_color_str:
+            self.color = getattr(self.theme_cls, self._text_color_str)
 
 
 class MDIcon(MDLabel):

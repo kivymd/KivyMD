@@ -52,7 +52,7 @@ Example
 
 
     KV = '''
-    BoxLayout:
+    MDBoxLayout:
         orientation: 'vertical'
 
         MDToolbar:
@@ -60,7 +60,7 @@ Example
             left_action_items: [['menu', lambda x: None]]
             elevation: 10
 
-        FloatLayout:
+        MDFloatLayout:
 
             MDRoundFlatIconButton:
                 text: "Open manager"
@@ -129,6 +129,9 @@ Not tested on `iOS`.
 """
 
 __all__ = ("MDFileManager",)
+
+from kivy.factory import Factory
+from typing import NoReturn, Union, Tuple, List
 
 import locale
 import os
@@ -282,7 +285,9 @@ ACTIVITY_MANAGER = """
 
 
 class BodyManagerWithPreview(MDBoxLayout):
-    """Base class for folder icons and thumbnails images in ``preview`` mode."""
+    """
+    Base class for folder icons and thumbnails images in ``preview`` mode.
+    """
 
 
 class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
@@ -453,39 +458,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self.ext = [".png", ".jpg", ".jpeg"]
         self.disks = []
 
-    def __sort_files(self, files):
-        def sort_by_name(files):
-            files.sort(key=locale.strxfrm)
-            files.sort(key=str.casefold)
-            return files
-
-        if self.sort_by == "name":
-            sorted_files = sort_by_name(files)
-        elif self.sort_by == "date":
-            _files = sort_by_name(files)
-            _sorted_files = [os.path.join(self.current_path, f) for f in _files]
-            _sorted_files.sort(key=os.path.getmtime, reverse=True)
-            sorted_files = [os.path.basename(f) for f in _sorted_files]
-        elif self.sort_by == "size":
-            _files = sort_by_name(files)
-            _sorted_files = [os.path.join(self.current_path, f) for f in _files]
-            _sorted_files.sort(key=os.path.getsize, reverse=True)
-            sorted_files = [os.path.basename(f) for f in _sorted_files]
-        elif self.sort_by == "type":
-            _files = sort_by_name(files)
-            sorted_files = sorted(
-                _files,
-                key=lambda f: (os.path.splitext(f)[1], os.path.splitext(f)[0]),
-            )
-        else:
-            sorted_files = files
-
-        if self.sort_by_desc:
-            sorted_files.reverse()
-
-        return sorted_files
-
-    def show_disks(self):
+    def show_disks(self) -> NoReturn:
         if platform == "win":
             self.disks = sorted(
                 re.findall(
@@ -542,8 +515,9 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self._window_manager.open()
             self._window_manager_open = True
 
-    def show(self, path):
-        """Forms the body of a directory tree.
+    def show(self, path: str) -> NoReturn:
+        """
+        Forms the body of a directory tree.
 
         :param path:
             The path to the directory that will be opened in the file manager.
@@ -633,7 +607,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self._window_manager.open()
             self._window_manager_open = True
 
-    def get_access_string(self, path):
+    def get_access_string(self, path: str) -> str:
         access_string = ""
         if self.use_access:
             access_data = {"r": os.R_OK, "w": os.W_OK, "x": os.X_OK}
@@ -643,7 +617,9 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                 )
         return access_string
 
-    def get_content(self):
+    def get_content(
+        self,
+    ) -> Union[Tuple[List[str], List[str]], Tuple[None, None]]:
         """Returns a list of the type [[Folder List], [file list]]."""
 
         try:
@@ -683,13 +659,17 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         except OSError:
             return None, None
 
-    def close(self):
+    def close(self) -> NoReturn:
         """Closes the file manager window."""
 
         self._window_manager.dismiss()
         self._window_manager_open = False
 
-    def select_dir_or_file(self, path, widget):
+    def select_dir_or_file(
+        self,
+        path: str,
+        widget: Union[BodyManagerWithPreview, Factory.BodyManager],
+    ):
         """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(os.path.join(self.current_path, path)):
@@ -710,7 +690,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self.current_path = path
             self.show(path)
 
-    def back(self):
+    def back(self) -> NoReturn:
         """Returning to the branch down in the directory tree."""
 
         path, end = os.path.split(self.current_path)
@@ -721,11 +701,10 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             if not end:
                 self.close()
                 self.exit_manager(1)
-
             else:
                 self.show(path)
 
-    def select_directory_on_press_button(self, *args):
+    def select_directory_on_press_button(self, *args) -> NoReturn:
         """Called when a click on a floating button."""
 
         if self.selector == "multi":
@@ -734,6 +713,38 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         else:
             if self.selector == "folder" or self.selector == "any":
                 self.select_path(self.current_path)
+
+    def __sort_files(self, files):
+        def sort_by_name(files):
+            files.sort(key=locale.strxfrm)
+            files.sort(key=str.casefold)
+            return files
+
+        if self.sort_by == "name":
+            sorted_files = sort_by_name(files)
+        elif self.sort_by == "date":
+            _files = sort_by_name(files)
+            _sorted_files = [os.path.join(self.current_path, f) for f in _files]
+            _sorted_files.sort(key=os.path.getmtime, reverse=True)
+            sorted_files = [os.path.basename(f) for f in _sorted_files]
+        elif self.sort_by == "size":
+            _files = sort_by_name(files)
+            _sorted_files = [os.path.join(self.current_path, f) for f in _files]
+            _sorted_files.sort(key=os.path.getsize, reverse=True)
+            sorted_files = [os.path.basename(f) for f in _sorted_files]
+        elif self.sort_by == "type":
+            _files = sort_by_name(files)
+            sorted_files = sorted(
+                _files,
+                key=lambda f: (os.path.splitext(f)[1], os.path.splitext(f)[0]),
+            )
+        else:
+            sorted_files = files
+
+        if self.sort_by_desc:
+            sorted_files.reverse()
+
+        return sorted_files
 
 
 Builder.load_string(ACTIVITY_MANAGER)

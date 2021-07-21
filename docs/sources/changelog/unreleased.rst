@@ -11,5 +11,3 @@ Unreleased
 * Added `ImageLeftWidgetWithoutTouch <https://github.com/kivymd/KivyMD/blob/master/kivymd/uix/list.py#L1070>`_, `ImageRightWidgetWithoutTouch <https://github.com/kivymd/KivyMD/blob/master/kivymd/uix/list.py#L1082>`_, `IconRightWidgetWithoutTouch <https://github.com/kivymd/KivyMD/blob/master/kivymd/uix/list.py#L1096>`_, `IconLeftWidgetWithoutTouch <https://github.com/kivymd/KivyMD/blob/master/kivymd/uix/list.py#L1108>`_ classes to *kivymd/uix/list.py* module;
 * Added `MDStepper <https://kivymd.readthedocs.io/en/latest/components/stepper/>`_ component;
 * Added a feature, `show_disks <https://github.com/kivymd/KivyMD/blob/master/kivymd/uix/filemanager.py#L476>`_ to the `MDFileManager <https://kivymd.readthedocs.io/en/latest/components/file-manager/>`_ class, that allows you to display the disks and folders contained in them;
-* Added new `opening_transition`, `closing_time`, `closing_transition` attributes to `MDBackdrop <https://kivymd.readthedocs.io/en/latest/components/backdrop/>`_ class;
-* Added new attributes `opening_timeout`, `opening_time`, `cloing_time` to the `MDBanner <https://kivymd.readthedocs.io/en/latest/components/banner/>`_ class;

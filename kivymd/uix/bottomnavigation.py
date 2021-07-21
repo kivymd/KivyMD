@@ -16,7 +16,7 @@ Usage
 
 .. code-block:: kv
 
-    <Root>
+    <Root>>:
 
         MDBottomNavigation:
 
@@ -39,21 +39,21 @@ For ease of understanding, this code works like this:
 
 .. code-block:: kv
 
-    <Root>
+    <Root>>:
 
         ScreenManager:
 
-            MDScreen:
+            Screen:
                 name: "screen 1"
 
                 YourContent:
 
-            MDScreen:
+            Screen:
                 name: "screen 2"
 
                 YourContent:
 
-            MDScreen:
+            Screen:
                 name: "screen 3"
 
                 YourContent:
@@ -63,9 +63,8 @@ Example
 
 .. code-block:: python
 
-    from kivy.lang import Builder
-
     from kivymd.app import MDApp
+    from kivy.lang import Builder
 
 
     class Test(MDApp):
@@ -74,8 +73,8 @@ Example
             self.theme_cls.primary_palette = "Gray"
             return Builder.load_string(
                 '''
-    MDBoxLayout:
-        orientation: 'vertical'
+    BoxLayout:
+        orientation:'vertical'
 
         MDToolbar:
             title: 'Bottom navigation'
@@ -257,11 +256,6 @@ Builder.load_string(
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
     on_touch_move: self.tab.dispatch("on_tab_touch_move", *args)
     on_touch_up: self.tab.dispatch("on_tab_touch_up", *args)
-    width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens) \
-        if len(root.panel.ids.tab_manager.screens) != 0 \
-        else root.panel.width
-
     width:
         root.panel.width / len(root.panel.ids.tab_manager.screens) \
         if len(root.panel.ids.tab_manager.screens) != 0 \

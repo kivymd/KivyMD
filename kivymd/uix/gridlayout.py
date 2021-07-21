@@ -1,6 +1,6 @@
 """
-Components/Grid Layout
-======================
+Components/GridLayout
+=====================
 
 :class:`~kivy.uix.gridlayout.GridLayout` class equivalent. Simplifies working
 with some widget properties. For example:

@@ -1,6 +1,6 @@
 """
-Components/Dropdown Item
-========================
+Components/DropdownItem
+=======================
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dropdown-item.png
     :align: center

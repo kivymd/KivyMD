@@ -1,6 +1,6 @@
 """
-Components/Bottom Sheet
-=======================
+Components/BottomSheet
+======================
 
 .. seealso::
 

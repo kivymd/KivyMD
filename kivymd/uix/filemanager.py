@@ -1,6 +1,6 @@
 """
-Components/File Manager
-=======================
+Components/FileManager
+======================
 
 A simple manager for selecting directories and files.
 

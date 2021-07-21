@@ -246,6 +246,8 @@ MDThemePicker
 __all__ = ("MDTimePicker", "MDDatePicker", "MDThemePicker", "BaseDialogPicker")
 
 import calendar
+from typing import NoReturn, Union
+
 import datetime
 import re
 from datetime import date
@@ -275,7 +277,7 @@ from kivy.utils import get_color_from_hex
 from kivy.vector import Vector
 
 from kivymd.color_definitions import colors, palette
-from kivymd.theming import ThemableBehavior
+from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.toast import toast
 from kivymd.uix.behaviors import (
     CircularRippleBehavior,
@@ -1079,18 +1081,20 @@ class BaseDialogPicker(
         self.register_event_type("on_save")
         self.register_event_type("on_cancel")
 
-    def on_save(self, *args):
+    def on_save(self, *args) -> NoReturn:
         """Events called when the "OK" dialog box button is clicked."""
 
         self.dismiss()
 
-    def on_cancel(self, *args):
+    def on_cancel(self, *args) -> NoReturn:
         """Events called when the "CANCEL" dialog box button is clicked."""
 
         self.dismiss()
 
 
 class DatePickerBaseTooltip(MDTooltip):
+    """Implements tooltips for members of the :class:`~MDDatePicker` class."""
+
     owner = ObjectProperty()
     hint_text = StringProperty()
 
@@ -1111,10 +1115,11 @@ class DatePickerEnterDataField(MDTextField):
     """Implements date input in 01/01/2021 format."""
 
     owner = ObjectProperty()
+
     _backspace = False
     _date = ""
 
-    def isnumeric(self, value):
+    def isnumeric(self, value: Union[int, str]) -> bool:
         """
         We are forced to create a custom method because if we set the ``int``
         value for the ``input_filter`` parameter of the text field, then the
@@ -1128,7 +1133,7 @@ class DatePickerEnterDataField(MDTextField):
         except ValueError:
             return False
 
-    def do_backspace(self, *args):
+    def do_backspace(self, *args) -> NoReturn:
         """Prevent deleting text from the middle of a line of a text field."""
 
         self._backspace = True
@@ -1136,15 +1141,15 @@ class DatePickerEnterDataField(MDTextField):
         self._date = self.text
         self._backspace = False
 
-    def input_filter(self, value, boolean):
+    def input_filter(self, char: str, boolean: bool) -> Union[None, str]:
         """Date validity check in dd/mm/yyyy format."""
 
         cursor = self.cursor[0]
         if len(self.text) == 10:
             return
-        if self.isnumeric(value):
-            self._date += value
-            value = int(value)
+        if self.isnumeric(char):
+            self._date += char
+            value = int(char)
             # checking a valid value for the number of days in a month
             if cursor == 0:  # first value
                 if self.owner.sel_month == 2:
@@ -1181,17 +1186,17 @@ class DatePickerEnterDataField(MDTextField):
                     return
             return str(value)
 
-    def on_text(self, instance_field, value):
-        if value != "" and not value.isspace() and not self._backspace:
-            if len(value) <= 1 and instance_field.focus:
-                instance_field.text = value
+    def on_text(self, instance_field: MDTextField, text: str) -> NoReturn:
+        if text != "" and not text.isspace() and not self._backspace:
+            if len(text) <= 1 and instance_field.focus:
+                instance_field.text = text
                 self._set_pos_cursor()
-            elif len(value) == 3:
+            elif len(text) == 3:
                 start = instance_field.text[:-1]
                 end = instance_field.text[-1]
                 instance_field.text = f"{start}/{end}"
                 self._set_pos_cursor()
-            elif len(value) == 5:
+            elif len(text) == 5:
                 instance_field.text += "/"
                 self._set_pos_cursor()
             if not self.owner.min_date and not self.owner.max_date:
@@ -1233,7 +1238,7 @@ class DatePickerDaySelectableItem(
     current_year = NumericProperty()
     index = NumericProperty(0)
 
-    def check_date(self, year, month, day):
+    def check_date(self, year: int, month: int, day: int):
         try:
             return date(year, month, day) in self.owner._date_range
         except ValueError as error:
@@ -1488,14 +1493,16 @@ class MDDatePicker(BaseDialogPicker):
             self.set_month_day(self.sel_day)
             self._sel_day_widget.dispatch("on_release")
 
-    def on_device_orientation(self, instance, value):
+    def on_device_orientation(
+        self, instance_theme_manager: ThemeManager, orientation_value: str
+    ) -> NoReturn:
         if self._input_date_dialog_open:
-            if value == "portrait":
+            if orientation_value == "portrait":
                 self._shift_dialog_height = dp(250)
-            if value == "landscape":
+            if orientation_value == "landscape":
                 self._shift_dialog_height = dp(138)
 
-    def transformation_from_dialog_select_year(self):
+    def transformation_from_dialog_select_year(self) -> NoReturn:
         self.ids.chevron_left.disabled = False
         self.ids.chevron_right.disabled = False
         self.ids._year_layout.disabled = True
@@ -1518,7 +1525,7 @@ class MDDatePicker(BaseDialogPicker):
             self.set_month_day(self.day)
             self._sel_day_widget.dispatch("on_release")
 
-    def transformation_to_dialog_select_year(self):
+    def transformation_to_dialog_select_year(self) -> NoReturn:
         def disabled_chevron_buttons(*args):
             self.ids.chevron_left.disabled = True
             self.ids.chevron_right.disabled = True
@@ -1535,7 +1542,7 @@ class MDDatePicker(BaseDialogPicker):
         self.generate_list_widgets_years()
         self.set_position_to_current_year()
 
-    def transformation_to_dialog_input_date(self):
+    def transformation_to_dialog_input_date(self) -> NoReturn:
         def set_date_to_input_field():
             if not self._enter_data_field_two:
                 # Date of current day.
@@ -1613,7 +1620,9 @@ class MDDatePicker(BaseDialogPicker):
             self.theme_cls.device_orientation,
         )
 
-    def transformation_from_dialog_input_date(self, interval):
+    def transformation_from_dialog_input_date(
+        self, interval: Union[int, float]
+    ) -> NoReturn:
         self._input_date_dialog_open = False
         self.ids.label_full_date.text = self.set_text_full_date(
             self.sel_year,
@@ -1675,7 +1684,7 @@ class MDDatePicker(BaseDialogPicker):
                 self.theme_cls.device_orientation,
             )
 
-    def compare_date_range(self):
+    def compare_date_range(self) -> NoReturn:
         # TODO: Add behavior if the minimum date range exceeds the maximum
         #  date range. Use toast?
         if self.max_date <= self.min_date:
@@ -1684,7 +1693,7 @@ class MDDatePicker(BaseDialogPicker):
                 "to 'min_date' value"
             )
 
-    def update_calendar_for_date_range(self):
+    def update_calendar_for_date_range(self) -> NoReturn:
         # self.compare_date_range()
         self._date_range = self.get_date_range()
         self._calendar_layout.clear_widgets()

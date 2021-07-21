@@ -1,6 +1,6 @@
 """
-Components/Expansion Panel
-==========================
+Components/ExpansionPanel
+=========================
 
 .. seealso::
 

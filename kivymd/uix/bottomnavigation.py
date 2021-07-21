@@ -16,7 +16,7 @@ Usage
 
 .. code-block:: kv
 
-    <Root>>:
+    <Root>
 
         MDBottomNavigation:
 
@@ -39,21 +39,21 @@ For ease of understanding, this code works like this:
 
 .. code-block:: kv
 
-    <Root>>:
+    <Root>
 
         ScreenManager:
 
-            Screen:
+            MDScreen:
                 name: "screen 1"
 
                 YourContent:
 
-            Screen:
+            MDScreen:
                 name: "screen 2"
 
                 YourContent:
 
-            Screen:
+            MDScreen:
                 name: "screen 3"
 
                 YourContent:
@@ -63,8 +63,9 @@ Example
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
+
+    from kivymd.app import MDApp
 
 
     class Test(MDApp):
@@ -73,8 +74,8 @@ Example
             self.theme_cls.primary_palette = "Gray"
             return Builder.load_string(
                 '''
-    BoxLayout:
-        orientation:'vertical'
+    MDBoxLayout:
+        orientation: 'vertical'
 
         MDToolbar:
             title: 'Bottom navigation'
@@ -206,6 +207,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import Screen, ScreenManagerException
 
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     BackgroundColorBehavior,
@@ -215,7 +217,6 @@ from kivymd.uix.behaviors.backgroundcolor_behavior import (
 Builder.load_string(
     """
 #:import sm kivy.uix.screenmanager
-#:import Window kivy.core.window.Window
 
 
 <MDBottomNavigation>
@@ -233,7 +234,10 @@ Builder.load_string(
         id: bottom_panel
         size_hint_y: None
         height: dp(56)
-        md_bg_color: root.theme_cls.bg_dark if not root.panel_color else root.panel_color
+        md_bg_color:
+            root.theme_cls.bg_dark \
+            if not root.panel_color \
+            else root.panel_color
 
         BoxLayout:
             id: tab_bar
@@ -243,22 +247,18 @@ Builder.load_string(
 
 
 <MDBottomNavigationHeader>
-    canvas:
-        Color:
-            rgba: root.panel_color
-        Rectangle:
-            size: self.size
-            pos: self.pos
-
-    width:
-        root.panel.width / len(root.panel.ids.tab_manager.screens) \
-        if len(root.panel.ids.tab_manager.screens) != 0 else root.panel.width
+    md_bg_color: root.panel_color
     padding: (dp(12), dp(12))
     on_press: self.tab.dispatch("on_tab_press")
     on_release: self.tab.dispatch("on_tab_release")
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
     on_touch_move: self.tab.dispatch("on_tab_touch_move", *args)
     on_touch_up: self.tab.dispatch("on_tab_touch_up", *args)
+
+    width:
+        root.panel.width / len(root.panel.ids.tab_manager.screens) \
+        if len(root.panel.ids.tab_manager.screens) != 0 \
+        else root.panel.width
 
     RelativeLayout:
         id: item_container
@@ -303,7 +303,7 @@ Builder.load_string(
 )
 
 
-class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, AnchorLayout):
+class MDBottomNavigationHeader(ThemableBehavior, ButtonBehavior, MDAnchorLayout):
     opposite_colors = BooleanProperty(True)
 
     panel_color = ListProperty([1, 1, 1, 0])

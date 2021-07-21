@@ -1,6 +1,6 @@
 """
-Components/Bottom Navigation
-============================
+Components/BottomNavigation
+===========================
 
 .. seealso::
 

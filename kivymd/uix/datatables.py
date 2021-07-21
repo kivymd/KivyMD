@@ -14,32 +14,21 @@ Components/DataTables
 Warnings
 ---------
 
-.. warning::
-
-    Data tables are still far from perfect. The class is in constant change,
-    because of optimizations and bug fixes.
-
-    If you find a bug or have an improvement you want to share, take some time
-    and share your discoveries with us over the main git repo.
-
+.. warning:: Data tables are still far from perfect. The class is in constant
+    change, because of optimizations and bug fixes. If you find a bug or have
+    an improvement you want to share, take some time and share your discoveries
+    with us over the main git repo.
     Any help is well appreciated.
 
-.. warning::
+.. warning:: In versions prior to `Kivy 2.1.0-dev0` exists an error in which is
+    the table has only one row in the current page, the table will only render
+    one column instead of the whole row.
 
-    In versions prior to Kivy 2.1-dev0 exists an error in which is the table
-    has only one row in the current page, the table will only render one
-    column instead of the whole row.
-
-.. note::
-
-    MDDataTable allows developers to sort the data provided by column. This
-    happens thanks to the use of an external function that you can bind while
-    you're defining the table columns.
-
-    Be aware that the sorting function must return a 2 value list in the
-    format of:
-
-    `[Index, Sorted_Row_Data]`
+.. note:: `MDDataTable` allows developers to sort the data provided by column.
+    This happens thanks to the use of an external function that you can bind
+    while you're defining the table columns. Be aware that the sorting function
+    must return a 2 value list in the format of:
+        `[Index, Sorted_Row_Data]`
 
     This is because the index list is needed to allow MDDataTable to keep track
     of the selected rows. and, after the data is sorted, update the row
@@ -53,6 +42,7 @@ Warnings
 __all__ = ("MDDataTable",)
 
 from collections import defaultdict
+from typing import NoReturn, Union
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -81,6 +71,7 @@ from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.tooltip import MDTooltip
 
 Builder.load_string(
@@ -177,7 +168,6 @@ Builder.load_string(
     id: sort_btn
     icon: "arrow-up"
     pos_hint: {"center_y": 0.5}
-    #ripple_scale: .65
     size: [dp(24), dp(0)]
     theme_text_color: "Custom"
     text_color: self.theme_cls.secondary_text_color
@@ -368,159 +358,6 @@ class TableRecycleGridLayout(
         col = self.table_data.recycle_data[self.selected_row]["range"]
         for x in range(col[0], col[1] + 1):
             self.select_node(nodes[x])
-
-
-class CellRow(
-    ThemableBehavior,
-    RecycleDataViewBehavior,
-    HoverBehavior,
-    ButtonBehavior,
-    BoxLayout,
-):
-    text = StringProperty()  # row text
-    table = ObjectProperty()  # <TableData object>
-    index = None
-    icon = StringProperty()
-    icon_copy = icon
-    icon_color = ColorProperty(None)
-    selected = BooleanProperty(False)
-    selectable = BooleanProperty(True)
-
-    def __init__(self, **kwargs):
-        super(CellRow, self).__init__(**kwargs)
-        self.ids.check.bind(active=self.select_check)
-        self.ids.check.bind(active=self.notify_checkbox_click)
-
-    def notify_checkbox_click(self, instance, active):
-        self.table.get_select_row(self.index)
-
-    def on_icon(self, instance, value):
-        self.icon_copy = value
-
-    def on_table(self, instance, table):
-        """Sets padding/spacing to zero if no checkboxes are used for rows."""
-
-        if not table.check:
-            self.ids.box.padding = 0
-            self.ids.box.spacing = 0
-
-    def refresh_view_attrs(self, table_data, index, data):
-        """
-        Called by the :class:`RecycleAdapter` when the view is initially
-        populated with the values from the `data` dictionary for this item.
-
-        Any pos or size info should be removed because they are set
-        subsequently with :attr:`refresh_view_layout`.
-
-        :Parameters:
-
-            `table_data`: :class:`TableData` instance
-                The :class:`TableData` that caused the update.
-            `data`: dict
-                The data dict used to populate this view.
-        """
-
-        self.index = index
-        return super().refresh_view_attrs(table_data, index, data)
-
-    def on_touch_down(self, touch):
-        if super().on_touch_down(touch):
-            if self.table._parent:
-                self.table._parent.dispatch("on_row_press", self)
-            return True
-
-    def apply_selection(self, table_data, index, is_selected):
-        """Called when list items of table appear on the screen."""
-
-        self.selected = is_selected
-
-        # Fixes cloning of icons.
-        ic = table_data.recycle_data[index].get("icon", None)
-        cell_row_obj = table_data.view_adapter.get_visible_view(index)
-
-        if not ic:
-            cell_row_obj.icon = ""
-        else:
-            cell_row_obj.icon = cell_row_obj.icon_copy
-
-        # Set checkboxes.
-        if table_data.check:
-            if self.index in table_data.data_first_cells:
-                self.ids.check.size = (dp(32), dp(32))
-                self.ids.check.opacity = 1
-                self.ids.box.spacing = dp(16)
-                self.ids.box.padding[0] = dp(8)
-            else:
-                self.ids.check.size = (0, 0)
-                self.ids.check.opacity = 0
-                self.ids.box.spacing = 0
-                self.ids.box.padding[0] = 0
-
-        # Set checkboxes state.
-        if table_data._rows_number in table_data.current_selection_check:
-            for index in table_data.current_selection_check[
-                table_data._rows_number
-            ]:
-                if (
-                    self.index
-                    in table_data.current_selection_check[
-                        table_data._rows_number
-                    ]
-                ):
-                    self.change_check_state_no_notif("down")
-                else:
-                    self.change_check_state_no_notif("normal")
-        else:
-            self.change_check_state_no_notif("normal")
-
-    def change_check_state_no_notif(self, new_state):
-        checkbox = self.ids.check
-        checkbox.unbind(active=self.notify_checkbox_click)
-        checkbox.state = new_state
-        checkbox.bind(active=self.notify_checkbox_click)
-
-    def _check_all(self, state):
-        """Checks if all checkboxes are in same state"""
-
-        if state == "down" and self.table.check_all(state):
-            self.table.table_header.ids.check.state = "down"
-        else:
-            self.table.table_header.ids.check.state = "normal"
-
-    def select_check(self, instance, active):
-        """Called upon activation/deactivation of the checkbox."""
-
-        if active:
-            if (
-                self.table._rows_number
-                not in self.table.current_selection_check
-            ):
-                self.table.current_selection_check[self.table._rows_number] = []
-            if (
-                self.index
-                not in self.table.current_selection_check[
-                    self.table._rows_number
-                ]
-            ):
-                self.table.current_selection_check[
-                    self.table._rows_number
-                ].append(self.index)
-        else:
-            if self.table._rows_number in self.table.current_selection_check:
-                if (
-                    self.index
-                    in self.table.current_selection_check[
-                        self.table._rows_number
-                    ]
-                    and not active
-                ):
-                    self.table.current_selection_check[
-                        self.table._rows_number
-                    ].remove(self.index)
-
-
-class SortButton(MDIconButton):
-    pass
 
 
 class CellHeader(MDTooltip, BoxLayout):
@@ -981,37 +818,17 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     .. code-block:: python
 
+
         from kivy.metrics import dp
-        from kivy.uix.anchorlayout import AnchorLayout
-        from kivy.lang import Builder
-        from kivy.logger import Logger
 
         from kivymd.app import MDApp
         from kivymd.uix.datatables import MDDataTable
+        from kivymd.uix.screen import MDScreen
 
-        kv = '''
-        BoxLayout:
-            orientation: "vertical"
-            BoxLayout:
-                id:button_tab
-                size_hint_y:None
-                height: dp(48)
-
-                MDFlatButton:
-                    text: "Hello <3"
-                    on_release:
-                        app.update_row_data()
-
-            BoxLayout:
-                id:body
-
-        '''
 
         class Example(MDApp):
             def build(self):
                 self.data_tables = MDDataTable(
-                    # MDDataTable allows the use of size_hint
-                    size_hint=(0.8, 0.7),
                     use_pagination=True,
                     check=True,
                     column_data=[
@@ -1021,83 +838,76 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                         ("Severity", dp(30)),
                         ("Stage", dp(30)),
                         ("Schedule", dp(30), self.sort_on_schedule),
-                        ("Team Lead", dp(30), self.sort_on_team)
+                        ("Team Lead", dp(30), self.sort_on_team),
                     ],
                     row_data=[
-                        ("1", ("alert", [255 / 256, 165 / 256, 0, 1], "No Signal"),
-                         "Astrid: NE shared managed", "Medium", "Triaged", "0:33",
-                         "Chase Nguyen"),
-                        ("2", ("alert-circle", [1, 0, 0, 1], "Offline"),
-                         "Cosmo: prod shared ares", "Huge", "Triaged", "0:39",
-                         "Brie Furman"),
-                        ("3", (
-                            "checkbox-marked-circle",
-                            [39 / 256, 174 / 256, 96 / 256, 1],
-                            "Online"), "Phoenix: prod shared lyra-lists", "Minor",
-                         "Not Triaged", "3:12", "Jeremy lake"),
-                        ("4", (
-                            "checkbox-marked-circle",
-                            [39 / 256, 174 / 256, 96 / 256, 1],
-                            "Online"), "Sirius: NW prod shared locations",
-                         "Negligible",
-                         "Triaged", "13:18", "Angelica Howards"),
-                        ("5", (
-                            "checkbox-marked-circle",
-                            [39 / 256, 174 / 256, 96 / 256, 1],
-                            "Online"), "Sirius: prod independent account",
-                         "Negligible",
-                         "Triaged", "22:06", "Diane Okuma"),
-
+                        (
+                            "1",
+                            ("alert", [255 / 256, 165 / 256, 0, 1], "No Signal"),
+                            "Astrid: NE shared managed",
+                            "Medium",
+                            "Triaged",
+                            "0:33",
+                            "Chase Nguyen",
+                        ),
+                        (
+                            "2",
+                            ("alert-circle", [1, 0, 0, 1], "Offline"),
+                            "Cosmo: prod shared ares",
+                            "Huge",
+                            "Triaged",
+                            "0:39",
+                            "Brie Furman",
+                        ),
+                        (
+                            "3",
+                            (
+                                "checkbox-marked-circle",
+                                [39 / 256, 174 / 256, 96 / 256, 1],
+                                "Online",
+                            ),
+                            "Phoenix: prod shared lyra-lists",
+                            "Minor",
+                            "Not Triaged",
+                            "3:12",
+                            "Jeremy lake",
+                        ),
+                        (
+                            "4",
+                            (
+                                "checkbox-marked-circle",
+                                [39 / 256, 174 / 256, 96 / 256, 1],
+                                "Online",
+                            ),
+                            "Sirius: NW prod shared locations",
+                            "Negligible",
+                            "Triaged",
+                            "13:18",
+                            "Angelica Howards",
+                        ),
+                        (
+                            "5",
+                            (
+                                "checkbox-marked-circle",
+                                [39 / 256, 174 / 256, 96 / 256, 1],
+                                "Online",
+                            ),
+                            "Sirius: prod independent account",
+                            "Negligible",
+                            "Triaged",
+                            "22:06",
+                            "Diane Okuma",
+                        ),
                     ],
                     sorted_on="Schedule",
                     sorted_order="ASC",
-                    elevation=2
+                    elevation=2,
                 )
                 self.data_tables.bind(on_row_press=self.on_row_press)
                 self.data_tables.bind(on_check_press=self.on_check_press)
-                root = Builder.load_string(kv)
-                root.ids.body.add_widget(self.data_tables)
-                return root
-
-            def update_row_data(self, *dt):
-                self.data_tables.row_data = [
-                (
-                    "21",
-                    ("alert", [255 / 256, 165 / 256, 0, 1], "No Signal"),
-                    "Astrid: NE shared managed",
-                    "Medium",
-                    "Triaged",
-                    "0:33",
-                    "Chase Nguyen"
-                ),
-                ("32", ("alert-circle", [1, 0, 0, 1], "Offline"),
-                "Cosmo: prod shared ares", "Huge", "Triaged", "0:39",
-                "Brie Furman"),
-                ("43", (
-                "checkbox-marked-circle",
-                [39 / 256, 174 / 256, 96 / 256, 1],
-                "Online"), "Phoenix: prod shared lyra-lists", "Minor",
-                "Not Triaged", "3:12", "Jeremy lake"),
-                ("54", (
-                "checkbox-marked-circle",
-                [39 / 256, 174 / 256, 96 / 256, 1],
-                "Online"), "Sirius: NW prod shared locations",
-                "Negligible",
-                "Triaged", "13:18", "Angelica Howards"),
-                ("85", (
-                "checkbox-marked-circle",
-                [39 / 256, 174 / 256, 96 / 256, 1],
-                "Online"), "Sirius: prod independent account",
-                "Negligible",
-                "Triaged", "22:06", "Diane Okuma"),
-                ("85", (
-                "checkbox-marked-circle",
-                [39 / 256, 174 / 256, 96 / 256, 1],
-                "Online"), "Sirius: prod independent account",
-                "Negligible",
-                "Triaged", "22:06", "John Sakura"),
-                ]
-
+                screen = MDScreen()
+                screen.add_widget(self.data_tables)
+                return screen
 
             def on_row_press(self, instance_table, instance_row):
                 '''Called when a table row is clicked.'''
@@ -1110,42 +920,35 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                 print(instance_table, current_row)
 
             # Sorting Methods:
-            # Since the # 914 Pull request, the sorting method requires you to sort
-            # out the indexes of each data value for the support of selections
-
-            # The most common method to do this is with the use of the bult-in function
-            # zip and enimerate, see the example below for more info.
-
-            # the result given by these funcitons must be a list in the format of
+            # since the https://github.com/kivymd/KivyMD/pull/914 request, the
+            # sorting method requires you to sort out the indexes of each data value
+            # for the support of selections.
+            #
+            # The most common method to do this is with the use of the builtin function
+            # zip and enumerate, see the example below for more info.
+            #
+            # The result given by these funcitons must be a list in the format of
             # [Indexes, Sorted_Row_Data]
 
-
             def sort_on_signal(self, data):
-                return zip(
-                    *sorted(
-                        enumerate(data),
-                        key=lambda l: l[1][2]
-                    )
-                )
+                return zip(*sorted(enumerate(data), key=lambda l: l[1][2]))
 
             def sort_on_schedule(self, data):
                 return zip(
                     *sorted(
                         enumerate(data),
                         key=lambda l: sum(
-                            [int(l[1][-2].split(":")[0])*60,
-                            int(l[1][-2].split(":")[1])]
-                        )
+                            [
+                                int(l[1][-2].split(":")[0]) * 60,
+                                int(l[1][-2].split(":")[1]),
+                            ]
+                        ),
                     )
                 )
 
             def sort_on_team(self, data):
-                return zip(
-                    *sorted(
-                        enumerate(data),
-                        key=lambda l: l[1][-1]
-                    )
-                )
+                return zip(*sorted(enumerate(data), key=lambda l: l[1][-1]))
+
 
         Example().run()
     """
@@ -1170,7 +973,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                     size_hint=(0.7, 0.6),
                     use_pagination=True,
                     check=True,
-
                     # name column, width column, sorting function column(optional)
                     column_data=[
                         ("No.", dp(30)),
@@ -1194,23 +996,64 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     :attr:`column_data` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
 
-    .. note::
-        The functions which will be called for sorting must accept a data argument and return the sorted data.
-
-        Incoming data format will be similar to the provided row_data except that it'll be all list instead of tuple like below.
-        Any icon provided initially will also be there in this data so handle accordingly.
+    .. note:: The functions which will be called for sorting must accept a data
+        argument and return the sorted data. Incoming data format will be
+        similar to the provided row_data except that it'll be all list instead
+        of tuple like below. Any icon provided initially will also be there in
+        this data so handle accordingly.
 
         .. code-block:: python
 
             [
-                ['1', ['icon', 'No Signal'], 'Astrid: NE shared managed', 'Medium', 'Triaged', '0:33', 'Chase Nguyen'],
-                ['2', 'Offline', 'Cosmo: prod shared ares', 'Huge', 'Triaged', '0:39', 'Brie Furman'],
-                ['3', 'Online', 'Phoenix: prod shared lyra-lists', 'Minor', 'Not Triaged', '3:12', 'Jeremy lake'],
-                ['4', 'Online', 'Sirius: NW prod shared locations', 'Negligible', 'Triaged', '13:18', 'Angelica Howards'],
-                ['5', 'Online', 'Sirius: prod independent account', 'Negligible', 'Triaged', '22:06', 'Diane Okuma']
+                [
+                    "1",
+                    ["icon", "No Signal"],
+                    "Astrid: NE shared managed",
+                    "Medium",
+                    "Triaged",
+                    "0:33",
+                    "Chase Nguyen",
+                ],
+                [
+                    "2",
+                    "Offline",
+                    "Cosmo: prod shared ares",
+                    "Huge",
+                    "Triaged",
+                    "0:39",
+                    "Brie Furman",
+                ],
+                [
+                    "3",
+                    "Online",
+                    "Phoenix: prod shared lyra-lists",
+                    "Minor",
+                    "Not Triaged",
+                    "3:12",
+                    "Jeremy lake",
+                ],
+                [
+                    "4",
+                    "Online",
+                    "Sirius: NW prod shared locations",
+                    "Negligible",
+                    "Triaged",
+                    "13:18",
+                    "Angelica Howards",
+                ],
+                [
+                    "5",
+                    "Online",
+                    "Sirius: prod independent account",
+                    "Negligible",
+                    "Triaged",
+                    "22:06",
+                    "Diane Okuma",
+                ],
             ]
 
-        You must sort inner lists in ascending order and return the sorted data in the same format.
+        You must sort inner lists in ascending order and return the sorted data
+        in the same format.
     """
 
     row_data = ListProperty()
@@ -1577,7 +1420,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         Clock.schedule_once(self.create_pagination_menu, 0.5)
         self.bind(row_data=self.update_row_data)
 
-    def update_row_data(self, instance, value):
+    def update_row_data(self, instance_data_table, data: list) -> NoReturn:
         """
         Called when a the widget data must be updated.
 
@@ -1586,14 +1429,14 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         coroutine.
         """
 
-        self.table_data.row_data = value
+        self.table_data.row_data = data
         self.table_data.on_rows_num(self, self.table_data.rows_num)
-        # Set cursors to 0
+        # Set cursors to 0.
         self.table_data._rows_number = 0
         self.table_data._current_value = 1
 
-        if len(value) < self.table_data.rows_num:
-            self.table_data._to_value = len(value)
+        if len(data) < self.table_data.rows_num:
+            self.table_data._to_value = len(data)
             self.table_data.pagination.ids.button_forward.disabled = True
         else:
             self.table_data._to_value = self.table_data.rows_num
@@ -1609,12 +1452,12 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     def on_check_press(self, *args):
         """Called when the check box in the table row is checked."""
 
-    def get_row_checks(self):
+    def get_row_checks(self) -> list:
         """Returns all rows that are checked."""
 
         return self.table_data._get_row_checks()
 
-    def create_pagination_menu(self, interval):
+    def create_pagination_menu(self, interval: Union[int, float]) -> NoReturn:
         menu_items = [
             {
                 "text": f"{i}",
@@ -1642,3 +1485,167 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     def _scroll_with_header(self, instance, value):
         self.header.scroll_x = value
+
+
+class CellRow(
+    ThemableBehavior,
+    RecycleDataViewBehavior,
+    HoverBehavior,
+    ButtonBehavior,
+    BoxLayout,
+):
+    text = StringProperty()  # row text
+    table = ObjectProperty()  # <TableData object>
+    index = None
+    icon = StringProperty()
+    icon_copy = icon
+    icon_color = ColorProperty(None)
+    selected = BooleanProperty(False)
+    selectable = BooleanProperty(True)
+
+    def __init__(self, **kwargs):
+        super(CellRow, self).__init__(**kwargs)
+        self.ids.check.bind(active=self.select_check)
+        self.ids.check.bind(active=self.notify_checkbox_click)
+
+    def notify_checkbox_click(
+        self, instance_check: MDCheckbox, active: bool
+    ) -> NoReturn:
+        """Called when the table row checkbox is activated/deactivated."""
+
+        self.table.get_select_row(self.index)
+
+    def on_icon(self, instance_cell_row, name_icon: str) -> NoReturn:
+        self.icon_copy = name_icon
+
+    def on_table(self, instance, table):
+        """Sets padding/spacing to zero if no checkboxes are used for rows."""
+
+        if not table.check:
+            self.ids.box.padding = 0
+            self.ids.box.spacing = 0
+
+    def refresh_view_attrs(
+        self, instance_table_data: TableData, index: int, data: dict
+    ):
+        """
+        Called by the :class:`RecycleAdapter` when the view is initially
+        populated with the values from the `data` dictionary for this item.
+
+        Any pos or size info should be removed because they are set
+        subsequently with :attr:`refresh_view_layout`.
+
+        :Parameters:
+
+            `table_data`: :class:`TableData` instance
+                The :class:`TableData` that caused the update.
+            `data`: dict
+                The data dict used to populate this view.
+        """
+
+        self.index = index
+        return super().refresh_view_attrs(instance_table_data, index, data)
+
+    def on_touch_down(self, touch):
+        if super().on_touch_down(touch):
+            if self.table._parent:
+                self.table._parent.dispatch("on_row_press", self)
+            return True
+
+    def apply_selection(
+        self, instance_table_data: TableData, index: int, is_selected: bool
+    ) -> NoReturn:
+        """Called when list items of table appear on the screen."""
+
+        self.selected = is_selected
+
+        # Fixes cloning of icons.
+        ic = instance_table_data.recycle_data[index].get("icon", None)
+        cell_row_obj = instance_table_data.view_adapter.get_visible_view(index)
+
+        if not ic:
+            cell_row_obj.icon = ""
+        else:
+            cell_row_obj.icon = cell_row_obj.icon_copy
+
+        # Set checkboxes.
+        if instance_table_data.check:
+            if self.index in instance_table_data.data_first_cells:
+                self.ids.check.size = (dp(32), dp(32))
+                self.ids.check.opacity = 1
+                self.ids.box.spacing = dp(16)
+                self.ids.box.padding[0] = dp(8)
+            else:
+                self.ids.check.size = (0, 0)
+                self.ids.check.opacity = 0
+                self.ids.box.spacing = 0
+                self.ids.box.padding[0] = 0
+
+        # Set checkboxes state.
+        if (
+            instance_table_data._rows_number
+            in instance_table_data.current_selection_check
+        ):
+            for index in instance_table_data.current_selection_check[
+                instance_table_data._rows_number
+            ]:
+                if (
+                    self.index
+                    in instance_table_data.current_selection_check[
+                        instance_table_data._rows_number
+                    ]
+                ):
+                    self.change_check_state_no_notify("down")
+                else:
+                    self.change_check_state_no_notify("normal")
+        else:
+            self.change_check_state_no_notify("normal")
+
+    def change_check_state_no_notify(self, new_state: str) -> NoReturn:
+        checkbox = self.ids.check
+        checkbox.unbind(active=self.notify_checkbox_click)
+        checkbox.state = new_state
+        checkbox.bind(active=self.notify_checkbox_click)
+
+    def select_check(self, instance, active):
+        """Called upon activation/deactivation of the checkbox."""
+
+        if active:
+            if (
+                self.table._rows_number
+                not in self.table.current_selection_check
+            ):
+                self.table.current_selection_check[self.table._rows_number] = []
+            if (
+                self.index
+                not in self.table.current_selection_check[
+                    self.table._rows_number
+                ]
+            ):
+                self.table.current_selection_check[
+                    self.table._rows_number
+                ].append(self.index)
+        else:
+            if self.table._rows_number in self.table.current_selection_check:
+                if (
+                    self.index
+                    in self.table.current_selection_check[
+                        self.table._rows_number
+                    ]
+                    and not active
+                ):
+                    self.table.current_selection_check[
+                        self.table._rows_number
+                    ].remove(self.index)
+
+    def _check_all(self, state):
+        """Checks if all checkboxes are in same state"""
+
+        if state == "down" and self.table.check_all(state):
+            self.table.table_header.ids.check.state = "down"
+        else:
+            self.table.table_header.ids.check.state = "normal"
+
+
+class SortButton(MDIconButton):
+    pass

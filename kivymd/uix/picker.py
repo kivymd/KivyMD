@@ -246,11 +246,10 @@ MDThemePicker
 __all__ = ("MDTimePicker", "MDDatePicker", "MDThemePicker", "BaseDialogPicker")
 
 import calendar
-from typing import NoReturn, Union
-
 import datetime
 import re
 from datetime import date
+from typing import NoReturn, Union
 
 from kivy import Logger
 from kivy.animation import Animation

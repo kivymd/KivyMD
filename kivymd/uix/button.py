@@ -430,6 +430,8 @@ __all__ = (
     "MDFloatingActionButtonSpeedDial",
 )
 
+from typing import NoReturn, Union
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -459,7 +461,7 @@ from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.color_definitions import text_colors
 from kivymd.font_definitions import theme_font_styles
-from kivymd.theming import ThemableBehavior
+from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     CircularElevationBehavior,
@@ -897,10 +899,12 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         if not self.text_color:
             self.text_color = self.theme_cls.text_color
 
-    def update_text_color(self, instance, value):
+    def update_text_color(
+        self, instance_theme_manager: ThemeManager, theme_style: str
+    ) -> NoReturn:
         pass
 
-    def set_md_bg_color(self, interval):
+    def set_md_bg_color(self, interval: Union[int, float]) -> NoReturn:
         """Checks if a value is set for the `md_bg_color` parameter."""
 
         if self.md_bg_color == [1.0, 1.0, 1.0, 0]:
@@ -908,20 +912,22 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         if not self.md_bg_color_disabled:
             self.md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager: ThemeManager, name_palette: str
+    ) -> NoReturn:
         """Called when the application color palette changes."""
 
         self.md_bg_color = self.theme_cls._get_primary_color()
-        self.update_text_color(instance, value)
+        self.update_text_color(instance_theme_manager, name_palette)
 
-    def on_disabled(self, instance, value):
+    def on_disabled(self, instance_button, value_disabled: bool) -> NoReturn:
         """
         Sets the color of the button at the moment of setting the parameter
         `disabled`.
         """
 
         # Sets button background color (disabled).
-        if value:
+        if value_disabled:
             if not self.md_bg_color_disabled:
                 self.md_bg_color_disabled = (
                     self.theme_cls.disabled_hint_text_color
@@ -935,11 +941,11 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
                 else self.theme_cls.primary_color
             )
 
-    def on_md_bg_color(self, instance, value):
+    def on_md_bg_color(self, instance_button, color: list) -> NoReturn:
         """Sets last current button background color."""
 
         if self.md_bg_color != self.md_bg_color_disabled:
-            self._md_bg_color = value
+            self._md_bg_color = color
 
 
 class BasePressedButton(BaseButton):
@@ -990,25 +996,27 @@ class BaseRectangularButton(
 ):
     """Base class for all rectangular buttons."""
 
-    def on_width(self, *args):
+    def on_width(self, instance_button, width: float) -> NoReturn:
         if self.width < 88:
             self.width = 88
 
 
 class BaseFlatButton(BaseRectangularButton):
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager, name_palette: str
+    ) -> NoReturn:
         """Called when the application color palette changes."""
 
         self.text_color = self.theme_cls.primary_color
 
-    def set_text_color(self, interval):
+    def set_text_color(self, interval: Union[int, float]) -> NoReturn:
         """Sets the text color if no custom value is specified."""
 
         if self.text_color in ([0.0, 0.0, 0.0, 0.87], [1, 0, 1, 1]):
             self.theme_text_color = "Custom"
             self.text_color = self.theme_cls.primary_color
 
-    def on_md_bg_color(self, instance, value):
+    def on_md_bg_color(self, instance_button, color: list) -> NoReturn:
         """
         We override this method, thus prohibiting setting the background color
         for the button.
@@ -1019,11 +1027,11 @@ class BaseFlatButton(BaseRectangularButton):
         Ignore other custom colors.
         """
 
-        if value[:-1] != [0.0, 0.0, 0.0]:
+        if color[:-1] != [0.0, 0.0, 0.0]:
             self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
 
-    def on_disabled(self, instance, value):
-        if value and not self.disabled:
+    def on_disabled(self, instance_button, value_disabled: bool) -> NoReturn:
+        if value_disabled and not self.disabled:
             self.md_bg_color = (
                 self.md_bg_color_disabled
                 if self.md_bg_color_disabled
@@ -1033,14 +1041,15 @@ class BaseFlatButton(BaseRectangularButton):
             if self._md_bg_color:
                 self.md_bg_color = self._md_bg_color
 
-    def on_elevation(self, instance, value):
+    def on_elevation(self, instance_button, elevation_value: int) -> NoReturn:
         """
         We are overriding this method to not allow set the `elevation` value
         for this type of button.
         """
+
         self.elevation = 0
         self._elevation = 0
-        super().on_elevation(instance, value)
+        super().on_elevation(instance_button, elevation_value)
 
 
 class BaseElevationButton(CommonElevationBehavior, BaseButton):
@@ -1066,19 +1075,21 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
         super().__init__(**kwargs)
         self.on_elevation(self, self.elevation)
 
-    def on_elevation(self, instance, value):
-        super().on_elevation(instance, value)
+    def on_elevation(self, instance_button, elevation_value: int) -> NoReturn:
+        super().on_elevation(instance_button, elevation_value)
         self._elevation_raised = self.elevation + 6
         self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
 
-    def on__elevation_raised(self, instance, value):
+    def on__elevation_raised(
+        self, instance_button, elevation_value: int
+    ) -> NoReturn:
         Animation.cancel_all(self, "_elevation")
         self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
 
-    def on_disabled(self, instance, value):
+    def on_disabled(self, instance_button, disabled_value: bool) -> NoReturn:
         if self.disabled is True:
             Animation.cancel_all(self, "_elevation")
-        super().on_disabled(instance, value)
+        super().on_disabled(instance_button, disabled_value)
 
     def on_touch_down(self, touch):
         if not self.disabled:
@@ -1125,11 +1136,11 @@ class BaseRoundButton(CircularRippleBehavior, BaseButton):
         Clock.schedule_once(self.set_text)
         Clock.schedule_once(self.set_text_color)
 
-    def set_text_color(self, interval):
+    def set_text_color(self, interval: Union[int, float]) -> NoReturn:
         if not self.text_color:
             self.text_color = self.theme_cls._get_text_color()
 
-    def set_text(self, interval):
+    def set_text(self, interval: Union[int, float]) -> NoReturn:
         self.text = ""
 
 
@@ -1164,7 +1175,7 @@ class MDRaisedButton(BaseRectangularButton, BaseElevationButton):
         super().__init__(**kwargs)
         Clock.schedule_once(self.update_text_color)
 
-    def update_text_color(self, *args):
+    def update_text_color(self, *args) -> NoReturn:
         if self.text_color in (
             [0.0, 0.0, 0.0, 0.87],
             [0.0, 0.0, 0.0, 1.0],
@@ -1209,17 +1220,19 @@ class MDRectangleFlatIconButton(BaseRectangleFlatButton):
         Clock.schedule_once(self.remove_label)
         Clock.schedule_once(self.set_icon_color)
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager, name_palette: str
+    ) -> NoReturn:
         self.text_color = self.theme_cls.primary_color
         self.icon_color = self.theme_cls.primary_color
 
-    def set_icon_color(self, interval):
+    def set_icon_color(self, interval: Union[int, float]) -> NoReturn:
         """Sets the icon color if no custom value is specified."""
 
         if not self.icon_color:
             self.icon_color = self.theme_cls.primary_color
 
-    def remove_label(self, interval):
+    def remove_label(self, interval: Union[int, float]) -> NoReturn:
         self.remove_widget(self.ids.lbl_txt)
 
 
@@ -1291,24 +1304,26 @@ class MDRoundFlatIconButton(MDRoundFlatButton):
         Clock.schedule_once(self.remove_label)
         Clock.schedule_once(self.set_icon_color)
 
-    def set_icon_color(self, interval):
+    def set_icon_color(self, interval: Union[int, float]) -> NoReturn:
         """Sets the icon color if no custom value is specified."""
 
         if not self.icon_color:
             self.icon_color = self.theme_cls.primary_color
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager, name_palette: str
+    ) -> NoReturn:
         self.text_color = self.theme_cls.primary_color
         self.icon_color = self.theme_cls.primary_color
 
     # From Python code.
-    def on_icon_color(self, instance, value):
+    def on_icon_color(self, instance_button, color: list) -> NoReturn:
         def set_icon_color(interval):
-            self.icon_color = value
+            self.icon_color = color
 
         Clock.schedule_once(set_icon_color)
 
-    def remove_label(self, interval):
+    def remove_label(self, interval: Union[int, float]) -> NoReturn:
         self.remove_widget(self.ids.lbl_txt)
 
 
@@ -1322,7 +1337,7 @@ class MDFillRoundFlatButton(MDRoundFlatButton):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_text_color)
 
-    def set_text_color(self, interval):
+    def set_text_color(self, interval: Union[int, float]) -> NoReturn:
         if self.text_color in (
             [0.0, 0.0, 0.0, 0.87],
             [0.0, 0.0, 0.0, 1.0],
@@ -1332,11 +1347,13 @@ class MDFillRoundFlatButton(MDRoundFlatButton):
                 self.theme_cls.primary_hue
             ]
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager, name_palette: str
+    ) -> NoReturn:
         self.md_bg_color = self.theme_cls.primary_color
         self.set_text_color(0)
 
-    def on_md_bg_color(self, instance, value):
+    def on_md_bg_color(self, instance_button, color: list) -> NoReturn:
         self.set_text_color(0)
 
 
@@ -1346,20 +1363,22 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
         Clock.schedule_once(self.update_text_color)
         Clock.schedule_once(self.update_icon_color)
 
-    def set_md_bg_color(self, interval):
+    def set_md_bg_color(self, interval: Union[int, float]) -> NoReturn:
         if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
             self.md_bg_color = self.theme_cls.primary_color
 
-    def on_md_bg_color(self, instance, value):
-        self.md_bg_color = value
+    def on_md_bg_color(self, instance_button, color: list) -> NoReturn:
+        self.md_bg_color = color
         if self.md_bg_color != self.md_bg_color_disabled:
-            self._md_bg_color = value
+            self._md_bg_color = color
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager, name_palette: str
+    ) -> NoReturn:
         """Called when the application color palette changes."""
 
         self.md_bg_color = self.theme_cls._get_primary_color()
-        self.update_text_color(instance, value)
+        self.update_text_color(instance_theme_manager, name_palette)
         if self.icon_color in (
             [0.0, 0.0, 0.0, 0.87],
             [0.0, 0.0, 0.0, 1.0],
@@ -1369,7 +1388,7 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
                 self.theme_cls.primary_hue
             ]
 
-    def update_text_color(self, *args):
+    def update_text_color(self, *args) -> NoReturn:
         if self.text_color in (
             [0.0, 0.0, 0.0, 0.87],
             [0.0, 0.0, 0.0, 1.0],
@@ -1379,17 +1398,17 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
                 self.theme_cls.primary_hue
             ]
 
-    def set_text_color(self, interval):
+    def set_text_color(self, interval: Union[int, float]) -> NoReturn:
         pass
 
-    def update_icon_color(self, interval):
+    def update_icon_color(self, interval: Union[int, float]) -> NoReturn:
         if not self.icon_color:
             self.icon_color = text_colors[self.theme_cls.primary_palette][
                 self.theme_cls.primary_hue
             ]
 
-    def on_disabled(self, instance, value):
-        if value:
+    def on_disabled(self, instance_button, value_disabled: bool) -> NoReturn:
+        if value_disabled:
             if not self.md_bg_color_disabled:
                 self.md_bg_color_disabled = (
                     self.theme_cls.disabled_hint_text_color
@@ -1418,7 +1437,7 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
         Clock.schedule_once(self.set_size)
         self.on_md_bg_color(self, [0.0, 0.0, 0.0, 0.0])
 
-    def set_size(self, interval):
+    def set_size(self, interval: Union[int, float]) -> NoReturn:
         """
         Sets the custom icon size if the value of the `user_font_size`
         attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
@@ -1431,7 +1450,9 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
             "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
         )
 
-    def update_md_bg_color(self, instance, value):
+    def update_md_bg_color(
+        self, instance_theme_manager: ThemeManager, name_palette: str
+    ) -> NoReturn:
         if self.md_bg_color != [0.0, 0.0, 0.0, 0.0]:
             self.md_bg_color = self.theme_cls._get_primary_color()
 
@@ -1456,7 +1477,7 @@ class MDFloatingActionButton(
         Clock.schedule_once(self.set_size)
         Clock.schedule_once(self.update_text_color)
 
-    def update_text_color(self, *args):
+    def update_text_color(self, *args) -> NoReturn:
         if self.text_color in (
             [0.0, 0.0, 0.0, 0.87],
             [0.0, 0.0, 0.0, 1.0],
@@ -1466,11 +1487,11 @@ class MDFloatingActionButton(
                 self.theme_cls.primary_hue
             ]
 
-    def set_md_bg_color(self, interval):
+    def set_md_bg_color(self, interval: Union[int, float]) -> NoReturn:
         if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
             self.md_bg_color = self.theme_cls.primary_color
 
-    def set_size(self, interval):
+    def set_size(self, interval: Union[int, float]) -> NoReturn:
         self.width = "56dp"
         self.height = "56dp"
 
@@ -1509,7 +1530,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
 
     _color = ColorProperty(None)  # last current button text color
 
-    def animation_label(self):
+    def animation_label(self) -> NoReturn:
         def set_default_state_label(*args):
             Animation(opacity=1, d=0.1, t="in_out_cubic").start(self)
 
@@ -1521,11 +1542,11 @@ class MDTextButton(ButtonBehavior, MDLabel):
         self.animation_label()
         return super().on_press(*args)
 
-    def on_md_bg_color(self, instance, value):
-        self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
+    # def on_md_bg_color(self, instance_button, value) -> NoReturn:
+    #     self.md_bg_color = [0.0, 0.0, 0.0, 0.0]
 
-    def on_disabled(self, instance, value):
-        if value:
+    def on_disabled(self, instance_button, disabled_value) -> NoReturn:
+        if disabled_value:
             if not self.color_disabled:
                 self.color_disabled = self.theme_cls.disabled_hint_text_color
                 self._color = self.color
@@ -1550,7 +1571,7 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
     _padding_right = NumericProperty(0)
     _bg_color = ColorProperty(None)
 
-    def set_size(self, interval):
+    def set_size(self, interval: Union[int, float]) -> NoReturn:
         self.width = "46dp"
         self.height = "46dp"
 
@@ -1809,7 +1830,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     def on_close(self, *args):
         """Called when a stack is closed."""
 
-    def on_leave(self, instance):
+    def on_leave(self, instance_button: MDFloatingBottomButton) -> NoReturn:
         """Called when the mouse cursor goes outside the button of stack."""
 
         if self.state == "open":
@@ -1823,7 +1844,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                                 _padding_right=0,
                                 d=self.opening_time,
                                 t=self.opening_transition,
-                            ).start(instance)
+                            ).start(instance_button)
                             if self.hint_animation:
                                 Animation(
                                     opacity=0, d=0.1, t=self.opening_transition
@@ -1831,7 +1852,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                             break
                     break
 
-    def on_enter(self, instance):
+    def on_enter(self, instance_button: MDFloatingBottomButton) -> NoReturn:
         """Called when the mouse cursor is over a button from the stack."""
 
         if self.state == "open":
@@ -1845,7 +1866,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                                 _padding_right=dp(5) if self.right_pad else 0,
                                 d=self.opening_time,
                                 t=self.opening_transition,
-                            ).start(instance)
+                            ).start(instance_button)
                             if self.hint_animation:
                                 Animation(
                                     opacity=1,
@@ -1855,7 +1876,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                             break
                     break
 
-    def on_data(self, instance, value):
+    def on_data(self, instance_speed_dial, data: dict) -> NoReturn:
         """Creates a stack of buttons."""
 
         # FIXME: Don't know how to fix AttributeError error:
@@ -1869,14 +1890,13 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         #     canvas.add(widget.canvas)
         # AttributeError: 'NoneType' object has no attribute 'add'
         super().__init__()
-
         self.clear_widgets()
         self._anim_buttons_data = {}
         self._anim_labels_data = {}
         self._label_pos_y_set = False
 
         # Bottom buttons.
-        for name, name_icon in value.items():
+        for name, name_icon in data.items():
             bottom_button = MDFloatingBottomButton(
                 icon=name_icon,
                 on_enter=self.on_enter,
@@ -1900,62 +1920,94 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         self.set_pos_root_button(root_button)
         self.add_widget(root_button)
 
-    def on_icon(self, instance, value):
-        self._get_count_widget(MDFloatingRootButton).icon = value
+    def on_icon(self, instance_speed_dial, name_icon: str) -> NoReturn:
+        self._get_count_widget(MDFloatingRootButton).icon = name_icon
 
-    def on_label_text_color(self, instance, value):
+    def on_label_text_color(self, instance_speed_dial, color: list) -> NoReturn:
         for widget in self.children:
             if isinstance(widget, MDFloatingLabel):
-                widget.text_color = value
+                widget.text_color = color
 
-    def on_color_icon_stack_button(self, instance, value):
+    def on_color_icon_stack_button(
+        self, instance_speed_dial, color: list
+    ) -> NoReturn:
         for widget in self.children:
             if isinstance(widget, MDFloatingBottomButton):
-                widget.text_color = value
+                widget.text_color = color
 
-    def on_hint_animation(self, instance, value):
+    def on_hint_animation(self, instance_speed_dial, value: bool) -> NoReturn:
         for widget in self.children:
             if isinstance(widget, MDFloatingLabel):
                 widget.bg_color = (0, 0, 0, 0)
 
-    def on_bg_hint_color(self, instance, value):
+    def on_bg_hint_color(self, instance_speed_dial, color: list) -> NoReturn:
         for widget in self.children:
             if isinstance(widget, MDFloatingBottomButton):
-                widget._bg_color = value
+                widget._bg_color = color
 
-    def on_color_icon_root_button(self, instance, value):
-        self._get_count_widget(MDFloatingRootButton).text_color = value
+    def on_color_icon_root_button(
+        self, instance_speed_dial, color: list
+    ) -> NoReturn:
+        self._get_count_widget(MDFloatingRootButton).text_color = color
 
-    def on_bg_color_stack_button(self, instance, value):
+    def on_bg_color_stack_button(
+        self, instance_speed_dial, color: list
+    ) -> NoReturn:
         for widget in self.children:
             if isinstance(widget, MDFloatingBottomButton):
-                widget.md_bg_color = value
+                widget.md_bg_color = color
 
-    def on_bg_color_root_button(self, instance, value):
-        self._get_count_widget(MDFloatingRootButton).md_bg_color = value
+    def on_bg_color_root_button(
+        self, instance_speed_dial, color: list
+    ) -> NoReturn:
+        self._get_count_widget(MDFloatingRootButton).md_bg_color = color
 
-    def set_pos_labels(self, widget):
-        """Sets the position of the floating labels."""
+    def set_pos_labels(
+        self, instance_floating_label: MDFloatingLabel
+    ) -> NoReturn:
+        """
+        Sets the position of the floating labels.
+        Called when the application's root window is resized.
+        """
 
         if self.anchor == "right":
-            widget.x = Window.width - widget.width - dp(86)
+            instance_floating_label.x = (
+                Window.width - instance_floating_label.width - dp(86)
+            )
 
-    def set_pos_root_button(self, instance):
-        """Sets the position of the root button."""
+    def set_pos_root_button(
+        self, instance_floating_root_button: MDFloatingRootButton
+    ) -> NoReturn:
+        """
+        Sets the position of the root button.
+        Called when the application's root window is resized.
+        """
 
         if self.anchor == "right":
-            instance.y = dp(20)
-            instance.x = Window.width - (dp(56) + dp(20))
+            instance_floating_root_button.y = dp(20)
+            instance_floating_root_button.x = Window.width - (dp(56) + dp(20))
 
-    def set_pos_bottom_buttons(self, instance):
-        """Sets the position of the bottom buttons in a stack."""
+    def set_pos_bottom_buttons(
+        self, instance_floating_bottom_button: MDFloatingBottomButton
+    ) -> NoReturn:
+        """
+        Sets the position of the bottom buttons in a stack.
+        Called when the application's root window is resized.
+        """
 
         if self.anchor == "right":
             if self.state != "open":
-                instance.y = instance.height / 2
-            instance.x = Window.width - (instance.height + instance.width / 2)
+                instance_floating_bottom_button.y = (
+                    instance_floating_bottom_button.height / 2
+                )
+            instance_floating_bottom_button.x = Window.width - (
+                instance_floating_bottom_button.height
+                + instance_floating_bottom_button.width / 2
+            )
 
-    def open_stack(self, instance):
+    def open_stack(
+        self, instance_floating_root_button: MDFloatingRootButton
+    ) -> NoReturn:
         """Opens a button stack."""
 
         for widget in self.children:
@@ -2015,7 +2067,18 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         else:
             self.close_stack()
 
-    def do_animation_open_stack(self, anim_data):
+    def do_animation_open_stack(self, anim_data: dict) -> NoReturn:
+        """
+        :param anim_data:
+            {
+                <kivymd.uix.button.MDFloatingBottomButton object>:
+                    <kivy.animation.Animation>,
+                <kivymd.uix.button.MDFloatingBottomButton object>:
+                    <kivy.animation.Animation object>,
+                ...,
+            }
+        """
+
         def on_progress(animation, widget, value):
             if value >= 0.1:
                 animation_open_stack()

@@ -253,6 +253,8 @@ Example with FitImage
 
 __all__ = ("MDSelectionList",)
 
+from typing import Union, NoReturn
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
@@ -302,18 +304,53 @@ Builder.load_string(
 
 
 class SelectionIconCheck(MDIconButton):
+    """Implements the icon for the checked item."""
+
     scale = NumericProperty(0)
     icon_check_color = ColorProperty([0, 0, 0, 1])
 
 
 class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
     selected = BooleanProperty(False)
+    """
+    Whether or not an item is checked.
+
+    :attr:`selected` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     owner = ObjectProperty()
+    """
+    Instance of :class:`~kivymd.uix.selection.MDSelectionList` class.
+
+    :attr:`owner` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
     instance_item = ObjectProperty()
+    """
+    User item. Must be a Kivy or KivyMD widget.
+
+    :attr:`instance_item` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
     instance_icon = ObjectProperty()
+    """
+    Instance of :class:`~kivymd.uix.selection.SelectionIconCheck` class.
+    
+    :attr:`instance_icon` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
     overlay_color = ColorProperty([0, 0, 0, 0.2])
+    """See :attr:`~MDSelectionList.overlay_color`."""
+
     progress_round_size = NumericProperty(dp(46))
+    """See :attr:`~MDSelectionList.progress_round_size`."""
+
     progress_round_color = ColorProperty(None)
+    """See :attr:`~MDSelectionList.progress_round_color`."""
 
     _progress_round = NumericProperty(0)
     _progress_line_end = NumericProperty(0)
@@ -330,7 +367,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_progress_round)
 
-    def set_progress_round(self, interval):
+    def set_progress_round(self, interval: Union[int, float]) -> NoReturn:
         with self.canvas.after:
             self._instance_progress_inner_circle_color = Color(
                 rgba=(0, 0, 0, 0)
@@ -370,20 +407,22 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
                 ],
             )
 
-    def do_selected_item(self, *args):
+    def do_selected_item(self, *args) -> NoReturn:
         Animation(scale=1, d=0.2).start(self.instance_icon)
         self.selected = True
         self._progress_animation = False
         self._instance_overlay_color.rgba = self.get_overlay_color()
         self.owner.dispatch("on_selected", self)
 
-    def do_unselected_item(self):
+    def do_unselected_item(self) -> NoReturn:
         Animation(scale=0, d=0.2).start(self.instance_icon)
         self.selected = False
         self._instance_overlay_color.rgba = self.get_overlay_color()
         self.owner.dispatch("on_unselected", self)
 
-    def do_animation_progress_line(self, animation, instance, value):
+    def do_animation_progress_line(
+        self, animation: Animation, instance_selection_item, value: float
+    ) -> NoReturn:
         self._instance_progress_inner_outer_line.circle = (
             self.center_x,
             self.center_y,
@@ -392,11 +431,11 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
             360 * value,
         )
 
-    def update_overlay_rounded_rec(self, *args):
+    def update_overlay_rounded_rec(self, *args) -> NoReturn:
         self._instance_overlay_rounded_rec.size = self.size
         self._instance_overlay_rounded_rec.pos = self.pos
 
-    def update_progress_inner_circle_ellipse(self, *args):
+    def update_progress_inner_circle_ellipse(self, *args) -> NoReturn:
         self._instance_progress_inner_circle_ellipse.size = (
             self.get_progress_round_size()
         )
@@ -404,7 +443,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
             self.get_progress_round_pos()
         )
 
-    def reset_progress_animation(self):
+    def reset_progress_animation(self) -> NoReturn:
         Animation.cancel_all(self)
         self._progress_animation = False
         self._instance_progress_inner_circle_color.rgba = (0, 0, 0, 0)
@@ -418,33 +457,33 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
         ]
         self._progress_line_end = 0
 
-    def get_overlay_color(self):
+    def get_overlay_color(self) -> list:
         return self.overlay_color if self.selected else (0, 0, 0, 0)
 
-    def get_progress_round_pos(self):
+    def get_progress_round_pos(self) -> tuple:
         return (
             self.center_x - self.progress_round_size / 2,
             self.center_y - self.progress_round_size / 2,
         )
 
-    def get_progress_round_size(self):
+    def get_progress_round_size(self) -> tuple:
         return self.progress_round_size, self.progress_round_size
 
-    def get_progress_round_color(self):
+    def get_progress_round_color(self) -> tuple:
         return (
             self.theme_cls.primary_color
             if not self.progress_round_color
             else self.progress_round_color
         )
 
-    def get_progress_line_color(self):
+    def get_progress_line_color(self) -> tuple:
         return (
             self.theme_cls.primary_color[:-1] + [0.5]
             if not self.progress_round_color
             else self.progress_round_color[:-1] + [0.5]
         )
 
-    def on_long_touch(self, *args):
+    def on_long_touch(self, *args) -> NoReturn:
         if not self.owner.get_selected():
             self._touch_long = True
             self._progress_animation = True
@@ -464,12 +503,16 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
                     self.do_selected_item()
         return super().on_touch_down(touch)
 
-    def on__touch_long(self, instance, value):
-        if not value:
+    def on__touch_long(
+        self, instance_selection_tem, touch_value: bool
+    ) -> NoReturn:
+        if not touch_value:
             self.reset_progress_animation()
 
-    def on__progress_animation(self, instance, value):
-        if value:
+    def on__progress_animation(
+        self, instance_selection_tem, touch_value: bool
+    ) -> NoReturn:
+        if touch_value:
             anim = Animation(_progress_line_end=360, d=1, t="in_out_quad")
             anim.bind(
                 on_progress=self.do_animation_progress_line,
@@ -594,7 +637,9 @@ class MDSelectionList(MDList):
         container.add_widget(selection_icon)
         return super().add_widget(container, index, canvas)
 
-    def get_selected(self):
+    def get_selected(self) -> bool:
+        """Returns ``True`` if at least one item in the list is checked."""
+
         selected = False
         for item in self.children:
             if item.selected:
@@ -602,19 +647,25 @@ class MDSelectionList(MDList):
                 break
         return selected
 
-    def get_selected_list_items(self):
+    def get_selected_list_items(self) -> list:
+        """
+        Returns a list of marked objects:
+
+        [<kivymd.uix.selection.SelectionItem object>, ...]
+        """
+
         selected_list_items = []
         for item in self.children:
             if item.selected:
                 selected_list_items.append(item)
         return selected_list_items
 
-    def unselected_all(self):
+    def unselected_all(self) -> NoReturn:
         for item in self.children:
             item.do_unselected_item()
         self.selected_mode = False
 
-    def selected_all(self):
+    def selected_all(self) -> NoReturn:
         for item in self.children:
             item.do_selected_item()
         self.selected_mode = True

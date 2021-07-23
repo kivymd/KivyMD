@@ -161,7 +161,9 @@ class _RefreshScrollEffect(DampedScrollEffect):
     and defaults to `'-100dp'`.
     """
 
-    def on_overscroll(self, instance_refresh_scroll_effect, overscroll: Union[int, float]) -> bool:
+    def on_overscroll(
+        self, instance_refresh_scroll_effect, overscroll: Union[int, float]
+    ) -> bool:
         if overscroll < self.min_scroll_to_reload:
             scroll_view = self.target_widget.parent
             scroll_view._did_overscroll = True

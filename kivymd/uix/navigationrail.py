@@ -151,7 +151,7 @@ Builder.load_string(
         id: icon_settings
         opacity: 0
         opposite_colors: True
-        icon: "cog"
+        icon: root.secicon
         pos_hint: {"center_y": .5}
 
 
@@ -284,6 +284,11 @@ class NavigationRailTitle(MDBoxLayout):
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Rail'`.
     """
+    secicon =StringProperty('')
+    '''
+        second icon
+        normally appears as a cog
+        '''
 
 
 class MDNavigationRailItem(
@@ -513,7 +518,13 @@ class MDNavigationRail(MDCard):
     :attr:`use_title` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
-
+    sec_icon=StringProperty('abacus')
+    '''
+    Second icon can be reffered
+    Use sec_icon:'<icon_name>' to change
+    '''
+    
+    
     icon_title = StringProperty("menu")
     """
     Icon (name or path to `png` file) for :class:`~NavigationRailTitle` class.
@@ -808,6 +819,7 @@ class MDNavigationRail(MDCard):
                         navigation_rail=self,
                         icon=self.icon_title,
                         title=self.text_title,
+                        secicon=self.sec_icon
                     )
                 )
 

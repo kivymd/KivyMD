@@ -163,7 +163,7 @@ from kivymd.utils.fitimage import FitImage
 ACTIVITY_MANAGER = """
 #:import os os
 
-<BodyManager@BoxLayout>
+<BodyManager>
     icon: "folder"
     path: ""
     background_normal: ""
@@ -281,6 +281,12 @@ ACTIVITY_MANAGER = """
         y: root.y + root.height / 2 - self.height / 2
         size: dp(48), dp(48)
 """
+
+
+class BodyManager(MDBoxLayout):
+    """
+    Base class for folders and files icons.
+    """
 
 
 class BodyManagerWithPreview(MDBoxLayout):

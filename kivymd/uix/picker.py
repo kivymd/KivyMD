@@ -540,7 +540,7 @@ Builder.load_string(
 
         # TODO: Replace the GridLayout with a RecycleView
         # if it improves performance.
-        GridLayout:
+        MDGridLayout:
             id: _calendar_layout
             cols: 7
             size_hint: None, None

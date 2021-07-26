@@ -148,7 +148,7 @@ Builder.load_string(
         x: root.x
         y: root.y if root.overlap or root.box_position == 'header' else box.top
 
-    BoxLayout:
+    MDBoxLayout:
         id: img_overlay
         size_hint: img.size_hint
         size: img.size
@@ -175,7 +175,7 @@ Builder.load_string(
         x: root.x
         y: root.y if root.overlap or root.box_position == 'header' else box.top
 
-    BoxLayout:
+    MDBoxLayout:
         id: img_overlay
         size_hint: img.size_hint
         size: img.size

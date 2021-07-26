@@ -387,13 +387,13 @@ Builder.load_string(
 
 <MDToolbar>
 
-    BoxLayout:
+    MDBoxLayout:
         id: left_actions
         orientation: "horizontal"
         size_hint_x: None
         padding: [0, (self.height - dp(48)) / 2]
 
-    BoxLayout:
+    MDBoxLayout:
         padding: dp(12), 0
 
         MDLabel:
@@ -408,7 +408,7 @@ Builder.load_string(
             halign: root.anchor_title
             markup: True
 
-    BoxLayout:
+    MDBoxLayout:
         id: right_actions
         orientation: "horizontal"
         size_hint_x: None

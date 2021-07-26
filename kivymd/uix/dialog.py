@@ -130,7 +130,7 @@ Builder.load_string(
             height: self.texture_size[1]
             valign: "top"
 
-        BoxLayout:
+        MDBoxLayout:
             id: spacer_top_box
             size_hint_y: None
             height: root._spacer_top
@@ -155,12 +155,12 @@ Builder.load_string(
                 adaptive_height: True
                 cols: 1
 
-        BoxLayout:
+        MDBoxLayout:
             id: spacer_bottom_box
             size_hint_y: None
             height: self.minimum_height
 
-        AnchorLayout:
+        MDAnchorLayout:
             id: root_button_box
             size_hint_y: None
             height: "52dp"

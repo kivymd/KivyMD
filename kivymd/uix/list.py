@@ -550,7 +550,7 @@ Builder.load_string(
             pos: self.pos
             size: self.size
 
-    BoxLayout:
+    MDBoxLayout:
         id: _text_container
         orientation: "vertical"
         pos: root.pos
@@ -597,7 +597,7 @@ Builder.load_string(
 
 <OneLineAvatarListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _left_container
         size_hint: None, None
         x: root.x + dp(16)
@@ -607,7 +607,7 @@ Builder.load_string(
 
 <ThreeLineAvatarListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _left_container
         size_hint: None, None
         x: root.x + dp(16)
@@ -617,7 +617,7 @@ Builder.load_string(
 
 <OneLineIconListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _left_container
         size_hint: None, None
         x: root.x + dp(16)
@@ -626,7 +626,7 @@ Builder.load_string(
 
 
 <ThreeLineIconListItem>
-    BoxLayout:
+    MDBoxLayout:
         id: _left_container
         size_hint: None, None
         x: root.x + dp(16)
@@ -636,7 +636,7 @@ Builder.load_string(
 
 <OneLineRightIconListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
@@ -646,7 +646,7 @@ Builder.load_string(
 
 <ThreeLineRightIconListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
@@ -656,7 +656,7 @@ Builder.load_string(
 
 <OneLineAvatarIconListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
@@ -666,7 +666,7 @@ Builder.load_string(
 
 <TwoLineAvatarIconListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
@@ -676,7 +676,7 @@ Builder.load_string(
 
 <ThreeLineAvatarIconListItem>
 
-    BoxLayout:
+    MDBoxLayout:
         id: _right_container
         size_hint: None, None
         x: root.x + root.width - m_res.HORIZ_MARGINS - self.width

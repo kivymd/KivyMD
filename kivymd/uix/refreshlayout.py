@@ -120,7 +120,7 @@ Builder.load_string(
 
 <RefreshSpinner>
 
-    AnchorLayout:
+    MDAnchorLayout:
         id: body_spinner
         size_hint: None, None
         size: dp(46), dp(46)

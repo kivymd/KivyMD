@@ -1064,7 +1064,12 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def on_focus(self, *args):
         disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
-        if self._hint_y == dp(38) and not self.text or self._hint_y == dp(14) and self.text:
+        if (
+            self._hint_y == dp(38)
+            and not self.text
+            or self._hint_y == dp(14)
+            and self.text
+        ):
             Animation.cancel_all(
                 self, "_line_width", "_hint_y", "_hint_lbl_font_size"
             )

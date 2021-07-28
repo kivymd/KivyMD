@@ -438,10 +438,9 @@ With right icon
 
 __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
-from typing import NoReturn, Union
-
 import re
 import sys
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -1147,7 +1146,7 @@ class MDTextField(ThemableBehavior, TextInput):
         self._hint_lbl.font_name = font_name
 
     def on_font_name_max_length(
-            self, instance_text_field, font_name: str
+        self, instance_text_field, font_name: str
     ) -> NoReturn:
         self._right_msg_lbl.font_name = font_name
 

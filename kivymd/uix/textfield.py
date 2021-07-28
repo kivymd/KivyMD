@@ -438,6 +438,8 @@ With right icon
 
 __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
+from typing import NoReturn, Union
+
 import re
 import sys
 
@@ -993,23 +995,111 @@ class MDTextField(ThemableBehavior, TextInput):
         self.theme_cls.bind(
             primary_color=self._update_primary_color,
             theme_style=self._update_theme_style,
-            accent_color=self._update_accent_color,
+            accent_color=self.update_accent_color,
         )
         self.has_had_text = False
         self._better_texture_size = None
         Clock.schedule_once(self.check_text)
-        Clock.schedule_once(self._set_fill_color)
+        Clock.schedule_once(self.set_fill_color)
         self._set_msg(self, self.helper_text)
 
-    def check_text(self, interval):
+    def check_text(self, interval: Union[float, int]) -> NoReturn:
         self.set_text(self, self.text)
 
-    def _set_fill_color(self, interval):
+    def set_fill_color(self, interval: Union[float, int]) -> NoReturn:
+        """Sets the fill color for a text field."""
+
         self._fill_color = self.fill_color
 
-    def set_objects_labels(self):
-        """Creates labels objects for the parameters
-        `helper_text`,`hint_text`, etc."""
+    def set_error_color(self) -> NoReturn:
+        """Sets the color of the text field in an error state."""
+
+        Animation(
+            duration=0.2,
+            _current_hint_text_color=self.error_color,
+            _current_line_color=self.error_color,
+        ).start(self)
+
+    def set_normal_color(self) -> NoReturn:
+        """Restores the normal color of the text field."""
+
+        Animation(
+            duration=0.2,
+            _current_hint_text_color=self.line_color_focus,
+            _current_line_color=self.line_color_focus,
+        ).start(self)
+
+    def set_fields_colors(self, color: list = None) -> NoReturn:
+        """
+        Sets the colors of the rectangle, line, text, hint text of text field.
+        """
+
+        if not color:
+            line_color = self.line_color_focus
+            hint_text_color = (
+                self.theme_cls.disabled_hint_text_color
+                if not self.current_hint_text_color
+                else self.current_hint_text_color
+            )
+            right_lbl_color = (0, 0, 0, 0)
+        else:
+            line_color = color
+            hint_text_color = color
+            right_lbl_color = color
+        Animation(
+            duration=0.2,
+            _current_line_color=line_color,
+            _current_hint_text_color=hint_text_color,
+            _current_right_lbl_color=right_lbl_color,
+        ).start(self)
+
+    def set_hint_text_font_size(
+        self, hint_y: float, font_size: float
+    ) -> NoReturn:
+        # TODO: Use `Scale` to animate the font size.
+        #  This will increase perfomance.
+        Animation(
+            _hint_y=hint_y,
+            _hint_lbl_font_size=font_size,
+            duration=0.2,
+            t="out_quad",
+        ).start(self)
+
+    def set_text(self, instance_text_field, text: str) -> NoReturn:
+        self.text = re.sub("\n", " ", text) if not self.multiline else text
+        if len(text) > 0:
+            self.has_had_text = True
+        if self.max_text_length is not None:
+            self._right_msg_lbl.text = f"{len(text)}/{self.max_text_length}"
+        self._set_text_len_error()
+        if self.error or self._text_len_error:
+            if self.required or self.max_text_length:
+                self.set_error_color()
+            if self.helper_text_mode == "on_error" and (
+                self.error or self._text_len_error
+            ):
+                self._anim_current_error_color(self.error_color)
+            if self._text_len_error:
+                self._anim_current_right_lbl_color(self.error_color)
+        else:
+            self._anim_current_right_lbl_color(
+                self.theme_cls.disabled_hint_text_color
+            )
+            if self.max_text_length:
+                self.set_normal_color()
+            if self.helper_text_mode == "on_error":
+                self._anim_current_error_color((0, 0, 0, 0))
+            self.on_focus(self, self.focus)
+
+        if len(self.text) != 0 and not self.focus:
+            self._hint_y = dp(14)
+            self._hint_lbl_font_size = sp(12)
+
+    def set_objects_labels(self) -> NoReturn:
+        """
+        Creates labels objects for the parameters`helper_text`,`hint_text`,
+        etc.
+        """
 
         # Label object for `helper_text` parameter.
         self._msg_lbl = TextfieldLabel(
@@ -1035,34 +1125,39 @@ class MDTextField(ThemableBehavior, TextInput):
         # MDIcon object for the icon on the right.
         self._lbl_icon_right = MDIcon(theme_text_color="Custom")
 
-    def on_font_name_helper_text(self, instance, value):
-        self._msg_lbl.font_name = value
+    def update_accent_color(self, *args) -> NoReturn:
+        if self.color_mode == "accent":
+            self.update_line_color(self.theme_cls.accent_color)
 
-    def on_font_name_hint_text(self, instance, value):
-        self._hint_lbl.font_name = value
+    def update_line_color(self, color: list) -> NoReturn:
+        self.line_color_focus = color
+        if not self.error and not self._text_len_error:
+            self._current_line_color = color
+            if self.focus:
+                self._current_line_color = color
 
-    def on_font_name_max_length(self, instance, value):
-        self._right_msg_lbl.font_name = value
+    def on_font_name_helper_text(
+        self, instance_text_field, font_name: str
+    ) -> NoReturn:
+        self._msg_lbl.font_name = font_name
 
-    def on_icon_right(self, instance, value):
-        self._lbl_icon_right.icon = value
+    def on_font_name_hint_text(
+        self, instance_text_field, font_name: str
+    ) -> NoReturn:
+        self._hint_lbl.font_name = font_name
 
-    def on_icon_right_color(self, instance, value):
-        self._lbl_icon_right.text_color = value
+    def on_font_name_max_length(
+            self, instance_text_field, font_name: str
+    ) -> NoReturn:
+        self._right_msg_lbl.font_name = font_name
 
-    def on_width(self, instance, width):
-        """Called when the application window is resized."""
+    def on_icon_right(self, instance_text_field, color: list) -> NoReturn:
+        self._lbl_icon_right.icon = color
 
-        if (
-            any((self.focus, self.error, self._text_len_error))
-            and instance is not None
-        ):
-            # Bottom line width when active focus.
-            self._line_width = width
-        self._msg_lbl.width = self.width
-        self._right_msg_lbl.width = self.width
+    def on_icon_right_color(self, instance_text_field, color: list) -> NoReturn:
+        self._lbl_icon_right.text_color = color
 
-    def on_focus(self, *args):
+    def on_focus(self, instance_text_field, focus_value: bool) -> NoReturn:
         disabled_hint_text_color = self.theme_cls.disabled_hint_text_color
         Animation.cancel_all(
             self, "_line_width", "_hint_y", "_hint_lbl_font_size"
@@ -1092,7 +1187,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 self, "_line_width", "_hint_y", "_hint_lbl_font_size"
             )
             if not self.text:
-                self._anim_lbl_font_size(dp(14), sp(12))
+                self.set_hint_text_font_size(dp(14), sp(12))
             Animation(
                 _line_width=self.width,
                 duration=(0.2 if self.line_anim else 0),
@@ -1128,7 +1223,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 t="out_quad",
             ).start(self)
             if not self.text:
-                self._anim_lbl_font_size(dp(38), sp(16))
+                self.set_hint_text_font_size(dp(38), sp(16))
                 Animation(
                     _line_blank_space_right_point=0,
                     _line_blank_space_left_point=0,
@@ -1136,7 +1231,7 @@ class MDTextField(ThemableBehavior, TextInput):
                     t="out_quad",
                 ).start(self)
             if self._get_has_error():
-                self._anim_get_has_error_color(self.error_color)
+                self.set_fields_colors(self.error_color)
                 if self.helper_text_mode == "on_error" and (
                     self.error or self._text_len_error
                 ):
@@ -1155,7 +1250,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 Animation(duration=0.2, color=(1, 1, 1, 1)).start(
                     self._hint_lbl
                 )
-                self._anim_get_has_error_color()
+                self.set_fields_colors()
                 if self.helper_text_mode == "on_error":
                     self._anim_current_error_color((0, 0, 0, 0))
                 elif self.helper_text_mode == "persistent":
@@ -1168,132 +1263,67 @@ class MDTextField(ThemableBehavior, TextInput):
                     t="out_quad",
                 ).start(self)
 
-    def on_disabled(self, *args):
+    def on_disabled(
+        self, instance_text_field, disabled_value: bool
+    ) -> NoReturn:
         if self.disabled:
-            self._update_colors(self.theme_cls.disabled_hint_text_color)
+            self.update_line_color(self.theme_cls.disabled_hint_text_color)
         elif not self.disabled:
             if self.color_mode == "primary":
                 self._update_primary_color()
             elif self.color_mode == "accent":
-                self._update_accent_color()
+                self.update_accent_color()
             elif self.color_mode == "custom":
-                self._update_colors(self.line_color_focus)
+                self.update_line_color(self.line_color_focus)
 
-    def set_text(self, instance, text):
-        self.text = re.sub("\n", " ", text) if not self.multiline else text
-        if len(text) > 0:
-            self.has_had_text = True
-        if self.max_text_length is not None:
-            self._right_msg_lbl.text = f"{len(text)}/{self.max_text_length}"
-        self._set_text_len_error()
-        if self.error or self._text_len_error:
-            self._anim_current_line_color(self.error_color)
-            if self.helper_text_mode == "on_error" and (
-                self.error or self._text_len_error
-            ):
-                self._anim_current_error_color(self.error_color)
-            if self._text_len_error:
-                self._anim_current_right_lbl_color(self.error_color)
-        else:
-            self._anim_current_right_lbl_color(
-                self.theme_cls.disabled_hint_text_color
-            )
-            self._anim_current_line_color(self.line_color_focus)
-            if self.helper_text_mode == "on_error":
-                self._anim_current_error_color((0, 0, 0, 0))
-            self.on_focus(self, self.focus)
-
-        if len(self.text) != 0 and not self.focus:
-            self._hint_y = dp(14)
-            self._hint_lbl_font_size = sp(12)
-
-    def on_text_validate(self):
+    def on_text_validate(self) -> NoReturn:
         self.has_had_text = True
         self._set_text_len_error()
 
-    def on_color_mode(self, instance, mode):
+    def on_color_mode(self, instance_text_field, mode: str) -> NoReturn:
         if mode == "primary":
             self._update_primary_color()
         elif mode == "accent":
-            self._update_accent_color()
+            self.update_accent_color()
         elif mode == "custom":
-            self._update_colors(self.line_color_focus)
+            self.update_line_color(self.line_color_focus)
 
-    def on_line_color_focus(self, *args):
+    def on_line_color_focus(self, instance_text_field, color: list) -> NoReturn:
         if self.color_mode == "custom":
-            self._update_colors(self.line_color_focus)
+            self.update_line_color(self.line_color_focus)
 
     def on__hint_text(self, instance, value):
         pass
 
-    def on_hint_text(self, instance, value):
-        self._hint_lbl.text = value
+    def on_hint_text(self, instance_text_field, hint_text: str) -> NoReturn:
+        self._hint_lbl.text = hint_text
         self._hint_lbl.font_size = sp(16)
 
-    def on_height(self, instance, value):
-        if value >= self.max_height and self.max_height:
+    def on_width(self, instance_text_field, width: float) -> NoReturn:
+        """Called when the application window is resized."""
+
+        if (
+            any((self.focus, self.error, self._text_len_error))
+            and instance_text_field is not None
+        ):
+            # Bottom line width when active focus.
+            self._line_width = width
+        self._msg_lbl.width = self.width
+        self._right_msg_lbl.width = self.width
+
+    def on_height(self, instance_text_field, value_height: float) -> NoReturn:
+        if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
 
-    def _anim_get_has_error_color(self, color=None):
-        # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_get_has_error.png
-        if not color:
-            line_color = self.line_color_focus
-            hint_text_color = (
-                self.theme_cls.disabled_hint_text_color
-                if not self.current_hint_text_color
-                else self.current_hint_text_color
-            )
-            right_lbl_color = (0, 0, 0, 0)
-        else:
-            line_color = color
-            hint_text_color = color
-            right_lbl_color = color
-        Animation(
-            duration=0.2,
-            _current_line_color=line_color,
-            _current_hint_text_color=hint_text_color,
-            _current_right_lbl_color=right_lbl_color,
-        ).start(self)
-
-    def _anim_current_line_color(self, color):
-        # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_anim_current_line_color.gif
-        Animation(
-            duration=0.2,
-            _current_hint_text_color=color,
-            _current_line_color=color,
-        ).start(self)
-
-    def _anim_lbl_font_size(self, hint_y, font_size):
-        Animation(
-            _hint_y=hint_y,
-            _hint_lbl_font_size=font_size,
-            duration=0.2,
-            t="out_quad",
-        ).start(self)
-
     def _anim_current_right_lbl_color(self, color, duration=0.2):
-        # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_anim_current_right_lbl_color.png
         Animation(duration=duration, _current_right_lbl_color=color).start(self)
 
     def _anim_current_error_color(self, color, duration=0.2):
-        # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_anim_current_error_color_to_disabled_color.gif
-        # https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/_anim_current_error_color_to_fade.gif
         Animation(duration=duration, _current_error_color=color).start(self)
-
-    def _update_colors(self, color):
-        self.line_color_focus = color
-        if not self.error and not self._text_len_error:
-            self._current_line_color = color
-            if self.focus:
-                self._current_line_color = color
-
-    def _update_accent_color(self, *args):
-        if self.color_mode == "accent":
-            self._update_colors(self.theme_cls.accent_color)
 
     def _update_primary_color(self, *args):
         if self.color_mode == "primary":
-            self._update_colors(self.theme_cls.primary_color)
+            self.update_line_color(self.theme_cls.primary_color)
 
     def _update_theme_style(self, *args):
         self.line_color_normal = self.theme_cls.divider_color
@@ -1326,8 +1356,10 @@ class MDTextField(ThemableBehavior, TextInput):
         return has_error
 
     def _get_max_text_length(self):
-        """Returns the maximum number of characters that can be entered in a
-        text field."""
+        """
+        Returns the maximum number of characters that can be entered in a text
+        field.
+        """
 
         return (
             sys.maxsize
@@ -1347,16 +1379,16 @@ class MDTextField(ThemableBehavior, TextInput):
         self._msg_lbl.text = text
         self.helper_text = text
 
-    def _set_message_mode(self, instance, text):
+    def _set_message_mode(self, instance_text_field, text: str):
         self.helper_text_mode = text
         if self.helper_text_mode == "persistent":
             self._anim_current_error_color(
                 self.theme_cls.disabled_hint_text_color, 0.1
             )
 
-    def _set_max_text_length(self, instance, length):
-        self.max_text_length = length
-        self._right_msg_lbl.text = f"{len(self.text)}/{length}"
+    def _set_max_text_length(self, instance_text_field, max_length: int):
+        self.max_text_length = max_length
+        self._right_msg_lbl.text = f"{len(self.text)}/{max_length}"
 
     def _refresh_hint_text(self):
         pass
@@ -1438,8 +1470,8 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
         if not self.color_active:
             self._color_active = (0.5, 0.5, 0.5, 0.5)
 
-    def on_focus(self, instance, value):
-        if value:
+    def on_focus(self, instance_text_field, focus_value: bool) -> NoReturn:
+        if focus_value:
             self.icon_left_color = self.theme_cls.primary_color
             self.icon_right_color = self.theme_cls.primary_color
         else:
@@ -1450,33 +1482,33 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
                 self._icon_right_color_copy or self.theme_cls.text_color
             )
 
-    def on_icon_left(self, instance, value):
-        self._lbl_icon_left.icon = value
+    def on_icon_left(self, instance_text_field, icon_name: str) -> NoReturn:
+        self._lbl_icon_left.icon = icon_name
 
-    def on_icon_left_color(self, instance, value):
-        self._lbl_icon_left.text_color = value
+    def on_icon_left_color(self, instance_text_field, color: list) -> NoReturn:
+        self._lbl_icon_left.text_color = color
         if (
             not self._icon_left_color_copy
-            and value != self.theme_cls.text_color
-            and value != self.theme_cls.primary_color
+            and color != self.theme_cls.text_color
+            and color != self.theme_cls.primary_color
         ):
-            self._icon_left_color_copy = value
+            self._icon_left_color_copy = color
 
-    def on_icon_right(self, instance, value):
-        self._lbl_icon_right.icon = value
+    def on_icon_right(self, instance_text_field, icon_name: str) -> NoReturn:
+        self._lbl_icon_right.icon = icon_name
 
-    def on_icon_right_color(self, instance, value):
-        self._lbl_icon_right.text_color = value
+    def on_icon_right_color(self, instance_text_field, color: list) -> NoReturn:
+        self._lbl_icon_right.text_color = color
         if (
             not self._icon_right_color_copy
-            and value != self.theme_cls.text_color
-            and value != self.theme_cls.primary_color
+            and color != self.theme_cls.text_color
+            and color != self.theme_cls.primary_color
         ):
-            self._icon_right_color_copy = value
+            self._icon_right_color_copy = color
 
-    def on_color_active(self, instance, value):
-        if value != [0, 0, 0, 0.5]:
-            self._color_active = value
+    def on_color_active(self, instance_text_field, color: list) -> NoReturn:
+        if color != [0, 0, 0, 0.5]:
+            self._color_active = color
             self._color_active[-1] = 0.5
         else:
-            self._color_active = value
+            self._color_active = color

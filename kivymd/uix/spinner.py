@@ -18,7 +18,7 @@ Usage
     from kivymd.app import MDApp
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDSpinner:
             size_hint: None, None
@@ -109,6 +109,8 @@ Determinate mode
 
 __all__ = ("MDSpinner",)
 
+from typing import NoReturn, Union
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -142,7 +144,6 @@ Builder.load_string(
             width: root.line_width
     canvas.after:
         PopMatrix
-
 """
 )
 
@@ -220,10 +221,8 @@ class MDSpinner(ThemableBehavior, Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
         if not self.color:
             self.color = self.theme_cls.primary_color
-
         if self.color == self.theme_cls.primary_color:
             self.theme_cls.bind(primary_color=self._update_color)
 
@@ -233,7 +232,6 @@ class MDSpinner(ThemableBehavior, Widget):
             on_complete=self._reset,
             on_progress=self._on_determinate_progress,
         )
-
         self.register_event_type("on_determinate_complete")
         Clock.schedule_once(self.check_determinate)
 
@@ -251,10 +249,10 @@ class MDSpinner(ThemableBehavior, Widget):
                     self._palette = iter(self.palette)
                     Animation(color=next(self._palette), duration=2).start(self)
 
-    def on_palette(self, instance, value):
-        self._palette = iter(value)
+    def on_palette(self, instance_spinner, palette_list: list) -> NoReturn:
+        self._palette = iter(palette_list)
 
-    def on_active(self, *args):
+    def on_active(self, instance_spinner, active_value: bool) -> NoReturn:
         self._reset()
         if self.active:
             self.check_determinate()
@@ -265,7 +263,7 @@ class MDSpinner(ThemableBehavior, Widget):
         `determinate = True` mode.
         """
 
-    def check_determinate(self, *args):
+    def check_determinate(self, interval: Union[float, int] = 0) -> NoReturn:
         if self.active:
             if self.determinate:
                 self._start_determinate()

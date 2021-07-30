@@ -265,7 +265,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         self.dispatch("on_show")
 
     def animation_tooltip_dismiss(self, interval):
-        """version added: 1.0.0"""
+        """versionadded:: 1.0.0"""
         if not self._tooltip:
             return
         anim = (
@@ -322,7 +322,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         pass
 
     def on_dismiss(self):
-        """version added: 1.0.0"""
+        """versionadded:: 1.0.0"""
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):

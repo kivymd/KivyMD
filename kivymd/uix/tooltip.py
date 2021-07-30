@@ -201,6 +201,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_show")
+        self.register_event_type("on_dismiss")
 
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y) and touch.grab_current:
@@ -263,6 +264,23 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         ).start(self._tooltip)
         self.dispatch("on_show")
 
+    def animation_tooltip_dismiss(self, interval):
+        """.. versionadded:: 1.0.0"""
+
+        if not self._tooltip:
+            return
+        anim = (
+                Animation(_scale_x=0, _scale_y=0, d=0.1)
+                + Animation(opacity=0, d=0.2)
+        )
+        anim.bind(on_complete=self._on_dismiss_anim_complete)
+        anim.start(self._tooltip)
+
+    def _on_dismiss_anim_complete(self, *args):
+        self.dispatch("on_dismiss")
+        self.remove_tooltip()
+        self._tooltip = None
+
     def remove_tooltip(self, *args):
         Window.remove_widget(self._tooltip)
 
@@ -299,11 +317,13 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """
 
         if self._tooltip:
-            Window.remove_widget(self._tooltip)
-            self._tooltip = None
+            Clock.schedule_once(self.animation_tooltip_dismiss)
 
     def on_show(self):
         pass
+
+    def on_dismiss(self):
+        """.. versionadded:: 1.0.0"""
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):

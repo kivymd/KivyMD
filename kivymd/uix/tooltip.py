@@ -269,9 +269,8 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
         if not self._tooltip:
             return
-        anim = (
-                Animation(_scale_x=0, _scale_y=0, d=0.1)
-                + Animation(opacity=0, d=0.2)
+        anim = Animation(_scale_x=0, _scale_y=0, d=0.1) + Animation(
+            opacity=0, d=0.2
         )
         anim.bind(on_complete=self._on_dismiss_anim_complete)
         anim.start(self._tooltip)

@@ -438,10 +438,9 @@ With right icon
 
 __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
-from typing import NoReturn, Union
-
 import re
 import sys
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock

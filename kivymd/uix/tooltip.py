@@ -66,7 +66,7 @@ In Python code:
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")
 
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -266,7 +266,9 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
             ).start(self._tooltip)
             self.dispatch("on_show")
 
-    def animation_tooltip_dismiss(self, interval: Union[int, float]) -> NoReturn:
+    def animation_tooltip_dismiss(
+        self, interval: Union[int, float]
+    ) -> NoReturn:
         """
         .. versionadded:: 1.0.0
 

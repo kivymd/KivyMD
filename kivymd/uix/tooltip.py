@@ -40,7 +40,7 @@ In Python code:
     <TooltipMDIconButton@MDIconButton+MDTooltip>
 
 
-    Screen:
+    MDScreen:
 
         TooltipMDIconButton:
             icon: "language-python"
@@ -66,6 +66,8 @@ In Python code:
 
 __all__ = ("MDTooltip", "MDTooltipViewClass")
 
+from typing import Union, NoReturn
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -88,9 +90,6 @@ from kivymd.uix.behaviors import HoverBehavior, TouchBehavior
 
 Builder.load_string(
     """
-#:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
-
-
 <MDTooltipViewClass>
     size_hint: None, None
     width: self.minimum_width
@@ -124,11 +123,11 @@ Builder.load_string(
         theme_text_color: "Custom"
         font_style: root.tooltip_font_style
         markup: True
+        pos_hint: {"center_y": .5}
         text_color:
             ([0, 0, 0, 1] if not root.tooltip_text_color else root.tooltip_text_color) \
             if root.theme_cls.theme_style == "Dark" else \
             ([1, 1, 1, 1] if not root.tooltip_text_color else root.tooltip_text_color)
-        pos_hint: {"center_y": .5}
 """
 )
 
@@ -211,9 +210,11 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
                 pass
             self.on_leave()
 
-    def adjust_tooltip_position(self, x, y):
-        """Returns the coordinates of the tooltip
-        that fit into the borders of the screen."""
+    def adjust_tooltip_position(self, x: float, y: float) -> tuple:
+        """
+        Returns the coordinates of the tooltip that fit into the borders of the
+        screen.
+        """
 
         # If the position of the tooltip is outside the right border
         # of the screen.
@@ -233,7 +234,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
                 y = Window.height - (self._tooltip.height + dp(10))
         return x, y
 
-    def display_tooltip(self, interval):
+    def display_tooltip(self, interval: Union[int, float]) -> NoReturn:
         if not self._tooltip:
             return
         Window.add_widget(self._tooltip)
@@ -255,61 +256,61 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         else:
             Clock.schedule_once(self.animation_tooltip_show, 0)
 
-    def animation_tooltip_show(self, interval):
-        if not self._tooltip:
-            return
-        (
-            Animation(_scale_x=1, _scale_y=1, d=0.1)
-            + Animation(opacity=1, d=0.2)
-        ).start(self._tooltip)
-        self.dispatch("on_show")
+    def animation_tooltip_show(self, interval: Union[int, float]) -> NoReturn:
+        """Animation of opening tooltip on the screen."""
 
-    def animation_tooltip_dismiss(self, interval):
-        """.. versionadded:: 1.0.0"""
+        if self._tooltip:
+            (
+                Animation(_scale_x=1, _scale_y=1, d=0.1)
+                + Animation(opacity=1, d=0.2)
+            ).start(self._tooltip)
+            self.dispatch("on_show")
 
-        if not self._tooltip:
-            return
-        anim = Animation(_scale_x=0, _scale_y=0, d=0.1) + Animation(
-            opacity=0, d=0.2
-        )
-        anim.bind(on_complete=self._on_dismiss_anim_complete)
-        anim.start(self._tooltip)
+    def animation_tooltip_dismiss(self, interval: Union[int, float]) -> NoReturn:
+        """
+        .. versionadded:: 1.0.0
 
-    def _on_dismiss_anim_complete(self, *args):
-        self.dispatch("on_dismiss")
-        self.remove_tooltip()
-        self._tooltip = None
+        Animation of opening tooltip on the screen.
+        """
 
-    def remove_tooltip(self, *args):
+        if self._tooltip:
+            anim = Animation(_scale_x=0, _scale_y=0, d=0.1) + Animation(
+                opacity=0, d=0.2
+            )
+            anim.bind(on_complete=self._on_dismiss_anim_complete)
+            anim.start(self._tooltip)
+
+    def remove_tooltip(self, *args) -> NoReturn:
+        """Removes the tooltip widget from the screen."""
+
         Window.remove_widget(self._tooltip)
 
-    def on_long_touch(self, touch, *args):
+    def on_long_touch(self, touch, *args) -> NoReturn:
         if DEVICE_TYPE != "desktop":
             self.on_enter(True)
 
-    def on_enter(self, *args):
-        """See
+    def on_enter(self, *args) -> NoReturn:
+        """
+        See
         :attr:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior.on_enter`
         method in :class:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior`
         class.
         """
 
-        if not args and DEVICE_TYPE != "desktop":
-            return
-        else:
-            if not self.tooltip_text:
-                return
-            self._tooltip = MDTooltipViewClass(
-                tooltip_bg_color=self.tooltip_bg_color,
-                tooltip_text_color=self.tooltip_text_color,
-                tooltip_text=self.tooltip_text,
-                tooltip_font_style=self.tooltip_font_style,
-                tooltip_radius=self.tooltip_radius,
-            )
-            Clock.schedule_once(self.display_tooltip, -1)
+        if not args and DEVICE_TYPE == "desktop":
+            if self.tooltip_text:
+                self._tooltip = MDTooltipViewClass(
+                    tooltip_bg_color=self.tooltip_bg_color,
+                    tooltip_text_color=self.tooltip_text_color,
+                    tooltip_text=self.tooltip_text,
+                    tooltip_font_style=self.tooltip_font_style,
+                    tooltip_radius=self.tooltip_radius,
+                )
+                Clock.schedule_once(self.display_tooltip, -1)
 
-    def on_leave(self):
-        """See
+    def on_leave(self) -> NoReturn:
+        """
+        See
         :attr:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior.on_leave`
         method in :class:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior`
         class.
@@ -318,11 +319,20 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         if self._tooltip:
             Clock.schedule_once(self.animation_tooltip_dismiss)
 
-    def on_show(self):
-        pass
+    def on_show(self) -> NoReturn:
+        """Default dismiss event handler."""
 
-    def on_dismiss(self):
-        """.. versionadded:: 1.0.0"""
+    def on_dismiss(self) -> NoReturn:
+        """
+        .. versionadded:: 1.0.0
+
+        Default dismiss event handler.
+        """
+
+    def _on_dismiss_anim_complete(self, *args):
+        self.dispatch("on_dismiss")
+        self.remove_tooltip()
+        self._tooltip = None
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):

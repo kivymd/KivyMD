@@ -976,11 +976,11 @@ class BasePressedButton(BaseButton):
 
     def on_touch_up(self, touch):
         if (
-            self.collide_point(touch.x, touch.y)
+            not self.disabled
             and self.animation_fade_bg
-            and not self.disabled
         ):
             self.animation_fade_bg.stop_property(self, "md_bg_color")
+            self.animation_fade_bg = None
             Animation(
                 duration=0.05, md_bg_color=self.current_md_bg_color
             ).start(self)

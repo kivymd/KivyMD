@@ -296,6 +296,8 @@ class MDChip(ThemableBehavior, ButtonBehavior, BoxLayout):
                             size_hint=(None, None),
                             size=("26dp", "26dp"),
                             font_size=sp(20),
+                            theme_text_color = "Custom",
+                            text_color = self.icon_color
                         )
                     )
                 else:

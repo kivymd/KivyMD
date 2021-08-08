@@ -206,11 +206,11 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManagerException
 
+from kivymd.material_resources import dp
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
-    BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -222,15 +222,18 @@ Builder.load_string(
 
 
 <MDBottomNavigation>
-    id: panel
     orientation: "vertical"
     height: dp(56)
 
     ScreenManager:
         id: tab_manager
         transition: sm.FadeTransition(duration=.2)
-        current: root.current
-        screens: root.tabs
+        on_current:
+            root.dispatch( \
+            "on_switch_tabs", \
+            root._get_switchig_tab(self.current), \
+            self.current \
+            )
 
     MDBottomNavigationBar:
         id: bottom_panel
@@ -353,9 +356,8 @@ class MDBottomNavigationHeader(
     _text_color_normal = ListProperty([1, 1, 1, 1])
     _text_color_active = ListProperty([1, 1, 1, 1])
 
-    def __init__(self, panel, height, tab):
+    def __init__(self, panel, tab):
         self.panel = panel
-        self.height = height
         self.tab = tab
         super().__init__()
         self._text_color_normal = (
@@ -469,21 +471,27 @@ class MDBottomNavigationItem(MDTab):
     def on_tab_press(self, *args) -> NoReturn:
         """Called when clicking on a panel item."""
 
-        par = self.parent_widget
-        par.ids.tab_manager.current = self.name
-        if par.previous_tab is not self:
-            Animation(_label_font_size=sp(12), d=0.1).start(
-                par.previous_tab.header
-            )
+        bottom_navigation_object = self.parent_widget
+        bottom_navigation_header_object = (
+            bottom_navigation_object.previous_tab.header
+        )
+        bottom_navigation_object.ids.tab_manager.current = self.name
+
+        if bottom_navigation_object.previous_tab is not self:
+            if bottom_navigation_object.use_text:
+                Animation(_label_font_size=sp(12), d=0.1).start(
+                    bottom_navigation_object.previous_tab.header
+                )
             Animation(
-                _text_color_normal=par.previous_tab.header.text_color_normal
-                if par.previous_tab.header.text_color_normal != [1, 1, 1, 1]
+                _text_color_normal=bottom_navigation_header_object.text_color_normal
+                if bottom_navigation_object.previous_tab.header.text_color_normal
+                != [1, 1, 1, 1]
                 else self.theme_cls.disabled_hint_text_color,
                 d=0.1,
-            ).start(par.previous_tab.header)
-            par.previous_tab.header.active = False
+            ).start(bottom_navigation_object.previous_tab.header)
+            bottom_navigation_object.previous_tab.header.active = False
             self.header.active = True
-        par.previous_tab = self
+        bottom_navigation_object.previous_tab = self
 
     def on_leave(self, *args):
         pass
@@ -526,6 +534,12 @@ class MDBottomNavigation(TabbedPanelBase):
     """
     A bottom navigation that is implemented by delegating all items to a
     :class:`~kivy.uix.screenmanager,ScreenManager`.
+
+    :Events:
+        :attr:`on_switch_tabs`
+            Called when switching tabs. Returns the object of the tab to be opened.
+
+        .. versionadded:: 1.0.0
     """
 
     first_widget = ObjectProperty()
@@ -556,32 +570,25 @@ class MDBottomNavigation(TabbedPanelBase):
     and defaults to `[1, 1, 1, 1]`.
     """
 
+    use_text = BooleanProperty(True)
+    """
+    Use text for :class:`~MDBottomNavigationItem` or not.
+    If ``True``, the :class:`~MDBottomNavigation` panel height will be reduced
+    by the text height.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`use_text` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.register_event_type("on_switch_tabs")
         self.previous_tab = None
         self.widget_index = 0
         Window.bind(on_resize=self.on_resize)
         Clock.schedule_once(lambda x: self.on_resize(), 0)
-
-    def on_panel_color(
-        self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
-        self.tab_header.panel_color = color
-
-    def on_text_color_normal(
-        self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
-        for tab in self.ids.tab_bar.children:
-            if not tab.active:
-                tab._text_color_normal = color
-
-    def on_text_color_active(
-        self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
-        for tab in self.ids.tab_bar.children:
-            tab.text_color_active = color
-            if tab.active:
-                tab._text_color_normal = color
 
     def switch_tab(self, name_tab) -> NoReturn:
         """Switching the tab by name."""
@@ -608,9 +615,7 @@ class MDBottomNavigation(TabbedPanelBase):
             tab_bar.clear_widgets()
             tab_manager = self.ids.tab_manager
             for tab in tab_manager.screens:
-                self.tab_header = MDBottomNavigationHeader(
-                    tab=tab, panel=self, height=tab_bar.height
-                )
+                self.tab_header = MDBottomNavigationHeader(tab=tab, panel=self)
                 tab.header = self.tab_header
                 tab_bar.add_widget(self.tab_header)
                 if tab is self.first_widget:
@@ -621,6 +626,47 @@ class MDBottomNavigation(TabbedPanelBase):
                     self.tab_header.active = True
                 else:
                     self.tab_header._label_font_size = sp(12)
+
+    def on_panel_color(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        self.tab_header.panel_color = color
+
+    def on_use_text(
+        self, instance_bottom_navigation, use_text_value: bool
+    ) -> NoReturn:
+        if not use_text_value:
+            for instance_bottom_navigation_header in self.ids.tab_bar.children:
+                instance_bottom_navigation_header.ids.item_container.remove_widget(
+                    instance_bottom_navigation_header.ids._label
+                )
+            self.height = dp(42)
+            self.ids.bottom_panel.height = dp(42)
+            self.ids.tab_bar.height = dp(42)
+        else:
+            self.height = dp(56)
+            self.ids.bottom_panel.height = dp(56)
+            self.ids.tab_bar.height = dp(56)
+
+    def on_text_color_normal(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        for tab in self.ids.tab_bar.children:
+            if not tab.active:
+                tab._text_color_normal = color
+
+    def on_text_color_active(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        for tab in self.ids.tab_bar.children:
+            tab.text_color_active = color
+            if tab.active:
+                tab._text_color_normal = color
+
+    def on_switch_tabs(self, bottom_navigation_item, name_tab: str) -> NoReturn:
+        """
+        Called when switching tabs. Returns the object of the tab to be opened.
+        """
 
     def on_size(self, *args) -> NoReturn:
         self.on_resize()
@@ -660,6 +706,14 @@ class MDBottomNavigation(TabbedPanelBase):
             self.refresh_tabs()
         else:
             super().remove_widget(widget)
+
+    def _get_switchig_tab(self, name_tab: str) -> MDBottomNavigationItem:
+        bottom_navigation_item = None
+        for bottom_navigation_header_instance in self.ids.tab_bar.children:
+            if bottom_navigation_header_instance.tab.name == name_tab:
+                bottom_navigation_item = bottom_navigation_header_instance.tab
+                break
+        return bottom_navigation_item
 
 
 class MDBottomNavigationBar(

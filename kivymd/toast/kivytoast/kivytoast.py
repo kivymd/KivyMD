@@ -38,7 +38,7 @@ KivyToast
     Test().run()
 """
 
-from typing import NoReturn
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -87,7 +87,7 @@ class Toast(BaseDialog):
         self.add_widget(self.label_toast)
 
     def label_check_texture_size(
-        self, instance_label: Label, texture_size: list[int, int]
+        self, instance_label: Label, texture_size: Union[int, int]
     ) -> NoReturn:
         """
         Resizes the text if the text texture is larger than the screen size.

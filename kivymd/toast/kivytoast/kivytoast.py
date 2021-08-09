@@ -38,7 +38,7 @@ KivyToast
     Test().run()
 """
 
-from typing import NoReturn, List
+from typing import List, NoReturn
 
 from kivy.animation import Animation
 from kivy.clock import Clock

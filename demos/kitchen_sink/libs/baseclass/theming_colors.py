@@ -27,7 +27,7 @@ class KitchenSinkThemingColors(Screen):
     ):
         if not tab_label_text:
             tab_label_text = "Red"
-        if not instance_android_tabs.colors_loaded:
+        if not instance_android_tabs.rv.data:
             for hue in _colors[tab_label_text]:
                 color = _colors[tab_label_text][hue]
                 if tab_label_text == "Light":
@@ -43,7 +43,6 @@ class KitchenSinkThemingColors(Screen):
                     "text_color": text_color,
                 }
                 instance_android_tabs.rv.data.append(color_widget)
-            instance_android_tabs.colors_loaded = True
 
 
 class KitchenSinkColorWidget(MDBoxLayout):
@@ -54,8 +53,4 @@ class KitchenSinkColorWidget(MDBoxLayout):
 
 
 class KitchenSinkThemeTab(MDBoxLayout, MDTabsBase):
-    colors_loaded = BooleanProperty(False)
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.orientation = "vertical"
+    pass

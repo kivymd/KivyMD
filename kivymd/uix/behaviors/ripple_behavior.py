@@ -22,7 +22,7 @@ For example, let's create an image button with a circular ripple effect:
     #:import images_path kivymd.images_path
 
 
-    Screen:
+    MDScreen:
 
         CircularRippleButton:
             source: f"{images_path}/kivymd.png"
@@ -61,7 +61,7 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
     from kivymd.uix.behaviors import RectangularRippleBehavior, BackgroundColorBehavior
 
     KV = '''
-    Screen:
+    MDScreen:
 
         RectangularRippleButton:
             size_hint: None, None
@@ -258,7 +258,7 @@ class CommonRipple(object):
         if not self.collide_point(touch.x, touch.y):
             return False
 
-        if not self.disabled:
+        if not self.disabled and list(touch.ud.keys())[0] is self:
             if self._doing_ripple:
                 Animation.cancel_all(
                     self, "_ripple_rad", "ripple_color", "rect_color"

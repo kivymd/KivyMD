@@ -12,7 +12,7 @@ Components/ColorPicker
 Usage
 -----
 
-..code-block:: python
+.. code-block:: python
 
     from typing import Union, NoReturn
 

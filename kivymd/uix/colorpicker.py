@@ -76,35 +76,36 @@ Usage
 
 import struct
 from io import BytesIO
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy.clock import Clock
+from kivy.core.image import Image as CoreImage
 from kivy.graphics import RoundedRectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
-    ListProperty,
     ColorProperty,
+    ListProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
-    VariableListProperty,
     StringProperty,
+    VariableListProperty,
 )
-from kivy.core.image import Image as CoreImage
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.utils import get_hex_from_color, get_color_from_hex
+from kivy.utils import get_color_from_hex, get_hex_from_color
+from PIL import Image as PilImage
+from PIL import ImageDraw
 
+from kivymd.color_definitions import colors as _colors
+from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.dialog import BaseDialog
-from kivymd.color_definitions import colors as _colors, text_colors
-from kivymd.uix.tab import MDTabsBase, MDTabs, MDTabsLabel
-
-from PIL import Image as PilImage, ImageDraw
+from kivymd.uix.tab import MDTabs, MDTabsBase, MDTabsLabel
 
 __all__ = ("MDColorPicker",)
 
@@ -818,7 +819,12 @@ class MDColorPicker(BaseDialog):
 
         Clock.schedule_once(set_background_down)
 
-    def on_type_color(self, instance_color_picker, type_color: str = "", interval: Union[float, int] = 0) -> NoReturn:
+    def on_type_color(
+        self,
+        instance_color_picker,
+        type_color: str = "",
+        interval: Union[float, int] = 0,
+    ) -> NoReturn:
         """Called when buttons are clicked to set the color type."""
 
         if not type_color:
@@ -932,9 +938,13 @@ class MDColorPicker(BaseDialog):
         rgba = [0, 0, 0, 0]
         if isinstance(selected_color, list):
             if selected_color[0] > 1:
-                rgba = [x / 255.0 for x in selected_color] + [self._opacity_value_selected_color]
+                rgba = [x / 255.0 for x in selected_color] + [
+                    self._opacity_value_selected_color
+                ]
             else:
                 rgba = selected_color
         elif isinstance(selected_color, str):
-            rgba = get_color_from_hex(selected_color)[:-1] + [self._opacity_value_selected_color]
+            rgba = get_color_from_hex(selected_color)[:-1] + [
+                self._opacity_value_selected_color
+            ]
         return rgba

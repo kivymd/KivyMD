@@ -713,7 +713,7 @@ class MDColorPicker(BaseDialog):
     """
     Button background for choosing a color type ('RGBA', 'HEX', 'HSL', 'RGB').
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/color-picker-background-down-button-selected-type-color.png.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/color-picker-background-down-button-selected-type-color.png
         :align: center
 
     :attr:`background_down_button_selected_type_color` is an

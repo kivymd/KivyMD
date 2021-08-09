@@ -44,7 +44,7 @@ Usage
             color_picker = MDColorPicker(size_hint=(0.45, 0.85))
             color_picker.open()
             color_picker.bind(
-                # on_select_color=self.on_select_color,
+                on_select_color=self.on_select_color,
                 on_release=self.get_selected_color,
             )
 
@@ -64,8 +64,6 @@ Usage
 
         def on_select_color(self, instance_gradient_tab, color: list) -> NoReturn:
             '''Called when a gradient image is clicked.'''
-
-            self.update_color(color)
 
 
     MyApp().run()

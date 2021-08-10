@@ -477,7 +477,7 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty,
+    StringProperty, VariableListProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.recycleview import RecycleView
@@ -522,7 +522,7 @@ Builder.load_string(
     MDCard:
         id: card
         orientation: "vertical"
-        elevation: 10
+        elevation: root.elevation
         size_hint: None, None
         size: md_menu.size[0], md_menu.size[1] + content_header.height
         pos: md_menu.pos
@@ -673,16 +673,22 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `'auto'`.
     """
 
-    radius = ListProperty(
-        [
-            dp(7),
-        ]
-    )
+    radius = VariableListProperty([dp(7)])
     """
     Menu radius.
 
-    :attr:`radius` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `'[dp(7),]'`.
+    :attr:`radius` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to `'[dp(7)]'`.
+    """
+
+    elevation = NumericProperty(10)
+    """
+    Elevation value of menu dialog.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `10`.
     """
 
     _start_coords = []

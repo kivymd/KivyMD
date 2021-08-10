@@ -258,31 +258,38 @@ class CommonRipple(object):
         if not self.collide_point(touch.x, touch.y):
             return False
 
-        if not self.disabled and list(touch.ud.keys())[0] is self:
-            if self._doing_ripple:
-                Animation.cancel_all(
-                    self, "_ripple_rad", "ripple_color", "rect_color"
-                )
-                self.anim_complete()
-            self._ripple_rad = self.ripple_rad_default
-            self.ripple_pos = (touch.x, touch.y)
+        if "very_first_object_touched" not in touch.ud:
+            touch.ud["very_first_object_touched"] = self
+            self.call_ripple_animation_methods(touch)
+        else:
+            if touch.ud["very_first_object_touched"] == self and not self.disabled:
+                self.call_ripple_animation_methods(touch)
 
-            if self.ripple_color:
-                pass
-            elif hasattr(self, "theme_cls"):
-                self.ripple_color = self.theme_cls.ripple_color
-            else:
-                # If no theme, set Gray 300.
-                self.ripple_color = [
-                    0.8784313725490196,
-                    0.8784313725490196,
-                    0.8784313725490196,
-                    self.ripple_alpha,
-                ]
-            self.ripple_color[3] = self.ripple_alpha
-            self.lay_canvas_instructions()
-            self.finish_rad = max(self.width, self.height) * self.ripple_scale
-            self.start_ripple()
+    def call_ripple_animation_methods(self, touch):
+        if self._doing_ripple:
+            Animation.cancel_all(
+                self, "_ripple_rad", "ripple_color", "rect_color"
+            )
+            self.anim_complete()
+        self._ripple_rad = self.ripple_rad_default
+        self.ripple_pos = (touch.x, touch.y)
+
+        if self.ripple_color:
+            pass
+        elif hasattr(self, "theme_cls"):
+            self.ripple_color = self.theme_cls.ripple_color
+        else:
+            # If no theme, set Gray 300.
+            self.ripple_color = [
+                0.8784313725490196,
+                0.8784313725490196,
+                0.8784313725490196,
+                self.ripple_alpha,
+            ]
+        self.ripple_color[3] = self.ripple_alpha
+        self.lay_canvas_instructions()
+        self.finish_rad = max(self.width, self.height) * self.ripple_scale
+        self.start_ripple()
 
     def on_touch_move(self, touch, *args):
         if not self.collide_point(touch.x, touch.y):

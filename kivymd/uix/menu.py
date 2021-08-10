@@ -477,7 +477,8 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, VariableListProperty,
+    StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.recycleview import RecycleView

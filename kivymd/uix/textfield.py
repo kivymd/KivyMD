@@ -487,10 +487,15 @@ Builder.load_string(
 
         # Active line.
         Color:
-            rgba: self._current_line_color if root.mode in ("line", "fill") and root.active_line else (0, 0, 0, 0)
+            rgba: \
+                self._current_line_color \
+                if root.mode in ("line", "fill") and root.active_line \
+                else (0, 0, 0, 0)
         Rectangle:
             size: self._line_width, dp(2)
-            pos: self.center_x - (self._line_width / 2), self.y + (dp(16) if root.mode != "fill" else 0)
+            pos:
+                self.center_x - (self._line_width / 2), \
+                self.y + (dp(16) if root.mode != "fill" else 0)
 
         # Helper text.
         Color:
@@ -500,7 +505,9 @@ Builder.load_string(
             size:
                 self._msg_lbl.texture_size[0] - (dp(3) if root.mode in ("fill", "rectangle") else 0), \
                 self._msg_lbl.texture_size[1] - (dp(3) if root.mode in ("fill", "rectangle") else 0)
-            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y + (dp(3) if root.mode in ("fill", "rectangle") else 0)
+            pos:
+                self.x + (dp(8) if root.mode == "fill" else 0), \
+                self.y + (dp(3) if root.mode in ("fill", "rectangle") else 0)
 
         # Texture of right Icon.
         Color:
@@ -531,11 +538,16 @@ Builder.load_string(
 
         # Hint text.
         Color:
-            rgba: self._current_hint_text_color if not self.current_hint_text_color else self.current_hint_text_color
+            rgba:
+                self._current_hint_text_color \
+                if not self.current_hint_text_color \
+                else self.current_hint_text_color
         Rectangle:
             texture: self._hint_lbl.texture
             size: self._hint_lbl.texture_size
-            pos: self.x + (dp(8) if root.mode == "fill" else 0), self.y + self.height - self._hint_y
+            pos:
+                self.x + (dp(8) if root.mode == "fill" else 0), \
+                self.y + self.height - self._hint_y
 
         Color:
             rgba:
@@ -546,8 +558,16 @@ Builder.load_string(
         # "rectangle" mode
         Color:
             rgba:
+                ( \
                 (self._current_line_color if not self.text_color else self.text_color) \
-                if self.focus else self._current_hint_text_color
+                if root.line_color_normal == root.theme_cls.divider_color \
+                else root.line_color_normal \
+                ) \
+                if self.focus else \
+                ( \
+                self._current_hint_text_color if root.line_color_normal == root.theme_cls.divider_color \
+                else root.line_color_normal \
+                )
         Line:
             width: dp(1) if root.mode == "rectangle" else dp(0.00001)
             points:
@@ -1177,16 +1197,17 @@ class MDTextField(ThemableBehavior, TextInput):
                         self._hint_lbl.width + dp(5)
                     )
 
-                animation = Animation(
-                    _line_blank_space_left_point=self._hint_lbl.x - dp(5),
-                    _current_hint_text_color=self.line_color_focus,
-                    _fill_color=self.fill_color[:-1]
-                    + [self.fill_color[-1] - 0.1],
-                    duration=0.2,
-                    t="out_quad",
-                )
-                animation.bind(on_progress=on_progress)
-                animation.start(self)
+                if self.hint_text:
+                    animation = Animation(
+                        _line_blank_space_left_point=self._hint_lbl.x - dp(5),
+                        _current_hint_text_color=self.line_color_focus,
+                        _fill_color=self.fill_color[:-1]
+                        + [self.fill_color[-1] - 0.1],
+                        duration=0.2,
+                        t="out_quad",
+                    )
+                    animation.bind(on_progress=on_progress)
+                    animation.start(self)
             self.has_had_text = True
 
             if not self.text:

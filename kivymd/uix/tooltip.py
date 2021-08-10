@@ -272,7 +272,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """
         .. versionadded:: 1.0.0
 
-        Animation of opening tooltip on the screen.
+        Animation of closing tooltip on the screen.
         """
 
         if self._tooltip:

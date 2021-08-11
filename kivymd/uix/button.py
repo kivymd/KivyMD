@@ -791,7 +791,9 @@ Builder.load_string(
         text: root.text
         size_hint: None, None
         size: self.texture_size
-        color: root.theme_cls.text_color if not root.text_color else root.text_color
+        color:
+            root.theme_cls.text_color \
+            if not root.text_color else root.text_color
 """
 )
 
@@ -895,6 +897,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
             self.md_bg_color_disabled = self.theme_cls.disabled_hint_text_color
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
         self.theme_cls.bind(theme_style=self.update_text_color)
+        self.theme_cls.bind(theme_style=self.update_disabled_color)
         Clock.schedule_once(self.set_md_bg_color)
         if not self.text_color:
             self.text_color = self.theme_cls.text_color
@@ -903,6 +906,16 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         self, instance_theme_manager: ThemeManager, theme_style: str
     ) -> NoReturn:
         pass
+
+    def update_disabled_color(
+        self, instance_theme_manager: ThemeManager, theme_style: str
+    ) -> NoReturn:
+        if self.disabled:
+            if self.md_bg_color_disabled in [[0.0, 0.0, 0.0, 0.38], [1.0, 1.0, 1.0, 0.5]]:
+                self.md_bg_color_disabled = (
+                    self.theme_cls.disabled_hint_text_color
+                )
+            self.md_bg_color = self.md_bg_color_disabled
 
     def set_md_bg_color(self, interval: Union[int, float]) -> NoReturn:
         """Checks if a value is set for the `md_bg_color` parameter."""
@@ -1009,7 +1022,7 @@ class BaseFlatButton(BaseRectangularButton):
     def set_text_color(self, interval: Union[int, float]) -> NoReturn:
         """Sets the text color if no custom value is specified."""
 
-        if self.text_color in ([0.0, 0.0, 0.0, 0.87], [1, 0, 1, 1]):
+        if self.text_color in ([0.0, 0.0, 0.0, 0.87], [1, 1, 1, 1]):
             self.theme_text_color = "Custom"
             self.text_color = self.theme_cls.primary_color
 

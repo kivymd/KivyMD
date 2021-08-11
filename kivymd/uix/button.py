@@ -544,7 +544,6 @@ Builder.load_string(
 
 <MDRoundFlatButton>
     canvas.before:
-        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -563,7 +562,6 @@ Builder.load_string(
 
 <MDFillRoundFlatButton>
     canvas.before:
-        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
@@ -581,7 +579,6 @@ Builder.load_string(
 
 <MDFillRoundFlatIconButton>
     canvas.before:
-        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
@@ -599,7 +596,6 @@ Builder.load_string(
 
 <MDRectangleFlatButton>
     canvas.before:
-        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -615,7 +611,6 @@ Builder.load_string(
 
 <MDRectangleFlatIconButton>
     canvas.before:
-        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -666,7 +661,6 @@ Builder.load_string(
 
 <MDRoundFlatIconButton>
     canvas.before:
-        Clear
         Color:
             rgba:
                 (root.theme_cls.primary_color if not root.line_color else root.line_color) \
@@ -963,6 +957,9 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         if self.md_bg_color != self.md_bg_color_disabled:
             self._md_bg_color = color
 
+    def _remove_shadow(self, interval: Union[int, float]) -> NoReturn:
+        self.canvas.before.remove_group("soft_shadow")
+
 
 class BasePressedButton(BaseButton):
     """
@@ -1208,7 +1205,10 @@ class MDRectangleFlatButton(BaseRectangleFlatButton):
     #  color palette changes, the text color will also change to the current
     #  color of the color scheme. Do need to preserve custom text colors when
     #  changing the application palette?
-    pass
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_once(self._remove_shadow)
 
 
 class MDRectangleFlatIconButton(BaseRectangleFlatButton):
@@ -1232,6 +1232,7 @@ class MDRectangleFlatIconButton(BaseRectangleFlatButton):
         super().__init__(**kwargs)
         Clock.schedule_once(self.remove_label)
         Clock.schedule_once(self.set_icon_color)
+        Clock.schedule_once(self._remove_shadow)
 
     def update_md_bg_color(
         self, instance_theme_manager, name_palette: str
@@ -1271,6 +1272,7 @@ class MDRoundFlatButton(MDFlatButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_text_color)
+        Clock.schedule_once(self._remove_shadow)
 
     def anim_complete(self, *args):
         self._doing_ripple = False

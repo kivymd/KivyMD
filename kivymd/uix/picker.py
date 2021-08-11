@@ -2979,6 +2979,30 @@ class MDTimePicker(BaseDialogPicker):
 
 Builder.load_string(
     """
+<RoundedToolbar>
+    id: toolbar
+    adaptive_height: True
+    height: root.theme_cls.standard_increment
+    padding: dp(12), 0
+    canvas.before:
+        Color:
+            rgba: root.theme_cls.primary_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+
+    MDLabel:
+        id: label_title
+        font_style: "H6"
+        text: root.title
+        theme_text_color: "Custom"
+        text_color: root.specific_text_color
+        shorten: True
+        shorten_from: "right"
+        markup: True
+
+
 <RoundButton>
     size_hint: None, None
 
@@ -3006,20 +3030,27 @@ Builder.load_string(
 
 <MDThemePicker>
     size_hint: None, None
-    size: "284dp", "400dp"
-
-    MDBoxLayout:
+    MDCard:
+        id: container
         orientation: "vertical"
+        size_hint: None, None
+        size: "284dp", "400dp"
+        elevation: 24
+        radius: root.radius
+        md_bg_color: root.theme_cls.bg_darkest
 
-        MDToolbar:
-            title: "Change theme"
+        RoundedToolbar:
+            title: 'Change theme'
+            radius: root.toolbar_radius
 
         MDTabs:
+            id: tabs
             on_tab_switch: root.on_tab_switch(*args)
 
             Tab:
                 id: theme_tab
                 text: "Theme"
+                radius: root.tab_radius
 
                 MDGridLayout:
                     id: primary_box
@@ -3037,6 +3068,7 @@ Builder.load_string(
 
             Tab:
                 text: "Accent"
+                radius: root.tab_radius
 
                 MDGridLayout:
                     id: accent_box
@@ -3054,6 +3086,7 @@ Builder.load_string(
 
             Tab:
                 text: "Style"
+                radius: root.tab_radius
 
                 MDGridLayout:
                     adaptive_size: True
@@ -3097,6 +3130,12 @@ Builder.load_string(
 )
 
 
+class RoundedToolbar(ThemableBehavior, MDBoxLayout):
+    """.. versionadded:: 1.0.0"""
+
+    title = StringProperty()
+
+
 class RoundButton(CircularRippleBehavior, ButtonBehavior, AnchorLayout):
     pass
 
@@ -3113,6 +3152,27 @@ class MDThemePicker(
     SpecificBackgroundColorBehavior,
     FakeRectangularElevationBehavior,
 ):
+    tab_radius = ListProperty([dp(0), dp(0), dp(0), dp(0)])
+    """
+    Tab radius.
+
+    :attr:`tab_radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(0), dp(0), dp(0), dp(0)]`.
+    """
+
+    toolbar_radius = ListProperty([dp(0), dp(0), dp(0), dp(0)])
+    """
+    Toolbar radius.
+
+    :attr:`toolbar_radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(20), dp(20), dp(0), dp(0)]`.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.radius = [*self.toolbar_radius[0: 2], *self.tab_radius[2:]]
+        self.size = self.ids.container.size
+
     def on_open(self):
         self.on_tab_switch(None, self.ids.theme_tab, None, None)
 

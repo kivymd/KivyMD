@@ -398,7 +398,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
             if not self.disabled:
                 self.color = getattr(self.theme_cls, self._text_color_str)
             else:
-                self.color = self.color = getattr(self.theme_cls, "disabled_hint_text_color")
+                self.color = getattr(self.theme_cls, "disabled_hint_text_color")
 
 
 class MDIcon(MDLabel):

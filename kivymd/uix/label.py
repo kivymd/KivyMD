@@ -250,6 +250,7 @@ Builder.load_string(
     font_style: "Icon"
     text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
     source: None if self.icon in md_icons else self.icon
+
     canvas:
         Color:
             rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
@@ -312,11 +313,13 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     """
 
     text_color = ColorProperty(None)
-    """Label text color in ``rgba`` format.
+    """
+    Label text color in ``rgba`` format.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
+
     _text_color_str = StringProperty()
 
     parent_background = ColorProperty(None)
@@ -392,6 +395,10 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
     def _do_update_theme_color(self, *args):
         if self._text_color_str:
             self.color = getattr(self.theme_cls, self._text_color_str)
+            if not self.disabled:
+                self.color = getattr(self.theme_cls, self._text_color_str)
+            else:
+                self.color = self.color = getattr(self.theme_cls, "disabled_hint_text_color")
 
 
 class MDIcon(MDLabel):

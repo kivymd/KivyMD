@@ -911,7 +911,10 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
         self, instance_theme_manager: ThemeManager, theme_style: str
     ) -> NoReturn:
         if self.disabled:
-            if self.md_bg_color_disabled in [[0.0, 0.0, 0.0, 0.38], [1.0, 1.0, 1.0, 0.5]]:
+            if self.md_bg_color_disabled in [
+                [0.0, 0.0, 0.0, 0.38],
+                [1.0, 1.0, 1.0, 0.5],
+            ]:
                 self.md_bg_color_disabled = (
                     self.theme_cls.disabled_hint_text_color
                 )

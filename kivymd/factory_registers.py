@@ -5,8 +5,8 @@ Register KivyMD widgets to use without import.
 from kivy.factory import Factory
 
 register = Factory.register
-register("MDColorPicker", module="kivymd.uix.colorpicker")
 register("MDNavigationRail", module="kivymd.uix.navigationrail")
+register("MDNavigationRailItem", module="kivymd.uix.navigationrail")
 register("MDSwiper", module="kivymd.uix.swiper")
 register("MDCarousel", module="kivymd.uix.carousel")
 register("MDFloatLayout", module="kivymd.uix.floatlayout")
@@ -91,4 +91,3 @@ register("MDToolbar", module="kivymd.uix.toolbar")
 register("MDBottomAppBar", module="kivymd.uix.toolbar")
 register("MDDropDownItem", module="kivymd.uix.dropdownitem")
 register("MDCircularLayout", module="kivymd.uix.circularlayout")
-# register("MDStepper", module="kivymd.uix.stepper")

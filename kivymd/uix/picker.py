@@ -812,8 +812,9 @@ Builder.load_string(
     mode: "fill"
     opacity: 0
     hint_text: "dd/mm/yyyy"
-    input_filter: root.input_filter
-    do_backspace: root.do_backspace
+    input_filter: root.mask.input_filter
+    do_backspace: root.mask.do_backspace
+    on_text: root.mask.format(self, self.text)
     fill_color:
         (0, 0, 0, .15) \
         if not self.owner.input_field_background_color \
@@ -1787,7 +1788,9 @@ class MDDatePicker(BaseDialogPicker):
     def get_field(self):
         """Creates and returns a text field object used to enter dates."""
 
-        field = DatePickerEnterDataField(owner=self)
+        field = DatePickerEnterDataField(
+            owner=self, line_color_normal=self.theme_cls.divider_color
+        )
         field.color_mode = "custom"
         field.line_color_focus = (
             self.theme_cls.primary_color

@@ -1,0 +1,20 @@
+#:import md_icons kivymd.icon_definitions.md_icons
+
+
+<MDLabel>
+    disabled_color: self.theme_cls.disabled_hint_text_color
+    text_size: self.width, None
+
+
+<MDIcon>:
+    font_style: "Icon"
+    text: u"{}".format(md_icons[self.icon]) if self.icon in md_icons else ""
+    source: None if self.icon in md_icons else self.icon
+
+    canvas:
+        Color:
+            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
+        Rectangle:
+            source: self.source if self.source else None
+            pos: self.pos
+            size: self.size

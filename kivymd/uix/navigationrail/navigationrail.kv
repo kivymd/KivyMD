@@ -1,0 +1,106 @@
+#:import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
+
+
+<NavigationRailTitle>
+    id: title_box
+    padding: "12dp", "8dp", "8dp", "8dp"
+    spacing: "16dp"
+
+    MDIconButton:
+        id: title_icon
+        icon: root.icon
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_release:
+            root.navigation_rail.rail_state = "open" \
+            if root.navigation_rail.rail_state == "close" else "close"
+
+    MDLabel:
+        id: lbl_title
+        text: root.title
+        size_hint: None, None
+        -text_size: dp(140), None
+        size: dp(140), self.texture_size[1]
+        pos_hint: {"center_y": .5}
+        opacity: 0
+        markup: True
+
+    MDIconButton:
+        id: icon_settings
+        opacity: 0
+        opposite_colors: True
+        icon: "cog"
+        pos_hint: {"center_y": .5}
+
+
+<BaseNavigationRailFloatingButton>
+    theme_text_color: "Custom"
+
+    canvas.before:
+        Color:
+            rgba: root.md_bg_color
+        RoundedRectangle:
+            pos: dp(8), self.y - self._padding_right / 2 + dp(1.5)
+            size:
+                self.width + self._canvas_width - dp(3), \
+                self.height + self._padding_right - dp(3)
+            radius: [self.height / 2]
+
+        Color:
+            rgba: 1, 1, 1, self._alpha
+        Rectangle:
+            texture: self._lbl_text.texture
+            size: self._lbl_text.texture_size
+            pos: self.width + dp(8), self.y + dp(18)
+
+
+<BaseNavigationRailBoxItem>
+    spacing: "8dp"
+    padding: "16dp"
+
+
+<MDNavigationRailItem>
+    orientation: "vertical"
+    spacing: "12dp"
+    adaptive_height: True
+
+    MDIcon:
+        id: btn_icon
+        icon: root.icon
+        font_size: "24dp"
+        halign: "center"
+        theme_text_color: "Custom"
+        text_color:
+            root.theme_cls.text_color \
+            if not root._color_normal else root._color_normal
+        pos_hint: {"center_y": .5}
+
+    MDLabel:
+        id: lbl_text
+        text: root.text
+        size_hint_y: None
+        height: self.texture_size[1]
+        halign: "center"
+        markup: True
+        theme_text_color: "Custom"
+        text_color:
+            btn_icon.text_color \
+            if root.navigation_rail.visible == "Persistent" else (0, 0, 0, 0)
+
+
+<MDNavigationRail>
+    orientation: "vertical"
+    padding: 0, "8dp", 0, "8dp"
+    elevation: root.elevation
+
+    MDBoxLayout:
+        id: box_title
+        size_hint: None, None
+        size: root.width * 2, "56dp"
+
+    ScrollView:
+        effect_cls: StiffScrollEffect
+        bar_width: 0
+
+        MDList:
+            id: box
+            spacing: "8dp"

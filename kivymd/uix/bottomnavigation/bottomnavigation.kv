@@ -1,0 +1,80 @@
+#:import sm kivy.uix.screenmanager
+
+
+<MDBottomNavigation>
+    orientation: "vertical"
+    height: dp(56)
+
+    ScreenManager:
+        id: tab_manager
+        transition: sm.FadeTransition(duration=.2)
+        on_current:
+            root.dispatch( \
+            "on_switch_tabs", \
+            root._get_switchig_tab(self.current), \
+            self.current \
+            )
+
+    MDBottomNavigationBar:
+        id: bottom_panel
+        size_hint_y: None
+        height: dp(56)
+        md_bg_color:
+            root.theme_cls.bg_dark \
+            if not root.panel_color \
+            else root.panel_color
+
+        MDBoxLayout:
+            id: tab_bar
+            pos_hint: {"center_x": .5, "center_y": .5}
+            height: dp(56)
+            size_hint: None, None
+
+
+<MDBottomNavigationHeader>
+    md_bg_color: root.panel_color
+    padding: (dp(12), dp(12))
+    on_press: self.tab.dispatch("on_tab_press")
+    on_release: self.tab.dispatch("on_tab_release")
+    on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
+    on_touch_move: self.tab.dispatch("on_tab_touch_move", *args)
+    on_touch_up: self.tab.dispatch("on_tab_touch_up", *args)
+    width:
+        root.panel.width / len(root.panel.ids.tab_manager.screens) \
+        if len(root.panel.ids.tab_manager.screens) != 0 \
+        else root.panel.width
+
+    RelativeLayout:
+        id: item_container
+
+        MDIcon:
+            id: _label_icon
+            icon: root.tab.icon
+            size_hint_x: None
+            text_size: (None, root.height)
+            height: self.texture_size[1]
+            theme_text_color: "Custom"
+            text_color: root._text_color_normal
+            opposite_colors: root.opposite_colors
+            pos: [self.pos[0], self.pos[1]]
+            font_size: dp(24)
+            pos_hint: {"center_x": .5}
+            y: item_container.height - dp(8)
+
+        MDLabel:
+            id: _label
+            text: root.tab.text
+            font_style: "Button"
+            size_hint_x: None
+            text_size: None, root.height
+            adaptive_height: True
+            theme_text_color: "Custom"
+            text_color: root._text_color_normal
+            opposite_colors: root.opposite_colors
+            font_size: root._label_font_size
+            pos_hint: {"center_x": .5}
+            y: -dp(8)
+
+
+<MDTab>
+    md_bg_color: root.theme_cls.bg_normal

@@ -1,0 +1,85 @@
+#:import Window kivy.core.window.Window
+
+
+<ThreeLineIconBanner>
+    text: root.text_message[0]
+    secondary_text: root.text_message[1]
+    tertiary_text: root.text_message[2]
+    divider: None
+    _no_ripple_effect: True
+
+    ImageLeftWidget:
+        source: root.icon
+
+
+<TwoLineIconBanner>
+    text: root.text_message[0]
+    secondary_text: root.text_message[1]
+    divider: None
+    _no_ripple_effect: True
+
+    ImageLeftWidget:
+        source: root.icon
+
+
+<OneLineIconBanner>
+    text: root.text_message[0]
+    divider: None
+    _no_ripple_effect: True
+
+    ImageLeftWidget:
+        source: root.icon
+
+
+<ThreeLineBanner>
+    text: root.text_message[0]
+    secondary_text: root.text_message[1]
+    tertiary_text: root.text_message[2]
+    divider: None
+    _no_ripple_effect: True
+
+
+<TwoLineBanner>
+    text: root.text_message[0]
+    secondary_text: root.text_message[1]
+    divider: None
+    _no_ripple_effect: True
+
+
+<OneLineBanner>
+    text: root.text_message[0]
+    divider: None
+    _no_ripple_effect: True
+
+
+<MDBanner>
+    size_hint_y: None
+    height: self.minimum_height
+    banner_y: 0
+    orientation: "vertical"
+    y: Window.height - self.banner_y
+
+    canvas:
+        Color:
+            rgba: 0, 0, 0, 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDBoxLayout:
+        id: container_message
+        adaptive_height: True
+
+    MDBoxLayout:
+        adaptive_size: True
+        pos_hint: {"right": 1}
+        padding: 0, 0, "8dp", "8dp"
+        spacing: "8dp"
+
+        MDBoxLayout:
+            id: left_action_box
+            adaptive_size: True
+
+        MDBoxLayout:
+            id: right_action_box
+            adaptive_size: True

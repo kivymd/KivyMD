@@ -1,0 +1,36 @@
+<_Triangle>:
+    canvas:
+        Color:
+            rgba: root.theme_cls.text_color
+        Triangle:
+            points:
+                [ \
+                self.right-dp(14), self.y+dp(7), \
+                self.right-dp(7), self.y+dp(7), \
+                self.right-dp(7), self.y+dp(14) \
+                ]
+
+
+<MDDropDownItem>
+    orientation: "vertical"
+    adaptive_size: True
+    spacing: "5dp"
+    padding: "5dp", "5dp", "5dp", 0
+
+    MDBoxLayout:
+        adaptive_size: True
+        spacing: "10dp"
+
+        Label:
+            id: label_item
+            size_hint: None, None
+            size: self.texture_size
+            color: root.theme_cls.text_color
+            font_size: root.font_size
+
+
+        _Triangle:
+            size_hint: None, None
+            size: "20dp", "20dp"
+
+    MDSeparator:

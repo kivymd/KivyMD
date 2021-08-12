@@ -1,0 +1,50 @@
+#:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
+
+
+<MDChooseChip>
+    adaptive_height: True
+    spacing: "5dp"
+
+
+<MDChip>
+    size_hint: None,  None
+    height: "26dp"
+    padding: 0, 0, "8dp", 0
+    width:
+        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
+        if root.icon != 'checkbox-blank-circle' else self.minimum_width
+
+    canvas:
+        Color:
+            rgba: root.theme_cls.primary_color if not root.color else root.color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+
+    MDBoxLayout:
+        id: box_check
+        adaptive_size: True
+        pos_hint: {'center_y': .5}
+        padding: "8dp", 0, 0, 0
+
+    MDBoxLayout:
+        adaptive_width: True
+        padding: dp(10)
+
+        Label:
+            id: label
+            text: root.text
+            size_hint_x: None
+            width: self.texture_size[0]
+            color: root.text_color if root.text_color else (root.theme_cls.text_color)
+            markup: True
+
+    MDIcon:
+        id: icon
+        icon: root.icon
+        size_hint: None, None
+        size: "26dp", "26dp"
+        font_size: "20sp"
+        theme_text_color: "Custom"
+        text_color: root.icon_color if root.icon_color else (root.theme_cls.text_color)

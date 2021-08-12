@@ -1,0 +1,21 @@
+#:import Window kivy.core.window.Window
+
+
+<MDNavigationDrawer>:
+    size_hint_x: None
+    width: Window.width - dp(56) if Window.width <= dp(376) else dp(320)
+    x:
+        (self.width * (self.open_progress - 1)) \
+        if self.anchor == "left" \
+        else (Window.width - self.width * self.open_progress)
+
+    canvas:
+        Clear
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: root.background
+            radius: root._radius
+    md_bg_color: self.theme_cls.bg_light

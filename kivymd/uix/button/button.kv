@@ -1,0 +1,313 @@
+<BaseButton>
+    canvas:
+        Clear
+        Color:
+            rgba:
+                self.md_bg_color if not self.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [root._radius, ]
+
+    lbl_txt: lbl_txt
+    size_hint: None, None
+    height: dp(20) + lbl_txt.texture_size[1]
+    width: lbl_txt.texture_size[0] + dp(24)
+
+    MDLabel:
+        id: lbl_txt
+        text: root.text
+        font_size: root.font_size
+        font_style: root.font_style
+        adaptive_size: True
+        -text_size: None, None
+        theme_text_color: root.theme_text_color
+        text_color: root.text_color
+        markup: True
+        disabled: root.disabled
+        opposite_colors: root.opposite_colors
+        font_name: root.font_name if root.font_name else self.font_name
+
+
+<BaseRoundButton>
+    canvas:
+        Clear
+        Color:
+            rgba:
+                (self.md_bg_color if root.icon in md_icons else (0, 0, 0, 0)) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        Ellipse:
+            size: self.size
+            pos: self.pos
+            source: self.source if hasattr(self, "source") else ""
+
+    size: "48dp", "48dp"
+    lbl_txt: lbl_txt
+    padding: "12dp" if root.icon in md_icons else (0, 0, 0, 0)
+
+    MDIcon:
+        id: lbl_txt
+        icon: root.icon
+        font_size: root.user_font_size if root.user_font_size else self.font_size
+        font_name: root.font_name if root.font_name else self.font_name
+        theme_text_color: root.theme_text_color
+        text_color:
+            root.text_color if not root.disabled else \
+            (root.md_bg_color_disabled if root.md_bg_color_disabled \
+            else root.theme_cls.disabled_hint_text_color)
+        disabled: root.disabled
+        valign: "middle"
+        halign: "center"
+        opposite_colors: root.opposite_colors
+
+
+<MDRoundFlatButton>
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        Line:
+            width: root.line_width
+            rounded_rectangle:
+                (self.x, self.y, self.width, self.height,\
+                root._radius, root._radius, root._radius, root._radius,\
+                self.height)
+
+    theme_text_color: "Custom"
+
+
+<MDFillRoundFlatButton>
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root.md_bg_color) if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [root._radius, ]
+
+    line_width: 0.001
+    theme_text_color: "Custom"
+
+
+<MDFillRoundFlatIconButton>
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root.md_bg_color) if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: [root._radius, ]
+
+    line_width: 0.001
+    theme_text_color: "Custom"
+
+
+<MDRectangleFlatButton>
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        Line:
+            width: root.line_width
+            rectangle: (self.x, self.y, self.width, self.height)
+
+    theme_text_color: "Custom"
+
+
+<MDRectangleFlatIconButton>
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        Line:
+            width: root.line_width
+            rectangle: (self.x, self.y, self.width, self.height)
+
+    size_hint_x: None
+    width: root.lbl_txt.width + lbl_ic.width * 2 + box.spacing
+
+    MDBoxLayout:
+        id: box
+        size_hint: None, None
+        size: root.size
+        padding: "10dp", 0, 0, 0
+        spacing: "8dp"
+
+        MDIcon:
+            id: lbl_ic
+            icon: root.icon
+            theme_text_color: "Custom"
+            text_color:
+                (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+            size_hint_x: None
+            width: self.texture_size[0]
+
+        MDLabel:
+            id: lbl
+            text: root.text
+            font_size: root.font_size
+            font_style: root.font_style
+            adaptive_size: True
+            -text_size: None, None
+            theme_text_color: "Custom"
+            text_color: root.text_color
+            markup: True
+            disabled: root.disabled
+            opposite_colors: root.opposite_colors
+            font_name: root.font_name if root.font_name else self.font_name
+            pos_hint: {"center_y": .5}
+
+
+<MDRoundFlatIconButton>
+    canvas.before:
+        Color:
+            rgba:
+                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+        Line:
+            width: root.line_width
+            rounded_rectangle:
+                (self.x, self.y, self.width, self.height,\
+                root._radius, root._radius, root._radius, root._radius,\
+                self.height)
+
+    size_hint_x: None
+    width: root.lbl_txt.width + lbl_ic.width * 2 + box.spacing
+
+    MDBoxLayout:
+        id: box
+        size_hint: None, None
+        size: root.size
+        padding: "10dp", 0, 0, 0
+        spacing: "8dp"
+
+        MDIcon:
+            id: lbl_ic
+            icon: root.icon
+            theme_text_color: "Custom"
+            text_color:
+                (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
+                if not root.disabled else \
+                (root.md_bg_color_disabled if root.md_bg_color_disabled \
+                else root.theme_cls.disabled_hint_text_color)
+            size_hint_x: None
+            width: self.texture_size[0]
+
+        MDLabel:
+            id: lbl
+            text: root.text
+            font_size: root.font_size
+            font_style: root.font_style
+            adaptive_size: True
+            -text_size: None, None
+            theme_text_color: root.theme_text_color
+            text_color: root.text_color
+            markup: True
+            disabled: root.disabled
+            opposite_colors: root.opposite_colors
+            font_name: root.font_name if root.font_name else self.font_name
+            pos_hint: {"center_y": .5}
+
+
+<MDIconButton>
+    on_size: root.set_size(0)
+
+
+<MDFloatingActionButton>
+    theme_text_color: "Custom"
+    # theme_text_color: root.theme_text_color
+    # opposite_colors: root.opposite_colors
+    on_size: root.set_size(0)
+
+
+<MDTextButton>
+    adaptive_size: True
+    color: root.theme_cls.primary_color if not root.color else root.color
+    opacity: 1
+
+
+<BaseFloatingBottomButton>
+    theme_text_color: "Custom"
+    md_bg_color: self.theme_cls.primary_color
+
+    canvas.before:
+        Color:
+            rgba:
+                self.theme_cls.primary_color \
+                if not self._bg_color else self._bg_color
+        RoundedRectangle:
+            pos:
+                (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
+                self.y - self._padding_right / 2 + dp(1.5)
+            size:
+                self.width + self._canvas_width - dp(3), \
+                self.height + self._padding_right - dp(3)
+            radius: [self.height / 2]
+
+
+<BaseFloatingRootButton>
+    theme_text_color: "Custom"
+    md_bg_color: self.theme_cls.primary_color
+
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self._angle
+            axis: (0, 0, 1)
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+
+<BaseFloatingLabel>
+    size_hint: None, None
+    padding: "8dp", "4dp", "8dp", "4dp"
+    height: label.texture_size[1] + self.padding[1] * 2
+    width: label.texture_size[0] + self.padding[0] * 2
+    elevation: 10
+
+    canvas:
+        Color:
+            rgba:
+                self.theme_cls.primary_color \
+                if not root.bg_color else root.bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+
+    Label:
+        id: label
+        markup: True
+        text: root.text
+        size_hint: None, None
+        size: self.texture_size
+        color:
+            root.theme_cls.text_color \
+            if not root.text_color else root.text_color

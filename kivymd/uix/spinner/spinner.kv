@@ -1,0 +1,18 @@
+<MDSpinner>
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self._rotation_angle
+            origin: self.center
+    canvas:
+        Color:
+            rgba: self.color if self.color else self.theme_cls.primary_color
+            a: self._alpha
+        SmoothLine:
+            cap: 'square'
+            width: root.line_width
+            circle:
+                self.center_x, self.center_y, self.width / 2, \
+                self._angle_start, self._angle_end
+    canvas.after:
+        PopMatrix

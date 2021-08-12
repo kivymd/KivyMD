@@ -1,0 +1,38 @@
+<MDTooltipViewClass>
+    size_hint: None, None
+    width: self.minimum_width
+    height: self.minimum_height + root.padding[1]
+    opacity: 0
+
+    canvas.before:
+        PushMatrix
+        Color:
+            rgba:
+                root.theme_cls.opposite_bg_dark if not root.tooltip_bg_color \
+                else root.tooltip_bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.tooltip_radius
+        Scale:
+            origin: self.center
+            x: root._scale_x
+            y: root._scale_y
+    canvas.after:
+        PopMatrix
+
+    MDLabel:
+        id: label_tooltip
+        text: root.tooltip_text
+        size_hint: None, None
+        -text_size: None, None
+        size: self.texture_size
+        bold: True
+        theme_text_color: "Custom"
+        font_style: root.tooltip_font_style
+        markup: True
+        pos_hint: {"center_y": .5}
+        text_color:
+            ([0, 0, 0, 1] if not root.tooltip_text_color else root.tooltip_text_color) \
+            if root.theme_cls.theme_style == "Dark" else \
+            ([1, 1, 1, 1] if not root.tooltip_text_color else root.tooltip_text_color)

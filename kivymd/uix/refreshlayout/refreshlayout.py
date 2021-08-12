@@ -100,7 +100,7 @@ Example
     Example().run()
 """
 
-__all__ = ("MDScrollViewRefreshLayout", )
+__all__ = ("MDScrollViewRefreshLayout",)
 
 import os
 from typing import NoReturn, Union
@@ -118,7 +118,8 @@ from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 
 with open(
-    os.path.join(uix_path, "refreshlayout", "refreshlayout.kv"), encoding="utf-8"
+    os.path.join(uix_path, "refreshlayout", "refreshlayout.kv"),
+    encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
 

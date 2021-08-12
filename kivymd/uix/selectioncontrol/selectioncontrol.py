@@ -182,7 +182,8 @@ from kivymd.uix.behaviors import (
 from kivymd.uix.label import MDIcon
 
 with open(
-    os.path.join(uix_path, "selectioncontrol", "selectioncontrol.kv"), encoding="utf-8"
+    os.path.join(uix_path, "selectioncontrol", "selectioncontrol.kv"),
+    encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
 

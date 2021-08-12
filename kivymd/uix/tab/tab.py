@@ -536,9 +536,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.carousel import MDCarousel
 from kivymd.uix.label import MDLabel
 
-with open(
-    os.path.join(uix_path, "tab", "tab.kv"), encoding="utf-8"
-) as kv_file:
+with open(os.path.join(uix_path, "tab", "tab.kv"), encoding="utf-8") as kv_file:
     Builder.load_string(kv_file.read())
 
 

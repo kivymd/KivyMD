@@ -1,1 +1,1 @@
-from .swiper import MDSwiperItem, MDSwiper
+from .swiper import MDSwiper, MDSwiperItem

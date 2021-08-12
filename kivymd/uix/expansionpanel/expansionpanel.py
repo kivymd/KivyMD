@@ -170,7 +170,8 @@ from kivymd.uix.list import (
 )
 
 with open(
-    os.path.join(uix_path, "expansionpanel", "expansionpanel.kv"), encoding="utf-8"
+    os.path.join(uix_path, "expansionpanel", "expansionpanel.kv"),
+    encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
 

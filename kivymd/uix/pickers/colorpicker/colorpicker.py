@@ -97,6 +97,7 @@ from kivy.utils import get_color_from_hex, get_hex_from_color
 from PIL import Image as PilImage
 from PIL import ImageDraw
 
+from kivymd import uix_path
 from kivymd.color_definitions import colors as _colors
 from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
@@ -106,7 +107,6 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.dialog import BaseDialog
 from kivymd.uix.tab import MDTabs, MDTabsBase, MDTabsLabel
-from kivymd import uix_path
 
 __all__ = ("MDColorPicker",)
 

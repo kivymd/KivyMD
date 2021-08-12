@@ -125,7 +125,8 @@ from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 
 with open(
-    os.path.join(uix_path, "navigationrail", "navigationrail.kv"), encoding="utf-8"
+    os.path.join(uix_path, "navigationrail", "navigationrail.kv"),
+    encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
 

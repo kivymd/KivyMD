@@ -1,1 +1,1 @@
-from .chip import MDChooseChip, MDChip
+from .chip import MDChip, MDChooseChip

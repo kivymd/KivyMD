@@ -1,1 +1,1 @@
-from .label import MDLabel, MDIcon
+from .label import MDIcon, MDLabel

@@ -1,1 +1,1 @@
-from .dialog import MDDialog, BaseDialog
+from .dialog import BaseDialog, MDDialog

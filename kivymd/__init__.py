@@ -53,6 +53,9 @@ fonts_path = os.path.join(path, f"fonts{os.sep}")
 images_path = os.path.join(path, f"images{os.sep}")
 """Path to images directory."""
 
+uix_path = os.path.join(path, "uix")
+"""Path to uix directory."""
+
 _log_message = (
     "KivyMD:"
     + (" Release" if release else "")

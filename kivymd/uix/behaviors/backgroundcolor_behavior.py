@@ -7,7 +7,7 @@ Behaviors/Background Color
 
 __all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 
-from typing import NoReturn, List
+from typing import List, NoReturn
 
 from kivy.lang import Builder
 from kivy.properties import (
@@ -24,6 +24,7 @@ from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import hue, palette, text_colors
 from kivymd.theming import ThemeManager
+
 from .elevation import CommonElevationBehavior
 
 Builder.load_string(

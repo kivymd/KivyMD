@@ -76,7 +76,7 @@ Usage
 import os
 import struct
 from io import BytesIO
-from typing import NoReturn, Union
+from typing import NoReturn, Union, List
 
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
@@ -152,7 +152,7 @@ class SelectAlphaChannelWidget(MDBoxLayout):
     def set_scale_rgb(
         self,
         instance_color_picker,
-        color: Union[list[int, int, int], list[float, float, float]],
+        color: Union[List[int], List[float]],
     ) -> NoReturn:
         if color[0] > 1:
             self._rgb = [x / 255.0 for x in color]
@@ -174,7 +174,7 @@ class SliderTab(MDBoxLayout):
         super().__init__(**kwargs)
         self.register_event_type("on_slide_value")
 
-    def get_color(self) -> list[float, float, float]:
+    def get_color(self) -> List[float]:
         return [
             self.ids.slider_red.ids.slider.value / 255,
             self.ids.slider_green.ids.slider.value / 255,
@@ -275,7 +275,7 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
 
     def get_rgba_color_from_touch_region(
         self, widget, touch
-    ) -> tuple[int, int, int, int]:
+    ) -> List[int]:
         """
         Returns the color of the pixel in the gradient that was clicked.
         """

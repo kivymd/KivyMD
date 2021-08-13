@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import re
 import subprocess
 import sys
@@ -59,6 +60,20 @@ def write_version_info():
     open(filename, "wt", encoding="utf-8").write(version_info)
 
 
+def glob_paths(pattern):
+    out_files = []
+
+    src_path = os.path.join(os.path.dirname(__file__), 'kivymd')
+
+    for root, dirs, files in os.walk(src_path):
+        for file in files:
+            if file.endswith(pattern):
+                filepath = os.path.join(str(Path(*Path(root).parts[1:])), file)
+                out_files.append(filepath)
+
+    return out_files
+
+
 if __name__ == "__main__":
     # Static strings are in setup.cfg
     write_version_info()
@@ -69,7 +84,7 @@ if __name__ == "__main__":
         ),
         package_dir={"kivymd": "kivymd"},
         package_data={
-            "kivymd": ["images/*.png", "images/*.atlas", "fonts/*.ttf"]
+            "kivymd": ["images/*.png", "images/*.atlas", "fonts/*.ttf", *glob_paths(".kv")]
         },
         extras_require={
             "dev": [

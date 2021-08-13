@@ -1,9 +1,9 @@
 import os
-from pathlib import Path
 import re
 import subprocess
 import sys
 from datetime import datetime
+from pathlib import Path
 from time import time
 
 from setuptools import find_packages, setup
@@ -63,7 +63,7 @@ def write_version_info():
 def glob_paths(pattern):
     out_files = []
 
-    src_path = os.path.join(os.path.dirname(__file__), 'kivymd')
+    src_path = os.path.join(os.path.dirname(__file__), "kivymd")
 
     for root, dirs, files in os.walk(src_path):
         for file in files:
@@ -84,7 +84,12 @@ if __name__ == "__main__":
         ),
         package_dir={"kivymd": "kivymd"},
         package_data={
-            "kivymd": ["images/*.png", "images/*.atlas", "fonts/*.ttf", *glob_paths(".kv")]
+            "kivymd": [
+                "images/*.png",
+                "images/*.atlas",
+                "fonts/*.ttf",
+                *glob_paths(".kv"),
+            ]
         },
         extras_require={
             "dev": [

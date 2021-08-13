@@ -313,7 +313,8 @@ from kivymd.uix.card import MDCard
 from kivymd.uix.toolbar import MDToolbar
 
 with open(
-    os.path.join(uix_path, "navigationdrawer", "navigationdrawer.kv"), encoding="utf-8"
+    os.path.join(uix_path, "navigationdrawer", "navigationdrawer.kv"),
+    encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
 

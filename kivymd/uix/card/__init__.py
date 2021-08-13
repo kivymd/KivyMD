@@ -1,1 +1,7 @@
-from .card import MDCard, MDCardSwipe, MDCardSwipeFrontBox, MDCardSwipeLayerBox, MDSeparator
+from .card import (
+    MDCard,
+    MDCardSwipe,
+    MDCardSwipeFrontBox,
+    MDCardSwipeLayerBox,
+    MDSeparator,
+)

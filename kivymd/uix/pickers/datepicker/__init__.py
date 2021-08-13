@@ -1,2 +1,1 @@
-from .datepicker import MDDatePicker
-from .datepicker import BaseDialogPicker
+from .datepicker import BaseDialogPicker, MDDatePicker

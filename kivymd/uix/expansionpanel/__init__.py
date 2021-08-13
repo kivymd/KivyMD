@@ -1,1 +1,7 @@
-from .expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine, MDExpansionPanelTwoLine, MDExpansionPanelThreeLine, MDExpansionPanelLabel
+from .expansionpanel import (
+    MDExpansionPanel,
+    MDExpansionPanelLabel,
+    MDExpansionPanelOneLine,
+    MDExpansionPanelThreeLine,
+    MDExpansionPanelTwoLine,
+)

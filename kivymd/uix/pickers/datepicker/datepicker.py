@@ -144,7 +144,7 @@ import calendar
 import datetime
 import os
 from datetime import date
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy import Logger
 from kivy.animation import Animation
@@ -152,34 +152,34 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
-    StringProperty,
     BooleanProperty,
-    NumericProperty,
     ColorProperty,
-    OptionProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.toast import toast
-from kivymd.uix.behaviors import CircularRippleBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDIconButton
-from kivymd.uix.label import MDLabel
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.tooltip import MDTooltip
-from kivymd.uix.dialog import BaseDialog
 from kivymd.uix.behaviors import (
+    CircularRippleBehavior,
     FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.dialog import BaseDialog
+from kivymd.uix.label import MDLabel
+from kivymd.uix.textfield import MDTextField
+from kivymd.uix.tooltip import MDTooltip
 
 with open(
     os.path.join(uix_path, "pickers", "datepicker", "datepicker.kv"),

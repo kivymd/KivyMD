@@ -1230,11 +1230,15 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         self.pagination.ids.button_back.disabled = True
         Clock.schedule_once(self.create_pagination_menu, 0.5)
 
-    def on_row_press(self, *args):
+    def on_row_press(self, instance_cell_row) -> NoReturn:
         """Called when a table row is clicked."""
 
-    def on_check_press(self, *args):
-        """Called when the check box in the table row is checked."""
+    def on_check_press(self, row_data: list) -> NoReturn:
+        """
+        Called when the check box in the table row is checked.
+
+        :param row_data: One of the elements from the :attr:`MDDataTable.row_data` list.
+        """
 
     def get_row_checks(self) -> list:
         """Returns all rows that are checked."""

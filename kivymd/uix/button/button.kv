@@ -73,7 +73,7 @@
                 if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
-        Line:
+        SmoothLine:
             width: root.line_width
             rounded_rectangle:
                 (self.x, self.y, self.width, self.height,\
@@ -190,7 +190,7 @@
                 if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
-        Line:
+        SmoothLine:
             width: root.line_width
             rounded_rectangle:
                 (self.x, self.y, self.width, self.height,\

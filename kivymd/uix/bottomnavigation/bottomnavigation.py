@@ -501,6 +501,9 @@ class MDBottomNavigation(TabbedPanelBase):
 
     .. versionadded:: 1.0.0
 
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-use-text.png
+        :align: center
+
     :attr:`use_text` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """

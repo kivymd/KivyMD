@@ -76,7 +76,7 @@ Usage
 import os
 import struct
 from io import BytesIO
-from typing import NoReturn, Union, List
+from typing import List, NoReturn, Union
 
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
@@ -273,9 +273,7 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
             )
             self.bind(size=self._update_canvas)
 
-    def get_rgba_color_from_touch_region(
-        self, widget, touch
-    ) -> List[int]:
+    def get_rgba_color_from_touch_region(self, widget, touch) -> List[int]:
         """
         Returns the color of the pixel in the gradient that was clicked.
         """

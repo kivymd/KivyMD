@@ -1180,10 +1180,11 @@ class MDTextField(ThemableBehavior, TextInput):
                 self.set_hint_text_font_size(sp(16))
             if self.icon_right:
                 self.set_icon_right_color(self.icon_right_color_normal)
+            if self.hint_text:
+                self.set_hint_text_color(focus, self.error)
 
             self.set_active_underline_width(0)
             self.set_max_length_text_color([0, 0, 0, 0])
-            self.set_hint_text_color(focus)
 
             if self.mode == "fill":
                 self.set_fill_color(self.fill_color_normal)

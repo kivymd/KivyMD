@@ -266,7 +266,7 @@ Custom Snackbar
     :align: center
 """
 
-__all__ = ("Snackbar",)
+__all__ = ("Snackbar", "BaseSnackbar")
 
 import os
 

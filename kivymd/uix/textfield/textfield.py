@@ -339,15 +339,15 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
+    AliasProperty,
     BooleanProperty,
     ColorProperty,
+    DictProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    DictProperty,
-    AliasProperty,
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput

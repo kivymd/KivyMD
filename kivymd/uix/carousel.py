@@ -206,5 +206,10 @@ class MDCarousel(Carousel):
                 self.index = self._skip_slide
                 self._skip_slide = None
 
-        anim.bind(on_complete=_cmp)
+        anim.bind(
+            on_complete=_cmp,
+            on_progress=lambda *args: self.dispatch(
+                "on_slide_progress", (self._offset, 0)
+            ),
+        )
         anim.start(self)

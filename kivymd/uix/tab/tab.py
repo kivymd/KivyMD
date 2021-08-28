@@ -31,6 +31,7 @@ content for the tab.
 
     <Tab>
         content_text
+
         MDLabel:
             text: root.content_text
             pos_hint: {"center_x": .5, "center_y": .5}
@@ -410,6 +411,7 @@ Switching the tab by name
 .. code-block:: python
 
     from kivy.lang import Builder
+
     from kivymd.app import MDApp
     from kivymd.icon_definitions import md_icons
     from kivymd.uix.floatlayout import MDFloatLayout
@@ -500,9 +502,12 @@ Switching the tab by name
 
 __all__ = ("MDTabs", "MDTabsBase")
 
+from typing import NoReturn, Union
+
 import os
 
 from kivy.clock import Clock
+from kivy.graphics.texture import Texture
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.metrics import dp
@@ -526,7 +531,7 @@ from kivy.utils import boundary
 from kivymd import uix_path
 from kivymd.font_definitions import fonts, theme_font_styles
 from kivymd.icon_definitions import md_icons
-from kivymd.theming import ThemableBehavior
+from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.behaviors import (
     FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
@@ -564,13 +569,13 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
             text=self._update_text_size,
         )
 
-    def on_release(self):
+    def on_release(self) -> NoReturn:
         self.tab_bar.parent.dispatch("on_tab_switch", self.tab, self, self.text)
         # If the label is selected load the relative tab from carousel.
         if self.state == "down":
             self.tab_bar.parent.carousel.load_slide(self.tab)
 
-    def on_texture(self, widget, texture):
+    def on_texture(self, instance_tabs_label, texture: Texture) -> NoReturn:
         # Just save the minimum width of the label based of the content.
         if texture:
             max_width = dp(360)
@@ -769,10 +774,10 @@ class MDTabsBase(Widget):
         self.tab_label.padding = dp(16), 0
         self.update_label_text(None, self.tab_label_text)
 
-    def update_label_text(self, widget, value):
+    def update_label_text(self, instance_user_tab, text_tab: str) -> NoReturn:
         self.tab_label.text = self.text = self.tab_label_text
 
-    def on_text(self, widget, text):
+    def on_text(self, instance_user_tab, text_tab: str) -> NoReturn:
         self.tab_label_text = self.text
 
 
@@ -845,7 +850,9 @@ class MDTabsCarousel(MDCarousel):
 class MDTabsScrollView(ScrollView):
     """This class hacked version to fix scroll_x manual setting."""
 
-    def goto(self, scroll_x, scroll_y):
+    def goto(
+        self, scroll_x: Union[float, None], scroll_y: Union[float, None]
+    ) -> NoReturn:
         """Update event value along with scroll_*."""
 
         def _update(e, x):
@@ -910,7 +917,9 @@ class MDTabsBar(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def update_indicator(self, x, w, radius=None):
+    def update_indicator(
+        self, x: Union[float, int], w: Union[float, int], radius=None
+    ) -> NoReturn:
         # Update position and size of the indicator.
         if self.parent.tab_indicator_type == "line-round":
             self.parent._line_x = x
@@ -927,11 +936,11 @@ class MDTabsBar(
             if radius:
                 self.indicator.radius = radius
 
-    def tab_bar_autoscroll(self, target, step):
+    def tab_bar_autoscroll(self, instance_tab_label: MDTabsLabel, step: float):
         # Automatic scroll animation of the tab bar.
         bound_left = self.center_x - self.x
         bound_right = self.layout.width - bound_left
-        dt = target.center_x - bound_left
+        dt = instance_tab_label.center_x - bound_left
         sx, sy = self.scrollview.convert_distance_to_scroll(dt, 0)
         lsx = self.last_scroll_x  # ast scroll x of the tab bar
         scroll_is_late = lsx < sx  # determine scroll direction
@@ -939,37 +948,41 @@ class MDTabsBar(
 
         if not dst:
             return
-        if scroll_is_late and target.center_x > bound_left:
+        if scroll_is_late and instance_tab_label.center_x > bound_left:
             x = lsx + dst
-        elif not scroll_is_late and target.center_x < bound_right:
+        elif not scroll_is_late and instance_tab_label.center_x < bound_right:
             x = lsx - dst
         else:
             return
         x = boundary(x, 0.0, 1.0)
         self.scrollview.goto(x, None)
 
-    def android_animation(self, carousel, offset):
+    def android_animation(
+        self, instance_carousel: MDTabsCarousel, offset: Union[float, int]
+    ):
         # Try to reproduce the android animation effect.
-        if offset != 0 and abs(offset) < carousel.width:
+        if offset != 0 and abs(offset) < instance_carousel.width:
             forward = offset < 0
             offset = abs(offset)
-            step = offset / float(carousel.width)
+            step = offset / float(instance_carousel.width)
             indicator_animation = self.parent.tab_indicator_anim
 
             skip_slide = (
-                carousel.slides[carousel._skip_slide]
-                if carousel._skip_slide is not None
+                instance_carousel.slides[instance_carousel._skip_slide]
+                if instance_carousel._skip_slide is not None
                 else None
             )
             next_slide = (
-                carousel.next_slide if forward else carousel.previous_slide
+                instance_carousel.next_slide
+                if forward
+                else instance_carousel.previous_slide
             )
             self.target = skip_slide if skip_slide else next_slide
 
             if not self.target:
                 return
 
-            a = carousel.current_slide.tab_label
+            a = instance_carousel.current_slide.tab_label
             b = self.target.tab_label
             self.tab_bar_autoscroll(b, step)
 
@@ -1221,37 +1234,26 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         )
         self.bind(tab_hint_x=self._update_tab_hint_x)
 
-    def _update_tab_hint_x(self, *args):
-        if not self.ids.layout.children:
-            return
-        if self.tab_hint_x is True:
-            self.fixed_tab_label_width = self.width // len(
-                self.ids.layout.children
-            )
-            self.allow_stretch = False
-        else:
-            self.allow_stretch = True
+    def update_icon_color(
+        self,
+        instance_theme_manager: ThemeManager,
+        name_theme_style_name_palette: str,
+    ) -> NoReturn:
+        """
+        Called when the app's color scheme or style has changed
+        (dark theme/light theme).
+        """
 
-    def _parse_icon_mode(self, *args):
-        if self.force_title_icon_mode is True:
-            for slide in self.carousel.slides:
-                slide.title_icon_mode = self.title_icon_mode
-                if self.title_icon_mode == "Top":
-                    self.tab_bar_height = dp(72)
-                else:
-                    self.tab_bar_height = dp(48)
-
-    def update_icon_color(self, instance, value):
         for tab_label in self.get_tab_list():
             if not self.text_color_normal:
                 tab_label.text_color_normal = self.theme_cls.text_color
             if not self.text_color_active:
                 tab_label.text_color_active = self.specific_secondary_text_color
 
-    def switch_tab(self, name_tab, search_by="text"):
+    def switch_tab(self, name_tab: Union[MDTabsLabel, str], search_by="text"):
         """
-        This funciont switch between tabs
-        name_tab can be either a String or a MDTabsBase.
+        This method switch between tabs
+        name_tab can be either a String or a :class:`~MDTabsBase`.
 
         `search_by` will look up through the properties of every tab.
 
@@ -1294,12 +1296,14 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         else:
             self.carousel.load_slide(name_tab.tab)
 
-    def get_tab_list(self):
-        """Returns a list of tab objects."""
+    def get_tab_list(self) -> list:
+        """Returns a list of :class:`~MDTabsLabel` objects."""
 
         return self.tab_bar.layout.children[::-1]
 
-    def get_slides(self):
+    def get_slides(self) -> list:
+        """Returns a list of user tab objects."""
+
         return self.carousel.slides
 
     def add_widget(self, widget, index=0, canvas=None):
@@ -1385,21 +1389,22 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         title_label = None
         widget = None
 
-    def on_slide_progress(self, *args):
+    def on_slide_progress(self, *args) -> NoReturn:
         """
         This event is deployed every available frame while the tab is scrolling.
         """
 
-    def on_carousel_index(self, carousel, index):
-        """Called when the Tab index have changed.
+    def on_carousel_index(self, instance_tabs_carousel, index: int) -> NoReturn:
+        """
+        Called when the Tab index have changed.
 
         This event is deployed by the built in carousel of the class.
         """
 
         # When the index of the carousel change, update tab indicator,
         # select the current tab and reset threshold data.
-        if carousel.current_slide:
-            current_tab_label = carousel.current_slide.tab_label
+        if instance_tabs_carousel.current_slide:
+            current_tab_label = instance_tabs_carousel.current_slide.tab_label
             if current_tab_label.state == "normal":
                 # current_tab_label._do_press()
                 current_tab_label.dispatch("on_release")
@@ -1449,18 +1454,40 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     current_tab_label.x, current_tab_label.width
                 )
 
-    def on_ref_press(self, *args):
+    def on_ref_press(self, *args) -> NoReturn:
         """
         This event will be launched every time the user press a markup enabled
         label with a link or reference inside.
         """
 
-    def on_tab_switch(self, *args):
+    def on_tab_switch(self, *args) -> NoReturn:
         """This event is launched every time the current tab is changed."""
 
-    def on_size(self, *args):
+    def on_size(self, instance_tab, size: list) -> NoReturn:
+        """Called when the application screen is resized."""
+
         if self.carousel.current_slide:
             self._update_indicator(self.carousel.current_slide.tab_label)
+
+    def _update_tab_hint_x(self, *args):
+        if not self.ids.layout.children:
+            return
+        if self.tab_hint_x is True:
+            self.fixed_tab_label_width = self.width // len(
+                self.ids.layout.children
+            )
+            self.allow_stretch = False
+        else:
+            self.allow_stretch = True
+
+    def _parse_icon_mode(self, *args):
+        if self.force_title_icon_mode is True:
+            for slide in self.carousel.slides:
+                slide.title_icon_mode = self.title_icon_mode
+                if self.title_icon_mode == "Top":
+                    self.tab_bar_height = dp(72)
+                else:
+                    self.tab_bar_height = dp(48)
 
     def _carousel_bind(self, interval):
         self.carousel.bind(on_slide_progress=self._on_slide_progress)
@@ -1484,11 +1511,15 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             Clock.schedule_once(self._update_tab_hint_x)
             return True
         padding = [0, 0]
+        # FIXME: It's not entirely clear why the `padding = [dp (52), 0]`
+        #  instruction is needed? This creates an extra 52px left padding and
+        #  looks like a bug. This instruction was added by the contributors in
+        #  previous commits and I have not yet figured out why this was done.
         # This is more efficient than to use sum([layout.children]).
-        width = layout.width - (layout.padding[0] * 2)
+        # width = layout.width - (layout.padding[0] * 2)
         # Forces the padding of the tab_bar when the tab_bar is scrollable.
-        if width > self.width:
-            padding = [dp(52), 0]
+        # if width > self.width:
+        #     padding = [dp(52), 0]
         # Set the new padding.
         layout.padding = padding
         # Update the indicator.

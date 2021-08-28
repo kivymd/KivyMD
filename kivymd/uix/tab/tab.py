@@ -502,9 +502,8 @@ Switching the tab by name
 
 __all__ = ("MDTabs", "MDTabsBase")
 
-from typing import NoReturn, Union
-
 import os
+from typing import NoReturn, Union
 
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture

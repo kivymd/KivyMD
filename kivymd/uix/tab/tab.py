@@ -502,9 +502,8 @@ Switching the tab by name
 
 __all__ = ("MDTabs", "MDTabsBase")
 
-from typing import NoReturn, Union
-
 import os
+from typing import NoReturn, Union
 
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
@@ -663,8 +662,8 @@ class MDTabsBase(Widget):
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
 
-    .. warning::
-        This property is deprecated, use :attr:`tab_label_text` instead.
+    .. deprecated:: 1.0.0
+        Use :attr:`tab_label_text` instead.
     """
 
     tab_label_text = StringProperty()

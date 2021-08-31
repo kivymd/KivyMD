@@ -478,6 +478,9 @@ class MDTextField(ThemableBehavior, TextInput):
     Color text mode. Available options are: `'primary'`, `'accent'`,
     `'custom'`.
 
+    .. deprecated:: 1.0.0
+        Don't use this attribute.
+
     :attr:`color_mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'primary'`.
     """
@@ -545,6 +548,9 @@ class MDTextField(ThemableBehavior, TextInput):
     The background color of the fill in rgba format when the ``mode`` parameter
     is "fill".
 
+    .. deprecated:: 1.0.0
+        Use :attr:`fill_color_normal` and :attr:`fill_color_focus` instead.
+
     :attr:`fill_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
@@ -584,6 +590,9 @@ class MDTextField(ThemableBehavior, TextInput):
     current_hint_text_color = ColorProperty([0, 0, 0, 0], deprecated=True)
     """
     Hint text color.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`hint_text_color_normal` and :attr:`hint_text_color_focus` instead.
 
     :attr:`current_hint_text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -741,6 +750,9 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Color of right icon in ``rgba`` format.
 
+    .. deprecated:: 1.0.0
+        Don't use this attribute.
+
     :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 1]`.
     """
@@ -748,6 +760,9 @@ class MDTextField(ThemableBehavior, TextInput):
     text_color = ColorProperty([0, 0, 0, 0], deprecated=True)
     """
     Text color in ``rgba`` format.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`text_color_normal` and :attr:`text_color_focus` instead.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.

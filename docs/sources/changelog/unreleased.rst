@@ -16,3 +16,4 @@ Unreleased
 * Added new `transition <https://github.com/kivymd/KivyMD/tree/master/kivymd/uix/transition>`_ package - a set of classes for implementing transitions between application screens.
 * Now all modules from the `uix <https://github.com/kivymd/KivyMD/tree/master/kivymd/uix>`_ directory are packages;
 * Type hints have been added to the source code of the KivyMD library;
+* Added `divider_color <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem.divider_color>`_ attribute to `BaseListItem <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem>`_ class;

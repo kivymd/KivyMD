@@ -463,6 +463,7 @@ You can disable the icon event using the `WithoutTouch` classes:
 """
 
 __all__ = (
+    "BaseListItem",
     "MDList",
     "ILeftBodyTouch",
     "IRightBodyTouch",

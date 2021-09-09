@@ -21,7 +21,7 @@ With value hint
     from kivymd.app import MDApp
 
     KV = '''
-    Screen
+    MDScreen
 
         MDSlider:
             min: 0
@@ -112,12 +112,12 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    hint_bg_color = ColorProperty(None)
+    hint_bg_color = ColorProperty([0, 0, 0, 0])
     """
     Hint rectangle color in ``rgba`` format.
 
     :attr:`hint_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     hint_text_color = ColorProperty(None)
@@ -178,7 +178,8 @@ class MDSlider(ThemableBehavior, Slider):
             self.remove_widget(self.ids.hint_box)
 
     def on_value_normalized(self, *args):
-        """When the ``value == min`` set it to `'off'` state and make slider
+        """
+        When the ``value == min`` set it to `'off'` state and make slider
         a ring.
         """
 
@@ -202,7 +203,8 @@ class MDSlider(ThemableBehavior, Slider):
             self.active = False
 
     def _update_offset(self):
-        """Offset is used to shift the sliders so the background color
+        """
+        Offset is used to shift the sliders so the background color
         shows through the off circle.
         """
 

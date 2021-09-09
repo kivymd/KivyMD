@@ -352,7 +352,7 @@ Custom list item
         RightCheckbox:
 
 
-    BoxLayout:
+    MDBoxLayout:
 
         ScrollView:
 
@@ -660,6 +660,16 @@ class BaseListItem(
 
     :attr:`divider` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'Full'`.
+    """
+
+    divider_color = ColorProperty(None)
+    """
+    Divider color.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`divider_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     bg_color = ColorProperty(None)

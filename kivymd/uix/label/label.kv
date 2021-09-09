@@ -3,6 +3,11 @@
 
 <MDLabel>
     disabled_color: self.theme_cls.disabled_hint_text_color
+    # FIXME: Overriding the values of this property greatly affects application
+    #  performance. Especially when the application window is resized and a
+    #  custom font is used. Performance is especially slow when you are using
+    # `PIL` as your text processing provider - os.environ ['KIVY_TEXT'] = 'pil'.
+    #  Priority - CRITICAL.
     text_size: self.width, None
 
 

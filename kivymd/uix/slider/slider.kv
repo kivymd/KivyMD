@@ -3,7 +3,6 @@
 
 
 <MDSlider>
-    id: slider
     canvas:
         Clear
         Color:
@@ -44,8 +43,9 @@
         Rectangle:
             size:
                 ((self.width - self.padding * 2) * self.value_normalized, sp(4)) \
-                if slider.orientation == "horizontal" else (sp(4), \
-                (self.height - self.padding * 2) * self.value_normalized)
+                if root.orientation == "horizontal" \
+                else \
+                (sp(4), (self.height - self.padding * 2) * self.value_normalized)
             pos:
                 (self.x + self.padding, self.center_y - dp(4)) \
                 if self.orientation == "horizontal" \
@@ -55,41 +55,59 @@
         id: thumb
         size_hint: None, None
         size:
-            (dp(12), dp(12)) if root.disabled else ((dp(24), dp(24)) \
-            if root.active else (dp(16), dp(16)))
+            (dp(12), dp(12)) \
+            if root.disabled \
+            else \
+            ((dp(24), dp(24)) \
+            if root.active \
+            else \
+            (dp(16), dp(16)))
         pos:
-            (slider.value_pos[0] - dp(8), slider.center_y - thumb.height / 2 - dp(2)) \
-            if slider.orientation == "horizontal" \
-            else (slider.center_x - thumb.width / 2 - dp(2), \
-            slider.value_pos[1] - dp(8))
+            (root.value_pos[0] - dp(8), root.center_y - thumb.height / 2 - dp(2)) \
+            if root.orientation == "horizontal" \
+            else (root.center_x - thumb.width / 2 - dp(2), \
+            root.value_pos[1] - dp(8))
         color:
-            (0, 0, 0, 0) if slider._is_off else (root._track_color_disabled \
+            (0, 0, 0, 0) if root._is_off else (root._track_color_disabled \
             if root.disabled else root.color)
-        elevation:
-            0 if slider._is_off else (4 if root.active else 2)
+        elevation: 0 if root._is_off else (4 if root.active else 2)
 
     MDCard:
         id: hint_box
         size_hint: None, None
-        md_bg_color: (1, 1, 1, 1) if not root.hint_bg_color else slider.hint_bg_color
+        md_bg_color: root.hint_bg_color
         elevation: 0
-        opacity: 1 if slider.active else 0
-        background: f"{images_path}transparent.png"
-        radius: [slider.hint_radius,]
+        opacity: 1 if root.active else 0
+        radius: root.hint_radius
+        padding: "6dp", "6dp", "6dp", "8dp"
         size:
-            (dp(12), dp(12)) if root.disabled else ((dp(28), dp(28)) \
-            if root.active else (dp(20), dp(20)))
+            lbl_value.width + self.padding[0] * 2, \
+            lbl_value.height + self.padding[0]
         pos:
-            (slider.value_pos[0] - dp(9), slider.center_y - hint_box.height / 2 + dp(30)) \
-            if slider.orientation == "horizontal" \
-            else (slider.center_x - hint_box.width / 2 + dp(30), \
-            slider.value_pos[1] - dp(8))
+            (root.value_pos[0] - dp(9), root.center_y - hint_box.height / 2 + dp(30)) \
+            if root.orientation == "horizontal" \
+            else \
+            (root.center_x - hint_box.width / 2 + dp(30), root.value_pos[1] - dp(8))
 
         MDLabel:
-            text: str(int(slider.value))
+            id: lbl_value
             font_style: "Caption"
             halign: "center"
             theme_text_color: "Custom"
+            -text_size: None, None
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
             text_color:
-                (root.color if root.active else (0, 0, 0, 0)) \
-                if not slider.hint_text_color else slider.hint_text_color
+                ( \
+                root.color \
+                if root.active \
+                else (0, 0, 0, 0) \
+                ) \
+                if not root.hint_text_color \
+                else \
+                root.hint_text_color
+            text:
+                str(root.value) \
+                if isinstance(root.step, float) \
+                else \
+                str(int(root.value))

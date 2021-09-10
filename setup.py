@@ -13,6 +13,7 @@ assert sys.version_info >= (3, 6, 0), "KivyMD requires Python 3.6+"
 
 def get_version() -> str:
     """Get __version__ from __init__.py file."""
+
     version_file = os.path.join(
         os.path.dirname(__file__), "kivymd", "__init__.py"
     )
@@ -27,6 +28,7 @@ def get_version() -> str:
 
 def write_version_info():
     """Create _version.py file with git revision and date."""
+
     filename = os.path.join(os.path.dirname(__file__), "kivymd", "_version.py")
     version = get_version()
     epoch = int(os.environ.get("SOURCE_DATE_EPOCH", time()))
@@ -51,10 +53,10 @@ def write_version_info():
 
     version_info = (
         f"# THIS FILE IS GENERATED FROM KIVYMD SETUP.PY\n"
-        f'__version__ = "{version}"\n'
-        f'__hash__ = "{git_revision}"\n'
-        f'__short_hash__ = "{git_revision[:7]}"\n'
-        f'__date__ = "{date}"\n'
+        f"__version__ = '{version}'\n"
+        f"__hash__ = '{git_revision}'\n"
+        f"__short_hash__ = '{git_revision[:7]}'\n"
+        f"__date__ = '{date}'\n"
     )
 
     open(filename, "wt", encoding="utf-8").write(version_info)

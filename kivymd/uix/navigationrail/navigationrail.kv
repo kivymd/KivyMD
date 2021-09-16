@@ -55,16 +55,20 @@
 
 <BaseNavigationRailBoxItem>
     spacing: "8dp"
-    padding: "16dp"
+    padding: "8dp",
 
 
 <MDNavigationRailItem>
     orientation: "vertical"
-    spacing: "12dp"
+    spacing: "12dp" if self.orientation == "horizontal" else "0dp" 
     adaptive_height: True
+    # on_size: print(self.size)
 
     MDIcon:
         id: btn_icon
+        # md_bg_color: [0,0.5,0,0.5]
+        size_hint: None,None
+        size: [root.normal_width-root.padding[0]-root.padding[2],self.font_size]
         icon: root.icon
         font_size: "24dp"
         halign: "center"
@@ -72,19 +76,21 @@
         text_color:
             root.theme_cls.text_color \
             if not root._color_normal else root._color_normal
-        pos_hint: {"center_y": .5}
+        pos_hint: {"center_x": .5,"center_y": .5}
 
     MDLabel:
         id: lbl_text
+        # md_bg_color: [0,0,0,0.5]
         text: root.text
         size_hint_y: None
         height: self.texture_size[1]
-        halign: "center"
+        halign: "left" if root.orientation == "horizontal" else "center"
         markup: True
         theme_text_color: "Custom"
         text_color:
             btn_icon.text_color \
             if root.navigation_rail.visible == "Persistent" else (0, 0, 0, 0)
+        pos_hint: {"center_x": .5,"center_y": .5}
 
 
 <MDNavigationRail>
@@ -103,4 +109,4 @@
 
         MDList:
             id: box
-            spacing: "8dp"
+            spacing: "10dp"

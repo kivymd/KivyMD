@@ -224,16 +224,18 @@ class MDNavigationRailItem(
     _color_normal = ColorProperty(None)
     _color_active = ColorProperty(None)
 
+    normal_width = NumericProperty(dp(72))
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._no_ripple_effect = True
-        Clock.schedule_once(self.set_width)
+        # Clock.schedule_once(self.set_width)
 
     def set_width(self, interval: Union[int, float]) -> NoReturn:
         """Sets the size of the menu item."""
 
         self.size_hint = (None, None)
-        self.size = (self.navigation_rail.width, self.navigation_rail.width)
+        self.width = self.navigation_rail.normal_width # (self.navigation_rail.normal_width, self.navigation_rail.width)
 
     def on_enter(self) -> NoReturn:
         if self.navigation_rail.use_hover_behavior:
@@ -554,6 +556,14 @@ class MDNavigationRail(MDCard):
     and defaults to `'close'`.
     """
 
+    normal_width = NumericProperty(dp(72))
+    # width used for close state
+    # also used for railitems icon width
+
+    open_width = NumericProperty(dp(72)*4)
+    # width used for open state
+    # also used to set railitems width
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.floating_action_button = None
@@ -639,7 +649,7 @@ class MDNavigationRail(MDCard):
                 )
 
         if self.use_resizeable:
-            anim = Animation(width=self.width * 4, d=0.2)
+            anim = Animation(width=self.open_width, d=0.2)
             anim.bind(on_complete=set_opacity_title_component)
             anim.start(self)
 
@@ -654,7 +664,7 @@ class MDNavigationRail(MDCard):
 
     def close(self) -> NoReturn:
         if self.use_resizeable:
-            Animation(width=self.width / 4, d=0.2).start(self)
+            Animation(width=self.normal_width, d=0.2).start(self)
             if self.use_title:
                 Animation(opacity=0, d=0.2).start(
                     self.ids.box_title.children[0].ids.lbl_title
@@ -699,7 +709,7 @@ class MDNavigationRail(MDCard):
     def on_use_title(
         self, instance_navigation_rail, title_value: bool
     ) -> NoReturn:
-        def add_title(interval):
+        def add_title(interval: Union[int, float]) -> NoReturn:
             if title_value:
                 self.ids.box_title.add_widget(
                     NavigationRailTitle(
@@ -714,16 +724,17 @@ class MDNavigationRail(MDCard):
     def on_use_resizeable(
         self, instance_navigation_rail, resizeable_value: bool
     ) -> NoReturn:
-        def add_item(interval):
+        def add_item(interval: Union[int, float]) -> NoReturn:
             if resizeable_value:
                 for widget in self.ids.box.children:
                     if isinstance(widget, MDNavigationRailItem):
                         widget.orientation = "horizontal"
-                        self.ids.box.spacing = "24dp"
+                        self.ids.box.spacing = "20dp"
                         self.use_hover_behavior = False
                         widget._no_ripple_effect = True
                         widget.size_hint_x = None
-                        widget.width = self.width * 2
+                        widget.width = self.open_width
+                        widget.normal_width = self.normal_width
 
         Clock.schedule_once(add_item)
 
@@ -758,7 +769,7 @@ class MDNavigationRail(MDCard):
 
     def set_width(self, interval: Union[int, float]) -> NoReturn:
         self.size_hint_x = None
-        self.width = dp(72)
+        self.width = self.normal_width
 
     def set_box_title_size(self, interval: Union[int, float]) -> NoReturn:
         if not self.use_title:

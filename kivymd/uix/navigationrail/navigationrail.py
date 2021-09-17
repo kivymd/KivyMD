@@ -555,21 +555,17 @@ class MDNavigationRail(MDCard):
     :attr:`rail_state` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'close'`.
     """
-
-    normal_width = NumericProperty(dp(72))
+    
     normal_width = NumericProperty(dp(72))
     """
     Width used for close state also used for rail items icon width.
-
     :attr:`normal_width` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(72)`.
     """
 
     open_width = NumericProperty(dp(72)*4)
-
     """
     width used for open state also used to set railitems width
-
     :attr:`normal_width` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(72)`.
     """
@@ -644,6 +640,8 @@ class MDNavigationRail(MDCard):
             self.bind(color_normal=widget.setter("color_normal"))
             self.bind(color_normal=widget.setter("_color_normal"))
             self.bind(color_active=widget.setter("color_active"))
+            self.bind(normal_width=widget.setter("normal_width"))
+            self.bind(open_width=widget.setter("width"))
             self.ids.box.add_widget(widget)
         else:
             return super().add_widget(widget)
@@ -690,6 +688,14 @@ class MDNavigationRail(MDCard):
                     _alpha=0,
                 ).start(self.floating_action_button)
             self.dispatch("on_close")
+
+    def on_normal_width(self, instance, value):
+        if self.rail_state == "close":
+            self.width = value
+
+    def on_open_width(self, instance, value):
+        if self.rail_state == "open":
+            self.width = value
 
     def on_rail_state(self, instance, value):
         if value == "open":

@@ -67,8 +67,8 @@
     MDIcon:
         id: btn_icon
         # md_bg_color: [0,0.5,0,0.5]
-        size_hint: None,None
-        size: [root.normal_width-root.padding[0]-root.padding[2],self.font_size]
+        size_hint: None, None
+        size: [root.normal_width-root.padding[0]-root.padding[2], self.font_size]
         icon: root.icon
         font_size: "24dp"
         halign: "center"
@@ -76,7 +76,7 @@
         text_color:
             root.theme_cls.text_color \
             if not root._color_normal else root._color_normal
-        pos_hint: {"center_x": .5,"center_y": .5}
+        pos_hint: {"center_x": .5, "center_y": .5}
 
     MDLabel:
         id: lbl_text

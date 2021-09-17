@@ -557,12 +557,22 @@ class MDNavigationRail(MDCard):
     """
 
     normal_width = NumericProperty(dp(72))
-    # width used for close state
-    # also used for railitems icon width
+    normal_width = NumericProperty(dp(72))
+    """
+    Width used for close state also used for rail items icon width.
+
+    :attr:`normal_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(72)`.
+    """
 
     open_width = NumericProperty(dp(72)*4)
-    # width used for open state
-    # also used to set railitems width
+
+    """
+    width used for open state also used to set railitems width
+
+    :attr:`normal_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(72)`.
+    """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -297,7 +297,7 @@ You can add MDTooltips to the Toolbar icons by ading a text string to the toolba
     `Components-Bottom-App-Bar <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-App-Bar>`_
 """
 
-__all__ = ("MDToolbar", "MDBottomAppBar")
+__all__ = ("MDToolbar", "MDBottomAppBar", "MDActionTopAppBarButton")
 
 import os
 from math import cos, radians, sin

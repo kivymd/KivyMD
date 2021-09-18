@@ -22,7 +22,7 @@ import requests
 
 os.environ["KIVY_NO_ARGS"] = "1"
 
-from kivymd.tools.release.git_commands import git_commit
+from kivymd.tools.release.git_commands import git_commit  # NOQA E402
 
 # Paths to files in kivymd repository
 kivymd_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))

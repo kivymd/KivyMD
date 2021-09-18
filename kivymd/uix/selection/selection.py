@@ -323,7 +323,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
     instance_icon = ObjectProperty()
     """
     Instance of :class:`~kivymd.uix.selection.SelectionIconCheck` class.
-    
+
     :attr:`instance_icon` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """

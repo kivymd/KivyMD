@@ -62,7 +62,7 @@ Usage
     :align: center
 """
 
-__all__ = ("MDDialog",)
+__all__ = ("MDDialog", "BaseDialog")
 
 import os
 

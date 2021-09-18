@@ -17,3 +17,4 @@ Unreleased
 * Now all modules from the `uix <https://github.com/kivymd/KivyMD/tree/master/kivymd/uix>`_ directory are packages;
 * Type hints have been added to the source code of the KivyMD library;
 * Added `divider_color <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem.divider_color>`_ attribute to `BaseListItem <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem>`_ class;
+* Added `load_all_kv_files method <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp.load_all_kv_files>`_ to `MDApp <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp>`_ class

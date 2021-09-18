@@ -1,1 +1,1 @@
-from .label import MDIcon, MDLabel
+from .label import MDIcon, MDLabel  # NOQA F401

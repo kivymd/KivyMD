@@ -1,1 +1,1 @@
-from .dialog import BaseDialog, MDDialog
+from .dialog import BaseDialog, MDDialog  # NOQA F401

@@ -1,1 +1,1 @@
-from .timepicker import MDTimePicker
+from .timepicker import MDTimePicker  # NOQA F401

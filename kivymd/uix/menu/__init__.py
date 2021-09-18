@@ -1,1 +1,1 @@
-from .menu import MDDropdownMenu
+from .menu import MDDropdownMenu  # NOQA F401

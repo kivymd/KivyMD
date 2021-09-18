@@ -1,1 +1,1 @@
-from .banner import MDBanner
+from .banner import MDBanner  # NOQA F401

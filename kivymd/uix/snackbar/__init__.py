@@ -1,1 +1,1 @@
-from .snackbar import Snackbar
+from .snackbar import Snackbar  # NOQA F401

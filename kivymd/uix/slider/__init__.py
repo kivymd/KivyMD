@@ -1,1 +1,1 @@
-from .slider import MDSlider
+from .slider import MDSlider  # NOQA F401

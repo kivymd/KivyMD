@@ -1,1 +1,1 @@
-from .selection import MDSelectionList
+from .selection import MDSelectionList  # NOQA F401

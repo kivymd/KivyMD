@@ -1,1 +1,1 @@
-from .spinner import MDSpinner
+from .spinner import MDSpinner  # NOQA F401

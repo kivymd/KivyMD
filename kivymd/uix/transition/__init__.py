@@ -1,1 +1,1 @@
-from .transition import MDFadeSlideTransition
+from .transition import MDFadeSlideTransition  # NOQA F401

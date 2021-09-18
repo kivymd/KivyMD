@@ -1,1 +1,1 @@
-from .datatables import MDDataTable
+from .datatables import MDDataTable  # NOQA F401

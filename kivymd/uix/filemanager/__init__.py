@@ -1,1 +1,1 @@
-from .filemanager import MDFileManager
+from .filemanager import MDFileManager  # NOQA F401

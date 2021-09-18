@@ -5,8 +5,6 @@ Behaviors/Background Color
 .. note:: The following classes are intended for in-house use of the library.
 """
 
-__all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
-
 from typing import List, NoReturn
 
 from kivy.lang import Builder
@@ -26,6 +24,9 @@ from kivymd.color_definitions import hue, palette, text_colors
 from kivymd.theming import ThemeManager
 
 from .elevation import CommonElevationBehavior
+
+__all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
+
 
 Builder.load_string(
     """

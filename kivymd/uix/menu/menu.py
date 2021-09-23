@@ -605,7 +605,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     caller = ObjectProperty()
     """
-    The widget object that caller the menu window.
+    The widget object that calls the menu window.
 
     :attr:`caller` is a :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.

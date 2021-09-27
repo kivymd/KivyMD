@@ -63,8 +63,9 @@ Example
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang import Builder
+
+    from kivymd.app import MDApp
 
 
     class Test(MDApp):
@@ -73,7 +74,7 @@ Example
             self.theme_cls.primary_palette = "Gray"
             return Builder.load_string(
                 '''
-    BoxLayout:
+    MDBoxLayout:
         orientation:'vertical'
 
         MDToolbar:
@@ -456,11 +457,12 @@ class TabbedPanelBase(
 class MDBottomNavigation(TabbedPanelBase):
     """
     A bottom navigation that is implemented by delegating all items to a
-    :class:`~kivy.uix.screenmanager,ScreenManager`.
+    :class:`~kivy.uix.screenmanager.ScreenManager`.
 
     :Events:
         :attr:`on_switch_tabs`
-            Called when switching tabs. Returns the object of the tab to be opened.
+            Called when switching tabs. Returns the object of the tab to be
+            opened.
 
         .. versionadded:: 1.0.0
     """
@@ -552,11 +554,6 @@ class MDBottomNavigation(TabbedPanelBase):
                     self.tab_header.active = True
                 else:
                     self.tab_header._label_font_size = sp(12)
-
-    def on_panel_color(
-        self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
-        self.tab_header.panel_color = color
 
     def on_use_text(
         self, instance_bottom_navigation, use_text_value: bool

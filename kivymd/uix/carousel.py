@@ -115,7 +115,7 @@ class MDCarousel(Carousel):
                 _current.pos = (xoff, y)
 
                 if self._scrolling:
-                    self.dispatch("on_slide_progress", (xoff, y))
+                    self.dispatch("on_slide_progress", xoff)
 
             if skip_next:
                 return
@@ -209,7 +209,7 @@ class MDCarousel(Carousel):
         anim.bind(
             on_complete=_cmp,
             on_progress=lambda *args: self.dispatch(
-                "on_slide_progress", (self._offset, 0)
+                "on_slide_progress", self._offset
             ),
         )
         anim.start(self)

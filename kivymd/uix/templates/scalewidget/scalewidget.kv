@@ -1,0 +1,10 @@
+<ScaleWidget>
+    canvas.before:
+        PushMatrix
+        Scale:
+            x: self.scale_value_x
+            y: self.scale_value_y
+            z: self.scale_value_x
+            origin: self.center
+    canvas.after:
+        PopMatrix

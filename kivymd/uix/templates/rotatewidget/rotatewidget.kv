@@ -1,0 +1,9 @@
+<RotateWidget>
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self.rotate_value_angle
+            axis: tuple(self.rotate_value_axis)
+            origin: self.center
+    canvas.after:
+        PopMatrix

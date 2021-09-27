@@ -1,0 +1,13 @@
+<StencilWidget>
+    canvas.before:
+        StencilPush
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
+        StencilUse
+    canvas.after:
+        StencilUnUse
+        RoundedRectangle:
+            pos: root.pos
+            size: root.size
+        StencilPop

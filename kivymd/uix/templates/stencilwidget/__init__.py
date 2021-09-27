@@ -1,0 +1,1 @@
+from .stencilwidget import StencilWidget

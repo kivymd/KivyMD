@@ -31,16 +31,16 @@ We do not recommend that you change this.
 However, if you do need to change the standard colors, for instance to meet branding
 guidelines, you can do this by overloading the `color_definitions.py` object.
 
-* Create a custom color defintion object. This should have the same format as the `colors <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#module-kivymd.color_definitions>`_ object in `color_definitions.py` and contain definitions for at least the primary color, the accent color and the Light and Dark backgrounds.
+Create a custom color defintion object. This should have the same format as
+the `colors <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#module-kivymd.color_definitions>`_
+object in `color_definitions.py` and contain definitions for at least the
+primary color, the accent color and the Light and Dark backgrounds.
 
-.. note::
-
-    Your custom colors *must* use the names of the `existing colors as
-    defined in the palette <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
+.. note:: Your custom colors *must* use the names of the `existing colors as
+    defined in the palette<https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
     e.g. You can have `Blue` but you cannot have `NavyBlue`.
 
-
-* Add the custom theme to the MDApp as shown in the following snippet.
+Add the custom theme to the MDApp as shown in the following snippet.
 
 .. code-block:: python
 
@@ -84,6 +84,22 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
             "A200": "91cee3",
             "A400": "62acce",
             "A700": "487fa5",
+        },
+        "Red": {
+            "50": "FFEBEE",
+            "100": "FFCDD2",
+            "200": "EF9A9A",
+            "300": "E57373",
+            "400": "EF5350",
+            "500": "F44336",
+            "600": "E53935",
+            "700": "D32F2F",
+            "800": "C62828",
+            "900": "B71C1C",
+            "A100": "FF8A80",
+            "A200": "FF5252",
+            "A400": "FF1744",
+            "A700": "D50000",
         },
         "Light": {
             "StatusBar": "E0E0E0",
@@ -146,11 +162,13 @@ guidelines, you can do this by overloading the `color_definitions.py` object.
 
     Example().run()
 
-This will change the theme colors to your custom defintion. In all other respects,
-the theming stays as documented.
+This will change the theme colors to your custom defintion. In all other
+respects, the theming stays as documented.
 
-
+.. warning:: Please note that the key ``'Red'`` is a required key for the
+    dictionary ``colors``.
 """
+
 from typing import NoReturn
 
 from kivy.app import App

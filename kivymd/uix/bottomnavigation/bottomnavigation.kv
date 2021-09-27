@@ -1,9 +1,10 @@
 #:import sm kivy.uix.screenmanager
+#:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
 
 
 <MDBottomNavigation>
     orientation: "vertical"
-    height: dp(56)
+    height: STANDARD_INCREMENT
 
     ScreenManager:
         id: tab_manager
@@ -18,7 +19,7 @@
     MDBottomNavigationBar:
         id: bottom_panel
         size_hint_y: None
-        height: dp(56)
+        height: STANDARD_INCREMENT
         md_bg_color:
             root.theme_cls.bg_dark \
             if not root.panel_color \
@@ -27,13 +28,13 @@
         MDBoxLayout:
             id: tab_bar
             pos_hint: {"center_x": .5, "center_y": .5}
-            height: dp(56)
+            height: STANDARD_INCREMENT
             size_hint: None, None
 
 
 <MDBottomNavigationHeader>
     md_bg_color: root.panel_color
-    padding: (dp(12), dp(12))
+    padding: "12dp", "12dp"
     on_press: self.tab.dispatch("on_tab_press")
     on_release: self.tab.dispatch("on_tab_release")
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
@@ -57,7 +58,7 @@
             text_color: root._text_color_normal
             opposite_colors: root.opposite_colors
             pos: [self.pos[0], self.pos[1]]
-            font_size: dp(24)
+            font_size: "24dp"
             pos_hint: {"center_x": .5}
             y: item_container.height - dp(8)
 

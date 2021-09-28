@@ -257,17 +257,9 @@ class CommonRipple(object):
             return False
         if not self.collide_point(touch.x, touch.y):
             return False
-
-        if "very_first_object_touched" not in touch.ud:
-            if not self.disabled:
-                touch.ud["very_first_object_touched"] = self
-                self.call_ripple_animation_methods(touch)
-        else:
-            if (
-                touch.ud["very_first_object_touched"] is self
-                and not self.disabled
-            ):
-                self.call_ripple_animation_methods(touch)
+        if not self.disabled:
+            self.call_ripple_animation_methods(touch)
+            return True
 
     def call_ripple_animation_methods(self, touch):
         if self._doing_ripple:

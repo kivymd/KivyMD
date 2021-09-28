@@ -152,7 +152,11 @@ class BaseNavigationRailFloatingButton(MDFloatingActionButton):
     _canvas_width = NumericProperty(0)
     _alpha = NumericProperty(0)
     _padding_right = NumericProperty(0)
-    _lbl_text = MDLabel(markup=True)
+    _lbl_text = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        self._lbl_text = MDLabel(markup=True)
+        super().__init__(**kwargs)
 
     def on_text(self, instance, value):
         self._lbl_text.text = value

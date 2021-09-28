@@ -111,6 +111,7 @@ from kivy.properties import (
     NumericProperty,
     StringProperty,
 )
+from kivy.uix.behaviors import ToggleButtonBehavior
 
 
 class CommonRipple(object):
@@ -252,6 +253,9 @@ class CommonRipple(object):
         self.canvas.after.remove_group("rectangular_ripple_behavior")
 
     def on_touch_down(self, touch):
+        # FIXME: in fact, the output of the super method is extra.
+        #  But without this, the list (`ScrollView`) placed in the `MDCard`
+        #  widget will not scroll.
         super().on_touch_down(touch)
         if touch.is_mouse_scrolling:
             return False
@@ -259,7 +263,15 @@ class CommonRipple(object):
             return False
         if not self.disabled:
             self.call_ripple_animation_methods(touch)
-            return True
+            # FIXME: this check is needed for the `MDTabsLabel` object.
+            #  With the normal `return True`, events for tabs from the `MDTabs`
+            #  class are not processed.
+            #  There may be problems with other widgets.
+            #  Status: requires check.
+            if isinstance(self, ToggleButtonBehavior):
+                return super().on_touch_down(touch)
+            else:
+                return True
 
     def call_ripple_animation_methods(self, touch):
         if self._doing_ripple:

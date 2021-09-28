@@ -2,6 +2,8 @@
 Templates/StencilWidget
 =======================
 
+.. versionadded:: 1.0.0
+
 Base class for controlling the stencil instructions of the widget.
 
 .. note:: See `Stencil instructions

@@ -2,6 +2,8 @@
 Templates/ScaleWidget
 =====================
 
+.. versionadded:: 1.0.0
+
 Base class for controlling the scale of the widget.
 
 .. note:: See `kivy.graphics.Scale

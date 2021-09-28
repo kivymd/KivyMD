@@ -2,6 +2,8 @@
 Templates/RotateWidget
 ======================
 
+.. versionadded:: 1.0.0
+
 Base class for controlling the rotate of the widget.
 
 .. note:: See `kivy.graphics.Rotate

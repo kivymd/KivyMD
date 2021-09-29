@@ -1,23 +1,25 @@
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
-#:import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
 
 
 <CellRow>
     orientation: "vertical"
-
-    canvas.before:
-        Color:
-            rgba:
-                (\
-                root.theme_cls.bg_darkest \
-                if root.theme_cls.theme_style == "Light" else \
-                root.theme_cls.bg_light \
-                ) \
-                if self.selected else root.theme_cls.bg_normal
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
+    md_bg_color:
+        ( \
+        ( \
+        root.theme_cls.bg_darkest \
+        if root.theme_cls.theme_style == "Light" else \
+        root.theme_cls.bg_light \
+        ) \
+        if not root.background_color_selected_cell \
+        else root.background_color_selected_cell \
+        ) \
+        if self.selected \
+        else \
+        ( \
+        root.theme_cls.bg_normal \
+        if not root.background_color_cell \
+        else root.background_color_cell \
+        )
     on_press: if DEVICE_TYPE != "desktop": root.table.on_mouse_select(self)
     on_enter: if DEVICE_TYPE == "desktop": root.table.on_mouse_select(self)
 
@@ -73,8 +75,7 @@
         MDLabel:
             id: lbl
             text: " " + root.text
-            size_hint_y: None
-            height: self.texture_size[1]
+            adaptive_height: True
             bold: True
             markup: True
             color:
@@ -108,6 +109,10 @@
         cols_minimum: root.cols_minimum
         adaptive_size: True
         padding: 0, "8dp", 0, 0
+        md_bg_color:
+            root.theme_cls.bg_light \
+            if not root.background_color_header \
+            else root.background_color_header
 
         MDBoxLayout:
             orientation: "vertical"
@@ -134,7 +139,6 @@
     data: root.recycle_data
     data_first_cells: root.data_first_cells
     key_viewclass: "viewclass"
-    # effect_cls: StiffScrollEffect
 
     TableRecycleGridLayout:
         id: row_controller
@@ -167,9 +171,10 @@
     MDDropDownItem:
         id: drop_item
         pos_hint: {'center_y': .5}
-        text: str(root.table_data.rows_num)
         font_size: "14sp"
         on_release: root.table_data.open_pagination_menu()
+        text:
+            f"{root.table_data.rows_num if root.table_data.rows_num < len(root.table_data.row_data) else len(root.table_data.row_data)}"
 
     Widget:
         size_hint_x: None
@@ -177,9 +182,7 @@
 
     MDLabel:
         id: label_rows_per_page
-        text: f"1-{root.table_data.rows_num} of {len(root.table_data.row_data)}"
-        size_hint: None, None
-        size: self.texture_size
+        adaptive_size: True
         -text_size: None, None
         pos_hint: {"center_y": .5}
         font_style: "Caption"
@@ -187,6 +190,10 @@
             (1, 1, 1, 1) \
             if root.theme_cls.theme_style == "Dark" else \
             (0, 0, 0, 1)
+        text:
+            f"1-" \
+            f"{root.table_data.rows_num if root.table_data.rows_num < len(root.table_data.row_data) else len(root.table_data.row_data)} " \
+            f"of {len(root.table_data.row_data)}"
 
     MDIconButton:
         id: button_back

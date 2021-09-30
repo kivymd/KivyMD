@@ -19,9 +19,10 @@ from kivy.properties import (
     ReferenceListProperty,
     StringProperty,
     VariableListProperty,
+    ObjectProperty
 )
 from kivy.utils import get_color_from_hex
-
+from kivy.graphics.instructions import CanvasBase
 from kivymd.color_definitions import hue, palette, text_colors
 from kivymd.theming import ThemeManager
 
@@ -32,39 +33,119 @@ Builder.load_string(
 #:import RelativeLayout kivy.uix.relativelayout.RelativeLayout
 
 
-<BackgroundColorBehavior>
+# <BackgroundColorBehavior>
+
+
+<RoundedRectangularColorBehavior>:
+    _md_bg_color: md_bg_color
+    PushMatrix
+    Rotate:
+        angle: self.angle
+        origin: self._background_origin
+
+    Color:
+        rgba: self._md_bg_color
+    RoundedRectangle:
+        group: "Background_instruction"
+        size: self.size
+        pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
+        radius: root.radius
+        source: root.background
+
+    Color:
+        rgba: self.line_color if self.line_color else (0, 0, 0, 0)
+    Line:
+        rounded_rectangle:
+            [ \
+            self.x, \
+            self.y, \
+            self.width, \
+            self.height, \
+            *self.radius, \
+            100, \
+            ]
+
+    PopMatrix
+
+
+<RectangularColorBehavior>:
     canvas.before:
         PushMatrix
         Rotate:
             angle: self.angle
             origin: self._background_origin
+
         Color:
-            rgba: self.md_bg_color
-        RoundedRectangle:
+            rgba: self._md_bg_color
+        Rectangle:
             group: "Background_instruction"
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
-            radius: root.radius
             source: root.background
+
         Color:
             rgba: self.line_color if self.line_color else (0, 0, 0, 0)
         Line:
-            rounded_rectangle:
-                [ \
-                self.x,
-                self.y, \
-                self.width, \
-                self.height, \
-                *self.radius, \
-                100, \
-                ]
+            rectangle: [\
+                self.x, self.y, \
+                self.width, self.height, \
+            ]
+
         PopMatrix
+
+
+<EllipseColorBehavior>:
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: self.angle
+            origin: self._background_origin
+
+        Color:
+            rgba: self._md_bg_color
+        Ellipse:
+            pos: self.pos
+            size: self.size
+            angle_start: self.angle_start
+            angle_end: self.angle_end
+
+        Color:
+            rgba: self.line_color if self.line_color else (0, 0, 0, 0)
+        Line:
+            ellipse: [\
+                self.x, self.y, \
+                self.width, self.height, \
+                self.angle_start,self.angle_end, \
+                100, \
+            ]
+
+        PopMatrix
+
 """,
     filename="BackgroundColorBehavior.kv",
 )
 
 
 class BackgroundColorBehavior(CommonElevationBehavior):
+    """
+    This is a Meta class, `BackgroundColorBehavior` will manage all the color
+    behavior that is shared across kivymd, here we set the memory namespaces
+    and basic behavior.
+
+    Rememebr that most MD widgets relly in this class as it manages the
+    background color.
+
+    Usually we define our canvas instructions on the new widget, you can use
+    this class directly as controller and add your own instructions or you
+    can use one of the pre fabricated instructions such as:
+    * :class:`~RoundedRectangularColorBehavior` : Draws a RoundedRectangle.
+    * :class:`~RectangularColorBehavior`: Draws a Rectangle.
+    * :class:`~EllipseColorBehavior`: Draws an Ellipse.
+
+    Rememebr that all this pre fabricated classes work directly under the
+    canvas.before canvas layer.
+
+    """
     background = StringProperty()
     """
     Background image path.
@@ -120,7 +201,19 @@ class BackgroundColorBehavior(CommonElevationBehavior):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    md_bg_color = ReferenceListProperty(r, g, b, a)
+    _md_bg_color = ReferenceListProperty(r, g, b, a)
+    """
+    Current color of the widget.
+
+    This color will reflect directly on the canvas instruction that is bound to.
+
+    You can change this color and turn back to :attr:`md_bg_color` anytime.
+
+    This has been done this way to allow developers to easely manage the current
+    color and the "default" color.
+    """
+
+    md_bg_color = ColorProperty(None)
     """
     The background color of the widget (:class:`~kivy.uix.widget.Widget`)
     that will be inherited from the :attr:`BackgroundColorBehavior` class.
@@ -141,12 +234,20 @@ class BackgroundColorBehavior(CommonElevationBehavior):
 
     .. code-block:: kv
 
-        <MyWidget@BackgroundColorBehavior>
+        <MyWidget@RectangularColorBehavior>
             md_bg_color: 0, 1, 1, 1
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ReferenceListProperty`
+    use any of the following behaviors that already have canvas instructions:
+    * :class:`~RoundedRectangularColorBehavior`
+    * :class:`~RectangularColorBehavior`
+    * :class:`~EllipseColorBehavior`
+
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
     """
+
+    md_bg_color_disabled = ColorProperty(None)
+
 
     line_color = ColorProperty([0, 0, 0, 0])
     """
@@ -180,6 +281,25 @@ class BackgroundColorBehavior(CommonElevationBehavior):
     def __init__(self, **kwarg):
         super().__init__(**kwarg)
         self.bind(pos=self.update_background_origin)
+        self.bind(md_bg_color=self.update_bg_color)
+
+    def update_bg_color(self, instance, value):
+        """
+        This method updates the background color in a standard way.
+        rememebr _md_bg_color is the current background color.
+        while the md_bg_color is the Normal state of the background.
+        this is done to help developers to design icons that have different
+        states easier, rather than cleaning up or making a widget from 0.
+
+        Overwrite this method to extend the functionallity.
+
+        rememrber to keep the on_disabled method active as it will keep the
+        disbaled status of the widget.
+        """
+        if self.disabled is True:
+            self.on_disabled(self, self.disabled)
+            return
+        self._md_bg_color = self.md_bg_color
 
     def update_background_origin(
         self, instance_md_widget, pos: List[float]
@@ -188,6 +308,13 @@ class BackgroundColorBehavior(CommonElevationBehavior):
             self._background_origin = self.background_origin
         else:
             self._background_origin = self.center
+
+    def on_disabled(self, instance, value: bool) -> NoReturn:
+        if value is False:
+            self.update_bg_color(self, self.md_bg_color)
+            return
+        if self.md_bg_color_disabled:
+            self._md_bg_color = self.md_bg_color_disabled
 
 
 class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
@@ -255,3 +382,17 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
             secondary_color[3] = 0.7
         self.specific_text_color = color
         self.specific_secondary_text_color = secondary_color
+
+
+class RoundedRectangularColorBehavior(BackgroundColorBehavior):
+    pass
+
+
+class RectangularColorBehavior(BackgroundColorBehavior):
+    pass
+
+
+class EllipseColorBehavior(BackgroundColorBehavior):
+    angle_start: int = NumericProperty(0)
+    angle_end: int = NumericProperty(360)
+    pass

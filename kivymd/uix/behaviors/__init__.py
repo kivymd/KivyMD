@@ -10,6 +10,9 @@ from .hover_behavior import HoverBehavior  # isort:skip
 from .backgroundcolor_behavior import (
     BackgroundColorBehavior,
     SpecificBackgroundColorBehavior,
+    RoundedRectangularColorBehavior,
+    RectangularColorBehavior,
+    EllipseColorBehavior,
 )
 from .elevation import (
     CircularElevationBehavior,

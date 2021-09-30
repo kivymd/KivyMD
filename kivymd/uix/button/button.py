@@ -466,6 +466,8 @@ from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
+    RectangularColorBehavior,
+    EllipseColorBehavior,
     CircularElevationBehavior,
     CircularRippleBehavior,
     CommonElevationBehavior,
@@ -481,7 +483,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
+class BaseButton(BackgroundColorBehavior, ThemableBehavior, ButtonBehavior, AnchorLayout):
     """Base class for all buttons."""
 
     text = StringProperty(" ")
@@ -572,7 +574,7 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """
 
     _radius = NumericProperty(0)
-    _md_bg_color = ColorProperty(None)  # last current button color
+    # _md_bg_color = ColorProperty(None)  # last current button color
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -631,12 +633,12 @@ class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
                 self.md_bg_color_disabled = (
                     self.theme_cls.disabled_hint_text_color
                 )
-            self.md_bg_color = self.md_bg_color_disabled
+            self._md_bg_color = self.md_bg_color_disabled
         # Sets last current button background color.
         else:
-            self.md_bg_color = (
-                self._md_bg_color
-                if self._md_bg_color
+            self._md_bg_color = (
+                self.md_bg_color
+                if self.md_bg_color
                 else self.theme_cls.primary_color
             )
 
@@ -689,7 +691,7 @@ class BasePressedButton(BaseButton):
 class BaseRectangularButton(
     RectangularRippleBehavior,
     FakeRectangularElevationBehavior,
-    BackgroundColorBehavior,
+    # RectangularColorBehavior,
     BasePressedButton,
     BaseButton,
 ):
@@ -737,8 +739,8 @@ class BaseFlatButton(BaseRectangularButton):
                 else self.theme_cls.disabled_hint_text_color
             )
         else:
-            if self._md_bg_color:
-                self.md_bg_color = self._md_bg_color
+            if self.md_bg_color:
+                self._md_bg_color = self.md_bg_color
 
     def on_elevation(self, instance_button, elevation_value: int) -> NoReturn:
         """
@@ -751,7 +753,7 @@ class BaseFlatButton(BaseRectangularButton):
         super().on_elevation(instance_button, elevation_value)
 
 
-class BaseElevationButton(CommonElevationBehavior, BaseButton):
+class BaseElevationButton(BaseButton, CommonElevationBehavior):
     """
     Base class for raised buttons.
     Implements elevation behavior as well as the recommended down/disabled
@@ -1135,8 +1137,8 @@ class MDFillRoundFlatIconButton(MDRoundFlatIconButton):
                 )
             self.md_bg_color = self.md_bg_color_disabled
         else:
-            if self._md_bg_color:
-                self.md_bg_color = self._md_bg_color
+            if self.md_bg_color:
+                self._md_bg_color = self.md_bg_color
 
     def set_icon_color(self, interval):
         pass

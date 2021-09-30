@@ -1479,6 +1479,24 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         self.pagination.ids.button_back.disabled = True
         Clock.schedule_once(self.create_pagination_menu, 0.5)
 
+    def add_row(self, data: Union[list, tuple]) -> NoReturn:
+        """
+        Added new row to common table.
+
+        .. versionadded:: 1.0.0
+        """
+
+        self.row_data.append(data)
+
+    def remove_row(self, data: Union[list, tuple]) -> NoReturn:
+        """
+        Removed row from common table.
+
+        .. versionadded:: 1.0.0
+        """
+
+        self.row_data.remove(data)
+
     def on_row_press(self, instance_cell_row) -> NoReturn:
         """Called when a table row is clicked."""
 

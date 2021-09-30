@@ -283,7 +283,7 @@ class BackgroundColorBehavior(CommonElevationBehavior):
         self.bind(pos=self.update_background_origin)
         self.bind(md_bg_color=self.update_bg_color)
 
-    def update_bg_color(self, instance, value):
+    def update_bg_color(self, instance, value: list) -> NoReturn:
         """
         This method updates the background color in a standard way.
         rememebr _md_bg_color is the current background color.
@@ -299,7 +299,9 @@ class BackgroundColorBehavior(CommonElevationBehavior):
         if self.disabled is True:
             self.on_disabled(self, self.disabled)
             return
-        self._md_bg_color = self.md_bg_color
+
+        if self.md_bg_color:
+            self._md_bg_color = self.md_bg_color
 
     def update_background_origin(
         self, instance_md_widget, pos: List[float]

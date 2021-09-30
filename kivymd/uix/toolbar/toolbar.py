@@ -322,6 +322,7 @@ from kivymd import uix_path
 from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
@@ -617,14 +618,14 @@ class MDToolbar(NotchedBox):
         Window.bind(on_resize=self._on_resize)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         # self.bind(opposite_colors=self.update_opposite_colors)
-        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        self.theme_cls.bind(primary_palette=self.update_bg_color)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items)
         )
         Clock.schedule_once(
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
-        Clock.schedule_once(lambda x: self.set_md_bg_color(0, self.md_bg_color))
+        Clock.schedule_once(lambda x: self.update_bg_color(0, self.md_bg_color))
 
     def on_type(self, instance, value):
         if value == "bottom":
@@ -647,7 +648,7 @@ class MDToolbar(NotchedBox):
 
     def on_md_bg_color(self, instance, value):
         if self.type == "bottom":
-            self.md_bg_color = [0, 0, 0, 0]
+            self._md_bg_color = [0, 0, 0, 0]
 
     def on_left_action_items(self, instance, value):
         self.update_action_bar(self.ids["left_actions"], value)
@@ -655,9 +656,16 @@ class MDToolbar(NotchedBox):
     def on_right_action_items(self, instance, value):
         self.update_action_bar(self.ids["right_actions"], value)
 
-    def set_md_bg_color(self, instance, value):
-        if value == [1.0, 1.0, 1.0, 0.0]:
-            self.md_bg_color = self.theme_cls.primary_color
+    def update_bg_color(self, instance, value):
+        if self.disabled is True:
+            self.on_disabled(self, self.disabled)
+            return
+        if not self.md_bg_color:
+            self._md_bg_color = self.theme_cls._get_primary_color()
+            # self._md_bg_color = self.theme_cls.primary_color
+            return
+        self._md_bg_color = self.md_bg_color
+
 
     def update_action_bar(self, action_bar, action_bar_items):
         action_bar.clear_widgets()
@@ -687,8 +695,8 @@ class MDToolbar(NotchedBox):
             )
         action_bar.width = new_width
 
-    def update_md_bg_color(self, *args):
-        self.md_bg_color = self.theme_cls._get_primary_color()
+    # def update_md_bg_color(self, *args):
+    #     self.md_bg_color = self.theme_cls._get_primary_color()
 
     def update_opposite_colors(self, instance, value):
         if value:
@@ -787,8 +795,8 @@ class MDToolbar(NotchedBox):
             ][self.theme_cls.primary_hue]
 
 
-class MDBottomAppBar(FloatLayout):
-    md_bg_color = ColorProperty([0, 0, 0, 0])
+class MDBottomAppBar(BackgroundColorBehavior, FloatLayout):
+    md_bg_color = ColorProperty(None)
     """
     Color toolbar.
 

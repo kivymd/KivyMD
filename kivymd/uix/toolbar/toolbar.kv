@@ -24,16 +24,20 @@
     canvas:
         Color:
             rgba:
+                # ( \
+                # root.theme_cls.primary_color \
+                # if root._md_bg_color == [0, 0, 0, 0] \
+                # else root._md_bg_color \
+                # ) \
+                # if root.type == "top" else \
+                # ( \
+                # root.theme_cls.primary_color \
+                # if root.parent._md_bg_color == [0, 0, 0, 0] \
+                # else root.parent._md_bg_color \
+                # )
                 ( \
-                root.theme_cls.primary_color \
-                if root.md_bg_color == [0, 0, 0, 0] \
-                else root.md_bg_color \
-                ) \
-                if root.type == "top" else \
-                ( \
-                root.theme_cls.primary_color \
-                if root.parent.md_bg_color == [0, 0, 0, 0] \
-                else root.parent.md_bg_color \
+                root._md_bg_color if root.type == "top" \
+                else root.parent._md_bg_color \
                 )
         Mesh:
             vertices: root._vertices_left

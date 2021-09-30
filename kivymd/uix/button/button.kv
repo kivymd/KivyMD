@@ -1,9 +1,9 @@
 <BaseButton>
-    canvas.before:
+    canvas:
         Clear
         Color:
             rgba:
-                self.md_bg_color if not self.disabled else \
+                self._md_bg_color if not self.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
         RoundedRectangle:
@@ -32,11 +32,11 @@
 
 
 <BaseRoundButton>
-    canvas.before:
+    canvas:
         Clear
         Color:
             rgba:
-                (self.md_bg_color if root.icon in md_icons else (0, 0, 0, 0)) \
+                (self._md_bg_color if root.icon in md_icons else (0, 0, 0, 0)) \
                 if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
@@ -87,8 +87,8 @@
     canvas.before:
         Color:
             rgba:
-                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
-                else root.md_bg_color) if not root.disabled else \
+                (root.theme_cls.primary_color if root._md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root._md_bg_color) if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
         RoundedRectangle:
@@ -104,8 +104,8 @@
     canvas.before:
         Color:
             rgba:
-                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
-                else root.md_bg_color) if not root.disabled else \
+                (root.theme_cls.primary_color if root._md_bg_color == [0.0, 0.0, 0.0, 0.0] \
+                else root._md_bg_color) if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
         RoundedRectangle:

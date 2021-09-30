@@ -49,4 +49,4 @@
         size_hint_y: None
         height: root.height - toolbar.height - dp(40)
         y: root.height - self.height - toolbar.height - dp(20)
-        on_swipe: self.get_current_slide().ids.icon.shake()
+        on_swipe: self.get_current_item().ids.icon.shake()

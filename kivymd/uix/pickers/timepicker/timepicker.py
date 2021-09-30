@@ -170,8 +170,7 @@ class TimeInputTextField(MDTextField):
         super().__init__(**kwargs)
         Clock.schedule_once(self.on_text)
         self.register_event_type("on_select")
-        self.bind(text_color=self.setter("_current_hint_text_color"))
-        self.bind(text_color=self.setter("current_hint_text_color"))
+        self.bind(text_color=self.setter("hint_text_color_normal"))
 
     def validate_time(self, s):
         reg = self.hour_regx if self.num_type == "hour" else self.minute_regx

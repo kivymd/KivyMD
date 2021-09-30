@@ -3,10 +3,10 @@ import os
 from kivy.properties import StringProperty
 
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.swiper import MDSwiperSlide
+from kivymd.uix.swiper import MDSwiperItem
 
 
-class KitchenSinkSwiperItem(MDSwiperSlide):
+class KitchenSinkSwiperItem(MDSwiperItem):
     source = StringProperty()
 
 

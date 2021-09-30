@@ -23,7 +23,8 @@
                 id: icon
                 icon: "weather-sunny"
                 user_font_size: "56sp"
-                opposite_colors: True
+                theme_text_color: "Custom"
+                text_color: 1, 1, 1, 1
 
             MDLabel:
                 text: os.path.split(root.source)[1]
@@ -31,7 +32,7 @@
                 size_hint_y: None
                 height: self.texture_size[1]
                 pos_hint: {"center_y": .5}
-                opposite_colors: True
+                color: 1, 1, 1, 1
                 shorten: True
 
 

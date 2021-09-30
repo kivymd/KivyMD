@@ -1482,6 +1482,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     def add_row(self, data: Union[list, tuple]) -> NoReturn:
         """
         Added new row to common table.
+        Argument `data` is the row data from the list :attr:`row_data`.
 
         .. versionadded:: 1.0.0
         """
@@ -1491,6 +1492,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     def remove_row(self, data: Union[list, tuple]) -> NoReturn:
         """
         Removed row from common table.
+        Argument `data` is the row data from the list :attr:`row_data`.
 
         .. versionadded:: 1.0.0
         """

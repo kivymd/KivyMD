@@ -301,6 +301,7 @@ __all__ = ("MDToolbar", "MDBottomAppBar", "MDActionTopAppBarButton")
 
 import os
 from math import cos, radians, sin
+from typing import List, NoReturn
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -328,6 +329,7 @@ from kivymd.uix.behaviors import (
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.tooltip import MDTooltip
+from kivy.app import App
 
 with open(
     os.path.join(uix_path, "toolbar", "toolbar.kv"), encoding="utf-8"
@@ -497,6 +499,15 @@ class NotchedBox(
             points.append([x, y])
 
         return points
+
+    def update_bg_color(self, instance, value: List) -> NoReturn:
+        if self.disabled is True:
+            self.on_disabled(self, self.disabled)
+            return
+        if self.md_bg_color:
+            self._md_bg_color = self.md_bg_color
+        else:
+            self._md_bg_color = App.get_running_app().theme_cls._get_primary_color()
 
 
 class MDToolbar(NotchedBox):

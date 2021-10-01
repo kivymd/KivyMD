@@ -14,7 +14,8 @@
         self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
         if root.icon != 'checkbox-blank-circle' else self.minimum_width
 
-    canvas:
+    canvas.before:
+        Clear
         Color:
             rgba: root.theme_cls.primary_color if not root.color else root.color
         RoundedRectangle:

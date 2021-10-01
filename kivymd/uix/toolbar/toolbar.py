@@ -601,7 +601,7 @@ class MDToolbar(NotchedBox):
     type = OptionProperty("top", options=["top", "bottom"])
     """
     When using the :class:`~MDBottomAppBar` class, the parameter ``type``
-    must be set to `'bottom'`:
+    must be set to `"bottom"`:
 
     .. code-block:: kv
 
@@ -610,7 +610,7 @@ class MDToolbar(NotchedBox):
             MDToolbar:
                 type: "bottom"
 
-    Available options are: `'top'`, `'bottom'`.
+    Available options are: `"top"`, `"bottom"`.
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'top'`.
@@ -636,7 +636,7 @@ class MDToolbar(NotchedBox):
         Clock.schedule_once(
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
-        Clock.schedule_once(lambda x: self.update_bg_color(0, self.md_bg_color))
+        Clock.schedule_once(lambda x: self.update_bg_color(0, self._md_bg_color))
 
     def on_type(self, instance, value):
         if value == "bottom":
@@ -807,19 +807,34 @@ class MDToolbar(NotchedBox):
 
 
 class MDBottomAppBar(BackgroundColorBehavior, FloatLayout):
-    md_bg_color = ColorProperty(None)
-    """
-    Color toolbar.
-
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0]`.
-    """
+    # md_bg_color = ColorProperty(None)
+    # """
+    # Color toolbar.
+    #
+    # :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    # and defaults to `[0, 0, 0, 0]`.
+    # """
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        App.get_running_app().theme_cls.bind(primary_color=self.update_bg_color)
         self.size_hint_y = None
+        # Clock.schedule_once(lambda *x: self.update_bg_color)
 
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDToolbar):
             super().add_widget(widget)
             return super().add_widget(widget.action_button)
+
+    def update_bg_color(self, instance, value: list) -> NoReturn:
+        """
+        updates the background collor of the bottom toolbar widget.
+        """
+        # if self.disabled is True:
+        #     self.on_disabled(self, self.disabled)
+        #     return
+
+        if self.md_bg_color:
+            self._md_bg_color = self.md_bg_color
+            return
+        self._md_bg_color = App.get_running_app().theme_cls._get_primary_color()

@@ -646,8 +646,11 @@ class MDCard(
     def update_md_bg_color(
         self, instance_card_swipe_front_box, theme_style: str
     ) -> NoReturn:
-        if self.md_bg_color in self._bg_color_map:
-            self.md_bg_color = get_color_from_hex(
+        if self.md_bg_color:
+            self._md_bg_color = self.md_bg_color
+            return
+        if self._md_bg_color in self._bg_color_map:
+            self._md_bg_color = get_color_from_hex(
                 colors[theme_style]["CardsDialogs"]
             )
 

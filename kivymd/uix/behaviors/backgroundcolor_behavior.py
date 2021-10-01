@@ -9,6 +9,7 @@ __all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 
 from typing import List, NoReturn
 
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import (
     BoundedNumericProperty,
@@ -282,6 +283,7 @@ class BackgroundColorBehavior(CommonElevationBehavior):
         super().__init__(**kwarg)
         self.bind(pos=self.update_background_origin)
         self.bind(md_bg_color=self.update_bg_color)
+        Clock.schedule_once(lambda *x: self.update_bg_color(self, self.md_bg_color))
 
     def update_bg_color(self, instance, value: list) -> NoReturn:
         """

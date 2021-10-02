@@ -85,6 +85,7 @@ __all__ = ("StencilWidget",)
 import os
 
 from kivy.lang import Builder
+from kivy.properties import VariableListProperty
 
 from kivymd import uix_path
 
@@ -97,3 +98,17 @@ with open(
 
 class StencilWidget:
     """Base class for controlling the stencil instructions of the widget"""
+
+    radius = VariableListProperty([0], length=4)
+    """
+    Canvas radius.
+
+    .. code-block:: python
+
+        # Top left corner slice.
+        MDWidget:
+            radius: [25, 0, 0, 0]
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """

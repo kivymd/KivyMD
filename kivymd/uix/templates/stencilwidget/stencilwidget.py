@@ -103,6 +103,8 @@ class StencilWidget:
     """
     Canvas radius.
 
+    .. versionadded:: 1.0.0
+
     .. code-block:: python
 
         # Top left corner slice.

@@ -19,3 +19,4 @@ Unreleased
 * Added `divider_color <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem.divider_color>`_ attribute to `BaseListItem <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem>`_ class;
 * Added `load_all_kv_files method <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp.load_all_kv_files>`_ to `MDApp <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp>`_ class
 * Added `Templates package <https://kivymd.readthedocs.io/en/latest/templates/>`_
+* `FitImage` widget move from `kivymd.utils` to `kivymd.uix.fitimage`;

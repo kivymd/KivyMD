@@ -301,6 +301,7 @@ def main():
         )
         create_view(use_firebase, name_screen, module_name, path_to_project)
         create_requirements(use_firebase, path_to_project)
+        os.makedirs(os.path.join(path_to_project, "assets", "images"))
         os.mkdir(os.path.join(path_to_project, "assets", "fonts"))
         rename_ext_py_tmp_to_py(path_to_project)
         move_init(path_to_project, name_screen)

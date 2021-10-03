@@ -56,7 +56,7 @@ import shutil
 from typing import NoReturn, Union
 
 from kivymd import path as kivymd_path
-from kivymd.tools.release.argument_parser import ArgumentParserWithHelp
+from kivymd.tools.argument_parser import ArgumentParserWithHelp
 
 _firebase_model = '''
 import multitasking

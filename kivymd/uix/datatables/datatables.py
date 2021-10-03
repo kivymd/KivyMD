@@ -1354,7 +1354,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color_header = ColorProperty(None)
     """
-    Background color for :class:`~TableHeader.`.
+    Background color for :class:`~TableHeader` class.
 
     .. versionadded:: 1.0.0
 
@@ -1374,7 +1374,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color_cell = ColorProperty(None)
     """
-    Background color for :class:`~CellRow.` class.
+    Background color for :class:`~CellRow` class.
 
     .. versionadded:: 1.0.0
 
@@ -1395,7 +1395,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color_selected_cell = ColorProperty(None)
     """
-    Background selected color for :class:`~CellRow.` class.
+    Background selected color for :class:`~CellRow` class.
 
     .. versionadded:: 1.0.0
 

@@ -18,5 +18,7 @@ Unreleased
 * Type hints have been added to the source code of the KivyMD library;
 * Added `divider_color <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem.divider_color>`_ attribute to `BaseListItem <https://kivymd.readthedocs.io/en/latest/components/list/#kivymd.uix.list.list.BaseListItem>`_ class;
 * Added `load_all_kv_files method <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp.load_all_kv_files>`_ to `MDApp <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp>`_ class
-* Added `Templates package <https://kivymd.readthedocs.io/en/latest/templates/>`_
+* Added `Templates package <https://kivymd.readthedocs.io/en/latest/templates/>`_ - base classes for controlling the scale, rotation of the widget, etc.;
+* Added `Templates package <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/create_project/>`_ - scripts for creating projects with design patterns;
 * `FitImage` widget move from `kivymd.utils` to `kivymd.uix.fitimage`;
+* Added `background_color_header <https://kivymd.readthedocs.io/en/latest/components/datatables/#kivymd.uix.datatables.datatables.MDDataTable.background_color_header>`_, `background_color_cell <https://kivymd.readthedocs.io/en/latest/components/datatables/#kivymd.uix.datatables.datatables.MDDataTable.background_color_cell>`_, `background_color_selected_cell <https://kivymd.readthedocs.io/en/latest/components/datatables/#kivymd.uix.datatables.datatables.MDDataTable.background_color_selected_cell>`_, added methods for adding/removing rows to a common table to `MDDataTable <https://kivymd.readthedocs.io/en/latest/components/datatables/#module-kivymd.uix.datatables.datatables>`_ widget;

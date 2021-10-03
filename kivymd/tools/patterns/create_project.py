@@ -240,11 +240,17 @@ _firebase_view_model_is_changed_method = """if self.model.data_validation_status
             self.dialog.auto_dismiss = True
 """
 
-_firebase_requirements = """multitasking
+_firebase_requirements = """kivy==2.0.0
+kivymd==1.0.0
+multitasking
 firebase
 firebase-admin
 pycryptodome==3.4.3
 requests_toolbelt
+"""
+
+_without_firebase_requirements = """kivy==2.0.0
+kivymd==1.0.0
 """
 
 available_patterns = ["MVC"]
@@ -297,6 +303,7 @@ def main():
         create_requirements(use_firebase, path_to_project)
         os.mkdir(os.path.join(path_to_project, "assets", "fonts"))
         rename_ext_py_tmp_to_py(path_to_project)
+        move_init(path_to_project, name_screen)
     else:
         parser.error(f"The {path_to_project} project already exists")
 
@@ -440,10 +447,14 @@ def create_view(
 
 
 def create_requirements(use_firebase: str, path_to_project: str) -> NoReturn:
-    replace_in_file(
-        os.path.join(path_to_project, "requirements.txt"),
-        (_firebase_requirements if use_firebase == "yes" else ""),
-    )
+    with open(
+        os.path.join(path_to_project, "requirements.txt"), "w", encoding="utf-8"
+    ) as requirements:
+        requirements.write(
+            _firebase_requirements
+            if use_firebase == "yes"
+            else _without_firebase_requirements
+        )
 
 
 def rename_ext_py_tmp_to_py(path_to_project: str) -> NoReturn:
@@ -456,6 +467,26 @@ def rename_ext_py_tmp_to_py(path_to_project: str) -> NoReturn:
                         path_to_dir, f"{os.path.splitext(name_file)[0]}.py"
                     ),
                 )
+
+
+def move_init(path_to_project: str, name_screen: str) -> NoReturn:
+    path_to_init_file = __file__.replace("create_project", "__init__")
+    for name_dir in ("Controller", "Model", "Utility", "View"):
+        shutil.copy(
+            path_to_init_file,
+            os.path.join(path_to_project, name_dir, "__init__.py"),
+        )
+    shutil.copy(
+        path_to_init_file,
+        os.path.join(path_to_project, "View", name_screen, "__init__.py"),
+    )
+    path_to_components = os.path.join(
+        path_to_project, "View", name_screen, "components"
+    )
+    os.mkdir(path_to_components)
+    shutil.copy(
+        path_to_init_file, os.path.join(path_to_components, "__init__.py")
+    )
 
 
 def chek_camel_case_name_project(name_project) -> Union[bool, list]:

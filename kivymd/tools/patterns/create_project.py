@@ -2,7 +2,7 @@
 Script creates a project with the MVC pattern
 =============================================
 
-.. versionadded: 1.0.0
+.. versionadded:: 1.0.0
 
 .. seealso::
 

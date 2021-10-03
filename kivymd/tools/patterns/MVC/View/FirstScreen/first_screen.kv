@@ -1,0 +1,48 @@
+<%s>
+
+    FitImage:
+        source: "assets/images/firebase-logo.png"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "%s"
+
+        MDFloatLayout:
+
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                size_hint_x: None
+                width: root.width - dp(72)
+                radius: 12
+                padding: "12dp"
+                md_bg_color: 1, 1, 1, .5
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDLabel:
+                    id: prev_label
+                    text: "To log in, enter your personal data:"
+                    font_style: "H6"
+                    adaptive_height: True
+                    halign: "center"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: "50dp"
+                    spacing: "20dp"
+
+                    MDTextField:
+                        hint_text: "Login"
+                        on_text: root.controller.set_user_data("login", self.text)
+
+                    MDTextField:
+                        hint_text: "Password"
+                        on_text: root.controller.set_user_data("password", self.text)
+
+    MDFillRoundFlatButton:
+        text: "LOGIN"
+        on_release: root.controller.on_tap_button_login()
+        pos_hint: {"center_x": .5, "center_y": .1}

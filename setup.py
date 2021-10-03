@@ -91,6 +91,7 @@ if __name__ == "__main__":
                 "images/*.atlas",
                 "fonts/*.ttf",
                 *glob_paths(".kv"),
+                *glob_paths(".py_tmp"),
             ]
         },
         extras_require={

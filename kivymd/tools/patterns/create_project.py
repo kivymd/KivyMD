@@ -58,7 +58,6 @@ from typing import NoReturn, Union
 from kivymd import path as kivymd_path
 from kivymd.tools.release.argument_parser import ArgumentParserWithHelp
 
-
 _firebase_model = '''
 import multitasking
 
@@ -188,7 +187,7 @@ class %s:
         """Called every time the user enters text into the text fields."""
 '''
 
-_firebase_view_import = '''
+_firebase_view_import = """
 from typing import Union, NoReturn
 
 from kivy.properties import ObjectProperty
@@ -200,9 +199,9 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.snackbar import Snackbar
 
 from Utility.observer import Observer
-'''
+"""
 
-_without_firebase_view_import = '''
+_without_firebase_view_import = """
 from typing import NoReturn
 
 from kivy.properties import ObjectProperty
@@ -210,7 +209,7 @@ from kivy.properties import ObjectProperty
 from kivymd.uix.screen import MDScreen
 
 from Utility.observer import Observer
-'''
+"""
 
 _firebase_view_methods = '''
         self.dialog = MDDialog()
@@ -233,20 +232,20 @@ _firebase_view_methods = '''
         ).open()
 '''
 
-_firebase_view_model_is_changed_method = '''if self.model.data_validation_status:
+_firebase_view_model_is_changed_method = """if self.model.data_validation_status:
             self.dialog.dismiss()
             Clock.schedule_once(self.show_toast, 1)
         if self.model.data_validation_status is False:
             self.dialog.text = "Wrong data!"
             self.dialog.auto_dismiss = True
-'''
+"""
 
-_firebase_requirements = '''multitasking
+_firebase_requirements = """multitasking
 firebase
 firebase-admin
 pycryptodome==3.4.3
 requests_toolbelt
-'''
+"""
 
 available_patterns = ["MVC"]
 
@@ -275,7 +274,9 @@ def main():
             "\nFor example - 'MyFirstScreen'"
         )
     module_name = "_".join([name.lower() for name in module_name])
-    if not os.path.exists(os.path.join(kivymd_path, "tools", "patterns", pattern_name)):
+    if not os.path.exists(
+        os.path.join(kivymd_path, "tools", "patterns", pattern_name)
+    ):
         parser.error(
             f"There is no {pattern_name} pattern.\n"
             f"Only {available_patterns} template is available."
@@ -300,7 +301,9 @@ def main():
         parser.error(f"The {path_to_project} project already exists")
 
 
-def create_main(use_firebase: str, path_to_project: str, project_name: str) -> NoReturn:
+def create_main(
+    use_firebase: str, path_to_project: str, project_name: str
+) -> NoReturn:
     replace_in_file(
         os.path.join(path_to_project, "main.py_tmp"),
         (
@@ -395,9 +398,13 @@ def create_view(
         (f"{name_screen}View", name_screen),
     )
     replace_in_file(
-        os.path.join(path_to_project, "View", "FirstScreen", "first_screen.py_tmp"),
+        os.path.join(
+            path_to_project, "View", "FirstScreen", "first_screen.py_tmp"
+        ),
         (
-            _firebase_view_import if use_firebase == "yes" else _without_firebase_view_import,
+            _firebase_view_import
+            if use_firebase == "yes"
+            else _without_firebase_view_import,
             f"{name_screen}View",
             "ThemableBehavior, " if use_firebase == "yes" else "",
             module_name,
@@ -407,7 +414,9 @@ def create_view(
             module_name,
             f"{name_screen}Model",
             _firebase_view_methods if use_firebase == "yes" else "",
-            _firebase_view_model_is_changed_method if use_firebase == "yes" else "",
+            _firebase_view_model_is_changed_method
+            if use_firebase == "yes"
+            else "",
         ),
     )
     os.rename(
@@ -417,7 +426,9 @@ def create_view(
         ),
     )
     os.rename(
-        os.path.join(path_to_project, "View", "FirstScreen", "first_screen.py_tmp"),
+        os.path.join(
+            path_to_project, "View", "FirstScreen", "first_screen.py_tmp"
+        ),
         os.path.join(
             path_to_project, "View", "FirstScreen", f"{module_name}.py_tmp"
         ),
@@ -441,7 +452,9 @@ def rename_ext_py_tmp_to_py(path_to_project: str) -> NoReturn:
             if os.path.splitext(name_file)[1] == ".py_tmp":
                 os.rename(
                     os.path.join(path_to_dir, name_file),
-                    os.path.join(path_to_dir, f"{os.path.splitext(name_file)[0]}.py"),
+                    os.path.join(
+                        path_to_dir, f"{os.path.splitext(name_file)[0]}.py"
+                    ),
                 )
 
 

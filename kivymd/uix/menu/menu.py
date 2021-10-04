@@ -611,7 +611,9 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `None`.
     """
 
-    position = OptionProperty("auto", options=["top", "auto", "center", "bottom"])
+    position = OptionProperty(
+        "auto", options=["top", "auto", "center", "bottom"]
+    )
     """
     Menu window position relative to parent element.
     Available options are: `'auto'`, `'center'`, `'bottom'`.

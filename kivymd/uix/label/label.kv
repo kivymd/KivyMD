@@ -2,6 +2,13 @@
 
 
 <MDLabel>
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: self.radius
     disabled_color: self.theme_cls.disabled_hint_text_color
     # FIXME: Overriding the values of this property greatly affects application
     #  performance. Especially when the application window is resized and a

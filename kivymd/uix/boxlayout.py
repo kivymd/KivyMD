@@ -86,8 +86,22 @@ Equivalent
 __all__ = ("MDBoxLayout",)
 
 from kivy.uix.boxlayout import BoxLayout
+from kivy.lang.builder import Builder
 
 from kivymd.uix import MDAdaptiveWidget
+from kivy.lang.builder import Builder
+
+kv = """
+<MDBoxLayout>:
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+"""
+
+Builder.load_string(kv, filename="MDBoxLayout.kv")
 
 
 class MDBoxLayout(BoxLayout, MDAdaptiveWidget):

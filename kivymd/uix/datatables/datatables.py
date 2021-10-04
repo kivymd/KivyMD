@@ -1259,7 +1259,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `10`.
     """
 
-    pagination_menu_pos = OptionProperty("center", options=["center", "auto"])
+    pagination_menu_pos = OptionProperty("top", options=["center", "auto", "top"])
     """
     Menu position for selecting the number of displayed rows.
     Available options are `'center'`, `'auto'`.

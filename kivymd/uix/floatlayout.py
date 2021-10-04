@@ -48,7 +48,7 @@ kv = """
             size: self.size
 """
 
-Builder.load_string(kv, filename="MDBoxLayout.kv")
+Builder.load_string(kv, filename="MDFloatLayout.kv")
 
 
 class MDFloatLayout(FloatLayout, MDAdaptiveWidget):

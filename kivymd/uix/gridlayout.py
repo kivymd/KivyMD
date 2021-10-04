@@ -99,7 +99,7 @@ kv = """
             size: self.size
 """
 
-Builder.load_string(kv, filename="MDBoxLayout.kv")
+Builder.load_string(kv, filename="MDGridLayout.kv")
 
 class MDGridLayout(GridLayout, MDAdaptiveWidget):
     pass

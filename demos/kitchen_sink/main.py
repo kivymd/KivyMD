@@ -129,7 +129,7 @@ class KitchenSinkApp(MDApp):
         self.theme_cls.theme_style = (
             "Light" if self.theme_cls.theme_style == "Dark" else "Dark"
         )
-        self.root.ids.backdrop.ids._front_layer.md_bg_color = [0, 0, 0, 0]
+        # self.root.ids.backdrop.ids._front_layer.md_bg_color = [0, 0, 0, 0]
 
     def show_code(self):
         if self.theme_cls.device_orientation == "landscape":

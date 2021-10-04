@@ -422,6 +422,12 @@ def main():
                 module_name,
                 use_firebase,
             )
+            with open(
+                os.path.join(path_to_project, "requirements.txt"),
+                "a",
+                encoding="utf-8",
+            ) as requirements:
+                requirements.write("watchdog")
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
     else:
         parser.error(f"The {path_to_project} project already exists")

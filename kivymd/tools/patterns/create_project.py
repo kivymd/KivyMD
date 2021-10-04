@@ -522,6 +522,9 @@ def create_controller(
         import_module=""
         f"import importlib\n\n"
         f"import View.{name_screen}.{module_name}\n\n"
+        f"# We have to manually reload the view module in order to apply the"
+        f"# changes made to the code on a subsequent hot reload."
+        f"If you no longer need a hot reload, you can delete this instruction."
         f"importlib.reload(View.{name_screen}.{module_name})"
         if use_hotreload == "yes"
         else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",

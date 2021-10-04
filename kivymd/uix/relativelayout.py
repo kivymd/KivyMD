@@ -30,8 +30,20 @@ MDRelativeLayout
 """
 
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.lang.builder import Builder
 
 from kivymd.uix import MDAdaptiveWidget
+
+kv = """
+<MDRelativeLayout>:
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+"""
+Builder.load_string(kv, filename="MDRelativeLayout.kv")
 
 
 class MDRelativeLayout(RelativeLayout, MDAdaptiveWidget):

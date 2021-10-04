@@ -47,7 +47,6 @@ kv = """
             pos: self.pos
             size: self.size
 """
-
 Builder.load_string(kv, filename="MDFloatLayout.kv")
 
 

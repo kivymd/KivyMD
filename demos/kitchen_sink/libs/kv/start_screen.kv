@@ -27,6 +27,7 @@ MDBoxLayout:
         Home:
             id: home
             name: "home"
+            BoxLayout:
 
             MDBackdrop:
                 id: backdrop
@@ -79,6 +80,7 @@ MDBoxLayout:
 
 
     ScrollView:
+        y:root.y
 
         MDGridLayout:
             adaptive_height: True
@@ -103,12 +105,17 @@ MDBoxLayout:
                     spacing: "30dp"
 
                     KitchenSinkThemeStyleCheckbox:
+                        state: "down"
+                        on_release:
+                            app.theme_cls.theme_style = 'Light'
 
                     Label:
                         text: "Light"
                         color: app.theme_cls.text_color
 
                     KitchenSinkThemeStyleCheckbox:
+                        on_release:
+                            app.theme_cls.theme_style = 'Dark'
 
                     Label:
                         text: "Dark"
@@ -127,7 +134,8 @@ MDBoxLayout:
                 text: "Change Theme"
                 icon: "palette-outline"
                 divider: None
-                on_release: app.show_dialog_change_theme()
+                on_release:
+                    app.show_dialog_change_theme()
 
             MDSeparator:
 
@@ -142,13 +150,15 @@ MDBoxLayout:
                 text: "Developers"
                 icon: "dev-to"
                 divider: None
-                on_release: KitchenSinkDialogDev().open()
+                on_release:
+                    KitchenSinkDialogDev().open()
 
             KitchenSinkOneLineIconListItem:
                 text: "License"
                 icon: "license"
                 divider: None
-                on_release: KitchenSinkDialogLicense().open()
+                on_release:
+                    KitchenSinkDialogLicense().open()
 
             Widget:
                 size_hint_y: None
@@ -159,4 +169,6 @@ MDBoxLayout:
     group: "style"
     size_hint: None, None
     size: "48dp", "48dp"
-    on_active: if self.active: app.switch_theme_style()
+
+    on_release:
+        self.active = True

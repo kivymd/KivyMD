@@ -23,7 +23,7 @@ Usage
 -----
 
 .. note::
-    See `Create project with hot reload <https://en.wikipedia.org/wiki/Model–view–controller>`_
+    See `create project with hot reload <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/create_project/#create-project-with-hot-reload>`_
     for more information.
 
 TODO

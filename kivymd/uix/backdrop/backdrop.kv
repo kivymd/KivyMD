@@ -1,8 +1,10 @@
 <MDBackdrop>
-    md_bg_color:
-        root.theme_cls.primary_color \
-        if not root.back_layer_color \
-        else root.back_layer_color
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     MDBackdropToolbar:
         id: toolbar
@@ -11,30 +13,26 @@
         left_action_items: root.left_action_items
         right_action_items: root.right_action_items
         pos_hint: {"top": 1}
-        md_bg_color:
-            root.theme_cls.primary_color \
-            if not root.back_layer_color \
-            else root.back_layer_color
+        md_bg_color: root._md_bg_color
 
     _BackLayer:
         id: back_layer
-        y: -toolbar.height
-        padding: 0, 0, 0, toolbar.height + dp(10)
+        cols: 1
+        top: toolbar.y
+        height: root.height-toolbar.height
+        size_hint_y: None
+        padding: 0, 0, 0, header_button.height + dp(8)
 
     _FrontLayer:
         id: _front_layer
-        md_bg_color: 0, 0, 0, 0
         orientation: "vertical"
         size_hint_y: None
         height: root.height - toolbar.height
         padding: root.padding
-        md_bg_color:
-            root.theme_cls.bg_normal \
-            if not root.front_layer_color \
-            else root.front_layer_color
+        elevation: root.elevation
         radius:
             [root.radius_left, root.radius_left,
-            root.radius_right, root.radius_right]
+            0, 0]
 
         OneLineListItem:
             id: header_button

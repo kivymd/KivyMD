@@ -122,7 +122,7 @@ __all__ = (
 )
 
 import os
-from typing import NoReturn, Union
+from typing import NoReturn, Union, List
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -135,14 +135,14 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.stencilview import StencilView
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.toolbar import MDActionTopAppBarButton, MDToolbar
-
 with open(
     os.path.join(uix_path, "backdrop", "backdrop.kv"),
     encoding="utf-8",
@@ -150,13 +150,23 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDBackdrop(ThemableBehavior, MDFloatLayout):
+class MDBackdrop(ThemableBehavior, MDFloatLayout, StencilView):
     """
     :Events:
         :attr:`on_open`
             When the front layer drops.
         :attr:`on_close`
             When the front layer rises.
+
+    Inner design:
+    ```
+        ┌ MDBackdrop(MDFloatLayout & StencilView):
+        ├──■ Canvas Background Layer (Canvas.before)
+        ├──■ MDBackdropToolbar (MDToolbar)
+        ├──■ Back Layer (GridLayout)
+        └──■ Front Layer (MDCard)
+    ```
+    Remember that the last added widget will be drawn in over the others.
     """
 
     padding = ListProperty([0, 0, 0, 0])
@@ -194,9 +204,13 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
     and defaults to `''`.
     """
 
-    back_layer_color = ColorProperty(None)
+    back_layer_color = ColorProperty(None, deprecated=True)
     """
     Background color of back layer.
+    This property will soon be removed, as we will be using the
+    md_bg_color property instead.
+    2021-10-04 Mo.
+
 
     :attr:`back_layer_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -295,6 +309,19 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
     and defaults to `'out_quad'`.
     """
 
+    elevation: int = NumericProperty(8)
+    """
+    Elevation of the front pannel,
+    Remember that the front layer is a :class:`~kivymd.uix.card.MDCard`.
+    Use Integer values only, as float values might end in visual bugs or
+    blurry images.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`elevation` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `8`.
+    """
+
     _open_icon = ""
     _front_layer_open = False
 
@@ -302,9 +329,27 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
         super().__init__(**kwargs)
         self.register_event_type("on_open")
         self.register_event_type("on_close")
+        self.theme_cls.bind(primary_color=self.update_bg_color)
         Clock.schedule_once(
             lambda x: self.on_left_action_items(self, self.left_action_items)
         )
+
+
+    def update_bg_color(self, instance, value: List) -> NoReturn:
+        """
+        This method updates the background color of the MDBackDrop container.
+        """
+        if self.disabled is True:
+            self.on_disabled(self, self.disabled)
+            return
+
+        if self.md_bg_color:
+            self._md_bg_color = self.md_bg_color
+            return
+        if self.back_layer_color:
+            self._md_bg_color = self.back_layer_color
+            return
+        self._md_bg_color = self.theme_cls._get_primary_color()
 
     def on_open(self) -> NoReturn:
         """When the front layer drops."""
@@ -421,9 +466,31 @@ class MDBackdropBackLayer(BoxLayout):
     """Container for back content."""
 
 
-class _BackLayer(BoxLayout):
+class _BackLayer(GridLayout):
     pass
 
 
-class _FrontLayer(MDCard, FakeRectangularElevationBehavior):
-    pass
+class _FrontLayer(MDCard):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_color=self.update_bg_color)
+        self.theme_cls.bind(bg_normal=self.update_bg_color)
+
+    def update_bg_color(self, instance, value: List) -> NoReturn:
+        """
+        This method updates the background color of the MDBackDrop container.
+        """
+        if self.disabled is True:
+            self.on_disabled(self, self.disabled)
+            return
+
+        if self.md_bg_color:
+            self._md_bg_color = self.md_bg_color
+            return
+
+        if self.parent:
+            color = getattr(self.parent, "front_layer_color", self.parent.theme_cls.bg_normal)
+            if color is None:
+                color = self.parent.theme_cls.bg_normal
+            self._md_bg_color = color
+        return

@@ -98,8 +98,8 @@ kv = """
             pos: self.pos
             size: self.size
 """
-
 Builder.load_string(kv, filename="MDGridLayout.kv")
+
 
 class MDGridLayout(GridLayout, MDAdaptiveWidget):
     pass

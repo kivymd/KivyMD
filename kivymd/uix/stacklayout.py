@@ -84,8 +84,20 @@ Equivalent
 """
 
 from kivy.uix.stacklayout import StackLayout
+from kivy.lang.builder import Builder
 
 from kivymd.uix import MDAdaptiveWidget
+
+kv = """
+<MDStackLayout>:
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+"""
+Builder.load_string(kv, filename="MDStackLayout.kv")
 
 
 class MDStackLayout(StackLayout, MDAdaptiveWidget):

@@ -245,6 +245,9 @@ kivymd==1.0.0
 multitasking
 firebase
 firebase-admin
+python_jwt
+gcloud
+sseclient
 pycryptodome==3.4.3
 requests_toolbelt
 """

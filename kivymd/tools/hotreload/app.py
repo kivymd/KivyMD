@@ -36,25 +36,24 @@ TODO
 import os
 import sys
 import traceback
-from os.path import join, realpath
 from fnmatch import fnmatch
+from os.path import join, realpath
 
 original_argv = sys.argv
 
-from kivy.logger import Logger
+from kivy.base import ExceptionHandler, ExceptionManager
 from kivy.clock import Clock, mainthread
 from kivy.factory import Factory
 from kivy.lang import Builder
-from kivy.base import ExceptionHandler, ExceptionManager
+from kivy.logger import Logger
 from kivy.properties import (
     BooleanProperty,
-    ListProperty,
     DictProperty,
+    ListProperty,
     NumericProperty,
 )
 
 from kivymd.app import MDApp as BaseApp
-
 
 try:
     from monotonic import monotonic
@@ -302,8 +301,8 @@ class MDApp(BaseApp):
         """
 
         try:
-            from watchdog.observers import Observer
             from watchdog.events import FileSystemEventHandler
+            from watchdog.observers import Observer
         except ImportError:
             Logger.warn(
                 "{}: Autoreloader is missing watchdog".format(self.appname)

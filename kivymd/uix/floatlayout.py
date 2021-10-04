@@ -34,8 +34,21 @@ MDFloatLayout
 """
 
 from kivy.uix.floatlayout import FloatLayout
+from kivy.lang.builder import Builder
 
 from kivymd.uix import MDAdaptiveWidget
+
+kv = """
+<MDFloatLayout>:
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+"""
+
+Builder.load_string(kv, filename="MDBoxLayout.kv")
 
 
 class MDFloatLayout(FloatLayout, MDAdaptiveWidget):

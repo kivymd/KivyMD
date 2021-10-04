@@ -4,6 +4,9 @@ HotReload
 
 .. versionadded:: 1.0.0
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hot-reload.png
+    :align: center
+
 .. rubric::
     Hot reload tool - is a fork of the project https://github.com/tito/kaki
 

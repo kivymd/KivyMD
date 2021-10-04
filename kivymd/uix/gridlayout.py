@@ -84,9 +84,22 @@ Equivalent
 """
 
 from kivy.uix.gridlayout import GridLayout
+from kivy.lang.builder import Builder
 
 from kivymd.uix import MDAdaptiveWidget
 
+
+kv = """
+<MDGridLayout>:
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+"""
+
+Builder.load_string(kv, filename="MDBoxLayout.kv")
 
 class MDGridLayout(GridLayout, MDAdaptiveWidget):
     pass

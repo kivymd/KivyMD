@@ -30,9 +30,20 @@ MDScreen
 """
 
 from kivy.uix.screenmanager import Screen
+from kivy.lang.builder import Builder
 
 from kivymd.uix import MDAdaptiveWidget
 
+kv = """
+<MDScreen>:
+    canvas.before:
+        Color:
+            rgba: self._md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+"""
+Builder.load_string(kv, filename="MDScreen.kv")
 
 class MDScreen(Screen, MDAdaptiveWidget):
     pass

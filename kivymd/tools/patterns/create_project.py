@@ -521,7 +521,7 @@ def create_controller(
         module_name=module_name,
         import_module=""
         f"import importlib\n\n"
-        f"import View.{name_screen}.{module_name} as \n\n"
+        f"import View.{name_screen}.{module_name}\n\n"
         f"importlib.reload(View.{name_screen}.{module_name})"
         if use_hotreload == "yes"
         else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",

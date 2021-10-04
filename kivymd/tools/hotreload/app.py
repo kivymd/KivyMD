@@ -10,7 +10,7 @@ HotReload
 .. rubric::
     Hot reload tool - is a fork of the project https://github.com/tito/kaki
 
-.. note:
+.. note::
     Since the project is not developing, we decided to include it in the
     KivvMD library and hope that the further development of the hot reload
     tool in the KivyMD project will develop faster.

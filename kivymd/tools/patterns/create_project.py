@@ -20,8 +20,8 @@ Project creation
 
     python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project
 
-For example:
-------------
+For example
+-----------
 
 .. code-block:: bash
 
@@ -46,6 +46,18 @@ To create a project without using the Firebase library, run the command:
 
     python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project --use_firebase no
 
+Create project with hot reload
+------------------------------
+
+.. code-block:: bash
+
+    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project --use_hotreload yes
+
+After creating the project, open the file `main.py`, there is a lot of useful
+information. Also, the necessary information is in other modules of the project
+in the form of comments. So do not forget to look at the source files of the
+created project.
+
 .. note:: For more information on arguments, run the command:
     ``python -m kivymd.tools.patterns.create_project -h``
 """
@@ -54,6 +66,8 @@ import os
 import re
 import shutil
 from typing import NoReturn, Union
+
+from kivy import Logger
 
 from kivymd import path as kivymd_path
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
@@ -65,20 +79,18 @@ import multitasking
 multitasking.set_max_threads(10)
 
 
-class %s:
+class {name_screen}Model:
     """
     Implements the logic of the
-    :class:`~View.%s.%s.%sView` class.
+    :class:`~View.{name_screen}.{module_name}.{name_screen}View` class.
     """
 
     def __init__(self, base):
         self.base = base
-        # Data:
-        #  {
-        #      'login': 'User Login',
-        #      'password': '12345',
-        #  }
-        self.user_data = {}
+        # Dict:
+        #     'login': 'User Login'
+        #     'password': '12345'
+        self.user_data = dict()
         self._data_validation_status = None
         self._observers = []
 
@@ -90,7 +102,7 @@ class %s:
     def data_validation_status(self, value):
         self._data_validation_status = value
         # We notify the View -
-        # :class:`~View.%s.%s.%s` about the
+        # :class:`~View.{name_screen}.{module_name}.{name_screen}View` about the
         # changes that have occurred in the data model.
         self.notify_observers()
 
@@ -121,10 +133,10 @@ class %s:
 '''
 
 _without_firebase_model = '''
-class %s:
+class {name_screen}Model:
     """
     Implements the logic of the
-    :class:`~View.%s.%s.%s` class.
+    :class:`~View.{module_name}.{name_screen}.{name_screen}View` class.
     """
 
     def __init__(self):
@@ -132,21 +144,22 @@ class %s:
 '''
 
 _firebase_controller = '''from typing import NoReturn
+{import_module}
 
-from View.%s.%s import %s
 
-
-class %s:
+class {name_screen}Controller:
     """
-    The `%s` class represents a controller implementation.
+    The `{name_screen}Controller` class represents a controller implementation.
     Coordinates work of the view with the model.
     The controller implements the strategy pattern. The controller connects to
     the view to control its actions.
     """
 
     def __init__(self, model):
-        self.model = model  # Model.%s.%s
-        self.view = %s(controller=self, model=self.model)
+        self.model = model  # Model.{module_name}.{name_screen}Model
+        self.view = {name_view}(
+            controller=self, model=self.model
+        )
 
     def set_user_data(self, key, value) -> NoReturn:
         """Called every time the user enters text into the text fields."""
@@ -164,21 +177,20 @@ class %s:
 '''
 
 _without_firebase_controller = '''from typing import NoReturn
+{import_module}
 
-from View.%s.%s import %s
 
-
-class %s:
+class {name_screen}Controller:
     """
-    The `%s` class represents a controller implementation.
+    The `{name_screen}Controller` class represents a controller implementation.
     Coordinates work of the view with the model.
     The controller implements the strategy pattern. The controller connects to
     the view to control its actions.
     """
 
     def __init__(self, model):
-        self.model = model  # Model.%s.%s
-        self.view = %s(controller=self, model=self.model)
+        self.model = model  # Model.{module_name}.{name_screen}Model
+        self.view = {name_view}(controller=self, model=self.model)
 
     def on_tap_button_login(self) -> NoReturn:
         """Called when the `LOGIN` button is pressed."""
@@ -256,6 +268,95 @@ _without_firebase_requirements = """kivy==2.0.0
 kivymd==1.0.0
 """
 
+_hot_reload_main = '''
+"""
+Script for managing hot reloading of the project.
+For more details see the documentation page -
+
+https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/create_project/
+
+To run the application in hot boot mode, execute the command in the console:
+DEBUG=1 python main.py
+"""
+
+import importlib
+import os
+from typing import NoReturn
+
+from kivy import Config
+from kivy.uix.screenmanager import ScreenManager
+
+from PIL import ImageGrab
+
+# TODO: You may know an easier way to get the size of a computer display.
+resolution = ImageGrab.grab().size
+
+# Change the values of the application window size as you need.
+Config.set("graphics", "height", resolution[1])
+Config.set("graphics", "width", "400")
+
+from kivy.core.window import Window
+
+# Place the application window on the right side of the computer screen.
+Window.top = 0
+Window.left = resolution[0] - Window.width
+
+from kivymd.tools.hotreload.app import MDApp
+%s
+
+class %s(MDApp):
+    KV_FILES = {
+        os.path.join(
+            os.getcwd(),
+            "View",
+            "%s",
+            "%s.kv",
+        ),
+    }
+
+    def build_app(self) -> ScreenManager:
+        """
+        In this method, you don't need to change anything other than the
+        application theme.
+        """
+
+        import View.screens
+
+        self.theme_cls.primary_palette = "Orange"
+        self.manager_screens = ScreenManager()
+        %s
+        Window.bind(on_key_down=self.on_keyboard_down)
+        importlib.reload(View.screens)
+        screens = View.screens.screens
+
+        for i, name_screen in enumerate(screens.keys()):
+            model = screens[name_screen]["model"](%s)
+            controller = screens[name_screen]["controller"](model)
+            view = controller.get_view()
+            view.manager_screens = self.manager_screens
+            view.name = name_screen
+            self.manager_screens.add_widget(view)
+
+        return self.manager_screens
+
+    def on_keyboard_down(self, window, keyboard, keycode, text, modifiers) -> NoReturn:
+        """
+        The method handles keyboard events.
+
+        By default, a forced restart of an application is tied to the
+        `CTRL+R` key on Windows OS and `COMMAND+R` on Mac OS.
+        """
+
+        if "meta" in modifiers or "ctrl" in modifiers and text == "r":
+            self.rebuild()
+
+
+%s().run()
+
+# After you finish the project, remove the above code and uncomment the below
+# code to test the application normally without hot reloading.
+'''
+
 available_patterns = ["MVC"]
 
 
@@ -269,6 +370,7 @@ def main():
     name_screen = "".join(args.name_screen.split(" "))
     path_to_project = os.path.join(project_directory, project_name)
     use_firebase = args.use_firebase
+    use_hotreload = args.use_hotreload
 
     # Check arguments.
     if name_screen[-6:] != "Screen":
@@ -300,7 +402,11 @@ def main():
         create_main(use_firebase, path_to_project, project_name)
         create_model(use_firebase, name_screen, module_name, path_to_project)
         create_controller(
-            use_firebase, name_screen, module_name, path_to_project
+            use_firebase,
+            use_hotreload,
+            name_screen,
+            module_name,
+            path_to_project,
         )
         create_view(use_firebase, name_screen, module_name, path_to_project)
         create_requirements(use_firebase, path_to_project)
@@ -308,8 +414,49 @@ def main():
         os.mkdir(os.path.join(path_to_project, "assets", "fonts"))
         rename_ext_py_tmp_to_py(path_to_project)
         move_init(path_to_project, name_screen)
+        if use_hotreload == "yes":
+            create_main_with_hotreload(
+                path_to_project,
+                project_name,
+                name_screen,
+                module_name,
+                use_firebase,
+            )
+        Logger.info(f"KivyMD: Project '{path_to_project}' created")
     else:
         parser.error(f"The {path_to_project} project already exists")
+
+
+def create_main_with_hotreload(
+    path_to_project: str,
+    project_name: str,
+    name_screen: str,
+    module_name: str,
+    use_firebase: str,
+) -> NoReturn:
+    with open(
+        os.path.join(path_to_project, "main.py"), encoding="utf-8"
+    ) as main_file:
+        main_code = ""
+        for string in main_file.readlines():
+            main_code += f"# {string}"
+    with open(
+        os.path.join(path_to_project, "main.py"), "w", encoding="utf-8"
+    ) as main_file:
+        main_file.write(f"{_hot_reload_main}\n{main_code}")
+
+    replace_in_file(
+        os.path.join(path_to_project, "main.py"),
+        (
+            "\nfrom Model.base import Base" if use_firebase == "yes" else "",
+            project_name,
+            name_screen,
+            module_name,
+            "self.base = Base()\n" if use_firebase == "yes" else "",
+            "self.base" if use_firebase == "yes" else "",
+            project_name,
+        ),
+    )
 
 
 def create_main(
@@ -318,10 +465,10 @@ def create_main(
     replace_in_file(
         os.path.join(path_to_project, "main.py_tmp"),
         (
-            "from Model.base import Base\n" if use_firebase else "",
+            "from Model.base import Base\n" if use_firebase == "yes" else "",
             project_name,
-            "self.base = Base()\n" if use_firebase else "",
-            "self.base" if use_firebase else "",
+            "self.base = Base()\n" if use_firebase == "yes" else "",
+            "self.base" if use_firebase == "yes" else "",
             project_name,
         ),
     )
@@ -331,25 +478,16 @@ def create_model(
     use_firebase: str, name_screen: str, module_name: str, path_to_project: str
 ) -> NoReturn:
     if use_firebase == "yes":
-        firebase_model = _firebase_model % (
-            f"{name_screen}Model",
-            name_screen,
-            module_name,
-            name_screen,
-            name_screen,
-            module_name,
-            f"{name_screen}View",
+        firebase_model = _firebase_model.format(
+            name_screen=name_screen, module_name=module_name
         )
         replace_in_file(
             os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
             (firebase_model),
         )
     else:
-        without_firebase_model = _without_firebase_model % (
-            f"{name_screen}Model",
-            module_name,
-            name_screen,
-            f"{name_screen}View",
+        without_firebase_model = _without_firebase_model.format(
+            module_name=module_name, name_screen=name_screen
         )
         replace_in_file(
             os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
@@ -363,25 +501,35 @@ def create_model(
 
 
 def create_controller(
-    use_firebase: str, name_screen: str, module_name: str, path_to_project: str
+    use_firebase: str,
+    use_hotreload: str,
+    name_screen: str,
+    module_name: str,
+    path_to_project: str,
 ) -> NoReturn:
     if use_firebase == "yes":
         firebase_controller = _firebase_controller
     else:
         firebase_controller = _without_firebase_controller
-    firebase_controller = firebase_controller % (
-        name_screen,
-        module_name,
-        f"{name_screen}View",
-        f"{name_screen}Controller",
-        f"{name_screen}Controller",
-        module_name,
-        f"{name_screen}Model",
-        f"{name_screen}View",
+    name_view = (
+        f"View.{name_screen}.{module_name}.{name_screen}View"
+        if use_hotreload == "yes"
+        else f"{name_screen}View"
+    )
+    firebase_controller = firebase_controller.format(
+        name_screen=name_screen,
+        module_name=module_name,
+        import_module=""
+        f"import importlib\n\n"
+        f"import View.{name_screen}.{module_name} as \n\n"
+        f"importlib.reload(View.{name_screen}.{module_name})"
+        if use_hotreload == "yes"
+        else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",
+        name_view=name_view,
     )
     replace_in_file(
         os.path.join(path_to_project, "Controller", "first_screen.py_tmp"),
-        (firebase_controller, f"{name_screen}View"),
+        (firebase_controller, name_view),
     )
     os.rename(
         os.path.join(path_to_project, "Controller", "first_screen.py_tmp"),
@@ -533,6 +681,11 @@ def create_argument_parser() -> ArgumentParserWithHelp:
         "--use_firebase",
         default="yes",
         help="use a basic template to work with the 'firebase' library.",
+    )
+    parser.add_argument(
+        "--use_hotreload",
+        default="no",
+        help="creates a hot reload entry point to the application.",
     )
     return parser
 

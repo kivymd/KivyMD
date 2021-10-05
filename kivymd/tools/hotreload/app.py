@@ -44,19 +44,19 @@ from os.path import join, realpath
 
 original_argv = sys.argv
 
-from kivy.base import ExceptionHandler, ExceptionManager
-from kivy.clock import Clock, mainthread
-from kivy.factory import Factory
-from kivy.lang import Builder
-from kivy.logger import Logger
-from kivy.properties import (
+from kivy.base import ExceptionHandler, ExceptionManager  # NOQA E402
+from kivy.clock import Clock, mainthread  # NOQA E402
+from kivy.factory import Factory  # NOQA E402
+from kivy.lang import Builder  # NOQA E402
+from kivy.logger import Logger  # NOQA E402
+from kivy.properties import (  # NOQA E402
     BooleanProperty,
     DictProperty,
     ListProperty,
     NumericProperty,
 )
 
-from kivymd.app import MDApp as BaseApp
+from kivymd.app import MDApp as BaseApp  # NOQA E402
 
 try:
     from monotonic import monotonic

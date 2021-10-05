@@ -1011,14 +1011,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             occurs when you, for example, use markup text for tabs.
     """
 
-    default_tab = NumericProperty(0)
-    """
-    Index of the default tab.
-
-    :attr:`default_tab` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
-    """
-
     tab_bar_height = NumericProperty("48dp")
     """
     Height of the tab bar.
@@ -1299,6 +1291,15 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         """Returns a list of user tab objects."""
 
         return self.carousel.slides
+
+    def get_current_tab(self):
+        """
+        Returns current tab object.
+
+        .. versionadded:: 1.0.0
+        """
+
+        return self.carousel.current_slide
 
     def add_widget(self, widget, index=0, canvas=None):
         # You can add only subclass of MDTabsBase.

@@ -173,6 +173,18 @@ check the code from the official documentation.
 | Asics Shoes Concept | Facebook Desktop Redesign |
 <a href="https://www.youtube.com/watch?v=ehuXPgun0k0"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtue.png" title="Click to watch it on YouTube"></a>  |  <a href="https://www.youtube.com/watch?v=ZNBQib6Hk4s"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtue-3.png" title="Click to watch it on YouTube"></a>
 
+## Use MVC and Hot Reload
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=JLBrgoSSeTU&t">
+    <img 
+        img width="600" 
+        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/hot-reload-preview-youtube.png" 
+        title='Click to watch video on YouTube'
+    >
+  </a>
+</p>
+
 ## Support
 
 If you need assistance or you have a question, you can ask for help on our mailing list:

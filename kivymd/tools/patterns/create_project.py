@@ -18,17 +18,18 @@ Project creation
 
 .. code-block:: bash
 
-    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project
+    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project python_used kivy_used
 
 For example
 -----------
 
 .. code-block:: bash
 
-    python -m kivymd.tools.patterns.create_project MVC /Users/macbookair/Projects MyProject
+    python -m kivymd.tools.patterns.create_project MVC /Users/macbookair/Projects MyProject python3.9 master
 
 This command will by default create a project with an MVC pattern that uses
-the Firebase library:
+the Firebase library. Also, the project will create a virtual environment with
+Python 3.9 and the Kivy/KivyMD master version.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mvc-firebase.png
     :align: center
@@ -44,22 +45,65 @@ To create a project without using the Firebase library, run the command:
 
 .. code-block:: bash
 
-    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project --use_firebase no
+    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project python3.9 master --use_firebase no
 
 Create project with hot reload
 ------------------------------
 
 .. code-block:: bash
 
-    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project --use_hotreload yes
+    python -m kivymd.tools.patterns.create_project name_pattern path_to_project name_project python3.9 master --use_hotreload yes
 
 After creating the project, open the file `main.py`, there is a lot of useful
 information. Also, the necessary information is in other modules of the project
 in the form of comments. So do not forget to look at the source files of the
 created project.
 
-.. note:: For more information on arguments, run the command:
-    ``python -m kivymd.tools.patterns.create_project -h``
+Command line arguments
+======================
+
+Required Arguments
+------------------
+
+- pattern
+
+        the name of the pattern with which the project will be created
+
+- directory
+
+        directory in which the project will be created
+
+- name
+
+        project name
+
+- python_version
+
+        the version of Python (specify as `python3.9` or `python3.8`) with
+        which the virtual environment will be created
+
+- kivy_version
+
+        version of Kivy (specify as `2.0.0` or `master`) that will be used in the project
+
+Optional arguments
+------------------
+
+- name_screen
+
+        the name of the class wich be used when creating the project pattern
+
+- use_firebase
+
+        use a basic template to work with the 'firebase' library
+
+- use_hotreload
+
+        creates a hot reload entry point to the application
+
+.. warning:: On Windows, hot reloading of Python files may not work.
+    But, for example, there is no such problem in Mac OS. If you fix this,
+    please report it to the KivyMD community.
 """
 
 import os
@@ -67,7 +111,7 @@ import re
 import shutil
 from typing import NoReturn, Union
 
-from kivy import Logger
+from kivy import Logger, platform
 
 from kivymd import path as kivymd_path
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
@@ -367,6 +411,10 @@ def main():
     pattern_name = args.pattern
     project_directory = args.directory
     project_name = "".join(args.name.split(" "))
+    kivy_version = args.kivy_version
+    python_version = args.python_version
+    if "3" not in python_version:
+        parser.error("Python must be at least version 3")
     name_screen = "".join(args.name_screen.split(" "))
     path_to_project = os.path.join(project_directory, project_name)
     use_firebase = args.use_firebase
@@ -429,7 +477,16 @@ def main():
             ) as requirements:
                 requirements.write("watchdog")
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
+        Logger.info(
+            f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
+        )
+        create_virtual_environment(python_version, path_to_project)
+        Logger.info(
+            f"KivyMD: Install requirements for '{path_to_project}' project..."
+        )
+        install_requirements(path_to_project, kivy_version, use_firebase)
     else:
+
         parser.error(f"The {path_to_project} project already exists")
 
 
@@ -618,6 +675,53 @@ def create_requirements(use_firebase: str, path_to_project: str) -> NoReturn:
         )
 
 
+def create_virtual_environment(
+    python_version: str, path_to_project: str
+) -> NoReturn:
+    os.system(f"{python_version} -m pip install virtualenv")
+    os.system(
+        f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}"
+    )
+
+
+def install_requirements(
+    path_to_project: str, kivy_version: str, use_firebase: str
+) -> NoReturn:
+    python = os.path.join(path_to_project, "venv", "bin", "python3")
+    if kivy_version == "master":
+        if platform == "macosx":
+            os.system(
+                f"{python} -m pip install 'kivy[base] @ https://github.com/kivy/kivy/archive/master.zip'"
+            )
+        else:
+            os.system(
+                f"{python} -m pip install https://github.com/kivy/kivy/archive/master.zip"
+            )
+    elif kivy_version == "stable":
+        os.system(f"{python} -m pip install kivy")
+    else:
+        os.system(f"{python} -m pip install kivy=={kivy_version}")
+    os.system(
+        f"{python} -m pip install https://github.com/kivymd/KivyMD/archive/master.zip"
+    )
+    if use_firebase == "yes":
+        os.system(
+            f"{python} -m pip install "
+            f"multitasking "
+            f"firebase "
+            f"firebase-admin "
+            f"python_jwt "
+            f"gcloud "
+            f"sseclient "
+            f"pycryptodome==3.4.3 "
+            f"requests_toolbelt "
+            f"watchdog "
+        )
+    os.system(
+        f"{os.path.join(path_to_project, 'venv', 'bin', 'python3')} -m pip list"
+    )
+
+
 def rename_ext_py_tmp_to_py(path_to_project: str) -> NoReturn:
     for path_to_dir, dirs, files in os.walk(path_to_project):
         for name_file in files:
@@ -680,6 +784,16 @@ def create_argument_parser() -> ArgumentParserWithHelp:
     parser.add_argument(
         "name",
         help="project name.",
+    )
+    parser.add_argument(
+        "python_version",
+        help="the version of Python (specify as `python3.9` or `python3.8`) "
+        "with which the virtual environment will be created.",
+    )
+    parser.add_argument(
+        "kivy_version",
+        help="version of Kivy (specify as `2.0.0` or `master`) that will be "
+        "used in the project.",
     )
     parser.add_argument(
         "--name_screen",

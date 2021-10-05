@@ -34,6 +34,11 @@ TODO
 
 - Add automatic reloading of Python classes;
 - Add save application state on reloading;
+
+FIXME
+-----
+
+- On Windows, hot reloading of Python files may not work;
 """
 
 import os

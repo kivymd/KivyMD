@@ -13,4 +13,4 @@ def test_create_project():
         f"--use_firebase yes "
         f"--use_hotreload yes"
     )
-    assert(os.path.exists(os.path.join(os.path.expanduser('~'), "TestProject")))
+    assert os.path.exists(os.path.join(os.path.expanduser("~"), "TestProject"))

@@ -66,40 +66,32 @@ Required Arguments
 ------------------
 
 - pattern
-
-        the name of the pattern with which the project will be created
+    - the name of the pattern with which the project will be created
 
 - directory
-
-        directory in which the project will be created
+    - directory in which the project will be created
 
 - name
-
-        project name
+    - project name
 
 - python_version
-
-        the version of Python (specify as `python3.9` or `python3.8`) with
-        which the virtual environment will be created
+    - the version of Python (specify as `python3.9` or `python3.8`) with
+    - which the virtual environment will be created
 
 - kivy_version
-
-        version of Kivy (specify as `2.0.0` or `master`) that will be used in the project
+    - version of Kivy (specify as `2.0.0` or `master`) that will be used in the project
 
 Optional arguments
 ------------------
 
 - name_screen
-
-        the name of the class wich be used when creating the project pattern
+    - the name of the class wich be used when creating the project pattern
 
 - use_firebase
-
-        use a basic template to work with the 'firebase' library
+    - use a basic template to work with the 'firebase' library
 
 - use_hotreload
-
-        creates a hot reload entry point to the application
+    - creates a hot reload entry point to the application
 
 .. warning:: On Windows, hot reloading of Python files may not work.
     But, for example, there is no such problem in Mac OS. If you fix this,

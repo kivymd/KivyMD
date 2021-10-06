@@ -118,6 +118,14 @@ class MDApp(BaseApp):
     and defaults to `[]`.
     """
 
+    KV_DIRS = ListProperty()
+    """
+    List of managed KV directories for autoloader.
+
+    :attr:`KV_DIRS` is a :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     AUTORELOADER_PATHS = ListProperty([(".", {"recursive": True})])
     """
     List of path to watch for auto reloading.
@@ -224,11 +232,19 @@ class MDApp(BaseApp):
         Usually happen before a reload
         """
 
-        for path in self.KV_FILES:
-            path = realpath(path)
-            Builder.unload_file(path)
+        for path_to_kv_file in self.KV_FILES:
+            path_to_kv_file = realpath(path_to_kv_file)
+            Builder.unload_file(path_to_kv_file)
+
         for name, module in self.CLASSES.items():
             Factory.unregister(name)
+
+        for path in self.KV_DIRS:
+            for path_to_dir, dirs, files in os.walk(path):
+                for name_file in files:
+                    if os.path.splitext(name_file)[1] == ".kv":
+                        path_to_kv_file = os.path.join(path_to_dir, name_file)
+                        Builder.unload_file(path_to_kv_file)
 
     def load_app_dependencies(self):
         """
@@ -236,11 +252,19 @@ class MDApp(BaseApp):
         This is called before rebuild.
         """
 
-        for path in self.KV_FILES:
-            path = realpath(path)
-            Builder.load_file(path)
+        for path_to_kv_file in self.KV_FILES:
+            path_to_kv_file = realpath(path_to_kv_file)
+            Builder.load_file(path_to_kv_file)
+
         for name, module in self.CLASSES.items():
             Factory.register(name, module=module)
+
+        for path in self.KV_DIRS:
+            for path_to_dir, dirs, files in os.walk(path):
+                for name_file in files:
+                    if os.path.splitext(name_file)[1] == ".kv":
+                        path_to_kv_file = os.path.join(path_to_dir, name_file)
+                        Builder.load_file(path_to_kv_file)
 
     def rebuild(self, *args, **kwargs):
         print("{}: Rebuild the application".format(self.appname))

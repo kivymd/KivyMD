@@ -27,4 +27,4 @@ Unreleased
 * Added `top` value to `position <https://kivymd.readthedocs.io/en/latest/components/menu/#kivymd.uix.menu.menu.MDDropdownMenu.position>`_ parameter of `MDDropdownMenu <https://kivymd.readthedocs.io/en/latest/components/menu/#module-kivymd.uix.menu.menu>`_ class
 * Added `get_current_tab <https://kivymd.readthedocs.io/en/latest/components/tabs/#kivymd.uix.tab.tab.MDTabs.get_current_tab>`_ method to `MDTabs <https://kivymd.readthedocs.io/en/latest/components/tabs/>`_ class
 * Added the feature to automatically create a virtual environment when creating a project using the `kivymd.tools.patterns.create_project <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/create_project/>`_ tool
-
+* Added the feature to use the `left_icon <https://kivymd.readthedocs.io/en/latest/components/textfield/#kivymd.uix.textfield.textfield.MDTextField.icon_left>`_ for `MDTextField <https://kivymd.readthedocs.io/en/latest/components/textfield/#kivymd.uix.textfield.textfield.MDTextField>`_ text fields

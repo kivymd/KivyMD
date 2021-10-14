@@ -451,22 +451,22 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and property is readonly.
     """
 
-    theme_thumb_color = OptionProperty("Primary", options=["Primary", "Custom"])
+    theme_thumb_color = OptionProperty("Accent", options=["Accent", "Custom"])
     """
     Thumb color scheme name
 
     :attr:`theme_thumb_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `Primary`.
+    and defaults to `Accent`.
     """
 
     theme_thumb_down_color = OptionProperty(
-        "Primary", options=["Primary", "Custom"]
+        "Accent", options=["Accent", "Custom"]
     )
     """
     Thumb Down color scheme name
 
     :attr:`theme_thumb_down_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `Primary`.
+    and defaults to `Accent`.
     """
 
     _track_color_active = ColorProperty([0, 0, 0, 0])
@@ -478,8 +478,8 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         super().__init__(**kwargs)
         self.theme_cls.bind(
             theme_style=self._set_colors,
-            primary_color=self._set_colors,
-            primary_palette=self._set_colors,
+            accent_color=self._set_colors,
+            accent_palette=self._set_colors,
         )
         self.bind(active=self._update_thumb_pos)
         Clock.schedule_once(self._set_colors)
@@ -490,8 +490,8 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         self._track_color_normal = self.theme_cls.disabled_hint_text_color
         if self.theme_cls.theme_style == "Dark":
 
-            if self.theme_thumb_down_color == "Primary":
-                self._track_color_active = self.theme_cls.primary_color
+            if self.theme_thumb_down_color == "Accent":
+                self._track_color_active = self.theme_cls.accent_color
             else:
                 self._track_color_active = self.thumb_color_down
 
@@ -499,17 +499,17 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             self._track_color_disabled = get_color_from_hex("FFFFFF")
             self._track_color_disabled[3] = 0.1
 
-            if self.theme_thumb_color == "Primary":
+            if self.theme_thumb_color == "Accent":
                 self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
 
-            if self.theme_thumb_down_color == "Primary":
+            if self.theme_thumb_down_color == "Accent":
                 self.thumb_color_down = get_color_from_hex(
-                    colors[self.theme_cls.primary_palette]["200"]
+                    colors[self.theme_cls.accent_palette]["200"]
                 )
         else:
-            if self.theme_thumb_down_color == "Primary":
+            if self.theme_thumb_down_color == "Accent":
                 self._track_color_active = get_color_from_hex(
-                    colors[self.theme_cls.primary_palette]["200"]
+                    colors[self.theme_cls.accent_palette]["200"]
                 )
             else:
                 self._track_color_active = self.thumb_color_down
@@ -517,10 +517,10 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
             self._track_color_active[3] = 0.5
             self._track_color_disabled = self.theme_cls.disabled_hint_text_color
 
-            if self.theme_thumb_down_color == "Primary":
-                self.thumb_color_down = self.theme_cls.primary_color
+            if self.theme_thumb_down_color == "Accent":
+                self.thumb_color_down = self.theme_cls.accent_color
 
-            if self.theme_thumb_color == "Primary":
+            if self.theme_thumb_color == "Accent":
                 self.thumb_color = get_color_from_hex(colors["Gray"]["50"])
 
     def _update_thumb_pos(self, *args, animation=True):

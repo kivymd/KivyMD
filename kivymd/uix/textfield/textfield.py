@@ -1611,7 +1611,6 @@ MDScreen:
             on_release: app.set_text()
 """
 
-
     class Test(MDApp):
         def build(self):
             return Builder.load_string(KV)
@@ -1620,6 +1619,5 @@ MDScreen:
             for widget in self.root.ids.box.children:
                 if issubclass(widget.__class__, TextInput):
                     widget.text = "Input text"
-
 
     Test().run()

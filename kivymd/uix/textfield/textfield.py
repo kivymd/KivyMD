@@ -1555,3 +1555,71 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
             self._color_active[-1] = 0.5
         else:
             self._color_active = color
+
+
+if __name__ == "__main__":
+    from kivy.lang import Builder
+    from kivy.uix.textinput import TextInput
+
+    from kivymd.app import MDApp
+
+    KV = """
+MDScreen:
+
+    MDBoxLayout:
+        id: box
+        orientation: "vertical"
+        spacing: "28dp"
+        adaptive_height: True
+        size_hint_x: .8
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDTextField:
+            hint_text: "Label"
+            helper_text: "Error massage"
+            mode: "rectangle"
+
+        MDTextField:
+            icon_left: "git"
+            hint_text: "Label"
+            helper_text: "Error massage"
+            mode: "rectangle"
+
+        MDTextField:
+            icon_left: "git"
+            hint_text: "Label"
+            helper_text: "Error massage"
+            mode: "fill"
+
+        MDTextField:
+            hint_text: "Label"
+            helper_text: "Error massage"
+            mode: "fill"
+
+        MDTextField:
+            hint_text: "Label"
+            helper_text: "Error massage"
+
+        MDTextField:
+            icon_left: "git"
+            hint_text: "Label"
+            helper_text: "Error massage"
+
+        MDFlatButton:
+            text: "SET TEXT"
+            pos_hint: {"center_x": .5}
+            on_release: app.set_text()
+"""
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def set_text(self):
+            for widget in self.root.ids.box.children:
+                if issubclass(widget.__class__, TextInput):
+                    widget.text = "Input text"
+
+
+    Test().run()

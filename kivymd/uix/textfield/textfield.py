@@ -1161,7 +1161,7 @@ class MDTextField(ThemableBehavior, TextInput):
             ).start(self)
         elif self.mode == "fill":
             Animation(
-                _hint_x=dp(16) if not self.icon_left else dp(20),
+                _hint_x=dp(16) if not self.icon_left else dp(36),
                 duration=0.2,
                 t="out_quad",
             ).start(self)

@@ -143,7 +143,7 @@ Behavior
 Long press on the chip, it will be marked.
 When you click on the marked chip, the mark will be removed:
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-activate.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-activate.gif
     :align: center
 """
 

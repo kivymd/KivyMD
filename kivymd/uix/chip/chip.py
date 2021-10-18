@@ -145,6 +145,158 @@ When you click on the marked chip, the mark will be removed:
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-activate.gif
     :align: center
+
+Examples
+========
+
+Multiple choose
+---------------
+
+Selecting a single choice chip automatically deselects all other chips in the set.
+
+.. code-block:: python
+
+    from kivy.animation import Animation
+    from kivy.lang import Builder
+
+    from kivymd.uix.screen import MDScreen
+    from kivymd.uix.chip import MDChip
+    from kivymd.app import MDApp
+
+    KV = '''
+    <MyScreen>
+
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_size: True
+            spacing: "12dp"
+            padding: "56dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDLabel:
+                text: "Multiple choice"
+                bold: True
+                font_style: "H5"
+                adaptive_size: True
+
+            MDBoxLayout:
+                id: chip_box
+                adaptive_size: True
+                spacing: "8dp"
+
+                MyChip:
+                    text: "Elevator"
+                    on_press: if self.active: root.removes_marks_all_chips()
+
+                MyChip:
+                    text: "Washer / Dryer"
+                    on_press: if self.active: root.removes_marks_all_chips()
+
+                MyChip:
+                    text: "Fireplace"
+                    on_press: if self.active: root.removes_marks_all_chips()
+
+
+    ScreenManager:
+
+        MyScreen:
+    '''
+
+
+    class MyChip(MDChip):
+        icon_check_color = (0, 0, 0, 1)
+        text_color = (0, 0, 0, 0.5)
+        _no_ripple_effect = True
+
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.bind(active=self.set_chip_bg_color)
+            self.bind(active=self.set_chip_text_color)
+
+        def set_chip_bg_color(self, instance_chip, active_value: int):
+            '''
+            Will be called every time the chip is activated/deactivated.
+            Sets the background color of the chip.
+            '''
+
+            self.md_bg_color = (
+                (0, 0, 0, 0.4)
+                if active_value
+                else (
+                    self.theme_cls.bg_darkest
+                    if self.theme_cls.theme_style == "Light"
+                    else (
+                        self.theme_cls.bg_light
+                        if not self.disabled
+                        else self.theme_cls.disabled_hint_text_color
+                    )
+                )
+            )
+
+        def set_chip_text_color(self, instance_chip, active_value: int):
+            Animation(
+                color=(0, 0, 0, 1) if active_value else (0, 0, 0, 0.5), d=0.2
+            ).start(self.ids.label)
+
+
+    class MyScreen(MDScreen):
+        def removes_marks_all_chips(self):
+            for instance_chip in self.ids.chip_box.children:
+                if instance_chip.active:
+                    instance_chip.active = False
+
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-multiple-choose.gif
+    :align: center
+
+Only choose
+-----------
+
+Only one chip will be selected.
+
+.. code-block:: python
+    KV = '''
+    <MyScreen>
+
+        [...]
+
+            MDBoxLayout:
+                id: chip_box
+                adaptive_size: True
+                spacing: "8dp"
+
+                MyChip:
+                    text: "Elevator"
+                    on_active: if self.active: root.removes_marks_all_chips(self)
+
+                MyChip:
+                    text: "Washer / Dryer"
+                    on_active: if self.active: root.removes_marks_all_chips(self)
+
+                MyChip:
+                    text: "Fireplace"
+                    on_active: if self.active: root.removes_marks_all_chips(self)
+
+
+    [...]
+    '''
+
+
+    class MyScreen(MDScreen):
+        def removes_marks_all_chips(self, selected_instance_chip):
+            for instance_chip in self.ids.chip_box.children:
+                if instance_chip != selected_instance_chip:
+                    instance_chip.active = False
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-only-choose.gif
+    :align: center
 """
 
 __all__ = ("MDChip",)
@@ -155,6 +307,7 @@ from typing import NoReturn
 from kivy import Logger
 from kivy.animation import Animation
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import BooleanProperty, ColorProperty, StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 
@@ -272,6 +425,16 @@ class MDChip(
     and defaults to `None`.
     """
 
+    icon_check_color = ColorProperty(None)
+    """
+    Chip's check icon color in ``rgba`` format.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`icon_check_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     check = BooleanProperty(False, deprecated=True)
     """
     If `True`, a checkmark is added to the left when touch to the chip.
@@ -306,8 +469,6 @@ class MDChip(
         super().__init__(**kwargs)
 
     def on_long_touch(self, *args) -> NoReturn:
-        if not self.icon_left:
-            return
         if self.active:
             return
         self.active = True if not self.active else False
@@ -321,11 +482,9 @@ class MDChip(
     def do_animation_check(
         self, md_bg_color: list, scale_value: int
     ) -> NoReturn:
-        Animation(
-            md_bg_color=md_bg_color,
-            t="out_sine",
-            d=0.1,
-        ).start(self.ids.icon_left_box)
+        Animation(md_bg_color=md_bg_color, t="out_sine", d=0.1).start(
+            self.ids.icon_left_box
+        )
         Animation(
             scale_value_x=scale_value,
             scale_value_y=scale_value,
@@ -334,11 +493,21 @@ class MDChip(
             d=0.1,
         ).start(self.ids.check_icon)
 
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
-            if self.active:
-                self.active = False
-            return super().on_touch_down(touch)
+        if not self.icon_left:
+            if scale_value:
+                self.ids.check_icon.x = -dp(4)
+                Animation(size=(dp(24), dp(24)), t="out_sine", d=0.1).start(
+                    self.ids.relative_box
+                )
+            else:
+                self.ids.check_icon.x = 0
+                Animation(size=(0, 0), t="out_sine", d=0.1).start(
+                    self.ids.relative_box
+                )
+
+    def on_press(self, *args):
+        if self.active:
+            self.active = False
 
 
 class MDChooseChip(MDStackLayout):
@@ -352,3 +521,126 @@ class MDChooseChip(MDStackLayout):
 
 class MDScalableCheckIcon(MDIcon, ScaleWidget):
     pass
+
+
+if __name__ == "__main__":
+    from kivymd.app import MDApp
+    from kivymd.uix.screen import MDScreen
+
+    KV = """
+<MyScreen>
+
+    MDBoxLayout:
+        orientation: "vertical"
+        adaptive_size: True
+        spacing: "12dp"
+        padding: "56dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDLabel:
+            text: "Multiple choose"
+            bold: True
+            font_style: "H5"
+            adaptive_size: True
+
+        MDBoxLayout:
+            id: chip_box
+            adaptive_size: True
+            spacing: "8dp"
+
+            MyChip:
+                text: "Elevator"
+                on_press: if self.active: root.removes_marks_all_chips()
+
+            MyChip:
+                text: "Washer / Dryer"
+                on_press: if self.active: root.removes_marks_all_chips()
+
+            MyChip:
+                text: "Fireplace"
+                on_press: if self.active: root.removes_marks_all_chips()
+
+        MDSeparator:
+
+        MDLabel:
+            text: "Only choose"
+            bold: True
+            font_style: "H5"
+            adaptive_size: True
+
+        MDBoxLayout:
+            id: chip_only_box
+            adaptive_size: True
+            spacing: "8dp"
+
+            MyChip:
+                text: "Elevator"
+                on_active: if self.active: root.removes_marks_all_chips(self, False)
+
+            MyChip:
+                text: "Washer / Dryer"
+                on_active: if self.active: root.removes_marks_all_chips(self, False)
+
+            MyChip:
+                text: "Fireplace"
+                on_active: if self.active: root.removes_marks_all_chips(self, False)
+
+
+ScreenManager:
+
+    MyScreen:
+    """
+
+    class MyChip(MDChip):
+        icon_check_color = (0, 0, 0, 1)
+        text_color = (0, 0, 0, 0.5)
+        _no_ripple_effect = True
+
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.bind(active=self.set_chip_bg_color)
+            self.bind(active=self.set_chip_text_color)
+
+        def set_chip_bg_color(self, instance_chip, active_value: int):
+            """
+            Will be called every time the chip is activated/deactivated.
+            Sets the background color of the chip.
+            """
+
+            self.md_bg_color = (
+                (0, 0, 0, 0.4)
+                if active_value
+                else (
+                    self.theme_cls.bg_darkest
+                    if self.theme_cls.theme_style == "Light"
+                    else (
+                        self.theme_cls.bg_light
+                        if not self.disabled
+                        else self.theme_cls.disabled_hint_text_color
+                    )
+                )
+            )
+
+        def set_chip_text_color(self, instance_chip, active_value: int):
+            Animation(
+                color=(0, 0, 0, 1) if active_value else (0, 0, 0, 0.5), d=0.2
+            ).start(self.ids.label)
+
+    class MyScreen(MDScreen):
+        def removes_marks_all_chips(
+            self, selected_instance_chip=None, multiple=True
+        ):
+            if multiple:
+                for instance_chip in self.ids.chip_box.children:
+                    if instance_chip.active:
+                        instance_chip.active = False
+            else:
+                for instance_chip in self.ids.chip_only_box.children:
+                    if instance_chip != selected_instance_chip:
+                        instance_chip.active = False
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+    Test().run()

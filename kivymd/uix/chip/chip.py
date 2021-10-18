@@ -262,6 +262,7 @@ Only choose
 Only one chip will be selected.
 
 .. code-block:: python
+
     KV = '''
     <MyScreen>
 

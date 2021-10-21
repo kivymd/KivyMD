@@ -1515,8 +1515,12 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
 
     def on_focus(self, instance_text_field, focus_value: bool) -> NoReturn:
         if focus_value:
-            self.icon_left_color = self.theme_cls.primary_color
-            self.icon_right_color = self.theme_cls.primary_color
+            self.icon_left_color = (
+                self._icon_left_color_copy or self.theme_cls.text_color
+            )
+            self.icon_right_color = (
+                self._icon_right_color_copy or self.theme_cls.text_color
+            )
         else:
             self.icon_left_color = (
                 self._icon_left_color_copy or self.theme_cls.text_color

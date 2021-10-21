@@ -1522,12 +1522,9 @@ class MDTextFieldRound(ThemableBehavior, TextInput):
                 self._icon_right_color_copy or self.theme_cls.text_color
             )
         else:
-            self.icon_left_color = (
-                self._icon_left_color_copy or self.theme_cls.text_color
-            )
-            self.icon_right_color = (
-                self._icon_right_color_copy or self.theme_cls.text_color
-            )
+            self.icon_left_color = self.theme_cls.primary_color
+            self.icon_right_color = self.theme_cls.primary_color
+            
 
     def on_icon_left(self, instance_text_field, icon_name: str) -> NoReturn:
         self._lbl_icon_left.icon = icon_name

@@ -133,11 +133,12 @@ Determinate
 __all__ = ("MDProgressBar",)
 
 import os
-from typing import NoReturn
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
@@ -181,6 +182,16 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     Progress bar color in ``rgba`` format.
 
     :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    back_color = ColorProperty(None)
+    """
+    Progress bar back color in ``rgba`` format.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`back_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -233,6 +244,16 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
         self.catching_anim = None
         self.running_anim = None
         super().__init__(**kwargs)
+        Clock.schedule_once(self.check_size)
+
+    def check_size(self, interval: Union[int, float]) -> NoReturn:
+        if self.size == [100, 100]:
+            if self.orientation == "horizontal":
+                self.size_hint_y = None
+                self.height = dp(4)
+            elif self.orientation == "vertical":
+                self.size_hint_x = None
+                self.width = dp(4)
 
     def start(self) -> NoReturn:
         """Start animation."""

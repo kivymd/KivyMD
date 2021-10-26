@@ -46,10 +46,14 @@ Usage
                     text="Discard draft?",
                     buttons=[
                         MDFlatButton(
-                            text="CANCEL", text_color=self.theme_cls.primary_color
+                            text="CANCEL",
+                            theme_text_color="Custom",
+                            text_color=self.theme_cls.primary_color,
                         ),
                         MDFlatButton(
-                            text="DISCARD", text_color=self.theme_cls.primary_color
+                            text="DISCARD",
+                            theme_text_color="Custom",
+                            text_color=self.theme_cls.primary_color,
                         ),
                     ],
                 )
@@ -130,10 +134,14 @@ class MDDialog(BaseDialog):
                 title="Reset settings?",
                 buttons=[
                     MDFlatButton(
-                        text="CANCEL", text_color=self.theme_cls.primary_color
+                        text="CANCEL",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
                     ),
                     MDFlatButton(
-                        text="ACCEPT", text_color=self.theme_cls.primary_color
+                        text="ACCEPT",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
                     ),
                 ],
             )
@@ -158,10 +166,14 @@ class MDDialog(BaseDialog):
                 text="This will reset your device to its default factory settings.",
                 buttons=[
                     MDFlatButton(
-                        text="CANCEL", text_color=self.theme_cls.primary_color
+                        text="CANCEL",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
                     ),
                     MDFlatButton(
-                        text="ACCEPT", text_color=self.theme_cls.primary_color
+                        text="ACCEPT",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
                     ),
                 ],
             )
@@ -327,10 +339,14 @@ class MDDialog(BaseDialog):
                         ],
                         buttons=[
                             MDFlatButton(
-                                text="CANCEL", text_color=self.theme_cls.primary_color
+                                text="CANCEL",
+                                theme_text_color="Custom",
+                                text_color=self.theme_cls.primary_color,
                             ),
                             MDFlatButton(
-                                text="OK", text_color=self.theme_cls.primary_color
+                                text="OK",
+                                theme_text_color="Custom",
+                                text_color=self.theme_cls.primary_color,
                             ),
                         ],
                     )
@@ -419,10 +435,14 @@ class MDDialog(BaseDialog):
                         content_cls=Content(),
                         buttons=[
                             MDFlatButton(
-                                text="CANCEL", text_color=self.theme_cls.primary_color
+                                text="CANCEL",
+                                theme_text_color="Custom",
+                                text_color=self.theme_cls.primary_color,
                             ),
                             MDFlatButton(
-                                text="OK", text_color=self.theme_cls.primary_color
+                                text="OK",
+                                theme_text_color="Custom",
+                                text_color=self.theme_cls.primary_color,
                             ),
                         ],
                     )

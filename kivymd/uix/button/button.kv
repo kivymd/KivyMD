@@ -15,6 +15,8 @@
     size_hint: None, None
     height: dp(20) + lbl_txt.texture_size[1]
     width: lbl_txt.texture_size[0] + dp(24)
+    anchor_x: root.halign
+    anchor_y: root.valign
 
     MDLabel:
         id: lbl_txt
@@ -144,14 +146,15 @@
             width: root.line_width
             rectangle: (self.x, self.y, self.width, self.height)
 
-    size_hint_x: None
-    width: root.lbl_txt.width + lbl_ic.width * 2 + box.spacing
+    size_hint: None, None
+    size:
+        root.lbl_txt.width + lbl_ic.width * 2 + box.spacing, \
+        lbl_ic.texture_size[1] + dp(12)
 
     MDBoxLayout:
         id: box
-        size_hint: None, None
-        size: root.size
-        padding: "10dp", 0, 0, 0
+        adaptive_size: True
+        padding: root.padding
         spacing: "8dp"
 
         MDIcon:
@@ -165,6 +168,7 @@
                 else root.theme_cls.disabled_hint_text_color)
             size_hint_x: None
             width: self.texture_size[0]
+            font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
 
         MDLabel:
             id: lbl
@@ -179,7 +183,6 @@
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
-            pos_hint: {"center_y": .5}
 
 
 <MDRoundFlatIconButton>
@@ -197,14 +200,15 @@
                 root._radius, root._radius, root._radius, root._radius,\
                 self.height)
 
-    size_hint_x: None
-    width: root.lbl_txt.width + lbl_ic.width * 2 + box.spacing
+    size_hint: None, None
+    size:
+        root.lbl_txt.width + lbl_ic.width * 2 + box.spacing, \
+        lbl_ic.texture_size[1] + dp(12)
 
     MDBoxLayout:
         id: box
-        size_hint: None, None
-        size: root.size
-        padding: "10dp", 0, 0, 0
+        adaptive_size: True
+        padding: root.padding
         spacing: "8dp"
 
         MDIcon:
@@ -218,6 +222,7 @@
                 else root.theme_cls.disabled_hint_text_color)
             size_hint_x: None
             width: self.texture_size[0]
+            font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
 
         MDLabel:
             id: lbl
@@ -232,7 +237,6 @@
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
-            pos_hint: {"center_y": .5}
 
 
 <MDIconButton>

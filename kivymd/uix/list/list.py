@@ -406,7 +406,7 @@ Custom list item
         IconLeftWidget:
             icon: "cog"
 
-        Container:
+        YourContainer:
             id: container
 
             MDIconButton:
@@ -417,7 +417,7 @@ Custom list item
     '''
 
 
-    class Container(IRightBodyTouch, MDBoxLayout):
+    class YourContainer(IRightBodyTouch, MDBoxLayout):
         adaptive_width = True
 
 

@@ -454,6 +454,7 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
@@ -483,6 +484,51 @@ with open(
 
 class BaseButton(ThemableBehavior, ButtonBehavior, AnchorLayout):
     """Base class for all buttons."""
+
+    icon_size = NumericProperty()
+    """
+    Left icon font size.
+    Use this parameter as the font size, that is, in sp units.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`icon_size` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `None`.
+    """
+
+    padding = VariableListProperty([dp(16), dp(12), dp(16), dp(12)])
+    """
+    Padding between the widget box and its children, in pixels:
+    [padding_left, padding_top, padding_right, padding_bottom].
+
+    padding also accepts a two argument form [padding_horizontal,
+    padding_vertical] and a one argument form [padding].
+
+    .. versionadded:: 1.0.0
+
+    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to [0, 0, 0, 0].
+    """
+
+    halign = OptionProperty("center", options=("left", "center", "right"))
+    """
+    Horizontal anchor.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`anchor_x` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to 'center'. It accepts values of 'left', 'center' or 'right'.
+    """
+
+    valign = OptionProperty("center", options=("top", "center", "bottom"))
+    """
+    Vertical anchor.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`anchor_y` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to 'center'. It accepts values of 'top', 'center' or 'bottom'.
+    """
 
     text = StringProperty(" ")
     """

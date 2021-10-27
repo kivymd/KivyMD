@@ -643,6 +643,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     _start_coords = []
     _calculate_complete = False
     _calculate_process = False
+    _move_menu = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -668,10 +669,19 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         if self.caller:
             self.ids.md_menu.data = self.items
             # We need to pick a starting point, see how big we need to be,
-            # and where to grow to.
-            self._start_coords = self.caller.to_window(
-                self.caller.center_x, self.caller.center_y
-            )
+            # and where to grow to. Top bar starting point.
+            if self.caller.center_y >= 100:
+                self._start_coords = self.caller.to_window(
+                    self.caller.center_x, 
+                    self.caller.center_y - 50
+                )
+            # Bottom bar starting point.
+            else:
+                self._start_coords = self.caller.to_window(
+                    self.caller.center_x, 
+                    self.caller.center_y
+                )
+            
             self.target_width = self.width_mult * m_res.STANDARD_INCREMENT
 
             # If we're wider than the Window...
@@ -774,6 +784,18 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 self.tar_x = self._start_coords[0] - self.target_width
             self._calculate_complete = True
 
+        # Top left and right icon when position = "auto" only.
+        if (self._move_menu and 
+            self.caller.center_y >= 100 and 
+            self.position == "auto"):
+            self.on_top_shift()
+
+        # Bottom left and right icon when position = "auto" only.
+        if (self._move_menu and 
+            self.caller.center_y <= 100 and 
+            self.position == "auto"): 
+            self.on_bottom_shift()
+
     def open(self) -> NoReturn:
         """Animate the opening of a menu window."""
 
@@ -819,6 +841,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             Window.add_widget(self)
             Clock.unschedule(open)
             self._calculate_process = False
+            self._move_menu = True 
 
         self.set_menu_properties()
         if not self._calculate_process:
@@ -861,3 +884,32 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         """Closes the menu."""
 
         self.on_dismiss()
+        
+    def on_top_shift(self):
+        # Top left menu shift effect.
+        if self.caller.center_x <= 100:
+            self.menu.pos = self.caller.to_window(
+                    self.caller.center_x, 
+                    self.caller.center_y  - self.target_height - 50
+                )
+        # Top right menu shift effect.
+        else: 
+            self.menu.pos = self.caller.to_window(
+                    self.caller.center_x - self.target_width, 
+                    self.caller.center_y - self.target_height - 50
+                )
+
+    def on_bottom_shift(self):
+        # Bottom right menu shift effect.
+        if self.caller.center_x >= 100:
+            self.menu.pos = self.caller.to_window(
+                    self.caller.center_x - self.target_width, 
+                    self._start_coords[1]
+                )
+        # Bottom left menu shift effect.
+        else: 
+            self.menu.pos = self.caller.to_window(
+                    self.caller.center_x, 
+                    self.caller.center_y
+                )
+

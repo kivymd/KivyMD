@@ -11,6 +11,7 @@
 
         MDToolbar:
             title: "%s"
+            right_action_items: [["web", lambda x: app.switch_lang()]]
 
         MDFloatLayout:
 
@@ -26,7 +27,7 @@
 
                 MDLabel:
                     id: prev_label
-                    text: "To log in, enter your personal data:"
+                    text: %s
                     font_style: "H6"
                     adaptive_height: True
                     halign: "center"
@@ -38,14 +39,14 @@
                     spacing: "20dp"
 
                     MDTextField:
-                        hint_text: "Login"
+                        hint_text: %s
                         on_text: root.controller.set_user_data("login", self.text)
 
                     MDTextField:
-                        hint_text: "Password"
+                        hint_text: %s
                         on_text: root.controller.set_user_data("password", self.text)
 
     MDFillRoundFlatButton:
-        text: "LOGIN"
+        text: %s
         on_release: root.controller.on_tap_button_login()
         pos_hint: {"center_x": .5, "center_y": .1}

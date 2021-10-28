@@ -473,11 +473,14 @@ def main():
             localization_po_file(path_to_project)
             create_mofile(path_to_project)
         else:
-            os.remove(os.path.join(path_to_project, "message.pot"))
-            os.remove(
-                os.path.join(path_to_project, "data", "libs", "translation.py")
-            )
-            shutil.rmtree(os.path.join(path_to_project, "data"))
+            try:
+                os.remove(os.path.join(path_to_project, "message.pot"))
+                os.remove(
+                    os.path.join(path_to_project, "data", "libs", "translation.py")
+                )
+                shutil.rmtree(os.path.join(path_to_project, "data"))
+            except FileNotFoundError:
+                pass
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
         Logger.info(
             f"KivyMD: Create a virtual environment for '{path_to_project}' project..."

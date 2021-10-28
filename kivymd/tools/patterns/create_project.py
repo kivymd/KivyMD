@@ -479,14 +479,14 @@ def main():
             )
             shutil.rmtree(os.path.join(path_to_project, "data"))
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
-        # Logger.info(
-        #     f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
-        # )
-        # create_virtual_environment(python_version, path_to_project)
-        # Logger.info(
-        #     f"KivyMD: Install requirements for '{path_to_project}' project..."
-        # )
-        # install_requirements(path_to_project, kivy_version, use_firebase)
+        Logger.info(
+            f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
+        )
+        create_virtual_environment(python_version, path_to_project)
+        Logger.info(
+            f"KivyMD: Install requirements for '{path_to_project}' project..."
+        )
+        install_requirements(path_to_project, kivy_version, use_firebase)
     else:
         parser.error(f"The {path_to_project} project already exists")
 

@@ -34,7 +34,9 @@ class Translation(Observable):
             return super().funbind(name, func, *args, **kwargs)
 
     def switch_lang(self, lang):
-        locales = gettext.translation(self.domian, self.resource_dir, languages=[lang])
+        locales = gettext.translation(
+            self.domian, self.resource_dir, languages=[lang]
+        )
         try:
             self.ugettext = locales.ugettext
         except AttributeError:

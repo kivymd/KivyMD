@@ -476,7 +476,9 @@ def main():
             try:
                 os.remove(os.path.join(path_to_project, "message.pot"))
                 os.remove(
-                    os.path.join(path_to_project, "data", "libs", "translation.py")
+                    os.path.join(
+                        path_to_project, "data", "libs", "translation.py"
+                    )
                 )
                 shutil.rmtree(os.path.join(path_to_project, "data"))
             except FileNotFoundError:

@@ -473,14 +473,9 @@ def main():
             localization_po_file(path_to_project)
             create_mofile(path_to_project)
         else:
-            try:
-                os.remove(os.path.join(path_to_project, "message.pot"))
-                os.remove(
-                    os.path.join(path_to_project, "data", "libs", "translation.py")
-                )
-                shutil.rmtree(os.path.join(path_to_project, "data"))
-            except FileNotFoundError:
-                pass
+            os.remove(os.path.join(path_to_project, "messages.pot"))
+            os.remove(os.path.join(path_to_project, "libs", "translation.py"))
+            shutil.rmtree(os.path.join(path_to_project, "data"))
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
         Logger.info(
             f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
@@ -786,25 +781,6 @@ def create_virtual_environment(
     os.system(
         f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}"
     )
-
-
-"""
-#: View/BlurConceptScreen/blur_concept_screen.kv:29
-msgid "To log in, enter your personal data:"
-msgstr ""
-
-#: View/BlurConceptScreen/blur_concept_screen.kv:41
-msgid "Login"
-msgstr ""
-
-#: View/BlurConceptScreen/blur_concept_screen.kv:45
-msgid "Password"
-msgstr ""
-
-#: View/BlurConceptScreen/blur_concept_screen.kv:49
-msgid "LOGIN"
-msgstr ""
-"""
 
 
 def localization_po_file(path_to_project: str) -> NoReturn:

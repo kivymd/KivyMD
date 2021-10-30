@@ -676,18 +676,19 @@ def create_view(
         (
             f"{name_screen}View",
             name_screen,
+            "app.switch_lang()" if use_localization == "yes" else "x",
             'app.translation._("To log in, enter your personal data:")'
             if use_localization == "yes"
-            else "To log in, enter your personal data:",
+            else "\"To log in, enter your personal data:\"",
             'app.translation._("Login")'
             if use_localization == "yes"
-            else "Login",
+            else "\"Login\"",
             'app.translation._("Password")'
             if use_localization == "yes"
-            else "Password",
+            else "\"Password\"",
             'app.translation._("LOGIN")'
             if use_localization == "yes"
-            else "LOGIN",
+            else "\"LOGIN\"",
         ),
     )
     replace_in_file(

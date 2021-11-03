@@ -197,10 +197,23 @@ The :class:`~MDIcon` class is inherited from
 .. code-block:: kv
 
     MDIcon:
-        halign: "center"
-        icon: "language-python"
+        icon: "gmail"
+        pos_hint: {"center_x": .5, "center_y": .5}
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon.png
+    :align: center
+
+MDIcon with badge icon
+----------------------
+
+.. code-block:: kv
+
+    MDIcon:
+        icon: "gmail"
+        badge_icon: "numeric-10"
+        pos_hint: {"center_x": .5, "center_y": .5}
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-badge.png
     :align: center
 """
 
@@ -216,6 +229,7 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ColorProperty,
+    NumericProperty,
     OptionProperty,
     StringProperty,
 )
@@ -225,6 +239,7 @@ from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.floatlayout import MDFloatLayout
 
 __MDLabel_colors__ = {
     "Primary": "text_color",
@@ -383,13 +398,53 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
                 self.color = getattr(self.theme_cls, "disabled_hint_text_color")
 
 
-class MDIcon(MDLabel):
+class MDIcon(MDFloatLayout, MDLabel):
     icon = StringProperty("android")
     """
     Label icon name.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
+    """
+
+    badge_icon = StringProperty()
+    """
+    Label badge icon name.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`badge_icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    badge_icon_color = ColorProperty([1, 1, 1, 1])
+    """
+    Badge icon color.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`badge_icon_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    badge_bg_color = ColorProperty(None)
+    """
+    Badge icon background color.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`badge_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    badge_font_size = NumericProperty()
+    """
+    Badge icon color.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`badge_font_size` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
     """
 
     source = StringProperty(None, allownone=True)
@@ -399,3 +454,12 @@ class MDIcon(MDLabel):
     :attr:`source` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
     """
+
+    def __init__(self, **kwargs):
+        from kivymd.uix.selectioncontrol import MDCheckbox
+
+        super().__init__(**kwargs)
+        if not isinstance(self, MDCheckbox):
+            self.size_hint = (None, None)
+            self.size = self.texture_size
+            self.adaptive_size = True

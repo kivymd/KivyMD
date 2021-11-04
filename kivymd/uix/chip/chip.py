@@ -521,7 +521,7 @@ class MDChooseChip(MDStackLayout):
 
 
 class MDScalableCheckIcon(MDIcon, ScaleWidget):
-    pos_hint = {"center_y": .5}
+    pos_hint = {"center_y": 0.5}
 
 
 if __name__ == "__main__":

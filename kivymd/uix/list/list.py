@@ -944,7 +944,7 @@ class ImageRightWidgetWithoutTouch(
 
 
 class IconRightWidget(IRightBodyTouch, MDIconButton):
-    pos_hint = {"center_y": .5}
+    pos_hint = {"center_y": 0.5}
 
 
 class IconRightWidgetWithoutTouch(IRightBody, MDIconButton):
@@ -952,12 +952,12 @@ class IconRightWidgetWithoutTouch(IRightBody, MDIconButton):
     .. versionadded:: 1.0.0
     """
 
-    pos_hint = {"center_y": .5}
+    pos_hint = {"center_y": 0.5}
     _no_ripple_effect = True
 
 
 class IconLeftWidget(ILeftBodyTouch, MDIconButton):
-    pos_hint = {"center_y": .5}
+    pos_hint = {"center_y": 0.5}
 
 
 class IconLeftWidgetWithoutTouch(ILeftBody, MDIconButton):
@@ -965,7 +965,7 @@ class IconLeftWidgetWithoutTouch(ILeftBody, MDIconButton):
     .. versionadded:: 1.0.0
     """
 
-    pos_hint = {"center_y": .5}
+    pos_hint = {"center_y": 0.5}
     _no_ripple_effect = True
 
 

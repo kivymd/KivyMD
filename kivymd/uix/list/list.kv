@@ -33,9 +33,10 @@
                 )
         Color:
             rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
-        Rectangle:
+        RoundedRectangle:
             pos: self.pos
             size: self.size
+            radius: root.radius
 
     BoxLayout:
         id: _text_container

@@ -13,16 +13,16 @@ https://en.wikipedia.org/wiki/Model–view–controller
 
 from typing import NoReturn
 
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager%s
 
 from kivymd.app import MDApp
 
-from View.screens import screens
+from View.screens import screens%s
 %s
 
-class %s(MDApp):
+class %s(MDApp):%s
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(**kwargs)%s
         self.load_all_kv_files(self.directory)
         # This is the screen manager that will contain all the screens of your
         # application.
@@ -60,6 +60,6 @@ class %s(MDApp):
             view.manager_screens = self.manager_screens
             view.name = name_screen
             self.manager_screens.add_widget(view)
-
+%s%s
 
 %s().run()

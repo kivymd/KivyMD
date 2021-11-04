@@ -30,3 +30,6 @@ Unreleased
 * Added the feature to use the `left_icon <https://kivymd.readthedocs.io/en/latest/components/textfield/#kivymd.uix.textfield.textfield.MDTextField.icon_left>`_ for `MDTextField <https://kivymd.readthedocs.io/en/latest/components/textfield/#kivymd.uix.textfield.textfield.MDTextField>`_ text fields;
 * The design and behavior of the `MDChip <https://kivymd.readthedocs.io/en/latest/components/chip/>`_ widget is close to the material design spec;
 * Added the feature to set the thickness of the `MDProgressBar <https://kivymd.readthedocs.io/en/latest/components/progressbar/>`_ class;
+* Added localization support when creating a project using the `create_project <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/create_project/>`_ tool;
+* Added support `Material Design v3`;
+* Added support badge icon to `MDIcon <https://kivymd.readthedocs.io/en/latest/components/label/#mdicon-with-badge-icon>`_ class;

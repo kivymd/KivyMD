@@ -464,10 +464,11 @@ Center position
 __all__ = ("MDDropdownMenu",)
 
 import os
+from traceback import print_tb
 from typing import NoReturn, Union
-
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core import window
 from kivy.core.window import Window
 from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.lang import Builder
@@ -493,7 +494,6 @@ with open(
 ) as kv_file:
     Builder.load_string(kv_file.read())
 
-
 class MDMenu(RecycleView):
     width_mult = NumericProperty(1)
     """
@@ -504,7 +504,6 @@ class MDMenu(RecycleView):
     """
     See :class:`~MDDropdownMenu` class.
     """
-
 
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
@@ -644,7 +643,10 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     _calculate_complete = False
     _calculate_process = False
     _move_menu = False
-
+    _ver_growth = None
+    _hor_growth = None
+    _header_cls = False
+   
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Window.bind(on_resize=self.check_position_caller)
@@ -653,6 +655,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
         self.target_height = 0
+        self.h_cls = 0
 
     def check_position_caller(
         self, instance_window: WindowSDL, width: int, height: int
@@ -668,20 +671,10 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
         if self.caller:
             self.ids.md_menu.data = self.items
+
             # We need to pick a starting point, see how big we need to be,
-            # and where to grow to. Top bar starting point.
-            if self.caller.center_y >= 100:
-                self._start_coords = self.caller.to_window(
-                    self.caller.center_x, 
-                    self.caller.center_y - 50
-                )
-            # Bottom bar starting point.
-            else:
-                self._start_coords = self.caller.to_window(
-                    self.caller.center_x, 
-                    self.caller.center_y
-                )
-            
+            # and where to grow to.
+            self.coordinates(0, 0)
             self.target_width = self.width_mult * m_res.STANDARD_INCREMENT
 
             # If we're wider than the Window...
@@ -691,13 +684,22 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     int(Window.width / m_res.STANDARD_INCREMENT)
                     * m_res.STANDARD_INCREMENT
                 )
+            # When MenuHeader added to MDDropdownMenu we add 55 to the list
+            # target_height to get a correct target position otherwise carry on.
+            # Header_cls size on y axis. Dropping menu down minus header size.
+            if self._header_cls:
+                self.h_cls = dp(self.header_size)
+            else:
+                self.h_cls = 0
+                self._header_cls = False
+
+            self.target_height =  0 - dp(self.h_cls)
 
             # Set the target_height of the menu depending on the size of
             # each MDMenuItem or MDMenuItemIcon.
-            self.target_height = 0
             for item in self.ids.md_menu.data:
-                self.target_height += item.get("height", dp(72))
-
+                self.target_height += item.get("height", dp(48))
+           
             # If we're over max_height...
             if 0 < self.max_height < self.target_height:
                 self.target_height = self.max_height
@@ -708,13 +710,13 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             else:
                 # If there's enough space below us:
                 if (
-                    self.target_height
+                    self.target_height + dp(self.h_cls)
                     <= self._start_coords[1] - self.border_margin
                 ):
                     ver_growth = "down"
                 # if there's enough space above us:
                 elif (
-                    self.target_height
+                    self.target_height + dp(self.h_cls)
                     < Window.height - self._start_coords[1] - self.border_margin
                 ):
                     ver_growth = "up"
@@ -727,7 +729,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     ):
                         ver_growth = "down"
                         self.target_height = (
-                            self._start_coords[1] - self.border_margin
+                            self._start_coords[1] - self.border_margin - dp(self.h_cls)
                         )
                     # If there's more space above us:
                     else:
@@ -774,27 +776,49 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                         )
 
             if ver_growth == "down":
-                self.tar_y = self._start_coords[1] - self.target_height
+                self.tar_y = self._start_coords[1] - self.target_height - dp(self.h_cls)
             else:  # should always be "up"
                 self.tar_y = self._start_coords[1]
-
+              
             if hor_growth == "right":
                 self.tar_x = self._start_coords[0]
             else:  # should always be "left"
                 self.tar_x = self._start_coords[0] - self.target_width
+
             self._calculate_complete = True
+            self._ver_growth = ver_growth
+            self._hor_growth = hor_growth
 
-        # Top left and right icon when position = "auto" only.
         if (self._move_menu and 
-            self.caller.center_y >= 100 and 
             self.position == "auto"):
-            self.on_top_shift()
+            self.on_shift()         
+    
+    # Shift effect for MDDropdownMenu when window resizing only in 'default' and 'auto' position.
+    def on_shift(self):
+    
+        if self._ver_growth == "down" and self._hor_growth == "left":
+            self.menu.pos = self.coordinates(self.target_width,
+                                            self.target_height + dp(self.h_cls))
+            
+        elif self._ver_growth == "up" and self._hor_growth == "right":
+            self.menu.pos = self.coordinates(0, 0)
+       
+        elif self._ver_growth == "down" and self._hor_growth == "right":
+            self.menu.pos = self.coordinates(0, self.target_height + dp(self.h_cls))
+        # Move top left.
+        else:
+            self.menu.pos = self.coordinates(self.target_width, 0)
 
-        # Bottom left and right icon when position = "auto" only.
-        if (self._move_menu and 
-            self.caller.center_y <= 100 and 
-            self.position == "auto"): 
-            self.on_bottom_shift()
+        self._calculate_process = False
+    
+    # Window starting and follow up coordinates for repositioning DropdownMenu.
+    def coordinates (self, *args):
+        self._start_coords = self.caller.to_window(
+            self.caller.center_x - args[0], 
+            self.caller.center_y - args[1]
+            )
+        return self._start_coords
+        
 
     def open(self) -> NoReturn:
         """Animate the opening of a menu window."""
@@ -806,7 +830,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 self.menu.pos = self._start_coords
                 anim = Animation(
                     x=self.tar_x,
-                    y=self.tar_y,
+                    y=self.tar_y, 
                     width=self.target_width,
                     height=self.target_height,
                     duration=self.opening_time,
@@ -843,19 +867,22 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             self._calculate_process = False
             self._move_menu = True 
 
-        self.set_menu_properties()
         if not self._calculate_process:
             self._calculate_process = True
             Clock.schedule_interval(open, 0)
+        self.set_menu_properties()
 
     def on_header_cls(
         self, instance_dropdown_menu, instance_user_menu_header
     ) -> NoReturn:
+        
         def add_content_header_cls(interval):
             self.ids.content_header.clear_widgets()
             self.ids.content_header.add_widget(instance_user_menu_header)
-
+        
         Clock.schedule_once(add_content_header_cls, 1)
+        self._header_cls = True
+        self.header_size = self.size[0] / 2
 
     def on_touch_down(self, touch):
         if not self.menu.collide_point(*touch.pos):
@@ -884,32 +911,3 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         """Closes the menu."""
 
         self.on_dismiss()
-        
-    def on_top_shift(self):
-        # Top left menu shift effect.
-        if self.caller.center_x <= 100:
-            self.menu.pos = self.caller.to_window(
-                    self.caller.center_x, 
-                    self.caller.center_y  - self.target_height - 50
-                )
-        # Top right menu shift effect.
-        else: 
-            self.menu.pos = self.caller.to_window(
-                    self.caller.center_x - self.target_width, 
-                    self.caller.center_y - self.target_height - 50
-                )
-
-    def on_bottom_shift(self):
-        # Bottom right menu shift effect.
-        if self.caller.center_x >= 100:
-            self.menu.pos = self.caller.to_window(
-                    self.caller.center_x - self.target_width, 
-                    self._start_coords[1]
-                )
-        # Bottom left menu shift effect.
-        else: 
-            self.menu.pos = self.caller.to_window(
-                    self.caller.center_x, 
-                    self.caller.center_y
-                )
-

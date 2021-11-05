@@ -393,7 +393,15 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
     TestNavigationDrawer().run()
 """
 
-__all__ = ("MDNavigationLayout", "MDNavigationDrawer")
+__all__ = (
+    "MDNavigationLayout",
+    "MDNavigationDrawer",
+    "MDNavigationDrawerItem",
+    "MDNavigationDrawerMenu",
+    "MDNavigationDrawerHeader",
+    "MDNavigationDrawerLabel",
+    "MDNavigationDrawerDivider",
+)
 
 import os
 from typing import NoReturn, Union

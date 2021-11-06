@@ -42,10 +42,14 @@
                 if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
-        Ellipse:
+        RoundedRectangle:
             size: self.size
             pos: self.pos
             source: self.source if hasattr(self, "source") else ""
+            radius:
+                self.radius \
+                if hasattr(self, "radius") and self.radius else \
+                [self.width / 2,]
 
     size: "48dp", "48dp"
     lbl_txt: lbl_txt

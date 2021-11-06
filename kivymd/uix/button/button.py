@@ -120,17 +120,59 @@ To change :class:`~MDFloatingActionButton` background, use the
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-md-bg-color.png
     :align: center
 
-The length of the shadow is controlled by the ``elevation_normal`` parameter:
+Material design style 3
+-----------------------
 
-.. code-block:: kv
+.. code-block:: python
 
-    MDFloatingActionButton:
-        icon: "android"
-        elevation_normal: 12
+    from kivy.lang import Builder
+    from kivy.utils import get_color_from_hex
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-elevation-normal.png
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDFloatingActionButton
+
+    KV = '''
+    #:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+    MDScreen:
+        md_bg_color: get_color_from_hex("#f7f2fa")
+
+        MDBoxLayout:
+            id: box
+            spacing: "56dp"
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class TestNavigationDrawer(MDApp):
+        def build(self):
+            self.theme_cls.material_style = "M3"
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            data = {
+                "standard": {"md_bg_color": "#fefbff", "text_color": "#6851a5"},
+                "small": {"md_bg_color": "#e9dff7", "text_color": "#211c29"},
+                "large": {"md_bg_color": "#f8d7e3", "text_color": "#311021"},
+            }
+            for type_button in data.keys():
+                self.root.ids.box.add_widget(
+                    MDFloatingActionButton(
+                        icon="pencil",
+                        type=type_button,
+                        theme_text_color="Custom",
+                        md_bg_color=get_color_from_hex(data[type_button]["md_bg_color"]),
+                        text_color=get_color_from_hex(data[type_button]["text_color"]),
+                    )
+                )
+
+
+    TestNavigationDrawer().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-m3.gif
     :align: center
-
 
 .. MDFlatButton:
 MDFlatButton
@@ -467,11 +509,10 @@ from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
-    CircularElevationBehavior,
-    CircularRippleBehavior,
     CommonElevationBehavior,
     FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
+    RoundedRectangularElevationBehavior,
 )
 from kivymd.uix.label import MDLabel
 from kivymd.uix.tooltip import MDTooltip
@@ -863,12 +904,12 @@ class BaseElevationButton(CommonElevationBehavior, BaseButton):
 
 
 class BaseCircularElevationButton(
-    CircularElevationBehavior, BaseElevationButton, BaseButton
+    RoundedRectangularElevationBehavior, BaseElevationButton
 ):
     pass
 
 
-class BaseRoundButton(CircularRippleBehavior, BaseButton):
+class BaseRoundButton(RectangularRippleBehavior, BaseButton):
     """
     Base class for all round buttons, bringing in the appropriate
     on-touch behavior
@@ -1215,6 +1256,9 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
         self.height = (
             "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
         )
+        self.radius = [
+            self.width / 2,
+        ]
 
     def update_md_bg_color(
         self, instance_theme_manager: ThemeManager, name_palette: str
@@ -1226,6 +1270,12 @@ class MDIconButton(BaseRoundButton, BasePressedButton):
 class MDFloatingActionButton(
     BaseRoundButton, BasePressedButton, BaseCircularElevationButton
 ):
+    """
+    Implementation
+    `FAB <https://m3.material.io/components/floating-action-button/overview>`_
+    button.
+    """
+
     icon = StringProperty("android")
     """
     Button icon.
@@ -1234,13 +1284,33 @@ class MDFloatingActionButton(
     and defaults to `'android'`.
     """
 
+    type = OptionProperty("standard", options=["small", "large", "standard"])
+    """
+    Type button.
+
+    .. versionadded:: 1.0.0
+
+    Available options are: 'small', 'large', 'standard'.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-types.png
+        :align: center
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'standard'`.
+    """
+
     # FIXME: The `opposite_colors` parameter does not work for this type
     #  of buttons
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        self.theme_cls.bind(
+            primary_palette=self.update_md_bg_color,
+            material_style=self.set_size,
+        )
         Clock.schedule_once(self.set_md_bg_color)
         Clock.schedule_once(self.set_size)
+        Clock.schedule_once(self.set_radius)
+        Clock.schedule_once(self.set_font_size)
         Clock.schedule_once(self.update_text_color)
 
     def update_text_color(self, *args) -> NoReturn:
@@ -1257,9 +1327,43 @@ class MDFloatingActionButton(
         if self.md_bg_color == [0.0, 0.0, 0.0, 0.0]:
             self.md_bg_color = self.theme_cls.primary_color
 
-    def set_size(self, interval: Union[int, float]) -> NoReturn:
-        self.width = "56dp"
-        self.height = "56dp"
+    def set_font_size(self, *args) -> NoReturn:
+        if self.theme_cls.material_style == "M3":
+            if self.type == "large":
+                self.user_font_size = "36sp"
+            else:
+                self.user_font_size = 0
+
+    def set_radius(self, *args) -> NoReturn:
+        if self.theme_cls.material_style == "M2":
+            self.radius = self.width / 2
+        else:
+            if self.type == "large":
+                self.radius = 32
+            elif self.type == "standard":
+                self.radius = 16
+            elif self.type == "small":
+                self.radius = 14
+
+    def set_size(self, *args) -> NoReturn:
+        if self.theme_cls.material_style == "M2":
+            self.width = dp(56)
+            self.height = dp(56)
+        else:
+            if self.type == "small":
+                self.size = (dp(40), dp(40))
+            elif self.type == "standard":
+                self.width = dp(56)
+                self.height = dp(56)
+            elif self.type == "large":
+                self.width = dp(96)
+                self.height = dp(96)
+
+    def on_type(
+        self, instance_md_floating_action_button, type: str
+    ) -> NoReturn:
+        self.set_size()
+        self.set_font_size()
 
     def on_touch_down(self, touch):
         super(MDFloatingActionButton, self).on_touch_down(touch)

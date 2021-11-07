@@ -797,7 +797,9 @@ class MDToolbar(NotchedBox):
     def on_icon_color(self, instance, icon_name: str) -> NoReturn:
         self.action_button.md_bg_color = icon_name
 
-    def on_md_bg_bottom_color(self, instance_toolbar, color_value: list) -> NoReturn:
+    def on_md_bg_bottom_color(
+        self, instance_toolbar, color_value: list
+    ) -> NoReturn:
         set_bars_colors(None, color_value, self.theme_cls.theme_style)
 
     def on_anchor_title(self, instance_toolbar, anchor_value: str) -> NoReturn:

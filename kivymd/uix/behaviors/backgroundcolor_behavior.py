@@ -49,6 +49,7 @@ Builder.load_string(
         Color:
             rgba: self.line_color if self.line_color else (0, 0, 0, 0)
         Line:
+            width: root.line_width
             rounded_rectangle:
                 [ \
                 self.x,
@@ -165,6 +166,16 @@ class BackgroundColorBehavior(CommonElevationBehavior):
 
     :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
+    """
+
+    line_width = NumericProperty(1)
+    """
+    Border of the specified width will be used to border the widget.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
     """
 
     angle = NumericProperty(0)

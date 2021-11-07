@@ -357,6 +357,7 @@ from kivymd.uix.behaviors import (
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.tooltip import MDTooltip
+from kivymd.utils.set_bars_colors import set_bars_colors
 
 with open(
     os.path.join(uix_path, "toolbar", "toolbar.kv"), encoding="utf-8"
@@ -692,7 +693,17 @@ class MDToolbar(NotchedBox):
         :align: center
     """
 
-    _shift = NumericProperty("4dp")
+    md_bg_bottom_color = ColorProperty(None)
+    """
+    The background color for the toolbar with the ``bottom`` mode.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`md_bg_bottom_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _shift = NumericProperty("3dp")
 
     def __init__(self, **kwargs):
         self.action_button = MDActionBottomAppBarButton()
@@ -764,6 +775,8 @@ class MDToolbar(NotchedBox):
     def on_md_bg_color(self, instance_toolbar, color_value: list) -> NoReturn:
         if self.type == "bottom":
             self.md_bg_color = [0, 0, 0, 0]
+        else:
+            set_bars_colors(color_value, None, self.theme_cls.theme_style)
 
     def on_left_action_items(
         self, instance_toolbar, items_value: list
@@ -787,6 +800,9 @@ class MDToolbar(NotchedBox):
     def on_icon_color(self, instance, icon_name: str) -> NoReturn:
         self.action_button.md_bg_color = icon_name
 
+    def on_md_bg_bottom_color(self, instance_toolbar, color_value: list) -> NoReturn:
+        set_bars_colors(None, color_value, self.theme_cls.theme_style)
+
     def on_anchor_title(self, instance_toolbar, anchor_value: str) -> NoReturn:
         def on_anchor_title(interval: Union[int, float]):
             self.ids.label_title.halign = anchor_value
@@ -797,44 +813,47 @@ class MDToolbar(NotchedBox):
         if self.type == "top":
             return
 
-        def set_button_pos(*args):
-            self.action_button.x = x
-            self.action_button.y = y - self._rounded_rectangle_height / 2
-            self.action_button._hard_shadow_size = (0, 0)
-            self.action_button._soft_shadow_size = (0, 0)
-            anim = Animation(_scale_x=1, _scale_y=1, d=0.05)
-            anim.bind(on_complete=self.set_shadow)
+        def on_mode(interval: Union[int, float]):
+            def set_button_pos(*args):
+                self.action_button.x = x
+                self.action_button.y = y - self._rounded_rectangle_height / 2
+                self.action_button._hard_shadow_size = (0, 0)
+                self.action_button._soft_shadow_size = (0, 0)
+                anim = Animation(_scale_x=1, _scale_y=1, d=0.05)
+                anim.bind(on_complete=self.set_shadow)
+                anim.start(self.action_button)
+
+            if mode_value == "center":
+                self.set_notch()
+                x = Window.width / 2 - self.action_button.width / 2
+                y = (
+                    (self.center[1] - self.height / 2)
+                    + self.theme_cls.standard_increment / 2
+                    + self._shift
+                )
+            elif mode_value == "end":
+                self.set_notch()
+                x = Window.width - self.action_button.width * 2
+                y = (
+                    (self.center[1] - self.height / 2)
+                    + self.theme_cls.standard_increment / 2
+                    + self._shift
+                )
+                self.right_action_items = []
+            elif mode_value == "free-end":
+                self.remove_notch()
+                x = Window.width - self.action_button.width - dp(10)
+                y = self.action_button.height + self.action_button.height / 2
+            elif mode_value == "free-center":
+                self.remove_notch()
+                x = Window.width / 2 - self.action_button.width / 2
+                y = self.action_button.height + self.action_button.height / 2
+            self.remove_shadow()
+            anim = Animation(_scale_x=0, _scale_y=0, d=0.1)
+            anim.bind(on_complete=set_button_pos)
             anim.start(self.action_button)
 
-        if mode_value == "center":
-            self.set_notch()
-            x = Window.width / 2 - self.action_button.width / 2
-            y = (
-                (self.center[1] - self.height / 2)
-                + self.theme_cls.standard_increment / 2
-                + self._shift
-            )
-        elif mode_value == "end":
-            self.set_notch()
-            x = Window.width - self.action_button.width * 2
-            y = (
-                (self.center[1] - self.height / 2)
-                + self.theme_cls.standard_increment / 2
-                + self._shift
-            )
-            self.right_action_items = []
-        elif mode_value == "free-end":
-            self.remove_notch()
-            x = Window.width - self.action_button.width - dp(10)
-            y = self.action_button.height + self.action_button.height / 2
-        elif mode_value == "free-center":
-            self.remove_notch()
-            x = Window.width / 2 - self.action_button.width / 2
-            y = self.action_button.height + self.action_button.height / 2
-        self.remove_shadow()
-        anim = Animation(_scale_x=0, _scale_y=0, d=0.1)
-        anim.bind(on_complete=set_button_pos)
-        anim.start(self.action_button)
+        Clock.schedule_once(on_mode)
 
     def set_md_bg_color(self, instance_toolbar, color_value: list) -> NoReturn:
         if color_value == [1.0, 1.0, 1.0, 0.0]:

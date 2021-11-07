@@ -663,9 +663,6 @@ class MDToolbar(NotchedBox):
 
     Available options are: 'small', 'large', 'small'.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-types.png
-        :align: center
-
     :attr:`type_height` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'small'`.
     """

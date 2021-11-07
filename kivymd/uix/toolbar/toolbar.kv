@@ -1,9 +1,4 @@
-#:import m_res kivymd.material_resources
-
-
 <MDActionBottomAppBarButton>
-    md_bg_color: self.theme_cls.primary_color
-
     canvas.before:
         PushMatrix
         Scale:
@@ -17,7 +12,6 @@
 <NotchedBox>
     size_hint_y: None
     padding: [root.theme_cls.horizontal_margins - dp(12), 0]
-    # opposite_colors: False
     elevation: root.elevation
 
     canvas:
@@ -30,7 +24,11 @@
                 ) \
                 if root.type == "top" else \
                 ( \
+                ( \
                 root.theme_cls.primary_color \
+                if not self.md_bg_bottom_color else \
+                self.md_bg_bottom_color \
+                ) \
                 if root.parent.md_bg_color == [0, 0, 0, 0] \
                 else root.parent.md_bg_color \
                 )

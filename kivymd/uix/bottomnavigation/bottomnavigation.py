@@ -194,6 +194,7 @@ from kivymd.uix.behaviors.backgroundcolor_behavior import (
 )
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.screen import MDScreen
+from kivymd.utils.set_bars_colors import set_bars_colors
 
 with open(
     os.path.join(uix_path, "bottomnavigation", "bottomnavigation.kv"),
@@ -557,7 +558,11 @@ class MDBottomNavigation(TabbedPanelBase):
         self.widget_index = 0
         self.theme_cls.bind(material_style=self.refresh_tabs)
         Window.bind(on_resize=self.on_resize)
-        Clock.schedule_once(lambda x: self.on_resize(), 0)
+        Clock.schedule_once(lambda x: self.on_resize())
+        Clock.schedule_once(self.set_status_bar_color)
+
+    def set_status_bar_color(self, interval: Union[int, float]) -> NoReturn:
+        set_bars_colors(self.panel_color, None, self.theme_cls.theme_style)
 
     def switch_tab(self, name_tab) -> NoReturn:
         """Switching the tab by name."""

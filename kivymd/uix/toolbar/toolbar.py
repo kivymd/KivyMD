@@ -5,8 +5,8 @@ Components/Toolbar
 .. seealso::
 
     `Material Design spec, App bars: top <https://material.io/components/app-bars-top>`_
-
     `Material Design spec, App bars: bottom <https://material.io/components/app-bars-bottom/app-bars-bottom.html>`_
+    `Material Design 3 spec, App bars: bottom <https://m3.material.io/components/top-app-bar/overview>`_
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/app-bar-top.png
     :align: center
@@ -237,25 +237,6 @@ Custom color
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-11.png
     :align: center
 
-MDToolbar with Menus
---------------------
-
-A Toolbar without Menus is not particularly useful. However, the
-:class:`~MDDropdownMenu` works well with the standard
-:class:`~kivymd.uix.toolbar.MDToolbar` to provide this functionality,
-as shown in the image below.
-
-.. seealso::
-
-    See the
-    `MDDropdownMenu documentation
-    <https://kivymd.readthedocs.io/en/latest/components/menu/#menu-with-mdtoolbar>`_
-    for details of how to implement this.
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-menu.gif
-    :align: center
-
-
 Tooltips
 --------
 
@@ -275,7 +256,8 @@ You can add MDTooltips to the Toolbar icons by ading a text string to the toolba
         MDToolbar:
             title: "MDToolbar"
             left_action_items: [["menu", "This is the navigation"]]
-            right_action_items: [["dots-vertical", lambda x: app.callback(x), "this is the More Actions"]]
+            right_action_items:
+                [["dots-vertical", lambda x: app.callback(x), "this is the More Actions"]]
 
         MDLabel:
             text: "Content"
@@ -292,15 +274,63 @@ You can add MDTooltips to the Toolbar icons by ading a text string to the toolba
 
     Test().run()
 
-.. seealso::
+Material design 3 style
+-----------------------
 
-    `Components-Bottom-App-Bar <https://github.com/kivymd/KivyMD/wiki/Components-Bottom-App-Bar>`_
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.utils import get_color_from_hex
+
+    from kivymd.app import MDApp
+    from kivymd.uix.toolbar import MDToolbar
+
+    KV = '''
+    MDScreen:
+
+        MDBoxLayout:
+            id: box
+            orientation: "vertical"
+            spacing: "12dp"
+            pos_hint: {"top": 1}
+            adaptive_height: True
+    '''
+
+
+    class TestNavigationDrawer(MDApp):
+        def build(self):
+            self.theme_cls.material_style = "M3"
+            return Builder.load_string(KV)
+
+        def on_start(self):
+            for type_height in ["medium", "large", "small"]:
+                self.root.ids.box.add_widget(
+                    MDToolbar(
+                        type_height=type_height,
+                        headline_text=f"Headline {type_height.lower()}",
+                        md_bg_color=get_color_from_hex("#2d2734"),
+                        left_action_items=[["arrow-left", lambda x: x]],
+                        right_action_items=[
+                            ["attachment", lambda x: x],
+                            ["calendar", lambda x: x],
+                            ["dots-vertical", lambda x: x],
+                        ],
+                        title="Title" if type_height == "small" else ""
+                    )
+                )
+
+
+    TestNavigationDrawer().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-m3.png
+    :align: center
 """
 
 __all__ = ("MDToolbar", "MDBottomAppBar", "MDActionTopAppBarButton")
 
 import os
 from math import cos, radians, sin
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -541,7 +571,27 @@ class MDToolbar(NotchedBox):
     and defaults to `''`.
     """
 
-    anchor_title = OptionProperty("left", options=["left", "center", "right"])
+    headline_text = StringProperty()
+    """
+    Headline text toolbar.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`headline_text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    headline_text_color = ColorProperty(None)
+    """
+    Headline text color.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`headline_text_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    anchor_title = OptionProperty(None, options=["left", "center", "right"])
     """
     Position toolbar title.
     Available options are: `'left'`, `'center'`, `'right'`.
@@ -564,7 +614,7 @@ class MDToolbar(NotchedBox):
     round = NumericProperty("10dp")
     """
     Rounding the corners at the notch for a button.
-    Onle for :class:`~MDBottomAppBar` class.
+    Only for :class:`~MDBottomAppBar` class.
 
     :attr:`round` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `'10dp'`.
@@ -572,7 +622,7 @@ class MDToolbar(NotchedBox):
 
     icon = StringProperty("android")
     """
-    Floating button. Onle for :class:`~MDBottomAppBar` class.
+    Floating button. Only for :class:`~MDBottomAppBar` class.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
@@ -580,7 +630,7 @@ class MDToolbar(NotchedBox):
 
     icon_color = ColorProperty()
     """
-    Color action button. Onle for :class:`~MDBottomAppBar` class.
+    Color action button. Only for :class:`~MDBottomAppBar` class.
 
     :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -604,9 +654,45 @@ class MDToolbar(NotchedBox):
     and defaults to `'top'`.
     """
 
-    opposite_colors = BooleanProperty(False)
+    type_height = OptionProperty("small", options=["medium", "large", "small"])
+    """
+    Toolbar height type.
 
-    _shift = NumericProperty("3.5dp")
+    .. versionadded:: 1.0.0
+
+    Available options are: 'small', 'large', 'small'.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-types.png
+        :align: center
+
+    :attr:`type_height` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'small'`.
+    """
+
+    opposite_colors = BooleanProperty(False)
+    """
+    Changes the color of the label to the color opposite to the main theme.
+
+    .. code-block:: kv
+
+        MDToolbar:
+            title: "MDToolbar"
+            opposite_colors: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-true.png
+        :align: center
+
+    .. code-block:: kv
+
+        MDToolbar:
+            title: "MDToolbar"
+            opposite_colors: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-false.png
+        :align: center
+    """
+
+    _shift = NumericProperty("4dp")
 
     def __init__(self, **kwargs):
         self.action_button = MDActionBottomAppBarButton()
@@ -616,6 +702,7 @@ class MDToolbar(NotchedBox):
             self.icon_color = self.theme_cls.primary_color
         Window.bind(on_resize=self._on_resize)
         self.bind(specific_text_color=self.update_action_bar_text_colors)
+        self.theme_cls.bind(material_style=self.update_bar_height)
         # self.bind(opposite_colors=self.update_opposite_colors)
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
         Clock.schedule_once(
@@ -625,9 +712,21 @@ class MDToolbar(NotchedBox):
             lambda x: self.on_right_action_items(0, self.right_action_items)
         )
         Clock.schedule_once(lambda x: self.set_md_bg_color(0, self.md_bg_color))
+        Clock.schedule_once(lambda x: self.on_type_height(0, self.type_height))
+        Clock.schedule_once(
+            lambda x: self.update_anchor_title(self.theme_cls.material_style)
+        )
+        Clock.schedule_once(self.update_floating_radius)
 
-    def on_type(self, instance, value):
-        if value == "bottom":
+    def set_headline_font_style(self, interval: Union[int, float]) -> NoReturn:
+        if self.type_height in ("medium", "large"):
+            self.ids.label_headline.font_style = {
+                "medium": "H6",
+                "large": "H5",
+            }[self.type_height]
+
+    def on_type(self, instance_toolbar, type_value: str) -> NoReturn:
+        if type_value == "bottom":
             self.action_button.bind(center_x=self.setter("notch_center_x"))
             self.action_button.bind(
                 on_release=lambda x: self.dispatch("on_action_button")
@@ -642,71 +741,59 @@ class MDToolbar(NotchedBox):
             )
             self.on_mode(None, self.mode)
 
+    def on_type_height(
+        self, instance_toolbar, height_type_value: str
+    ) -> NoReturn:
+        if self.theme_cls.material_style == "M2":
+            self.height = self.theme_cls.standard_increment
+        else:
+            if self.type != "bottom":
+                if height_type_value == "small":
+                    self.height = dp(64)
+                elif height_type_value == "medium":
+                    self.height = dp(112)
+                elif height_type_value == "large":
+                    self.height = dp(152)
+            else:
+                self.height = self.theme_cls.standard_increment
+        Clock.schedule_once(self.set_headline_font_style)
+
     def on_action_button(self, *args):
         pass
 
-    def on_md_bg_color(self, instance, value):
+    def on_md_bg_color(self, instance_toolbar, color_value: list) -> NoReturn:
         if self.type == "bottom":
             self.md_bg_color = [0, 0, 0, 0]
 
-    def on_left_action_items(self, instance, value):
-        self.update_action_bar(self.ids["left_actions"], value)
+    def on_left_action_items(
+        self, instance_toolbar, items_value: list
+    ) -> NoReturn:
+        def on_left_action_items(interval: Union[int, float]):
+            self.update_action_bar(self.ids.left_actions, items_value)
 
-    def on_right_action_items(self, instance, value):
-        self.update_action_bar(self.ids["right_actions"], value)
+        Clock.schedule_once(on_left_action_items)
 
-    def set_md_bg_color(self, instance, value):
-        if value == [1.0, 1.0, 1.0, 0.0]:
-            self.md_bg_color = self.theme_cls.primary_color
+    def on_right_action_items(
+        self, instance_toolbar, items_value: list
+    ) -> NoReturn:
+        def on_right_actions(interval: Union[int, float]):
+            self.update_action_bar(self.ids.right_actions, items_value)
 
-    def update_action_bar(self, action_bar, action_bar_items):
-        action_bar.clear_widgets()
-        new_width = 0
-        for item in action_bar_items:
-            new_width += dp(48)
-            if len(item) == 1:
-                item.append(lambda x: None)
-            if len(item) > 1 and not item[1]:
-                item[1] = lambda x: None
-            if len(item) == 2:
-                if type(item[1]) is str:
-                    item.insert(1, lambda x: None)
-                else:
-                    item.append("")
-            action_bar.add_widget(
-                MDActionTopAppBarButton(
-                    icon=item[0],
-                    on_release=item[1],
-                    tooltip_text=item[2],
-                    theme_text_color="Custom"
-                    if not self.opposite_colors
-                    else "Primary",
-                    text_color=self.specific_text_color,
-                    opposite_colors=self.opposite_colors,
-                )
-            )
-        action_bar.width = new_width
+        Clock.schedule_once(on_right_actions)
 
-    def update_md_bg_color(self, *args):
-        self.md_bg_color = self.theme_cls._get_primary_color()
+    def on_icon(self, instance_toolbar, icon_name: str) -> NoReturn:
+        self.action_button.icon = icon_name
 
-    def update_opposite_colors(self, instance, value):
-        if value:
-            self.ids.label_title.theme_text_color = ""
+    def on_icon_color(self, instance, icon_name: str) -> NoReturn:
+        self.action_button.md_bg_color = icon_name
 
-    def update_action_bar_text_colors(self, *args):
-        for child in self.ids["left_actions"].children:
-            child.text_color = self.specific_text_color
-        for child in self.ids["right_actions"].children:
-            child.text_color = self.specific_text_color
+    def on_anchor_title(self, instance_toolbar, anchor_value: str) -> NoReturn:
+        def on_anchor_title(interval: Union[int, float]):
+            self.ids.label_title.halign = anchor_value
 
-    def on_icon(self, instance, value):
-        self.action_button.icon = value
+        Clock.schedule_once(on_anchor_title)
 
-    def on_icon_color(self, instance, value):
-        self.action_button.md_bg_color = value
-
-    def on_mode(self, instance, value):
+    def on_mode(self, instance_toolbar, mode_value: str) -> NoReturn:
         if self.type == "top":
             return
 
@@ -719,7 +806,7 @@ class MDToolbar(NotchedBox):
             anim.bind(on_complete=self.set_shadow)
             anim.start(self.action_button)
 
-        if value == "center":
+        if mode_value == "center":
             self.set_notch()
             x = Window.width / 2 - self.action_button.width / 2
             y = (
@@ -727,8 +814,7 @@ class MDToolbar(NotchedBox):
                 + self.theme_cls.standard_increment / 2
                 + self._shift
             )
-        elif value == "end":
-
+        elif mode_value == "end":
             self.set_notch()
             x = Window.width - self.action_button.width * 2
             y = (
@@ -737,11 +823,11 @@ class MDToolbar(NotchedBox):
                 + self._shift
             )
             self.right_action_items = []
-        elif value == "free-end":
+        elif mode_value == "free-end":
             self.remove_notch()
             x = Window.width - self.action_button.width - dp(10)
             y = self.action_button.height + self.action_button.height / 2
-        elif value == "free-center":
+        elif mode_value == "free-center":
             self.remove_notch()
             x = Window.width / 2 - self.action_button.width / 2
             y = self.action_button.height + self.action_button.height / 2
@@ -750,25 +836,90 @@ class MDToolbar(NotchedBox):
         anim.bind(on_complete=set_button_pos)
         anim.start(self.action_button)
 
-    def remove_notch(self):
-        anim = Animation(d=0.1) + Animation(
-            notch_radius=0,
-            d=0.1,
-        )
-        anim.start(self)
+    def set_md_bg_color(self, instance_toolbar, color_value: list) -> NoReturn:
+        if color_value == [1.0, 1.0, 1.0, 0.0]:
+            self.md_bg_color = self.theme_cls.primary_color
 
-    def set_notch(self):
+    def set_notch(self) -> NoReturn:
         anim = Animation(d=0.1) + Animation(
             notch_radius=self.action_button.width / 2 + dp(8),
             d=0.1,
         )
         anim.start(self)
 
-    def remove_shadow(self):
-        self.action_button._elevation = 0
-
-    def set_shadow(self, *args):
+    def set_shadow(self, *args) -> NoReturn:
         self.action_button._elevation = self.action_button.elevation
+
+    def update_bar_height(
+        self, instance_theme_manager, material_style_value: str
+    ) -> NoReturn:
+        self.on_type_height(self, self.type_height)
+        self.update_anchor_title(material_style_value)
+
+    def update_floating_radius(self, interval: Union[int, float]) -> NoReturn:
+        self.action_button.radius = self.action_button.width / 2
+
+    def update_anchor_title(self, material_style_value: str) -> str:
+        if material_style_value == "M2":
+            self.anchor_title = "left"
+        elif material_style_value == "M3" and self.type != "bottom":
+            if not self.anchor_title:
+                self.anchor_title = "center"
+        elif material_style_value == "M3" and self.type == "bottom":
+            self.anchor_title = "left"
+        return self.anchor_title
+
+    def update_action_bar(
+        self, instance_box_layout, action_bar_items: list
+    ) -> NoReturn:
+        instance_box_layout.clear_widgets()
+        new_width = 0
+        for item in action_bar_items:
+            new_width += dp(48)
+            if len(item) == 1:
+                item.append(lambda x: None)
+            if len(item) > 1 and not item[1]:
+                item[1] = lambda x: None
+            if len(item) == 2:
+                if type(item[1]) is str:
+                    item.insert(1, lambda x: None)
+                else:
+                    item.append("")
+            instance_box_layout.add_widget(
+                MDActionTopAppBarButton(
+                    icon=item[0],
+                    on_release=item[1],
+                    tooltip_text=item[2],
+                    theme_text_color="Custom"
+                    if not self.opposite_colors
+                    else "Primary",
+                    text_color=self.specific_text_color,
+                    opposite_colors=self.opposite_colors,
+                )
+            )
+        instance_box_layout.width = new_width
+
+    def update_md_bg_color(self, *args) -> NoReturn:
+        self.md_bg_color = self.theme_cls._get_primary_color()
+
+    def update_opposite_colors(
+        self, instance_toolbar, opposite_value: bool
+    ) -> NoReturn:
+        if opposite_value:
+            self.ids.label_title.theme_text_color = ""
+
+    def update_action_bar_text_colors(self, *args) -> NoReturn:
+        for child in self.ids["left_actions"].children:
+            child.text_color = self.specific_text_color
+        for child in self.ids["right_actions"].children:
+            child.text_color = self.specific_text_color
+
+    def remove_notch(self) -> NoReturn:
+        anim = Animation(d=0.1) + Animation(notch_radius=0, d=0.1)
+        anim.start(self)
+
+    def remove_shadow(self) -> NoReturn:
+        self.action_button._elevation = 0
 
     def _on_resize(self, instance, width, height):
         if self.mode == "center":

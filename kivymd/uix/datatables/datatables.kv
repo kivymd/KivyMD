@@ -1,4 +1,5 @@
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
+#:import FakeRectangularElevationBehavior kivymd.uix.behaviors.FakeRectangularElevationBehavior
 
 
 <CellRow>
@@ -216,9 +217,12 @@
         on_release: root.table_data.set_next_row_data_parts("forward")
 
 
+<TableContainer@MDCard+FakeRectangularElevationBehavior>
+
+
 <MDDataTable>
 
-    MDCard:
+    TableContainer:
         id: container
         orientation: "vertical"
         elevation: root.elevation

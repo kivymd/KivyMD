@@ -4,11 +4,12 @@ Components/Card
 
 .. seealso::
 
-    `Material Design spec, Cards <https://material.io/components/cards>`_
+    `Material Design spec, Cards <https://material.io/components/cards>`_ and
+    `Material Design 3 spec, Cards <https://m3.material.io/components/cards/specs>`_
 
 .. rubric:: Cards contain content and actions about a single subject.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/cards.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/cards.png
     :align: center
 
 `KivyMD` provides the following card classes for use:
@@ -16,7 +17,7 @@ Components/Card
 - MDCard_
 - MDCardSwipe_
 
-.. Note:: :class:`~MDCard` inherited from
+.. note:: :class:`~MDCard` inherited from
     :class:`~kivy.uix.boxlayout.BoxLayout`. You can use all parameters and
     attributes of the :class:`~kivy.uix.boxlayout.BoxLayout` class in the
     :class:`~MDCard` class.
@@ -25,72 +26,103 @@ Components/Card
 MDCard
 ------
 
+.. warning:: Starting from the KivyMD 1.0.0 library version, it is necessary
+    to manually inherit the map class from one of the ``Elevation`` classes
+    from ``kivymd/uix/behaviors/elevation.py`` module to draw the card shadow.
+
 .. code-block:: python
 
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-
-    KV = '''
-    MDScreen:
-
-        MDCard:
-            size_hint: None, None
-            size: "280dp", "180dp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+    from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
+    from kivymd.uix.card import MDCard
 
 
-    class TestCard(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+    class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+        '''Implements a material design v3 card.'''
 
+This may sound awkward to you, but it actually allows for better control over
+the providers that implement the rendering of the shadows.
 
-    TestCard().run()
+.. note:: You can read more information about the classes that implement the
+    rendering of shadows on this `documentation page <https://kivymd.readthedocs.io/en/latest/behaviors/elevation/>`_.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card.png
-    :align: center
-
-Add content to card:
---------------------
+An example of the implementation of a card in the style of material design version 3
+------------------------------------------------------------------------------------
 
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.properties import StringProperty
+    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
+    from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
+    from kivymd.uix.card import MDCard
 
     KV = '''
+    #:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+    <MD3Card>
+        padding: 16
+        size_hint: None, None
+        size: "200dp", "100dp"
+
+        MDRelativeLayout:
+            size_hint: None, None
+            size: root.size
+
+            MDIconButton:
+                icon: "dots-vertical"
+                pos:
+                    root.width - (self.width + root.padding[0] + dp(4)), \
+                    root.height - (self.height + root.padding[0] + dp(4))
+
+            MDLabel:
+                id: label
+                text: root.text
+                adaptive_size: True
+                color: .2, .2, .2, .8
+
+
     MDScreen:
 
-        MDCard:
-            orientation: "vertical"
-            padding: "8dp"
-            size_hint: None, None
-            size: "280dp", "180dp"
+        MDBoxLayout:
+            id: box
+            adaptive_size: True
+            spacing: "56dp"
             pos_hint: {"center_x": .5, "center_y": .5}
-
-            MDLabel:
-                text: "Title"
-                theme_text_color: "Secondary"
-                adaptive_height: True
-
-            MDSeparator:
-                height: "1dp"
-
-            MDLabel:
-                text: "Body"
     '''
+
+
+    class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+        '''Implements a material design v3 card.'''
+
+        text = StringProperty()
 
 
     class TestCard(MDApp):
         def build(self):
+            self.theme_cls.material_style = "M3"
             return Builder.load_string(KV)
+
+        def on_start(self):
+            styles = {
+                "elevated": "#f6eeee", "filled": "#f4dedc", "outlined": "#f8f5f4"
+            }
+            for style in styles.keys():
+                self.root.ids.box.add_widget(
+                    MD3Card(
+                        line_color=(0.2, 0.2, 0.2, 0.8),
+                        style=style,
+                        text=style.capitalize(),
+                        md_bg_color=get_color_from_hex(styles[style]),
+                    )
+                )
 
 
     TestCard().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-content.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/cards-m3.png
     :align: center
 
 .. MDCardSwipe:
@@ -536,7 +568,7 @@ __all__ = (
 )
 
 import os
-from typing import NoReturn
+from typing import NoReturn, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -545,6 +577,7 @@ from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
+    ListProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
@@ -558,7 +591,6 @@ from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
-    FakeRectangularElevationBehavior,
     FocusBehavior,
     RectangularRippleBehavior,
 )
@@ -597,13 +629,11 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
 
 class MDCard(
     ThemableBehavior,
-    FakeRectangularElevationBehavior,
     BackgroundColorBehavior,
     RectangularRippleBehavior,
     FocusBehavior,
     BoxLayout,
 ):
-
     focus_behavior = BooleanProperty(False)
     """
     Using focus when hovering over a card.
@@ -628,6 +658,28 @@ class MDCard(
     and defaults to 1.
     """
 
+    radius = ListProperty([dp(6), dp(6), dp(6), dp(6)])
+    """
+    Card radius by default.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(6), dp(6), dp(6), dp(6)]`.
+    """
+
+    style = OptionProperty(None, options=("filled", "elevated", "outlined"))
+    """
+    Card type.
+
+    .. versionadded:: 1.0.0
+
+    Available options are: 'filled', 'elevated', 'outlined'.
+
+    :attr:`style` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'elevated'`.
+    """
+
     _bg_color_map = (
         get_color_from_hex(colors["Light"]["CardsDialogs"]),
         get_color_from_hex(colors["Dark"]["CardsDialogs"]),
@@ -637,30 +689,52 @@ class MDCard(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(theme_style=self.update_md_bg_color)
-        Clock.schedule_once(lambda x: self._on_elevation(self.elevation))
+        self.theme_cls.bind(material_style=self.set_style)
+        Clock.schedule_once(self.set_style)
         Clock.schedule_once(
             lambda x: self.on_ripple_behavior(0, self.ripple_behavior)
         )
         self.update_md_bg_color(self, self.theme_cls.theme_style)
 
-    def update_md_bg_color(
-        self, instance_card_swipe_front_box, theme_style: str
-    ) -> NoReturn:
+    def update_md_bg_color(self, instance_card, theme_style: str) -> NoReturn:
         if self.md_bg_color in self._bg_color_map:
             self.md_bg_color = get_color_from_hex(
                 colors[theme_style]["CardsDialogs"]
             )
 
+    def set_style(self, *args) -> NoReturn:
+        self.set_radius()
+        self.set_elevation()
+        self.set_line_color()
+
+    def set_line_color(self):
+        if self.theme_cls.material_style == "M3":
+            if self.style == "elevated" or self.style == "filled":
+                self.line_color = [0, 0, 0, 0]
+
+    def set_elevation(self):
+        if self.theme_cls.material_style == "M3":
+            if self.style == "outlined" or self.style == "filled":
+                self.elevation = 0
+            elif self.style == "elevated":
+                self.elevation = 1
+
+    def set_radius(self) -> NoReturn:
+        if (
+            self.radius == [dp(6), dp(6), dp(6), dp(6)]
+            and self.theme_cls.material_style == "M3"
+        ):
+            self.radius = [dp(16), dp(16), dp(16), dp(16)]
+        elif (
+            self.radius == [dp(16), dp(16), dp(16), dp(16)]
+            and self.theme_cls.material_style == "M2"
+        ):
+            self.radius = [dp(6), dp(6), dp(6), dp(6)]
+
     def on_ripple_behavior(
-        self, interval: int, value_behavior: bool
+        self, interval: Union[int, float], value_behavior: bool
     ) -> NoReturn:
         self._no_ripple_effect = False if value_behavior else True
-
-    def _on_elevation(self, value):
-        if value is None:
-            self.elevation = 6
-        else:
-            self.elevation = value
 
 
 class MDCardSwipe(RelativeLayout):

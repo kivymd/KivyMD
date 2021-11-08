@@ -2,6 +2,9 @@
 #:import Thumb kivymd.uix.selectioncontrol.Thumb
 
 
+<HintBoxContainer@MDCard+FakeRectangularElevationBehavior>
+
+
 <MDSlider>
     canvas:
         Clear
@@ -72,7 +75,7 @@
             if root.disabled else root.color)
         elevation: 0 if root._is_off else (4 if root.active else 2)
 
-    MDCard:
+    HintBoxContainer:
         id: hint_box
         size_hint: None, None
         md_bg_color: root.hint_bg_color

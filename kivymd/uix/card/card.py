@@ -27,7 +27,7 @@ MDCard
 ------
 
 .. warning:: Starting from the KivyMD 1.0.0 library version, it is necessary
-    to manually inherit the map class from one of the ``Elevation`` classes
+    to manually inherit the card class from one of the ``Elevation`` classes
     from ``kivymd/uix/behaviors/elevation.py`` module to draw the card shadow.
 
 .. code-block:: python

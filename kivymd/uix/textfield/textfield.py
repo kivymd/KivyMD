@@ -1389,6 +1389,9 @@ class MDTextField(ThemableBehavior, TextInput):
         if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
 
+    def on_text_color_normal(self, instance_text_field, color: list):
+        self._text_color_normal = color
+
     def on_hint_text_color_normal(self, instance_text_field, color: list):
         self._hint_text_color = color
 

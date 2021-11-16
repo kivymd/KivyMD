@@ -272,10 +272,11 @@ class MDBottomNavigationHeader(
         self.panel = panel
         self.tab = tab
         super().__init__()
+        # Change text_color if it is not default [1.1.1.1]
         self._text_color_normal = (
             self.theme_cls.disabled_hint_text_color
-            if self.text_color_normal == [1, 1, 1, 1]
-            else self.text_color_normal
+            if MDColorHolder.on_normal_color == None
+            else MDColorHolder.on_normal_color
         )
         self._label = self.ids._label
         self._label_font_size = sp(12)
@@ -295,8 +296,8 @@ class MDBottomNavigationHeader(
             ).start(self)
         Animation(
             _text_color_normal=self.theme_cls.primary_color
-            if self.text_color_active == [1, 1, 1, 1]
-            else self.text_color_active,
+            if MDColorHolder.on_active_color == None
+            else MDColorHolder.on_active_color,
             d=0.1,
         ).start(self)
 
@@ -583,7 +584,10 @@ class MDBottomNavigation(TabbedPanelBase):
 
     def refresh_tabs(self, *args) -> NoReturn:
         """Refresh all tabs."""
-
+        # Use primary_color if default color used otherwise use on_active_color.
+        color_active = self.theme_cls.primary_color
+        if MDColorHolder.on_active_color != None:
+            color_active = MDColorHolder.on_active_color
         if self.ids:
             tab_bar = self.ids.tab_bar
             tab_bar.clear_widgets()
@@ -594,7 +598,7 @@ class MDBottomNavigation(TabbedPanelBase):
                 tab_bar.add_widget(self.tab_header)
                 if tab is self.first_widget:
                     self.tab_header._text_color_normal = (
-                        self.theme_cls.primary_color
+                        color_active
                     )
                     self.tab_header._label_font_size = sp(14)
                     self.tab_header.active = True
@@ -635,6 +639,8 @@ class MDBottomNavigation(TabbedPanelBase):
     def on_text_color_normal(
         self, instance_bottom_navigation, color: list
     ) -> NoReturn:
+        # Getting text_normal_color and store value in MCColorHolder class.
+        MDColorHolder.on_normal_color = color
         for tab in self.ids.tab_bar.children:
             if not tab.active:
                 tab._text_color_normal = color
@@ -642,6 +648,8 @@ class MDBottomNavigation(TabbedPanelBase):
     def on_text_color_active(
         self, instance_bottom_navigation, color: list
     ) -> NoReturn:
+        # Getting text_active_color and store value in MCColorHolder class.
+        MDColorHolder.on_active_color = color
         for tab in self.ids.tab_bar.children:
             tab.text_color_active = color
             if tab.active:
@@ -706,3 +714,8 @@ class MDBottomNavigationBar(
     MDFloatLayout,
 ):
     pass
+
+#  Store active color and normal color and use it for text color and icon color.
+class MDColorHolder:
+    on_normal_color = None
+    on_active_color = None

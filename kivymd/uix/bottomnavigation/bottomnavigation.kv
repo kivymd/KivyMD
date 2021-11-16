@@ -4,7 +4,8 @@
 
 <MDBottomNavigation>
     orientation: "vertical"
-    height: STANDARD_INCREMENT
+    height:
+        STANDARD_INCREMENT if app.theme_cls.material_style == "M2" else "80dp"
 
     ScreenManager:
         id: tab_manager
@@ -19,7 +20,10 @@
     MDBottomNavigationBar:
         id: bottom_panel
         size_hint_y: None
-        height: STANDARD_INCREMENT
+        height:
+            STANDARD_INCREMENT \
+            if app.theme_cls.material_style == "M2" else \
+            "80dp"
         md_bg_color:
             root.theme_cls.bg_dark \
             if not root.panel_color \
@@ -28,13 +32,15 @@
         MDBoxLayout:
             id: tab_bar
             pos_hint: {"center_x": .5, "center_y": .5}
-            height: STANDARD_INCREMENT
             size_hint: None, None
+            height:
+                STANDARD_INCREMENT \
+                if app.theme_cls.material_style == "M2" else \
+                "80dp"
 
 
 <MDBottomNavigationHeader>
     md_bg_color: root.panel_color
-    padding: "12dp", "12dp"
     on_press: self.tab.dispatch("on_tab_press")
     on_release: self.tab.dispatch("on_tab_release")
     on_touch_down: self.tab.dispatch("on_tab_touch_down", *args)
@@ -44,6 +50,8 @@
         root.panel.width / len(root.panel.ids.tab_manager.screens) \
         if len(root.panel.ids.tab_manager.screens) != 0 \
         else root.panel.width
+    padding:
+        0, "12dp", 0, "12dp" if app.theme_cls.material_style == "M2" else "16dp"
 
     RelativeLayout:
         id: item_container
@@ -51,21 +59,43 @@
         MDIcon:
             id: _label_icon
             icon: root.tab.icon
-            size_hint_x: None
-            text_size: (None, root.height)
-            height: self.texture_size[1]
+            height: self.height
+            badge_icon: root.tab.badge_icon
             theme_text_color: "Custom"
             text_color: root._text_color_normal
             opposite_colors: root.opposite_colors
             pos: [self.pos[0], self.pos[1]]
             font_size: "24dp"
-            pos_hint: {"center_x": .5}
-            y: item_container.height - dp(8)
+            y: item_container.height - self.height
+            pos_hint:
+                {"center_x": .5, "center_y": .5} \
+                if not root.panel.use_text else \
+                {"center_x": .5, "top": 1}
+
+            canvas.before:
+                Color:
+                    rgba:
+                        ( \
+                        ( \
+                        app.theme_cls.disabled_hint_text_color \
+                        if not root.selected_color_background else \
+                        root.selected_color_background \
+                        ) \
+                        if root.active else \
+                        (0, 0, 0, 0) \
+                        ) \
+                        if app.theme_cls.material_style == "M3" else \
+                        (0, 0, 0, 0)
+                RoundedRectangle:
+                    radius: [16,]
+                    size: root._selected_region_width, dp(32)
+                    pos:
+                        self.center_x - self.width - dp(8), \
+                        self.center_y - (dp(16))
 
         MDLabel:
             id: _label
             text: root.tab.text
-            font_style: "Button"
             size_hint_x: None
             text_size: None, root.height
             adaptive_height: True
@@ -74,7 +104,9 @@
             opposite_colors: root.opposite_colors
             font_size: root._label_font_size
             pos_hint: {"center_x": .5}
-            y: -dp(8)
+            y: -dp(4) if app.theme_cls.material_style == "M2" else 0
+            font_style:
+                "Button" if app.theme_cls.material_style == "M2" else "Body2"
 
 
 <MDTab>

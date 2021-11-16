@@ -9,6 +9,7 @@
 
 <BaseListItem>
     size_hint_y: None
+
     canvas:
         Color:
             rgba:
@@ -32,9 +33,10 @@
                 )
         Color:
             rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
-        Rectangle:
+        RoundedRectangle:
             pos: self.pos
             size: self.size
+            radius: root.radius
 
     BoxLayout:
         id: _text_container
@@ -112,6 +114,7 @@
 
 
 <ThreeLineIconListItem>
+
     BoxLayout:
         id: _left_container
         size_hint: None, None

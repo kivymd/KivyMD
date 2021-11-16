@@ -42,10 +42,14 @@
                 if not root.disabled else \
                 (root.md_bg_color_disabled if root.md_bg_color_disabled \
                 else root.theme_cls.disabled_hint_text_color)
-        Ellipse:
+        RoundedRectangle:
             size: self.size
             pos: self.pos
             source: self.source if hasattr(self, "source") else ""
+            radius:
+                self.radius \
+                if hasattr(self, "radius") and self.radius else \
+                [self.width / 2,]
 
     size: "48dp", "48dp"
     lbl_txt: lbl_txt
@@ -57,14 +61,14 @@
         font_size: root.user_font_size if root.user_font_size else self.font_size
         font_name: root.font_name if root.font_name else self.font_name
         theme_text_color: root.theme_text_color
+        disabled: root.disabled
+        opposite_colors: root.opposite_colors
         text_color:
             root.text_color if not root.disabled else \
             (root.md_bg_color_disabled if root.md_bg_color_disabled \
             else root.theme_cls.disabled_hint_text_color)
-        disabled: root.disabled
-        valign: "middle"
-        halign: "center"
-        opposite_colors: root.opposite_colors
+        on_icon:
+            if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
 
 
 <MDRoundFlatButton>
@@ -183,6 +187,7 @@
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
+            pos_hint: {"center_y": .5}
 
 
 <MDRoundFlatIconButton>
@@ -237,6 +242,7 @@
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
+            pos_hint: {"center_y": .5}
 
 
 <MDIconButton>

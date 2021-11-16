@@ -93,6 +93,9 @@ Optional arguments
 - use_hotreload
     - creates a hot reload entry point to the application
 
+-use_localization
+    - creates application localization files
+
 .. warning:: On Windows, hot reloading of Python files may not work.
     But, for example, there is no such problem in Mac OS. If you fix this,
     please report it to the KivyMD community.
@@ -108,14 +111,14 @@ from kivy import Logger, platform
 from kivymd import path as kivymd_path
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
 
-_firebase_model = '''
-import multitasking
+_firebase_model = '''import multitasking
 
+from Model.base_model import BaseScreenModel
 
 multitasking.set_max_threads(10)
 
 
-class {name_screen}Model:
+class {name_screen}Model(BaseScreenModel):
     """
     Implements the logic of the
     :class:`~View.{name_screen}.{module_name}.{name_screen}View` class.
@@ -128,7 +131,6 @@ class {name_screen}Model:
         #     'password': '12345'
         self.user_data = dict()
         self._data_validation_status = None
-        self._observers = []
 
     @property
     def data_validation_status(self):
@@ -168,16 +170,14 @@ class {name_screen}Model:
         self.data_validation_status = None
 '''
 
-_without_firebase_model = '''
-class {name_screen}Model:
+_without_firebase_model = '''from Model.base_model import BaseScreenModel
+
+
+class {name_screen}Model(BaseScreenModel):
     """
     Implements the logic of the
     :class:`~View.{module_name}.{name_screen}.{name_screen}View` class.
-    """
-
-    def __init__(self):
-        self._observers = []
-'''
+    """'''
 
 _firebase_controller = '''from typing import NoReturn
 {import_module}
@@ -235,31 +235,19 @@ class {name_screen}Controller:
         """Called every time the user enters text into the text fields."""
 '''
 
-_firebase_view_import = """
-from typing import Union, NoReturn
+_firebase_view_import = """from typing import Union, NoReturn
 
-from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.screen import MDScreen
 from kivymd.uix.snackbar import Snackbar
-
-from Utility.observer import Observer
 """
 
-_without_firebase_view_import = """
-from typing import NoReturn
-
-from kivy.properties import ObjectProperty
-
-from kivymd.uix.screen import MDScreen
-
-from Utility.observer import Observer
+_without_firebase_view_import = """from typing import NoReturn
 """
 
-_firebase_view_methods = '''
+_firebase_view_methods = '''    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.dialog = MDDialog()
         self.dialog.bind(on_dismiss=self.controller.reset_data_validation_status)
 
@@ -331,14 +319,14 @@ resolution = ImageGrab.grab().size
 Config.set("graphics", "height", resolution[1])
 Config.set("graphics", "width", "400")
 
-from kivy.core.window import Window
+from kivy.core.window import Window%s
 
 # Place the application window on the right side of the computer screen.
 Window.top = 0
 Window.left = resolution[0] - Window.width
 
 from kivymd.tools.hotreload.app import MDApp
-%s
+%s%s
 
 class %s(MDApp):
     KV_FILES = {
@@ -348,7 +336,7 @@ class %s(MDApp):
             "%s",
             "%s.kv",
         ),
-    }
+    }%s
 
     def build_app(self) -> ScreenManager:
         """
@@ -359,8 +347,7 @@ class %s(MDApp):
         import View.screens
 
         self.theme_cls.primary_palette = "Orange"
-        self.manager_screens = ScreenManager()
-        %s
+        self.manager_screens = ScreenManager()%s%s
         Window.bind(on_key_down=self.on_keyboard_down)
         importlib.reload(View.screens)
         screens = View.screens.screens
@@ -384,7 +371,7 @@ class %s(MDApp):
         """
 
         if "meta" in modifiers or "ctrl" in modifiers and text == "r":
-            self.rebuild()
+            self.rebuild()%s%s
 
 
 %s().run()
@@ -411,6 +398,7 @@ def main():
     path_to_project = os.path.join(project_directory, project_name)
     use_firebase = args.use_firebase
     use_hotreload = args.use_hotreload
+    use_localization = args.use_localization
 
     # Check arguments.
     if name_screen[-6:] != "Screen":
@@ -439,7 +427,9 @@ def main():
             os.path.join(kivymd_path, "tools", "patterns", pattern_name),
             path_to_project,
         )
-        create_main(use_firebase, path_to_project, project_name)
+        create_main(
+            use_firebase, use_localization, path_to_project, project_name
+        )
         create_model(use_firebase, name_screen, module_name, path_to_project)
         create_controller(
             use_firebase,
@@ -448,7 +438,13 @@ def main():
             module_name,
             path_to_project,
         )
-        create_view(use_firebase, name_screen, module_name, path_to_project)
+        create_view(
+            use_firebase,
+            use_localization,
+            name_screen,
+            module_name,
+            path_to_project,
+        )
         create_requirements(use_firebase, path_to_project)
         os.makedirs(os.path.join(path_to_project, "assets", "images"))
         os.mkdir(os.path.join(path_to_project, "assets", "fonts"))
@@ -461,6 +457,7 @@ def main():
                 name_screen,
                 module_name,
                 use_firebase,
+                use_localization,
             )
             with open(
                 os.path.join(path_to_project, "requirements.txt"),
@@ -468,6 +465,17 @@ def main():
                 encoding="utf-8",
             ) as requirements:
                 requirements.write("watchdog")
+        if use_localization == "yes":
+            Logger.info(f"KivyMD: Create localization files...")
+            create_makefile(
+                path_to_project, project_name, module_name, name_screen
+            )
+            localization_po_file(path_to_project)
+            create_mofile(path_to_project)
+        else:
+            os.remove(os.path.join(path_to_project, "messages.pot"))
+            os.remove(os.path.join(path_to_project, "libs", "translation.py"))
+            shutil.rmtree(os.path.join(path_to_project, "data"))
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
         Logger.info(
             f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
@@ -478,7 +486,6 @@ def main():
         )
         install_requirements(path_to_project, kivy_version, use_firebase)
     else:
-
         parser.error(f"The {path_to_project} project already exists")
 
 
@@ -488,6 +495,7 @@ def create_main_with_hotreload(
     name_screen: str,
     module_name: str,
     use_firebase: str,
+    use_localization: str,
 ) -> NoReturn:
     with open(
         os.path.join(path_to_project, "main.py"), encoding="utf-8"
@@ -503,27 +511,76 @@ def create_main_with_hotreload(
     replace_in_file(
         os.path.join(path_to_project, "main.py"),
         (
+            "\nfrom kivy.properties import StringProperty"
+            if use_localization == "yes"
+            else "",
             "\nfrom Model.base import Base" if use_firebase == "yes" else "",
+            "\nfrom libs.translation import Translation\n"
+            if use_localization == "yes"
+            else "",
             project_name,
             name_screen,
             module_name,
-            "self.base = Base()\n" if use_firebase == "yes" else "",
+            '\n    lang = StringProperty("en")\n'
+            if use_localization == "yes"
+            else "",
+            "\n        self.base = Base()\n" if use_firebase == "yes" else "",
+            "\n        self.translation = Translation(\n"
+            '            self.lang, "%s", f"{self.directory}/data/locales"'
+            "\n        )" % project_name
+            if use_localization == "yes"
+            else "",
             "self.base" if use_firebase == "yes" else "",
+            "\n\n    def on_lang(self, instance_app, lang_value: str) -> NoReturn:\n"
+            "        self.translation.switch_lang(lang_value)\n"
+            if use_localization == "yes"
+            else "",
+            "\n    def switch_lang(self) -> NoReturn:\n"
+            '        """Switch lang."""\n\n'
+            '        self.lang = "ru" if self.lang == "en" else "en"'
+            if use_localization == "yes"
+            else "",
             project_name,
         ),
     )
 
 
 def create_main(
-    use_firebase: str, path_to_project: str, project_name: str
+    use_firebase: str,
+    use_localization: str,
+    path_to_project: str,
+    project_name: str,
 ) -> NoReturn:
     replace_in_file(
         os.path.join(path_to_project, "main.py_tmp"),
         (
+            "\nfrom kivy.properties import StringProperty"
+            if use_localization == "yes"
+            else "",
+            "\nfrom libs.translation import Translation"
+            if use_localization == "yes"
+            else "",
             "from Model.base import Base\n" if use_firebase == "yes" else "",
             project_name,
+            '\n    lang = StringProperty("en")\n'
+            if use_localization == "yes"
+            else "",
+            "\n        self.translation = Translation(\n"
+            '            self.lang, "%s", f"{self.directory}/data/locales"'
+            "\n        )" % project_name
+            if use_localization == "yes"
+            else "",
             "self.base = Base()\n" if use_firebase == "yes" else "",
             "self.base" if use_firebase == "yes" else "",
+            "\n    def on_lang(self, instance_app, lang_value: str) -> NoReturn:\n"
+            "        self.translation.switch_lang(lang_value)\n"
+            if use_localization == "yes"
+            else "",
+            "\n    def switch_lang(self) -> NoReturn:\n"
+            '        """Switch lang."""\n\n'
+            '        self.lang = "ru" if self.lang == "en" else "en"\n'
+            if use_localization == "yes"
+            else "",
             project_name,
         ),
     )
@@ -596,7 +653,11 @@ def create_controller(
 
 
 def create_view(
-    use_firebase: str, name_screen: str, module_name: str, path_to_project: str
+    use_firebase: str,
+    use_localization: str,
+    name_screen: str,
+    module_name: str,
+    path_to_project: str,
 ) -> NoReturn:
     replace_in_file(
         os.path.join(path_to_project, "View", "screens.py_tmp"),
@@ -612,7 +673,23 @@ def create_view(
     )
     replace_in_file(
         os.path.join(path_to_project, "View", "FirstScreen", "first_screen.kv"),
-        (f"{name_screen}View", name_screen),
+        (
+            f"{name_screen}View",
+            name_screen,
+            "app.switch_lang()" if use_localization == "yes" else "x",
+            'app.translation._("To log in, enter your personal data:")'
+            if use_localization == "yes"
+            else '"To log in, enter your personal data:"',
+            'app.translation._("Login")'
+            if use_localization == "yes"
+            else '"Login"',
+            'app.translation._("Password")'
+            if use_localization == "yes"
+            else '"Password"',
+            'app.translation._("LOGIN")'
+            if use_localization == "yes"
+            else '"LOGIN"',
+        ),
     )
     replace_in_file(
         os.path.join(
@@ -623,18 +700,26 @@ def create_view(
             if use_firebase == "yes"
             else _without_firebase_view_import,
             f"{name_screen}View",
-            "ThemableBehavior, " if use_firebase == "yes" else "",
+            _firebase_view_methods if use_firebase == "yes" else "",
+            _firebase_view_model_is_changed_method
+            if use_firebase == "yes"
+            else "",
+        ),
+    )
+    replace_in_file(
+        os.path.join(path_to_project, "View", "base_screen.py_tmp"),
+        (
             module_name,
             f"{name_screen}Model",
             module_name,
             f"{name_screen}Controller",
             module_name,
             f"{name_screen}Model",
-            _firebase_view_methods if use_firebase == "yes" else "",
-            _firebase_view_model_is_changed_method
-            if use_firebase == "yes"
-            else "",
         ),
+    )
+    os.rename(
+        os.path.join(path_to_project, "View", "base_screen.py_tmp"),
+        os.path.join(path_to_project, "View", "base_screen.py"),
     )
     os.rename(
         os.path.join(path_to_project, "View", "FirstScreen", "first_screen.kv"),
@@ -667,6 +752,29 @@ def create_requirements(use_firebase: str, path_to_project: str) -> NoReturn:
         )
 
 
+def create_makefile(
+    path_to_project: str, project_name: str, module_name: str, name_screen: str
+) -> NoReturn:
+    replace_in_file(
+        os.path.join(path_to_project, "Makefile"),
+        (
+            name_screen,
+            module_name,
+            name_screen,
+            module_name,
+            project_name,
+            project_name,
+        ),
+    )
+    os.chdir(path_to_project)
+    os.system("make po")
+
+
+def create_mofile(path_to_project: str) -> NoReturn:
+    os.chdir(path_to_project)
+    os.system("make mo")
+
+
 def create_virtual_environment(
     python_version: str, path_to_project: str
 ) -> NoReturn:
@@ -674,6 +782,32 @@ def create_virtual_environment(
     os.system(
         f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}"
     )
+
+
+def localization_po_file(path_to_project: str) -> NoReturn:
+    path_to_file_po = os.path.join(
+        path_to_project, "data", "locales", "po", "ru.po"
+    )
+    with open(path_to_file_po, "rt", encoding="utf-8") as file_po:
+        file_po_content = (
+            file_po.read()
+            .replace(
+                'msgid "To log in, enter your personal data:"\nmsgstr ""',
+                'msgid "To log in, enter your personal data:"\nmsgstr "Для входа введите свои личные данные"',
+            )
+            .replace(
+                'msgid "Login"\nmsgstr ""', 'msgid "Login"\nmsgstr "Логин"'
+            )
+            .replace(
+                'msgid "Password"\nmsgstr ""',
+                'msgid "Password"\nmsgstr "Пароль"',
+            )
+            .replace(
+                'msgid "LOGIN"\nmsgstr ""', 'msgid "LOGIN"\nmsgstr "ЛОГИН"'
+            )
+        )
+    with open(path_to_file_po, "wt", encoding="utf-8") as file_po:
+        file_po.write(file_po_content)
 
 
 def install_requirements(
@@ -794,13 +928,18 @@ def create_argument_parser() -> ArgumentParserWithHelp:
     )
     parser.add_argument(
         "--use_firebase",
-        default="yes",
+        default="no",
         help="use a basic template to work with the 'firebase' library.",
     )
     parser.add_argument(
         "--use_hotreload",
         default="no",
         help="creates a hot reload entry point to the application.",
+    )
+    parser.add_argument(
+        "--use_localization",
+        default="no",
+        help="creates application localization files.",
     )
     return parser
 

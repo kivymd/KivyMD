@@ -1322,6 +1322,7 @@ class MDTextField(ThemableBehavior, TextInput):
             if self.error:
                 self.set_static_underline_color(self.error_color)
             else:
+                # print(self._cache_colors["line_color_normal"])
                 self.set_static_underline_color(
                     self._cache_colors["line_color_normal"]
                 )
@@ -1387,6 +1388,21 @@ class MDTextField(ThemableBehavior, TextInput):
     def on_height(self, instance_text_field, value_height: float) -> NoReturn:
         if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
+
+    def on_text_color_normal(self, instance_text_field, color: list):
+        self._text_color_normal = color
+
+    def on_hint_text_color_normal(self, instance_text_field, color: list):
+        self._hint_text_color = color
+
+    def on_helper_text_color_normal(self, instance_text_field, color: list):
+        self._helper_text_color = color
+
+    def on_icon_right_color_normal(self, instance_text_field, color: list):
+        self._icon_right_color = color
+
+    def on_max_length_text_color(self, instance_text_field, color: list):
+        self._max_length_text_color = color
 
     def _set_color(self, attr_name: str, color: str, updated: bool) -> NoReturn:
         if attr_name in self._colors_to_updated or updated:

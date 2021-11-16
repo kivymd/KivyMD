@@ -472,6 +472,23 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
+    material_style = OptionProperty("M2", options=["M2", "M3"])
+    """
+    Material design style.
+    Available options are: 'M2', 'M3'.
+
+    .. versionadded:: 1.0.0
+
+    .. seealso::
+    
+       `Material Design 2 <https://material.io/>`_ and
+       `Material Design 3 <https://m3.material.io>`_
+
+
+    :attr:`material_style` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'M2'`.
+    """
+
     theme_style = OptionProperty("Light", options=["Light", "Dark"])
     """
     App theme style.

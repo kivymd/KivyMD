@@ -157,6 +157,7 @@ from kivy.properties import (
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.card import MDCard
@@ -176,7 +177,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDBanner(MDCard):
+class MDBanner(MDCard, FakeRectangularElevationBehavior):
     vertical_pad = NumericProperty(dp(68))
     """
     Indent the banner at the top of the screen.

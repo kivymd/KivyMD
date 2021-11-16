@@ -33,3 +33,6 @@ Unreleased
 * Added localization support when creating a project using the `create_project <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/create_project/>`_ tool;
 * Added support `Material Design v3`;
 * Added support badge icon to `MDIcon <https://kivymd.readthedocs.io/en/latest/components/label/#mdicon-with-badge-icon>`_ class;
+* Added the feature to use a radius for the `BaseListItem` class;
+* `MDFloatingActionButton <https://kivymd.readthedocs.io/en/latest/components/button/#mdfloatingactionbutton>`_ class `configured according to M3 <https://kivymd.readthedocs.io/en/latest/components/button/#material-design-style-3>`_ style;
+* Ripple animation for round buttons customized to material design standards;

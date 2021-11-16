@@ -335,6 +335,10 @@ class RectangularRippleBehavior(CommonRipple):
             return
         with self.canvas.after:
             if hasattr(self, "radius"):
+                if isinstance(self.radius, (float, int)):
+                    self.radius = [
+                        self.radius,
+                    ]
                 self._round_rad = self.radius
             StencilPush(group="rectangular_ripple_behavior")
             RoundedRectangle(

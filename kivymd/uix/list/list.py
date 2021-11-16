@@ -506,7 +506,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.floatlayout import FloatLayout
 
 import kivymd.material_resources as m_res
 from kivymd import uix_path
@@ -516,6 +515,7 @@ from kivymd.uix.behaviors import (
     RectangularRippleBehavior,
 )
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.utils.fitimage import FitImage
@@ -547,7 +547,7 @@ class MDList(MDGridLayout):
 
 
 class BaseListItem(
-    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, FloatLayout
+    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, MDFloatLayout
 ):
     """
     Base class to all ListItems. Not supposed to be instantiated on its own.

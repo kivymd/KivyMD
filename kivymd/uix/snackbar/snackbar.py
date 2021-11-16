@@ -284,6 +284,7 @@ from kivy.properties import (
 )
 
 from kivymd import uix_path
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDCard
 
@@ -293,7 +294,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class BaseSnackbar(MDCard):
+class BaseSnackbar(MDCard, FakeRectangularElevationBehavior):
     """
     :Events:
         :attr:`on_open`

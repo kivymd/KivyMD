@@ -118,7 +118,11 @@ from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import CircularRippleBehavior, HoverBehavior
+from kivymd.uix.behaviors import (
+    CircularRippleBehavior,
+    FakeRectangularElevationBehavior,
+    HoverBehavior,
+)
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFloatingActionButton
 from kivymd.uix.card import MDCard
@@ -275,7 +279,7 @@ class MDNavigationRailItem(
         self.ids.lbl_text.text_color = (0, 0, 0, 0)
 
 
-class MDNavigationRail(MDCard):
+class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
     """
     :Events:
         `on_item_switch`

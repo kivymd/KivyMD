@@ -464,7 +464,6 @@ Center position
 __all__ = ("MDDropdownMenu",)
 
 import os
-from traceback import print_tb
 from typing import NoReturn, Union
 from kivy.animation import Animation
 from kivy.clock import Clock

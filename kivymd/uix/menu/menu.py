@@ -698,7 +698,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
             self.target_height = 0 - dp(self.h_cls)
 
-            # Set the target_height of the Menu depending on the size of
+            # Set the target_height of the menu depending on the size of
             # each MDMenuItem or MDMenuItemIcon.
             for item in self.ids.md_menu.data:
                 self.target_height += item.get("height", dp(48))

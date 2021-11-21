@@ -598,9 +598,7 @@ class MDBottomNavigation(TabbedPanelBase):
                 tab.header = self.tab_header
                 tab_bar.add_widget(self.tab_header)
                 if tab is self.first_widget:
-                    self.tab_header._text_color_normal = (
-                        self._active_color
-                    )
+                    self.tab_header._text_color_normal = self._active_color
                     self.tab_header._label_font_size = sp(14)
                     self.tab_header.active = True
                 else:
@@ -640,16 +638,16 @@ class MDBottomNavigation(TabbedPanelBase):
     def on_text_color_normal(
         self, instance_bottom_navigation, color: list
     ) -> NoReturn:
-        MDBottomNavigationHeader.text_color_normal = (color)
+        MDBottomNavigationHeader.text_color_normal = color
         for tab in self.ids.tab_bar.children:
             if not tab.active:
                 tab._text_color_normal = color
-        
+
     def on_text_color_active(
         self, instance_bottom_navigation, color: list
     ) -> NoReturn:
-        MDBottomNavigationHeader.text_color_active = (color)
-        self.text_color_active = (color)
+        MDBottomNavigationHeader.text_color_active = color
+        self.text_color_active = color
         for tab in self.ids.tab_bar.children:
             tab.text_color_active = color
             if tab.active:

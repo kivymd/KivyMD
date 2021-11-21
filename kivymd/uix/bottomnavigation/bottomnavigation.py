@@ -550,6 +550,8 @@ class MDBottomNavigation(TabbedPanelBase):
     :attr:`tab_header` is an :class:`~MDBottomNavigationHeader`
     and defaults to `None`.
     """
+    # Text active color if it is selected.
+    _active_color = ColorProperty([1, 1, 1, 1])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -588,14 +590,15 @@ class MDBottomNavigation(TabbedPanelBase):
             tab_bar = self.ids.tab_bar
             tab_bar.clear_widgets()
             tab_manager = self.ids.tab_manager
+            self._active_color = self.theme_cls.primary_color
+            if self.text_color_active != [1, 1, 1, 1]:
+                self._active_color = self.text_color_active
             for tab in tab_manager.screens:
                 self.tab_header = MDBottomNavigationHeader(tab=tab, panel=self)
                 tab.header = self.tab_header
                 tab_bar.add_widget(self.tab_header)
                 if tab is self.first_widget:
-                    self.tab_header._text_color_normal = (
-                        self.theme_cls.primary_color
-                    )
+                    self.tab_header._text_color_normal = self._active_color
                     self.tab_header._label_font_size = sp(14)
                     self.tab_header.active = True
                 else:
@@ -635,6 +638,7 @@ class MDBottomNavigation(TabbedPanelBase):
     def on_text_color_normal(
         self, instance_bottom_navigation, color: list
     ) -> NoReturn:
+        MDBottomNavigationHeader.text_color_normal = color
         for tab in self.ids.tab_bar.children:
             if not tab.active:
                 tab._text_color_normal = color
@@ -642,6 +646,8 @@ class MDBottomNavigation(TabbedPanelBase):
     def on_text_color_active(
         self, instance_bottom_navigation, color: list
     ) -> NoReturn:
+        MDBottomNavigationHeader.text_color_active = color
+        self.text_color_active = color
         for tab in self.ids.tab_bar.children:
             tab.text_color_active = color
             if tab.active:

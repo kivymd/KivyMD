@@ -108,7 +108,11 @@ class MDApp(App, FpsMonitoring):
         """
 
         for path_to_dir, dirs, files in os.walk(path_to_directory):
-            if "venv" in path_to_dir:
+            if (
+                "venv" in path_to_dir
+                or ".buildozer" in path_to_dir
+                or "kivymd/tools/patterns/MVC" in path_to_dir
+            ):
                 continue
             for name_file in files:
                 if (

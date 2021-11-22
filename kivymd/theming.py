@@ -480,8 +480,8 @@ class ThemeManager(EventDispatcher):
     .. versionadded:: 1.0.0
 
     .. seealso::
-    `Material Design 2 <https://material.io/>`_ and
-    `Material Design 3 <https://m3.material.io>`_
+        `Material Design 2 <https://material.io/>`_ and
+        `Material Design 3 <https://m3.material.io>`_
 
 
     :attr:`material_style` is an :class:`~kivy.properties.OptionProperty`

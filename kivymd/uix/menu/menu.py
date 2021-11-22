@@ -798,7 +798,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         if self._move_menu and self.position == "auto":
             self.on_shift()
 
-    # Shift effect for MDDropdownMenu when window resizing only in 'default' and 'auto' position.
+    # Shift effect for MDDropdownMenu when Window resizing only in 'default' and 'auto' position.
     def on_shift(self):
 
         if self._ver_growth == "down" and self._hor_growth == "left":

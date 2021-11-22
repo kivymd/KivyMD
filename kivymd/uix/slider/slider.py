@@ -128,12 +128,12 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `None`.
     """
 
-    hint_radius = NumericProperty(4)
+    hint_radius = ListProperty([dp(4), dp(4), dp(4), dp(4)])
     """
     Hint radius.
 
-    :attr:`hint_radius` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `4`.
+    :attr:`hint_radius` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(4), dp(4), dp(4), dp(4)]`.
     """
 
     show_off = BooleanProperty(True)

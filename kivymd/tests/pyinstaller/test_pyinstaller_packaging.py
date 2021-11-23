@@ -6,12 +6,14 @@ PyInstaller must package KivyMD apps correctly.
 """
 
 import subprocess
+from typing import NoReturn
 
 from PyInstaller import __main__ as pyi_main
 
 
-def test_datas(tmp_path):
+def test_datas(tmp_path) -> NoReturn:
     """Test fonts and images."""
+
     app_name = "userapp"
     workpath = tmp_path / "build"
     distpath = tmp_path / "dist"
@@ -19,8 +21,10 @@ def test_datas(tmp_path):
     app.write_text(
         """
 import os
-import kivymd
+
 from kivy.core.text import LabelBase
+
+import kivymd
 
 fonts = os.listdir(kivymd.fonts_path)
 print(fonts)
@@ -50,8 +54,9 @@ assert "rec_shadow.atlas" in images
     subprocess.run([str(distpath / app_name / app_name)], check=True)
 
 
-def test_widgets(tmp_path):
+def test_widgets(tmp_path) -> NoReturn:
     """Test that all widgets are accesible."""
+
     app_name = "userapp"
     workpath = tmp_path / "build"
     distpath = tmp_path / "dist"
@@ -59,6 +64,7 @@ def test_widgets(tmp_path):
     app.write_text(
         """
 import os
+
 import kivymd  # NOQA
 __import__("kivymd.uix.label")
 __import__("kivymd.uix.button")

@@ -1,0 +1,73 @@
+#:import Window kivy.core.window.Window
+
+
+<SheetList>
+
+    MDGridLayout:
+        id: box_sheet_list
+        cols: 1
+        adaptive_height: True
+        padding: 0, 0, 0, "96dp"
+
+
+<MDBottomSheet>
+    md_bg_color: root.value_transparent
+    _upper_padding: _upper_padding
+    _gl_content: _gl_content
+    _position_content: Window.height
+
+    MDBoxLayout:
+        orientation: "vertical"
+        padding: 0, 1, 0, 0
+
+        BsPadding:
+            id: _upper_padding
+            size_hint_y: None
+            height: root.height - min(root.width * 9 / 16, root._gl_content.height)
+            on_release: root.dismiss()
+
+        BottomSheetContent:
+            id: _gl_content
+            size_hint_y: None
+            cols: 1
+            md_bg_color: 0, 0, 0, 0
+
+            canvas:
+                Color:
+                    rgba: root.theme_cls.bg_normal if not root.bg_color else root.bg_color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius:
+                        [
+                        (root.radius, root.radius) if root.radius_from == "top_left" or root.radius_from == "top" else (0, 0),
+                        (root.radius, root.radius) if root.radius_from == "top_right" or root.radius_from == "top" else (0, 0),
+                        (root.radius, root.radius) if root.radius_from == "bottom_right" or root.radius_from == "bottom" else (0, 0),
+                        (root.radius, root.radius) if root.radius_from == "bottom_left" or root.radius_from == "bottom" else (0, 0)
+                        ]
+
+
+<ListBottomSheetIconLeft>
+    theme_text_color: "Primary"
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+
+<GridBottomSheetItem>
+    orientation: "vertical"
+    padding: 0, dp(24), 0, 0
+    size_hint_y: None
+    size: dp(64), dp(96)
+
+    AnchorLayout:
+        anchor_x: "center"
+
+        MDIconButton:
+            icon: root.source
+            user_font_size: root.icon_size
+            on_release: root.dispatch("on_release")
+
+    MDLabel:
+        font_style: "Caption"
+        theme_text_color: "Secondary"
+        text: root.caption
+        halign: "center"

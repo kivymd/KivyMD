@@ -1,5 +1,7 @@
 __all__ = ("MDAdaptiveWidget",)
 
+from typing import NoReturn
+
 from kivy.properties import BooleanProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
@@ -48,7 +50,7 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
     and defaults to `False`.
     """
 
-    def on_adaptive_height(self, instance, value):
+    def on_adaptive_height(self, md_widget, value: bool) -> NoReturn:
         self.size_hint_y = None
         if issubclass(self.__class__, Label):
             self.bind(
@@ -60,7 +62,7 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
             if not isinstance(self, (FloatLayout, Screen)):
                 self.bind(minimum_height=self.setter("height"))
 
-    def on_adaptive_width(self, instance, value):
+    def on_adaptive_width(self, md_widget, value: bool) -> NoReturn:
         self.size_hint_x = None
         if issubclass(self.__class__, Label):
             self.bind(
@@ -72,7 +74,7 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
             if not isinstance(self, (FloatLayout, Screen)):
                 self.bind(minimum_width=self.setter("width"))
 
-    def on_adaptive_size(self, instance, value):
+    def on_adaptive_size(self, md_widget, value: bool) -> NoReturn:
         self.size_hint = (None, None)
         if issubclass(self.__class__, Label):
             self.text_size = (None, None)

@@ -1,0 +1,74 @@
+<MDCheckbox>
+    canvas:
+        Clear
+        Color:
+            rgba: self.color
+        Rectangle:
+            texture: self.texture
+            size: self.texture_size
+            pos:
+                int(self.center_x - self.texture_size[0] / 2.), \
+                int(self.center_y - self.texture_size[1] / 2.)
+
+    color: self._current_color
+    halign: "center"
+    valign: "middle"
+
+
+<Thumb>
+    color: 1, 1, 1, 1
+    canvas:
+        Color:
+            rgba: self.color
+        Ellipse:
+            size: self.size
+            pos: self.pos
+
+
+<MDSwitch>
+    canvas.before:
+        Color:
+            rgba:
+                self._track_color_disabled if self.disabled else \
+                ( \
+                self._track_color_active \
+                if self.active else self._track_color_normal \
+                )
+        RoundedRectangle:
+            size:
+                (self.width + dp(14), dp(28)) \
+                if root.widget_style == "ios" else \
+                (self.width - dp(8), dp(16))
+            pos:
+                (self.x - dp(2), self.center_y - dp(14)) \
+                if root.widget_style == "ios" else \
+                (self.x + dp(8), self.center_y - dp(8))
+            radius:
+                [dp(14)] if root.widget_style == "ios" else [dp(7)]
+        Color:
+            rgba:
+                ( \
+                self.theme_cls.disabled_hint_text_color[:-1] + [.2] \
+                if not root.active else (0, 0, 0, 0) \
+                ) \
+                if root.widget_style == "ios" else (0, 0, 0, 0)
+        Line:
+            width: 1
+            rounded_rectangle:
+                ( \
+                self.x - dp(2), self.center_y - dp(14), self.width + dp(14), \
+                dp(28), dp(14), dp(14), dp(14), dp(14), dp(28) \
+                ) \
+                if root.widget_style == "ios" else \
+                (1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+    Thumb:
+        id: thumb
+        size_hint: None, None
+        size: dp(24), dp(24)
+        pos: root.pos[0] + root._thumb_pos[0], root.pos[1] + root._thumb_pos[1]
+        color:
+            root.thumb_color_disabled if root.disabled else \
+            (root.thumb_color_down if root.active else root.thumb_color)
+        elevation: 8 if root.active else 5
+        on_release: setattr(root, "active", not root.active)

@@ -61,13 +61,13 @@ is fired when the roulette stops, "making a selection". It can be listened to
 for handling or cleaning up choice making.
 """
 
-__all_ = ("RouletteScrollEffect",)
-
 from math import ceil, exp, floor
 
 from kivy.animation import Animation
 from kivy.effects.scroll import ScrollEffect
 from kivy.properties import AliasProperty, NumericProperty, ObjectProperty
+
+__all_ = ("RouletteScrollEffect",)
 
 
 class RouletteScrollEffect(ScrollEffect):
@@ -84,7 +84,7 @@ class RouletteScrollEffect(ScrollEffect):
     drag_threshold = NumericProperty(0)
     """
     Overrides :attr:`ScrollEffect.drag_threshold` to abolish drag threshold.
-    
+
     .. note::
         If using this with a :class:`Roulette` or other :class:`Tickline`
         subclasses, what matters is :attr:`Tickline.drag_threshold`, which
@@ -126,7 +126,7 @@ class RouletteScrollEffect(ScrollEffect):
     coasting_alpha = NumericProperty(0.5)
     """
     When within :attr:`coasting_alpha` * :attr:`interval` of the
-    next notch and velocity is below :attr:`terminal_velocity`, 
+    next notch and velocity is below :attr:`terminal_velocity`,
     coasting begins and will end on the next notch.
 
     :attr:`coasting_alpha` is an :class:`~kivy.properties.NumericProperty`
@@ -135,9 +135,9 @@ class RouletteScrollEffect(ScrollEffect):
 
     pull_back_velocity = NumericProperty("50sp")
     """
-    The velocity below which the scroll value will be drawn to the 
+    The velocity below which the scroll value will be drawn to the
     *nearest* notch instead of the *next* notch in the direction travelled.
-    
+
     :attr:`pull_back_velocity` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `50sp`.
     """
@@ -164,10 +164,10 @@ class RouletteScrollEffect(ScrollEffect):
         cache=True,
     )
     """
-    If velocity falls between :attr:`pull_back_velocity` and 
+    If velocity falls between :attr:`pull_back_velocity` and
     :attr:`terminal velocity` then the movement will start to coast
     to the next coming stopping value.
-    
+
     :attr:`terminal_velocity` is computed from a set formula given
     :attr:`interval`, :attr:`coasting_alpha`, :attr:`pull_duration`,
     and :attr:`friction`. Setting :attr:`terminal_velocity` has the

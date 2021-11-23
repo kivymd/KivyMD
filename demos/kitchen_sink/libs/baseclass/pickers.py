@@ -1,4 +1,4 @@
-from kivymd.uix.picker import MDDatePicker, MDTimePicker
+from kivymd.uix.pickers import MDDatePicker, MDTimePicker
 from kivymd.uix.screen import MDScreen
 
 

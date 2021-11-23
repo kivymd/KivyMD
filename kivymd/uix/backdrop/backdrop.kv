@@ -1,0 +1,48 @@
+<MDBackdrop>
+    md_bg_color:
+        root.theme_cls.primary_color \
+        if not root.back_layer_color \
+        else root.back_layer_color
+
+    MDBackdropToolbar:
+        id: toolbar
+        title: root.title
+        elevation: 0
+        left_action_items: root.left_action_items
+        right_action_items: root.right_action_items
+        pos_hint: {"top": 1}
+        md_bg_color:
+            root.theme_cls.primary_color \
+            if not root.back_layer_color \
+            else root.back_layer_color
+
+    _BackLayer:
+        id: back_layer
+        y: -toolbar.height
+        padding: 0, 0, 0, toolbar.height + dp(10)
+
+    _FrontLayer:
+        id: _front_layer
+        md_bg_color: 0, 0, 0, 0
+        orientation: "vertical"
+        size_hint_y: None
+        height: root.height - toolbar.height
+        padding: root.padding
+        md_bg_color:
+            root.theme_cls.bg_normal \
+            if not root.front_layer_color \
+            else root.front_layer_color
+        radius:
+            [root.radius_left, root.radius_left,
+            root.radius_right, root.radius_right]
+
+        OneLineListItem:
+            id: header_button
+            text: root.header_text
+            divider: None
+            _no_ripple_effect: True
+            on_press: root.open()
+
+        MDBoxLayout:
+            id: front_layer
+            padding: 0, 0, 0, "10dp"

@@ -1,0 +1,173 @@
+#:import m_res kivymd.material_resources
+
+
+<MDList>
+    cols: 1
+    adaptive_height: True
+    padding: 0, self._list_vertical_padding
+
+
+<BaseListItem>
+    size_hint_y: None
+
+    canvas:
+        Color:
+            rgba:
+                ( \
+                self.theme_cls.divider_color \
+                if root.divider is not None \
+                else (0, 0, 0, 0) \
+                ) \
+                if not root.divider_color \
+                else \
+                root.divider_color
+
+        Line:
+            points:
+                ( \
+                root.x ,root.y, root.x + self.width, root.y) \
+                if root.divider == "Full" else \
+                (root.x + root._txt_left_pad, root.y, \
+                root.x + self.width - root._txt_left_pad-root._txt_right_pad, \
+                root.y \
+                )
+        Color:
+            rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+
+    BoxLayout:
+        id: _text_container
+        orientation: "vertical"
+        pos: root.pos
+        padding:
+            root._txt_left_pad, root._txt_top_pad, \
+            root._txt_right_pad, root._txt_bot_pad
+
+        MDLabel:
+            id: _lbl_primary
+            text: root.text
+            font_style: root.font_style
+            theme_text_color: root.theme_text_color
+            text_color: root.text_color
+            size_hint_y: None
+            height: self.texture_size[1]
+            markup: True
+            shorten_from: "right"
+            shorten: True
+
+        MDLabel:
+            id: _lbl_secondary
+            text: "" if root._num_lines == 1 else root.secondary_text
+            font_style: root.secondary_font_style
+            theme_text_color: root.secondary_theme_text_color
+            text_color: root.secondary_text_color
+            size_hint_y: None
+            height: 0 if root._num_lines == 1 else self.texture_size[1]
+            shorten: True
+            shorten_from: "right"
+            markup: True
+
+        MDLabel:
+            id: _lbl_tertiary
+            text: "" if root._num_lines == 1 else root.tertiary_text
+            font_style: root.tertiary_font_style
+            theme_text_color: root.tertiary_theme_text_color
+            text_color: root.tertiary_text_color
+            size_hint_y: None
+            height: 0 if root._num_lines == 1 else self.texture_size[1]
+            shorten: True
+            shorten_from: "right"
+            markup: True
+
+
+<OneLineAvatarListItem>
+
+    BoxLayout:
+        id: _left_container
+        size_hint: None, None
+        x: root.x + dp(16)
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(40), dp(40)
+
+
+<ThreeLineAvatarListItem>
+
+    BoxLayout:
+        id: _left_container
+        size_hint: None, None
+        x: root.x + dp(16)
+        y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
+        size: dp(40), dp(40)
+
+
+<OneLineIconListItem>
+
+    BoxLayout:
+        id: _left_container
+        size_hint: None, None
+        x: root.x + dp(16)
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(48), dp(48)
+
+
+<ThreeLineIconListItem>
+
+    BoxLayout:
+        id: _left_container
+        size_hint: None, None
+        x: root.x + dp(16)
+        y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
+        size: dp(48), dp(48)
+
+
+<OneLineRightIconListItem>
+
+    BoxLayout:
+        id: _right_container
+        size_hint: None, None
+        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(48), dp(48)
+
+
+<ThreeLineRightIconListItem>
+
+    BoxLayout:
+        id: _right_container
+        size_hint: None, None
+        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(48), dp(48)
+
+
+<OneLineAvatarIconListItem>
+
+    BoxLayout:
+        id: _right_container
+        size_hint: None, None
+        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(48), dp(48)
+
+
+<TwoLineAvatarIconListItem>
+
+    BoxLayout:
+        id: _right_container
+        size_hint: None, None
+        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(48), dp(48)
+
+
+<ThreeLineAvatarIconListItem>
+
+    BoxLayout:
+        id: _right_container
+        size_hint: None, None
+        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+        y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
+        size: dp(48), dp(48)

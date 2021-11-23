@@ -37,7 +37,15 @@ AndroidToast
 
     Test().run()
 """
+
 __all__ = ("toast",)
+
+from kivy import platform
+
+if platform != "android":
+    raise TypeError(
+        f"{platform.capitalize()} platform does not support Android Toast"
+    )
 
 from android.runnable import run_on_ui_thread
 from jnius import autoclass
@@ -53,7 +61,7 @@ def toast(text, length_long=False, gravity=0, y=0, x=0):
     Displays a toast.
 
     :param length_long: the amount of time (in seconds) that the toast is
-           visible on the screen.
+           visible on the screen;
     :param text: text to be displayed in the toast;
     :param short_duration:  duration of the toast, if `True` the toast
            will last 2.3s but if it is `False` the toast will last 3.9s;

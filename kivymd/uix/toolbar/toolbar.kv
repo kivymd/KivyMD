@@ -1,0 +1,117 @@
+<MDActionBottomAppBarButton>
+    canvas.before:
+        PushMatrix
+        Scale:
+            origin: self.center
+            x: root._scale_x
+            y: root._scale_y
+    canvas.after:
+        PopMatrix
+
+
+<NotchedBox>
+    size_hint_y: None
+    padding: [root.theme_cls.horizontal_margins - dp(12), 0]
+    elevation: root.elevation
+
+    canvas:
+        Color:
+            rgba:
+                ( \
+                root.theme_cls.primary_color \
+                if root.md_bg_color == [0, 0, 0, 0] \
+                else root.md_bg_color \
+                ) \
+                if root.type == "top" else \
+                ( \
+                ( \
+                root.theme_cls.primary_color \
+                if not self.md_bg_bottom_color else \
+                self.md_bg_bottom_color \
+                ) \
+                if root.parent.md_bg_color == [0, 0, 0, 0] \
+                else root.parent.md_bg_color \
+                )
+        Mesh:
+            vertices: root._vertices_left
+            indices: root._indices_left
+            mode: "triangle_fan"
+
+        Mesh:
+            vertices: root._vertices_right
+            indices: root._indices_right
+            mode: "triangle_fan"
+
+        RoundedRectangle:
+            pos: root._rectangle_left_pos
+            size: root._rectangle_left_width, root._rounded_rectangle_height
+            radius:
+                [0,] if root.mode == "normal" \
+                else [0, root.notch_radius * root._rounding_percentage, 0, 0]
+
+        RoundedRectangle:
+            pos: root._rectangle_right_pos
+            size: root._rectangle_right_width, root._rounded_rectangle_height
+            radius:
+                [0,] if root.mode == "normal" \
+                else [root.notch_radius * root._rounding_percentage, 0, 0, 0]
+
+
+<MDToolbar>
+    orientation: "vertical"
+
+    MDBoxLayout:
+        padding: 0, 0, 0, root.height - headline_box.height - (dp(48) + dp(20))
+
+        MDBoxLayout:
+            id: left_actions
+            orientation: "horizontal"
+            size_hint_x: None
+            padding: [0, (self.height - dp(48)) / 2]
+
+        MDBoxLayout:
+            padding: dp(12), 0
+
+            MDLabel:
+                id: label_title
+                font_style: "H6"
+                opposite_colors: root.opposite_colors
+                theme_text_color: "Custom" if not root.opposite_colors else "Primary"
+                text_color: root.specific_text_color
+                text: root.title
+                shorten: True
+                shorten_from: "right"
+                markup: True
+                halign:
+                    root.anchor_title \
+                    if root.anchor_title else \
+                    root.update_anchor_title(app.theme_cls.material_style)
+
+        MDBoxLayout:
+            id: right_actions
+            orientation: "horizontal"
+            size_hint_x: None
+            padding: [0, (self.height - dp(48)) / 2]
+
+    MDBoxLayout:
+        id: headline_box
+        size_hint_y: None
+        height: label_headline.texture_size[1] if label_headline.text else 0
+        padding: "16dp"
+
+        MDLabel:
+            id: label_headline
+            adaptive_height: True
+            shorten: True
+            shorten_from: "right"
+            theme_text_color: "Custom"
+            text_color:
+                label_title.text_color \
+                if not root.headline_text_color else \
+                root.headline_text_color
+            text:
+                root.headline_text \
+                if root.type_height in ("medium", "large") \
+                and app.theme_cls.material_style == "M3" \
+                and root.type != "bottom" else \
+                ""

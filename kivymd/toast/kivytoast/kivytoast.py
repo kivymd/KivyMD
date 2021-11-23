@@ -38,6 +38,8 @@ KivyToast
     Test().run()
 """
 
+from typing import List, NoReturn
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -84,28 +86,44 @@ class Toast(BaseDialog):
         self.label_toast.bind(texture_size=self.label_check_texture_size)
         self.add_widget(self.label_toast)
 
-    def label_check_texture_size(self, instance, texture_size):
+    def label_check_texture_size(
+        self, instance_label: Label, texture_size: List[int]
+    ) -> NoReturn:
+        """
+        Resizes the text if the text texture is larger than the screen size.
+        Sets the size of the toast according to the texture size of the toast
+        text.
+        """
+
         texture_width, texture_height = texture_size
         if texture_width > Window.width:
-            instance.text_size = (Window.width - dp(10), None)
-            instance.texture_update()
-            texture_width, texture_height = instance.texture_size
+            instance_label.text_size = (Window.width - dp(10), None)
+            instance_label.texture_update()
+            texture_width, texture_height = instance_label.texture_size
         self.size = (texture_width + 25, texture_height + 25)
 
-    def toast(self, text_toast):
+    def toast(self, text_toast: str) -> NoReturn:
+        """Displays a toast."""
+
         self.label_toast.text = text_toast
         self.open()
 
-    def on_open(self):
+    def on_open(self) -> NoReturn:
+        """Default open event handler."""
+
         self.fade_in()
         Clock.schedule_once(self.fade_out, self.duration)
 
-    def fade_in(self):
+    def fade_in(self) -> NoReturn:
+        """Animation of opening toast on the screen."""
+
         anim = Animation(opacity=1, duration=0.4)
         anim.start(self.label_toast)
         anim.start(self)
 
-    def fade_out(self, *args):
+    def fade_out(self, *args) -> NoReturn:
+        """Animation of hiding toast on the screen."""
+
         anim = Animation(opacity=0, duration=0.4)
         anim.bind(on_complete=lambda *x: self.dismiss())
         anim.start(self.label_toast)
@@ -120,14 +138,17 @@ class Toast(BaseDialog):
         return True
 
 
-def toast(text="", background=[0.2, 0.2, 0.2, 1], duration=2.5):
-    """Displays a toast.
+def toast(
+    text: str = "", background: list = None, duration: float = 2.5
+) -> NoReturn:
+    """
+    Displays a toast.
 
-    :attr duration: the amount of time (in seconds) that the toast is visible on the screen
-    :type duration: float
-
-    :attr background: color ``rgba`` in Kivy format
-    :type background: list
+    :param text: text to be displayed in the toast;
+    :param duration: the amount of time (in seconds) that the toast is visible on the screen
+    :param background: toast background color in ``rgba`` format;
     """
 
+    if background is None:
+        background = [0.2, 0.2, 0.2, 1]
     Toast(duration=duration, _md_bg_color=background).toast(text)

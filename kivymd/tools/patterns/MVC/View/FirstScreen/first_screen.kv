@@ -1,0 +1,52 @@
+#:import images_path kivymd.images_path
+
+
+<%s>
+
+    FitImage:
+        source: f"{images_path}firebase-logo.png"
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDToolbar:
+            title: "%s"
+            right_action_items: [["web", lambda x: %s]]
+
+        MDFloatLayout:
+
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                size_hint_x: None
+                width: root.width - dp(72)
+                radius: 12
+                padding: "12dp"
+                md_bg_color: 1, 1, 1, .5
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDLabel:
+                    id: prev_label
+                    text: %s
+                    font_style: "H6"
+                    adaptive_height: True
+                    halign: "center"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: "50dp"
+                    spacing: "20dp"
+
+                    MDTextField:
+                        hint_text: %s
+                        on_text: root.controller.set_user_data("login", self.text)
+
+                    MDTextField:
+                        hint_text: %s
+                        on_text: root.controller.set_user_data("password", self.text)
+
+    MDFillRoundFlatButton:
+        text: %s
+        on_release: root.controller.on_tap_button_login()
+        pos_hint: {"center_x": .5, "center_y": .1}

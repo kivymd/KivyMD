@@ -21,7 +21,7 @@ If you wish to become a project developer (permission to create branches on the 
 
 [![Discord](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
 [![Twitter](https://img.shields.io/twitter/follow/KivyMD?label=follow&logo=twitter&style=flat&color=brightgreen)](https://twitter.com/KivyMD)
-[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=2k)](https://www.youtube.com/c/KivyMD)
+[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=3k)](https://www.youtube.com/c/KivyMD)
 [![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
 [![StackOverflow](https://img.shields.io/static/v1?label=stackoverflow%20tag&logo=stackoverflow&logoColor=fe7a16&color=brightgreen&message=kivymd)](https://stackoverflow.com/tags/kivymd)
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/kivymd)
@@ -88,6 +88,15 @@ branch, you should specify link to zip archive:
 requirements = kivy==2.0.0, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
+---
+**NOTE**
+
+Until the release of the KivyMD library version 1.0.0 has been released, use
+```ini
+requirements = https://github.com/kivymd/KivyMD/archive/master.zip
+```
+---
+
 Do not forget to run `buildozer android clean` or remove `.buildozer` directory
 before building if version was updated (Buildozer doesn't update already
 downloaded packages).
@@ -148,14 +157,30 @@ You can download apks for your smartphone: [kivymd/storage (binaries branch)](ht
 
 [Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
 
+---
+**NOTE**
+
+Some of the code examples in the video tutorials may be out of date, so if you have a problem,
+check the code from the official documentation.
+
+---
+
 ### Comparison of Flutter & KivyMD
 
+| Sky View Concept | Healthy Food Delivery |
+:-------------------------:|:-------------------------:
+<a href="https://www.youtube.com/watch?v=xvi2D1c4mfQ"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-1.png" title="Click to watch it on YouTube"></a>  |  <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" title="Click to watch it on YouTube"></a>
+| Asics Shoes Concept | Facebook Desktop Redesign |
+<a href="https://www.youtube.com/watch?v=ehuXPgun0k0"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtue.png" title="Click to watch it on YouTube"></a>  |  <a href="https://www.youtube.com/watch?v=ZNBQib6Hk4s"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtue-3.png" title="Click to watch it on YouTube"></a>
+
+## Use MVC and Hot Reload
+
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM">
+  <a href="https://www.youtube.com/watch?v=JLBrgoSSeTU&t">
     <img 
-        width="600" 
-        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-youtube-2.png" 
-        title="Click to watch it on YouTube"
+        img width="600" 
+        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/hot-reload-preview-youtube.png" 
+        title='Click to watch video on YouTube'
     >
   </a>
 </p>
@@ -172,7 +197,7 @@ If you need assistance or you have a question, you can ask for help on our maili
 
 #### [Syntax highlighting and auto-completion for Kivy/KivyMD .kv files in PyCharm/Intellij IDEA](https://github.com/noembryo/KV4Jetbrains)
 
-## Video preview
+## Promo Video
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=crt8wA4Q5eU">
@@ -182,12 +207,6 @@ If you need assistance or you have a question, you can ask for help on our maili
         title='Click to watch video on YouTube'
     >
   </a>
-</p>
-
-## Image preview
-
-<p align="center">
-  <img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/previous.png">
 </p>
 
 ## Contributing
@@ -213,7 +232,7 @@ Format all files and run tests:
 
 ```bash
 pre-commit run --all-files
-pytest kivymd/tests --timeout=300 --cov=kivymd --cov-report=term
+pytest kivymd/tests --timeout=600 --cov=kivymd --cov-report=term
 ```
 
 pre-commit will format modified files with Black and sort imports with isort.

@@ -1,0 +1,714 @@
+"""
+Components/BottomNavigation
+===========================
+
+.. seealso::
+
+    `Material Design 2 spec, Bottom navigation <https://material.io/components/bottom-navigation>`_ and
+    `Material Design 3 spec, Bottom navigation <https://m3.material.io/components/navigation-bar/overview>`_
+
+.. rubric:: Bottom navigation bars allow movement between primary destinations in an app:
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation.png
+    :align: center
+
+Usage
+-----
+
+.. code-block:: kv
+
+    <Root>
+
+        MDBottomNavigation:
+
+            MDBottomNavigationItem:
+                name: "screen 1"
+
+                YourContent:
+
+            MDBottomNavigationItem:
+                name: "screen 2"
+
+                YourContent:
+
+            MDBottomNavigationItem:
+                name: "screen 3"
+
+                YourContent:
+
+For ease of understanding, this code works like this:
+
+.. code-block:: kv
+
+    <Root>
+
+        ScreenManager:
+
+            Screen:
+                name: "screen 1"
+
+                YourContent:
+
+            Screen:
+                name: "screen 2"
+
+                YourContent:
+
+            Screen:
+                name: "screen 3"
+
+                YourContent:
+
+Example
+-------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+
+    class Test(MDApp):
+
+        def build(self):
+            self.theme_cls.material_style = "M3"
+            return Builder.load_string(
+                '''
+    #:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
+    MDScreen:
+
+        MDBottomNavigation:
+            panel_color: get_color_from_hex("#eeeaea")
+            selected_color_background: get_color_from_hex("#97ecf8")
+            text_color_active: 0, 0, 0, 1
+
+            MDBottomNavigationItem:
+                name: 'screen 1'
+                text: 'Mail'
+                icon: 'gmail'
+                badge_icon: "numeric-10"
+
+                MDLabel:
+                    text: 'Mail'
+                    halign: 'center'
+
+            MDBottomNavigationItem:
+                name: 'screen 2'
+                text: 'Discord'
+                icon: 'discord'
+                badge_icon: "numeric-5"
+
+                MDLabel:
+                    text: 'Discord'
+                    halign: 'center'
+
+            MDBottomNavigationItem:
+                name: 'screen 3'
+                text: 'LinkedIN'
+                icon: 'linkedin'
+
+                MDLabel:
+                    text: 'LinkedIN'
+                    halign: 'center'
+    '''
+            )
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation.gif
+    :align: center
+
+.. rubric:: :class:`~MDBottomNavigationItem` provides the following events for use:
+
+.. code-block:: python
+
+    __events__ = (
+        "on_tab_touch_down",
+        "on_tab_touch_move",
+        "on_tab_touch_up",
+        "on_tab_press",
+        "on_tab_release",
+    )
+
+.. code-block:: kv
+
+    Root:
+
+        MDBottomNavigation:
+
+            MDBottomNavigationItem:
+                on_tab_touch_down: print("on_tab_touch_down")
+                on_tab_touch_move: print("on_tab_touch_move")
+                on_tab_touch_up: print("on_tab_touch_up")
+                on_tab_press: print("on_tab_press")
+                on_tab_release: print("on_tab_release")
+
+                YourContent:
+
+How to automatically switch a tab?
+----------------------------------
+
+Use method :attr:`~MDBottomNavigation.switch_tab` which takes as argument
+the name of the tab you want to switch to.
+"""
+
+__all__ = (
+    "TabbedPanelBase",
+    "MDBottomNavigationItem",
+    "MDBottomNavigation",
+    "MDTab",
+)
+
+import os
+from typing import NoReturn, Union
+
+from kivy.animation import Animation
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.core.window.window_sdl2 import WindowSDL
+from kivy.lang import Builder
+from kivy.metrics import dp, sp
+from kivy.properties import (
+    BooleanProperty,
+    ColorProperty,
+    ListProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
+)
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManagerException
+
+from kivymd import uix_path
+from kivymd.material_resources import STANDARD_INCREMENT
+from kivymd.theming import ThemableBehavior, ThemeManager
+from kivymd.uix.anchorlayout import MDAnchorLayout
+from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.behaviors.backgroundcolor_behavior import (
+    SpecificBackgroundColorBehavior,
+)
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.screen import MDScreen
+from kivymd.utils.set_bars_colors import set_bars_colors
+
+with open(
+    os.path.join(uix_path, "bottomnavigation", "bottomnavigation.kv"),
+    encoding="utf-8",
+) as kv_file:
+    Builder.load_string(kv_file.read())
+
+
+class MDBottomNavigationHeader(
+    ThemableBehavior, ButtonBehavior, MDAnchorLayout
+):
+    panel_color = ColorProperty([1, 1, 1, 0])
+    """
+    Panel color of bottom navigation.
+
+    :attr:`panel_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 0]`.
+    """
+
+    tab = ObjectProperty()
+    """
+    :attr:`tab` is an :class:`~MDBottomNavigationItem`
+    and defaults to `None`.
+    """
+
+    panel = ObjectProperty()
+    """
+    :attr:`panel` is an :class:`~MDBottomNavigation`
+    and defaults to `None`.
+    """
+
+    active = BooleanProperty(False)
+
+    text = StringProperty()
+    """
+    :attr:`text` is an :class:`~MDTab.text`
+    and defaults to `''`.
+    """
+
+    text_color_normal = ColorProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is not selected.
+
+    :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    text_color_active = ColorProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is selected.
+
+    :attr:`text_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    selected_color_background = ColorProperty(None)
+    """
+    The background color of the highlighted item when using Material Design v3.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`selected_color_background` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    opposite_colors = BooleanProperty(True)
+
+    _label = ObjectProperty()
+    _label_font_size = NumericProperty("12sp")
+    _text_color_normal = ColorProperty([1, 1, 1, 1])
+    _text_color_active = ColorProperty([1, 1, 1, 1])
+    _selected_region_width = NumericProperty(dp(64))
+
+    def __init__(self, panel, tab):
+        self.panel = panel
+        self.tab = tab
+        super().__init__()
+        self._text_color_normal = (
+            self.theme_cls.disabled_hint_text_color
+            if self.text_color_normal == [1, 1, 1, 1]
+            else self.text_color_normal
+        )
+        self._label = self.ids._label
+        self._label_font_size = sp(12)
+        self.theme_cls.bind(disabled_hint_text_color=self._update_theme_style)
+        self.active = False
+
+    def on_press(self) -> NoReturn:
+        """Called when clicking on a panel item."""
+
+        if self.theme_cls.material_style == "M2":
+            Animation(_label_font_size=sp(14), d=0.1).start(self)
+        elif self.theme_cls.material_style == "M3":
+            Animation(
+                _selected_region_width=dp(64),
+                t="in_out_sine",
+                d=0,
+            ).start(self)
+        Animation(
+            _text_color_normal=self.theme_cls.primary_color
+            if self.text_color_active == [1, 1, 1, 1]
+            else self.text_color_active,
+            d=0.1,
+        ).start(self)
+
+    def _update_theme_style(
+        self, instance_theme_manager: ThemeManager, color: list
+    ):
+        """Called when the application theme style changes (White/Black)."""
+
+        if not self.active:
+            self._text_color_normal = (
+                color
+                if self.text_color_normal == [1, 1, 1, 1]
+                else self.text_color_normal
+            )
+
+
+class MDTab(MDScreen, ThemableBehavior):
+    """
+    A tab is simply a screen with meta information that defines the content
+    that goes in the tab header.
+    """
+
+    __events__ = (
+        "on_tab_touch_down",
+        "on_tab_touch_move",
+        "on_tab_touch_up",
+        "on_tab_press",
+        "on_tab_release",
+    )
+    """Events provided."""
+
+    text = StringProperty()
+    """
+    Tab header text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    icon = StringProperty("checkbox-blank-circle")
+    """
+    Tab header icon.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'checkbox-blank-circle'`.
+    """
+
+    badge_icon = StringProperty("blank")
+    """
+    Tab header badge icon.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`badge_icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.index = 0
+        self.parent_widget = None
+        self.register_event_type("on_tab_touch_down")
+        self.register_event_type("on_tab_touch_move")
+        self.register_event_type("on_tab_touch_up")
+        self.register_event_type("on_tab_press")
+        self.register_event_type("on_tab_release")
+
+    def on_tab_touch_down(self, *args):
+        pass
+
+    def on_tab_touch_move(self, *args):
+        pass
+
+    def on_tab_touch_up(self, *args):
+        pass
+
+    def on_tab_press(self, *args):
+        par = self.parent_widget
+        if par.previous_tab is not self:
+            if par.previous_tab.index > self.index:
+                par.ids.tab_manager.transition.direction = "right"
+            elif par.previous_tab.index < self.index:
+                par.ids.tab_manager.transition.direction = "left"
+            par.ids.tab_manager.current = self.name
+            par.previous_tab = self
+
+    def on_tab_release(self, *args):
+        pass
+
+    def __repr__(self):
+        return f"<MDTab name='{self.name}', text='{self.text}'>"
+
+
+class MDBottomNavigationItem(MDTab):
+    header = ObjectProperty()
+    """
+    :attr:`header` is an :class:`~MDBottomNavigationHeader`
+    and defaults to `None`.
+    """
+
+    def on_tab_press(self, *args) -> NoReturn:
+        """Called when clicking on a panel item."""
+
+        bottom_navigation_object = self.parent_widget
+        bottom_navigation_header_object = (
+            bottom_navigation_object.previous_tab.header
+        )
+        bottom_navigation_object.ids.tab_manager.current = self.name
+
+        if bottom_navigation_object.previous_tab is not self:
+            if bottom_navigation_object.use_text:
+                Animation(_label_font_size=sp(12), d=0.1).start(
+                    bottom_navigation_object.previous_tab.header
+                )
+            Animation(
+                _selected_region_width=0,
+                t="in_out_sine",
+                d=0,
+            ).start(bottom_navigation_header_object)
+            Animation(
+                _text_color_normal=bottom_navigation_header_object.text_color_normal
+                if bottom_navigation_object.previous_tab.header.text_color_normal
+                != [1, 1, 1, 1]
+                else self.theme_cls.disabled_hint_text_color,
+                d=0.1,
+            ).start(bottom_navigation_object.previous_tab.header)
+            bottom_navigation_object.previous_tab.header.active = False
+            self.header.active = True
+        bottom_navigation_object.previous_tab = self
+
+    def on_leave(self, *args):
+        pass
+
+
+class TabbedPanelBase(
+    ThemableBehavior, SpecificBackgroundColorBehavior, BoxLayout
+):
+    """
+    A class that contains all variables a :class:`~kivy.properties.TabPannel`
+    must have. It is here so I (zingballyhoo) don't get mad about
+    the :class:`~kivy.properties.TabbedPannels` not being DRY.
+    """
+
+    current = StringProperty(None)
+    """
+    Current tab name.
+
+    :attr:`current` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `None`.
+    """
+
+    previous_tab = ObjectProperty()
+    """
+    :attr:`previous_tab` is an :class:`~MDTab` and defaults to `None`.
+    """
+
+    panel_color = ColorProperty(None)
+    """
+    Panel color of bottom navigation.
+
+    :attr:`panel_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[]`.
+    """
+
+    tabs = ListProperty()
+
+
+class MDBottomNavigation(TabbedPanelBase):
+    """
+    A bottom navigation that is implemented by delegating all items to a
+    :class:`~kivy.uix.screenmanager.ScreenManager`.
+
+    :Events:
+        :attr:`on_switch_tabs`
+            Called when switching tabs. Returns the object of the tab to be
+            opened.
+
+        .. versionadded:: 1.0.0
+    """
+
+    text_color_normal = ColorProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is not selected.
+
+    .. code-block:: kv_label_font_size
+
+        MDBottomNavigation:
+            text_color_normal: 1, 0, 1, 1
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-text_color_normal.png
+
+    :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    text_color_active = ColorProperty([1, 1, 1, 1])
+    """
+    Text color of the label when it is selected.
+
+    .. code-block:: kv
+
+        MDBottomNavigation:
+            text_color_active: 0, 0, 0, 1
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-text_color_active.png
+
+    :attr:`text_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    use_text = BooleanProperty(True)
+    """
+    Use text for :class:`~MDBottomNavigationItem` or not.
+    If ``True``, the :class:`~MDBottomNavigation` panel height will be reduced
+    by the text height.
+
+    .. versionadded:: 1.0.0
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-use-text.png
+        :align: center
+
+    :attr:`use_text` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
+    selected_color_background = ColorProperty(None)
+    """
+    The background color of the highlighted item when using Material Design v3.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDBottomNavigation:
+            elected_color_background: 0, 0, 1, .4
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation=selected-color-background.png
+
+    :attr:`selected_color_background` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    first_widget = ObjectProperty()
+    """
+    :attr:`first_widget` is an :class:`~MDBottomNavigationItem`
+    and defaults to `None`.
+    """
+
+    tab_header = ObjectProperty()
+    """
+    :attr:`tab_header` is an :class:`~MDBottomNavigationHeader`
+    and defaults to `None`.
+    """
+    # Text active color if it is selected.
+    _active_color = ColorProperty([1, 1, 1, 1])
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.register_event_type("on_switch_tabs")
+        self.previous_tab = None
+        self.widget_index = 0
+        self.theme_cls.bind(material_style=self.refresh_tabs)
+        Window.bind(on_resize=self.on_resize)
+        Clock.schedule_once(lambda x: self.on_resize())
+        Clock.schedule_once(self.set_status_bar_color)
+
+    def set_status_bar_color(self, interval: Union[int, float]) -> NoReturn:
+        set_bars_colors(self.panel_color, None, self.theme_cls.theme_style)
+
+    def switch_tab(self, name_tab) -> NoReturn:
+        """Switching the tab by name."""
+
+        if not self.ids.tab_manager.has_screen(name_tab):
+            raise ScreenManagerException(f"No Screen with name '{name_tab}'.")
+        self.ids.tab_manager.get_screen(name_tab).dispatch("on_tab_press")
+        count_index_screen = [
+            self.ids.tab_manager.screens.index(screen)
+            for screen in self.ids.tab_manager.screens
+            if screen.name == name_tab
+        ][0]
+        numbers_screens = list(range(len(self.ids.tab_manager.screens)))
+        numbers_screens.reverse()
+        self.ids.tab_bar.children[
+            numbers_screens.index(count_index_screen)
+        ].dispatch("on_press")
+
+    def refresh_tabs(self, *args) -> NoReturn:
+        """Refresh all tabs."""
+
+        if self.ids:
+            tab_bar = self.ids.tab_bar
+            tab_bar.clear_widgets()
+            tab_manager = self.ids.tab_manager
+            self._active_color = self.theme_cls.primary_color
+            if self.text_color_active != [1, 1, 1, 1]:
+                self._active_color = self.text_color_active
+            for tab in tab_manager.screens:
+                self.tab_header = MDBottomNavigationHeader(tab=tab, panel=self)
+                tab.header = self.tab_header
+                tab_bar.add_widget(self.tab_header)
+                if tab is self.first_widget:
+                    self.tab_header._text_color_normal = self._active_color
+                    self.tab_header._label_font_size = sp(14)
+                    self.tab_header.active = True
+                else:
+                    self.tab_header.ids._label.font_size = sp(12)
+                    self.tab_header._label_font_size = sp(12)
+
+    def on_selected_color_background(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        for tab in self.ids.tab_bar.children:
+            tab.selected_color_background = color
+
+    def on_use_text(
+        self, instance_bottom_navigation, use_text_value: bool
+    ) -> NoReturn:
+        if not use_text_value:
+            for instance_bottom_navigation_header in self.ids.tab_bar.children:
+                instance_bottom_navigation_header.ids.item_container.remove_widget(
+                    instance_bottom_navigation_header.ids._label
+                )
+            if self.theme_cls.material_style == "M2":
+                height = dp(42)
+            else:
+                height = dp(80)
+            self.height = height
+            self.ids.bottom_panel.height = height
+            self.ids.tab_bar.height = height
+        else:
+            if self.theme_cls.material_style == "M2":
+                height = STANDARD_INCREMENT
+            else:
+                height = dp(80)
+            self.height = height
+            self.ids.bottom_panel.height = height
+            self.ids.tab_bar.height = height
+
+    def on_text_color_normal(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        MDBottomNavigationHeader.text_color_normal = color
+        for tab in self.ids.tab_bar.children:
+            if not tab.active:
+                tab._text_color_normal = color
+
+    def on_text_color_active(
+        self, instance_bottom_navigation, color: list
+    ) -> NoReturn:
+        MDBottomNavigationHeader.text_color_active = color
+        self.text_color_active = color
+        for tab in self.ids.tab_bar.children:
+            tab.text_color_active = color
+            if tab.active:
+                tab._text_color_normal = color
+
+    def on_switch_tabs(self, bottom_navigation_item, name_tab: str) -> NoReturn:
+        """
+        Called when switching tabs. Returns the object of the tab to be opened.
+        """
+
+    def on_size(self, *args) -> NoReturn:
+        self.on_resize()
+
+    def on_resize(
+        self,
+        instance: Union[WindowSDL, None] = None,
+        width: Union[int, None] = None,
+        do_again: bool = True,
+    ) -> NoReturn:
+        """Called when the application window is resized."""
+
+        full_width = 0
+        for tab in self.ids.tab_manager.screens:
+            full_width += tab.header.width
+            tab.header.text_color_normal = self.text_color_normal
+        self.ids.tab_bar.width = full_width
+        if do_again:
+            Clock.schedule_once(lambda x: self.on_resize(do_again=False), 0.1)
+
+    def add_widget(self, widget, **kwargs):
+        if isinstance(widget, MDBottomNavigationItem):
+            self.widget_index += 1
+            widget.index = self.widget_index
+            widget.parent_widget = self
+            self.ids.tab_manager.add_widget(widget)
+            if self.widget_index == 1:
+                self.previous_tab = widget
+                self.first_widget = widget
+            self.refresh_tabs()
+        else:
+            super().add_widget(widget)
+
+    def remove_widget(self, widget):
+        if isinstance(widget, MDBottomNavigationItem):
+            self.ids.tab_manager.remove_widget(widget)
+            self.refresh_tabs()
+        else:
+            super().remove_widget(widget)
+
+    def _get_switchig_tab(self, name_tab: str) -> MDBottomNavigationItem:
+        bottom_navigation_item = None
+        for bottom_navigation_header_instance in self.ids.tab_bar.children:
+            if bottom_navigation_header_instance.tab.name == name_tab:
+                bottom_navigation_item = bottom_navigation_header_instance.tab
+                break
+        return bottom_navigation_item
+
+
+class MDBottomNavigationBar(
+    ThemableBehavior,
+    FakeRectangularElevationBehavior,
+    MDFloatLayout,
+):
+    pass

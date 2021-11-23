@@ -1,0 +1,278 @@
+#:import images_path kivymd.images_path
+
+
+<MDTextField>
+    canvas.before:
+        Clear
+
+        # "fill" mode.
+        Color:
+            rgba: self._fill_color if self.mode == "fill" else (0, 0, 0, 0)
+        RoundedRectangle:
+            pos: self.x, self.y
+            size: self.width, self.height
+            radius: self.radius
+
+        # Static underline texture.
+        Color:
+            rgba:
+                (self.line_color_normal \
+                if self.line_color_normal else self.theme_cls.divider_color) \
+                if self.mode == "line" else (0, 0, 0, 0)
+        Line:
+            points: self.x, self.y + dp(16), self.x + self.width, self.y + dp(16)
+            width: 1
+            dash_length: dp(3)
+            dash_offset: 2 if self.disabled else 0
+
+        # Active underline (on focus) texture.
+        Color:
+            rgba:
+                self.line_color_focus \
+                if self.mode in ("line", "fill") and self.active_line \
+                else (0, 0, 0, 0)
+        Rectangle:
+            size: self._underline_width, dp(1)
+            pos:
+                self.center_x - (self._underline_width / 2), \
+                self.y + (dp(16) if self.mode != "fill" else 0)
+
+        # Helper text texture.
+        Color:
+            rgba:
+                self._helper_text_color
+        Rectangle:
+            texture: self._helper_text_label.texture
+            size: self._helper_text_label.texture_size
+            pos:
+                self.x + (dp(16) if self.mode == "fill" else 0), \
+                self.y + (dp(-18) if self.mode in ("fill", "rectangle") else dp(-2))
+
+        # Right/left icon texture.
+        Color:
+            rgba: self._icon_right_color if self.icon_right else self._icon_left_color
+        Rectangle:
+            texture:
+                self._icon_right_label.texture if self.icon_right else self._icon_left_label.texture
+            size:
+                (0, 0) if (not self.icon_right and not self.icon_left) else \
+                (self._icon_right_label.texture_size if self.icon_right else self._icon_left_label.texture_size)
+            pos:
+                ( \
+                (self.width + self.x) - (self._icon_right_label.texture_size[1]) - dp(8), \
+                self.center[1] - self._icon_right_label.texture_size[1] / 2 + (dp(8) if self.mode != "fill" else 0) \
+                if self.mode != "rectangle" else \
+                self.center[1] - self._icon_right_label.texture_size[1] / 2 - dp(4) \
+                ) \
+                if self.icon_right else \
+                ( \
+                self.x + (dp(0) if self.mode != "fill" else (dp(4) if not self.icon_left else dp(16))), \
+                self.center[1] - self._icon_left_label.texture_size[1] / 2 + ((dp(4) if self.mode not in ("rectangle", "fill") else dp(8)) if self.mode != "fill" else 0) \
+                if self.mode != "rectangle" else \
+                self.center[1] - self._icon_left_label.texture_size[1] / 2 - dp(4) \
+                )
+
+        # Max length texture.
+        Color:
+            rgba: self._max_length_text_color
+        Rectangle:
+            texture: self._max_length_label.texture
+            size: self._max_length_label.texture_size
+            pos:
+                self.x + self.width - self._max_length_label.texture_size[0] - dp(12), \
+                self.y - (dp(2) if self.mode == "line" else dp(18))
+
+        # Cursor blink.
+        Color:
+            rgba:
+                self.line_color_focus \
+                if self.focus and not self._cursor_blink \
+                else (0, 0, 0, 0)
+        Rectangle:
+            pos: (int(x) for x in self.cursor_pos)
+            size: 1, -self.line_height
+
+        # Hint text texture.
+        Color:
+            rgba:
+                self._hint_text_color
+        Rectangle:
+            texture: self._hint_text_label.texture
+            size: self._hint_text_label.texture_size
+            pos:
+                ( \
+                self.x + ((dp(16) if not self.icon_left else dp(52)) \
+                if self.mode == "fill" else (0 if not self.icon_left else \
+                dp(36))) if not self.focus and not self.text else \
+                self.x + (dp(16) if self.mode in ("fill", "rectangle") and \
+                self.icon_left else 0) + self._hint_x
+                ), \
+                self.y + self.height + ((dp(4) if self.mode != "line" else dp(-6)) if self.mode != "rectangle" else dp(-4)) - self._hint_y
+
+        # "rectangle" mode
+        Color:
+            rgba: self.line_color_focus if self.focus else self.line_color_normal
+        Line:
+            width: dp(1) if self.mode == "rectangle" else dp(0.00001)
+            points:
+                (
+                self.x + self._line_blank_space_right_point, self.top - self._hint_text_label.texture_size[1] // 2,
+                self.right + dp(12), self.top - self._hint_text_label.texture_size[1] // 2,
+                self.right + dp(12), self.y,
+                self.x - dp(12), self.y,
+                self.x - dp(12), self.top - self._hint_text_label.texture_size[1] // 2,
+                self.x + self._line_blank_space_left_point, self.top - self._hint_text_label.texture_size[1] // 2
+                )
+
+        # Text color.
+        Color:
+            rgba:
+                self.disabled_foreground_color if self.disabled else \
+                ( \
+                self.text_color_focus if self.focus else self._text_color_normal
+                ) \
+                if not self.error else self.error_color
+
+    font_name: "Roboto" if not self.font_name else self.font_name
+    foreground_color: self.theme_cls.text_color
+    bold: False
+    padding:
+        (0 if not self.icon_left else "36dp") if self.mode != "fill" else ("16dp" if not self.icon_left else "52dp"), \
+        "24dp" , \
+        0 if self.mode != "fill" and not self.icon_right else ("14dp" if not self.icon_right else self._icon_right_label.texture_size[1] + dp(20)), \
+        "8dp" if self.mode == "fill" else ("22dp" if self.icon_left and self.mode != "rectangle" else ("16dp" if self.mode in ("fill", "rectangle") else "20dp"))
+    multiline: False
+    size_hint_y: None
+    height: self.minimum_height
+
+
+<TextfieldLabel>
+    size_hint_x: None
+    width: self.texture_size[0]
+    shorten: True
+    shorten_from: "right"
+
+
+<MDTextFieldRect>
+    on_focus:
+        self.anim_rect((self.x, self.y, self.right, self.y, self.right, \
+        self.top, self.x, self.top, self.x, self.y), 1) if self.focus \
+        else self.anim_rect((self.x - dp(60), self.y - dp(60), \
+        self.right + dp(60), self.y - dp(60),
+        self.right + dp(60), self.top + dp(60), \
+        self.x - dp(60), self.top + dp(60), \
+        self.x - dp(60), self.y - dp(60)), 0)
+
+    canvas.after:
+        Color:
+            group: "color"
+            rgba: self._primary_color
+        Line:
+            group: "rectangle"
+            width: dp(1.5)
+            points:
+                (
+                self.x - dp(60), self.y - dp(60),
+                self.right + dp(60), self.y - dp(60),
+                self.right + dp(60), self.top + dp(60),
+                self.x - dp(60), self.top + dp(60),
+                self.x - dp(60), self.y - dp(60)
+                )
+
+
+<MDTextFieldRound>:
+    multiline: False
+    size_hint: 1, None
+    height: self.line_height + dp(10)
+    background_active: f'{images_path}transparent.png'
+    background_normal: f'{images_path}transparent.png'
+    hint_text_color: self.theme_cls.disabled_hint_text_color
+    padding:
+        self._lbl_icon_left.texture_size[1] + dp(10) if self.icon_left else dp(15), \
+        (self.height / 2) - (self.line_height / 2), \
+        self._lbl_icon_right.texture_size[1] + dp(20) if self.icon_right else dp(15), \
+        0
+
+    canvas.before:
+        Color:
+            rgba: self.normal_color if not self.focus else self._color_active
+        Ellipse:
+            angle_start: 180
+            angle_end: 360
+            pos: self.pos[0] - self.size[1] / 2, self.pos[1]
+            size: self.size[1], self.size[1]
+        Ellipse:
+            angle_start: 360
+            angle_end: 540
+            pos: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1]
+            size: self.size[1], self.size[1]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+        # Texture of left Icon.
+        Color:
+            rgba:
+                self.icon_left_color \
+                if self.focus else self.theme_cls.disabled_hint_text_color
+        Rectangle:
+            texture: self._lbl_icon_left.texture
+            size:
+                self._lbl_icon_left.texture_size if self.icon_left \
+                else (0, 0)
+            pos:
+                self.x, \
+                self.center[1] - self._lbl_icon_right.texture_size[1] / 2
+
+        # Texture of right Icon.
+        Color:
+            rgba:
+                self.icon_right_color \
+                if self.focus else self.theme_cls.disabled_hint_text_color
+        Rectangle:
+            texture: self._lbl_icon_right.texture
+            size:
+                self._lbl_icon_right.texture_size if self.icon_right \
+                else (0, 0)
+            pos:
+                (self.width + self.x) - (self._lbl_icon_right.texture_size[1]), \
+                self.center[1] - self._lbl_icon_right.texture_size[1] / 2
+
+        Color:
+            rgba:
+                self.hint_text_color if not self.text else self.foreground_color
+
+    canvas.after:
+        Color:
+            rgba:
+                self.line_color \
+                if self.focus \
+                else self.theme_cls.disabled_hint_text_color
+        Line:
+            points:
+                self.pos[0], \
+                self.pos[1], \
+                self.pos[0] + self.size[0], \
+                self.pos[1]
+        Line:
+            points:
+                self.pos[0], \
+                self.pos[1] + self.size[1], \
+                self.pos[0] + self.size[0], \
+                self.pos[1] + self.size[1]
+        Line:
+            ellipse:
+                self.pos[0] - self.size[1] / 2, \
+                self.pos[1], \
+                self.size[1], \
+                self.size[1], \
+                180, \
+                360
+        Line:
+            ellipse:
+                self.size[0] + self.pos[0] - self.size[1] / 2.0, \
+                self.pos[1], \
+                self.size[1], \
+                self.size[1], \
+                360, \
+                540

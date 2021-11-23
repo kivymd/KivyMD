@@ -1,0 +1,116 @@
+#:import images_path kivymd.images_path
+#:import Thumb kivymd.uix.selectioncontrol.Thumb
+
+
+<HintBoxContainer@MDCard+FakeRectangularElevationBehavior>
+
+
+<MDSlider>
+    canvas:
+        Clear
+        Color:
+            rgba:
+                self._track_color_disabled if self.disabled \
+                else (self._track_color_active if self.active \
+                else self._track_color_normal)
+        Rectangle:
+            size:
+                (self.width - self.padding * 2 - self._offset[0], dp(4)) if \
+                self.orientation == "horizontal" \
+                else (dp(4),self.height - self.padding*2 - self._offset[1])
+            pos:
+                (self.x + self.padding + self._offset[0], self.center_y - dp(4)) \
+                if self.orientation == "horizontal" else \
+                (self.center_x - dp(4), self.y + self.padding + self._offset[1])
+
+        # If 0 draw circle
+        Color:
+            rgba:
+                (0, 0, 0, 0) if not self._is_off \
+                else (self._track_color_disabled if self.disabled \
+                else (self._track_color_active \
+                if self.active else self._track_color_normal))
+        Line:
+            width: 2
+            circle:
+                (self.x + self.padding + dp(3), self.center_y - dp(2), 8 \
+                if self.active else 6 ) if self.orientation == "horizontal" \
+                else (self.center_x - dp(2), self.y + self.padding + dp(3), 8 \
+                if self.active else 6)
+
+        Color:
+            rgba:
+                (0, 0, 0, 0) if self._is_off \
+                else (self.color if not self.disabled \
+                else self._track_color_disabled)
+        Rectangle:
+            size:
+                ((self.width - self.padding * 2) * self.value_normalized, sp(4)) \
+                if root.orientation == "horizontal" \
+                else \
+                (sp(4), (self.height - self.padding * 2) * self.value_normalized)
+            pos:
+                (self.x + self.padding, self.center_y - dp(4)) \
+                if self.orientation == "horizontal" \
+                else (self.center_x - dp(4), self.y + self.padding)
+
+    Thumb:
+        id: thumb
+        size_hint: None, None
+        size:
+            (dp(12), dp(12)) \
+            if root.disabled \
+            else \
+            ((dp(24), dp(24)) \
+            if root.active \
+            else \
+            (dp(16), dp(16)))
+        pos:
+            (root.value_pos[0] - dp(8), root.center_y - thumb.height / 2 - dp(2)) \
+            if root.orientation == "horizontal" \
+            else (root.center_x - thumb.width / 2 - dp(2), \
+            root.value_pos[1] - dp(8))
+        color:
+            (0, 0, 0, 0) if root._is_off else (root._track_color_disabled \
+            if root.disabled else root.color)
+        elevation: 0 if root._is_off else (4 if root.active else 2)
+
+    HintBoxContainer:
+        id: hint_box
+        size_hint: None, None
+        md_bg_color: root.hint_bg_color
+        elevation: 0
+        opacity: 1 if root.active else 0
+        radius: root.hint_radius
+        padding: "6dp", "6dp", "6dp", "8dp"
+        size:
+            lbl_value.width + self.padding[0] * 2, \
+            lbl_value.height + self.padding[0]
+        pos:
+            (root.value_pos[0] - dp(9), root.center_y - hint_box.height / 2 + dp(30)) \
+            if root.orientation == "horizontal" \
+            else \
+            (root.center_x - hint_box.width / 2 + dp(30), root.value_pos[1] - dp(8))
+
+        MDLabel:
+            id: lbl_value
+            font_style: "Caption"
+            halign: "center"
+            theme_text_color: "Custom"
+            -text_size: None, None
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y": .5}
+            text_color:
+                ( \
+                root.color \
+                if root.active \
+                else (0, 0, 0, 0) \
+                ) \
+                if not root.hint_text_color \
+                else \
+                root.hint_text_color
+            text:
+                str(root.value) \
+                if isinstance(root.step, float) \
+                else \
+                str(int(root.value))

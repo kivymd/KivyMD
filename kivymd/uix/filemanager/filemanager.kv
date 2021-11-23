@@ -1,0 +1,119 @@
+#:import os os
+
+<BodyManager>
+    icon: "folder"
+    path: ""
+    background_normal: ""
+    background_down: ""
+    dir_or_file_name: ""
+    _selected: False
+    events_callback: lambda x: None
+    orientation: "vertical"
+
+    ModifiedOneLineIconListItem:
+        text: root.dir_or_file_name
+        bg_color:
+            self.theme_cls.bg_darkest \
+            if root._selected else self.theme_cls.bg_normal
+        on_release: root.events_callback(root.path, root)
+
+        IconLeftWidget:
+            icon: root.icon
+            theme_text_color: "Custom"
+            text_color: self.theme_cls.primary_color
+
+    MDSeparator:
+
+
+<LabelContent@MDLabel>
+    size_hint_y: None
+    height: self.texture_size[1]
+    shorten: True
+    shorten_from: "center"
+    halign: "center"
+    text_size: self.width, None
+
+
+<BodyManagerWithPreview>
+    name: ""
+    path: ""
+    realpath: ""
+    type: "folder"
+    events_callback: lambda x: None
+    _selected: False
+    orientation: "vertical"
+    size_hint_y: None
+    hright: root.height
+    padding: dp(20)
+
+    IconButton:
+        mipmap: True
+        source: root.path
+        bg_color:
+            app.theme_cls.bg_darkest \
+            if root._selected else app.theme_cls.bg_normal
+        on_release:
+            root.events_callback( \
+            os.path.join(root.path if root.type != "folder" \
+            else root.realpath, root.name), root)
+
+    LabelContent:
+        text: root.name
+
+
+<FloatButton>
+    anchor_x: "right"
+    anchor_y: "bottom"
+    size_hint_y: None
+    height: dp(56)
+    padding: dp(10)
+
+    MDFloatingActionButton:
+        size_hint: None, None
+        size:dp(56), dp(56)
+        icon: root.icon
+        opposite_colors: True
+        elevation: 8
+        on_release: root.callback()
+        md_bg_color: root.md_bg_color
+
+
+<MDFileManager>
+    md_bg_color: root.theme_cls.bg_normal
+
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(5)
+
+        MDToolbar:
+            id: toolbar
+            title: root.current_path
+            right_action_items: [["close-box", lambda x: root.exit_manager(1)]]
+            left_action_items: [["chevron-left", lambda x: root.back()]]
+            elevation: 10
+
+        RecycleView:
+            id: rv
+            key_viewclass: "viewclass"
+            key_size: "height"
+            bar_width: dp(4)
+            bar_color: root.theme_cls.primary_color
+
+            RecycleGridLayout:
+                padding: "10dp"
+                spacing: "2dp"
+                cols: 3 if root.preview else 1
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+
+
+<ModifiedOneLineIconListItem>
+
+    BoxLayout:
+        id: _left_container
+        size_hint: None, None
+        x: root.x + dp(16)
+        y: root.y + root.height / 2 - self.height / 2
+        size: dp(48), dp(48)

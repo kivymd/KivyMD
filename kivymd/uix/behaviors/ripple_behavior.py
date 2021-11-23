@@ -22,7 +22,7 @@ For example, let's create an image button with a circular ripple effect:
     #:import images_path kivymd.images_path
 
 
-    Screen:
+    MDScreen:
 
         CircularRippleButton:
             source: f"{images_path}/kivymd.png"
@@ -61,7 +61,7 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
     from kivymd.uix.behaviors import RectangularRippleBehavior, BackgroundColorBehavior
 
     KV = '''
-    Screen:
+    MDScreen:
 
         RectangularRippleButton:
             size_hint: None, None
@@ -111,6 +111,7 @@ from kivy.properties import (
     NumericProperty,
     StringProperty,
 )
+from kivy.uix.behaviors import ToggleButtonBehavior
 
 
 class CommonRipple(object):
@@ -252,37 +253,51 @@ class CommonRipple(object):
         self.canvas.after.remove_group("rectangular_ripple_behavior")
 
     def on_touch_down(self, touch):
+        # FIXME: in fact, the output of the super method is extra.
+        #  But without this, the list (`ScrollView`) placed in the `MDCard`
+        #  widget will not scroll.
         super().on_touch_down(touch)
         if touch.is_mouse_scrolling:
             return False
         if not self.collide_point(touch.x, touch.y):
             return False
-
         if not self.disabled:
-            if self._doing_ripple:
-                Animation.cancel_all(
-                    self, "_ripple_rad", "ripple_color", "rect_color"
-                )
-                self.anim_complete()
-            self._ripple_rad = self.ripple_rad_default
-            self.ripple_pos = (touch.x, touch.y)
-
-            if self.ripple_color:
-                pass
-            elif hasattr(self, "theme_cls"):
-                self.ripple_color = self.theme_cls.ripple_color
+            self.call_ripple_animation_methods(touch)
+            # FIXME: this check is needed for the `MDTabsLabel` object.
+            #  With the normal `return True`, events for tabs from the `MDTabs`
+            #  class are not processed.
+            #  There may be problems with other widgets.
+            #  Status: requires check.
+            if isinstance(self, ToggleButtonBehavior):
+                return super().on_touch_down(touch)
             else:
-                # If no theme, set Gray 300.
-                self.ripple_color = [
-                    0.8784313725490196,
-                    0.8784313725490196,
-                    0.8784313725490196,
-                    self.ripple_alpha,
-                ]
-            self.ripple_color[3] = self.ripple_alpha
-            self.lay_canvas_instructions()
-            self.finish_rad = max(self.width, self.height) * self.ripple_scale
-            self.start_ripple()
+                return True
+
+    def call_ripple_animation_methods(self, touch):
+        if self._doing_ripple:
+            Animation.cancel_all(
+                self, "_ripple_rad", "ripple_color", "rect_color"
+            )
+            self.anim_complete()
+        self._ripple_rad = self.ripple_rad_default
+        self.ripple_pos = (touch.x, touch.y)
+
+        if self.ripple_color:
+            pass
+        elif hasattr(self, "theme_cls"):
+            self.ripple_color = self.theme_cls.ripple_color
+        else:
+            # If no theme, set Gray 300.
+            self.ripple_color = [
+                0.8784313725490196,
+                0.8784313725490196,
+                0.8784313725490196,
+                self.ripple_alpha,
+            ]
+        self.ripple_color[3] = self.ripple_alpha
+        self.lay_canvas_instructions()
+        self.finish_rad = max(self.width, self.height) * self.ripple_scale
+        self.start_ripple()
 
     def on_touch_move(self, touch, *args):
         if not self.collide_point(touch.x, touch.y):
@@ -320,6 +335,10 @@ class RectangularRippleBehavior(CommonRipple):
             return
         with self.canvas.after:
             if hasattr(self, "radius"):
+                if isinstance(self.radius, (float, int)):
+                    self.radius = [
+                        self.radius,
+                    ]
                 self._round_rad = self.radius
             StencilPush(group="rectangular_ripple_behavior")
             RoundedRectangle(

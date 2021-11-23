@@ -1,0 +1,17 @@
+<SelectionIconCheck>
+    theme_text_color: "Custom"
+    text_color: self.icon_check_color
+
+    canvas.before:
+        PushMatrix
+        Scale:
+            x: root.scale
+            y: root.scale
+            z: root.scale
+            origin: self.center
+    canvas.after:
+        PopMatrix
+
+
+<SelectionItem>
+    md_bg_color: root.overlay_color if root.selected else (0, 0, 0, 0)

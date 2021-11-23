@@ -1,0 +1,124 @@
+#:import DampedScrollEffect kivy.effects.dampedscroll.DampedScrollEffect
+
+
+<MDTabsLabel>
+    _set_start_tab: False
+    size_hint: None, 1
+    halign: "center"
+    valign: "center"
+    group: "tabs"
+    font: root.font_name
+    allow_no_selection: False
+    markup: True
+    on_width:
+        if not self._set_start_tab: \
+        self.tab_bar.parent._update_indicator( \
+        self.tab_bar.parent.carousel.current_slide.tab_label); \
+        self._set_start_tab = True
+    on_tab_bar:
+        self.text_size = (None, None) \
+        if self.tab_bar.parent.allow_stretch else (self.width, None)
+    on_ref_press:
+        self.tab_bar.parent.dispatch( \
+        "on_ref_press",
+        self, \
+        self.tab, \
+        self.tab_bar, \
+        self.tab_bar.parent.carousel)
+    color:
+        ( \
+        self.text_color_active \
+        if self.text_color_active else self.specific_secondary_text_color \
+        ) \
+        if self.state == "down" else \
+        ( \
+        self.text_color_normal \
+        if self.text_color_normal else self.theme_cls.text_color \
+        )
+
+
+<MDTabsScrollView>
+    size_hint: 1, 1
+    do_scroll_y: False
+    bar_color: 0, 0, 0, 0
+    bar_inactive_color: 0, 0, 0, 0
+    bar_width: 0
+    effect_cls: DampedScrollEffect
+
+
+<MDTabs>
+    carousel: carousel
+    tab_bar: tab_bar
+    anchor_y: "top"
+    background_palette: "Primary"
+
+    _line_x: 0
+    _line_width: 0
+    _line_height: 0
+    _line_radius: 0
+
+    on_size:
+        root._update_padding(layout)
+
+    MDTabsMain:
+        padding: 0, tab_bar.height, 0, 0
+
+        MDTabsCarousel:
+            id: carousel
+            lock_swiping: root.lock_swiping
+            ignore_perpendicular_swipes: True
+            anim_move_duration: root.anim_duration
+            on_index: root.on_carousel_index(*args)
+            on__offset: tab_bar.android_animation(*args)
+
+    MDTabsBar:
+        id: tab_bar
+        padding: root.tab_padding
+        carousel: carousel
+        scrollview: scrollview
+        layout: layout
+        size_hint: 1, None
+        elevation: root.elevation
+        height: root.tab_bar_height
+        md_bg_color:
+            self.theme_cls.primary_color \
+            if not root.background_color else \
+            root.background_color
+
+        MDTabsScrollView:
+            id: scrollview
+            do_scroll_x: False if layout.width <= self.width else True
+
+            MDGridLayout:
+                id: layout
+                rows: 1
+                size_hint_y: 1
+                adaptive_width: True
+                on_size: root._update_padding(layout)
+
+                canvas.before:
+                    Color:
+                        rgba: root.underline_color
+                    Line:
+                        width: dp(2)
+                        rectangle: [0, 0, layout.width, dp(2)]
+                    Color:
+                        rgba:
+                            root.theme_cls.accent_color \
+                            if not root.indicator_color else \
+                            root.indicator_color
+                    RoundedRectangle:
+                        group: "Indicator_line"
+                        pos: self.pos
+                        size: 0, root.tab_indicator_height
+                        radius: [0,]
+                    Line:
+                        width: dp(2)
+                        rounded_rectangle:
+                            [ \
+                            root._line_x, \
+                            self.pos[1], \
+                            root._line_width, \
+                            root._line_height, \
+                            root._line_radius \
+                            ]

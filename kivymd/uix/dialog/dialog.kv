@@ -1,0 +1,87 @@
+#:import images_path kivymd.images_path
+
+
+<BaseDialog>
+    background: '{}/transparent.png'.format(images_path)
+
+    canvas.before:
+        PushMatrix
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+        Scale:
+            origin: self.center
+            x: root._scale_x
+            y: root._scale_y
+    canvas.after:
+        PopMatrix
+
+
+<DialogContainer@MDCard+FakeRectangularElevationBehavior>
+
+
+<MDDialog>
+
+    DialogContainer:
+        id: container
+        orientation: "vertical"
+        size_hint_y: None
+        height: self.minimum_height
+        elevation: 24
+        padding: "24dp", "24dp", "8dp", "8dp"
+        radius: root.radius
+        md_bg_color:
+            root.theme_cls.bg_dark \
+            if not root.md_bg_color else root.md_bg_color
+
+        MDLabel:
+            id: title
+            text: root.title
+            font_style: "H6"
+            bold: True
+            markup: True
+            size_hint_y: None
+            height: self.texture_size[1]
+            valign: "top"
+
+        BoxLayout:
+            id: spacer_top_box
+            size_hint_y: None
+            height: root._spacer_top
+
+        MDLabel:
+            id: text
+            text: root.text
+            font_style: "Body1"
+            theme_text_color: "Custom"
+            text_color: root.theme_cls.disabled_hint_text_color
+            size_hint_y: None
+            height: self.texture_size[1]
+            markup: True
+
+        ScrollView:
+            id: scroll
+            size_hint_y: None
+            height: root._scroll_height
+
+            MDGridLayout:
+                id: box_items
+                adaptive_height: True
+                cols: 1
+
+        BoxLayout:
+            id: spacer_bottom_box
+            size_hint_y: None
+            height: self.minimum_height
+
+        AnchorLayout:
+            id: root_button_box
+            size_hint_y: None
+            height: "52dp"
+            anchor_x: "right"
+
+            MDBoxLayout:
+                id: button_box
+                adaptive_size: True
+                spacing: "8dp"

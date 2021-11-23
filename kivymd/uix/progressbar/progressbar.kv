@@ -1,0 +1,32 @@
+<MDProgressBar>
+    canvas:
+        Clear
+        Color:
+            rgba:
+                self.theme_cls.divider_color \
+                if not self.back_color \
+                else self.back_color
+        Rectangle:
+            size:
+                (self.width, self.height) \
+                if self.orientation == "horizontal" \
+                else (self.width, self.height)
+            pos:
+                (self.x, self.center_y - self.height / 2) \
+                if self.orientation == "horizontal" \
+                else (self.center_x - self.width / 2, self.y)
+        Color:
+            rgba:
+                self.theme_cls.primary_color if not self.color else self.color
+        Rectangle:
+            size:
+                (self.width * self.value_normalized, self.height) \
+                if self.orientation == "horizontal" \
+                else (self.width, self.height * self.value_normalized)
+            pos:
+                (self.width * (1 - self.value_normalized) + self.x \
+                if self.reversed else self.x + self._x, self.center_y - self.height / 2) \
+                if self.orientation == "horizontal" \
+                else (self.center_x - self.width / 2, self.height \
+                * (1 - self.value_normalized) + self.y if self.reversed \
+                else self.y)

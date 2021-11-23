@@ -1,0 +1,60 @@
+<SmartTile>
+    _img_widget: img
+    _img_overlay: img_overlay
+    _box_overlay: box
+
+    FitImage:
+        id: img
+        source: root.source
+        x: root.x
+        y: root.y if root.overlap or root.box_position == 'header' else box.top
+
+    BoxLayout:
+        id: img_overlay
+        size_hint: img.size_hint
+        size: img.size
+        pos: img.pos
+
+    MDBoxLayout:
+        id: box
+        md_bg_color: root.box_color
+        size_hint_y: None
+        height: "68dp" if root.lines == 2 else "48dp"
+        x: root.x
+        y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
+
+
+<SmartTileWithLabel>
+    _img_widget: img
+    _img_overlay: img_overlay
+    _box_overlay: box
+    _box_label: boxlabel
+
+    FitImage:
+        id: img
+        source: root.source
+        x: root.x
+        y: root.y if root.overlap or root.box_position == 'header' else box.top
+
+    BoxLayout:
+        id: img_overlay
+        size_hint: img.size_hint
+        size: img.size
+        pos: img.pos
+
+    MDBoxLayout:
+        id: box
+        padding: "5dp", 0, 0, 0
+        md_bg_color: root.box_color
+        adaptive_height: True
+        x: root.x
+        y: root.y if root.box_position == 'footer' else root.y + root.height - self.height
+
+        MDLabel:
+            id: boxlabel
+            font_style: root.font_style
+            size_hint_y: None
+            height: self.texture_size[1]
+            text: root.text
+            color: root.tile_text_color
+            markup: True

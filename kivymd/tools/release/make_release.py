@@ -27,7 +27,7 @@ import re
 import subprocess
 import sys
 
-from kivymd.tools.release.argument_parser import ArgumentParserWithHelp
+from kivymd.tools.argument_parser import ArgumentParserWithHelp
 from kivymd.tools.release.git_commands import (
     command,
     get_previous_version,

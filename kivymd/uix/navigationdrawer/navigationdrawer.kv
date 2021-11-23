@@ -1,0 +1,134 @@
+#:import Window kivy.core.window.Window
+#:import m_res kivymd.material_resources
+
+
+<MDNavigationDrawer>:
+    size_hint_x: None
+    width: Window.width - dp(56) if Window.width <= dp(376) else dp(320)
+    md_bg_color: self.theme_cls.bg_light
+    padding:
+    x:
+        (self.width * (self.open_progress - 1)) \
+        if self.anchor == "left" \
+        else (Window.width - self.width * self.open_progress)
+
+    canvas:
+        Clear
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: root.background
+            radius: root.radius
+
+
+<MDNavigationDrawerLabel>
+    adaptive_height: True
+
+    MDLabel:
+        text: root.text
+        adaptive_size: True
+        markup: True
+
+
+<MDNavigationDrawerDivider>
+    adaptive_height: True
+
+    MDSeparator:
+        color: root.color if root.color else app.theme_cls.divider_color
+
+
+<MDNavigationDrawerHeader>
+    adaptive_height: True
+
+    FitImage:
+        id: logo
+        source: root.source
+        size_hint: None, None
+        size: label_box.height, label_box.height
+
+    MDBoxLayout:
+        id: label_box
+        orientation: "vertical"
+        adaptive_height: True
+
+        MDLabel:
+            id: title
+            adaptive_height: True
+            halign: root.title_halign
+            text: root.title
+            font_style: root.title_font_style
+            font_size: root.title_font_size
+            color:
+                root.title_color \
+                if root.title_color else \
+                app.theme_cls.text_color
+
+        MDLabel:
+            id: text
+            adaptive_height: True
+            text: root.text
+            halign: root.text_halign
+            font_style: root.text_font_style
+            font_size: root.text_font_size
+            color:
+                root.text_color \
+                if root.text_color else \
+                app.theme_cls.text_color
+
+
+<MDNavigationDrawerItem>
+    radius: self.height / 2 if self.radius == [0, 0, 0, 0] else self.radius
+    divider: None
+    theme_text_color: "Custom"
+    text_color: self.text_color if not self.selected else self.selected_color
+    _txt_left_pad: "56dp"
+    on_size:
+        self.ids._left_container.x = "4dp"
+        self.ids._right_container.width = right_label.texture_size[0]
+    on_release:
+        self._text_color = self.text_color
+        self._text_right_color = root.text_right_color if root.text_right_color else app.theme_cls.text_color
+        self._drawer_menu.reset_active_color(self)
+
+    IconLeftWidgetWithoutTouch:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color:
+            ( \
+            app.theme_cls.text_color \
+            if not root.icon_color else \
+            root.icon_color \
+            ) \
+            if not root.selected else \
+            root.selected_color
+
+    MDLabel:
+        id: right_label
+        text: root.right_text
+        pos_hint: {"center_y": .5}
+        adaptive_size: True
+        markup: True
+        color:
+            ( \
+            root.text_right_color \
+            if root.text_right_color else \
+            app.theme_cls.text_color \
+            ) \
+            if not root.selected else \
+            root.selected_color
+        x:
+            root.x \
+            + root.width \
+            - m_res.HORIZ_MARGINS \
+            - root.ids._right_container.width - dp(24) \
+            - self.texture_size[0] \
+            + dp(24)
+
+
+<MDNavigationDrawerMenu>
+
+    MDList:
+        id: menu
+        spacing: root.spacing

@@ -1,0 +1,61 @@
+#:import md_icons kivymd.icon_definitions.md_icons
+
+
+<MDLabel>
+    disabled_color: self.theme_cls.disabled_hint_text_color
+    # FIXME: Overriding the values of this property greatly affects application
+    #  performance. Especially when the application window is resized and a
+    #  custom font is used. Performance is especially slow when you are using
+    # `PIL` as your text processing provider - os.environ ['KIVY_TEXT'] = 'pil'.
+    #  Priority - CRITICAL.
+    text_size: self.width, None
+
+
+<MDIcon>:
+    canvas:
+        Color:
+            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
+        Rectangle:
+            source: self.source if self.source else None
+            pos: self.pos
+            size: self.size
+
+    font_style: "Icon"
+    text: u"{}".format(md_icons[root.icon]) if root.icon in md_icons else "blank"
+    source: None if root.icon in md_icons else root.icon
+
+    # Badge icon.
+    MDLabel:
+        font_style: "Icon"
+        adaptive_size: True
+        opposite_icon_color: True
+        color: root.badge_icon_color
+        text:
+            u"{}".format(md_icons[root.badge_icon]) \
+            if root.badge_icon in md_icons else \
+            ""
+        pos:
+            root.x + root.width / 2 + self.width / 2 - dp(6), \
+            root.y + self.texture_size[1] / 2 + dp(6)
+        font_size:
+            ( \
+            root.font_size / 1.5 \
+            if not root.badge_font_size else \
+            root.badge_font_size \
+            ) \
+            if root.badge_icon and root.badge_icon != "blank" else 0
+
+        canvas.before:
+            Color:
+                rgba:
+                    ( \
+                    root.badge_bg_color \
+                    if root.badge_bg_color else \
+                    app.theme_cls.error_color \
+                    ) \
+                    if root.badge_icon else \
+                    (0, 0, 0, 0)
+            RoundedRectangle:
+                radius: [self.width / 2,]
+                pos: self.pos
+                size: self.size

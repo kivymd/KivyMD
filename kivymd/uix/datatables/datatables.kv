@@ -1,0 +1,229 @@
+#:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
+#:import FakeRectangularElevationBehavior kivymd.uix.behaviors.FakeRectangularElevationBehavior
+
+
+<CellRow>
+    orientation: "vertical"
+    md_bg_color:
+        ( \
+        ( \
+        root.theme_cls.bg_darkest \
+        if root.theme_cls.theme_style == "Light" else \
+        root.theme_cls.bg_light \
+        ) \
+        if not root.background_color_selected_cell \
+        else root.background_color_selected_cell \
+        ) \
+        if self.selected \
+        else \
+        ( \
+        root.theme_cls.bg_normal \
+        if not root.background_color_cell \
+        else root.background_color_cell \
+        )
+    on_press: if DEVICE_TYPE != "desktop": root.table.on_mouse_select(self)
+    on_enter: if DEVICE_TYPE == "desktop": root.table.on_mouse_select(self)
+
+    MDBoxLayout:
+        id: box
+        padding: "8dp", "8dp", 0, "8dp"
+        spacing: "16dp"
+
+        MDCheckbox:
+            id: check
+            size_hint: None, None
+            size: 0, 0
+            opacity: 0
+
+        MDBoxLayout:
+            id: inner_box
+
+            MDIcon:
+                id: icon
+                size_hint: None, None
+                pos_hint: {"center_y": 0.5}
+                size: ("24dp", "24dp") if root.icon else (0, 0)
+                icon: root.icon if root.icon else ""
+                theme_text_color: "Custom"
+                text_color:
+                    root.icon_color if root.icon_color else \
+                    root.theme_cls.primary_color
+
+            MDLabel:
+                id: label
+                text: " " + root.text
+                markup: True
+                color:
+                    (1, 1, 1, 1) \
+                    if root.theme_cls.theme_style == "Dark" else \
+                    (0, 0, 0, 1)
+
+    MDSeparator:
+
+
+<CellHeader>
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+    spacing: "4dp"
+    tooltip_text: root.text
+
+    BoxLayout:
+        id: box
+        size_hint_y: None
+        height: lbl.height
+
+        MDLabel:
+            id: lbl
+            text: " " + root.text
+            adaptive_height: True
+            bold: True
+            markup: True
+            color:
+                (1, 1, 1, 1) \
+                if root.theme_cls.theme_style == "Dark" else \
+                (0, 0, 0, 1)
+
+    MDSeparator:
+        id: separator
+
+
+<SortButton>
+    id: sort_btn
+    icon: "arrow-up"
+    pos_hint: {"center_y": 0.5}
+    size: [dp(24), dp(0)]
+    theme_text_color: "Custom"
+    text_color: self.theme_cls.secondary_text_color
+    opacity: 0
+
+
+<TableHeader>
+    bar_width: 0
+    do_scroll: False
+    size_hint: 1, None
+    height: header.height
+
+    MDGridLayout:
+        id: header
+        rows: 1
+        cols_minimum: root.cols_minimum
+        adaptive_size: True
+        padding: 0, "8dp", 0, 0
+        md_bg_color:
+            root.theme_cls.bg_light \
+            if not root.background_color_header \
+            else root.background_color_header
+
+        MDBoxLayout:
+            orientation: "vertical"
+
+            MDBoxLayout:
+                id: box
+                padding: "8dp", "8dp", "4dp", 0
+                spacing: "16dp"
+
+                MDCheckbox:
+                    id: check
+                    size_hint: None, None
+                    size: 0, 0
+                    opacity: 0
+                    on_release: root.table_data.select_all(self.state)
+
+                CellHeader:
+                    id: first_cell
+
+            MDSeparator:
+
+
+<TableData>
+    data: root.recycle_data
+    data_first_cells: root.data_first_cells
+    key_viewclass: "viewclass"
+
+    TableRecycleGridLayout:
+        id: row_controller
+        key_selection: "selectable"
+        cols: root.total_col_headings
+        cols_minimum: root.cols_minimum
+        default_size: None, dp(52)
+        default_size_hint: 1, None
+        size_hint: None, None
+        height: self.minimum_height
+        width: self.minimum_width
+        multiselect: True
+        touch_multiselect: True
+
+
+<TablePagination>
+    adaptive_height: True
+    spacing: "8dp"
+
+    MDLabel:
+        text: "Rows per page"
+        shorten: True
+        halign: "right"
+        font_style: "Caption"
+        color:
+            (1, 1, 1, 1) \
+            if root.theme_cls.theme_style == "Dark" else \
+            (0, 0, 0, 1)
+
+    MDDropDownItem:
+        id: drop_item
+        pos_hint: {'center_y': .5}
+        font_size: "14sp"
+        on_release: root.table_data.open_pagination_menu()
+        text:
+            f"{root.table_data.rows_num if root.table_data.rows_num < len(root.table_data.row_data) else len(root.table_data.row_data)}"
+
+    Widget:
+        size_hint_x: None
+        width: "32dp" if DEVICE_TYPE != "mobile" else "8dp"
+
+    MDLabel:
+        id: label_rows_per_page
+        adaptive_size: True
+        -text_size: None, None
+        pos_hint: {"center_y": .5}
+        font_style: "Caption"
+        color:
+            (1, 1, 1, 1) \
+            if root.theme_cls.theme_style == "Dark" else \
+            (0, 0, 0, 1)
+        text:
+            f"1-" \
+            f"{root.table_data.rows_num if root.table_data.rows_num < len(root.table_data.row_data) else len(root.table_data.row_data)} " \
+            f"of {len(root.table_data.row_data)}"
+
+    MDIconButton:
+        id: button_back
+        icon: "chevron-left"
+        user_font_size: "20sp" if DEVICE_TYPE != "mobile" else "16dp"
+        ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
+        pos_hint: {'center_y': .5}
+        disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
+        on_release: root.table_data.set_next_row_data_parts("back")
+
+    MDIconButton:
+        id: button_forward
+        icon: "chevron-right"
+        user_font_size: "20sp" if DEVICE_TYPE != "mobile" else "16dp"
+        ripple_scale: .5 if DEVICE_TYPE == "mobile" else 1
+        pos_hint: {'center_y': .5}
+        disabled: True
+        md_bg_color_disabled: 0, 0, 0, 0
+        on_release: root.table_data.set_next_row_data_parts("forward")
+
+
+<TableContainer@MDCard+FakeRectangularElevationBehavior>
+
+
+<MDDataTable>
+
+    TableContainer:
+        id: container
+        orientation: "vertical"
+        elevation: root.elevation
+        padding: "24dp", "24dp", "8dp", "8dp"

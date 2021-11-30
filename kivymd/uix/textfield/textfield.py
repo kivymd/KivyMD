@@ -965,8 +965,9 @@ class MDTextField(ThemableBehavior, TextInput):
     _max_length_text_color = ColorProperty([0, 0, 0, 0])
     _icon_right_color = ColorProperty([0, 0, 0, 0])
     _icon_left_color = ColorProperty([0, 0, 0, 0])
+    _line_color_normal = ColorProperty([0, 0, 0, 0])
+    _line_color_focus = ColorProperty([0, 0, 0, 0])
 
-    _cache_colors = DictProperty()
     # List of color attribute names that should be updated when changing the
     # application color palette.
     _colors_to_updated = ListProperty()
@@ -1051,8 +1052,8 @@ class MDTextField(ThemableBehavior, TextInput):
         elif self.helper_text_mode == "persistent":
             self._helper_text_color = self.helper_text_color_normal
 
-        self._cache_colors["line_color_normal"] = self.line_color_normal
-        self._cache_colors["line_color_focus"] = self.line_color_focus
+        self._line_color_normal = self.line_color_normal
+        self._line_color_focus = self.line_color_focus
 
     def set_notch_rectangle(self, joining: bool = False) -> NoReturn:
         """
@@ -1089,7 +1090,7 @@ class MDTextField(ThemableBehavior, TextInput):
         """Animates the color of a static underline line."""
 
         Animation(
-            line_color_normal=color,
+            _line_color_normal=color,
             duration=(0.2 if self.line_anim else 0),
             t="out_quad",
         ).start(self)
@@ -1097,7 +1098,7 @@ class MDTextField(ThemableBehavior, TextInput):
     def set_active_underline_color(self, color: list) -> NoReturn:
         """Animates the fill color for 'fill' mode."""
 
-        Animation(line_color_focus=color, duration=0.2, t="out_quad").start(
+        Animation(_line_color_focus=color, duration=0.2, t="out_quad").start(
             self
         )
 
@@ -1322,10 +1323,7 @@ class MDTextField(ThemableBehavior, TextInput):
             if self.error:
                 self.set_static_underline_color(self.error_color)
             else:
-                # print(self._cache_colors["line_color_normal"])
-                self.set_static_underline_color(
-                    self._cache_colors["line_color_normal"]
-                )
+                self.set_static_underline_color(self.line_color_normal)
 
     def on_icon_left(self, instance_text_field, icon_name: str) -> NoReturn:
         self._icon_left_label.icon = icon_name
@@ -1359,9 +1357,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 self.set_helper_text_color(self.error_color)
         else:
             self.set_max_length_text_color(self.max_length_text_color)
-            self.set_active_underline_color(
-                self._cache_colors["line_color_focus"]
-            )
+            self.set_active_underline_color(self._line_color_focus)
             if self.hint_text:
                 self.set_hint_text_color(self.focus)
             if self.helper_text:
@@ -1400,6 +1396,9 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def on_icon_right_color_normal(self, instance_text_field, color: list):
         self._icon_right_color = color
+
+    def on_line_color_normal(self, instance_text_field, color: list):
+        self._line_color_normal = color
 
     def on_max_length_text_color(self, instance_text_field, color: list):
         self._max_length_text_color = color

@@ -16,7 +16,7 @@
         # Static underline texture.
         Color:
             rgba:
-                (self.line_color_normal \
+                (self._line_color_normal \
                 if self.line_color_normal else self.theme_cls.divider_color) \
                 if self.mode == "line" else (0, 0, 0, 0)
         Line:
@@ -28,7 +28,7 @@
         # Active underline (on focus) texture.
         Color:
             rgba:
-                self.line_color_focus \
+                self._line_color_focus \
                 if self.mode in ("line", "fill") and self.active_line \
                 else (0, 0, 0, 0)
         Rectangle:

@@ -80,7 +80,7 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     ListProperty,
-    NumericProperty,
+    VariableListProperty,
 )
 from kivy.uix.slider import Slider
 from kivy.utils import get_color_from_hex
@@ -128,11 +128,11 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `None`.
     """
 
-    hint_radius = ListProperty([dp(4), dp(4), dp(4), dp(4)])
+    hint_radius = VariableListProperty([dp(4), dp(4), dp(4), dp(4)])
     """
     Hint radius.
 
-    :attr:`hint_radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`hint_radius` is an :class:`~kivy.properties.VariableListProperty`
     and defaults to `[dp(4), dp(4), dp(4), dp(4)]`.
     """
 

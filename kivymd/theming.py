@@ -711,6 +711,43 @@ class ThemeManager(EventDispatcher):
     property is readonly.
     """
 
+    def _get_disabled_primary_color(self, opposite: bool = False) -> list:
+        theme_style = self._get_theme_style(opposite)
+        lum = sum(self.primary_color[0:3]) / 3.0
+        if theme_style == "Light":
+            a = 0.38
+        elif theme_style == "Dark":
+            a = 0.50
+        return [lum, lum, lum, a]
+
+    disabled_primary_color = AliasProperty(
+        _get_disabled_primary_color, bind=["theme_style"]
+    )
+    """
+    The greyscale disabled version of the current application theme color
+    in ``rgba`` format.
+
+    :attr:`disabled_primary_color`
+    is an :class:`~kivy.properties.AliasProperty` that returns the value
+    in ``rgba`` format for :attr:`disabled_primary_color`,
+    property is readonly.
+    """
+
+    def _get_op_disabled_primary_color(self) -> list:
+        return self._get_disabled_primary_color(True)
+
+    opposite_disabled_primary_color = AliasProperty(
+        _get_op_disabled_primary_color, bind=["theme_style"]
+    )
+    """
+    The opposite value of color in the :attr:`disabled_primary_color`.
+
+    :attr:`opposite_disabled_primary_color` is an
+    :class:`~kivy.properties.AliasProperty` that returns the value
+    in ``rgba`` format for :attr:`opposite_disabled_primary_color`,
+    property is readonly.
+    """
+
     def _get_text_color(self, opposite: bool = False) -> list:
         theme_style = self._get_theme_style(opposite)
         if theme_style == "Light":

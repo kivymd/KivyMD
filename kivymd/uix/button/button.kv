@@ -120,19 +120,19 @@
     theme_text_color: "Custom"
     md_bg_color: self.theme_cls.primary_color
 
-#     canvas.before:
-#         Color:
-#             rgba:
-#                 self.theme_cls.primary_color \
-#                 if not self._bg_color else self._bg_color
-#         RoundedRectangle:
-#             pos:
-#                 (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
-#                 self.y - self._padding_right / 2 + dp(1.5)
-#             size:
-#                 self.width + self._canvas_width - dp(3), \
-#                 self.height + self._padding_right - dp(3)
-#             radius: [self.height / 2]
+    canvas.before:
+        Color:
+            rgba:
+                self.theme_cls.primary_color \
+                if not self._bg_color else self._bg_color
+        RoundedRectangle:
+            pos:
+                (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
+                self.y - self._padding_right / 2 + dp(1.5)
+            size:
+                self.width + self._canvas_width - dp(3), \
+                self.height + self._padding_right - dp(3)
+            radius: [self.height / 2]
 
 
 <BaseFloatingRootButton>

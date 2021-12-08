@@ -478,14 +478,6 @@ from typing import NoReturn, Union
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.graphics.context_instructions import Color
-from kivy.graphics.stencil_instructions import (
-    StencilPop,
-    StencilPush,
-    StencilUnUse,
-    StencilUse,
-)
-from kivy.graphics.vertex_instructions import Ellipse, RoundedRectangle
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -506,9 +498,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivymd import uix_path
 from kivymd.color_definitions import text_colors
 from kivymd.font_definitions import theme_font_styles
-from kivymd.theming import ThemableBehavior, ThemeManager
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    BackgroundColorBehavior,
     CommonElevationBehavior,
     FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
@@ -1139,7 +1130,6 @@ class MDFloatingActionButton(
         Clock.schedule_once(self.set_size)
         Clock.schedule_once(self.set_radius)
         Clock.schedule_once(self.set_font_size)
-
 
     def set_font_size(self, *args) -> NoReturn:
         if self.theme_cls.material_style == "M3":

@@ -26,43 +26,43 @@ MDScreen:
         spacing: "10dp"
 
         ScrollView:
-    
+
             MDBoxLayout:
                 orientation: "vertical"
                 padding: 20
                 spacing: "10dp"
                 adaptive_height: True
-    
+
                 # MDIconButton
-    
+
                 MDLabel:
                     text: "MDIconButton from KV"
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-    
+
                 MDSeparator:
-        
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
                     adaptive_height: True
-        
+
                     MDIconButton:
                         id: btn_1
                         icon: "android"
                         user_font_size: "24sp"
-        
+
                     MDIconButton:
                         id: btn_2
                         icon: "android"
                         user_font_size: "36sp"
-        
+
                     MDIconButton:
                         id: btn_3
                         icon: "android"
                         user_font_size: "48sp"
-        
+
                     MDIconButton:
                         icon: "android"
                         user_font_size: "56sp"
@@ -80,14 +80,14 @@ MDScreen:
                             btn_2.text_color = (0, 0, 1, 1)
                             btn_3.theme_text_color = "Custom"
                             btn_3.text_color = (0, 0, 1, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_1.disabled = True
                             btn_2.disabled = True
                             btn_3.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -112,7 +112,9 @@ MDScreen:
                     MDFlatButton:
                         text: "SET PALETTE"
                         on_release:
-                            app.theme_cls.primary_palette = "Green"
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Green" \
+                            else "Green"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -126,7 +128,7 @@ MDScreen:
                         adaptive_height: True
                         halign: "center"
                         font_style: "H6"
-            
+
                     MDBoxLayout:
                         id: python_box
                         padding: 20
@@ -142,28 +144,28 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
                     adaptive_height: True
-        
+
                     MDFloatingActionButton:
                         id: btn_4
                         icon: "git"
-        
+
                     MDFloatingActionButton:
                         id: btn_5
                         icon: "android"
-        
+
                     MDFloatingActionButton:
                         id: btn_6
                         icon: "android"
-        
+
                     MDFloatingActionButton:
                         icon: "android"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -176,14 +178,14 @@ MDScreen:
                             btn_5.text_color = (0, 1, 1, 1)
                             btn_6.theme_text_color = "Custom"
                             btn_6.text_color = (1, 0, 0, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_4.disabled = True
                             btn_5.disabled = True
                             btn_6.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -207,7 +209,10 @@ MDScreen:
 
                     MDFlatButton:
                         text: "SET PALETTE"
-                        on_release: app.theme_cls.primary_palette = "Yellow"
+                        on_release:
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -215,13 +220,13 @@ MDScreen:
                     spacing: "10dp"
                     adaptive_height: True
                     md_bg_color: 0, 0, 0, .2
-        
+
                     MDLabel:
                         text: "MDFloatingActionButton from Python"
                         adaptive_height: True
                         halign: "center"
                         font_style: "H6"
-            
+
                     MDBoxLayout:
                         id: python_box_2
                         padding: 20
@@ -237,7 +242,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -251,11 +256,11 @@ MDScreen:
                         id: btn_8
                         text: "MDFlatButton"
                         font_style: "H5"
-        
+
                     MDFlatButton:
                         text: "MDFlatButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -266,13 +271,13 @@ MDScreen:
                             btn_7.text_color = (0, 0, 1, 1)
                             btn_8.theme_text_color = "Custom"
                             btn_8.text_color = (0, 0, 1, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_7.disabled = True
                             btn_8.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -314,7 +319,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -328,11 +333,11 @@ MDScreen:
                         id: btn_10
                         text: "MDRaisedButton"
                         font_style: "H5"
-        
+
                     MDRaisedButton:
                         text: "MDRaisedButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -347,16 +352,16 @@ MDScreen:
                     MDFlatButton:
                         text: "SET BG COLOR"
                         on_release:
-                            app.theme_cls.primary_palette = "Yellow"
-                            #btn_9.md_bg_color = (0, 0, 1, 1)
-                            #btn_10.md_bg_color = (1, 0, 1, 1)
-        
+                            #app.theme_cls.primary_palette = "Yellow"
+                            btn_9.md_bg_color = (0, 0, 1, 1)
+                            btn_10.md_bg_color = (1, 0, 1, 1)
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_9.disabled = True
                             btn_10.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -370,6 +375,13 @@ MDScreen:
                             if app.theme_cls.theme_style == "Light" \
                             else "Light"
 
+                    MDFlatButton:
+                        text: "SET PALETTE"
+                        on_release:
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
+
                 MDBoxLayout:
                     orientation: "vertical"
                     padding: 20
@@ -378,7 +390,7 @@ MDScreen:
                     md_bg_color: 0, 0, 0, .2
 
                     MDLabel:
-                        text: "MDFlatButton from Python"
+                        text: "MDRaisedButton from Python"
                         adaptive_height: True
                         halign: "center"
                         font_style: "H6"
@@ -398,7 +410,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -412,11 +424,11 @@ MDScreen:
                         id: btn_12
                         text: "MDRectangleFlatButton"
                         font_style: "H5"
-        
+
                     MDRectangleFlatButton:
                         text: "MDRectangleFlatButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -433,13 +445,13 @@ MDScreen:
                         on_release:
                             btn_11.line_color = (0, 0, 1, 1)
                             btn_12.line_color = (1, 0, 1, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_11.disabled = True
                             btn_12.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -456,7 +468,9 @@ MDScreen:
                     MDFlatButton:
                         text: "SET PALETTE"
                         on_release:
-                            app.theme_cls.primary_palette = "Yellow"
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -486,7 +500,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -500,11 +514,11 @@ MDScreen:
                         id: btn_14
                         text: "MDRectangleFlatIconButton"
                         font_style: "H5"
-        
+
                     MDRectangleFlatIconButton:
                         text: "MDRectangleFlatIconButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -527,13 +541,13 @@ MDScreen:
                         on_release:
                             btn_13.line_color = (1, 0, 1, 1)
                             btn_14.line_color = (0, 0, 1, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_13.disabled = True
                             btn_14.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -550,7 +564,9 @@ MDScreen:
                     MDFlatButton:
                         text: "SET PALETTE"
                         on_release:
-                            app.theme_cls.primary_palette = "Yellow"
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -580,7 +596,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -594,11 +610,11 @@ MDScreen:
                         id: btn_16
                         text: "MDRoundFlatButton"
                         font_style: "H5"
-        
+
                     MDRoundFlatButton:
                         text: "MDRoundFlatButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -615,13 +631,13 @@ MDScreen:
                         on_release:
                             btn_15.line_color = (1, 0, 1, 1)
                             btn_16.line_color = (0, 0, 1, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_15.disabled = True
                             btn_16.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -637,7 +653,10 @@ MDScreen:
 
                     MDFlatButton:
                         text: "SET PALETTE"
-                        on_release: app.theme_cls.primary_palette = "Yellow"
+                        on_release:
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -667,7 +686,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -681,11 +700,11 @@ MDScreen:
                         id: btn_18
                         text: "MDRoundFlatIconButton"
                         font_style: "H5"
-        
+
                     MDRoundFlatIconButton:
                         text: "MDRoundFlatIconButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -708,13 +727,13 @@ MDScreen:
                         on_release:
                             btn_17.icon_color = (0, 0, 1, 1)
                             btn_18.icon_color = (1, 0, 1, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_17.disabled = True
                             btn_18.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -730,7 +749,10 @@ MDScreen:
 
                     MDFlatButton:
                         text: "SET PALETTE"
-                        on_release: app.theme_cls.primary_palette = "Yellow"
+                        on_release:
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -740,7 +762,7 @@ MDScreen:
                     md_bg_color: 0, 0, 0, .2
 
                     MDLabel:
-                        text: "MDRoundFlatButton from Python"
+                        text: "MDRoundFlatIconButton from Python"
                         adaptive_height: True
                         halign: "center"
                         font_style: "H6"
@@ -760,7 +782,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -774,11 +796,11 @@ MDScreen:
                         id: btn_20
                         text: "MDFillRoundFlatButton"
                         font_style: "H5"
-        
+
                     MDFillRoundFlatButton:
                         text: "MDFillRoundFlatButton"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -793,20 +815,22 @@ MDScreen:
                     MDFlatButton:
                         text: "SET PALETTE"
                         on_release:
-                            app.theme_cls.primary_palette = "Yellow"
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                     MDFlatButton:
                         text: "SET BG COLOR"
                         on_release:
                             btn_19.md_bg_color = (0, 0, 1, 1)
                             btn_20.md_bg_color = (1, 0, 0, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_19.disabled = True
                             btn_20.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -848,7 +872,7 @@ MDScreen:
                     adaptive_height: True
                     halign: "center"
                     font_style: "H6"
-            
+
                 MDBoxLayout:
                     padding: 20
                     spacing: "10dp"
@@ -862,11 +886,11 @@ MDScreen:
                         id: btn_22
                         text: "MDFillRoundFlatIconButton"
                         font_style: "H5"
-        
+
                     MDFillRoundFlatIconButton:
                         text: "MDFillRoundFlatIconButton 333"
                         disabled: True
-        
+
                 MDBoxLayout:
                     adaptive_size: True
 
@@ -889,13 +913,13 @@ MDScreen:
                         on_release:
                             btn_21.md_bg_color = (0, 0, 1, 1)
                             btn_22.md_bg_color = (1, 0, 0, 1)
-        
+
                     MDFlatButton:
                         text: "DISABLED"
                         on_release:
                             btn_21.disabled = True
                             btn_22.disabled = True
-        
+
                     MDFlatButton:
                         text: "UNDISABLED"
                         on_release:
@@ -912,7 +936,9 @@ MDScreen:
                     MDFlatButton:
                         text: "SET PALETTE"
                         on_release:
-                            app.theme_cls.primary_palette = "Yellow"
+                            app.theme_cls.primary_palette = "Blue" \
+                            if app.theme_cls.primary_palette == "Yellow" \
+                            else "Yellow"
 
                 MDBoxLayout:
                     orientation: "vertical"
@@ -1018,14 +1044,14 @@ class Test(MDApp):
         )
         self.root.ids.python_box_4.add_widget(
             MDRaisedButton(
-                text="MDFlatButton",
+                text="MDRaisedButton",
                 md_bg_color=(0, 0, 1, 1),
                 font_style="H5",
             )
         )
         self.root.ids.python_box_4.add_widget(
             MDRaisedButton(
-                text="MDFlatButton",
+                text="MDRaisedButton",
                 disabled=True,
             )
         )

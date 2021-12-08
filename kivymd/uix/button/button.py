@@ -514,6 +514,16 @@ with open(
     Builder.load_string(kv_file.read())
 
 
+THEME_TEXT_COLOR_OPTIONS = [
+    "Primary",
+    "Secondary",
+    "Hint",
+    "Error",
+    "Custom",
+    "ContrastParentBackground",
+]
+
+
 class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
                  AnchorLayout):
     """Base class for all buttons."""
@@ -552,23 +562,13 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     and defaults to 'center'. It accepts values of 'top', 'center' or 'bottom'.
     """
 
-    theme_text_color = OptionProperty(
-        None,
-        options=[
-            "Primary",
-            "Secondary",
-            "Hint",
-            "Error",
-            "Custom",
-            "ContrastParentBackground",
-        ],
-    )
+    theme_text_color = OptionProperty(None, options=THEME_TEXT_COLOR_OPTIONS,)
     """
     Button text type. Available options are: (`"Primary"`, `"Secondary"`,
     `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
 
     :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'Primary'`.
+    and defaults to `None` (depends on button class).
     """
 
     text_color = ColorProperty(None)
@@ -661,17 +661,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     _md_bg_color_disabled = ColorProperty(None)
     _line_color = ColorProperty(None)
     _line_color_disabled = ColorProperty(None)
-    _theme_text_color = OptionProperty(
-        None,
-        options=[
-            "Primary",
-            "Secondary",
-            "Hint",
-            "Error",
-            "Custom",
-            "ContrastParentBackground",
-        ],
-    )
+    _theme_text_color = OptionProperty(None, options=THEME_TEXT_COLOR_OPTIONS)
     _text_color = ColorProperty(None)
 
     # Default colors - set to None to use primary theme colors
@@ -758,15 +748,6 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
             default_text_color = self.theme_cls.text_color
         self._text_color = self.text_color or default_text_color
 
-    def update_text_color(self, *args) -> NoReturn:
-        pass
-
-    def on_md_bg_color(self, instance_button, color: list) -> NoReturn:
-        pass
-
-    #def _remove_shadow(self, interval: Union[int, float]) -> NoReturn:
-        #self.canvas.before.remove_group("soft_shadow")
-
     def on_width(self, instance_button, width: float) -> NoReturn:
         """If the button style has a minimum width set, enforce it here."""
         if self._min_width and (self.width < self._min_width):
@@ -809,67 +790,8 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
         return super().on_touch_up(touch)
 
 
-class ButtonContentsText():
-    """Contents for BaseButton consisting of a single label."""
-
-    text = StringProperty(" ")
-    """
-    Button text.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `' '`.
-    """
-
-    _min_width = NumericProperty(88)
-
-
-class ButtonContentsIcon():
-    """Contents for a round BaseButton consisting of an MDIcon."""
-
-    icon_size = NumericProperty()
-    """
-    Icon font size.
-    Use this parameter as the font size, that is, in sp units.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`icon_size` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `None`.
-    """
-
-    icon = StringProperty("checkbox-blank-circle")
-    """
-    Button icon.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank-circle'`.
-    """
-
-    icon_color = ColorProperty(None)
-    """
-    Button icon color.
-
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-    _icon_color = ColorProperty(None)
-
-    def set_text_color(self, *args):
-        super().set_text_color()
-        self._icon_color = self.icon_color or self._text_color
-
-
-class ButtonContentsIconText():
-    """Contents for BaseButton consisting of a BoxLayout
-    with an icon and a label."""
-
-    text = StringProperty(" ")
-    """
-    Button text.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `' '`.
-    """
+class IconMixin():
+    """Extra properties for dealing with icons"""
 
     icon_size = NumericProperty()
     """
@@ -897,13 +819,91 @@ class ButtonContentsIconText():
     :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
+
+    theme_icon_color = OptionProperty(None, options=THEME_TEXT_COLOR_OPTIONS)
+    """
+    Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
+    `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
+
+    :attr:`theme_icon_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None` (depends on button class).
+    """
     _icon_color = ColorProperty(None)
+    _theme_icon_color = OptionProperty(None, options=THEME_TEXT_COLOR_OPTIONS)
+    _default_icon_color = ColorProperty(None)
+    _default_theme_icon_color = StringProperty('Primary')
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(theme_icon_color=self.set_text_color)
+
+    def set_text_color(self, *args) -> NoReturn:
+        """Set _theme_icon_color and _icon_color based on defaults
+        and options.
+        """
+        super().set_text_color(*args)
+        self._theme_icon_color = (
+            self.theme_icon_color
+            or self._default_theme_icon_color
+        )
+        if self._default_icon_color == 'PrimaryHue':
+            default_icon_color = (
+                text_colors[self.theme_cls.primary_palette]
+                [self.theme_cls.primary_hue]
+            )
+        elif self._default_icon_color == 'Primary':
+            default_icon_color = self.theme_cls.primary_color
+        else:
+            default_icon_color = self.theme_cls.text_color
+        self._icon_color = self.icon_color or default_icon_color
+
+
+class ButtonContentsText():
+    """Contents for BaseButton consisting of a single label."""
+
+    text = StringProperty(" ")
+    """
+    Button text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `' '`.
+    """
 
     _min_width = NumericProperty(88)
 
-    def set_text_color(self, *args):
-        super().set_text_color()
-        self._icon_color = self.icon_color or self._text_color
+
+class ButtonContentsIcon(IconMixin):
+    """Contents for a round BaseButton consisting of an MDIcon."""
+
+    def on_text_color(self, instance_button, color: list) -> NoReturn:
+        """Set icon_color equal to text_color.
+        For backwards compatibility - can use text_color instead
+        of icon_color.
+        """
+        if color:
+            self.icon_color = color
+
+
+class ButtonContentsIconText(IconMixin):
+    """Contents for BaseButton consisting of a BoxLayout
+    with an icon and a label."""
+
+    text = StringProperty(" ")
+    """
+    Button text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `' '`.
+    """
+
+    _min_width = NumericProperty(88)
+
+    def on_icon_color(self, instance_button, color: list) -> NoReturn:
+        """If we are setting an icon color, set theme_icon_color to Custom.
+        For backwards compatibility (before theme_icon_color existed).
+        """
+        if color:
+            self.theme_icon_color = "Custom"
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):
@@ -1010,7 +1010,9 @@ class MDRectangleFlatIconButton(ButtonContentsIconText, BaseButton):
     _default_line_color = None
     _default_line_color_disabled = None
     _default_theme_text_color = "Custom"
+    _default_theme_icon_color = "Custom"
     _default_text_color = "Primary"
+    _default_icon_color = "Primary"
 
 
 class MDRoundFlatButton(ButtonContentsText, BaseButton):
@@ -1032,7 +1034,9 @@ class MDRoundFlatIconButton(ButtonContentsIconText, BaseButton):
     _default_line_color = None
     _default_line_color_disabled = None
     _default_theme_text_color = "Custom"
+    _default_theme_icon_color = "Custom"
     _default_text_color = "Primary"
+    _default_icon_color = "Primary"
     _radius = NumericProperty("18dp")
 
 
@@ -1055,11 +1059,15 @@ class MDFillRoundFlatIconButton(ButtonContentsIconText, BaseButton):
     _default_md_bg_color = None
     _default_md_bg_color_disabled = None
     _default_theme_text_color = "Custom"
+    _default_theme_icon_color = "Custom"
     _default_text_color = "PrimaryHue"
+    _default_icon_color = "PrimaryHue"
     _radius = NumericProperty("18dp")
 
 
 class MDIconButton(ButtonContentsIcon, BaseButton):
+    """A simple rounded icon button."""
+
     icon = StringProperty("checkbox-blank-circle")
     """
     Button icon.
@@ -1070,9 +1078,7 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        #self.theme_cls.bind(primary_palette=self.update_md_bg_color)
         Clock.schedule_once(self.set_size)
-        self.on_md_bg_color(self, [0.0, 0.0, 0.0, 0.0])
 
     def set_size(self, interval: Union[int, float]) -> NoReturn:
         """
@@ -1119,8 +1125,8 @@ class MDFloatingActionButton(
 
     _default_md_bg_color = None
     _default_md_bg_color_disabled = None
-    _default_theme_text_color = "Custom"
-    _default_text_color = "PrimaryHue"
+    _default_theme_icon_color = "Custom"
+    _default_icon_color = "PrimaryHue"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

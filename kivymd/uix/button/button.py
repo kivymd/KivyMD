@@ -86,14 +86,15 @@ Use :class:`~BaseButton.user_font_size` attribute to resize the button:
 By default, the color of :class:`~MDIconButton`
 (depending on the style of the application) is black or white.
 You can change the color of :class:`~MDIconButton` as the text color
-of :class:`~kivymd.uix.label.MDLabel`:
+of :class:`~kivymd.uix.label.MDLabel`, substituting ``theme_icon_color`` for
+``theme_text_color`` and ``icon_color`` for ``text_color``.
 
 .. code-block:: kv
 
     MDIconButton:
         icon: "android"
-        theme_text_color: "Custom"
-        text_color: app.theme_cls.primary_color
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.primary_color
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button-theme-text-color.png
     :align: center
@@ -162,9 +163,9 @@ Material design style 3
                     MDFloatingActionButton(
                         icon="pencil",
                         type=type_button,
-                        theme_text_color="Custom",
+                        theme_icon_color="Custom",
                         md_bg_color=get_color_from_hex(data[type_button]["md_bg_color"]),
-                        text_color=get_color_from_hex(data[type_button]["text_color"]),
+                        icon_color=get_color_from_hex(data[type_button]["text_color"]),
                     )
                 )
 
@@ -253,7 +254,8 @@ MDRectangleFlatIconButton
     :align: center
 
 Button parameters :class:`~MDRectangleFlatButton` are the same as
-button :class:`~MDRectangleFlatButton`:
+button :class:`~MDRectangleFlatButton`, with the addition of the
+``theme_icon_color`` and ``icon_color`` parameters as for `~MDIconButton`.
 
 .. code-block:: kv
 
@@ -263,6 +265,7 @@ button :class:`~MDRectangleFlatButton`:
         theme_text_color: "Custom"
         text_color: 0, 0, 1, 1
         line_color: 1, 0, 1, 1
+        theme_icon_color: "Custom"
         icon_color: 1, 0, 0, 1
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button-custom.png
@@ -323,7 +326,8 @@ MDRoundFlatIconButton
     :align: center
 
 Button parameters :class:`~MDRoundFlatIconButton` are the same as
-button :class:`~MDRoundFlatButton`:
+button :class:`~MDRoundFlatButton`, with the addition of the
+``theme_icon_color`` and ``icon_color`` parameters as for `~MDIconButton`.:
 
 .. code-block:: kv
 
@@ -349,7 +353,8 @@ MDFillRoundFlatIconButton
     :align: center
 
 Button parameters :class:`~MDFillRoundFlatIconButton` are the same as
-button :class:`~MDRaisedButton`.
+button :class:`~MDRaisedButton`, with the addition of the
+``theme_icon_color`` and ``icon_color`` parameters as for `~MDIconButton`..
 
 .. note:: Notice that the width of the :class:`~MDFillRoundFlatIconButton`
     button matches the size of the button text.
@@ -564,6 +569,14 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     and defaults to 'center'. It accepts values of 'top', 'center' or 'bottom'.
     """
 
+    text = StringProperty(" ")
+    """
+    Button text.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `' '`.
+    """
+
     theme_text_color = OptionProperty(None, options=theme_text_color_options)
     """
     Button text type. Available options are: (`"Primary"`, `"Secondary"`,
@@ -657,14 +670,17 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     and defaults to `None`.
     """
 
+    # Properties used for rendering
     _radius = NumericProperty(0)
-    _min_width = NumericProperty(None)
     _md_bg_color = ColorProperty(None)
     _md_bg_color_disabled = ColorProperty(None)
     _line_color = ColorProperty(None)
     _line_color_disabled = ColorProperty(None)
     _theme_text_color = OptionProperty(None, options=theme_text_color_options)
     _text_color = ColorProperty(None)
+
+    # Defaults which can be overridden in subclasses
+    _min_width = 88
 
     # Default colors - set to None to use primary theme colors
     _default_md_bg_color = [0.0, 0.0, 0.0, 0.0]
@@ -804,9 +820,9 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
         return super().on_touch_up(touch)
 
 
-class IconMixin():
+class ButtonIconMixin():
     """
-    Extra properties for dealing with icons.
+    Extra properties to be added to BaseButton for dealing with icons.
     """
 
     icon_size = NumericProperty()
@@ -851,7 +867,10 @@ class IconMixin():
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(theme_icon_color=self.set_text_color)
+        self.bind(
+            theme_icon_color=self.set_text_color,
+            icon_color=self.set_text_color
+        )
 
     def set_text_color(self, *args) -> NoReturn:
         """
@@ -874,27 +893,26 @@ class IconMixin():
             default_icon_color = self.theme_cls.text_color
         self._icon_color = self.icon_color or default_icon_color
 
+    def on_icon_color(self, instance_button, color: list) -> NoReturn:
+        """If we are setting an icon color, set theme_icon_color to Custom.
+        For backwards compatibility (before theme_icon_color existed).
+        """
+        if color and (self.theme_text_color == 'Custom'):
+            self.theme_icon_color = "Custom"
+
 
 class ButtonContentsText():
     """
     Contents for BaseButton consisting of a single label.
     """
-
-    text = StringProperty(" ")
-    """
-    Button text.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `' '`.
-    """
-
-    _min_width = NumericProperty(88)
+    pass
 
 
-class ButtonContentsIcon(IconMixin):
+class ButtonContentsIcon(ButtonIconMixin):
     """
     Contents for a round BaseButton consisting of an MDIcon.
     """
+    _min_width = None
 
     def on_text_color(self, instance_button, color: list) -> NoReturn:
         """Set icon_color equal to text_color.
@@ -905,28 +923,12 @@ class ButtonContentsIcon(IconMixin):
             self.icon_color = color
 
 
-class ButtonContentsIconText(IconMixin):
+class ButtonContentsIconText(ButtonIconMixin):
     """
     Contents for BaseButton consisting of a BoxLayout
     with an icon and a label.
     """
-
-    text = StringProperty(" ")
-    """
-    Button text.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `' '`.
-    """
-
-    _min_width = NumericProperty(88)
-
-    def on_icon_color(self, instance_button, color: list) -> NoReturn:
-        """If we are setting an icon color, set theme_icon_color to Custom.
-        For backwards compatibility (before theme_icon_color existed).
-        """
-        if color:
-            self.theme_icon_color = "Custom"
+    pass
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):
@@ -943,10 +945,11 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
 
     _elevation_raised = NumericProperty()
     _anim_raised = ObjectProperty(None, allownone=True)
+    _default_elevation = 2
 
     def __init__(self, **kwargs):
         if self.elevation == 0:
-            self.elevation = 2
+            self.elevation = self._default_elevation
         super().__init__(**kwargs)
         self.bind(_radius=self.setter('radius'))
         self.on_elevation(self, self.elevation)
@@ -1109,6 +1112,7 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
+    _min_width = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1165,6 +1169,7 @@ class MDFloatingActionButton(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(material_style=self.set_size)
+        self.theme_cls.bind(material_style=self.set_radius)
         Clock.schedule_once(self.set_size)
         Clock.schedule_once(self.set_radius)
         Clock.schedule_once(self.set_font_size)

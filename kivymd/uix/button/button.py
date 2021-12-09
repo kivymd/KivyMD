@@ -573,7 +573,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Button text.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`
     and defaults to `' '`.
     """
 
@@ -583,14 +583,14 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
 
     :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `None` (depends on button class).
+    and defaults to `None` (set by button class).
     """
 
     text_color = ColorProperty(None)
     """
     Button text color in (r, g, b, a) format.
 
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -598,7 +598,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Button text font name.
 
-    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    :attr:`font_name` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
 
@@ -606,7 +606,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Button text font size.
 
-    :attr:`font_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `14sp`.
     """
 
@@ -614,7 +614,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Custom font size for :class:`~MDIconButton`.
 
-    :attr:`user_font_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`user_font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
@@ -626,7 +626,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
     `'Caption'`, `'Overline'`, `'Icon'`.
 
-    :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
+    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'Body1'`.
     """
 
@@ -634,7 +634,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Line width for button border.
 
-    :attr:`line_width` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`line_width` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
     """
 
@@ -642,15 +642,17 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Line color for button border.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`line_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
     line_color_disabled = ColorProperty(None)
     """
-    Line color for button border.
+    Disabled line color for button border.
 
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
+    .. versionadded:: 1.0.0
+
+    :attr:`line_color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -658,7 +660,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Button background color.
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`md_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -666,7 +668,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
     Disabled button text color.
 
-    :attr:`md_bg_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -832,7 +834,7 @@ class ButtonIconMixin():
 
     .. versionadded:: 1.0.0
 
-    :attr:`icon_size` is an :class:`~kivy.properties.NumericProperty`
+    :attr:`icon_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.
     """
 
@@ -840,7 +842,7 @@ class ButtonIconMixin():
     """
     Button icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'android'`.
     """
 
@@ -848,7 +850,7 @@ class ButtonIconMixin():
     """
     Button icon color.
 
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -857,8 +859,10 @@ class ButtonIconMixin():
     Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
     `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
 
+    ... versionadded:: 1.0.0
+
     :attr:`theme_icon_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `None` (depends on button class).
+    and defaults to `None` (set by button subclass).
     """
     _icon_color = ColorProperty(None)
     _theme_icon_color = OptionProperty(None, options=theme_text_color_options)
@@ -894,7 +898,8 @@ class ButtonIconMixin():
         self._icon_color = self.icon_color or default_icon_color
 
     def on_icon_color(self, instance_button, color: list) -> NoReturn:
-        """If we are setting an icon color, set theme_icon_color to Custom.
+        """
+        If we are setting an icon color, set theme_icon_color to Custom.
         For backwards compatibility (before theme_icon_color existed).
         """
         if color and (self.theme_text_color == 'Custom'):
@@ -912,10 +917,12 @@ class ButtonContentsIcon(ButtonIconMixin):
     """
     Contents for a round BaseButton consisting of an MDIcon.
     """
+
     _min_width = None
 
     def on_text_color(self, instance_button, color: list) -> NoReturn:
-        """Set icon_color equal to text_color.
+        """
+        Set icon_color equal to text_color.
         For backwards compatibility - can use text_color instead
         of icon_color.
         """
@@ -1109,9 +1116,16 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
     """
     Button icon.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
     """
+
+    # Deprecated for MDIcon - use icon_color and theme_icon_color
+    text_color = ColorProperty(None, deprecated=True)
+    theme_text_color = OptionProperty(
+        None, options=theme_text_color_options, deprecated=True
+    )
+
     _min_width = None
 
     def __init__(self, **kwargs):
@@ -1218,7 +1232,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
     """
     Button color in (r, g, b, a) format.
 
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -1226,7 +1240,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
     """
     Button color disabled in (r, g, b, a) format.
 
-    :attr:`color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 

@@ -727,6 +727,8 @@ class ThemeManager(EventDispatcher):
     The greyscale disabled version of the current application theme color
     in ``rgba`` format.
 
+    .. versionadded:: 1.0.0
+
     :attr:`disabled_primary_color`
     is an :class:`~kivy.properties.AliasProperty` that returns the value
     in ``rgba`` format for :attr:`disabled_primary_color`,
@@ -741,6 +743,8 @@ class ThemeManager(EventDispatcher):
     )
     """
     The opposite value of color in the :attr:`disabled_primary_color`.
+
+    .. versionadded:: 1.0.0
 
     :attr:`opposite_disabled_primary_color` is an
     :class:`~kivy.properties.AliasProperty` that returns the value

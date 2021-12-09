@@ -678,16 +678,22 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.theme_cls.bind(primary_palette=self.set_button_colors)
-        self.theme_cls.bind(primary_palette=self.set_text_color)
-        self.theme_cls.bind(theme_style=self.set_button_colors)
-        self.theme_cls.bind(theme_style=self.set_text_color)
-        self.bind(md_bg_color=self.set_button_colors)
-        self.bind(md_bg_color_disabled=self.set_button_colors)
-        self.bind(line_color=self.set_button_colors)
-        self.bind(line_color_disabled=self.set_button_colors)
-        self.bind(theme_text_color=self.set_text_color)
-        self.bind(text_color=self.set_text_color)
+        self.theme_cls.bind(
+            primary_palette=self.set_button_colors,
+            theme_style=self.set_button_colors
+        )
+        self.theme_cls.bind(
+            primary_palette=self.set_text_color,
+            theme_style=self.set_text_color
+        )
+        self.bind(
+            md_bg_color=self.set_button_colors,
+            md_bg_color_disabled=self.set_button_colors,
+            line_color=self.set_button_colors,
+            line_color_disabled=self.set_button_colors,
+            theme_text_color=self.set_text_color,
+            text_color=self.set_text_color
+        )
         Clock.schedule_once(self.set_button_colors)
         Clock.schedule_once(self.set_text_color)
 
@@ -1158,9 +1164,7 @@ class MDFloatingActionButton(
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.theme_cls.bind(
-            material_style=self.set_size,
-        )
+        self.theme_cls.bind(material_style=self.set_size)
         Clock.schedule_once(self.set_size)
         Clock.schedule_once(self.set_radius)
         Clock.schedule_once(self.set_font_size)

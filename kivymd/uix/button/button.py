@@ -88,6 +88,8 @@ By default, the color of :class:`~MDIconButton`
 You can change the color of :class:`~MDIconButton` as the text color
 of :class:`~kivymd.uix.label.MDLabel`, substituting ``theme_icon_color`` for
 ``theme_text_color`` and ``icon_color`` for ``text_color``.
+The use of ``text_color`` and ``theme_text_color`` for :class:`~MDIconButton`
+is deprecated.
 
 .. code-block:: kv
 
@@ -1120,11 +1122,26 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
     and defaults to `'checkbox-blank-circle'`.
     """
 
-    # Deprecated for MDIcon - use icon_color and theme_icon_color
     text_color = ColorProperty(None, deprecated=True)
+    """
+    Deprecated for :class:`~MDIconButton`. Use ``icon_color`` instead.
+    Button icon color in (r, g, b, a) format.
+
+    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     theme_text_color = OptionProperty(
         None, options=theme_text_color_options, deprecated=True
     )
+    """
+    Deprecated for :class:`~MDIconButton`. Use ``theme_icon_color`` instead.
+    Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
+    `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
+
+    :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None` (set by button class).
+    """
 
     _min_width = None
 

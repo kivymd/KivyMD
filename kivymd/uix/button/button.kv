@@ -3,6 +3,16 @@
         Clear
         Color:
             rgba:
+                (self._md_bg_color or [0.0, 0.0, 0.0, 0.0])\
+                if not self.disabled else \
+                (self._md_bg_color_disabled or [0.0, 0.0, 0.0, 0.0])
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            source: self.source if hasattr(self, "source") else ""
+            radius: [root._radius, ]
+        Color:
+            rgba:
                 (root._line_color or [0.0, 0.0, 0.0, 0.0]) \
                 if not root.disabled else \
                 (root._line_color_disabled or [0.0, 0.0, 0.0, 0.0])
@@ -12,16 +22,6 @@
                 (self.x, self.y, self.width, self.height,\
                 root._radius, root._radius, root._radius, root._radius,\
                 self.height)
-        Color:
-            rgba:
-                (self._md_bg_color or [0.0, 0.0, 0.0, 0.0])\
-                if not self.disabled else \
-                (self._md_bg_color_disabled or [0.0, 0.0, 0.0, 0.0])
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            source: self.source if hasattr(self, "source") else ""
-            radius: [root._radius, ]
 
     size_hint: None, None
     anchor_x: root.halign

@@ -675,7 +675,7 @@ class BaseButton(RectangularRippleBehavior, ThemableBehavior, ButtonBehavior,
     """
 
     # Properties used for rendering
-    _radius = NumericProperty(0)
+    _radius = NumericProperty(0.1)  # Must be > 0 to avoid rendering issues
     _md_bg_color = ColorProperty(None)
     _md_bg_color_disabled = ColorProperty(None)
     _line_color = ColorProperty(None)

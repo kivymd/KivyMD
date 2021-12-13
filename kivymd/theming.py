@@ -480,7 +480,7 @@ class ThemeManager(EventDispatcher):
     .. versionadded:: 1.0.0
 
     .. seealso::
-    
+
        `Material Design 2 <https://material.io/>`_ and
        `Material Design 3 <https://m3.material.io>`_
 

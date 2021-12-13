@@ -918,8 +918,6 @@ class ButtonContentsText:
     Contents for BaseButton consisting of a single label.
     """
 
-    pass
-
 
 class ButtonContentsIcon(ButtonIconMixin):
     """
@@ -943,8 +941,6 @@ class ButtonContentsIconText(ButtonIconMixin):
     Contents for BaseButton consisting of a BoxLayout
     with an icon and a label.
     """
-
-    pass
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):
@@ -1020,8 +1016,6 @@ class MDFlatButton(ButtonContentsText, BaseButton):
     A flat rectangular button with (by default) no border or
     background. Text is the default text color.
     """
-
-    pass
 
 
 class MDRaisedButton(

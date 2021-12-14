@@ -781,14 +781,6 @@ class BaseButton(
             default_text_color = self.theme_cls.text_color
         self._text_color = self.text_color or default_text_color
 
-    def on_width(self, instance_button, width: float) -> NoReturn:
-        """
-        If the button style has a minimum width set, enforce it here.
-        """
-
-        if self._min_width and (self.width < self._min_width):
-            self.width = self._min_width
-
     # Touch events that cause transparent buttons to fade to background
     def on_touch_down(self, touch):
         """
@@ -924,7 +916,7 @@ class ButtonContentsIcon(ButtonIconMixin):
     Contents for a round BaseButton consisting of an MDIcon.
     """
 
-    _min_width = None
+    _min_width = 0
 
     def on_text_color(self, instance_button, color: list) -> NoReturn:
         """
@@ -1160,7 +1152,7 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
     and defaults to `None` (set by button class).
     """
 
-    _min_width = None
+    _min_width = 0
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -32,7 +32,8 @@
 
 <ButtonContentsText>
     lbl_txt: lbl_txt
-    width: lbl_txt.texture_size[0] + dp(24)
+    width: max(root._min_width, lbl_txt.texture_size[0] + dp(24))
+    size_hint_min_x: max(root._min_width, lbl_txt.texture_size[0] + dp(24))
     height: dp(20) + lbl_txt.texture_size[1]
 
     MDLabel:
@@ -74,7 +75,8 @@
 <ButtonContentsIconText>
     lbl_txt: lbl_txt
     lbl_ic: lbl_ic
-    width: lbl_txt.width + lbl_ic.width * 2 + box.spacing
+    width: max(root._min_width, lbl_txt.width + lbl_ic.width * 2 + box.spacing)
+    size_hint_min_x: max(root._min_width, lbl_txt.texture_size[0] + dp(24))
     height: lbl_ic.texture_size[1] + dp(12)
 
     MDBoxLayout:

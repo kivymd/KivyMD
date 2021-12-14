@@ -577,10 +577,10 @@ from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
-    ListProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
@@ -658,13 +658,13 @@ class MDCard(
     and defaults to 1.
     """
 
-    radius = ListProperty([dp(6), dp(6), dp(6), dp(6)])
+    radius = VariableListProperty([dp(6), dp(6), dp(6), dp(6)])
     """
     Card radius by default.
 
     .. versionadded:: 1.0.0
 
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
     and defaults to `[dp(6), dp(6), dp(6), dp(6)]`.
     """
 

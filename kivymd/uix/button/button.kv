@@ -3,20 +3,37 @@
         Clear
         Color:
             rgba:
-                self.md_bg_color if not self.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
+                (self._md_bg_color or [0.0, 0.0, 0.0, 0.0])\
+                if not self.disabled else \
+                (self._md_bg_color_disabled or [0.0, 0.0, 0.0, 0.0])
         RoundedRectangle:
             size: self.size
             pos: self.pos
+            source: self.source if hasattr(self, "source") else ""
             radius: [root._radius, ]
+        Color:
+            rgba:
+                (root._line_color or [0.0, 0.0, 0.0, 0.0]) \
+                if not root.disabled else \
+                (root._line_color_disabled or [0.0, 0.0, 0.0, 0.0])
+        Line:
+            width: root.line_width
+            rounded_rectangle:
+                (self.x, self.y, self.width, self.height,\
+                root._radius, root._radius, root._radius, root._radius,\
+                self.height)
 
-    lbl_txt: lbl_txt
     size_hint: None, None
-    height: dp(20) + lbl_txt.texture_size[1]
-    width: lbl_txt.texture_size[0] + dp(24)
     anchor_x: root.halign
     anchor_y: root.valign
+    _round_rad: [self._radius] * 4
+
+
+
+<ButtonContentsText>
+    lbl_txt: lbl_txt
+    width: lbl_txt.texture_size[0] + dp(24)
+    height: dp(20) + lbl_txt.texture_size[1]
 
     MDLabel:
         id: lbl_txt
@@ -25,135 +42,40 @@
         font_style: root.font_style
         adaptive_size: True
         -text_size: None, None
-        theme_text_color: root.theme_text_color
-        text_color: root.text_color
+        theme_text_color: root._theme_text_color
+        text_color: root._text_color
         markup: True
         disabled: root.disabled
         opposite_colors: root.opposite_colors
         font_name: root.font_name if root.font_name else self.font_name
 
 
-<BaseRoundButton>
-    canvas:
-        Clear
-        Color:
-            rgba:
-                (self.md_bg_color if root.icon in md_icons else (0, 0, 0, 0)) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            source: self.source if hasattr(self, "source") else ""
-            radius:
-                self.radius \
-                if hasattr(self, "radius") and self.radius else \
-                [self.width / 2,]
-
+<ButtonContentsIcon>
+    lbl_ic: lbl_ic
     size: "48dp", "48dp"
-    lbl_txt: lbl_txt
     padding: "12dp" if root.icon in md_icons else (0, 0, 0, 0)
+    theme_icon_color: root.theme_text_color  # Backwards compatibility
 
     MDIcon:
-        id: lbl_txt
+        id: lbl_ic
         icon: root.icon
         font_size: root.user_font_size if root.user_font_size else self.font_size
         font_name: root.font_name if root.font_name else self.font_name
-        theme_text_color: root.theme_text_color
+        theme_text_color: root._theme_icon_color
         disabled: root.disabled
         opposite_colors: root.opposite_colors
         text_color:
-            root.text_color if not root.disabled else \
-            (root.md_bg_color_disabled if root.md_bg_color_disabled \
-            else root.theme_cls.disabled_hint_text_color)
+            root._icon_color if not root.disabled else \
+            root.theme_cls.disabled_hint_text_color
         on_icon:
             if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
 
 
-<MDRoundFlatButton>
-    canvas.before:
-        Color:
-            rgba:
-                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        Line:
-            width: root.line_width
-            rounded_rectangle:
-                (self.x, self.y, self.width, self.height,\
-                root._radius, root._radius, root._radius, root._radius,\
-                self.height)
-
-    theme_text_color: "Custom"
-
-
-<MDFillRoundFlatButton>
-    canvas.before:
-        Color:
-            rgba:
-                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
-                else root.md_bg_color) if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius: [root._radius, ]
-
-    line_width: 0.001
-    theme_text_color: "Custom"
-
-
-<MDFillRoundFlatIconButton>
-    canvas.before:
-        Color:
-            rgba:
-                (root.theme_cls.primary_color if root.md_bg_color == [0.0, 0.0, 0.0, 0.0] \
-                else root.md_bg_color) if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            radius: [root._radius, ]
-
-    line_width: 0.001
-    theme_text_color: "Custom"
-
-
-<MDRectangleFlatButton>
-    canvas.before:
-        Color:
-            rgba:
-                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        Line:
-            width: root.line_width
-            rectangle: (self.x, self.y, self.width, self.height)
-
-    theme_text_color: "Custom"
-
-
-<MDRectangleFlatIconButton>
-    canvas.before:
-        Color:
-            rgba:
-                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        Line:
-            width: root.line_width
-            rectangle: (self.x, self.y, self.width, self.height)
-
-    size_hint: None, None
-    size:
-        root.lbl_txt.width + lbl_ic.width * 2 + box.spacing, \
-        lbl_ic.texture_size[1] + dp(12)
+<ButtonContentsIconText>
+    lbl_txt: lbl_txt
+    lbl_ic: lbl_ic
+    width: lbl_txt.width + lbl_ic.width * 2 + box.spacing
+    height: lbl_ic.texture_size[1] + dp(12)
 
     MDBoxLayout:
         id: box
@@ -164,96 +86,30 @@
         MDIcon:
             id: lbl_ic
             icon: root.icon
-            theme_text_color: "Custom"
+            font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
+            theme_text_color: root._theme_icon_color
             text_color:
-                (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
+                root._icon_color if not root.disabled \
+                else root.theme_cls.disabled_hint_text_color
+            disabled: root.disabled
+            opposite_colors: root.opposite_colors
             size_hint_x: None
             width: self.texture_size[0]
-            font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
 
         MDLabel:
-            id: lbl
+            id: lbl_txt
             text: root.text
             font_size: root.font_size
             font_style: root.font_style
             adaptive_size: True
             -text_size: None, None
-            theme_text_color: "Custom"
-            text_color: root.text_color
+            theme_text_color: root._theme_text_color
+            text_color: root._text_color
             markup: True
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_name: root.font_name if root.font_name else self.font_name
             pos_hint: {"center_y": .5}
-
-
-<MDRoundFlatIconButton>
-    canvas.before:
-        Color:
-            rgba:
-                (root.theme_cls.primary_color if not root.line_color else root.line_color) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-        Line:
-            width: root.line_width
-            rounded_rectangle:
-                (self.x, self.y, self.width, self.height,\
-                root._radius, root._radius, root._radius, root._radius,\
-                self.height)
-
-    size_hint: None, None
-    size:
-        root.lbl_txt.width + lbl_ic.width * 2 + box.spacing, \
-        lbl_ic.texture_size[1] + dp(12)
-
-    MDBoxLayout:
-        id: box
-        adaptive_size: True
-        padding: root.padding
-        spacing: "8dp"
-
-        MDIcon:
-            id: lbl_ic
-            icon: root.icon
-            theme_text_color: "Custom"
-            text_color:
-                (root.theme_cls.primary_color if not root.icon_color else root.icon_color) \
-                if not root.disabled else \
-                (root.md_bg_color_disabled if root.md_bg_color_disabled \
-                else root.theme_cls.disabled_hint_text_color)
-            size_hint_x: None
-            width: self.texture_size[0]
-            font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
-
-        MDLabel:
-            id: lbl
-            text: root.text
-            font_size: root.font_size
-            font_style: root.font_style
-            adaptive_size: True
-            -text_size: None, None
-            theme_text_color: root.theme_text_color
-            text_color: root.text_color
-            markup: True
-            disabled: root.disabled
-            opposite_colors: root.opposite_colors
-            font_name: root.font_name if root.font_name else self.font_name
-            pos_hint: {"center_y": .5}
-
-
-<MDIconButton>
-    on_size: root.set_size(0)
-
-
-<MDFloatingActionButton>
-    theme_text_color: "Custom"
-    # theme_text_color: root.theme_text_color
-    # opposite_colors: root.opposite_colors
-    on_size: root.set_size(0)
 
 
 <MDTextButton>

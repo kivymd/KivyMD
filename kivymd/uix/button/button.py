@@ -699,6 +699,13 @@ class BaseButton(
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # To prevent infinite loop for partially-initialized button width
+        # between AnchorLayout and on_width, set size_hint_min_x to match
+        # (at least) _min_width.
+        if self._min_width:
+            self.size_hint_min_x = max(
+                self._min_width, self.size_hint_min_x or 0
+            )
         self.theme_cls.bind(
             primary_palette=self.set_button_colors,
             theme_style=self.set_button_colors,

@@ -3,7 +3,7 @@
         Clear
         Color:
             rgba:
-                (self._md_bg_color or [0.0, 0.0, 0.0, 0.0])\
+                (self._md_bg_color or [0.0, 0.0, 0.0, 0.0]) \
                 if not self.disabled else \
                 (self._md_bg_color_disabled or [0.0, 0.0, 0.0, 0.0])
         RoundedRectangle:
@@ -19,8 +19,8 @@
         Line:
             width: root.line_width
             rounded_rectangle:
-                (self.x, self.y, self.width, self.height,\
-                root._radius, root._radius, root._radius, root._radius,\
+                (self.x, self.y, self.width, self.height, \
+                root._radius, root._radius, root._radius, root._radius, \
                 self.height)
 
     size_hint: None, None
@@ -55,7 +55,7 @@
     lbl_ic: lbl_ic
     size: "48dp", "48dp"
     padding: "12dp" if root.icon in md_icons else (0, 0, 0, 0)
-    theme_icon_color: root.theme_text_color  # Backwards compatibility
+    theme_icon_color: root.theme_text_color  # backwards compatibility
 
     MDIcon:
         id: lbl_ic
@@ -66,7 +66,8 @@
         disabled: root.disabled
         opposite_colors: root.opposite_colors
         text_color:
-            root._icon_color if not root.disabled else \
+            root._icon_color \
+            if not root.disabled else \
             root.theme_cls.disabled_hint_text_color
         on_icon:
             if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
@@ -90,13 +91,14 @@
             icon: root.icon
             font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
             theme_text_color: root._theme_icon_color
-            text_color:
-                root._icon_color if not root.disabled \
-                else root.theme_cls.disabled_hint_text_color
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             size_hint_x: None
             width: self.texture_size[0]
+            text_color:
+                root._icon_color \
+                if not root.disabled else \
+                root.theme_cls.disabled_hint_text_color
 
         MDLabel:
             id: lbl_txt
@@ -128,7 +130,8 @@
         Color:
             rgba:
                 self.theme_cls.primary_color \
-                if not self._bg_color else self._bg_color
+                if not self._bg_color else \
+                self._bg_color
         RoundedRectangle:
             pos:
                 (self.x - self._canvas_width + dp(1.5)) + self._padding_right / 2, \
@@ -164,7 +167,8 @@
         Color:
             rgba:
                 self.theme_cls.primary_color \
-                if not root.bg_color else root.bg_color
+                if not root.bg_color else \
+                root.bg_color
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -178,4 +182,5 @@
         size: self.texture_size
         color:
             root.theme_cls.text_color \
-            if not root.text_color else root.text_color
+            if not root.text_color else \
+            root.text_color

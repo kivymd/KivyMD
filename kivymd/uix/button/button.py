@@ -1303,6 +1303,8 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
         self.height = "46dp"
 
 
+# FIXME: Use :class:`~kivymd.uix.boxlayout.MDBoxLayout` instead
+#  :class:`~kivy.uix.boxlayout.BoxLayout`.
 class BaseFloatingLabel(
     ThemableBehavior, FakeRectangularElevationBehavior, BoxLayout
 ):

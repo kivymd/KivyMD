@@ -156,6 +156,8 @@
         PopMatrix
 
 
+# FIXME: Use :class:`~kivymd.uix.boxlayout.MDBoxLayout` instead
+#  :class:`~kivy.uix.boxlayout.BoxLayout`.
 <BaseFloatingLabel>
     size_hint: None, None
     padding: "8dp", "4dp", "8dp", "4dp"
@@ -163,6 +165,7 @@
     width: label.texture_size[0] + self.padding[0] * 2
     elevation: 10
 
+    # TODO: Use `md_bg_color` and `radius` instead `canvasю
     canvas:
         Color:
             rgba:

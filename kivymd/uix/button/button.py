@@ -534,9 +534,7 @@ theme_text_color_options = (
 class BaseButton(
     RectangularRippleBehavior, ThemableBehavior, ButtonBehavior, AnchorLayout
 ):
-    """
-    Base class for all buttons.
-    """
+    """Base class for all buttons."""
 
     padding = VariableListProperty([dp(16), dp(12), dp(16), dp(12)])
     """
@@ -718,9 +716,7 @@ class BaseButton(
         Clock.schedule_once(self.set_text_color)
 
     def set_button_colors(self, *args) -> NoReturn:
-        """
-        Set all button colours (except text).
-        """
+        """Set all button colours (except text)."""
 
         # Set main color
         self._md_bg_color = (
@@ -764,8 +760,7 @@ class BaseButton(
 
     def set_text_color(self, *args) -> NoReturn:
         """
-        Set _theme_text_color and _text_color based on defaults
-        and options.
+        Set _theme_text_color and _text_color based on defaults and options.
         """
 
         self._theme_text_color = (
@@ -805,9 +800,7 @@ class BaseButton(
             return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
-        """
-        Animates return to original background on touch release.
-        """
+        """Animates return to original background on touch release."""
 
         if not self.disabled and self._animation_fade_bg:
             self._animation_fade_bg.stop_property(self, "_md_bg_color")
@@ -822,9 +815,7 @@ class BaseButton(
 
 
 class ButtonIconMixin:
-    """
-    Extra properties to be added to BaseButton for dealing with icons.
-    """
+    """Extra properties to be added to BaseButton for dealing with icons."""
 
     icon_size = NumericProperty()
     """
@@ -877,8 +868,7 @@ class ButtonIconMixin:
 
     def set_text_color(self, *args) -> NoReturn:
         """
-        Set _theme_icon_color and _icon_color based on defaults
-        and options.
+        Set _theme_icon_color and _icon_color based on defaults and options.
         """
 
         super().set_text_color(*args)
@@ -906,14 +896,12 @@ class ButtonIconMixin:
 
 
 class ButtonContentsText:
-    """
-    Contents for BaseButton consisting of a single label.
-    """
+    """Contents for :class:`~BaseButton` class consisting of a single label."""
 
 
 class ButtonContentsIcon(ButtonIconMixin):
     """
-    Contents for a round BaseButton consisting of an MDIcon.
+    Contents for a round BaseButton consisting of an :class:`~MDIcon` class.
     """
 
     _min_width = 0
@@ -924,14 +912,15 @@ class ButtonContentsIcon(ButtonIconMixin):
         For backwards compatibility - can use text_color instead
         of icon_color.
         """
+
         if color:
             self.icon_color = color
 
 
 class ButtonContentsIconText(ButtonIconMixin):
     """
-    Contents for BaseButton consisting of a BoxLayout
-    with an icon and a label.
+    Contents for :class:`~BaseButton` class consisting of a
+    :class:`~kivy.uix.boxlayout.BoxLayout` with an icon and a label.
     """
 
 
@@ -940,11 +929,11 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
     Implements elevation behavior as well as the recommended down/disabled
     colors for raised buttons.
 
-    The minimum elevation for any raised button is `"1dp"`,
-    by default, set to `"2dp"`.
+    The minimum elevation for any raised button is `'1dp'`,
+    by default, set to `'2dp'`.
 
-    the _elevation_raised is automatically computed and is set to
-    self.elevation + 6 each time self.elevation is updated.
+    The `_elevation_raised` is automatically computed and is set to
+    `self.elevation + 6` each time `self.elevation` is updated.
     """
 
     _elevation_raised = NumericProperty()
@@ -1005,8 +994,8 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
 
 class MDFlatButton(ButtonContentsText, BaseButton):
     """
-    A flat rectangular button with (by default) no border or
-    background. Text is the default text color.
+    A flat rectangular button with (by default) no border or background.
+    Text is the default text color.
     """
 
 
@@ -1041,8 +1030,8 @@ class MDRectangleFlatButton(ButtonContentsText, BaseButton):
 
 class MDRectangleFlatIconButton(ButtonContentsIconText, BaseButton):
     """
-    A flat button with (by default) a primary color border,
-    primary color text and a primary color icon on the left.
+    A flat button with (by default) a primary color border, primary color text
+    and a primary color icon on the left.
     """
 
     _default_line_color = None
@@ -1055,8 +1044,8 @@ class MDRectangleFlatIconButton(ButtonContentsIconText, BaseButton):
 
 class MDRoundFlatButton(ButtonContentsText, BaseButton):
     """
-    A flat button with (by default) rounded corners, a primary
-    color border and primary color text.
+    A flat button with (by default) rounded corners, a primary color border
+    and primary color text.
     """
 
     _default_line_color = None
@@ -1068,9 +1057,8 @@ class MDRoundFlatButton(ButtonContentsText, BaseButton):
 
 class MDRoundFlatIconButton(ButtonContentsIconText, BaseButton):
     """
-    A flat button with (by default) rounded corners, a primary
-    color border, primary color text and a primary color icon on
-    the left.
+    A flat button with (by default) rounded corners, a primary color border,
+    primary color text and a primary color icon on the left.
     """
 
     _default_line_color = None
@@ -1084,8 +1072,8 @@ class MDRoundFlatIconButton(ButtonContentsIconText, BaseButton):
 
 class MDFillRoundFlatButton(ButtonContentsText, BaseButton):
     """
-    A flat button with (by default) rounded corners, a primary
-    color fill and primary color text.
+    A flat button with (by default) rounded corners, a primary color fill
+    and primary color text.
     """
 
     _default_md_bg_color = None
@@ -1097,9 +1085,8 @@ class MDFillRoundFlatButton(ButtonContentsText, BaseButton):
 
 class MDFillRoundFlatIconButton(ButtonContentsIconText, BaseButton):
     """
-    A flat button with (by default) rounded corners, a primary
-    color fill, primary color text and a primary color icon on
-    the left.
+    A flat button with (by default) rounded corners, a primary color fill,
+    primary color text and a primary color icon on the left.
     """
 
     _default_md_bg_color = None
@@ -1112,9 +1099,7 @@ class MDFillRoundFlatIconButton(ButtonContentsIconText, BaseButton):
 
 
 class MDIconButton(ButtonContentsIcon, BaseButton):
-    """
-    A simple rounded icon button.
-    """
+    """A simple rounded icon button."""
 
     icon = StringProperty("checkbox-blank-circle")
     """
@@ -1173,6 +1158,7 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
 
     def on_width(self, instance_button, width: Union[int, float]) -> NoReturn:
         """Sets the radius to half the width."""
+
         self._radius = self.width / 2
 
 

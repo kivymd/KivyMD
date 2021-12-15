@@ -43,19 +43,37 @@
                 halign: "center"
                 theme_text_color: "Primary"
 
-            MDProgressBar:
-                value: progress_slider.value
+            MDBoxLayout:
+                spacing: "8dp"
+                adaptive_height: True
 
-            MDProgressBar:
-                reversed: True
-                value: progress_slider.value
-
-            BoxLayout:
-                MDProgressBar:
+                MDBoxLayout:
                     orientation: "vertical"
-                    reversed: True
-                    value: progress_slider.value
+                    spacing: "8dp"
 
-                MDProgressBar:
-                    orientation: "vertical"
-                    value: progress_slider.value
+                    MDProgressBar:
+                        value: progress_slider.value
+                        size_hint_y: None
+                        height: "4dp"
+
+                    MDProgressBar:
+                        reversed: True
+                        value: progress_slider.value
+                        size_hint_y: None
+                        height: "4dp"
+
+                MDBoxLayout:
+                    spacing: "8dp"
+
+                    MDProgressBar:
+                        orientation: "vertical"
+                        reversed: True
+                        size_hint_x: None
+                        width: "4dp"
+                        value: progress_slider.value
+
+                    MDProgressBar:
+                        orientation: "vertical"
+                        size_hint_x: None
+                        width: "4dp"
+                        value: progress_slider.value

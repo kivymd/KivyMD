@@ -55,7 +55,7 @@
     lbl_ic: lbl_ic
     size: "48dp", "48dp"
     padding: "12dp" if root.icon in md_icons else (0, 0, 0, 0)
-    theme_icon_color: root.theme_text_color  # backwards compatibility
+    theme_icon_color: root.theme_icon_color or root.theme_text_color  # backwards compatibility
 
     MDIcon:
         id: lbl_ic

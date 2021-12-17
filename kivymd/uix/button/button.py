@@ -946,12 +946,11 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         super().__init__(**kwargs)
         self.bind(_radius=self.setter("radius"))
         self.on_elevation(self, self.elevation)
-        self.on_disabled(self, self.disabled)
 
     def on_elevation(self, instance_button, elevation_value: int) -> NoReturn:
         super().on_elevation(instance_button, elevation_value)
         self._elevation_raised = self.elevation + 6
-        self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
+        self.on_disabled(self, self.disabled)
 
     def on__elevation_raised(
         self, instance_button, elevation_value: int

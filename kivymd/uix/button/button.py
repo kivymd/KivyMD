@@ -1010,6 +1010,8 @@ class MDRaisedButton(
     color text.
     """
 
+    # FIXME: Move the underlying attributes to the :class:`~BaseButton` class.
+    #  This applies to all classes of buttons that have similar attributes.
     _default_md_bg_color = None
     _default_md_bg_color_disabled = None
     _default_theme_text_color = "Custom"

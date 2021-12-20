@@ -66,7 +66,8 @@
     lbl_ic: lbl_ic
     size: "48dp", "48dp"
     padding: "12dp" if root.icon in md_icons else (0, 0, 0, 0)
-    theme_icon_color: root.theme_icon_color or root.theme_text_color  # backwards compatibility
+    theme_icon_color:
+        root.theme_icon_color or root.theme_text_color  # backwards compatibility
 
     MDIcon:
         id: lbl_ic
@@ -89,13 +90,37 @@
     lbl_ic: lbl_ic
 
     width:
-        max(root._min_width, root.padding[0] + lbl_ic.texture_size[0] + box.spacing + lbl_txt.texture_size[0] + root.padding[2])
+        max( \
+        root._min_width, \
+        root.padding[0] \
+        + lbl_ic.texture_size[0] \
+        + box.spacing \
+        + lbl_txt.texture_size[0] \
+        + root.padding[2] \
+        )
     size_hint_min_x:
-        max(root._min_width, root.padding[0] + lbl_ic.texture_size[0] + box.spacing + lbl_txt.texture_size[0] + root.padding[2])
+        max( \
+        root._min_width, \
+        root.padding[0] \
+        + lbl_ic.texture_size[0] \
+        + box.spacing \
+        + lbl_txt.texture_size[0] \
+        + root.padding[2] \
+        )
     height:
-        max(root._min_height, root.padding[1] + max(lbl_ic.texture_size[1], lbl_txt.texture_size[1]) + root.padding[3])
+        max( \
+        root._min_height, \
+        root.padding[1] \
+        + max(lbl_ic.texture_size[1], lbl_txt.texture_size[1]) \
+        + root.padding[3] \
+        )
     size_hint_min_y:
-        max(root._min_height, root.padding[1] + max(lbl_ic.texture_size[1], lbl_txt.texture_size[1]) + root.padding[3])
+        max( \
+        root._min_height, \
+        root.padding[1] \
+        + max(lbl_ic.texture_size[1], lbl_txt.texture_size[1]) \
+        + root.padding[3] \
+        )
 
     MDBoxLayout:
         id: box
@@ -108,10 +133,13 @@
             size_hint_x: None
             pos_hint: {"center_y": .5}
             icon: root.icon
-            font_size: root.icon_size if root.icon_size else (18/14 * lbl_txt.font_size)
             theme_text_color: root._theme_icon_color
             disabled: root.disabled
             opposite_colors: root.opposite_colors
+            font_size:
+                root.icon_size \
+                if root.icon_size else \
+                (18 / 14 * lbl_txt.font_size)
             text_color:
                 root._icon_color \
                 if not root.disabled else \

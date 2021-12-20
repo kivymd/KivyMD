@@ -983,7 +983,7 @@ class ButtonContentsIcon:
         super().__init__(**kwargs)
         if self.user_font_size:
             self.icon_size = self.user_font_size
-        self.bind(user_font_size=self.setter('icon_size'))
+        self.bind(user_font_size=self.setter("icon_size"))
 
     def on_text_color(self, instance_button, color: list) -> NoReturn:
         """
@@ -1231,12 +1231,8 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
         attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
         """
 
-        self.width = (
-            "48dp" if not self.icon_size else dp(self.icon_size + 23)
-        )
-        self.height = (
-            "48dp" if not self.icon_size else dp(self.icon_size + 23)
-        )
+        self.width = "48dp" if not self.icon_size else dp(self.icon_size + 23)
+        self.height = "48dp" if not self.icon_size else dp(self.icon_size + 23)
 
 
 class MDFloatingActionButton(

@@ -863,6 +863,7 @@ class BaseButton(
         Set the radius, if we are a rounded button, based on the
         current height.
         """
+
         if self.rounded_button:
             self._radius = self.height / 2
 

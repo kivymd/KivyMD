@@ -72,13 +72,13 @@ You can also use custom icons:
     :align: center
 
 By default, :class:`~MDIconButton` button has a size ``(dp(48), dp (48))``.
-Use :class:`~BaseButton.user_font_size` attribute to resize the button:
+Use :class:`~BaseButton.icon_size` attribute to resize the button:
 
 .. code-block:: kv
 
     MDIconButton:
         icon: "android"
-        user_font_size: "64sp"
+        icon_size: "64sp"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button-user-font-size.gif
     :align: center
@@ -88,8 +88,8 @@ By default, the color of :class:`~MDIconButton`
 You can change the color of :class:`~MDIconButton` as the text color
 of :class:`~kivymd.uix.label.MDLabel`, substituting ``theme_icon_color`` for
 ``theme_text_color`` and ``icon_color`` for ``text_color``.
-The use of ``text_color`` and ``theme_text_color`` for :class:`~MDIconButton`
-is deprecated.
+The use of ``user_font_size``, ``text_color`` and ``theme_text_color`` for
+:class:`~MDIconButton` is deprecated.
 
 .. code-block:: kv
 
@@ -662,9 +662,11 @@ class BaseButton(
     and defaults to `None`.
     """
 
-    user_font_size = NumericProperty(0)
+    user_font_size = NumericProperty(0, deprecated=True)
     """
     Custom font size for :class:`~MDIconButton`.
+
+    .. deprecated in 1.0.0::
 
     :attr:`user_font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
@@ -977,6 +979,12 @@ class ButtonContentsIcon:
 
     _min_width = NumericProperty(0)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.user_font_size:
+            self.icon_size = self.user_font_size
+        self.bind(user_font_size=self.setter('icon_size'))
+
     def on_text_color(self, instance_button, color: list) -> NoReturn:
         """
         Set icon_color equal to text_color.
@@ -1219,15 +1227,15 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
 
     def set_size(self, interval: Union[int, float]) -> NoReturn:
         """
-        Sets the custom icon size if the value of the `user_font_size`
+        Sets the custom icon size if the value of the `icon_size`
         attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
         """
 
         self.width = (
-            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
+            "48dp" if not self.icon_size else dp(self.icon_size + 23)
         )
         self.height = (
-            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
+            "48dp" if not self.icon_size else dp(self.icon_size + 23)
         )
 
 
@@ -1275,9 +1283,9 @@ class MDFloatingActionButton(
     def set_font_size(self, *args) -> NoReturn:
         if self.theme_cls.material_style == "M3":
             if self.type == "large":
-                self.user_font_size = "36sp"
+                self.icon_size = "36sp"
             else:
-                self.user_font_size = 0
+                self.icon_size = 0
 
     def set__radius(self, *args) -> NoReturn:
         if self.theme_cls.material_style == "M2":

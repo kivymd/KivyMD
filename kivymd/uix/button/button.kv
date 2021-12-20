@@ -32,15 +32,26 @@
 
 <ButtonContentsText>
     lbl_txt: lbl_txt
-    width: max(root._min_width, lbl_txt.texture_size[0] + dp(24))
-    size_hint_min_x: max(root._min_width, lbl_txt.texture_size[0] + dp(24))
-    height: dp(20) + lbl_txt.texture_size[1]
+    width:
+        max(root._min_width, \
+        root.padding[0] + lbl_txt.texture_size[0] + root.padding[2])
+    size_hint_min_x:
+        max(root._min_width, \
+        root.padding[0] + lbl_txt.texture_size[0] + root.padding[2])
+    height:
+        max(root._min_height, \
+        root.padding[1] + lbl_txt.texture_size[1] + root.padding[3])
+    size_hint_min_y:
+        max(root._min_height, \
+        root.padding[1] + lbl_txt.texture_size[1] + root.padding[3])
 
     MDLabel:
         id: lbl_txt
         text: root.text
         font_size: root.font_size
         font_style: root.font_style
+        halign: 'center'
+        valign: 'middle'
         adaptive_size: True
         -text_size: None, None
         theme_text_color: root._theme_text_color
@@ -76,25 +87,31 @@
 <ButtonContentsIconText>
     lbl_txt: lbl_txt
     lbl_ic: lbl_ic
-    width: max(root._min_width, lbl_txt.width + lbl_ic.width * 2 + box.spacing)
-    size_hint_min_x: max(root._min_width, lbl_txt.texture_size[0] + dp(24))
-    height: lbl_ic.texture_size[1] + dp(12)
+
+    width:
+        max(root._min_width, root.padding[0] + lbl_ic.texture_size[0] + box.spacing + lbl_txt.texture_size[0] + root.padding[2])
+    size_hint_min_x:
+        max(root._min_width, root.padding[0] + lbl_ic.texture_size[0] + box.spacing + lbl_txt.texture_size[0] + root.padding[2])
+    height:
+        max(root._min_height, root.padding[1] + max(lbl_ic.texture_size[1], lbl_txt.texture_size[1]) + root.padding[3])
+    size_hint_min_y:
+        max(root._min_height, root.padding[1] + max(lbl_ic.texture_size[1], lbl_txt.texture_size[1]) + root.padding[3])
 
     MDBoxLayout:
         id: box
         adaptive_size: True
-        padding: root.padding
-        spacing: "8dp"
+        padding: 0
+        spacing: "4dp"
 
         MDIcon:
             id: lbl_ic
+            size_hint_x: None
+            pos_hint: {"center_y": .5}
             icon: root.icon
-            font_size: root.icon_size if root.icon_size else root.font_size + sp(14)
+            font_size: root.icon_size if root.icon_size else (18/14 * lbl_txt.font_size)
             theme_text_color: root._theme_icon_color
             disabled: root.disabled
             opposite_colors: root.opposite_colors
-            size_hint_x: None
-            width: self.texture_size[0]
             text_color:
                 root._icon_color \
                 if not root.disabled else \
@@ -102,18 +119,19 @@
 
         MDLabel:
             id: lbl_txt
+            adaptive_size: True
+            pos_hint: {"center_y": .5}
+            halign: 'center'
+            valign: 'middle'
             text: root.text
             font_size: root.font_size
             font_style: root.font_style
-            adaptive_size: True
-            -text_size: None, None
+            font_name: root.font_name if root.font_name else self.font_name
             theme_text_color: root._theme_text_color
             text_color: root._text_color
             markup: True
             disabled: root.disabled
             opposite_colors: root.opposite_colors
-            font_name: root.font_name if root.font_name else self.font_name
-            pos_hint: {"center_y": .5}
 
 
 <MDTextButton>

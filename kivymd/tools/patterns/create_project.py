@@ -466,7 +466,7 @@ def main():
             ) as requirements:
                 requirements.write("watchdog")
         if use_localization == "yes":
-            Logger.info(f"KivyMD: Create localization files...")
+            Logger.info("KivyMD: Create localization files...")
             create_makefile(
                 path_to_project, project_name, module_name, name_screen
             )

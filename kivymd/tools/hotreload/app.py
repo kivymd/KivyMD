@@ -224,7 +224,7 @@ class MDApp(BaseApp):
         that the application is built. Act according to it.
         """
 
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def unload_app_dependencies(self):
         """
@@ -488,7 +488,7 @@ class MDApp(BaseApp):
         try:
             mod = sys.modules[self.__class__.__module__]
             mod_filename = realpath(mod.__file__)
-        except Exception as e:
+        except Exception:
             mod_filename = None
 
         # Detect if it's the application class // main.

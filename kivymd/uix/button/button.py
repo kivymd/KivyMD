@@ -489,6 +489,7 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    BoundedNumericProperty,
     ColorProperty,
     DictProperty,
     NumericProperty,
@@ -536,7 +537,7 @@ class BaseButton(
 ):
     """Base class for all buttons."""
 
-    padding = VariableListProperty([dp(16), dp(12), dp(16), dp(12)])
+    padding = VariableListProperty([dp(16), dp(8), dp(16), dp(8)])
     """
     Padding between the widget box and its children, in pixels:
     [padding_left, padding_top, padding_right, padding_bottom].
@@ -547,7 +548,7 @@ class BaseButton(
     .. versionadded:: 1.0.0
 
     :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
-    and defaults to [0, 0, 0, 0].
+    and defaults to [16dp, 8dp, 16dp, 8dp].
     """
 
     halign = OptionProperty("center", options=("left", "center", "right"))
@@ -570,12 +571,32 @@ class BaseButton(
     and defaults to 'center'. It accepts values of 'top', 'center' or 'bottom'.
     """
 
-    text = StringProperty(" ")
+    text = StringProperty("")
     """
     Button text.
 
     :attr:`text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `' '`.
+    and defaults to `''`.
+    """
+
+    icon = StringProperty("")
+    """
+    Button icon.
+
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+    font_style = OptionProperty("Body1", options=theme_font_styles)
+    """
+    Button text font style.
+
+    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`,
+    `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
+    `'Caption'`, `'Overline'`, `'Icon'`.
+
+    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'Body1'`.
     """
 
     theme_text_color = OptionProperty(None, options=theme_text_color_options)
@@ -587,11 +608,30 @@ class BaseButton(
     and defaults to `None` (set by button class).
     """
 
+    theme_icon_color = OptionProperty(None, options=theme_text_color_options)
+    """
+    Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
+    `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
+
+    ... versionadded:: 1.0.0
+
+    :attr:`theme_icon_color` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None` (set by button subclass).
+    """
+
     text_color = ColorProperty(None)
     """
     Button text color in (r, g, b, a) format.
 
     :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    icon_color = ColorProperty(None)
+    """
+    Button icon color.
+
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -611,24 +651,23 @@ class BaseButton(
     and defaults to `14sp`.
     """
 
+    icon_size = NumericProperty()
+    """
+    Icon font size.
+    Use this parameter as the font size, that is, in sp units.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`icon_size` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `None`.
+    """
+
     user_font_size = NumericProperty(0)
     """
     Custom font size for :class:`~MDIconButton`.
 
     :attr:`user_font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
-    """
-
-    font_style = OptionProperty("Body1", options=theme_font_styles)
-    """
-    Button text font style.
-
-    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`,
-    `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
-    `'Caption'`, `'Overline'`, `'Icon'`.
-
-    :attr:`font_style` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'Body1'`.
     """
 
     line_width = NumericProperty(1)
@@ -673,17 +712,31 @@ class BaseButton(
     and defaults to `None`.
     """
 
+    rounded_button = BooleanProperty(False)
+    """
+    Should the button have fully rounded corners (e.g. like M3 buttons)?
+
+    .. versionadded:: 1.0.0
+
+    :attr:`rounded_button` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     # Properties used for rendering
-    _radius = NumericProperty(0.1)  # Must be > 0 to avoid rendering issues
+    _radius = BoundedNumericProperty(dp(4), min=0.1, errorvalue=0.1)
+    # Note - _radius must be > 0 to avoid rendering issues
     _md_bg_color = ColorProperty(None)
     _md_bg_color_disabled = ColorProperty(None)
     _line_color = ColorProperty(None)
     _line_color_disabled = ColorProperty(None)
     _theme_text_color = OptionProperty(None, options=theme_text_color_options)
+    _theme_icon_color = OptionProperty(None, options=theme_text_color_options)
     _text_color = ColorProperty(None)
+    _icon_color = ColorProperty(None)
 
     # Defaults which can be overridden in subclasses
-    _min_width = 88
+    _min_width = NumericProperty(dp(64))
+    _min_height = NumericProperty(dp(36))
 
     # Default colors - set to None to use primary theme colors
     _default_md_bg_color = [0.0, 0.0, 0.0, 0.0]
@@ -691,18 +744,17 @@ class BaseButton(
     _default_line_color = [0.0, 0.0, 0.0, 0.0]
     _default_line_color_disabled = [0.0, 0.0, 0.0, 0.0]
     _default_theme_text_color = StringProperty("Primary")
+    _default_theme_icon_color = StringProperty("Primary")
     _default_text_color = ColorProperty(None)
+    _default_icon_color = ColorProperty(None)
 
     _animation_fade_bg = ObjectProperty(None, allownone=True)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(
-            primary_palette=self.set_button_colors,
-            theme_style=self.set_button_colors,
-        )
-        self.theme_cls.bind(
-            primary_palette=self.set_text_color, theme_style=self.set_text_color
+            primary_palette=self.set_all_colors,
+            theme_style=self.set_all_colors,
         )
         self.bind(
             md_bg_color=self.set_button_colors,
@@ -711,12 +763,22 @@ class BaseButton(
             line_color_disabled=self.set_button_colors,
             theme_text_color=self.set_text_color,
             text_color=self.set_text_color,
+            theme_icon_color=self.set_icon_color,
+            icon_color=self.set_icon_color,
+            rounded_button=self.set_radius,
+            height=self.set_radius,
         )
-        Clock.schedule_once(self.set_button_colors)
-        Clock.schedule_once(self.set_text_color)
+        Clock.schedule_once(self.set_all_colors)
+        Clock.schedule_once(self.set_radius)
+
+    def set_all_colors(self, *args) -> NoReturn:
+        """Set all button colours."""
+        self.set_button_colors()
+        self.set_text_color()
+        self.set_icon_color()
 
     def set_button_colors(self, *args) -> NoReturn:
-        """Set all button colours (except text)."""
+        """Set all button colours (except text/icons)."""
 
         # Set main color
         self._md_bg_color = (
@@ -776,6 +838,32 @@ class BaseButton(
             default_text_color = self.theme_cls.text_color
         self._text_color = self.text_color or default_text_color
 
+    def set_icon_color(self, *args) -> NoReturn:
+        """
+        Set _theme_icon_color and _icon_color based on defaults and options.
+        """
+
+        self._theme_icon_color = (
+            self.theme_icon_color or self._default_theme_icon_color
+        )
+        if self._default_icon_color == "PrimaryHue":
+            default_icon_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
+        elif self._default_icon_color == "Primary":
+            default_icon_color = self.theme_cls.primary_color
+        else:
+            default_icon_color = self.theme_cls.text_color
+        self._icon_color = self.icon_color or default_icon_color
+
+    def set_radius(self, *args) -> NoReturn:
+        """
+        Set the radius, if we are a rounded button, based on the
+        current height.
+        """
+        if self.rounded_button:
+            self._radius = self.height / 2
+
     # Touch events that cause transparent buttons to fade to background
     def on_touch_down(self, touch):
         """
@@ -812,116 +900,6 @@ class BaseButton(
             )
             Animation(duration=0.05, _md_bg_color=md_bg_color).start(self)
         return super().on_touch_up(touch)
-
-
-class ButtonIconMixin:
-    """Extra properties to be added to BaseButton for dealing with icons."""
-
-    icon_size = NumericProperty()
-    """
-    Icon font size.
-    Use this parameter as the font size, that is, in sp units.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`icon_size` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `None`.
-    """
-
-    icon = StringProperty("android")
-    """
-    Button icon.
-
-    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'android'`.
-    """
-
-    icon_color = ColorProperty(None)
-    """
-    Button icon color.
-
-    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    theme_icon_color = OptionProperty(None, options=theme_text_color_options)
-    """
-    Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
-    `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
-
-    ... versionadded:: 1.0.0
-
-    :attr:`theme_icon_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `None` (set by button subclass).
-    """
-
-    _icon_color = ColorProperty(None)
-    _theme_icon_color = OptionProperty(None, options=theme_text_color_options)
-    _default_icon_color = ColorProperty(None)
-    _default_theme_icon_color = StringProperty("Primary")
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.bind(
-            theme_icon_color=self.set_text_color, icon_color=self.set_text_color
-        )
-
-    def set_text_color(self, *args) -> NoReturn:
-        """
-        Set _theme_icon_color and _icon_color based on defaults and options.
-        """
-
-        super().set_text_color(*args)
-        self._theme_icon_color = (
-            self.theme_icon_color or self._default_theme_icon_color
-        )
-        if self._default_icon_color == "PrimaryHue":
-            default_icon_color = text_colors[self.theme_cls.primary_palette][
-                self.theme_cls.primary_hue
-            ]
-        elif self._default_icon_color == "Primary":
-            default_icon_color = self.theme_cls.primary_color
-        else:
-            default_icon_color = self.theme_cls.text_color
-        self._icon_color = self.icon_color or default_icon_color
-
-    def on_icon_color(self, instance_button, color: list) -> NoReturn:
-        """
-        If we are setting an icon color, set theme_icon_color to Custom.
-        For backwards compatibility (before theme_icon_color existed).
-        """
-
-        if color and (self.theme_text_color == "Custom"):
-            self.theme_icon_color = "Custom"
-
-
-class ButtonContentsText:
-    """Contents for :class:`~BaseButton` class consisting of a single label."""
-
-
-class ButtonContentsIcon(ButtonIconMixin):
-    """
-    Contents for a round BaseButton consisting of an :class:`~MDIcon` class.
-    """
-
-    _min_width = 0
-
-    def on_text_color(self, instance_button, color: list) -> NoReturn:
-        """
-        Set icon_color equal to text_color.
-        For backwards compatibility - can use text_color instead
-        of icon_color.
-        """
-
-        if color:
-            self.icon_color = color
-
-
-class ButtonContentsIconText(ButtonIconMixin):
-    """
-    Contents for :class:`~BaseButton` class consisting of a
-    :class:`~kivy.uix.boxlayout.BoxLayout` with an icon and a label.
-    """
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):
@@ -988,13 +966,85 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         self._elevation = self.elevation
 
 
-# MD Button classes
+class ButtonContentsText:
+    """Contents for :class:`~BaseButton` class consisting of a single label."""
+
+
+class ButtonContentsIcon:
+    """
+    Contents for a round BaseButton consisting of an :class:`~MDIcon` class.
+    """
+
+    _min_width = NumericProperty(0)
+
+    def on_text_color(self, instance_button, color: list) -> NoReturn:
+        """
+        Set icon_color equal to text_color.
+        For backwards compatibility - can use text_color instead
+        of icon_color.
+        """
+
+        if color:
+            self.icon_color = color
+
+
+class ButtonContentsIconText:
+    """
+    Contents for :class:`~BaseButton` class consisting of a
+    :class:`~kivy.uix.boxlayout.BoxLayout` with an icon and a label.
+    """
+
+    padding = VariableListProperty([dp(12), dp(8), dp(16), dp(8)])
+    """
+    Padding between the widget box and its children, in pixels:
+    [padding_left, padding_top, padding_right, padding_bottom].
+
+    padding also accepts a two argument form [padding_horizontal,
+    padding_vertical] and a one argument form [padding].
+
+    .. versionadded:: 1.0.0
+
+    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to [12dp, 8dp, 16dp, 8dp].
+    """
+
+
+# Old MD Button classes
+
+
+class OldButtonIconMixin:
+    """Backwards-compatibility for icons."""
+
+    icon = StringProperty("android")
+
+    def on_icon_color(self, instance_button, color: list) -> NoReturn:
+        """
+        If we are setting an icon color, set theme_icon_color to Custom.
+        For backwards compatibility (before theme_icon_color existed).
+        """
+
+        if color and (self.theme_text_color == "Custom"):
+            self.theme_icon_color = "Custom"
 
 
 class MDFlatButton(ButtonContentsText, BaseButton):
     """
     A flat rectangular button with (by default) no border or background.
     Text is the default text color.
+    """
+
+    padding = VariableListProperty([dp(8), dp(8), dp(8), dp(8)])
+    """
+    Padding between the widget box and its children, in pixels:
+    [padding_left, padding_top, padding_right, padding_bottom].
+
+    padding also accepts a two argument form [padding_horizontal,
+    padding_vertical] and a one argument form [padding].
+
+    .. versionadded:: 1.0.0
+
+    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to [8dp, 8dp, 8dp, 8dp].
     """
 
 
@@ -1029,7 +1079,9 @@ class MDRectangleFlatButton(ButtonContentsText, BaseButton):
     _default_text_color = "Primary"
 
 
-class MDRectangleFlatIconButton(ButtonContentsIconText, BaseButton):
+class MDRectangleFlatIconButton(
+    OldButtonIconMixin, ButtonContentsIconText, BaseButton
+):
     """
     A flat button with (by default) a primary color border, primary color text
     and a primary color icon on the left.
@@ -1045,18 +1097,25 @@ class MDRectangleFlatIconButton(ButtonContentsIconText, BaseButton):
 
 class MDRoundFlatButton(ButtonContentsText, BaseButton):
     """
-    A flat button with (by default) rounded corners, a primary color border
-    and primary color text.
+    A flat button with (by default) fully rounded corners, a primary
+    color border and primary color text.
     """
 
     _default_line_color = None
     _default_line_color_disabled = None
     _default_theme_text_color = "Custom"
     _default_text_color = "Primary"
-    _radius = NumericProperty("18dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.rounded_button = True
 
 
-class MDRoundFlatIconButton(ButtonContentsIconText, BaseButton):
+class MDRoundFlatIconButton(
+    OldButtonIconMixin,
+    ButtonContentsIconText,
+    BaseButton,
+):
     """
     A flat button with (by default) rounded corners, a primary color border,
     primary color text and a primary color icon on the left.
@@ -1068,7 +1127,10 @@ class MDRoundFlatIconButton(ButtonContentsIconText, BaseButton):
     _default_theme_icon_color = "Custom"
     _default_text_color = "Primary"
     _default_icon_color = "Primary"
-    _radius = NumericProperty("18dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.rounded_button = True
 
 
 class MDFillRoundFlatButton(ButtonContentsText, BaseButton):
@@ -1081,10 +1143,17 @@ class MDFillRoundFlatButton(ButtonContentsText, BaseButton):
     _default_md_bg_color_disabled = None
     _default_theme_text_color = "Custom"
     _default_text_color = "PrimaryHue"
-    _radius = NumericProperty("18dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.rounded_button = True
 
 
-class MDFillRoundFlatIconButton(ButtonContentsIconText, BaseButton):
+class MDFillRoundFlatIconButton(
+    OldButtonIconMixin,
+    ButtonContentsIconText,
+    BaseButton,
+):
     """
     A flat button with (by default) rounded corners, a primary color fill,
     primary color text and a primary color icon on the left.
@@ -1096,10 +1165,13 @@ class MDFillRoundFlatIconButton(ButtonContentsIconText, BaseButton):
     _default_theme_icon_color = "Custom"
     _default_text_color = "PrimaryHue"
     _default_icon_color = "PrimaryHue"
-    _radius = NumericProperty("18dp")
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.rounded_button = True
 
 
-class MDIconButton(ButtonContentsIcon, BaseButton):
+class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
     """A simple rounded icon button."""
 
     icon = StringProperty("checkbox-blank-circle")
@@ -1138,10 +1210,11 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
     and defaults to `None` (set by button class).
     """
 
-    _min_width = 0
+    _min_width = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.rounded_button = True
         Clock.schedule_once(self.set_size)
 
     def set_size(self, interval: Union[int, float]) -> NoReturn:
@@ -1157,13 +1230,9 @@ class MDIconButton(ButtonContentsIcon, BaseButton):
             "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
         )
 
-    def on_width(self, instance_button, width: Union[int, float]) -> NoReturn:
-        """Sets the radius to half the width."""
-
-        self._radius = self.width / 2
-
 
 class MDFloatingActionButton(
+    OldButtonIconMixin,
     RoundedRectangularElevationBehavior,
     ButtonElevationBehaviour,
     ButtonContentsIcon,
@@ -1198,9 +1267,9 @@ class MDFloatingActionButton(
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.bind(material_style=self.set_size)
-        self.theme_cls.bind(material_style=self.set_radius)
+        self.theme_cls.bind(material_style=self.set__radius)
         Clock.schedule_once(self.set_size)
-        Clock.schedule_once(self.set_radius)
+        Clock.schedule_once(self.set__radius)
         Clock.schedule_once(self.set_font_size)
 
     def set_font_size(self, *args) -> NoReturn:
@@ -1210,30 +1279,28 @@ class MDFloatingActionButton(
             else:
                 self.user_font_size = 0
 
-    def set_radius(self, *args) -> NoReturn:
+    def set__radius(self, *args) -> NoReturn:
         if self.theme_cls.material_style == "M2":
-            self._radius = self.width / 2
+            self.rounded_button = True
         else:
-            if self.type == "large":
-                self._radius = 32
+            self.rounded_button = False
+            if self.type == "small":
+                self._radius = dp(12)
             elif self.type == "standard":
-                self._radius = 16
-            elif self.type == "small":
-                self._radius = 14
+                self._radius = dp(16)
+            elif self.type == "large":
+                self._radius = dp(28)
 
     def set_size(self, *args) -> NoReturn:
         if self.theme_cls.material_style == "M2":
-            self.width = dp(56)
-            self.height = dp(56)
+            self.size = dp(56), dp(56)
         else:
             if self.type == "small":
-                self.size = (dp(40), dp(40))
+                self.size = dp(40), dp(40)
             elif self.type == "standard":
-                self.width = dp(56)
-                self.height = dp(56)
+                self.size = dp(56), dp(56)
             elif self.type == "large":
-                self.width = dp(96)
-                self.height = dp(96)
+                self.size = dp(96), dp(96)
 
     def on_type(
         self, instance_md_floating_action_button, type: str

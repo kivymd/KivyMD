@@ -775,6 +775,7 @@ class BaseButton(
 
     def set_all_colors(self, *args) -> NoReturn:
         """Set all button colours."""
+
         self.set_button_colors()
         self.set_text_color()
         self.set_icon_color()

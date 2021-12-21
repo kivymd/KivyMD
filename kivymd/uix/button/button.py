@@ -725,7 +725,7 @@ class BaseButton(
     """
 
     # Properties used for rendering
-    _radius = BoundedNumericProperty(dp(4), min=0.1, errorvalue=0.1)
+    _radius = BoundedNumericProperty(dp(4), min=0.0999, errorvalue=0.1)
     # Note - _radius must be > 0 to avoid rendering issues
     _md_bg_color = ColorProperty(None)
     _md_bg_color_disabled = ColorProperty(None)

@@ -85,7 +85,7 @@
         # Cursor blink.
         Color:
             rgba:
-                self.line_color_focus \
+                (self.text_color_focus if self.focus else self._text_color_normal) \
                 if self.focus and not self._cursor_blink \
                 else (0, 0, 0, 0)
         Rectangle:

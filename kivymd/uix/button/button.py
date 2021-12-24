@@ -708,9 +708,20 @@ class BaseButton(
 
     md_bg_color_disabled = ColorProperty(None)
     """
-    Disabled button text color.
+    The background color of the button when the button is disabled.
 
     :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    disabled_color = ColorProperty(None)
+    """
+    The color of the text and icon when the button is disabled, in the 
+    (r, g, b, a) format.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`disabled_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -724,9 +735,10 @@ class BaseButton(
     and defaults to `False`.
     """
 
-    # Properties used for rendering
+    # Note - _radius must be > 0 to avoid rendering issues.
     _radius = BoundedNumericProperty(dp(4), min=0.0999, errorvalue=0.1)
-    # Note - _radius must be > 0 to avoid rendering issues
+    # Properties used for rendering.
+    _disabled_color = ColorProperty(None)
     _md_bg_color = ColorProperty(None)
     _md_bg_color_disabled = ColorProperty(None)
     _line_color = ColorProperty(None)
@@ -767,11 +779,32 @@ class BaseButton(
             text_color=self.set_text_color,
             theme_icon_color=self.set_icon_color,
             icon_color=self.set_icon_color,
+            disabled_color=self.set_disabled_color,
             rounded_button=self.set_radius,
             height=self.set_radius,
         )
         Clock.schedule_once(self.set_all_colors)
         Clock.schedule_once(self.set_radius)
+
+    def set_disabled_color(self, *args):
+        """
+        Sets the color for the icon, text and line of the button when button
+        is disabled.
+        """
+
+        if self.disabled:
+            disabled_color = (
+                self.disabled_color
+                if self.disabled_color
+                else self.theme_cls.disabled_hint_text_color
+            )
+            self._disabled_color = disabled_color
+            # Button icon color.
+            if "lbl_ic" in self.ids:
+                self.ids.lbl_ic.disabled_color = disabled_color
+            # Button text color.
+            if "lbl_txt" in self.ids:
+                self.ids.lbl_txt.disabled_color = disabled_color
 
     def set_all_colors(self, *args) -> NoReturn:
         """Set all button colours."""
@@ -904,6 +937,9 @@ class BaseButton(
             )
             Animation(duration=0.05, _md_bg_color=md_bg_color).start(self)
         return super().on_touch_up(touch)
+
+    def on_disabled(self, instance_button, disabled_value: bool) -> NoReturn:
+        Clock.schedule_once(self.set_disabled_color)
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):

@@ -465,6 +465,7 @@ You can set your color values ​​for background, text of buttons etc:
 """
 
 __all__ = (
+    "BaseButton",
     "MDIconButton",
     "MDFloatingActionButton",
     "MDFlatButton",

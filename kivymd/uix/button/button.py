@@ -614,7 +614,7 @@ class BaseButton(
     Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
     `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
 
-    ... versionadded:: 1.0.0
+    .. versionadded:: 1.0.0
 
     :attr:`theme_icon_color` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `None` (set by button subclass).

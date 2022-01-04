@@ -211,7 +211,7 @@ class ThemeManager(EventDispatcher):
     .. code-block:: python
 
         from kivymd.app import MDApp
-        from kivymd.screen import MDScreen
+        from kivymd.uix.screen import MDScreen
         from kivymd.uix.button import MDRectangleFlatButton
 
 
@@ -248,7 +248,7 @@ class ThemeManager(EventDispatcher):
     .. code-block:: python
 
         from kivymd.app import MDApp
-        from kivymd.screen import MDScreen
+        from kivymd.uix.screen import MDScreen
         from kivymd.uix.button import MDRectangleFlatButton
 
 

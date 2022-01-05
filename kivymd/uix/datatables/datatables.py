@@ -701,12 +701,14 @@ class TableData(RecycleView):
 
     def on_mouse_select(self, instance_cell_row) -> NoReturn:
         """Called on the ``on_enter`` event of the :class:`~CellRow` class."""
-
+        """
         if not self.pagination_menu_open:
             if self.ids.row_controller.selected_row != instance_cell_row.index:
                 self.ids.row_controller.selected_row = instance_cell_row.index
                 self.ids.row_controller.select_current(self)
-
+        """
+        pass
+    
     def on_rows_num(self, instance_table_date, value_rows_num: int) -> NoReturn:
         if not self._to_value:
             self._to_value = value_rows_num

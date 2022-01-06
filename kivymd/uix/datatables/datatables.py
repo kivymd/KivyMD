@@ -488,7 +488,7 @@ class TableData(RecycleView):
         self.cols_minimum = table_header.cols_minimum
         self.set_row_data()
         self.effect_cls = self._parent.effect_cls
-        Clock.schedule_once(self.set_default_first_row, 0)
+        #Clock.schedule_once(self.set_default_first_row, 0)
 
     def get_select_row(self, index: int) -> NoReturn:
         """Returns the current row with all elements."""

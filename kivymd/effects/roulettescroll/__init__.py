@@ -1,6 +1,6 @@
 """
-Components/RouletteScrollEffect
-===============================
+Effects/RouletteScrollEffect
+============================
 
 This is a subclass of :class:`kivy.effects.ScrollEffect` that simulates the
 motion of a roulette, or a notched wheel (think Wheel of Fortune). It is

@@ -806,6 +806,8 @@ class BaseButton(
             # Button text color.
             if "lbl_txt" in self.ids:
                 self.ids.lbl_txt.disabled_color = disabled_color
+        else:
+            self._disabled_color = self._line_color
 
     def set_all_colors(self, *args) -> NoReturn:
         """Set all button colours."""
@@ -1262,6 +1264,8 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.rounded_button = True
+        # FIXME: GraphicException: Invalid width value, must be > 0
+        self.line_width = 0.001
         Clock.schedule_once(self.set_size)
 
     def set_size(self, interval: Union[int, float]) -> NoReturn:
@@ -1309,6 +1313,8 @@ class MDFloatingActionButton(
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        # FIXME: GraphicException: Invalid width value, must be > 0
+        self.line_width = 0.001
         self.theme_cls.bind(material_style=self.set_size)
         self.theme_cls.bind(material_style=self.set__radius)
         Clock.schedule_once(self.set_size)

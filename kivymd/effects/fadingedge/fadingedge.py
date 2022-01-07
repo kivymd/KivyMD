@@ -1,6 +1,6 @@
 """
-Components/FadingEdgeEffect
-===============================
+Effects/FadingEdgeEffect
+========================
 
 .. versionadded:: 1.0.0
 

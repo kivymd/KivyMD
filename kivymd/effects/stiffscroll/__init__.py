@@ -1,6 +1,6 @@
 """
-Stiff Scroll Effect
-===================
+Effects/StiffScrollEffect
+=========================
 
 An Effect to be used with ScrollView to prevent scrolling beyond
 the bounds, but politely.

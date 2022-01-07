@@ -37,3 +37,4 @@ Unreleased
 * `MDFloatingActionButton <https://kivymd.readthedocs.io/en/latest/components/button/#mdfloatingactionbutton>`_ class `configured according to M3 <https://kivymd.readthedocs.io/en/latest/components/button/#material-design-style-3>`_ style;
 * Ripple animation for round buttons customized to material design standards;
 * `Fix <https://github.com/kivymd/KivyMD/pull/1141>`_ `Warning, too much iteration done before the next frame` for button classes;
+* Added `FadingEdgeEffect class <https://kivymd.readthedocs.io/en/latest/effects/fadingedgeeffect/>`_

@@ -1444,17 +1444,20 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             rows_num=self.rows_num,
             _parent=self,
         )
+        self.table_data.bar_width = 3
+        self.table_data.scroll_type = ['bars', 'content']
         self.register_event_type("on_row_press")
         self.register_event_type("on_check_press")
         self.pagination = TablePagination(table_data=self.table_data)
         self.table_data.pagination = self.pagination
         self.header.table_data = self.table_data
-        self.table_data.fbind("scroll_x", self._scroll_with_header)
+        #self.table_data.fbind("scroll_x", self._scroll_with_header)
         self.ids.container.add_widget(self.header)
         self.ids.container.add_widget(self.table_data)
         if self.use_pagination:
             self.ids.container.add_widget(self.pagination)
         Clock.schedule_once(self.create_pagination_menu, 0.5)
+        Clock.schedule_interval(lambda dt: self.update_header_scroll_x(), 0.01) # update scroll bar of header
         self.bind(row_data=self.update_row_data)
 
     def update_row_data(self, instance_data_table, data: list) -> NoReturn:
@@ -1482,6 +1485,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         self.table_data.set_next_row_data_parts("")
         self.pagination.ids.button_back.disabled = True
         Clock.schedule_once(self.create_pagination_menu, 0.5)
+
+    def update_header_scroll_x(self):
+        self.header.scroll_x = self.table_data.scroll_x
 
     def add_row(self, data: Union[list, tuple]) -> NoReturn:
         """

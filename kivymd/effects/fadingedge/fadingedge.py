@@ -56,7 +56,7 @@ from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.metrics import dp
-from kivy.properties import ColorProperty, NumericProperty, BooleanProperty
+from kivy.properties import BooleanProperty, ColorProperty, NumericProperty
 
 from kivymd.theming import ThemableBehavior
 

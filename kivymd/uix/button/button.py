@@ -1690,13 +1690,11 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                                 _padding_right=0,
                                 d=self.opening_time,
                                 t=self.opening_transition,
+                                _elevation=0,
                             ).start(instance_button)
-                            if self.hint_animation:
-                                Animation(
-                                    opacity=0, d=0.1, t=self.opening_transition
-                                ).start(widget)
-                            break
-                    break
+                            Animation(
+                                opacity=0, d=0.1, t=self.opening_transition
+                            ).start(widget)
 
     def on_enter(self, instance_button: MDFloatingBottomButton) -> NoReturn:
         """Called when the mouse cursor is over a button from the stack."""
@@ -1705,6 +1703,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             for widget in self.children:
                 if isinstance(widget, MDFloatingLabel) and self.hint_animation:
                     widget._elevation = 0
+                    Animation.cancel_all(widget)
                     for item in self.data.items():
                         if widget.text in item:
                             Animation(
@@ -1713,14 +1712,19 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                                 d=self.opening_time,
                                 t=self.opening_transition,
                             ).start(instance_button)
-                            if self.hint_animation:
+                            if (
+                                instance_button.icon
+                                == self.data[f"{widget.text}"]
+                            ):
                                 Animation(
                                     opacity=1,
                                     d=self.opening_time,
                                     t=self.opening_transition,
                                 ).start(widget)
-                            break
-                    break
+                            else:
+                                Animation(
+                                    opacity=0, d=0.1, t=self.opening_transition
+                                ).start(widget)
 
     def on_data(self, instance_speed_dial, data: dict) -> NoReturn:
         """Creates a stack of buttons."""

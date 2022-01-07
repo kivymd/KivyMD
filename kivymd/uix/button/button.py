@@ -1684,7 +1684,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                                 _padding_right=0,
                                 d=self.opening_time,
                                 t=self.opening_transition,
-                                _elevation=0
+                                _elevation=0,
                             ).start(instance_button)
                             Animation(
                                 opacity=0, d=0.1, t=self.opening_transition
@@ -1706,11 +1706,14 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                                 d=self.opening_time,
                                 t=self.opening_transition,
                             ).start(instance_button)
-                            if instance_button.icon == self.data[f"{widget.text}"]:
+                            if (
+                                instance_button.icon
+                                == self.data[f"{widget.text}"]
+                            ):
                                 Animation(
                                     opacity=1,
                                     d=self.opening_time,
-                                    t=self.opening_transition
+                                    t=self.opening_transition,
                                 ).start(widget)
                             else:
                                 Animation(

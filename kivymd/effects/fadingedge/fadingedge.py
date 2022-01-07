@@ -45,6 +45,7 @@ The `FadingEdgeEffect` class implements a fade effect for `KivyMD` widgets:
     Test().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fading-edge-effect-white.gif
+    :align: center
 
 .. note:: Use the same color value for the fade_color parameter as for the
     parent widget.

@@ -485,6 +485,9 @@ class CommonElevationBehavior(Widget):
 
 
             Example().run()
+
+    :attr:`elevation` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0`.
     """
 
     # Shadow rendering properties.

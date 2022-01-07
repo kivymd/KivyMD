@@ -19,6 +19,7 @@ Contents
    /themes/index
    /components/index
    /behaviors/index
+   /effects/index
    /templates/index
    /changelog/index
    /about

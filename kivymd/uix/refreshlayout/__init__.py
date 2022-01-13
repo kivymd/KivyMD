@@ -1,1 +1,1 @@
-from .refreshlayout import MDScrollViewRefreshLayout  # NOQA F401
+from .refreshlayout import MDScrollViewRefreshLayout, MDRecycleViewRefreshLayout  # NOQA F401

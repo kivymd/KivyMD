@@ -100,7 +100,7 @@ Example
     Example().run()
 """
 
-__all__ = ("MDScrollViewRefreshLayout",)
+__all__ = ("MDScrollViewRefreshLayout", "MDRecycleViewRefreshLayout",)
 
 import os
 from typing import NoReturn, Union
@@ -113,6 +113,7 @@ from kivy.metrics import dp
 from kivy.properties import ColorProperty, NumericProperty, ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.recycleview import RecycleView
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
@@ -151,6 +152,41 @@ class _RefreshScrollEffect(DampedScrollEffect):
 
 
 class MDScrollViewRefreshLayout(ScrollView):
+    root_layout = ObjectProperty()
+    """
+    The spinner will be attached to this layout.
+
+    :attr:`root_layout` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    def __init__(self, **kargs):
+        super().__init__(**kargs)
+        self.effect_cls = _RefreshScrollEffect
+        self._work_spinnrer = False
+        self._did_overscroll = False
+        self.refresh_spinner = None
+
+    def on_touch_up(self, *args):
+        if self._did_overscroll and not self._work_spinnrer:
+            if self.refresh_callback:
+                self.refresh_callback()
+            if not self.refresh_spinner:
+                self.refresh_spinner = RefreshSpinner(_refresh_layout=self)
+                self.root_layout.add_widget(self.refresh_spinner)
+            self.refresh_spinner.start_anim_spinner()
+            self._work_spinnrer = True
+            self._did_overscroll = False
+            return True
+
+        return super().on_touch_up(*args)
+
+    def refresh_done(self) -> NoReturn:
+        if self.refresh_spinner:
+            self.refresh_spinner.hide_anim_spinner()
+
+
+class MDRecycleViewRefreshLayout(RecycleView):
     root_layout = ObjectProperty()
     """
     The spinner will be attached to this layout.

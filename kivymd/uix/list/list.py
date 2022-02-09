@@ -928,6 +928,12 @@ class ImageLeftWidgetWithoutTouch(CircularRippleBehavior, ILeftBody, FitImage):
 
     _no_ripple_effect = True
 
+    def on_release(self):
+        self.parent.parent.dispatch("on_release")
+
+    def on_press(self):
+        self.parent.parent.dispatch("on_press")
+
 
 class ImageRightWidget(CircularRippleBehavior, IRightBodyTouch, FitImage):
     pass
@@ -942,6 +948,12 @@ class ImageRightWidgetWithoutTouch(
 
     _no_ripple_effect = True
 
+    def on_release(self):
+        self.parent.parent.dispatch("on_release")
+
+    def on_press(self):
+        self.parent.parent.dispatch("on_press")
+
 
 class IconRightWidget(IRightBodyTouch, MDIconButton):
     pos_hint = {"center_y": 0.5}
@@ -955,6 +967,12 @@ class IconRightWidgetWithoutTouch(IRightBody, MDIconButton):
     pos_hint = {"center_y": 0.5}
     _no_ripple_effect = True
 
+    def on_release(self):
+        self.parent.parent.dispatch("on_release")
+
+    def on_press(self):
+        self.parent.parent.dispatch("on_press")
+
 
 class IconLeftWidget(ILeftBodyTouch, MDIconButton):
     pos_hint = {"center_y": 0.5}
@@ -967,6 +985,12 @@ class IconLeftWidgetWithoutTouch(ILeftBody, MDIconButton):
 
     pos_hint = {"center_y": 0.5}
     _no_ripple_effect = True
+
+    def on_release(self):
+        self.parent.parent.dispatch("on_release")
+
+    def on_press(self):
+        self.parent.parent.dispatch("on_press")
 
 
 class CheckboxLeftWidget(ILeftBodyTouch, MDCheckbox):

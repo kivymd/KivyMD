@@ -1357,7 +1357,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 self.set_helper_text_color(self.error_color)
         else:
             self.set_max_length_text_color(self.max_length_text_color)
-            self.set_active_underline_color(self._line_color_focus)
+            self.set_active_underline_color(self.line_color_focus)
             if self.hint_text:
                 self.set_hint_text_color(self.focus)
             if self.helper_text:

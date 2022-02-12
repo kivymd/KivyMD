@@ -926,6 +926,14 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `'Roboto'`.
     """
 
+    reset_focus_on_text_empty = BooleanProperty(False)
+    """
+    Is the text field unfocused if there are no characters in it.
+
+    :attr:`reset_focus_on_text_empty` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     # The x-axis position of the hint text in the text field.
     _hint_x = NumericProperty(0)
     # The y-axis position of the hint text in the text field.
@@ -1219,8 +1227,9 @@ class MDTextField(ThemableBehavior, TextInput):
                 self.set_notch_rectangle()
 
         if not self.text:
-            self.on_focus(instance_text_field, False)
-            self.focus = False
+            if self.reset_focus_on_text_empty:
+                self.on_focus(instance_text_field, False)
+                self.focus = False
 
     def set_objects_labels(self) -> NoReturn:
         """
@@ -1357,7 +1366,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 self.set_helper_text_color(self.error_color)
         else:
             self.set_max_length_text_color(self.max_length_text_color)
-            self.set_active_underline_color(self._line_color_focus)
+            self.set_active_underline_color(self.line_color_focus)
             if self.hint_text:
                 self.set_hint_text_color(self.focus)
             if self.helper_text:

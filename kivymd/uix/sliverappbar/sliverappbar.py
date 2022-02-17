@@ -118,17 +118,17 @@ Example
 __all__ = ("MDSliverAppbar", "MDSliverAppbarHeader", "MDSliverAppbarContent")
 
 import os
-from typing import Union, NoReturn
+from typing import NoReturn, Union
 
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang.builder import Builder
 from kivy.properties import (
     BooleanProperty,
-    NumericProperty,
     ColorProperty,
-    VariableListProperty,
+    NumericProperty,
     ObjectProperty,
+    VariableListProperty,
 )
 
 from kivymd import uix_path

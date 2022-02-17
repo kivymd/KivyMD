@@ -1,0 +1,40 @@
+#:import ScrollEffect kivy.effects.scroll.ScrollEffect
+
+
+<MDSliverAppbar>
+
+    FloatLayout:
+        id: float_box
+
+        BoxLayout:
+            canvas.after:
+                Color:
+                    rgba:
+                        root.background_color \
+                        if root.background_color else \
+                        root.theme_cls.primary_color
+                    a: root._opacity
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            id: header
+            size_hint_y: None
+            height: root.max_height +  root.radius[0]
+            pos: self.x, root.height - root.max_height - root.radius[0]
+
+        ScrollView:
+            id: scroll
+            effect_cls: ScrollEffect
+            on_vbar: root.on_vbar()
+            on_scroll_start:
+                if not root._scroll_was_moving: root._scroll_was_moving = True
+
+            MDBoxLayout:
+                id: scroll_box
+                adaptive_height: True
+                orientation: "vertical"
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: root.max_height

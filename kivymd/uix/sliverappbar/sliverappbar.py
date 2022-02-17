@@ -366,7 +366,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
     max_opacity = NumericProperty(1)
     """
     Maximum background transparency value for the
-    :class:`~kivymd.uix.sliverappbar.sliverappbar.MDSLiverAppbarHeader` class.
+    :class:`~kivymd.uix.sliverappbar.sliverappbar.MDSliverAppbarHeader` class.
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/sliver-app-bar-max-opacity.gif
         :align: center

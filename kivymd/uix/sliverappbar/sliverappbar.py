@@ -182,11 +182,11 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
 
     toolbar_cls = ObjectProperty()
     """
-    Must be an object of the :class:`~kivymd.uix.toolbar.MDToolbar class`.
-    See :class:`~kivymd.uix.toolbar.MDToolbar class` class documentation
+    Must be an object of the :class:`~kivymd.uix.toolbar.toolbar.MDToolbar class`.
+    See :class:`~kivymd.uix.toolbar.toolbar.MDToolbar class` class documentation
     for more information.
 
-    By default, MDSLiverAppbar widget uses the MDToolbar class with no
+    By default, MDSliverAppbar widget uses the MDToolbar class with no
     parameters.
 
     .. code-block:: python
@@ -400,7 +400,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
         """
         Called when the list of custom content is being scrolled.
 
-        :type instance_sliverappbar: :class:`~MDSliverAppbar`
+        :param instance_sliverappbar: :class:`~MDSliverAppbar`
         :param value: see :attr:`~kivy.uix.scrollview.ScrollView.scroll_y`
         :param direction: scroll direction: 'up/down'
         """

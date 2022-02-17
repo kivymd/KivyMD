@@ -182,8 +182,8 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
 
     toolbar_cls = ObjectProperty()
     """
-    Must be an object of the :class:`~kivymd.uix.toolbar.toolbar.MDToolbar class`.
-    See :class:`~kivymd.uix.toolbar.toolbar.MDToolbar class` class documentation
+    Must be an object of the :class:`~kivymd.uix.toolbar.toolbar.MDToolbar' class.
+    See :class:`~kivymd.uix.toolbar.toolbar.MDToolbar` class documentation
     for more information.
 
     By default, MDSliverAppbar widget uses the MDToolbar class with no
@@ -366,7 +366,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
     max_opacity = NumericProperty(1)
     """
     Maximum background transparency value for the
-    :class:`~MDSLiverAppbarHeader` class.
+    :class:`~kivymd.uix.sliverappbar.sliverappbar.MDSLiverAppbarHeader` class.
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/sliver-app-bar-max-opacity.gif
         :align: center

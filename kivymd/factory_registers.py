@@ -5,6 +5,9 @@ Register KivyMD widgets to use without import.
 from kivy.factory import Factory
 
 register = Factory.register
+register("MDSliverAppbar", module="kivymd.uix.sliverappbar")
+register("MDSliverAppbarContent", module="kivymd.uix.sliverappbar")
+register("MDSliverAppbarHeader", module="kivymd.uix.sliverappbar")
 register("MDNavigationRail", module="kivymd.uix.navigationrail")
 register("MDNavigationRailItem", module="kivymd.uix.navigationrail")
 register("MDSwiper", module="kivymd.uix.swiper")

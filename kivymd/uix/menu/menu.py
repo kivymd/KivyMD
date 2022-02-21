@@ -75,7 +75,8 @@ Wrong
 Customization of menu item
 --------------------------
 
-Menu items are created in the same way as items for the :class:`~kivy.uix.recycleview.RecycleView` class.
+Menu items are created in the same way as items for the
+:class:`~kivy.uix.recycleview.RecycleView` class.
 
 .. code-block:: python
 
@@ -172,8 +173,9 @@ Menu items are created in the same way as items for the :class:`~kivy.uix.recycl
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-right.gif
     :align: center
 
-Header Menu
------------
+.. Header:
+Header
+------
 
 .. code-block:: python
 
@@ -317,8 +319,9 @@ the callback using `lambda x: app.callback(x)`.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-menu.gif
     :align: center
 
-Position menu
-=============
+.. Position:
+Position
+========
 
 Bottom position
 ---------------
@@ -520,6 +523,11 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     .. versionadded:: 0.104.2
 
+    See Header_ for more information.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-header-cls.png
+        :align: center
+
     :attr:`header_cls` is a :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
@@ -528,17 +536,55 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
     See :attr:`~kivy.uix.recycleview.RecycleView.data`.
 
+    .. code-block:: python
+
+        items = [
+            {
+                "viewclass": "OneLineListItem",
+                "height": dp(56),
+                "text": f"Item {i}",
+            }
+            for i in range(5)
+        ]
+        self.menu = MDDropdownMenu(
+            items=items,
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-items.png
+        :align: center
+
     :attr:`items` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
     width_mult = NumericProperty(1)
     """
-    This number multiplied by the standard increment (56dp on mobile,
-    64dp on desktop, determines the width of the menu items.
+    This number multiplied by the standard increment ('56dp' on mobile, '64dp'
+    on desktop), determines the width of the menu items.
 
     If the resulting number were to be too big for the application Window,
     the multiplier will be adjusted for the biggest possible one.
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            width_mult=4,
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-width-mult-4.png
+        :align: center
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            width_mult=8,
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-width-mult-8.png
+        :align: center
 
     :attr:`width_mult` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `1`.
@@ -548,6 +594,26 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
     The menu will grow no bigger than this number. Set to 0 for no limit.
 
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            max_height=dp(112),
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-max-height-112.png
+        :align: center
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            max_height=dp(224),
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-max-height-224.png
+        :align: center
+
     :attr:`max_height` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
@@ -556,14 +622,54 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
     Margin between Window border and menu.
 
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            border_margin=dp(4),
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-border-margin-4.png
+        :align: center
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            border_margin=dp(24),
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-border-margin-24.png
+        :align: center
+
     :attr:`border_margin` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `4dp`.
     """
 
     ver_growth = OptionProperty(None, allownone=True, options=["up", "down"])
     """
-    Where the menu will grow vertically to when opening. Set to None to let
+    Where the menu will grow vertically to when opening. Set to `None` to let
     the widget pick for you. Available options are: `'up'`, `'down'`.
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            ver_growth="up",
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-ver-growth-up.gif
+        :align: center
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            ver_growth="down",
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-ver-growth-down.gif
+        :align: center
 
     :attr:`ver_growth` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
@@ -571,8 +677,28 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     hor_growth = OptionProperty(None, allownone=True, options=["left", "right"])
     """
-    Where the menu will grow horizontally to when opening. Set to None to let
+    Where the menu will grow horizontally to when opening. Set to `None` to let
     the widget pick for you. Available options are: `'left'`, `'right'`.
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            hor_growth="left",
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-hor-growth-left.gif
+        :align: center
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            hor_growth="right",
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-hor-growth-right.gif
+        :align: center
 
     :attr:`hor_growth` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
@@ -581,6 +707,16 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     background_color = ColorProperty(None)
     """
     Color of the background of the menu.
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            background_color=self.theme_cls.primary_light,
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-background-color.png
+        :align: center
 
     :attr:`background_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -618,6 +754,11 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     Menu window position relative to parent element.
     Available options are: `'auto'`, `'center'`, `'bottom'`.
 
+    See Position_ for more information.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position.png
+        :align: center
+
     :attr:`position` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'auto'`.
     """
@@ -625,6 +766,16 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     radius = VariableListProperty([dp(7)])
     """
     Menu radius.
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            radius=[24, 0, 24, 0],
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-radius.png
+        :align: center
 
     :attr:`radius` is a :class:`~kivy.properties.VariableListProperty`
     and defaults to `'[dp(7)]'`.
@@ -635,6 +786,16 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     Elevation value of menu dialog.
 
     .. versionadded:: 1.0.0
+
+    .. code-block:: python
+
+        self.menu = MDDropdownMenu(
+            elevation=16,
+            ...,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-elevation.png
+        :align: center
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `10`.
@@ -649,6 +810,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         Window.bind(on_resize=self.check_position_caller)
         Window.bind(on_maximize=self.set_menu_properties)
         Window.bind(on_restore=self.set_menu_properties)
+        Clock.schedule_once(self.ajust_radius)
         self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
         self.target_height = 0
@@ -708,7 +870,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     < Window.height - self._start_coords[1] - self.border_margin
                 ):
                     ver_growth = "up"
-                # Otherwise, let's pick the one with more space and adjust ourselves.
+                # Otherwise, let's pick the one with more space and adjust
+                # ourselves.
                 else:
                     # If there"s more space below us:
                     if (
@@ -743,7 +906,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     < self._start_coords[0] - self.border_margin
                 ):
                     hor_growth = "left"
-                # Otherwise, let's pick the one with more space and adjust ourselves.
+                # Otherwise, let's pick the one with more space and adjust
+                # ourselves.
                 else:
                     # if there"s more space to the right:
                     if (
@@ -774,17 +938,71 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 self.tar_x = self._start_coords[0] - self.target_width
             self._calculate_complete = True
 
+    def ajust_radius(self, interval: Union[int, float]) -> NoReturn:
+        """
+        Adjusts the radius of the first and last items in the menu list
+        according to the radius that is set for the menu.
+        """
+
+        radius_for_firt_item = self.radius[:2]
+        radius_for_last_item = self.radius[2:]
+
+        firt_data_item = self.items[0]
+        last_data_item = self.items[-1]
+
+        firt_data_item["radius"] = radius_for_firt_item + [0, 0]
+        last_data_item["radius"] = [0, 0] + radius_for_last_item
+        last_data_item["divider"] = None
+
+        self.items[0] = firt_data_item
+        self.items[-1] = last_data_item
+
+        # For all other elements of the list, except for the first and last,
+        # we set the value of the radius to `0`.
+        for i, data_item in enumerate(self.items):
+            if "radius" not in data_item:
+                data_item["radius"] = 0
+                self.items[i] = data_item
+
+    def adjust_position(self) -> str:
+        """
+        Returns value 'auto' for the menu position if the menu position is out
+        of screen.
+        """
+
+        target_width = self.target_width
+        target_height = self.target_height
+        caller = self.caller
+        position = self.position
+
+        if (
+            caller.x < target_width
+            or caller.x + target_width > Window.width
+            or caller.y + target_height > Window.height
+            or (caller.y < target_height and position == "center")
+        ):
+            position = "auto"
+            if self.hor_growth or self.ver_growth:
+                self.hor_growth = None
+                self.ver_growth = None
+                self.set_menu_properties()
+        return position
+
     def open(self) -> NoReturn:
         """Animate the opening of a menu window."""
 
         def open(interval):
             if not self._calculate_complete:
                 return
-            if self.position == "auto":
+
+            position = self.adjust_position()
+
+            if position == "auto":
                 self.menu.pos = self._start_coords
                 anim = Animation(
                     x=self.tar_x,
-                    y=self.tar_y,
+                    y=self.tar_y
+                    - (self.header_cls.height if self.header_cls else 0),
                     width=self.target_width,
                     height=self.target_height,
                     duration=self.opening_time,
@@ -793,17 +1011,17 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 )
                 anim.start(self.menu)
             else:
-                if self.position == "center":
+                if position == "center":
                     self.menu.pos = (
                         self._start_coords[0] - self.target_width / 2,
                         self._start_coords[1] - self.target_height / 2,
                     )
-                elif self.position == "bottom":
+                elif position == "bottom":
                     self.menu.pos = (
                         self._start_coords[0] - self.target_width / 2,
                         self.caller.pos[1] - self.target_height,
                     )
-                elif self.position == "top":
+                elif position == "top":
                     self.menu.pos = (
                         self._start_coords[0] - self.target_width / 2,
                         self.caller.pos[1] + self.caller.height,
@@ -828,6 +1046,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     def on_header_cls(
         self, instance_dropdown_menu, instance_user_menu_header
     ) -> NoReturn:
+        """Called when a value is set to the :attr:`header_cls` parameter."""
+
         def add_content_header_cls(interval):
             self.ids.content_header.clear_widgets()
             self.ids.content_header.add_widget(instance_user_menu_header)
@@ -857,7 +1077,58 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.height = 0
         self.menu.opacity = 0
 
-    def dismiss(self) -> NoReturn:
+    def dismiss(self, *args) -> NoReturn:
         """Closes the menu."""
 
         self.on_dismiss()
+
+
+if __name__ == "__main__":
+    # To test the correct menu position.
+    from kivy.lang import Builder
+    from kivy.metrics import dp
+
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDRaisedButton
+    from kivymd.uix.screen import MDScreen
+
+
+    class Test(MDApp):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            self.screen = MDScreen()
+            menu_items = [
+                {
+                    "viewclass": "OneLineListItem",
+                    "height": dp(56),
+                    "text": f"Item {i}",
+                }
+                for i in range(5)
+            ]
+            self.menu = MDDropdownMenu(items=menu_items, width_mult=4)
+
+        def open_menu(self, caller):
+            self.menu.caller = caller
+            self.menu.open()
+
+        def on_start(self):
+            pos_hints = [
+                {"top": 1, "left": 0.1},
+                {"top": 1, "center_x": 0.5},
+                {"top": 1, "right": 1},
+                {"center_y": 0.5, "left": 1},
+                {"bottom": 1, "left": 1},
+                {"bottom": 1, "center_x": 0.5},
+                {"bottom": 1, "right": 1},
+                {"center_y": 0.5, "right": 1},
+                {"center_y": 0.5, "center_x": 0.5},
+            ]
+            for pos_hint in pos_hints:
+                self.screen.add_widget(
+                    MDRaisedButton(pos_hint=pos_hint, on_release=self.open_menu)
+                )
+
+        def build(self):
+            return self.screen
+
+    Test().run()

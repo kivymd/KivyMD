@@ -283,6 +283,7 @@ from typing import NoReturn, Union
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.metrics import dp, sp
 from kivy.properties import (
     AliasProperty,
@@ -297,7 +298,6 @@ from kivy.properties import (
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.logger import Logger
 
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
@@ -434,7 +434,9 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `'primary'`.
     """
 
-    mode = OptionProperty("line", options=["rectangle", "round", "fill", "line"])
+    mode = OptionProperty(
+        "line", options=["rectangle", "round", "fill", "line"]
+    )
     """
     Text field mode.
     Available options are: `'line'`, `'rectangle'`, `'fill'`, `'round'`.
@@ -1333,7 +1335,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def on_hint_text(self, instance_text_field, hint_text: str) -> NoReturn:
         if hint_text:
-           self.__hint_text = hint_text
+            self.__hint_text = hint_text
         self._hint_text_label.text = hint_text
         self._hint_text_label.font_size = sp(16)
 
@@ -1425,7 +1427,8 @@ class MDTextFieldRound(MDTextField):
         Logger.warning(
             "KivyMD: "
             "The `MDTextFieldRound` class has been deprecated. "
-            "Use the `MDTextField` class instead with `mode='round'`")
+            "Use the `MDTextField` class instead with `mode='round'`"
+        )
 
 
 if __name__ == "__main__":

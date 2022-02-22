@@ -209,8 +209,8 @@ MDTextFieldRect
 
 .. Warning:: While there is no way to change the color of the border.
 
-Clickable icon for MDTextFieldRound
------------------------------------
+Clickable icon for MDTextField
+------------------------------
 
 .. code-block:: python
 

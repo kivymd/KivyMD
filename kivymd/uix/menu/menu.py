@@ -1092,7 +1092,6 @@ if __name__ == "__main__":
     from kivymd.uix.button import MDRaisedButton
     from kivymd.uix.screen import MDScreen
 
-
     class Test(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)

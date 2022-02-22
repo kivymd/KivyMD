@@ -175,6 +175,20 @@ Fill mode
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-mode.gif
     :align: center
 
+Round mode
+---------
+
+.. code-block:: kv
+
+    MDTextField:
+        hint_text: "Round mode"
+        mode: "round"
+        max_text_length: 15
+        helper_text: "Massage"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-mode.png
+    :align: center
+
 .. MDTextFieldRect:
 MDTextFieldRect
 ---------------
@@ -195,71 +209,6 @@ MDTextFieldRect
 
 .. Warning:: While there is no way to change the color of the border.
 
-.. MDTextFieldRound:
-MDTextFieldRound
-----------------
-
-Without icon
-------------
-
-.. code-block:: kv
-
-    MDTextFieldRound:
-        hint_text: 'Empty field'
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round.gif
-    :align: center
-
-With left icon
---------------
-
-.. Warning:: The icons in the :class:`~MDTextFieldRound` are static. You cannot
-    bind events to them.
-
-.. code-block:: kv
-
-    MDTextFieldRound:
-        icon_left: "email"
-        hint_text: "Field with left icon"
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-left-icon.png
-    :align: center
-
-With left and right icons
--------------------------
-
-.. code-block:: kv
-
-    MDTextFieldRound:
-        icon_left: 'key-variant'
-        icon_right: 'eye-off'
-        hint_text: 'Field with left and right icons'
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-left-right-icon.png
-    :align: center
-
-Control background color
-------------------------
-
-.. code-block:: kv
-
-    MDTextFieldRound:
-        icon_left: 'key-variant'
-        normal_color: app.theme_cls.accent_color
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-normal-color.gif
-    :align: center
-
-.. code-block:: kv
-
-    MDTextFieldRound:
-        icon_left: 'key-variant'
-        normal_color: app.theme_cls.accent_color
-        color_active: 1, 0, 0, 1
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-active-color.gif
-    :align: center
-
 Clickable icon for MDTextFieldRound
 -----------------------------------
 
@@ -276,24 +225,18 @@ Clickable icon for MDTextFieldRound
         size_hint_y: None
         height: text_field.height
 
-        MDTextFieldRound:
+        MDTextField:
             id: text_field
             hint_text: root.hint_text
             text: root.text
             password: True
-            color_active: app.theme_cls.primary_light
             icon_left: "key-variant"
-            padding:
-                self._lbl_icon_left.texture_size[1] + dp(10) if self.icon_left else dp(15), \
-                (self.height / 2) - (self.line_height / 2), \
-                self._lbl_icon_right.texture_size[1] + dp(20), \
-                0
 
         MDIconButton:
             icon: "eye-off"
-            ripple_scale: .5
             pos_hint: {"center_y": .5}
             pos: text_field.width - self.width + dp(8), 0
+            theme_text_color: "Hint"
             on_release:
                 self.icon = "eye" if self.icon == "eye-off" else "eye-off"
                 text_field.password = False if text_field.password is True else True
@@ -323,6 +266,9 @@ Clickable icon for MDTextFieldRound
 
     Test().run()
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-clickable_right-icon.gif
+    :align: center
+
 .. seealso::
 
     See more information in the :class:`~MDTextFieldRect` class.
@@ -351,6 +297,7 @@ from kivy.properties import (
 )
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
+from kivy.logger import Logger
 
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
@@ -440,6 +387,8 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Text for ``helper_text`` mode.
 
+
+
     :attr:`helper_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
@@ -485,9 +434,10 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `'primary'`.
     """
 
-    mode = OptionProperty("line", options=["rectangle", "fill", "line"])
+    mode = OptionProperty("line", options=["rectangle", "round", "fill", "line"])
     """
-    Text field mode. Available options are: `'line'`, `'rectangle'`, `'fill'`.
+    Text field mode.
+    Available options are: `'line'`, `'rectangle'`, `'fill'`, `'round'`.
 
     :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'line'`.
@@ -529,7 +479,7 @@ class MDTextField(ThemableBehavior, TextInput):
 
     line_anim = BooleanProperty(True)
     """
-    If True, then text field shows animated line when on focus.
+    If True, then text field shows animated underline when on focus.
 
     :attr:`line_anim` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -968,6 +918,8 @@ class MDTextField(ThemableBehavior, TextInput):
     _line_color_normal = ColorProperty([0, 0, 0, 0])
     _line_color_focus = ColorProperty([0, 0, 0, 0])
 
+    # Text to restore the text of the tale after clearing the text field.
+    __hint_text = StringProperty()
     # List of color attribute names that should be updated when changing the
     # application color palette.
     _colors_to_updated = ListProperty()
@@ -1138,47 +1090,50 @@ class MDTextField(ThemableBehavior, TextInput):
     def set_hint_text_color(self, focus: bool, error: bool = False) -> NoReturn:
         """Animates the color of the hint text."""
 
-        Animation(
-            _hint_text_color=(
-                self.hint_text_color_normal
-                if not focus
-                else self.hint_text_color_focus
-            )
-            if not error
-            else self.error_color,
-            duration=0.2,
-            t="out_quad",
-        ).start(self)
+        if self.mode != "round":
+            Animation(
+                _hint_text_color=(
+                    self.hint_text_color_normal
+                    if not focus
+                    else self.hint_text_color_focus
+                )
+                if not error
+                else self.error_color,
+                duration=0.2,
+                t="out_quad",
+            ).start(self)
 
     def set_pos_hint_text(self, y: float, x: float = 0) -> NoReturn:
         """Animates the x-axis width and y-axis height of the hint text."""
 
-        Animation(_hint_y=y, duration=0.2, t="out_quad").start(self)
-        if self.mode == "rectangle":
-            Animation(
-                _hint_x=x if not self.icon_left else dp(-16),
-                duration=0.2,
-                t="out_quad",
-            ).start(self)
-        elif self.mode == "fill":
-            Animation(
-                _hint_x=dp(16) if not self.icon_left else dp(36),
-                duration=0.2,
-                t="out_quad",
-            ).start(self)
-        elif self.mode == "line":
-            Animation(
-                _hint_x=dp(0) if not self.icon_left else dp(36),
-                duration=0.2,
-                t="out_quad",
-            ).start(self)
+        if self.mode != "round":
+            Animation(_hint_y=y, duration=0.2, t="out_quad").start(self)
+            if self.mode == "rectangle":
+                Animation(
+                    _hint_x=x if not self.icon_left else dp(-16),
+                    duration=0.2,
+                    t="out_quad",
+                ).start(self)
+            elif self.mode == "fill":
+                Animation(
+                    _hint_x=dp(16) if not self.icon_left else dp(36),
+                    duration=0.2,
+                    t="out_quad",
+                ).start(self)
+            elif self.mode == "line":
+                Animation(
+                    _hint_x=dp(0) if not self.icon_left else dp(36),
+                    duration=0.2,
+                    t="out_quad",
+                ).start(self)
 
     def set_hint_text_font_size(self, font_size: float) -> NoReturn:
         """Animates the font size of the hint text."""
 
-        Animation(
-            _hint_text_font_size=font_size, duration=0.2, t="out_quad"
-        ).start(self)
+        if self.mode != "round":
+            Animation(
+                _hint_text_font_size=font_size, duration=0.2, t="out_quad"
+            ).start(self)
 
     def set_max_text_length(self) -> NoReturn:
         """Called when text is entered into a text field."""
@@ -1221,6 +1176,11 @@ class MDTextField(ThemableBehavior, TextInput):
         if not self.text:
             self.on_focus(instance_text_field, False)
             self.focus = False
+
+        if self.mode == "round" and self.text:
+            self.hint_text = ""
+        if self.mode == "round" and not self.text:
+            self.hint_text = self.__hint_text
 
     def set_objects_labels(self) -> NoReturn:
         """
@@ -1372,6 +1332,8 @@ class MDTextField(ThemableBehavior, TextInput):
                 self.set_helper_text_color(self.helper_text_color_normal)
 
     def on_hint_text(self, instance_text_field, hint_text: str) -> NoReturn:
+        if hint_text:
+           self.__hint_text = hint_text
         self._hint_text_label.text = hint_text
         self._hint_text_label.font_size = sp(16)
 
@@ -1452,124 +1414,18 @@ class MDTextField(ThemableBehavior, TextInput):
         """Method override to avoid duplicate hint text texture."""
 
 
-class MDTextFieldRound(ThemableBehavior, TextInput):
-    icon_left = StringProperty()
+class MDTextFieldRound(MDTextField):
     """
-    Left icon.
-
-    :attr:`icon_left` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
+    .. deprecated:: 1.0.0
+        Use :class:`~MDTextField` class instead.
     """
-
-    icon_left_color = ColorProperty((0, 0, 0, 1))
-    """
-    Color of left icon in ``rgba`` format.
-
-    :attr:`icon_left_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `(0, 0, 0, 1)`.
-    """
-
-    icon_right = StringProperty()
-    """
-    Right icon.
-
-    :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    icon_right_color = ColorProperty((0, 0, 0, 1))
-    """
-    Color of right icon.
-
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `(0, 0, 0, 1)`.
-    """
-
-    line_color = ColorProperty(None)
-    """
-    Field line color.
-
-    :attr:`line_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    normal_color = ColorProperty(None)
-    """
-    Field color if `focus` is `False`.
-
-    :attr:`normal_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    color_active = ColorProperty(None)
-    """
-    Field color if `focus` is `True`.
-
-    :attr:`color_active` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    _color_active = ColorProperty(None)
-    _icon_left_color_copy = ColorProperty(None)
-    _icon_right_color_copy = ColorProperty(None)
 
     def __init__(self, **kwargs):
-        self._lbl_icon_left = MDIcon(theme_text_color="Custom")
-        self._lbl_icon_right = MDIcon(theme_text_color="Custom")
         super().__init__(**kwargs)
-        self.cursor_color = self.theme_cls.primary_color
-        self.icon_left_color = self.theme_cls.text_color
-        self.icon_right_color = self.theme_cls.text_color
-
-        if not self.normal_color:
-            self.normal_color = self.theme_cls.primary_light
-        if not self.line_color:
-            self.line_color = self.theme_cls.primary_dark
-        if not self.color_active:
-            self._color_active = (0.5, 0.5, 0.5, 0.5)
-
-    def on_focus(self, instance_text_field, focus_value: bool) -> NoReturn:
-        if focus_value:
-            self.icon_left_color = self.theme_cls.primary_color
-            self.icon_right_color = self.theme_cls.primary_color
-        else:
-            self.icon_left_color = (
-                self._icon_left_color_copy or self.theme_cls.text_color
-            )
-            self.icon_right_color = (
-                self._icon_right_color_copy or self.theme_cls.text_color
-            )
-
-    def on_icon_left(self, instance_text_field, icon_name: str) -> NoReturn:
-        self._lbl_icon_left.icon = icon_name
-
-    def on_icon_left_color(self, instance_text_field, color: list) -> NoReturn:
-        self._lbl_icon_left.text_color = color
-        if (
-            not self._icon_left_color_copy
-            and color != self.theme_cls.text_color
-            and color != self.theme_cls.primary_color
-        ):
-            self._icon_left_color_copy = color
-
-    def on_icon_right(self, instance_text_field, icon_name: str) -> NoReturn:
-        self._lbl_icon_right.icon = icon_name
-
-    def on_icon_right_color(self, instance_text_field, color: list) -> NoReturn:
-        self._lbl_icon_right.text_color = color
-        if (
-            not self._icon_right_color_copy
-            and color != self.theme_cls.text_color
-            and color != self.theme_cls.primary_color
-        ):
-            self._icon_right_color_copy = color
-
-    def on_color_active(self, instance_text_field, color: list) -> NoReturn:
-        if color != [0, 0, 0, 0.5]:
-            self._color_active = color
-            self._color_active[-1] = 0.5
-        else:
-            self._color_active = color
+        Logger.warning(
+            "KivyMD: "
+            "The `MDTextFieldRound` class has been deprecated. "
+            "Use the `MDTextField` class instead with `mode='round'`")
 
 
 if __name__ == "__main__":
@@ -1584,7 +1440,7 @@ MDScreen:
     MDBoxLayout:
         id: box
         orientation: "vertical"
-        spacing: "28dp"
+        spacing: "20dp"
         adaptive_height: True
         size_hint_x: .8
         pos_hint: {"center_x": .5, "center_y": .5}
@@ -1593,6 +1449,7 @@ MDScreen:
             hint_text: "Label"
             helper_text: "Error massage"
             mode: "rectangle"
+            max_text_length: 5
 
         MDTextField:
             icon_left: "git"
@@ -1619,6 +1476,12 @@ MDScreen:
             icon_left: "git"
             hint_text: "Label"
             helper_text: "Error massage"
+
+        MDTextField:
+            hint_text: "Round mode"
+            mode: "round"
+            max_text_length: 15
+            helper_text: "Massage"
 
         MDFlatButton:
             text: "SET TEXT"

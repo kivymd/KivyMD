@@ -159,7 +159,7 @@
                 self.x + ((dp(16) if not self.icon_left else dp(52)) \
                 if self.mode == "fill" else (0 if not self.icon_left else \
                 dp(36))) if not self.focus and not self.text else \
-                self.x + (dp(16) if self.mode in ("fill", "rectangle") and \
+                self.x + ((dp(16) if self.mode != "round" else dp(36)) if self.mode in ("fill", "rectangle", "round") and \
                 self.icon_left else 0) + self._hint_x
                 ), \
                 self.y + self.height + (((dp(4) if self.mode != "round" else dp(10)) \

@@ -43,7 +43,7 @@ __all__ = ("MDDataTable",)
 
 import os
 from collections import defaultdict
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -198,7 +198,7 @@ class CellHeader(MDTooltip, BoxLayout):
 
             box.add_widget(ib, index=1)
 
-    def restore_checks(self, indices: dict) -> NoReturn:
+    def restore_checks(self, indices: dict) -> None:
         curr_checks = self.table_data.current_selection_check
         rows_num = self.table_data.rows_num
         columns = self.table_data.total_col_headings
@@ -213,7 +213,7 @@ class CellHeader(MDTooltip, BoxLayout):
                 new_checks[new_page].append(new_indice)
         self.table_data.current_selection_check = dict(new_checks)
 
-    def set_sort_btn(self, instance_cell_header) -> NoReturn:
+    def set_sort_btn(self, instance_cell_header) -> None:
         btn = instance_cell_header.ids.box.children[-1]
         if btn.opacity:
             btn.size = [dp(24), dp(0)]
@@ -359,9 +359,7 @@ class TableHeader(ThemableBehavior, ScrollView):
                 self.ids.first_cell.ids.separator.height = 0
                 self.ids.first_cell.width = self.cols_minimum[i]
 
-    def on_table_data(
-        self, instance_table_header, instance_table_data
-    ) -> NoReturn:
+    def on_table_data(self, instance_table_header, instance_table_data) -> None:
         """Sets the checkbox in the first cell."""
 
         if self.table_data.check:
@@ -490,7 +488,7 @@ class TableData(RecycleView):
         self.effect_cls = self._parent.effect_cls
         Clock.schedule_once(self.set_default_first_row, 0)
 
-    def get_select_row(self, index: int) -> NoReturn:
+    def get_select_row(self, index: int) -> None:
         """Returns the current row with all elements."""
 
         row = []
@@ -500,12 +498,12 @@ class TableData(RecycleView):
         self._parent.dispatch("on_check_press", row)
         self._get_row_checks()  # update the dict
 
-    def set_default_first_row(self, interval: Union[int, float]) -> NoReturn:
+    def set_default_first_row(self, interval: Union[int, float]) -> None:
         """Set default first row as selected."""
 
         self.ids.row_controller.select_next(self)
 
-    def set_row_data(self) -> NoReturn:
+    def set_row_data(self) -> None:
         data = []
         low = 0
         high = self.total_col_headings - 1
@@ -570,7 +568,7 @@ class TableData(RecycleView):
                 raise ValueError("Set value for column_data in class TableData")
             self.data_first_cells.append(self.table_header.column_data[0][0])
 
-    def set_text_from_of(self, direction: str) -> NoReturn:
+    def set_text_from_of(self, direction: str) -> None:
         """Sets the text of the numbers of displayed pages in table."""
 
         if self.pagination:
@@ -606,7 +604,7 @@ class TableData(RecycleView):
                 f"of {len(self.row_data)}"
             )
 
-    def select_all(self, state: str) -> NoReturn:
+    def select_all(self, state: str) -> None:
         """Sets the checkboxes of all rows to the active/inactive position."""
 
         for i in range(0, len(self.recycle_data), self.total_col_headings):
@@ -638,7 +636,7 @@ class TableData(RecycleView):
         # resets all checks on all pages
         self.current_selection_check = {}
 
-    def check_all(self, state: str) -> NoReturn:
+    def check_all(self, state: str) -> None:
         """Checks if checkboxes of all rows are in the same state."""
 
         tmp = []
@@ -653,19 +651,19 @@ class TableData(RecycleView):
                 tmp.append(cell_row_obj.ids.check.state == state)
         return all(tmp)
 
-    def close_pagination_menu(self, *args) -> NoReturn:
+    def close_pagination_menu(self, *args) -> None:
         """Called when the pagination menu window is closed."""
 
         self.pagination_menu_open = False
 
-    def open_pagination_menu(self) -> NoReturn:
+    def open_pagination_menu(self) -> None:
         """Open pagination menu window."""
 
         if self.pagination_menu.items:
             self.pagination_menu_open = True
             self.pagination_menu.open()
 
-    def set_number_displayed_lines(self, text_item) -> NoReturn:
+    def set_number_displayed_lines(self, text_item) -> None:
         """
         Called when the user sets the number of pages displayed
         in the table.
@@ -677,7 +675,7 @@ class TableData(RecycleView):
         self.set_text_from_of("reset")
         self.pagination_menu.caller.text = text_item
 
-    def set_next_row_data_parts(self, direction: str) -> NoReturn:
+    def set_next_row_data_parts(self, direction: str) -> None:
         """Called when switching the pages of the table."""
 
         if direction == "reset":
@@ -699,7 +697,7 @@ class TableData(RecycleView):
         if self._current_value == 1:
             self.pagination.ids.button_back.disabled = True
 
-    def on_mouse_select(self, instance_cell_row) -> NoReturn:
+    def on_mouse_select(self, instance_cell_row) -> None:
         """Called on the ``on_enter`` event of the :class:`~CellRow` class."""
 
         if not self.pagination_menu_open:
@@ -707,7 +705,7 @@ class TableData(RecycleView):
                 self.ids.row_controller.selected_row = instance_cell_row.index
                 self.ids.row_controller.select_current(self)
 
-    def on_rows_num(self, instance_table_date, value_rows_num: int) -> NoReturn:
+    def on_rows_num(self, instance_table_date, value_rows_num: int) -> None:
         if not self._to_value:
             self._to_value = value_rows_num
 
@@ -718,7 +716,7 @@ class TableData(RecycleView):
 
     def on_pagination(
         self, instance_table_date, instance_table_pagination
-    ) -> NoReturn:
+    ) -> None:
         if self._to_value < len(self.row_data):
             self.pagination.ids.button_forward.disabled = False
 
@@ -1455,7 +1453,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         Clock.schedule_once(self.create_pagination_menu, 0.5)
         self.bind(row_data=self.update_row_data)
 
-    def update_row_data(self, instance_data_table, data: list) -> NoReturn:
+    def update_row_data(self, instance_data_table, data: list) -> None:
         """
         Called when a the widget data must be updated.
 
@@ -1481,7 +1479,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         self.pagination.ids.button_back.disabled = True
         Clock.schedule_once(self.create_pagination_menu, 0.5)
 
-    def add_row(self, data: Union[list, tuple]) -> NoReturn:
+    def add_row(self, data: Union[list, tuple]) -> None:
         """
         Added new row to common table.
         Argument `data` is the row data from the list :attr:`row_data`.
@@ -1491,7 +1489,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         self.row_data.append(data)
 
-    def remove_row(self, data: Union[list, tuple]) -> NoReturn:
+    def remove_row(self, data: Union[list, tuple]) -> None:
         """
         Removed row from common table.
         Argument `data` is the row data from the list :attr:`row_data`.
@@ -1501,10 +1499,10 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         self.row_data.remove(data)
 
-    def on_row_press(self, instance_cell_row) -> NoReturn:
+    def on_row_press(self, instance_cell_row) -> None:
         """Called when a table row is clicked."""
 
-    def on_check_press(self, row_data: list) -> NoReturn:
+    def on_check_press(self, row_data: list) -> None:
         """
         Called when the check box in the table row is checked.
 
@@ -1516,7 +1514,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         return self.table_data._get_row_checks()
 
-    def create_pagination_menu(self, interval: Union[int, float]) -> NoReturn:
+    def create_pagination_menu(self, interval: Union[int, float]) -> None:
         menu_items = [
             {
                 "text": f"{i}",
@@ -1619,7 +1617,7 @@ class CellRow(
 
     def notify_checkbox_click(
         self, instance_check: MDCheckbox, active: bool
-    ) -> NoReturn:
+    ) -> None:
         """Called when the table row checkbox is activated/deactivated."""
 
         self.table.get_select_row(self.index)
@@ -1647,7 +1645,7 @@ class CellRow(
 
     def apply_selection(
         self, instance_table_data: TableData, index: int, is_selected: bool
-    ) -> NoReturn:
+    ) -> None:
         """Called when list items of table appear on the screen."""
 
         self.selected = is_selected
@@ -1694,7 +1692,7 @@ class CellRow(
         else:
             self.change_check_state_no_notify("normal")
 
-    def change_check_state_no_notify(self, new_state: str) -> NoReturn:
+    def change_check_state_no_notify(self, new_state: str) -> None:
         checkbox = self.ids.check
         checkbox.unbind(active=self.notify_checkbox_click)
         checkbox.state = new_state
@@ -1702,7 +1700,7 @@ class CellRow(
 
     def select_check(
         self, instance_table_data: MDDataTable, active: bool
-    ) -> NoReturn:
+    ) -> None:
         """Called upon activation/deactivation of the checkbox."""
 
         if active:
@@ -1739,12 +1737,12 @@ class CellRow(
                 self.table._parent.dispatch("on_row_press", self)
             return True
 
-    def on_icon(self, instance_cell_row, name_icon: str) -> NoReturn:
+    def on_icon(self, instance_cell_row, name_icon: str) -> None:
         self.icon_copy = name_icon
 
     def on_table(
         self, instance_cell_row, instance_table_data: TableData
-    ) -> NoReturn:
+    ) -> None:
         """Sets padding/spacing to zero if no checkboxes are used for rows."""
 
         if not instance_table_data.check:

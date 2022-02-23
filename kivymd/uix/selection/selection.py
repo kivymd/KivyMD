@@ -254,7 +254,7 @@ Example with FitImage
 __all__ = ("MDSelectionList",)
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -352,7 +352,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_progress_round)
 
-    def set_progress_round(self, interval: Union[int, float]) -> NoReturn:
+    def set_progress_round(self, interval: Union[int, float]) -> None:
         with self.canvas.after:
             self._instance_progress_inner_circle_color = Color(
                 rgba=(0, 0, 0, 0)
@@ -392,14 +392,14 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
                 ],
             )
 
-    def do_selected_item(self, *args) -> NoReturn:
+    def do_selected_item(self, *args) -> None:
         Animation(scale=1, d=0.2).start(self.instance_icon)
         self.selected = True
         self._progress_animation = False
         self._instance_overlay_color.rgba = self.get_overlay_color()
         self.owner.dispatch("on_selected", self)
 
-    def do_unselected_item(self) -> NoReturn:
+    def do_unselected_item(self) -> None:
         Animation(scale=0, d=0.2).start(self.instance_icon)
         self.selected = False
         self._instance_overlay_color.rgba = self.get_overlay_color()
@@ -407,7 +407,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
 
     def do_animation_progress_line(
         self, animation: Animation, instance_selection_item, value: float
-    ) -> NoReturn:
+    ) -> None:
         self._instance_progress_inner_outer_line.circle = (
             self.center_x,
             self.center_y,
@@ -416,11 +416,11 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
             360 * value,
         )
 
-    def update_overlay_rounded_rec(self, *args) -> NoReturn:
+    def update_overlay_rounded_rec(self, *args) -> None:
         self._instance_overlay_rounded_rec.size = self.size
         self._instance_overlay_rounded_rec.pos = self.pos
 
-    def update_progress_inner_circle_ellipse(self, *args) -> NoReturn:
+    def update_progress_inner_circle_ellipse(self, *args) -> None:
         self._instance_progress_inner_circle_ellipse.size = (
             self.get_progress_round_size()
         )
@@ -428,7 +428,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
             self.get_progress_round_pos()
         )
 
-    def reset_progress_animation(self) -> NoReturn:
+    def reset_progress_animation(self) -> None:
         Animation.cancel_all(self)
         self._progress_animation = False
         self._instance_progress_inner_circle_color.rgba = (0, 0, 0, 0)
@@ -468,7 +468,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
             else self.progress_round_color[:-1] + [0.5]
         )
 
-    def on_long_touch(self, *args) -> NoReturn:
+    def on_long_touch(self, *args) -> None:
         if not self.owner.get_selected():
             self._touch_long = True
             self._progress_animation = True
@@ -488,15 +488,13 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
                     self.do_selected_item()
         return super().on_touch_down(touch)
 
-    def on__touch_long(
-        self, instance_selection_tem, touch_value: bool
-    ) -> NoReturn:
+    def on__touch_long(self, instance_selection_tem, touch_value: bool) -> None:
         if not touch_value:
             self.reset_progress_animation()
 
     def on__progress_animation(
         self, instance_selection_tem, touch_value: bool
-    ) -> NoReturn:
+    ) -> None:
         if touch_value:
             anim = Animation(_progress_line_end=360, d=1, t="in_out_quad")
             anim.bind(
@@ -645,12 +643,12 @@ class MDSelectionList(MDList):
                 selected_list_items.append(item)
         return selected_list_items
 
-    def unselected_all(self) -> NoReturn:
+    def unselected_all(self) -> None:
         for item in self.children:
             item.do_unselected_item()
         self.selected_mode = False
 
-    def selected_all(self) -> NoReturn:
+    def selected_all(self) -> None:
         for item in self.children:
             item.do_selected_item()
         self.selected_mode = True

@@ -568,7 +568,7 @@ __all__ = (
 )
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -617,7 +617,7 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
         super().__init__(**kwargs)
         self.on_orientation()
 
-    def on_orientation(self, *args) -> NoReturn:
+    def on_orientation(self, *args) -> None:
         self.size_hint = (
             (1, None) if self.orientation == "horizontal" else (None, 1)
         )
@@ -696,13 +696,13 @@ class MDCard(
         )
         self.update_md_bg_color(self, self.theme_cls.theme_style)
 
-    def update_md_bg_color(self, instance_card, theme_style: str) -> NoReturn:
+    def update_md_bg_color(self, instance_card, theme_style: str) -> None:
         if self.md_bg_color in self._bg_color_map:
             self.md_bg_color = get_color_from_hex(
                 colors[theme_style]["CardsDialogs"]
             )
 
-    def set_style(self, *args) -> NoReturn:
+    def set_style(self, *args) -> None:
         self.set_radius()
         self.set_elevation()
         self.set_line_color()
@@ -719,7 +719,7 @@ class MDCard(
             elif self.style == "elevated":
                 self.elevation = 1
 
-    def set_radius(self) -> NoReturn:
+    def set_radius(self) -> None:
         if (
             self.radius == [dp(6), dp(6), dp(6), dp(6)]
             and self.theme_cls.material_style == "M3"
@@ -733,7 +733,7 @@ class MDCard(
 
     def on_ripple_behavior(
         self, interval: Union[int, float], value_behavior: bool
-    ) -> NoReturn:
+    ) -> None:
         self._no_ripple_effect = False if value_behavior else True
 
 
@@ -851,7 +851,7 @@ class MDCardSwipe(RelativeLayout):
 
     def on_anchor(
         self, instance_swipe_to_delete_item, anchor_value: str
-    ) -> NoReturn:
+    ) -> None:
         if anchor_value == "right":
             self.open_progress = 1.0
         else:
@@ -859,7 +859,7 @@ class MDCardSwipe(RelativeLayout):
 
     def on_open_progress(
         self, instance_swipe_to_delete_item, progress_value: float
-    ) -> NoReturn:
+    ) -> None:
         if self.anchor == "left":
             self.children[0].x = self.width * progress_value
         else:
@@ -895,7 +895,7 @@ class MDCardSwipe(RelativeLayout):
                 self.close_card()
         return super().on_touch_down(touch)
 
-    def complete_swipe(self) -> NoReturn:
+    def complete_swipe(self) -> None:
         expr = (
             self.open_progress <= self.max_swipe_x
             if self.anchor == "left"
@@ -906,7 +906,7 @@ class MDCardSwipe(RelativeLayout):
         else:
             self.open_card()
 
-    def open_card(self) -> NoReturn:
+    def open_card(self) -> None:
         if self.type_swipe == "hand":
             swipe_x = (
                 self.max_opened_x
@@ -922,7 +922,7 @@ class MDCardSwipe(RelativeLayout):
         anim.start(self.children[0])
         self.state = "opened"
 
-    def close_card(self) -> NoReturn:
+    def close_card(self) -> None:
         anim = Animation(x=0, t=self.closing_transition, d=self.opening_time)
         anim.bind(on_complete=self._reset_open_progress)
         anim.start(self.children[0])

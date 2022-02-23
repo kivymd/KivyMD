@@ -498,7 +498,7 @@ Switching the tab by name
 __all__ = ("MDTabs", "MDTabsBase")
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
@@ -563,13 +563,13 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
             text=self._update_text_size,
         )
 
-    def on_release(self) -> NoReturn:
+    def on_release(self) -> None:
         self.tab_bar.parent.dispatch("on_tab_switch", self.tab, self, self.text)
         # If the label is selected load the relative tab from carousel.
         if self.state == "down":
             self.tab_bar.parent.carousel.load_slide(self.tab)
 
-    def on_texture(self, instance_tabs_label, texture: Texture) -> NoReturn:
+    def on_texture(self, instance_tabs_label, texture: Texture) -> None:
         # Just save the minimum width of the label based of the content.
         if texture:
             max_width = dp(360)
@@ -768,10 +768,10 @@ class MDTabsBase(Widget):
         self.tab_label.padding = dp(16), 0
         self.update_label_text(None, self.tab_label_text)
 
-    def update_label_text(self, instance_user_tab, text_tab: str) -> NoReturn:
+    def update_label_text(self, instance_user_tab, text_tab: str) -> None:
         self.tab_label.text = self.text = self.tab_label_text
 
-    def on_text(self, instance_user_tab, text_tab: str) -> NoReturn:
+    def on_text(self, instance_user_tab, text_tab: str) -> None:
         self.tab_label_text = self.text
 
 
@@ -846,7 +846,7 @@ class MDTabsScrollView(ScrollView):
 
     def goto(
         self, scroll_x: Union[float, None], scroll_y: Union[float, None]
-    ) -> NoReturn:
+    ) -> None:
         """Update event value along with scroll_*."""
 
         def _update(e, x):
@@ -913,7 +913,7 @@ class MDTabsBar(
 
     def update_indicator(
         self, x: Union[float, int], w: Union[float, int], radius=None
-    ) -> NoReturn:
+    ) -> None:
         # Update position and size of the indicator.
         if self.parent.tab_indicator_type == "line-round":
             self.parent._line_x = x
@@ -1224,7 +1224,7 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         self,
         instance_theme_manager: ThemeManager,
         name_theme_style_name_palette: str,
-    ) -> NoReturn:
+    ) -> None:
         """
         Called when the app's color scheme or style has changed
         (dark theme/light theme).
@@ -1384,12 +1384,12 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
         title_label = None
         widget = None
 
-    def on_slide_progress(self, *args) -> NoReturn:
+    def on_slide_progress(self, *args) -> None:
         """
         This event is deployed every available frame while the tab is scrolling.
         """
 
-    def on_carousel_index(self, instance_tabs_carousel, index: int) -> NoReturn:
+    def on_carousel_index(self, instance_tabs_carousel, index: int) -> None:
         """
         Called when the Tab index have changed.
 
@@ -1449,16 +1449,16 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
                     current_tab_label.x, current_tab_label.width
                 )
 
-    def on_ref_press(self, *args) -> NoReturn:
+    def on_ref_press(self, *args) -> None:
         """
         This event will be launched every time the user press a markup enabled
         label with a link or reference inside.
         """
 
-    def on_tab_switch(self, *args) -> NoReturn:
+    def on_tab_switch(self, *args) -> None:
         """This event is launched every time the current tab is changed."""
 
-    def on_size(self, instance_tab, size: list) -> NoReturn:
+    def on_size(self, instance_tab, size: list) -> None:
         """Called when the application screen is resized."""
 
         if self.carousel.current_slide:

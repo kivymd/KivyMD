@@ -6,12 +6,12 @@ PyInstaller must package KivyMD apps correctly.
 """
 
 import subprocess
-from typing import NoReturn
+
 
 from PyInstaller import __main__ as pyi_main
 
 
-def test_datas(tmp_path) -> NoReturn:
+def test_datas(tmp_path) -> None:
     """Test fonts and images."""
 
     app_name = "userapp"
@@ -54,7 +54,7 @@ assert "rec_shadow.atlas" in images
     subprocess.run([str(distpath / app_name / app_name)], check=True)
 
 
-def test_widgets(tmp_path) -> NoReturn:
+def test_widgets(tmp_path) -> None:
     """Test that all widgets are accesible."""
 
     app_name = "userapp"

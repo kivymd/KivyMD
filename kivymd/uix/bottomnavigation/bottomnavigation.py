@@ -164,7 +164,7 @@ __all__ = (
 )
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -282,7 +282,7 @@ class MDBottomNavigationHeader(
         self.theme_cls.bind(disabled_hint_text_color=self._update_theme_style)
         self.active = False
 
-    def on_press(self) -> NoReturn:
+    def on_press(self) -> None:
         """Called when clicking on a panel item."""
 
         if self.theme_cls.material_style == "M2":
@@ -397,7 +397,7 @@ class MDBottomNavigationItem(MDTab):
     and defaults to `None`.
     """
 
-    def on_tab_press(self, *args) -> NoReturn:
+    def on_tab_press(self, *args) -> None:
         """Called when clicking on a panel item."""
 
         bottom_navigation_object = self.parent_widget
@@ -563,10 +563,10 @@ class MDBottomNavigation(TabbedPanelBase):
         Clock.schedule_once(lambda x: self.on_resize())
         Clock.schedule_once(self.set_status_bar_color)
 
-    def set_status_bar_color(self, interval: Union[int, float]) -> NoReturn:
+    def set_status_bar_color(self, interval: Union[int, float]) -> None:
         set_bars_colors(self.panel_color, None, self.theme_cls.theme_style)
 
-    def switch_tab(self, name_tab) -> NoReturn:
+    def switch_tab(self, name_tab) -> None:
         """Switching the tab by name."""
 
         if not self.ids.tab_manager.has_screen(name_tab):
@@ -583,7 +583,7 @@ class MDBottomNavigation(TabbedPanelBase):
             numbers_screens.index(count_index_screen)
         ].dispatch("on_press")
 
-    def refresh_tabs(self, *args) -> NoReturn:
+    def refresh_tabs(self, *args) -> None:
         """Refresh all tabs."""
 
         if self.ids:
@@ -607,13 +607,13 @@ class MDBottomNavigation(TabbedPanelBase):
 
     def on_selected_color_background(
         self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
+    ) -> None:
         for tab in self.ids.tab_bar.children:
             tab.selected_color_background = color
 
     def on_use_text(
         self, instance_bottom_navigation, use_text_value: bool
-    ) -> NoReturn:
+    ) -> None:
         if not use_text_value:
             for instance_bottom_navigation_header in self.ids.tab_bar.children:
                 instance_bottom_navigation_header.ids.item_container.remove_widget(
@@ -637,7 +637,7 @@ class MDBottomNavigation(TabbedPanelBase):
 
     def on_text_color_normal(
         self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
+    ) -> None:
         MDBottomNavigationHeader.text_color_normal = color
         for tab in self.ids.tab_bar.children:
             if not tab.active:
@@ -645,7 +645,7 @@ class MDBottomNavigation(TabbedPanelBase):
 
     def on_text_color_active(
         self, instance_bottom_navigation, color: list
-    ) -> NoReturn:
+    ) -> None:
         MDBottomNavigationHeader.text_color_active = color
         self.text_color_active = color
         for tab in self.ids.tab_bar.children:
@@ -653,12 +653,12 @@ class MDBottomNavigation(TabbedPanelBase):
             if tab.active:
                 tab._text_color_normal = color
 
-    def on_switch_tabs(self, bottom_navigation_item, name_tab: str) -> NoReturn:
+    def on_switch_tabs(self, bottom_navigation_item, name_tab: str) -> None:
         """
         Called when switching tabs. Returns the object of the tab to be opened.
         """
 
-    def on_size(self, *args) -> NoReturn:
+    def on_size(self, *args) -> None:
         self.on_resize()
 
     def on_resize(
@@ -666,7 +666,7 @@ class MDBottomNavigation(TabbedPanelBase):
         instance: Union[WindowSDL, None] = None,
         width: Union[int, None] = None,
         do_again: bool = True,
-    ) -> NoReturn:
+    ) -> None:
         """Called when the application window is resized."""
 
         full_width = 0

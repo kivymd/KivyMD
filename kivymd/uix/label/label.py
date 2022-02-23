@@ -220,7 +220,7 @@ MDIcon with badge icon
 __all__ = ("MDLabel", "MDIcon")
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -343,7 +343,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
         else:
             return True
 
-    def update_font_style(self, instance_label, font_style: str) -> NoReturn:
+    def update_font_style(self, instance_label, font_style: str) -> None:
         if self.check_font_styles() is True:
             font_info = self.theme_cls.font_styles[self.font_style]
             self.font_name = font_info[0]
@@ -358,7 +358,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
 
     def on_theme_text_color(
         self, instance_label, theme_text_color: str
-    ) -> NoReturn:
+    ) -> None:
         op = self.opposite_colors
         if op:
             self._text_color_str = __MDLabel_colors__.get("OP", "").get(
@@ -382,11 +382,11 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
             else:
                 self.color = [0, 0, 0, 1]
 
-    def on_text_color(self, instance_label, color: list) -> NoReturn:
+    def on_text_color(self, instance_label, color: list) -> None:
         if self.theme_text_color == "Custom":
             self.color = self.text_color
 
-    def on_opposite_colors(self, *args) -> NoReturn:
+    def on_opposite_colors(self, *args) -> None:
         self.on_theme_text_color(self, self.theme_text_color)
 
     def _do_update_theme_color(self, *args):

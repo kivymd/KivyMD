@@ -14,7 +14,7 @@ Usage
 
 .. code-block:: python
 
-    from typing import Union, NoReturn
+    from typing import Union, None
 
     from kivy.lang import Builder
 
@@ -49,7 +49,7 @@ Usage
                 on_release=self.get_selected_color,
             )
 
-        def update_color(self, color: list) -> NoReturn:
+        def update_color(self, color: list) -> None:
             self.root.ids.toolbar.md_bg_color = color
 
         def get_selected_color(
@@ -63,7 +63,7 @@ Usage
             print(f"Selected color is {selected_color}")
             self.update_color(selected_color[:-1] + [1])
 
-        def on_select_color(self, instance_gradient_tab, color: list) -> NoReturn:
+        def on_select_color(self, instance_gradient_tab, color: list) -> None:
             '''Called when a gradient image is clicked.'''
 
 
@@ -76,7 +76,7 @@ Usage
 import os
 import struct
 from io import BytesIO
-from typing import List, NoReturn, Union
+from typing import List, None, Union
 
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
@@ -146,14 +146,14 @@ class SelectAlphaChannelWidget(MDBoxLayout):
 
     def on_color_picker(
         self, instance_select_alpha_channel_widget, instance_color_picker
-    ) -> NoReturn:
+    ) -> None:
         instance_color_picker.bind(_rgb=self.set_scale_rgb)
 
     def set_scale_rgb(
         self,
         instance_color_picker,
         color: Union[List[int], List[float]],
-    ) -> NoReturn:
+    ) -> None:
         if color[0] > 1:
             self._rgb = [x / 255.0 for x in color]
         else:
@@ -182,7 +182,7 @@ class SliderTab(MDBoxLayout):
             self.color_picker._opacity_value_selected_color,
         ]
 
-    def on_slide_value(self, *args) -> NoReturn:
+    def on_slide_value(self, *args) -> None:
         """Basic event handler for changing the slider value."""
 
 
@@ -205,7 +205,7 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
 
     def create_gradient_texture(
         self, r_g_b=None, interval: Union[int, float] = 0
-    ) -> NoReturn:
+    ) -> None:
         """
         Creates a gradient value buffer and texture object.
         Called when clicking on the gradient bar to the right.
@@ -260,7 +260,7 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
 
     def create_canvas_with_gradient_texture(
         self, interval: Union[int, float]
-    ) -> NoReturn:
+    ) -> None:
         """Creates a canvas with a gradient texture."""
 
         with self.ids.color_selection_box.canvas:
@@ -282,7 +282,7 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
         rgba = struct.unpack("4B", pixel.pixels)
         return rgba
 
-    def updated_canvas(self, widget, touch, color=None) -> NoReturn:
+    def updated_canvas(self, widget, touch, color=None) -> None:
         """
         Called when clicking on the gradient bar to the right.
         Updates the color of the gradient texture.
@@ -313,7 +313,7 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
             )
         return super().on_touch_down(touch)
 
-    def _update_canvas(self, instance_gradient_widget, size: list) -> NoReturn:
+    def _update_canvas(self, instance_gradient_widget, size: list) -> None:
         self.rectangle.size = self.ids.gradient_widget.size
         self.rectangle.pos = self.ids.gradient_widget.pos
 
@@ -337,7 +337,7 @@ class ColorListTab(MDTabs):
         instance_tab_color_list: TabColorList,
         instance_tabs_label: MDTabsLabel,
         tab_label_text: str,
-    ) -> NoReturn:
+    ) -> None:
         """
         Generates list of colors.
         Called when you click the tab of :class:`~TabColorList` class.
@@ -364,7 +364,7 @@ class ColorListTab(MDTabs):
                     }
                 )
 
-    def on_press_color_item(self, color: list) -> NoReturn:
+    def on_press_color_item(self, color: list) -> None:
         """Called when you click on the color item from the list of colors."""
 
         rgb = [int(value * 255) for value in color[:-1]]
@@ -476,7 +476,7 @@ class MDColorPicker(BaseDialog):
 
     def update_color_slider_item_bottom_navigation(
         self, color: list
-    ) -> NoReturn:
+    ) -> None:
         """
         Updates the color of the slider that sets the transparency value of the
         selected color and the color of bottom navigation items.
@@ -488,7 +488,7 @@ class MDColorPicker(BaseDialog):
             )
         self.ids.bottom_navigation.text_color_active = color
 
-    def update_color_type_buttons(self, color: list) -> NoReturn:
+    def update_color_type_buttons(self, color: list) -> None:
         """
         Updating button colors (display buttons of type of color) to match the
         selected color.
@@ -509,8 +509,8 @@ class MDColorPicker(BaseDialog):
 
     def on_background_down_button_selected_type_color(
         self, instance_color_picker, color: list
-    ) -> NoReturn:
-        def set_background_down(interval: Union[float, int]) -> NoReturn:
+    ) -> None:
+        def set_background_down(interval: Union[float, int]) -> None:
             for (
                 instance_toggle_button
             ) in self.ids.type_color_button_box.children:
@@ -525,7 +525,7 @@ class MDColorPicker(BaseDialog):
         instance_color_picker,
         type_color: str = "",
         interval: Union[float, int] = 0,
-    ) -> NoReturn:
+    ) -> None:
         """Called when buttons are clicked to set the color type."""
 
         if not type_color:
@@ -550,7 +550,7 @@ class MDColorPicker(BaseDialog):
 
             self.ids.lbl_color_value.text = color
 
-    def on_open(self) -> NoReturn:
+    def on_open(self) -> None:
         """Default open event handler."""
 
         if not self.ids.bottom_navigation_gradient.children:
@@ -558,7 +558,7 @@ class MDColorPicker(BaseDialog):
             self._current_tab = self.gradient_tab
             self.ids.bottom_navigation_gradient.add_widget(self.gradient_tab)
 
-    def on_select_color(self, color: list) -> NoReturn:
+    def on_select_color(self, color: list) -> None:
         """Called when a gradient image is clicked."""
 
         if len(color) == 3:
@@ -575,7 +575,7 @@ class MDColorPicker(BaseDialog):
         bottom_navigation_instance,
         bottom_navigation_item_instance,
         name_tab,
-    ) -> NoReturn:
+    ) -> None:
         """Called when switching tabs of bottom navigation."""
 
         if name_tab == "bottom navigation gradient":

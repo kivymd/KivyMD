@@ -404,7 +404,7 @@ __all__ = (
 )
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation, AnimationTransition
 from kivy.clock import Clock
@@ -454,7 +454,7 @@ class MDNavigationLayout(FloatLayout):
         super().__init__(**kwargs)
         self.bind(width=self.update_pos)
 
-    def update_pos(self, instance_navigation_drawer, pos_x: float) -> NoReturn:
+    def update_pos(self, instance_navigation_drawer, pos_x: float) -> None:
         drawer = self._navigation_drawer
         manager = self._screen_manager
         if not drawer or not manager:
@@ -475,7 +475,7 @@ class MDNavigationLayout(FloatLayout):
             else:
                 manager.width = self.width
 
-    def add_scrim(self, instance_manager: ScreenManager) -> NoReturn:
+    def add_scrim(self, instance_manager: ScreenManager) -> None:
         with instance_manager.canvas.after:
             self._scrim_color = Color(rgba=[0, 0, 0, 0])
             self._scrim_rectangle = Rectangle(
@@ -488,7 +488,7 @@ class MDNavigationLayout(FloatLayout):
 
     def update_scrim_rectangle(
         self, instance_manager: ScreenManager, size: list
-    ) -> NoReturn:
+    ) -> None:
         self._scrim_rectangle.pos = self.pos
         self._scrim_rectangle.size = self.size
 
@@ -734,7 +734,7 @@ class MDNavigationDrawerHeader(MDBoxLayout):
         super().__init__(**kwargs)
         Clock.schedule_once(self.check_content)
 
-    def check_content(self, interval: Union[int, float]) -> NoReturn:
+    def check_content(self, interval: Union[int, float]) -> None:
         """Removes widgets that the user has not added to the container."""
 
         if not self.title:
@@ -859,7 +859,7 @@ class MDNavigationDrawerMenu(ScrollView):
                 widget._drawer_menu = self
             self.ids.menu.add_widget(widget)
 
-    def reset_active_color(self, item: MDNavigationDrawerItem) -> NoReturn:
+    def reset_active_color(self, item: MDNavigationDrawerItem) -> None:
         for widget in self.ids.menu.children:
             if issubclass(widget.__class__, MDNavigationDrawerItem):
                 if widget != item:
@@ -1141,7 +1141,7 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
         )
         Window.bind(on_keyboard=self._handle_keyboard)
 
-    def set_state(self, new_state="toggle", animation=True) -> NoReturn:
+    def set_state(self, new_state="toggle", animation=True) -> None:
         """
         Change state of the side panel.
         New_state can be one of `"toggle"`, `"open"` or `"close"`.
@@ -1173,7 +1173,7 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
             else:
                 self.open_progress = 0
 
-    def update_status(self, *_) -> NoReturn:
+    def update_status(self, *_) -> None:
         status = self.status
         if status == "closed":
             self.state = "close"
@@ -1197,7 +1197,7 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
         else:
             self.opacity = 1
 
-    def get_dist_from_side(self, x: float) -> NoReturn:
+    def get_dist_from_side(self, x: float) -> float:
         if self.anchor == "left":
             return 0 if x < 0 else x
         return 0 if x > Window.width else Window.width - x
@@ -1264,12 +1264,10 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
             return False
         return True
 
-    def on_radius(
-        self, instance_navigation_drawer, radius_value: list
-    ) -> NoReturn:
+    def on_radius(self, instance_navigation_drawer, radius_value: list) -> None:
         self._radius = radius_value
 
-    def on_type(self, instance_navigation_drawer, drawer_type: str) -> NoReturn:
+    def on_type(self, instance_navigation_drawer, drawer_type: str) -> None:
         if self.type == "standard":
             self.enable_swiping = False
             self.close_on_click = False

@@ -51,7 +51,7 @@ The `FadingEdgeEffect` class implements a fade effect for `KivyMD` widgets:
     parent widget.
 """
 
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
@@ -111,7 +111,7 @@ class FadingEdgeEffect(ThemableBehavior):
 
     # TODO: Perhaps it would be better if we used a Shader for the fade effect.
     #  But, I think the canvas instructions shouldn't affect performance
-    def set_fade(self, interval: Union[int, float]) -> NoReturn:
+    def set_fade(self, interval: Union[int, float]) -> None:
         """Draws a bottom and top fade border on the canvas."""
 
         fade_color = (
@@ -172,7 +172,7 @@ class FadingEdgeEffect(ThemableBehavior):
         rectangle_top: Rectangle,
         rectangle_bottom: Rectangle,
         index: int,
-    ) -> NoReturn:
+    ) -> None:
         """
         Updates the position and size of the fade border on the canvas.
         Called when the application screen is resized.

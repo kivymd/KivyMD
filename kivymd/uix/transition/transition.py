@@ -30,7 +30,6 @@ You have multiple transitions available by default, such as:
 
 __all__ = ("MDFadeSlideTransition",)
 
-from typing import NoReturn
 
 from kivy.animation import Animation, AnimationTransition
 from kivy.uix.screenmanager import (
@@ -43,7 +42,7 @@ from kivy.uix.screenmanager import (
 class MDFadeSlideTransition(SlideTransition):
     _direction = "up"
 
-    def start(self, instance_screen_manager: ScreenManager) -> NoReturn:
+    def start(self, instance_screen_manager: ScreenManager) -> None:
         """
         Starts the transition. This is automatically called by the
         :class:`ScreenManager`.
@@ -76,7 +75,7 @@ class MDFadeSlideTransition(SlideTransition):
             self.screen_in.y = 0
             self.screen_in.opacity = 0
 
-    def on_progress(self, progression: float) -> NoReturn:
+    def on_progress(self, progression: float) -> None:
         progression = AnimationTransition.out_quad(progression)
 
         if self._direction == "up":
@@ -90,7 +89,7 @@ class MDFadeSlideTransition(SlideTransition):
             )
             self.screen_out.opacity = 1 - progression
 
-    def on_complete(self) -> NoReturn:
+    def on_complete(self) -> None:
         if self._direction == "down":
             self._direction = "up"
         else:

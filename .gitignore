@@ -63,6 +63,7 @@ temp
 .pytest_cache
 .coverage
 .DS_Store
+.dccache
 
 /kivymd/tools/release/*.zip
 /kivymd/tools/release/temp

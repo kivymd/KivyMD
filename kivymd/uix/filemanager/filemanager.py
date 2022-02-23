@@ -133,7 +133,7 @@ __all__ = ("MDFileManager",)
 import locale
 import os
 import re
-from typing import List, NoReturn, Tuple, Union
+from typing import List, None, Tuple, Union
 
 from kivy import platform
 from kivy.factory import Factory
@@ -346,7 +346,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self.ext = [".png", ".jpg", ".jpeg"]
         self.disks = []
 
-    def show_disks(self) -> NoReturn:
+    def show_disks(self) -> None:
         if platform == "win":
             self.disks = sorted(
                 re.findall(
@@ -403,7 +403,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self._window_manager.open()
             self._window_manager_open = True
 
-    def show(self, path: str) -> NoReturn:
+    def show(self, path: str) -> None:
         """
         Forms the body of a directory tree.
 
@@ -547,7 +547,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         except OSError:
             return None, None
 
-    def close(self) -> NoReturn:
+    def close(self) -> None:
         """Closes the file manager window."""
 
         self._window_manager.dismiss()
@@ -578,7 +578,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             self.current_path = path
             self.show(path)
 
-    def back(self) -> NoReturn:
+    def back(self) -> None:
         """Returning to the branch down in the directory tree."""
 
         path, end = os.path.split(self.current_path)
@@ -592,7 +592,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             else:
                 self.show(path)
 
-    def select_directory_on_press_button(self, *args) -> NoReturn:
+    def select_directory_on_press_button(self, *args) -> None:
         """Called when a click on a floating button."""
 
         if self.selector == "multi":

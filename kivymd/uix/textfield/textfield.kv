@@ -25,7 +25,7 @@
         Color:
             rgba:
                 ( \
-                self._line_color_focus \
+                (self.line_color_focus if not self.error else self.error_color) \
                 if self.focus \
                 else self.theme_cls.disabled_hint_text_color \
                 ) \
@@ -168,7 +168,10 @@
 
         # "rectangle" mode
         Color:
-            rgba: self.line_color_focus if self.focus else self.line_color_normal
+            rgba:
+                (self.line_color_focus if not self.error else self.error_color) \
+                if self.focus else \
+                self.line_color_normal
         Line:
             width: dp(1) if self.mode == "rectangle" else dp(0.00001)
             points:

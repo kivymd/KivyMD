@@ -119,7 +119,6 @@ __all__ = ("SmartTile", "SmartTileWithLabel", "SmartTileWithStar")
 
 import os
 
-
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,

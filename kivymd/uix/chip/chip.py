@@ -304,7 +304,6 @@ __all__ = ("MDChip",)
 
 import os
 
-
 from kivy import Logger
 from kivy.animation import Animation
 from kivy.lang import Builder

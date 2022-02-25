@@ -717,8 +717,8 @@ class BaseButton(
 
     disabled_color = ColorProperty(None)
     """
-    The color of the text and icon when the button is disabled, in the 
-    (r, g, b, a) format.
+    The color of the text and icon when the button is disabled, in the
+     (r, g, b, a) format.
 
     .. versionadded:: 1.0.0
 

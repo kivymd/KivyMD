@@ -294,7 +294,7 @@ class TableHeader(ThemableBehavior, ScrollView):
     sorted_on = StringProperty()
     """
     See :attr:`~MDDataTable.sorted_on`.
-    
+
     :attr:`sorted_on` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """
@@ -1364,7 +1364,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             ...,
             background_color_header=get_color_from_hex("#65275d"),
         )
-        
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-header.png
         :align: center
 
@@ -1385,7 +1385,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             background_color_header=get_color_from_hex("#65275d"),
             background_color_cell=get_color_from_hex("#451938"),
         )
-        
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-cell.png
         :align: center
 
@@ -1407,7 +1407,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             background_color_cell=get_color_from_hex("#451938"),
             background_color_selected_cell=get_color_from_hex("e4514f"),
         )
-        
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-selected-cell.gif
         :align: center
 

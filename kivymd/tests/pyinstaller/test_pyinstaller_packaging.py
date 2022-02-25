@@ -7,7 +7,6 @@ PyInstaller must package KivyMD apps correctly.
 
 import subprocess
 
-
 from PyInstaller import __main__ as pyi_main
 
 

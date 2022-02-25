@@ -1,6 +1,5 @@
 __all__ = ("MDAdaptiveWidget",)
 
-
 from kivy.properties import BooleanProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label

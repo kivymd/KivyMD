@@ -86,7 +86,6 @@ Example:
 
 __all__ = ("MagicBehavior",)
 
-
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import NumericProperty

@@ -306,7 +306,6 @@ DEBUG=1 python main.py
 import importlib
 import os
 
-
 from kivy import Config
 from kivy.uix.screenmanager import ScreenManager
 

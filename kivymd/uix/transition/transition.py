@@ -30,7 +30,6 @@ You have multiple transitions available by default, such as:
 
 __all__ = ("MDFadeSlideTransition",)
 
-
 from kivy.animation import Animation, AnimationTransition
 from kivy.uix.screenmanager import (
     ScreenManager,

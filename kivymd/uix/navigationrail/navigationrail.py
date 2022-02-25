@@ -100,7 +100,7 @@ Usage
 __all__ = ("MDNavigationRail", "MDNavigationRailItem")
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -237,13 +237,13 @@ class MDNavigationRailItem(
         self._no_ripple_effect = True
         Clock.schedule_once(self.set_width)
 
-    def set_width(self, interval: Union[int, float]) -> NoReturn:
+    def set_width(self, interval: Union[int, float]) -> None:
         """Sets the size of the menu item."""
 
         self.size_hint = (None, None)
         self.size = (self.navigation_rail.width, self.navigation_rail.width)
 
-    def on_enter(self) -> NoReturn:
+    def on_enter(self) -> None:
         if self.navigation_rail.use_hover_behavior:
             Animation(
                 md_bg_color=self.theme_cls.bg_darkest
@@ -253,7 +253,7 @@ class MDNavigationRailItem(
                 d=self.navigation_rail.color_change_duration,
             ).start(self)
 
-    def on_leave(self) -> NoReturn:
+    def on_leave(self) -> None:
         if self.navigation_rail.use_hover_behavior:
             Animation(
                 md_bg_color=self.theme_cls.bg_light
@@ -263,19 +263,15 @@ class MDNavigationRailItem(
                 d=self.navigation_rail.color_change_duration,
             ).start(self)
 
-    def on_release(self) -> NoReturn:
+    def on_release(self) -> None:
         self.navigation_rail.set_color_menu_item(self)
         self.navigation_rail.dispatch("on_item_switch", self)
 
-    def on_visible(
-        self, instance_navigation_rail, visible_value: str
-    ) -> NoReturn:
+    def on_visible(self, instance_navigation_rail, visible_value: str) -> None:
         if visible_value in ("Selected", "Unlabeled"):
             Clock.schedule_once(self.set_item_label_transparency)
 
-    def set_item_label_transparency(
-        self, interval: Union[int, float]
-    ) -> NoReturn:
+    def set_item_label_transparency(self, interval: Union[int, float]) -> None:
         self.ids.lbl_text.text_color = (0, 0, 0, 0)
 
 
@@ -582,7 +578,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
 
     def anim_color_normal(
         self, instance_navigation_rail_item: MDNavigationRailItem
-    ) -> NoReturn:
+    ) -> None:
         color = (
             self.theme_cls.text_color
             if not instance_navigation_rail_item.color_normal
@@ -602,7 +598,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
 
     def anim_color_active(
         self, instance_navigation_rail_item: MDNavigationRailItem
-    ) -> NoReturn:
+    ) -> None:
         color = (
             self.theme_cls.primary_color
             if not instance_navigation_rail_item.color_active
@@ -636,7 +632,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
         else:
             return super().add_widget(widget)
 
-    def open(self) -> NoReturn:
+    def open(self) -> None:
         def set_opacity_title_component(*args):
             if self.use_title:
                 Animation(opacity=1, d=0.2).start(
@@ -660,7 +656,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
                 ).start(self.floating_action_button)
             self.dispatch("on_open")
 
-    def close(self) -> NoReturn:
+    def close(self) -> None:
         if self.use_resizeable:
             Animation(width=self.width / 4, d=0.2).start(self)
             if self.use_title:
@@ -697,16 +693,12 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
     def on_action_button(self, floating_action_button):
         """Called when the `MDFloatingActionButton` is pressed."""
 
-    def on_visible(
-        self, instance_navigation_rail, visible_value: str
-    ) -> NoReturn:
+    def on_visible(self, instance_navigation_rail, visible_value: str) -> None:
         for widget in self.ids.box.children:
             if isinstance(widget, MDNavigationRailItem):
                 widget.visible = visible_value
 
-    def on_use_title(
-        self, instance_navigation_rail, title_value: bool
-    ) -> NoReturn:
+    def on_use_title(self, instance_navigation_rail, title_value: bool) -> None:
         def add_title(interval):
             if title_value:
                 self.ids.box_title.add_widget(
@@ -721,7 +713,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
 
     def on_use_resizeable(
         self, instance_navigation_rail, resizeable_value: bool
-    ) -> NoReturn:
+    ) -> None:
         def add_item(interval):
             if resizeable_value:
                 for widget in self.ids.box.children:
@@ -737,7 +729,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
 
     def on_use_action_button(
         self, instance_navigation_rail, use_value: bool
-    ) -> NoReturn:
+    ) -> None:
         if use_value:
             rail_box = BaseNavigationRailBoxItem(
                 size_hint=(None, None),
@@ -757,32 +749,30 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
 
     def press_floating_action_button(
         self, instance_button: BaseNavigationRailFloatingButton
-    ) -> NoReturn:
+    ) -> None:
         self.dispatch("on_action_button", instance_button)
 
-    def set_action_color_button(self, interval: Union[int, float]) -> NoReturn:
+    def set_action_color_button(self, interval: Union[int, float]) -> None:
         if self.floating_action_button and self.action_color_button:
             self.floating_action_button.md_bg_color = self.action_color_button
 
-    def set_width(self, interval: Union[int, float]) -> NoReturn:
+    def set_width(self, interval: Union[int, float]) -> None:
         self.size_hint_x = None
         self.width = dp(72)
 
-    def set_box_title_size(self, interval: Union[int, float]) -> NoReturn:
+    def set_box_title_size(self, interval: Union[int, float]) -> None:
         if not self.use_title:
             self.remove_widget(self.ids.box_title)
 
-    def set_action_icon_button(self, interval: Union[int, float]) -> NoReturn:
+    def set_action_icon_button(self, interval: Union[int, float]) -> None:
         if self.floating_action_button:
             self.floating_action_button.icon = self.action_icon_button
 
-    def set_action_text_button(self, interval: Union[int, float]) -> NoReturn:
+    def set_action_text_button(self, interval: Union[int, float]) -> None:
         if self.floating_action_button:
             self.floating_action_button.text = self.action_text_button
 
-    def set_color_menu_item(
-        self, instance_item: MDNavigationRailItem
-    ) -> NoReturn:
+    def set_color_menu_item(self, instance_item: MDNavigationRailItem) -> None:
         for item in self.ids.box.children:
             if isinstance(item, MDNavigationRailItem):
                 if instance_item is item:
@@ -790,13 +780,13 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
                 else:
                     self.anim_color_normal(item)
 
-    def set_items_color(self, interval: Union[int, float]) -> NoReturn:
+    def set_items_color(self, interval: Union[int, float]) -> None:
         if not self.color_normal:
             self.color_normal = self.theme_cls.text_color
         if not self.color_active:
             self.color_active = self.theme_cls.bg_light
 
-    def set_items_visible(self, interval: Union[int, float]) -> NoReturn:
+    def set_items_visible(self, interval: Union[int, float]) -> None:
         # If the user does not set the `visible` parameter.
         if self.visible == "Persistent":
             for widget in self.ids.box.children:

@@ -67,7 +67,7 @@ In Python code:
 __all__ = ("MDTooltip", "MDTooltipViewClass")
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -198,7 +198,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
                 y = Window.height - (self._tooltip.height + dp(10))
         return x, y
 
-    def display_tooltip(self, interval: Union[int, float]) -> NoReturn:
+    def display_tooltip(self, interval: Union[int, float]) -> None:
         if not self._tooltip:
             return
         Window.add_widget(self._tooltip)
@@ -220,7 +220,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         else:
             Clock.schedule_once(self.animation_tooltip_show, 0)
 
-    def animation_tooltip_show(self, interval: Union[int, float]) -> NoReturn:
+    def animation_tooltip_show(self, interval: Union[int, float]) -> None:
         """Animation of opening tooltip on the screen."""
 
         if self._tooltip:
@@ -230,9 +230,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
             ).start(self._tooltip)
             self.dispatch("on_show")
 
-    def animation_tooltip_dismiss(
-        self, interval: Union[int, float]
-    ) -> NoReturn:
+    def animation_tooltip_dismiss(self, interval: Union[int, float]) -> None:
         """
         .. versionadded:: 1.0.0
 
@@ -246,16 +244,16 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
             anim.bind(on_complete=self._on_dismiss_anim_complete)
             anim.start(self._tooltip)
 
-    def remove_tooltip(self, *args) -> NoReturn:
+    def remove_tooltip(self, *args) -> None:
         """Removes the tooltip widget from the screen."""
 
         Window.remove_widget(self._tooltip)
 
-    def on_long_touch(self, touch, *args) -> NoReturn:
+    def on_long_touch(self, touch, *args) -> None:
         if DEVICE_TYPE != "desktop":
             self.on_enter(True)
 
-    def on_enter(self, *args) -> NoReturn:
+    def on_enter(self, *args) -> None:
         """
         See
         :attr:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior.on_enter`
@@ -274,7 +272,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
                 )
                 Clock.schedule_once(self.display_tooltip, -1)
 
-    def on_leave(self) -> NoReturn:
+    def on_leave(self) -> None:
         """
         See
         :attr:`~kivymd.uix.behaviors.hover_behavior.HoverBehavior.on_leave`
@@ -285,10 +283,10 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         if self._tooltip:
             Clock.schedule_once(self.animation_tooltip_dismiss)
 
-    def on_show(self) -> NoReturn:
+    def on_show(self) -> None:
         """Default dismiss event handler."""
 
-    def on_dismiss(self) -> NoReturn:
+    def on_dismiss(self) -> None:
         """
         .. versionadded:: 1.0.0
 

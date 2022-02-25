@@ -15,8 +15,6 @@ Kivy
 
 .. code-block:: python
 
-    from typing import NoReturn
-
     from kivy.animation import Animation
     from kivy.lang import Builder
     from kivy.app import App
@@ -50,7 +48,7 @@ Kivy
         def build(self):
             return Builder.load_string(KV)
 
-        def change_rotate(self, instance_button: Button) -> NoReturn:
+        def change_rotate(self, instance_button: Button) -> None:
             Animation(rotate_value_angle=45, d=0.3).start(instance_button)
 
 
@@ -60,8 +58,6 @@ KivyMD
 ------
 
 .. code-block:: python
-
-    from typing import NoReturn
 
     from kivy.animation import Animation
     from kivy.lang import Builder
@@ -89,7 +85,7 @@ KivyMD
         def build(self):
             return Builder.load_string(KV)
 
-        def change_rotate(self, instance_button: MDRaisedButton) -> NoReturn:
+        def change_rotate(self, instance_button: MDRaisedButton) -> None:
             Animation(rotate_value_angle=45, d=0.3).start(instance_button)
 
 

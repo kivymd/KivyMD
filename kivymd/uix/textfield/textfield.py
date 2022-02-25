@@ -278,7 +278,7 @@ __all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
 
 import os
 import re
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -947,7 +947,7 @@ class MDTextField(ThemableBehavior, TextInput):
     # TODO: Is this method necessary?
     #  During testing, a quick double-click on the text box does not stop
     #  the animation of the hint text height.
-    def cancel_all_animations_on_double_click(self) -> NoReturn:
+    def cancel_all_animations_on_double_click(self) -> None:
         """
         Cancels the animations of the text field when double-clicking on the
         text field.
@@ -967,14 +967,14 @@ class MDTextField(ThemableBehavior, TextInput):
                 "_hint_text_font_size",
             )
 
-    def set_colors_to_updated(self, interval: Union[float, int]) -> NoReturn:
+    def set_colors_to_updated(self, interval: Union[float, int]) -> None:
         for attr_name in self._attr_names_to_updated.keys():
             if getattr(self, attr_name) == [0, 0, 0, 0]:
                 self._colors_to_updated.append(attr_name)
 
     def set_default_colors(
         self, interval: Union[float, int], updated: bool = False
-    ) -> NoReturn:
+    ) -> None:
         """
         Sets the default text field colors when initializing a text field
         object. Also called when the application palette changes.
@@ -1009,7 +1009,7 @@ class MDTextField(ThemableBehavior, TextInput):
         self._line_color_normal = self.line_color_normal
         self._line_color_focus = self.line_color_focus
 
-    def set_notch_rectangle(self, joining: bool = False) -> NoReturn:
+    def set_notch_rectangle(self, joining: bool = False) -> None:
         """
         Animates a notch for the hint text in the rectangle of the text field
         of type `rectangle`.
@@ -1031,7 +1031,7 @@ class MDTextField(ThemableBehavior, TextInput):
             animation.bind(on_progress=on_progress)
             animation.start(self)
 
-    def set_active_underline_width(self, width: Union[float, int]) -> NoReturn:
+    def set_active_underline_width(self, width: Union[float, int]) -> None:
         """Animates the width of the active underline line."""
 
         Animation(
@@ -1040,7 +1040,7 @@ class MDTextField(ThemableBehavior, TextInput):
             t="out_quad",
         ).start(self)
 
-    def set_static_underline_color(self, color: list) -> NoReturn:
+    def set_static_underline_color(self, color: list) -> None:
         """Animates the color of a static underline line."""
 
         Animation(
@@ -1049,47 +1049,47 @@ class MDTextField(ThemableBehavior, TextInput):
             t="out_quad",
         ).start(self)
 
-    def set_active_underline_color(self, color: list) -> NoReturn:
+    def set_active_underline_color(self, color: list) -> None:
         """Animates the fill color for 'fill' mode."""
 
         Animation(_line_color_focus=color, duration=0.2, t="out_quad").start(
             self
         )
 
-    def set_fill_color(self, color: list) -> NoReturn:
+    def set_fill_color(self, color: list) -> None:
         """Animates the color of the hint text."""
 
         Animation(_fill_color=color, duration=0.2, t="out_quad").start(self)
 
-    def set_helper_text_color(self, color: list) -> NoReturn:
+    def set_helper_text_color(self, color: list) -> None:
         """Animates the color of the hint text."""
 
         Animation(_helper_text_color=color, duration=0.2, t="out_quad").start(
             self
         )
 
-    def set_max_length_text_color(self, color: list) -> NoReturn:
+    def set_max_length_text_color(self, color: list) -> None:
         """Animates the color of the max length text."""
 
         Animation(
             _max_length_text_color=color, duration=0.2, t="out_quad"
         ).start(self)
 
-    def set_icon_right_color(self, color: list) -> NoReturn:
+    def set_icon_right_color(self, color: list) -> None:
         """Animates the color of the icon right."""
 
         Animation(_icon_right_color=color, duration=0.2, t="out_quad").start(
             self
         )
 
-    def set_icon_left_color(self, color: list) -> NoReturn:
+    def set_icon_left_color(self, color: list) -> None:
         """Animates the color of the icon left."""
 
         Animation(_icon_left_color=color, duration=0.2, t="out_quad").start(
             self
         )
 
-    def set_hint_text_color(self, focus: bool, error: bool = False) -> NoReturn:
+    def set_hint_text_color(self, focus: bool, error: bool = False) -> None:
         """Animates the color of the hint text."""
 
         if self.mode != "round":
@@ -1105,7 +1105,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 t="out_quad",
             ).start(self)
 
-    def set_pos_hint_text(self, y: float, x: float = 0) -> NoReturn:
+    def set_pos_hint_text(self, y: float, x: float = 0) -> None:
         """Animates the x-axis width and y-axis height of the hint text."""
 
         if self.mode != "round":
@@ -1129,7 +1129,7 @@ class MDTextField(ThemableBehavior, TextInput):
                     t="out_quad",
                 ).start(self)
 
-    def set_hint_text_font_size(self, font_size: float) -> NoReturn:
+    def set_hint_text_font_size(self, font_size: float) -> None:
         """Animates the font size of the hint text."""
 
         if self.mode != "round":
@@ -1137,7 +1137,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 _hint_text_font_size=font_size, duration=0.2, t="out_quad"
             ).start(self)
 
-    def set_max_text_length(self) -> NoReturn:
+    def set_max_text_length(self) -> None:
         """Called when text is entered into a text field."""
 
         if self.max_text_length:
@@ -1145,10 +1145,10 @@ class MDTextField(ThemableBehavior, TextInput):
                 f"{len(self.text)}/{self.max_text_length}"
             )
 
-    def check_text(self, interval: Union[float, int]) -> NoReturn:
+    def check_text(self, interval: Union[float, int]) -> None:
         self.set_text(self, self.text)
 
-    def set_text(self, instance_text_field, text: str) -> NoReturn:
+    def set_text(self, instance_text_field, text: str) -> None:
         """Called when text is entered into a text field."""
 
         self.text = re.sub("\n", " ", text) if not self.multiline else text
@@ -1184,7 +1184,7 @@ class MDTextField(ThemableBehavior, TextInput):
         if self.mode == "round" and not self.text:
             self.hint_text = self.__hint_text
 
-    def set_objects_labels(self) -> NoReturn:
+    def set_objects_labels(self) -> None:
         """
         Creates labels objects for the parameters`helper_text`,`hint_text`,
         etc.
@@ -1210,10 +1210,10 @@ class MDTextField(ThemableBehavior, TextInput):
         self._icon_right_label = MDIcon(theme_text_color="Custom")
         self._icon_left_label = MDIcon(theme_text_color="Custom")
 
-    def on_helper_text(self, instance_text_field, helper_text: str) -> NoReturn:
+    def on_helper_text(self, instance_text_field, helper_text: str) -> None:
         self._helper_text_label.text = helper_text
 
-    def on_focus(self, instance_text_field, focus: bool) -> NoReturn:
+    def on_focus(self, instance_text_field, focus: bool) -> None:
         # TODO: See `cancel_all_animations_on_double_click` method.
         # self.cancel_all_animations_on_double_click()
 
@@ -1287,18 +1287,16 @@ class MDTextField(ThemableBehavior, TextInput):
             else:
                 self.set_static_underline_color(self.line_color_normal)
 
-    def on_icon_left(self, instance_text_field, icon_name: str) -> NoReturn:
+    def on_icon_left(self, instance_text_field, icon_name: str) -> None:
         self._icon_left_label.icon = icon_name
 
-    def on_icon_right(self, instance_text_field, icon_name: str) -> NoReturn:
+    def on_icon_right(self, instance_text_field, icon_name: str) -> None:
         self._icon_right_label.icon = icon_name
 
-    def on_disabled(
-        self, instance_text_field, disabled_value: bool
-    ) -> NoReturn:
+    def on_disabled(self, instance_text_field, disabled_value: bool) -> None:
         pass
 
-    def on_error(self, instance_text_field, error: bool) -> NoReturn:
+    def on_error(self, instance_text_field, error: bool) -> None:
         """
         Changes the primary colors of the text box to match the `error` value
         (text field is in an error state or not).
@@ -1333,19 +1331,19 @@ class MDTextField(ThemableBehavior, TextInput):
             elif self.helper_text_mode == "persistent":
                 self.set_helper_text_color(self.helper_text_color_normal)
 
-    def on_hint_text(self, instance_text_field, hint_text: str) -> NoReturn:
+    def on_hint_text(self, instance_text_field, hint_text: str) -> None:
         if hint_text:
             self.__hint_text = hint_text
         self._hint_text_label.text = hint_text
         self._hint_text_label.font_size = sp(16)
 
-    def on_width(self, instance_text_field, width: float) -> NoReturn:
+    def on_width(self, instance_text_field, width: float) -> None:
         """Called when the application window is resized."""
 
         if self.focus:
             self._underline_width = self.width
 
-    def on_height(self, instance_text_field, value_height: float) -> NoReturn:
+    def on_height(self, instance_text_field, value_height: float) -> None:
         if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
 
@@ -1367,14 +1365,12 @@ class MDTextField(ThemableBehavior, TextInput):
     def on_max_length_text_color(self, instance_text_field, color: list):
         self._max_length_text_color = color
 
-    def _set_color(self, attr_name: str, color: str, updated: bool) -> NoReturn:
+    def _set_color(self, attr_name: str, color: str, updated: bool) -> None:
         if attr_name in self._colors_to_updated or updated:
             if attr_name in self._colors_to_updated:
                 setattr(self, attr_name, color)
 
-    def _set_attr_names_to_updated(
-        self, interval: Union[float, int]
-    ) -> NoReturn:
+    def _set_attr_names_to_updated(self, interval: Union[float, int]) -> None:
         """
         Sets and update the default color dictionary for text field textures.
         """

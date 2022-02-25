@@ -103,7 +103,7 @@ Example
 __all__ = ("MDScrollViewRefreshLayout",)
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.core.window import Window
@@ -180,7 +180,7 @@ class MDScrollViewRefreshLayout(ScrollView):
 
         return super().on_touch_up(*args)
 
-    def refresh_done(self) -> NoReturn:
+    def refresh_done(self) -> None:
         if self.refresh_spinner:
             self.refresh_spinner.hide_anim_spinner()
 
@@ -197,7 +197,7 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
     # kivymd.refreshlayout.MDScrollViewRefreshLayout object
     _refresh_layout = ObjectProperty()
 
-    def start_anim_spinner(self) -> NoReturn:
+    def start_anim_spinner(self) -> None:
         spinner = self.ids.body_spinner
         Animation(
             y=spinner.y - self.theme_cls.standard_increment * 2 + dp(10),
@@ -205,13 +205,13 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
             t="out_elastic",
         ).start(spinner)
 
-    def hide_anim_spinner(self) -> NoReturn:
+    def hide_anim_spinner(self) -> None:
         spinner = self.ids.body_spinner
         anim = Animation(y=Window.height, d=0.8, t="out_elastic")
         anim.bind(on_complete=self.set_spinner)
         anim.start(spinner)
 
-    def set_spinner(self, *args) -> NoReturn:
+    def set_spinner(self, *args) -> None:
         body_spinner = self.ids.body_spinner
         body_spinner.size = (dp(46), dp(46))
         body_spinner.y = Window.height

@@ -110,7 +110,7 @@ Determinate mode
 __all__ = ("MDSpinner",)
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -234,10 +234,10 @@ class MDSpinner(ThemableBehavior, Widget):
                     self._palette = iter(self.palette)
                     Animation(color=next(self._palette), duration=2).start(self)
 
-    def on_palette(self, instance_spinner, palette_list: list) -> NoReturn:
+    def on_palette(self, instance_spinner, palette_list: list) -> None:
         self._palette = iter(palette_list)
 
-    def on_active(self, instance_spinner, active_value: bool) -> NoReturn:
+    def on_active(self, instance_spinner, active_value: bool) -> None:
         self._reset()
         if self.active:
             self.check_determinate()
@@ -248,7 +248,7 @@ class MDSpinner(ThemableBehavior, Widget):
         `determinate = True` mode.
         """
 
-    def check_determinate(self, interval: Union[float, int] = 0) -> NoReturn:
+    def check_determinate(self, interval: Union[float, int] = 0) -> None:
         if self.active:
             if self.determinate:
                 self._start_determinate()

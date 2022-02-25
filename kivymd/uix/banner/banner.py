@@ -140,7 +140,7 @@ add the prefix `'-icon'` to the banner type:
 __all__ = ("MDBanner",)
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -296,7 +296,7 @@ class MDBanner(MDCard, FakeRectangularElevationBehavior):
 
     def add_actions_buttons(
         self, instance_box: MDBoxLayout, data: list
-    ) -> NoReturn:
+    ) -> None:
         """
         Adds buttons to the banner.
 
@@ -314,7 +314,7 @@ class MDBanner(MDCard, FakeRectangularElevationBehavior):
             action_button.markup = True
             instance_box.add_widget(action_button)
 
-    def show(self) -> NoReturn:
+    def show(self) -> None:
         """Displays a banner on the screen."""
 
         def show(interval: Union[int, float]):
@@ -332,7 +332,7 @@ class MDBanner(MDCard, FakeRectangularElevationBehavior):
                 self.hide()
             Clock.schedule_once(show, self.opening_timeout)
 
-    def hide(self) -> NoReturn:
+    def hide(self) -> None:
         """Hides the banner from the screen."""
 
         def hide(interval: Union[int, float]):
@@ -347,7 +347,7 @@ class MDBanner(MDCard, FakeRectangularElevationBehavior):
             self._progress = True
             Clock.schedule_once(hide, 0.5)
 
-    def set_type_banner(self) -> NoReturn:
+    def set_type_banner(self) -> None:
         self._type_message = {
             "three-line-icon": ThreeLineIconBanner,
             "two-line-icon": TwoLineIconBanner,
@@ -357,7 +357,7 @@ class MDBanner(MDCard, FakeRectangularElevationBehavior):
             "one-line": OneLineBanner,
         }[self.type]
 
-    def animation_display_banner(self, interval: Union[int, float]) -> NoReturn:
+    def animation_display_banner(self, interval: Union[int, float]) -> None:
         Animation(
             banner_y=self.height + self.vertical_pad,
             d=self.opening_time,
@@ -380,7 +380,7 @@ class MDBanner(MDCard, FakeRectangularElevationBehavior):
     def _reset_progress(self, *args):
         self._progress = False
 
-    def _add_banner_to_container(self) -> NoReturn:
+    def _add_banner_to_container(self) -> None:
         self.ids.container_message.add_widget(
             self._type_message(text_message=self.text, icon=self.icon)
         )

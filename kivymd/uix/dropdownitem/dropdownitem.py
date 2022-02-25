@@ -44,7 +44,6 @@ Usage
 __all__ = ("MDDropDownItem",)
 
 import os
-from typing import NoReturn
 
 from kivy.lang import Builder
 from kivy.properties import NumericProperty, StringProperty
@@ -96,10 +95,10 @@ class MDDropDownItem(
     and defaults to `'16sp'`.
     """
 
-    def on_text(self, instance_drop_down_item, text_item: str) -> NoReturn:
+    def on_text(self, instance_drop_down_item, text_item: str) -> None:
         self.ids.label_item.text = text_item
 
-    def set_item(self, name_item: str) -> NoReturn:
+    def set_item(self, name_item: str) -> None:
         """Sets new text for an item."""
 
         self.ids.label_item.text = name_item

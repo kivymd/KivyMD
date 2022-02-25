@@ -133,7 +133,7 @@ Determinate
 __all__ = ("MDProgressBar",)
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -246,7 +246,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
         super().__init__(**kwargs)
         Clock.schedule_once(self.check_size)
 
-    def check_size(self, interval: Union[int, float]) -> NoReturn:
+    def check_size(self, interval: Union[int, float]) -> None:
         if self.size == [100, 100]:
             if self.orientation == "horizontal":
                 self.size_hint_y = None
@@ -255,7 +255,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
                 self.size_hint_x = None
                 self.width = dp(4)
 
-    def start(self) -> NoReturn:
+    def start(self) -> None:
         """Start animation."""
 
         if self.type in ("indeterminate", "determinate"):
@@ -267,17 +267,17 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
                     self._create_determinate_animations()
             self.running_away()
 
-    def stop(self) -> NoReturn:
+    def stop(self) -> None:
         """Stop animation."""
 
         Animation.cancel_all(self)
         self._set_default_value(0)
 
-    def running_away(self, *args) -> NoReturn:
+    def running_away(self, *args) -> None:
         self._set_default_value(0)
         self.running_anim.start(self)
 
-    def catching_up(self, *args) -> NoReturn:
+    def catching_up(self, *args) -> None:
         if self.type == "indeterminate":
             self.reversed = True
         self.catching_anim.start(self)

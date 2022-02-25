@@ -144,7 +144,7 @@ import calendar
 import datetime
 import os
 from datetime import date
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy import Logger
 from kivy.animation import Animation
@@ -446,12 +446,12 @@ class BaseDialogPicker(
         self.register_event_type("on_save")
         self.register_event_type("on_cancel")
 
-    def on_save(self, *args) -> NoReturn:
+    def on_save(self, *args) -> None:
         """Events called when the "OK" dialog box button is clicked."""
 
         self.dismiss()
 
-    def on_cancel(self, *args) -> NoReturn:
+    def on_cancel(self, *args) -> None:
         """Events called when the "CANCEL" dialog box button is clicked."""
 
         self.dismiss()
@@ -498,7 +498,7 @@ class DatePickerEnterDataField(MDTextField):
         except ValueError:
             return False
 
-    def do_backspace(self, *args) -> NoReturn:
+    def do_backspace(self, *args) -> None:
         """Prevent deleting text from the middle of a line of a text field."""
 
         self._backspace = True
@@ -551,7 +551,7 @@ class DatePickerEnterDataField(MDTextField):
                     return
             return str(value)
 
-    def on_text(self, instance_field: MDTextField, text: str) -> NoReturn:
+    def on_text(self, instance_field: MDTextField, text: str) -> None:
         if text != "" and not text.isspace() and not self._backspace:
             if len(text) <= 1 and instance_field.focus:
                 instance_field.text = text
@@ -860,14 +860,14 @@ class MDDatePicker(BaseDialogPicker):
 
     def on_device_orientation(
         self, instance_theme_manager: ThemeManager, orientation_value: str
-    ) -> NoReturn:
+    ) -> None:
         if self._input_date_dialog_open:
             if orientation_value == "portrait":
                 self._shift_dialog_height = dp(250)
             if orientation_value == "landscape":
                 self._shift_dialog_height = dp(138)
 
-    def transformation_from_dialog_select_year(self) -> NoReturn:
+    def transformation_from_dialog_select_year(self) -> None:
         self.ids.chevron_left.disabled = False
         self.ids.chevron_right.disabled = False
         self.ids._year_layout.disabled = True
@@ -890,7 +890,7 @@ class MDDatePicker(BaseDialogPicker):
             self.set_month_day(self.day)
             self._sel_day_widget.dispatch("on_release")
 
-    def transformation_to_dialog_select_year(self) -> NoReturn:
+    def transformation_to_dialog_select_year(self) -> None:
         def disabled_chevron_buttons(*args):
             self.ids.chevron_left.disabled = True
             self.ids.chevron_right.disabled = True
@@ -907,7 +907,7 @@ class MDDatePicker(BaseDialogPicker):
         self.generate_list_widgets_years()
         self.set_position_to_current_year()
 
-    def transformation_to_dialog_input_date(self) -> NoReturn:
+    def transformation_to_dialog_input_date(self) -> None:
         def set_date_to_input_field():
             if not self._enter_data_field_two:
                 # Date of current day.
@@ -987,7 +987,7 @@ class MDDatePicker(BaseDialogPicker):
 
     def transformation_from_dialog_input_date(
         self, interval: Union[int, float]
-    ) -> NoReturn:
+    ) -> None:
         self._input_date_dialog_open = False
         self.ids.label_full_date.text = self.set_text_full_date(
             self.sel_year,
@@ -1049,7 +1049,7 @@ class MDDatePicker(BaseDialogPicker):
                 self.theme_cls.device_orientation,
             )
 
-    def compare_date_range(self) -> NoReturn:
+    def compare_date_range(self) -> None:
         # TODO: Add behavior if the minimum date range exceeds the maximum
         #  date range. Use toast?
         if self.max_date <= self.min_date:
@@ -1058,7 +1058,7 @@ class MDDatePicker(BaseDialogPicker):
                 "to 'min_date' value"
             )
 
-    def update_calendar_for_date_range(self) -> NoReturn:
+    def update_calendar_for_date_range(self) -> None:
         # self.compare_date_range()
         self._date_range = self.get_date_range()
         self._calendar_layout.clear_widgets()

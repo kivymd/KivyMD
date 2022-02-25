@@ -122,7 +122,7 @@ __all__ = (
 )
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -306,24 +306,24 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
             lambda x: self.on_left_action_items(self, self.left_action_items)
         )
 
-    def on_open(self) -> NoReturn:
+    def on_open(self) -> None:
         """When the front layer drops."""
 
-    def on_close(self) -> NoReturn:
+    def on_close(self) -> None:
         """When the front layer rises."""
 
-    def on_left_action_items(self, instance_backdrop, menu: list) -> NoReturn:
+    def on_left_action_items(self, instance_backdrop, menu: list) -> None:
         if menu:
             self.left_action_items = [menu[0]]
         else:
             self.left_action_items = [["menu", lambda x: self.open()]]
         self._open_icon = self.left_action_items[0][0]
 
-    def on_header(self, instance_backdrop, value: bool) -> NoReturn:
+    def on_header(self, instance_backdrop, value: bool) -> None:
         if not value:
             self.ids._front_layer.remove_widget(self.ids.header_button)
 
-    def open(self, open_up_to: int = 0) -> NoReturn:
+    def open(self, open_up_to: int = 0) -> None:
         """
         Opens the front layer.
 
@@ -355,7 +355,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
         self._front_layer_open = True
         self.dispatch("on_open")
 
-    def close(self) -> NoReturn:
+    def close(self) -> None:
         """Opens the front layer."""
 
         Animation(y=0, d=self.closing_time, t=self.closing_transition).start(
@@ -369,7 +369,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
         instance_icon_menu: Union[MDActionTopAppBarButton, None] = None,
         opacity_value: int = 0,
         call_set_new_icon: bool = True,
-    ) -> NoReturn:
+    ) -> None:
         """Starts the opacity animation of the icon."""
 
         if not instance_icon_menu:
@@ -387,7 +387,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
         self,
         instance_animation: Animation,
         instance_icon_menu: MDActionTopAppBarButton,
-    ) -> NoReturn:
+    ) -> None:
         """
         Sets the icon of the button depending on the state of the backdrop.
         """

@@ -118,7 +118,7 @@ Example
 __all__ = ("MDSliverAppbar", "MDSliverAppbarHeader", "MDSliverAppbarContent")
 
 import os
-from typing import NoReturn, Union
+from typing import Union
 
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -161,7 +161,7 @@ class MDSliverAppbarContent(ThemableBehavior, MDBoxLayout):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_bg_color)
 
-    def set_bg_color(self, interval: Union[int, float]) -> NoReturn:
+    def set_bg_color(self, interval: Union[int, float]) -> None:
         if self.md_bg_color == [0, 0, 0, 0]:
             self.md_bg_color = self.theme_cls.bg_normal
 
@@ -407,13 +407,13 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
 
     def on_background_color(
         self, instance_sliver_appbar, color_value: list
-    ) -> NoReturn:
+    ) -> None:
         if self.toolbar_cls:
             self.toolbar_cls.md_bg_color = color_value
 
     def on_toolbar_cls(
         self, instance_sliver_appbar, instance_toolbar_cls: MDToolbar
-    ) -> NoReturn:
+    ) -> None:
         """Called when a value is set to the :attr:`toolbar_cls` parameter."""
 
         # If an MDToolbar object is already in use, delete it
@@ -432,7 +432,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
                 "`kivymd.uix.toolbar.MDToolbar class`"
             )
 
-    def on_vbar(self) -> NoReturn:
+    def on_vbar(self) -> None:
         if not self.background_color:
             self.background_color = self.theme_cls.primary_color
 
@@ -480,7 +480,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
         else:
             super().add_widget(widget, index=index, canvas=canvas)
 
-    def _set_radius(self, instance: MDSliverAppbarContent) -> NoReturn:
+    def _set_radius(self, instance: MDSliverAppbarContent) -> None:
         instance.radius = self.radius
 
     def _get_direction_swipe(self, current_percent: float) -> str:

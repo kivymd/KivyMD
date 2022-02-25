@@ -15,8 +15,6 @@ Kivy
 
 .. code-block:: python
 
-
-
     from kivy.animation import Animation
     from kivy.lang import Builder
     from kivy.app import App

@@ -133,7 +133,7 @@ __all__ = ("MDFileManager",)
 import locale
 import os
 import re
-from typing import List, None, Tuple, Union
+from typing import List, Tuple, Union
 
 from kivy import platform
 from kivy.factory import Factory

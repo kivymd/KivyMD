@@ -7,7 +7,7 @@ Behaviors/Background Color
 
 __all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 
-from typing import List, None
+from typing import List
 
 from kivy.lang import Builder
 from kivy.properties import (

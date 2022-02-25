@@ -636,7 +636,7 @@ class TableData(RecycleView):
         # resets all checks on all pages
         self.current_selection_check = {}
 
-    def check_all(self, state: str) -> None:
+    def check_all(self, state: str) -> bool:
         """Checks if checkboxes of all rows are in the same state."""
 
         tmp = []

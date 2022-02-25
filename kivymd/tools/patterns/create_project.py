@@ -235,7 +235,7 @@ class {name_screen}Controller:
         """Called every time the user enters text into the text fields."""
 '''
 
-_firebase_view_import = """from typing import Union, None
+_firebase_view_import = """from typing import Union
 
 from kivy.clock import Clock
 

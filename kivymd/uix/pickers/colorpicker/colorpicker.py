@@ -14,7 +14,7 @@ Usage
 
 .. code-block:: python
 
-    from typing import Union, None
+    from typing import Union
 
     from kivy.lang import Builder
 
@@ -76,7 +76,7 @@ Usage
 import os
 import struct
 from io import BytesIO
-from typing import List, None, Union
+from typing import List, Union
 
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
@@ -474,9 +474,7 @@ class MDColorPicker(BaseDialog):
         )
         Clock.schedule_once(lambda x: self.on_type_color(self), 1)
 
-    def update_color_slider_item_bottom_navigation(
-        self, color: list
-    ) -> None:
+    def update_color_slider_item_bottom_navigation(self, color: list) -> None:
         """
         Updates the color of the slider that sets the transparency value of the
         selected color and the color of bottom navigation items.

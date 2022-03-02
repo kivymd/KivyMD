@@ -669,6 +669,8 @@ class BaseButton(
 
     .. deprecated in 1.0.0::
 
+        Use :attr:`icon_size` instead.
+
     :attr:`user_font_size` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """

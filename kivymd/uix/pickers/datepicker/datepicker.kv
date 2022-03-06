@@ -150,8 +150,8 @@
         MDIconButton:
             id: edit_icon
             icon: "pencil"
-            user_font_size: "24sp"
-            theme_text_color: "Custom"
+            icon_size: "24sp"
+            theme_icon_color: "Custom"
             on_release:
                 root.transformation_to_dialog_input_date() \
                 if not root._input_date_dialog_open else \
@@ -189,7 +189,7 @@
             owner: root
             icon: "menu-down"
             ripple_scale: .5
-            theme_text_color: "Custom"
+            theme_icon_color: "Custom"
             hint_text: "Choose year"
             on_release:
                 root.transformation_to_dialog_select_year() \
@@ -208,9 +208,8 @@
             id: chevron_left
             owner: root
             icon: "chevron-left"
-            theme_text_color: "Secondary"
             on_release: root.change_month("prev")
-            theme_text_color: "Custom"
+            theme_icon_color: "Custom"
             hint_text: "Previous month"
             x:
                 dp(228) if root.theme_cls.device_orientation == "portrait" \
@@ -227,9 +226,8 @@
             id: chevron_right
             owner: root
             icon: "chevron-right"
-            theme_text_color: "Secondary"
             on_release: root.change_month("next")
-            theme_text_color: "Custom"
+            theme_icon_color: "Custom"
             hint_text: "Next month"
             x:
                 dp(272) if root.theme_cls.device_orientation == "portrait" \
@@ -284,13 +282,9 @@
             font_name: root.font_name
             text_color:
                 root.theme_cls.primary_color \
-                if not root.text_button_color else root.text_button_color
-            on_release:
-                root.dispatch(\
-                "on_save", \
-                date(root.sel_year, root.sel_month, root.sel_day), \
-                root._date_range \
-                )
+                if not root.text_button_color else \
+                root.text_button_color
+            on_release: root.on_ok_button_pressed()
 
         MDFlatButton:
             id: cancel_button
@@ -301,7 +295,8 @@
             font_name: root.font_name
             text_color:
                 root.theme_cls.primary_color \
-                if not root.text_button_color else root.text_button_color
+                if not root.text_button_color else \
+                root.text_button_color
 
 
 <DatePickerDaySelectableItem>
@@ -495,7 +490,7 @@
             radius: [root.height / 2, ]
 
 
-<DatePickerDatePickerEnterDataFieldContainer>
+<DatePickerInputFieldContainer>
     adaptive_height: True
     size_hint_x: None
     spacing: dp(8)
@@ -512,12 +507,11 @@
         else dp(168) + dp(24)
 
 
-<DatePickerEnterDataField>
+<DatePickerInputField>
     mode: "fill"
     opacity: 0
     hint_text: "dd/mm/yyyy"
     input_filter: root.input_filter
-    do_backspace: root.do_backspace
     fill_color:
         (0, 0, 0, .15) \
         if not self.owner.input_field_background_color \

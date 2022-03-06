@@ -1,1 +1,1 @@
-from .datepicker import BaseDialogPicker, MDDatePicker  # NOQA F401
+from .datepicker import BaseDialogPicker, MDDatePicker, DatePickerInputField  # NOQA F401

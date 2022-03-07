@@ -168,7 +168,7 @@ class TimeInputTextField(MDTextField):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Clock.schedule_once(self.on_text)
+        Clock.schedule_once(self.set_text)
         self.register_event_type("on_select")
         self.bind(text_color=self.setter("hint_text_color_normal"))
 
@@ -183,9 +183,9 @@ class TimeInputTextField(MDTextField):
             s = ""
         return super().insert_text(s, from_undo=from_undo)
 
-    def on_text(self, *args):
+    def set_text(self, *args):
         """
-        Texts should be center aligned. now we are setting the padding of text
+        Texts should be center aligned. Now we are setting the padding of text
         to somehow make them aligned.
         """
 
@@ -222,7 +222,7 @@ class TimeInputTextField(MDTextField):
             super().on_touch_down(touch)
 
 
-class TimeInput(MDRelativeLayout, EventDispatcher):
+class TimeInput(MDRelativeLayout):
     bg_color = ColorProperty()
     bg_color_active = ColorProperty()
     text_color = ColorProperty()
@@ -250,8 +250,8 @@ class TimeInput(MDRelativeLayout, EventDispatcher):
         return [hour, minute]
 
     def _update_padding(self, *args):
-        self._hour.on_text()
-        self._minute.on_text()
+        self._hour.set_text()
+        self._minute.set_text()
 
     def on_time_input(self, *args):
         pass

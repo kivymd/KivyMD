@@ -630,7 +630,7 @@ class BaseButton(
 
     icon_color = ColorProperty(None)
     """
-    Button icon color.
+    Button icon color in (r, g, b, a) format.
 
     :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

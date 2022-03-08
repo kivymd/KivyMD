@@ -123,9 +123,9 @@ class TypeColorButton(MDRaisedButton, MDToggleButton):
     'RGBA', 'HEX', 'RGB'.
     """
 
-    theme_text_color = "Custom"
-    text_color = (0, 0, 0, 1)
-    elevation = 0
+    theme_text_color = StringProperty('Custom')
+    text_color = ColorProperty((0, 0, 0, 1))
+    elevation = NumericProperty(0)
 
 
 class SelectAlphaChannelWidget(MDBoxLayout):

@@ -96,6 +96,22 @@
     active_line: False
     font_size: dp(56)
     radius: [dp(10), ]
+    fill_color_normal:
+        root.parent.parent.parent.accent_color \
+        if root.parent.parent.parent.accent_color else \
+        ( \
+        [*root.parent.bg_color_active[:3], 0.5] \
+        if root.parent.state in ["hour", "minute"] else \
+        [*root.bg_color[:3], 0.5] \
+        )
+    fill_color_focus:
+        (1, 1, 1, 0.5) \
+        if root.parent.parent.parent.primary_color else \
+        self.theme_cls.bg_dark
+    text_color_focus:
+        root.parent.parent.parent.accent_color \
+        if root.parent.parent.parent.accent_color else \
+        self.theme_cls.primary_color
 
 
 <TimeInput>
@@ -114,10 +130,6 @@
         on_select:
             root.dispatch("on_hour_select")
             root.state = "hour"
-        fill_color:
-            [*root.bg_color_active[:3], 0.5] \
-            if root.state == "hour" else [*root.bg_color[:3], 0.5]
-
 
     MDLabel:
         text: ":"
@@ -141,9 +153,6 @@
         on_select:
             root.dispatch("on_minute_select")
             root.state = "minute"
-        fill_color:
-            [*root.bg_color_active[:3], 0.5] \
-            if root.state == "minute" else [*root.bg_color[:3], 0.5]
 
 
 <CircularSelector>
@@ -265,6 +274,7 @@
 
         AmPmSelector:
             id: _am_pm_selector
+            owner: root
             border_color:
                 root.accent_color if root.accent_color else \
                 root.theme_cls.primary_color
@@ -290,7 +300,7 @@
                 root.accent_color if root.accent_color else \
                 root.theme_cls.primary_light
             selector_color:
-                root.selector_color if root.selector_color else \
+                root.primary_color if root.primary_color else \
                 root.theme_cls.primary_color
             font_name: root.font_name
             on_selector_change: root._get_dial_time(_selector)
@@ -299,10 +309,10 @@
             id: input_clock_switch
             icon: "keyboard"
             pos: dp(12), dp(8)
-            theme_text_color: "Custom"
-            user_font_size: "24dp"
+            theme_icon_color: "Custom"
+            icon_size: "24dp"
             on_release: root._switch_input()
-            text_color:
+            icon_color:
                 root.text_toolbar_color if root.text_toolbar_color else \
                 root.theme_cls.secondary_text_color
 

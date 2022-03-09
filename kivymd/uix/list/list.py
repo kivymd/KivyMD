@@ -917,11 +917,21 @@ class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
-class ImageLeftWidget(CircularRippleBehavior, ILeftBodyTouch, FitImage):
+class TouchBehavior:
+    def on_release(self):
+        if issubclass(self.parent.parent.__class__, BaseListItem):
+            self.parent.parent.dispatch("on_release")
+
+
+class ImageLeftWidget(
+    CircularRippleBehavior, ButtonBehavior, ILeftBodyTouch, FitImage
+):
     pass
 
 
-class ImageLeftWidgetWithoutTouch(CircularRippleBehavior, ILeftBody, FitImage):
+class ImageLeftWidgetWithoutTouch(
+    CircularRippleBehavior, TouchBehavior, ButtonBehavior, ILeftBody, FitImage
+):
     """
     .. versionadded:: 1.0.0
     """
@@ -929,12 +939,14 @@ class ImageLeftWidgetWithoutTouch(CircularRippleBehavior, ILeftBody, FitImage):
     _no_ripple_effect = True
 
 
-class ImageRightWidget(CircularRippleBehavior, IRightBodyTouch, FitImage):
+class ImageRightWidget(
+    CircularRippleBehavior, ButtonBehavior, IRightBodyTouch, FitImage
+):
     pass
 
 
 class ImageRightWidgetWithoutTouch(
-    CircularRippleBehavior, IRightBody, FitImage
+    CircularRippleBehavior, TouchBehavior, ButtonBehavior, IRightBody, FitImage
 ):
     """
     .. versionadded:: 1.0.0
@@ -947,7 +959,7 @@ class IconRightWidget(IRightBodyTouch, MDIconButton):
     pos_hint = {"center_y": 0.5}
 
 
-class IconRightWidgetWithoutTouch(IRightBody, MDIconButton):
+class IconRightWidgetWithoutTouch(TouchBehavior, IRightBody, MDIconButton):
     """
     .. versionadded:: 1.0.0
     """
@@ -960,7 +972,7 @@ class IconLeftWidget(ILeftBodyTouch, MDIconButton):
     pos_hint = {"center_y": 0.5}
 
 
-class IconLeftWidgetWithoutTouch(ILeftBody, MDIconButton):
+class IconLeftWidgetWithoutTouch(TouchBehavior, ILeftBody, MDIconButton):
     """
     .. versionadded:: 1.0.0
     """

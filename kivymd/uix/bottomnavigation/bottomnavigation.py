@@ -154,6 +154,19 @@ How to automatically switch a tab?
 
 Use method :attr:`~MDBottomNavigation.switch_tab` which takes as argument
 the name of the tab you want to switch to.
+
+Use custom icon
+---------------
+
+.. code-block:: kv
+
+    MDBottomNavigation:
+
+        MDBottomNavigationItem:
+            icon: "icon.png"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-custom-icon.png
+    :align: center
 """
 
 __all__ = (

@@ -71,6 +71,11 @@
                 {"center_x": .5, "center_y": .5} \
                 if not root.panel.use_text else \
                 {"center_x": .5, "top": 1}
+            on_icon:
+                if self.icon not in md_icons.keys(): \
+                self.size_hint = (None, None); \
+                self.width = self.font_size; \
+                self.height = self.font_size
 
             canvas.before:
                 Color:

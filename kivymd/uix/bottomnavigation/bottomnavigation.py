@@ -250,14 +250,6 @@ class MDBottomNavigationHeader(
     and defaults to `[1, 1, 1, 1]`.
     """
 
-    font_name = StringProperty("Roboto")
-    """
-    Font name of the label.
-
-    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'Roboto'`.
-    """
-
     selected_color_background = ColorProperty(None)
     """
     The background color of the highlighted item when using Material Design v3.

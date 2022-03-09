@@ -561,3 +561,8 @@ class MDDialog(BaseDialog):
         for button in self.buttons:
             if issubclass(button.__class__, BaseButton):
                 self.ids.button_box.add_widget(button)
+
+    def update_items(self, items: list) -> None:
+        self.ids.box_items.clear_widgets()
+        self.items = items
+        self.create_items()

@@ -88,14 +88,14 @@
         self.ids._left_container.x = "4dp"
         self.ids._right_container.width = right_label.texture_size[0]
     on_release:
-        self._text_color = self.text_color
+        if not self.selected: self._text_color = self.text_color
         self._text_right_color = root.text_right_color if root.text_right_color else app.theme_cls.text_color
         self._drawer_menu.reset_active_color(self)
 
     IconLeftWidgetWithoutTouch:
         icon: root.icon
-        theme_text_color: "Custom"
-        text_color:
+        theme_icon_color: "Custom"
+        icon_color:
             ( \
             app.theme_cls.text_color \
             if not root.icon_color else \

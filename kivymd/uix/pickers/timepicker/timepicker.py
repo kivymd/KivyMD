@@ -106,6 +106,7 @@ __all__ = ("MDTimePicker",)
 import datetime
 import os
 import re
+import time
 from typing import Union
 
 from kivy.animation import Animation
@@ -635,10 +636,16 @@ class MDTimePicker(BaseDialogPicker):
 
     def _get_data(self):
         try:
-            result = datetime.datetime.strptime(
-                f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
-                "%I:%M %p",
-            ).time()
+            if time.strftime("%p"):
+                result = datetime.datetime.strptime(
+                    f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
+                    "%I:%M %p",
+                ).time()
+            else:
+                result = datetime.datetime.strptime(
+                    f"{int(self.hour):02d}:{int(self.minute):02d}",
+                    "%I:%M",
+                ).time()
             return result
         except ValueError:
             return None  # hour is zero

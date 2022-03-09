@@ -250,6 +250,14 @@ class MDBottomNavigationHeader(
     and defaults to `[1, 1, 1, 1]`.
     """
 
+    font_name = StringProperty("Roboto")
+    """
+    Font name of the label.
+
+    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Roboto'`.
+    """
+
     selected_color_background = ColorProperty(None)
     """
     The background color of the highlighted item when using Material Design v3.
@@ -481,7 +489,7 @@ class MDBottomNavigation(TabbedPanelBase):
     """
     Text color of the label when it is not selected.
 
-    .. code-block:: kv_label_font_size
+    .. code-block:: kv
 
         MDBottomNavigation:
             text_color_normal: 1, 0, 1, 1
@@ -539,6 +547,23 @@ class MDBottomNavigation(TabbedPanelBase):
     and defaults to `None`.
     """
 
+    font_name = StringProperty("Roboto")
+    """
+    Font name of the label.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDBottomNavigation:
+            font_name: "path/to/font.ttf"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-font-name.png
+
+    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Roboto'`.
+    """
+
     first_widget = ObjectProperty()
     """
     :attr:`first_widget` is an :class:`~MDBottomNavigationItem`
@@ -550,6 +575,7 @@ class MDBottomNavigation(TabbedPanelBase):
     :attr:`tab_header` is an :class:`~MDBottomNavigationHeader`
     and defaults to `None`.
     """
+
     # Text active color if it is selected.
     _active_color = ColorProperty([1, 1, 1, 1])
 
@@ -591,12 +617,15 @@ class MDBottomNavigation(TabbedPanelBase):
             tab_bar.clear_widgets()
             tab_manager = self.ids.tab_manager
             self._active_color = self.theme_cls.primary_color
+
             if self.text_color_active != [1, 1, 1, 1]:
                 self._active_color = self.text_color_active
+
             for tab in tab_manager.screens:
                 self.tab_header = MDBottomNavigationHeader(tab=tab, panel=self)
                 tab.header = self.tab_header
                 tab_bar.add_widget(self.tab_header)
+
                 if tab is self.first_widget:
                     self.tab_header._text_color_normal = self._active_color
                     self.tab_header._label_font_size = sp(14)
@@ -604,6 +633,10 @@ class MDBottomNavigation(TabbedPanelBase):
                 else:
                     self.tab_header.ids._label.font_size = sp(12)
                     self.tab_header._label_font_size = sp(12)
+
+    def on_font_name(self, instance_bottom_navigation, font_name: str) -> None:
+        for tab in self.ids.tab_bar.children:
+            tab.ids._label.font_name = font_name
 
     def on_selected_color_background(
         self, instance_bottom_navigation, color: list

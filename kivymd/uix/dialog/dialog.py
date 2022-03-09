@@ -509,7 +509,7 @@ class MDDialog(BaseDialog):
         if update_height:
             Clock.schedule_once(self.update_height)
 
-    def update_width(self, *args):
+    def update_width(self, *args) -> None:
         self.width = max(
             self.height + self.width_offset,
             min(
@@ -518,14 +518,19 @@ class MDDialog(BaseDialog):
             ),
         )
 
-    def update_height(self, *args):
+    def update_height(self, *args) -> None:
         self._spacer_top = self.content_cls.height + dp(24)
 
-    def on_open(self):
+    def update_items(self, items: list) -> None:
+        self.ids.box_items.clear_widgets()
+        self.items = items
+        self.create_items()
+
+    def on_open(self) -> None:
         # TODO: Add scrolling text.
         self.height = self.ids.container.height
 
-    def get_normal_height(self):
+    def get_normal_height(self) -> float:
         return (
             (Window.height * 80 / 100)
             - self._spacer_top
@@ -535,11 +540,11 @@ class MDDialog(BaseDialog):
             - 100
         )
 
-    def edit_padding_for_item(self, instance_item):
+    def edit_padding_for_item(self, instance_item) -> None:
         instance_item.ids._left_container.x = 0
         instance_item._txt_left_pad = "56dp"
 
-    def create_items(self):
+    def create_items(self) -> None:
         if not self.text:
             self.ids.container.remove_widget(self.ids.text)
             height = 0
@@ -557,12 +562,7 @@ class MDDialog(BaseDialog):
         else:
             self.ids.scroll.height = height
 
-    def create_buttons(self):
+    def create_buttons(self) -> None:
         for button in self.buttons:
             if issubclass(button.__class__, BaseButton):
                 self.ids.button_box.add_widget(button)
-
-    def update_items(self, items: list) -> None:
-        self.ids.box_items.clear_widgets()
-        self.items = items
-        self.create_items()

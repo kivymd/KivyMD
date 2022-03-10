@@ -1573,6 +1573,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         Removed row from common table.
         Argument `data` is the row data from the list :attr:`row_data`.
 
+        Change row
+        ----------
+
         .. code-block:: python
 
             from kivy.metrics import dp

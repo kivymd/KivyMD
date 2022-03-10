@@ -1450,7 +1450,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         self.ids.container.add_widget(self.table_data)
         if self.use_pagination:
             self.ids.container.add_widget(self.pagination)
-        Clock.schedule_once(self.create_pagination_menu, 0.5)
+            Clock.schedule_once(self.create_pagination_menu, 0.5)
         self.bind(row_data=self.update_row_data)
 
     def update_row_data(self, instance_data_table, data: list) -> None:
@@ -1477,12 +1477,91 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         self.table_data.set_next_row_data_parts("")
         self.pagination.ids.button_back.disabled = True
-        Clock.schedule_once(self.create_pagination_menu, 0.5)
+        if self.use_pagination:
+            Clock.schedule_once(self.create_pagination_menu, 0.5)
 
     def add_row(self, data: Union[list, tuple]) -> None:
         """
         Added new row to common table.
         Argument `data` is the row data from the list :attr:`row_data`.
+
+        Add/remove row
+        --------------
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.datatables import MDDataTable
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.button import MDRaisedButton
+
+
+            class Example(MDApp):
+                data_tables = None
+
+                def build(self):
+                    layout = MDFloatLayout()  # root layout
+                    # Creating control buttons.
+                    button_box = MDBoxLayout(
+                        pos_hint={"center_x": 0.5},
+                        adaptive_size=True,
+                        padding="24dp",
+                        spacing="24dp",
+                    )
+
+                    for button_text in ["Add row", "Remove row"]:
+                        button_box.add_widget(
+                            MDRaisedButton(
+                                text=button_text, on_release=self.on_button_press
+                            )
+                        )
+
+                    # Create a table.
+                    self.data_tables = MDDataTable(
+                        pos_hint={"center_y": 0.5, "center_x": 0.5},
+                        size_hint=(0.9, 0.6),
+                        use_pagination=False,
+                        column_data=[
+                            ("No.", dp(30)),
+                            ("Column 1", dp(40)),
+                            ("Column 2", dp(40)),
+                            ("Column 3", dp(40)),
+                        ],
+                        row_data=[("1", "1", "2", "3")],
+                    )
+                    # Adding a table and buttons to the toot layout.
+                    layout.add_widget(self.data_tables)
+                    layout.add_widget(button_box)
+
+                    return layout
+
+                def on_button_press(self, instance_button: MDRaisedButton) -> None:
+                    '''Called when a control button is clicked.'''
+
+                    try:
+                        {
+                            "Add row": self.add_row,
+                            "Remove row": self.remove_row,
+                        }[instance_button.text]()
+                    except KeyError:
+                        pass
+
+                def add_row(self) -> None:
+                    last_num_row = int(self.data_tables.row_data[-1][0])
+                    self.data_tables.add_row((str(last_num_row + 1), "1", "2", "3"))
+
+                def remove_row(self) -> None:
+                    if len(self.data_tables.row_data) > 1:
+                        self.data_tables.remove_row(self.data_tables.row_data[-1])
+
+
+            Example().run()
+
+        .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-add-remove-row.gif
+            :align: center
 
         .. versionadded:: 1.0.0
         """
@@ -1493,6 +1572,55 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         """
         Removed row from common table.
         Argument `data` is the row data from the list :attr:`row_data`.
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.datatables import MDDataTable
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.button import MDRaisedButton
+
+
+            class Example(MDApp):
+                data_tables = None
+
+                def build(self):
+                    layout = MDFloatLayout()
+                    layout.add_widget(
+                        MDRaisedButton(
+                            text="Change 2 row",
+                            pos_hint={"center_x": 0.5},
+                            on_release=self.change_row,
+                            y=24,
+                        )
+                    )
+                    self.data_tables = MDDataTable(
+                        pos_hint={"center_y": 0.5, "center_x": 0.5},
+                        size_hint=(0.9, 0.6),
+                        use_pagination=False,
+                        column_data=[
+                            ("No.", dp(30)),
+                            ("Column 1", dp(40)),
+                            ("Column 2", dp(40)),
+                            ("Column 3", dp(40)),
+                        ],
+                        row_data=[(f"{i + 1}", "1", "2", "3") for i in range(3)],
+                    )
+                    layout.add_widget(self.data_tables)
+
+                    return layout
+
+                def change_row(self, instance_button: MDRaisedButton) -> None:
+                    updated_second_row_data = ["2", "A", "B", "C"]
+                    self.data_tables.row_data[1] = updated_second_row_data
+
+
+            Example().run()
+
+        .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-change-row.gif
+            :align: center
 
         .. versionadded:: 1.0.0
         """

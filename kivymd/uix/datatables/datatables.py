@@ -1485,8 +1485,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         Added new row to common table.
         Argument `data` is the row data from the list :attr:`row_data`.
 
-        Add/remove row
-        --------------
+        .. rubric:: Add/remove row
 
         .. code-block:: python
 
@@ -1573,8 +1572,22 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         Removed row from common table.
         Argument `data` is the row data from the list :attr:`row_data`.
 
-        Change row
-        ----------
+        See the code in the doc string for the :attr:`add_row` method for more
+        information.
+
+        .. versionadded:: 1.0.0
+        """
+
+        self.row_data.remove(data)
+
+    def update_row(
+        self, old_data: Union[list, tuple], new_data: Union[list, tuple]
+    ) -> None:
+        """
+        Updates a table row.
+        Argument `old_data/new_data` is the row data from the list :attr:`row_data`.
+
+        .. rubric:: Update row
 
         .. code-block:: python
 
@@ -1595,7 +1608,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                         MDRaisedButton(
                             text="Change 2 row",
                             pos_hint={"center_x": 0.5},
-                            on_release=self.change_row,
+                            on_release=self.update_row,
                             y=24,
                         )
                     )
@@ -1615,9 +1628,11 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
                     return layout
 
-                def change_row(self, instance_button: MDRaisedButton) -> None:
-                    updated_second_row_data = ["2", "A", "B", "C"]
-                    self.data_tables.row_data[1] = updated_second_row_data
+                def update_row(self, instance_button: MDRaisedButton) -> None:
+                    self.data_tables.update_row(
+                        self.data_tables.row_data[1],  # old row data
+                        ["2", "A", "B", "C"],          # new row data
+                    )
 
 
             Example().run()
@@ -1628,7 +1643,11 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         .. versionadded:: 1.0.0
         """
 
-        self.row_data.remove(data)
+        for data in self.row_data:
+            if data == old_data:
+                index_data = self.row_data.index(data)
+                self.row_data[index_data] = new_data
+                break
 
     def on_row_press(self, instance_cell_row) -> None:
         """Called when a table row is clicked."""

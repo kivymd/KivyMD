@@ -39,4 +39,4 @@ Unreleased
 * `Fix <https://github.com/kivymd/KivyMD/pull/1141>`_ `Warning, too much iteration done before the next frame` for button classes;
 * Added `FadingEdgeEffect class <https://kivymd.readthedocs.io/en/latest/effects/fadingedgeeffect/>`_
 * Added `MDSliverAppBar <https://kivymd.readthedocs.io/en/latest/components/sliverappbar/#module-kivymd.uix.sliverappbar.sliverappbar>`_ widget;
-
+* Added the feature to use `custom icons <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/#use-custom-icon>`_ and `font name <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/#kivymd.uix.bottomnavigation.bottomnavigation.MDBottomNavigation.font_name>`_ for the `MDBottomNavigation <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/>`_ class;

@@ -471,7 +471,7 @@ class TabbedPanelBase(
     Panel color of bottom navigation.
 
     :attr:`panel_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[]`.
+    and defaults to `None`.
     """
 
     tabs = ListProperty()
@@ -581,6 +581,17 @@ class MDBottomNavigation(TabbedPanelBase):
     and defaults to `None`.
     """
 
+    set_bars_color = BooleanProperty(False)
+    """
+    If `True` the background color of the navigation bar will be set
+    automatically according to the current color of the toolbar.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`set_bars_color` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     # Text active color if it is selected.
     _active_color = ColorProperty([1, 1, 1, 1])
 
@@ -595,7 +606,8 @@ class MDBottomNavigation(TabbedPanelBase):
         Clock.schedule_once(self.set_status_bar_color)
 
     def set_status_bar_color(self, interval: Union[int, float]) -> None:
-        set_bars_colors(self.panel_color, None, self.theme_cls.theme_style)
+        if self.set_bars_color:
+            set_bars_colors(self.panel_color, None, self.theme_cls.theme_style)
 
     def switch_tab(self, name_tab) -> None:
         """Switching the tab by name."""

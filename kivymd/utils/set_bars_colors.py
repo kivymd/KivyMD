@@ -22,6 +22,9 @@ def set_bars_colors(
 
     .. warning:: Works only on Android devices.
 
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/status-bar-color-light.png
+        :align: center
+
     .. code-block:: python
 
         from kivy.lang import Builder
@@ -67,9 +70,6 @@ def set_bars_colors(
 
 
         Test().run()
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/status-bar-color-light.png
-        :align: center
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-bar-color.png
         :align: center

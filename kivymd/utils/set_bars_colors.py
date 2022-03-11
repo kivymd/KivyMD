@@ -20,6 +20,74 @@ def set_bars_colors(
     """
     Sets the color of the status of the StatusBar and NavigationBar.
 
+    .. warning:: Works only on Android devices.
+
+    .. code-block:: python
+
+        from kivy.lang import Builder
+
+        from kivymd.app import MDApp
+        from kivymd.utils.set_bars_colors import set_bars_colors
+
+        KV = '''
+        MDBoxLayout:
+            orientation: "vertical"
+
+            MDToolbar:
+                title: "MDToolbar"
+
+            MDBottomNavigation:
+                panel_color: app.theme_cls.primary_color
+                text_color_active: .2, .2, .2, 1
+                text_color_normal: .9, .9, .9, 1
+                use_text: False
+
+                MDBottomNavigationItem:
+                    icon: 'gmail'
+
+                MDBottomNavigationItem:
+                    icon: 'twitter'
+
+                MDBottomNavigationItem:
+                    icon: 'youtube'
+        '''
+
+
+        class Test(MDApp):
+            def build(self):
+                self.set_bars_colors()
+                return Builder.load_string(KV)
+
+            def set_bars_colors(self):
+                set_bars_colors(
+                    self.theme_cls.primary_color,  # status bar color
+                    self.theme_cls.primary_color,  # navigation bar color
+                    "Light",                       # icons color of status bar
+                )
+
+
+        Test().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/status-bar-color-light.png
+        :align: center
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-bar-color.png
+        :align: center
+
+    .. rubric:: Dark icon mode
+
+    .. code-block:: python
+
+        def set_bars_colors(self):
+            set_bars_colors(
+                self.theme_cls.primary_color,  # status bar color
+                self.theme_cls.primary_color,  # navigation bar color
+                "Dark",                        # icons color of status bar
+            )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/status-bar-color-dark.png
+        :align: center
+
     .. versionadded:: 1.0.0
     """
 

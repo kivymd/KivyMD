@@ -700,6 +700,17 @@ class MDToolbar(NotchedBox):
     and defaults to `None`.
     """
 
+    set_bars_color = BooleanProperty(False)
+    """
+    If `True` the background color of the bar status will be set automatically
+    according to the current color of the toolbar.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`set_bars_color` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     _shift = NumericProperty("3dp")
 
     def __init__(self, **kwargs):
@@ -768,10 +779,16 @@ class MDToolbar(NotchedBox):
         pass
 
     def on_md_bg_color(self, instance_toolbar, color_value: list) -> None:
-        if self.type == "bottom":
-            self.md_bg_color = [0, 0, 0, 0]
-        else:
-            set_bars_colors(color_value, None, self.theme_cls.theme_style)
+        def on_md_bg_color(interval: Union[int, float]):
+            if self.type == "bottom":
+                self.md_bg_color = [0, 0, 0, 0]
+            else:
+                if self.set_bars_color:
+                    set_bars_colors(
+                        color_value, None, self.theme_cls.theme_style
+                    )
+
+        Clock.schedule_once(on_md_bg_color)
 
     def on_left_action_items(self, instance_toolbar, items_value: list) -> None:
         def on_left_action_items(interval: Union[int, float]):

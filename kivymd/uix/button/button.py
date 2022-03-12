@@ -255,9 +255,9 @@ MDRectangleFlatIconButton
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
     :align: center
 
-Button parameters :class:`~MDRectangleFlatButton` are the same as
+Button parameters :class:`~MDRectangleFlatIconButton` are the same as
 button :class:`~MDRectangleFlatButton`, with the addition of the
-``theme_icon_color`` and ``icon_color`` parameters as for `~MDIconButton`.
+``theme_icon_color`` and ``icon_color`` parameters as for :class:`~MDIconButton`.
 
 .. code-block:: kv
 
@@ -329,7 +329,7 @@ MDRoundFlatIconButton
 
 Button parameters :class:`~MDRoundFlatIconButton` are the same as
 button :class:`~MDRoundFlatButton`, with the addition of the
-``theme_icon_color`` and ``icon_color`` parameters as for `~MDIconButton`.:
+``theme_icon_color`` and ``icon_color`` parameters as for :class:`~MDIconButton`:
 
 .. code-block:: kv
 
@@ -356,7 +356,7 @@ MDFillRoundFlatIconButton
 
 Button parameters :class:`~MDFillRoundFlatIconButton` are the same as
 button :class:`~MDRaisedButton`, with the addition of the
-``theme_icon_color`` and ``icon_color`` parameters as for `~MDIconButton`..
+``theme_icon_color`` and ``icon_color`` parameters as for :class:`~MDIconButton`.
 
 .. note:: Notice that the width of the :class:`~MDFillRoundFlatIconButton`
     button matches the size of the button text.

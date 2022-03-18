@@ -594,7 +594,7 @@ class MDToolbar(NotchedBox):
 
     anchor_title = OptionProperty(None, options=["left", "center", "right"])
     """
-    Position toolbar title.
+    Position toolbar title. Only used with `material_style = 'M3'`
     Available options are: `'left'`, `'center'`, `'right'`.
 
     :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`

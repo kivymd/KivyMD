@@ -878,6 +878,13 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `'Roboto'`.
     """
 
+    reset_focus_on_text_empty = BooleanProperty(True)
+    """
+    Is the text field unfocused if there are no characters in it.
+    :attr:`reset_focus_on_text_empty` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     # The x-axis position of the hint text in the text field.
     _hint_x = NumericProperty(0)
     # The y-axis position of the hint text in the text field.
@@ -1175,7 +1182,7 @@ class MDTextField(ThemableBehavior, TextInput):
             if self.mode == "rectangle":
                 self.set_notch_rectangle()
 
-        if not self.text:
+        if not self.text and self.reset_focus_on_text_empty:
             self.on_focus(instance_text_field, False)
             self.focus = False
 

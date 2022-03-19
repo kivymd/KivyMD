@@ -882,7 +882,7 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Is the text field unfocused if there are no characters in it.
     :attr:`reset_focus_on_text_empty` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
+    and defaults to `True`.
     """
 
     # The x-axis position of the hint text in the text field.

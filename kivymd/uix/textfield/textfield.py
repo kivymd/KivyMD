@@ -387,8 +387,6 @@ class MDTextField(ThemableBehavior, TextInput):
     """
     Text for ``helper_text`` mode.
 
-
-
     :attr:`helper_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """

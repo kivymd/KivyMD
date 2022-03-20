@@ -1177,7 +1177,6 @@ class MDTextField(ThemableBehavior, TextInput):
 
         if not self.text:
             self.on_focus(instance_text_field, False)
-            self.focus = False
 
         if self.mode == "round" and self.text:
             self.hint_text = ""

@@ -1184,7 +1184,7 @@ class MDTextField(ThemableBehavior, TextInput):
             if self.mode == "rectangle":
                 self.set_notch_rectangle()
 
-        if not self.text:
+        if not self.text and not self.focus:
             self.on_focus(instance_text_field, False)
 
         if self.mode == "round" and self.text:

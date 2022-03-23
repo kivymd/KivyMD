@@ -1,106 +1,145 @@
-#:import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
+<MDNavigationRailMenuButton>
+    pos_hint: {"center_x": .5, "top": 1}
 
 
-<NavigationRailTitle>
-    id: title_box
-    padding: "12dp", "8dp", "8dp", "8dp"
-    spacing: "16dp"
-
-    MDIconButton:
-        id: title_icon
-        icon: root.icon
-        pos_hint: {"center_x": .5, "center_y": .5}
-        on_release:
-            root.navigation_rail.rail_state = "open" \
-            if root.navigation_rail.rail_state == "close" else "close"
-
-    MDLabel:
-        id: lbl_title
-        text: root.title
-        size_hint: None, None
-        -text_size: dp(140), None
-        size: dp(140), self.texture_size[1]
-        pos_hint: {"center_y": .5}
-        opacity: 0
-        markup: True
-
-    MDIconButton:
-        id: icon_settings
-        opacity: 0
-        opposite_colors: True
-        icon: "cog"
-        pos_hint: {"center_y": .5}
+<MDNavigationRailFabButton>
+    type: "standard"
+    pos_hint: {"center_x": .5}
 
 
-<BaseNavigationRailFloatingButton>
-    theme_text_color: "Custom"
+<MDNavigationRail>
+    size_hint: None, 1
+    width: "80dp"
 
-    canvas.before:
-        Color:
-            rgba: root.md_bg_color
-        RoundedRectangle:
-            pos: dp(8), self.y - self._padding_right / 2 + dp(1.5)
-            size:
-                self.width + self._canvas_width - dp(3), \
-                self.height + self._padding_right - dp(3)
-            radius: [self.height / 2]
+    PanelRoot:
+        id: box_buttons
 
-        Color:
-            rgba: 1, 1, 1, self._alpha
-        Rectangle:
-            texture: self._lbl_text.texture
-            size: self._lbl_text.texture_size
-            pos: self.width + dp(8), self.y + dp(18)
-
-
-<BaseNavigationRailBoxItem>
-    spacing: "8dp"
-    padding: "16dp"
+        PanelItems:
+            id: box_items
+            orientation: "vertical"
+            spacing: "12dp"
+            adaptive_size: True
+            pos_hint: {"center_x": .5}
 
 
 <MDNavigationRailItem>
     orientation: "vertical"
-    spacing: "12dp"
-    adaptive_height: True
+    size_hint: None, None
+    size: self.navigation_rail.width, "56dp"
 
-    MDIcon:
-        id: btn_icon
-        icon: root.icon
-        font_size: "24dp"
-        halign: "center"
-        theme_text_color: "Custom"
-        text_color:
-            root.theme_cls.text_color \
-            if not root._color_normal else root._color_normal
-        pos_hint: {"center_y": .5}
-
-    MDLabel:
-        id: lbl_text
-        text: root.text
-        size_hint_y: None
-        height: self.texture_size[1]
-        halign: "center"
-        markup: True
-        theme_text_color: "Custom"
-        text_color:
-            btn_icon.text_color \
-            if root.navigation_rail.visible == "Persistent" else (0, 0, 0, 0)
-
-
-<MDNavigationRail>
-    orientation: "vertical"
-    padding: 0, "8dp", 0, "8dp"
-    elevation: root.elevation
-
-    MDBoxLayout:
-        id: box_title
+    RelativeLayout:
+        id: container
         size_hint: None, None
-        size: root.width * 2, "56dp"
+        size: root.size
 
-    ScrollView:
-        effect_cls: StiffScrollEffect
-        bar_width: 0
+        RippleWidget:
+            id: ripple_widget
+            size_hint: None, None
+            size: (container.width, container.width)
+            radius: container.width / 2
+            scale_value_x: 0
+            scale_value_y: 0
+            scale_value_z: 0
+            opacity: 0
+            md_bg_color:
+                root.navigation_rail.ripple_color_item \
+                if root.navigation_rail.ripple_color_item else \
+                app.theme_cls.primary_color
 
-        MDList:
-            id: box
-            spacing: "8dp"
+        MDIcon:
+            id: icon
+            icon: root.icon
+            opposite_colors: root.opposite_colors
+            font_size: "24sp"
+            pos_hint: {"center_x": .5}
+            badge_icon: root.badge_icon
+            badge_font_size: root.badge_font_size
+            badge_icon_color:
+                root.badge_icon_color \
+                if root.badge_icon_color else \
+                (1, 1, 1, 1)
+            badge_bg_color:
+                root.badge_bg_color \
+                if root.badge_bg_color else \
+                app.theme_cls.error_color
+            theme_text_color: "Custom"
+            text_color:
+                ( \
+                root.navigation_rail.icon_color_item_normal \
+                if root.navigation_rail.icon_color_item_normal else \
+                app.theme_cls.text_color \
+                ) \
+                if not root.active else \
+                ( \
+                root.navigation_rail.icon_color_item_active \
+                if root.navigation_rail.icon_color_item_active else \
+                app.theme_cls.text_color \
+                )
+            y:
+                container.height - \
+                ( \
+                (self.height + dp(4)) \
+                if root.navigation_rail.type == "unselected" else \
+                (self.height - dp(8)) \
+                )
+
+            canvas.before:
+                Color:
+                    rgba:
+                        ( \
+                        ( \
+                        ( \
+                        app.theme_cls.primary_color \
+                        if not root.navigation_rail.selected_color_background else \
+                        root.navigation_rail.selected_color_background \
+                        ) \
+                        if root._release else \
+                        (0, 0, 0, 0) \
+                        ) \
+                        ) \
+                        if root.active else \
+                        (0, 0, 0, 0)
+                RoundedRectangle:
+                    radius:
+                        [root._selected_region_width / 2,] \
+                        if root.navigation_rail.type == "unselected" else \
+                        [root._selected_region_width / 4,]
+                    size:
+                        root._selected_region_width, \
+                        root._selected_region_width \
+                        if root.navigation_rail.type == "unselected" else \
+                        root._selected_region_width / 2
+                    pos:
+                        self.center_x - self.width - dp(4), \
+                        self.center_y - root._selected_region_width / 2 \
+                        if root.navigation_rail.type == "unselected" else \
+                        self.center_y - root._selected_region_width / 4
+
+        MDLabel:
+            id: label
+            text: root.text
+            size_hint_x: None
+            text_size: None, root.height
+            adaptive_height: True
+            opposite_colors: root.opposite_colors
+            pos_hint: {"center_x": .5}
+            y: "16"
+            font_style: "Body2"
+            font_name: root.navigation_rail.font_name
+            theme_text_color: "Custom"
+            text_color:
+                ( \
+                root.navigation_rail.text_color_item_normal \
+                if root.navigation_rail.text_color_item_normal else \
+                app.theme_cls.text_color \
+                ) \
+                if not root.active else \
+                ( \
+                root.navigation_rail.text_color_item_active \
+                if root.navigation_rail.text_color_item_active else \
+                app.theme_cls.text_color \
+                )
+            opacity:
+                (0 if root.navigation_rail.type == "unselected" else 1) \
+                if root.navigation_rail.type != "selected" else \
+                (0 if not root.active else 1)

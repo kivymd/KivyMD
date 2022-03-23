@@ -940,6 +940,7 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
     and defaults to `'left'`.
     """
 
+    # FIXME: Doesn't work in Kivy v2.1.0.
     scrim_color = ColorProperty([0, 0, 0, 0.5])
     """
     Color for scrim. Alpha channel will be multiplied with

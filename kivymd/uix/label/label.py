@@ -311,7 +311,7 @@ class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
 
     text_color = ColorProperty(None)
     """
-    Label text color in ``rgba`` format.
+    Label text color in (r, g, b, a) format.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -419,7 +419,7 @@ class MDIcon(MDFloatLayout, MDLabel):
 
     badge_icon_color = ColorProperty([1, 1, 1, 1])
     """
-    Badge icon color.
+    Badge icon color in (r, g, b, a) format.
 
     .. versionadded:: 1.0.0
 
@@ -429,7 +429,7 @@ class MDIcon(MDFloatLayout, MDLabel):
 
     badge_bg_color = ColorProperty(None)
     """
-    Badge icon background color.
+    Badge icon background color in (r, g, b, a) format.
 
     .. versionadded:: 1.0.0
 
@@ -439,7 +439,7 @@ class MDIcon(MDFloatLayout, MDLabel):
 
     badge_font_size = NumericProperty()
     """
-    Badge icon color.
+    Badge font size.
 
     .. versionadded:: 1.0.0
 

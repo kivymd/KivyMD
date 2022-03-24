@@ -1109,8 +1109,16 @@ class MDTextField(ThemableBehavior, TextInput):
         if self.mode != "round":
             Animation(_hint_y=y, duration=0.2, t="out_quad").start(self)
             if self.mode == "rectangle":
+                if not self.icon_left:
+                    _hint_x = x
+                else:
+                    if y == dp(10):
+                        _hint_x = dp(-16)
+                    else:
+                        _hint_x = dp(20)
+
                 Animation(
-                    _hint_x=x if not self.icon_left else dp(-16),
+                    _hint_x=_hint_x,
                     duration=0.2,
                     t="out_quad",
                 ).start(self)
@@ -1169,18 +1177,21 @@ class MDTextField(ThemableBehavior, TextInput):
                 if self.mode != "rectangle"
                 else dp(10)
             )
+
             self.set_hint_text_font_size(sp(12))
             if self.mode == "rectangle":
                 self.set_notch_rectangle()
 
-        if not self.text:
+        if not self.text and not self.focus:
             self.on_focus(instance_text_field, False)
-            self.focus = False
 
         if self.mode == "round" and self.text:
             self.hint_text = ""
         if self.mode == "round" and not self.text:
             self.hint_text = self.__hint_text
+
+    def set_x_pos(self):
+        pass
 
     def set_objects_labels(self) -> None:
         """
@@ -1260,11 +1271,14 @@ class MDTextField(ThemableBehavior, TextInput):
             if self.mode == "rectangle" and not self.text:
                 self.set_notch_rectangle(joining=True)
             if not self.text:
-                self.set_pos_hint_text(
-                    dp(38)
-                    if not self.icon_left or self.mode == "rectangle"
-                    else (dp(34) if not self.mode == "fill" else dp(38))
-                )
+                if self.mode == "rectangle":
+                    y = dp(38)
+                elif self.mode == "fill":
+                    y = dp(46)
+                else:
+                    y = dp(34)
+
+                self.set_pos_hint_text(y)
                 self.set_hint_text_font_size(sp(16))
             if self.icon_right:
                 self.set_icon_right_color(self.icon_right_color_normal)

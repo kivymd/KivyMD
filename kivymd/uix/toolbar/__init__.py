@@ -1,2 +1,2 @@
 # NOQA F401
-from .toolbar import MDActionTopAppBarButton, MDBottomAppBar, MDToolbar
+from .toolbar import MDBottomAppBar, MDToolbar, MDTopAppBar

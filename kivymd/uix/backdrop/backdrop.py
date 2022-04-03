@@ -141,7 +141,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.toolbar import MDActionTopAppBarButton, MDToolbar
+from kivymd.uix.toolbar.toolbar import ActionTopAppBarButton, MDTopAppBar
 
 with open(
     os.path.join(uix_path, "backdrop", "backdrop.kv"),
@@ -169,9 +169,9 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
 
     left_action_items = ListProperty()
     """
-    The icons and methods left of the :class:`kivymd.uix.toolbar.MDToolbar`
+    The icons and methods left of the :class:`kivymd.uix.toolbar.MDTopAppBar`
     in back layer. For more information, see the
-    :class:`kivymd.uix.toolbar.MDToolbar` module
+    :class:`kivymd.uix.toolbar.MDTopAppBar` module
     and :attr:`left_action_items` parameter.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
@@ -188,7 +188,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
 
     title = StringProperty()
     """
-    See the :class:`kivymd.uix.toolbar.MDToolbar.title` parameter.
+    See the :class:`kivymd.uix.toolbar.MDTopAppBar.title` parameter.
 
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
@@ -366,7 +366,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
 
     def animate_opacity_icon(
         self,
-        instance_icon_menu: Union[MDActionTopAppBarButton, None] = None,
+        instance_icon_menu: Union[ActionTopAppBarButton, None] = None,
         opacity_value: int = 0,
         call_set_new_icon: bool = True,
     ) -> None:
@@ -386,7 +386,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
     def set_new_icon(
         self,
         instance_animation: Animation,
-        instance_icon_menu: MDActionTopAppBarButton,
+        instance_icon_menu: ActionTopAppBarButton,
     ) -> None:
         """
         Sets the icon of the button depending on the state of the backdrop.
@@ -409,7 +409,7 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
                 self.ids.front_layer.add_widget(widget)
 
 
-class MDBackdropToolbar(MDToolbar):
+class MDBackdropToolbar(MDTopAppBar):
     """Implements a toolbar for back content."""
 
 

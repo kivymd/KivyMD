@@ -601,11 +601,11 @@ class MDTopAppBar(NotchedBox, WindowController):
  
         MDTopAppBar:
             right_action_items:
-                [ \
-                ["home", lambda x: app.callback(x), "Home"], \
-                ["message-star", lambda x: app.callback(x), "Message star"], \
-                ["message-question", lambda x: app.callback(x), "Message question"], \
-                ["message-reply", lambda x: app.callback(x), "Message reply"], \
+                [ \\
+                ["home", lambda x: app.callback(x), "Home"], \\
+                ["message-star", lambda x: app.callback(x), "Message star"], \\
+                ["message-question", lambda x: app.callback(x), "Message question"], \\
+                ["message-reply", lambda x: app.callback(x), "Message reply"], \\
                 ]
     
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-tooltip-text.gif

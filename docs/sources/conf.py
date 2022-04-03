@@ -17,7 +17,7 @@ import kivymd  # NOQA
 
 # Project information
 project = "KivyMD"
-copyright = "2021, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
+copyright = "2022, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 version = kivymd.__version__
 release = kivymd.__version__

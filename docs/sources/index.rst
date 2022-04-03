@@ -18,8 +18,8 @@ Contents
    /getting-started
    /themes/index
    /components/index
+   /controllers/index
    /behaviors/index
-   /controller/index
    /effects/index
    /templates/index
    /changelog/index

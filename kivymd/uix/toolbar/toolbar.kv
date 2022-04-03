@@ -1,12 +1,7 @@
-<MDActionBottomAppBarButton>
-    canvas.before:
-        PushMatrix
-        Scale:
-            origin: self.center
-            x: root._scale_x
-            y: root._scale_y
-    canvas.after:
-        PopMatrix
+<OverFlowMenuItem>
+
+    IconLeftWidget:
+        icon: root.icon
 
 
 <NotchedBox>
@@ -57,7 +52,7 @@
                 else [root.notch_radius * root._rounding_percentage, 0, 0, 0]
 
 
-<MDToolbar>
+<MDTopAppBar>
     orientation: "vertical"
 
     MDBoxLayout:
@@ -69,28 +64,26 @@
             size_hint_x: None
             padding: [0, (self.height - dp(48)) / 2]
 
-        MDBoxLayout:
+        MDLabel:
+            id: label_title
+            font_style: "H6"
+            opposite_colors: root.opposite_colors
+            theme_text_color: "Custom" if not root.opposite_colors else "Primary"
+            text_color: root.specific_text_color
+            text: root.title
+            shorten: True
+            shorten_from: "right"
+            markup: True
             padding: dp(12), 0
-
-            MDLabel:
-                id: label_title
-                font_style: "H6"
-                opposite_colors: root.opposite_colors
-                theme_text_color: "Custom" if not root.opposite_colors else "Primary"
-                text_color: root.specific_text_color
-                text: root.title
-                shorten: True
-                shorten_from: "right"
-                markup: True
-                halign:
-                    root.anchor_title \
-                    if root.anchor_title else \
-                    root.update_anchor_title(app.theme_cls.material_style)
+            halign:
+                root.anchor_title \
+                if root.anchor_title else \
+                root.update_anchor_title(app.theme_cls.material_style)
 
         MDBoxLayout:
             id: right_actions
             orientation: "horizontal"
-            size_hint_x: None
+            adaptive_width: True
             padding: [0, (self.height - dp(48)) / 2]
 
     MDBoxLayout:

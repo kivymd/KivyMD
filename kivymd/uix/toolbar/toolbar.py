@@ -361,7 +361,7 @@ from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
-from kivymd.uix.controller import WindowController
+from kivymd.uix.controller.windowcontroller import WindowController
 from kivymd.uix.list import OneLineIconListItem
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.templates import ScaleWidget

@@ -5,7 +5,9 @@ Components/Toolbar
 .. seealso::
 
     `Material Design spec, App bars: top <https://material.io/components/app-bars-top>`_
+
     `Material Design spec, App bars: bottom <https://material.io/components/app-bars-bottom/app-bars-bottom.html>`_
+
     `Material Design 3 spec, App bars: bottom <https://m3.material.io/components/top-app-bar/overview>`_
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/app-bar-top.png
@@ -30,8 +32,8 @@ Top
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
-            title: "MDToolbar"
+        MDTopAppBar:
+            title: "MDTopAppBar"
 
         MDLabel:
             text: "Content"
@@ -54,8 +56,8 @@ Add left menu
 
 .. code-block:: kv
 
-    MDToolbar:
-        title: "MDToolbar"
+    MDTopAppBar:
+        title: "MDTopAppBar"
         left_action_items: [["menu", lambda x: app.callback()]]
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-2.png
@@ -70,8 +72,8 @@ Add right menu
 
 .. code-block:: kv
 
-    MDToolbar:
-        title: "MDToolbar"
+    MDTopAppBar:
+        title: "MDTopAppBar"
         right_action_items: [["dots-vertical", lambda x: app.callback()]]
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-3.png
@@ -82,8 +84,8 @@ Add two item to the right menu
 
 .. code-block:: kv
 
-    MDToolbar:
-        title: "MDToolbar"
+    MDTopAppBar:
+        title: "MDTopAppBar"
         right_action_items: [["dots-vertical", lambda x: app.callback_1()], ["clock", lambda x: app.callback_2()]]
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-4.png
@@ -94,8 +96,8 @@ Change toolbar color
 
 .. code-block:: kv
 
-    MDToolbar:
-        title: "MDToolbar"
+    MDTopAppBar:
+        title: "MDTopAppBar"
         md_bg_color: app.theme_cls.accent_color
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-5.png
@@ -106,8 +108,8 @@ Change toolbar text color
 
 .. code-block:: kv
 
-    MDToolbar:
-        title: "MDToolbar"
+    MDTopAppBar:
+        title: "MDTopAppBar"
         specific_text_color: app.theme_cls.accent_color
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-6.png
@@ -118,7 +120,7 @@ Shadow elevation control
 
 .. code-block:: kv
 
-    MDToolbar:
+    MDTopAppBar:
         title: "Elevation 10"
         elevation: 10
 
@@ -147,7 +149,7 @@ Usage
         # Will always be at the bottom of the screen.
         MDBottomAppBar:
 
-            MDToolbar:
+            MDTopAppBar:
                 title: "Title"
                 icon: "git"
                 type: "bottom"
@@ -174,7 +176,7 @@ Event ``on_action_button``:
 
     MDBottomAppBar:
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Title"
             icon: "git"
             type: "bottom"
@@ -195,7 +197,7 @@ Mode:
 
     MDBottomAppBar:
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Title"
             icon: "git"
             type: "bottom"
@@ -209,7 +211,7 @@ Mode:
 
     MDBottomAppBar:
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Title"
             icon: "git"
             type: "bottom"
@@ -227,7 +229,7 @@ Custom color
     MDBottomAppBar:
         md_bg_color: 0, 1, 0, 1
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Title"
             icon: "git"
             type: "bottom"
@@ -253,8 +255,8 @@ You can add MDTooltips to the Toolbar icons by ading a text string to the toolba
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
-            title: "MDToolbar"
+        MDTopAppBar:
+            title: "MDTopAppBar"
             left_action_items: [["menu", "This is the navigation"]]
             right_action_items:
                 [["dots-vertical", lambda x: app.callback(x), "this is the More Actions"]]
@@ -283,7 +285,7 @@ Material design 3 style
     from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
-    from kivymd.uix.toolbar import MDToolbar
+    from kivymd.uix.toolbar import MDTopAppBar
 
     KV = '''
     MDScreen:
@@ -305,7 +307,7 @@ Material design 3 style
         def on_start(self):
             for type_height in ["medium", "large", "small"]:
                 self.root.ids.box.add_widget(
-                    MDToolbar(
+                    MDTopAppBar(
                         type_height=type_height,
                         headline_text=f"Headline {type_height.lower()}",
                         md_bg_color=get_color_from_hex("#2d2734"),
@@ -326,7 +328,7 @@ Material design 3 style
     :align: center
 """
 
-__all__ = ("MDToolbar", "MDBottomAppBar", "MDActionTopAppBarButton")
+__all__ = ("MDTopAppBar", "MDBottomAppBar", "MDToolbar")
 
 import os
 from math import cos, radians, sin
@@ -336,12 +338,15 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.metrics import dp
 from kivy.properties import (
+    AliasProperty,
     BooleanProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     StringProperty,
 )
@@ -356,6 +361,10 @@ from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
+from kivymd.uix.controller import WindowController
+from kivymd.uix.list import OneLineIconListItem
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.templates import ScaleWidget
 from kivymd.uix.tooltip import MDTooltip
 from kivymd.utils.set_bars_colors import set_bars_colors
 
@@ -365,13 +374,37 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDActionBottomAppBarButton(MDFloatingActionButton):
-    _scale_x = NumericProperty(1)
-    _scale_y = NumericProperty(1)
+class ActionBottomAppBarButton(MDFloatingActionButton, ScaleWidget):
+    """
+    Implements a floating action button (FAB) for a toolbar with type 'bottom'.
+    """
 
 
-class MDActionTopAppBarButton(MDIconButton, MDTooltip):
-    pass
+class ActionTopAppBarButton(MDIconButton, MDTooltip):
+    """Implements action buttons on the toolbar."""
+
+    # The text of the menu item of the corresponding action button that will
+    # be displayed in the `OverFlowMenu` menu.
+    overflow_text = StringProperty()
+
+
+class ActionOverFlowButton(ActionTopAppBarButton):
+    """Implements a toolbar action button for the `OverFlowMenu` menu."""
+
+    icon = "dots-vertical"
+
+
+class OverFlowMenu(MDDropdownMenu):
+    """
+    Implements a menu for the items (:class:`~OverFlowMenuItem`) of the
+    corresponding action buttons.
+    """
+
+
+class OverFlowMenuItem(OneLineIconListItem):
+    """Implements a menu (:class:`~OverFlowMenu`) item."""
+
+    icon = StringProperty()
 
 
 class NotchedBox(
@@ -381,13 +414,6 @@ class NotchedBox(
     BoxLayout,
 ):
     elevation = NumericProperty(6)
-    """
-    Elevation value.
-
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `6`.
-    """
-
     notch_radius = NumericProperty()
     notch_center_x = NumericProperty("100dp")
 
@@ -529,7 +555,7 @@ class NotchedBox(
         return points
 
 
-class MDToolbar(NotchedBox):
+class MDTopAppBar(NotchedBox, WindowController):
     """
     :Events:
         `on_action_button`
@@ -543,13 +569,67 @@ class MDToolbar(NotchedBox):
 
     .. code-block:: kv
 
-        left_action_items: [`'icon_name'`, callback, tooltip text]
+        MDTopAppBar:
+            left_action_items: ["dots-vertical", callback, "tooltip text", "overflow text"]
 
-    where `'icon_name'` is a string that corresponds to an icon definition,
-    ``callback`` is the function called on a touch release event and
-    ``tooltip text` is the text to be displayed in the tooltip. Both the
-    ``callback`` and ``tooltip text`` are optional but the order must be
-    preserved.
+    ``icon_name`` - is a string that corresponds to an icon definition:
+
+    .. code-block:: kv
+
+        MDTopAppBar:
+            right_action_items: [["home"]]
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-icon.png
+        :align: center
+
+    ``callback`` - is the function called on a touch release event and:
+
+    .. code-block:: kv
+
+        MDTopAppBar:
+            right_action_items: [["home", lambda x: app.callback(x)]]
+
+    .. code-block:: python
+
+        class Test(MDApp):
+            def callback(self, instance_action_top_appbar_button):
+                print(instance_action_top_appbar_button)
+
+    ``tooltip text`` - is the text to be displayed in the tooltip:
+
+    .. code-block:: kv
+ 
+        MDTopAppBar:
+            right_action_items:
+                [ \
+                ["home", lambda x: app.callback(x), "Home"], \
+                ["message-star", lambda x: app.callback(x), "Message star"], \
+                ["message-question", lambda x: app.callback(x), "Message question"], \
+                ["message-reply", lambda x: app.callback(x), "Message reply"], \
+                ]
+    
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-tooltip-text.gif
+        :align: center
+    
+    ``overflow text`` - is the text for menu items (:class:`~OverFlowMenuItem`)
+    of the corresponding action buttons:
+
+    .. code-block:: kv
+ 
+        MDTopAppBar:
+            right_action_items:
+                [ \
+                ["home", lambda x: app.callback(x), "", "Home"], \
+                ["message-star", lambda x: app.callback(x), "", "Message star"], \
+                ["message-question", lambda x: app.callback(x), "" , "Message question"], \
+                ["message-reply", lambda x: app.callback(x), "", "Message reply"], \
+                ]
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-overflow-text.png
+        :align: center
+
+    Both the ``callback`` and ``tooltip text`` and ``overflow text`` are
+    optional but the order must be preserved.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
@@ -568,8 +648,269 @@ class MDToolbar(NotchedBox):
     """
     Text toolbar.
 
+    .. code-block:: kv
+    
+        MDTopAppBar:
+            title: "MDToolbar"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-title.png
+        :align: center
+
     :attr:`title` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
+    """
+
+    mode = OptionProperty(
+        "center", options=["free-end", "free-center", "end", "center"]
+    )
+    """
+    Floating button position. Only for :class:`~MDBottomAppBar` class.
+    Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
+
+    .. rubric:: Mode "end":
+
+    .. code-block:: kv
+    
+        MDBottomAppBar:
+    
+            MDTopAppBar:
+                title: "Title"
+                icon: "git"
+                type: "bottom"
+                left_action_items: [["menu", lambda x: x]]
+                mode: "end"
+    
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-9.png
+        :align: center
+
+    .. rubric:: Mode "free-end":
+
+    .. code-block:: kv
+
+        MDBottomAppBar:
+    
+            MDTopAppBar:
+                mode: "free-end"
+   
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-10.png
+        :align: center
+
+    .. rubric:: Mode "free-center":
+
+    .. code-block:: kv
+
+        MDBottomAppBar:
+    
+            MDTopAppBar:
+                mode: "free-center"
+    
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-free-center.png
+        :align: center
+
+    .. rubric:: Mode "center":
+    
+    .. code-block:: kv
+    
+        MDBottomAppBar:
+    
+            MDTopAppBar:
+                mode: "center"
+    
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-center.png
+        :align: center
+
+    :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'center'`.
+    """
+
+    type = OptionProperty("top", options=["top", "bottom"])
+    """
+    When using the :class:`~MDBottomAppBar` class, the parameter ``type``
+    must be set to `'bottom'`:
+
+    .. code-block:: kv
+
+        MDBottomAppBar:
+
+            MDTopAppBar:
+                type: "bottom"
+
+    Available options are: `'top'`, `'bottom'`.
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'top'`.
+    """
+
+    opposite_colors = BooleanProperty(False)
+    """
+    Changes the color of the label to the color opposite to the main theme.
+
+    .. code-block:: kv
+
+        MDTopAppBar:
+            opposite_colors: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-true.png
+        :align: center
+
+    .. code-block:: kv
+
+        MDTopAppBar:
+            opposite_colors: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-false.png
+        :align: center
+    """
+
+    md_bg_bottom_color = ColorProperty(None)
+    """
+    The background color in (r, g, b, a) format for the toolbar with the
+    ``bottom`` mode.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDBottomAppBar:
+    
+            MDTopAppBar:
+                md_bg_bottom_color: 0, 1, 0, 1
+                icon_color: self.md_bg_bottom_color
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-md-bg-bottom-color.png
+        :align: center
+
+    :attr:`md_bg_bottom_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    set_bars_color = BooleanProperty(False)
+    """
+    If `True` the background color of the bar status will be set automatically
+    according to the current color of the toolbar.
+
+    .. versionadded:: 1.0.0
+
+    See `set_bars_colors <https://kivymd.readthedocs.io/en/latest/api/kivymd/utils/set_bars_colors/>`
+    for more information.
+
+    :attr:`set_bars_color` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    use_overflow = BooleanProperty(False)
+    """
+    As a top app bar is resized, actions move to the overflow menu from right
+    to left.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDTopAppBar:
+            title: "MDToolbar"
+            use_overflow: True
+            right_action_items:
+                [ \
+                ["home", lambda x: app.callback(x), "Home", "Home"], \
+                ["message-star", lambda x: app.callback(x), "Message star", "Message star"], \
+                ["message-question", lambda x: app.callback(x), "Message question", "Message question"], \
+                ["message-reply", lambda x: app.callback(x), "Message reply", "Message reply"], \
+                ]
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-use-overflow.gif
+        :align: center
+
+    :attr:`use_overflow` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    overflow_cls = ObjectProperty()
+    """
+    Must be an object of the :class:`~kivymd.uix.menu.MDDropdownMenu' class.
+    See :class:`~kivymd.uix.menu.MDDropdownMenu` class documentation for more
+    information.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: python
+
+        from kivy.lang import Builder
+
+        from kivymd.app import MDApp
+        from kivymd.uix.menu import MDDropdownMenu
+
+        KV = '''
+        #:import CustomOverFlowMenu __main__.CustomOverFlowMenu
+
+
+        MDBoxLayout:
+            orientation: "vertical"
+
+            MDToolbar:
+                title: "MDToolbar"
+                use_overflow: True
+                overflow_cls: CustomOverFlowMenu()
+                right_action_items:
+                    [ \
+                    ["home", lambda x: app.callback(x), "Home", "Home"], \
+                    ["message-star", lambda x: app.callback(x), "Message star", "Message star"], \
+                    ["message-question", lambda x: app.callback(x), "Message question", "Message question"], \
+                    ["message-reply", lambda x: app.callback(x), "Message reply", "Message reply"], \
+                    ]
+
+            MDLabel:
+                text: "Content"
+                halign: "center"
+        '''
+
+
+        class CustomOverFlowMenu(MDDropdownMenu):
+            # In this class you can set custom properties for the overflow menu.
+            pass
+
+
+        class Test(MDApp):
+            def build(self):
+                return Builder.load_string(KV)
+
+            def callback(self, instance_action_top_appbar_button):
+                print(instance_action_top_appbar_button)
+
+
+        Test().run()
+
+    :attr:`overflow_cls` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    # Attributes only for the BottomAppBar class.
+
+    icon = StringProperty()
+    """
+    Floating button. Only for :class:`~MDBottomAppBar` class.
+
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'android'`.
+    """
+
+    icon_color = ColorProperty()
+    """
+    Color action button. Only for :class:`~MDBottomAppBar` class.
+
+    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[]`.
+    """
+
+    # MD3 Style attributes.
+
+    anchor_title = OptionProperty(None, options=["left", "center", "right"])
+    """
+    Position toolbar title. Only used with `material_style = 'M3'`
+    Available options are: `'left'`, `'center'`, `'right'`.
+
+    :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'left'`.
     """
 
     headline_text = StringProperty()
@@ -592,69 +933,6 @@ class MDToolbar(NotchedBox):
     and defaults to `None`.
     """
 
-    anchor_title = OptionProperty(None, options=["left", "center", "right"])
-    """
-    Position toolbar title. Only used with `material_style = 'M3'`
-    Available options are: `'left'`, `'center'`, `'right'`.
-
-    :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'left'`.
-    """
-
-    mode = OptionProperty(
-        "center", options=["free-end", "free-center", "end", "center"]
-    )
-    """
-    Floating button position. Only for :class:`~MDBottomAppBar` class.
-    Available options are: `'free-end'`, `'free-center'`, `'end'`, `'center'`.
-
-    :attr:`mode` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'center'`.
-    """
-
-    round = NumericProperty("10dp")
-    """
-    Rounding the corners at the notch for a button.
-    Only for :class:`~MDBottomAppBar` class.
-
-    :attr:`round` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `'10dp'`.
-    """
-
-    icon = StringProperty("android")
-    """
-    Floating button. Only for :class:`~MDBottomAppBar` class.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'android'`.
-    """
-
-    icon_color = ColorProperty()
-    """
-    Color action button. Only for :class:`~MDBottomAppBar` class.
-
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[]`.
-    """
-
-    type = OptionProperty("top", options=["top", "bottom"])
-    """
-    When using the :class:`~MDBottomAppBar` class, the parameter ``type``
-    must be set to `'bottom'`:
-
-    .. code-block:: kv
-
-        MDBottomAppBar:
-
-            MDToolbar:
-                type: "bottom"
-
-    Available options are: `'top'`, `'bottom'`.
-
-    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'top'`.
-    """
-
     type_height = OptionProperty("small", options=["medium", "large", "small"])
     """
     Toolbar height type.
@@ -667,63 +945,36 @@ class MDToolbar(NotchedBox):
     and defaults to `'small'`.
     """
 
-    opposite_colors = BooleanProperty(False)
+    round = NumericProperty("10dp", deprecated=True)
     """
-    Changes the color of the label to the color opposite to the main theme.
+    Rounding the corners at the notch for a button.
+    Only for :class:`~MDBottomAppBar` class.
 
-    .. code-block:: kv
+    .. deprecated:: 1.0.0
+        Don't use this attribute.
 
-        MDToolbar:
-            title: "MDToolbar"
-            opposite_colors: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-true.png
-        :align: center
-
-    .. code-block:: kv
-
-        MDToolbar:
-            title: "MDToolbar"
-            opposite_colors: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-false.png
-        :align: center
+    :attr:`round` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `'10dp'`.
     """
 
-    md_bg_bottom_color = ColorProperty(None)
-    """
-    The background color for the toolbar with the ``bottom`` mode.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`md_bg_bottom_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    set_bars_color = BooleanProperty(False)
-    """
-    If `True` the background color of the bar status will be set automatically
-    according to the current color of the toolbar.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`set_bars_color` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    _shift = NumericProperty("3dp")
+    # List of action buttons (ActionTopAppBarButton instance) that have been
+    # .added to the overflow
+    _hidden_items = []
+    # See `kivymd.uix.menu.MDDropdownMenu.items` attribute.
+    _overflow_menu_items = []
 
     def __init__(self, **kwargs):
-        self.action_button = MDActionBottomAppBarButton()
+        self.action_button = ActionBottomAppBarButton()
         super().__init__(**kwargs)
         self.register_event_type("on_action_button")
+
         if not self.icon_color:
             self.icon_color = self.theme_cls.primary_color
-        Window.bind(on_resize=self._on_resize)
+
         self.bind(specific_text_color=self.update_action_bar_text_colors)
         self.theme_cls.bind(material_style=self.update_bar_height)
-        # self.bind(opposite_colors=self.update_opposite_colors)
         self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items)
         )
@@ -736,6 +987,7 @@ class MDToolbar(NotchedBox):
             lambda x: self.update_anchor_title(self.theme_cls.material_style)
         )
         Clock.schedule_once(self.update_floating_radius)
+        Clock.schedule_once(self.check_overflow_cls)
 
     def set_headline_font_style(self, interval: Union[int, float]) -> None:
         if self.type_height in ("medium", "large"):
@@ -744,7 +996,111 @@ class MDToolbar(NotchedBox):
                 "large": "H5",
             }[self.type_height]
 
+    def on_width(self, instance_toolbar, width: float) -> None:
+        """
+        Called when the toolbar is resized (size of the application window).
+        """
+
+        if self.mode == "center":
+            self.action_button.x = width / 2 - self.action_button.width / 2
+        else:
+            self.action_button.x = width - self.action_button.width * 2
+
+        # The user reduces the width of the window.
+        if (
+            self.get_window_width_resizing_direction() == "left"
+            and self.use_overflow
+            and self.ids.label_title.is_shortened
+        ):
+            if not self.overflow_action_button_is_added():
+                self.add_overflow_button()
+            self.add_action_button_to_overflow()
+        # The user increases the width of the window.
+        if (
+            self.get_window_width_resizing_direction() == "right"
+            and self.use_overflow
+            and not self.ids.label_title.is_shortened
+            and self.overflow_cls.items
+        ):
+            self.return_action_button_to_toolbar()
+
+    def return_action_button_to_toolbar(self) -> None:
+        if len(self._hidden_items):
+            action_button = self._hidden_items.pop()
+            self.ids.right_actions.add_widget(action_button, index=1)
+            self.update_overflow_menu_items(action_button)
+            if not len(self._hidden_items):
+                self.remove_overflow_button()
+
+    def remove_overflow_button(self) -> None:
+        """Removes an overflow button to the toolbar."""
+
+        if self.overflow_action_button_is_added():
+            action_overflow_button = self.ids.right_actions.children[0]
+            self.ids.right_actions.remove_widget(action_overflow_button)
+            self._overflow_menu_items = []
+
+    def add_overflow_button(self) -> None:
+        """Adds an overflow button to the toolbar."""
+
+        self.ids.right_actions.add_widget(
+            ActionOverFlowButton(
+                theme_text_color="Custom"
+                if not self.opposite_colors
+                else "Primary",
+                text_color=self.specific_text_color,
+                opposite_colors=self.opposite_colors,
+                on_release=lambda x: self.overflow_cls.open(),
+            )
+        )
+
+    def overflow_action_button_is_added(self) -> bool:
+        """
+        Returns `True` if at least one action button
+        (:class:`~ActionTopAppBarButton') on the toolbar is added to the
+        overflow.
+        """
+
+        if (
+            not self.ids.right_actions.children[0].__class__
+            is ActionOverFlowButton
+        ):
+            return False
+        return True
+
+    def add_action_button_to_overflow(self):
+        """Adds an overflow button to the toolbar."""
+
+        if len(self.ids.right_actions.children) > 1:
+            button_to_be_added = self.ids.right_actions.children[1]
+            self._hidden_items.append(button_to_be_added)
+            self.ids.right_actions.remove_widget(button_to_be_added)
+
+            self._overflow_menu_items.append(
+                {
+                    "viewclass": "OverFlowMenuItem",
+                    "icon": button_to_be_added.icon,
+                    "text": button_to_be_added.overflow_text,
+                    "height": dp(48),
+                    "on_press": lambda *x: button_to_be_added.on_release(*x),
+                }
+            )
+            self.overflow_cls.items = self._overflow_menu_items
+            self.overflow_cls.caller = self.ids.right_actions.children[0]
+
+    def check_overflow_cls(self, interval: Union[int, float]) -> None:
+        """
+        If the user does not set the :attr:`overflow_cls` attribute but uses
+        overflows, the :attr:`overflow_cls` attribute will use the default
+        value.
+        """
+
+        if not self.overflow_cls:
+            self.overflow_cls = self.get_default_overflow_cls()
+
     def on_type(self, instance_toolbar, type_value: str) -> None:
+        """Called when the value of the  :attr:`type` attribute changes."""
+
         if type_value == "bottom":
             self.action_button.bind(center_x=self.setter("notch_center_x"))
             self.action_button.bind(
@@ -761,6 +1117,10 @@ class MDToolbar(NotchedBox):
             self.on_mode(None, self.mode)
 
     def on_type_height(self, instance_toolbar, height_type_value: str) -> None:
+        """
+        Called when the value of the  :attr:`type_height` attribute changes.
+        """
+
         if self.theme_cls.material_style == "M2":
             self.height = self.theme_cls.standard_increment
         else:
@@ -776,9 +1136,24 @@ class MDToolbar(NotchedBox):
         Clock.schedule_once(self.set_headline_font_style)
 
     def on_action_button(self, *args):
-        pass
+        """
+        Method for the button used for the :class:`~MDBottomAppBar` class.
+        """
+
+    def on_overflow_cls(
+        self, instance_toolbar, instance_overflow_cls: MDDropdownMenu
+    ) -> None:
+        """
+        Called when the value of the  :attr:`overflow_cls` attribute changes.
+        """
+
+        self.overflow_cls = instance_overflow_cls
 
     def on_md_bg_color(self, instance_toolbar, color_value: list) -> None:
+        """
+        Called when the value of the  :attr:`md_bg_color` attribute changes.
+        """
+
         def on_md_bg_color(interval: Union[int, float]):
             if self.type == "bottom":
                 self.md_bg_color = [0, 0, 0, 0]
@@ -791,6 +1166,11 @@ class MDToolbar(NotchedBox):
         Clock.schedule_once(on_md_bg_color)
 
     def on_left_action_items(self, instance_toolbar, items_value: list) -> None:
+        """
+        Called when the value of the  :attr:`left_action_items` attribute
+        changes.
+        """
+
         def on_left_action_items(interval: Union[int, float]):
             self.update_action_bar(self.ids.left_actions, items_value)
 
@@ -799,29 +1179,51 @@ class MDToolbar(NotchedBox):
     def on_right_action_items(
         self, instance_toolbar, items_value: list
     ) -> None:
+        """
+        Called when the value of the  :attr:`right_action_items` attribute
+        changes.
+        """
+
         def on_right_actions(interval: Union[int, float]):
             self.update_action_bar(self.ids.right_actions, items_value)
 
         Clock.schedule_once(on_right_actions)
 
     def on_icon(self, instance_toolbar, icon_name: str) -> None:
+        """Called when the value of the  :attr:`icon` attribute changes."""
+
         self.action_button.icon = icon_name
 
     def on_icon_color(self, instance, icon_name: str) -> None:
+        """
+        Called when the value of the  :attr:`icon_color` attribute changes.
+        """
+
         self.action_button.md_bg_color = icon_name
 
     def on_md_bg_bottom_color(
         self, instance_toolbar, color_value: list
     ) -> None:
+        """
+        Called when the value of the  :attr:`md_bg_bottom_color` attribute
+        changes.
+        """
+
         set_bars_colors(None, color_value, self.theme_cls.theme_style)
 
     def on_anchor_title(self, instance_toolbar, anchor_value: str) -> None:
+        """
+        Called when the value of the  :attr:`anchor_title` attribute changes.
+        """
+
         def on_anchor_title(interval: Union[int, float]):
             self.ids.label_title.halign = anchor_value
 
         Clock.schedule_once(on_anchor_title)
 
     def on_mode(self, instance_toolbar, mode_value: str) -> None:
+        """Called when the value of the  :attr:`made` attribute changes."""
+
         if self.type == "top":
             return
 
@@ -831,7 +1233,9 @@ class MDToolbar(NotchedBox):
                 self.action_button.y = y - self._rounded_rectangle_height / 2
                 self.action_button._hard_shadow_size = (0, 0)
                 self.action_button._soft_shadow_size = (0, 0)
-                anim = Animation(_scale_x=1, _scale_y=1, d=0.05)
+                anim = Animation(
+                    scale_value_x=1, scale_value_y=1, scale_value_z=1, d=0.05
+                )
                 anim.bind(on_complete=self.set_shadow)
                 anim.start(self.action_button)
 
@@ -861,7 +1265,9 @@ class MDToolbar(NotchedBox):
                 x = Window.width / 2 - self.action_button.width / 2
                 y = self.action_button.height + self.action_button.height / 2
             self.remove_shadow()
-            anim = Animation(_scale_x=0, _scale_y=0, d=0.1)
+            anim = Animation(
+                scale_value_x=0, scale_value_y=0, scale_value_z=0, d=0.1
+            )
             anim.bind(on_complete=set_button_pos)
             anim.start(self.action_button)
 
@@ -880,6 +1286,15 @@ class MDToolbar(NotchedBox):
 
     def set_shadow(self, *args) -> None:
         self.action_button._elevation = self.action_button.elevation
+
+    def get_default_overflow_cls(self) -> OverFlowMenu:
+        return OverFlowMenu(width_mult=4)
+
+    def update_overflow_menu_items(self, action_button) -> None:
+        for data in self.overflow_cls.items:
+            if data["icon"] == action_button.icon:
+                self.overflow_cls.items.remove(data)
+                break
 
     def update_bar_height(
         self, instance_theme_manager, material_style_value: str
@@ -905,6 +1320,7 @@ class MDToolbar(NotchedBox):
     ) -> None:
         instance_box_layout.clear_widgets()
         new_width = 0
+
         for item in action_bar_items:
             new_width += dp(48)
             if len(item) == 1:
@@ -916,11 +1332,13 @@ class MDToolbar(NotchedBox):
                     item.insert(1, lambda x: None)
                 else:
                     item.append("")
+
             instance_box_layout.add_widget(
-                MDActionTopAppBarButton(
+                ActionTopAppBarButton(
                     icon=item[0],
                     on_release=item[1],
                     tooltip_text=item[2],
+                    overflow_text=item[3] if len(item) == 4 else "",
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",
@@ -928,21 +1346,16 @@ class MDToolbar(NotchedBox):
                     opposite_colors=self.opposite_colors,
                 )
             )
+
         instance_box_layout.width = new_width
 
     def update_md_bg_color(self, *args) -> None:
         self.md_bg_color = self.theme_cls._get_primary_color()
 
-    def update_opposite_colors(
-        self, instance_toolbar, opposite_value: bool
-    ) -> None:
-        if opposite_value:
-            self.ids.label_title.theme_text_color = ""
-
     def update_action_bar_text_colors(self, *args) -> None:
-        for child in self.ids["left_actions"].children:
+        for child in self.ids.left_actions.children:
             child.text_color = self.specific_text_color
-        for child in self.ids["right_actions"].children:
+        for child in self.ids.right_actions.children:
             child.text_color = self.specific_text_color
 
     def remove_notch(self) -> None:
@@ -951,12 +1364,6 @@ class MDToolbar(NotchedBox):
 
     def remove_shadow(self) -> None:
         self.action_button._elevation = 0
-
-    def _on_resize(self, instance, width, height):
-        if self.mode == "center":
-            self.action_button.x = width / 2 - self.action_button.width / 2
-        else:
-            self.action_button.x = width - self.action_button.width * 2
 
     def _update_specific_text_color(self, instance, value):
         if self.specific_text_color in (
@@ -983,6 +1390,22 @@ class MDBottomAppBar(FloatLayout):
         self.size_hint_y = None
 
     def add_widget(self, widget, index=0, canvas=None):
-        if isinstance(widget, MDToolbar):
+        if isinstance(widget, MDTopAppBar):
             super().add_widget(widget)
             return super().add_widget(widget.action_button)
+
+
+class MDToolbar(MDTopAppBar):
+    """
+    .. deprecated:: 1.0.0
+
+        Use :class:`~MDTopAppBar` class instead.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Logger.warning(
+            "KivyMD: "
+            "The `MDToolbar` class has been deprecated. Use the `MDTopAppBar` "
+            "class instead."
+        )

@@ -6,7 +6,7 @@ KivyMD is a collection of Material Design compliant widgets for use with [Kivy](
 
 The project's goal is to approximate Google's [Material Design spec](https://material.io/design/introduction/) as close as possible without sacrificing ease of use or application performance.
 
-This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD) the author of which stopped supporting this project four years ago. We found the strength and brought this project to a new level.
+This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD). We found the strength and brought this project to a new level.
 
 Currently we're in **beta** status, so things are changing all the time and we cannot promise any kind of API stability. However it is safe to vendor now and make use of what's currently available.
 

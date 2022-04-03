@@ -944,25 +944,26 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         according to the radius that is set for the menu.
         """
 
-        radius_for_firt_item = self.radius[:2]
-        radius_for_last_item = self.radius[2:]
+        if self.items:
+            radius_for_firt_item = self.radius[:2]
+            radius_for_last_item = self.radius[2:]
 
-        firt_data_item = self.items[0]
-        last_data_item = self.items[-1]
+            firt_data_item = self.items[0]
+            last_data_item = self.items[-1]
 
-        firt_data_item["radius"] = radius_for_firt_item + [0, 0]
-        last_data_item["radius"] = [0, 0] + radius_for_last_item
-        last_data_item["divider"] = None
+            firt_data_item["radius"] = radius_for_firt_item + [0, 0]
+            last_data_item["radius"] = [0, 0] + radius_for_last_item
+            last_data_item["divider"] = None
 
-        self.items[0] = firt_data_item
-        self.items[-1] = last_data_item
+            self.items[0] = firt_data_item
+            self.items[-1] = last_data_item
 
-        # For all other elements of the list, except for the first and last,
-        # we set the value of the radius to `0`.
-        for i, data_item in enumerate(self.items):
-            if "radius" not in data_item:
-                data_item["radius"] = 0
-                self.items[i] = data_item
+            # For all other elements of the list, except for the first and
+            # last, we set the value of the radius to `0`.
+            for i, data_item in enumerate(self.items):
+                if "radius" not in data_item:
+                    data_item["radius"] = 0
+                    self.items[i] = data_item
 
     def adjust_position(self) -> str:
         """

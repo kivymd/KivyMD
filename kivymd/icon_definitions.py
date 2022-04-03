@@ -12,7 +12,7 @@ Themes/Icon Definitions
 List of icons from materialdesignicons.com. These expanded material design
 icons are maintained by Austin Andrews (Templarian on Github).
 
-LAST UPDATED: Version 6.6.95
+LAST UPDATED: Version 6.6.96
 
 To preview the icons and their names, you can use the following application:
 ----------------------------------------------------------------------------
@@ -3963,6 +3963,7 @@ md_icons = {
     "leaf-off": "\U000F12D9",
     "leak": "\U000F0DD7",
     "leak-off": "\U000F0DD8",
+    "lecturn": "\U000F1AF0",
     "led-off": "\U000F032B",
     "led-on": "\U000F032C",
     "led-outline": "\U000F032D",

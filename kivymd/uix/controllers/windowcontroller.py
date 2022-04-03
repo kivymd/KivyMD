@@ -39,6 +39,8 @@ class WindowController:
         Window.bind(on_resize=self._on_resize)
 
     def get_window_width_resizing_direction(self) -> str:
+        """Return window width resizing direction - 'left' or 'right' """
+
         return self.window_resizing_direction
 
     def _set_window_width_resizing_direction(self, width: int) -> None:

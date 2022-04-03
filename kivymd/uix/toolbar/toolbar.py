@@ -618,11 +618,11 @@ class MDTopAppBar(NotchedBox, WindowController):
  
         MDTopAppBar:
             right_action_items:
-                [ \
-                ["home", lambda x: app.callback(x), "", "Home"], \
-                ["message-star", lambda x: app.callback(x), "", "Message star"], \
-                ["message-question", lambda x: app.callback(x), "" , "Message question"], \
-                ["message-reply", lambda x: app.callback(x), "", "Message reply"], \
+                [
+                ["home", lambda x: app.callback(x), "", "Home"],
+                ["message-star", lambda x: app.callback(x), "", "Message star"],
+                ["message-question", lambda x: app.callback(x), "" , "Message question"],
+                ["message-reply", lambda x: app.callback(x), "", "Message reply"],
                 ]
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-overflow-text.png
@@ -811,11 +811,11 @@ class MDTopAppBar(NotchedBox, WindowController):
             title: "MDToolbar"
             use_overflow: True
             right_action_items:
-                [ \
-                ["home", lambda x: app.callback(x), "Home", "Home"], \
-                ["message-star", lambda x: app.callback(x), "Message star", "Message star"], \
-                ["message-question", lambda x: app.callback(x), "Message question", "Message question"], \
-                ["message-reply", lambda x: app.callback(x), "Message reply", "Message reply"], \
+                [
+                ["home", lambda x: app.callback(x), "Home", "Home"],
+                ["message-star", lambda x: app.callback(x), "Message star", "Message star"],
+                ["message-question", lambda x: app.callback(x), "Message question", "Message question"],
+                ["message-reply", lambda x: app.callback(x), "Message reply", "Message reply"],
                 ]
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-use-overflow.gif
@@ -852,11 +852,11 @@ class MDTopAppBar(NotchedBox, WindowController):
                 use_overflow: True
                 overflow_cls: CustomOverFlowMenu()
                 right_action_items:
-                    [ \
-                    ["home", lambda x: app.callback(x), "Home", "Home"], \
-                    ["message-star", lambda x: app.callback(x), "Message star", "Message star"], \
-                    ["message-question", lambda x: app.callback(x), "Message question", "Message question"], \
-                    ["message-reply", lambda x: app.callback(x), "Message reply", "Message reply"], \
+                    [
+                    ["home", lambda x: app.callback(x), "Home", "Home"],
+                    ["message-star", lambda x: app.callback(x), "Message star", "Message star"],
+                    ["message-question", lambda x: app.callback(x), "Message question", "Message question"],
+                    ["message-reply", lambda x: app.callback(x), "Message reply", "Message reply"],
                     ]
 
             MDLabel:

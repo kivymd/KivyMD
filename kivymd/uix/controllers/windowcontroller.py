@@ -2,6 +2,9 @@
 Controllers/WindowController
 ============================
 
+Modules and classes that implement useful methods for getting information
+about the state of the current application window.
+
 Controlling the resizing direction of the application window
 ------------------------------------------------------------
 

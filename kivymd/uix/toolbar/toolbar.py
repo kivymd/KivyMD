@@ -428,6 +428,7 @@ class NotchedBox(
     _rectangle_right_pos = ListProperty([0, 0])
     _rectangle_right_width = NumericProperty()
     _rounding_percentage = NumericProperty(0.15)
+    _shift = NumericProperty(dp(4))
 
     def __init__(self, **kw):
         super().__init__(**kw)

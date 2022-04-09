@@ -887,7 +887,9 @@ class MDDatePicker(BaseDialogPicker):
         Called when the 'OK' button is pressed to confirm the date entered.
         """
 
-        if not self.is_date_valaid(self._enter_data_field.text):
+        if self._enter_data_field and not self.is_date_valaid(
+            self._enter_data_field.text
+        ):
             self._enter_data_field.set_error()
             return
         if self._enter_data_field_two and not self.is_date_valaid(

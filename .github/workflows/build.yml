@@ -26,7 +26,7 @@ jobs:
         # dist: [bdist_wheel]
         include:
           - os: ubuntu-latest # Modify one element to build source distribution
-            python-version: 3.7
+            python-version: '3.10'
             architecture: x64
             dist: sdist bdist_wheel
     runs-on: ${{ matrix.os }}
@@ -75,7 +75,7 @@ jobs:
         path: dist
 
     - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@v1.2.2
+      uses: pypa/gh-action-pypi-publish@v1.5.0
       with:
         user: __token__
         password: ${{ secrets.PYPI_TOKEN }}

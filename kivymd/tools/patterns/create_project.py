@@ -79,7 +79,7 @@ Required Arguments
     - which the virtual environment will be created
 
 - kivy_version
-    - version of Kivy (specify as `2.0.0` or `master`) that will be used in the project
+    - version of Kivy (specify as `2.1.0` or `master`) that will be used in the project
 
 Optional arguments
 ------------------
@@ -276,7 +276,7 @@ _firebase_view_model_is_changed_method = """if self.model.data_validation_status
             self.dialog.auto_dismiss = True
 """
 
-_firebase_requirements = """kivy==2.0.0
+_firebase_requirements = """kivy==2.1.0
 kivymd==1.0.0
 multitasking
 firebase
@@ -288,7 +288,7 @@ pycryptodome==3.4.3
 requests_toolbelt
 """
 
-_without_firebase_requirements = """kivy==2.0.0
+_without_firebase_requirements = """kivy==2.1.0
 kivymd==1.0.0
 """
 
@@ -917,7 +917,7 @@ def create_argument_parser() -> ArgumentParserWithHelp:
     )
     parser.add_argument(
         "kivy_version",
-        help="version of Kivy (specify as `2.0.0` or `master`) that will be "
+        help="version of Kivy (specify as `2.1.0` or `master`) that will be "
         "used in the project.",
     )
     parser.add_argument(

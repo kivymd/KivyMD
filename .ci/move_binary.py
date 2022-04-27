@@ -63,7 +63,8 @@ for i in range(3):
         [
             "git",
             "fetch",
-            f"origin/{data_repository}",
+            "origin",
+            data_repository,
             "--depth=1",
             "--force",
         ]

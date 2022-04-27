@@ -7,19 +7,19 @@ repos:
 
   # Format Python
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 22.3.0
     hooks:
       - id: black
 
   # Sort imports
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.6.4
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
     hooks:
       - id: isort
         additional_dependencies: ["toml"]
 
   # Lint Python
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
+  - repo: https://gitlab.com/PyCQA/flake8
+    rev: 4.0.1
     hooks:
       - id: flake8

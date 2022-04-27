@@ -500,8 +500,10 @@ class TableData(RecycleView):
 
     def set_default_first_row(self, interval: Union[int, float]) -> None:
         """Set default first row as selected."""
-
-        self.ids.row_controller.select_next(self)
+        try:
+            self.ids.row_controller.select_next(self)
+        except IndexError:
+            ...
 
     def set_row_data(self) -> None:
         data = []

@@ -83,6 +83,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import WidgetException
 
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
@@ -201,25 +202,27 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
     def display_tooltip(self, interval: Union[int, float]) -> None:
         if not self._tooltip and not self._tooltip.parent:
             return
+        try:
+            Window.add_widget(self._tooltip)
+            pos = self.to_window(self.center_x, self.center_y)
+            x = pos[0] - self._tooltip.width / 2
 
-        Window.add_widget(self._tooltip)
-        pos = self.to_window(self.center_x, self.center_y)
-        x = pos[0] - self._tooltip.width / 2
+            if not self.shift_y:
+                y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
+            else:
+                y = pos[1] - self._tooltip.height / 2 - self.height + self.shift_y
 
-        if not self.shift_y:
-            y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)
-        else:
-            y = pos[1] - self._tooltip.height / 2 - self.height + self.shift_y
+            x, y = self.adjust_tooltip_position(x, y)
+            self._tooltip.pos = (x, y)
 
-        x, y = self.adjust_tooltip_position(x, y)
-        self._tooltip.pos = (x, y)
-
-        if DEVICE_TYPE == "desktop":
-            Clock.schedule_once(
-                self.animation_tooltip_show, self.tooltip_display_delay
-            )
-        else:
-            Clock.schedule_once(self.animation_tooltip_show, 0)
+            if DEVICE_TYPE == "desktop":
+                Clock.schedule_once(
+                    self.animation_tooltip_show, self.tooltip_display_delay
+                )
+            else:
+                Clock.schedule_once(self.animation_tooltip_show, 0)
+        except WidgetException:
+            ...
 
     def animation_tooltip_show(self, interval: Union[int, float]) -> None:
         """Animation of opening tooltip on the screen."""

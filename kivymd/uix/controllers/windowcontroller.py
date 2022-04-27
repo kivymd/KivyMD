@@ -42,7 +42,7 @@ class WindowController:
         Window.bind(on_resize=self._on_resize)
 
     def get_window_width_resizing_direction(self) -> str:
-        """Return window width resizing direction - 'left' or 'right' """
+        """Return window width resizing direction - 'left' or 'right'"""
 
         return self.window_resizing_direction
 
@@ -52,6 +52,8 @@ class WindowController:
         elif self.__width < width:
             self.window_resizing_direction = "right"
 
-    def _on_resize(self, window_sdl2: WindowSDL, width: int, height: int) -> None:
+    def _on_resize(
+        self, window_sdl2: WindowSDL, width: int, height: int
+    ) -> None:
         self._set_window_width_resizing_direction(width)
         self.__width = width

@@ -96,9 +96,7 @@ def update_readme(previous_version, version, test: bool = False):
     if test and not success:
         print("Couldn't update README.md file.", file=sys.stderr)
 
-    readme_buildozer_version_regex = (
-        rf"(?<=, kivymd==){previous_version}(?=\n```)"
-    )
+    readme_buildozer_version_regex = rf"(?<=, kivymd==){previous_version}(?=, )"
     success = replace_in_file(
         readme_buildozer_version_regex, version, readme_file
     )

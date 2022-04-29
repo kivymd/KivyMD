@@ -132,7 +132,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
-    StringProperty,
+    StringProperty, OptionProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 
@@ -157,6 +157,17 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
             When the front layer drops.
         :attr:`on_close`
             When the front layer rises.
+    """
+
+    anchor_title = OptionProperty("left", options=["left", "center", "right"])
+    """
+    Position toolbar title. Only used with `material_style = 'M3'`
+    Available options are: `'left'`, `'center'`, `'right'`.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'left'`.
     """
 
     padding = ListProperty([0, 0, 0, 0])

@@ -911,7 +911,7 @@ class MDTopAppBar(NotchedBox, WindowController):
     Available options are: `'left'`, `'center'`, `'right'`.
 
     :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'left'`.
+    and defaults to `None`.
     """
 
     headline_text = StringProperty()

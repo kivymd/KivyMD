@@ -9,16 +9,22 @@ import sys
 from pathlib import Path
 
 diff = sys.argv[1]
+is_workflow_dispatch = sys.argv[2] == "true"
 all_demos = ["kitchen_sink", "crane", "fortnightly", "rally", "shrine"]
 demos_android = []
 
 for filename in diff.split("\n"):
     filename = Path(filename)
-    if str(filename).split(os.sep, 1)[0] in ("kivymd",) or filename in (
-        ".github/workflows/build-demos.yml",
-        "setup.py",
-        "setup.cfg",
-        ".ci/move_binary",
+    if (
+        str(filename).split(os.sep, 1)[0] in ("kivymd",)
+        or filename
+        in (
+            ".github/workflows/build-demos.yml",
+            "setup.py",
+            "setup.cfg",
+            ".ci/move_binary.py",
+        )
+        or is_workflow_dispatch
     ):
         demos_android = all_demos
         break

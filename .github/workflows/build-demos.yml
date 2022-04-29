@@ -46,7 +46,8 @@ jobs:
         id: set-matrix
         run: |
           echo "${{ steps.diff.outputs.diff }}"
-          python3 .ci/generate_matrix.py "${{ steps.diff.outputs.diff }}"
+          echo "${{ github.event_name == 'workflow_dispatch' }}"
+          python3 .ci/generate_matrix.py "${{ steps.diff.outputs.diff }}" "${{ github.event_name == 'workflow_dispatch' }}"
 
   # Build job. Builds every demo app for Android with Buildozer
   build-android:
@@ -98,7 +99,7 @@ jobs:
       uses: actions/setup-python@v2
       if: github.event_name == 'push'
       with:
-        python-version: 3.7
+        python-version: '3.10'
         architecture: x64
 
     - name: Push binary to kivymd/storage repository (binaries branch)

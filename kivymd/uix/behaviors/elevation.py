@@ -1377,8 +1377,8 @@ class FakeRectangularElevationBehavior(CommonElevationBehavior):
                 center_y - soft_height / 2 - dp(self._elevation * 0.5),
             )
             # Set transparency
-            self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
-            self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
+            self._soft_shadow_a = 0.1 * 1.05**self._elevation
+            self._hard_shadow_a = 0.4 * 0.8**self._elevation
             t = int(round(self._elevation))
             if 0 < t <= 23:
                 self._soft_shadow_texture = (
@@ -1455,8 +1455,8 @@ class FakeCircularElevationBehavior(CommonElevationBehavior):
             self.hard_shadow_pos = (x, y)
 
             # shadow transparency
-            self._soft_shadow_a = 0.1 * 1.05 ** self._elevation
-            self._hard_shadow_a = 0.4 * 0.8 ** self._elevation
+            self._soft_shadow_a = 0.1 * 1.05**self._elevation
+            self._hard_shadow_a = 0.4 * 0.8**self._elevation
             t = int(round(self._elevation))
             if 0 < t <= 23:
                 if hasattr(self, "_shadow"):

@@ -9,7 +9,7 @@ from kivymd.uix.filemanager import MDFileManager
 
 
 class KitchenSinkFileFileManagerTypeDialog(MDBoxLayout):
-    """ Choose file manager type and selection type """
+    """Choose file manager type and selection type"""
 
     allow_multiple_selection = False
 

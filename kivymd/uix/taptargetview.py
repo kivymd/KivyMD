@@ -755,7 +755,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
         h, k = pos
 
         lhs = (cx - h) ** 2 + (cy - k) ** 2
-        rhs = r ** 2
+        rhs = r**2
         if lhs <= rhs:
             return True
         return False
@@ -772,7 +772,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
         h, k = pos
 
         lhs = (cx - h) ** 2 + (cy - k) ** 2
-        rhs = r ** 2
+        rhs = r**2
         if lhs <= rhs:
             return True
         return False

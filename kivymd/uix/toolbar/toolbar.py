@@ -599,7 +599,7 @@ class MDTopAppBar(NotchedBox, WindowController):
     ``tooltip text`` - is the text to be displayed in the tooltip:
 
     .. code-block:: kv
- 
+
         MDTopAppBar:
             right_action_items:
                 [
@@ -608,15 +608,15 @@ class MDTopAppBar(NotchedBox, WindowController):
                 ["message-question", lambda x: app.callback(x), "Message question"],
                 ["message-reply", lambda x: app.callback(x), "Message reply"],
                 ]
-    
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-tooltip-text.gif
         :align: center
-    
+
     ``overflow text`` - is the text for menu items (:class:`~OverFlowMenuItem`)
     of the corresponding action buttons:
 
     .. code-block:: kv
- 
+
         MDTopAppBar:
             right_action_items:
                 [
@@ -650,7 +650,7 @@ class MDTopAppBar(NotchedBox, WindowController):
     Text toolbar.
 
     .. code-block:: kv
-    
+
         MDTopAppBar:
             title: "MDToolbar"
 
@@ -671,16 +671,16 @@ class MDTopAppBar(NotchedBox, WindowController):
     .. rubric:: Mode "end":
 
     .. code-block:: kv
-    
+
         MDBottomAppBar:
-    
+
             MDTopAppBar:
                 title: "Title"
                 icon: "git"
                 type: "bottom"
                 left_action_items: [["menu", lambda x: x]]
                 mode: "end"
-    
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-9.png
         :align: center
 
@@ -689,10 +689,10 @@ class MDTopAppBar(NotchedBox, WindowController):
     .. code-block:: kv
 
         MDBottomAppBar:
-    
+
             MDTopAppBar:
                 mode: "free-end"
-   
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-10.png
         :align: center
 
@@ -701,22 +701,22 @@ class MDTopAppBar(NotchedBox, WindowController):
     .. code-block:: kv
 
         MDBottomAppBar:
-    
+
             MDTopAppBar:
                 mode: "free-center"
-    
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-free-center.png
         :align: center
 
     .. rubric:: Mode "center":
-    
+
     .. code-block:: kv
-    
+
         MDBottomAppBar:
-    
+
             MDTopAppBar:
                 mode: "center"
-    
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-center.png
         :align: center
 
@@ -773,7 +773,7 @@ class MDTopAppBar(NotchedBox, WindowController):
     .. code-block:: kv
 
         MDBottomAppBar:
-    
+
             MDTopAppBar:
                 md_bg_bottom_color: 0, 1, 0, 1
                 icon_color: self.md_bg_bottom_color

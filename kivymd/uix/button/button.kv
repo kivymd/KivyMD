@@ -13,12 +13,8 @@
             radius: [root._radius, ]
         Color:
             rgba:
-                ( \
-                (root._line_color or [0.0, 0.0, 0.0, 0.0]) \
-                if not root.disabled else \
-                (root._line_color_disabled or [0.0, 0.0, 0.0, 0.0]) \
-                ) \
-                if not self._disabled_color else self._disabled_color
+                root._line_color or [0.0, 0.0, 0.0, 0.0] if not root.disabled else \
+                root._line_color_disabled or self._disabled_color or [0.0, 0.0, 0.0, 0.0]
         Line:
             width: root.line_width
             rounded_rectangle:

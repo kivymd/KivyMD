@@ -13,8 +13,13 @@
             radius: [root._radius, ]
         Color:
             rgba:
-                root._line_color or [0.0, 0.0, 0.0, 0.0] if not root.disabled else \
-                root._line_color_disabled or self._disabled_color or [0.0, 0.0, 0.0, 0.0]
+                root._line_color or [0.0, 0.0, 0.0, 0.0] \
+                if not root.disabled else \
+                ( \
+                root._line_color_disabled \
+                or self._disabled_color \
+                or [0.0, 0.0, 0.0, 0.0] \
+                )
         Line:
             width: root.line_width
             rounded_rectangle:
@@ -73,7 +78,6 @@
         icon: root.icon
         font_size: root.icon_size if root.icon_size else self.font_size
         font_name: root.font_name if root.font_name else self.font_name
-        theme_text_color: root._theme_icon_color if not root.disabled else "Primary"
         disabled: root.disabled
         opposite_colors: root.opposite_colors
         text_color:
@@ -84,6 +88,8 @@
             root.theme_cls.disabled_hint_text_color
         on_icon:
             if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
+        theme_text_color:
+            root._theme_icon_color if not root.disabled else "Primary"
 
 
 <ButtonContentsIconText>
@@ -134,7 +140,6 @@
             size_hint_x: None
             pos_hint: {"center_y": .5}
             icon: root.icon
-            theme_text_color: root._theme_icon_color if not root.disabled else "Primary"
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_size:
@@ -145,6 +150,8 @@
                 root._icon_color \
                 if not root.disabled else \
                 root.theme_cls.disabled_hint_text_color
+            theme_text_color:
+                root._theme_icon_color if not root.disabled else "Primary"
 
         MDLabel:
             id: lbl_txt

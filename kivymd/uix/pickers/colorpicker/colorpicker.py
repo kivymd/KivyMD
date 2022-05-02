@@ -271,7 +271,11 @@ class GradientTab(ThemableBehavior, MDBoxLayout):
                 radius=self.color_picker.radius,
                 group="gradient",
             )
-            self.bind(size=lambda instance, size: Clock.schedule_once(lambda dt: self._update_canvas(instance, size)))
+            self.bind(
+                size=lambda instance, size: Clock.schedule_once(
+                    lambda dt: self._update_canvas(instance, size)
+                )
+            )
 
     def get_rgba_color_from_touch_region(self, widget, touch) -> List[int]:
         """

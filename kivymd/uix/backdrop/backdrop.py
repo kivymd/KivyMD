@@ -132,7 +132,8 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
-    StringProperty, OptionProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 

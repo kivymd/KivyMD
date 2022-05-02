@@ -36,7 +36,7 @@ Carousel
         def Calculate_slide_pos(self, *args):
             ["Code to calculate the current position of the slide"]
 
-        def do_custom_animation(self, *args)
+        def do_custom_animation(self, *args):
             ["Code to recreate an animation"]
 
 

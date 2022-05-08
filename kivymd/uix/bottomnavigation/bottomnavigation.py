@@ -357,7 +357,7 @@ class MDTab(MDScreen, ThemableBehavior):
     and defaults to `'checkbox-blank-circle'`.
     """
 
-    badge_icon = StringProperty("blank")
+    badge_icon = StringProperty()
     """
     Tab header badge icon.
 

@@ -45,6 +45,7 @@ import os
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import ObjectProperty
+from kivy.logger import Logger
 
 from kivymd.theming import ThemeManager
 
@@ -107,10 +108,16 @@ class MDApp(App, FpsMonitoring):
         """
 
         for path_to_dir, dirs, files in os.walk(path_to_directory):
+            if "kivymd" in path_to_directory:
+                Logger.critical(
+                    "KivyMD: "
+                    "Do not use the word 'kivymd' in the name of the directory "
+                    "from where you download KV files"
+                )
             if (
                 "venv" in path_to_dir
                 or ".buildozer" in path_to_dir
-                or "kivymd/tools/patterns/MVC" in path_to_dir
+                or os.path.join("kivymd") in path_to_dir
             ):
                 continue
             for name_file in files:

@@ -108,6 +108,9 @@ class MDApp(App, FpsMonitoring):
         """
 
         for path_to_dir, dirs, files in os.walk(path_to_directory):
+            # When using the `load_all_kv_files` method, all KV files
+            # from the `KivyMD` library were loaded twice, which leads to
+            # failures when using application built using `PyInstaller`.
             if "kivymd" in path_to_directory:
                 Logger.critical(
                     "KivyMD: "

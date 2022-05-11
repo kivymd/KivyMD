@@ -469,7 +469,9 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
     def get_default_toolbar(self) -> MDTopAppBar:
         """Called if no value is passed for the toolbar_cls attribute."""
 
-        return MDTopAppBar(pos_hint={"top": 1}, md_bg_color=self.background_color)
+        return MDTopAppBar(
+            pos_hint={"top": 1}, md_bg_color=self.background_color
+        )
 
     def add_widget(self, widget, index=0, canvas=None):
         if issubclass(widget.__class__, MDSliverAppbarContent):

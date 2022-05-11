@@ -6,7 +6,7 @@ Components/SliverAppbar
 
 .. rubric:: MDSliverAppbar is a Material Design widget in KivyMD which gives
     scrollable or collapsible
-    `MDToolbar <https://kivymd.readthedocs.io/en/latest/components/toolbar/>`_
+    `MDTopAppBar <https://kivymd.readthedocs.io/en/latest/components/toolbar/>`_
 
 .. note:: This widget is a modification of the
     `silverappbar.py <https://github.com/kivymd-extensions/akivymd/blob/main/kivymd_extensions/akivymd/uix/silverappbar.py>`_ module.
@@ -134,7 +134,7 @@ from kivy.properties import (
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.toolbar import MDToolbar
+from kivymd.uix.toolbar import MDTopAppBar
 
 with open(
     os.path.join(uix_path, "sliverappbar", "sliverappbar.kv"), encoding="utf-8"
@@ -182,11 +182,11 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
 
     toolbar_cls = ObjectProperty()
     """
-    Must be an object of the :class:`~kivymd.uix.toolbar.toolbar.MDToolbar' class.
-    See :class:`~kivymd.uix.toolbar.toolbar.MDToolbar` class documentation
+    Must be an object of the :class:`~kivymd.uix.toolbar.toolbar.MDTopAppBar' class.
+    See :class:`~kivymd.uix.toolbar.toolbar.MDTopAppBar` class documentation
     for more information.
 
-    By default, MDSliverAppbar widget uses the MDToolbar class with no
+    By default, MDSliverAppbar widget uses the MDTopAppBar class with no
     parameters.
 
     .. code-block:: python
@@ -194,7 +194,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
         from kivy.lang.builder import Builder
 
         from kivymd.uix.card import MDCard
-        from kivymd.uix.toolbar import MDToolbar
+        from kivymd.uix.toolbar import MDTopAppBar
         from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
         KV = '''
@@ -260,7 +260,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
             pass
 
 
-        class SliverToolbar(MDToolbar):
+        class SliverToolbar(MDTopAppBar):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
                 self.type_height = "medium"
@@ -412,24 +412,24 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
             self.toolbar_cls.md_bg_color = color_value
 
     def on_toolbar_cls(
-        self, instance_sliver_appbar, instance_toolbar_cls: MDToolbar
+        self, instance_sliver_appbar, instance_toolbar_cls: MDTopAppBar
     ) -> None:
         """Called when a value is set to the :attr:`toolbar_cls` parameter."""
 
-        # If an MDToolbar object is already in use, delete it
-        # before adding a new MDToolbar object.
+        # If an MDTopAppBar object is already in use, delete it
+        # before adding a new MDTopAppBar object.
         for widget in self.ids.float_box.children:
-            if issubclass(widget.__class__, MDToolbar):
+            if issubclass(widget.__class__, MDTopAppBar):
                 self.ids.float_box.remove_widget(widget)
 
-        # Adding a custom MDToolbar object.
-        if issubclass(instance_toolbar_cls.__class__, MDToolbar):
+        # Adding a custom MDTopAppBar object.
+        if issubclass(instance_toolbar_cls.__class__, MDTopAppBar):
             instance_toolbar_cls.pos_hint = {"top": 1}
             self.ids.float_box.add_widget(instance_toolbar_cls)
         else:
             raise MDSliverAppbarException(
                 "The `toolbar_cls` parameter must be an object of the "
-                "`kivymd.uix.toolbar.MDToolbar class`"
+                "`kivymd.uix.toolbar.MDTopAppBar class`"
             )
 
     def on_vbar(self) -> None:
@@ -466,10 +466,10 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
             else:
                 self.background_color = self.background_color[0:3] + [1]
 
-    def get_default_toolbar(self) -> MDToolbar:
+    def get_default_toolbar(self) -> MDTopAppBar:
         """Called if no value is passed for the toolbar_cls attribute."""
 
-        return MDToolbar(pos_hint={"top": 1}, md_bg_color=self.background_color)
+        return MDTopAppBar(pos_hint={"top": 1}, md_bg_color=self.background_color)
 
     def add_widget(self, widget, index=0, canvas=None):
         if issubclass(widget.__class__, MDSliverAppbarContent):

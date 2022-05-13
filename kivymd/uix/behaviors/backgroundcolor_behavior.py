@@ -44,7 +44,10 @@ Builder.load_string(
             group: "Background_instruction"
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
-            radius: root.radius
+            # FIXME: Sometimes the radius has the value [], which get a
+            # `GraphicException:
+            #     Invalid radius value, must be list of tuples/numerics` error`
+            radius: root.radius if root.radius else [0, 0, 0, 0]
             source: root.background
         Color:
             rgba: self.line_color if self.line_color else (0, 0, 0, 0)

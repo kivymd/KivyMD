@@ -3,11 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/KivyMD.iml" filepath="$PROJECT_DIR$/.idea/KivyMD.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demos/crane/.idea/crane.iml" filepath="$PROJECT_DIR$/demos/crane/.idea/crane.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demos/fortnightly/.idea/fortnightly.iml" filepath="$PROJECT_DIR$/demos/fortnightly/.idea/fortnightly.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demos/kitchen_sink/.idea/kitchen_sink.iml" filepath="$PROJECT_DIR$/demos/kitchen_sink/.idea/kitchen_sink.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demos/rally/.idea/rally.iml" filepath="$PROJECT_DIR$/demos/rally/.idea/rally.iml" />
-      <module fileurl="file://$PROJECT_DIR$/demos/shrine/.idea/shrine.iml" filepath="$PROJECT_DIR$/demos/shrine/.idea/shrine.iml" />
     </modules>
   </component>
 </project>

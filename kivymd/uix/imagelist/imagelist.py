@@ -69,8 +69,8 @@ __all__ = ("MDSmartTile", "SmartTileWithLabel", "SmartTileWithStar")
 
 import os
 
-from kivy.logger import Logger
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,

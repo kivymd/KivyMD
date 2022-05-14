@@ -128,10 +128,15 @@ downloaded packages).
 
 ### Demos
 
-[Kitchen sink](https://github.com/kivymd/KivyMD/tree/master/demos/kitchen_sink) 
-app demonstrates every KivyMD widget. You can see how to use widget in code of app. 
-You can download apk for your smartphone (Android 6.0 and higher): 
-[kivymd/storage (binaries branch)](https://github.com/kivymd/storage/tree/binaries/demo_kitchen_sink).
+<p align="center">
+    <img 
+        width="720" 
+        src="https://github.com/kivymd/KitchenSink/blob/main/assets/images/preview.png"
+    >
+</p>
+
+[Kitchen sink](https://github.com/kivymd/KitchenSink) 
+app demonstrates every KivyMD widget. You can see how to use widget in code of app.
 
 Also we have Material Studies:
 

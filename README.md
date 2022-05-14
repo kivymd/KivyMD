@@ -138,15 +138,6 @@ downloaded packages).
 [Kitchen sink](https://github.com/kivymd/KitchenSink) 
 app demonstrates every KivyMD widget. You can see how to use widget in code of app.
 
-Also we have Material Studies:
-
-- [Crane](https://github.com/kivymd/KivyMD/tree/master/demos/crane)
-- [Fortnightly](https://github.com/kivymd/KivyMD/tree/master/demos/fortnightly)
-- [Rally](https://github.com/kivymd/KivyMD/tree/master/demos/rally)
-- [Shrine](https://github.com/kivymd/KivyMD/tree/master/demos/shrine).
-
-You can download apks for your smartphone: [kivymd/storage (binaries branch)](https://github.com/kivymd/storage/tree/binaries).
-
 ### Tutorials on YouTube
 
 <p align="center">

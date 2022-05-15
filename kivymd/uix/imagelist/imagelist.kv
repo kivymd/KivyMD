@@ -3,7 +3,7 @@
     SmartTileImage:
         id: image
         source: root.source
-        radius: root.radius
+        radius: root.radius if root.radius else [0, 0, 0, 0]
         size_hint_y: 1 if root.overlap else None
         height: root.height if root.overlap else root.height - box.height
         pos:

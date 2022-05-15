@@ -46,7 +46,7 @@
         size_hint: None, None
         size: ("24dp", "24dp") if root.icon_left else (0, 0)
         pos_hint: {"center_y": .5}
-        radius: self.height / 2
+        radius: [self.height / 2,]
 
         MDIcon:
             id: icon_left

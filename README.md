@@ -129,11 +129,11 @@ downloaded packages).
 ### Demos
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
+  <a href="https://www.youtube.com/watch?v=4er9b6TH_TA">
     <img 
-        width="720" 
-        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" 
-        title="Click to watch KivyMD Tutorials on YouTube"
+        width="600" 
+        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-kitchen-sink.png" 
+        title="Click to watch demo application of the KivyMD library widgets"
     >
   </a>
 </p>
@@ -144,11 +144,11 @@ app demonstrates every KivyMD widget. You can see how to use widget in code of a
 ### Tutorials on YouTube
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=4er9b6TH_TA">
+  <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
     <img 
-        width="600" 
-        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/preview-kitchen-sink.png" 
-        title="Click to watch demo application of the KivyMD library widgets"
+        width="400" 
+        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" 
+        title="Click to watch KivyMD Tutorials on YouTube"
     >
   </a>
 </p>

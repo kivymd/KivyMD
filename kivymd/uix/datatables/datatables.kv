@@ -193,7 +193,7 @@
             (0, 0, 0, 1)
         text:
             f"1-" \
-            f"{root.table_data.rows_num if root.table_data.rows_num < len(root.table_data.row_data) else len(root.table_data.row_data)} " \
+            f"{root.table_data.rows_num if root.table_data.rows_num > len(root.table_data.row_data) else len(root.table_data.row_data)} " \
             f"of {len(root.table_data.row_data)}"
 
     MDIconButton:

@@ -142,10 +142,10 @@ class {name_screen}Model(BaseScreenModel):
         # We notify the View -
         # :class:`~View.{name_screen}.{module_name}.{name_screen}View` about the
         # changes that have occurred in the data model.
-        self.notify_observers()
+        self.notify_observers({notify_name_screen})
 
     @multitasking.task
-    def chek_data(self):
+    def check_data(self):
         """
         Get data from the database and compares this data with the data entered
         by the user.
@@ -161,12 +161,12 @@ class {name_screen}Model(BaseScreenModel):
                 break
         self.data_validation_status = data_validation_status
 
-    def set_user_data(self, key, value):
+    def set_user_data(self, key: str, value: str) -> None:
         """Sets a dictionary of data that the user enters."""
 
         self.user_data[key] = value
 
-    def reset_data_validation_status(self):
+    def reset_data_validation_status(self) -> None:
         self.data_validation_status = None
 '''
 
@@ -197,7 +197,7 @@ class {name_screen}Controller:
             controller=self, model=self.model
         )
 
-    def set_user_data(self, key, value) -> None:
+    def set_user_data(self, key: str, value: str) -> None:
         """Called every time the user enters text into the text fields."""
 
         self.model.set_user_data(key, value)
@@ -206,7 +206,7 @@ class {name_screen}Controller:
         """Called when the `LOGIN` button is pressed."""
 
         self.view.show_dialog_wait()
-        self.model.chek_data()
+        self.model.check_data()
 
     def reset_data_validation_status(self, *args) -> None:
         self.model.reset_data_validation_status()
@@ -590,7 +590,9 @@ def create_model(
 ) -> None:
     if use_firebase == "yes":
         firebase_model = _firebase_model.format(
-            name_screen=name_screen, module_name=module_name
+            name_screen=name_screen,
+            module_name=module_name,
+            notify_name_screen=f'"{" ".join(module_name.split("_"))}"',
         )
         replace_in_file(
             os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
@@ -829,6 +831,7 @@ def install_requirements(
     os.system(
         f"{python} -m pip install https://github.com/kivymd/KivyMD/archive/master.zip"
     )
+    os.system(f"{python} -m pip install watchdog")
     if use_firebase == "yes":
         os.system(
             f"{python} -m pip install "

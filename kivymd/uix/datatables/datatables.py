@@ -1675,9 +1675,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                     x
                 ),
             }
-            for i in range(
-                self.rows_num, len(self.row_data), self.rows_num
-            )
+            for i in range(self.rows_num, len(self.row_data), self.rows_num)
         ]
         pagination_menu = MDDropdownMenu(
             caller=self.pagination.ids.drop_item,

@@ -14,7 +14,7 @@ def get_time() -> str:
     ).strftime("%d-%m-%Y %H:%M:%S")
 
 
-class Base:
+class DataBase:
     """
     Your methods for working with the database should be implemented in this
     class.

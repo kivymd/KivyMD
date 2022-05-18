@@ -87,17 +87,17 @@ the database restdb.io.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mvc-database.png
     :align: center
 
-.. note::
-    Please note that `database.py` the shell in the `DataBase` class uses the
-    `database_url` and `api_key` parameters on the test database (works only in read mode),
-    so you should use your data for the database.
-
 .. code-block:: python
 
     class DataBase:
         def __init__(self):
             database_url = "https://restdbio-5498.restdb.io"
             api_key = "7ce258d66f919d3a891d1166558765f0b4dbd"
+
+.. note::
+    Please note that `database.py` the shell in the `DataBase` class uses the
+    `database_url` and `api_key` parameters on the test database (works only in read mode),
+    so you should use your data for the database.
 
 Preview of the basic MVC template using the RestDB database
 -----------------------------------------------------------

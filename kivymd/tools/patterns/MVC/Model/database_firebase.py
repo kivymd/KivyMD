@@ -35,16 +35,19 @@ class DataBase:
         # Address for users collections.
         self.USER_DATA = "Userdata"
         # RealTime Database attribute.
-        self.real_time_firebase = firebase.FirebaseApplication(self.DATABASE_URL, None)
+        self.real_time_firebase = firebase.FirebaseApplication(
+            self.DATABASE_URL, None
+        )
 
     @get_connect
     def get_data_from_collection(self, name_collection: str) -> dict | bool:
         """Returns data of the selected collection from the database."""
 
         try:
-            data = self.real_time_firebase.get(self.DATABASE_URL, name_collection)
+            data = self.real_time_firebase.get(
+                self.DATABASE_URL, name_collection
+            )
         except requests.exceptions.ConnectionError:
             return False
 
         return data
-

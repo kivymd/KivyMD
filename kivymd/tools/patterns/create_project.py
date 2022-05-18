@@ -604,7 +604,9 @@ def create_main_with_hotreload(
             "\nfrom kivy.properties import StringProperty"
             if use_localization == "yes"
             else "",
-            "\nfrom Model.database import DataBase" if name_database != "no" else "",
+            "\nfrom Model.database import DataBase"
+            if name_database != "no"
+            else "",
             "\nfrom libs.translation import Translation\n"
             if use_localization == "yes"
             else "",
@@ -614,7 +616,9 @@ def create_main_with_hotreload(
             '\n    lang = StringProperty("en")\n'
             if use_localization == "yes"
             else "",
-            "\n        self.base = DataBase()\n" if name_database != "no" else "",
+            "\n        self.base = DataBase()\n"
+            if name_database != "no"
+            else "",
             "\n        self.translation = Translation(\n"
             '            self.lang, "%s", f"{self.directory}/data/locales"'
             "\n        )" % project_name
@@ -650,7 +654,9 @@ def create_main(
             "\nfrom libs.translation import Translation"
             if use_localization == "yes"
             else "",
-            "from Model.database import DataBase\n" if name_database != "no" else "",
+            "from Model.database import DataBase\n"
+            if name_database != "no"
+            else "",
             project_name,
             '\n    lang = StringProperty("en")\n'
             if use_localization == "yes"
@@ -697,7 +703,9 @@ def create_model(
             os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
             (without_database_model),
         )
-        os.remove(os.path.join(path_to_project, "Model", "database_firebase.py"))
+        os.remove(
+            os.path.join(path_to_project, "Model", "database_firebase.py")
+        )
         os.remove(os.path.join(path_to_project, "Model", "database_restdb.py"))
     os.rename(
         os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
@@ -975,20 +983,16 @@ def move_init(path_to_project: str, name_screen: str) -> None:
 
 
 def check_databases(name_database: str, path_to_project: str) -> None:
-        databases = {"firebase": "restdb", "restdb": "firebase"}
-        os.remove(
-            os.path.join(
-                path_to_project, "Model", f"database_{databases[name_database]}.py"
-            )
+    databases = {"firebase": "restdb", "restdb": "firebase"}
+    os.remove(
+        os.path.join(
+            path_to_project, "Model", f"database_{databases[name_database]}.py"
         )
-        os.rename(
-            os.path.join(
-                path_to_project, "Model", f"database_{name_database}.py"
-            ),
-            os.path.join(
-                path_to_project, "Model", f"database.py"
-            ),
-        )
+    )
+    os.rename(
+        os.path.join(path_to_project, "Model", f"database_{name_database}.py"),
+        os.path.join(path_to_project, "Model", f"database.py"),
+    )
 
 
 def chek_camel_case_name_project(name_project) -> Union[bool, list]:

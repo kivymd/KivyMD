@@ -29,17 +29,6 @@ class %s(MDApp):%s
         self.manager_screens = ScreenManager()
         %s
     def build(self) -> ScreenManager:
-        """
-        Initializes the application; it will be called only once.
-        If this method returns a widget (tree), it will be used as the root
-        widget and added to the window.
-
-        :return:
-            None or a root :class:`~kivy.uix.widget.Widget` instance
-            if no self.root exists.
-        """
-
-        self.theme_cls.primary_palette = "Amber"
         self.generate_application_screens()
         return self.manager_screens
 

@@ -107,7 +107,7 @@ import datetime
 import os
 import re
 import time
-from typing import Union
+from typing import List, Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -275,7 +275,7 @@ class TimeInput(MDRelativeLayout):
         self._hour.text = hour
         self._minute.text = minute
 
-    def get_time(self) -> list[str, str]:
+    def get_time(self) -> List[str]:
         hour = self._hour.text.strip()
         minute = self._minute.text.strip()
         return [hour, minute]

@@ -295,6 +295,9 @@ on OpenCollective and help us sustain our community.
 [Become a Gold Sponsor](https://opencollective.com/kivymd/contribute/gold-sponsor-16160)
 and get your logo on our Readme with a link to your website.
 
+<!-- FIXME: sponsors are not displayed -->
+
+<a href="https://opencollective.com/peter-surda?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1.png?requireActive=false"></a>
 <a href="https://opencollective.com/kivymd/gold-sponsor/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/0/avatar.svg?requireActive=false"></a>
 <a href="https://opencollective.com/kivymd/gold-sponsor/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/1/avatar.svg?requireActive=false"></a>
 <a href="https://opencollective.com/kivymd/gold-sponsor/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/2/avatar.svg?requireActive=false"></a>

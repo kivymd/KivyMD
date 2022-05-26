@@ -487,7 +487,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
     BoundedNumericProperty,
@@ -1262,6 +1262,7 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
     """
 
     _min_width = NumericProperty(0)
+    _default_icon_pad = max(dp(48) - sp(24), 0)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1272,12 +1273,13 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
 
     def set_size(self, interval: Union[int, float]) -> None:
         """
-        Sets the custom icon size if the value of the `icon_size`
-        attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
+        Sets the icon width/height based on the current `icon_size`
+        attribute, or the default value if it is zero. The icon size
+        is set to `(48, 48)` for an icon with the default font_size 24sp.
         """
-
-        self.width = "48dp" if not self.icon_size else dp(self.icon_size + 23)
-        self.height = "48dp" if not self.icon_size else dp(self.icon_size + 23)
+        d = self._default_icon_pad + (self.icon_size or sp(24))
+        self.width = d
+        self.height = d
 
 
 class MDFloatingActionButton(

@@ -1277,9 +1277,9 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
         attribute, or the default value if it is zero. The icon size
         is set to `(48, 48)` for an icon with the default font_size 24sp.
         """
-        d = self._default_icon_pad + (self.icon_size or sp(24))
-        self.width = d
-        self.height = d
+        diameter = self._default_icon_pad + (self.icon_size or sp(24))
+        self.width = diameter
+        self.height = diameter
 
 
 class MDFloatingActionButton(

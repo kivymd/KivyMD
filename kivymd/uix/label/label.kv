@@ -1,4 +1,5 @@
 #:import md_icons kivymd.icon_definitions.md_icons
+#:import os os
 
 
 <MDLabel>
@@ -21,8 +22,8 @@
             size: self.size
 
     font_style: "Icon"
-    text: u"{}".format(md_icons[root.icon]) if root.icon in md_icons else "blank"
-    source: None if root.icon in md_icons else root.icon
+    text: u"{}".format(md_icons[root.icon]) if root.icon in md_icons else u"{}".format(root.icon)
+    source: None if root.icon in md_icons or not os.path.isfile(root.icon) else root.icon
 
     # Badge icon.
     MDLabel:
@@ -32,8 +33,8 @@
         color: root.badge_icon_color
         text:
             u"{}".format(md_icons[root.badge_icon]) \
-            if root.badge_icon in md_icons else \
-            ""
+            if root.badge_icon in md_icons else "" \
+            if not root.badge_icon else u"{}".format(root.badge_icon)
         pos:
             root.x + root.width / 2 + self.width / 2 - dp(6), \
             root.y + self.texture_size[1] / 2 + dp(6)

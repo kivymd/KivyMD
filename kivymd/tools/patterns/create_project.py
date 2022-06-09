@@ -856,8 +856,9 @@ def create_requirements(name_database: str, path_to_project: str) -> None:
 def create_makefile(
     path_to_project: str, project_name: str, module_name: str, name_screen: str
 ) -> None:
+    path_to_makefile_tmp = os.path.join(path_to_project, "Makefile.tmp")
     replace_in_file(
-        os.path.join(path_to_project, "Makefile"),
+        path_to_makefile_tmp,
         (
             name_screen,
             module_name,
@@ -867,6 +868,7 @@ def create_makefile(
             project_name,
         ),
     )
+    os.rename(path_to_makefile_tmp, os.path.splitext(path_to_makefile_tmp)[0])
     os.chdir(path_to_project)
     os.system("make po")
 

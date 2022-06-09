@@ -92,6 +92,9 @@ if __name__ == "__main__":
                 "fonts/*.ttf",
                 *glob_paths(".kv"),
                 *glob_paths(".py_tmp"),
+                *glob_paths(".tmp"),
+                *glob_paths(".pot"),
+                *glob_paths(".po"),
             ]
         },
         extras_require={

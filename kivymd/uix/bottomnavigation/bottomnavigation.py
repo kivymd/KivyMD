@@ -440,6 +440,11 @@ class MDBottomNavigationItem(MDTab):
             self.header.active = True
         bottom_navigation_object.previous_tab = self
 
+    def on_disabled(
+        self, instance_bottom_navigation_item, disabled_value: bool
+    ) -> None:
+        self.header.disabled = disabled_value
+
     def on_leave(self, *args):
         pass
 
@@ -544,7 +549,7 @@ class MDBottomNavigation(TabbedPanelBase):
     .. code-block:: kv
 
         MDBottomNavigation:
-            elected_color_background: 0, 0, 1, .4
+            selected_color_background: 0, 0, 1, .4
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation=selected-color-background.png
 

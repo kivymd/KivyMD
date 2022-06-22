@@ -155,7 +155,27 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
     """
     Y-offset of tooltip text.
 
-    :attr:`shift_y` is an :class:`~kivy.properties.StringProperty`
+    :attr:`shift_y` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
+    shift_right = NumericProperty()
+    """
+    Shifting the tooltip text to the right.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`shift_right` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
+    shift_left = NumericProperty()
+    """
+    Shifting the tooltip text to the left.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`shift_left` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
     """
 
@@ -204,7 +224,14 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
         Window.add_widget(self._tooltip)
         pos = self.to_window(self.center_x, self.center_y)
-        x = pos[0] - self._tooltip.width / 2
+
+        if not self.shift_right and not self.shift_left:
+            x = pos[0] - (self._tooltip.width / 2)
+        else:
+            if self.shift_right:
+                x = pos[0] - (self._tooltip.width / 2) + self.shift_right
+            if self.shift_left:
+                x = pos[0] - (self._tooltip.width / 2) - self.shift_left
 
         if not self.shift_y:
             y = pos[1] - self._tooltip.height / 2 - self.height / 2 - dp(20)

@@ -43,3 +43,5 @@ Unreleased
 * Added the feature to use `custom icons <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/#use-custom-icon>`_ and `font name <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/#kivymd.uix.bottomnavigation.bottomnavigation.MDBottomNavigation.font_name>`_ for the `MDBottomNavigation <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/>`_ class;
 * Rename `MDToolbarr` to `MDTopAppBar <https://kivymd.readthedocs.io/en/latest/components/toolbar/#kivymd.uix.toolbar.toolbar.MDTopAppBar>`_ class;
 * The `overflow behavior <https://kivymd.readthedocs.io/en/latest/components/toolbar/#kivymd.uix.toolbar.toolbar.MDTopAppBar.use_overflow>`_ from the `ActionBar` class of the `Kivy` framework has been added to the `MDTopAppBar` class;
+* Add `shift_right` and `shift_right` attributes to `MFTooltip <https://kivymd.readthedocs.io/en/latest/components/tooltip/>`_ class;
+* Fixed the size of the `MDIconButton <https://kivymd.readthedocs.io/en/latest/components/button/#mdiconbutton>`_ icon when changing icon_size on mobile devices;

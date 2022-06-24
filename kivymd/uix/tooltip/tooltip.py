@@ -290,6 +290,11 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """
 
         if not args and DEVICE_TYPE == "desktop":
+            for children in Window.children:
+                if isinstance(children, MDTooltipViewClass):
+                    self._tooltip = children
+                    return
+
             if self.tooltip_text:
                 self._tooltip = MDTooltipViewClass(
                     tooltip_bg_color=self.tooltip_bg_color,

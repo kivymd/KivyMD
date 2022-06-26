@@ -1218,7 +1218,7 @@ class MDTopAppBar(NotchedBox, WindowController):
         """
 
         def on_anchor_title(interval: Union[int, float]):
-            self.ids.label_title.halign = anchor_value
+            self.ids.label_title.__self__.halign = anchor_value
 
         Clock.schedule_once(on_anchor_title)
 

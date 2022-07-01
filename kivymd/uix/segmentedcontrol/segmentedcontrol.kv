@@ -1,0 +1,27 @@
+<MDSegmentedControlItem>
+    adaptive_height: True
+    halign: "center"
+    pos_hint: {"center_y": .5}
+    markup: True
+
+
+<MDSegmentedControl>
+    size_hint: None, None
+    size: segment_panel.size
+
+    SegmentSwitch:
+        id: segment_switch
+        height: segment_panel.height - dp(12)
+        pos_hint: {"center_y": .5}
+        x: root._segment_switch_x
+        md_bg_color: root.segment_color
+        elevation: 6
+        _radius: root.radius[0] - 4
+
+    SegmentPanel:
+        id: segment_panel
+        radius: 12
+        spacing: "12dp"
+        padding: "12dp"
+        size_hint: None, None
+        size: "320dp", root.segment_panel_height

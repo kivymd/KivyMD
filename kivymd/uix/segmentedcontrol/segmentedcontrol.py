@@ -156,6 +156,18 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-segment-color.png
         :align: center
 
+    .. code-block:: kv
+
+        MDSegmentedControl:
+            md_bg_color: get_color_from_hex("#451938")
+            segment_color: get_color_from_hex("#e4514f")
+
+            MDSegmentedControlItem:
+                text: "[color=fff]Male[/color]"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-text-color.png
+        :align: center
+
     :attr:`segment_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
@@ -174,6 +186,24 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
 
     :attr:`segment_panel_height` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `'42dp'`.
+    """
+
+    separator_color = ColorProperty(None)
+    """
+    The color of the separator between the segments.
+
+    .. code-block:: kv
+
+        MDSegmentedControl:
+            md_bg_color: get_color_from_hex("#451938")
+            segment_color: get_color_from_hex("#e4514f")
+            separator_color: 1, 1, 1, 1
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-separator-color.png
+        :align: center
+
+    :attr:`separator_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     radius = VariableListProperty([16], length=4)
@@ -260,6 +290,15 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
             widget.texture_size[0] + self.ids.segment_panel.spacing
         )
 
+    def update_separator_color(self, widget: MDSeparator) -> None:
+        """Updates the color of the separators between segments."""
+
+        widget.color = (
+            self.separator_color
+            if self.separator_color
+            else self.theme_cls.divider_color
+        )
+
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, (SegmentPanel, SegmentSwitch)):
             return super().add_widget(widget)
@@ -269,8 +308,10 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
             )
             widget.bind(on_touch_down=self.on_press_segment)
             self.ids.segment_panel.add_widget(widget)
-            self.ids.segment_panel.add_widget(
-                MDSeparator(orientation="vertical")
+            separator = MDSeparator(orientation="vertical")
+            self.ids.segment_panel.add_widget(separator)
+            Clock.schedule_once(
+                lambda x: self.update_separator_color(separator)
             )
 
     def on_active(self, *args) -> None:

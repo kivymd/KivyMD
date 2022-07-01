@@ -993,7 +993,7 @@ def check_databases(name_database: str, path_to_project: str) -> None:
     )
     os.rename(
         os.path.join(path_to_project, "Model", f"database_{name_database}.py"),
-        os.path.join(path_to_project, "Model", f"database.py"),
+        os.path.join(path_to_project, "Model", "database.py"),
     )
 
 

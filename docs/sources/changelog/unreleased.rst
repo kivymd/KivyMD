@@ -45,3 +45,4 @@ Unreleased
 * The `overflow behavior <https://kivymd.readthedocs.io/en/latest/components/toolbar/#kivymd.uix.toolbar.toolbar.MDTopAppBar.use_overflow>`_ from the `ActionBar` class of the `Kivy` framework has been added to the `MDTopAppBar` class;
 * Add `shift_right` and `shift_right` attributes to `MDTooltip <https://kivymd.readthedocs.io/en/latest/components/tooltip/>`_ class;
 * Fixed the size of the `MDIconButton <https://kivymd.readthedocs.io/en/latest/components/button/#mdiconbutton>`_ icon when changing icon_size on mobile devices;
+* Add new `MDSegmentedControl <https://kivymd.readthedocs.io/en/latest/components/segmentedcontrol/>`_ widget;

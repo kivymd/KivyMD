@@ -120,6 +120,7 @@ class MDSegmentedControlItem(MDLabel):
     """Implements a label to place on the :class:`~SegmentPanel` panel."""
 
 
+# TODO: Add an attribute for the color of the active segment label.
 class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
     """
     :Events:
@@ -254,6 +255,8 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
 
         Clock.schedule_once(self.set_default_colors)
         Clock.schedule_once(self._remove_last_separator)
+        # FIXME: Sometimes this interval is not enough to get the width
+        #  of the segment label textures.
         Clock.schedule_once(self._set_width_segment_switch, 2.2)
 
     def set_default_colors(self, *args) -> None:

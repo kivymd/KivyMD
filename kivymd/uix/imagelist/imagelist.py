@@ -117,7 +117,7 @@ class MDSmartTile(ThemableBehavior, MDRelativeLayout):
     .. versionadded:: 1.0.0
 
     .. code-block:: kv
-    
+
         MDSmartTile:
             radius: 24
             box_radius: [0, 0, 24, 24]
@@ -134,7 +134,7 @@ class MDSmartTile(ThemableBehavior, MDRelativeLayout):
     Sets the color and opacity for the information box.
 
     .. code-block:: kv
-    
+
         MDSmartTile:
             radius: 24
             box_radius: [0, 0, 24, 24]

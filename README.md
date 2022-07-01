@@ -1,18 +1,32 @@
 # KivyMD [0.104.2](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
-<img align="center" height=240 src="https://github.com/kivymd/internal/raw/main/logo/github_readme_logo.png"/>
+<img align="right" height="256" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_logo_blue.png"/>
 
-KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
+KivyMD is a collection of Material Design compliant widgets for use with
+[Kivy](http://kivy.org), a framework for cross-platform, touch-enabled
+graphical applications.
 
-The project's goal is to approximate Google's [Material Design spec](https://material.io/design/introduction/) as close as possible without sacrificing ease of use or application performance.
+The project's goal is to approximate Google's
+[Material Design spec](https://material.io/design/introduction/) as close as
+possible without sacrificing ease of use or application performance.
 
-This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD). We found the strength and brought this project to a new level.
+This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD).
+We found the strength and brought this project to a new level.
 
-Currently we're in **beta** status, so things are changing all the time and we cannot promise any kind of API stability. However it is safe to vendor now and make use of what's currently available.
+Currently we're in **beta** status, so things are changing all the time and we
+cannot promise any kind of API stability until the first version (1.0.0) is
+released. However it is safe to vendor now and make use of what's currently
+available.
 
-Join the project! Just fork the project, branch out and submit a pull request when your patch is ready. If any changes are necessary, we'll guide you through the steps that need to be done via PR comments or access to your for may be requested to outright submit them.
+Join the project! Just fork the project, branch out and submit a pull request
+when your patch is ready. If any changes are necessary, we'll guide you through
+the steps that need to be done via PR comments or access to your for may be
+requested to outright submit them.
 
-If you wish to become a project developer (permission to create branches on the project without forking for easier collaboration), have at least one PR approved and ask for it. If you contribute regularly to the project the role may be offered to you without asking too.
+If you wish to become a project developer (permission to create branches on the
+project without forking for easier collaboration), have at least one PR
+approved and ask for it. If you contribute regularly to the project the role
+may be offered to you without asking too.
 
 [![PyPI version](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
@@ -138,30 +152,8 @@ downloaded packages).
   </a>
 </p>
 
-[Kitchen sink](https://github.com/kivymd/KitchenSink) 
-app demonstrates every KivyMD widget. You can see how to use widget in code of app.
-
-### Tutorials on YouTube
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1">
-    <img 
-        width="400" 
-        src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/tutorial.png" 
-        title="Click to watch KivyMD Tutorials on YouTube"
-    >
-  </a>
-</p>
-
-[Tutorials](https://www.youtube.com/watch?v=kRWtSkIYPFI&list=PLy5hjmUzdc0nMkzhphsqgPCX62NFhkell&index=1) by [Erik Sandberg](https://github.com/Dirk-Sandberg) show you how to create application with KivyMD and use its widgets.
-
----
-**NOTE**
-
-Some of the code examples in the video tutorials may be out of date, so if you have a problem,
-check the code from the official documentation.
-
----
+[Kitchen sink](https://github.com/kivymd/KitchenSink) app demonstrates every KivyMD widget.
+You can see how to use widget in code of app.
 
 ### Comparison of Flutter & KivyMD
 
@@ -298,26 +290,10 @@ and get your logo on our Readme with a link to your website.
 <!-- FIXME: sponsors are not displayed -->
 
 <a href="https://opencollective.com/peter-surda?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1.png?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/0/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/0/avatar.svg?requireActive=false"></a>
+<a href="https://opencollective.com/github-sponsors?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-4.png?requireActive=false"></a>
+<a href="https://opencollective.com/lukas-sliacky?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-2.png?requireActive=false"></a>
+<a href="https://opencollective.com/tom-mclaughlin?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-3.png?requireActive=false"></a>
 <a href="https://opencollective.com/kivymd/gold-sponsor/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/1/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/2/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/2/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/3/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/3/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/4/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/4/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/5/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/5/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/6/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/6/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/7/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/7/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/8/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/8/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/9/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/9/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/10/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/10/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/11/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/11/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/12/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/12/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/13/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/13/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/14/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/14/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/15/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/15/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/16/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/16/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/17/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/17/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/18/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/18/avatar.svg?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/19/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/19/avatar.svg?requireActive=false"></a>
 
 #### Backers
 

@@ -247,7 +247,7 @@ __MDLabel_colors__ = {
     "Hint": "disabled_hint_text_color",
     "Error": "error_color",
     "OP": {
-        "primary": "opposite_text_color",
+        "Primary": "opposite_text_color",
         "Secondary": "opposite_secondary_text_color",
         "Hint": "opposite_disabled_hint_text_color",
     },

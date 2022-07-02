@@ -30,7 +30,7 @@ and default is positioned on the left:
         MDBoxLayout:
             orientation: "vertical"
 
-            MDToolbar:
+            MDTopAppBar:
                 title: "MDLabel"
 
             MDLabel:
@@ -80,7 +80,7 @@ and default is positioned on the left:
             id: box
             orientation: "vertical"
 
-            MDToolbar:
+            MDTopAppBar:
                 title: "MDLabel"
     '''
 
@@ -145,7 +145,7 @@ parameter:
         MDBoxLayout:
             orientation: "vertical"
 
-            MDToolbar:
+            MDTopAppBar:
                 title: "MDLabel"
 
             ScrollView:

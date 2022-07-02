@@ -35,7 +35,7 @@ Example
 
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
             title: "MDSwiper"
             elevation: 10
@@ -139,7 +139,7 @@ Example
 
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
             title: "MDSwiper"
             elevation: 10

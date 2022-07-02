@@ -32,7 +32,7 @@ Example
         MDBoxLayout:
             orientation: 'vertical'
 
-            MDToolbar:
+            MDTopAppBar:
                 title: app.title
                 md_bg_color: app.theme_cls.primary_color
                 background_palette: 'Primary'

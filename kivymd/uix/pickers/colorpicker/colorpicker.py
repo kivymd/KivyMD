@@ -24,9 +24,9 @@ Usage
     KV = '''
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
-            title: "MDToolbar"
+            title: "MDTopAppBar"
             pos_hint: {"top": 1}
 
         MDRaisedButton:

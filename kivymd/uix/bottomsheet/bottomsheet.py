@@ -31,7 +31,7 @@ Usage :class:`~MDListBottomSheet`
     KV = '''
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example BottomSheet"
             pos_hint: {"top": 1}
             elevation: 10
@@ -91,7 +91,7 @@ which will be used as an icon to the left of the item:
     KV = '''
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             title: 'Example BottomSheet'
             pos_hint: {"top": 1}
             elevation: 10
@@ -157,7 +157,7 @@ which will be used as an icon to the left of the item:
         size_hint_y: None
         height: "400dp"
 
-        MDToolbar:
+        MDTopAppBar:
             title: 'Custom bottom sheet:'
 
         ScrollView:
@@ -177,7 +177,7 @@ which will be used as an icon to the left of the item:
 
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             title: 'Example BottomSheet'
             pos_hint: {"top": 1}
             elevation: 10

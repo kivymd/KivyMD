@@ -189,7 +189,7 @@ End full code
             orientation: "vertical"
             spacing: "10dp"
 
-            MDToolbar:
+            MDTopAppBar:
                 elevation: 10
                 title: "MDCardSwipe"
 
@@ -315,7 +315,7 @@ End full code
             orientation: "vertical"
             spacing: "10dp"
 
-            MDToolbar:
+            MDTopAppBar:
                 elevation: 10
                 title: "MDCardSwipe"
 
@@ -410,7 +410,7 @@ End full code
             orientation: "vertical"
             spacing: "10dp"
 
-            MDToolbar:
+            MDTopAppBar:
                 elevation: 10
                 title: "MDCardSwipe"
 

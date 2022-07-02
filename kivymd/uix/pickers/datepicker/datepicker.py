@@ -26,7 +26,7 @@ Components/DatePicker
     KV = '''
     MDFloatLayout:
 
-        MDToolbar:
+        MDTopAppBar:
             title: "MDDatePicker"
             pos_hint: {"top": 1}
             elevation: 10

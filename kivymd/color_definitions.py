@@ -355,7 +355,7 @@ To demonstrate the shades of the palette, you can run the following code:
     <Root@MDBoxLayout>
         orientation: 'vertical'
 
-        MDToolbar:
+        MDTopAppBar:
             title: app.title
 
         MDTabs:

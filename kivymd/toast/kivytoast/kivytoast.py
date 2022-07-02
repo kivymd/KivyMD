@@ -14,7 +14,7 @@ KivyToast
     KV = '''
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             title: 'Test Toast'
             pos_hint: {'top': 1}
             left_action_items: [['menu', lambda x: x]]

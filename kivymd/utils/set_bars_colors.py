@@ -36,8 +36,8 @@ def set_bars_colors(
         MDBoxLayout:
             orientation: "vertical"
 
-            MDToolbar:
-                title: "MDToolbar"
+            MDTopAppBar:
+                title: "MDTopAppBar"
 
             MDBottomNavigation:
                 panel_color: app.theme_cls.primary_color

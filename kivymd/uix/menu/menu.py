@@ -251,12 +251,12 @@ Header
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-header.png
     :align: center
 
-Menu with MDToolbar
--------------------
+Menu with MDTopAppBar
+---------------------
 
 The :class:`~MDDropdownMenu` works well with the standard
-:class:`~kivymd.uix.toolbar.MDToolbar`. Since the buttons on the Toolbar are created
-by the MDToolbar component, it is necessary to pass the button as an argument to
+:class:`~kivymd.uix.toolbar.MDTopAppBar`. Since the buttons on the Toolbar are created
+by the MDTopAppBar component, it is necessary to pass the button as an argument to
 the callback using `lambda x: app.callback(x)`.
 
 .. note:: This example uses drop down menus for both the righthand and
@@ -278,8 +278,8 @@ the callback using `lambda x: app.callback(x)`.
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
-            title: "MDToolbar"
+        MDTopAppBar:
+            title: "MDTopAppBar"
             left_action_items: [["menu", lambda x: app.callback(x)]]
             right_action_items: [["dots-vertical", lambda x: app.callback(x)]]
 

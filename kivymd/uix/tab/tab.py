@@ -70,7 +70,7 @@ Example with tab icon
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:
@@ -150,7 +150,7 @@ Example with tab text
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:
@@ -214,7 +214,7 @@ Example with tab icon and text
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:
@@ -255,7 +255,7 @@ Dynamic tab management
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:
@@ -338,7 +338,7 @@ method accordingly:
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:
@@ -421,7 +421,7 @@ Switching the tab by name
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:

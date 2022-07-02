@@ -55,7 +55,7 @@ Example
     MDBoxLayout:
         orientation: 'vertical'
 
-        MDToolbar:
+        MDTopAppBar:
             title: "MDFileManager"
             left_action_items: [['menu', lambda x: None]]
             elevation: 10

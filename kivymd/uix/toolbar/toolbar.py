@@ -651,7 +651,7 @@ class MDTopAppBar(NotchedBox, WindowController):
     .. code-block:: kv
 
         MDTopAppBar:
-            title: "MDToolbar"
+            title: "MDTopAppBar"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-title.png
         :align: center
@@ -808,7 +808,7 @@ class MDTopAppBar(NotchedBox, WindowController):
     .. code-block:: kv
 
         MDTopAppBar:
-            title: "MDToolbar"
+            title: "MDTopAppBar"
             use_overflow: True
             right_action_items:
                 [
@@ -847,8 +847,8 @@ class MDTopAppBar(NotchedBox, WindowController):
         MDBoxLayout:
             orientation: "vertical"
 
-            MDToolbar:
-                title: "MDToolbar"
+            MDTopAppBar:
+                title: "MDTopAppBar"
                 use_overflow: True
                 overflow_cls: CustomOverFlowMenu()
                 right_action_items:

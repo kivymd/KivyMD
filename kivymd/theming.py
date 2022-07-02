@@ -122,7 +122,7 @@ Add the custom theme to the MDApp as shown in the following snippet.
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             title: "Example Tabs"
 
         MDTabs:
@@ -1185,13 +1185,13 @@ class ThemableBehavior(EventDispatcher):
     opposite_colors = BooleanProperty(False)
     """
     For some widgets, for example, for a widget
-    :class:`~kivymd.uix.toolbar.MDToolbar` changes the color of the label to
+    :class:`~kivymd.uix.toolbar.MDTopAppBar` changes the color of the label to
     the color opposite to the main theme.
 
     .. code-block:: kv
 
-        MDToolbar:
-            title: "MDToolbar"
+        MDTopAppBar:
+            title: "MDTopAppBar"
             opposite_colors: True
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-true.png
@@ -1199,8 +1199,8 @@ class ThemableBehavior(EventDispatcher):
 
     .. code-block:: kv
 
-        MDToolbar:
-            title: "MDToolbar"
+        MDTopAppBar:
+            title: "MDTopAppBar"
             opposite_colors: True
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-opposite-false.png

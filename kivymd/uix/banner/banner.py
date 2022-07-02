@@ -32,7 +32,7 @@ Usage
             over_widget: screen
             vertical_pad: toolbar.height
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
             title: "Example Banners"
             elevation: 10

@@ -223,6 +223,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
             return
 
         Window.add_widget(self._tooltip)
+
         pos = self.to_window(self.center_x, self.center_y)
 
         if not self.shift_right and not self.shift_left:
@@ -252,11 +253,20 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """Animation of opening tooltip on the screen."""
 
         if self._tooltip:
-            (
+            self._change_tooltip_state('on_pre_open')
+
+            anim = (
                 Animation(_scale_x=1, _scale_y=1, d=0.1)
                 + Animation(opacity=1, d=0.2)
-            ).start(self._tooltip)
+            )
+            anim.bind(on_complete=lambda *args: Clock.schedule_once(lambda dt: self._change_tooltip_state('open')))
+            anim.start(self._tooltip)
+
             self.dispatch("on_show")
+
+    def _change_tooltip_state(self, state: str):
+        if self._tooltip:
+            self._tooltip.state = state
 
     def animation_tooltip_dismiss(self, interval: Union[int, float]) -> None:
         """
@@ -266,6 +276,8 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """
 
         if self._tooltip:
+            self._change_tooltip_state('on_pre_dismiss')
+
             anim = Animation(_scale_x=0, _scale_y=0, d=0.1) + Animation(
                 opacity=0, d=0.2
             )
@@ -290,12 +302,14 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """
 
         if not args and DEVICE_TYPE == "desktop":
-            for children in Window.children:
-                if isinstance(children, MDTooltipViewClass):
-                    self._tooltip = children
-                    return
-
             if self.tooltip_text:
+                for children in Window.children:
+                    if isinstance(children, MDTooltipViewClass):
+                        if children.state in ['close', 'on_pre_open', 'open']:
+                            # if `MDTooltip` already open or close, thats meanes it does not be removed rather
+                            self._tooltip = children
+                            self.remove_tooltip()
+
                 self._tooltip = MDTooltipViewClass(
                     tooltip_bg_color=self.tooltip_bg_color,
                     tooltip_text_color=self.tooltip_text_color,
@@ -303,6 +317,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
                     tooltip_font_style=self.tooltip_font_style,
                     tooltip_radius=self.tooltip_radius,
                 )
+
                 Clock.schedule_once(self.display_tooltip, -1)
 
     def on_leave(self) -> None:
@@ -328,8 +343,8 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
     def _on_dismiss_anim_complete(self, *args):
         self.dispatch("on_dismiss")
+        self._change_tooltip_state('close')
         self.remove_tooltip()
-        self._tooltip = None
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):
@@ -356,6 +371,14 @@ class MDTooltipViewClass(ThemableBehavior, BoxLayout):
     tooltip_radius = ListProperty()
     """
     See :attr:`~MDTooltip.tooltip_radius`.
+    """
+
+    state = StringProperty('close')
+    """
+    Tooltip state. Available options are: `on_pre_open`, `on_open`, `on_pre_dismiss`, `close`
+
+    :attr:`state` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `close`.
     """
 
     _scale_x = NumericProperty(0)

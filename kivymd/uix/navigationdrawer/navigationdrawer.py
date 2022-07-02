@@ -47,9 +47,6 @@ A simple example
     from kivymd.app import MDApp
 
     KV = '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
-
-
     MDScreen:
 
         MDNavigationLayout:
@@ -58,19 +55,19 @@ A simple example
 
                 MDScreen:
 
-                    MDToolbar:
+                    MDTopAppBar:
                         title: "Navigation Drawer"
                         elevation: 10
                         pos_hint: {"top": 1}
-                        md_bg_color: get_color_from_hex("#e7e4c0")
-                        specific_text_color: get_color_from_hex("#4a4939")
+                        md_bg_color: "#e7e4c0"
+                        specific_text_color: "#4a4939"
                         left_action_items:
                             [['menu', lambda x: nav_drawer.set_state("open")]]
 
 
             MDNavigationDrawer:
                 id: nav_drawer
-                md_bg_color: get_color_from_hex("#f7f4e7")
+                md_bg_color: "#f7f4e7"
 
                 ContentNavigationDrawer:
     '''
@@ -208,28 +205,19 @@ Standard content for the navigation bar
     from kivymd.app import MDApp
 
     KV = '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
-
-    #:set text_color get_color_from_hex("#4a4939")
-    #:set focus_color get_color_from_hex("#e7e4c0")
-    #:set ripple_color get_color_from_hex("#c5bdd2")
-    #:set bg_color get_color_from_hex("#f7f4e7")
-    #:set selected_color get_color_from_hex("#0c6c4d")
-
-
     <DrawerClickableItem@MDNavigationDrawerItem>
-        focus_color: focus_color
-        unfocus_color: bg_color
-        text_color: text_color
-        icon_color: text_color
-        ripple_color: ripple_color
-        selected_color: selected_color
+        focus_color: "#e7e4c0"
+        unfocus_color: "#f7f4e7"
+        text_color: "#4a4939"
+        icon_color: "#4a4939"
+        ripple_color: "#c5bdd2"
+        selected_color: "#0c6c4d"
 
 
     <DrawerLabelItem@MDNavigationDrawerItem>
-        bg_color: bg_color
-        text_color: text_color
-        icon_color: text_color
+        bg_color: "#f7f4e7"
+        text_color: "#4a4939"
+        icon_color: "#4a4939"
         _no_ripple_effect: True
 
 
@@ -241,12 +229,12 @@ Standard content for the navigation bar
 
                 MDScreen:
 
-                    MDToolbar:
+                    MDTopAppBar:
                         title: "Navigation Drawer"
                         elevation: 10
                         pos_hint: {"top": 1}
-                        md_bg_color: focus_color
-                        specific_text_color: text_color
+                        md_bg_color: "#e7e4c0"
+                        specific_text_color: "#4a4939"
                         left_action_items:
                             [ \
                             [ \
@@ -260,15 +248,15 @@ Standard content for the navigation bar
             MDNavigationDrawer:
                 id: nav_drawer
                 radius: (0, 16, 16, 0) if self.anchor == "left" else (16, 0, 0, 16)
-                md_bg_color: bg_color
+                md_bg_color: "#f7f4e7"
 
                 MDNavigationDrawerMenu:
 
                     MDNavigationDrawerHeader:
                         title: "Header title"
-                        title_color: text_color
+                        title_color: "#4a4939"
                         text: "Header text"
-                        title_color: text_color
+                        title_color: "#4a4939"
                         spacing: "4dp"
                         padding: "12dp", 0, 0, "56dp"
 
@@ -278,7 +266,7 @@ Standard content for the navigation bar
                     DrawerClickableItem:
                         icon: "gmail"
                         right_text: "+99"
-                        text_right_color: text_color
+                        text_right_color: "#4a4939"
                         text: "Inbox"
 
                     DrawerClickableItem:
@@ -311,7 +299,7 @@ Standard content for the navigation bar
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-standatd-content.gif
     :align: center
 
-Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
+Switching screens in the ``ScreenManager`` and using the common ``MDTopAppBar``
 -----------------------------------------------------------------------------
 
 .. code-block:: python
@@ -344,7 +332,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDToolbar``
 
     MDScreen:
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
             pos_hint: {"top": 1}
             elevation: 10
@@ -431,7 +419,7 @@ from kivymd.uix.behaviors import FakeRectangularElevationBehavior, FocusBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import MDList, OneLineAvatarIconListItem
-from kivymd.uix.toolbar import MDToolbar
+from kivymd.uix.toolbar import MDTopAppBar
 
 with open(
     os.path.join(uix_path, "navigationdrawer", "navigationdrawer.kv"),
@@ -500,7 +488,7 @@ class MDNavigationLayout(FloatLayout):
         """
 
         if not isinstance(
-            widget, (MDNavigationDrawer, ScreenManager, MDToolbar)
+            widget, (MDNavigationDrawer, ScreenManager, MDTopAppBar)
         ):
             raise NavigationDrawerContentError(
                 "The MDNavigationLayout must contain "

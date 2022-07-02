@@ -1,4 +1,5 @@
 #:import ScrollEffect kivy.effects.scroll.ScrollEffect
+#:import get_color_from_hex kivy.utils.get_color_from_hex
 
 
 <MDSliverAppbar>
@@ -12,7 +13,7 @@
                     rgba:
                         root.background_color \
                         if root.background_color else \
-                        root.theme_cls.primary_color
+                        get_color_from_hex(root.theme_cls.primary_color)
                     a: root._opacity
                 Rectangle:
                     pos: self.pos

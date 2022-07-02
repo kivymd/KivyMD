@@ -135,7 +135,7 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: get_color_from_hex("#451938")
+            md_bg_color: "#451938"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-md-bg-color.png
         :align: center
@@ -151,8 +151,8 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: get_color_from_hex("#451938")
-            segment_color: get_color_from_hex("#e4514f")
+            md_bg_color: "#451938"
+            segment_color: "#e4514f"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-segment-color.png
         :align: center
@@ -160,8 +160,8 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: get_color_from_hex("#451938")
-            segment_color: get_color_from_hex("#e4514f")
+            md_bg_color: "#451938"
+            segment_color: "#e4514f"
 
             MDSegmentedControlItem:
                 text: "[color=fff]Male[/color]"
@@ -196,8 +196,8 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: get_color_from_hex("#451938")
-            segment_color: get_color_from_hex("#e4514f")
+            md_bg_color: "#451938"
+            segment_color: "#e4514f"
             separator_color: 1, 1, 1, 1
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-separator-color.png

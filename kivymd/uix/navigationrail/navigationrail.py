@@ -79,7 +79,6 @@ Example
 
     from kivy.clock import Clock
     from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
@@ -89,12 +88,7 @@ Example
     from kivymd.uix.screen import MDScreen
 
     KV = '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
     #:import FadeTransition kivy.uix.screenmanager.FadeTransition
-
-    #:set rail_bg_color get_color_from_hex("#fffcf4")
-    #:set fab_button_bg_color get_color_from_hex("#b0f0d6")
-    #:set selected_item_bg_color get_color_from_hex("#e7e4c0")
 
 
     <ExtendedButton>
@@ -103,8 +97,8 @@ Example
 
 
     <DrawerClickableItem@MDNavigationDrawerItem>
-        focus_color: selected_item_bg_color
-        unfocus_color: rail_bg_color
+        focus_color: "#e7e4c0"
+        unfocus_color: "#fffcf4"
 
 
     MDScreen:
@@ -120,7 +114,7 @@ Example
 
                         MDBoxLayout:
                             adaptive_height: True
-                            md_bg_color: rail_bg_color
+                            md_bg_color: "#fffcf4"
                             padding: "12dp"
 
                             MDLabel:
@@ -132,16 +126,16 @@ Example
 
                             MDNavigationRail:
                                 id: navigation_rail
-                                md_bg_color: rail_bg_color
-                                selected_color_background: selected_item_bg_color
-                                ripple_color_item: selected_item_bg_color
+                                md_bg_color: "#fffcf4"
+                                selected_color_background: "#e7e4c0"
+                                ripple_color_item: "#e7e4c0"
                                 on_item_release: app.switch_screen(*args)
 
                                 MDNavigationRailMenuButton:
                                     on_release: nav_drawer.set_state("open")
 
                                 MDNavigationRailFabButton:
-                                    md_bg_color: fab_button_bg_color
+                                    md_bg_color: "#b0f0d6"
 
                                 MDNavigationRailItem:
                                     text: "Python"
@@ -167,7 +161,7 @@ Example
         MDNavigationDrawer:
             id: nav_drawer
             radius: (0, 16, 16, 0)
-            md_bg_color: rail_bg_color
+            md_bg_color: "#fffcf4"
             elevation: 12
             width: "240dp"
 
@@ -260,7 +254,7 @@ Example
                 name_screen = widget.icon.split("-")[1].lower()
                 screen = MDScreen(
                     name=name_screen,
-                    md_bg_color=get_color_from_hex("#edd769"),
+                    md_bg_color="#edd769",
                     radius=[18, 0, 0, 0],
                 )
                 box = MDBoxLayout(padding="12dp")
@@ -490,7 +484,7 @@ class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
                 text: "Python"
                 icon: "language-python"
                 badge_icon: "plus"
-                badge_bg_color: get_color_from_hex("#b0f0d6")
+                badge_bg_color: "#b0f0d6"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-badge-bg-color.png
         :align: center
@@ -778,7 +772,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
     .. code-block:: kv
 
         MDNavigationRail:
-            selected_color_background: get_color_from_hex("#e7e4c0")
+            selected_color_background: "#e7e4c0"
 
             MDNavigationRailItem:
                 ...
@@ -798,7 +792,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
     .. code-block:: kv
 
         MDNavigationRail:
-            ripple_color_item: get_color_from_hex("#e7e4c0")
+            ripple_color_item: "#e7e4c0"
 
             MDNavigationRailItem:
                 ...

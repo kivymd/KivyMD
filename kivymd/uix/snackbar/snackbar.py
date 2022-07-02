@@ -221,7 +221,7 @@ Custom Snackbar
             text: root.text
             font_size: root.font_size
             theme_text_color: 'Custom'
-            text_color: get_color_from_hex('ffffff')
+            text_color: 'ffffff'
             shorten: True
             shorten_from: 'right'
             pos_hint: {'center_y': .5}

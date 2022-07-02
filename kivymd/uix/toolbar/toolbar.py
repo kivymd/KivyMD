@@ -282,7 +282,6 @@ Material design 3 style
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
     from kivymd.uix.toolbar import MDTopAppBar
@@ -310,7 +309,7 @@ Material design 3 style
                     MDTopAppBar(
                         type_height=type_height,
                         headline_text=f"Headline {type_height.lower()}",
-                        md_bg_color=get_color_from_hex("#2d2734"),
+                        md_bg_color="#2d2734",
                         left_action_items=[["arrow-left", lambda x: x]],
                         right_action_items=[
                             ["attachment", lambda x: x],

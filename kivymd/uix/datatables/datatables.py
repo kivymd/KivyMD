@@ -1362,7 +1362,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         self.data_tables = MDDataTable(
             ...,
-            background_color_header=get_color_from_hex("#65275d"),
+            background_color_header="#65275d",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-header.png
@@ -1382,8 +1382,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         self.data_tables = MDDataTable(
             ...,
-            background_color_header=get_color_from_hex("#65275d"),
-            background_color_cell=get_color_from_hex("#451938"),
+            background_color_header="#65275d",
+            background_color_cell="#451938",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-cell.png
@@ -1403,9 +1403,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         self.data_tables = MDDataTable(
             ...,
-            background_color_header=get_color_from_hex("#65275d"),
-            background_color_cell=get_color_from_hex("#451938"),
-            background_color_selected_cell=get_color_from_hex("e4514f"),
+            background_color_header="#65275d",
+            background_color_cell="#451938",
+            background_color_selected_cell="e4514f",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-selected-cell.gif

@@ -52,16 +52,12 @@ An example of the implementation of a card in the style of material design versi
 
     from kivy.lang import Builder
     from kivy.properties import StringProperty
-    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
     from kivymd.uix.card import MDCard
 
     KV = '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
-
-
     <MD3Card>
         padding: 16
         size_hint: None, None
@@ -115,7 +111,7 @@ An example of the implementation of a card in the style of material design versi
                         line_color=(0.2, 0.2, 0.2, 0.8),
                         style=style,
                         text=style.capitalize(),
-                        md_bg_color=get_color_from_hex(styles[style]),
+                        md_bg_color=styles[style],
                     )
                 )
 
@@ -584,7 +580,6 @@ from kivy.properties import (
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
-from kivy.utils import get_color_from_hex
 
 from kivymd import uix_path
 from kivymd.color_definitions import colors
@@ -681,8 +676,8 @@ class MDCard(
     """
 
     _bg_color_map = (
-        get_color_from_hex(colors["Light"]["CardsDialogs"]),
-        get_color_from_hex(colors["Dark"]["CardsDialogs"]),
+        colors["Light"]["CardsDialogs"],
+        colors["Dark"]["CardsDialogs"],
         [1.0, 1.0, 1.0, 0.0],
     )
 
@@ -698,9 +693,7 @@ class MDCard(
 
     def update_md_bg_color(self, instance_card, theme_style: str) -> None:
         if self.md_bg_color in self._bg_color_map:
-            self.md_bg_color = get_color_from_hex(
-                colors[theme_style]["CardsDialogs"]
-            )
+            self.md_bg_color = colors[theme_style]["CardsDialogs"]
 
     def set_style(self, *args) -> None:
         self.set_radius()

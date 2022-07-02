@@ -75,14 +75,11 @@ Example
             self.theme_cls.material_style = "M3"
             return Builder.load_string(
                 '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
-
-
     MDScreen:
 
         MDBottomNavigation:
-            panel_color: get_color_from_hex("#eeeaea")
-            selected_color_background: get_color_from_hex("#97ecf8")
+            panel_color: "#eeeaea"
+            selected_color_background: "#97ecf8"
             text_color_active: 0, 0, 0, 1
 
             MDBottomNavigationItem:

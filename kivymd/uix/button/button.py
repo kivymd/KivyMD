@@ -129,17 +129,13 @@ Material design style 3
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
     from kivymd.uix.button import MDFloatingActionButton
 
     KV = '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
-
-
     MDScreen:
-        md_bg_color: get_color_from_hex("#f7f2fa")
+        md_bg_color: "#f7f2fa"
 
         MDBoxLayout:
             id: box
@@ -166,8 +162,8 @@ Material design style 3
                         icon="pencil",
                         type=type_button,
                         theme_icon_color="Custom",
-                        md_bg_color=get_color_from_hex(data[type_button]["md_bg_color"]),
-                        icon_color=get_color_from_hex(data[type_button]["text_color"]),
+                        md_bg_color=data[type_button]["md_bg_color"],
+                        icon_color=data[type_button]["text_color"],
                     )
                 )
 

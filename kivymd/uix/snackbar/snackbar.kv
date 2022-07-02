@@ -1,4 +1,3 @@
-#:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import window kivy.core.window
 
 
@@ -7,7 +6,7 @@
     height: "58dp"
     spacing: "10dp"
     padding: "10dp", "10dp", "10dp", "10dp"
-    md_bg_color: get_color_from_hex("323232") if not root.bg_color else root.bg_color
+    md_bg_color: "323232" if not root.bg_color else root.bg_color
     radius: root.radius
     elevation: 11 if root.padding else 0
 
@@ -28,7 +27,7 @@
         text: root.text
         font_size: root.font_size
         theme_text_color: "Custom"
-        text_color: get_color_from_hex("ffffff")
+        text_color: "ffffff"
         shorten: True
         shorten_from: "right"
         markup: True

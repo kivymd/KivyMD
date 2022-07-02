@@ -50,7 +50,6 @@ Example with TwoLineAvatarListItem
 
     from kivy.animation import Animation
     from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
     from kivymd.uix.list import TwoLineAvatarListItem
@@ -68,7 +67,7 @@ Example with TwoLineAvatarListItem
     MDBoxLayout:
         orientation: "vertical"
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
             title: "Inbox"
             left_action_items: [["menu"]]
@@ -101,7 +100,7 @@ Example with TwoLineAvatarListItem
 
 
     class Example(MDApp):
-        overlay_color = get_color_from_hex("#6042e4")
+        overlay_color = "#6042e4"
 
         def build(self):
             return Builder.load_string(KV)
@@ -154,7 +153,7 @@ Example with FitImage
 
     from kivy.animation import Animation
     from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
+    from kivy.properties import ColorProperty
 
     from kivymd.app import MDApp
     from kivymd.utils.fitimage import FitImage
@@ -164,7 +163,7 @@ Example with FitImage
         orientation: "vertical"
         md_bg_color: app.theme_cls.bg_light
 
-        MDToolbar:
+        MDTopAppBar:
             id: toolbar
             title: "Inbox"
             left_action_items: [["menu"]]
@@ -197,8 +196,8 @@ Example with FitImage
 
 
     class Example(MDApp):
-        overlay_color = get_color_from_hex("#6042e4")
-        progress_round_color = get_color_from_hex("#ef514b")
+        overlay_color = ColorProperty("#6042e4")
+        progress_round_color = "#ef514b"
 
         def build(self):
             return Builder.load_string(KV)

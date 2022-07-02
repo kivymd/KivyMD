@@ -42,9 +42,6 @@ Example
     from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
     KV = '''
-    #:import get_color_from_hex kivy.utils.get_color_from_hex
-
-
     <CardItem>
         size_hint_y: None
         height: "86dp"
@@ -80,7 +77,7 @@ Example
     MDScreen:
 
         MDSliverAppbar:
-            background_color: get_color_from_hex("2d4a50")
+            background_color: "2d4a50"
 
             MDSliverAppbarHeader:
 
@@ -199,7 +196,6 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
 
         KV = '''
         #:import SliverToolbar __main__.SliverToolbar
-        #:import get_color_from_hex kivy.utils.get_color_from_hex
 
 
         <CardItem>
@@ -237,7 +233,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
         MDScreen:
 
             MDSliverAppbar:
-                background_color: get_color_from_hex("2d4a50")
+                background_color: "2d4a50"
                 toolbar_cls: SliverToolbar()
 
                 MDSliverAppbarHeader:
@@ -299,7 +295,7 @@ class MDSliverAppbar(ThemableBehavior, MDBoxLayout):
     .. code-block:: kv
 
         MDSliverAppbar:
-            background_color: get_color_from_hex("2d4a50")
+            background_color: "2d4a50"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/sliver-app-bar-background-color.png
         :align: center

@@ -1059,6 +1059,11 @@ class ButtonContentsIconText:
     and defaults to [12dp, 8dp, 16dp, 8dp].
     """
 
+    icon_position = OptionProperty("left", options=["left", "top"])
+    """
+    Control icon position [left, top)]
+    """
+
 
 # Old MD Button classes
 

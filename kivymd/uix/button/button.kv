@@ -134,12 +134,12 @@
         adaptive_size: True
         padding: 0
         spacing: "4dp"
+        orientation: 'vertical' if root.icon_position == 'top' else 'horizontal'
 
         MDIcon:
             id: lbl_ic
             size_hint_x: None
-            pos_hint: {"center_y": .5}
-            icon: root.icon
+            pos_hint: {"center_x": .5} if root.icon_position == 'top' else {'center_y': .5}            icon: root.icon
             disabled: root.disabled
             opposite_colors: root.opposite_colors
             font_size:

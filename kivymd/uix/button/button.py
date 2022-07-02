@@ -1061,7 +1061,11 @@ class ButtonContentsIconText:
 
     icon_position = OptionProperty("left", options=["left", "top"])
     """
-    Control icon position [left, top)]
+    Decides where the icon will be placed visually in relation to the label.
+    Available options are: 'left', 'top'.
+
+    :attr:`icon_position` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'left'`.
     """
 
 

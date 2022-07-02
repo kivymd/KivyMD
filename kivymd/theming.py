@@ -909,7 +909,7 @@ class ThemeManager(EventDispatcher):
     def _set_ripple_color(self, value) -> None:
         self._ripple_color = value
 
-    _ripple_color = ColorProperty(get_color_from_hex(colors["Gray"]["400"]))
+    _ripple_color = ColorProperty(colors["Gray"]["400"])
     """Private value."""
 
     ripple_color = AliasProperty(

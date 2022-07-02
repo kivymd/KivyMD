@@ -345,7 +345,6 @@ To demonstrate the shades of the palette, you can run the following code:
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
     from kivy.properties import ListProperty, StringProperty
 
     from kivymd.color_definitions import colors
@@ -427,7 +426,7 @@ To demonstrate the shades of the palette, you can run the following code:
                 self.screen.ids.rv.data.append(
                     {
                         "viewclass": "ItemColor",
-                        "md_bg_color": get_color_from_hex(colors[tab_text][value_color]),
+                        "md_bg_color": colors[tab_text][value_color],
                         "text": value_color,
                     }
                 )

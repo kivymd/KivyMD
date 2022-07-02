@@ -11,7 +11,6 @@ from typing import List
 
 from kivy.lang import Builder
 from kivy.properties import (
-    BoundedNumericProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
@@ -77,38 +76,6 @@ class BackgroundColorBehavior(CommonElevationBehavior):
     and defaults to `None`.
     """
 
-    r = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    """
-    The value of ``red`` in the ``rgba`` palette.
-
-    :attr:`r` is an :class:`~kivy.properties.BoundedNumericProperty`
-    and defaults to `1.0`.
-    """
-
-    g = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    """
-    The value of ``green`` in the ``rgba`` palette.
-
-    :attr:`g` is an :class:`~kivy.properties.BoundedNumericProperty`
-    and defaults to `1.0`.
-    """
-
-    b = BoundedNumericProperty(1.0, min=0.0, max=1.0)
-    """
-    The value of ``blue`` in the ``rgba`` palette.
-
-    :attr:`b` is an :class:`~kivy.properties.BoundedNumericProperty`
-    and defaults to `1.0`.
-    """
-
-    a = BoundedNumericProperty(0.0, min=0.0, max=1.0)
-    """
-    The value of ``alpha channel`` in the ``rgba`` palette.
-
-    :attr:`a` is an :class:`~kivy.properties.BoundedNumericProperty`
-    and defaults to `0.0`.
-    """
-
     radius = VariableListProperty([0], length=4)
     """
     Canvas radius.
@@ -124,7 +91,7 @@ class BackgroundColorBehavior(CommonElevationBehavior):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    md_bg_color = ReferenceListProperty(r, g, b, a)
+    md_bg_color = ColorProperty([1, 1, 1, 0])
     """
     The background color of the widget (:class:`~kivy.uix.widget.Widget`)
     that will be inherited from the :attr:`BackgroundColorBehavior` class.
@@ -148,8 +115,8 @@ class BackgroundColorBehavior(CommonElevationBehavior):
         <MyWidget@BackgroundColorBehavior>
             md_bg_color: 0, 1, 1, 1
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ReferenceListProperty`
-    and defaults to :attr:`r`, :attr:`g`, :attr:`b`, :attr:`a`.
+    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 0]`.
     """
 
     line_color = ColorProperty([0, 0, 0, 0])

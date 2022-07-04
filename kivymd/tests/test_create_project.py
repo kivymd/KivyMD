@@ -10,7 +10,7 @@ def test_create_project():
         f"{sys.executable} "
         f"master "
         f"--name_screen TestProjectScreen "
-        f"--use_firebase yes "
+        f"--name_database restdb "
         f"--use_hotreload yes"
     )
     assert os.path.exists(os.path.join(os.path.expanduser("~"), "TestProject"))

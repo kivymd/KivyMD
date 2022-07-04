@@ -108,6 +108,13 @@ class MDSmartTile(ThemableBehavior, MDRelativeLayout):
 
     Includes an image, a container to place overlays and a box that can act
     as a header or a footer, as described in the Material Design specs.
+
+    :Events:
+        `on_press`
+            Called when the button is pressed.
+        `on_release`
+            Called when the button is released (i.e. the touch/click that
+            pressed the button goes away).
     """
 
     box_radius = VariableListProperty([0], length=4)
@@ -230,8 +237,30 @@ class MDSmartTile(ThemableBehavior, MDRelativeLayout):
     and defaults to `''`.
     """
 
+    mipmap = BooleanProperty(False)
+    """
+    Indicate if you want OpenGL mipmapping to be applied to the texture.
+    Read :ref:`mipmap` for more information.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.register_event_type("on_release")
+        self.register_event_type("on_press")
+
+    def on_release(self, *args):
+        """
+        Called when the button is released (i.e. the touch/click that
+        pressed the button goes away).
+        """
+
+    def on_press(self, *args):
+        """Called when the button is pressed."""
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, (SmartTileImage, SmartTileOverlayBox)):

@@ -46,3 +46,5 @@ Unreleased
 * Add `shift_right` and `shift_right` attributes to `MDTooltip <https://kivymd.readthedocs.io/en/latest/components/tooltip/>`_ class;
 * Fixed the size of the `MDIconButton <https://kivymd.readthedocs.io/en/latest/components/button/#mdiconbutton>`_ icon when changing icon_size on mobile devices;
 * Add new `MDSegmentedControl <https://kivymd.readthedocs.io/en/latest/components/segmentedcontrol/>`_ widget;
+* Add `on_release/on_press` events to `MDSmartTile <https://kivymd.readthedocs.io/en/latest/components/imagelist/#kivymd.uix.imagelist.imagelist.MDSmartTile>`_ class;
+* Add `mipmap` property to `FitImage <https://kivymd.readthedocs.io/en/latest/components/fitimage/>`_ class;

@@ -2,6 +2,7 @@
 
     SmartTileImage:
         id: image
+        mipmap: root.mipmap
         source: root.source
         radius: root.radius if root.radius else [0, 0, 0, 0]
         size_hint_y: 1 if root.overlap else None
@@ -10,6 +11,8 @@
             ((0, 0) if root.overlap else (0, box.height)) \
             if root.box_position == "footer" else \
             (0, 0)
+        on_release: root.dispatch("on_release")
+        on_press: root.dispatch("on_press")
 
     SmartTileOverlayBox:
         id: box

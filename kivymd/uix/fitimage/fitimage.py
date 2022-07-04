@@ -79,7 +79,7 @@ __all__ = ("FitImage",)
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
@@ -92,8 +92,19 @@ class FitImage(BoxLayout, StencilWidget):
     """
     Filename/source of your image.
 
-    :attr:`source` is a :class:`~kivy.properties.StringProperty` and
-    defaults to None.
+    :attr:`source` is a :class:`~kivy.properties.StringProperty`
+    and defaults to None.
+    """
+
+    mipmap = BooleanProperty(False)
+    """
+    Indicate if you want OpenGL mipmapping to be applied to the texture.
+    Read :ref:`mipmap` for more information.
+
+    .. versionadded:: 1.0.0
+
+    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     _container = ObjectProperty()
@@ -103,7 +114,7 @@ class FitImage(BoxLayout, StencilWidget):
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
-        self._container = Container(self.source)
+        self._container = Container(self.source, self.mipmap)
         self.bind(source=self._container.setter("source"))
         self.add_widget(self._container)
 
@@ -115,9 +126,9 @@ class Container(Widget):
     source = ObjectProperty()
     image = ObjectProperty()
 
-    def __init__(self, source, **kwargs):
+    def __init__(self, source, mipmap, **kwargs):
         super().__init__(**kwargs)
-        self.image = AsyncImage()
+        self.image = AsyncImage(mipmap=mipmap)
         self.loader_clock = Clock.schedule_interval(
             self.adjust_size, self.image.anim_delay
         )

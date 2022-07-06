@@ -79,7 +79,7 @@ __all__ = ("FitImage",)
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import ObjectProperty, BooleanProperty
+from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget

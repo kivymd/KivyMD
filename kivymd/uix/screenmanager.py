@@ -23,8 +23,8 @@ class MDScreenManager(ScreenManager):
     :class:`~kivymd.uix.hero.MDHeroTo` objects that will be animated when
     animating the transition between screens.
 
-    See the `MDHeroTo <https://kivymd.readthedocs.io/en/latest/components/hero/>`_
-    widget documentation for more information about creating and using Hero animations.
+    See the `Hero <https://kivymd.readthedocs.io/en/latest/components/hero/>`_
+    module documentation for more information about creating and using Hero animations.
 
     :attr:`current_hero` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.
@@ -38,7 +38,9 @@ class MDScreenManager(ScreenManager):
         super().__init__(**kwargs)
         Clock.schedule_once(self.check_transition)
 
-    def check_transition(self, *args):
+    def check_transition(self, *args) -> None:
+        """Sets the default type transition."""
+
         from kivymd.uix.transition.transition import MDTransitionBase
 
         if not issubclass(self.transition.__class__, MDTransitionBase):
@@ -46,7 +48,7 @@ class MDScreenManager(ScreenManager):
 
             self.transition = MDSlideTransition()
 
-    def get_hero_from_widget(self):
+    def get_hero_from_widget(self) -> None:
         """
         Get an :class:`~kivymd.uix.hero.MDHeroTo` object with the
         :attr:`~current_hero` tag.

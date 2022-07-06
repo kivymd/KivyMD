@@ -9,9 +9,9 @@ If you want to use Hero animations you need to use :class:`~kivymd.uix.screenman
 not :class:`~kivy.uix.screenmanager.ScreenManager` class.
 """
 
+from kivy.clock import Clock
 from kivy.properties import ListProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager
-from kivy.clock import Clock
 
 from kivymd.uix.hero import MDHeroFrom
 

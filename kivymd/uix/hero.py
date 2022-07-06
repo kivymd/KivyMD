@@ -2,6 +2,8 @@
 Components/Hero
 ===============
 
+.. versionadded:: 1.0.0
+
 .. rubric:: Use the :class:`~MDHeroFrom` widget to animate a widget from one
     screen to the next.
 
@@ -11,20 +13,22 @@ Components/Hero
 - Animate the transformation of a hero’s shape from circular to rectangular while flying it from one screen to another.
 - The :class:`~MDHeroFrom` widget in KivyMD implements a style of animation commonly known as shared element transitions or shared element animations.
 
-<div
-    style="position: relative;
-           padding-bottom: 56.25%;
-           height: 0;
-           overflow: hidden;
-           max-width: 80%;
-           height: auto;">
-    <iframe
-        src="//www.youtube.com/embed/qfQ4mmMR2Kg"
-        frameborder="0"
-        allowfullscreen
-        style="position: absolute; top: 0; left: 0; width: 80%; height: 60%;">
-    </iframe>
-</div>
+.. raw:: html
+
+    <div
+        style="position: relative;
+               padding-bottom: 56.25%;
+               height: 0;
+               overflow: hidden;
+               max-width: 80%;
+               height: auto;">
+        <iframe
+            src="//www.youtube.com/embed/qfQ4mmMR2Kg"
+            frameborder="0"
+            allowfullscreen
+            style="position: absolute; top: 0; left: 0; width: 80%; height: 60%;">
+        </iframe>
+    </div>
 
 The widget that will move from screen A to screen B will be a hero. To move
 a widget from one screen to another using hero animation, you need to do the
@@ -500,10 +504,10 @@ class MDHeroFrom(MDBoxLayout):
         self.register_event_type("on_transform_out")
 
     def on_transform_in(self, *args):
-        """Called when the hero flies from screen **A** to screen **B**"""
+        """Called when the hero flies from screen **A** to screen **B**."""
 
     def on_transform_out(self, *args):
-        """Called when the hero back from screen **B** to screen **A**"""
+        """Called when the hero back from screen **B** to screen **A**."""
 
 
 class MDHeroTo(MDBoxLayout):

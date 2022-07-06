@@ -15,19 +15,12 @@ Components/Hero
 
 .. raw:: html
 
-    <div
-        style="position: relative;
-               padding-bottom: 56.25%;
-               height: 0;
-               overflow: hidden;
-               max-width: 80%;
-               height: auto;">
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
         <iframe
-            src="//www.youtube.com/embed/qfQ4mmMR2Kg"
+            src="https://www.youtube.com/embed/qfQ4mmMR2Kg"
             frameborder="0"
             allowfullscreen
-            style="position: absolute; top: 0; left: 0; width: 80%; height: 60%;">
-        </iframe>
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
     </div>
 
 The widget that will move from screen A to screen B will be a hero. To move

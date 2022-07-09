@@ -13,7 +13,7 @@
                     rgba:
                         root.background_color \
                         if root.background_color else \
-                        get_color_from_hex(root.theme_cls.primary_color)
+                        root.theme_cls.primary_color
                     a: root._opacity
                 Rectangle:
                     pos: self.pos

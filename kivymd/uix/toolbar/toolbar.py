@@ -1309,7 +1309,8 @@ class MDTopAppBar(NotchedBox, WindowController):
         if material_style_value == "M2":
             self.anchor_title = "left"
         elif material_style_value == "M3" and self.type != "bottom":
-            self.anchor_title = "center"
+            if not self.anchor_title:
+                self.anchor_title = "center"
         elif material_style_value == "M3" and self.type == "bottom":
             self.anchor_title = "left"
         return self.anchor_title

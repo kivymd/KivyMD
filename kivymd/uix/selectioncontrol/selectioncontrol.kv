@@ -1,3 +1,7 @@
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import colors kivymd.color_definitions.colors
+
+
 <MDCheckbox>
     canvas:
         Clear
@@ -16,59 +20,126 @@
 
 
 <Thumb>
-    color: 1, 1, 1, 1
-    canvas:
-        Color:
-            rgba: self.color
-        Ellipse:
-            size: self.size
-            pos: self.pos
+    radius: self.width / 2
+    ripple_scale: 2
+
+    ThumbIcon:
+        id: icon
+        font_size: "16sp"
+        theme_text_color: "Custom"
+        pos_hint: {"center_x": .5, "center_y": .5}
 
 
 <MDSwitch>
     canvas.before:
         Color:
             rgba:
-                self._track_color_disabled if self.disabled else \
                 ( \
-                self._track_color_active \
-                if self.active else self._track_color_normal \
+                self.track_color_disabled \
+                if self.track_color_disabled else \
+                self.theme_cls.disabled_hint_text_color) \
+                if self.disabled else \
+                ( \
+                ( \
+                self.track_color_active \
+                if self.track_color_active else \
+                self.theme_cls.primary_color[:-1] + [.5]) \
+                if self.active else \
+                (self.track_color_inactive \
+                if self.track_color_inactive else \
+                self.theme_cls.disabled_hint_text_color) \
                 )
         RoundedRectangle:
             size:
                 (self.width + dp(14), dp(28)) \
                 if root.widget_style == "ios" else \
-                (self.width - dp(8), dp(16))
+                ( \
+                (self.width - dp(8), dp(16)) \
+                if app.theme_cls.material_style == "M2" else \
+                (self.width + dp(16), dp(32)) \
+                )
             pos:
                 (self.x - dp(2), self.center_y - dp(14)) \
                 if root.widget_style == "ios" else \
                 (self.x + dp(8), self.center_y - dp(8))
             radius:
-                [dp(14)] if root.widget_style == "ios" else [dp(7)]
+                [dp(14)] \
+                if root.widget_style == "ios" else \
+                [dp(7) if app.theme_cls.material_style == "M2" else dp(16)]
         Color:
             rgba:
                 ( \
-                self.theme_cls.disabled_hint_text_color[:-1] + [.2] \
+                self.theme_cls.disabled_hint_text_color \
                 if not root.active else (0, 0, 0, 0) \
                 ) \
-                if root.widget_style == "ios" else (0, 0, 0, 0)
-        Line:
-            width: 1
+                if root.widget_style == "ios" \
+                or app.theme_cls.material_style == "M3" else \
+                (0, 0, 0, 0)
+        SmoothLine:
+            width:
+                1 \
+                if root.widget_style == "ios" \
+                or app.theme_cls.material_style == "M2" else \
+                1.4
             rounded_rectangle:
                 ( \
                 self.x - dp(2), self.center_y - dp(14), self.width + dp(14), \
                 dp(28), dp(14), dp(14), dp(14), dp(14), dp(28) \
                 ) \
                 if root.widget_style == "ios" else \
-                (1, 1, 1, 1, 1, 1, 1, 1, 1)
+                ( \
+                (1, 1, 1, 1, 1, 1, 1, 1, 1) \
+                if app.theme_cls.material_style == "M2" else \
+                ( \
+                self.x + dp(8), self.center_y - dp(8), self.width + dp(16), \
+                dp(32), dp(16), dp(16), dp(16), dp(16), dp(32) \
+                )
+                )
 
     Thumb:
         id: thumb
         size_hint: None, None
         size: dp(24), dp(24)
-        pos: root.pos[0] + root._thumb_pos[0], root.pos[1] + root._thumb_pos[1]
-        color:
-            root.thumb_color_disabled if root.disabled else \
-            (root.thumb_color_down if root.active else root.thumb_color)
-        elevation: 8 if root.active else 5
-        on_release: setattr(root, "active", not root.active)
+        elevation:
+            (8 if root.active else 5) \
+            if app.theme_cls.material_style != "M3" else \
+            0
+        pos:
+            (root.pos[0] + root._thumb_pos[0], root.pos[1] + root._thumb_pos[1]) \
+            if root.widget_style == "ios" \
+            or app.theme_cls.material_style == "M2" else \
+            ( \
+            root.pos[0] + self.width + root._thumb_pos[0], \
+            root.pos[1] + (root.height / 2 - self.height / 2) + root._thumb_pos[1] \
+            )
+        _no_ripple_effect:
+            True \
+            if app.theme_cls.material_style == "M3" \
+            and root.widget_style != "ios" else \
+            False
+        md_bg_color:
+            ( \
+            root.thumb_color_disabled \
+            if root.thumb_color_disabled else \
+            get_color_from_hex(colors["Gray"]["800"]) \
+            ) \
+            if root.disabled else \
+            ( \
+            (root.thumb_color_active \
+            if root.thumb_color_active else \
+            root.theme_cls.primary_color \
+            ) \
+            if root.active else \
+            ( \
+            root.thumb_color_inactive \
+            if root.thumb_color_inactive else \
+            get_color_from_hex(colors["Gray"]["50"] \
+            ) \
+            ) \
+            )
+        on_touch_down:
+            if self.collide_point(*args[1].pos) and not root.disabled: \
+            root.on_thumb_down()
+        on_touch_up:
+            if self.collide_point(*args[1].pos) and not root.disabled: \
+            setattr(root, "active", not root.active)

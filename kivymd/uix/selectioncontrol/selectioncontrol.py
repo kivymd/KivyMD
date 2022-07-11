@@ -51,9 +51,6 @@ MDCheckbox
     ``(dp(48), dp(48))``, but the ripple effect takes up all the available
     space.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-no-size.gif
-    :align: center
-
 Control state
 -------------
 
@@ -148,6 +145,35 @@ MDSwitch
 
 .. Note:: Control state of :class:`~MDSwitch` same way as in
     :class:`~MDCheckbox`.
+
+MDSwitch in M3 style
+--------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    MDScreen:
+
+        MDSwitch:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            active: True
+    '''
+
+
+    class Test(MDApp):
+        def build(self):
+            self.theme_cls.material_style = "M3"
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-m3.gif
+    :align: center
 """
 
 __all__ = ("MDCheckbox", "MDSwitch")
@@ -159,17 +185,13 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp, sp
 from kivy.properties import (
-    AliasProperty,
     BooleanProperty,
     ColorProperty,
     ListProperty,
-    NumericProperty,
-    OptionProperty,
     StringProperty,
 )
-from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
+from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 
 from kivymd import uix_path
@@ -179,6 +201,7 @@ from kivymd.uix.behaviors import (
     CircularRippleBehavior,
     FakeCircularElevationBehavior,
 )
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
 
 with open(
@@ -233,27 +256,81 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     and defaults to `'checkbox-marked-circle'`.
     """
 
-    selected_color = ColorProperty(None)
+    color_active = ColorProperty(None)
     """
-    Selected color in ``rgba`` format.
+    Color when the checkbox is in the active state.
 
-    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDCheckbox:
+            color_active: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-color-active.png
+        :align: center
+
+    :attr:`color_active` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    unselected_color = ColorProperty(None)
+    color_inactive = ColorProperty(None)
     """
-    Unelected color in ``rgba`` format.
+    Color when the checkbox is in the inactive state.
 
-    :attr:`unselected_color` is a :class:`~kivy.properties.ColorProperty`
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDCheckbox:
+            color_inactive: "blue"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-color-inactive.png
+        :align: center
+
+    :attr:`color_inactive` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
     disabled_color = ColorProperty(None)
     """
-    Disabled color in ``rgba`` format.
+    Color when the checkbox is in the disabled state.
+
+    .. code-block:: kv
+
+        MDCheckbox:
+            disabled_color: "lightgrey"
+            disabled: True
+            active: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-disabled-color.png
+        :align: center
 
     :attr:`disabled_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # Deprecated property.
+
+    selected_color = ColorProperty(None, deprecated=True)
+    """
+    Color when the checkbox is in the active state.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`color_active` instead.
+
+    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    unselected_color = ColorProperty(None, deprecated=True)
+    """
+    Color when the checkbox is in the inactive state.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`color_inactive` instead.
+
+    :attr:`unselected_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -265,10 +342,10 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             font_size=sp(24), duration=0.1, t="out_quad"
         )
         super().__init__(**kwargs)
-        self.selected_color = self.theme_cls.primary_color
-        self.unselected_color = self.theme_cls.secondary_text_color
+        self.color_active = self.theme_cls.primary_color
+        self.color_inactive = self.theme_cls.secondary_text_color
         self.disabled_color = self.theme_cls.divider_color
-        self._current_color = self.unselected_color
+        self._current_color = self.color_inactive
         self.check_anim_out.bind(
             on_complete=lambda *x: self.check_anim_in.start(self)
         )
@@ -278,8 +355,8 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             radio_icon_normal=self.update_icon,
             radio_icon_down=self.update_icon,
             group=self.update_icon,
-            selected_color=self.update_color,
-            unselected_color=self.update_color,
+            color_active=self.update_color,
+            color_inactive=self.update_color,
             disabled_color=self.update_color,
             disabled=self.update_color,
             state=self.update_color,
@@ -289,16 +366,16 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
         self.update_icon()
         self.update_color()
 
-    def update_primary_color(self, instance, value):
+    def update_primary_color(self, instance, value) -> None:
         if value in ("Dark", "Light"):
             if not self.disabled:
                 self.color = self.theme_cls.primary_color
             else:
                 self.color = self.disabled_color
         else:
-            self.selected_color = value
+            self.color_active = value
 
-    def update_icon(self, *args):
+    def update_icon(self, *args) -> None:
         if self.state == "down":
             self.icon = (
                 self.radio_icon_down if self.group else self.checkbox_icon_down
@@ -310,15 +387,15 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
                 else self.checkbox_icon_normal
             )
 
-    def update_color(self, *args):
+    def update_color(self, *args) -> None:
         if self.disabled:
             self._current_color = self.disabled_color
         elif self.state == "down":
-            self._current_color = self.selected_color
+            self._current_color = self.color_active
         else:
-            self._current_color = self.unselected_color
+            self._current_color = self.color_inactive
 
-    def on_state(self, *args):
+    def on_state(self, *args) -> None:
         if self.state == "down":
             self.check_anim_in.cancel(self)
             self.check_anim_out.start(self)
@@ -333,39 +410,29 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             self.update_icon()
             self.active = False
 
-    def on_active(self, *args):
+    def on_active(self, *args) -> None:
         self.state = "down" if self.active else "normal"
+
+
+class ThumbIcon(MDIcon):
+    """
+    Implements icon for the :class:`~Thumb` widget.
+
+    .. versionadded:: 1.0.0
+    """
 
 
 class Thumb(
     FakeCircularElevationBehavior,
     CircularRippleBehavior,
-    ButtonBehavior,
-    Widget,
+    MDFloatLayout,
 ):
-    ripple_scale = NumericProperty(2)
     """
-    See :attr:`~kivymd.uix.behaviors.ripplebehavior.CommonRipple.ripple_scale`.
-
-    :attr:`ripple_scale` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `2`.
+    Implements a thumb for the :class:`~MDSwitch` widget.
     """
 
-    def _set_ellipse(self, instance, value):
-        self.ellipse.size = (self._ripple_rad, self._ripple_rad)
-        if self.ellipse.size[0] > self.width * 1.5 and not self._fading_out:
-            self.fade_out()
-        self.ellipse.pos = (
-            self.center_x - self._ripple_rad / 2.0,
-            self.center_y - self._ripple_rad / 2.0,
-        )
-        self.stencil.pos = (
-            self.center_x - (self.width * self.ripple_scale) / 2,
-            self.center_y - (self.height * self.ripple_scale) / 2,
-        )
 
-
-class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
+class MDSwitch(ThemableBehavior, FloatLayout):
     active = BooleanProperty(False)
     """
     Indicates if the switch is active or inactive.
@@ -374,161 +441,341 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
     and defaults to `False`.
     """
 
-    _thumb_color = ColorProperty(get_color_from_hex(colors["Gray"]["50"]))
-
-    def _get_thumb_color(self):
-        return self._thumb_color
-
-    def _set_thumb_color(self, color, alpha=None):
-        if len(color) == 2:
-            self._thumb_color = get_color_from_hex(colors[color[0]][color[1]])
-            if alpha:
-                self._thumb_color[3] = alpha
-        elif len(color) == 4:
-            self._thumb_color = color
-
-    thumb_color = AliasProperty(
-        _get_thumb_color, _set_thumb_color, bind=["_thumb_color"]
-    )
+    icon_active = StringProperty()
     """
-    Get thumb color ``rgba`` format.
+    Thumb icon when the switch is in the active state (only M3 style).
 
-    :attr:`thumb_color` is an :class:`~kivy.properties.AliasProperty`
-    and property is readonly.
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            icon_active: "check"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-icon-active.png
+        :align: center
+
+    :attr:`icon_active` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
     """
 
-    _thumb_color_down = ColorProperty([1, 1, 1, 1])
-
-    def _get_thumb_color_down(self):
-        return self._thumb_color_down
-
-    def _set_thumb_color_down(self, color, alpha=None):
-        if len(color) == 2:
-            self._thumb_color_down = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
-            if alpha:
-                self._thumb_color_down[3] = alpha
-            else:
-                self._thumb_color_down[3] = 1
-        elif len(color) == 4:
-            self._thumb_color_down = color
-
-    _thumb_color_disabled = ColorProperty(
-        get_color_from_hex(colors["Gray"]["400"])
-    )
-
-    thumb_color_disabled = get_color_from_hex(colors["Gray"]["800"])
+    icon_inactive = StringProperty()
     """
-    Get thumb color disabled ``rgba`` format.
+    Thumb icon when the switch is in an inactive state (only M3 style).
 
-    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.AliasProperty`
-    and property is readonly.
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            icon_inactive: "close"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-icon-inactive.png
+        :align: center
+
+    :attr:`icon_inactive` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
     """
 
-    def _get_thumb_color_disabled(self):
-        return self._thumb_color_disabled
-
-    def _set_thumb_color_disabled(self, color, alpha=None):
-        if len(color) == 2:
-            self._thumb_color_disabled = get_color_from_hex(
-                colors[color[0]][color[1]]
-            )
-            if alpha:
-                self._thumb_color_disabled[3] = alpha
-        elif len(color) == 4:
-            self._thumb_color_disabled = color
-
-    thumb_color_down = AliasProperty(
-        _get_thumb_color_disabled,
-        _set_thumb_color_disabled,
-        bind=["_thumb_color_disabled"],
-    )
+    icon_active_color = ColorProperty(None)
     """
-    Get thumb color down ``rgba`` format.
+    Thumb icon color when the switch is in the active state (only M3 style).
 
-    :attr:`thumb_color_down` is an :class:`~kivy.properties.AliasProperty`
-    and property is readonly.
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            icon_active: "check"
+            icon_active_color: "white"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-icon-active-color.png
+        :align: center
+
+    :attr:`icon_active_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    theme_thumb_color = OptionProperty("Primary", options=["Primary", "Custom"])
+    icon_inactive_color = ColorProperty(None)
     """
-    Thumb color scheme name
+    Thumb icon color when the switch is in an inactive state (only M3 style).
 
-    :attr:`theme_thumb_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `Primary`.
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            icon_inactive: "close"
+            icon_inactive_color: "grey"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-icon-inactive-color.png
+        :align: center
+
+    :attr:`icon_inactive_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    theme_thumb_down_color = OptionProperty(
-        "Primary", options=["Primary", "Custom"]
-    )
+    thumb_color_active = ColorProperty(None)
     """
-    Thumb Down color scheme name
+    The color of the thumb when the switch is active.
 
-    :attr:`theme_thumb_down_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `Primary`.
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            thumb_color_active: "brown"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-active.png
+        :align: center
+
+    :attr:`thumb_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
     """
 
-    _track_color_active = ColorProperty([0, 0, 0, 0])
-    _track_color_normal = ColorProperty([0, 0, 0, 0])
-    _track_color_disabled = ColorProperty([0, 0, 0, 0])
+    thumb_color_inactive = ColorProperty(None)
+    """
+    The color of the thumb when the switch is inactive.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            thumb_color_inactive: "brown"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-inactive.png
+        :align: center
+
+    :attr:`thumb_color_inactive` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    thumb_color_disabled = ColorProperty(None)
+    """
+    The color of the thumb when the switch is in the disabled state.
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            thumb_color_disabled: "brown"
+            disabled: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-disabled.png
+        :align: center
+
+    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_active = ColorProperty(None)
+    """
+    The color of the track when the switch is active.
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            track_color_active: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-active.png
+        :align: center
+
+    :attr:`track_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_inactive = ColorProperty(None)
+    """
+    The color of the track when the switch is inactive.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            track_color_inactive: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-inactive.png
+        :align: center
+
+    :attr:`track_color_inactive` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_disabled = ColorProperty(None)
+    """
+    The color of the track when the switch is in the disabled state.
+
+    .. code-block:: kv
+
+        MDSwitch:
+            track_color_disabled: "lightgrey"
+            disabled: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-disabled.png
+        :align: center
+
+    :attr:`track_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    # Deprecated properties.
+
+    thumb_color = ColorProperty(None, deprecated=True)
+    """
+    The color of the thumb when the switch is inactive.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`thumb_color_inactive` instead.
+
+    :attr:`thumb_color` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    thumb_color_down = ColorProperty(None, deprecated=True)
+    """
+    The color of the thumb when the switch is inactive.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`thumb_color_active` instead.
+
+    :attr:`thumb_color_down` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color = ColorProperty(None, deprecated=True)
+    """
+    The color of the track when the switch is inactive.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`track_color_inactive` instead.
+
+    :attr:`track_color` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_down = ColorProperty(None, deprecated=True)
+    """
+    The color of the track when the switch is active.
+
+    .. deprecated:: 1.0.0
+        Use :attr:`track_color_active` instead.
+
+    :attr:`track_color_down` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
     _thumb_pos = ListProperty([0, 0])
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.theme_cls.bind(
-            theme_style=self._set_colors,
-            primary_color=self._set_colors,
-            primary_palette=self._set_colors,
-        )
-        self.bind(active=self._update_thumb_pos)
-        Clock.schedule_once(self._set_colors)
+        self.bind(icon_active=self.set_icon, icon_inactive=self.set_icon)
         self.size_hint = (None, None)
         self.size = (dp(36), dp(48))
+        Clock.schedule_once(self._check_style)
 
-    def _set_colors(self, *args):
-        self._track_color_normal = self.theme_cls.disabled_hint_text_color
-        if self.theme_cls.theme_style == "Dark":
+    def set_icon(self, instance_switch, icon_value: str) -> None:
+        icon = icon_value if icon_value else "blank"
+        self.ids.thumb.ids.icon.icon = icon
 
-            if self.theme_thumb_down_color == "Primary":
-                self._track_color_active = self.theme_cls.primary_color
-            else:
-                self._track_color_active = self.thumb_color_down
-
-            self._track_color_active[3] = 0.5
-            self._track_color_disabled = get_color_from_hex("FFFFFF")
-            self._track_color_disabled[3] = 0.1
-
-            if self.theme_thumb_color == "Primary":
-                self.thumb_color = get_color_from_hex(colors["Gray"]["400"])
-
-            if self.theme_thumb_down_color == "Primary":
-                self.thumb_color_down = get_color_from_hex(
-                    colors[self.theme_cls.primary_palette]["200"]
+    def on_active(self, instance_switch, active_value: bool) -> None:
+        if self.theme_cls.material_style == "M3" and self.widget_style != "ios":
+            size = (
+                (
+                    (dp(16), dp(16))
+                    if not self.icon_inactive
+                    else (dp(24), dp(24))
                 )
-        else:
-            if self.theme_thumb_down_color == "Primary":
-                self._track_color_active = get_color_from_hex(
-                    colors[self.theme_cls.primary_palette]["200"]
+                if not active_value
+                else (dp(24), dp(24))
+            )
+            icon = "blank"
+            color = (0, 0, 0, 0)
+
+            if self.icon_active and active_value:
+                icon = self.icon_active
+                color = (
+                    self.icon_active_color
+                    if self.icon_active_color
+                    else self.theme_cls.text_color
                 )
+            elif self.icon_inactive and not active_value:
+                icon = self.icon_inactive
+                color = (
+                    self.icon_inactive_color
+                    if self.icon_inactive_color
+                    else self.theme_cls.text_color
+                )
+
+            Animation(size=size, t="out_quad", d=0.2).start(self.ids.thumb)
+            Animation(color=color, t="out_quad", d=0.2).start(
+                self.ids.thumb.ids.icon
+            )
+            self.set_icon(self, icon)
+
+        self._update_thumb_pos()
+
+    # FIXME: If you move the cursor from the switch during the
+    #  `on_touch_down` event, the animation of returning the thumb to
+    #  the previous size does not work. The following code fixes this.
+    def on_thumb_down(self) -> None:
+        """
+        Called at the on_touch_down event of the :class:`~Thumb` object.
+        Indicates the state of the switch "on/off" by an animation of
+        increasing the size of the thumb.
+        """
+
+        if self.widget_style != "ios" and self.theme_cls.material_style == "M3":
+            if self.active:
+                size = (dp(28), dp(28))
+                pos = (self.ids.thumb.pos[0] - 2, self.ids.thumb.pos[1] - 1.8)
             else:
-                self._track_color_active = self.thumb_color_down
-
-            self._track_color_active[3] = 0.5
-            self._track_color_disabled = self.theme_cls.disabled_hint_text_color
-
-            if self.theme_thumb_down_color == "Primary":
-                self.thumb_color_down = self.theme_cls.primary_color
-
-            if self.theme_thumb_color == "Primary":
-                self.thumb_color = get_color_from_hex(colors["Gray"]["50"])
+                size = (dp(26), dp(26))
+                pos = (
+                    (self.ids.thumb.pos[0] - 5, self.ids.thumb.pos[1] - 5)
+                    if not self.icon_inactive
+                    else (self.ids.thumb.pos[0] + 1, self.ids.thumb.pos[1] - 1)
+                )
+            Animation(size=size, pos=pos, t="out_quad", d=0.2).start(
+                self.ids.thumb
+            )
 
     def _update_thumb_pos(self, *args, animation=True):
         if self.active:
-            _thumb_pos = (self.width - dp(14), self.height / 2 - dp(12))
+            _thumb_pos = (
+                self.width
+                - (
+                    dp(14)
+                    if self.widget_style == "ios"
+                    or self.theme_cls.material_style == "M2"
+                    else dp(28)
+                ),
+                self.height / 2
+                - (
+                    dp(12)
+                    if self.widget_style == "ios"
+                    or self.theme_cls.material_style == "M2"
+                    else dp(16)
+                ),
+            )
         else:
-            _thumb_pos = (0, self.height / 2 - dp(12))
+            _thumb_pos = (
+                0 if not self.icon_inactive else dp(-14),
+                self.height / 2
+                - (
+                    dp(12)
+                    if self.widget_style == "ios"
+                    or self.theme_cls.material_style == "M2"
+                    else dp(16)
+                ),
+            )
         Animation.cancel_all(self, "_thumb_pos")
+
         if animation:
             Animation(_thumb_pos=_thumb_pos, duration=0.2, t="out_quad").start(
                 self
@@ -536,5 +783,6 @@ class MDSwitch(ThemableBehavior, ButtonBehavior, FloatLayout):
         else:
             self._thumb_pos = _thumb_pos
 
-    def on_size(self, *args):
-        self._update_thumb_pos(animation=False)
+    def _check_style(self, *args):
+        if self.widget_style == "ios" or self.theme_cls.material_style == "M2":
+            self.set_icon(self, "")

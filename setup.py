@@ -113,7 +113,7 @@ if __name__ == "__main__":
             "docs": [
                 "sphinx",
                 "sphinx-autoapi==1.4.0",
-                "sphinx_rtd_theme",
+                "furo",
                 "sphinx-notfound-page",
             ],
         },

@@ -738,13 +738,22 @@ class MDSwitch(ThemableBehavior, FloatLayout):
         if self.widget_style != "ios" and self.theme_cls.material_style == "M3":
             if self.active:
                 size = (dp(28), dp(28))
-                pos = (self.ids.thumb.pos[0] - 2, self.ids.thumb.pos[1] - 1.8)
+                pos = (
+                    self.ids.thumb.pos[0] - dp(2),
+                    self.ids.thumb.pos[1] - dp(1.8),
+                )
             else:
                 size = (dp(26), dp(26))
                 pos = (
-                    (self.ids.thumb.pos[0] - 5, self.ids.thumb.pos[1] - 5)
+                    (
+                        self.ids.thumb.pos[0] - dp(5),
+                        self.ids.thumb.pos[1] - dp(5),
+                    )
                     if not self.icon_inactive
-                    else (self.ids.thumb.pos[0] + 1, self.ids.thumb.pos[1] - 1)
+                    else (
+                        self.ids.thumb.pos[0] + dp(1),
+                        self.ids.thumb.pos[1] - dp(1),
+                    )
                 )
             Animation(size=size, pos=pos, t="out_quad", d=0.2).start(
                 self.ids.thumb

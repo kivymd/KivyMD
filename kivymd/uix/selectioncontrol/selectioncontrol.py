@@ -678,10 +678,15 @@ class MDSwitch(ThemableBehavior, FloatLayout):
         self.size_hint = (None, None)
         self.size = (dp(36), dp(48))
         Clock.schedule_once(self._check_style)
+        Clock.schedule_once(lambda x: self._update_thumb_pos(animation=False))
+        Clock.schedule_once(lambda x: self.on_active(self, self.active))
 
     def set_icon(self, instance_switch, icon_value: str) -> None:
-        icon = icon_value if icon_value else "blank"
-        self.ids.thumb.ids.icon.icon = icon
+        def set_icon(*args):
+            icon = icon_value if icon_value else "blank"
+            self.ids.thumb.ids.icon.icon = icon
+
+        Clock.schedule_once(set_icon, 0.2)
 
     def on_active(self, instance_switch, active_value: bool) -> None:
         if self.theme_cls.material_style == "M3" and self.widget_style != "ios":

@@ -32,7 +32,8 @@ language = "Python"
 
 
 # HTML Theme
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
+default_dark_mode = True
 html_static_path = ["_static"]
 html_favicon = "_static/logo-kivymd.png"
 html_logo = "_static/logo-kivymd.png"

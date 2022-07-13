@@ -33,7 +33,7 @@ language = "Python"
 
 # HTML Theme
 html_theme = "furo"
-default_dark_mode = True
+pygments_style = "monokai"
 html_static_path = ["_static"]
 html_favicon = "_static/logo-kivymd.png"
 html_logo = "_static/logo-kivymd.png"

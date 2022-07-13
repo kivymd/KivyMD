@@ -29,9 +29,6 @@ templates_path = ["_templates"]
 locale_dirs = ["_locales"]
 language = "Python"
 
-# The name of the Pygments (syntax highlighting) style to use.
-pygments_style = "monokai"
-
 # HTML Theme.
 html_theme = "furo"
 html_static_path = ["_static"]

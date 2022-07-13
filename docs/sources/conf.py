@@ -41,6 +41,10 @@ html_theme_options = {
     "titles_only": True,
 }
 
+# Pygments style.
+pygments_style = "sphinx"
+pygments_dark_style = "monokai"
+
 # Extensions.
 extensions = [
     "notfound.extension",

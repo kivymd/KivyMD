@@ -1,7 +1,7 @@
 # Configuration file for the Sphinx documentation builder.
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# Path setup
+# Path setup.
 import os
 import sys
 
@@ -15,25 +15,25 @@ import autoapi_kivymd  # NOQA. from _extensions
 
 import kivymd  # NOQA
 
-# Project information
+# Project information.
 project = "KivyMD"
 copyright = "2022, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 version = kivymd.__version__
 release = kivymd.__version__
 
-
-# General configuration
+# General configuration.
 master_doc = "index"
 exclude_patterns = []
 templates_path = ["_templates"]
 locale_dirs = ["_locales"]
 language = "Python"
 
-
-# HTML Theme
-html_theme = "furo"
+# The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "monokai"
+
+# HTML Theme.
+html_theme = "furo"
 html_static_path = ["_static"]
 html_favicon = "_static/logo-kivymd.png"
 html_logo = "_static/logo-kivymd.png"
@@ -44,18 +44,18 @@ html_theme_options = {
     "titles_only": True,
 }
 
-
-# Extensions
+# Extensions.
 extensions = [
     "notfound.extension",
     "sphinx.ext.autodoc",
     "autoapi_kivymd",
     "sphinx.ext.intersphinx",
     "kivy_lexer",
+    "furo",
     "toctree_with_sort",
 ]
 
-# AutoAPI configuration
+# AutoAPI configuration.
 autoapi_dirs = ["../../kivymd"]
 autoapi_template_dir = os.path.abspath("_templates")
 autoapi_ignore = ["**/kivymd/tests/**"]
@@ -69,9 +69,9 @@ autoapi_include_inheritance_graphs = False
 autoapi_include_summaries = True
 autoapi_python_class_content = "class"
 autoapi_python_use_implicit_namespaces = False
-autoapi_keep_files = False  # True for debugging
+autoapi_keep_files = False  # true for debugging
 
-# InterSphinx configuration
+# InterSphinx configuration.
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "kivy": ("https://kivy.org/doc/stable/", None),

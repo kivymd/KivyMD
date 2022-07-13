@@ -51,7 +51,6 @@ extensions = [
     "autoapi_kivymd",
     "sphinx.ext.intersphinx",
     "kivy_lexer",
-    "furo",
     "toctree_with_sort",
 ]
 

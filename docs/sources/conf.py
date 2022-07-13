@@ -42,7 +42,7 @@ html_theme_options = {
 }
 
 # Pygments style.
-pygments_style = "sphinx"
+pygments_style = "autumn"
 pygments_dark_style = "monokai"
 
 # Extensions.

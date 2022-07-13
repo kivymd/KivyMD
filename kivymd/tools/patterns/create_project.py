@@ -686,7 +686,7 @@ def main():
         Logger.info(
             f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
         )
-        create_virtual_environment(python_version, path_to_project)
+        create_virtual_environment()
         Logger.info(
             f"KivyMD: Install requirements for '{path_to_project}' project..."
         )

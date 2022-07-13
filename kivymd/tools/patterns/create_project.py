@@ -693,8 +693,12 @@ def main():
         install_requirements()
         os.remove(os.path.join(path_to_project, "__init__.py"))
         if name_database == "no":
-            os.remove(os.path.join(path_to_project, "Model", "database_firebase.py"))
-            os.remove(os.path.join(path_to_project, "Model", "database_restdb.py"))
+            os.remove(
+                os.path.join(path_to_project, "Model", "database_firebase.py")
+            )
+            os.remove(
+                os.path.join(path_to_project, "Model", "database_restdb.py")
+            )
     else:
         parser.error(f"The {path_to_project} project already exists")
 

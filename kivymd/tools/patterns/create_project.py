@@ -563,6 +563,8 @@ name_database = ""
 use_hotreload = ""
 temp_makefile_files = ""
 temp_screens_data = ""
+kivy_version = ""
+python_version = ""
 
 
 def main():
@@ -573,6 +575,8 @@ def main():
     global temp_makefile_files
     global temp_screens_data
     global path_to_project
+    global kivy_version
+    global python_version
 
     parser = create_argument_parser()
     args = parser.parse_args()
@@ -686,7 +690,7 @@ def main():
         Logger.info(
             f"KivyMD: Install requirements for '{path_to_project}' project..."
         )
-        install_requirements(path_to_project, kivy_version, name_database)
+        install_requirements()
         os.remove(os.path.join(path_to_project, "__init__.py"))
     else:
         parser.error(f"The {path_to_project} project already exists")
@@ -944,18 +948,14 @@ def create_requirements() -> None:
         )
 
 
-def create_virtual_environment(
-    python_version: str, path_to_project: str
-) -> None:
+def create_virtual_environment() -> None:
     os.system(f"{python_version} -m pip install virtualenv")
     os.system(
         f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}"
     )
 
 
-def install_requirements(
-    path_to_project: str, kivy_version: str, name_database: str
-) -> None:
+def install_requirements() -> None:
     python = os.path.join(path_to_project, "venv", "bin", "python3")
     if kivy_version == "master":
         if platform == "macosx":

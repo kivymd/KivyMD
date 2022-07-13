@@ -99,12 +99,6 @@ the database restdb.io.
     `database_url` and `api_key` parameters on the test database (works only in read mode),
     so you should use your data for the database.
 
-Preview of the basic MVC template using the RestDB database
------------------------------------------------------------
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mvc-restbd-preview.png
-    :align: center
-
 Create project with hot reload
 ------------------------------
 
@@ -161,6 +155,20 @@ Optional arguments
 - name_screen
     - the name of the class which be used when creating the project pattern
 
+When you need to create an application template with multiple screens,
+use multiple values separated by a space for the `name_screen` parameter,
+for example, as shown below:
+
+Template command::
+
+    python -m kivymd.tools.patterns.create_project \\
+        name_pattern \\
+        path_to_project \\
+        name_project \\
+        python_version \\
+        kivy_version \\
+        --name_screen FirstScreen SecondScreen ThirdScreen
+
 - name_database
     - provides a basic template for working with the 'firebase' library
     - or a complete implementation for working with a database 'restdb.io'
@@ -186,7 +194,42 @@ from kivy import Logger, platform
 from kivymd import path as kivymd_path
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
 
-_database_model = '''import multitasking
+temp_basemodel = '''# The model implements the observer pattern. This means that the class must
+# support adding, removing, and alerting observers. In this case, the model is
+# completely independent of controllers and views. It is important that all
+# registered observers implement a specific method that will be called by the
+# model when they are notified (in this case, it is the `model_is_changed`
+# method). For this, observers must be descendants of an abstract class,
+# inheriting which, the `model_is_changed` method must be overridden.
+
+
+class BaseScreenModel:
+    """Implements a base class for model modules."""
+
+    _observers = []
+
+    def add_observer(self, observer) -> None:
+        self._observers.append(observer)
+
+    def remove_observer(self, observer) -> None:
+        self._observers.remove(observer)
+
+    def notify_observers(self, name_screen: str) -> None:
+        """
+        Method that will be called by the observer when the model data changes.
+
+        :param name_screen:
+            name of the view for which the method should be called
+            :meth:`model_is_changed`.
+        """
+
+        for observer in self._observers:
+            if observer.name == name_screen:
+                observer.model_is_changed()
+                break
+'''
+
+temp_database_model = '''import multitasking
 
 from Model.base_model import BaseScreenModel
 
@@ -200,20 +243,16 @@ class {name_screen}Model(BaseScreenModel):
     """
 
     def __init__(self, database):
-        self.database = database
-        # Dict:
-        #     'login': 'KivyMD'
-        #     'password': '1111'
-        self.user_data = dict()
-        self._data_validation_status = None
+        # Just an example of the data. Use your own values.
+        self._data = None
 
     @property
-    def data_validation_status(self):
-        return self._data_validation_status
+    def data(self):
+        return self._data
 
-    @data_validation_status.setter
-    def data_validation_status(self, value):
-        self._data_validation_status = value
+    @data.setter
+    def data(self, value):
+        self._data = value
         # We notify the View -
         # :class:`~View.{name_screen}.{module_name}.{name_screen}View` about the
         # changes that have occurred in the data model.
@@ -221,37 +260,12 @@ class {name_screen}Model(BaseScreenModel):
 
     @multitasking.task
     def check_data(self):
-        """
-        Get data from the database and compares this data with the data entered
-        by the user. This method is completely asynchronous.
-        It does not return any value.
-        """
+        """Just an example of the method. Use your own code."""
 
-        data = self.database.get_data_from_collection(self.database.USER_DATA)
-        data_validation_status = False
-
-        if data:
-            if self.database.name == "RestDB":
-                data = data[0]
-            else:
-                data = list(data.values())[0]
-            if (
-                data["login"] == self.user_data["login"]
-                and data["password"] == self.user_data["password"]
-            ):
-                data_validation_status = True
-        self.data_validation_status = data_validation_status
-
-    def set_user_data(self, key: str, value: str) -> None:
-        """Sets a dictionary of data that the user enters."""
-
-        self.user_data[key] = value
-
-    def reset_data_validation_status(self) -> None:
-        self.data_validation_status = None
+        self.data = ["example item"]
 '''
 
-_without_database_model = '''from Model.base_model import BaseScreenModel
+temp_without_database_model = '''from Model.base_model import BaseScreenModel
 
 
 class {name_screen}Model(BaseScreenModel):
@@ -260,41 +274,25 @@ class {name_screen}Model(BaseScreenModel):
     :class:`~View.{module_name}.{name_screen}.{name_screen}View` class.
     """'''
 
-_database_controller = '''
-{import_module}
+temp_screens_imports = """# The screens dictionary contains the objects of the models and controllers
+# of the screens of the application.
 
 
-class {name_screen}Controller:
-    """
-    The `{name_screen}Controller` class represents a controller implementation.
-    Coordinates work of the view with the model.
-    The controller implements the strategy pattern. The controller connects to
-    the view to control its actions.
-    """
+"""
 
-    def __init__(self, model):
-        self.model = model  # Model.{module_name}.{name_screen}Model object
-        self.view = {name_view}(
-            controller=self, model=self.model
-        )
+temp_code_view = '''from View.base_screen import BaseScreenView
 
-    def set_user_data(self, key: str, value: str) -> None:
-        """Called every time the user enters text into the text fields."""
 
-        self.model.set_user_data(key, value)
-
-    def on_tap_button_login(self) -> None:
-        """Called when the `LOGIN` button is pressed."""
-
-        self.view.show_dialog_wait()
-        self.model.check_data()
-
-    def reset_data_validation_status(self, *args) -> None:
-        self.model.reset_data_validation_status()
+class {name_screen}View(BaseScreenView):
+    def model_is_changed(self) -> None:
+        """
+        Called whenever any change has occurred in the data model.
+        The view in this method tracks these changes and updates the UI
+        according to these changes.
+        """
 '''
 
-_without_database_controller = '''
-{import_module}
+temp_code_controller = '''{import_module}
 
 
 class {name_screen}Controller:
@@ -309,71 +307,78 @@ class {name_screen}Controller:
         self.model = model  # Model.{module_name}.{name_screen}Model
         self.view = {name_view}(controller=self, model=self.model)
 
-    def on_tap_button_login(self) -> None:
-        """Called when the `LOGIN` button is pressed."""
-
-    def set_user_data(self, key, value) -> None:
-        """Called every time the user enters text into the text fields."""
+    def get_view(self) -> {get_view}:
+        return self.view
 '''
 
-_database_view_import = """from typing import Union
+temp_base_screen = '''from kivy.properties import ObjectProperty
 
-from kivy.clock import Clock
+from kivymd.app import MDApp
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.screen import MDScreen
 
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.snackbar import Snackbar
-"""
+from Utility.observer import Observer
 
-_without_database_view_import = """
-"""
 
-_database_view_methods = '''    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.dialog = MDDialog()
-        self.dialog.bind(on_dismiss=self.controller.reset_data_validation_status)
+class BaseScreenView(ThemableBehavior, MDScreen, Observer):
+    """
+    A base class that implements a visual representation of the model data.
+    The view class must be inherited from this class.
+    """
 
-    def show_dialog_wait(self) -> None:
-        """Displays a wait dialog while the model is processing data."""
+    controller = ObjectProperty()
+    """
+    Controller object - :class:`~Controller.controller_screen.ClassScreenControler`.
 
-        self.dialog.auto_dismiss = False
-        self.dialog.text = "Data validation..."
-        self.dialog.open()
+    :attr:`controller` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
 
-    def show_toast(self, interval: Union[int, float]) -> None:
-        Snackbar(
-            text="You have passed the verification successfully!",
-            snackbar_x="10dp",
-            snackbar_y="10dp",
-            size_hint_x=.8,
-            bg_color=self.theme_cls.primary_color,
-        ).open()
+    model = ObjectProperty()
+    """
+    Model object - :class:`~Model.model_screen.ClassScreenModel`.
+
+    :attr:`model` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    manager_screens = ObjectProperty()
+    """
+    Screen manager object - :class:`~kivymd.uix.screenmanager.MDScreenManager`.
+
+    :attr:`manager_screens` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        # Often you need to get access to the application object from the view
+        # class. You can do this using this attribute.
+        self.app = MDApp.get_running_app()
+        # Adding a view class as observer.
+        self.model.add_observer(self)
 '''
 
-_database_view_model_is_changed_method = """if self.model.data_validation_status:
-            self.dialog.dismiss()
-            Clock.schedule_once(self.show_toast, 1)
-        if self.model.data_validation_status is False:
-            self.dialog.text = "Wrong data!"
-            self.dialog.auto_dismiss = True
-"""
+temp_utility = '''
+# Of course, "very flexible Python" allows you to do without an abstract
+# superclass at all or use the clever exception `NotImplementedError`. In my
+# opinion, this can negatively affect the architecture of the application.
+# I would like to point out that using Kivy, one could use the on-signaling
+# model. In this case, when the state changes, the model will send a signal
+# that can be received by all attached observers. This approach seems less
+# universal - you may want to use a different library in the future.
 
-_firebase_requirements = """kivy==2.1.0
-kivymd==1.0.0
-multitasking
-firebase
-firebase-admin
-python_jwt
-gcloud
-sseclient
-pycryptodome==3.4.3
-requests_toolbelt
-"""
 
-_without_firebase_requirements = """kivy==2.1.0
-kivymd==1.0.0
-"""
+class Observer:
+    """Abstract superclass for all observers."""
 
-_hot_reload_main = '''
+    def model_is_changed(self):
+        """
+        The method that will be called on the observer when the model changes.
+        """
+'''
+
+temp_hot_reload_main = '''
 """
 Script for managing hot reloading of the project.
 For more details see the documentation page -
@@ -388,7 +393,6 @@ import importlib
 import os
 
 from kivy import Config
-from kivy.uix.screenmanager import ScreenManager
 
 from PIL import ImageGrab
 
@@ -399,26 +403,20 @@ resolution = ImageGrab.grab().size
 Config.set("graphics", "height", resolution[1])
 Config.set("graphics", "width", "400")
 
-from kivy.core.window import Window%s
+from kivy.core.window import Window{}
 
 # Place the application window on the right side of the computer screen.
 Window.top = 0
 Window.left = resolution[0] - Window.width
 
 from kivymd.tools.hotreload.app import MDApp
-%s%s
+from kivymd.uix.screenmanager import MDScreenManager
+{}{}
 
-class %s(MDApp):
-    KV_FILES = {
-        os.path.join(
-            os.getcwd(),
-            "View",
-            "%s",
-            "%s.kv",
-        ),
-    }%s
+class {}(MDApp):
+    KV_FILES = [os.path.join(os.getcwd(), "View")]{}
 
-    def build_app(self) -> ScreenManager:
+    def build_app(self) -> MDScreenManager:
         """
         In this method, you don't need to change anything other than the
         application theme.
@@ -426,14 +424,13 @@ class %s(MDApp):
 
         import View.screens
 
-        self.theme_cls.primary_palette = "Orange"
-        self.manager_screens = ScreenManager()%s%s
+        self.manager_screens = MDScreenManager(){}{}
         Window.bind(on_key_down=self.on_keyboard_down)
         importlib.reload(View.screens)
         screens = View.screens.screens
 
         for i, name_screen in enumerate(screens.keys()):
-            model = screens[name_screen]["model"](%s)
+            model = screens[name_screen]["model"]({})
             controller = screens[name_screen]["controller"](model)
             view = controller.get_view()
             view.manager_screens = self.manager_screens
@@ -451,20 +448,132 @@ class %s(MDApp):
         """
 
         if "meta" in modifiers or "ctrl" in modifiers and text == "r":
-            self.rebuild()%s%s
+            self.rebuild(){}{}
 
 
-%s().run()
+{}().run()
 
 # After you finish the project, remove the above code and uncomment the below
 # code to test the application normally without hot reloading.
 '''
 
+temp_main = '''"""
+The entry point to the application.
+
+The application uses the MVC template. Adhering to the principles of clean
+architecture means ensuring that your application is easy to test, maintain,
+and modernize.
+
+You can read more about this template at the links below:
+
+https://github.com/HeaTTheatR/LoginAppMVC
+https://en.wikipedia.org/wiki/Model–view–controller
+"""
+{}
+from kivymd.app import MDApp
+from kivymd.uix.screenmanager import MDScreenManager
+
+from View.screens import screens{}
+{}
+
+class {}(MDApp):{}
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs){}
+        self.load_all_kv_files(self.directory)
+        # This is the screen manager that will contain all the screens of your
+        # application.
+        self.manager_screens = MDScreenManager()
+        {}
+    def build(self) -> MDScreenManager:
+        self.generate_application_screens()
+        return self.manager_screens
+
+    def generate_application_screens(self) -> None:
+        """
+        Creating and adding screens to the screen manager.
+        You should not change this cycle unnecessarily. He is self-sufficient.
+
+        If you need to add any screen, open the `View.screens.py` module and
+        see how new screens are added according to the given application
+        architecture.
+        """
+
+        for i, name_screen in enumerate(screens.keys()):
+            model = screens[name_screen]["model"]({})
+            controller = screens[name_screen]["controller"](model)
+            view = controller.get_view()
+            view.manager_screens = self.manager_screens
+            view.name = name_screen
+            self.manager_screens.add_widget(view)
+{}{}
+
+{}().run()
+'''
+
+temp_makefile = """# FILE TO FIND AND CREATE LOCALIZATION FILES FOR YOUR APPLICATION. \\
+\\
+In this file, you can specify in which files of your project to search for \\
+localization strings. \\
+These files should be listed in the below command: \\
+\\
+\\
+xgettext -Lpython --output=messages.pot --from-code=utf-8 \\
+    path/to/file-1 \\
+    path/to/file-2 \\
+    ...
+
+.PHONY: po mo
+
+po:
+	xgettext -Lpython --output=messages.pot --from-code=utf-8 \\
+{}
+	msgmerge --update --no-fuzzy-matching --backup=off data/locales/po/en.po messages.pot
+	msgmerge --update --no-fuzzy-matching --backup=off data/locales/po/ru.po messages.pot
+
+mo:
+	mkdir -p data/locales/en/LC_MESSAGES
+	mkdir -p data/locales/ru/LC_MESSAGES
+	msgfmt -c -o data/locales/en/LC_MESSAGES/%s.mo data/locales/po/en.po
+	msgfmt -c -o data/locales/ru/LC_MESSAGES/%s.mo data/locales/po/ru.po
+"""
+
+firebase_requirements = """kivy==2.1.0
+kivymd==1.0.0
+multitasking
+firebase
+firebase-admin
+python_jwt
+gcloud
+sseclient
+pycryptodome==3.4.3
+requests_toolbelt
+"""
+
+without_firebase_requirements = """kivy==2.1.0
+kivymd==1.0.0
+"""
+
 available_patterns = ["MVC"]
 available_databases = ["firebase", "restdb"]
 
+path_to_project = ""
+project_name = ""
+use_localization = ""
+name_database = ""
+use_hotreload = ""
+temp_makefile_files = ""
+temp_screens_data = ""
+
 
 def main():
+    global project_name
+    global use_localization
+    global name_database
+    global use_hotreload
+    global temp_makefile_files
+    global temp_screens_data
+    global path_to_project
+
     parser = create_argument_parser()
     args = parser.parse_args()
 
@@ -475,7 +584,7 @@ def main():
     python_version = args.python_version
     if "3" not in python_version:
         parser.error("Python must be at least version 3")
-    name_screen = "".join(args.name_screen.split(" "))
+    name_screen = args.name_screen
     path_to_project = os.path.join(project_directory, project_name)
     name_database = args.name_database
     if name_database != "no" and name_database not in available_databases:
@@ -486,18 +595,13 @@ def main():
     use_localization = args.use_localization
 
     # Check arguments.
-    if name_screen[-6:] != "Screen":
-        parser.error(
-            "Name of the screen must contain the word 'Screen' at the end. "
-            "\nFor example - '... --name_screen MyFirstScreen'"
-        )
-    module_name = chek_camel_case_name_project(name_screen)
-    if not module_name:
-        parser.error(
-            "The name of the screen should be written in camel case style. "
-            "\nFor example - 'MyFirstScreen'"
-        )
-    module_name = "_".join([name.lower() for name in module_name])
+    for name in name_screen:
+        if name[-6:] != "Screen":
+            parser.error(
+                f"The name of the {name} screen should contain the word "
+                f"'Screen' at the end.\n"
+                "For example - '--name_screen MyFirstScreen ...'"
+            )
     if not os.path.exists(
         os.path.join(kivymd_path, "tools", "patterns", pattern_name)
     ):
@@ -512,42 +616,51 @@ def main():
             os.path.join(kivymd_path, "tools", "patterns", pattern_name),
             path_to_project,
         )
-        create_main(
-            name_database, use_localization, path_to_project, project_name
-        )
-        create_model(name_database, name_screen, module_name, path_to_project)
-        create_controller(
-            name_database,
-            use_hotreload,
-            name_screen,
-            module_name,
-            path_to_project,
-        )
-        create_view(
-            name_database,
-            use_localization,
-            name_screen,
-            module_name,
-            path_to_project,
-        )
-        create_requirements(name_database, path_to_project)
+        create_main()
+
+        for name in name_screen:
+            module_name = chek_camel_case_name_project(name)
+            if not module_name:
+                parser.error(
+                    "The name of the screen should be written in camel case style. "
+                    "\nFor example - 'MyFirstScreen'"
+                )
+            module_name = "_".join([name.lower() for name in module_name])
+
+            # Create models module.
+            create_model(name, module_name)
+            # Create controllers module.
+            create_controller(name, module_name)
+            # Create screens data.
+            create_screens_data(name, module_name)
+            if use_localization == "yes":
+                # Create makefile data.
+                create_makefile_data(name, module_name)
+            # Create views.
+            create_view(name, module_name)
+
+        # Create module `NameProject/View/screens.py`.
+        create_module_screens()
+        # Create module `NameProject/Model/base_model.py`.
+        create_basemodel()
+        # Create module `NameProject/View/base_screen.py`.
+        create_module_basescreen()
+        # Create package `NameProject/Utility`.
+        create_package_utility()
+        # Create file `NameProject/Makefile`.
+        if use_localization == "yes":
+            # Create makefile data.
+            create_makefile()
+
+        create_requirements()
         os.makedirs(os.path.join(path_to_project, "assets", "images"))
         os.mkdir(os.path.join(path_to_project, "assets", "fonts"))
-        rename_ext_py_tmp_to_py(path_to_project)
-        move_init(path_to_project, name_screen)
 
         if name_database != "no":
-            check_databases(name_database, path_to_project)
+            check_databases()
 
         if use_hotreload == "yes":
-            create_main_with_hotreload(
-                path_to_project,
-                project_name,
-                name_screen,
-                module_name,
-                name_database,
-                use_localization,
-            )
+            create_main_with_hotreload()
             with open(
                 os.path.join(path_to_project, "requirements.txt"),
                 "a",
@@ -557,15 +670,14 @@ def main():
 
         if use_localization == "yes":
             Logger.info("KivyMD: Create localization files...")
-            create_makefile(
-                path_to_project, project_name, module_name, name_screen
-            )
-            localization_po_file(path_to_project)
-            create_mofile(path_to_project)
+            os.chdir(path_to_project)
+            os.system("make po")
+            os.system("make mo")
         else:
             os.remove(os.path.join(path_to_project, "messages.pot"))
             os.remove(os.path.join(path_to_project, "libs", "translation.py"))
             shutil.rmtree(os.path.join(path_to_project, "data"))
+
         Logger.info(f"KivyMD: Project '{path_to_project}' created")
         Logger.info(
             f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
@@ -575,18 +687,12 @@ def main():
             f"KivyMD: Install requirements for '{path_to_project}' project..."
         )
         install_requirements(path_to_project, kivy_version, name_database)
+        os.remove(os.path.join(path_to_project, "__init__.py"))
     else:
         parser.error(f"The {path_to_project} project already exists")
 
 
-def create_main_with_hotreload(
-    path_to_project: str,
-    project_name: str,
-    name_screen: str,
-    module_name: str,
-    name_database: str,
-    use_localization: str,
-) -> None:
+def create_main_with_hotreload() -> None:
     with open(
         os.path.join(path_to_project, "main.py"), encoding="utf-8"
     ) as main_file:
@@ -596,12 +702,14 @@ def create_main_with_hotreload(
     with open(
         os.path.join(path_to_project, "main.py"), "w", encoding="utf-8"
     ) as main_file:
-        main_file.write(f"{_hot_reload_main}\n{main_code}")
+        main_file.write(f"{temp_hot_reload_main}\n{main_code}")
 
-    replace_in_file(
-        os.path.join(path_to_project, "main.py"),
-        (
-            "\nfrom kivy.properties import StringProperty"
+    with open(
+        os.path.join(path_to_project, "main.py"), encoding="utf-8"
+    ) as main_file:
+        main_code = main_file.read()
+        main_code = main_code.format(
+            "\nfrom kivy.properties import StringProperty\n"
             if use_localization == "yes"
             else "",
             "\nfrom Model.database import DataBase"
@@ -611,8 +719,6 @@ def create_main_with_hotreload(
             if use_localization == "yes"
             else "",
             project_name,
-            name_screen,
-            module_name,
             '\n    lang = StringProperty("en")\n'
             if use_localization == "yes"
             else "",
@@ -620,7 +726,7 @@ def create_main_with_hotreload(
             if name_database != "no"
             else "",
             "\n        self.translation = Translation(\n"
-            '            self.lang, "%s", f"{self.directory}/data/locales"'
+            '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
             "\n        )" % project_name
             if use_localization == "yes"
             else "",
@@ -635,101 +741,94 @@ def create_main_with_hotreload(
             if use_localization == "yes"
             else "",
             project_name,
-        ),
+        )
+        with open(
+            os.path.join(path_to_project, "main.py"), "w", encoding="utf-8"
+        ) as main_module:
+            main_module.write(main_code)
+
+
+def create_main() -> None:
+    main_code = temp_main.format(
+        "\nfrom kivy.properties import StringProperty\n"
+        if use_localization == "yes"
+        else "",
+        "\nfrom libs.translation import Translation"
+        if use_localization == "yes"
+        else "",
+        "from Model.database import DataBase\n"
+        if name_database != "no"
+        else "",
+        project_name,
+        '\n    lang = StringProperty("en")\n'
+        if use_localization == "yes"
+        else "",
+        "\n        self.translation = Translation(\n"
+        '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
+        "\n        )" % project_name
+        if use_localization == "yes"
+        else "",
+        "self.database = DataBase()\n" if name_database != "no" else "",
+        "self.database" if name_database != "no" else "",
+        "\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
+        "        self.translation.switch_lang(lang_value)\n"
+        if use_localization == "yes"
+        else "",
+        "\n    def switch_lang(self) -> None:\n"
+        '        """Switch lang."""\n\n'
+        '        self.lang = "ru" if self.lang == "en" else "en"\n'
+        if use_localization == "yes"
+        else "",
+        project_name,
     )
+    with open(
+        os.path.join(path_to_project, "main.py"), "w", encoding="utf-8"
+    ) as main_module:
+        main_module.write(main_code)
 
 
-def create_main(
-    name_database: str,
-    use_localization: str,
-    path_to_project: str,
-    project_name: str,
-) -> None:
-    replace_in_file(
-        os.path.join(path_to_project, "main.py_tmp"),
-        (
-            "\nfrom kivy.properties import StringProperty"
-            if use_localization == "yes"
-            else "",
-            "\nfrom libs.translation import Translation"
-            if use_localization == "yes"
-            else "",
-            "from Model.database import DataBase\n"
-            if name_database != "no"
-            else "",
-            project_name,
-            '\n    lang = StringProperty("en")\n'
-            if use_localization == "yes"
-            else "",
-            "\n        self.translation = Translation(\n"
-            '            self.lang, "%s", f"{self.directory}/data/locales"'
-            "\n        )" % project_name
-            if use_localization == "yes"
-            else "",
-            "self.database = DataBase()\n" if name_database != "no" else "",
-            "self.database" if name_database != "no" else "",
-            "\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
-            "        self.translation.switch_lang(lang_value)\n"
-            if use_localization == "yes"
-            else "",
-            "\n    def switch_lang(self) -> None:\n"
-            '        """Switch lang."""\n\n'
-            '        self.lang = "ru" if self.lang == "en" else "en"\n'
-            if use_localization == "yes"
-            else "",
-            project_name,
-        ),
-    )
-
-
-def create_model(
-    name_database: str, name_screen: str, module_name: str, path_to_project: str
-) -> None:
+def create_model(name_screen: str, module_name: str) -> None:
     if name_database != "no":
-        database_model = _database_model.format(
+        code_model = temp_database_model.format(
             name_screen=name_screen,
             module_name=module_name,
             notify_name_screen=f'"{" ".join(module_name.split("_"))}"',
         )
-        replace_in_file(
-            os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
-            (database_model),
-        )
     else:
-        without_database_model = _without_database_model.format(
+        code_model = temp_without_database_model.format(
             module_name=module_name, name_screen=name_screen
         )
-        replace_in_file(
-            os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
-            (without_database_model),
-        )
-        os.remove(
-            os.path.join(path_to_project, "Model", "database_firebase.py")
-        )
-        os.remove(os.path.join(path_to_project, "Model", "database_restdb.py"))
-    os.rename(
-        os.path.join(path_to_project, "Model", "first_screen.py_tmp"),
-        os.path.join(path_to_project, "Model", f"{module_name}.py_tmp"),
-    )
+
+    model_module = os.path.join(path_to_project, "Model", module_name)
+    with open(f"{model_module}.py", "w", encoding="utf-8") as module:
+        module.write(code_model)
 
 
-def create_controller(
-    name_database: str,
-    use_hotreload: str,
-    name_screen: str,
-    module_name: str,
-    path_to_project: str,
-) -> None:
-    if name_database != "no":
-        database_controller = _database_controller
-    else:
-        database_controller = _without_database_controller
+def create_basemodel() -> None:
+    with open(
+        os.path.join(path_to_project, "Model", "base_model.py"),
+        "w",
+        encoding="utf-8",
+    ) as module_basemodel:
+        module_basemodel.write(temp_basemodel)
+
+
+def create_module_basescreen() -> None:
+    with open(
+        os.path.join(path_to_project, "View", "base_screen.py"),
+        "w",
+        encoding="utf-8",
+    ) as base_screen:
+        base_screen.write(temp_base_screen)
+
+
+def create_controller(name_screen: str, module_name: str) -> None:
     name_view = (
         f"View.{name_screen}.{module_name}.{name_screen}View"
         if use_hotreload == "yes"
         else f"{name_screen}View"
     )
-    database_controller = database_controller.format(
+    code_controller = temp_code_controller.format(
         name_screen=name_screen,
         module_name=module_name,
         import_module=""
@@ -738,144 +837,111 @@ def create_controller(
         f"# We have to manually reload the view module in order to apply the\n"
         f"# changes made to the code on a subsequent hot reload.\n"
         f"# If you no longer need a hot reload, you can delete this instruction.\n"
-        f"importlib.reload(View.{name_screen}.{module_name})"
+        f"importlib.reload(View.{name_screen}.{module_name})\n\n"
         if use_hotreload == "yes"
         else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",
         name_view=name_view,
+        get_view=f"View.{name_screen}.{module_name}"
+        if use_hotreload == "yes"
+        else f"{name_screen}View",
     )
-    replace_in_file(
-        os.path.join(path_to_project, "Controller", "first_screen.py_tmp"),
-        (database_controller, name_view),
+
+    path_to_controller = os.path.join(path_to_project, "Controller")
+    if not os.path.exists(path_to_controller):
+        os.mkdir(path_to_controller)
+    controller_module = os.path.join(path_to_project, "Controller", module_name)
+    with open(f"{controller_module}.py", "w", encoding="utf-8") as module:
+        module.write(code_controller)
+
+
+def create_makefile() -> None:
+    makefile = temp_makefile.format(temp_makefile_files[:-2])
+    with open(
+        os.path.join(path_to_project, "Makefile"), "w", encoding="utf-8"
+    ) as make_file:
+        make_file.write(makefile)
+
+
+def create_makefile_data(name_screen: str, module_name: str) -> None:
+    global temp_makefile_files
+
+    temp_makefile_files += (
+        f"                View/{name_screen}/{module_name}.py \\\n"
     )
-    os.rename(
-        os.path.join(path_to_project, "Controller", "first_screen.py_tmp"),
-        os.path.join(path_to_project, "Controller", f"{module_name}.py_tmp"),
+    temp_makefile_files += (
+        f"                View/{name_screen}/{module_name}.kv \\\n"
     )
 
 
-def create_view(
-    name_database: str,
-    use_localization: str,
-    name_screen: str,
-    module_name: str,
-    path_to_project: str,
-) -> None:
-    replace_in_file(
-        os.path.join(path_to_project, "View", "screens.py_tmp"),
-        (
-            module_name,
-            f"{name_screen}Model",
-            module_name,
-            f"{name_screen}Controller",
+def create_screens_data(name_screen: str, module_name: str) -> None:
+    global temp_screens_imports
+    global temp_screens_data
+
+    temp_screens_imports += (
+        f"from Model.{module_name} import {name_screen}Model\n"
+        f"from Controller.{module_name} import {name_screen}Controller\n"
+    )
+    temp_screens_data += (
+        '\n    %s: {\n        "model": %s,'
+        '\n        "controller": %s,\n    },\n'
+        % (
             f'"{" ".join(module_name.split("_"))}"',
             f"{name_screen}Model",
             f"{name_screen}Controller",
-        ),
-    )
-    replace_in_file(
-        os.path.join(path_to_project, "View", "FirstScreen", "first_screen.kv"),
-        (
-            f"{name_screen}View",
-            name_screen,
-            "app.switch_lang()" if use_localization == "yes" else "x",
-            'app.translation._("To log in, enter your personal data:")'
-            if use_localization == "yes"
-            else '"To log in, enter your personal data:"',
-            'app.translation._("Login")'
-            if use_localization == "yes"
-            else '"Login"',
-            'app.translation._("Password")'
-            if use_localization == "yes"
-            else '"Password"',
-            'app.translation._("LOGIN")'
-            if use_localization == "yes"
-            else '"LOGIN"',
-        ),
-    )
-    replace_in_file(
-        os.path.join(
-            path_to_project, "View", "FirstScreen", "first_screen.py_tmp"
-        ),
-        (
-            _database_view_import
-            if name_database != "no"
-            else _without_database_view_import,
-            f"{name_screen}View",
-            _database_view_methods if name_database != "no" else "",
-            _database_view_model_is_changed_method
-            if name_database != "no"
-            else "",
-        ),
-    )
-    replace_in_file(
-        os.path.join(path_to_project, "View", "base_screen.py_tmp"),
-        (
-            module_name,
-            f"{name_screen}Model",
-            module_name,
-            f"{name_screen}Controller",
-            module_name,
-            f"{name_screen}Model",
-        ),
-    )
-    os.rename(
-        os.path.join(path_to_project, "View", "base_screen.py_tmp"),
-        os.path.join(path_to_project, "View", "base_screen.py"),
-    )
-    os.rename(
-        os.path.join(path_to_project, "View", "FirstScreen", "first_screen.kv"),
-        os.path.join(
-            path_to_project, "View", "FirstScreen", f"{module_name}.kv"
-        ),
-    )
-    os.rename(
-        os.path.join(
-            path_to_project, "View", "FirstScreen", "first_screen.py_tmp"
-        ),
-        os.path.join(
-            path_to_project, "View", "FirstScreen", f"{module_name}.py_tmp"
-        ),
-    )
-    os.rename(
-        os.path.join(path_to_project, "View", "FirstScreen"),
-        os.path.join(path_to_project, "View", name_screen),
+        )
     )
 
 
-def create_requirements(name_database: str, path_to_project: str) -> None:
+def create_module_screens() -> None:
+    path_to_module_screens = os.path.join(path_to_project, "View", "screens.py")
+    with open(path_to_module_screens, "w", encoding="utf-8") as module_screens:
+        module_screens.write(
+            "%s\nscreens = {%s}" % (temp_screens_imports, temp_screens_data)
+        )
+
+
+def create_view(name_screen: str, module_name: str) -> None:
+    path_to_view = os.path.join(path_to_project, "View", name_screen)
+    path_to_components = os.path.join(path_to_view, "components")
+    view_module = os.path.join(path_to_view, module_name)
+    os.makedirs(path_to_view)
+    os.makedirs(path_to_components)
+
+    with open(
+        os.path.join(path_to_view, "__init__.py"), "w", encoding="utf-8"
+    ) as init_module:
+        init_module.write("")
+    with open(f"{view_module}.py", "w", encoding="utf-8") as view_file:
+        view_file.write(temp_code_view.format(name_screen=name_screen))
+    with open(f"{view_module}.kv", "w", encoding="utf-8") as view_file:
+        view_file.write(f"<{name_screen}View>\n")
+
+    shutil.copy(os.path.join(path_to_view, "__init__.py"), path_to_components)
+
+
+def create_package_utility() -> None:
+    path_to_utility = os.path.join(path_to_project, "Utility")
+    os.mkdir(path_to_utility)
+
+    with open(
+        os.path.join(path_to_utility, "__init__.py"), "w", encoding="utf-8"
+    ) as init_module:
+        init_module.write("")
+    with open(
+        os.path.join(path_to_utility, "observer.py"), "w", encoding="utf-8"
+    ) as observer:
+        observer.write(temp_utility)
+
+
+def create_requirements() -> None:
     with open(
         os.path.join(path_to_project, "requirements.txt"), "w", encoding="utf-8"
     ) as requirements:
         requirements.write(
-            _firebase_requirements
-            if name_database != "no"
-            else _without_firebase_requirements
+            firebase_requirements
+            if name_database == "firebase"
+            else without_firebase_requirements
         )
-
-
-def create_makefile(
-    path_to_project: str, project_name: str, module_name: str, name_screen: str
-) -> None:
-    path_to_makefile_tmp = os.path.join(path_to_project, "Makefile.tmp")
-    replace_in_file(
-        path_to_makefile_tmp,
-        (
-            name_screen,
-            module_name,
-            name_screen,
-            module_name,
-            project_name,
-            project_name,
-        ),
-    )
-    os.rename(path_to_makefile_tmp, os.path.splitext(path_to_makefile_tmp)[0])
-    os.chdir(path_to_project)
-    os.system("make po")
-
-
-def create_mofile(path_to_project: str) -> None:
-    os.chdir(path_to_project)
-    os.system("make mo")
 
 
 def create_virtual_environment(
@@ -885,32 +951,6 @@ def create_virtual_environment(
     os.system(
         f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}"
     )
-
-
-def localization_po_file(path_to_project: str) -> None:
-    path_to_file_po = os.path.join(
-        path_to_project, "data", "locales", "po", "ru.po"
-    )
-    with open(path_to_file_po, "rt", encoding="utf-8") as file_po:
-        file_po_content = (
-            file_po.read()
-            .replace(
-                'msgid "To log in, enter your personal data:"\nmsgstr ""',
-                'msgid "To log in, enter your personal data:"\nmsgstr "Для входа введите свои личные данные"',
-            )
-            .replace(
-                'msgid "Login"\nmsgstr ""', 'msgid "Login"\nmsgstr "Логин"'
-            )
-            .replace(
-                'msgid "Password"\nmsgstr ""',
-                'msgid "Password"\nmsgstr "Пароль"',
-            )
-            .replace(
-                'msgid "LOGIN"\nmsgstr ""', 'msgid "LOGIN"\nmsgstr "ЛОГИН"'
-            )
-        )
-    with open(path_to_file_po, "wt", encoding="utf-8") as file_po:
-        file_po.write(file_po_content)
 
 
 def install_requirements(
@@ -952,39 +992,7 @@ def install_requirements(
     )
 
 
-def rename_ext_py_tmp_to_py(path_to_project: str) -> None:
-    for path_to_dir, dirs, files in os.walk(path_to_project):
-        for name_file in files:
-            if os.path.splitext(name_file)[1] == ".py_tmp":
-                os.rename(
-                    os.path.join(path_to_dir, name_file),
-                    os.path.join(
-                        path_to_dir, f"{os.path.splitext(name_file)[0]}.py"
-                    ),
-                )
-
-
-def move_init(path_to_project: str, name_screen: str) -> None:
-    path_to_init_file = __file__.replace("create_project", "__init__")
-    for name_dir in ("Controller", "Model", "Utility", "View"):
-        shutil.copy(
-            path_to_init_file,
-            os.path.join(path_to_project, name_dir, "__init__.py"),
-        )
-    shutil.copy(
-        path_to_init_file,
-        os.path.join(path_to_project, "View", name_screen, "__init__.py"),
-    )
-    path_to_components = os.path.join(
-        path_to_project, "View", name_screen, "components"
-    )
-    os.mkdir(path_to_components)
-    shutil.copy(
-        path_to_init_file, os.path.join(path_to_components, "__init__.py")
-    )
-
-
-def check_databases(name_database: str, path_to_project: str) -> None:
+def check_databases() -> None:
     databases = {"firebase": "restdb", "restdb": "firebase"}
     os.remove(
         os.path.join(
@@ -1002,13 +1010,6 @@ def chek_camel_case_name_project(name_project) -> Union[bool, list]:
     if len(result) == 1:
         return False
     return result
-
-
-def replace_in_file(path_to_file: str, args) -> None:
-    with open(path_to_file, "rt", encoding="utf-8") as file_content:
-        new_file_content = file_content.read() % (args)
-        with open(path_to_file, "wt", encoding="utf-8") as original_file:
-            original_file.write(new_file_content)
 
 
 def create_argument_parser() -> ArgumentParserWithHelp:
@@ -1040,8 +1041,10 @@ def create_argument_parser() -> ArgumentParserWithHelp:
     )
     parser.add_argument(
         "--name_screen",
-        default="MainScreen",
-        help="the name of the class wich be used when creating the project pattern.",
+        nargs="*",
+        type=str,
+        default=["MainScreen"],
+        help="the name/names of the class which be used when creating the project pattern.",
     )
     parser.add_argument(
         "--name_database",

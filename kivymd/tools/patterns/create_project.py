@@ -921,7 +921,9 @@ def create_module_screens() -> None:
         )
 
 
-def create_view(name_screen: str, module_name: str, path_to_project: str) -> None:
+def create_view(
+    name_screen: str, module_name: str, path_to_project: str
+) -> None:
     path_to_view = os.path.join(path_to_project, "View", name_screen)
     path_to_components = os.path.join(path_to_view, "components")
     view_module = os.path.join(path_to_view, module_name)

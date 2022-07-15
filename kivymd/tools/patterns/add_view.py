@@ -40,9 +40,9 @@ from kivy import Logger
 
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
 from kivymd.tools.patterns.create_project import (
-    create_model,
     chek_camel_case_name_project,
     create_controller,
+    create_model,
     create_view,
 )
 
@@ -116,7 +116,9 @@ def main():
     create_view(name_view, module_name, path_to_project)
     # Create 'View.screens.py module'.
     create_screens_data(name_view, module_name, path_to_project)
-    Logger.info(f"KivyMD: The {name_view} view has been added to the project...")
+    Logger.info(
+        f"KivyMD: The {name_view} view has been added to the project..."
+    )
 
 
 def create_screens_data(
@@ -149,11 +151,15 @@ def create_screens_data(
                     )
 
         imports.append(f"from Model.{module_name} import {name_view}Model")
-        imports.append(f"from Controller.{module_name} import {name_view}Controller")
+        imports.append(
+            f"from Controller.{module_name} import {name_view}Controller"
+        )
         imports.insert(0, screns_comment)
         screens = screens_data % ("\n".join(imports), screens)
 
-        with open(os.path.join(path_to_project, "View", "screens.py"), "w") as screen_module:
+        with open(
+            os.path.join(path_to_project, "View", "screens.py"), "w"
+        ) as screen_module:
             screen_module.write(screens)
 
 

@@ -647,7 +647,7 @@ def main():
                 # Create makefile data.
                 create_makefile_data(name, module_name)
             # Create views.
-            create_view(name, module_name)
+            create_view(name, module_name, path_to_project)
 
         # Create module `NameProject/View/screens.py`.
         create_module_screens()

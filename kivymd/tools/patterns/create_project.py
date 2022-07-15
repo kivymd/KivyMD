@@ -184,6 +184,10 @@ Template command::
     please report it to the KivyMD community.
 """
 
+__all__ = [
+    "main",
+]
+
 import os
 import re
 import shutil
@@ -568,6 +572,8 @@ python_version = ""
 
 
 def main():
+    """Project creation function."""
+
     global project_name
     global use_localization
     global name_database
@@ -632,9 +638,9 @@ def main():
             module_name = "_".join([name.lower() for name in module_name])
 
             # Create models module.
-            create_model(name, module_name)
+            create_model(name, module_name, name_database, path_to_project)
             # Create controllers module.
-            create_controller(name, module_name)
+            create_controller(name, module_name, use_hotreload)
             # Create screens data.
             create_screens_data(name, module_name)
             if use_localization == "yes":
@@ -693,8 +699,12 @@ def main():
         install_requirements()
         os.remove(os.path.join(path_to_project, "__init__.py"))
         if name_database == "no":
-            os.remove(os.path.join(path_to_project, "Model", "database_firebase.py"))
-            os.remove(os.path.join(path_to_project, "Model", "database_restdb.py"))
+            os.remove(
+                os.path.join(path_to_project, "Model", "database_firebase.py")
+            )
+            os.remove(
+                os.path.join(path_to_project, "Model", "database_restdb.py")
+            )
     else:
         parser.error(f"The {path_to_project} project already exists")
 
@@ -794,7 +804,9 @@ def create_main() -> None:
         main_module.write(main_code)
 
 
-def create_model(name_screen: str, module_name: str) -> None:
+def create_model(
+    name_screen: str, module_name: str, name_database: str, path_to_project: str
+) -> None:
     if name_database != "no":
         code_model = temp_database_model.format(
             name_screen=name_screen,
@@ -829,7 +841,9 @@ def create_module_basescreen() -> None:
         base_screen.write(temp_base_screen)
 
 
-def create_controller(name_screen: str, module_name: str) -> None:
+def create_controller(
+    name_screen: str, module_name: str, use_hotreload: str, path_to_project: str
+) -> None:
     name_view = (
         f"View.{name_screen}.{module_name}.{name_screen}View"
         if use_hotreload == "yes"
@@ -907,7 +921,7 @@ def create_module_screens() -> None:
         )
 
 
-def create_view(name_screen: str, module_name: str) -> None:
+def create_view(name_screen: str, module_name: str, path_to_project: str) -> None:
     path_to_view = os.path.join(path_to_project, "View", name_screen)
     path_to_components = os.path.join(path_to_view, "components")
     view_module = os.path.join(path_to_view, module_name)

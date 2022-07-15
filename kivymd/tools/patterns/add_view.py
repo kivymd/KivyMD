@@ -16,10 +16,10 @@ template created using the create_project utility.
 To add a new view to an existing project that was created using the
 `create_project` utility, use the following command::
 
-python -m kivymd.tools.patterns.add_view \\
-    name_pattern \\
-    path_to_project \\
-    name_view
+    python -m kivymd.tools.patterns.add_view \\
+        name_pattern \\
+        path_to_project \\
+        name_view
 
 Example command::
 

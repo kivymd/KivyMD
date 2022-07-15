@@ -153,7 +153,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.modalview import ModalView
 
 from kivymd import images_path, uix_path
-from kivymd.theming import ThemableBehavior
+from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
@@ -334,17 +334,21 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             or self.selector == "multi"
             or self.selector == "folder"
         ):
-            self.add_widget(
-                FloatButton(
-                    callback=self.select_directory_on_press_button,
-                    md_bg_color=self.theme_cls.primary_color,
-                    icon=self.icon,
-                )
+            self.float_button = FloatButton(
+                callback=self.select_directory_on_press_button,
+                md_bg_color=self.theme_cls.primary_color,
+                icon=self.icon,
             )
+
+            self.add_widget(self.float_button)
+            self.theme_cls.bind(primary_color=self._change_bg_color)
 
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
         self.disks = []
+
+    def _change_bg_color(self, inst: ThemeManager, color: list):
+        self.float_button.md_bg_color = color
 
     def show_disks(self) -> None:
         if platform == "win":

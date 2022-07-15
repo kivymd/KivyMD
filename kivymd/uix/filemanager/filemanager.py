@@ -153,7 +153,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.modalview import ModalView
 
 from kivymd import images_path, uix_path
-from kivymd.theming import ThemableBehavior, ThemeManager
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import BaseListItem, ContainerSupport
@@ -182,10 +182,17 @@ class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
     """Folder icons/thumbnails images in ``preview`` mode."""
 
 
-class FloatButton(AnchorLayout):
+class FloatButton(ThemableBehavior, AnchorLayout):
     callback = ObjectProperty()
     md_bg_color = ColorProperty([1, 1, 1, 1])
     icon = StringProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_palette=self.set_md_bg_color)
+
+    def set_md_bg_color(self, *args):
+        self.md_bg_color = self.theme_cls.primary_color
 
 
 class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):
@@ -334,21 +341,17 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
             or self.selector == "multi"
             or self.selector == "folder"
         ):
-            self.float_button = FloatButton(
-                callback=self.select_directory_on_press_button,
-                md_bg_color=self.theme_cls.primary_color,
-                icon=self.icon,
+            self.add_widget(
+                FloatButton(
+                    callback=self.select_directory_on_press_button,
+                    md_bg_color=self.theme_cls.primary_color,
+                    icon=self.icon,
+                )
             )
-
-            self.add_widget(self.float_button)
-            self.theme_cls.bind(primary_color=self._change_bg_color)
 
         if self.preview:
             self.ext = [".png", ".jpg", ".jpeg"]
         self.disks = []
-
-    def _change_bg_color(self, inst: ThemeManager, color: list):
-        self.float_button.md_bg_color = color
 
     def show_disks(self) -> None:
         if platform == "win":

@@ -640,7 +640,7 @@ def main():
             # Create models module.
             create_model(name, module_name, name_database, path_to_project)
             # Create controllers module.
-            create_controller(name, module_name, use_hotreload)
+            create_controller(name, module_name, use_hotreload, path_to_project)
             # Create screens data.
             create_screens_data(name, module_name)
             if use_localization == "yes":

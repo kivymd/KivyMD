@@ -144,7 +144,7 @@ toolchain pip install --no-deps kivymd
 **NOTE**
 
 Until the release of the KivyMD library version 1.0.0 has been released, use
-```ini
+```bash
 toolchain pip install --no-deps https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 

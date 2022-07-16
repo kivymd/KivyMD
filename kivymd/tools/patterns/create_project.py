@@ -418,7 +418,7 @@ from kivymd.uix.screenmanager import MDScreenManager
 {}{}
 
 class {}(MDApp):
-    KV_FILES = [os.path.join(os.getcwd(), "View")]{}
+    KV_DIRS = [os.path.join(os.getcwd(), "View")]{}
 
     def build_app(self) -> MDScreenManager:
         """

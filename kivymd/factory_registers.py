@@ -5,6 +5,7 @@ Register KivyMD widgets to use without import.
 from kivy.factory import Factory
 
 register = Factory.register
+register("MDResponsiveLayout", module="kivymd.uix.responsivelayout")
 register("MDSegmentedControl", module="kivymd.uix.segmentedcontrol")
 register("MDSegmentedControlItem", module="kivymd.uix.segmentedcontrol")
 register("MDSliverAppbar", module="kivymd.uix.sliverappbar")

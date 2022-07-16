@@ -290,6 +290,9 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         """
 
         if self.tooltip_text:
+            if self._tooltip:
+                self.remove_tooltip()
+
             self._tooltip = MDTooltipViewClass(
                 tooltip_bg_color=self.tooltip_bg_color,
                 tooltip_text_color=self.tooltip_text_color,

@@ -114,6 +114,13 @@ Do not forget to run `buildozer android clean` or remove `.buildozer` directory
 before building if version was updated (Buildozer doesn't update already
 downloaded packages).
 
+### How to use with [kivy-ios](https://github.com/kivy/kivy-ios)
+
+```bash
+toolchain build python3 kivy pillow
+toolchain pip install --no-deps https://github.com/kivymd/KivyMD/archive/master.zip
+```
+
 #### On Linux
 
 - Use Buildozer [directly](https://github.com/kivy/buildozer#installing-buildozer-with-target-python-3-default) 

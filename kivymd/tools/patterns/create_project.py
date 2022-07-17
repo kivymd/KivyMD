@@ -127,8 +127,31 @@ information. Also, the necessary information is in other modules of the project
 in the form of comments. So do not forget to look at the source files of the
 created project.
 
+Create project with responsive view
+-----------------------------------
+
+When creating a project, you can specify which views should use responsive
+behavior. To do this, specify the name of the view/views in the
+`--use_responsive` argument:
+
+Template command::
+
+    python -m kivymd.tools.patterns.create_project \\
+        name_pattern \\
+        path_to_project \\
+        name_project \\
+        python_version \\
+        kivy_version \\
+        --name_screen FirstScreen SecondScreen ThirdScreen \\
+        --use_responsive FirstScreen SecondScreen
+
+The `FirstScreen` and `SecondScreen` views will be created with an responsive
+architecture. For more detailed information about using the adaptive view, see
+the `MDResponsiveLayout <https://kivymd.readthedocs.io/en/latest/components/responsivelayout/>`_
+widget.
+
 Others command line arguments
-======================
+=============================
 
 Required Arguments
 ------------------
@@ -282,6 +305,45 @@ temp_screens_imports = """# The screens dictionary contains the objects of the m
 # of the screens of the application.
 
 
+"""
+
+temp_code_responsive_view = '''
+from kivymd.uix.responsivelayout import MDResponsiveLayout
+
+from View.{name_screen}.components import (
+    MobileScreenView,
+    TabletScreenView,
+    DesktopScreenView,
+)
+from View.base_screen import BaseScreenView
+
+
+class {name_screen}View(MDResponsiveLayout, BaseScreenView):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.mobile_view = MobileScreenView()
+        self.tablet_view = TabletScreenView()
+        self.desktop_view = DesktopScreenView()
+
+    def model_is_changed(self) -> None:
+        """
+        Called whenever any change has occurred in the data model.
+        The view in this method tracks these changes and updates the UI
+        according to these changes.
+        """
+'''
+
+temp_responsive_component_imports = """from .platforms.MobileScreen.mobile_screen import MobileScreenView
+from .platforms.TabletScreen.tablet_screen import TabletScreenView
+from .platforms.DesktopScreen.desktop_screen import DesktopScreenView
+"""
+
+temp_responsive_platform_baseclass = """
+from kivymd.uix.screen import MDScreen
+
+
+class {}View(MDScreen):
+    pass
 """
 
 temp_code_view = '''from View.base_screen import BaseScreenView
@@ -603,6 +665,7 @@ def main():
         )
     use_hotreload = args.use_hotreload
     use_localization = args.use_localization
+    use_responsive = args.use_responsive
 
     # Check arguments.
     for name in name_screen:
@@ -647,7 +710,7 @@ def main():
                 # Create makefile data.
                 create_makefile_data(name, module_name)
             # Create views.
-            create_view(name, module_name, path_to_project)
+            create_view(name, module_name, use_responsive, path_to_project)
 
         # Create module `NameProject/View/screens.py`.
         create_module_screens()
@@ -922,7 +985,10 @@ def create_module_screens() -> None:
 
 
 def create_view(
-    name_screen: str, module_name: str, path_to_project: str
+    name_screen: str,
+    module_name: str,
+    use_responsive: list,
+    path_to_project: str,
 ) -> None:
     path_to_view = os.path.join(path_to_project, "View", name_screen)
     path_to_components = os.path.join(path_to_view, "components")
@@ -935,11 +1001,63 @@ def create_view(
     ) as init_module:
         init_module.write("")
     with open(f"{view_module}.py", "w", encoding="utf-8") as view_file:
-        view_file.write(temp_code_view.format(name_screen=name_screen))
+        view_file.write(
+            temp_code_view.format(name_screen=name_screen)
+            if name_screen not in use_responsive
+            else temp_code_responsive_view.format(name_screen=name_screen)
+        )
+
+    if name_screen in use_responsive:
+        for name_platform in ["DesktopScreen", "MobileScreen", "TabletScreen"]:
+            path_to_init_components = os.path.join(
+                path_to_project,
+                "View",
+                name_screen,
+                "components",
+                "__init__.py",
+            )
+            path_to_platforms = os.path.join(
+                path_to_project,
+                "View",
+                name_screen,
+                "components",
+                "platforms",
+            )
+            path_to_platform = os.path.join(path_to_platforms, name_platform)
+            path_to_platform_components = os.path.join(
+                path_to_platform, "components"
+            )
+            os.makedirs(path_to_platform_components)
+            shutil.copy(
+                os.path.join(path_to_view, "__init__.py"),
+                path_to_platform_components,
+            )
+            shutil.copy(
+                os.path.join(path_to_view, "__init__.py"), path_to_platforms
+            )
+
+            name_platform_module = (
+                f'{name_platform.split("Screen")[0].lower()}_screen'
+            )
+            with open(
+                os.path.join(path_to_platform, f"{name_platform_module}.kv"), "w", encoding="utf-8"
+            ) as platform_rule:
+                platform_rule.write(f"<{name_platform}View>\n")
+            with open(
+                os.path.join(path_to_platform, f"{name_platform_module}.py"), "w", encoding="utf-8"
+            ) as platform_baseclass:
+                platform_baseclass.write(
+                    temp_responsive_platform_baseclass.format(name_platform)
+                )
+
+        with open(path_to_init_components, "w", encoding="utf-8") as init_components:
+            init_components.write(temp_responsive_component_imports)
+
     with open(f"{view_module}.kv", "w", encoding="utf-8") as view_file:
         view_file.write(f"<{name_screen}View>\n")
 
-    shutil.copy(os.path.join(path_to_view, "__init__.py"), path_to_components)
+    if name_screen not in use_responsive:
+        shutil.copy(os.path.join(path_to_view, "__init__.py"), path_to_components)
 
 
 def create_package_utility() -> None:
@@ -1064,6 +1182,13 @@ def create_argument_parser() -> ArgumentParserWithHelp:
         type=str,
         default=["MainScreen"],
         help="the name/names of the class which be used when creating the project pattern.",
+    )
+    parser.add_argument(
+        "--use_responsive",
+        nargs="*",
+        type=str,
+        default=[],
+        help="the name/names of the views to be used by the responsive UI.",
     )
     parser.add_argument(
         "--name_database",

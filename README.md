@@ -134,6 +134,19 @@ downloaded packages).
   to build your packages automatically on push or pull request.
 - See [full workflow example](https://github.com/ArtemSBulgakov/buildozer-action#full-workflow).
 
+### How to use with [kivy-ios](https://github.com/kivy/kivy-ios)
+
+```bash
+toolchain build python3 kivy pillow
+toolchain pip install --no-deps kivymd
+```
+
+**NOTE**
+
+Until the release of the KivyMD library version 1.0.0 has been released, use
+```bash
+toolchain pip install --no-deps https://github.com/kivymd/KivyMD/archive/master.zip
+```
 
 ## Documentation
 

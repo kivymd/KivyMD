@@ -44,6 +44,8 @@ class WindowController:
         Window.bind(on_resize=self._on_resize)
 
     def on_size(self, instance, size: list) -> None:
+        """Called when the application screen size changes."""
+
         window_width = size[0]
 
         if window_width < dp(500):
@@ -54,7 +56,7 @@ class WindowController:
             self.real_device_type = "desktop"
 
     def get_real_device_type(self) -> str:
-        """Returns the device type."""
+        """Returns the device type - 'mobile', 'tablet' or 'desktop'."""
 
         return self.real_device_type
 

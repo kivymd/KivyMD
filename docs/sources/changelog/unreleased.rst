@@ -49,3 +49,5 @@ Unreleased
 * Add `on_release/on_press` events to `MDSmartTile <https://kivymd.readthedocs.io/en/latest/components/imagelist/#kivymd.uix.imagelist.imagelist.MDSmartTile>`_ class;
 * Add `mipmap` property to `FitImage <https://kivymd.readthedocs.io/en/latest/components/fitimage/>`_ class;
 * Added the feature to use `Hero <https://kivymd.readthedocs.io/en/latest/components/hero/>`_ animation;
+* Added `MDResponsiveLayout <https://kivymd.readthedocs.io/en/latest/components/responsivelayout/>`_ layout;
+* Added `add_view <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/add_view/>`_ utility;

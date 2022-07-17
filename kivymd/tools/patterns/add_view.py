@@ -27,6 +27,17 @@ Example command::
         MVC \\
         /Users/macbookair/Projects \\
         NewScreen
+
+You can also add new views with responsive behavior to an existing project::
+
+    python -m kivymd.tools.patterns.add_view \\
+        MVC \\
+        /Users/macbookair/Projects \\
+        NewScreen \\
+        --use_responsive yes
+
+For more information about adaptive design,
+`see here <https://kivymd.readthedocs.io/en/latest/components/responsivelayout/>`_.
 """
 
 __all__ = [
@@ -67,6 +78,7 @@ def main():
     pattern_name = args.pattern
     path_to_project = args.directory
     name_view = args.name
+    use_responsive = args.use_responsive
 
     if not os.path.exists(path_to_project):
         parser.error(f"Project <{path_to_project}> does not exist...")
@@ -113,7 +125,10 @@ def main():
             name_view, module_name, use_hotreload, path_to_project
         )
     # Create View.
-    create_view(name_view, module_name, path_to_project)
+    if use_responsive == "no":
+        create_view(name_view, module_name, [], path_to_project)
+    else:
+        create_view(name_view, module_name, [name_view], path_to_project)
     # Create 'View.screens.py module'.
     create_screens_data(name_view, module_name, path_to_project)
     Logger.info(
@@ -179,6 +194,11 @@ def create_argument_parser() -> ArgumentParserWithHelp:
     parser.add_argument(
         "name",
         help="the name of the view to add to an existing project.",
+    )
+    parser.add_argument(
+        "--use_responsive",
+        default="no",
+        help="whether to create a view with responsive behavior.",
     )
     return parser
 

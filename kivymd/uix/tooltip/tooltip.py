@@ -279,7 +279,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
     def on_long_touch(self, touch, *args) -> None:
         if DEVICE_TYPE != "desktop":
-            self.on_enter(True)
+            self.on_enter()
 
     def on_enter(self, *args) -> None:
         """
@@ -289,16 +289,18 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
         class.
         """
 
-        if not args and DEVICE_TYPE == "desktop":
-            if self.tooltip_text:
-                self._tooltip = MDTooltipViewClass(
-                    tooltip_bg_color=self.tooltip_bg_color,
-                    tooltip_text_color=self.tooltip_text_color,
-                    tooltip_text=self.tooltip_text,
-                    tooltip_font_style=self.tooltip_font_style,
-                    tooltip_radius=self.tooltip_radius,
-                )
-                Clock.schedule_once(self.display_tooltip, -1)
+        if self.tooltip_text:
+            if self._tooltip:
+                self.remove_tooltip()
+
+            self._tooltip = MDTooltipViewClass(
+                tooltip_bg_color=self.tooltip_bg_color,
+                tooltip_text_color=self.tooltip_text_color,
+                tooltip_text=self.tooltip_text,
+                tooltip_font_style=self.tooltip_font_style,
+                tooltip_radius=self.tooltip_radius,
+            )
+            Clock.schedule_once(self.display_tooltip, -1)
 
     def on_leave(self) -> None:
         """

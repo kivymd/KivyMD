@@ -1040,24 +1040,32 @@ def create_view(
                 f'{name_platform.split("Screen")[0].lower()}_screen'
             )
             with open(
-                os.path.join(path_to_platform, f"{name_platform_module}.kv"), "w", encoding="utf-8"
+                os.path.join(path_to_platform, f"{name_platform_module}.kv"),
+                "w",
+                encoding="utf-8",
             ) as platform_rule:
                 platform_rule.write(f"<{name_platform}View>\n")
             with open(
-                os.path.join(path_to_platform, f"{name_platform_module}.py"), "w", encoding="utf-8"
+                os.path.join(path_to_platform, f"{name_platform_module}.py"),
+                "w",
+                encoding="utf-8",
             ) as platform_baseclass:
                 platform_baseclass.write(
                     temp_responsive_platform_baseclass.format(name_platform)
                 )
 
-        with open(path_to_init_components, "w", encoding="utf-8") as init_components:
+        with open(
+            path_to_init_components, "w", encoding="utf-8"
+        ) as init_components:
             init_components.write(temp_responsive_component_imports)
 
     with open(f"{view_module}.kv", "w", encoding="utf-8") as view_file:
         view_file.write(f"<{name_screen}View>\n")
 
     if name_screen not in use_responsive:
-        shutil.copy(os.path.join(path_to_view, "__init__.py"), path_to_components)
+        shutil.copy(
+            os.path.join(path_to_view, "__init__.py"), path_to_components
+        )
 
 
 def create_package_utility() -> None:

@@ -182,10 +182,17 @@ class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
     """Folder icons/thumbnails images in ``preview`` mode."""
 
 
-class FloatButton(AnchorLayout):
+class FloatButton(ThemableBehavior, AnchorLayout):
     callback = ObjectProperty()
     md_bg_color = ColorProperty([1, 1, 1, 1])
     icon = StringProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_palette=self.set_md_bg_color)
+
+    def set_md_bg_color(self, *args):
+        self.md_bg_color = self.theme_cls.primary_color
 
 
 class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):

@@ -307,8 +307,7 @@ temp_screens_imports = """# The screens dictionary contains the objects of the m
 
 """
 
-temp_code_responsive_view = '''
-from kivymd.uix.responsivelayout import MDResponsiveLayout
+temp_code_responsive_view = '''from kivymd.uix.responsivelayout import MDResponsiveLayout
 
 from View.{name_screen}.components import (
     MobileScreenView,
@@ -338,8 +337,7 @@ from .platforms.TabletScreen.tablet_screen import TabletScreenView
 from .platforms.DesktopScreen.desktop_screen import DesktopScreenView
 """
 
-temp_responsive_platform_baseclass = """
-from kivymd.uix.screen import MDScreen
+temp_responsive_platform_baseclass = """from kivymd.uix.screen import MDScreen
 
 
 class {}View(MDScreen):

@@ -712,6 +712,8 @@ def main():
             # Create views.
             create_view(name, module_name, use_responsive, path_to_project)
 
+        # Create module `NameProject/View/NameScreen/components/common/__init__.py`.
+        create_common_responsive_module(use_responsive, path_to_project)
         # Create module `NameProject/View/screens.py`.
         create_module_screens()
         # Create module `NameProject/Model/base_model.py`.
@@ -984,6 +986,24 @@ def create_module_screens() -> None:
         )
 
 
+def create_common_responsive_module(
+    use_responsive: list, path_to_project: str
+) -> None:
+    for name_screen in use_responsive:
+        path_to_init_common = os.path.join(
+            path_to_project, "View", name_screen, "components", "common"
+        )
+        os.makedirs(path_to_init_common)
+        with open(
+            os.path.join(path_to_init_common, "__init__.py"),
+            "w",
+            encoding="utf-8",
+        ) as init_common_components:
+            init_common_components.write(
+                "# This directory is for common responsive design components\n"
+            )
+
+
 def create_view(
     name_screen: str,
     module_name: str,
@@ -1017,11 +1037,7 @@ def create_view(
                 "__init__.py",
             )
             path_to_platforms = os.path.join(
-                path_to_project,
-                "View",
-                name_screen,
-                "components",
-                "platforms",
+                path_to_project, "View", name_screen, "components", "platforms"
             )
             path_to_platform = os.path.join(path_to_platforms, name_platform)
             path_to_platform_components = os.path.join(

@@ -53,6 +53,7 @@ from kivymd.tools.argument_parser import ArgumentParserWithHelp
 from kivymd.tools.patterns.create_project import (
     chek_camel_case_name_project,
     create_controller,
+    create_common_responsive_module,
     create_model,
     create_view,
 )
@@ -129,6 +130,7 @@ def main():
         create_view(name_view, module_name, [], path_to_project)
     else:
         create_view(name_view, module_name, [name_view], path_to_project)
+        create_common_responsive_module([name_view], path_to_project)
     # Create 'View.screens.py module'.
     create_screens_data(name_view, module_name, path_to_project)
     Logger.info(

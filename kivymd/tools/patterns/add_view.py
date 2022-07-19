@@ -52,8 +52,8 @@ from kivy import Logger
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
 from kivymd.tools.patterns.create_project import (
     chek_camel_case_name_project,
-    create_controller,
     create_common_responsive_module,
+    create_controller,
     create_model,
     create_view,
 )

@@ -5,12 +5,15 @@ Register KivyMD widgets to use without import.
 from kivy.factory import Factory
 
 register = Factory.register
+register("MDScrollView", module="kivymd.uix.scrollview")
+register("MDRecycleView", module="kivymd.uix.recycleview")
 register("MDResponsiveLayout", module="kivymd.uix.responsivelayout")
 register("MDSegmentedControl", module="kivymd.uix.segmentedcontrol")
 register("MDSegmentedControlItem", module="kivymd.uix.segmentedcontrol")
 register("MDSliverAppbar", module="kivymd.uix.sliverappbar")
 register("MDSliverAppbarContent", module="kivymd.uix.sliverappbar")
 register("MDSliverAppbarHeader", module="kivymd.uix.sliverappbar")
+register("MDNavigationRailItem", module="kivymd.uix.navigationrail")
 register("MDNavigationRail", module="kivymd.uix.navigationrail")
 register("MDNavigationRailFabButton", module="kivymd.uix.navigationrail")
 register("MDNavigationRailMenuButton", module="kivymd.uix.navigationrail")

@@ -33,10 +33,11 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.hero import MDHeroTo
 
 
-class MDScreen(Screen, MDAdaptiveWidget):
+class MDScreen(DeclarativeBehavior, Screen, MDAdaptiveWidget):
     hero_to = ObjectProperty()
     """
     Must be a  :class:`~kivymd.uix.hero.MDHeroTo` class.

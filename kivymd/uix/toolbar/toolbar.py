@@ -356,6 +356,7 @@ from kivymd import uix_path
 from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
     FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
@@ -555,7 +556,7 @@ class NotchedBox(
         return points
 
 
-class MDTopAppBar(NotchedBox, WindowController):
+class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
     """
     :Events:
         `on_action_button`
@@ -1376,7 +1377,7 @@ class MDTopAppBar(NotchedBox, WindowController):
             ][self.theme_cls.primary_hue]
 
 
-class MDBottomAppBar(FloatLayout):
+class MDBottomAppBar(DeclarativeBehavior, FloatLayout):
     md_bg_color = ColorProperty([0, 0, 0, 0])
     """
     Color toolbar.
@@ -1385,8 +1386,8 @@ class MDBottomAppBar(FloatLayout):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.size_hint_y = None
 
     def add_widget(self, widget, index=0, canvas=None):

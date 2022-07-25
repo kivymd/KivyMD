@@ -239,6 +239,7 @@ from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.floatlayout import MDFloatLayout
 
 __MDLabel_colors__ = {
@@ -259,7 +260,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDLabel(ThemableBehavior, Label, MDAdaptiveWidget):
+class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
     font_style = StringProperty("Body1")
     """
     Label font style.

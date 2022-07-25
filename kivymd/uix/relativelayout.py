@@ -32,7 +32,8 @@ MDRelativeLayout
 from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDRelativeLayout(RelativeLayout, MDAdaptiveWidget):
+class MDRelativeLayout(DeclarativeBehavior, RelativeLayout, MDAdaptiveWidget):
     pass

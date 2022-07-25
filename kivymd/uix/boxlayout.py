@@ -88,7 +88,8 @@ __all__ = ("MDBoxLayout",)
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDBoxLayout(BoxLayout, MDAdaptiveWidget):
+class MDBoxLayout(DeclarativeBehavior, BoxLayout, MDAdaptiveWidget):
     pass

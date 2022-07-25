@@ -121,7 +121,7 @@ class MDSegmentedControlItem(MDLabel):
 
 
 # TODO: Add an attribute for the color of the active segment label.
-class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
+class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     """
     :Events:
         `on_active`
@@ -249,8 +249,8 @@ class MDSegmentedControl(ThemableBehavior, MDRelativeLayout):
 
     _segment_switch_x = NumericProperty(dp(4))
 
-    def __init__(self, **kw):
-        super().__init__(**kw)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.register_event_type("on_active")
 
         Clock.schedule_once(self.set_default_colors)

@@ -74,6 +74,7 @@ __all__ = ("MDSlider",)
 
 import os
 
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -172,10 +173,19 @@ class MDSlider(ThemableBehavior, Slider):
             primary_palette=self._set_colors,
         )
         self._set_colors()
+        Clock.schedule_once(self.set_thumb_icon)
+
+    def set_thumb_icon(self, *args):
+        self.ids.thumb.ids.icon.icon = "blank"
 
     def on_hint(self, instance, value):
-        if not value:
-            self.remove_widget(self.ids.hint_box)
+        def on_hint(*args):
+            if not value:
+                self.remove_widget(self.ids.hint_box)
+
+        # Schedule using for declarative style.
+        # Otherwise get AttributeError exception.
+        Clock.schedule_once(on_hint)
 
     def on_value_normalized(self, *args):
         """

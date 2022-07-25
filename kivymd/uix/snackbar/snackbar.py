@@ -25,7 +25,7 @@ Usage
     #:import Snackbar kivymd.uix.snackbar.Snackbar
 
 
-    Screen:
+    MDScreen:
 
         MDRaisedButton:
             text: "Create simple snackbar"
@@ -149,7 +149,7 @@ Custom usage
 
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MDFloatingActionButton:
             id: button
@@ -227,7 +227,7 @@ Custom Snackbar
             pos_hint: {'center_y': .5}
 
 
-    Screen:
+    MDScreen:
 
         MDRaisedButton:
             text: "SHOW"

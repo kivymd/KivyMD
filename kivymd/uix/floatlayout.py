@@ -36,7 +36,8 @@ MDFloatLayout
 from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDFloatLayout(FloatLayout, MDAdaptiveWidget):
+class MDFloatLayout(DeclarativeBehavior, FloatLayout, MDAdaptiveWidget):
     pass

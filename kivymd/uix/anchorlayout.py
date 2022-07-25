@@ -20,12 +20,12 @@ AnchorLayout
                 pos: self.pos
                 size: self.size
 
-AnchorLayout
-------------
+MDAnchorLayout
+--------------
 
 .. code-block::
 
-    MDBoxLayout:
+    MDAnchorLayout:
         md_bg_color: app.theme_cls.primary_color
 
 Available options are:
@@ -86,7 +86,8 @@ __all__ = ("MDAnchorLayout",)
 from kivy.uix.anchorlayout import AnchorLayout
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDAnchorLayout(AnchorLayout, MDAdaptiveWidget):
+class MDAnchorLayout(DeclarativeBehavior, AnchorLayout, MDAdaptiveWidget):
     pass

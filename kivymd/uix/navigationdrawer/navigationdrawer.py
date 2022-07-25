@@ -24,7 +24,7 @@ Anatomy
 
         MDNavigationLayout:
 
-            ScreenManager:
+            MDScreenManager:
 
                 Screen_1:
 
@@ -51,7 +51,7 @@ A simple example
 
         MDNavigationLayout:
 
-            ScreenManager:
+            MDScreenManager:
 
                 MDScreen:
 
@@ -225,7 +225,7 @@ Standard content for the navigation bar
 
         MDNavigationLayout:
 
-            ScreenManager:
+            MDScreenManager:
 
                 MDScreen:
 
@@ -256,7 +256,6 @@ Standard content for the navigation bar
                         title: "Header title"
                         title_color: "#4a4939"
                         text: "Header text"
-                        title_color: "#4a4939"
                         spacing: "4dp"
                         padding: "12dp", 0, 0, "56dp"
 
@@ -342,7 +341,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDTopAppBar``
         MDNavigationLayout:
             x: toolbar.height
 
-            ScreenManager:
+            MDScreenManager:
                 id: screen_manager
 
                 MDScreen:
@@ -412,13 +411,17 @@ from kivy.properties import (
 )
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
-from kivy.uix.scrollview import ScrollView
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior, FocusBehavior
+from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
+    FakeRectangularElevationBehavior,
+    FocusBehavior,
+)
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import MDList, OneLineAvatarIconListItem
+from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.toolbar import MDTopAppBar
 
 with open(
@@ -432,14 +435,14 @@ class NavigationDrawerContentError(Exception):
     pass
 
 
-class MDNavigationLayout(FloatLayout):
+class MDNavigationLayout(DeclarativeBehavior, FloatLayout):
     _scrim_color = ObjectProperty(None)
     _scrim_rectangle = ObjectProperty(None)
     _screen_manager = ObjectProperty(None)
     _navigation_drawer = ObjectProperty(None)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.bind(width=self.update_pos)
 
     def update_pos(self, instance_navigation_drawer, pos_x: float) -> None:
@@ -814,7 +817,7 @@ class MDNavigationDrawerItem(OneLineAvatarIconListItem, FocusBehavior):
     _drawer_menu = ObjectProperty()
 
 
-class MDNavigationDrawerMenu(ScrollView):
+class MDNavigationDrawerMenu(MDScrollView):
     """
     Implements a scrollable list for menu items of the
     :class:`~MDNavigationDrawer` class.
@@ -863,7 +866,9 @@ class MDNavigationDrawerMenu(ScrollView):
                     widget.text_color = widget._text_color
 
 
-class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
+class MDNavigationDrawer(
+    DeclarativeBehavior, MDCard, FakeRectangularElevationBehavior
+):
     type = OptionProperty("modal", options=("standard", "modal"))
     """
     Type of drawer. Modal type will be on top of screen. Standard type will be
@@ -1121,8 +1126,8 @@ class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
     and defaults to `0.2`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.bind(
             open_progress=self.update_status,
             status=self.update_status,

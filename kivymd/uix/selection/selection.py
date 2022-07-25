@@ -50,6 +50,7 @@ Example with TwoLineAvatarListItem
 
     from kivy.animation import Animation
     from kivy.lang import Builder
+    from kivy.utils import get_color_from_hex
 
     from kivymd.app import MDApp
     from kivymd.uix.list import TwoLineAvatarListItem
@@ -100,7 +101,7 @@ Example with TwoLineAvatarListItem
 
 
     class Example(MDApp):
-        overlay_color = "#6042e4"
+        overlay_color = get_color_from_hex("#6042e4")
 
         def build(self):
             return Builder.load_string(KV)
@@ -446,7 +447,7 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
 
     def get_progress_round_pos(self) -> tuple:
         return (
-            self.center_x - self.progress_round_size / 2,
+            (self.pos[0] + self.width / 2) - self.progress_round_size / 2,
             self.center_y - self.progress_round_size / 2,
         )
 

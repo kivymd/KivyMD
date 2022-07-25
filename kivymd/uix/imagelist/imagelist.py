@@ -102,7 +102,7 @@ class SmartTileOverlayBox(MDBoxLayout):
     """Implements a container for custom widgets to be added to the tile."""
 
 
-class MDSmartTile(ThemableBehavior, MDRelativeLayout):
+class MDSmartTile(MDRelativeLayout, ThemableBehavior):
     """
     A tile for more complex needs.
 
@@ -248,8 +248,8 @@ class MDSmartTile(ThemableBehavior, MDRelativeLayout):
     and defaults to `False`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.register_event_type("on_release")
         self.register_event_type("on_press")
 

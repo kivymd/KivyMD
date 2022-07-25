@@ -140,6 +140,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.toolbar.toolbar import ActionTopAppBarButton, MDTopAppBar
@@ -151,7 +152,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDBackdrop(ThemableBehavior, MDFloatLayout):
+class MDBackdrop(MDFloatLayout, ThemableBehavior):
     """
     :Events:
         :attr:`on_open`
@@ -310,8 +311,8 @@ class MDBackdrop(ThemableBehavior, MDFloatLayout):
     _open_icon = ""
     _front_layer_open = False
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.register_event_type("on_open")
         self.register_event_type("on_close")
         Clock.schedule_once(
@@ -425,11 +426,11 @@ class MDBackdropToolbar(MDTopAppBar):
     """Implements a toolbar for back content."""
 
 
-class MDBackdropFrontLayer(BoxLayout):
+class MDBackdropFrontLayer(MDBoxLayout):
     """Container for front content."""
 
 
-class MDBackdropBackLayer(BoxLayout):
+class MDBackdropBackLayer(MDBoxLayout):
     """Container for back content."""
 
 

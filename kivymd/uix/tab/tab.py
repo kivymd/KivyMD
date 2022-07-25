@@ -83,7 +83,7 @@ Example with tab icon
         MDIconButton:
             id: icon
             icon: root.icon
-            user_font_size: "48sp"
+            icon_size: "48sp"
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
 
@@ -351,7 +351,7 @@ method accordingly:
         MDIconButton:
             id: icon
             icon: app.icons[0]
-            user_font_size: "48sp"
+            icon_size: "48sp"
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
 
@@ -439,13 +439,13 @@ Switching the tab by name
             MDIconButton:
                 id: icon
                 icon: "arrow-right"
-                user_font_size: "48sp"
+                icon_size: "48sp"
                 on_release: app.switch_tab_by_name()
 
             MDIconButton:
                 id: icon2
                 icon: "page-next"
-                user_font_size: "48sp"
+                icon_size: "48sp"
                 on_release: app.switch_tab_by_object()
     '''
 
@@ -527,6 +527,7 @@ from kivymd.font_definitions import fonts, theme_font_styles
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
     FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
     SpecificBackgroundColorBehavior,
@@ -564,10 +565,15 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
         )
 
     def on_release(self) -> None:
-        self.tab_bar.parent.dispatch("on_tab_switch", self.tab, self, self.text)
-        # If the label is selected load the relative tab from carousel.
-        if self.state == "down":
-            self.tab_bar.parent.carousel.load_slide(self.tab)
+        try:
+            self.tab_bar.parent.dispatch(
+                "on_tab_switch", self.tab, self, self.text
+            )
+            # If the label is selected load the relative tab from carousel.
+            if self.state == "down":
+                self.tab_bar.parent.carousel.load_slide(self.tab)
+        except KeyError:
+            pass
 
     def on_texture(self, instance_tabs_label, texture: Texture) -> None:
         # Just save the minimum width of the label based of the content.
@@ -997,7 +1003,12 @@ class MDTabsBar(
         self.update_indicator(widget.x, widget.width)
 
 
-class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
+class MDTabs(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    SpecificBackgroundColorBehavior,
+    AnchorLayout,
+):
     """
     You can use this class to create your own tabbed panel.
 
@@ -1204,8 +1215,8 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
     and defaults to `True`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.register_event_type("on_tab_switch")
         self.register_event_type("on_ref_press")
         self.register_event_type("on_slide_progress")

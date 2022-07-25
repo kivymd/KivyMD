@@ -24,8 +24,11 @@
                 if not self.md_bg_bottom_color else \
                 self.md_bg_bottom_color \
                 ) \
-                if root.parent.md_bg_color == [0, 0, 0, 0] \
-                else root.parent.md_bg_color \
+                if root.parent and root.parent.md_bg_color == [0, 0, 0, 0] \
+                else \
+                ( \
+                root.parent.md_bg_color if root.parent else root.md_bg_color \
+                ) \
                 )
         Mesh:
             vertices: root._vertices_left

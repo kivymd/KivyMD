@@ -279,6 +279,7 @@ Example
 
 __all__ = (
     "MDNavigationRail",
+    "MDNavigationRailItem",
     "MDNavigationRailFabButton",
     "MDNavigationRailMenuButton",
 )
@@ -305,7 +306,10 @@ from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
+    FakeRectangularElevationBehavior,
+)
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.card import MDCard
@@ -561,7 +565,9 @@ class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
         self.navigation_rail.dispatch("on_item_release", self)
 
 
-class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
+class MDNavigationRail(
+    DeclarativeBehavior, MDCard, FakeRectangularElevationBehavior
+):
     """
     :Events:
         :attr:`on_item_press`
@@ -852,8 +858,8 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
     and defaults to `'Roboto'`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_pos_menu_fab_buttons)
         Clock.schedule_once(self.set_current_selected_item)
         self.register_event_type("on_item_press")
@@ -979,6 +985,7 @@ class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
             )
 
     def add_widget(self, widget, *args, **kwargs):
+        print("ADD", widget)
         if isinstance(widget, MDNavigationRailFabButton):
             self.ids.box_buttons.add_widget(widget)
         elif isinstance(widget, MDNavigationRailMenuButton):

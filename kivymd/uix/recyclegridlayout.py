@@ -1,6 +1,6 @@
 """
 Components/RecycleGridLayout
-=====================
+============================
 
 :class:`~kivy.uix.recyclegridlayout.RecycleGridLayout` class equivalent. Simplifies working
 with some widget properties. For example:
@@ -86,7 +86,10 @@ Equivalent
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDRecycleGridLayout(RecycleGridLayout, MDAdaptiveWidget):
+class MDRecycleGridLayout(
+    DeclarativeBehavior, RecycleGridLayout, MDAdaptiveWidget
+):
     pass

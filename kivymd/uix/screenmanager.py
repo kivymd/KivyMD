@@ -13,10 +13,11 @@ from kivy.clock import Clock
 from kivy.properties import ListProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager
 
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.hero import MDHeroFrom
 
 
-class MDScreenManager(ScreenManager):
+class MDScreenManager(DeclarativeBehavior, ScreenManager):
     current_hero = StringProperty(None)
     """
     The name of the current tag for the :class:`~kivymd.uix.hero.MDHeroFrom` and
@@ -34,8 +35,8 @@ class MDScreenManager(ScreenManager):
     # screen manager.
     _heroes_data = ListProperty()
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         Clock.schedule_once(self.check_transition)
 
     def check_transition(self, *args) -> None:

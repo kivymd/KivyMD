@@ -506,6 +506,7 @@ from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
+    DeclarativeBehavior,
     FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
     RoundedRectangularElevationBehavior,
@@ -530,7 +531,11 @@ theme_text_color_options = (
 
 
 class BaseButton(
-    RectangularRippleBehavior, ThemableBehavior, ButtonBehavior, AnchorLayout
+    DeclarativeBehavior,
+    RectangularRippleBehavior,
+    ThemableBehavior,
+    ButtonBehavior,
+    AnchorLayout,
 ):
     """Base class for all buttons."""
 

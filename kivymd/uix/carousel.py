@@ -57,8 +57,10 @@ MDCarousel
 from kivy.animation import Animation
 from kivy.uix.carousel import Carousel
 
+from kivymd.uix.behaviors import DeclarativeBehavior
 
-class MDCarousel(Carousel):
+
+class MDCarousel(DeclarativeBehavior, Carousel):
     """
     based on kivy's carousel.
 
@@ -68,8 +70,8 @@ class MDCarousel(Carousel):
 
     _scrolling = False
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.register_event_type("on_slide_progress")
         self.register_event_type("on_slide_complete")
 

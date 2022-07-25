@@ -73,6 +73,10 @@
         color:
             (0, 0, 0, 0) if root._is_off else (root._track_color_disabled \
             if root.disabled else root.color)
+        md_bg_color:
+            root.color \
+            if root.color != [0, 0, 0, 0] else \
+            app.theme_cls.primary_color
         elevation: 0 if root._is_off else (4 if root.active else 2)
 
     HintBoxContainer:

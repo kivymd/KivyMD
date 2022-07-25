@@ -198,7 +198,10 @@ from kivymd import uix_path
 from kivymd.material_resources import STANDARD_INCREMENT
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.anchorlayout import MDAnchorLayout
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
+    FakeRectangularElevationBehavior,
+)
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     SpecificBackgroundColorBehavior,
 )
@@ -364,8 +367,8 @@ class MDTab(MDScreen, ThemableBehavior):
     and defaults to `''`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.index = 0
         self.parent_widget = None
         self.register_event_type("on_tab_touch_down")
@@ -406,6 +409,9 @@ class MDBottomNavigationItem(MDTab):
     :attr:`header` is an :class:`~MDBottomNavigationHeader`
     and defaults to `None`.
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def on_tab_press(self, *args) -> None:
         """Called when clicking on a panel item."""
@@ -463,7 +469,7 @@ class TabbedPanelBase(
     and defaults to `None`.
     """
 
-    previous_tab = ObjectProperty()
+    previous_tab = ObjectProperty(None, aloownone=True)
     """
     :attr:`previous_tab` is an :class:`~MDTab` and defaults to `None`.
     """
@@ -479,7 +485,7 @@ class TabbedPanelBase(
     tabs = ListProperty()
 
 
-class MDBottomNavigation(TabbedPanelBase):
+class MDBottomNavigation(DeclarativeBehavior, TabbedPanelBase):
     """
     A bottom navigation that is implemented by delegating all items to a
     :class:`~kivy.uix.screenmanager.ScreenManager`.
@@ -594,14 +600,15 @@ class MDBottomNavigation(TabbedPanelBase):
     and defaults to `False`.
     """
 
+    widget_index = NumericProperty(0)
+
     # Text active color if it is selected.
     _active_color = ColorProperty([1, 1, 1, 1])
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.register_event_type("on_switch_tabs")
+    def __init__(self, *args, **kwargs):
         self.previous_tab = None
-        self.widget_index = 0
+        self.register_event_type("on_switch_tabs")
+        super().__init__(*args, **kwargs)
         self.theme_cls.bind(material_style=self.refresh_tabs)
         Window.bind(on_resize=self.on_resize)
         Clock.schedule_once(lambda x: self.on_resize())
@@ -660,8 +667,11 @@ class MDBottomNavigation(TabbedPanelBase):
     def on_selected_color_background(
         self, instance_bottom_navigation, color: list
     ) -> None:
-        for tab in self.ids.tab_bar.children:
-            tab.selected_color_background = color
+        def on_selected_color_background(*args):
+            for tab in self.ids.tab_bar.children:
+                tab.selected_color_background = color
+
+        Clock.schedule_once(on_selected_color_background)
 
     def on_use_text(
         self, instance_bottom_navigation, use_text_value: bool

@@ -7,12 +7,12 @@ Example
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.clock import Clock
     from kivy.lang import Builder
     from kivy.factory import Factory
     from kivy.properties import StringProperty
 
+    from kivymd.app import MDApp
     from kivymd.uix.button import MDIconButton
     from kivymd.icon_definitions import md_icons
     from kivymd.uix.list import ILeftBodyTouch, OneLineIconListItem
@@ -27,7 +27,7 @@ Example
             icon: root.icon
 
 
-    <Example@FloatLayout>
+    <Example@MDFloatLayout>
 
         MDBoxLayout:
             orientation: 'vertical'
@@ -112,10 +112,10 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ColorProperty, NumericProperty, ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.scrollview import ScrollView
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.scrollview import MDScrollView
 
 with open(
     os.path.join(uix_path, "refreshlayout", "refreshlayout.kv"),
@@ -150,7 +150,7 @@ class _RefreshScrollEffect(DampedScrollEffect):
             return False
 
 
-class MDScrollViewRefreshLayout(ScrollView):
+class MDScrollViewRefreshLayout(MDScrollView):
     root_layout = ObjectProperty()
     """
     The spinner will be attached to this layout.
@@ -159,22 +159,31 @@ class MDScrollViewRefreshLayout(ScrollView):
     and defaults to `None`.
     """
 
-    def __init__(self, **kargs):
-        super().__init__(**kargs)
+    refresh_callback = ObjectProperty()
+    """
+    The method that will be called at the on_touch_up event,
+    provided that the overscroll of the list has been registered.
+
+    :attr:`refresh_callback` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.effect_cls = _RefreshScrollEffect
-        self._work_spinnrer = False
+        self._work_spinner = False
         self._did_overscroll = False
         self.refresh_spinner = None
 
     def on_touch_up(self, *args):
-        if self._did_overscroll and not self._work_spinnrer:
+        if self._did_overscroll and not self._work_spinner:
             if self.refresh_callback:
                 self.refresh_callback()
             if not self.refresh_spinner:
                 self.refresh_spinner = RefreshSpinner(_refresh_layout=self)
                 self.root_layout.add_widget(self.refresh_spinner)
             self.refresh_spinner.start_anim_spinner()
-            self._work_spinnrer = True
+            self._work_spinner = True
             self._did_overscroll = False
             return True
 
@@ -219,5 +228,5 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
         spinner = self.ids.spinner
         spinner.size = (dp(30), dp(30))
         spinner.opacity = 1
-        self._refresh_layout._work_spinnrer = False
+        self._refresh_layout._work_spinner = False
         self._refresh_layout._did_overscroll = False

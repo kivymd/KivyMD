@@ -51,3 +51,4 @@ Unreleased
 * Added the feature to use `Hero <https://kivymd.readthedocs.io/en/latest/components/hero/>`_ animation;
 * Added `MDResponsiveLayout <https://kivymd.readthedocs.io/en/latest/components/responsivelayout/>`_ layout;
 * Added `add_view <https://kivymd.readthedocs.io/en/latest/api/kivymd/tools/patterns/add_view/>`_ utility;
+* Added the feature to create widgets in `declarative programming style <https://kivymd.readthedocs.io/en/latest/behaviors/declarative/>`_;

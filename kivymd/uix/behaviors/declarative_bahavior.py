@@ -4,6 +4,9 @@ Behaviors/Declarative
 
 .. versionadded:: 1.0.0
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/declarative-preview.png
+    :align: center
+
 As you already know, the Kivy framework provides the best/simplest/modern
 UI creation tool that allows you to separate the logic of your application
 from the description of the properties of widgets/GUI components.
@@ -66,8 +69,8 @@ which is used in Kivy.
 Now let's see how the same code is implemented using the KV language,
 which uses a declarative style of describing widget properties.
 
-Imperative style with KV language
----------------------------------
+Declarative style with KV language
+----------------------------------
 
 .. code-block:: python
 
@@ -129,8 +132,8 @@ change/add new properties/widgets. This is named declarative UI creation style.
 But now the KivyMD library allows you to write Python code in a declarative style.
 Just as it is implemented in Flutter/Jetpack Compose/SwiftUI.
 
-Imperative style with Python code
----------------------------------
+Declarative style with Python code
+----------------------------------
 
 .. code-block:: python
 

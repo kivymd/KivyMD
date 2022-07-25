@@ -2,6 +2,8 @@
 Components/RecycleView
 ======================
 
+.. versionadded:: 1.0.0
+
 :class:`~kivy.uix.recycleview.RecycleView` class equivalent. Simplifies working
 with some widget properties. For example:
 

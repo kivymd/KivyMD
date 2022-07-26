@@ -21,7 +21,6 @@ from .elevation import (
     RectangularElevationBehavior,
     RoundedRectangularElevationBehavior,
 )
-from .focus_behavior import FocusBehavior
 from .magic_behavior import MagicBehavior
 from .ripple_behavior import CircularRippleBehavior, RectangularRippleBehavior
 from .touch_behavior import TouchBehavior

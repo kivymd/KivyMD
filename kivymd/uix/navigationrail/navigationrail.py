@@ -985,7 +985,6 @@ class MDNavigationRail(
             )
 
     def add_widget(self, widget, *args, **kwargs):
-        print("ADD", widget)
         if isinstance(widget, MDNavigationRailFabButton):
             self.ids.box_buttons.add_widget(widget)
         elif isinstance(widget, MDNavigationRailMenuButton):

@@ -416,8 +416,8 @@ from kivymd import uix_path
 from kivymd.uix.behaviors import (
     DeclarativeBehavior,
     FakeRectangularElevationBehavior,
-    FocusBehavior,
 )
+from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import MDList, OneLineAvatarIconListItem

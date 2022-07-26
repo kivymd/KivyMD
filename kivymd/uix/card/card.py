@@ -586,9 +586,9 @@ from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
-    FocusBehavior,
     RectangularRippleBehavior,
 )
+from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 
 with open(

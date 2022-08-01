@@ -247,7 +247,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
         Clock.schedule_once(self.check_size)
 
     def check_size(self, interval: Union[int, float]) -> None:
-        if self.size == [100, 100]:
+        if self.height == 100:
             if self.orientation == "horizontal":
                 self.size_hint_y = None
                 self.height = dp(4)

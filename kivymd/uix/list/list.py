@@ -504,18 +504,20 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.floatlayout import FloatLayout
 
 import kivymd.material_resources as m_res
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CircularRippleBehavior,
+    DeclarativeBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.utils.fitimage import FitImage
@@ -547,7 +549,11 @@ class MDList(MDGridLayout):
 
 
 class BaseListItem(
-    ThemableBehavior, RectangularRippleBehavior, ButtonBehavior, MDFloatLayout
+    DeclarativeBehavior,
+    ThemableBehavior,
+    RectangularRippleBehavior,
+    ButtonBehavior,
+    FloatLayout,
 ):
     """
     Base class to all ListItems. Not supposed to be instantiated on its own.
@@ -681,12 +687,75 @@ class BaseListItem(
     and defaults to `None`.
     """
 
+    radius = VariableListProperty([0], length=4)
+    """
+    Canvas radius.
+
+    .. code-block:: python
+
+        # Top left corner slice.
+        MDBoxLayout:
+            md_bg_color: app.theme_cls.primary_color
+            radius: [25, 0, 0, 0]
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
     _txt_left_pad = NumericProperty("16dp")
     _txt_top_pad = NumericProperty()
     _txt_bot_pad = NumericProperty()
     _txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
     _num_lines = 3
     _no_ripple_effect = BooleanProperty(False)
+    _touchable_widgets = ListProperty()
+
+    def on_touch_down(self, touch):
+        if self.propagate_touch_to_touchable_widgets(touch, "down"):
+            return
+        super().on_touch_down(touch)
+
+    def on_touch_move(self, touch, *args):
+        if self.propagate_touch_to_touchable_widgets(touch, "move", *args):
+            return
+        super().on_touch_move(touch, *args)
+
+    def on_touch_up(self, touch):
+        if self.propagate_touch_to_touchable_widgets(touch, "up"):
+            return
+        super().on_touch_up(touch)
+
+    def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
+        triggered = False
+        for i in self._touchable_widgets:
+            if i.collide_point(touch.x, touch.y):
+                triggered = True
+                if touch_event == "down":
+                    i.on_touch_down(touch)
+                elif touch_event == "move":
+                    i.on_touch_move(touch, *args)
+                elif touch_event == "up":
+                    i.on_touch_up(touch)
+        return triggered
+
+    def add_widget(self, widget):
+        if issubclass(widget.__class__, ILeftBody):
+            self.ids._left_container.add_widget(widget)
+        elif issubclass(widget.__class__, ILeftBodyTouch):
+            self.ids._left_container.add_widget(widget)
+            self._touchable_widgets.append(widget)
+        elif issubclass(widget.__class__, IRightBody):
+            self.ids._right_container.add_widget(widget)
+        elif issubclass(widget.__class__, IRightBodyTouch):
+            self.ids._right_container.add_widget(widget)
+            self._touchable_widgets.append(widget)
+        else:
+            return super().add_widget(widget)
+
+    def remove_widget(self, widget):
+        super().remove_widget(widget)
+        if widget in self._touchable_widgets:
+            self._touchable_widgets.remove(widget)
 
 
 class ILeftBody:
@@ -725,68 +794,21 @@ class ContainerSupport:
     """
     Overrides ``add_widget`` in a ``ListItem`` to include support
     for ``I*Body`` widgets when the appropiate containers are present.
+
+    .. deprecated:: 1.0.0
     """
-
-    _touchable_widgets = ListProperty()
-
-    def add_widget(self, widget, index=0):
-        if issubclass(widget.__class__, ILeftBody):
-            self.ids._left_container.add_widget(widget)
-        elif issubclass(widget.__class__, ILeftBodyTouch):
-            self.ids._left_container.add_widget(widget)
-            self._touchable_widgets.append(widget)
-        elif issubclass(widget.__class__, IRightBody):
-            self.ids._right_container.add_widget(widget)
-        elif issubclass(widget.__class__, IRightBodyTouch):
-            self.ids._right_container.add_widget(widget)
-            self._touchable_widgets.append(widget)
-        else:
-            return super().add_widget(widget)
-
-    def remove_widget(self, widget):
-        super().remove_widget(widget)
-        if widget in self._touchable_widgets:
-            self._touchable_widgets.remove(widget)
-
-    def on_touch_down(self, touch):
-        if self.propagate_touch_to_touchable_widgets(touch, "down"):
-            return
-        super().on_touch_down(touch)
-
-    def on_touch_move(self, touch, *args):
-        if self.propagate_touch_to_touchable_widgets(touch, "move", *args):
-            return
-        super().on_touch_move(touch, *args)
-
-    def on_touch_up(self, touch):
-        if self.propagate_touch_to_touchable_widgets(touch, "up"):
-            return
-        super().on_touch_up(touch)
-
-    def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
-        triggered = False
-        for i in self._touchable_widgets:
-            if i.collide_point(touch.x, touch.y):
-                triggered = True
-                if touch_event == "down":
-                    i.on_touch_down(touch)
-                elif touch_event == "move":
-                    i.on_touch_move(touch, *args)
-                elif touch_event == "up":
-                    i.on_touch_up(touch)
-        return triggered
 
 
 class OneLineListItem(BaseListItem):
     """A one line list item."""
 
     _txt_top_pad = NumericProperty("16dp")
-    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
+    _txt_bot_pad = NumericProperty("15dp")
     _height = NumericProperty()
     _num_lines = 1
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.height = dp(48) if not self._height else self._height
 
 
@@ -794,7 +816,7 @@ class TwoLineListItem(BaseListItem):
     """A two line list item."""
 
     _txt_top_pad = NumericProperty("20dp")
-    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
+    _txt_bot_pad = NumericProperty("15dp")
     _height = NumericProperty()
 
     def __init__(self, **kwargs):
@@ -806,63 +828,65 @@ class ThreeLineListItem(BaseListItem):
     """A three line list item."""
 
     _txt_top_pad = NumericProperty("16dp")
-    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
+    _txt_bot_pad = NumericProperty("15dp")
     _height = NumericProperty()
     _num_lines = 3
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.height = dp(88) if not self._height else self._height
 
 
-class OneLineAvatarListItem(ContainerSupport, BaseListItem):
+class OneLineAvatarListItem(BaseListItem):
     _txt_left_pad = NumericProperty("72dp")
     _txt_top_pad = NumericProperty("20dp")
-    _txt_bot_pad = NumericProperty("19dp")  # dp(24) - dp(5)
+    _txt_bot_pad = NumericProperty("19dp")
     _height = NumericProperty()
     _num_lines = 1
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.height = dp(56) if not self._height else self._height
 
 
 class TwoLineAvatarListItem(OneLineAvatarListItem):
     _txt_top_pad = NumericProperty("20dp")
-    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
+    _txt_bot_pad = NumericProperty("15dp")
     _height = NumericProperty()
     _num_lines = 2
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.height = dp(72) if not self._height else self._height
 
 
-class ThreeLineAvatarListItem(ContainerSupport, ThreeLineListItem):
+class ThreeLineAvatarListItem(ThreeLineListItem):
     _txt_left_pad = NumericProperty("72dp")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-class OneLineIconListItem(ContainerSupport, OneLineListItem):
+
+class OneLineIconListItem(OneLineListItem):
     _txt_left_pad = NumericProperty("72dp")
 
 
 class TwoLineIconListItem(OneLineIconListItem):
     _txt_top_pad = NumericProperty("20dp")
-    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
+    _txt_bot_pad = NumericProperty("15dp")
     _height = NumericProperty()
     _num_lines = 2
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.height = dp(72) if not self._height else self._height
 
 
-class ThreeLineIconListItem(ContainerSupport, ThreeLineListItem):
+class ThreeLineIconListItem(ThreeLineListItem):
     _txt_left_pad = NumericProperty("72dp")
 
 
-class OneLineRightIconListItem(ContainerSupport, OneLineListItem):
-    # dp(40) = dp(16) + dp(24):
+class OneLineRightIconListItem(OneLineListItem):
     _txt_right_pad = NumericProperty("40dp")
 
     def __init__(self, **kwargs):
@@ -872,7 +896,7 @@ class OneLineRightIconListItem(ContainerSupport, OneLineListItem):
 
 class TwoLineRightIconListItem(OneLineRightIconListItem):
     _txt_top_pad = NumericProperty("20dp")
-    _txt_bot_pad = NumericProperty("15dp")  # dp(20) - dp(5)
+    _txt_bot_pad = NumericProperty("15dp")
     _height = NumericProperty()
     _num_lines = 2
 
@@ -881,8 +905,7 @@ class TwoLineRightIconListItem(OneLineRightIconListItem):
         self.height = dp(72) if not self._height else self._height
 
 
-class ThreeLineRightIconListItem(ContainerSupport, ThreeLineListItem):
-    # dp(40) = dp(16) + dp(24):
+class ThreeLineRightIconListItem(ThreeLineListItem):
     _txt_right_pad = NumericProperty("40dp")
 
     def __init__(self, **kwargs):
@@ -891,29 +914,26 @@ class ThreeLineRightIconListItem(ContainerSupport, ThreeLineListItem):
 
 
 class OneLineAvatarIconListItem(OneLineAvatarListItem):
-    # dp(40) = dp(16) + dp(24):
     _txt_right_pad = NumericProperty("40dp")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class TwoLineAvatarIconListItem(TwoLineAvatarListItem):
-    # dp(40) = dp(16) + dp(24):
     _txt_right_pad = NumericProperty("40dp")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 
 class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
-    # dp(40) = dp(16) + dp(24):
     _txt_right_pad = NumericProperty("40dp")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 

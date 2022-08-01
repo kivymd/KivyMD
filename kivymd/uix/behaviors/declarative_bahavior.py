@@ -282,6 +282,7 @@ Yes, this is not a very good solution, but I think it will be fixed soon.
 """
 
 from kivy.properties import StringProperty
+from kivy.uix.widget import Widget
 
 
 class DeclarativeBehavior:
@@ -302,6 +303,7 @@ class DeclarativeBehavior:
         super().__init__(**kwargs)
 
         for child in args:
-            self.add_widget(child)
-            if hasattr(child, "id") and child.id:
-                self.ids[child.id] = child
+            if issubclass(child.__class__, Widget):
+                self.add_widget(child)
+                if hasattr(child, "id") and child.id:
+                    self.ids[child.id] = child

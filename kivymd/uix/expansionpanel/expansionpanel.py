@@ -56,6 +56,8 @@ Example
 
 .. code-block:: python
 
+    impoer os
+
     from kivy.lang import Builder
 
     from kivymd.app import MDApp
@@ -75,7 +77,7 @@ Example
                 icon: 'phone'
 
 
-    ScrollView:
+    MDScrollView:
 
         MDGridLayout:
             id: box
@@ -96,7 +98,7 @@ Example
             for i in range(10):
                 self.root.ids.box.add_widget(
                     MDExpansionPanel(
-                        icon=f"{images_path}kivymd.png",
+                        icon=os.path.join(images_path, "logo", "kivymd-icon-128.png"),
                         content=Content(),
                         panel_cls=MDExpansionPanelThreeLine(
                             text="Text",

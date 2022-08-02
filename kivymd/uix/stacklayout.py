@@ -8,7 +8,7 @@ with some widget properties. For example:
 StackLayout
 -----------
 
-.. code-block::
+.. code-block:: kv
 
     StackLayout:
         size_hint_y: None
@@ -24,7 +24,7 @@ StackLayout
 MDStackLayout
 -------------
 
-.. code-block::
+.. code-block:: kv
 
     MDStackLayout:
         adaptive_height: True
@@ -83,10 +83,16 @@ Equivalent
     size: self.minimum_size
 """
 
+__all__ = ("MDStackLayout",)
+
 from kivy.uix.stacklayout import StackLayout
 
 from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDStackLayout(StackLayout, MDAdaptiveWidget):
-    pass
+class MDStackLayout(DeclarativeBehavior, StackLayout, MDAdaptiveWidget):
+    """
+    Stack layout class. For more information, see in the
+    :class:`~kivy.uix.stacklayout.StackLayout` class documentation.
+    """

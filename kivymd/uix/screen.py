@@ -40,7 +40,7 @@ from kivymd.uix.hero import MDHeroTo
 class MDScreen(DeclarativeBehavior, Screen, MDAdaptiveWidget):
     """
     Screen is an element intended to be used with a
-    :class:`kivymd.uix.screenmanager.MDScreenManager`. For more information,
+    :class:`~kivymd.uix.screenmanager.MDScreenManager`. For more information,
     see in the :class:`~kivy.uix.screenmanager.Screen` class documentation.
     """
 

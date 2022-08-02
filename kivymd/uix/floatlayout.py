@@ -8,7 +8,7 @@ with some widget properties. For example:
 FloatLayout
 -----------
 
-.. code-block::
+.. code-block:: kv
 
     FloatLayout:
         canvas:
@@ -22,7 +22,7 @@ FloatLayout
 MDFloatLayout
 -------------
 
-.. code-block::
+.. code-block:: kv
 
     MDFloatLayout:
         radius: [25, 0, 0, 0]
@@ -40,4 +40,7 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 
 
 class MDFloatLayout(DeclarativeBehavior, FloatLayout, MDAdaptiveWidget):
-    pass
+    """
+    Float layout class. For more information, see in the
+    :class:`~kivy.uix.floatlayout.FloatLayout` class documentation.
+    """

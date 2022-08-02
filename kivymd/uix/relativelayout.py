@@ -2,13 +2,13 @@
 Components/RelativeLayout
 =========================
 
-:class:`~kivy.uix.relativelayout.RelativeLayout` class equivalent. Simplifies working
-with some widget properties. For example:
+:class:`~kivy.uix.relativelayout.RelativeLayout` class equivalent.
+Simplifies working with some widget properties. For example:
 
 RelativeLayout
 --------------
 
-.. code-block::
+.. code-block:: kv
 
     RelativeLayout:
         canvas:
@@ -22,7 +22,7 @@ RelativeLayout
 MDRelativeLayout
 ----------------
 
-.. code-block::
+.. code-block:: kv
 
     MDRelativeLayout:
         radius: [25, ]
@@ -36,4 +36,7 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 
 
 class MDRelativeLayout(DeclarativeBehavior, RelativeLayout, MDAdaptiveWidget):
-    pass
+    """
+    Relative layout class. For more information, see in the
+    :class:`~kivy.uix.relativelayout.RelativeLayout` class documentation.
+    """

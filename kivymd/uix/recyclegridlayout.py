@@ -2,13 +2,13 @@
 Components/RecycleGridLayout
 ============================
 
-:class:`~kivy.uix.recyclegridlayout.RecycleGridLayout` class equivalent. Simplifies working
-with some widget properties. For example:
+:class:`~kivy.uix.recyclegridlayout.RecycleGridLayout` class equivalent.
+Simplifies working with some widget properties. For example:
 
-GridLayout
-----------
+RecycleGridLayout
+-----------------
 
-.. code-block::
+.. code-block:: kv
 
     RecycleGridLayout:
         size_hint_y: None
@@ -22,9 +22,9 @@ GridLayout
                 size: self.size
 
 MDRecycleGridLayout
-------------
+-------------------
 
-.. code-block::
+.. code-block:: kv
 
     MDRecycleGridLayout:
         adaptive_height: True
@@ -92,4 +92,7 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 class MDRecycleGridLayout(
     DeclarativeBehavior, RecycleGridLayout, MDAdaptiveWidget
 ):
-    pass
+    """
+    Recycle grid layout layout class. For more information, see in the
+    :class:`~kivy.uix.recyclegridlayout.RecycleGridLayout` class documentation.
+    """

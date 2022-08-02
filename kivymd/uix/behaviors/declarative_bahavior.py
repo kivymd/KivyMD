@@ -4,8 +4,16 @@ Behaviors/Declarative
 
 .. versionadded:: 1.0.0
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/declarative-preview.png
-    :align: center
+.. raw:: html
+
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; height: auto;">
+        <iframe
+            src="https://www.youtube.com/embed/_kiaJacLz8o"
+            frameborder="0"
+            allowfullscreen
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        </iframe>
+    </div>
 
 As you already know, the Kivy framework provides the best/simplest/modern
 UI creation tool that allows you to separate the logic of your application

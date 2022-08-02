@@ -10,7 +10,7 @@ with some widget properties. For example:
 ScrollView
 ----------
 
-.. code-block::
+.. code-block:: kv
 
     ScrollView:
 
@@ -24,7 +24,7 @@ ScrollView
 MDScrollView
 ------------
 
-.. code-block::
+.. code-block:: kv
 
     MDScrollView:
         md_bg_color: app.theme_cls.primary_color
@@ -38,4 +38,7 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 
 
 class MDScrollView(DeclarativeBehavior, ScrollView):
-    pass
+    """
+    ScrollView class. For more information, see in the
+    :class:`~kivy.uix.scrollview.ScrollView` class documentation.
+    """

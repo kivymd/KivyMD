@@ -8,7 +8,7 @@ with some widget properties. For example:
 BoxLayout
 ---------
 
-.. code-block::
+.. code-block:: kv
 
     BoxLayout:
         size_hint_y: None
@@ -24,7 +24,7 @@ BoxLayout
 MDBoxLayout
 -----------
 
-.. code-block::
+.. code-block:: kv
 
     MDBoxLayout:
         adaptive_height: True
@@ -92,4 +92,7 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 
 
 class MDBoxLayout(DeclarativeBehavior, BoxLayout, MDAdaptiveWidget):
-    pass
+    """
+    Anchor layout class. For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    """

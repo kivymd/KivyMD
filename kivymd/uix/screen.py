@@ -8,7 +8,7 @@ with some widget properties. For example:
 Screen
 ------
 
-.. code-block::
+.. code-block:: kv
 
     Screen:
         canvas:
@@ -22,7 +22,7 @@ Screen
 MDScreen
 --------
 
-.. code-block::
+.. code-block:: kv
 
     MDScreen:
         radius: [25, 0, 0, 0]
@@ -38,6 +38,12 @@ from kivymd.uix.hero import MDHeroTo
 
 
 class MDScreen(DeclarativeBehavior, Screen, MDAdaptiveWidget):
+    """
+    Screen is an element intended to be used with a
+    :class:`kivymd.uix.screenmanager.MDScreenManager`. For more information,
+    see in the :class:`~kivy.uix.screenmanager.Screen` class documentation.
+    """
+
     hero_to = ObjectProperty()
     """
     Must be a  :class:`~kivymd.uix.hero.MDHeroTo` class.

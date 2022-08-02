@@ -10,7 +10,7 @@ with some widget properties. For example:
 RecycleView
 -----------
 
-.. code-block::
+.. code-block:: kv
 
     RecycleView:
 
@@ -24,9 +24,9 @@ RecycleView
 MDRecycleView
 -------------
 
-.. code-block::
+.. code-block:: kv
 
-    RecycleView:
+    MDRecycleView:
         md_bg_color: app.theme_cls.primary_color
 """
 
@@ -38,4 +38,7 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 
 
 class MDRecycleView(DeclarativeBehavior, RecycleView):
-    pass
+    """
+    Recycle view class. For more information, see in the
+    :class:`~kivy.uix.recycleview.RecycleView` class documentation.
+    """

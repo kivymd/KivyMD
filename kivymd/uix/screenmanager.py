@@ -5,8 +5,9 @@ Components/ScreenManager
 .. versionadded:: 1.0.0
 
 :class:`~kivy.uix.screenmanager.ScreenManager` class equivalent.
-If you want to use Hero animations you need to use :class:`~kivymd.uix.screenmanager.MDScreenManager`
-not :class:`~kivy.uix.screenmanager.ScreenManager` class.
+If you want to use Hero animations you need to use
+:class:`~kivymd.uix.screenmanager.MDScreenManager` not
+:class:`~kivy.uix.screenmanager.ScreenManager` class.
 """
 
 from kivy.clock import Clock
@@ -18,14 +19,22 @@ from kivymd.uix.hero import MDHeroFrom
 
 
 class MDScreenManager(DeclarativeBehavior, ScreenManager):
+    """
+    Screen manager. This is the main class that will control your
+    :class:`~kivymd.uix.screen.MDScreen` stack and memory. For more
+    information, see in the :class:`~kivy.uix.screenmanager.ScreenManager`
+    class documentation.
+    """
+
     current_hero = StringProperty(None)
     """
-    The name of the current tag for the :class:`~kivymd.uix.hero.MDHeroFrom` and
-    :class:`~kivymd.uix.hero.MDHeroTo` objects that will be animated when
+    The name of the current tag for the :class:`~kivymd.uix.hero.MDHeroFrom`
+    and :class:`~kivymd.uix.hero.MDHeroTo` objects that will be animated when
     animating the transition between screens.
 
     See the `Hero <https://kivymd.readthedocs.io/en/latest/components/hero/>`_
-    module documentation for more information about creating and using Hero animations.
+    module documentation for more information about creating and using Hero
+    animations.
 
     :attr:`current_hero` is an :class:`~kivy.properties.StringProperty`
     and defaults to `None`.

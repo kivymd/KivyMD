@@ -56,7 +56,7 @@ Example
 
 .. code-block:: python
 
-    impoer os
+    import os
 
     from kivy.lang import Builder
 

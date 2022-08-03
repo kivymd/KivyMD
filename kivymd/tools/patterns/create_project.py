@@ -589,16 +589,16 @@ xgettext -Lpython --output=messages.pot --from-code=utf-8 \\
 .PHONY: po mo
 
 po:
-	xgettext -Lpython --output=messages.pot --from-code=utf-8 \\
+    xgettext -Lpython --output=messages.pot --from-code=utf-8 \\
 {}
-	msgmerge --update --no-fuzzy-matching --backup=off data/locales/po/en.po messages.pot
-	msgmerge --update --no-fuzzy-matching --backup=off data/locales/po/ru.po messages.pot
+    msgmerge --update --no-fuzzy-matching --backup=off data/locales/po/en.po messages.pot
+    msgmerge --update --no-fuzzy-matching --backup=off data/locales/po/ru.po messages.pot
 
 mo:
-	mkdir -p data/locales/en/LC_MESSAGES
-	mkdir -p data/locales/ru/LC_MESSAGES
-	msgfmt -c -o data/locales/en/LC_MESSAGES/%s.mo data/locales/po/en.po
-	msgfmt -c -o data/locales/ru/LC_MESSAGES/%s.mo data/locales/po/ru.po
+    mkdir -p data/locales/en/LC_MESSAGES
+    mkdir -p data/locales/ru/LC_MESSAGES
+    msgfmt -c -o data/locales/en/LC_MESSAGES/%s.mo data/locales/po/en.po
+    msgfmt -c -o data/locales/ru/LC_MESSAGES/%s.mo data/locales/po/ru.po
 """
 
 firebase_requirements = """kivy==2.1.0

@@ -76,7 +76,8 @@ def main():
     parser = create_argument_parser()
     args = parser.parse_args()
 
-    pattern_name = args.pattern
+    # pattern_name isn't used currently, will be used if new patterns is added in future
+    pattern_name = args.pattern  # noqa F841
     path_to_project = args.directory
     name_view = args.name
     use_responsive = args.use_responsive

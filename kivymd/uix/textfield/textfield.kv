@@ -1,6 +1,3 @@
-#:import images_path kivymd.images_path
-
-
 <MDTextField>
     canvas.before:
         Clear
@@ -11,16 +8,16 @@
         Ellipse:
             angle_start: 180
             angle_end: 360
-            pos: self.pos[0] - self.size[1] / 2, self.pos[1]
-            size: self.size[1], self.size[1]
+            pos: self.x - self.height / 2 + dp(18), self.y
+            size: self.height, self.height
         Ellipse:
             angle_start: 360
             angle_end: 540
-            pos: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1]
-            size: self.size[1], self.size[1]
+            pos: (self.width - dp(18)) + self.x - self.height / 2.0, self.y
+            size: self.height, self.height
         Rectangle:
-            pos: self.pos
-            size: self.size
+            pos: self.x + dp(9), self.y
+            size: self.width - dp(18), self.height
 
         Color:
             rgba:
@@ -33,30 +30,30 @@
                 (0, 0, 0, 0)
         Line:
             points:
-                self.pos[0], \
-                self.pos[1], \
-                self.pos[0] + self.size[0], \
-                self.pos[1]
+                self.x + dp(18), \
+                self.y, \
+                self.x + self.width - dp(18), \
+                self.y
         Line:
             points:
-                self.pos[0], \
-                self.pos[1] + self.size[1], \
-                self.pos[0] + self.size[0], \
-                self.pos[1] + self.size[1]
+                self.x + dp(18), \
+                self.y + self.height, \
+                self.x + self.width - dp(18), \
+                self.y + self.height
         Line:
             ellipse:
-                self.pos[0] - self.size[1] / 2, \
-                self.pos[1], \
-                self.size[1], \
-                self.size[1], \
+                self.x - self.height / 2 + dp(18), \
+                self.y, \
+                self.height, \
+                self.height, \
                 180, \
                 360
         Line:
             ellipse:
-                self.size[0] + self.pos[0] - self.size[1] / 2.0, \
-                self.pos[1], \
-                self.size[1], \
-                self.size[1], \
+                self.width + self.x - self.height / 2.0 - dp(18), \
+                self.y, \
+                self.height, \
+                self.height, \
                 360, \
                 540
 
@@ -100,7 +97,8 @@
             texture: self._helper_text_label.texture
             size: self._helper_text_label.texture_size
             pos:
-                self.x + (dp(16) if self.mode == "fill" else 0), \
+                self.x + (dp(16) if self.mode == "fill" else \
+                (0 if self.mode not in ("round", "rectangle") else dp(12))), \
                 self.y + (dp(-18) if self.mode in ("fill", "rectangle", "round") else dp(-2))
 
         # Right/left icon texture.
@@ -114,15 +112,22 @@
                 (self._icon_right_label.texture_size if self.icon_right else self._icon_left_label.texture_size)
             pos:
                 ( \
-                (self.width + self.x) - (self._icon_right_label.texture_size[1]) - dp(8), \
-                self.center[1] - self._icon_right_label.texture_size[1] / 2 + ((dp(8) if self.mode != "round" else 0) if self.mode != "fill" else 0) \
+                (self.width + self.x - (0 if self.mode != "round" else dp(4))) - \
+                (self._icon_right_label.texture_size[1]) - dp(8), \
+                self.center[1] - self._icon_right_label.texture_size[1] / 2 + ((dp(8) \
+                if self.mode != "round" else 0) if self.mode != "fill" else 0) \
                 if self.mode != "rectangle" else \
                 self.center[1] - self._icon_right_label.texture_size[1] / 2 - dp(4) \
                 ) \
                 if self.icon_right else \
                 ( \
-                self.x + (dp(0) if self.mode != "fill" else (dp(4) if not self.icon_left else dp(16))), \
-                self.center[1] - self._icon_left_label.texture_size[1] / 2 + (((dp(4) if self.mode != "round" else 0) if self.mode not in ("rectangle", "fill") else dp(8)) if self.mode != "fill" else 0) \
+                self.x + ((dp((0 if self.mode != "round" else 12)) \
+                if self.mode != "rectangle" else dp(12)) \
+                if self.mode != "fill" else (dp(4) if not self.icon_left else dp(16))), \
+
+                self.center[1] - self._icon_left_label.texture_size[1] / 2 + (((dp(4) \
+                if self.mode != "round" else 0) if self.mode not in ("rectangle", "fill") \
+                else dp(8)) if self.mode != "fill" else 0) \
                 if self.mode != "rectangle" else \
                 self.center[1] - self._icon_left_label.texture_size[1] / 2 - dp(4) \
                 )
@@ -134,7 +139,7 @@
             texture: self._max_length_label.texture
             size: self._max_length_label.texture_size
             pos:
-                self.x + self.width - self._max_length_label.texture_size[0] - (dp(12) if self.mode != "round" else dp(0)), \
+                self.x + self.width - self._max_length_label.texture_size[0] - dp(12), \
                 self.y - (dp(2) if self.mode == "line" else dp(18))
 
         # Cursor blink.
@@ -157,11 +162,16 @@
             pos:
                 ( \
                 self.x + ((dp(16) if not self.icon_left else dp(52)) \
-                if self.mode == "fill" else (0 if not self.icon_left else \
-                dp(36))) if not self.focus and not self.text else \
-                self.x + ((dp(16) if self.mode != "round" else dp(36)) if self.mode in ("fill", "rectangle", "round") and \
-                self.icon_left else 0) + self._hint_x
+                if self.mode == "fill" else ( \
+                ((0 if self.mode != "round" else dp(12)) if self.mode != "rectangle" else dp(12)) \
+                if not self.icon_left else \
+                (dp(36 if self.mode != "round" else 42) if self.mode != "rectangle" else dp(42)))) \
+                if not self.focus and not self.text else \
+                self.x + ((dp(16) if self.mode != "round" else dp(36 if not self.icon_left else 42)) \
+                if self.mode in ("fill", "rectangle", "round") and \
+                self.icon_left else (0 if self.mode != "round" else dp(12))) + self._hint_x
                 ), \
+
                 self.y + self.height + (((dp(4) if self.mode != "round" else dp(10)) \
                 if self.mode != "line" else \
                 dp(-6)) if self.mode != "rectangle" else dp(-4)) - self._hint_y
@@ -176,12 +186,14 @@
             width: dp(1) if self.mode == "rectangle" else dp(0.00001)
             points:
                 (
-                self.x + self._line_blank_space_right_point, self.top - self._hint_text_label.texture_size[1] // 2,
-                self.right + dp(12), self.top - self._hint_text_label.texture_size[1] // 2,
-                self.right + dp(12), self.y,
-                self.x - dp(12), self.y,
-                self.x - dp(12), self.top - self._hint_text_label.texture_size[1] // 2,
-                self.x + self._line_blank_space_left_point, self.top - self._hint_text_label.texture_size[1] // 2
+                self.x + self._line_blank_space_right_point,
+                self.top - self._hint_text_label.texture_size[1] // 2,
+                self.right, self.top - self._hint_text_label.texture_size[1] // 2,
+                self.right, self.y,
+                self.x, self.y,
+                self.x, self.top - self._hint_text_label.texture_size[1] // 2,
+                self.x + self._line_blank_space_left_point,
+                self.top - self._hint_text_label.texture_size[1] // 2
                 )
 
         # Text color.
@@ -197,10 +209,32 @@
     foreground_color: self.theme_cls.text_color
     bold: False
     padding:
-        (0 if not self.icon_left else "36dp") if self.mode != "fill" else ("16dp" if not self.icon_left else "52dp"), \
+        ( \
+        ((0 if self.mode != "round" else "12dp") \
+        if self.mode != "rectangle" else "12dp") \
+        if not self.icon_left else \
+        (("36dp" if self.mode != "round" else "42dp") \
+        if self.mode != "rectangle" else "42dp") \
+        ) \
+        if self.mode != "fill" else \
+        ("16dp" if not self.icon_left else "52dp"), \
+
         "24dp" if self.mode != "round" else "8dp", \
-        0 if self.mode != "fill" and not self.icon_right else ("14dp" if not self.icon_right else self._icon_right_label.texture_size[1] + dp(20)), \
-        "8dp" if self.mode == "fill" else (("22dp" if self.mode != "round" else "8dp") if self.icon_left and self.mode != "rectangle" else ("16dp" if self.mode in ("fill", "rectangle") else "20dp" if self.mode != "round" else "8dp"))
+
+        ((0 if self.mode != "round" and not self.icon_left else dp(12)) \
+        if self.mode != "rectangle" else "12dp") \
+        if self.mode != "fill" and not self.icon_right else \
+        ( \
+        "14dp" \
+        if not self.icon_right else \
+        self._icon_right_label.texture_size[1] + (dp(20) \
+        if self.mode != "round" else dp(24))), \
+
+        "8dp" if self.mode == "fill" else \
+        (("22dp" if self.mode != "round" else "8dp") \
+        if self.icon_left and self.mode != "rectangle" else \
+        ("16dp" if self.mode in ("fill", "rectangle") else \
+        "20dp" if self.mode != "round" else "8dp"))
     multiline: False
     size_hint_y: None
     height: self.minimum_height

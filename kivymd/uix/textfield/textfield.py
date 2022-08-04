@@ -1015,12 +1015,12 @@ class MDTextField(ThemableBehavior, TextInput):
 
         def on_progress(*args):
             self._line_blank_space_right_point = (
-                self._hint_text_label.width + dp(5) if not joining else 0
+                self._hint_text_label.width + dp(17) if not joining else 0
             )
 
         if self.hint_text:
             animation = Animation(
-                _line_blank_space_left_point=self._hint_text_label.x - dp(5)
+                _line_blank_space_left_point=self._hint_text_label.x - dp(-7)
                 if not joining
                 else 0,
                 duration=0.2,
@@ -1103,7 +1103,7 @@ class MDTextField(ThemableBehavior, TextInput):
                 t="out_quad",
             ).start(self)
 
-    def set_pos_hint_text(self, y: float, x: float = 0) -> None:
+    def set_pos_hint_text(self, y: float, x: float = 12) -> None:
         """Animates the x-axis width and y-axis height of the hint text."""
 
         if self.mode != "round":
@@ -1113,7 +1113,7 @@ class MDTextField(ThemableBehavior, TextInput):
                     _hint_x = x
                 else:
                     if y == dp(10):
-                        _hint_x = dp(-16)
+                        _hint_x = dp(-4)
                     else:
                         _hint_x = dp(20)
 

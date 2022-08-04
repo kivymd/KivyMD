@@ -298,8 +298,9 @@ class MDApp(BaseApp):
         from kivy.core.window import Window
         from kivy.utils import get_color_from_hex
 
-        Window.clearcolor = get_color_from_hex("#e50000")
-        scroll = Factory.ScrollView(scroll_y=0)
+        scroll = Factory.MDScrollView(
+            scroll_y=0, md_bg_color=get_color_from_hex("#e50000")
+        )
         lbl = Factory.Label(
             text_size=(Window.width - 100, None),
             size_hint_y=None,

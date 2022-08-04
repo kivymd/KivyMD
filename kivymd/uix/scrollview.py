@@ -34,10 +34,15 @@ __all__ = ("MDScrollView",)
 
 from kivy.uix.scrollview import ScrollView
 
-from kivymd.uix.behaviors import DeclarativeBehavior, SpecificBackgroundColorBehavior
+from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
+    SpecificBackgroundColorBehavior,
+)
 
 
-class MDScrollView(DeclarativeBehavior, SpecificBackgroundColorBehavior, ScrollView):
+class MDScrollView(
+    DeclarativeBehavior, SpecificBackgroundColorBehavior, ScrollView
+):
     """
     ScrollView class. For more information, see in the
     :class:`~kivy.uix.scrollview.ScrollView` class documentation.

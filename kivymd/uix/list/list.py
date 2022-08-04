@@ -889,8 +889,8 @@ class ThreeLineIconListItem(ThreeLineListItem):
 class OneLineRightIconListItem(OneLineListItem):
     _txt_right_pad = NumericProperty("40dp")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._txt_right_pad = dp(40) + m_res.HORIZ_MARGINS
 
 

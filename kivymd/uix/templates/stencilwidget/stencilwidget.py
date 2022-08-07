@@ -56,7 +56,7 @@ KivyMD
 
     from kivymd.app import MDApp
     from kivymd.uix.templates import StencilWidget
-    from kivymd.utils.fitimage import FitImage
+    from kivymd.uix.fitimage import FitImage
 
     KV = '''
     MDCarousel:

@@ -157,7 +157,7 @@ Example with FitImage
     from kivy.properties import ColorProperty
 
     from kivymd.app import MDApp
-    from kivymd.utils.fitimage import FitImage
+    from kivymd.uix.fitimage import FitImage
 
     KV = '''
     MDBoxLayout:

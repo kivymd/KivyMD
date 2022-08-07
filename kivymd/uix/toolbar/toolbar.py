@@ -946,18 +946,6 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
     and defaults to `'small'`.
     """
 
-    round = NumericProperty("10dp", deprecated=True)
-    """
-    Rounding the corners at the notch for a button.
-    Only for :class:`~MDBottomAppBar` class.
-
-    .. deprecated:: 1.0.0
-        Don't use this attribute.
-
-    :attr:`round` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `'10dp'`.
-    """
-
     # List of action buttons (ActionTopAppBarButton instance) that have been
     # .added to the overflow
     _hidden_items = []
@@ -1394,19 +1382,3 @@ class MDBottomAppBar(DeclarativeBehavior, FloatLayout):
         if isinstance(widget, MDTopAppBar):
             super().add_widget(widget)
             return super().add_widget(widget.action_button)
-
-
-class MDToolbar(MDTopAppBar):
-    """
-    .. deprecated:: 1.0.0
-
-        Use :class:`~MDTopAppBar` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `MDToolbar` class has been deprecated. Use the `MDTopAppBar` "
-            "class instead."
-        )

@@ -789,16 +789,6 @@ class IRightBodyTouch:
     events instead of triggering the ``ListItem``'s ripple effect
     """
 
-
-class ContainerSupport:
-    """
-    Overrides ``add_widget`` in a ``ListItem`` to include support
-    for ``I*Body`` widgets when the appropiate containers are present.
-
-    .. deprecated:: 1.0.0
-    """
-
-
 class OneLineListItem(BaseListItem):
     """A one line list item."""
 

@@ -651,22 +651,6 @@ class MDTabsBase(Widget):
     and defaults to `True`.
     """
 
-    text = StringProperty(deprecated=True)
-    """
-    This property is the actual title of the tab.
-    use the property :attr:`icon` and :attr:`title` to set this property
-    correctly.
-
-    This property is kept public for specific and backward compatibility
-    purposes.
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`tab_label_text` instead.
-    """
-
     tab_label_text = StringProperty()
     """
     This property is the actual title's Label of the tab.

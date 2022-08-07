@@ -637,52 +637,6 @@ class MDSwitch(ThemableBehavior, FloatLayout):
     and default to `None`.
     """
 
-    # Deprecated properties.
-
-    thumb_color = ColorProperty(None, deprecated=True)
-    """
-    The color of the thumb when the switch is inactive.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`thumb_color_inactive` instead.
-
-    :attr:`thumb_color` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    thumb_color_down = ColorProperty(None, deprecated=True)
-    """
-    The color of the thumb when the switch is inactive.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`thumb_color_active` instead.
-
-    :attr:`thumb_color_down` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    track_color = ColorProperty(None, deprecated=True)
-    """
-    The color of the track when the switch is inactive.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`track_color_inactive` instead.
-
-    :attr:`track_color` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    track_color_down = ColorProperty(None, deprecated=True)
-    """
-    The color of the track when the switch is active.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`track_color_active` instead.
-
-    :attr:`track_color_down` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
     _thumb_pos = ListProperty([0, 0])
 
     def __init__(self, **kwargs):

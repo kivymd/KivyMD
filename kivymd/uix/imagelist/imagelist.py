@@ -270,33 +270,3 @@ class MDSmartTile(MDRelativeLayout, ThemableBehavior):
                 widget.shorten = True
                 widget.shorten_from = "right"
             self.ids.box.add_widget(widget)
-
-
-class SmartTileWithLabel(MDSmartTile):
-    """
-    .. deprecated:: 1.0.0
-        Use :class:`~MDSmartTile` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `SmartTileWithLabel` class has been deprecated. "
-            "Use the `MDSmartTile` class instead`"
-        )
-
-
-class SmartTileWithStar(MDSmartTile):
-    """
-    .. deprecated:: 1.0.0
-        Use :class:`~MDSmartTile` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `SmartTileWithStar` class has been deprecated. "
-            "Use the `MDSmartTile` class instead`"
-        )

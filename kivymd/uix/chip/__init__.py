@@ -1,1 +1,1 @@
-from .chip import MDChip, MDChooseChip  # NOQA F401
+from .chip import MDChip  # NOQA F401

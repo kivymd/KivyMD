@@ -2,7 +2,6 @@
 from .list import (
     BaseListItem,
     CheckboxLeftWidget,
-    ContainerSupport,
     IconLeftWidget,
     IconLeftWidgetWithoutTouch,
     IconRightWidget,

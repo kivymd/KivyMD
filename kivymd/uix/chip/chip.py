@@ -345,17 +345,6 @@ class MDChip(
     and defaults to `''`.
     """
 
-    icon = StringProperty("checkbox-blank-circle", deprecated=True)
-    """
-    Chip icon.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`icon_right` and :attr:`icon_left` instead.
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank-circle'`.
-    """
-
     icon_left = StringProperty()
     """
     Chip left icon.
@@ -376,32 +365,11 @@ class MDChip(
     and defaults to `''`.
     """
 
-    color = ColorProperty(None, deprecated=True)
-    """
-    Chip color in ``rgba`` format.
-
-    .. deprecated:: 1.0.0
-
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
     text_color = ColorProperty(None)
     """
     Chip's text color in ``rgba`` format.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    icon_color = ColorProperty(None, deprecated=True)
-    """
-    Chip's icon color in ``rgba`` format.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`icon_right_color` and :attr:`icon_left_color` instead.
-
-    :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -432,26 +400,6 @@ class MDChip(
     .. versionadded:: 1.0.0
 
     :attr:`icon_check_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    check = BooleanProperty(False, deprecated=True)
-    """
-    If `True`, a checkmark is added to the left when touch to the chip.
-
-    .. deprecated:: 1.0.0
-
-    :attr:`check` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    selected_chip_color = ColorProperty(None, deprecated=True)
-    """
-    The color of the chip that is currently selected in ``rgba`` format.
-
-    .. deprecated:: 1.0.0
-
-    :attr:`selected_chip_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -506,15 +454,6 @@ class MDChip(
     def on_press(self, *args):
         if self.active:
             self.active = False
-
-
-class MDChooseChip(MDStackLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "MDChooseChip: "
-            "class is deprecated and will be removed in a future version"
-        )
 
 
 class MDScalableCheckIcon(MDIcon, ScaleWidget):

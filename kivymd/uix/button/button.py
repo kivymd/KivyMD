@@ -88,8 +88,6 @@ By default, the color of :class:`~MDIconButton`
 You can change the color of :class:`~MDIconButton` as the text color
 of :class:`~kivymd.uix.label.MDLabel`, substituting ``theme_icon_color`` for
 ``theme_text_color`` and ``icon_color`` for ``text_color``.
-The use of ``user_font_size``, ``text_color`` and ``theme_text_color`` for
-:class:`~MDIconButton` is deprecated.
 
 .. code-block:: kv
 
@@ -664,18 +662,6 @@ class BaseButton(
     and defaults to `None`.
     """
 
-    user_font_size = NumericProperty(0, deprecated=True)
-    """
-    Custom font size for :class:`~MDIconButton`.
-
-    .. deprecated in 1.0.0::
-
-        Use :attr:`icon_size` instead.
-
-    :attr:`user_font_size` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
-    """
-
     line_width = NumericProperty(1)
     """
     Line width for button border.
@@ -1023,12 +1009,6 @@ class ButtonContentsIcon:
 
     _min_width = NumericProperty(0)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        if self.user_font_size:
-            self.icon_size = self.user_font_size
-        self.bind(user_font_size=self.setter("icon_size"))
-
     def on_text_color(self, instance_button, color: list) -> None:
         """
         Set icon_color equal to text_color.
@@ -1232,34 +1212,6 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
 
     :attr:`icon` is a :class:`~kivy.properties.StringProperty`
     and defaults to `'checkbox-blank-circle'`.
-    """
-
-    text_color = ColorProperty(None, deprecated=True)
-    """
-    Button icon color in (r, g, b, a) format.
-
-    .. deprecated in 1.0.0::
-
-        Deprecated for :class:`~MDIconButton`. Use ``icon_color`` instead.
-
-    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    theme_text_color = OptionProperty(
-        None, options=theme_text_color_options, deprecated=True
-    )
-    """
-    Button icon type. Available options are: (`"Primary"`, `"Secondary"`,
-    `"Hint"`, `"Error"`, `"Custom"`, `"ContrastParentBackground"`).
-
-    .. deprecated in 1.0.0::
-
-        Deprecated for :class:`~MDIconButton`. Use ``theme_icon_color`` instead.
-
-
-    :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `None` (set by button class).
     """
 
     _min_width = NumericProperty(0)

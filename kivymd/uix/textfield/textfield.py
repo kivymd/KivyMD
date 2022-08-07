@@ -418,20 +418,6 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `False`.
     """
 
-    color_mode = OptionProperty(
-        "primary", options=["primary", "accent", "custom"], deprecated=True
-    )
-    """
-    Color text mode. Available options are: `'primary'`, `'accent'`,
-    `'custom'`.
-
-    .. deprecated:: 1.0.0
-        Don't use this attribute.
-
-    :attr:`color_mode` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'primary'`.
-    """
-
     mode = OptionProperty(
         "line", options=["rectangle", "round", "fill", "line"]
     )
@@ -493,18 +479,6 @@ class MDTextField(ThemableBehavior, TextInput):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    fill_color = ColorProperty([0, 0, 0, 0], deprecated=True)
-    """
-    The background color of the fill in rgba format when the ``mode`` parameter
-    is "fill".
-
-    .. deprecated:: 1.0.0
-        Use :attr:`fill_color_normal` and :attr:`fill_color_focus` instead.
-
-    :attr:`fill_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0]`.
-    """
-
     fill_color_normal = ColorProperty([0, 0, 0, 0])
     """
     Fill background color in 'fill' mode when text field is out of focus.
@@ -535,17 +509,6 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`error` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
-    """
-
-    current_hint_text_color = ColorProperty([0, 0, 0, 0], deprecated=True)
-    """
-    Hint text color.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`hint_text_color_normal` and :attr:`hint_text_color_focus` instead.
-
-    :attr:`current_hint_text_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0]`.
     """
 
     hint_text_color_normal = ColorProperty([0, 0, 0, 0])
@@ -750,28 +713,6 @@ class MDTextField(ThemableBehavior, TextInput):
 
     :attr:`icon_left` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
-    """
-
-    icon_right_color = ColorProperty([0, 0, 0, 1], deprecated=True)
-    """
-    Color of right icon in ``rgba`` format.
-
-    .. deprecated:: 1.0.0
-        Don't use this attribute.
-
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 1]`.
-    """
-
-    text_color = ColorProperty([0, 0, 0, 0], deprecated=True)
-    """
-    Text color in ``rgba`` format.
-
-    .. deprecated:: 1.0.0
-        Use :attr:`text_color_normal` and :attr:`text_color_focus` instead.
-
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0]`.
     """
 
     text_color_normal = ColorProperty([0, 0, 0, 0])
@@ -1422,21 +1363,6 @@ class MDTextField(ThemableBehavior, TextInput):
 
     def _refresh_hint_text(self):
         """Method override to avoid duplicate hint text texture."""
-
-
-class MDTextFieldRound(MDTextField):
-    """
-    .. deprecated:: 1.0.0
-        Use :class:`~MDTextField` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `MDTextFieldRound` class has been deprecated. "
-            "Use the `MDTextField` class instead with `mode='round'`"
-        )
 
 
 if __name__ == "__main__":

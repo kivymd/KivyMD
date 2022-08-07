@@ -789,6 +789,7 @@ class IRightBodyTouch:
     events instead of triggering the ``ListItem``'s ripple effect
     """
 
+
 class OneLineListItem(BaseListItem):
     """A one line list item."""
 

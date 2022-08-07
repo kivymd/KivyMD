@@ -10,64 +10,6 @@ Components/Slider
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider.png
     :align: center
-
-With value hint
----------------
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-
-    KV = '''
-    MDScreen
-
-        MDSlider:
-            min: 0
-            max: 100
-            value: 40
-    '''
-
-
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-
-    Test().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-1.gif
-    :align: center
-
-Without value hint
-------------------
-
-.. code-block:: kv
-
-    MDSlider:
-        min: 0
-        max: 100
-        value: 40
-        hint: False
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-2.gif
-    :align: center
-
-Without custom color
---------------------
-
-.. code-block:: kv
-
-    MDSlider:
-        min: 0
-        max: 100
-        value: 40
-        hint: False
-        color: app.theme_cls.accent_color
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-3.png
-    :align: center
 """
 
 __all__ = ("MDSlider",)
@@ -84,10 +26,8 @@ from kivy.properties import (
     VariableListProperty,
 )
 from kivy.uix.slider import Slider
-from kivy.utils import get_color_from_hex
 
 from kivymd import uix_path
-from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 
 with open(
@@ -97,6 +37,11 @@ with open(
 
 
 class MDSlider(ThemableBehavior, Slider):
+    """
+    Class for creating a Slider widget. See in the
+    :class:`~kivy.uix.slider.Slider` class documentation.
+    """
+
     active = BooleanProperty(False)
     """
     If the slider is clicked.
@@ -105,9 +50,33 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `False`.
     """
 
+    color = ColorProperty(None)
+    """
+    Color slider.
+
+    .. code-block:: kv
+
+        MDSlider
+            color: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-color.png
+        :align: center
+
+    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     hint = BooleanProperty(True)
     """
     If True, then the current value is displayed above the slider.
+
+    .. code-block:: kv
+
+        MDSlider
+            hint: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint.png
+        :align: center
 
     :attr:`hint` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
@@ -115,7 +84,16 @@ class MDSlider(ThemableBehavior, Slider):
 
     hint_bg_color = ColorProperty([0, 0, 0, 0])
     """
-    Hint rectangle color in ``rgba`` format.
+    Hint rectangle color in (r.g.b.a) format.
+
+    .. code-block:: kv
+
+        MDSlider
+            hint: True
+            hint_bg_color: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint-bg-color.png
+        :align: center
 
     :attr:`hint_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -123,7 +101,17 @@ class MDSlider(ThemableBehavior, Slider):
 
     hint_text_color = ColorProperty(None)
     """
-    Hint text color in ``rgba`` format.
+    Hint text color in (r.g.b.a) format.
+
+    .. code-block:: kv
+
+        MDSlider
+            hint: True
+            hint_bg_color: "red"
+            hint_text_color: "white"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint-text-color.png
+        :align: center
 
     :attr:`hint_text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -133,8 +121,130 @@ class MDSlider(ThemableBehavior, Slider):
     """
     Hint radius.
 
+    .. code-block:: kv
+
+        MDSlider
+            hint: True
+            hint_bg_color: "red"
+            hint_text_color: "white"
+            hint_radius: [6, 0, 6, 0]
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint-radius.png
+        :align: center
+
     :attr:`hint_radius` is an :class:`~kivy.properties.VariableListProperty`
     and defaults to `[dp(4), dp(4), dp(4), dp(4)]`.
+    """
+
+    thumb_color_active = ColorProperty(None)
+    """
+    The color of the thumb when the slider is active.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSlider
+            thumb_color_active: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-thumb-color-active.png
+        :align: center
+
+    :attr:`thumb_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    thumb_color_inactive = ColorProperty(None)
+    """
+    The color of the thumb when the slider is inactive.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSlider
+            thumb_color_inactive: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-thumb-color-inactive.png
+        :align: center
+
+    :attr:`thumb_color_inactive` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    thumb_color_disabled = ColorProperty(None)
+    """
+    The color of the thumb when the slider is in the disabled state.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSlider
+            value: 55
+            disabled: True
+            thumb_color_disabled: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-thumb-color-disabled.png
+        :align: center
+
+    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_active = ColorProperty(None)
+    """
+    The color of the track when the slider is active.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSlider
+            track_color_active: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-track-color-active.png
+        :align: center
+
+    :attr:`track_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_inactive = ColorProperty(None)
+    """
+    The color of the track when the slider is inactive.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSlider
+            track_color_inactive: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-track-color-inactive.png
+        :align: center
+
+    :attr:`track_color_inactive` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_disabled = ColorProperty(None)
+    """
+    The color of the track when the slider is in the disabled state.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSlider
+            disabled: True
+            track_color_disabled: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-track-color-disabled.png
+        :align: center
+
+    :attr:`track_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
     """
 
     show_off = BooleanProperty(True)
@@ -145,40 +255,20 @@ class MDSlider(ThemableBehavior, Slider):
     and defaults to `True`.
     """
 
-    color = ColorProperty([0, 0, 0, 0])
-    """
-    Color slider in ``rgba`` format.
-
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    _track_color_active = ColorProperty([0, 0, 0, 0])
-    _track_color_normal = ColorProperty([0, 0, 0, 0])
-    _track_color_disabled = ColorProperty([0, 0, 0, 0])
     _thumb_pos = ListProperty([0, 0])
-    _thumb_color_disabled = ColorProperty(
-        get_color_from_hex(colors["Gray"]["400"])
-    )
-    # Internal state of ring
+    # Internal state of ring.
     _is_off = BooleanProperty(False)
-    # Internal adjustment to reposition sliders for ring
+    # Internal adjustment to reposition sliders for ring.
     _offset = ListProperty((0, 0))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.theme_cls.bind(
-            theme_style=self._set_colors,
-            primary_color=self._set_colors,
-            primary_palette=self._set_colors,
-        )
-        self._set_colors()
         Clock.schedule_once(self.set_thumb_icon)
 
-    def set_thumb_icon(self, *args):
+    def set_thumb_icon(self, *args) -> None:
         self.ids.thumb.ids.icon.icon = "blank"
 
-    def on_hint(self, instance, value):
+    def on_hint(self, instance, value) -> None:
         def on_hint(*args):
             if not value:
                 self.remove_widget(self.ids.hint_box)
@@ -187,7 +277,7 @@ class MDSlider(ThemableBehavior, Slider):
         # Otherwise get AttributeError exception.
         Clock.schedule_once(on_hint)
 
-    def on_value_normalized(self, *args):
+    def on_value_normalized(self, *args) -> None:
         """
         When the ``value == min`` set it to `'off'` state and make slider
         a ring.
@@ -195,13 +285,13 @@ class MDSlider(ThemableBehavior, Slider):
 
         self._update_is_off()
 
-    def on_show_off(self, *args):
+    def on_show_off(self, *args) -> None:
         self._update_is_off()
 
-    def on__is_off(self, *args):
+    def on__is_off(self, *args) -> None:
         self._update_offset()
 
-    def on_active(self, *args):
+    def on_active(self, *args) -> None:
         self._update_offset()
 
     def on_touch_down(self, touch):
@@ -223,26 +313,3 @@ class MDSlider(ThemableBehavior, Slider):
 
     def _update_is_off(self):
         self._is_off = self.show_off and (self.value_normalized == 0)
-
-    def _set_colors(self, *args):
-        if self.theme_cls.theme_style == "Dark":
-            self._track_color_normal = get_color_from_hex("FFFFFF")
-            self._track_color_normal[3] = 0.3
-            self._track_color_active = self._track_color_normal
-            self._track_color_disabled = self._track_color_normal
-            if self.color == [0, 0, 0, 0]:
-                self.color = get_color_from_hex(
-                    colors[self.theme_cls.primary_palette]["200"]
-                )
-            self.thumb_color_disabled = get_color_from_hex(
-                colors["Gray"]["800"]
-            )
-        else:
-            self._track_color_normal = get_color_from_hex("000000")
-            self._track_color_normal[3] = 0.26
-            self._track_color_active = get_color_from_hex("000000")
-            self._track_color_active[3] = 0.38
-            self._track_color_disabled = get_color_from_hex("000000")
-            self._track_color_disabled[3] = 0.26
-            if self.color == [0, 0, 0, 0]:
-                self.color = self.theme_cls.primary_color

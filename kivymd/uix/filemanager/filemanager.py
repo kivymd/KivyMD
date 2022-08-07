@@ -156,9 +156,9 @@ from kivymd import images_path, uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.fitimage import FitImage
 from kivymd.uix.list import BaseListItem
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.fitimage import FitImage
 
 with open(
     os.path.join(uix_path, "filemanager", "filemanager.kv"), encoding="utf-8"

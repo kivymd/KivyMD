@@ -520,7 +520,7 @@ from kivymd.uix.behaviors import (
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.utils.fitimage import FitImage
+from kivymd.uix.fitimage import FitImage
 
 with open(
     os.path.join(uix_path, "list", "list.kv"), encoding="utf-8"

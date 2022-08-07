@@ -156,9 +156,9 @@ from kivymd import images_path, uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import BaseListItem, ContainerSupport
+from kivymd.uix.list import BaseListItem
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.utils.fitimage import FitImage
+from kivymd.uix.fitimage import FitImage
 
 with open(
     os.path.join(uix_path, "filemanager", "filemanager.kv"), encoding="utf-8"
@@ -195,7 +195,7 @@ class FloatButton(ThemableBehavior, AnchorLayout):
         self.md_bg_color = self.theme_cls.primary_color
 
 
-class ModifiedOneLineIconListItem(ContainerSupport, BaseListItem):
+class ModifiedOneLineIconListItem(BaseListItem):
     _txt_left_pad = NumericProperty("72dp")
     _txt_top_pad = NumericProperty("16dp")
     _txt_bot_pad = NumericProperty("15dp")

@@ -65,7 +65,7 @@ Implementation
     :align: center
 """
 
-__all__ = ("MDSmartTile")
+__all__ = "MDSmartTile"
 
 import os
 

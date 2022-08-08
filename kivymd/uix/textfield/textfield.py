@@ -274,7 +274,7 @@ Clickable icon for MDTextField
     See more information in the :class:`~MDTextFieldRect` class.
 """
 
-__all__ = ("MDTextField", "MDTextFieldRect", "MDTextFieldRound")
+__all__ = ("MDTextField", "MDTextFieldRect")
 
 import os
 import re

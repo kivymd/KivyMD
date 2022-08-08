@@ -327,7 +327,7 @@ Material design 3 style
     :align: center
 """
 
-__all__ = ("MDTopAppBar", "MDBottomAppBar", "MDToolbar")
+__all__ = ("MDTopAppBar", "MDBottomAppBar")
 
 import os
 from math import cos, radians, sin

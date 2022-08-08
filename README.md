@@ -8,15 +8,9 @@ graphical applications.
 
 The project's goal is to approximate Google's
 [Material Design spec](https://material.io/design/introduction/) as close as
-possible without sacrificing ease of use or application performance.
-
-This library is a fork of the [KivyMD project](https://gitlab.com/kivymd/KivyMD).
-We found the strength and brought this project to a new level.
-
-Currently we're in **beta** status, so things are changing all the time and we
-cannot promise any kind of API stability until the first version (1.0.0) is
-released. However it is safe to vendor now and make use of what's currently
-available.
+possible without sacrificing ease of use. This library is a fork of the
+[KivyMD project](https://gitlab.com/kivymd/KivyMD). We found the strength and
+brought this project to a new level.
 
 Join the project! Just fork the project, branch out and submit a pull request
 when your patch is ready. If any changes are necessary, we'll guide you through
@@ -35,7 +29,7 @@ may be offered to you without asking too.
 
 [![Discord](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)
 [![Twitter](https://img.shields.io/twitter/follow/KivyMD?label=follow&logo=twitter&style=flat&color=brightgreen)](https://twitter.com/KivyMD)
-[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=4k)](https://www.youtube.com/c/KivyMD)
+[![YouTube](https://img.shields.io/static/v1?label=subscribe&logo=youtube&logoColor=ff0000&color=brightgreen&message=4.2k)](https://www.youtube.com/c/KivyMD)
 [![Habr](https://img.shields.io/static/v1?label=habr&message=ru&logo=habr&color=brightgreen)](https://habr.com/ru/users/kivymd/posts)
 [![StackOverflow](https://img.shields.io/static/v1?label=stackoverflow%20tag&logo=stackoverflow&logoColor=fe7a16&color=brightgreen&message=kivymd)](https://stackoverflow.com/tags/kivymd)
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/kivymd)
@@ -101,15 +95,6 @@ branch, you should specify link to zip archive:
 requirements = kivy==2.1.0, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
----
-**NOTE**
-
-Until the release of the KivyMD library version 1.0.0 has been released, use
-```ini
-requirements = https://github.com/kivymd/KivyMD/archive/master.zip
-```
----
-
 Do not forget to run `buildozer android clean` or remove `.buildozer` directory
 before building if version was updated (Buildozer doesn't update already
 downloaded packages).
@@ -139,13 +124,6 @@ downloaded packages).
 ```bash
 toolchain build python3 kivy pillow
 toolchain pip install --no-deps kivymd
-```
-
-**NOTE**
-
-Until the release of the KivyMD library version 1.0.0 has been released, use
-```bash
-toolchain pip install --no-deps https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 ## Documentation
@@ -303,10 +281,6 @@ and get your logo on our Readme with a link to your website.
 <!-- FIXME: sponsors are not displayed -->
 
 <a href="https://opencollective.com/peter-surda?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1.png?requireActive=false"></a>
-<a href="https://opencollective.com/github-sponsors?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-4.png?requireActive=false"></a>
-<a href="https://opencollective.com/lukas-sliacky?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-2.png?requireActive=false"></a>
-<a href="https://opencollective.com/tom-mclaughlin?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-3.png?requireActive=false"></a>
-<a href="https://opencollective.com/kivymd/gold-sponsor/1/website?requireActive=false" target="_blank"><img src="https://opencollective.com/kivymd/gold-sponsor/1/avatar.svg?requireActive=false"></a>
 
 #### Backers
 

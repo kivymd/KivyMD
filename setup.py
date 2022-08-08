@@ -64,14 +64,13 @@ def write_version_info():
 
 def glob_paths(pattern):
     out_files = []
-
     src_path = os.path.join(os.path.dirname(__file__), "kivymd")
 
     for root, dirs, files in os.walk(src_path):
         for file in files:
             if file.endswith(pattern):
                 filepath = os.path.join(str(Path(*Path(root).parts[1:])), file)
-                out_files.append(filepath)
+                out_files.append(filepath.split(f"kivymd{os.sep}")[1])
 
     return out_files
 

@@ -712,7 +712,6 @@ class MDTabsBase(Widget):
             icon=self._update_text,
             title=self._update_text,
             title_icon_mode=self._update_text,
-            text=self.update_label_text,
             tab_label_text=self.update_label_text,
             title_is_capital=self.update_label_text,
         )
@@ -732,7 +731,7 @@ class MDTabsBase(Widget):
             self.tab_label_text = f"[size=24sp][font={fonts[-1]['fn_regular']}]{md_icons[self.icon]}[/size][/font]"
             if self.title:
                 self.tab_label_text = (
-                    self.text
+                    self.tab_label_text
                     + (" " if self.title_icon_mode == "Lead" else "\n")
                     + self.title
                 )
@@ -759,10 +758,7 @@ class MDTabsBase(Widget):
         self.update_label_text(None, self.tab_label_text)
 
     def update_label_text(self, instance_user_tab, text_tab: str) -> None:
-        self.tab_label.text = self.text = self.tab_label_text
-
-    def on_text(self, instance_user_tab, text_tab: str) -> None:
-        self.tab_label_text = self.text
+        self.tab_label.text = text_tab
 
 
 class MDTabsMain(MDBoxLayout):

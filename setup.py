@@ -118,6 +118,7 @@ if __name__ == "__main__":
                 "furo",
                 "sphinx-notfound-page",
                 "sphinx-copybutton",
+                "sphinx-tabs",
             ],
         },
         install_requires=["kivy>=2.0.0", "pillow"],

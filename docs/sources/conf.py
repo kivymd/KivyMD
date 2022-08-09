@@ -51,6 +51,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "autoapi_kivymd",
     "sphinx.ext.intersphinx",
+    "sphinx_copybutton",
     "kivy_lexer",
     "toctree_with_sort",
 ]

@@ -13,14 +13,13 @@ Installation
     pip install kivymd
 
 Command above will install latest release version of KivyMD from `PyPI <https://pypi.org/project/kivymd>`_.
-
 If you want to install development version from `master <https://github.com/kivymd/KivyMD/tree/master/>`_
 branch, you should specify link to zip archive:
 
     pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
-**_Tip_**: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
-download KivyMD from specific commit.
+.. note:: Replace `master.zip` with `<commit hash>.zip` (eg `51b8ef0.zip`) to
+    download KivyMD from specific commit.
 
 Also you can install manually from sources. Just clone the project and run pip::
 
@@ -28,13 +27,9 @@ Also you can install manually from sources. Just clone the project and run pip::
     cd KivyMD
     pip install .
 
-**_Speed Tip_**: If you don't need full commit history (about 320 MiB), you can
-use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
-to save time. If you need full commit history, then remove `--depth 1`.
-
-.. info:: `KivyMD` depends on `Kivy`!
-    Until a stable version of the `KivyMD` library (above version 1.0.0) is available in `PyPi`,
-    we recommend installing the `KivyMD` library from the master branch.
+.. note:: If you don't need full commit history (about 320 MiB), you can use a
+    shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
+    to save time. If you need full commit history, then remove `--depth 1`.
 
 First KivyMD application
 ------------------------
@@ -70,9 +65,11 @@ First KivyMD application
 .. rubric:: To left - `Kivy`, to right - `KivyMD`:
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hello-world.png
+    :align: center
 
 At first glance, the `KivyMD` example contains more code...
-However, the following example already demonstrates how difficult it is to create a custom button in `Kivy`:
+However, the following example already demonstrates how difficult it is to
+create a custom button in `Kivy`:
 
 .. code-block:: python
 
@@ -81,9 +78,12 @@ However, the following example already demonstrates how difficult it is to creat
     from kivy.uix.behaviors import TouchRippleBehavior
     from kivy.uix.button import Button
     from kivy.lang import Builder
-
+    from kivy.utils import get_color_from_hex
 
     KV = """
+    #:import get_color_from_hex kivy.utils.get_color_from_hex
+
+
     <RectangleFlatButton>:
         ripple_color: 0, 0, 0, .2
         background_color: 0, 0, 0, 0
@@ -99,7 +99,7 @@ However, the following example already demonstrates how difficult it is to creat
     Screen:
         canvas:
             Color:
-                rgba: 0.9764705882352941, 0.9764705882352941, 0.9764705882352941, 1
+                rgba: get_color_from_hex("#0F0F0F")
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -107,12 +107,7 @@ However, the following example already demonstrates how difficult it is to creat
 
 
     class RectangleFlatButton(TouchRippleBehavior, Button):
-        primary_color = [
-            0.12941176470588237,
-            0.5882352941176471,
-            0.9529411764705882,
-            1
-        ]
+        primary_color = get_color_from_hex("#EB8933")
 
         def on_touch_down(self, touch):
             collide_point = self.collide_point(touch.x, touch.y)
@@ -151,26 +146,34 @@ However, the following example already demonstrates how difficult it is to creat
 
 .. code-block:: python
 
-    from kivy.uix.screenmanager import Screen
-
     from kivymd.app import MDApp
+    from kivymd.uix.screen import MDScreen
     from kivymd.uix.button import MDRectangleFlatButton
 
 
     class MainApp(MDApp):
         def build(self):
-            screen = Screen()
-            screen.add_widget(
-                MDRectangleFlatButton(
-                    text="Hello, World",
-                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
+
+            return (
+                MDScreen(
+                    MDRectangleFlatButton(
+                        text="Hello, World",
+                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                    )
                 )
             )
-            return screen
 
 
     MainApp().run()
 
-.. rubric:: To left - `Kivy`, to right - `KivyMD`:
+.. rubric:: `KivyMD`:
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/kivy-kivymd-rectangle-button-example.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/kivymd-ripple-rectangle-button.gif
+    :align: center
+
+.. rubric:: `Kivy`:
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/kivy-ripple-rectangle-button.gif
+    :align: center

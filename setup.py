@@ -126,6 +126,11 @@ if __name__ == "__main__":
             "pyinstaller40": [
                 "hook-dirs = kivymd.tools.packaging.pyinstaller:get_hook_dirs",
                 "tests = kivymd.tools.packaging.pyinstaller:get_pyinstaller_tests",
+            ],
+            "console_scripts": [
+                "add_view = kivymd.tools.patterns.add_view:main",
+                "create_project = kivymd.tools.patterns.create_project:main",
+                "make_release = kivymd.tools.release.make_release:main",
             ]
         },
     )

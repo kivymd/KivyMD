@@ -70,7 +70,12 @@ def glob_paths(pattern):
         for file in files:
             if file.endswith(pattern):
                 filepath = os.path.join(str(Path(*Path(root).parts[1:])), file)
-                out_files.append(filepath.split(f"kivymd{os.sep}")[1])
+
+                # FIXME: https://github.com/kivymd/KivyMD/issues/1305
+                try:
+                    out_files.append(filepath.split(f"kivymd{os.sep}")[1])
+                except IndexError:
+                    out_files.append(filepath)
 
     return out_files
 

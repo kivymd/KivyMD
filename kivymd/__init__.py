@@ -9,23 +9,16 @@ Is a collection of Material Design compliant widgets for use with,
 a framework for cross-platform, touch-enabled graphical applications.
 The project's goal is to approximate Google's `Material Design spec
 <https://material.io/design/introduction>`_ as close as possible without
-sacrificing ease of use or application performance.
+sacrificing ease of use.
 
 This library is a fork of the `KivyMD project
-<https://gitlab.com/kivymd/KivyMD>`_ the author of which stopped supporting
-this project three years ago. We found the strength and brought this project
-to a new level. Currently we're in **beta** status, so things are changing
-all the time and we cannot promise any kind of API stability.
-However it is safe to vendor now and make use of what's currently available.
+<https://gitlab.com/kivymd/KivyMD>`_. We found the strength and brought this
+project to a new level.
 
-Join the project! Just fork the project, branch out and submit a pull request
-when your patch is ready. If any changes are necessary, we'll guide you
-through the steps that need to be done via PR comments or access to your for
-may be requested to outright submit them. If you wish to become a project
-developer (permission to create branches on the project without forking for
-easier collaboration), have at least one PR approved and ask for it.
-If you contribute regularly to the project the role may be offered to you
-without asking too.
+If you wish to become a project developer (permission to create branches on the
+project without forking for easier collaboration), have at least one PR
+approved and ask for it. If you contribute regularly to the project the role
+may be offered to you without asking too.
 """
 
 import os

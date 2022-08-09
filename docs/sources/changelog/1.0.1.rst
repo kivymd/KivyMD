@@ -1,0 +1,11 @@
+1.0.1
+------
+
+    See on GitHub: `tag 1.0.1 <https://github.com/kivymd/KivyMD/tree/1.0.1>`_ | `compare 1.0.0/1.0.1 <https://github.com/kivymd/KivyMD/compare/1.0.0...1.0.1>`_
+
+    .. code-block:: bash
+
+       pip install kivymd==1.0.1
+
+* Bug fixes and other minor improvements.
+* Fix https://github.com/kivymd/KivyMD/issues/1305.

@@ -1,4 +1,4 @@
-# KivyMD [1.0.0](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
+# KivyMD [1.0.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
 <img align="right" height="256" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_logo_blue.png"/>
 
@@ -43,7 +43,7 @@ may be offered to you without asking too.
 ## Installation
 
 ```bash
-pip install kivymd==1.0.0
+pip install kivymd==1.0.1
 ```
 
 ### Dependencies:
@@ -83,7 +83,7 @@ to save time. If you need full commit history, then remove `--depth 1`.
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini
-requirements = kivy==2.1.0, kivymd==1.0.0, sdl2_ttf == 2.0.15, pillow
+requirements = kivy==2.1.0, kivymd==1.0.1, sdl2_ttf == 2.0.15, pillow
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).

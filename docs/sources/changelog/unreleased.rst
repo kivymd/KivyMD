@@ -8,3 +8,4 @@ Unreleased
        pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
+* Added a button to copy the code to the documentation.

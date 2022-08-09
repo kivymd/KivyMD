@@ -117,6 +117,7 @@ if __name__ == "__main__":
                 "sphinx-autoapi==1.4.0",
                 "furo",
                 "sphinx-notfound-page",
+                "sphinx-copybutton",
             ],
         },
         install_requires=["kivy>=2.0.0", "pillow"],

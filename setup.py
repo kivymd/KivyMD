@@ -128,9 +128,9 @@ if __name__ == "__main__":
                 "tests = kivymd.tools.packaging.pyinstaller:get_pyinstaller_tests",
             ],
             "console_scripts": [
-                "add_view = kivymd.tools.patterns.add_view:main",
-                "create_project = kivymd.tools.patterns.create_project:main",
-                "make_release = kivymd.tools.release.make_release:main",
+                "kivymd.add_view = kivymd.tools.patterns.add_view:main",
+                "kivymd.create_project = kivymd.tools.patterns.create_project:main",
+                "kivymd.make_release = kivymd.tools.release.make_release:main",
             ]
         },
     )

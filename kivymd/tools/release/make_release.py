@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2021 Artem Bulgakov
+# Copyright (c) 2019-2022 Artem Bulgakov
 #
 # This file is distributed under the terms of the same license,
 # as the Kivy framework.

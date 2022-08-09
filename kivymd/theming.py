@@ -9,16 +9,18 @@ Themes/Theming
 Material App
 ------------
 
-The main class of your application, which in `Kivy` inherits from the App class,
-in `KivyMD` must inherit from the `MDApp` class. The `MDApp` class has
-properties that allow you to control application properties
-such as :attr:`color/style/font` of interface elements and much more.
+The main class of your application, which in `Kivy` inherits from the
+:class:`~kivy.app.App` class, in `KivyMD` must inherit from the
+:class:`~kivymd.app.MDApp` class. The :class:`~kivymd.app.MDApp` class has
+properties that allow you to control application properties such as
+:attr:`color/style/font` of interface elements and much more.
 
 Control material properties
 ---------------------------
 
-The main application class inherited from the `MDApp` class has the :attr:`theme_cls`
-attribute, with which you control the material properties of your application.
+The main application class inherited from the :class:`~kivymd.app.MDApp` class
+has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
+the material properties of your application.
 
 Changing the theme colors
 -------------------------
@@ -36,137 +38,178 @@ the `colors <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#m
 object in `color_definitions.py` and contain definitions for at least the
 primary color, the accent color and the Light and Dark backgrounds.
 
-.. note:: Your custom colors *must* use the names of the `existing colors as
-    defined in the palette<https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
+.. note:: Your custom colors *must* use the names of the
+    `existing colors as defined in the palette <https://kivymd.readthedocs.io/en/latest/themes/color-definitions/#kivymd.color_definitions.palette>`_
     e.g. You can have `Blue` but you cannot have `NavyBlue`.
 
-Add the custom theme to the MDApp as shown in the following snippet.
+Add the custom theme to the :class:`~kivymd.app.MDApp` as shown in the
+following snippet.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import ObjectProperty
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.floatlayout import MDFloatLayout
-    from kivymd.uix.tab import MDTabsBase
-    from kivymd.icon_definitions import md_icons
+        .. code-block:: python
 
-    colors = {
-        "Teal": {
-            "50": "e4f8f9",
-            "100": "bdedf0",
-            "200": "97e2e8",
-            "300": "79d5de",
-            "400": "6dcbd6",
-            "500": "6ac2cf",
-            "600": "63b2bc",
-            "700": "5b9ca3",
-            "800": "54888c",
-            "900": "486363",
-            "A100": "bdedf0",
-            "A200": "97e2e8",
-            "A400": "6dcbd6",
-            "A700": "5b9ca3",
-        },
-        "Blue": {
-            "50": "e3f3f8",
-            "100": "b9e1ee",
-            "200": "91cee3",
-            "300": "72bad6",
-            "400": "62acce",
-            "500": "589fc6",
-            "600": "5191b8",
-            "700": "487fa5",
-            "800": "426f91",
-            "900": "35506d",
-            "A100": "b9e1ee",
-            "A200": "91cee3",
-            "A400": "62acce",
-            "A700": "487fa5",
-        },
-        "Red": {
-            "50": "FFEBEE",
-            "100": "FFCDD2",
-            "200": "EF9A9A",
-            "300": "E57373",
-            "400": "EF5350",
-            "500": "F44336",
-            "600": "E53935",
-            "700": "D32F2F",
-            "800": "C62828",
-            "900": "B71C1C",
-            "A100": "FF8A80",
-            "A200": "FF5252",
-            "A400": "FF1744",
-            "A700": "D50000",
-        },
-        "Light": {
-            "StatusBar": "E0E0E0",
-            "AppBar": "F5F5F5",
-            "Background": "FAFAFA",
-            "CardsDialogs": "FFFFFF",
-            "FlatButtonDown": "cccccc",
-        },
-        "Dark": {
-            "StatusBar": "000000",
-            "AppBar": "212121",
-            "Background": "303030",
-            "CardsDialogs": "424242",
-            "FlatButtonDown": "999999",
-        }
-    }
+            from kivy.lang import Builder
+            from kivy.properties import ObjectProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.tab import MDTabsBase
+            from kivymd.icon_definitions import md_icons
+
+            colors = {
+                "Teal": {
+                    "200": "#212121",
+                    "500": "#212121",
+                    "700": "#212121",
+                },
+                "Red": {
+                    "200": "#C25554",
+                    "500": "#C25554",
+                    "700": "#C25554",
+                },
+                "Light": {
+                    "StatusBar": "E0E0E0",
+                    "AppBar": "#202020",
+                    "Background": "#2E3032",
+                    "CardsDialogs": "#FFFFFF",
+                    "FlatButtonDown": "#CCCCCC",
+                },
+            }
 
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
 
-        MDTopAppBar:
-            title: "Example Tabs"
+                MDTopAppBar:
+                    title: "Custom theme"
 
-        MDTabs:
-            id: tabs
-
-
-    <Tab>
-
-        MDIconButton:
-            id: icon
-            icon: root.icon
-            user_font_size: "48sp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+                MDTabs:
+                    id: tabs
 
 
-    class Tab(MDFloatLayout, MDTabsBase):
-        '''Class implementing content for a tab.'''
+            <Tab>
 
-        icon = ObjectProperty()
-
-
-    class Example(MDApp):
-        icons = list(md_icons.keys())[15:30]
-
-        def build(self):
-            self.theme_cls.colors = colors
-            self.theme_cls.primary_palette = "Blue"
-            self.theme_cls.accent_palette = "Teal"
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for name_tab in self.icons:
-                tab = Tab(text="This is " + name_tab, icon=name_tab)
-                self.root.ids.tabs.add_widget(tab)
+                MDIconButton:
+                    id: icon
+                    icon: root.icon
+                    icon_size: "48sp"
+                    theme_icon_color: "Custom"
+                    icon_color: "white"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+            '''
 
 
-    Example().run()
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
 
-This will change the theme colors to your custom defintion. In all other
+                icon = ObjectProperty()
+
+
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.colors = colors
+                    self.theme_cls.primary_palette = "Teal"
+                    self.theme_cls.accent_palette = "Red"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for name_tab in self.icons:
+                        tab = Tab(title="This is " + name_tab, icon=name_tab)
+                        self.root.ids.tabs.add_widget(tab)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.properties import ObjectProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.toolbar import MDTopAppBar
+
+            colors = {
+                "Teal": {
+                    "200": "#212121",
+                    "500": "#212121",
+                    "700": "#212121",
+                },
+                "Red": {
+                    "200": "#C25554",
+                    "500": "#C25554",
+                    "700": "#C25554",
+                },
+                "Light": {
+                    "StatusBar": "E0E0E0",
+                    "AppBar": "#202020",
+                    "Background": "#2E3032",
+                    "CardsDialogs": "#FFFFFF",
+                    "FlatButtonDown": "#CCCCCC",
+                },
+            }
+
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
+
+                icon = ObjectProperty()
+
+
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.colors = colors
+                    self.theme_cls.primary_palette = "Teal"
+                    self.theme_cls.accent_palette = "Red"
+
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Custom theme"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
+                    )
+
+                def on_start(self):
+                    for name_tab in self.icons:
+                        self.root.ids.tabs.add_widget(
+                            Tab(
+                                MDIconButton(
+                                    icon=name_tab,
+                                    icon_size="48sp",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                ),
+                                title="This is " + name_tab,
+                                icon=name_tab,
+                            )
+                        )
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/custom-color.png
+    :align: center
+
+This will change the theme colors to your custom definition. In all other
 respects, the theming stays as documented.
 
 .. warning:: Please note that the key ``'Red'`` is a required key for the
-    dictionary ``colors``.
+    dictionary :attr:`kivymd.color_definition.colors`.
 """
 
 
@@ -207,29 +250,63 @@ class ThemeManager(EventDispatcher):
 
     To change the color scheme of an application:
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivymd.app import MDApp
-        from kivymd.uix.screen import MDScreen
-        from kivymd.uix.button import MDRectangleFlatButton
+        .. tab:: Imperative python style with KV
+
+            .. code-block:: python
+
+                from kivy.lang import Builder
+
+                from kivymd.app import MDApp
+
+                KV = '''
+                MDScreen:
+
+                    MDRectangleFlatButton:
+                        text: "Hello, World"
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                '''
 
 
-        class MainApp(MDApp):
-            def build(self):
-                self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
-                screen = MDScreen()
-                screen.add_widget(
-                    MDRectangleFlatButton(
-                        text="Hello, World",
-                        pos_hint={"center_x": 0.5, "center_y": 0.5},
-                    )
-                )
-                return screen
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Red"  # "Purple", "Red"
+
+                        return Builder.load_string(KV)
 
 
-        MainApp().run()
+                Example().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDRectangleFlatButton
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"  # "Purple", "Red"
+
+                        return (
+                            MDScreen(
+                                MDRectangleFlatButton(
+                                    text="Hello, World",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                )
+                            )
+                        )
+
+
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-palette.png
+        :align: center
 
     :attr:`primary_palette` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Blue'`.
@@ -244,36 +321,64 @@ class ThemeManager(EventDispatcher):
 
     To change the hue color scheme of an application:
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivymd.app import MDApp
-        from kivymd.uix.screen import MDScreen
-        from kivymd.uix.button import MDRectangleFlatButton
+        .. tab:: Imperative python style with KV
 
+            .. code-block:: python
 
-        class MainApp(MDApp):
-            def build(self):
-                self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
-                self.theme_cls.primary_hue = "200"  # "500"
-                screen = MDScreen()
-                screen.add_widget(
-                    MDRectangleFlatButton(
-                        text="Hello, World",
-                        pos_hint={"center_x": 0.5, "center_y": 0.5},
-                    )
-                )
-                return screen
+                from kivymd.app import MDApp
+                from kivymd.uix.screen import MDScreen
+                from kivymd.uix.button import MDRectangleFlatButton
 
 
-        MainApp().run()
+                class MainApp(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Orange"
+                        self.theme_cls.primary_hue = "200"  # "500"
+                        screen = MDScreen()
+                        screen.add_widget(
+                            MDRectangleFlatButton(
+                                text="Hello, World",
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            )
+                        )
+                        return screen
 
-    With a value of ``self.theme_cls.primary_hue = "500"``:
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-palette.png
+                MainApp().run()
 
-    With a value of ``self.theme_cls.primary_hue = "200"``:
+        .. tab:: Declarative python style
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-hue.png
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDRectangleFlatButton
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Orange"
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_hue = "200"  # "500"
+
+                        return (
+                            MDScreen(
+                                MDRectangleFlatButton(
+                                    text="Hello, World",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                )
+                            )
+                        )
+
+
+                Example().run()
+
+    With a value of ``self.theme_cls.primary_hue = "200"`` and ``self.theme_cls.primary_hue = "500"``:
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary_hue.png
+        :align: center
 
     :attr:`primary_hue` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'500'`.
@@ -304,7 +409,7 @@ class ThemeManager(EventDispatcher):
         _get_primary_color, bind=("primary_palette", "primary_hue")
     )
     """
-    The color of the current application theme in ``rgba`` format.
+    The color of the current application theme.
 
     :attr:`primary_color` is an :class:`~kivy.properties.AliasProperty` that
     returns the value of the current application theme, property is readonly.
@@ -319,42 +424,82 @@ class ThemeManager(EventDispatcher):
         _get_primary_light, bind=("primary_palette", "primary_light_hue")
     )
     """
-    Colors of the current application color theme in ``rgba`` format
-    (in lighter color).
+    Colors of the current application color theme (in lighter color).
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivy.lang import Builder
+        .. tab:: Declarative style with KV
 
-        from kivymd.app import MDApp
+            .. code-block:: python
 
+                from kivy.lang import Builder
 
-        KV = '''
-        MDScreen:
-
-            MDRaisedButton:
-                text: "primary_light"
-                pos_hint: {"center_x": 0.5, "center_y": 0.7}
-                md_bg_color: app.theme_cls.primary_light
-
-            MDRaisedButton:
-                text: "primary_color"
-                pos_hint: {"center_x": 0.5, "center_y": 0.5}
-
-            MDRaisedButton:
-                text: "primary_dark"
-                pos_hint: {"center_x": 0.5, "center_y": 0.3}
-                md_bg_color: app.theme_cls.primary_dark
-        '''
+                from kivymd.app import MDApp
 
 
-        class MainApp(MDApp):
-            def build(self):
-                self.theme_cls.primary_palette = "Green"
-                return Builder.load_string(KV)
+                KV = '''
+                MDScreen:
+
+                    MDRaisedButton:
+                        text: "primary_light"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+                        md_bg_color: app.theme_cls.primary_light
+
+                    MDRaisedButton:
+                        text: "primary_color"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                    MDRaisedButton:
+                        text: "primary_dark"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.3}
+                        md_bg_color: app.theme_cls.primary_dark
+                '''
 
 
-        MainApp().run()
+                class MainApp(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Orange"
+                        self.theme_cls.theme_style = "Dark"
+                        return Builder.load_string(KV)
+
+
+                MainApp().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDRaisedButton
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Orange"
+                        self.theme_cls.theme_style = "Dark"
+
+                        return (
+                            MDScreen(
+                                MDRaisedButton(
+                                    text="Primary light",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.7},
+                                    md_bg_color=self.theme_cls.primary_light,
+                                ),
+                                MDRaisedButton(
+                                    text="Primary color",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                ),
+                                MDRaisedButton(
+                                    text="Primary dark",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.3},
+                                    md_bg_color=self.theme_cls.primary_dark,
+                                ),
+                            )
+                        )
+
+
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-colors-light-dark.png
         :align: center
@@ -373,8 +518,7 @@ class ThemeManager(EventDispatcher):
         _get_primary_dark, bind=("primary_palette", "primary_dark_hue")
     )
     """
-    Colors of the current application color theme
-    in ``rgba`` format (in darker color).
+    Colors of the current application color theme (in darker color).
 
     :attr:`primary_dark` is an :class:`~kivy.properties.AliasProperty` that
     returns the value of the current application theme (in darker color),
@@ -384,12 +528,8 @@ class ThemeManager(EventDispatcher):
     accent_palette = OptionProperty("Amber", options=palette)
     """
     The application color palette used for items such as the tab indicator
-    in the :attr:`MDTabsBar` class and so on...
-
-    The image below shows the color schemes with the values
-    ``self.theme_cls.accent_palette = 'Blue'``, ``Red'`` and ``Yellow'``:
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/accent-palette.png
+    in the :class:`~kivymd.uix.tab.MDTabsBar` class and so on.
+    See :attr:`kivymd.uix.tab.MDTabsBar.indicator_color` attribute.
 
     :attr:`accent_palette` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Amber'`.
@@ -397,8 +537,7 @@ class ThemeManager(EventDispatcher):
 
     accent_hue = OptionProperty("500", options=hue)
     """
-    Similar to :attr:`primary_hue`,
-    but returns a value for :attr:`accent_palette`.
+    Similar to :attr:`primary_hue`, but returns a value for :attr:`accent_palette`.
 
     :attr:`accent_hue` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'500'`.
@@ -429,12 +568,11 @@ class ThemeManager(EventDispatcher):
         _get_accent_color, bind=["accent_palette", "accent_hue"]
     )
     """
-    Similar to :attr:`primary_color`, but returns a value
-    for :attr:`accent_color`.
+    Similar to :attr:`primary_color`, but returns a value for :attr:`accent_color`.
 
     :attr:`accent_color` is an :class:`~kivy.properties.AliasProperty` that
-    returns the value in ``rgba`` format for :attr:`accent_color`,
-    property is readonly.
+    returns the value in ``rgba`` format for :attr:`accent_color`, property is
+    readonly.
     """
 
     def _get_accent_light(self) -> list:
@@ -446,12 +584,11 @@ class ThemeManager(EventDispatcher):
         _get_accent_light, bind=["accent_palette", "accent_light_hue"]
     )
     """
-    Similar to :attr:`primary_light`, but returns a value
-    for :attr:`accent_light`.
+    Similar to :attr:`primary_light`, but returns a value for :attr:`accent_light`.
 
     :attr:`accent_light` is an :class:`~kivy.properties.AliasProperty` that
-    returns the value in ``rgba`` format for :attr:`accent_light`,
-    property is readonly.
+    returns the value in ``rgba`` format for :attr:`accent_light`, property is
+    readonly.
     """
 
     def _get_accent_dark(self) -> list:
@@ -463,12 +600,11 @@ class ThemeManager(EventDispatcher):
         _get_accent_dark, bind=["accent_palette", "accent_dark_hue"]
     )
     """
-    Similar to :attr:`primary_dark`, but returns a value
-    for :attr:`accent_dark`.
+    Similar to :attr:`primary_dark`, but returns a value for :attr:`accent_dark`.
 
     :attr:`accent_dark` is an :class:`~kivy.properties.AliasProperty` that
-    returns the value in ``rgba`` format for :attr:`accent_dark`,
-    property is readonly.
+    returns the value in ``rgba`` format for :attr:`accent_dark`, property is
+    readonly.
     """
 
     material_style = OptionProperty("M2", options=["M2", "M3"])
@@ -492,29 +628,61 @@ class ThemeManager(EventDispatcher):
     """
     App theme style.
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivymd.app import MDApp
-        from kivymd.uix.screen import MDScreen
-        from kivymd.uix.button import MDRectangleFlatButton
+        .. tab:: Imperative python style
 
+            .. code-block:: python
 
-        class MainApp(MDApp):
-            def build(self):
-                self.theme_cls.theme_style = "Dark"  # "Light"
-                screen = MDScreen()
-                screen.add_widget(
-                    MDRectangleFlatButton(
-                        text="Hello, World",
-                        pos_hint={"center_x": 0.5, "center_y": 0.5},
-                    )
-                )
-                return screen
+                from kivymd.app import MDApp
+                from kivymd.uix.screen import MDScreen
+                from kivymd.uix.button import MDRectangleFlatButton
 
 
-        MainApp().run()
+                class MainApp(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Orange"
+                        self.theme_cls.theme_style = "Dark"  # "Light"
+                        screen = MDScreen()
+                        screen.add_widget(
+                            MDRectangleFlatButton(
+                                text="Hello, World",
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            )
+                        )
+                        return screen
+
+
+                MainApp().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDRectangleFlatButton
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Orange"
+                        self.theme_cls.theme_style = "Dark"  # "Light"
+
+                        return (
+                            MDScreen(
+                                MDRectangleFlatButton(
+                                    text="Hello, World",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                ),
+                            )
+                        )
+
+
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/theme-style.png
+        :align: center
 
     :attr:`theme_style` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'Light'`.
@@ -538,38 +706,76 @@ class ThemeManager(EventDispatcher):
     Similar to :attr:`bg_dark`,
     but the color values are a tone lower (darker) than :attr:`bg_dark`.
 
-    .. code-block:: python
+    .. tabs::
 
-        KV = '''
-        MDBoxLayout:
+        .. tab:: Declarative style with KV
 
-            MDBoxLayout:
-                md_bg_color: app.theme_cls.bg_light
+            .. code-block:: python
 
-            MDBoxLayout:
-                md_bg_color: app.theme_cls.bg_normal
+                from kivy.lang import Builder
 
-            MDBoxLayout:
-                md_bg_color: app.theme_cls.bg_dark
+                from kivymd.app import MDApp
 
-            MDBoxLayout:
-                md_bg_color: app.theme_cls.bg_darkest
-        '''
+                KV = '''
+                MDBoxLayout:
 
-        from kivy.lang import Builder
+                    MDWidget:
+                        md_bg_color: app.theme_cls.bg_light
 
-        from kivymd.app import MDApp
+                    MDBoxLayout:
+                        md_bg_color: app.theme_cls.bg_normal
 
+                    MDBoxLayout:
+                        md_bg_color: app.theme_cls.bg_dark
 
-        class MainApp(MDApp):
-            def build(self):
-                self.theme_cls.theme_style = "Dark"  # "Light"
-                return Builder.load_string(KV)
+                    MDBoxLayout:
+                        md_bg_color: app.theme_cls.bg_darkest
+                '''
 
 
-        MainApp().run()
+                class MainApp(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"  # "Light"
+                        return Builder.load_string(KV)
+
+
+                MainApp().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.boxlayout import MDBoxLayout
+                from kivymd.uix.widget import MDWidget
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"  # "Light"
+
+                        return (
+                            MDBoxLayout(
+                                MDWidget(
+                                    md_bg_color=self.theme_cls.bg_light,
+                                ),
+                                MDWidget(
+                                    md_bg_color=self.theme_cls.bg_normal,
+                                ),
+                                MDWidget(
+                                    md_bg_color=self.theme_cls.bg_dark,
+                                ),
+                                MDWidget(
+                                    md_bg_color=self.theme_cls.bg_darkest,
+                                ),
+                            )
+                        )
+
+
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bg-normal-dark-darkest.png
+        :align: center
 
     :attr:`bg_darkest` is an :class:`~kivy.properties.AliasProperty` that
     returns the value in ``rgba`` format for :attr:`bg_darkest`,
@@ -1009,45 +1215,93 @@ class ThemeManager(EventDispatcher):
     """
     Data of default font styles.
 
-    Add custom font:
+    Add custom font
+    ---------------
 
-    .. code-block:: python
+    .. tabs::
 
-        KV = '''
-        MDScreen:
+        .. tab:: Declarative style with KV
 
-            MDLabel:
-                text: "JetBrainsMono"
-                halign: "center"
-                font_style: "JetBrainsMono"
-        '''
+            .. code-block:: python
 
-        from kivy.core.text import LabelBase
-        from kivy.lang import Builder
+                from kivy.core.text import LabelBase
+                from kivy.lang import Builder
 
-        from kivymd.app import MDApp
-        from kivymd.font_definitions import theme_font_styles
+                from kivymd.app import MDApp
+                from kivymd.font_definitions import theme_font_styles
 
+                KV = '''
+                MDScreen:
 
-        class MainApp(MDApp):
-            def build(self):
-                LabelBase.register(
-                    name="JetBrainsMono",
-                    fn_regular="JetBrainsMono-Regular.ttf")
-
-                theme_font_styles.append('JetBrainsMono')
-                self.theme_cls.font_styles["JetBrainsMono"] = [
-                    "JetBrainsMono",
-                    16,
-                    False,
-                    0.15,
-                ]
-                return Builder.load_string(KV)
+                    MDLabel:
+                        text: "JetBrainsMono"
+                        halign: "center"
+                        font_style: "JetBrainsMono"
+                '''
 
 
-        MainApp().run()
+                class MainApp(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+
+                        LabelBase.register(
+                            name="JetBrainsMono",
+                            fn_regular="JetBrainsMono-Regular.ttf")
+
+                        theme_font_styles.append('JetBrainsMono')
+                        self.theme_cls.font_styles["JetBrainsMono"] = [
+                            "JetBrainsMono",
+                            16,
+                            False,
+                            0.15,
+                        ]
+                        return Builder.load_string(KV)
+
+
+                MainApp().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivy.core.text import LabelBase
+
+                from kivymd.app import MDApp
+                from kivymd.uix.screen import MDScreen
+                from kivymd.uix.label import MDLabel
+                from kivymd.font_definitions import theme_font_styles
+
+
+                class MainApp(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+
+                        LabelBase.register(
+                            name="JetBrainsMono",
+                            fn_regular="JetBrainsMono-Regular.ttf")
+
+                        theme_font_styles.append('JetBrainsMono')
+                        self.theme_cls.font_styles["JetBrainsMono"] = [
+                            "JetBrainsMono",
+                            16,
+                            False,
+                            0.15,
+                        ]
+                        return (
+                            MDScreen(
+                                MDLabel(
+                                    text="JetBrainsMono",
+                                    halign="center",
+                                    font_style="JetBrainsMono",
+                                )
+                            )
+                        )
+
+
+                MainApp().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/font-styles.png
+        :align: center
 
     :attr:`font_styles` is an :class:`~kivy.properties.DictProperty`.
     """
@@ -1080,31 +1334,59 @@ class ThemeManager(EventDispatcher):
         Note that all values *must* be provided. If you only want to set one or two values
         use the appropriate method call for that.
 
-        .. code-block:: python
+        .. tabs::
 
-            from kivymd.app import MDApp
-            from kivymd.uix.screen import MDScreen
-            from kivymd.uix.button import MDRectangleFlatButton
+            .. tab:: Imperative python style
+
+                .. code-block:: python
+
+                    from kivymd.app import MDApp
+                    from kivymd.uix.screen import MDScreen
+                    from kivymd.uix.button import MDRectangleFlatButton
+
+                    class MainApp(MDApp):
+                        def build(self):
+                            self.theme_cls.set_colors(
+                                "Blue", "600", "50", "800", "Teal", "600", "100", "800"
+                            )
+                            screen = MDScreen()
+                            screen.add_widget(
+                                MDRectangleFlatButton(
+                                    text="Hello, World",
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                )
+                            )
+                            return screen
 
 
-            class MainApp(MDApp):
-                def build(self):
-                    self.theme_cls.set_colors(
-                        "Blue", "600", "50", "800", "Teal", "600", "100", "800"
-                    )
-                    screen = MDScreen()
-                    screen.add_widget(
-                        MDRectangleFlatButton(
-                            text="Hello, World",
-                            pos_hint={"center_x": 0.5, "center_y": 0.5},
-                        )
-                    )
-                    return screen
+                    MainApp().run()
+
+            .. tab:: Declarative python style
+
+                .. code-block:: python
+
+                    from kivymd.app import MDApp
+                    from kivymd.uix.screen import MDScreen
+                    from kivymd.uix.button import MDRectangleFlatButton
+
+                    class MainApp(MDApp):
+                        def build(self):
+                            self.theme_cls.set_colors(
+                                "Blue", "600", "50", "800", "Teal", "600", "100", "800"
+                            )
+                            return (
+                                MDScreen(
+                                    MDRectangleFlatButton(
+                                        text="Hello, World",
+                                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                    )
+                                )
+                            )
 
 
-            MainApp().run()
-
+                    MainApp().run()
         """
+
         self.primary_palette = primary_palette
         self.primary_hue = primary_hue
         self.primary_light_hue = primary_light_hue
@@ -1167,15 +1449,12 @@ class ThemableBehavior(EventDispatcher):
         MDSwitch:
             widget_style: "ios"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-ios.gif
-        :align: center
-
     .. code-block:: kv
 
         MDSwitch:
             widget_style: "android"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch-android.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-android-ios.png
         :align: center
 
     :attr:`widget_style` is an :class:`~kivy.properties.OptionProperty`

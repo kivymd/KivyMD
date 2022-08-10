@@ -25,12 +25,10 @@ content for the tab.
 
     class Tab(MDFloatLayout, MDTabsBase):
         '''Class implementing content for a tab.'''
-        content_text = StringProperty("")
 
 .. code-block:: kv
 
     <Tab>
-        content_text
 
         MDLabel:
             text: root.content_text
@@ -57,70 +55,138 @@ All tabs must be contained inside a :class:`~MDTabs` widget:
 Example with tab icon
 ---------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import MDTabsBase
-    from kivymd.uix.floatlayout import MDFloatLayout
-    from kivymd.icon_definitions import md_icons
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
 
-        MDTopAppBar:
-            title: "Example Tabs"
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import MDTabsBase
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.icon_definitions import md_icons
 
-        MDTabs:
-            id: tabs
-            on_tab_switch: app.on_tab_switch(*args)
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
 
+                MDTopAppBar:
+                    title: "Example Tabs"
 
-    <Tab>
-
-        MDIconButton:
-            id: icon
-            icon: root.icon
-            icon_size: "48sp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+                MDTabs:
+                    id: tabs
+                    on_tab_switch: app.on_tab_switch(*args)
 
 
-    class Tab(MDFloatLayout, MDTabsBase):
-        '''Class implementing content for a tab.'''
+            <Tab>
 
-
-    class Example(MDApp):
-        icons = list(md_icons.keys())[15:30]
-
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for tab_name in self.icons:
-                self.root.ids.tabs.add_widget(Tab(icon=tab_name))
-
-        def on_tab_switch(
-            self, instance_tabs, instance_tab, instance_tab_label, tab_text
-        ):
+                MDIconButton:
+                    id: icon
+                    icon: root.icon
+                    icon_size: "48sp"
+                    pos_hint: {"center_x": .5, "center_y": .5}
             '''
-            Called when switching tabs.
-
-            :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
-            :param instance_tab: <__main__.Tab object>;
-            :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
-            :param tab_text: text or name icon of tab;
-            '''
-            # get the tab icon.
-            count_icon = instance_tab.icon
-            # print it on shell/bash.
-            print(f"Welcome to {count_icon}' tab'")
 
 
-    Example().run()
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
 
+
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for tab_name in self.icons:
+                        self.root.ids.tabs.add_widget(Tab(icon=tab_name))
+
+                def on_tab_switch(
+                    self, instance_tabs, instance_tab, instance_tab_label, tab_text
+                ):
+                    '''
+                    Called when switching tabs.
+
+                    :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+                    :param instance_tab: <__main__.Tab object>;
+                    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+                    :param tab_text: text or name icon of tab;
+                    '''
+
+                    count_icon = instance_tab.icon  # get the tab icon
+                    print(f"Welcome to {count_icon}' tab'")
+
+
+            Example().run()
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
+
+
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Example Tabs"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
+                    )
+
+                def on_start(self):
+                    self.root.ids.tabs.bind(on_tab_switch=self.on_tab_switch)
+
+                    for tab_name in self.icons:
+                        self.root.ids.tabs.add_widget(
+                            Tab(
+                                MDIconButton(
+                                    icon=tab_name,
+                                    icon_size="48sp",
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                ),
+                                icon=tab_name,
+                            )
+                        )
+
+                def on_tab_switch(
+                    self, instance_tabs, instance_tab, instance_tab_label, tab_text
+                ):
+                    '''
+                    Called when switching tabs.
+
+                    :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+                    :param instance_tab: <__main__.Tab object>;
+                    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+                    :param tab_text: text or name icon of tab;
+                    '''
+
+                    count_icon = instance_tab.icon  # get the tab icon
+                    print(f"Welcome to {count_icon}' tab'")
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example.gif
     :align: center
@@ -138,62 +204,123 @@ Example with tab text
     if the tab has no icon, title or tab_label_text, the class will raise a
     ValueError.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.floatlayout import MDFloatLayout
-    from kivymd.uix.tab import MDTabsBase
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
 
-        MDTopAppBar:
-            title: "Example Tabs"
+            from kivymd.app import MDApp
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.tab import MDTabsBase
 
-        MDTabs:
-            id: tabs
-            on_tab_switch: app.on_tab_switch(*args)
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
 
+                MDTopAppBar:
+                    title: "Example Tabs"
 
-    <Tab>
-
-        MDLabel:
-            id: label
-            text: "Tab 0"
-            halign: "center"
-    '''
+                MDTabs:
+                    id: tabs
+                    on_tab_switch: app.on_tab_switch(*args)
 
 
-    class Tab(MDFloatLayout, MDTabsBase):
-        '''Class implementing content for a tab.'''
+            <Tab>
 
-
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for i in range(20):
-                self.root.ids.tabs.add_widget(Tab(title=f"Tab {i}"))
-
-        def on_tab_switch(
-            self, instance_tabs, instance_tab, instance_tab_label, tab_text
-        ):
-            '''Called when switching tabs.
-
-            :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
-            :param instance_tab: <__main__.Tab object>;
-            :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
-            :param tab_text: text or name icon of tab;
+                MDLabel:
+                    id: label
+                    text: "Tab 0"
+                    halign: "center"
             '''
 
-            instance_tab.ids.label.text = tab_text
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for i in range(20):
+                        self.root.ids.tabs.add_widget(Tab(title=f"Tab {i}"))
+
+                def on_tab_switch(
+                    self, instance_tabs, instance_tab, instance_tab_label, tab_text
+                ):
+                    '''Called when switching tabs.
+
+                    :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+                    :param instance_tab: <__main__.Tab object>;
+                    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+                    :param tab_text: text or name icon of tab;
+                    '''
+
+                    instance_tab.ids.label.text = tab_text
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Example Tabs"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
+                    )
+
+                def on_start(self):
+                    self.root.ids.tabs.bind(on_tab_switch=self.on_tab_switch)
+                    for i in range(20):
+                        self.root.ids.tabs.add_widget(
+                            Tab(
+                                MDLabel(id="label", text="Tab 0", halign="center"),
+                                title=f"Tab {i}",
+                            )
+                        )
+
+                def on_tab_switch(
+                    self, instance_tabs, instance_tab, instance_tab_label, tab_text
+                ):
+                    '''
+                    Called when switching tabs.
+
+                    :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+                    :param instance_tab: <__main__.Tab object>;
+                    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+                    :param tab_text: text or name icon of tab;
+                    '''
+
+                    instance_tab.ids.label.text = tab_text
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-text.gif
     :align: center
@@ -201,119 +328,246 @@ Example with tab text
 Example with tab icon and text
 ------------------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import MDTabsBase
-    from kivymd.uix.floatlayout import MDFloatLayout
-    from kivymd.icon_definitions import md_icons
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
 
-        MDTopAppBar:
-            title: "Example Tabs"
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import MDTabsBase
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.icon_definitions import md_icons
 
-        MDTabs:
-            id: tabs
-    '''
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
 
+                MDTopAppBar:
+                    title: "Example Tabs"
 
-    class Tab(MDFloatLayout, MDTabsBase):
-        pass
-
-
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for name_tab in list(md_icons.keys())[15:30]:
-                self.root.ids.tabs.add_widget(Tab(icon=name_tab, title=name_tab))
+                MDTabs:
+                    id: tabs
+            '''
 
 
-    Example().run()
+            class Tab(MDFloatLayout, MDTabsBase):
+                pass
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-icon-text.png
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for name_tab in list(md_icons.keys())[15:30]:
+                        self.root.ids.tabs.add_widget(Tab(icon=name_tab, title=name_tab))
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                pass
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Example Tabs"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
+                    )
+
+                def on_start(self):
+                    for name_tab in list(md_icons.keys())[15:30]:
+                        self.root.ids.tabs.add_widget(Tab(icon=name_tab, title=name_tab))
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-simple-example-icon-text.gif
     :align: center
 
 Dynamic tab management
 ----------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.uix.scrollview import ScrollView
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import MDTabsBase
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
 
-        MDTopAppBar:
-            title: "Example Tabs"
+            from kivymd.uix.scrollview import MDScrollView
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import MDTabsBase
 
-        MDTabs:
-            id: tabs
-
-
-    <Tab>
-
-        MDList:
-
+            KV = '''
             MDBoxLayout:
-                adaptive_height: True
+                orientation: "vertical"
 
-                MDFlatButton:
-                    text: "ADD TAB"
-                    on_release: app.add_tab()
+                MDTopAppBar:
+                    title: "Example Tabs"
 
-                MDFlatButton:
-                    text: "REMOVE LAST TAB"
-                    on_release: app.remove_tab()
-
-                MDFlatButton:
-                    text: "GET TAB LIST"
-                    on_release: app.get_tab_list()
-    '''
+                MDTabs:
+                    id: tabs
 
 
-    class Tab(ScrollView, MDTabsBase):
-        '''Class implementing content for a tab.'''
+            <Tab>
+
+                MDList:
+
+                    MDBoxLayout:
+                        adaptive_height: True
+
+                        MDFlatButton:
+                            text: "ADD TAB"
+                            on_release: app.add_tab()
+
+                        MDFlatButton:
+                            text: "REMOVE LAST TAB"
+                            on_release: app.remove_tab()
+
+                        MDFlatButton:
+                            text: "GET TAB LIST"
+                            on_release: app.get_tab_list()
+            '''
 
 
-    class Example(MDApp):
-        index = 0
-
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            self.add_tab()
-
-        def get_tab_list(self):
-            '''Prints a list of tab objects.'''
-
-            print(self.root.ids.tabs.get_tab_list())
-
-        def add_tab(self):
-            self.index += 1
-            self.root.ids.tabs.add_widget(Tab(text=f"{self.index} tab"))
-
-        def remove_tab(self):
-            if self.index > 1:
-                self.index -= 1
-            self.root.ids.tabs.remove_widget(
-                self.root.ids.tabs.get_tab_list()[-1]
-            )
+            class Tab(MDScrollView, MDTabsBase):
+                '''Class implementing content for a tab.'''
 
 
-    Example().run()
+            class Example(MDApp):
+                index = 0
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    self.add_tab()
+
+                def get_tab_list(self):
+                    '''Prints a list of tab objects.'''
+
+                    print(self.root.ids.tabs.get_tab_list())
+
+                def add_tab(self):
+                    self.index += 1
+                    self.root.ids.tabs.add_widget(Tab(title=f"{self.index} tab"))
+
+                def remove_tab(self):
+                    if self.index > 1:
+                        self.index -= 1
+                    self.root.ids.tabs.remove_widget(
+                        self.root.ids.tabs.get_tab_list()[-1]
+                    )
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.button import MDFlatButton
+            from kivymd.uix.list import MDList
+            from kivymd.uix.scrollview import MDScrollView
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Tab(MDScrollView, MDTabsBase):
+                '''Class implementing content for a tab.'''
+
+
+            class Example(MDApp):
+                index = 0
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Example Tabs"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
+                    )
+
+                def on_start(self):
+                    self.add_tab()
+
+                def get_tab_list(self, *args):
+                    '''Prints a list of tab objects.'''
+
+                    print(self.root.ids.tabs.get_tab_list())
+
+                def add_tab(self, *args):
+                    self.index += 1
+                    self.root.ids.tabs.add_widget(
+                        Tab(
+                            MDList(
+                                MDBoxLayout(
+                                    MDFlatButton(
+                                        text="ADD TAB",
+                                        on_release=self.add_tab,
+                                    ),
+                                    MDFlatButton(
+                                        text="REMOVE LAST TAB",
+                                        on_release=self.remove_tab,
+                                    ),
+                                    MDFlatButton(
+                                        text="GET TAB LIST",
+                                        on_release=self.get_tab_list,
+                                    ),
+                                    adaptive_height=True,
+                                ),
+                            ),
+                            title=f"{self.index} tab",
+                        )
+                    )
+
+                def remove_tab(self, *args):
+                    if self.index > 1:
+                        self.index -= 1
+                    self.root.ids.tabs.remove_widget(
+                        self.root.ids.tabs.get_tab_list()[-1]
+                    )
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-dynamic-managmant.gif
     :align: center
@@ -324,83 +578,166 @@ Use on_ref_press method
 You can use markup for the text of the tabs and use the ``on_ref_press``
 method accordingly:
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.floatlayout import MDFloatLayout
-    from kivymd.font_definitions import fonts
-    from kivymd.uix.tab import MDTabsBase
-    from kivymd.icon_definitions import md_icons
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
 
-        MDTopAppBar:
-            title: "Example Tabs"
+            from kivymd.app import MDApp
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.font_definitions import fonts
+            from kivymd.uix.tab import MDTabsBase
+            from kivymd.icon_definitions import md_icons
 
-        MDTabs:
-            id: tabs
-            on_ref_press: app.on_ref_press(*args)
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
 
+                MDTopAppBar:
+                    title: "Example Tabs"
 
-    <Tab>
-
-        MDIconButton:
-            id: icon
-            icon: app.icons[0]
-            icon_size: "48sp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+                MDTabs:
+                    id: tabs
+                    on_ref_press: app.on_ref_press(*args)
 
 
-    class Tab(MDFloatLayout, MDTabsBase):
-        '''Class implementing content for a tab.'''
+            <Tab>
+
+                MDIconButton:
+                    id: icon
+                    icon: app.icons[0]
+                    icon_size: "48sp"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+            '''
 
 
-    class Example(MDApp):
-        icons = list(md_icons.keys())[15:30]
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
 
-        def build(self):
-            return Builder.load_string(KV)
 
-        def on_start(self):
-            for name_tab in self.icons:
-                self.root.ids.tabs.add_widget(
-                    Tab(
-                        text=f"[ref={name_tab}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {name_tab}"
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for name_tab in self.icons:
+                        self.root.ids.tabs.add_widget(
+                            Tab(
+                                title=f"[ref={name_tab}][font={fonts[-1]['fn_regular']}]{md_icons['close']}[/font][/ref]  {name_tab}"
+                            )
+                        )
+
+                def on_ref_press(
+                    self,
+                    instance_tabs,
+                    instance_tab_label,
+                    instance_tab,
+                    instance_tab_bar,
+                    instance_carousel,
+                ):
+                    '''
+                    The method will be called when the ``on_ref_press`` event
+                    occurs when you, for example, use markup text for tabs.
+
+                    :param instance_tabs: <kivymd.uix.tab.MDTabs object>
+                    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>
+                    :param instance_tab: <__main__.Tab object>
+                    :param instance_tab_bar: <kivymd.uix.tab.MDTabsBar object>
+                    :param instance_carousel: <kivymd.uix.tab.MDTabsCarousel object>
+                    '''
+
+                    # Removes a tab by clicking on the close icon on the left.
+                    for instance_tab in instance_carousel.slides:
+                        if instance_tab.title == instance_tab_label.text:
+                            instance_tabs.remove_widget(instance_tab_label)
+                            break
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.font_definitions import fonts
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
+
+
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Example Tabs"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
                     )
-                )
 
-        def on_ref_press(
-            self,
-            instance_tabs,
-            instance_tab_label,
-            instance_tab,
-            instance_tab_bar,
-            instance_carousel,
-        ):
-            '''
-            The method will be called when the ``on_ref_press`` event
-            occurs when you, for example, use markup text for tabs.
+                def on_start(self):
+                    self.root.ids.tabs.bind(on_ref_press=self.on_ref_press)
+                    for name_tab in self.icons:
+                        self.root.ids.tabs.add_widget(
+                            Tab(
+                                MDIconButton(
+                                    icon=self.icons[0],
+                                    icon_size="48sp",
+                                    pos_hint={"center_x": .5, "center_y": .5}
+                                ),
+                                title=(
+                                    f"[ref={name_tab}][font={fonts[-1]['fn_regular']}]"
+                                    f"{md_icons['close']}[/font][/ref]  {name_tab}"
+                                ),
+                            )
+                        )
 
-            :param instance_tabs: <kivymd.uix.tab.MDTabs object>
-            :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>
-            :param instance_tab: <__main__.Tab object>
-            :param instance_tab_bar: <kivymd.uix.tab.MDTabsBar object>
-            :param instance_carousel: <kivymd.uix.tab.MDTabsCarousel object>
-            '''
+                def on_ref_press(
+                        self,
+                        instance_tabs,
+                        instance_tab_label,
+                        instance_tab,
+                        instance_tab_bar,
+                        instance_carousel,
+                ):
+                    '''
+                    The method will be called when the ``on_ref_press`` event
+                    occurs when you, for example, use markup text for tabs.
 
-            # Removes a tab by clicking on the close icon on the left.
-            for instance_tab in instance_carousel.slides:
-                if instance_tab.text == instance_tab_label.text:
-                    instance_tabs.remove_widget(instance_tab_label)
-                    break
+                    :param instance_tabs: <kivymd.uix.tab.MDTabs object>
+                    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>
+                    :param instance_tab: <__main__.Tab object>
+                    :param instance_tab_bar: <kivymd.uix.tab.MDTabsBar object>
+                    :param instance_carousel: <kivymd.uix.tab.MDTabsCarousel object>
+                    '''
+
+                    # Removes a tab by clicking on the close icon on the left.
+                    for instance_tab in instance_carousel.slides:
+                        if instance_tab.title == instance_tab_label.text:
+                            instance_tabs.remove_widget(instance_tab_label)
+                            break
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-on-ref-press.gif
     :align: center
@@ -408,88 +745,182 @@ method accordingly:
 Switching the tab by name
 -------------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.icon_definitions import md_icons
-    from kivymd.uix.floatlayout import MDFloatLayout
-    from kivymd.uix.tab import MDTabsBase
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
 
-        MDTopAppBar:
-            title: "Example Tabs"
+            from kivymd.app import MDApp
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.tab import MDTabsBase
 
-        MDTabs:
-            id: tabs
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
 
+                MDTopAppBar:
+                    title: "Example Tabs"
 
-    <Tab>
-
-        MDBoxLayout:
-            orientation: "vertical"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint: None, None
-            spacing: dp(48)
-
-            MDIconButton:
-                id: icon
-                icon: "arrow-right"
-                icon_size: "48sp"
-                on_release: app.switch_tab_by_name()
-
-            MDIconButton:
-                id: icon2
-                icon: "page-next"
-                icon_size: "48sp"
-                on_release: app.switch_tab_by_object()
-    '''
+                MDTabs:
+                    id: tabs
 
 
-    class Tab(MDFloatLayout, MDTabsBase):
-        '''Class implementing content for a tab.'''
+            <Tab>
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    adaptive_size: True
+                    spacing: dp(48)
+
+                    MDIconButton:
+                        id: icon
+                        icon: "arrow-right"
+                        icon_size: "48sp"
+                        on_release: app.switch_tab_by_name()
+
+                    MDIconButton:
+                        id: icon2
+                        icon: "page-next"
+                        icon_size: "48sp"
+                        on_release: app.switch_tab_by_object()
+            '''
 
 
-    class Example(MDApp):
-        icons = list(md_icons.keys())[15:30]
-
-        def build(self):
-            self.iter_list_names = iter(list(self.icons))
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for name_tab in list(self.icons):
-                self.root.ids.tabs.add_widget(Tab(tab_label_text=name_tab))
-            self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
-
-        def switch_tab_by_object(self):
-            try:
-                x = next(self.iter_list_objects)
-                print(f"Switch slide by object, next element to show: [{x}]")
-                self.root.ids.tabs.switch_tab(x)
-            except StopIteration:
-                # reset the iterator an begin again.
-                self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
-                self.switch_tab_by_object()
-
-        def switch_tab_by_name(self):
-            '''Switching the tab by name.'''
-
-            try:
-                x = next(self.iter_list_names)
-                print(f"Switch slide by name, next element to show: [{x}]")
-                self.root.ids.tabs.switch_tab(x)
-            except StopIteration:
-                # Reset the iterator an begin again.
-                self.iter_list_names = iter(list(self.icons))
-                self.switch_tab_by_name()
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
 
 
-    Example().run()
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    self.iter_list_names = iter(list(self.icons))
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for name_tab in list(self.icons):
+                        self.root.ids.tabs.add_widget(Tab(tab_label_text=name_tab))
+                    self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
+
+                def switch_tab_by_object(self):
+                    try:
+                        x = next(self.iter_list_objects)
+                        print(f"Switch slide by object, next element to show: [{x}]")
+                        self.root.ids.tabs.switch_tab(x)
+                    except StopIteration:
+                        # reset the iterator an begin again.
+                        self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
+                        self.switch_tab_by_object()
+
+                def switch_tab_by_name(self):
+                    '''Switching the tab by name.'''
+
+                    try:
+                        x = next(self.iter_list_names)
+                        print(f"Switch slide by name, next element to show: [{x}]")
+                        self.root.ids.tabs.switch_tab(x)
+                    except StopIteration:
+                        # Reset the iterator an begin again.
+                        self.iter_list_names = iter(list(self.icons))
+                        self.switch_tab_by_name()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.tab import MDTabsBase, MDTabs
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Tab(MDFloatLayout, MDTabsBase):
+                '''Class implementing content for a tab.'''
+
+
+            class Example(MDApp):
+                icons = list(md_icons.keys())[15:30]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    self.iter_list_names = iter(list(self.icons))
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(title="Example Tabs"),
+                            MDTabs(id="tabs"),
+                            orientation="vertical",
+                        )
+                    )
+
+                def on_start(self):
+                    for name_tab in list(self.icons):
+                        self.root.ids.tabs.add_widget(
+                            Tab(
+                                MDBoxLayout(
+                                    MDIconButton(
+                                        id="icon",
+                                        icon="arrow-right",
+                                        icon_size="48sp",
+                                        on_release=self.switch_tab_by_name,
+                                    ),
+                                    MDIconButton(
+                                        id="icon2",
+                                        icon="arrow-left",
+                                        icon_size="48sp",
+                                        on_release=self.switch_tab_by_object,
+                                    ),
+                                    orientation="vertical",
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                    adaptive_size=True,
+                                    spacing=dp(48),
+                                ),
+                                tab_label_text=name_tab,
+                            )
+                        )
+
+                    self.iter_list_objects = iter(list(self.root.ids.tabs.get_tab_list()))
+
+                def switch_tab_by_object(self, *args):
+                    try:
+                        x = next(self.iter_list_objects)
+                        print(f"Switch slide by object, next element to show: [{x}]")
+                        self.root.ids.tabs.switch_tab(x)
+                    except StopIteration:
+                        # reset the iterator an begin again.
+                        self.iter_list_objects = iter(
+                            list(self.root.ids.tabs.get_tab_list()))
+                        self.switch_tab_by_object()
+
+                def switch_tab_by_name(self, *args):
+                    '''Switching the tab by name.'''
+
+                    try:
+                        x = next(self.iter_list_names)
+                        print(f"Switch slide by name, next element to show: [{x}]")
+                        self.root.ids.tabs.switch_tab(x)
+                    except StopIteration:
+                        # Reset the iterator an begin again.
+                        self.iter_list_names = iter(list(self.icons))
+                        self.switch_tab_by_name()
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switching-tab-by-name.gif
     :align: center

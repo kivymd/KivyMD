@@ -10,3 +10,4 @@ Unreleased
 * Bug fixes and other minor improvements.
 * Added a button to copy the code to the documentation.
 * Added the feature to view code examples of documentation in imperative and declarative styles.
+* Added console scripts for developer tools.

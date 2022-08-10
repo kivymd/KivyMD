@@ -25,7 +25,7 @@ Project creation
 
 Template command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         name_pattern \\
         path_to_project \\
         name_project \\
@@ -34,7 +34,7 @@ Template command::
 
 Example command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         MVC \\
         /Users/macbookair/Projects \\
         MyMVCProject \\
@@ -61,7 +61,7 @@ Creating a project using a database
 
 Template command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         name_pattern \\
         path_to_project \\
         name_project \\
@@ -71,7 +71,7 @@ Template command::
 
 Example command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         MVC \\
         /Users/macbookair/Projects \\
         MyMVCProject \\
@@ -104,7 +104,7 @@ Create project with hot reload
 
 Template command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         name_pattern \\
         path_to_project \\
         name_project \\
@@ -114,7 +114,7 @@ Template command::
 
 Example command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         MVC \\
         /Users/macbookair/Projects \\
         MyMVCProject \\
@@ -136,7 +136,7 @@ behavior. To do this, specify the name of the view/views in the
 
 Template command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         name_pattern \\
         path_to_project \\
         name_project \\
@@ -184,7 +184,7 @@ for example, as shown below:
 
 Template command::
 
-    python -m kivymd.tools.patterns.create_project \\
+    kivymd.create_project \\
         name_pattern \\
         path_to_project \\
         name_project \\

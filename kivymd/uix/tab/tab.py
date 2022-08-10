@@ -563,12 +563,6 @@ Dynamic tab management
 
             Example().run()
 
-    .. tab:: Declarative python style
-
-        .. code-block:: python
-
-
-
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tabs-dynamic-managmant.gif
     :align: center
 

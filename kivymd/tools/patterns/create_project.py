@@ -199,8 +199,11 @@ Template command::
 - use_hotreload
     - creates a hot reload entry point to the application
 
--use_localization
+- use_localization
     - creates application localization files
+
+- use_responsive
+    - the name/names of the views to be used by the responsive UI
 
 .. warning:: On Windows, hot reloading of Python files may not work.
     But, for example, there is no such problem in macOS. If you fix this,

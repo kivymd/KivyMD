@@ -708,12 +708,15 @@ class MDBottomNavigation(DeclarativeBehavior, TabbedPanelBase):
     def on_text_color_active(
         self, instance_bottom_navigation, color: list
     ) -> None:
-        MDBottomNavigationHeader.text_color_active = color
-        self.text_color_active = color
-        for tab in self.ids.tab_bar.children:
-            tab.text_color_active = color
-            if tab.active:
-                tab._text_color_normal = color
+        def on_text_color_active(*args):
+            MDBottomNavigationHeader.text_color_active = color
+            self.text_color_active = color
+            for tab in self.ids.tab_bar.children:
+                tab.text_color_active = color
+                if tab.active:
+                    tab._text_color_normal = color
+
+        Clock.schedule_once(on_text_color_active)
 
     def on_switch_tabs(self, bottom_navigation_item, name_tab: str) -> None:
         """

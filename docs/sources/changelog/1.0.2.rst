@@ -1,11 +1,11 @@
-Unreleased
-----------
+1.0.2
+------
 
-    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare 1.0.1/master <https://github.com/kivymd/KivyMD/compare/1.0.1...master>`_
+    See on GitHub: `tag 1.0.2 <https://github.com/kivymd/KivyMD/tree/1.0.2>`_ | `compare 1.0.1/1.0.2 <https://github.com/kivymd/KivyMD/compare/1.0.1...1.0.2>`_
 
     .. code-block:: bash
 
-       pip install https://github.com/kivymd/KivyMD/archive/master.zip
+       pip install kivymd==1.0.2
 
 * Bug fixes and other minor improvements.
 * Added a button to copy the code to the documentation.

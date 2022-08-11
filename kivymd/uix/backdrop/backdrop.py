@@ -420,8 +420,11 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
         self._open_icon = self.left_action_items[0][0]
 
     def on_header(self, instance_backdrop, value: bool) -> None:
-        if not value:
-            self.ids._front_layer.remove_widget(self.ids.header_button)
+        def on_header(*args):
+            if not value:
+                self.ids._front_layer.remove_widget(self.ids.header_button)
+
+        Clock.schedule_once(on_header)
 
     def open(self, open_up_to: int = 0) -> None:
         """

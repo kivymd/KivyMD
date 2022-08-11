@@ -3,7 +3,7 @@
 from kivy.tests.common import GraphicUnitTest
 
 
-class ChipTest(GraphicUnitTest):
+class TextFieldTest(GraphicUnitTest):
     def test_textfield_raw_app(self):
         from kivymd.app import MDApp
         from kivymd.uix.boxlayout import MDBoxLayout

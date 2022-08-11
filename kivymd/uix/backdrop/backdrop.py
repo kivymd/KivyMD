@@ -31,84 +31,147 @@ Usage
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV styles
 
-    from kivymd.uix.screen import MDScreen
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    # Your layouts.
-    Builder.load_string(
-        '''
-    #:import Window kivy.core.window.Window
-    #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+            from kivy.lang import Builder
 
+            from kivymd.uix.screen import MDScreen
+            from kivymd.app import MDApp
 
-    <ItemBackdropFrontLayer@TwoLineAvatarListItem>
-        icon: "android"
-
-        IconLeftWidget:
-            icon: root.icon
-
-
-    <MyBackdropFrontLayer@ItemBackdropFrontLayer>
-        backdrop: None
-        text: "Lower the front layer"
-        secondary_text: " by 50 %"
-        icon: "transfer-down"
-        on_press: root.backdrop.open(-Window.height / 2)
-        pos_hint: {"top": 1}
-        _no_ripple_effect: True
+            # Your layouts.
+            Builder.load_string(
+                '''
+            #:import os os
+            #:import Window kivy.core.window.Window
+            #:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+            #:import images_path kivymd.images_path
 
 
-    <MyBackdropBackLayer@Image>
-        size_hint: .8, .8
-        source: "data/logo/kivy-icon-512.png"
-        pos_hint: {"center_x": .5, "center_y": .6}
-    '''
-    )
+            <ItemBackdropFrontLayer@TwoLineAvatarListItem>
+                icon: "android"
 
-    # Usage example of MDBackdrop.
-    Builder.load_string(
-        '''
-    <ExampleBackdrop>
-
-        MDBackdrop:
-            id: backdrop
-            left_action_items: [['menu', lambda x: self.open()]]
-            title: "Example Backdrop"
-            radius_left: "25dp"
-            radius_right: "0dp"
-            header_text: "Menu:"
-
-            MDBackdropBackLayer:
-                MyBackdropBackLayer:
-                    id: backlayer
-
-            MDBackdropFrontLayer:
-                MyBackdropFrontLayer:
-                    backdrop: backdrop
-    '''
-    )
+                IconLeftWidget:
+                    icon: root.icon
 
 
-    class ExampleBackdrop(MDScreen):
-        pass
+            <MyBackdropFrontLayer@ItemBackdropFrontLayer>
+                backdrop: None
+                text: "Lower the front layer"
+                secondary_text: " by 50 %"
+                icon: "transfer-down"
+                on_press: root.backdrop.open(-Window.height / 2)
+                pos_hint: {"top": 1}
+                _no_ripple_effect: True
 
 
-    class TestBackdrop(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
+            <MyBackdropBackLayer@Image>
+                size_hint: .8, .8
+                os.path.join(images_path, "logo", "kivymd-icon-512.png")
+                pos_hint: {"center_x": .5, "center_y": .6}
+            '''
+            )
 
-        def build(self):
-            return ExampleBackdrop()
+            # Usage example of MDBackdrop.
+            Builder.load_string(
+                '''
+            <ExampleBackdrop>
+
+                MDBackdrop:
+                    id: backdrop
+                    left_action_items: [['menu', lambda x: self.open()]]
+                    title: "Example Backdrop"
+                    radius_left: "25dp"
+                    radius_right: "0dp"
+                    header_text: "Menu:"
+
+                    MDBackdropBackLayer:
+                        MyBackdropBackLayer:
+                            id: backlayer
+
+                    MDBackdropFrontLayer:
+                        MyBackdropFrontLayer:
+                            backdrop: backdrop
+            '''
+            )
 
 
-    TestBackdrop().run()
+            class ExampleBackdrop(MDScreen):
+                pass
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return ExampleBackdrop()
+
+
+            Example().run()
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            import os
+
+            from kivy.core.window import Window
+            from kivy.uix.image import Image
+
+            from kivymd import images_path
+            from kivymd.uix.backdrop import MDBackdrop
+            from kivymd.uix.backdrop.backdrop import (
+                MDBackdropBackLayer, MDBackdropFrontLayer
+            )
+            from kivymd.uix.list import TwoLineAvatarListItem, IconLeftWidget
+            from kivymd.uix.screen import MDScreen
+            from kivymd.app import MDApp
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+
+                    return (
+                        MDScreen(
+                            MDBackdrop(
+                                MDBackdropBackLayer(
+                                    Image(
+                                        size_hint=(0.8, 0.8),
+                                        source=os.path.join(images_path, "logo", "kivymd-icon-512.png"),
+                                        pos_hint={"center_x": 0.5, "center_y": 0.6},
+                                    )
+                                ),
+                                MDBackdropFrontLayer(
+                                    TwoLineAvatarListItem(
+                                        IconLeftWidget(icon="transfer-down"),
+                                        text="Lower the front layer",
+                                        secondary_text=" by 50 %",
+                                        on_press=self.backdrop_open_by_50_percent,
+                                        pos_hint={"top": 1},
+                                        _no_ripple_effect=True,
+                                    ),
+                                ),
+                                id="backdrop",
+                                title="Example Backdrop",
+                                radius_left="25dp",
+                                radius_right="0dp",
+                                header_text="Menu:",
+                            )
+                        )
+                    )
+
+                def backdrop_open_by_50_percent(self, *args):
+                    self.root.ids.backdrop.open(-Window.height / 2)
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop.gif
-    :width: 280 px
     :align: center
 
 .. Note:: `See full example <https://github.com/kivymd/KivyMD/wiki/Components-Backdrop>`_
@@ -168,6 +231,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
 
     .. versionadded:: 1.0.0
 
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-anchor-title.png
+        :align: center
+
     :attr:`anchor_title` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'left'`.
     """
@@ -175,6 +241,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     padding = ListProperty([0, 0, 0, 0])
     """
     Padding for contents of the front layer.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-padding.png
+        :align: center
 
     :attr:`padding` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -211,6 +280,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     """
     Background color of back layer.
 
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-back-layer-color.png
+        :align: center
+
     :attr:`back_layer_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
@@ -218,6 +290,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     front_layer_color = ColorProperty(None)
     """
     Background color of front layer.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-front-layer-color.png
+        :align: center
 
     :attr:`front_layer_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -227,6 +302,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     """
     The value of the rounding radius of the upper left corner
     of the front layer.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-radius-left.png
+        :align: center
 
     :attr:`radius_left` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `16dp`.
@@ -245,6 +323,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     """
     Whether to use a header above the contents of the front layer.
 
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-header.png
+        :align: center
+
     :attr:`header` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
@@ -252,6 +333,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     header_text = StringProperty("Header")
     """
     Text of header.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-header-text.png
+        :align: center
 
     :attr:`header_text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'Header'`.
@@ -261,6 +345,9 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
     """
     The name of the icon that will be installed on the toolbar
     on the left when opening the front layer.
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/backdrop-close-icon.png
+        :align: center
 
     :attr:`close_icon` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'close'`.

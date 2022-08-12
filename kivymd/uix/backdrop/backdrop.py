@@ -70,7 +70,7 @@ Example
 
             <MyBackdropBackLayer@Image>
                 size_hint: .8, .8
-                os.path.join(images_path, "logo", "kivymd-icon-512.png")
+                source: os.path.join(images_path, "logo", "kivymd-icon-512.png")
                 pos_hint: {"center_x": .5, "center_y": .6}
             '''
             )

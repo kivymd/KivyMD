@@ -26,7 +26,7 @@ Components/Card
 MDCard
 ------
 
-.. warning:: Starting from the KivyMD 1.0.0 library version, it is necessary
+.. warning:: Starting from the KivyMD 1.1.0 library version, it is necessary
     to manually inherit the card class from one of the ``Elevation`` classes
     from ``kivymd/uix/behaviors/elevation.py`` module to draw the card shadow.
 
@@ -39,84 +39,153 @@ MDCard
     class MD3Card(MDCard, RoundedRectangularElevationBehavior):
         '''Implements a material design v3 card.'''
 
-This may sound awkward to you, but it actually allows for better control over
-the providers that implement the rendering of the shadows.
+It actually allows for better control over the providers that implement the
+rendering of the shadows.
 
 .. note:: You can read more information about the classes that implement the
-    rendering of shadows on this `documentation page <https://kivymd.readthedocs.io/en/latest/behaviors/elevation/>`_.
+    rendering of shadows on this
+    `documentation page <https://kivymd.readthedocs.io/en/latest/behaviors/elevation/>`_.
 
 An example of the implementation of a card in the style of material design version 3
 ------------------------------------------------------------------------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
-    from kivymd.uix.card import MDCard
+        .. code-block:: python
 
-    KV = '''
-    <MD3Card>
-        padding: 16
-        size_hint: None, None
-        size: "200dp", "100dp"
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-        MDRelativeLayout:
-            size_hint: None, None
-            size: root.size
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
+            from kivymd.uix.card import MDCard
 
-            MDIconButton:
-                icon: "dots-vertical"
-                pos:
-                    root.width - (self.width + root.padding[0] + dp(4)), \
-                    root.height - (self.height + root.padding[0] + dp(4))
+            KV = '''
+            <MD3Card>
+                padding: 4
+                size_hint: None, None
+                size: "200dp", "100dp"
 
-            MDLabel:
-                id: label
-                text: root.text
-                adaptive_size: True
-                color: .2, .2, .2, .8
+                MDRelativeLayout:
 
+                    MDIconButton:
+                        icon: "dots-vertical"
+                        pos_hint: {"top": 1, "right": 1}
 
-    MDScreen:
-
-        MDBoxLayout:
-            id: box
-            adaptive_size: True
-            spacing: "56dp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+                    MDLabel:
+                        id: label
+                        text: root.text
+                        adaptive_size: True
+                        color: "grey"
+                        pos: "12dp", "12dp"
+                        bold: True
 
 
-    class MD3Card(MDCard, RoundedRectangularElevationBehavior):
-        '''Implements a material design v3 card.'''
+            MDScreen:
 
-        text = StringProperty()
+                MDBoxLayout:
+                    id: box
+                    adaptive_size: True
+                    spacing: "56dp"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+            '''
 
 
-    class TestCard(MDApp):
-        def build(self):
-            self.theme_cls.material_style = "M3"
-            return Builder.load_string(KV)
+            class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+                '''Implements a material design v3 card.'''
 
-        def on_start(self):
-            styles = {
-                "elevated": "#f6eeee", "filled": "#f4dedc", "outlined": "#f8f5f4"
-            }
-            for style in styles.keys():
-                self.root.ids.box.add_widget(
-                    MD3Card(
-                        line_color=(0.2, 0.2, 0.2, 0.8),
-                        style=style,
-                        text=style.capitalize(),
-                        md_bg_color=styles[style],
+                text = StringProperty()
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.material_style = "M3"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    styles = {
+                        "elevated": "#f6eeee", "filled": "#f4dedc", "outlined": "#f8f5f4"
+                    }
+                    for style in styles.keys():
+                        self.root.ids.box.add_widget(
+                            MD3Card(
+                                line_color=(0.2, 0.2, 0.2, 0.8),
+                                style=style,
+                                text=style.capitalize(),
+                                md_bg_color=styles[style],
+                            )
+                        )
+
+
+            Example().run()
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import (
+                RoundedRectangularElevationBehavior, DeclarativeBehavior
+            )
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.card import MDCard
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.relativelayout import MDRelativeLayout
+            from kivymd.uix.screen import MDScreen
+
+
+            class MD3Card(DeclarativeBehavior, MDCard, RoundedRectangularElevationBehavior):
+                '''Implements a material design v3 card.'''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.material_style = "M3"
+                    return (
+                        MDScreen(
+                            MDBoxLayout(
+                                id="box",
+                                adaptive_size=True,
+                                spacing="56dp",
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            )
+                        )
                     )
-                )
+
+                def on_start(self):
+                    styles = {
+                        "elevated": "#f6eeee", "filled": "#f4dedc", "outlined": "#f8f5f4"
+                    }
+                    for style in styles.keys():
+                        self.root.ids.box.add_widget(
+                            MD3Card(
+                                MDRelativeLayout(
+                                    MDIconButton(
+                                        icon="dots-vertical",
+                                        pos_hint={"top": 1, "right": 1}
+                                    ),
+                                    MDLabel(
+                                        text=style.capitalize(),
+                                        adaptive_size=True,
+                                        color="grey",
+                                        pos=("12dp", "12dp"),
+                                        bold=True,
+                                    ),
+                                ),
+                                line_color=(0.2, 0.2, 0.2, 0.8),
+                                style=style,
+                                padding="4dp",
+                                size_hint=(None, None),
+                                size=("200dp", "100dp"),
+                                md_bg_color=styles[style],
+                            )
+                        )
 
 
-    TestCard().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/cards-m3.png
     :align: center
@@ -125,16 +194,13 @@ An example of the implementation of a card in the style of material design versi
 MDCardSwipe
 -----------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDCardSwipe.gif
-    :align: center
-
 To create a card with `swipe-to-delete` behavior, you must create a new class
 that inherits from the :class:`~MDCardSwipe` class:
 
 
 .. code-block:: kv
 
-    <SwipeToDeleteItem>:
+    <SwipeToDeleteItem>
         size_hint_y: None
         height: content.height
 
@@ -152,80 +218,144 @@ that inherits from the :class:`~MDCardSwipe` class:
     class SwipeToDeleteItem(MDCardSwipe):
         text = StringProperty()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/map-mdcard-swipr.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/sceleton-mdcard-swiper.png
     :align: center
 
 End full code
 -------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.card import MDCardSwipe
+        .. code-block:: python
 
-    KV = '''
-    <SwipeToDeleteItem>:
-        size_hint_y: None
-        height: content.height
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-        MDCardSwipeLayerBox:
-            # Content under the card.
+            from kivymd.app import MDApp
+            from kivymd.uix.card import MDCardSwipe
 
-        MDCardSwipeFrontBox:
+            KV = '''
+            <SwipeToDeleteItem>
+                size_hint_y: None
+                height: content.height
 
-            # Content of card.
-            OneLineListItem:
-                id: content
-                text: root.text
-                _no_ripple_effect: True
+                MDCardSwipeLayerBox:
+                    # Content under the card.
 
+                MDCardSwipeFrontBox:
 
-    MDScreen:
-
-        MDBoxLayout:
-            orientation: "vertical"
-            spacing: "10dp"
-
-            MDTopAppBar:
-                elevation: 10
-                title: "MDCardSwipe"
-
-            ScrollView:
-                scroll_timeout : 100
-
-                MDList:
-                    id: md_list
-                    padding: 0
-    '''
+                    # Content of card.
+                    OneLineListItem:
+                        id: content
+                        text: root.text
+                        _no_ripple_effect: True
 
 
-    class SwipeToDeleteItem(MDCardSwipe):
-        '''Card with `swipe-to-delete` behavior.'''
+            MDScreen:
 
-        text = StringProperty()
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "10dp"
 
+                    MDTopAppBar:
+                        elevation: 10
+                        title: "MDCardSwipe"
 
-    class TestCard(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
+                    MDScrollView:
+                        scroll_timeout : 100
 
-        def build(self):
-            return self.screen
-
-        def on_start(self):
-            '''Creates a list of cards.'''
-
-            for i in range(20):
-                self.screen.ids.md_list.add_widget(
-                    SwipeToDeleteItem(text=f"One-line item {i}")
-                )
+                        MDList:
+                            id: md_list
+                            padding: 0
+            '''
 
 
-    TestCard().run()
+            class SwipeToDeleteItem(MDCardSwipe):
+                '''Card with `swipe-to-delete` behavior.'''
+
+                text = StringProperty()
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    '''Creates a list of cards.'''
+
+                    for i in range(20):
+                        self.screen.ids.md_list.add_widget(
+                            SwipeToDeleteItem(text=f"One-line item {i}")
+                        )
+
+
+            Example().run()
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.card import (
+                MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
+            )
+            from kivymd.uix.list import MDList, OneLineListItem
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.scrollview import MDScrollView
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDScreen(
+                            MDBoxLayout(
+                                MDTopAppBar(
+                                    elevation=10,
+                                    title="MDCardSwipe",
+                                ),
+                                MDScrollView(
+                                    MDList(
+                                        id="md_list",
+                                    ),
+                                    id="scroll",
+                                    scroll_timeout=100,
+                                ),
+                                id="box",
+                                orientation="vertical",
+                                spacing="10dp",
+                            ),
+                        )
+                    )
+
+                def on_start(self):
+                    '''Creates a list of cards.'''
+
+                    for i in range(20):
+                        self.root.ids.box.ids.scroll.ids.md_list.add_widget(
+                            MDCardSwipe(
+                                MDCardSwipeLayerBox(),
+                                MDCardSwipeFrontBox(
+                                    OneLineListItem(
+                                        id="content",
+                                        text=f"One-line item {i}",
+                                        _no_ripple_effect=True,
+                                    )
+                                ),
+                                size_hint_y=None,
+                                height="52dp",
+                            )
+                        )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/list-mdcard-swipe.gif
     :align: center
@@ -235,7 +365,7 @@ Binding a swipe to one of the sides of the screen
 
 .. code-block:: kv
 
-    <SwipeToDeleteItem>:
+    <SwipeToDeleteItem>
         # By default, the parameter is "left"
         anchor: "right"
 
@@ -250,7 +380,7 @@ Swipe behavior
 
 .. code-block:: kv
 
-    <SwipeToDeleteItem>:
+    <SwipeToDeleteItem>
         # By default, the parameter is "hand"
         type_swipe: "hand"
 
@@ -271,85 +401,41 @@ Removing an item using the ``type_swipe = "auto"`` parameter
 The map provides the :attr:`MDCardSwipe.on_swipe_complete` event.
 You can use this event to remove items from a list:
 
-.. code-block:: kv
+.. tabs::
 
-    <SwipeToDeleteItem>:
-        on_swipe_complete: app.on_swipe_complete(root)
+    .. tab:: Declarative KV styles
 
-.. code-block:: python
+        .. code-block:: kv
 
-    def on_swipe_complete(self, instance):
-        self.screen.ids.md_list.remove_widget(instance)
+            <SwipeToDeleteItem>:
+                on_swipe_complete: app.on_swipe_complete(root)
 
-End full code
--------------
+    .. tab:: Declarative python styles
 
-.. code-block:: python
+        .. code-block:: kv
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+            .. code-block:: python
 
-    from kivymd.app import MDApp
-    from kivymd.uix.card import MDCardSwipe
-
-    KV = '''
-    <SwipeToDeleteItem>:
-        size_hint_y: None
-        height: content.height
-        type_swipe: "auto"
-        on_swipe_complete: app.on_swipe_complete(root)
-
-        MDCardSwipeLayerBox:
-
-        MDCardSwipeFrontBox:
-
-            OneLineListItem:
-                id: content
-                text: root.text
-                _no_ripple_effect: True
-
-
-    MDScreen:
-
-        MDBoxLayout:
-            orientation: "vertical"
-            spacing: "10dp"
-
-            MDTopAppBar:
-                elevation: 10
-                title: "MDCardSwipe"
-
-            ScrollView:
-
-                MDList:
-                    id: md_list
-                    padding: 0
-    '''
-
-
-    class SwipeToDeleteItem(MDCardSwipe):
-        text = StringProperty()
-
-
-    class TestCard(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
-
-        def build(self):
-            return self.screen
-
-        def on_swipe_complete(self, instance):
-            self.screen.ids.md_list.remove_widget(instance)
-
-        def on_start(self):
-            for i in range(20):
-                self.screen.ids.md_list.add_widget(
-                    SwipeToDeleteItem(text=f"One-line item {i}")
+                MDCardSwipe(
+                    ...
+                    on_swipe_complete=self.on_swipe_complete,
                 )
 
+.. tabs::
 
-    TestCard().run()
+    .. tab:: Imperative python styles
+
+        .. code-block:: python
+
+            def on_swipe_complete(self, instance):
+                self.screen.ids.md_list.remove_widget(instance)
+
+    .. tab:: Decralative python styles
+
+        .. code-block:: python
+
+            def on_swipe_complete(self, instance):
+                self.root.ids.box.ids.scroll.ids.md_list.remove_widget(instance)
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/autodelete-mdcard-swipe.gif
     :align: center
@@ -375,76 +461,156 @@ use the :class:`~MDCardSwipeLayerBox` class.
 End full code
 -------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative KV styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.card import MDCardSwipe
+        .. code-block:: python
 
-    KV = '''
-    <SwipeToDeleteItem>:
-        size_hint_y: None
-        height: content.height
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-        MDCardSwipeLayerBox:
-            padding: "8dp"
+            from kivymd.app import MDApp
+            from kivymd.uix.card import MDCardSwipe
 
-            MDIconButton:
-                icon: "trash-can"
-                pos_hint: {"center_y": .5}
-                on_release: app.remove_item(root)
+            KV = '''
+            <SwipeToDeleteItem>:
+                size_hint_y: None
+                height: content.height
 
-        MDCardSwipeFrontBox:
+                MDCardSwipeLayerBox:
+                    padding: "8dp"
 
-            OneLineListItem:
-                id: content
-                text: root.text
-                _no_ripple_effect: True
+                    MDIconButton:
+                        icon: "trash-can"
+                        pos_hint: {"center_y": .5}
+                        on_release: app.remove_item(root)
 
+                MDCardSwipeFrontBox:
 
-    MDScreen:
-
-        MDBoxLayout:
-            orientation: "vertical"
-            spacing: "10dp"
-
-            MDTopAppBar:
-                elevation: 10
-                title: "MDCardSwipe"
-
-            ScrollView:
-
-                MDList:
-                    id: md_list
-                    padding: 0
-    '''
+                    OneLineListItem:
+                        id: content
+                        text: root.text
+                        _no_ripple_effect: True
 
 
-    class SwipeToDeleteItem(MDCardSwipe):
-        text = StringProperty()
+            MDScreen:
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "10dp"
+
+                    MDTopAppBar:
+                        elevation: 10
+                        title: "MDCardSwipe"
+
+                    MDScrollView:
+
+                        MDList:
+                            id: md_list
+                            padding: 0
+            '''
 
 
-    class TestCard(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
-
-        def build(self):
-            return self.screen
-
-        def remove_item(self, instance):
-            self.screen.ids.md_list.remove_widget(instance)
-
-        def on_start(self):
-            for i in range(20):
-                self.screen.ids.md_list.add_widget(
-                    SwipeToDeleteItem(text=f"One-line item {i}")
-                )
+            class SwipeToDeleteItem(MDCardSwipe):
+                text = StringProperty()
 
 
-    TestCard().run()
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    self.screen = Builder.load_string(KV)
+
+                def build(self):
+                    return self.screen
+
+                def remove_item(self, instance):
+                    self.screen.ids.md_list.remove_widget(instance)
+
+                def on_start(self):
+                    for i in range(20):
+                        self.screen.ids.md_list.add_widget(
+                            SwipeToDeleteItem(text=f"One-line item {i}")
+                        )
+
+
+            Example().run()
+
+    .. tab:: Decralative python styles
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.card import (
+                MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
+            )
+            from kivymd.uix.list import MDList, OneLineListItem
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.scrollview import MDScrollView
+            from kivymd.uix.toolbar import MDTopAppBar
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDScreen(
+                            MDBoxLayout(
+                                MDTopAppBar(
+                                    elevation=10,
+                                    title="MDCardSwipe",
+                                ),
+                                MDScrollView(
+                                    MDList(
+                                        id="md_list",
+                                    ),
+                                    id="scroll",
+                                    scroll_timeout=100,
+                                ),
+                                id="box",
+                                orientation="vertical",
+                                spacing="10dp",
+                            ),
+                        )
+                    )
+
+                def on_start(self):
+                    '''Creates a list of cards.'''
+
+                    for i in range(20):
+                        self.root.ids.box.ids.scroll.ids.md_list.add_widget(
+                            MDCardSwipe(
+                                MDCardSwipeLayerBox(
+                                    MDIconButton(
+                                        icon="trash-can",
+                                        pos_hint={"center_y": 0.5},
+                                        on_release=self.remove_item,
+                                    ),
+                                ),
+                                MDCardSwipeFrontBox(
+                                    OneLineListItem(
+                                        id="content",
+                                        text=f"One-line item {i}",
+                                        _no_ripple_effect=True,
+                                    )
+                                ),
+                                size_hint_y=None,
+                                height="52dp",
+                            )
+                        )
+
+                def remove_item(self, instance):
+                    self.root.ids.box.ids.scroll.ids.md_list.remove_widget(
+                        instance.parent.parent
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/handdelete-mdcard-swipe.gif
     :align: center
@@ -456,6 +622,77 @@ Focus behavior
 
     MDCard:
         focus_behavior: True
+
+.. tabs::
+
+    .. tab:: Declarative KV styles
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+            from kivymd.uix.card import MDCard
+
+            KV = '''
+            MDScreen:
+
+                ElevationCard:
+                    size_hint: .7, .4
+                    focus_behavior: True
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    md_bg_color: "darkgrey"
+                    unfocus_color: "darkgrey"
+                    focus_color: "grey"
+            '''
+
+
+            class ElevationCard(MDCard, FakeRectangularElevationBehavior):
+                pass
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import FakeRectangularElevationBehavior
+            from kivymd.uix.card import  MDCard
+            from kivymd.uix.screen import MDScreen
+
+
+            class ElevationCard(MDCard, FakeRectangularElevationBehavior):
+                pass
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            ElevationCard(
+                                size_hint=(0.7, 0.4),
+                                focus_behavior=True,
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                md_bg_color="darkgrey",
+                                unfocus_color="darkgrey",
+                                focus_color="grey",
+                            ),
+                        )
+                    )
+
+
+            Example().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-focus.gif
     :align: center
@@ -471,88 +708,6 @@ Ripple behavior
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-behavior.gif
     :align: center
 
-End full code
--------------
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-
-    KV = '''
-    <StarButton@MDIconButton>
-        icon: "star"
-        on_release: self.icon = "star-outline" if self.icon == "star" else "star"
-
-
-    MDScreen:
-
-        MDCard:
-            orientation: "vertical"
-            size_hint: .5, None
-            height: box_top.height + box_bottom.height
-            focus_behavior: True
-            ripple_behavior: True
-            pos_hint: {"center_x": .5, "center_y": .5}
-
-            MDBoxLayout:
-                id: box_top
-                spacing: "20dp"
-                adaptive_height: True
-
-                FitImage:
-                    source: "/Users/macbookair/album.jpeg"
-                    size_hint: .3, None
-                    height: text_box.height
-
-                MDBoxLayout:
-                    id: text_box
-                    orientation: "vertical"
-                    adaptive_height: True
-                    spacing: "10dp"
-                    padding: 0, "10dp", "10dp", "10dp"
-
-                    MDLabel:
-                        text: "Ride the Lightning"
-                        theme_text_color: "Primary"
-                        font_style: "H5"
-                        bold: True
-                        adaptive_height: True
-
-                    MDLabel:
-                        text: "July 27, 1984"
-                        adaptive_height: True
-                        theme_text_color: "Primary"
-
-            MDSeparator:
-
-            MDBoxLayout:
-                id: box_bottom
-                adaptive_height: True
-                padding: "10dp", 0, 0, 0
-
-                MDLabel:
-                    text: "Rate this album"
-                    adaptive_height: True
-                    pos_hint: {"center_y": .5}
-                    theme_text_color: "Primary"
-
-                StarButton:
-                StarButton:
-                StarButton:
-                StarButton:
-                StarButton:
-    '''
-
-
-    class Test(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
-
-
-    Test().run()
 """
 
 __all__ = (
@@ -579,17 +734,18 @@ from kivy.properties import (
     VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd import uix_path
 from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
+    DeclarativeBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.relativelayout import MDRelativeLayout
 
 with open(
     os.path.join(uix_path, "card", "card.kv"), encoding="utf-8"
@@ -602,7 +758,7 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
 
     color = ColorProperty(None)
     """
-    Separator color in ``rgba`` format.
+    Separator color.
 
     :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -700,12 +856,12 @@ class MDCard(
         self.set_elevation()
         self.set_line_color()
 
-    def set_line_color(self):
+    def set_line_color(self) -> None:
         if self.theme_cls.material_style == "M3":
             if self.style == "elevated" or self.style == "filled":
                 self.line_color = [0, 0, 0, 0]
 
-    def set_elevation(self):
+    def set_elevation(self) -> None:
         if self.theme_cls.material_style == "M3":
             if self.style == "outlined" or self.style == "filled":
                 self.elevation = 0
@@ -730,7 +886,7 @@ class MDCard(
         self._no_ripple_effect = False if value_behavior else True
 
 
-class MDCardSwipe(RelativeLayout):
+class MDCardSwipe(MDRelativeLayout):
     """
     :Events:
         :attr:`on_swipe_complete`
@@ -831,9 +987,9 @@ class MDCardSwipe(RelativeLayout):
     _opens_process = False
     _to_closed = True
 
-    def __init__(self, **kw):
+    def __init__(self, *args, **kwargs):
         self.register_event_type("on_swipe_complete")
-        super().__init__(**kw)
+        super().__init__(*args, **kwargs)
 
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, (MDCardSwipeFrontBox, MDCardSwipeLayerBox)):
@@ -853,10 +1009,13 @@ class MDCardSwipe(RelativeLayout):
     def on_open_progress(
         self, instance_swipe_to_delete_item, progress_value: float
     ) -> None:
-        if self.anchor == "left":
-            self.children[0].x = self.width * progress_value
-        else:
-            self.children[0].x = self.width * progress_value - self.width
+        def on_open_progress(*args):
+            if self.anchor == "left":
+                self.children[0].x = self.width * progress_value
+            else:
+                self.children[0].x = self.width * progress_value - self.width
+
+        Clock.schedule_once(on_open_progress)
 
     def on_touch_move(self, touch):
         if self.collide_point(touch.x, touch.y):
@@ -930,7 +1089,7 @@ class MDCardSwipe(RelativeLayout):
         self.dispatch("on_swipe_complete")
 
 
-class MDCardSwipeFrontBox(MDCard):
+class MDCardSwipeFrontBox(DeclarativeBehavior, MDCard):
     pass
 
 

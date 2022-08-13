@@ -302,6 +302,7 @@ from kivy.uix.textinput import TextInput
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.label import MDIcon
 
 with open(
@@ -382,7 +383,7 @@ class TextfieldLabel(ThemableBehavior, Label):
         self.font_size = sp(self.theme_cls.font_styles[self.font_style][1])
 
 
-class MDTextField(ThemableBehavior, TextInput):
+class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
     helper_text = StringProperty()
     """
     Text for ``helper_text`` mode.
@@ -865,12 +866,12 @@ class MDTextField(ThemableBehavior, TextInput):
     # application color palette.
     _colors_to_updated = ListProperty()
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.set_objects_labels()
         Clock.schedule_once(self._set_attr_names_to_updated)
         Clock.schedule_once(self.set_colors_to_updated)
         Clock.schedule_once(self.set_default_colors)
-        super().__init__(**kwargs)
+        super().__init__(*args, **kwargs)
         self.bind(
             _hint_text_font_size=self._hint_text_label.setter("font_size"),
             _icon_right_color=self._icon_right_label.setter("text_color"),

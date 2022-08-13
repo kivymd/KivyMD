@@ -986,6 +986,7 @@ class MDCardSwipe(MDRelativeLayout):
 
     _opens_process = False
     _to_closed = True
+    _distance = 0
 
     def __init__(self, *args, **kwargs):
         self.register_event_type("on_swipe_complete")
@@ -1019,11 +1020,14 @@ class MDCardSwipe(MDRelativeLayout):
 
     def on_touch_move(self, touch):
         if self.collide_point(touch.x, touch.y):
-            expr = (
-                touch.x < self.swipe_distance
-                if self.anchor == "left"
-                else touch.x > self.width - self.swipe_distance
-            )
+            self._distance += touch.dx
+            expr = False
+
+            if self.anchor == "left" and touch.dx >= 0:
+                expr = abs(self._distance) < self.swipe_distance
+            elif self.anchor == "right" and touch.dx < 0:
+                expr = abs(self._distance) > self.swipe_distance
+
             if expr and not self._opens_process:
                 self._opens_process = True
                 self._to_closed = False
@@ -1034,6 +1038,7 @@ class MDCardSwipe(MDRelativeLayout):
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
+        self._distance = 0
         if self.collide_point(touch.x, touch.y):
             if not self._to_closed:
                 self._opens_process = False

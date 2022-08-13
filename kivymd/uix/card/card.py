@@ -921,6 +921,16 @@ class MDCardSwipe(MDRelativeLayout):
     and defaults to `'out_sine'`.
     """
 
+    closing_interval = NumericProperty(0)
+    """
+    Interval for closing the front layer.
+
+    .. versionadded:: 1.1.0
+
+    :attr:`closing_interval` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
     anchor = OptionProperty("left", options=("left", "right"))
     """
     Anchoring screen edge for card. Available options are: `'left'`, `'right'`.
@@ -1049,7 +1059,7 @@ class MDCardSwipe(MDRelativeLayout):
         if self.collide_point(touch.x, touch.y):
             if self.state == "opened":
                 self._to_closed = True
-                self.close_card()
+                Clock.schedule_once(self.close_card, self.closing_interval)
         return super().on_touch_down(touch)
 
     def complete_swipe(self) -> None:
@@ -1059,7 +1069,7 @@ class MDCardSwipe(MDRelativeLayout):
             else self.open_progress >= self.max_swipe_x
         )
         if expr:
-            self.close_card()
+            Clock.schedule_once(self.close_card, self.closing_interval)
         else:
             self.open_card()
 
@@ -1079,7 +1089,7 @@ class MDCardSwipe(MDRelativeLayout):
         anim.start(self.children[0])
         self.state = "opened"
 
-    def close_card(self) -> None:
+    def close_card(self, *args) -> None:
         anim = Animation(x=0, t=self.closing_transition, d=self.opening_time)
         anim.bind(on_complete=self._reset_open_progress)
         anim.start(self.children[0])

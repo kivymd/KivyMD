@@ -126,9 +126,7 @@ An example of the implementation of a card in the style of material design versi
         .. code-block:: python
 
             from kivymd.app import MDApp
-            from kivymd.uix.behaviors import (
-                RoundedRectangularElevationBehavior, DeclarativeBehavior
-            )
+            from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
             from kivymd.uix.boxlayout import MDBoxLayout
             from kivymd.uix.button import MDIconButton
             from kivymd.uix.card import MDCard
@@ -137,7 +135,7 @@ An example of the implementation of a card in the style of material design versi
             from kivymd.uix.screen import MDScreen
 
 
-            class MD3Card(DeclarativeBehavior, MDCard, RoundedRectangularElevationBehavior):
+            class MD3Card(MDCard, RoundedRectangularElevationBehavior):
                 '''Implements a material design v3 card.'''
 
 
@@ -779,6 +777,7 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
 
 
 class MDCard(
+    DeclarativeBehavior,
     ThemableBehavior,
     BackgroundColorBehavior,
     RectangularRippleBehavior,
@@ -837,8 +836,8 @@ class MDCard(
         [1.0, 1.0, 1.0, 0.0],
     )
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.theme_cls.bind(theme_style=self.update_md_bg_color)
         self.theme_cls.bind(material_style=self.set_style)
         Clock.schedule_once(self.set_style)
@@ -1104,7 +1103,7 @@ class MDCardSwipe(MDRelativeLayout):
         self.dispatch("on_swipe_complete")
 
 
-class MDCardSwipeFrontBox(DeclarativeBehavior, MDCard):
+class MDCardSwipeFrontBox(MDCard):
     pass
 
 

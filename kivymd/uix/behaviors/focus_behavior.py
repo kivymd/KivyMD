@@ -100,23 +100,35 @@ class FocusBehavior(HoverBehavior, ButtonBehavior):
     def on_enter(self):
         """Called when mouse enter the bbox of the widget."""
 
-        if hasattr(self, "md_bg_color") and self.focus_behavior:
+        if (
+            hasattr(self, "md_bg_color") or hasattr(self, "bg_color")
+        ) and self.focus_behavior:
             if hasattr(self, "theme_cls") and not self.focus_color:
-                self.md_bg_color = self.theme_cls.bg_normal
+                color = self.theme_cls.bg_normal
             else:
                 if not self.focus_color:
-                    self.md_bg_color = App.get_running_app().theme_cls.bg_normal
+                    color = App.get_running_app().theme_cls.bg_normal
                 else:
-                    self.md_bg_color = self.focus_color
+                    color = self.focus_color
+            self._set_bg_color(color)
 
     def on_leave(self):
         """Called when the mouse exit the widget."""
 
-        if hasattr(self, "md_bg_color") and self.focus_behavior:
+        if (
+            hasattr(self, "md_bg_color") or hasattr(self, "bg_color")
+        ) and self.focus_behavior:
             if hasattr(self, "theme_cls") and not self.unfocus_color:
-                self.md_bg_color = self.theme_cls.bg_light
+                color = self.theme_cls.bg_light
             else:
                 if not self.unfocus_color:
-                    self.md_bg_color = App.get_running_app().theme_cls.bg_light
+                    color = App.get_running_app().theme_cls.bg_light
                 else:
-                    self.md_bg_color = self.unfocus_color
+                    color = self.unfocus_color
+            self._set_bg_color(color)
+
+    def _set_bg_color(self, color):
+        if hasattr(self, "md_bg_color"):
+            self.md_bg_color = color
+        elif hasattr(self, "bg_color"):
+            self.bg_color = color

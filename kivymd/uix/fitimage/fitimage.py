@@ -1,6 +1,6 @@
 """
 Components/FitImage
-==================
+===================
 
 Feature to automatically crop a `Kivy` image to fit your layout
 Write by Benedikt Zwölfer
@@ -11,20 +11,42 @@ Referene - https://gist.github.com/benni12er/95a45eb168fc33a4fcd2d545af692dad
 Example:
 ========
 
-.. code-block:: kv
+.. tabs::
 
-    MDBoxLayout:
-        size_hint_y: None
-        height: "200dp"
-        orientation: 'vertical'
+    .. tab:: Declarative KV styles
 
-        FitImage:
-            size_hint_y: 3
-            source: 'images/img1.jpg'
+        .. code-block:: kv
 
-        FitImage:
-            size_hint_y: 1
-            source: 'images/img2.jpg'
+            MDBoxLayout:
+                size_hint_y: None
+                height: "200dp"
+                orientation: 'vertical'
+
+                FitImage:
+                    size_hint_y: 3
+                    source: 'images/img1.jpg'
+
+                FitImage:
+                    size_hint_y: 1
+                    source: 'images/img2.jpg'
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            MDBoxLayout(
+                FitImage(
+                    size_hint_y=.3,
+                    source='images/img1.jpg',
+                ),
+                FitImage(
+                    size_hint_y=.7,
+                    source='images/img2.jpg',
+                ),
+                size_hint_y=None,
+                height="200dp",
+                orientation='vertical',
+            )
 
 Example with round corners:
 ===========================
@@ -32,62 +54,89 @@ Example with round corners:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.uix.modalview import ModalView
-    from kivy.lang import Builder
+    .. tab:: Declarative KV styles
 
-    from kivymd import images_path
-    from kivymd.app import MDApp
-    from kivymd.uix.card import MDCard
+        .. code-block:: python
 
-    Builder.load_string(
-        '''
-    <Card>:
-        elevation: 10
-        radius: [36, ]
+            from kivy.lang import Builder
 
-        FitImage:
-            id: bg_image
-            source: "images/bg.png"
-            size_hint_y: .35
-            pos_hint: {"top": 1}
-            radius: 36, 36, 0, 0
-    ''')
+            from kivymd.app import MDApp
 
+            KV = '''
+            MDScreen:
 
-    class Card(MDCard):
-        pass
+                MDCard:
+                    radius: 36
+                    md_bg_color: "grey"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint: .4, .8
 
-
-    class Example(MDApp):
-        def build(self):
-            modal = ModalView(
-                size_hint=(0.4, 0.8),
-                background=f"{images_path}/transparent.png",
-                overlay_color=(0, 0, 0, 0),
-            )
-            modal.add_widget(Card())
-            modal.open()
+                    FitImage:
+                        source: "bg.jpg"
+                        size_hint_y: .35
+                        pos_hint: {"top": 1}
+                        radius: 36, 36, 0, 0
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python styles
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.card import MDCard
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDCard(
+                                FitImage(
+                                    source="bg.jpg",
+                                    size_hint_y=0.35,
+                                    pos_hint={"top": 1},
+                                    radius=(36, 36, 0, 0),
+                                ),
+                                radius=36,
+                                md_bg_color="grey",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                size_hint=(0.4, 0.8),
+                            ),
+                        )
+                    )
+
+
+            Example().run()
 """
 
-__all__ = ("FitImage",)
+__all__ = ("FitImage", )
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.properties import BooleanProperty, ObjectProperty
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
 
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.templates import StencilWidget
 
 
-class FitImage(BoxLayout, StencilWidget):
+class FitImage(MDBoxLayout, StencilWidget):
     source = ObjectProperty()
     """
     Filename/source of your image.

@@ -562,8 +562,7 @@ class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
         self.navigation_rail.dispatch("on_item_release", self)
 
 
-class MDNavigationRail(MDCard, FakeRectangularElevationBehavior
-):
+class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
     """
     :Events:
         :attr:`on_item_press`

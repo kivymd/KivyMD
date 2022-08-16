@@ -16,21 +16,21 @@ template created using the create_project utility.
 To add a new view to an existing project that was created using the
 `create_project` utility, use the following command::
 
-    python -m kivymd.tools.patterns.add_view \\
+    kivymd.add_view \\
         name_pattern \\
         path_to_project \\
         name_view
 
 Example command::
 
-    python -m kivymd.tools.patterns.add_view \\
+    kivymd.add_view \\
         MVC \\
         /Users/macbookair/Projects \\
         NewScreen
 
 You can also add new views with responsive behavior to an existing project::
 
-    python -m kivymd.tools.patterns.add_view \\
+    kivymd.add_view \\
         MVC \\
         /Users/macbookair/Projects \\
         NewScreen \\

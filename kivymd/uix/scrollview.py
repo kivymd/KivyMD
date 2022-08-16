@@ -40,9 +40,7 @@ from kivymd.uix.behaviors import (
 )
 
 
-class MDScrollView(
-    DeclarativeBehavior, SpecificBackgroundColorBehavior, ScrollView
-):
+class MDScrollView(DeclarativeBehavior, ScrollView):
     """
     ScrollView class. For more information, see in the
     :class:`~kivy.uix.scrollview.ScrollView` class documentation.

@@ -60,7 +60,7 @@ from kivymd.tools.patterns.create_project import (
 
 screens_data = """%s
 
-screen = {%s
+screens = {%s
 }"""
 
 screns_comment = """# The screen's dictionary contains the objects of the models and controllers

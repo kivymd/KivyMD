@@ -123,7 +123,7 @@ Example with round corners:
             Example().run()
 """
 
-__all__ = ("FitImage", )
+__all__ = ("FitImage",)
 
 from kivy.clock import Clock
 from kivy.graphics.context_instructions import Color

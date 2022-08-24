@@ -121,8 +121,8 @@ Shadow elevation control
 .. code-block:: kv
 
     MDTopAppBar:
-        title: "Elevation 10"
-        elevation: 10
+        title: "Elevation 4"
+        elevation: 4
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-7.png
     :align: center
@@ -327,7 +327,7 @@ Material design 3 style
     :align: center
 """
 
-__all__ = ("MDTopAppBar", "MDBottomAppBar")
+__all__ = ("MDTopAppBar", "MDBottomAppBar", "ActionTopAppBarButton")
 
 import os
 from math import cos, radians, sin
@@ -337,10 +337,8 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.metrics import dp
 from kivy.properties import (
-    AliasProperty,
     BooleanProperty,
     ColorProperty,
     ListProperty,
@@ -356,8 +354,8 @@ from kivymd import uix_path
 from kivymd.color_definitions import text_colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    CommonElevationBehavior,
     DeclarativeBehavior,
-    FakeRectangularElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
@@ -409,7 +407,7 @@ class OverFlowMenuItem(OneLineIconListItem):
 
 class NotchedBox(
     ThemableBehavior,
-    FakeRectangularElevationBehavior,
+    CommonElevationBehavior,
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):
@@ -1103,6 +1101,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                 + self.theme_cls.standard_increment / 2
                 + self._shift
             )
+            self.shadow_offset = [0, 30]
             self.on_mode(None, self.mode)
 
     def on_type_height(self, instance_toolbar, height_type_value: str) -> None:

@@ -673,27 +673,6 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
                 group="ttv_group",
             )
 
-    def stop(self, *args):
-        """Starts widget close animation."""
-
-        # It needs a better implementation.
-        if self.anim_ripple is not None:
-            self.anim_ripple.unbind(on_complete=self._repeat_ripple)
-        self.core_title_text.opacity = 0
-        self.core_description_text.opacity = 0
-        anim = Animation(
-            d=0.15,
-            t="in_cubic",
-            **dict(
-                zip(
-                    ["_outer_radius", "_target_radius", "target_ripple_radius"],
-                    [0, 0, 0],
-                )
-            ),
-        )
-        anim.bind(on_complete=self._after_stop)
-        anim.start(self.widget)
-
     def _after_stop(self, *args):
         self.widget.canvas.before.remove_group("ttv_group")
         args[0].stop_all(self.widget)

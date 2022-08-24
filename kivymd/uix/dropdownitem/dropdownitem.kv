@@ -1,7 +1,7 @@
 <_Triangle>:
     canvas:
         Color:
-            rgba: root.theme_cls.text_color
+            rgba: app.theme_cls.text_color
         Triangle:
             points:
                 [ \
@@ -13,7 +13,8 @@
 
 <MDDropDownItem>
     orientation: "vertical"
-    adaptive_size: True
+    size_hint: None, None
+    size: self.minimum_size
     spacing: "5dp"
     padding: "5dp", "5dp", "5dp", 0
 

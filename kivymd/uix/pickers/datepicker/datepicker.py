@@ -29,7 +29,7 @@ Components/DatePicker
         MDTopAppBar:
             title: "MDDatePicker"
             pos_hint: {"top": 1}
-            elevation: 10
+            elevation: 4
 
         MDRaisedButton:
             text: "Open date picker"
@@ -152,7 +152,6 @@ from typing import Union
 
 from kivy import Logger
 from kivy.animation import Animation
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -175,7 +174,7 @@ from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.toast import toast
 from kivymd.uix.behaviors import (
     CircularRippleBehavior,
-    FakeRectangularElevationBehavior,
+    CommonElevationBehavior,
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -194,7 +193,7 @@ with open(
 
 class BaseDialogPicker(
     BaseDialog,
-    FakeRectangularElevationBehavior,
+    CommonElevationBehavior,
     SpecificBackgroundColorBehavior,
 ):
     """

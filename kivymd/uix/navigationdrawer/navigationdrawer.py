@@ -61,7 +61,7 @@ A simple example
 
                             MDTopAppBar:
                                 title: "Navigation Drawer"
-                                elevation: 10
+                                elevation: 4
                                 pos_hint: {"top": 1}
                                 md_bg_color: "#e7e4c0"
                                 specific_text_color: "#4a4939"
@@ -115,7 +115,7 @@ A simple example
                                     MDScreen(
                                         MDTopAppBar(
                                             title="Navigation Drawer",
-                                            elevation=10,
+                                            elevation=4,
                                             pos_hint={"top": 1},
                                             md_bg_color="#e7e4c0",
                                             specific_text_color="#4a4939",
@@ -188,7 +188,7 @@ Standard content for the navigation bar
 
                             MDTopAppBar:
                                 title: "Navigation Drawer"
-                                elevation: 10
+                                elevation: 4
                                 pos_hint: {"top": 1}
                                 md_bg_color: "#e7e4c0"
                                 specific_text_color: "#4a4939"
@@ -296,7 +296,7 @@ Standard content for the navigation bar
                                     MDScreen(
                                         MDTopAppBar(
                                             title="Navigation Drawer",
-                                            elevation=10,
+                                            elevation=4,
                                             pos_hint={"top": 1},
                                             md_bg_color="#e7e4c0",
                                             specific_text_color="#4a4939",
@@ -396,7 +396,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDTopAppBar``
 
                 MDTopAppBar:
                     pos_hint: {"top": 1}
-                    elevation: 10
+                    elevation: 4
                     title: "MDNavigationDrawer"
                     left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
@@ -465,7 +465,7 @@ Switching screens in the ``ScreenManager`` and using the common ``MDTopAppBar``
                         MDScreen(
                             MDTopAppBar(
                                 pos_hint={"top": 1},
-                                elevation=10,
+                                elevation=4,
                                 title="MDNavigationDrawer",
                                 left_action_items=[["menu", lambda x: self.nav_drawer_open()]],
                             ),
@@ -551,14 +551,9 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import (
-    DeclarativeBehavior,
-    FakeRectangularElevationBehavior,
-)
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
@@ -1029,7 +1024,7 @@ class MDNavigationDrawerMenu(MDScrollView):
                     widget.text_color = widget._text_color
 
 
-class MDNavigationDrawer(MDCard, FakeRectangularElevationBehavior):
+class MDNavigationDrawer(MDCard):
     type = OptionProperty("modal", options=("standard", "modal"))
     """
     Type of drawer. Modal type will be on top of screen. Standard type will be

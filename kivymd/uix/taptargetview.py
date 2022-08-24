@@ -487,6 +487,8 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     _outer_radius = NumericProperty(0)
     _target_radius = NumericProperty(0)
 
+    __elevation = 0
+
     def __init__(self, **kwargs):
         self.ripple_max_dist = dp(90)
         self.on_outer_radius(self, self.outer_radius)
@@ -514,6 +516,89 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
         if not self.outer_circle_color:
             self.outer_circle_color = self.theme_cls.primary_color[:-1]
 
+    def start(self, *args):
+        """Starts widget opening animation."""
+
+        self._initialize()
+        self._animate_outer()
+        self.state = "open"
+        self.core_title_text.opacity = 1
+        self.core_description_text.opacity = 1
+        self.dispatch("on_open")
+
+        elevation = getattr(self.widget, "elevation", None)
+        if elevation:
+            self.__elevation = elevation
+            self.widget.elevation = 0
+
+    def stop(self, *args):
+        """Starts widget close animation."""
+
+        # It needs a better implementation.
+        if self.anim_ripple is not None:
+            self.anim_ripple.unbind(on_complete=self._repeat_ripple)
+        self.core_title_text.opacity = 0
+        self.core_description_text.opacity = 0
+        anim = Animation(
+            d=0.15,
+            t="in_cubic",
+            **dict(
+                zip(
+                    ["_outer_radius", "_target_radius", "target_ripple_radius"],
+                    [0, 0, 0],
+                )
+            ),
+        )
+        anim.bind(on_complete=self._after_stop)
+        anim.start(self.widget)
+
+    def on_open(self, *args):
+        """Called at the time of the start of the widget opening animation."""
+
+    def on_close(self, *args):
+        """Called at the time of the start of the widget closed animation."""
+
+    def on_draw_shadow(self, instance, value):
+        Logger.warning(
+            "The shadow adding method will be implemented in future versions"
+        )
+
+    def on_description_text(self, instance, value):
+        self.core_description_text.text = value
+
+    def on_description_text_size(self, instance, value):
+        self.core_description_text.font_size = value
+
+    def on_description_text_bold(self, instance, value):
+        self.core_description_text.bold = value
+
+    def on_title_text(self, instance, value):
+        self.core_title_text.text = value
+
+    def on_title_text_size(self, instance, value):
+        self.core_title_text.font_size = value
+
+    def on_title_text_bold(self, instance, value):
+        self.core_title_text.bold = value
+
+    def on_outer_radius(self, instance, value):
+        self._outer_radius = self.outer_radius * 2
+
+    def on_target_radius(self, instance, value):
+        self._target_radius = self.target_radius * 2
+
+    def on_target_touch(self):
+        if self.stop_on_target_touch:
+            self.stop()
+
+    def on_outer_touch(self):
+        if self.stop_on_outer_touch:
+            self.stop()
+
+    def on_outside_click(self):
+        if self.cancelable:
+            self.stop()
+
     def _initialize(self):
         setattr(self.widget, "_outer_radius", 0)
         setattr(self.widget, "_target_radius", 0)
@@ -527,7 +612,7 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
 
     def _draw_canvas(self):
         _pos = self._ttv_pos()
-        self.widget.canvas.before.clear()
+        self.widget.canvas.before.remove_group("ttv_group")
 
         with self.widget.canvas.before:
             # Outer circle.
@@ -612,10 +697,11 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
     def _after_stop(self, *args):
         self.widget.canvas.before.remove_group("ttv_group")
         args[0].stop_all(self.widget)
-        elev = getattr(self.widget, "elevation", None)
 
-        if elev:
-            self._fix_elev()
+        elevation = getattr(self.widget, "elevation", None)
+        if elevation:
+            self.widget.elevation = self.__elevation
+
         self.dispatch("on_close")
 
         # Don't forget to unbind the function or it'll mess
@@ -638,16 +724,6 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
                 pos=self.widget._hard_shadow_pos,
             )
             Color(a=1)
-
-    def start(self, *args):
-        """Starts widget opening animation."""
-
-        self._initialize()
-        self._animate_outer()
-        self.state = "open"
-        self.core_title_text.opacity = 1
-        self.core_description_text.opacity = 1
-        self.dispatch("on_open")
 
     def _animate_outer(self):
         anim = Animation(
@@ -683,53 +759,6 @@ class MDTapTargetView(ThemableBehavior, EventDispatcher):
         setattr(self.widget, "target_ripple_radius", self._target_radius)
         setattr(self.widget, "target_ripple_alpha", 1)
         self._animate_ripple()
-
-    def on_open(self, *args):
-        """Called at the time of the start of the widget opening animation."""
-
-    def on_close(self, *args):
-        """Called at the time of the start of the widget closed animation."""
-
-    def on_draw_shadow(self, instance, value):
-        Logger.warning(
-            "The shadow adding method will be implemented in future versions"
-        )
-
-    def on_description_text(self, instance, value):
-        self.core_description_text.text = value
-
-    def on_description_text_size(self, instance, value):
-        self.core_description_text.font_size = value
-
-    def on_description_text_bold(self, instance, value):
-        self.core_description_text.bold = value
-
-    def on_title_text(self, instance, value):
-        self.core_title_text.text = value
-
-    def on_title_text_size(self, instance, value):
-        self.core_title_text.font_size = value
-
-    def on_title_text_bold(self, instance, value):
-        self.core_title_text.bold = value
-
-    def on_outer_radius(self, instance, value):
-        self._outer_radius = self.outer_radius * 2
-
-    def on_target_radius(self, instance, value):
-        self._target_radius = self.target_radius * 2
-
-    def on_target_touch(self):
-        if self.stop_on_target_touch:
-            self.stop()
-
-    def on_outer_touch(self):
-        if self.stop_on_outer_touch:
-            self.stop()
-
-    def on_outside_click(self):
-        if self.cancelable:
-            self.stop()
 
     def _some_func(self, wid, touch):
         """

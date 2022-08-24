@@ -781,7 +781,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `'[dp(7)]'`.
     """
 
-    elevation = NumericProperty(10)
+    elevation = NumericProperty(4)
     """
     Elevation value of menu dialog.
 
@@ -790,7 +790,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     .. code-block:: python
 
         self.menu = MDDropdownMenu(
-            elevation=16,
+            elevation=4,
             ...,
         )
 
@@ -798,7 +798,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         :align: center
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `10`.
+    and defaults to `4`.
     """
 
     _start_coords = []

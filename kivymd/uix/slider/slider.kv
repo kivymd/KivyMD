@@ -3,7 +3,7 @@
 #:import colors kivymd.color_definitions.colors
 
 
-<HintBoxContainer@MDCard+FakeRectangularElevationBehavior>
+<HintBoxContainer@MDCard>
 
 
 <MDSlider>
@@ -131,16 +131,20 @@
             ) \
             ) \
             )
-        elevation: 0 if root._is_off else (4 if root.active else 2)
+        elevation: 0 if root._is_off else (3 if root.active else 1)
 
     HintBoxContainer:
         id: hint_box
         size_hint: None, None
-        md_bg_color: root.hint_bg_color
-        elevation: 0
+        md_bg_color: root.hint_bg_color if root.hint_bg_color else [0, 0, 0, 0]
+        elevation: 1.5
         opacity: 1 if root.active else 0
         radius: root.hint_radius
         padding: "6dp", "6dp", "6dp", "8dp"
+        shadow_color:
+            ([0, 0, 0, 0.6] if root.hint_bg_color else [0, 0, 0, 0]) \
+            if root.active else \
+            [0, 0, 0, 0]
         size:
             lbl_value.width + self.padding[0] * 2, \
             lbl_value.height + self.padding[0]

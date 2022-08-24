@@ -34,7 +34,7 @@ Usage :class:`~MDListBottomSheet`
         MDTopAppBar:
             title: "Example BottomSheet"
             pos_hint: {"top": 1}
-            elevation: 10
+            elevation: 4
 
         MDRaisedButton:
             text: "Open list bottom sheet"
@@ -94,7 +94,7 @@ which will be used as an icon to the left of the item:
         MDTopAppBar:
             title: 'Example BottomSheet'
             pos_hint: {"top": 1}
-            elevation: 10
+            elevation: 4
 
         MDRaisedButton:
             text: "Open grid bottom sheet"
@@ -180,7 +180,7 @@ which will be used as an icon to the left of the item:
         MDTopAppBar:
             title: 'Example BottomSheet'
             pos_hint: {"top": 1}
-            elevation: 10
+            elevation: 4
 
         MDRaisedButton:
             text: "Open custom bottom sheet"

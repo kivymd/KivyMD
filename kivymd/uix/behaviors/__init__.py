@@ -17,7 +17,6 @@ from .elevation import (
     CommonElevationBehavior,
     FakeCircularElevationBehavior,
     FakeRectangularElevationBehavior,
-    ObservableShadow,
     RectangularElevationBehavior,
     RoundedRectangularElevationBehavior,
 )

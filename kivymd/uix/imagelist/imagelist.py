@@ -70,7 +70,6 @@ __all__ = "MDSmartTile"
 import os
 
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,

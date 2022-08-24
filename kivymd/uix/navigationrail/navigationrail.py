@@ -162,7 +162,7 @@ Example
             id: nav_drawer
             radius: (0, 16, 16, 0)
             md_bg_color: "#fffcf4"
-            elevation: 12
+            elevation: 4
             width: "240dp"
 
             MDNavigationDrawerMenu:
@@ -306,7 +306,6 @@ from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.card import MDCard
@@ -562,7 +561,7 @@ class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
         self.navigation_rail.dispatch("on_item_release", self)
 
 
-class MDNavigationRail(MDCard, FakeRectangularElevationBehavior):
+class MDNavigationRail(MDCard):
     """
     :Events:
         :attr:`on_item_press`

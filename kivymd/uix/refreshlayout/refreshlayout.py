@@ -36,7 +36,7 @@ Example
                 title: app.title
                 md_bg_color: app.theme_cls.primary_color
                 background_palette: 'Primary'
-                elevation: 10
+                elevation: 4
                 left_action_items: [['menu', lambda x: x]]
 
             MDScrollViewRefreshLayout:

@@ -26,26 +26,6 @@ Components/Card
 MDCard
 ------
 
-.. warning:: Starting from the KivyMD 1.1.0 library version, it is necessary
-    to manually inherit the card class from one of the ``Elevation`` classes
-    from ``kivymd/uix/behaviors/elevation.py`` module to draw the card shadow.
-
-.. code-block:: python
-
-    from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
-    from kivymd.uix.card import MDCard
-
-
-    class MD3Card(MDCard, RoundedRectangularElevationBehavior):
-        '''Implements a material design v3 card.'''
-
-It actually allows for better control over the providers that implement the
-rendering of the shadows.
-
-.. note:: You can read more information about the classes that implement the
-    rendering of shadows on this
-    `documentation page <https://kivymd.readthedocs.io/en/latest/behaviors/elevation/>`_.
-
 An example of the implementation of a card in the style of material design version 3
 ------------------------------------------------------------------------------------
 
@@ -59,7 +39,6 @@ An example of the implementation of a card in the style of material design versi
             from kivy.properties import StringProperty
 
             from kivymd.app import MDApp
-            from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
             from kivymd.uix.card import MDCard
 
             KV = '''
@@ -93,7 +72,7 @@ An example of the implementation of a card in the style of material design versi
             '''
 
 
-            class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+            class MD3Card(MDCard):
                 '''Implements a material design v3 card.'''
 
                 text = StringProperty()
@@ -126,7 +105,6 @@ An example of the implementation of a card in the style of material design versi
         .. code-block:: python
 
             from kivymd.app import MDApp
-            from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
             from kivymd.uix.boxlayout import MDBoxLayout
             from kivymd.uix.button import MDIconButton
             from kivymd.uix.card import MDCard
@@ -135,7 +113,7 @@ An example of the implementation of a card in the style of material design versi
             from kivymd.uix.screen import MDScreen
 
 
-            class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+            class MD3Card(MDCard):
                 '''Implements a material design v3 card.'''
 
 
@@ -170,7 +148,6 @@ An example of the implementation of a card in the style of material design versi
                                         adaptive_size=True,
                                         color="grey",
                                         pos=("12dp", "12dp"),
-                                        bold=True,
                                     ),
                                 ),
                                 line_color=(0.2, 0.2, 0.2, 0.8),
@@ -255,10 +232,9 @@ End full code
 
                 MDBoxLayout:
                     orientation: "vertical"
-                    spacing: "10dp"
 
                     MDTopAppBar:
-                        elevation: 10
+                        elevation: 4
                         title: "MDCardSwipe"
 
                     MDScrollView:
@@ -286,7 +262,7 @@ End full code
                     '''Creates a list of cards.'''
 
                     for i in range(20):
-                        self.screen.ids.md_list.add_widget(
+                        self.root.ids.md_list.add_widget(
                             SwipeToDeleteItem(text=f"One-line item {i}")
                         )
 
@@ -316,7 +292,7 @@ End full code
                         MDScreen(
                             MDBoxLayout(
                                 MDTopAppBar(
-                                    elevation=10,
+                                    elevation=4,
                                     title="MDCardSwipe",
                                 ),
                                 MDScrollView(
@@ -328,7 +304,6 @@ End full code
                                 ),
                                 id="box",
                                 orientation="vertical",
-                                spacing="10dp",
                             ),
                         )
                     )
@@ -426,7 +401,7 @@ You can use this event to remove items from a list:
         .. code-block:: python
 
             def on_swipe_complete(self, instance):
-                self.screen.ids.md_list.remove_widget(instance)
+                self.root.ids.md_list.remove_widget(instance)
 
     .. tab:: Decralative python styles
 
@@ -496,10 +471,9 @@ End full code
 
                 MDBoxLayout:
                     orientation: "vertical"
-                    spacing: "10dp"
 
                     MDTopAppBar:
-                        elevation: 10
+                        elevation: 4
                         title: "MDCardSwipe"
 
                     MDScrollView:
@@ -560,7 +534,7 @@ End full code
                         MDScreen(
                             MDBoxLayout(
                                 MDTopAppBar(
-                                    elevation=10,
+                                    elevation=4,
                                     title="MDCardSwipe",
                                 ),
                                 MDScrollView(
@@ -572,7 +546,6 @@ End full code
                                 ),
                                 id="box",
                                 orientation="vertical",
-                                spacing="10dp",
                             ),
                         )
                     )
@@ -630,24 +603,19 @@ Focus behavior
             from kivy.lang import Builder
 
             from kivymd.app import MDApp
-            from kivymd.uix.behaviors import FakeRectangularElevationBehavior
-            from kivymd.uix.card import MDCard
 
             KV = '''
             MDScreen:
 
-                ElevationCard:
+                MDCard:
                     size_hint: .7, .4
                     focus_behavior: True
                     pos_hint: {"center_x": .5, "center_y": .5}
                     md_bg_color: "darkgrey"
                     unfocus_color: "darkgrey"
                     focus_color: "grey"
+                    elevation: 6
             '''
-
-
-            class ElevationCard(MDCard, FakeRectangularElevationBehavior):
-                pass
 
 
             class Example(MDApp):
@@ -663,13 +631,8 @@ Focus behavior
         .. code-block:: python
 
             from kivymd.app import MDApp
-            from kivymd.uix.behaviors import FakeRectangularElevationBehavior
             from kivymd.uix.card import  MDCard
             from kivymd.uix.screen import MDScreen
-
-
-            class ElevationCard(MDCard, FakeRectangularElevationBehavior):
-                pass
 
 
             class Example(MDApp):
@@ -677,20 +640,20 @@ Focus behavior
                     self.theme_cls.theme_style = "Dark"
                     return (
                         MDScreen(
-                            ElevationCard(
+                            MDCard(
                                 size_hint=(0.7, 0.4),
                                 focus_behavior=True,
                                 pos_hint={"center_x": 0.5, "center_y": 0.5},
                                 md_bg_color="darkgrey",
                                 unfocus_color="darkgrey",
                                 focus_color="grey",
+                                elevation=6,
                             ),
                         )
                     )
 
 
             Example().run()
-
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-focus.gif
     :align: center
@@ -738,6 +701,7 @@ from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
+    CommonElevationBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
 )
@@ -781,6 +745,7 @@ class MDCard(
     ThemableBehavior,
     BackgroundColorBehavior,
     RectangularRippleBehavior,
+    CommonElevationBehavior,
     FocusBehavior,
     BoxLayout,
 ):
@@ -798,14 +763,6 @@ class MDCard(
 
     :attr:`ripple_behavior` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
-    """
-
-    elevation = NumericProperty(None, allownone=True)
-    """
-    Elevation value.
-
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to 1.
     """
 
     radius = VariableListProperty([dp(6), dp(6), dp(6), dp(6)])
@@ -865,7 +822,7 @@ class MDCard(
             if self.style == "outlined" or self.style == "filled":
                 self.elevation = 0
             elif self.style == "elevated":
-                self.elevation = 1
+                self.elevation = 2
 
     def set_radius(self) -> None:
         if (

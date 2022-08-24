@@ -192,15 +192,10 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
-from kivy.utils import get_color_from_hex
 
 from kivymd import uix_path
-from kivymd.color_definitions import colors
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import (
-    CircularRippleBehavior,
-    FakeCircularElevationBehavior,
-)
+from kivymd.uix.behaviors import CircularRippleBehavior, CommonElevationBehavior
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
 
@@ -423,7 +418,7 @@ class ThumbIcon(MDIcon):
 
 
 class Thumb(
-    FakeCircularElevationBehavior,
+    CommonElevationBehavior,
     CircularRippleBehavior,
     MDFloatLayout,
 ):

@@ -1238,12 +1238,12 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `False`.
     """
 
-    elevation = NumericProperty(8)
+    elevation = NumericProperty(4)
     """
     Table elevation.
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `8`.
+    and defaults to `4`.
     """
 
     rows_num = NumericProperty(5)

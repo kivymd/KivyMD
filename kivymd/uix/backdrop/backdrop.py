@@ -202,7 +202,6 @@ from kivy.uix.boxlayout import BoxLayout
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import FakeRectangularElevationBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -528,5 +527,5 @@ class _BackLayer(BoxLayout):
     pass
 
 
-class _FrontLayer(MDCard, FakeRectangularElevationBehavior):
+class _FrontLayer(MDCard):
     pass

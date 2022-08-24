@@ -19,12 +19,11 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
+from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import hue, palette, text_colors
 from kivymd.theming import ThemeManager
-
-from .elevation import CommonElevationBehavior
 
 Builder.load_string(
     """
@@ -32,7 +31,7 @@ Builder.load_string(
 
 
 <BackgroundColorBehavior>
-    canvas:
+    canvas.before:
         PushMatrix
         Rotate:
             angle: self.angle
@@ -67,7 +66,7 @@ Builder.load_string(
 )
 
 
-class BackgroundColorBehavior(CommonElevationBehavior):
+class BackgroundColorBehavior(Widget):
     background = StringProperty()
     """
     Background image path.

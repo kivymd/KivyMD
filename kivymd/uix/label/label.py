@@ -229,9 +229,10 @@ from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ColorProperty,
+    ListProperty,
     NumericProperty,
     OptionProperty,
-    StringProperty, ListProperty,
+    StringProperty,
 )
 from kivy.uix.label import Label
 

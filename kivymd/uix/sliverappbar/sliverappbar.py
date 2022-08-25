@@ -38,8 +38,8 @@ Example
 
     from kivy.lang.builder import Builder
 
+    from kivymd.app import MDApp
     from kivymd.uix.card import MDCard
-    from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
     KV = '''
     <CardItem>
@@ -47,7 +47,6 @@ Example
         height: "86dp"
         padding: "4dp"
         radius: 12
-        elevation: 4
 
         FitImage:
             source: "avatar.jpg"
@@ -95,8 +94,10 @@ Example
     '''
 
 
-    class CardItem(MDCard, RoundedRectangularElevationBehavior):
-        pass
+    class CardItem(MDCard):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.elevation = 3
 
 
     class Example(MDApp):
@@ -192,7 +193,6 @@ class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
 
         from kivymd.uix.card import MDCard
         from kivymd.uix.toolbar import MDTopAppBar
-        from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
         KV = '''
         #:import SliverToolbar __main__.SliverToolbar
@@ -203,7 +203,6 @@ class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
             height: "86dp"
             padding: "4dp"
             radius: 12
-            elevation: 4
 
             FitImage:
                 source: "avatar.jpg"
@@ -252,13 +251,16 @@ class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
         '''
 
 
-        class CardItem(MDCard, RoundedRectangularElevationBehavior):
-            pass
+        class CardItem(MDCard):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.elevation = 3
 
 
         class SliverToolbar(MDTopAppBar):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
+                self.shadow_color = (0, 0, 0, 0)
                 self.type_height = "medium"
                 self.headline_text = "Headline medium"
                 self.left_action_items = [["arrow-left", lambda x: x]]
@@ -422,6 +424,7 @@ class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
             # Adding a custom MDTopAppBar object.
             if issubclass(instance_toolbar_cls.__class__, MDTopAppBar):
                 instance_toolbar_cls.pos_hint = {"top": 1}
+                instance_toolbar_cls.elevation = 0
                 self.ids.float_box.add_widget(instance_toolbar_cls)
             else:
                 raise MDSliverAppbarException(

@@ -261,7 +261,7 @@ from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors import (
     DeclarativeBehavior,
-    FakeRectangularElevationBehavior,
+    FakeRectangularElevationBehavior, CommonElevationBehavior,
 )
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     SpecificBackgroundColorBehavior,
@@ -853,8 +853,6 @@ class MDBottomNavigation(DeclarativeBehavior, TabbedPanelBase):
 
 
 class MDBottomNavigationBar(
-    ThemableBehavior,
-    FakeRectangularElevationBehavior,
-    MDFloatLayout,
+    ThemableBehavior, CommonElevationBehavior, MDFloatLayout
 ):
     pass

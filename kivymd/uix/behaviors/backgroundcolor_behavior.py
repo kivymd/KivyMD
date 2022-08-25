@@ -31,7 +31,7 @@ Builder.load_string(
 
 
 <BackgroundColorBehavior>
-    canvas.before:
+    canvas:
         PushMatrix
         Rotate:
             angle: self.angle

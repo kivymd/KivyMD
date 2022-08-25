@@ -143,7 +143,7 @@ Material design style 3
     '''
 
 
-    class TestNavigationDrawer(MDApp):
+    class Example(MDApp):
         def build(self):
             self.theme_cls.material_style = "M3"
             return Builder.load_string(KV)
@@ -166,7 +166,7 @@ Material design style 3
                 )
 
 
-    TestNavigationDrawer().run()
+    Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-m3.gif
     :align: center
@@ -507,7 +507,6 @@ from kivymd.uix.behaviors import (
     DeclarativeBehavior,
     FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
-    RoundedRectangularElevationBehavior,
 )
 from kivymd.uix.label import MDLabel
 from kivymd.uix.tooltip import MDTooltip
@@ -948,29 +947,28 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
 
     _elevation_raised = NumericProperty()
     _anim_raised = ObjectProperty(None, allownone=True)
-    _default_elevation = 2
+    _default_elevation = 3.5
 
     def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         if self.elevation == 0:
             self.elevation = self._default_elevation
-        super().__init__(**kwargs)
-        self.bind(_radius=self.setter("radius"))
-        self.on_elevation(self, self.elevation)
+        if hasattr(self, "radius"):
+            self.bind(_radius=self.setter("radius"))
+        Clock.schedule_once(self.create_anim_raised)
+        self.on_disabled(self, self.disabled)
+
+    def create_anim_raised(self, *args) -> None:
+        self._elevation_raised = self.elevation + 1.2
+        self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
 
     def on_elevation(self, instance_button, elevation_value: int) -> None:
         super().on_elevation(instance_button, elevation_value)
-        self._elevation_raised = self.elevation + 6
         self.on_disabled(self, self.disabled)
-
-    def on__elevation_raised(
-        self, instance_button, elevation_value: int
-    ) -> None:
-        Animation.cancel_all(self, "_elevation")
-        self._anim_raised = Animation(_elevation=self._elevation_raised, d=0.15)
 
     def on_disabled(self, instance_button, disabled_value: bool) -> None:
         if self.disabled is True:
-            Animation.cancel_all(self, "_elevation")
+            Animation.cancel_all(self, "elevation")
         super().on_disabled(instance_button, disabled_value)
 
     def on_touch_down(self, touch):
@@ -994,8 +992,8 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         return super().on_touch_up(touch)
 
     def stop_elevation_anim(self):
-        Animation.cancel_all(self, "_elevation")
-        self._elevation = self.elevation
+        Animation.cancel_all(self, "elevation")
+        self.elevation = self._elevation_raised - 1
 
 
 class ButtonContentsText:
@@ -1097,6 +1095,12 @@ class MDRaisedButton(
     _default_md_bg_color_disabled = None
     _default_theme_text_color = "Custom"
     _default_text_color = "PrimaryHue"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.shadow_softness = 12
+        self.shadow_offset = (0, 2)
+        self.shadow_radius = self._radius * 2
 
 
 class MDRectangleFlatButton(ButtonContentsText, BaseButton):
@@ -1237,7 +1241,6 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
 
 class MDFloatingActionButton(
     OldButtonIconMixin,
-    RoundedRectangularElevationBehavior,
     ButtonElevationBehaviour,
     ButtonContentsIcon,
     BaseButton,
@@ -1287,15 +1290,21 @@ class MDFloatingActionButton(
 
     def set__radius(self, *args) -> None:
         if self.theme_cls.material_style == "M2":
+            self.shadow_radius = self.height / 2
             self.rounded_button = True
         else:
+            self.shadow_softness = 8
+            self.shadow_offset = (0, 2)
             self.rounded_button = False
+
             if self.type == "small":
                 self._radius = dp(12)
             elif self.type == "standard":
                 self._radius = dp(16)
             elif self.type == "large":
                 self._radius = dp(28)
+
+            self.shadow_radius = self._radius
 
     def set_size(self, *args) -> None:
         if self.theme_cls.material_style == "M2":

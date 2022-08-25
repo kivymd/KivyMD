@@ -1,4 +1,3 @@
-#:import sm kivy.uix.screenmanager
 #:import STANDARD_INCREMENT kivymd.material_resources.STANDARD_INCREMENT
 
 
@@ -7,9 +6,9 @@
     height:
         STANDARD_INCREMENT if app.theme_cls.material_style == "M2" else "80dp"
 
-    MDScreenManager:
+    ScreenManager:
         id: tab_manager
-        transition: sm.FadeTransition(duration=.2)
+        transition: root.transition(duration=root.transition_duration)
         on_current:
             root.dispatch( \
             "on_switch_tabs", \

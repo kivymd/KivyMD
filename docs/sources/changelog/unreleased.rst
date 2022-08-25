@@ -8,3 +8,5 @@ Unreleased
        pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
+* Add `closing_interval` parameter to `MDCardSwipe` class.
+* Added implementation of elevation behavior on shaders.

@@ -62,59 +62,120 @@ For ease of understanding, this code works like this:
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
+            from kivy.lang import Builder
 
-    class Test(MDApp):
-
-        def build(self):
-            self.theme_cls.material_style = "M3"
-            return Builder.load_string(
-                '''
-    MDScreen:
-
-        MDBottomNavigation:
-            panel_color: "#eeeaea"
-            selected_color_background: "#97ecf8"
-            text_color_active: 0, 0, 0, 1
-
-            MDBottomNavigationItem:
-                name: 'screen 1'
-                text: 'Mail'
-                icon: 'gmail'
-                badge_icon: "numeric-10"
-
-                MDLabel:
-                    text: 'Mail'
-                    halign: 'center'
-
-            MDBottomNavigationItem:
-                name: 'screen 2'
-                text: 'Discord'
-                icon: 'discord'
-                badge_icon: "numeric-5"
-
-                MDLabel:
-                    text: 'Discord'
-                    halign: 'center'
-
-            MDBottomNavigationItem:
-                name: 'screen 3'
-                text: 'LinkedIN'
-                icon: 'linkedin'
-
-                MDLabel:
-                    text: 'LinkedIN'
-                    halign: 'center'
-    '''
-            )
+            from kivymd.app import MDApp
 
 
-    Test().run()
+            class Test(MDApp):
+
+                def build(self):
+                    self.theme_cls.material_style = "M3"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(
+                        '''
+            MDScreen:
+
+                MDBottomNavigation:
+                    #panel_color: "#eeeaea"
+                    selected_color_background: "orange"
+                    text_color_active: "lightgrey"
+
+                    MDBottomNavigationItem:
+                        name: 'screen 1'
+                        text: 'Mail'
+                        icon: 'gmail'
+                        badge_icon: "numeric-10"
+
+                        MDLabel:
+                            text: 'Mail'
+                            halign: 'center'
+
+                    MDBottomNavigationItem:
+                        name: 'screen 2'
+                        text: 'Twitter'
+                        icon: 'twitter'
+                        badge_icon: "numeric-5"
+
+                        MDLabel:
+                            text: 'Twitter'
+                            halign: 'center'
+
+                    MDBottomNavigationItem:
+                        name: 'screen 3'
+                        text: 'LinkedIN'
+                        icon: 'linkedin'
+
+                        MDLabel:
+                            text: 'LinkedIN'
+                            halign: 'center'
+            '''
+                    )
+
+
+            Test().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.bottomnavigation import MDBottomNavigation, MDBottomNavigationItem
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+
+
+            class Test(MDApp):
+                def build(self):
+                    self.theme_cls.material_style = "M3"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDBottomNavigation(
+                                MDBottomNavigationItem(
+                                    MDLabel(
+                                        text='Mail',
+                                        halign='center',
+                                    ),
+                                    name='screen 1',
+                                    text='Mail',
+                                    icon='gmail',
+                                    badge_icon="numeric-10",
+                                ),
+                                MDBottomNavigationItem(
+                                    MDLabel(
+                                        text='Twitter',
+                                        halign='center',
+                                    ),
+                                    name='screen 1',
+                                    text='Twitter',
+                                    icon='twitter',
+                                    badge_icon="numeric-10",
+                                ),
+                                MDBottomNavigationItem(
+                                    MDLabel(
+                                        text='LinkedIN',
+                                        halign='center',
+                                    ),
+                                    name='screen 1',
+                                    text='LinkedIN',
+                                    icon='linkedin',
+                                    badge_icon="numeric-10",
+                                ),
+                                selected_color_background="orange",
+                                text_color_active="lightgrey",
+                            )
+                        )
+                    )
+
+
+            Test().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation.gif
     :align: center
@@ -192,7 +253,7 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import ScreenManagerException
+from kivy.uix.screenmanager import ScreenManagerException, FadeTransition
 
 from kivymd import uix_path
 from kivymd.material_resources import STANDARD_INCREMENT
@@ -496,6 +557,26 @@ class MDBottomNavigation(DeclarativeBehavior, TabbedPanelBase):
             opened.
 
         .. versionadded:: 1.0.0
+    """
+
+    transition = ObjectProperty(FadeTransition)
+    """
+    Transition animation of bottom navigation screen manager.
+
+    .. versionadded:: 1.1.0
+
+    :attr:`transition` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `FadeTransition`.
+    """
+
+    transition_duration = NumericProperty(0.2)
+    """
+    Duration animation of bottom navigation screen manager.
+
+    .. versionadded:: 1.1.0
+
+    :attr:`transition_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
     """
 
     text_color_normal = ColorProperty([1, 1, 1, 1])

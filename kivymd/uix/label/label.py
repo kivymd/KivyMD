@@ -231,7 +231,7 @@ from kivy.properties import (
     ColorProperty,
     NumericProperty,
     OptionProperty,
-    StringProperty,
+    StringProperty, ListProperty,
 )
 from kivy.uix.label import Label
 
@@ -459,11 +459,16 @@ class MDIcon(MDFloatLayout, MDLabel):
     and defaults to `None`.
     """
 
-    def __init__(self, **kwargs):
+    _size = ListProperty((0, 0))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        Clock.schedule_once(self.adjust_size)
+
+    def adjust_size(self, *args) -> None:
         from kivymd.uix.selectioncontrol import MDCheckbox
 
-        super().__init__(**kwargs)
         if not isinstance(self, MDCheckbox):
             self.size_hint = (None, None)
-            self.size = self.texture_size
+            self._size = self.texture_size[1], self.texture_size[1]
             self.adaptive_size = True

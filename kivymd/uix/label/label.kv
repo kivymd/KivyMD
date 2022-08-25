@@ -17,8 +17,14 @@
             rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
         Rectangle:
             source: self.source if self.source else None
-            pos: self.pos
-            size: self.size
+            pos:
+                self.pos \
+                if not self.source else \
+                (self.x - self._size[0] / 2, self.y)
+            size:
+                self._size \
+                if self.source else \
+                self.size
 
     font_style: "Icon"
     text: u"{}".format(md_icons[root.icon]) if root.icon in md_icons else "blank"

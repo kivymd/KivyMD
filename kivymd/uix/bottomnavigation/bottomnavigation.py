@@ -253,7 +253,7 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import ScreenManagerException, FadeTransition
+from kivy.uix.screenmanager import FadeTransition, ScreenManagerException
 
 from kivymd import uix_path
 from kivymd.material_resources import STANDARD_INCREMENT

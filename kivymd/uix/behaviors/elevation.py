@@ -389,7 +389,7 @@ class CommonElevationBehavior(Widget):
     and defaults to `0`.
     """
 
-    shadow_radius = VariableListProperty([16], length=4)
+    shadow_radius = VariableListProperty([0], length=4)
     """
     Radius of the corners of the shadow.
 
@@ -439,7 +439,7 @@ class CommonElevationBehavior(Widget):
         kivy_radius = ['top-left', 'top-right', 'bottom-right', 'bottom-left']
 
     :attr:`shadow_radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[16, 16, 16, 16]`.
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     shadow_softness = NumericProperty(12)
@@ -493,7 +493,7 @@ class CommonElevationBehavior(Widget):
     and defaults to `12`.
     """
 
-    shadow_offset = ListProperty((0, 0))
+    shadow_offset = ListProperty((0, 2))
     """
     Offset of the shadow.
 
@@ -562,7 +562,7 @@ class CommonElevationBehavior(Widget):
         :align: center
 
     :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `(0, 0)`.
+    and defaults to `(0, 2)`.
     """
 
     shadow_color = ColorProperty([0, 0, 0, 0.6])

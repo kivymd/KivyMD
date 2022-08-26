@@ -149,7 +149,8 @@ class MDToggleButton(ToggleButtonBehavior):
         # Do the object inherited from the "supported" buttons?
         if not issubclass(self.__class__, classinfo):
             raise ValueError(
-                f"Class {self.__class__} must be inherited from one of the classes in the list {classinfo}"
+                f"Class {self.__class__} must be inherited from one of the "
+                f"classes in the list {classinfo}"
             )
         if (
             not self.background_normal
@@ -165,10 +166,14 @@ class MDToggleButton(ToggleButtonBehavior):
             ):
                 self.__is_filled = True
                 self.background_normal = self.theme_cls.primary_color
-            # If not the background_normal must be the same as the inherited one:
+            # If not background_normal must be the same as the inherited one.
             else:
-                self.background_normal = self.md_bg_color[:]
-        # If no background_down is setted:
+                self.background_normal = (
+                    self.md_bg_color[:]
+                    if self.md_bg_color
+                    else (0, 0, 0, 0)
+                )
+        # If no background_down is setter.
         if (
             not self.background_down
         ):  # This means that if the value == [] or None will return True.

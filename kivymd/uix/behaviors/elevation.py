@@ -676,7 +676,9 @@ class CommonElevationBehavior(Widget):
         def on_elevation(*args):
             if hasattr(self, "context"):
                 self._elevation = value
-                self.hide_elevation(True if value <= 0 else False)
+                self.hide_elevation(
+                    True if (value <= 0 or self.disabled) else False
+                )
 
         Clock.schedule_once(on_elevation)
 
@@ -730,12 +732,11 @@ class CommonElevationBehavior(Widget):
         self.shadow_radius = [value[1], value[2], value[0], value[3]]
 
     def on_disabled(self, instance, value) -> None:
-        self.hide_elevation(value)
-
-        try:
-            super().on_disabled(instance, value)
-        except Exception:
-            pass
+        if value:
+            self._elevation = 0
+            self.hide_elevation(True)
+        else:
+            self.hide_elevation(False)
 
     def hide_elevation(self, hide: bool) -> None:
         if hide:

@@ -623,12 +623,7 @@ class CommonElevationBehavior(Widget):
         else:
             self._has_relative_position = True
 
-        # Loops until parent is the window and binds to window on_draw method.
-        parent = self.parent
-        while not isinstance(parent, type(Window)):
-            parent = parent.parent
-
-        parent.bind(on_draw=self.update_window_position)
+        Window.bind(on_draw=self.update_window_position)
 
     def get_shader_string(self) -> str:
         shader_string = ""

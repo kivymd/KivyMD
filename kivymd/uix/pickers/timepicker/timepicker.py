@@ -16,35 +16,73 @@ Components/TimePicker
 
 .. rubric:: Usage
 
-.. code-block::
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDTimePicker
+        .. code-block:: python
 
-    KV = '''
-    MDFloatLayout:
+            from kivy.lang import Builder
 
-        MDRaisedButton:
-            text: "Open time picker"
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_time_picker()
-    '''
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDTimePicker
 
+            KV = '''
+            MDFloatLayout:
 
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def show_time_picker(self):
-            '''Open time picker dialog.'''
-
-            time_dialog = MDTimePicker()
-            time_dialog.open()
+                MDRaisedButton:
+                    text: "Open time picker"
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_time_picker()
+            '''
 
 
-    Test().run()
+            class Test(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def show_time_picker(self):
+                    '''Open time picker dialog.'''
+
+                    time_dialog = MDTimePicker()
+                    time_dialog.open()
+
+
+            Test().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDRaisedButton
+            from kivymd.uix.pickers import MDTimePicker
+            from kivymd.uix.screen import MDScreen
+
+
+            class Test(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDScreen(
+                            MDRaisedButton(
+                                text="Open time picker",
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                                on_release=self.show_time_picker,
+                            )
+                        )
+                    )
+
+                def show_time_picker(self, *args):
+                    '''Open time picker dialog.'''
+
+                    MDTimePicker().open()
+
+
+            Test().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDTimePicker.png
     :align: center
@@ -91,14 +129,14 @@ Use the :attr:`~MDTimePicker.set_time` method of the
 
 .. code-block:: python
 
-    time_dialog = MDTimePicker(
-        primary_color=get_color_from_hex("#72225b"),
-        accent_color=get_color_from_hex("#5d1a4a"),
-        text_button_color=(1, 1, 1, 1),
-    )
+        MDTimePicker(
+            primary_color="brown",
+            accent_color="red",
+            text_button_color="white",
+        ).open()
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-customization.png
-        :align: center
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-customization.png
+    :align: center
 """
 
 __all__ = ("MDTimePicker",)

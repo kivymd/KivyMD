@@ -1,13 +1,12 @@
 def test_create_project():
     import os
-    import sys
 
     os.system(
-        f"{sys.executable} -m kivymd.tools.patterns.create_project "
+        f"python3.10 -m kivymd.tools.patterns.create_project "
         f"MVC "
         f"{os.path.expanduser('~')} "
         f"TestProject "
-        f"{sys.executable} "
+        f"python3.10 "
         f"master "
         f"--name_screen TestProjectScreen "
         f"--name_database restdb "

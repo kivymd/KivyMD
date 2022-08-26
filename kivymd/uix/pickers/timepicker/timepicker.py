@@ -194,8 +194,8 @@ class TimeInputTextField(MDTextField):
     hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
     minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_text)
         self.register_event_type("on_select")
         self.bind(text_color_focus=self.setter("hint_text_color_normal"))
@@ -217,17 +217,20 @@ class TimeInputTextField(MDTextField):
         to somehow make them aligned.
         """
 
-        if not self.text:
-            self.text = " "
+        def set_text(*args):
+            if not self.text:
+                self.text = " "
 
-        self._refresh_text(self.text)
-        max_size = max(self._lines_rects, key=lambda r: r.size[0]).size
-        dx = (self.width - max_size[0]) / 2.0
-        dy = (self.height - max_size[1]) / 2.0
-        self.padding = [dx, dy, dx, dy]
+            self._refresh_text(self.text)
+            max_size = max(self._lines_rects, key=lambda r: r.size[0]).size
+            dx = (self.width - max_size[0]) / 2.0
+            dy = (self.height - max_size[1]) / 2.0
+            self.padding = [dx, dy, dx, dy]
 
-        if len(self.text) > 1:
-            self.text = self.text.replace(" ", "")
+            if len(self.text) > 1:
+                self.text = self.text.replace(" ", "")
+
+        Clock.schedule_once(set_text)
 
     def on_focus(self, *args) -> None:
         super().on_focus(*args)

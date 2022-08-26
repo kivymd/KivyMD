@@ -174,9 +174,11 @@
         font_size: "14sp"
         on_release: root.table_data.open_pagination_menu()
         text:
-            f"{root.table_data.rows_num " \
-            f"if root.table_data.rows_num < len(root.table_data.row_data) " \
-            f"else len(root.table_data.row_data)}"
+            "{}".format( \
+            root.table_data.rows_num \
+            if root.table_data.rows_num < len(root.table_data.row_data) else \
+            len(root.table_data.row_data) \
+            )
 
     Widget:
         size_hint_x: None
@@ -193,10 +195,11 @@
             if root.theme_cls.theme_style == "Dark" else \
             (0, 0, 0, 1)
         text:
-            f"1-{root.table_data.rows_num " \
-            f"if root.table_data.rows_num > len(root.table_data.row_data) " \
-            f"else len(root.table_data.row_data)} " \
-            f"of {len(root.table_data.row_data)}"
+            "1-{} of {}".format( \
+            root.table_data.rows_num \
+            if root.table_data.rows_num > len(root.table_data.row_data) else \
+            len(root.table_data.row_data), len(root.table_data.row_data) \
+            )
 
     MDIconButton:
         id: button_back

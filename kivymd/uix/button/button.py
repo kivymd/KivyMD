@@ -505,7 +505,6 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     DeclarativeBehavior,
-    FakeRectangularElevationBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.label import MDLabel
@@ -753,8 +752,8 @@ class BaseButton(
 
     _animation_fade_bg = ObjectProperty(None, allownone=True)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.theme_cls.bind(
             primary_palette=self.set_all_colors,
             theme_style=self.set_all_colors,
@@ -930,7 +929,9 @@ class BaseButton(
         return super().on_touch_up(touch)
 
     def on_disabled(self, instance_button, disabled_value: bool) -> None:
-        Clock.schedule_once(self.set_disabled_color)
+        if hasattr(super(), "on_disabled"):
+            super().on_disabled(instance_button, disabled_value)
+            Clock.schedule_once(self.set_disabled_color)
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):
@@ -1057,7 +1058,7 @@ class OldButtonIconMixin:
             self.theme_icon_color = "Custom"
 
 
-class MDFlatButton(ButtonContentsText, BaseButton):
+class MDFlatButton(BaseButton, ButtonContentsText):
     """
     A flat rectangular button with (by default) no border or background.
     Text is the default text color.
@@ -1078,12 +1079,7 @@ class MDFlatButton(ButtonContentsText, BaseButton):
     """
 
 
-class MDRaisedButton(
-    FakeRectangularElevationBehavior,
-    ButtonElevationBehaviour,
-    ButtonContentsText,
-    BaseButton,
-):
+class MDRaisedButton(BaseButton, ButtonElevationBehaviour, ButtonContentsText):
     """
     A flat button with (by default) a primary color fill and matching
     color text.
@@ -1103,7 +1099,7 @@ class MDRaisedButton(
         self.shadow_radius = self._radius * 2
 
 
-class MDRectangleFlatButton(ButtonContentsText, BaseButton):
+class MDRectangleFlatButton(BaseButton, ButtonContentsText):
     """
     A flat button with (by default) a primary color border and primary
     color text.
@@ -1116,7 +1112,7 @@ class MDRectangleFlatButton(ButtonContentsText, BaseButton):
 
 
 class MDRectangleFlatIconButton(
-    OldButtonIconMixin, ButtonContentsIconText, BaseButton
+    BaseButton, OldButtonIconMixin, ButtonContentsIconText
 ):
     """
     A flat button with (by default) a primary color border, primary color text
@@ -1131,7 +1127,7 @@ class MDRectangleFlatIconButton(
     _default_icon_color = "Primary"
 
 
-class MDRoundFlatButton(ButtonContentsText, BaseButton):
+class MDRoundFlatButton(BaseButton, ButtonContentsText):
     """
     A flat button with (by default) fully rounded corners, a primary
     color border and primary color text.
@@ -1142,15 +1138,13 @@ class MDRoundFlatButton(ButtonContentsText, BaseButton):
     _default_theme_text_color = "Custom"
     _default_text_color = "Primary"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.rounded_button = True
 
 
 class MDRoundFlatIconButton(
-    OldButtonIconMixin,
-    ButtonContentsIconText,
-    BaseButton,
+    BaseButton, OldButtonIconMixin, ButtonContentsIconText
 ):
     """
     A flat button with (by default) rounded corners, a primary color border,
@@ -1164,12 +1158,12 @@ class MDRoundFlatIconButton(
     _default_text_color = "Primary"
     _default_icon_color = "Primary"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.rounded_button = True
 
 
-class MDFillRoundFlatButton(ButtonContentsText, BaseButton):
+class MDFillRoundFlatButton(BaseButton, ButtonContentsText):
     """
     A flat button with (by default) rounded corners, a primary color fill
     and primary color text.
@@ -1180,15 +1174,13 @@ class MDFillRoundFlatButton(ButtonContentsText, BaseButton):
     _default_theme_text_color = "Custom"
     _default_text_color = "PrimaryHue"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.rounded_button = True
 
 
 class MDFillRoundFlatIconButton(
-    OldButtonIconMixin,
-    ButtonContentsIconText,
-    BaseButton,
+    BaseButton, OldButtonIconMixin, ButtonContentsIconText
 ):
     """
     A flat button with (by default) rounded corners, a primary color fill,
@@ -1202,12 +1194,12 @@ class MDFillRoundFlatIconButton(
     _default_text_color = "PrimaryHue"
     _default_icon_color = "PrimaryHue"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.rounded_button = True
 
 
-class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
+class MDIconButton(BaseButton, OldButtonIconMixin, ButtonContentsIcon):
     """A simple rounded icon button."""
 
     icon = StringProperty("checkbox-blank-circle")
@@ -1221,8 +1213,8 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
     _min_width = NumericProperty(0)
     _default_icon_pad = max(dp(48) - sp(24), 0)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.rounded_button = True
         # FIXME: GraphicException: Invalid width value, must be > 0
         self.line_width = 0.001
@@ -1240,10 +1232,7 @@ class MDIconButton(OldButtonIconMixin, ButtonContentsIcon, BaseButton):
 
 
 class MDFloatingActionButton(
-    OldButtonIconMixin,
-    ButtonElevationBehaviour,
-    ButtonContentsIcon,
-    BaseButton,
+    BaseButton, OldButtonIconMixin, ButtonElevationBehaviour, ButtonContentsIcon
 ):
     """
     Implementation
@@ -1271,8 +1260,8 @@ class MDFloatingActionButton(
     _default_theme_icon_color = "Custom"
     _default_icon_color = "PrimaryHue"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # FIXME: GraphicException: Invalid width value, must be > 0
         self.line_width = 0.001
         self.theme_cls.bind(material_style=self.set_size)
@@ -1369,8 +1358,8 @@ class MDTextButton(ButtonBehavior, MDLabel):
 class BaseFloatingRootButton(MDFloatingActionButton):
     _angle = NumericProperty(0)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.elevation = 5
 
 
@@ -1386,9 +1375,7 @@ class BaseFloatingBottomButton(MDFloatingActionButton, MDTooltip):
 
 # FIXME: Use :class:`~kivymd.uix.boxlayout.MDBoxLayout` instead
 #  :class:`~kivy.uix.boxlayout.BoxLayout`.
-class BaseFloatingLabel(
-    ThemableBehavior, FakeRectangularElevationBehavior, BoxLayout
-):
+class BaseFloatingLabel(ThemableBehavior, CommonElevationBehavior, BoxLayout):
     text = StringProperty()
     text_color = ColorProperty(None)
     bg_color = ColorProperty(None)

@@ -97,6 +97,7 @@ if __name__ == "__main__":
                 *glob_paths(".kv"),
                 *glob_paths(".pot"),
                 *glob_paths(".po"),
+                *glob_paths(".frag"),
             ]
         },
         extras_require={

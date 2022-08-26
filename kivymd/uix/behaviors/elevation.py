@@ -117,6 +117,13 @@ For example, let's create a button with a rectangular elevation effect:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/rectangular-elevation-effect.png
     :align: center
 
+.. warning::
+
+    If before the KivyMD 1.1.0 library version you used the elevation property
+    with an average value of `12` for the shadow, then starting with the KivyMD
+    1.1.0 library version, the average value of the elevation property will be
+    somewhere `4`.
+
 Similarly, create a circular button:
 
 .. tabs::

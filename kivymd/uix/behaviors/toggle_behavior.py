@@ -212,9 +212,7 @@ class MDToggleButton(ToggleButtonBehavior):
             # If not background_normal must be the same as the inherited one.
             else:
                 self.background_normal = (
-                    self.md_bg_color[:]
-                    if self.md_bg_color
-                    else (0, 0, 0, 0)
+                    self.md_bg_color[:] if self.md_bg_color else (0, 0, 0, 0)
                 )
         # If no background_down is setter.
         if (

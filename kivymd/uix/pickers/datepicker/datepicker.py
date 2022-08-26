@@ -11,65 +11,112 @@ Components/DatePicker
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/picker-previous.png
     :align: center
 
-.. warning:: The widget is under testing. Therefore, we would be grateful if
-    you would let us know about the bugs found.
-
 .. rubric:: Usage
+
+.. tabs::
+
+    .. tab:: Declarative KV style
 
 .. code-block:: python
 
-    from kivy.lang import Builder
+        from kivy.lang import Builder
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDDatePicker
+        from kivymd.app import MDApp
+        from kivymd.uix.pickers import MDDatePicker
 
-    KV = '''
-    MDFloatLayout:
+        KV = '''
+        MDFloatLayout:
 
-        MDTopAppBar:
-            title: "MDDatePicker"
-            pos_hint: {"top": 1}
-            elevation: 4
-
-        MDRaisedButton:
-            text: "Open date picker"
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_date_picker()
-    '''
+            MDRaisedButton:
+                text: "Open date picker"
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                on_release: app.show_date_picker()
+        '''
 
 
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+        class Test(MDApp):
+            def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
+                return Builder.load_string(KV)
 
-        def on_save(self, instance, value, date_range):
-            '''
-            Events called when the "OK" dialog box button is clicked.
+            def on_save(self, instance, value, date_range):
+                '''
+                Events called when the "OK" dialog box button is clicked.
 
-            :type instance: <kivymd.uix.picker.MDDatePicker object>;
+                :type instance: <kivymd.uix.picker.MDDatePicker object>;
 
-            :param value: selected date;
-            :type value: <class 'datetime.date'>;
+                :param value: selected date;
+                :type value: <class 'datetime.date'>;
 
-            :param date_range: list of 'datetime.date' objects in the selected range;
-            :type date_range: <class 'list'>;
-            '''
+                :param date_range: list of 'datetime.date' objects in the selected range;
+                :type date_range: <class 'list'>;
+                '''
 
-            print(instance, value, date_range)
+                print(instance, value, date_range)
 
-        def on_cancel(self, instance, value):
-            '''Events called when the "CANCEL" dialog box button is clicked.'''
+            def on_cancel(self, instance, value):
+                '''Events called when the "CANCEL" dialog box button is clicked.'''
 
-        def show_date_picker(self):
-            date_dialog = MDDatePicker()
-            date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-            date_dialog.open()
-
-
-    Test().run()
+            def show_date_picker(self):
+                date_dialog = MDDatePicker()
+                date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+                date_dialog.open()
 
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDDatePicker.gif
+        Test().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDRaisedButton
+            from kivymd.uix.pickers import MDDatePicker
+            from kivymd.uix.screen import MDScreen
+
+
+            class Test(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDScreen(
+                            MDRaisedButton(
+                                text="Open data picker",
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                                on_release=self.show_date_picker,
+                            )
+                        )
+                    )
+
+                def on_save(self, instance, value, date_range):
+                    '''
+                    Events called when the "OK" dialog box button is clicked.
+
+                    :type instance: <kivymd.uix.picker.MDDatePicker object>;
+
+                    :param value: selected date;
+                    :type value: <class 'datetime.date'>;
+
+                    :param date_range: list of 'datetime.date' objects in the selected range;
+                    :type date_range: <class 'list'>;
+                    '''
+
+                    print(instance, value, date_range)
+
+                def on_cancel(self, instance, value):
+                    '''Events called when the "CANCEL" dialog box button is clicked.'''
+
+                def show_date_picker(self, *args):
+                    date_dialog = MDDatePicker()
+                    date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+                    date_dialog.open()
+
+
+            Test().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDDatePicker.png
     :align: center
 
 Open date dialog with the specified date
@@ -81,7 +128,7 @@ Open date dialog with the specified date
         date_dialog = MDDatePicker(year=1983, month=4, day=12)
         date_dialog.open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/previous-date.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/specified-date.png
     :align: center
 
 Interval date
@@ -94,12 +141,16 @@ that are not included in this range will have the status `disabled`.
 
     def show_date_picker(self):
         date_dialog = MDDatePicker(
-            min_date=datetime.date(2021, 2, 15),
-            max_date=datetime.date(2021, 3, 27),
+            min_date=datetime.date.today(),
+            max_date=datetime.date(
+                datetime.date.today().year,
+                datetime.date.today().month,
+                datetime.date.today().day + 2,
+            ),
         )
         date_dialog.open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/range-date.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/range-date.png
     :align: center
 
 The range of available dates can be changed in the picker dialog:
@@ -122,7 +173,7 @@ You can set the range of years using the :attr:`~kivymd.uix.picker.MDDatePicker.
 .. code-block:: python
 
     def show_date_picker(self):
-        date_dialog = MDDatePicker(min_year=2021, max_year=2030)
+        date_dialog = MDDatePicker(min_year=2022, max_year=2030)
         date_dialog.open()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/min-max-year-date.png
@@ -254,11 +305,11 @@ class BaseDialogPicker(
 
     primary_color = ColorProperty(None)
     """
-    Background color of toolbar in (r, g, b, a) format.
+    Background color of toolbar in (r, g, b, a) or string format.
 
     .. code-block:: python
 
-        MDDatePicker(primary_color=get_color_from_hex("#72225b"))
+        MDDatePicker(primary_color="brown")
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-color-date.png
         :align: center
@@ -269,13 +320,13 @@ class BaseDialogPicker(
 
     accent_color = ColorProperty(None)
     """
-    Background color of calendar/clock face in (r, g, b, a) format.
+    Background color of calendar/clock face in (r, g, b, a) or string format.
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
+            primary_color="brown",
+            accent_color="darkred",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/accent-color-date.png
@@ -287,14 +338,15 @@ class BaseDialogPicker(
 
     selector_color = ColorProperty(None)
     """
-    Background color of the selected day of the month or hour in (r, g, b, a) format.
+    Background color of the selected day of the month or hour in (r, g, b, a)
+    or string format.
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/selector-color-date.png
@@ -306,15 +358,15 @@ class BaseDialogPicker(
 
     text_toolbar_color = ColorProperty(None)
     """
-    Color of labels for text on a toolbar in (r, g, b, a) format.
+    Color of labels for text on a toolbar in (r, g, b, a) or string format.
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-toolbar-color-date.png
@@ -326,16 +378,16 @@ class BaseDialogPicker(
 
     text_color = ColorProperty(None)
     """
-    Color of text labels in calendar/clock face in (r, g, b, a) format.
+    Color of text labels in calendar/clock face in (r, g, b, a) or string format.
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
-            text_color=("#ffffff"),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-color-date.png
@@ -347,17 +399,18 @@ class BaseDialogPicker(
 
     text_current_color = ColorProperty(None)
     """
-    Color of the text of the current day of the month/hour in (r, g, b, a) format.
+    Color of the text of the current day of the month/hour in (r, g, b, a)
+    or string format.
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
-            text_color=("#ffffff"),
-            text_current_color=get_color_from_hex("#e93f39"),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-current-color-date.png
@@ -374,13 +427,13 @@ class BaseDialogPicker(
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
-            text_color=("#ffffff"),
-            text_current_color=get_color_from_hex("#e93f39"),
-            text_button_color=(1, 1, 1, .5),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
+            text_button_color="lightgrey",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-button-color-date.png
@@ -390,52 +443,124 @@ class BaseDialogPicker(
     and defaults to `None`.
     """
 
-    input_field_background_color = ColorProperty(None)
+    input_field_background_color_normal = ColorProperty(None)
     """
-    Background color of input fields in (r, g, b, a) format.
+    Background color normal of input fields in (r, g, b, a) or string format.
+
+    .. versionadded:: 1.1.0
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
-            text_color=("#ffffff"),
-            text_current_color=get_color_from_hex("#e93f39"),
-            input_field_background_color=(1, 1, 1, 0.2),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
+            text_button_color="lightgrey",
+            input_field_background_color_normal="coral",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/input-field-background-color-date.png
         :align: center
 
-    :attr:`input_field_background_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`input_field_background_color_normal` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
+    """
+
+    input_field_background_color_focus = ColorProperty(None)
+    """
+    Background color normal of input fields in (r, g, b, a) or string format.
+
+    .. versionadded:: 1.1.0
+
+    .. code-block:: python
+
+        MDDatePicker(
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
+            text_button_color="lightgrey",
+            input_field_background_color_normal="coral",
+            input_field_background_color_focus="red",
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/input-field-background-color-focus-date.png
+        :align: center
+
+    :attr:`input_field_background_color_focus` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    input_field_background_color = ColorProperty(None)
+    """
+    .. deprecated:: 1.1.0
+        Use :attr:`input_field_background_color_normal` instead.
     """
 
     input_field_text_color = ColorProperty(None)
     """
-    Text color of input fields in (r, g, b, a) format.
+    .. deprecated:: 1.1.0
+        Use :attr:`input_field_text_color_normal` instead.
+    """
 
-    Background color of input fields.
+    input_field_text_color_normal = ColorProperty(None)
+    """
+    Text color normal of input fields in (r, g, b, a) or string format.
+
+    .. versionadded:: 1.1.0
 
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
-            text_color=("#ffffff"),
-            text_current_color=get_color_from_hex("#e93f39"),
-            input_field_background_color=(1, 1, 1, 0.2),
-            input_field_text_color=(1, 1, 1, 1),
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
+            text_button_color="lightgrey",
+            input_field_background_color_normal="brown",
+            input_field_background_color_focus="red",
+            input_field_text_color_normal="white",
         )
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/input-field-background-color-date.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/input-field-text-color-normal-date.png
         :align: center
 
-    :attr:`input_field_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`input_field_text_color_normal` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    input_field_text_color_focus = ColorProperty(None)
+    """
+    Text color focus of input fields in (r, g, b, a) or string format.
+
+    .. versionadded:: 1.1.0
+
+    .. code-block:: python
+
+        MDDatePicker(
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
+            text_button_color="lightgrey",
+            input_field_background_color_normal="brown",
+            input_field_background_color_focus="red",
+            input_field_text_color_normal="white",
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/input-field-text-color-normal-date.png
+        :align: center
+
+    :attr:`input_field_text_color_focus` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -446,16 +571,18 @@ class BaseDialogPicker(
     .. code-block:: python
 
         MDDatePicker(
-            primary_color=get_color_from_hex("#72225b"),
-            accent_color=get_color_from_hex("#5d1a4a"),
-            selector_color=get_color_from_hex("#e93f39"),
-            text_toolbar_color=get_color_from_hex("#cccccc"),
-            text_color=("#ffffff"),
-            text_current_color=get_color_from_hex("#e93f39"),
-            input_field_background_color=(1, 1, 1, 0.2),
-            input_field_text_color=(1, 1, 1, 1),
-            font_name="Weather.ttf",
-
+            primary_color="brown",
+            accent_color="darkred",
+            selector_color="red",
+            text_toolbar_color="lightgrey",
+            text_color="orange",
+            text_current_color="white",
+            text_button_color="lightgrey",
+            input_field_background_color_normal="brown",
+            input_field_background_color_focus="red",
+            input_field_text_color_normal="white",
+            input_field_text_color_focus="lightgrey",
+            font_name="nasalization.ttf",
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/font-name-date.png
@@ -469,6 +596,20 @@ class BaseDialogPicker(
         super().__init__(**kwargs)
         self.register_event_type("on_save")
         self.register_event_type("on_cancel")
+
+    def on_input_field_background_color(
+        self, instance, value: str | list | tuple
+    ) -> None:
+        """For supported of current API."""
+
+        self.input_field_background_color_normal = value
+
+    def on_input_field_text_color(
+        self, instance, value: str | list | tuple
+    ) -> None:
+        """For supported of current API."""
+
+        self.input_field_text_color_normal = value
 
     def on_save(self, *args) -> None:
         """Events called when the "OK" dialog box button is clicked."""
@@ -660,7 +801,7 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
 class MDDatePicker(BaseDialogPicker):
     text_weekday_color = ColorProperty(None)
     """
-    Text color of weekday names in (r, g, b, a) format.
+    Text color of weekday names in (r, g, b, a) or string format.
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-date-picker-text-weekday-color.png
         :align: center
@@ -1199,19 +1340,39 @@ class MDDatePicker(BaseDialogPicker):
         """Creates and returns a text field object used to enter dates."""
 
         if issubclass(self.input_field_cls, MDTextField):
+            text_color_focus = (
+                self.input_field_text_color_focus
+                if self.input_field_text_color_focus
+                else self.theme_cls.primary_color
+            )
+            text_color_normal = (
+                self.input_field_text_color_normal
+                if self.input_field_text_color_normal
+                else self.theme_cls.disabled_hint_text_color
+            )
+            fill_color_focus = (
+                self.input_field_background_color_focus
+                if self.input_field_background_color_focus
+                else self.theme_cls.bg_dark
+            )
+            fill_color_normal = (
+                self.input_field_background_color_normal
+                if self.input_field_background_color_normal
+                else self.theme_cls.bg_darkest
+            )
+
             field = self.input_field_cls(
                 owner=self,
                 helper_text=self.helper_text,
-                line_color_normal=self.theme_cls.divider_color,
+                fill_color_normal=fill_color_normal,
+                fill_color_focus=fill_color_focus,
+                hint_text_color_normal=text_color_normal,
+                hint_text_color_focus=text_color_focus,
+                text_color_normal=text_color_normal,
+                text_color_focus=text_color_focus,
+                line_color_focus=text_color_focus,
+                line_color_normal=text_color_normal,
             )
-            field.color_mode = "custom"
-            field.line_color_focus = (
-                self.theme_cls.primary_color
-                if not self.input_field_text_color
-                else self.input_field_text_color
-            )
-            field.current_hint_text_color = field.line_color_focus
-            field._current_hint_text_color = field.line_color_focus
             return field
         else:
             raise TypeError(

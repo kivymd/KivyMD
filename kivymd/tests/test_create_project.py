@@ -7,7 +7,7 @@ def test_create_project():
         f"{os.path.expanduser('~')} "
         f"TestProject "
         f"python3.10 "
-        f"master "
+        f"stable "
         f"--name_screen TestProjectScreen "
         f"--name_database restdb "
         f"--use_hotreload yes"

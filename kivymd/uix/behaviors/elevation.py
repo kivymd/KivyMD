@@ -379,7 +379,7 @@ from kivymd import glsl_path
 
 
 # FIXME: Add shadow manipulation with canvas instructions such as
-#  PushMatrix and PopMatrix,
+#  PushMatrix and PopMatrix.
 class CommonElevationBehavior(Widget):
     """Common base class for rectangular and circular elevation behavior."""
 
@@ -672,6 +672,7 @@ class CommonElevationBehavior(Widget):
     def on_elevation(self, instance, value) -> None:
         def on_elevation(*args):
             if hasattr(self, "context"):
+                #print("on_elevation", value)
                 self._elevation = value
                 self.hide_elevation(
                     True if (value <= 0 or self.disabled) else False

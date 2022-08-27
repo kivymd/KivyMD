@@ -97,7 +97,6 @@ __all__ = ("RotateBahavior",)
 from kivy.lang import Builder
 from kivy.properties import ListProperty, NumericProperty
 
-
 Builder.load_string(
     """
 <RotateBahavior>

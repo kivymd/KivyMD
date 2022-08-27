@@ -378,6 +378,8 @@ from kivy.uix.widget import Widget
 from kivymd import glsl_path
 
 
+# FIXME: Add shadow manipulation with canvas instructions such as
+#  PushMatrix and PopMatrix,
 class CommonElevationBehavior(Widget):
     """Common base class for rectangular and circular elevation behavior."""
 

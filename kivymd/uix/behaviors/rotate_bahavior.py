@@ -61,6 +61,7 @@ KivyMD
 
     from kivy.animation import Animation
     from kivy.lang import Builder
+    from kivy.uix.behaviors import ButtonBehavior
 
     from kivymd.app import MDApp
     from kivymd.uix.behaviors.rotate_bahavior import RotateBahavior
@@ -69,7 +70,7 @@ KivyMD
     KV = '''
     MDScreen:
 
-        RotateWidget:
+        RotateBox:
             size_hint: .5, .5
             pos_hint: {"center_x": .5, "center_y": .5}
             on_release: app.change_rotate(self)
@@ -77,7 +78,7 @@ KivyMD
     '''
 
 
-    class RotateWidget(MDBoxLayout, RotateBahavior):
+    class RotateBox(ButtonBehavior, RotateBahavior, MDBoxLayout):
         pass
 
 
@@ -85,7 +86,7 @@ KivyMD
         def build(self):
             return Builder.load_string(KV)
 
-        def change_rotate(self, instance_button: MDRaisedButton) -> None:
+        def change_rotate(self, instance_button: RotateBox) -> None:
             Animation(rotate_value_angle=45, d=0.3).start(instance_button)
 
 

@@ -64,7 +64,7 @@ KivyMD
     from kivy.uix.behaviors import ButtonBehavior
 
     from kivymd.app import MDApp
-    from kivymd.uix.behaviors.rotate_bahavior import RotateBahavior
+    from kivymd.uix.behaviors import RotateBahavior
     from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''

@@ -607,11 +607,12 @@ class CommonElevationBehavior(Widget):
         with self.context:
             self.rect = RoundedRectangle(pos=self.pos, size=self.size)
 
-        Clock.schedule_once(self.after_init, 0)
+        Clock.schedule_once(self.after_init)
 
     def after_init(self, *args):
-        Clock.schedule_once(self.check_for_relative_pos, 0)
-        Clock.schedule_once(self.set_shader_string, 0)
+        Clock.schedule_once(self.check_for_relative_pos)
+        Clock.schedule_once(self.set_shader_string)
+        Clock.schedule_once(lambda x: self.on_elevation(self, self.elevation))
         self.on_pos()
 
     def check_for_relative_pos(self, *args) -> None:
@@ -672,7 +673,6 @@ class CommonElevationBehavior(Widget):
     def on_elevation(self, instance, value) -> None:
         def on_elevation(*args):
             if hasattr(self, "context"):
-                # print("on_elevation", value)
                 self._elevation = value
                 self.hide_elevation(
                     True if (value <= 0 or self.disabled) else False

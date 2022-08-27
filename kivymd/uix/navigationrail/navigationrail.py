@@ -29,45 +29,86 @@ Usage
 
         MDNavigationRailItem:
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
+            from kivy.lang import Builder
 
+            from kivymd.app import MDApp
 
-    MDBoxLayout:
+            KV = '''
+            MDBoxLayout:
 
-        MDNavigationRail:
+                MDNavigationRail:
 
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
+                    MDNavigationRailItem:
+                        text: "Python"
+                        icon: "language-python"
 
-            MDNavigationRailItem:
-                text: "JavaScript"
-                icon: "language-javascript"
+                    MDNavigationRailItem:
+                        text: "JavaScript"
+                        icon: "language-javascript"
 
-            MDNavigationRailItem:
-                text: "CPP"
-                icon: "language-cpp"
+                    MDNavigationRailItem:
+                        text: "CPP"
+                        icon: "language-cpp"
 
-            MDNavigationRailItem:
-                text: "Git"
-                icon: "git"
+                    MDNavigationRailItem:
+                        text: "Git"
+                        icon: "git"
 
-        MDScreen:
-    '''
-
-
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+                MDScreen:
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.navigationrail import MDNavigationRail, MDNavigationRailItem
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDBoxLayout(
+                            MDNavigationRail(
+                                MDNavigationRailItem(
+                                    text="Python",
+                                    icon="language-python",
+                                ),
+                                MDNavigationRailItem(
+                                    text="JavaScript",
+                                    icon="language-javascript",
+                                ),
+                                MDNavigationRailItem(
+                                    text="CPP",
+                                    icon="language-cpp",
+                                ),
+                                MDNavigationRailItem(
+                                    text="Git",
+                                    icon="git",
+                                ),
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-usage.png
     :align: center
@@ -75,202 +116,412 @@ Usage
 Example
 =======
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.clock import Clock
-    from kivy.lang import Builder
+    .. tab:: Declarative KV and imperative python styles
 
-    from kivymd.app import MDApp
-    from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
-    from kivymd.uix.boxlayout import MDBoxLayout
-    from kivymd.uix.button import MDFillRoundFlatIconButton
-    from kivymd.uix.label import MDLabel
-    from kivymd.uix.screen import MDScreen
+        .. code-block:: python
 
-    KV = '''
-    #:import FadeTransition kivy.uix.screenmanager.FadeTransition
+            from kivy.clock import Clock
+            from kivy.lang import Builder
 
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import CommonElevationBehavior
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDFillRoundFlatIconButton
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
 
-    <ExtendedButton>
-        elevation: 3
-        -height: "56dp"
-
-
-    <DrawerClickableItem@MDNavigationDrawerItem>
-        focus_color: "#e7e4c0"
-        unfocus_color: "#fffcf4"
+            KV = '''
+            #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 
 
-    MDScreen:
+            <ExtendedButton>
+                elevation: 3.5
+                shadow_radius: 12
+                shadow_softness: 4
+                -height: "56dp"
 
-        MDNavigationLayout:
 
-            ScreenManager:
+            <DrawerClickableItem@MDNavigationDrawerItem>
+                focus_color: "#e7e4c0"
+                unfocus_color: "#fffcf4"
 
-                MDScreen:
 
-                    MDBoxLayout:
-                        orientation: "vertical"
+            MDScreen:
+
+                MDNavigationLayout:
+
+                    ScreenManager:
+
+                        MDScreen:
+
+                            MDBoxLayout:
+                                orientation: "vertical"
+
+                                MDBoxLayout:
+                                    adaptive_height: True
+                                    md_bg_color: "#fffcf4"
+                                    padding: "12dp"
+
+                                    MDLabel:
+                                        text: "12:00"
+                                        adaptive_height: True
+                                        pos_hint: {"center_y": .5}
+
+                                MDBoxLayout:
+
+                                    MDNavigationRail:
+                                        id: navigation_rail
+                                        md_bg_color: "#fffcf4"
+                                        selected_color_background: "#e7e4c0"
+                                        ripple_color_item: "#e7e4c0"
+                                        on_item_release: app.switch_screen(*args)
+
+                                        MDNavigationRailMenuButton:
+                                            on_release: nav_drawer.set_state("open")
+
+                                        MDNavigationRailFabButton:
+                                            md_bg_color: "#b0f0d6"
+
+                                        MDNavigationRailItem:
+                                            text: "Python"
+                                            icon: "language-python"
+
+                                        MDNavigationRailItem:
+                                            text: "JavaScript"
+                                            icon: "language-javascript"
+
+                                        MDNavigationRailItem:
+                                            text: "CPP"
+                                            icon: "language-cpp"
+
+                                        MDNavigationRailItem:
+                                            text: "Swift"
+                                            icon: "language-swift"
+
+                                    ScreenManager:
+                                        id: screen_manager
+                                        transition:
+                                            FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
+
+                MDNavigationDrawer:
+                    id: nav_drawer
+                    radius: (0, 16, 16, 0)
+                    md_bg_color: "#fffcf4"
+                    elevation: 4
+                    width: "240dp"
+
+                    MDNavigationDrawerMenu:
 
                         MDBoxLayout:
+                            orientation: "vertical"
                             adaptive_height: True
-                            md_bg_color: "#fffcf4"
-                            padding: "12dp"
+                            spacing: "12dp"
+                            padding: "3dp", 0, 0, "12dp"
 
-                            MDLabel:
-                                text: "12:00"
-                                adaptive_height: True
-                                pos_hint: {"center_y": .5}
+                            MDIconButton:
+                                icon: "menu"
 
-                        MDBoxLayout:
+                            ExtendedButton:
+                                text: "Compose"
+                                icon: "pencil"
 
-                            MDNavigationRail:
-                                id: navigation_rail
-                                md_bg_color: "#fffcf4"
-                                selected_color_background: "#e7e4c0"
-                                ripple_color_item: "#e7e4c0"
-                                on_item_release: app.switch_screen(*args)
+                        DrawerClickableItem:
+                            text: "Python"
+                            icon: "language-python"
 
-                                MDNavigationRailMenuButton:
-                                    on_release: nav_drawer.set_state("open")
+                        DrawerClickableItem:
+                            text: "JavaScript"
+                            icon: "language-javascript"
 
-                                MDNavigationRailFabButton:
-                                    md_bg_color: "#b0f0d6"
+                        DrawerClickableItem:
+                            text: "CPP"
+                            icon: "language-cpp"
 
-                                MDNavigationRailItem:
-                                    text: "Python"
-                                    icon: "language-python"
-
-                                MDNavigationRailItem:
-                                    text: "JavaScript"
-                                    icon: "language-javascript"
-
-                                MDNavigationRailItem:
-                                    text: "CPP"
-                                    icon: "language-cpp"
-
-                                MDNavigationRailItem:
-                                    text: "Swift"
-                                    icon: "language-swift"
-
-                            ScreenManager:
-                                id: screen_manager
-                                transition:
-                                    FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
-
-        MDNavigationDrawer:
-            id: nav_drawer
-            radius: (0, 16, 16, 0)
-            md_bg_color: "#fffcf4"
-            elevation: 4
-            width: "240dp"
-
-            MDNavigationDrawerMenu:
-
-                MDBoxLayout:
-                    orientation: "vertical"
-                    adaptive_height: True
-                    spacing: "12dp"
-                    padding: 0, 0, 0, "12dp"
-
-                    MDIconButton:
-                        icon: "menu"
-
-                    ExtendedButton:
-                        text: "Compose"
-                        icon: "pencil"
-
-                DrawerClickableItem:
-                    text: "Python"
-                    icon: "language-python"
-
-                DrawerClickableItem:
-                    text: "JavaScript"
-                    icon: "language-javascript"
-
-                DrawerClickableItem:
-                    text: "CPP"
-                    icon: "language-cpp"
-
-                DrawerClickableItem:
-                    text: "Swift"
-                    icon: "language-swift"
-    '''
-
-
-    class ExtendedButton(
-        RoundedRectangularElevationBehavior, MDFillRoundFlatIconButton
-    ):
-        '''
-        Implements a button of type
-        `Extended FAB <https://m3.material.io/components/extended-fab/overview>`_.
-
-        .. rubric::
-            Extended FABs help people take primary actions.
-            They're wider than FABs to accommodate a text label and larger target
-            area.
-
-        This type of buttons is not yet implemented in the standard widget set
-        of the KivyMD library, so we will implement it ourselves in this class.
-        '''
-
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.padding = "16dp"
-            Clock.schedule_once(self.set_spacing)
-
-        def set_spacing(self, interval):
-            self.ids.box.spacing = "12dp"
-
-        def set_radius(self, *args):
-            if self.rounded_button:
-                self._radius = self.radius = self.height / 4
-
-
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.material_style = "M3"
-            self.theme_cls.primary_palette = "Orange"
-            return Builder.load_string(KV)
-
-        def switch_screen(
-            self, instance_navigation_rail, instance_navigation_rail_item
-        ):
-            '''
-            Called when tapping on rail menu items. Switches application screens.
+                        DrawerClickableItem:
+                            text: "Swift"
+                            icon: "language-swift"
             '''
 
-            self.root.ids.screen_manager.current = (
-                instance_navigation_rail_item.icon.split("-")[1].lower()
+
+            class ExtendedButton(MDFillRoundFlatIconButton, CommonElevationBehavior):
+                '''
+                Implements a button of type
+                `Extended FAB <https://m3.material.io/components/extended-fab/overview>`_.
+
+                .. rubric::
+                    Extended FABs help people take primary actions.
+                    They're wider than FABs to accommodate a text label and larger target
+                    area.
+
+                This type of buttons is not yet implemented in the standard widget set
+                of the KivyMD library, so we will implement it ourselves in this class.
+                '''
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.padding = "16dp"
+                    Clock.schedule_once(self.set_spacing)
+
+                def set_spacing(self, interval):
+                    self.ids.box.spacing = "12dp"
+
+                def set_radius(self, *args):
+                    if self.rounded_button:
+                        self._radius = self.radius = self.height / 4
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.material_style = "M3"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+                def switch_screen(
+                    self, instance_navigation_rail, instance_navigation_rail_item
+                ):
+                    '''
+                    Called when tapping on rail menu items. Switches application screens.
+                    '''
+
+                    self.root.ids.screen_manager.current = (
+                        instance_navigation_rail_item.icon.split("-")[1].lower()
+                    )
+
+                def on_start(self):
+                    '''Creates application screens.'''
+
+                    navigation_rail_items = self.root.ids.navigation_rail.get_items()[:]
+                    navigation_rail_items.reverse()
+
+                    for widget in navigation_rail_items:
+                        name_screen = widget.icon.split("-")[1].lower()
+                        screen = MDScreen(
+                            name=name_screen,
+                            md_bg_color="#edd769",
+                            radius=[18, 0, 0, 0],
+                        )
+                        box = MDBoxLayout(padding="12dp")
+                        label = MDLabel(
+                            text=name_screen.capitalize(),
+                            font_style="H1",
+                            halign="right",
+                            adaptive_height=True,
+                            shorten=True,
+                        )
+                        box.add_widget(label)
+                        screen.add_widget(box)
+                        self.root.ids.screen_manager.add_widget(screen)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import CommonElevationBehavior
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDFillRoundFlatIconButton, MDIconButton
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.navigationdrawer import (
+                MDNavigationDrawerItem,
+                MDNavigationLayout,
+                MDNavigationDrawer,
+                MDNavigationDrawerMenu,
             )
-
-        def on_start(self):
-            '''Creates application screens.'''
-
-            navigation_rail_items = self.root.ids.navigation_rail.get_items()[:]
-            navigation_rail_items.reverse()
-
-            for widget in navigation_rail_items:
-                name_screen = widget.icon.split("-")[1].lower()
-                screen = MDScreen(
-                    name=name_screen,
-                    md_bg_color="#edd769",
-                    radius=[18, 0, 0, 0],
-                )
-                box = MDBoxLayout(padding="12dp")
-                label = MDLabel(
-                    text=name_screen.capitalize(),
-                    font_style="H1",
-                    halign="right",
-                    adaptive_height=True,
-                    shorten=True,
-                )
-                box.add_widget(label)
-                screen.add_widget(box)
-                self.root.ids.screen_manager.add_widget(screen)
+            from kivymd.uix.navigationrail import (
+                MDNavigationRail,
+                MDNavigationRailMenuButton,
+                MDNavigationRailFabButton,
+                MDNavigationRailItem,
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
 
 
-    Example().run()
+            class DrawerClickableItem(MDNavigationDrawerItem):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.focus_color = "#e7e4c0"
+                    self.unfocus_color = self.theme_cls.bg_light
+                    self.radius = 24
+
+
+            class ExtendedButton(MDFillRoundFlatIconButton, CommonElevationBehavior):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.padding = "16dp"
+                    self.elevation = 3.5
+                    self.shadow_radius = 12
+                    self.shadow_softness = 4
+                    self.height = dp(56)
+                    Clock.schedule_once(self.set_spacing)
+
+                def set_spacing(self, interval):
+                    self.ids.box.spacing = "12dp"
+
+                def set_radius(self, *args):
+                    if self.rounded_button:
+                        self._radius = self.radius = self.height / 4
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.material_style = "M3"
+                    self.theme_cls.primary_palette = "Orange"
+                    return MDScreen(
+                        MDNavigationLayout(
+                            MDScreenManager(
+                                MDScreen(
+                                    MDBoxLayout(
+                                        MDBoxLayout(
+                                            MDLabel(
+                                                text="12:00",
+                                                adaptive_height=True,
+                                                pos_hint={"center_y": 0.5},
+                                            ),
+                                            adaptive_height=True,
+                                            md_bg_color="#fffcf4",
+                                            padding="12dp",
+                                        ),
+                                        MDBoxLayout(
+                                            MDNavigationRail(
+                                                MDNavigationRailMenuButton(
+                                                    on_release=self.open_nav_drawer,
+                                                ),
+                                                MDNavigationRailFabButton(
+                                                    md_bg_color="#b0f0d6",
+                                                ),
+                                                MDNavigationRailItem(
+                                                    text="Python",
+                                                    icon="language-python",
+                                                ),
+                                                MDNavigationRailItem(
+                                                    text="JavaScript",
+                                                    icon="language-javascript",
+                                                ),
+                                                MDNavigationRailItem(
+                                                    text="CPP",
+                                                    icon="language-cpp",
+                                                ),
+                                                MDNavigationRailItem(
+                                                    text="Swift",
+                                                    icon="language-swift",
+                                                ),
+                                                id="navigation_rail",
+                                                md_bg_color="#fffcf4",
+                                                selected_color_background="#e7e4c0",
+                                                ripple_color_item="#e7e4c0",
+                                            ),
+                                            MDScreenManager(
+                                                id="screen_manager_content",
+                                            ),
+                                            id="root_box",
+                                        ),
+                                        id="box_rail",
+                                        orientation="vertical",
+                                    ),
+                                    id="box",
+                                ),
+                                id="screen",
+                            ),
+                            id="screen_manager",
+                        ),
+                        MDNavigationDrawer(
+                            MDNavigationDrawerMenu(
+                                MDBoxLayout(
+                                    MDIconButton(
+                                        icon="menu",
+                                    ),
+                                    ExtendedButton(
+                                        text="Compose",
+                                        icon="pencil",
+                                    ),
+                                    orientation="vertical",
+                                    adaptive_height=True,
+                                    spacing="12dp",
+                                    padding=("3dp", 0, 0, "12dp"),
+                                ),
+                                DrawerClickableItem(
+                                    text="Python",
+                                    icon="language-python",
+                                ),
+                                DrawerClickableItem(
+                                    text="JavaScript",
+                                    icon="language-javascript",
+                                ),
+                                DrawerClickableItem(
+                                    text="CPP",
+                                    icon="language-cpp",
+                                ),
+                                DrawerClickableItem(
+                                    text="Swift",
+                                    icon="language-swift",
+                                ),
+                            ),
+                            id="nav_drawer",
+                            radius=(0, 16, 16, 0),
+                            elevation=4,
+                            width="240dp",
+                        ),
+                    )
+
+                def switch_screen(self, *args, screen_manager_content=None):
+                    '''
+                    Called when tapping on rail menu items. Switches application screens.
+                    '''
+            
+                    instance_navigation_rail, instance_navigation_rail_item = args
+                    screen_manager_content.current = (
+                        instance_navigation_rail_item.icon.split("-")[1].lower()
+                    )
+            
+                def open_nav_drawer(self, *args):
+                    self.root.ids.nav_drawer.set_state("open")
+            
+                def on_start(self):
+                    '''Creates application screens.'''
+            
+                    screen_manager = self.root.ids.screen_manager
+                    root_box = screen_manager.ids.screen.ids.box.ids.box_rail.ids.root_box
+                    navigation_rail = root_box.ids.navigation_rail
+                    screen_manager_content = root_box.ids.screen_manager_content
+                    navigation_rail_items = navigation_rail.get_items()[:]
+                    navigation_rail_items.reverse()
+                    navigation_rail.bind(
+                        on_item_release=lambda *args: self.switch_screen(
+                            *args, screen_manager_content=screen_manager_content
+                        )
+                    )
+            
+                    for widget in navigation_rail_items:
+                        name_screen = widget.icon.split("-")[1].lower()
+                        screen_manager_content.add_widget(
+                            MDScreen(
+                                MDBoxLayout(
+                                    MDLabel(
+                                        text=name_screen.capitalize(),
+                                        font_style="H1",
+                                        halign="right",
+                                        adaptive_height=True,
+                                        shorten=True,
+                                    ),
+                                    padding="12dp",
+                                ),
+                                name=name_screen,
+                                md_bg_color="#edd769",
+                                radius=[18, 0, 0, 0],
+                            ),
+                        )
+            
+            
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-example.gif
     :align: center

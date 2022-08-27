@@ -316,10 +316,10 @@ from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     RectangularRippleBehavior,
     TouchBehavior,
+    ScaleBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
-from kivymd.uix.templates import ScaleWidget
 
 with open(
     os.path.join(uix_path, "chip", "chip.kv"), encoding="utf-8"
@@ -331,9 +331,9 @@ class MDChip(
     MDBoxLayout,
     ThemableBehavior,
     RectangularRippleBehavior,
+    ButtonBehavior,
     CommonElevationBehavior,
     TouchBehavior,
-    ButtonBehavior,
 ):
     text = StringProperty()
     """
@@ -454,7 +454,7 @@ class MDChip(
             self.active = False
 
 
-class MDScalableCheckIcon(MDIcon, ScaleWidget):
+class MDScalableCheckIcon(MDIcon, ScaleBehavior):
     pos_hint = {"center_y": 0.5}
 
 

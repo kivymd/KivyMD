@@ -430,7 +430,7 @@ class CommonElevationBehavior(Widget):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-radius.png
         :align: center
 
-    .. nate::
+    .. note::
         However, if you want to use this parameter, remember that the angle
         values for the radius of the Kivy widgets and the radius for the shader
         are different.

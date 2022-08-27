@@ -73,7 +73,7 @@ KivyMD
     from kivy.uix.behaviors import ButtonBehavior
 
     from kivymd.app import MDApp
-    from kivymd.uix.behaviors.scale_behavior import ScaleBahavior
+    from kivymd.uix.behaviors import ScaleBahavior
     from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''

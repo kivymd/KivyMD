@@ -525,6 +525,62 @@ theme_text_color_options = (
     "ContrastParentBackground",
 )
 
+# FIXME: If you set a new elevation value for the button
+#  (press the "Set elevation" button), then disable the button
+#  (press the "Disabled" button), and then enable the button
+#  (press the "Undisabled" button), then the previously set elevation value is
+#  reset to zero.
+#  In addition, if you set a new elevation value
+#  (press the "Set elevation" button) and click on the button for which we set
+#  the elevation value, then the new elevation value will receive the previous
+#  elevation value. This problem is only related to the buttons.
+#  For example, there is no such problem for the MDCard widget.
+
+"""
+from kivy.lang import Builder
+
+from kivymd.app import MDApp
+
+KV = '''
+MDScreen:
+
+    MDRaisedButton:
+        size_hint: .5, .5
+        id: button
+        pos_hint: {"center_x": .5, "center_y": .5}
+        elevation: 0
+
+    MDBoxLayout:
+        adaptive_size: True
+        pos_hint: {"center_x": .5}
+        spacing: 12
+        padding: 12
+
+        MDRaisedButton:
+            text: "Set elevation"
+            pos_hint: {"center_x": .5, "bottom": 1}
+            on_release: button.elevation = 4
+
+        MDRaisedButton:
+            text: "Disabled"
+            pos_hint: {"center_x": .5, "bottom": 1}
+            on_release: button.disabled = True
+
+        MDRaisedButton:
+            text: "Undisabled"
+            pos_hint: {"center_x": .5, "bottom": 1}
+            on_release: button.disabled = False
+'''
+
+
+class Test(MDApp):
+    def build(self):
+        return Builder.load_string(KV)
+
+
+Test().run()
+"""
+
 
 class BaseButton(
     DeclarativeBehavior,
@@ -930,6 +986,8 @@ class BaseButton(
 
     def on_disabled(self, instance_button, disabled_value: bool) -> None:
         if hasattr(super(), "on_disabled"):
+            if self.disabled is True:
+                Animation.cancel_all(self, "elevation")
             super().on_disabled(instance_button, disabled_value)
             Clock.schedule_once(self.set_disabled_color)
 
@@ -948,7 +1006,7 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
 
     _elevation_raised = NumericProperty()
     _anim_raised = ObjectProperty(None, allownone=True)
-    _default_elevation = 3.5
+    _default_elevation = 3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -962,15 +1020,6 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
     def create_anim_raised(self, *args) -> None:
         self._elevation_raised = self.elevation + 1.2
         self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
-
-    def on_elevation(self, instance_button, elevation_value: int) -> None:
-        super().on_elevation(instance_button, elevation_value)
-        self.on_disabled(self, self.disabled)
-
-    def on_disabled(self, instance_button, disabled_value: bool) -> None:
-        if self.disabled is True:
-            Animation.cancel_all(self, "elevation")
-        super().on_disabled(instance_button, disabled_value)
 
     def on_touch_down(self, touch):
         if not self.disabled:
@@ -1092,9 +1141,9 @@ class MDRaisedButton(BaseButton, ButtonElevationBehaviour, ButtonContentsText):
     _default_theme_text_color = "Custom"
     _default_text_color = "PrimaryHue"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.shadow_softness = 12
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.shadow_softness = 8
         self.shadow_offset = (0, 2)
         self.shadow_radius = self._radius * 2
 

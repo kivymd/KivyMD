@@ -944,7 +944,6 @@ from kivy.properties import (
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.scrollview import ScrollView
-from kivy.uix.widget import Widget
 from kivy.utils import boundary
 
 from kivymd import uix_path
@@ -1024,7 +1023,7 @@ class MDTabsLabel(ToggleButtonBehavior, RectangularRippleBehavior, MDLabel):
         Clock.schedule_once(self.tab_bar._label_request_indicator_update, 0)
 
 
-class MDTabsBase(Widget):
+class MDTabsBase:
     """
     This class allow you to create a tab.
     You must create a new class that inherits from MDTabsBase.
@@ -1130,9 +1129,9 @@ class MDTabsBase(Widget):
     This property will affect the Tab's Title Label widget.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.tab_label = MDTabsLabel(tab=self)
-        super().__init__(**kwargs)
+        super().__init__(*args, **kwargs)
         self.bind(
             icon=self._update_text,
             title=self._update_text,

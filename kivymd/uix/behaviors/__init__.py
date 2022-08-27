@@ -11,7 +11,7 @@ from .backgroundcolor_behavior import (
 )
 
 # flake8: NOQA
-from .declarative_bahavior import DeclarativeBehavior
+from .declarative_behavior import DeclarativeBehavior
 from .elevation import (
     CircularElevationBehavior,
     CommonElevationBehavior,

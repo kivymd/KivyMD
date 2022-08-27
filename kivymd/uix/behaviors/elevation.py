@@ -672,7 +672,7 @@ class CommonElevationBehavior(Widget):
     def on_elevation(self, instance, value) -> None:
         def on_elevation(*args):
             if hasattr(self, "context"):
-                #print("on_elevation", value)
+                # print("on_elevation", value)
                 self._elevation = value
                 self.hide_elevation(
                     True if (value <= 0 or self.disabled) else False

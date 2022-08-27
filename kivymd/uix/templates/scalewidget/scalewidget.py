@@ -15,13 +15,13 @@ __all__ = ("ScaleWidget",)
 
 from kivy import Logger
 
-from kivymd.uix.behaviors.scale_behavior import ScaleBahavior
+from kivymd.uix.behaviors.scale_behavior import ScaleBehavior
 
 
-class ScaleWidget(ScaleBahavior):
+class ScaleWidget(ScaleBehavior):
     """
     .. deprecated:: 1.1.0
-        Use :class:`~kivymd.uix.behaviors.scale_bahavior.ScaleBahavior`
+        Use :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior`
         class instead.
     """
 

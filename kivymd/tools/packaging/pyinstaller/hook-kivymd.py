@@ -13,6 +13,18 @@ from pathlib import Path
 import kivymd
 
 datas = [
+    # Add `.frag` files from the `kivymd/data/glsl/elevation` directory.
+    (
+        str(Path(kivymd.glsl_path).joinpath(f"elevation")) + os.sep,
+        str(
+            Path("kivymd").joinpath(
+                str(Path(kivymd.glsl_path)).split(str(Path("kivymd")) + os.sep)[
+                    1
+                ]
+                + f"{os.sep}elevation"
+            )
+        ),
+    ),
     # Add `.ttf` files from the `kivymd/fonts` directory.
     (
         kivymd.fonts_path,

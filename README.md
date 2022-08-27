@@ -49,7 +49,7 @@ pip install kivymd==1.0.2
 ### Dependencies:
 
 - [Kivy](https://github.com/kivy/kivy) >= 2.0.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
-- [Python 3.6+](https://www.python.org/)
+- [Python 3.7+](https://www.python.org/)
 
 ### How to install
 

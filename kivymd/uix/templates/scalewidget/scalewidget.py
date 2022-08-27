@@ -7,7 +7,7 @@ Templates/ScaleWidget
 Base class for controlling the scale of the widget.
 
 .. note:: `ScaleWidget` class has been deprecated. Please use
-    `ScaleBahavior <https://kivymd.readthedocs.io/en/latest/behaviors/scale/>`_
+    `ScaleBehavior <https://kivymd.readthedocs.io/en/latest/behaviors/scale/>`_
     class instead.
 """
 

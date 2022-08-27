@@ -13,6 +13,8 @@ Base class for controlling the scale of the widget.
 
 __all__ = ("ScaleWidget",)
 
+from kivy import Logger
+
 from kivymd.uix.behaviors.scale_behavior import ScaleBahavior
 
 
@@ -22,3 +24,11 @@ class ScaleWidget(ScaleBahavior):
         Use :class:`~kivymd.uix.behaviors.scale_bahavior.ScaleBahavior`
         class instead.
     """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Logger.warning(
+            "KivyMD: "
+            "The `ScaleWidget` class has been deprecated. "
+            "Use the `ScaleBahavior` class instead."
+        )

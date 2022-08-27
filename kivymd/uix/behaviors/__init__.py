@@ -22,6 +22,9 @@ from .elevation import (
 )
 from .magic_behavior import MagicBehavior
 from .ripple_behavior import CircularRippleBehavior, RectangularRippleBehavior
+from .rotate_behavior import RotateBehavior
+from .scale_behavior import ScaleBehavior
+from .stencil_behavior import StencilBehavior
 from .touch_behavior import TouchBehavior
 
 from .hover_behavior import HoverBehavior  # isort:skip

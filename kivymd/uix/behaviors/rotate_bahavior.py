@@ -64,7 +64,7 @@ KivyMD
     from kivy.uix.behaviors import ButtonBehavior
 
     from kivymd.app import MDApp
-    from kivymd.uix.behaviors import RotateBahavior
+    from kivymd.uix.behaviors import RotateBehavior
     from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''
@@ -78,7 +78,7 @@ KivyMD
     '''
 
 
-    class RotateBox(ButtonBehavior, RotateBahavior, MDBoxLayout):
+    class RotateBox(ButtonBehavior, RotateBehavior, MDBoxLayout):
         pass
 
 
@@ -93,14 +93,14 @@ KivyMD
     Test().run()
 """
 
-__all__ = ("RotateBahavior",)
+__all__ = ("RotateBehavior",)
 
 from kivy.lang import Builder
 from kivy.properties import ListProperty, NumericProperty
 
 Builder.load_string(
     """
-<RotateBahavior>
+<RotateBehavior>
     canvas.before:
         PushMatrix
         Rotate:
@@ -113,7 +113,7 @@ Builder.load_string(
 )
 
 
-class RotateBahavior:
+class RotateBehavior:
     """Base class for controlling the rotate of the widget."""
 
     rotate_value_angle = NumericProperty(0)

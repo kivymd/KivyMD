@@ -73,7 +73,7 @@ KivyMD
     from kivy.uix.behaviors import ButtonBehavior
 
     from kivymd.app import MDApp
-    from kivymd.uix.behaviors import ScaleBahavior
+    from kivymd.uix.behaviors import ScaleBehavior
     from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''
@@ -87,7 +87,7 @@ KivyMD
     '''
 
 
-    class ScaleBox(ButtonBehavior, ScaleBahavior, MDBoxLayout):
+    class ScaleBox(ButtonBehavior, ScaleBehavior, MDBoxLayout):
         pass
 
 
@@ -107,14 +107,14 @@ KivyMD
     Test().run()
 """
 
-__all__ = ("ScaleBahavior",)
+__all__ = ("ScaleBehavior",)
 
 from kivy.lang import Builder
 from kivy.properties import NumericProperty
 
 Builder.load_string(
     """
-<ScaleBahavior>
+<ScaleBehavior>
     canvas.before:
         PushMatrix
         Scale:
@@ -128,7 +128,7 @@ Builder.load_string(
 )
 
 
-class ScaleBahavior:
+class ScaleBehavior:
     """Base class for controlling the scale of the widget."""
 
     scale_value_x = NumericProperty(1)

@@ -2,7 +2,7 @@
 Templates/RotateWidget
 ======================
 
-.. versionadded:: 1.0.0
+.. deprecated:: 1.0.0
 
 .. note:: `RotateWidget` class has been deprecated. Please use
     `RotateBahavior <https://kivymd.readthedocs.io/en/latest/behaviors/rotate/>`_

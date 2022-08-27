@@ -15,7 +15,7 @@ __all__ = ("ScaleWidget",)
 
 from kivy import Logger
 
-from kivymd.uix.behaviors.scale_behavior import ScaleBehavior
+from kivymd.uix.behaviors import ScaleBehavior
 
 
 class ScaleWidget(ScaleBehavior):

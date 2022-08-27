@@ -476,18 +476,18 @@ Example
                     '''
                     Called when tapping on rail menu items. Switches application screens.
                     '''
-            
+
                     instance_navigation_rail, instance_navigation_rail_item = args
                     screen_manager_content.current = (
                         instance_navigation_rail_item.icon.split("-")[1].lower()
                     )
-            
+
                 def open_nav_drawer(self, *args):
                     self.root.ids.nav_drawer.set_state("open")
-            
+
                 def on_start(self):
                     '''Creates application screens.'''
-            
+
                     screen_manager = self.root.ids.screen_manager
                     root_box = screen_manager.ids.screen.ids.box.ids.box_rail.ids.root_box
                     navigation_rail = root_box.ids.navigation_rail
@@ -499,7 +499,7 @@ Example
                             *args, screen_manager_content=screen_manager_content
                         )
                     )
-            
+
                     for widget in navigation_rail_items:
                         name_screen = widget.icon.split("-")[1].lower()
                         screen_manager_content.add_widget(
@@ -519,8 +519,8 @@ Example
                                 radius=[18, 0, 0, 0],
                             ),
                         )
-            
-            
+
+
             Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-example.gif

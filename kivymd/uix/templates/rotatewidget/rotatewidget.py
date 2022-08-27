@@ -13,13 +13,13 @@ __all__ = ("RotateWidget",)
 
 from kivy import Logger
 
-from kivymd.uix.behaviors.rotate_bahavior import RotateBahavior
+from kivymd.uix.behaviors.rotate_behavior import RotateBehavior
 
 
-class RotateWidget(RotateBahavior):
+class RotateWidget(RotateBehavior):
     """
     .. deprecated:: 1.1.0
-        Use :class:`~kivymd.uix.behaviors.rotate_bahavior.RotateBahavior`
+        Use :class:`~kivymd.uix.behaviors.rotate_behavior.RotateBehavior`
         class instead.
     """
 

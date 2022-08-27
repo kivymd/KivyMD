@@ -64,20 +64,20 @@ KivyMD
 
     from kivymd.app import MDApp
     from kivymd.uix.behaviors.rotate_bahavior import RotateBahavior
-    from kivymd.uix.button import MDRaisedButton
+    from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''
     MDScreen:
 
-        RotateButton:
+        RotateWidget:
             size_hint: .5, .5
             pos_hint: {"center_x": .5, "center_y": .5}
             on_release: app.change_rotate(self)
-            elevation:0
+            md_bg_color: "red"
     '''
 
 
-    class RotateButton(MDRaisedButton, RotateBahavior):
+    class RotateWidget(MDBoxLayout, RotateBahavior):
         pass
 
 

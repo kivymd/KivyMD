@@ -13,7 +13,7 @@ __all__ = ("RotateWidget",)
 
 from kivy import Logger
 
-from kivymd.uix.behaviors.rotate_behavior import RotateBehavior
+from kivymd.uix.behaviors import RotateBehavior
 
 
 class RotateWidget(RotateBehavior):

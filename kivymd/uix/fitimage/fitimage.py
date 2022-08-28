@@ -132,8 +132,8 @@ from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
 
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.behaviors import StencilBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 
 
 class FitImage(MDBoxLayout, StencilBehavior):

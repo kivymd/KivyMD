@@ -750,6 +750,7 @@ class DatePickerDaySelectableItem(
             return
         super().on_touch_down(touch)
 
+
 class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
     """Implements an item for a pick list of the year."""
 

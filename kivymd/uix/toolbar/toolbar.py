@@ -357,12 +357,12 @@ from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     DeclarativeBehavior,
     SpecificBackgroundColorBehavior,
+    ScaleBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.controllers import WindowController
 from kivymd.uix.list import OneLineIconListItem
 from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.templates import ScaleWidget
 from kivymd.uix.tooltip import MDTooltip
 from kivymd.utils.set_bars_colors import set_bars_colors
 
@@ -372,7 +372,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class ActionBottomAppBarButton(MDFloatingActionButton, ScaleWidget):
+class ActionBottomAppBarButton(MDFloatingActionButton, ScaleBehavior):
     """
     Implements a floating action button (FAB) for a toolbar with type 'bottom'.
     """

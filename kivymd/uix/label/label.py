@@ -223,6 +223,7 @@ import os
 from typing import Union
 
 from kivy.clock import Clock
+from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
 from kivy.metrics import sp
 from kivy.properties import (
@@ -231,6 +232,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     StringProperty,
 )
@@ -324,6 +326,7 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
 
     parent_background = ColorProperty(None)
     can_capitalize = BooleanProperty(True)
+    canvas_bg = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -387,12 +390,25 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
             else:
                 self.color = [0, 0, 0, 1]
 
-    def on_text_color(self, instance_label, color: list) -> None:
+    def on_text_color(self, instance_label, color: Union[list, str]) -> None:
         if self.theme_text_color == "Custom":
             self.color = self.text_color
 
     def on_opposite_colors(self, *args) -> None:
         self.on_theme_text_color(self, self.theme_text_color)
+
+    def on_md_bg_color(self, instance_label, color: Union[list, str]) -> None:
+        self.canvas.remove_group("Background_instruction")
+        with self.canvas.before:
+            Color(rgba=color)
+            self.canvas_bg = Rectangle(pos=self.pos, size=self.size)
+            self.bind(pos=self.update_canvas_bg_pos)
+
+    def on_size(self, instance_label, size: list) -> None:
+        self.canvas_bg.size = size
+
+    def update_canvas_bg_pos(self, instance_label, pos: list) -> None:
+        self.canvas_bg.pos = pos
 
     def _do_update_theme_color(self, *args):
         if self._text_color_str:

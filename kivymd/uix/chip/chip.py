@@ -315,8 +315,8 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     RectangularRippleBehavior,
-    TouchBehavior,
     ScaleBehavior,
+    TouchBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon

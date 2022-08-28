@@ -745,7 +745,8 @@ class DatePickerDaySelectableItem(
             self.owner.set_selected_widget(self)
 
     def on_touch_down(self, touch):
-        # if year_layout is active don't dispatch on_touch_down events, so date items don't consume touch
+        # If year_layout is active don't dispatch on_touch_down events,
+        # so date items don't consume touch.
         if not self.owner.ids._year_layout.disabled:
             return
         super().on_touch_down(touch)

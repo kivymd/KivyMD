@@ -405,10 +405,12 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
             self.bind(pos=self.update_canvas_bg_pos)
 
     def on_size(self, instance_label, size: list) -> None:
-        self.canvas_bg.size = size
+        if self.canvas_bg:
+            self.canvas_bg.size = size
 
     def update_canvas_bg_pos(self, instance_label, pos: list) -> None:
-        self.canvas_bg.pos = pos
+        if self.canvas_bg:
+            self.canvas_bg.pos = pos
 
     def _do_update_theme_color(self, *args):
         if self._text_color_str:

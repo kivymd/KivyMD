@@ -133,10 +133,10 @@ from kivy.uix.image import AsyncImage
 from kivy.uix.widget import Widget
 
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.templates import StencilWidget
+from kivymd.uix.behaviors import StencilBehavior
 
 
-class FitImage(MDBoxLayout, StencilWidget):
+class FitImage(MDBoxLayout, StencilBehavior):
     source = ObjectProperty()
     """
     Filename/source of your image.

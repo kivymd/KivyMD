@@ -28,5 +28,5 @@ class RotateWidget(RotateBehavior):
         Logger.warning(
             "KivyMD: "
             "The `RotateWidget` class has been deprecated. "
-            "Use the `RotateBahavior` class instead."
+            "Use the `RotateBehavior` class instead."
         )

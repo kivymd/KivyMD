@@ -557,11 +557,11 @@ from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import ScaleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.templates import ScaleWidget
 from kivymd.uix.widget import MDWidget
 
 with open(
@@ -583,7 +583,7 @@ class PanelItems(MDBoxLayout):
     """Box for menu items."""
 
 
-class RippleWidget(MDWidget, ScaleWidget):
+class RippleWidget(MDWidget, ScaleBehavior):
     """
     Implements a background color for a menu item -
     (:class:`~MDNavigationRailItem`).

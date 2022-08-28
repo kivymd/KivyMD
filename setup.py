@@ -8,7 +8,7 @@ from time import time
 
 from setuptools import find_packages, setup
 
-assert sys.version_info >= (3, 6, 0), "KivyMD requires Python 3.6+"
+assert sys.version_info >= (3, 7, 0), "KivyMD requires Python 3.7+"
 
 
 def get_version() -> str:

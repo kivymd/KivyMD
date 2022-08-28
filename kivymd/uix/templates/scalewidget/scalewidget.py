@@ -30,5 +30,5 @@ class ScaleWidget(ScaleBehavior):
         Logger.warning(
             "KivyMD: "
             "The `ScaleWidget` class has been deprecated. "
-            "Use the `ScaleBahavior` class instead."
+            "Use the `ScaleBehavior` class instead."
         )

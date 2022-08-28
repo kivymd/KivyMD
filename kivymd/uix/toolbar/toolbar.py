@@ -411,7 +411,7 @@ class NotchedBox(
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):
-    elevation = NumericProperty(6)
+    elevation = NumericProperty(4)
     notch_radius = NumericProperty()
     notch_center_x = NumericProperty("100dp")
 

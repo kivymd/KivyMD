@@ -7,8 +7,9 @@ Behaviors/Background Color
 
 __all__ = ("BackgroundColorBehavior", "SpecificBackgroundColorBehavior")
 
-from typing import List
+from typing import List, Union
 
+from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import (
     ColorProperty,
@@ -37,7 +38,7 @@ Builder.load_string(
             angle: self.angle
             origin: self._background_origin
         Color:
-            rgba: self.md_bg_color
+            rgba: self._md_bg_color
         RoundedRectangle:
             group: "Background_instruction"
             size: self.size
@@ -156,10 +157,20 @@ class BackgroundColorBehavior(Widget):
         _background_x,
         _background_y,
     )
+    _md_bg_color = ColorProperty([0, 0, 0, 0])
 
     def __init__(self, **kwarg):
         super().__init__(**kwarg)
         self.bind(pos=self.update_background_origin)
+
+    def on_md_bg_color(self, instance_md_widget, color: Union[list, str]):
+        if (
+            hasattr(self, "theme_cls")
+            and self.theme_cls.theme_style_switch_animation
+        ):
+            Animation(_md_bg_color=color, d=0.2, t="linear").start(self)
+        else:
+            self._md_bg_color = color
 
     def update_background_origin(
         self, instance_md_widget, pos: List[float]

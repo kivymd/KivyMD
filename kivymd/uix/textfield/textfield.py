@@ -724,7 +724,6 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    # FIXME: property not work.
     max_length_text_color = ColorProperty([0, 0, 0, 0])
     """
     Text color in (r, g, b, a) or string format of the maximum length of
@@ -992,7 +991,11 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
                 else self.error_color
             )
         if self.max_length_text_color == [0, 0, 0, 0] or updated:
-            self.max_length_text_color = self.theme_cls.disabled_hint_text_color
+            self.max_length_text_color = (
+                self.theme_cls.disabled_hint_text_color
+                if self.max_length_text_color == [0, 0, 0, 0]
+                else self.max_length_text_color
+            )
 
         self._hint_text_color = self.hint_text_color_normal
         self._text_color_normal = self.text_color_normal

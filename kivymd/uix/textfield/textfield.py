@@ -14,7 +14,6 @@ Components/TextField
 `KivyMD` provides the following field classes for use:
 
 - MDTextField_
-- MDTextFieldRound_
 - MDTextFieldRect_
 
 .. Note:: :class:`~MDTextField` inherited from
@@ -79,15 +78,15 @@ parameter to `True`:
     from kivymd.app import MDApp
 
     KV = '''
-    BoxLayout:
-        padding: "10dp"
+    MDScreen:
 
         MDTextField:
             id: text_field_error
             hint_text: "Helper text on error (press 'Enter')"
             helper_text: "There will always be a mistake"
             helper_text_mode: "on_error"
-            pos_hint: {"center_y": .5}
+            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint_x: .5
     '''
 
 
@@ -97,6 +96,8 @@ parameter to `True`:
             self.screen = Builder.load_string(KV)
 
         def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
             self.screen.ids.text_field_error.bind(
                 on_text_validate=self.set_error_message,
                 on_focus=self.set_error_message,
@@ -119,6 +120,7 @@ Helper text mode `'on_error'` (with required)
 
     MDTextField:
         hint_text: "required = True"
+        text: "required = True"
         required: True
         helper_text_mode: "on_error"
         helper_text: "Enter text"
@@ -203,6 +205,7 @@ MDTextFieldRect
     MDTextFieldRect:
         size_hint: 1, None
         height: "30dp"
+        background_color: app.theme_cls.bg_normal
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-rect.gif
     :align: center
@@ -283,13 +286,11 @@ from typing import Union
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.metrics import dp, sp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
     ColorProperty,
-    DictProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
@@ -309,6 +310,25 @@ with open(
     os.path.join(uix_path, "textfield", "textfield.kv"), encoding="utf-8"
 ) as kv_file:
     Builder.load_string(kv_file.read())
+
+
+# TODO: Add a class to work with the phone number mask.
+
+class Validator:
+    """Container class for various validation methods."""
+
+    def is_email_valid(self, text: str) -> bool:
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", text):
+            return True
+        return False
+
+    def is_time_valid(self, text: str) -> bool:
+        if re.match(r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$", text) or re.match(
+            r"^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$", text
+        ):
+            return False
+
+        return True
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
@@ -383,7 +403,7 @@ class TextfieldLabel(ThemableBehavior, Label):
         self.font_size = sp(self.theme_cls.font_styles[self.font_style][1])
 
 
-class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
+class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
     helper_text = StringProperty()
     """
     Text for ``helper_text`` mode.
@@ -430,17 +450,40 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
     and defaults to `'line'`.
     """
 
+    validator = OptionProperty(None, options=["email", "time"])
+    """
+    The type of text field for entering Email, time, etc.
+    Automatically sets the type of the text field as "error" if the user input
+    does not match any of the set validation types.
+    Available options are: `'email'`, `'time'`.
+
+    .. versionadded:: 1.1.0
+
+    .. code-block:: python
+
+        MDTextField:
+            hint_text: "Email"
+            helper_text: "user@gmail.com"
+            validator: "email"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-validator.png
+        :align: center
+
+    :attr:`validator` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
+    """
+
     line_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Line color normal (static underline line) in ``rgba`` format.
+    Line color normal (static underline line) in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
         MDTextField:
             hint_text: "line_color_normal"
-            line_color_normal: 1, 0, 1, 1
+            line_color_normal: "red"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-line-color-normal.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-line-color-normal.png
         :align: center
 
     :attr:`line_color_normal` is an :class:`~kivy.properties.ColorProperty`
@@ -449,13 +492,13 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     line_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Line color focus (active underline line) in ``rgba`` format.
+    Line color focus (active underline line) in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
         MDTextField:
             hint_text: "line_color_focus"
-            line_color_focus: 0, 1, 0, 1
+            line_color_focus: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-line-color-focus.gif
         :align: center
@@ -472,9 +515,11 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
     and defaults to `True`.
     """
 
+    # FIXME: property not work.
+    # TODO: add example and previous image.
     error_color = ColorProperty([0, 0, 0, 0])
     """
-    Error color in ``rgba`` format for ``required = True``.
+    Error color in (r, g, b, a) or string format for ``required = True``.
 
     :attr:`error_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -482,7 +527,18 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     fill_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Fill background color in 'fill' mode when text field is out of focus.
+    Fill background color in (r, g, b, a) or string format in 'fill' mode when]
+    text field is out of focus.
+
+    .. code=block:: kv
+
+        MDTextField:
+            hint_text: "Fill mode"
+            mode: "fill"
+            fill_color_normal: "brown"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-color-normal.png
+        :align: center
 
     :attr:`fill_color_normal` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -490,7 +546,18 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     fill_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Fill background color in 'fill' mode when the text field has focus.
+    Fill background color in (r, g, b, a) or string format in 'fill' mode when
+    the text field has focus.
+
+    .. code=block:: kv
+
+        MDTextField:
+            hint_text: "Fill mode"
+            mode: "fill"
+            fill_color_focus: "brown"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-fill-color-focus.gif
+        :align: center
 
     :attr:`fill_color_focus` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -514,7 +581,8 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     hint_text_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Hint text color when text field is out of focus.
+    Hint text color in (r, g, b, a) or string format when text field is out
+    of focus.
 
     .. versionadded:: 1.0.0
 
@@ -522,9 +590,9 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
         MDTextField:
             hint_text: "hint_text_color_normal"
-            hint_text_color_normal: 0, 1, 0, 1
+            hint_text_color_normal: "red"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-hint-text-color-normal.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-hint-text-color-normal.png
         :align: center
 
     :attr:`hint_text_color_normal` is an :class:`~kivy.properties.ColorProperty`
@@ -533,7 +601,8 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     hint_text_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Hint text color when the text field has focus.
+    Hint text color in (r, g, b, a) or string format when the text field has
+    focus.
 
     .. versionadded:: 1.0.0
 
@@ -541,7 +610,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
         MDTextField:
             hint_text: "hint_text_color_focus"
-            hint_text_color_focus: 0, 1, 0, 1
+            hint_text_color_focus: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-hint-text-color-focus.gif
         :align: center
@@ -552,7 +621,8 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     helper_text_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Helper text color when text field is out of focus.
+    Helper text color in (r, g, b, a) or string format when text field is out
+    of focus.
 
     .. versionadded:: 1.0.0
 
@@ -561,7 +631,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         MDTextField:
             helper_text: "helper_text_color_normal"
             helper_text_mode: "persistent"
-            helper_text_color_normal: 0, 1, 0, 1
+            helper_text_color_normal: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-helper-text-color-normal.png
         :align: center
@@ -572,7 +642,8 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     helper_text_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Helper text color when the text field has focus.
+    Helper text color in (r, g, b, a) or string format when the text field has
+    focus.
 
     .. versionadded:: 1.0.0
 
@@ -581,7 +652,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         MDTextField:
             helper_text: "helper_text_color_focus"
             helper_text_mode: "persistent"
-            helper_text_color_focus: 0, 1, 0, 1
+            helper_text_color_focus: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-helper-text-color-focus.gif
         :align: center
@@ -592,7 +663,8 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     icon_right_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Color of right icon when text field is out of focus.
+    Color in (r, g, b, a) or string format of right icon when text field is out
+    of focus.
 
     .. versionadded:: 1.0.0
 
@@ -601,7 +673,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         MDTextField:
             icon_right: "language-python"
             hint_text: "icon_right_color_normal"
-            icon_right_color_normal: 0, 1, 0, 1
+            icon_right_color_normal: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-icon-right-color-normal.gif
         :align: center
@@ -612,7 +684,8 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     icon_right_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Color of right icon  when the text field has focus.
+    Color in (r, g, b, a) or string format of right icon  when the text field
+    has focus.
 
     .. versionadded:: 1.0.0
 
@@ -621,7 +694,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         MDTextField:
             icon_right: "language-python"
             hint_text: "icon_right_color_focus"
-            icon_right_color_focus: 0, 1, 0, 1
+            icon_right_color_focus: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-icon-right-color-focus.gif
         :align: center
@@ -632,19 +705,10 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     icon_left_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Color of right icon when text field is out of focus.
+    Color in (r, g, b, a) or string format of right icon when text field is out
+    of focus.
 
     .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDTextField:
-            icon_right: "language-python"
-            hint_text: "icon_right_color_normal"
-            icon_left_color_normal: 0, 1, 0, 1
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-icon-right-color-normal.gif
-        :align: center
 
     :attr:`icon_left_color_normal` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -652,27 +716,20 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     icon_left_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Color of right icon  when the text field has focus.
+    Color in (r, g, b, a) or string format of right icon  when the text field
+    has focus.
 
     .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDTextField:
-            icon_right: "language-python"
-            hint_text: "icon_right_color_focus"
-            icon_right_color_focus: 0, 1, 0, 1
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-icon-right-color-focus.gif
-        :align: center
 
     :attr:`icon_left_color_focus` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
     """
 
+    # FIXME: property not work.
     max_length_text_color = ColorProperty([0, 0, 0, 0])
     """
-    Text color of the maximum length of characters to be input.
+    Text color in (r, g, b, a) or string format of the maximum length of
+    characters to be input.
 
     .. versionadded:: 1.0.0
 
@@ -680,10 +737,10 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
         MDTextField:
             hint_text: "max_length_text_color"
-            max_length_text_color: 0, 1, 0, 1
+            max_length_text_color: "red"
             max_text_length: 5
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-max-length-text-color.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-max-length-text-color.png
         :align: center
 
     :attr:`max_length_text_color` is an :class:`~kivy.properties.ColorProperty`
@@ -718,7 +775,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     text_color_normal = ColorProperty([0, 0, 0, 0])
     """
-    Text color in ``rgba`` format when text field is out of focus.
+    Text color in (r, g, b, a) or string format when text field is out of focus.
 
     .. versionadded:: 1.0.0
 
@@ -726,9 +783,9 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
         MDTextField:
             hint_text: "text_color_normal"
-            text_color_normal: 0, 1, 0, 1
+            text_color_normal: "red"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-text-color-normal.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-text-color-normal.png
         :align: center
 
     :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
@@ -737,7 +794,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
     text_color_focus = ColorProperty([0, 0, 0, 0])
     """
-    Text color in ``rgba`` format when text field has focus.
+    Text color in (r, g, b, a) or string format when text field has focus.
 
     .. versionadded:: 1.0.0
 
@@ -745,7 +802,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
 
         MDTextField:
             hint_text: "text_color_focus"
-            text_color_focus: 0, 1, 0, 1
+            text_color_focus: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-text-color-focus.gif
         :align: center
@@ -1102,7 +1159,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         self.text = re.sub("\n", " ", text) if not self.multiline else text
         self.set_max_text_length()
 
-        if self.text and self.max_length_text_color and self._get_has_error():
+        if (self.text and self.max_length_text_color) or self._get_has_error():
             self.error = True
         if (
             self.text
@@ -1301,22 +1358,34 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
 
-    def on_text_color_normal(self, instance_text_field, color: list):
+    def on_text_color_normal(
+        self, instance_text_field, color: Union[list, str]
+    ):
         self._text_color_normal = color
 
-    def on_hint_text_color_normal(self, instance_text_field, color: list):
+    def on_hint_text_color_normal(
+        self, instance_text_field, color: Union[list, str]
+    ):
         self._hint_text_color = color
 
-    def on_helper_text_color_normal(self, instance_text_field, color: list):
+    def on_helper_text_color_normal(
+        self, instance_text_field, color: Union[list, str]
+    ):
         self._helper_text_color = color
 
-    def on_icon_right_color_normal(self, instance_text_field, color: list):
+    def on_icon_right_color_normal(
+        self, instance_text_field, color: Union[list, str]
+    ):
         self._icon_right_color = color
 
-    def on_line_color_normal(self, instance_text_field, color: list):
+    def on_line_color_normal(
+        self, instance_text_field, color: Union[list, str]
+    ):
         self._line_color_normal = color
 
-    def on_max_length_text_color(self, instance_text_field, color: list):
+    def on_max_length_text_color(
+        self, instance_text_field, color: Union[list, str]
+    ):
         self._max_length_text_color = color
 
     def _set_color(self, attr_name: str, color: str, updated: bool) -> None:
@@ -1353,6 +1422,12 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput):
         the :attr:`~MDTextField.required` parameter is set to `True`.
         """
 
+        if self.validator:
+            has_error = {
+                "email": self.is_email_valid,
+                "time": self.is_time_valid,
+            }[self.validator](self.text)
+            return has_error
         if self.max_text_length and len(self.text) > self.max_text_length:
             has_error = True
         else:
@@ -1429,6 +1504,8 @@ MDScreen:
 
     class Test(MDApp):
         def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
             return Builder.load_string(KV)
 
         def set_text(self):

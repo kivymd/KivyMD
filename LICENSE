@@ -5,14 +5,14 @@ Copyright (c) 2021 KivyMD Team and other contributors - KivyMD library version 0
 
 Other libraries used in the project:
 
-Copyright (c) 2010-2021 Kivy Team and other contributors
-Copyright (c) 2013 Brian Knapp - Androidoast library
-Copyright (c) 2014 LogicalDash - stiffscroll library
-Copyright (c) 2015 Kivy Garden - tabs module
-Copyright (c) 2020 Nattōsai Mitō - asynckivy module
-Copyright (c) 2021 tshirtman - magic_behavior module
-Copyright (c) 2021 shashi278 - taptargetview module
-Copyright (c) 2020 Benedikt Zwölfer - fitimage module
+Copyright (c) 2010-2022 Kivy Team and other contributors
+Copyright (c) 2022 Brian Knapp - Androidoast library
+Copyright (c) 2022 LogicalDash - stiffscroll library
+Copyright (c) 2022 Kivy Garden - tabs module
+Copyright (c) 2022 Nattōsai Mitō - asynckivy module
+Copyright (c) 2022 tshirtman - magic_behavior module
+Copyright (c) 2022 shashi278 - taptargetview module
+Copyright (c) 2022 Benedikt Zwölfer - fitimage module
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

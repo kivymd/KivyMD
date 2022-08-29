@@ -314,6 +314,7 @@ with open(
 
 # TODO: Add a class to work with the phone number mask.
 
+
 class Validator:
     """Container class for various validation methods."""
 

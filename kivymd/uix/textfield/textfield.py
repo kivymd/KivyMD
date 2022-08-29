@@ -188,7 +188,7 @@ Round mode
         max_text_length: 15
         helper_text: "Massage"
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-mode.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-mode.gif
     :align: center
 
 .. MDTextFieldRect:

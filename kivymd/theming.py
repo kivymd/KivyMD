@@ -212,9 +212,8 @@ respects, the theming stays as documented.
     dictionary :attr:`kivymd.color_definition.colors`.
 """
 
-
+from kivy.animation import Animation
 from kivy.app import App
-from kivy.atlas import Atlas
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
@@ -230,7 +229,6 @@ from kivy.properties import (
 )
 from kivy.utils import get_color_from_hex
 
-from kivymd import images_path
 from kivymd.color_definitions import colors, hue, palette
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS, DEVICE_TYPE
@@ -622,6 +620,131 @@ class ThemeManager(EventDispatcher):
 
     :attr:`material_style` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'M2'`.
+    """
+
+    theme_style_switch_animation = BooleanProperty(False)
+    """
+    Animate app colors when switching app color scheme ('Dark/light').
+
+    .. versionadded:: 1.1.0
+
+    .. tabs::
+
+        .. tab:: Declarative KV style
+
+            .. code-block:: python
+
+                from kivy.lang import Builder
+
+                from kivymd.app import MDApp
+
+                KV = '''
+                MDScreen:
+
+                    MDCard:
+                        orientation: "vertical"
+                        padding: 0, 0, 0 , "36dp"
+                        size_hint: .5, .5
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        elevation: 4
+                        shadow_radius: 6
+                        shadow_offset: 0, 2
+
+                        MDLabel:
+                            text: "Theme style - {}".format(app.theme_cls.theme_style)
+                            halign: "center"
+                            valign: "center"
+                            bold: True
+                            font_style: "H5"
+
+                        MDRaisedButton:
+                            text: "Set theme"
+                            on_release: app.switch_theme_style()
+                            pos_hint: {"center_x": .5}
+                '''
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style_switch_animation = True
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return Builder.load_string(KV)
+
+                    def switch_theme_style(self):
+                        self.theme_cls.primary_palette = (
+                            "Orange" if self.theme_cls.primary_palette == "Red" else "Red"
+                        )
+                        self.theme_cls.theme_style = (
+                            "Dark" if self.theme_cls.theme_style == "Light" else "Light"
+                        )
+
+
+                Example().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDRaisedButton
+                from kivymd.uix.card import MDCard
+                from kivymd.uix.label import MDLabel
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style_switch_animation = True
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return (
+                            MDScreen(
+                                MDCard(
+                                    MDLabel(
+                                        id="label",
+                                        text="Theme style - {}".format(self.theme_cls.theme_style),
+                                        halign="center",
+                                        valign="center",
+                                        bold=True,
+                                        font_style="H5",
+                                    ),
+                                    MDRaisedButton(
+                                        text="Set theme",
+                                        on_release=self.switch_theme_style,
+                                        pos_hint={"center_x": 0.5},
+                                    ),
+                                    id="card",
+                                    orientation="vertical",
+                                    padding=(0, 0, 0, "36dp"),
+                                    size_hint=(0.5, 0.5),
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                    elevation=4,
+                                    shadow_radius=6,
+                                    shadow_offset=(0, 2),
+                                )
+                            )
+                        )
+
+                    def switch_theme_style(self, *args):
+                        self.theme_cls.primary_palette = (
+                            "Orange" if self.theme_cls.primary_palette == "Red" else "Red"
+                        )
+                        self.theme_cls.theme_style = (
+                            "Dark" if self.theme_cls.theme_style == "Light" else "Light"
+                        )
+                        self.root.ids.card.ids.label.text = (
+                            "Theme style - {}".format(self.theme_cls.theme_style)
+                        )
+
+
+                Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/theme-style-switch-animation.gif
+        :align: center
+
+    :attr:`theme_style_switch_animation` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
     """
 
     theme_style = OptionProperty("Light", options=["Light", "Dark"])
@@ -1184,14 +1307,22 @@ class ThemeManager(EventDispatcher):
         ):
             self.set_clearcolor_by_theme_style(theme_style)
 
-    set_clearcolor = BooleanProperty(True)
+    _set_clearcolor = False
 
     def set_clearcolor_by_theme_style(self, theme_style):
-        if not self.set_clearcolor:
-            return
-        Window.clearcolor = get_color_from_hex(
-            self.colors[theme_style]["Background"]
-        )
+        if self.theme_style_switch_animation and self._set_clearcolor:
+            Animation(
+                clearcolor=get_color_from_hex(
+                    self.colors[theme_style]["Background"]
+                ),
+                d=0.2,
+                t="linear",
+            ).start(Window)
+        else:
+            Window.clearcolor = get_color_from_hex(
+                self.colors[theme_style]["Background"]
+            )
+            self._set_clearcolor = True
 
     # Font name, size (sp), always caps, letter spacing (sp).
     font_styles = DictProperty(

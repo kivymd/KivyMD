@@ -695,6 +695,7 @@ from kivy.properties import (
     VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
+from kivy.utils import get_color_from_hex
 
 from kivymd import uix_path
 from kivymd.color_definitions import colors
@@ -788,8 +789,8 @@ class MDCard(
     """
 
     _bg_color_map = (
-        colors["Light"]["CardsDialogs"],
-        colors["Dark"]["CardsDialogs"],
+        get_color_from_hex(colors["Light"]["CardsDialogs"]),
+        get_color_from_hex(colors["Dark"]["CardsDialogs"]),
         [1.0, 1.0, 1.0, 0.0],
     )
 
@@ -805,7 +806,9 @@ class MDCard(
 
     def update_md_bg_color(self, instance_card, theme_style: str) -> None:
         if self.md_bg_color in self._bg_color_map:
-            self.md_bg_color = colors[theme_style]["CardsDialogs"]
+            self.md_bg_color = get_color_from_hex(
+                colors[theme_style]["CardsDialogs"]
+            )
 
     def set_style(self, *args) -> None:
         self.set_radius()

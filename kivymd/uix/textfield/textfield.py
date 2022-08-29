@@ -516,8 +516,6 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
     and defaults to `True`.
     """
 
-    # FIXME: property not work.
-    # TODO: add example and previous image.
     error_color = ColorProperty([0, 0, 0, 0])
     """
     Error color in (r, g, b, a) or string format for ``required = True``.
@@ -988,7 +986,11 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
             )
 
         if self.error_color == [0, 0, 0, 0] or updated:
-            self.error_color = self.theme_cls.error_color
+            self.error_color = (
+                self.theme_cls.error_color
+                if self.error_color == [0, 0, 0, 0]
+                else self.error_color
+            )
         if self.max_length_text_color == [0, 0, 0, 0] or updated:
             self.max_length_text_color = self.theme_cls.disabled_hint_text_color
 

@@ -9,4 +9,5 @@ Unreleased
 
 * Bug fixes and other minor improvements.
 * Add `closing_interval` parameter to `MDCardSwipe` class.
-* Added implementation of elevation behavior on shaders.
+* Add implementation of elevation behavior on shaders.
+* Add `validator <https://kivymd.readthedocs.io/en/latest/components/textfield/#kivymd.uix.textfield.textfield.MDTextField.validator>`_ property to `MDTextField <https://kivymd.readthedocs.io/en/latest/components/textfield/#kivymd.uix.textfield.textfield.MDTextFieldRect>`_ class.

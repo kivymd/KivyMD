@@ -223,6 +223,7 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     DictProperty,
+    NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
@@ -745,6 +746,27 @@ class ThemeManager(EventDispatcher):
 
     :attr:`theme_style_switch_animation` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
+    """
+
+    theme_style_switch_animation_duration = NumericProperty(0.2)
+    """
+    Duration of the animation of switching the color scheme of the application
+    ("Dark/ light").
+
+    .. versionadded:: 1.1.0
+
+    .. code-block:: python
+
+        class Example(MDApp):
+            def build(self):
+                self.theme_cls.theme_style_switch_animation = True
+                self.theme_cls.theme_style_switch_animation_duration = 0.8
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/theme-style-switch-animation-duration.gif
+        :align: center
+
+    :attr:`theme_style_switch_animation_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
     """
 
     theme_style = OptionProperty("Light", options=["Light", "Dark"])
@@ -1315,7 +1337,7 @@ class ThemeManager(EventDispatcher):
                 clearcolor=get_color_from_hex(
                     self.colors[theme_style]["Background"]
                 ),
-                d=0.2,
+                d=self.theme_style_switch_animation_duration,
                 t="linear",
             ).start(Window)
         else:

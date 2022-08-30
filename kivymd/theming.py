@@ -751,7 +751,7 @@ class ThemeManager(EventDispatcher):
     theme_style_switch_animation_duration = NumericProperty(0.2)
     """
     Duration of the animation of switching the color scheme of the application
-    ("Dark/ light").
+    ("Dark/light").
 
     .. versionadded:: 1.1.0
 

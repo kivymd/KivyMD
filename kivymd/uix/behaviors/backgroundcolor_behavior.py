@@ -168,7 +168,11 @@ class BackgroundColorBehavior(Widget):
             hasattr(self, "theme_cls")
             and self.theme_cls.theme_style_switch_animation
         ):
-            Animation(_md_bg_color=color, d=0.2, t="linear").start(self)
+            Animation(
+                _md_bg_color=color,
+                d=self.theme_cls.theme_style_switch_animation_duration,
+                t="linear",
+            ).start(self)
         else:
             self._md_bg_color = color
 

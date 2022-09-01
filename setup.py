@@ -92,7 +92,7 @@ if __name__ == "__main__":
         package_data={
             "kivymd": [
                 "images/*.png",
-                "images/*.atlas",
+                "images/logo/*.png",
                 "fonts/*.ttf",
                 *glob_paths(".kv"),
                 *glob_paths(".pot"),

@@ -315,6 +315,65 @@ with open(
 # TODO: Add a class to work with the phone number mask.
 
 
+class AutoFormatTelephoneNumber:
+    """
+    Implements automatic formatting of the text entered in the text field
+    according to the mask, for example '+38 (###) ### ## ##'.
+    """
+
+    def __init__(self):
+        self._backspace = False
+
+    def isnumeric(self, value):
+        try:
+            int(value)
+            return True
+        except ValueError:
+            return False
+
+    def do_backspace(self, *args):
+        if self.validator and self.validator == "phone":
+            self._backspace = True
+            text = self.text
+            text = text[:-1]
+            self.text = text
+            self._backspace = False
+
+    def field_filter(self, value, boolean):
+        if self.validator and self.validator == "phone":
+            if len(self.text) == 14:
+                return
+            if self.isnumeric(value):
+                return value
+        return value
+
+    def format(self, value):
+        if value != "" and not value.isspace() and not self._backspace:
+            if len(value) <= 1 and self.focus:
+                self.text = value
+                self._check_cursor()
+            elif len(value) == 4:
+                start = self.text[:-1]
+                end = self.text[-1]
+                self.text = "%s) %s" % (start, end)
+                self._check_cursor()
+            elif len(value) == 8:
+                self.text += "-"
+                self._check_cursor()
+            elif len(value) in [12, 16]:
+                start = self.text[:-1]
+                end = self.text[-1]
+                self.text = "%s-%s" % (start, end)
+                self._check_cursor()
+
+    def _check_cursor(self):
+        def set_pos_cursor(pos_corsor, interval=0.5):
+            self.cursor = (pos_corsor, 0)
+
+        if self.focus:
+            Clock.schedule_once(lambda x: set_pos_cursor(len(self.text)), 0.1)
+
+
 class Validator:
     """Container class for various validation methods."""
 
@@ -404,7 +463,13 @@ class TextfieldLabel(ThemableBehavior, Label):
         self.font_size = sp(self.theme_cls.font_styles[self.font_style][1])
 
 
-class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
+class MDTextField(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    TextInput,
+    Validator,
+    AutoFormatTelephoneNumber,
+):
     helper_text = StringProperty()
     """
     Text for ``helper_text`` mode.
@@ -451,7 +516,9 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
     and defaults to `'line'`.
     """
 
-    validator = OptionProperty(None, options=["email", "time"])
+    phone_mask = StringProperty("")
+
+    validator = OptionProperty(None, options=["email", "time", "phone"])
     """
     The type of text field for entering Email, time, etc.
     Automatically sets the type of the text field as "error" if the user input
@@ -674,7 +741,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
             hint_text: "icon_right_color_normal"
             icon_right_color_normal: "red"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-icon-right-color-normal.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-icon-right-color-normal.png
         :align: center
 
     :attr:`icon_right_color_normal` is an :class:`~kivy.properties.ColorProperty`
@@ -1164,6 +1231,9 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
 
         self.text = re.sub("\n", " ", text) if not self.multiline else text
         self.set_max_text_length()
+        if self.validator and self.validator == "phone":
+            pass
+            # self.format(self.text)
 
         if (self.text and self.max_length_text_color) or self._get_has_error():
             self.error = True
@@ -1428,7 +1498,7 @@ class MDTextField(DeclarativeBehavior, ThemableBehavior, TextInput, Validator):
         the :attr:`~MDTextField.required` parameter is set to `True`.
         """
 
-        if self.validator:
+        if self.validator and self.validator != "phone":
             has_error = {
                 "email": self.is_email_valid,
                 "time": self.is_time_valid,

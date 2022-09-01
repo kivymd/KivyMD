@@ -782,11 +782,11 @@ class BaseButton(
     # Note - _radius must be > 0 to avoid rendering issues.
     _radius = BoundedNumericProperty(dp(4), min=0.0999, errorvalue=0.1)
     # Properties used for rendering.
-    _disabled_color = ColorProperty(None)
-    _md_bg_color = ColorProperty(None)
-    _md_bg_color_disabled = ColorProperty(None)
-    _line_color = ColorProperty(None)
-    _line_color_disabled = ColorProperty(None)
+    _disabled_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+    _md_bg_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+    _md_bg_color_disabled = ColorProperty([0.0, 0.0, 0.0, 0.0])
+    _line_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+    _line_color_disabled = ColorProperty([0.0, 0.0, 0.0, 0.0])
     _theme_text_color = OptionProperty(None, options=theme_text_color_options)
     _theme_icon_color = OptionProperty(None, options=theme_text_color_options)
     _text_color = ColorProperty(None)
@@ -863,14 +863,14 @@ class BaseButton(
         """Set all button colours (except text/icons)."""
 
         # Set main color
-        self._md_bg_color = (
+        _md_bg_color = (
             self.md_bg_color
             or self._default_md_bg_color
             or self.theme_cls.primary_color
         )
 
         # Set disabled color
-        self._md_bg_color_disabled = (
+        _md_bg_color_disabled = (
             self.md_bg_color_disabled
             or (
                 [sum(self.md_bg_color[0:3]) / 3.0] * 3
@@ -883,14 +883,14 @@ class BaseButton(
         )
 
         # Set line color
-        self._line_color = (
+        _line_color = (
             self.line_color
             or self._default_line_color
             or self.theme_cls.primary_color
         )
 
         # Set disabled line color
-        self._line_color_disabled = (
+        _line_color_disabled = (
             self.line_color_disabled
             or (
                 [sum(self.line_color[0:3]) / 3.0] * 3
@@ -901,6 +901,21 @@ class BaseButton(
             or self._default_line_color_disabled
             or self.theme_cls.disabled_primary_color
         )
+
+        if self.theme_cls.theme_style_switch_animation:
+            Animation(
+                _md_bg_color=_md_bg_color,
+                _md_bg_color_disabled=_md_bg_color_disabled,
+                _line_color=_line_color,
+                _line_color_disabled=_line_color_disabled,
+                d=self.theme_cls.theme_style_switch_animation_duration,
+                t="linear",
+            ).start(self)
+        else:
+            self._md_bg_color = _md_bg_color
+            self._md_bg_color_disabled = _md_bg_color_disabled
+        self._line_color = _line_color
+        self._line_color_disabled = _line_color_disabled
 
     def set_text_color(self, *args) -> None:
         """

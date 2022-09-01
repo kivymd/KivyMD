@@ -3,9 +3,9 @@
         Clear
         Color:
             rgba:
-                (self._md_bg_color or [0.0, 0.0, 0.0, 0.0]) \
+                self._md_bg_color \
                 if not self.disabled else \
-                (self._md_bg_color_disabled or [0.0, 0.0, 0.0, 0.0])
+                self._md_bg_color_disabled
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -13,19 +13,17 @@
             radius: [root._radius, ]
         Color:
             rgba:
-                root._line_color or [0.0, 0.0, 0.0, 0.0] \
+                root._line_color \
                 if not root.disabled else \
-                ( \
-                root._line_color_disabled \
-                or self._disabled_color \
-                or [0.0, 0.0, 0.0, 0.0] \
-                )
+                (root._line_color_disabled or self._disabled_color)
         Line:
             width: root.line_width
             rounded_rectangle:
-                (self.x, self.y, self.width, self.height, \
+                ( \
+                self.x, self.y, self.width, self.height, \
                 root._radius, root._radius, root._radius, root._radius, \
-                self.height)
+                self.height \
+                )
 
     size_hint: None, None
     anchor_x: root.halign
@@ -33,21 +31,28 @@
     _round_rad: [self._radius] * 4
 
 
-
 <ButtonContentsText>
     lbl_txt: lbl_txt
     width:
-        max(root._min_width, \
-        root.padding[0] + lbl_txt.texture_size[0] + root.padding[2])
+        max( \
+        root._min_width, \
+        root.padding[0] + lbl_txt.texture_size[0] + root.padding[2] \
+        )
     size_hint_min_x:
-        max(root._min_width, \
-        root.padding[0] + lbl_txt.texture_size[0] + root.padding[2])
+        max( \
+        root._min_width, \
+        root.padding[0] + lbl_txt.texture_size[0] + root.padding[2] \
+        )
     height:
-        max(root._min_height, \
-        root.padding[1] + lbl_txt.texture_size[1] + root.padding[3])
+        max( \
+        root._min_height, \
+        root.padding[1] + lbl_txt.texture_size[1] + root.padding[3] \
+        )
     size_hint_min_y:
-        max(root._min_height, \
-        root.padding[1] + lbl_txt.texture_size[1] + root.padding[3])
+        max( \
+        root._min_height, \
+        root.padding[1] + lbl_txt.texture_size[1] + root.padding[3] \
+        )
 
     MDLabel:
         id: lbl_txt

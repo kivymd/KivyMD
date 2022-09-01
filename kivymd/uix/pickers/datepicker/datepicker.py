@@ -190,6 +190,8 @@ Set and select a date range
     :align: center
 """
 
+from __future__ import annotations
+
 __all__ = ("MDDatePicker", "BaseDialogPicker", "DatePickerInputField")
 
 import calendar

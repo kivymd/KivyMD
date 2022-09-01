@@ -10,6 +10,12 @@ corner radius:
 https://iquilezles.org/articles/distfunctions
 */
 
+float mysmoothstep(float a, float b, float x) {
+    float t = clamp((x - a) / (b - a), 0.0, 1.0);
+ 
+    return t * t * (3.0 - (2.0 * t));
+}
+
 float roundedBoxSDF(vec2 centerPosition, vec2 size, vec4 radius) {
     radius.xy = (centerPosition.x > 0.0) ? radius.xy : radius.zw;
     radius.x = (centerPosition.y > 0.0) ? radius.x : radius.y;
@@ -20,7 +26,7 @@ float roundedBoxSDF(vec2 centerPosition, vec2 size, vec4 radius) {
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // Smooth the result (free antialiasing).
-    float smoothedAlpha = 1.0 - smoothstep(0.0, 0.0, 1.0);
+    float smoothedAlpha = 1.0 - mysmoothstep(0.0, 0.0, 1.0);
     // Get the resultant shape.
     vec4 quadColor = mix(
         vec4(
@@ -36,7 +42,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float shadowDistance = roundedBoxSDF(
         fragCoord.xy - mouse.xy - (size / 2.0), size / 2.0, shadow_radius
     );
-    float shadowAlpha = 1.0 - smoothstep(
+    float shadowAlpha = 1.0 - mysmoothstep(
         -shadow_softness, shadow_softness, shadowDistance
     );
     fragColor = mix(quadColor, shadow_color, shadowAlpha - smoothedAlpha);

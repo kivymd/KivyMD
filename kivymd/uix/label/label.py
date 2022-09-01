@@ -257,7 +257,6 @@ __MDLabel_colors__ = {
         "Hint": "opposite_disabled_hint_text_color",
     },
 }
-DEFAULT_FONT = (15, 16)
 
 with open(
     os.path.join(uix_path, "label", "label.kv"), encoding="utf-8"
@@ -354,9 +353,8 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
         if self.check_font_styles() is True:
             font_info = self.theme_cls.font_styles[self.font_style]
             self.font_name = font_info[0]
+            self.font_size = sp(font_info[1])
 
-            if self.font_size in DEFAULT_FONT:
-                self.font_size = sp(font_info[1])
             if font_info[2] and self.can_capitalize:
                 self._capitalizing = True
             else:

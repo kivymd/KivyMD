@@ -222,6 +222,7 @@ __all__ = ("MDLabel", "MDIcon")
 import os
 from typing import Union
 
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
@@ -381,18 +382,34 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
             # generic None value it's not yet been set
             self._text_color_str = ""
             if theme_text_color == "Custom" and self.text_color:
-                self.color = self.text_color
+                color = self.text_color
             elif (
                 theme_text_color == "ContrastParentBackground"
                 and self.parent_background
             ):
-                self.color = get_contrast_text_color(self.parent_background)
+                color = get_contrast_text_color(self.parent_background)
             else:
-                self.color = [0, 0, 0, 1]
+                color = [0, 0, 0, 1]
+
+            if self.theme_cls.theme_style_switch_animation:
+                Animation(
+                    color=color,
+                    d=self.theme_cls.theme_style_switch_animation_duration,
+                    t="linear",
+                ).start(self)
+            else:
+                self.color = color
 
     def on_text_color(self, instance_label, color: Union[list, str]) -> None:
         if self.theme_text_color == "Custom":
-            self.color = self.text_color
+            if self.theme_cls.theme_style_switch_animation:
+                Animation(
+                    color=self.text_color,
+                    d=self.theme_cls.theme_style_switch_animation_duration,
+                    t="linear",
+                ).start(self)
+            else:
+                self.color = self.text_color
 
     def on_opposite_colors(self, *args) -> None:
         self.on_theme_text_color(self, self.theme_text_color)
@@ -414,11 +431,19 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
 
     def _do_update_theme_color(self, *args):
         if self._text_color_str:
-            self.color = getattr(self.theme_cls, self._text_color_str)
             if not self.disabled:
-                self.color = getattr(self.theme_cls, self._text_color_str)
+                color = getattr(self.theme_cls, self._text_color_str)
             else:
-                self.color = getattr(self.theme_cls, "disabled_hint_text_color")
+                color = getattr(self.theme_cls, "disabled_hint_text_color")
+
+            if self.theme_cls.theme_style_switch_animation:
+                Animation(
+                    color=color,
+                    d=self.theme_cls.theme_style_switch_animation_duration,
+                    t="linear",
+                ).start(self)
+            else:
+                self.color = color
 
 
 class MDIcon(MDFloatLayout, MDLabel):

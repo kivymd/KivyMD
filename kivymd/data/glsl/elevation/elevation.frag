@@ -20,7 +20,8 @@ float roundedBoxSDF(vec2 centerPosition, vec2 size, vec4 radius) {
 
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // Smooth the result (free antialiasing).
-    float smoothedAlpha = 1.0 - smoothstep(0.0, 0.0, 1.0);
+    float edge0 = 0.0;
+    float smoothedAlpha = 1.0 - smoothstep(0.0, edge0, 1.0);
     // Get the resultant shape.
     vec4 quadColor = mix(
         vec4(

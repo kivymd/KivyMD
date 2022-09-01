@@ -248,5 +248,17 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
             secondary_color[3] = 0.54
         else:
             secondary_color[3] = 0.7
-        self.specific_text_color = color
-        self.specific_secondary_text_color = secondary_color
+
+        if (
+            hasattr(self, "theme_cls")
+            and self.theme_cls.theme_style_switch_animation
+        ):
+            Animation(
+                specific_text_color=color,
+                specific_secondary_text_color=secondary_color,
+                d=self.theme_cls.theme_style_switch_animation_duration,
+                t="linear",
+            ).start(self)
+        else:
+            self.specific_text_color = color
+            self.specific_secondary_text_color = secondary_color

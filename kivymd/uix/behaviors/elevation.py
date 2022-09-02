@@ -630,7 +630,6 @@ class CommonElevationBehavior(Widget):
                 if isinstance(widget, Screen):
                     self._has_relative_position = True
                     widget.bind(on_enter=self.update_window_position)
-                    break
                  
                 if widget.parent:
                     widget = widget.parent

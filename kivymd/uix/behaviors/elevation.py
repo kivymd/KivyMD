@@ -373,6 +373,7 @@ from kivy.properties import (
     NumericProperty,
     VariableListProperty,
 )
+from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget
 
 from kivymd import glsl_path
@@ -622,6 +623,19 @@ class CommonElevationBehavior(Widget):
         """
 
         if self.pos == self.window_pos:
+            # check if widget has Screen parent
+            # loops until parent is a Screen and binds on_enter method
+            widget = self.parent            
+            while True:
+                if isinstance(widget, Screen):
+                    self._has_relative_position = True
+                    widget.bind(on_enter=self.update_window_position)
+                    break
+                 
+                if widget.parent:
+                    widget = widget.parent
+                else:
+                    break            
             return
         else:
             self._has_relative_position = True

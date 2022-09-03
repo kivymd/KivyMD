@@ -20,7 +20,6 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
-from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
 
 from kivymd.color_definitions import hue, palette, text_colors
@@ -67,7 +66,7 @@ Builder.load_string(
 )
 
 
-class BackgroundColorBehavior(Widget):
+class BackgroundColorBehavior:
     background = StringProperty()
     """
     Background image path.

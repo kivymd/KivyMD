@@ -259,11 +259,7 @@ from kivymd import uix_path
 from kivymd.material_resources import STANDARD_INCREMENT
 from kivymd.theming import ThemableBehavior, ThemeManager
 from kivymd.uix.anchorlayout import MDAnchorLayout
-from kivymd.uix.behaviors import (
-    CommonElevationBehavior,
-    DeclarativeBehavior,
-    FakeRectangularElevationBehavior,
-)
+from kivymd.uix.behaviors import CommonElevationBehavior, DeclarativeBehavior
 from kivymd.uix.behaviors.backgroundcolor_behavior import (
     SpecificBackgroundColorBehavior,
 )

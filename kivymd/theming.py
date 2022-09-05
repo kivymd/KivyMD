@@ -1670,5 +1670,12 @@ class ThemableBehavior(EventDispatcher):
                         )
                     }
                 )
+                self.theme_cls.unbind(
+                    **{
+                        "primary_color": getattr(
+                            callaback.proxy, callaback.method_name
+                        )
+                    }
+                )
 
         super().dec_disabled(*args, **kwargs)

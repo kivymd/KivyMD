@@ -1665,6 +1665,8 @@ class ThemableBehavior(EventDispatcher):
         super().__init__(**kwargs)
 
     def dec_disabled(self, *args, **kwargs) -> None:
+        # FIXME: the `unbind` method for the `'text_color'` property does
+        #  not work.
         callabacks = self.theme_cls.get_property_observers("theme_style")
         for callaback in callabacks:
             if hasattr(callaback, "proxy") and hasattr(

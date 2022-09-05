@@ -1328,8 +1328,7 @@ class MDFloatingActionButton(
         super().__init__(*args, **kwargs)
         # FIXME: GraphicException: Invalid width value, must be > 0
         self.line_width = 0.001
-        self.theme_cls.bind(material_style=self.set_size)
-        self.theme_cls.bind(material_style=self.set__radius)
+        self.theme_cls.bind(material_style=self.set_size_and_radius)
         Clock.schedule_once(self.set_size)
         Clock.schedule_once(self.set__radius)
         Clock.schedule_once(self.set_font_size)
@@ -1358,6 +1357,10 @@ class MDFloatingActionButton(
                 self._radius = dp(28)
 
             self.shadow_radius = self._radius
+
+    def set_size_and_radius(self, *args) -> None:
+        self.set_size(args)
+        self.set__radius(args)
 
     def set_size(self, *args) -> None:
         if self.theme_cls.material_style == "M2":

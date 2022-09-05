@@ -1640,6 +1640,7 @@ class ThemableBehavior(EventDispatcher):
             "theme_style",
             "primary_color",
             "primary_palette",
+            "text_color",
         ]
 
         if self.theme_cls is not None:

@@ -152,10 +152,7 @@ class BackgroundColorBehavior:
 
     _background_x = NumericProperty(0)
     _background_y = NumericProperty(0)
-    _background_origin = ReferenceListProperty(
-        _background_x,
-        _background_y,
-    )
+    _background_origin = ReferenceListProperty(_background_x, _background_y)
     _md_bg_color = ColorProperty([0, 0, 0, 0])
 
     def __init__(self, **kwarg):
@@ -219,12 +216,14 @@ class SpecificBackgroundColorBehavior(BackgroundColorBehavior):
         super().__init__(**kwargs)
         if hasattr(self, "theme_cls"):
             self.theme_cls.bind(
-                primary_palette=self._update_specific_text_color
+                primary_palette=self._update_specific_text_color,
+                accent_palette=self._update_specific_text_color,
+                theme_style=self._update_specific_text_color,
             )
-            self.theme_cls.bind(accent_palette=self._update_specific_text_color)
-            self.theme_cls.bind(theme_style=self._update_specific_text_color)
-        self.bind(background_hue=self._update_specific_text_color)
-        self.bind(background_palette=self._update_specific_text_color)
+        self.bind(
+            background_hue=self._update_specific_text_color,
+            background_palette=self._update_specific_text_color,
+        )
         self._update_specific_text_color(None, None)
 
     def _update_specific_text_color(

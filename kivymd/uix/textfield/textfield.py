@@ -1001,8 +1001,8 @@ class MDTextField(
             text=self.set_text,
         )
         self.theme_cls.bind(
-            primary_color=lambda x, y: self.set_default_colors(0, True),
-            theme_style=lambda x, y: self.set_default_colors(0, True),
+            primary_color=self.set_default_colors,
+            theme_style=self.set_default_colors,
         )
         Clock.schedule_once(self.check_text)
 

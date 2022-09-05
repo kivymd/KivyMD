@@ -1636,6 +1636,12 @@ class ThemableBehavior(EventDispatcher):
     """
 
     def __init__(self, **kwargs):
+        self.unbind_properties = [
+            "theme_style",
+            "primary_color",
+            "primary_palette",
+        ]
+
         if self.theme_cls is not None:
             pass
         else:
@@ -1663,19 +1669,13 @@ class ThemableBehavior(EventDispatcher):
             if hasattr(callaback, "proxy") and hasattr(
                 callaback.proxy, "theme_cls"
             ):
-                self.theme_cls.unbind(
-                    **{
-                        "theme_style": getattr(
-                            callaback.proxy, callaback.method_name
-                        )
-                    }
-                )
-                self.theme_cls.unbind(
-                    **{
-                        "primary_color": getattr(
-                            callaback.proxy, callaback.method_name
-                        )
-                    }
-                )
+                for property_name in self.unbind_properties:
+                    self.theme_cls.unbind(
+                        **{
+                            property_name: getattr(
+                                callaback.proxy, callaback.method_name
+                            )
+                        }
+                    )
 
         super().dec_disabled(*args, **kwargs)

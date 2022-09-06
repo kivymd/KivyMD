@@ -942,8 +942,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         
         
                 Example().run()
-
-    .. tabs::
     
         .. tab:: Declarative python style
     

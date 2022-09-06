@@ -11,19 +11,6 @@ Components/DataTables
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-previous.png
     :align: center
 
-Warnings
----------
-
-.. warning:: Data tables are still far from perfect. The class is in constant
-    change, because of optimizations and bug fixes. If you find a bug or have
-    an improvement you want to share, take some time and share your discoveries
-    with us over the main git repo.
-    Any help is well appreciated.
-
-.. warning:: In versions prior to `Kivy 2.1.0-dev0` exists an error in which is
-    the table has only one row in the current page, the table will only render
-    one column instead of the whole row.
-
 .. note:: `MDDataTable` allows developers to sort the data provided by column.
     This happens thanks to the use of an external function that you can bind
     while you're defining the table columns. Be aware that the sorting function
@@ -765,6 +752,9 @@ class TablePagination(ThemableBehavior, MDBoxLayout):
 
 class MDDataTable(ThemableBehavior, AnchorLayout):
     """
+    See :class:`~kivy.uix.anchorlayout.AnchorLayout` class documentation for
+    more information.
+
     :Events:
         :attr:`on_row_press`
             Called when a table row is clicked.
@@ -774,7 +764,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     .. rubric:: Use events as follows
 
     .. code-block:: python
-
 
         from kivy.metrics import dp
 
@@ -914,38 +903,84 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     """
     Data for header columns.
 
-    .. code-block:: python
+    .. tabs::
+    
+        .. tab:: Imperative python style
+    
+            .. code-block:: python
 
-        from kivy.metrics import dp
+                from kivy.metrics import dp
+        
+                from kivymd.app import MDApp
+                from kivymd.uix.datatables import MDDataTable
+                from kivy.uix.anchorlayout import AnchorLayout
+        
+        
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+        
+                        layout = AnchorLayout()
+                        self.data_tables = MDDataTable(
+                            size_hint=(0.7, 0.6),
+                            use_pagination=True,
+                            check=True,
+                            # name column, width column, sorting function column(optional)
+                            column_data=[
+                                ("No.", dp(30)),
+                                ("Status", dp(30)),
+                                ("Signal Name", dp(60)),
+                                ("Severity", dp(30)),
+                                ("Stage", dp(30)),
+                                ("Schedule", dp(30), lambda *args: print("Sorted using Schedule")),
+                                ("Team Lead", dp(30)),
+                            ],
+                        )
+                        layout.add_widget(self.data_tables)
+                        return layout
+        
+        
+                Example().run()
 
-        from kivymd.app import MDApp
-        from kivymd.uix.datatables import MDDataTable
-        from kivy.uix.anchorlayout import AnchorLayout
+    .. tabs::
+    
+        .. tab:: Declarative python style
+    
+            .. code-block:: python
+
+                from kivy.metrics import dp
+
+                from kivymd.app import MDApp
+                from kivymd.uix.anchorlayout import MDAnchorLayout
+                from kivymd.uix.datatables import MDDataTable
+    
+    
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return MDAnchorLayout(
+                            MDDataTable(
+                                size_hint=(0.7, 0.6),
+                                use_pagination=True,
+                                check=True,
+                                # name column, width column, sorting function column(optional)
+                                column_data=[
+                                    ("No.", dp(30)),
+                                    ("Status", dp(30)),
+                                    ("Signal Name", dp(60)),
+                                    ("Severity", dp(30)),
+                                    ("Stage", dp(30)),
+                                    ("Schedule", dp(30),
+                                     lambda *args: print("Sorted using Schedule")),
+                                    ("Team Lead", dp(30)),
+                                ],
+                            )
+                        )
 
 
-        class Example(MDApp):
-            def build(self):
-                layout = AnchorLayout()
-                self.data_tables = MDDataTable(
-                    size_hint=(0.7, 0.6),
-                    use_pagination=True,
-                    check=True,
-                    # name column, width column, sorting function column(optional)
-                    column_data=[
-                        ("No.", dp(30)),
-                        ("Status", dp(30)),
-                        ("Signal Name", dp(60)),
-                        ("Severity", dp(30)),
-                        ("Stage", dp(30)),
-                        ("Schedule", dp(30), lambda *args: print("Sorted using Schedule")),
-                        ("Team Lead", dp(30)),
-                    ],
-                )
-                layout.add_widget(self.data_tables)
-                return layout
-
-
-        Example().run()
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-column-data.png
         :align: center
@@ -1060,6 +1095,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         class Example(MDApp):
             def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
+
                 layout = AnchorLayout()
                 data_tables = MDDataTable(
                     size_hint=(0.9, 0.6),
@@ -1187,7 +1225,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     """
     Use or not use checkboxes for rows.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-check.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-check.png
         :align: center
 
     :attr:`check` is an :class:`~kivy.properties.BooleanProperty`
@@ -1209,6 +1247,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         class Example(MDApp):
             def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
+
                 layout = AnchorLayout()
                 data_tables = MDDataTable(
                     size_hint=(0.9, 0.6),
@@ -1250,7 +1291,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     """
     The number of rows displayed on one page of the table.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-use-pagination.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-use-pagination-rows-num.png
         :align: center
 
     :attr:`rows_num` is an :class:`~kivy.properties.NumericProperty`
@@ -1266,7 +1307,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     .. rubric:: Center
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-menu-pos-center.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-menu-pos-top.png
         :align: center
 
     .. rubric:: Auto
@@ -1282,11 +1323,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     """
     Menu height for selecting the number of displayed rows.
 
-    .. rubric:: 140dp
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-menu-height-140.png
-        :align: center
-
     .. rubric:: 240dp
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-menu-height-240.png
@@ -1298,7 +1334,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color = ColorProperty([0, 0, 0, 0])
     """
-    Background color in the format (r, g, b, a).
+    Background color in the format (r, g, b, a) or string format.
     See :attr:`~kivy.uix.modalview.ModalView.background_color`.
 
     Use markup strings
@@ -1315,6 +1351,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
         class Example(MDApp):
             def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
+
                 layout = AnchorLayout()
                 data_tables = MDDataTable(
                     size_hint=(0.9, 0.6),
@@ -1354,7 +1393,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color_header = ColorProperty(None)
     """
-    Background color for :class:`~TableHeader` class.
+    Background color in the format (r, g, b, a) or string format for
+    :class:`~TableHeader` class.
 
     .. versionadded:: 1.0.0
 
@@ -1374,7 +1414,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color_cell = ColorProperty(None)
     """
-    Background color for :class:`~CellRow` class.
+    Background color in the format (r, g, b, a) or string format for
+    :class:`~CellRow` class.
 
     .. versionadded:: 1.0.0
 
@@ -1395,7 +1436,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     background_color_selected_cell = ColorProperty(None)
     """
-    Background selected color for :class:`~CellRow` class.
+    Background selected color in the format (r, g, b, a) or string format for
+    :class:`~CellRow` class.
 
     .. versionadded:: 1.0.0
 
@@ -1408,7 +1450,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             background_color_selected_cell="e4514f",
         )
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-selected-cell.gif
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-background-color-selected-cell.png
         :align: center
 
     :attr:`background_color_selected_cell` is a :class:`~kivy.properties.ColorProperty` and
@@ -1503,6 +1545,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                 data_tables = None
 
                 def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+
                     layout = MDFloatLayout()  # root layout
                     # Creating control buttons.
                     button_box = MDBoxLayout(
@@ -1604,6 +1649,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                 data_tables = None
 
                 def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+
                     layout = MDFloatLayout()
                     layout.add_widget(
                         MDRaisedButton(

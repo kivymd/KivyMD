@@ -626,11 +626,11 @@ class CommonElevationBehavior(Widget):
         if self.pos != self.window_pos:
             self._has_relative_position = True
 
-        # loops to check if its inside screenmanager or bottom_navigation
+        # Loops to check if its inside screenmanager or bottom_navigation.
         widget = self
         while True:
-            # checks if has screen event function
-            # works for Screen and MDTab objects
+            # Checks if has screen event function
+            # works for Screen and MDTab objects.
             if hasattr(widget, "on_pre_enter"):
                 widget.bind(on_pre_enter=self.apply_correction)
                 widget.bind(on_pre_leave=self.apply_correction)
@@ -638,7 +638,7 @@ class CommonElevationBehavior(Widget):
                 widget.bind(on_leave=self.reset_correction)
                 self._has_relative_position = True
 
-                # save refs to objects with transition property
+                # Save refs to objects with transition property.
                 if hasattr(widget, "header"):  # specific to bottom_nav
                     self._transition_ref = widget.header.panel
                 elif hasattr(widget, "manager"):  # specific to screen
@@ -657,7 +657,8 @@ class CommonElevationBehavior(Widget):
     def apply_correction(self, *args):
         if self._transition_ref:
             transition = str(self._transition_ref.transition)
-            # Slide and Card transitions only need _has_relative_pos to be always on
+            # Slide and Card transitions only need _has_relative_pos to be
+            # always on.
             if (
                 "SlideTransition" in transition
                 or "CardTransition" in transition

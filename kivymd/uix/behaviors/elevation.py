@@ -371,6 +371,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
+    ObjectProperty,
     VariableListProperty,
 )
 from kivy.uix.widget import Widget
@@ -585,6 +586,7 @@ class CommonElevationBehavior(Widget):
     and defaults to `[0.4, 0.4, 0.4, 0.8]`.
     """
 
+    _transition_ref = ObjectProperty()
     _has_relative_position = BooleanProperty(defaultvalue=False)
     _elevation = 0
     _shadow_color = [0.0, 0.0, 0.0, 0.0]
@@ -610,23 +612,63 @@ class CommonElevationBehavior(Widget):
         Clock.schedule_once(self.after_init)
 
     def after_init(self, *args):
-        Clock.schedule_once(self.check_for_relative_pos)
+        Clock.schedule_once(self.check_for_relative_behavior)
         Clock.schedule_once(self.set_shader_string)
         Clock.schedule_once(lambda x: self.on_elevation(self, self.elevation))
         self.on_pos()
 
-    def check_for_relative_pos(self, *args) -> None:
+    def check_for_relative_behavior(self, *args) -> None:
         """
-        Checks if the widget has relative position properties and if necessary
-        binds Window.on_draw call to update window position
+        Checks if the widget has relative properties and if necessary
+        binds Window.on_draw and screen events to fix behavior
         """
 
-        if self.pos == self.window_pos:
-            return
-        else:
+        if self.pos != self.window_pos:
             self._has_relative_position = True
 
-        Window.bind(on_draw=self.update_window_position)
+        # loops to check if its inside screenmanager or bottom_navigation
+        widget = self
+        while True:
+            # checks if has screen event function
+            # works for Screen and MDTab objects
+            if hasattr(widget, "on_pre_enter"):
+                widget.bind(on_pre_enter=self.apply_correction)
+                widget.bind(on_pre_leave=self.apply_correction)
+                widget.bind(on_enter=self.reset_correction)
+                widget.bind(on_leave=self.reset_correction)
+                self._has_relative_position = True
+
+                # save refs to objects with transition property
+                if hasattr(widget, "header"):  # specific to bottom_nav
+                    self._transition_ref = widget.header.panel
+                elif hasattr(widget, "manager"):  # specific to screen
+                    if widget.manager:  # manager cant be None
+                        self._transition_ref = widget.manager
+                break
+
+            elif widget.parent and str(widget) != str(widget.parent):
+                widget = widget.parent
+            else:
+                break
+
+        if self._has_relative_position:
+            Window.bind(on_draw=self.update_window_position)
+
+    def apply_correction(self, *args):
+        if self._transition_ref:
+            transition = str(self._transition_ref.transition)
+            # Slide and Card transitions only need _has_relative_pos to be always on
+            if (
+                "SlideTransition" in transition
+                or "CardTransition" in transition
+            ):
+                self.context.use_parent_modelview = False
+            else:
+                self.context.use_parent_modelview = True
+
+    def reset_correction(self, *args):
+        self.context.use_parent_modelview = False
+        self.update_window_position()
 
     def get_shader_string(self) -> str:
         shader_string = ""
@@ -696,7 +738,10 @@ class CommonElevationBehavior(Widget):
         if not hasattr(self, "rect"):
             return
 
-        if self._has_relative_position:
+        if (
+            self._has_relative_position
+            and not self.context.use_parent_modelview
+        ):
             pos = self.window_pos
         else:
             pos = self.pos

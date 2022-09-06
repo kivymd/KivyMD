@@ -33,30 +33,61 @@ Components/Button
 MDIconButton
 ------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button.gif
+.. tabs::
+
+    .. tab:: Declarative KV style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+
+                MDIconButton:
+                    icon: "language-python"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDScreen(
+                            MDIconButton(
+                                icon="language-python",
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            )
+                        )
+                    )
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button.png
     :align: center
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-
-    KV = '''
-    MDScreen:
-
-        MDIconButton:
-            icon: "language-python"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
-
-
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-
-    Example().run()
 
 The :class:`~MDIconButton.icon` parameter must have the name of the icon
 from ``kivymd/icon_definitions.py`` file.
@@ -66,9 +97,9 @@ You can also use custom icons:
 .. code-block:: kv
 
     MDIconButton:
-        icon: "data/logo/kivy-icon-256.png"
+        icon: "kivymd/images/logo/kivymd-icon-256.png"
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-custom-button.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-custom-button.png
     :align: center
 
 By default, :class:`~MDIconButton` button has a size ``(dp(48), dp (48))``.
@@ -80,7 +111,7 @@ Use :class:`~BaseButton.icon_size` attribute to resize the button:
         icon: "android"
         icon_size: "64sp"
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button-user-font-size.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-button-user-font-size.png
     :align: center
 
 By default, the color of :class:`~MDIconButton`
@@ -145,6 +176,8 @@ Material design style 3
 
     class Example(MDApp):
         def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
             self.theme_cls.material_style = "M3"
             return Builder.load_string(KV)
 
@@ -168,24 +201,21 @@ Material design style 3
 
     Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-m3.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-floating-action-button-m3.png
     :align: center
 
 .. MDFlatButton:
 MDFlatButton
 ------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-flat-button.gif
-    :align: center
-
 To change the text color of: class:`~MDFlatButton` use the ``text_color`` parameter:
 
 .. code-block:: kv
 
     MDFlatButton:
-        text: "MDFLATBUTTON"
+        text: "MDFlatButton"
         theme_text_color: "Custom"
-        text_color: 0, 0, 1, 1
+        text_color: "orange"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-flat-button-text-color.png
     :align: center
@@ -195,7 +225,7 @@ Or use markup:
 .. code-block:: kv
 
     MDFlatButton:
-        text: "[color=#00ffcc]MDFLATBUTTON[/color]"
+        text: "[color=#00ffcc]MDFlatButton[/color]"
 
 To specify the font size and font name, use the parameters as in the usual
 `Kivy` buttons:
@@ -203,7 +233,7 @@ To specify the font size and font name, use the parameters as in the usual
 .. code-block:: kv
 
     MDFlatButton:
-        text: "MDFLATBUTTON"
+        text: "MDFlatButton"
         font_size: "18sp"
         font_name: "path/to/font"
 
@@ -211,33 +241,29 @@ To specify the font size and font name, use the parameters as in the usual
 MDRaisedButton
 --------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-raised-button.gif
-    :align: center
-
 This button is similar to the :class:`~MDFlatButton` button except that you
 can set the background color for :class:`~MDRaisedButton`:
 
 .. code-block:: kv
 
     MDRaisedButton:
-        text: "MDRAISEDBUTTON"
-        md_bg_color: 1, 0, 1, 1
+        text: "MDRaisedButton"
+        md_bg_color: "red"
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-raised-button.png
+    :align: center
 
 .. MDRectangleFlatButton:
 MDRectangleFlatButton
 ---------------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button.gif
-    :align: center
-
 .. code-block:: kv
 
     MDRectangleFlatButton:
-        text: "MDRECTANGLEFLATBUTTON"
+        text: "MDRectangleFlatButton"
         theme_text_color: "Custom"
-        text_color: 1, 0, 0, 1
-        line_color: 0, 0, 1, 1
+        text_color: "white"
+        line_color: "red"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-button-md-bg-color.png
     :align: center
@@ -245,9 +271,6 @@ MDRectangleFlatButton
 .. MDRectangleFlatIconButton:
 MDRectangleFlatIconButton
 -------------------------
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button.png
-    :align: center
 
 Button parameters :class:`~MDRectangleFlatIconButton` are the same as
 button :class:`~MDRectangleFlatButton`, with the addition of the
@@ -257,12 +280,12 @@ button :class:`~MDRectangleFlatButton`, with the addition of the
 
     MDRectangleFlatIconButton:
         icon: "android"
-        text: "MDRECTANGLEFLATICONBUTTON"
+        text: "MDRectangleFlatIconButton"
         theme_text_color: "Custom"
-        text_color: 0, 0, 1, 1
-        line_color: 1, 0, 1, 1
+        text_color: "white"
+        line_color: "red"
         theme_icon_color: "Custom"
-        icon_color: 1, 0, 0, 1
+        icon_color: "orange"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button-custom.png
     :align: center
@@ -279,16 +302,18 @@ Without border
 
     class Example(MDApp):
         def build(self):
-            screen = MDScreen()
-            screen.add_widget(
-                MDRectangleFlatIconButton(
-                    text="MDRectangleFlatIconButton",
-                    icon="language-python",
-                    line_color=(0, 0, 0, 0),
-                    pos_hint={"center_x": .5, "center_y": .5},
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
+            return (
+                MDScreen(
+                    MDRectangleFlatIconButton(
+                        text="MDRectangleFlatIconButton",
+                        icon="language-python",
+                        line_color=(0, 0, 0, 0),
+                        pos_hint={"center_x": .5, "center_y": .5},
+                    )
                 )
             )
-            return screen
 
 
     Example().run()
@@ -301,6 +326,9 @@ Without border
         line_color: 0, 0, 0, 0
         pos_hint: {"center_x": .5, "center_y": .5}
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-rectangle-flat-icon-button-without-border.png
+    :align: center
+
 .. MDRoundFlatButton:
 MDRoundFlatButton
 -----------------
@@ -308,8 +336,8 @@ MDRoundFlatButton
 .. code-block:: kv
 
     MDRoundFlatButton:
-        text: "MDROUNDFLATBUTTON"
-        text_color: 0, 1, 0, 1
+        text: "MDRoundFlatButton"
+        text_color: "white"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-button-text-color.png
     :align: center
@@ -318,9 +346,6 @@ MDRoundFlatButton
 MDRoundFlatIconButton
 ---------------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-icon-button.png
-    :align: center
-
 Button parameters :class:`~MDRoundFlatIconButton` are the same as
 button :class:`~MDRoundFlatButton`, with the addition of the
 ``theme_icon_color`` and ``icon_color`` parameters as for :class:`~MDIconButton`:
@@ -328,8 +353,12 @@ button :class:`~MDRoundFlatButton`, with the addition of the
 .. code-block:: kv
 
     MDRoundFlatIconButton:
+        text: "MDRoundFlatIconButton"
         icon: "android"
-        text: "MDROUNDFLATICONBUTTON"
+        text_color: "white"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-round-flat-icon-button.png
+    :align: center
 
 .. MDFillRoundFlatButton:
 MDFillRoundFlatButton
@@ -359,14 +388,14 @@ button :class:`~MDRaisedButton`, with the addition of the
 MDTextButton
 ------------
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-text-button.png
-    :align: center
-
 .. code-block:: kv
 
     MDTextButton:
-        text: "MDTEXTBUTTON"
-        custom_color: 0, 1, 0, 1
+        text: "MDTextButton"
+        custom_color: "white"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-text-button.png
+    :align: center
 
 .. MDFloatingActionButtonSpeedDial:
 MDFloatingActionButtonSpeedDial
@@ -675,7 +704,7 @@ class BaseButton(
 
     text_color = ColorProperty(None)
     """
-    Button text color in (r, g, b, a) format.
+    Button text color in (r, g, b, a) or string format.
 
     :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -683,7 +712,7 @@ class BaseButton(
 
     icon_color = ColorProperty(None)
     """
-    Button icon color in (r, g, b, a) format.
+    Button icon color in (r, g, b, a) or string format.
 
     :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -726,7 +755,7 @@ class BaseButton(
 
     line_color = ColorProperty(None)
     """
-    Line color for button border.
+    Line color in (r, g, b, a) or string format for button border.
 
     :attr:`line_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -734,7 +763,7 @@ class BaseButton(
 
     line_color_disabled = ColorProperty(None)
     """
-    Disabled line color for button border.
+    Disabled line color in (r, g, b, a) or string format for button border.
 
     .. versionadded:: 1.0.0
 
@@ -744,7 +773,7 @@ class BaseButton(
 
     md_bg_color = ColorProperty(None)
     """
-    Button background color.
+    Button background color in (r, g, b, a) or string format.
 
     :attr:`md_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -752,7 +781,8 @@ class BaseButton(
 
     md_bg_color_disabled = ColorProperty(None)
     """
-    The background color of the button when the button is disabled.
+    The background color in (r, g, b, a) or string format of the button when
+    the button is disabled.
 
     :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -760,8 +790,8 @@ class BaseButton(
 
     disabled_color = ColorProperty(None)
     """
-    The color of the text and icon when the button is disabled, in the
-     (r, g, b, a) format.
+    The color of the text and icon when the button is disabled,
+    in (r, g, b, a) or string format.
 
     .. versionadded:: 1.0.0
 
@@ -1381,7 +1411,7 @@ class MDFloatingActionButton(
 class MDTextButton(ButtonBehavior, MDLabel):
     color = ColorProperty(None)
     """
-    Button color in (r, g, b, a) format.
+    Button color in (r, g, b, a) or string format.
 
     :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -1389,7 +1419,7 @@ class MDTextButton(ButtonBehavior, MDLabel):
 
     color_disabled = ColorProperty(None)
     """
-    Button color disabled in (r, g, b, a) format.
+    Button color disabled in (r, g, b, a) or string format.
 
     :attr:`color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -1506,7 +1536,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     label_text_color = ColorProperty([0, 0, 0, 1])
     """
-    Floating text color in (r, g, b, a) format.
+    Floating text color in (r, g, b, a) or string format.
 
     :attr:`label_text_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 1]`.
@@ -1640,7 +1670,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     bg_color_stack_button = ColorProperty(None)
     """
-    The color of the buttons in the stack (r, g, b, a) format.
+    The color of the buttons in (r, g, b, a) or string format.
 
     :attr:`bg_color_stack_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1648,7 +1678,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     color_icon_stack_button = ColorProperty(None)
     """
-    The color icon of the buttons in the stack (r, g, b, a) format.
+    The color icon of the buttons in (r, g, b, a) or string format.
 
     :attr:`color_icon_stack_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1656,7 +1686,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     color_icon_root_button = ColorProperty(None)
     """
-    The color icon of the root button (r, g, b, a) format.
+    The color icon of the root in (r, g, b, a) or string format.
 
     :attr:`color_icon_root_button` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -1664,7 +1694,8 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
     bg_hint_color = ColorProperty(None)
     """
-    Background color for the text of the buttons in the stack (r, g, b, a) format.
+    Background color for the text of the buttons in (r, g, b, a) or string
+    format.
 
     :attr:`bg_hint_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

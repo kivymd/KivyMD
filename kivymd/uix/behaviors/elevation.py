@@ -658,7 +658,10 @@ class CommonElevationBehavior(Widget):
         if self._transition_ref:
             transition = str(self._transition_ref.transition)
             # Slide and Card transitions only need _has_relative_pos to be always on
-            if "SlideTransition" in transition or "CardTransition" in transition:
+            if (
+                "SlideTransition" in transition
+                or "CardTransition" in transition
+            ):
                 self.context.use_parent_modelview = False
             else:
                 self.context.use_parent_modelview = True
@@ -666,7 +669,6 @@ class CommonElevationBehavior(Widget):
     def reset_correction(self, *args):
         self.context.use_parent_modelview = False
         self.update_window_position()
-
 
     def get_shader_string(self) -> str:
         shader_string = ""
@@ -736,7 +738,10 @@ class CommonElevationBehavior(Widget):
         if not hasattr(self, "rect"):
             return
 
-        if self._has_relative_position and not self.context.use_parent_modelview:
+        if (
+            self._has_relative_position
+            and not self.context.use_parent_modelview
+        ):
             pos = self.window_pos
         else:
             pos = self.pos

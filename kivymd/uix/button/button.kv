@@ -198,48 +198,21 @@
             radius: [self.height / 2]
 
 
-<BaseFloatingRootButton>
+<MDFloatingRootButton>
     theme_text_color: "Custom"
     md_bg_color: self.theme_cls.primary_color
 
+
+<MDFloatingLabel>
+    padding_x: "8dp"
+    padding_y: "8dp"
+    adaptive_size: True
+    theme_text_color: "Custom"
+
     canvas.before:
-        PushMatrix
-        Rotate:
-            angle: self._angle
-            axis: (0, 0, 1)
-            origin: self.center
-    canvas.after:
-        PopMatrix
-
-
-# FIXME: Use :class:`~kivymd.uix.boxlayout.MDBoxLayout` instead
-#  :class:`~kivy.uix.boxlayout.BoxLayout`.
-<BaseFloatingLabel>
-    size_hint: None, None
-    padding: "8dp", "4dp", "8dp", "4dp"
-    height: label.texture_size[1] + self.padding[1] * 2
-    width: label.texture_size[0] + self.padding[0] * 2
-    elevation: 10
-
-    # TODO: Use `md_bg_color` and `radius` instead `canvasю
-    canvas:
         Color:
-            rgba:
-                self.theme_cls.primary_color \
-                if not root.bg_color else \
-                root.bg_color
+            rgba: self.bg_color
         RoundedRectangle:
-            pos: self.pos
             size: self.size
-            radius: [5]
-
-    Label:
-        id: label
-        markup: True
-        text: root.text
-        size_hint: None, None
-        size: self.texture_size
-        color:
-            root.theme_cls.text_color \
-            if not root.text_color else \
-            root.text_color
+            pos: self.pos
+            radius: self.radius

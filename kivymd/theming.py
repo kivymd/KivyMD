@@ -1666,17 +1666,21 @@ class ThemableBehavior(EventDispatcher):
 
     def dec_disabled(self, *args, **kwargs) -> None:
         callabacks = self.theme_cls.get_property_observers("theme_style")
+
         for callaback in callabacks:
-            if hasattr(callaback, "proxy") and hasattr(
-                callaback.proxy, "theme_cls"
-            ):
-                for property_name in self.unbind_properties:
-                    self.theme_cls.unbind(
-                        **{
-                            property_name: getattr(
-                                callaback.proxy, callaback.method_name
-                            )
-                        }
-                    )
+            try:
+                if hasattr(callaback, "proxy") and hasattr(
+                    callaback.proxy, "theme_cls"
+                ):
+                    for property_name in self.unbind_properties:
+                        self.theme_cls.unbind(
+                            **{
+                                property_name: getattr(
+                                    callaback.proxy, callaback.method_name
+                                )
+                            }
+                        )
+            except ReferenceError:
+                pass
 
         super().dec_disabled(*args, **kwargs)

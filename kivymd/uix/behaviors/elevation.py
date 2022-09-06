@@ -685,7 +685,9 @@ class CommonElevationBehavior(Widget):
     def set_shader_string(self, *args) -> None:
         self.context["shadow_radius"] = list(map(float, self.shadow_radius))
         self.context["shadow_softness"] = float(self.shadow_softness)
-        self.context["shadow_color"] = list(map(float, self.shadow_color))
+        self.context["shadow_color"] = list(map(float, self.shadow_color))[
+            :-1
+        ] + [float(self.opacity)]
         self.context["pos"] = list(map(float, self.rect.pos))
         self.context.shader.fs = self.get_shader_string()
 
@@ -694,7 +696,9 @@ class CommonElevationBehavior(Widget):
 
     def on_shadow_color(self, instance, value) -> None:
         def on_shadow_color(*args):
-            self._shadow_color = list(map(float, value))
+            self._shadow_color = list(map(float, value))[:-1] + [
+                float(self.opacity)
+            ]
             self.context["shadow_color"] = self._shadow_color
 
         Clock.schedule_once(on_shadow_color)
@@ -772,6 +776,21 @@ class CommonElevationBehavior(Widget):
         self.context["size"] = list(map(float, self.rect.size))
         self.update_resolution()
 
+    def on_opacity(self, instance, value: int | float) -> None:
+        """
+        Adjusts the transparency of the shadow according to the transparency
+        of the widget.
+        """
+
+        def on_opacity(*args):
+            self._shadow_color = list(map(float, self._shadow_color))[:-1] + [
+                float(value)
+            ]
+            self.context["shadow_color"] = self._shadow_color
+
+        super().on_opacity(instance, value)
+        Clock.schedule_once(on_opacity)
+
     def on_radius(self, instance, value) -> None:
         self.shadow_radius = [value[1], value[2], value[0], value[3]]
 
@@ -788,7 +807,7 @@ class CommonElevationBehavior(Widget):
             self._shadow_color = [0.0, 0.0, 0.0, 0.0]
         else:
             self._elevation = self.elevation
-            self._shadow_color = self.shadow_color
+            self._shadow_color = self.shadow_color[:-1] + [float(self.opacity)]
 
         self.on_shadow_color(self, self._shadow_color)
         self.on_size()

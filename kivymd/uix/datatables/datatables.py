@@ -904,23 +904,23 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     Data for header columns.
 
     .. tabs::
-    
+
         .. tab:: Imperative python style
-    
+
             .. code-block:: python
 
                 from kivy.metrics import dp
-        
+
                 from kivymd.app import MDApp
                 from kivymd.uix.datatables import MDDataTable
                 from kivy.uix.anchorlayout import AnchorLayout
-        
-        
+
+
                 class Example(MDApp):
                     def build(self):
                         self.theme_cls.theme_style = "Dark"
                         self.theme_cls.primary_palette = "Orange"
-        
+
                         layout = AnchorLayout()
                         self.data_tables = MDDataTable(
                             size_hint=(0.7, 0.6),
@@ -939,12 +939,12 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                         )
                         layout.add_widget(self.data_tables)
                         return layout
-        
-        
+
+
                 Example().run()
-    
+
         .. tab:: Declarative python style
-    
+
             .. code-block:: python
 
                 from kivy.metrics import dp
@@ -952,8 +952,8 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                 from kivymd.app import MDApp
                 from kivymd.uix.anchorlayout import MDAnchorLayout
                 from kivymd.uix.datatables import MDDataTable
-    
-    
+
+
                 class Example(MDApp):
                     def build(self):
                         self.theme_cls.theme_style = "Dark"

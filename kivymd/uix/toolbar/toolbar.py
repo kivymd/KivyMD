@@ -959,8 +959,10 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             self.icon_color = self.theme_cls.primary_color
 
         self.bind(specific_text_color=self.update_action_bar_text_colors)
-        self.theme_cls.bind(material_style=self.update_bar_height)
-        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        self.theme_cls.bind(
+            material_style=self.update_bar_height,
+            primary_palette=self.update_md_bg_color,
+        )
 
         Clock.schedule_once(
             lambda x: self.on_left_action_items(0, self.left_action_items)

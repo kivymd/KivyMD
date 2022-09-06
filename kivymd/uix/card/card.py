@@ -796,8 +796,9 @@ class MDCard(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.theme_cls.bind(theme_style=self.update_md_bg_color)
-        self.theme_cls.bind(material_style=self.set_style)
+        self.theme_cls.bind(
+            material_style=self.set_style, theme_style=self.update_md_bg_color
+        )
         Clock.schedule_once(self.set_style)
         Clock.schedule_once(
             lambda x: self.on_ripple_behavior(0, self.ripple_behavior)

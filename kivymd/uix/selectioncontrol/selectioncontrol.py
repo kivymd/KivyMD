@@ -356,8 +356,10 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
             disabled=self.update_color,
             state=self.update_color,
         )
-        self.theme_cls.bind(primary_color=self.update_primary_color)
-        self.theme_cls.bind(theme_style=self.update_primary_color)
+        self.theme_cls.bind(
+            theme_style=self.update_primary_color,
+            primary_color=self.update_primary_color,
+        )
         self.update_icon()
         self.update_color()
 

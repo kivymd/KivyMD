@@ -38,6 +38,8 @@ Usage
         dialog = None
 
         def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
             return Builder.load_string(KV)
 
         def show_alert_dialog(self):
@@ -278,21 +280,22 @@ class MDDialog(BaseDialog):
         class Example(MDApp):
             dialog = None
 
-            def build(self):
-                return Builder.load_string(KV)
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
+            return Builder.load_string(KV)
 
-            def show_simple_dialog(self):
-                if not self.dialog:
-                    self.dialog = MDDialog(
-                        title="Set backup account",
-                        type="simple",
-                        items=[
-                            Item(text="user01@gmail.com", source="user-1.png"),
-                            Item(text="user02@gmail.com", source="user-2.png"),
-                            Item(text="Add account", source="add-icon.png"),
-                        ],
-                    )
-                self.dialog.open()
+        def show_simple_dialog(self):
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    title="Set backup account",
+                    type="simple",
+                    items=[
+                        Item(text="user01@gmail.com", source="kivymd/images/logo/kivymd-icon-128.png"),
+                        Item(text="user02@gmail.com", source="data/logo/kivy-icon-128.png"),
+                    ],
+                )
+            self.dialog.open()
 
 
         Example().run()
@@ -345,6 +348,8 @@ class MDDialog(BaseDialog):
             dialog = None
 
             def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
                 return Builder.load_string(KV)
 
             def show_confirmation_dialog(self):
@@ -413,71 +418,140 @@ class MDDialog(BaseDialog):
     """
     Custom content class.
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivy.lang import Builder
-        from kivy.uix.boxlayout import BoxLayout
+        .. tab:: Declarative KV style
 
-        from kivymd.app import MDApp
-        from kivymd.uix.button import MDFlatButton
-        from kivymd.uix.dialog import MDDialog
+            .. code-block:: python
 
-        KV = '''
-        <Content>
-            orientation: "vertical"
-            spacing: "12dp"
-            size_hint_y: None
-            height: "120dp"
+                from kivy.lang import Builder
+                from kivy.uix.boxlayout import BoxLayout
 
-            MDTextField:
-                hint_text: "City"
+                from kivymd.app import MDApp
+                from kivymd.uix.button import MDFlatButton
+                from kivymd.uix.dialog import MDDialog
 
-            MDTextField:
-                hint_text: "Street"
+                KV = '''
+                <Content>
+                    orientation: "vertical"
+                    spacing: "12dp"
+                    size_hint_y: None
+                    height: "120dp"
 
+                    MDTextField:
+                        hint_text: "City"
 
-        MDFloatLayout:
-
-            MDFlatButton:
-                text: "ALERT DIALOG"
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                on_release: app.show_confirmation_dialog()
-        '''
+                    MDTextField:
+                        hint_text: "Street"
 
 
-        class Content(BoxLayout):
-            pass
+                MDFloatLayout:
+
+                    MDFlatButton:
+                        text: "ALERT DIALOG"
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        on_release: app.show_confirmation_dialog()
+                '''
 
 
-        class Example(MDApp):
-            dialog = None
-
-            def build(self):
-                return Builder.load_string(KV)
-
-            def show_confirmation_dialog(self):
-                if not self.dialog:
-                    self.dialog = MDDialog(
-                        title="Address:",
-                        type="custom",
-                        content_cls=Content(),
-                        buttons=[
-                            MDFlatButton(
-                                text="CANCEL",
-                                theme_text_color="Custom",
-                                text_color=self.theme_cls.primary_color,
-                            ),
-                            MDFlatButton(
-                                text="OK",
-                                theme_text_color="Custom",
-                                text_color=self.theme_cls.primary_color,
-                            ),
-                        ],
-                    )
-                self.dialog.open()
+                class Content(BoxLayout):
+                    pass
 
 
-        Example().run()
+                class Example(MDApp):
+                    dialog = None
+
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return Builder.load_string(KV)
+
+                    def show_confirmation_dialog(self):
+                        if not self.dialog:
+                            self.dialog = MDDialog(
+                                title="Address:",
+                                type="custom",
+                                content_cls=Content(),
+                                buttons=[
+                                    MDFlatButton(
+                                        text="CANCEL",
+                                        theme_text_color="Custom",
+                                        text_color=self.theme_cls.primary_color,
+                                    ),
+                                    MDFlatButton(
+                                        text="OK",
+                                        theme_text_color="Custom",
+                                        text_color=self.theme_cls.primary_color,
+                                    ),
+                                ],
+                            )
+                        self.dialog.open()
+
+
+                Example().run()
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.boxlayout import MDBoxLayout
+                from kivymd.uix.button import MDFlatButton
+                from kivymd.uix.dialog import MDDialog
+                from kivymd.uix.floatlayout import MDFloatLayout
+                from kivymd.uix.textfield import MDTextField
+
+
+                class Example(MDApp):
+                    dialog = None
+
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return (
+                            MDFloatLayout(
+                                MDFlatButton(
+                                    text="ALERT DIALOG",
+                                    pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                                    on_release=self.show_confirmation_dialog,
+                                )
+                            )
+                        )
+
+                    def show_confirmation_dialog(self, *args):
+                        if not self.dialog:
+                            self.dialog = MDDialog(
+                                title="Address:",
+                                type="custom",
+                                content_cls=MDBoxLayout(
+                                    MDTextField(
+                                        hint_text="City",
+                                    ),
+                                    MDTextField(
+                                        hint_text="Street",
+                                    ),
+                                    orientation="vertical",
+                                    spacing="12dp",
+                                    size_hint_y=None,
+                                    height="120dp",
+                                ),
+                                buttons=[
+                                    MDFlatButton(
+                                        text="CANCEL",
+                                        theme_text_color="Custom",
+                                        text_color=self.theme_cls.primary_color,
+                                    ),
+                                    MDFlatButton(
+                                        text="OK",
+                                        theme_text_color="Custom",
+                                        text_color=self.theme_cls.primary_color,
+                                    ),
+                                ],
+                            )
+                        self.dialog.open()
+
+
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-custom.png
         :align: center
@@ -488,7 +562,7 @@ class MDDialog(BaseDialog):
 
     md_bg_color = ColorProperty(None)
     """
-    Background color in the format (r, g, b, a).
+    Background color in the (r, g, b, a) or string format.
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

@@ -699,7 +699,7 @@ class CommonElevationBehavior(Widget):
     def on_shadow_color(self, instance, value) -> None:
         def on_shadow_color(*args):
             self._shadow_color = list(map(float, value))[:-1] + [
-                float(self.opacity)
+                float(self.opacity) if not self.disabled else 0
             ]
             self.context["shadow_color"] = self._shadow_color
 

@@ -1070,7 +1070,7 @@ class BaseButton(
             if self.disabled is True:
                 Animation.cancel_all(self, "elevation")
             super().on_disabled(instance_button, disabled_value)
-            Clock.schedule_once(self.set_disabled_color)
+        Clock.schedule_once(self.set_disabled_color)
 
 
 class ButtonElevationBehaviour(CommonElevationBehavior):

@@ -87,6 +87,7 @@ from kivy.uix.modalview import ModalView
 from kivymd import uix_path
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import CommonElevationBehavior
 from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
@@ -97,7 +98,34 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class BaseDialog(ThemableBehavior, ModalView):
+class BaseDialog(ThemableBehavior, ModalView, CommonElevationBehavior):
+    elevation = NumericProperty(3)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
+    attribute for more information.
+
+    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `3`.
+    """
+
+    shadow_softness = NumericProperty(24)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
+    attribute for more information.
+
+    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `24`.
+    """
+
+    shadow_offset = ListProperty((0, 4))
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
+    attribute for more information.
+
+    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[0, 4]`.
+    """
+
     radius = ListProperty([dp(7), dp(7), dp(7), dp(7)])
     """
     Dialog corners rounding value.

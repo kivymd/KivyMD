@@ -349,6 +349,8 @@ Animating the elevation
     :align: center
 """
 
+from __future__ import annotations
+
 __all__ = (
     "CommonElevationBehavior",
     "RectangularElevationBehavior",

@@ -106,6 +106,8 @@ class BaseDialog(ThemableBehavior, ModalView, CommonElevationBehavior):
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
     attribute for more information.
 
+    .. versionadded:: 1.1.0
+
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `3`.
     """
@@ -115,6 +117,8 @@ class BaseDialog(ThemableBehavior, ModalView, CommonElevationBehavior):
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
     attribute for more information.
 
+    .. versionadded:: 1.1.0
+
     :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `24`.
     """
@@ -123,6 +127,8 @@ class BaseDialog(ThemableBehavior, ModalView, CommonElevationBehavior):
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
     attribute for more information.
+
+    .. versionadded:: 1.1.0
 
     :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[0, 4]`.

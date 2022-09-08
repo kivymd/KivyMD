@@ -136,12 +136,22 @@ with open(
 
 
 class MDSegmentedControlItem(MDLabel):
-    """Implements a label to place on the :class:`~SegmentPanel` panel."""
+    """
+    Implements a label to place on the :class:`~SegmentPanel` panel.
+
+    See :class:`~kivymd.uix.label.MDLabel` class documentation for more
+    information.
+    """
 
 
 # TODO: Add an attribute for the color of the active segment label.
 class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     """
+    Implements a segmented control panel.
+
+    Relative layout class. For more information, see in the
+    :class:`~kivy.uix.relativelayout.RelativeLayout` class documentation.
+
     :Events:
         `on_active`
             Called when the segment is activated.

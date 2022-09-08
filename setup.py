@@ -122,7 +122,7 @@ if __name__ == "__main__":
                 "sphinx-tabs",
             ],
         },
-        install_requires=["kivy>=2.0.0"],
+        install_requires=["kivy>=2.0.0", "pillow"],
         setup_requires=[],
         python_requires=">=3.7",
         entry_points={

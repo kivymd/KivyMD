@@ -10,58 +10,77 @@ Components/SegmentedControl
 Usage
 =====
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
+            from kivy.lang import Builder
 
-    KV = '''
-    MDScreen:
-
-        MDSegmentedControl:
-            pos_hint: {"center_x": .5, "center_y": .5}
-
-            MDSegmentedControlItem:
-                text: "Male"
-
-            MDSegmentedControlItem:
-                text: "Female"
-
-            MDSegmentedControlItem:
-                text: "All"
-    '''
+            from kivymd.app import MDApp
 
 
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            KV = '''
+            MDScreen:
+
+                MDSegmentedControl:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDSegmentedControlItem:
+                        text: "Male"
+
+                    MDSegmentedControlItem:
+                        text: "Female"
+
+                    MDSegmentedControlItem:
+                        text: "All"
+            '''
 
 
-    Test().run()
-
-Or only in python code:
-
-.. code-block:: python
-
-    from kivymd.app import MDApp
-    from kivymd.uix.screen import MDScreen
-    from kivymd.uix.segmentedcontrol import MDSegmentedControl, MDSegmentedControlItem
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
 
 
-    class Test(MDApp):
-        def build(self):
-            screen = MDScreen()
-            segment_control = MDSegmentedControl(pos_hint={"center_x": .5, "center_y": .5})
-            segment_control.add_widget(MDSegmentedControlItem(text="Male"))
-            segment_control.add_widget(MDSegmentedControlItem(text="Female"))
-            segment_control.add_widget(MDSegmentedControlItem(text="All"))
-            screen.add_widget(segment_control)
-            return screen
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.segmentedcontrol import (
+                MDSegmentedControl, MDSegmentedControlItem
+            )
 
 
-    Test().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return (
+                        MDScreen(
+                            MDSegmentedControl(
+                                MDSegmentedControlItem(
+                                    text="Male"
+                                ),
+                                MDSegmentedControlItem(
+                                    text="Female"
+                                ),
+                                MDSegmentedControlItem(
+                                    text="All"
+                                ),
+                                pos_hint={"center_x": 0.5, "center_y": 0.5}
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-usage.gif
     :align: center
@@ -135,7 +154,7 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: "#451938"
+            md_bg_color: "brown"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-md-bg-color.png
         :align: center
@@ -151,8 +170,8 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: "#451938"
-            segment_color: "#e4514f"
+            md_bg_color: "brown"
+            segment_color: "red"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-segment-color.png
         :align: center
@@ -160,8 +179,8 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: "#451938"
-            segment_color: "#e4514f"
+            md_bg_color: "brown"
+            segment_color: "red"
 
             MDSegmentedControlItem:
                 text: "[color=fff]Male[/color]"
@@ -196,9 +215,9 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     .. code-block:: kv
 
         MDSegmentedControl:
-            md_bg_color: "#451938"
-            segment_color: "#e4514f"
-            separator_color: 1, 1, 1, 1
+            md_bg_color: "brown"
+            segment_color: "red"
+            separator_color: "white"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-segmented-control-separator-color.png
         :align: center

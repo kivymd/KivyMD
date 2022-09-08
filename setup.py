@@ -124,7 +124,7 @@ if __name__ == "__main__":
         },
         install_requires=["kivy>=2.0.0"],
         setup_requires=[],
-        python_requires=">=3.6",
+        python_requires=">=3.7",
         entry_points={
             "pyinstaller40": [
                 "hook-dirs = kivymd.tools.packaging.pyinstaller:get_hook_dirs",

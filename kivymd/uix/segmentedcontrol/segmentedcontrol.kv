@@ -17,7 +17,9 @@
         md_bg_color: root.segment_color
         elevation: 2
         _radius: root.radius[0] - 4
-        width: segment_panel.width/segment_panel.children_number - segment_panel.spacing
+        width:
+            segment_panel.width / segment_panel.children_number \
+            - segment_panel.spacing
 
     SegmentPanel:
         id: segment_panel

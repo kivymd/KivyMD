@@ -342,6 +342,7 @@ class SegmentPanel(MDBoxLayout):
     Implements a panel for placing items - :class:`~MDSegmentedControlItem`
     for the :class:`~MDSegmentedControl` class.
     """
+
     children_number = NumericProperty(1)
 
     _started = BooleanProperty(defaultvalue=False)

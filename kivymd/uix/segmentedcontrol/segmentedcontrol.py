@@ -255,9 +255,6 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
 
         Clock.schedule_once(self.set_default_colors)
         Clock.schedule_once(self._remove_last_separator)
-        # FIXME: Sometimes this interval is not enough to get the width
-        #  of the segment label textures.
-        Clock.schedule_once(self._set_width_segment_switch, 2.2)
 
     def set_default_colors(self, *args) -> None:
         """
@@ -313,6 +310,10 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
             self.ids.segment_panel.add_widget(widget)
             separator = MDSeparator(orientation="vertical")
             self.ids.segment_panel.add_widget(separator)
+            if not self.ids.segment_panel._started:
+                self.ids.segment_panel._started = True
+            else:
+                self.ids.segment_panel.children_number += 1
             Clock.schedule_once(
                 lambda x: self.update_separator_color(separator)
             )
@@ -325,15 +326,6 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
             self.animation_segment_switch(widget)
             self.current_active_segment = widget
             self.dispatch("on_active", widget)
-
-    def _set_width_segment_switch(self, *args):
-        """
-        Sets the width of the switch. I think this is not done quite correctly.
-        """
-
-        self.ids.segment_switch.width = self.ids.segment_panel.children[
-            0
-        ].width + dp(12)
 
     def _remove_last_separator(self, *args):
         self.ids.segment_panel.remove_widget(self.ids.segment_panel.children[0])
@@ -350,3 +342,6 @@ class SegmentPanel(MDBoxLayout):
     Implements a panel for placing items - :class:`~MDSegmentedControlItem`
     for the :class:`~MDSegmentedControl` class.
     """
+    children_number = NumericProperty(1)
+
+    _started = BooleanProperty(defaultvalue=False)

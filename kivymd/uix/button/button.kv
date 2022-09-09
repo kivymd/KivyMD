@@ -84,7 +84,7 @@
         font_size: root.icon_size if root.icon_size else self.font_size
         font_name: root.font_name if root.font_name else self.font_name
         opposite_colors: root.opposite_colors
-        icon_color:
+        text_color:
             # FIXME: ValueError: None is not allowed for MDIcon.text_color.
             #  This is only a temporary fix and does not fix the cause of the error.
             (root._icon_color if root._icon_color else root.theme_cls.text_color) \
@@ -92,7 +92,7 @@
             root.theme_cls.disabled_hint_text_color
         on_icon:
             if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
-        theme_icon_color: root._theme_icon_color
+        theme_text_color: root._theme_icon_color
 
 
 <ButtonContentsIconText>

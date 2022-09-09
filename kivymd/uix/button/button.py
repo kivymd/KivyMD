@@ -1007,7 +1007,9 @@ class BaseButton(
         """
 
         self._theme_icon_color = (
-            self.theme_icon_color or self._default_theme_icon_color
+            (self.theme_icon_color or self._default_theme_icon_color)
+            if not self.disabled
+            else "Custom"
         )
         if self._default_icon_color == "PrimaryHue":
             default_icon_color = text_colors[self.theme_cls.primary_palette][

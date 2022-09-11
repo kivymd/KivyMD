@@ -503,8 +503,7 @@ class MDBottomNavigationItem(MDTab):
 
         if bottom_navigation_object.previous_tab is not self:
             self.animate_header(
-                bottom_navigation_object,
-                bottom_navigation_header_object
+                bottom_navigation_object, bottom_navigation_header_object
             )
 
         super().on_tab_press(*args)

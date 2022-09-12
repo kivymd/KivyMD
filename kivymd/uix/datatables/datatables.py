@@ -349,7 +349,7 @@ class TableHeader(ThemableBehavior, ScrollView):
                             table_data=self.table_data,
                         )
                         if len(col_heading) == 3
-                        else CellHandler(
+                        else CellHeader(
                             text=col_heading[0],
                             width=self.cols_minimum[i],
                             table_data=self.table_data,

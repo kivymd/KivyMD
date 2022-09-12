@@ -471,6 +471,28 @@ class MDBottomNavigationItem(MDTab):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def animate_header(
+        self, bottom_navigation_object, bottom_navigation_header_object
+    ) -> None:
+        if bottom_navigation_object.use_text:
+            Animation(_label_font_size=sp(12), d=0.1).start(
+                bottom_navigation_object.previous_tab.header
+            )
+        Animation(
+            _selected_region_width=0,
+            t="in_out_sine",
+            d=0,
+        ).start(bottom_navigation_header_object)
+        Animation(
+            _text_color_normal=bottom_navigation_header_object.text_color_normal
+            if bottom_navigation_object.previous_tab.header.text_color_normal
+            != [1, 1, 1, 1]
+            else self.theme_cls.disabled_hint_text_color,
+            d=0.1,
+        ).start(bottom_navigation_object.previous_tab.header)
+        bottom_navigation_object.previous_tab.header.active = False
+        self.header.active = True
+
     def on_tab_press(self, *args) -> None:
         """Called when clicking on a panel item."""
 
@@ -478,28 +500,13 @@ class MDBottomNavigationItem(MDTab):
         bottom_navigation_header_object = (
             bottom_navigation_object.previous_tab.header
         )
-        bottom_navigation_object.ids.tab_manager.current = self.name
 
         if bottom_navigation_object.previous_tab is not self:
-            if bottom_navigation_object.use_text:
-                Animation(_label_font_size=sp(12), d=0.1).start(
-                    bottom_navigation_object.previous_tab.header
-                )
-            Animation(
-                _selected_region_width=0,
-                t="in_out_sine",
-                d=0,
-            ).start(bottom_navigation_header_object)
-            Animation(
-                _text_color_normal=bottom_navigation_header_object.text_color_normal
-                if bottom_navigation_object.previous_tab.header.text_color_normal
-                != [1, 1, 1, 1]
-                else self.theme_cls.disabled_hint_text_color,
-                d=0.1,
-            ).start(bottom_navigation_object.previous_tab.header)
-            bottom_navigation_object.previous_tab.header.active = False
-            self.header.active = True
-        bottom_navigation_object.previous_tab = self
+            self.animate_header(
+                bottom_navigation_object, bottom_navigation_header_object
+            )
+
+        super().on_tab_press(*args)
 
     def on_disabled(
         self, instance_bottom_navigation_item, disabled_value: bool

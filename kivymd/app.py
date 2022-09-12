@@ -75,6 +75,8 @@ class MDApp(App, FpsMonitoring):
     """
     See :attr:`~kivy.app.App.icon` attribute for more information.
 
+    .. versionadded:: 1.1.0
+
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
     adn default to `kivymd/images/logo/kivymd-icon-512.png`.
     """

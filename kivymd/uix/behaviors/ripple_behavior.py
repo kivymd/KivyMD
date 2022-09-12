@@ -111,7 +111,7 @@ from kivy.properties import (
 from kivy.uix.behaviors import ToggleButtonBehavior
 
 
-class CommonRipple(object):
+class CommonRipple:
     """Base class for ripple effect."""
 
     ripple_rad_default = NumericProperty(1)

@@ -1638,8 +1638,11 @@ class ThemableBehavior(EventDispatcher):
     def __init__(self, **kwargs):
         self.unbind_properties = [
             "theme_style",
+            "material_style",
+            "device_orientation",
             "primary_color",
             "primary_palette",
+            "accent_palette",
             "text_color",
         ]
 

@@ -14,3 +14,4 @@ Unreleased
 * Add `theme_style_switch_animation <https://kivymd.readthedocs.io/en/latest/themes/theming/#kivymd.theming.ThemeManager.theme_style_switch_animation>`_ property to animate the colors of the application when switching the color scheme of the application `('Dark/light')`.
 * Add `theme_style_switch_animation_duration <https://kivymd.readthedocs.io/en/latest/themes/theming/#kivymd.theming.ThemeManager.theme_style_switch_animation_duration>`_ property to duration of the animation of switching the color scheme of the application `("Dark/ light")`.
 * `Fix <https://github.com/kivymd/KivyMD/issues/1332>`_ memory leak when dynamically adding and removing `KivyMD` widgets.
+* `Fix <https://github.com/kivymd/KivyMD/pull/1344>`_ `MDBottomNavigation <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/>`_ slide transition direction.

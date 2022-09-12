@@ -988,13 +988,9 @@ class MDList(MDGridLayout):
 
     _list_vertical_padding = NumericProperty("8dp")
 
-    def add_widget(self, widget, index=0, canvas=None):
-        super().add_widget(widget, index, canvas)
-        self.height += widget.height
-
-    def remove_widget(self, widget):
-        super().remove_widget(widget)
-        self.height -= widget.height
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.adaptive_height = True
 
 
 class BaseListItem(

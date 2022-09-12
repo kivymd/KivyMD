@@ -15,3 +15,4 @@ Unreleased
 * Add `theme_style_switch_animation_duration <https://kivymd.readthedocs.io/en/latest/themes/theming/#kivymd.theming.ThemeManager.theme_style_switch_animation_duration>`_ property to duration of the animation of switching the color scheme of the application `("Dark/ light")`.
 * `Fix <https://github.com/kivymd/KivyMD/issues/1332>`_ memory leak when dynamically adding and removing `KivyMD` widgets.
 * `Fix <https://github.com/kivymd/KivyMD/pull/1344>`_ `MDBottomNavigation <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/>`_ slide transition direction.
+* Add a default value for the `icon <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp.icon>`_ attribute of `MDApp <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp>`_ class.

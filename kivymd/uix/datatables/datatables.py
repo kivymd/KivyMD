@@ -359,7 +359,7 @@ class TableHeader(ThemableBehavior, ScrollView):
             else:
                 # Sets the text in the first cell.
                 self.ids.first_cell.text = col_heading[0]
-                self.ids.first_cell.tootip = col_heading[2] if len(col_heading) in [3,4] else ''
+                self.ids.first_cell.tooltip = col_heading[2] if len(col_heading) in [3,4] else ''
                 self.ids.first_cell.ids.separator.height = 0
                 self.ids.first_cell.width = self.cols_minimum[i]
 

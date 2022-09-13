@@ -770,10 +770,17 @@ class CommonElevationBehavior(Widget):
         if not hasattr(self, "rect"):
             return
 
+        # If the elevation value is 0, set the canvas size to zero.
+        # Because even with a zero elevation value, the shadow is displayed
+        # under the widget. This is visible if we change the scale
+        # of the widget.
+        width = self.size[0] if self.elevation else 0
+        height = self.size[1] if self.elevation else 0
         self.rect.size = (
-            self.size[0] + (self._elevation * self.shadow_softness / 2),
-            self.size[1] + (self._elevation * self.shadow_softness / 2),
+            width + (self._elevation * self.shadow_softness / 2),
+            height + (self._elevation * self.shadow_softness / 2),
         )
+
         self.context["mouse"] = [self.rect.pos[0], 0.0, 0.0, 0.0]
         self.context["size"] = list(map(float, self.rect.size))
         self.update_resolution()

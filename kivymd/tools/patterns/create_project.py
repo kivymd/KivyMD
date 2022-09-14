@@ -657,13 +657,25 @@ def main():
     python_version = args.python_version
     if "3" not in python_version:
         parser.error("Python must be at least version 3")
+
+    # Fixed to work on Windows
+    if os.name == "nt":
+        project_directory = os.path.realpath(args.directory)
+        envs = [i.strip("\\") for i in os.getenv("PATH").split(";") if i != ""]
+        for i in envs:
+            env = [j.lower() for j in i.split("\\")]
+            if python_version.replace(".", "").lower() == env[-1]:
+                if os.path.exists(os.path.join(i, "python.exe")):
+                    python_version = os.path.join(i, "python.exe")
+                else:
+                    parser.error("Python version you entred must be installed")
+                break
+
     name_screen = args.name_screen
     path_to_project = os.path.join(project_directory, project_name)
     name_database = args.name_database
     if name_database != "no" and name_database not in available_databases:
-        parser.error(
-            f"The database name must be one of the {available_databases} list"
-        )
+        parser.error(f"The database name must be one of the {available_databases} list")
     use_hotreload = args.use_hotreload
     use_localization = args.use_localization
     use_responsive = args.use_responsive
@@ -676,9 +688,7 @@ def main():
                 f"'Screen' at the end.\n"
                 "For example - '--name_screen MyFirstScreen ...'"
             )
-    if not os.path.exists(
-        os.path.join(kivymd_path, "tools", "patterns", pattern_name)
-    ):
+    if not os.path.exists(os.path.join(kivymd_path, "tools", "patterns", pattern_name)):
         parser.error(
             f"There is no {pattern_name} pattern.\n"
             f"Only {available_patterns} template is available."
@@ -759,26 +769,19 @@ def main():
             f"KivyMD: Create a virtual environment for '{path_to_project}' project..."
         )
         create_virtual_environment()
-        Logger.info(
-            f"KivyMD: Install requirements for '{path_to_project}' project..."
-        )
+        Logger.info(f"KivyMD: Install requirements for '{path_to_project}' project...")
         install_requirements()
+        print("_" * 30)
         os.remove(os.path.join(path_to_project, "__init__.py"))
         if name_database == "no":
-            os.remove(
-                os.path.join(path_to_project, "Model", "database_firebase.py")
-            )
-            os.remove(
-                os.path.join(path_to_project, "Model", "database_restdb.py")
-            )
+            os.remove(os.path.join(path_to_project, "Model", "database_firebase.py"))
+            os.remove(os.path.join(path_to_project, "Model", "database_restdb.py"))
     else:
         parser.error(f"The {path_to_project} project already exists")
 
 
 def create_main_with_hotreload() -> None:
-    with open(
-        os.path.join(path_to_project, "main.py"), encoding="utf-8"
-    ) as main_file:
+    with open(os.path.join(path_to_project, "main.py"), encoding="utf-8") as main_file:
         main_code = ""
         for string in main_file.readlines():
             main_code += f"# {string}"
@@ -787,27 +790,19 @@ def create_main_with_hotreload() -> None:
     ) as main_file:
         main_file.write(f"{temp_hot_reload_main}\n{main_code}")
 
-    with open(
-        os.path.join(path_to_project, "main.py"), encoding="utf-8"
-    ) as main_file:
+    with open(os.path.join(path_to_project, "main.py"), encoding="utf-8") as main_file:
         main_code = main_file.read()
         main_code = main_code.format(
             "\nfrom kivy.properties import StringProperty\n"
             if use_localization == "yes"
             else "",
-            "\nfrom Model.database import DataBase"
-            if name_database != "no"
-            else "",
+            "\nfrom Model.database import DataBase" if name_database != "no" else "",
             "\nfrom libs.translation import Translation\n"
             if use_localization == "yes"
             else "",
             project_name,
-            '\n    lang = StringProperty("en")\n'
-            if use_localization == "yes"
-            else "",
-            "\n        self.base = DataBase()\n"
-            if name_database != "no"
-            else "",
+            '\n    lang = StringProperty("en")\n' if use_localization == "yes" else "",
+            "\n        self.base = DataBase()\n" if name_database != "no" else "",
             "\n        self.translation = Translation(\n"
             '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
             "\n        )" % project_name
@@ -839,13 +834,9 @@ def create_main() -> None:
         "\nfrom libs.translation import Translation"
         if use_localization == "yes"
         else "",
-        "from Model.database import DataBase\n"
-        if name_database != "no"
-        else "",
+        "from Model.database import DataBase\n" if name_database != "no" else "",
         project_name,
-        '\n    lang = StringProperty("en")\n'
-        if use_localization == "yes"
-        else "",
+        '\n    lang = StringProperty("en")\n' if use_localization == "yes" else "",
         "\n        self.translation = Translation(\n"
         '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
         "\n        )" % project_name
@@ -952,12 +943,8 @@ def create_makefile() -> None:
 def create_makefile_data(name_screen: str, module_name: str) -> None:
     global temp_makefile_files
 
-    temp_makefile_files += (
-        f"                View/{name_screen}/{module_name}.py \\\n"
-    )
-    temp_makefile_files += (
-        f"                View/{name_screen}/{module_name}.kv \\\n"
-    )
+    temp_makefile_files += f"                View/{name_screen}/{module_name}.py \\\n"
+    temp_makefile_files += f"                View/{name_screen}/{module_name}.kv \\\n"
 
 
 def create_screens_data(name_screen: str, module_name: str) -> None:
@@ -987,9 +974,7 @@ def create_module_screens() -> None:
         )
 
 
-def create_common_responsive_module(
-    use_responsive: list, path_to_project: str
-) -> None:
+def create_common_responsive_module(use_responsive: list, path_to_project: str) -> None:
     for name_screen in use_responsive:
         path_to_init_common = os.path.join(
             path_to_project, "View", name_screen, "components", "common"
@@ -1041,21 +1026,15 @@ def create_view(
                 path_to_project, "View", name_screen, "components", "platforms"
             )
             path_to_platform = os.path.join(path_to_platforms, name_platform)
-            path_to_platform_components = os.path.join(
-                path_to_platform, "components"
-            )
+            path_to_platform_components = os.path.join(path_to_platform, "components")
             os.makedirs(path_to_platform_components)
             shutil.copy(
                 os.path.join(path_to_view, "__init__.py"),
                 path_to_platform_components,
             )
-            shutil.copy(
-                os.path.join(path_to_view, "__init__.py"), path_to_platforms
-            )
+            shutil.copy(os.path.join(path_to_view, "__init__.py"), path_to_platforms)
 
-            name_platform_module = (
-                f'{name_platform.split("Screen")[0].lower()}_screen'
-            )
+            name_platform_module = f'{name_platform.split("Screen")[0].lower()}_screen'
             with open(
                 os.path.join(path_to_platform, f"{name_platform_module}.kv"),
                 "w",
@@ -1071,18 +1050,14 @@ def create_view(
                     temp_responsive_platform_baseclass.format(name_platform)
                 )
 
-        with open(
-            path_to_init_components, "w", encoding="utf-8"
-        ) as init_components:
+        with open(path_to_init_components, "w", encoding="utf-8") as init_components:
             init_components.write(temp_responsive_component_imports)
 
     with open(f"{view_module}.kv", "w", encoding="utf-8") as view_file:
         view_file.write(f"<{name_screen}View>\n")
 
     if name_screen not in use_responsive:
-        shutil.copy(
-            os.path.join(path_to_view, "__init__.py"), path_to_components
-        )
+        shutil.copy(os.path.join(path_to_view, "__init__.py"), path_to_components)
 
 
 def create_package_utility() -> None:
@@ -1112,13 +1087,16 @@ def create_requirements() -> None:
 
 def create_virtual_environment() -> None:
     os.system(f"{python_version} -m pip install virtualenv")
-    os.system(
-        f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}"
-    )
+    os.system(f"virtualenv -p {python_version} {os.path.join(path_to_project, 'venv')}")
 
 
 def install_requirements() -> None:
-    python = os.path.join(path_to_project, "venv", "bin", "python3")
+
+    if os.name == "nt":
+        python = os.path.join(path_to_project, "venv", "Scripts", "python")
+    else:
+        python = os.path.join(path_to_project, "venv", "bin", "python3")
+
     if kivy_version == "master":
         if platform == "macosx":
             os.system(
@@ -1149,9 +1127,7 @@ def install_requirements() -> None:
             f"requests_toolbelt "
             f"watchdog "
         )
-    os.system(
-        f"{os.path.join(path_to_project, 'venv', 'bin', 'python3')} -m pip list"
-    )
+    os.system(f"{python} -m pip list")
 
 
 def check_databases() -> None:

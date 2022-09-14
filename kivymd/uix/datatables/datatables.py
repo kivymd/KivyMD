@@ -334,8 +334,8 @@ class TableHeader(ThemableBehavior, ScrollView):
                     (
                         CellHeader(
                             text=col_heading[0],
-                            tooltip=col_heading[2],
-                            sort_action=col_heading[3],
+                            sort_action=col_heading[2],
+                            tooltip=col_heading[3],
                             width=self.cols_minimum[i],
                             table_data=self.table_data,
                             is_sorted=(col_heading[0] == self.sorted_on),
@@ -344,7 +344,7 @@ class TableHeader(ThemableBehavior, ScrollView):
                         if len(col_heading) == 4
                         else CellHeader(
                             text=col_heading[0],
-                            tooltip=col_heading[2],
+                            sort_action=col_heading[2],
                             width=self.cols_minimum[i],
                             table_data=self.table_data,
                         )
@@ -359,7 +359,7 @@ class TableHeader(ThemableBehavior, ScrollView):
             else:
                 # Sets the text in the first cell.
                 self.ids.first_cell.text = col_heading[0]
-                self.ids.first_cell.tooltip = col_heading[2] if len(col_heading) in [3,4] else ''
+                self.ids.first_cell.tooltip = col_heading[3] if len(col_heading) == 4 else ''
                 self.ids.first_cell.ids.separator.height = 0
                 self.ids.first_cell.width = self.cols_minimum[i]
 

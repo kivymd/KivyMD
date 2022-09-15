@@ -376,13 +376,14 @@ from kivy.properties import (
     ObjectProperty,
     VariableListProperty,
 )
+from kivy.uix.widget import Widget
 
 from kivymd import glsl_path
 
 
 # FIXME: Add shadow manipulation with canvas instructions such as
 #  PushMatrix and PopMatrix.
-class CommonElevationBehavior:
+class CommonElevationBehavior(Widget):
     """Common base class for rectangular and circular elevation behavior."""
 
     elevation = BoundedNumericProperty(0, min=0, errorvalue=0)
@@ -591,8 +592,6 @@ class CommonElevationBehavior:
     _has_relative_position = BooleanProperty(defaultvalue=False)
     _elevation = 0
     _shadow_color = [0.0, 0.0, 0.0, 0.0]
-    _scale_x = 1
-    _scale_y = 1
 
     def _get_window_pos(self, *args):
         window_pos = self.to_window(*self.pos)
@@ -606,14 +605,13 @@ class CommonElevationBehavior:
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Clock.schedule_once(self.set_canvas)
-        Clock.schedule_once(self.after_init)
 
-    def set_canvas(self, *args):
         with self.canvas.before:
             self.context = RenderContext(use_parent_projection=True)
         with self.context:
             self.rect = RoundedRectangle(pos=self.pos, size=self.size)
+
+        Clock.schedule_once(self.after_init)
 
     def after_init(self, *args):
         Clock.schedule_once(self.check_for_relative_behavior)
@@ -630,7 +628,7 @@ class CommonElevationBehavior:
         if self.pos != self.window_pos:
             self._has_relative_position = True
 
-        # Loops to check if its inside 'ScreenManager' or 'MDBottomNavigation'.
+        # Loops to check if its inside screenmanager or bottom_navigation.
         widget = self
         while True:
             # Checks if has screen event function

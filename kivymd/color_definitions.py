@@ -412,7 +412,7 @@ To demonstrate the shades of the palette, you can run the following code:
             self.screen = Factory.Root()
 
             for name_tab in colors.keys():
-                tab = Tab(text=name_tab)
+                tab = Tab(title=name_tab)
                 self.screen.ids.android_tabs.add_widget(tab)
             return self.screen
 
@@ -427,7 +427,7 @@ To demonstrate the shades of the palette, you can run the following code:
                     {
                         "viewclass": "ItemColor",
                         "md_bg_color": colors[tab_text][value_color],
-                        "text": value_color,
+                        "title": value_color,
                     }
                 )
 

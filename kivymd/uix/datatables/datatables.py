@@ -148,8 +148,9 @@ class CellHeader(MDTooltip, BoxLayout):
 
     tooltip = StringProperty()
     """
-    tooltip containing descriptive text for the column. If the tooltip
-    is not provided, column `text` shall be used instead.
+    Tooltip containing descriptive text for the column.
+    If the tooltip is not provided, column `text` shall be used instead.
+
     :attr:`tooltip` is a :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """

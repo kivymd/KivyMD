@@ -65,7 +65,7 @@
     size_hint_y: None
     height: self.minimum_height
     spacing: "4dp"
-    tooltip_text: root.text
+    tooltip_text: root.tooltip if root.tooltip else root.text
 
     BoxLayout:
         id: box

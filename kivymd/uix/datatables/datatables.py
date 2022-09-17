@@ -946,9 +946,9 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
                             size_hint=(0.7, 0.6),
                             use_pagination=True,
                             check=True,
-                            # name column, width column, sorting function column(optional)
+                            # name column, width column, sorting function column(optional), custom tooltip
                             column_data=[
-                                ("No.", dp(30)),
+                                ("No.", dp(30), None, "Custom tooltip"),
                                 ("Status", dp(30)),
                                 ("Signal Name", dp(60)),
                                 ("Severity", dp(30)),

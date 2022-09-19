@@ -42,7 +42,7 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDWidget(DeclarativeBehavior, Widget, MDAdaptiveWidget):
+class MDWidget(DeclarativeBehavior, MDAdaptiveWidget, Widget):
     """
     See :class:`~kivy.uix.Widget` class documentation for more information.
 

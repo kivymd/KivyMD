@@ -131,6 +131,7 @@ from kivy.properties import BooleanProperty, ColorProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
 from kivymd.uix.button import (
+    ButtonContentsIconText,
     MDFillRoundFlatButton,
     MDFillRoundFlatIconButton,
     MDFlatButton,
@@ -246,3 +247,6 @@ class MDToggleButton(ToggleButtonBehavior):
             ):  # If the background is transparent, the font color must be the
                 # primary color.
                 self.text_color = self.font_color_normal
+
+        if issubclass(self.__class__, ButtonContentsIconText):
+            self.icon_color = self.text_color

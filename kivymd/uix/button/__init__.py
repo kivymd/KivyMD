@@ -1,6 +1,7 @@
 # NOQA F401
 from .button import (
     BaseButton,
+    ButtonContentsIconText,
     MDFillRoundFlatButton,
     MDFillRoundFlatIconButton,
     MDFlatButton,

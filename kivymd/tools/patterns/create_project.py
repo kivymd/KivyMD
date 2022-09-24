@@ -20,6 +20,8 @@ your project. At the moment, support for the Firebase database
 (the basic implementation of the real time database) and RestDB
 (the full implementation) is available.
 
+.. warning:: This tool does not fully support Windows.
+
 Project creation
 ----------------
 
@@ -261,7 +263,7 @@ class BaseScreenModel:
 
 temp_database_model = '''import multitasking
 
-from Model.base_model import BaseScreenModel
+from models.base_model import BaseScreenModel
 
 multitasking.set_max_threads(10)
 
@@ -269,7 +271,7 @@ multitasking.set_max_threads(10)
 class {name_screen}Model(BaseScreenModel):
     """
     Implements the logic of the
-    :class:`~View.{name_screen}.{module_name}.{name_screen}View` class.
+    :class:`~views.{module_name}.{module_name}.{name_screen}View` class.
     """
 
     def __init__(self, database):
@@ -283,8 +285,8 @@ class {name_screen}Model(BaseScreenModel):
     @data.setter
     def data(self, value):
         self._data = value
-        # We notify the View -
-        # :class:`~View.{name_screen}.{module_name}.{name_screen}View` about the
+        # We notify the view -
+        # :class:`~views.{module_name}.{module_name}.{name_screen}View` about the
         # changes that have occurred in the data model.
         self.notify_observers({notify_name_screen})
 
@@ -295,13 +297,13 @@ class {name_screen}Model(BaseScreenModel):
         self.data = ["example item"]
 '''
 
-temp_without_database_model = '''from Model.base_model import BaseScreenModel
+temp_without_database_model = '''from models.base_model import BaseScreenModel
 
 
 class {name_screen}Model(BaseScreenModel):
     """
     Implements the logic of the
-    :class:`~View.{module_name}.{name_screen}.{name_screen}View` class.
+    :class:`~views.{module_name}.{module_name}.{name_screen}View` class.
     """'''
 
 temp_screens_imports = """# The screens dictionary contains the objects of the models and controllers
@@ -312,12 +314,12 @@ temp_screens_imports = """# The screens dictionary contains the objects of the m
 
 temp_code_responsive_view = '''from kivymd.uix.responsivelayout import MDResponsiveLayout
 
-from View.{name_screen}.components import (
+from views.{module_name}.components import (
     MobileScreenView,
     TabletScreenView,
     DesktopScreenView,
 )
-from View.base_screen import BaseScreenView
+from views.base_screen import BaseScreenView
 
 
 class {name_screen}View(MDResponsiveLayout, BaseScreenView):
@@ -335,9 +337,9 @@ class {name_screen}View(MDResponsiveLayout, BaseScreenView):
         """
 '''
 
-temp_responsive_component_imports = """from .platforms.MobileScreen.mobile_screen import MobileScreenView
-from .platforms.TabletScreen.tablet_screen import TabletScreenView
-from .platforms.DesktopScreen.desktop_screen import DesktopScreenView
+temp_responsive_component_imports = """from .platforms.mobile_screen.mobile_screen import MobileScreenView
+from .platforms.tablet_screen.tablet_screen import TabletScreenView
+from .platforms.desktop_screen.desktop_screen import DesktopScreenView
 """
 
 temp_responsive_platform_baseclass = """from kivymd.uix.screen import MDScreen
@@ -347,7 +349,7 @@ class {}View(MDScreen):
     pass
 """
 
-temp_code_view = '''from View.base_screen import BaseScreenView
+temp_code_view = '''from views.base_screen import BaseScreenView
 
 
 class {name_screen}View(BaseScreenView):
@@ -371,7 +373,7 @@ class {name_screen}Controller:
     """
 
     def __init__(self, model):
-        self.model = model  # Model.{module_name}.{name_screen}Model
+        self.model = model  # models.{module_name}.{name_screen}Model
         self.view = {name_view}(controller=self, model=self.model)
 
     def get_view(self) -> {get_view}:
@@ -384,7 +386,7 @@ from kivymd.app import MDApp
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.screen import MDScreen
 
-from Utility.observer import Observer
+from utilities.observer import Observer
 
 
 class BaseScreenView(ThemableBehavior, MDScreen, Observer):
@@ -395,7 +397,7 @@ class BaseScreenView(ThemableBehavior, MDScreen, Observer):
 
     controller = ObjectProperty()
     """
-    Controller object - :class:`~Controller.controller_screen.ClassScreenControler`.
+    Controller object - :class:`~controllers.controller_screen.ClassScreenController`.
 
     :attr:`controller` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
@@ -403,7 +405,7 @@ class BaseScreenView(ThemableBehavior, MDScreen, Observer):
 
     model = ObjectProperty()
     """
-    Model object - :class:`~Model.model_screen.ClassScreenModel`.
+    Model object - :class:`~models.model_screen.ClassScreenModel`.
 
     :attr:`model` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
@@ -458,6 +460,7 @@ DEBUG=1 python main.py
 
 import importlib
 import os
+import sys
 
 from kivy import Config
 
@@ -481,7 +484,7 @@ from kivymd.uix.screenmanager import MDScreenManager
 {}{}
 
 class {}(MDApp):
-    KV_DIRS = [os.path.join(os.getcwd(), "View")]{}
+    KV_DIRS = [os.path.join(os.getcwd(), "views")]{}
 
     def build_app(self) -> MDScreenManager:
         """
@@ -489,14 +492,14 @@ class {}(MDApp):
         application theme.
         """
 
-        import View.screens
+        import views.screens
 
         self.manager_screens = MDScreenManager(){}{}
         Window.bind(on_key_down=self.on_keyboard_down)
-        importlib.reload(View.screens)
-        screens = View.screens.screens
+        importlib.reload(views.screens)
+        screens = views.screens.screens
 
-        for i, name_screen in enumerate(screens.keys()):
+        for name_screen in screens.keys():
             model = screens[name_screen]["model"]({})
             controller = screens[name_screen]["controller"](model)
             view = controller.get_view()
@@ -518,7 +521,8 @@ class {}(MDApp):
             self.rebuild(){}{}
 
 
-{}().run()
+if __name__ == "__main__":
+    sys.exit({}().run())
 
 # After you finish the project, remove the above code and uncomment the below
 # code to test the application normally without hot reloading.
@@ -534,13 +538,15 @@ and modernize.
 You can read more about this template at the links below:
 
 https://github.com/HeaTTheatR/LoginAppMVC
-https://en.wikipedia.org/wiki/Model–view–controller
+https://en.wikipedia.org/wiki/Model-view-controller
 """
+
+import sys
 {}
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 
-from View.screens import screens{}
+from views.screens import screens{}
 {}
 
 class {}(MDApp):{}
@@ -549,8 +555,8 @@ class {}(MDApp):{}
         self.load_all_kv_files(self.directory)
         # This is the screen manager that will contain all the screens of your
         # application.
-        self.manager_screens = MDScreenManager()
-        {}
+        self.manager_screens = MDScreenManager(){}
+
     def build(self) -> MDScreenManager:
         self.generate_application_screens()
         return self.manager_screens
@@ -560,12 +566,12 @@ class {}(MDApp):{}
         Creating and adding screens to the screen manager.
         You should not change this cycle unnecessarily. He is self-sufficient.
 
-        If you need to add any screen, open the `View.screens.py` module and
+        If you need to add any screen, open the `views.screens.py` module and
         see how new screens are added according to the given application
         architecture.
         """
 
-        for i, name_screen in enumerate(screens.keys()):
+        for name_screen in screens.keys():
             model = screens[name_screen]["model"]({})
             controller = screens[name_screen]["controller"](model)
             view = controller.get_view()
@@ -574,7 +580,8 @@ class {}(MDApp):{}
             self.manager_screens.add_widget(view)
 {}{}
 
-{}().run()
+if __name__ == "__main__":
+    sys.exit({}().run())
 '''
 
 temp_makefile = """# FILE TO FIND AND CREATE LOCALIZATION FILES FOR YOUR APPLICATION. \\
@@ -710,18 +717,18 @@ def main():
             if use_localization == "yes":
                 # Create makefile data.
                 create_makefile_data(name, module_name)
-            # Create views.
+            # Create views
             create_view(name, module_name, use_responsive, path_to_project)
 
-        # Create module `NameProject/View/NameScreen/components/common/__init__.py`.
+        # Create module `NameProject/views/NameScreen/components/common/__init__.py`.
         create_common_responsive_module(use_responsive, path_to_project)
-        # Create module `NameProject/View/screens.py`.
+        # Create module `NameProject/views/screens.py`.
         create_module_screens()
         # Create module `NameProject/Model/base_model.py`.
         create_basemodel()
-        # Create module `NameProject/View/base_screen.py`.
+        # Create module `NameProject/views/base_screen.py`.
         create_module_basescreen()
-        # Create package `NameProject/Utility`.
+        # Create package `NameProject/utilities.`.
         create_package_utility()
         # Create file `NameProject/Makefile`.
         if use_localization == "yes":
@@ -766,10 +773,10 @@ def main():
         os.remove(os.path.join(path_to_project, "__init__.py"))
         if name_database == "no":
             os.remove(
-                os.path.join(path_to_project, "Model", "database_firebase.py")
+                os.path.join(path_to_project, "models", "database_firebase.py")
             )
             os.remove(
-                os.path.join(path_to_project, "Model", "database_restdb.py")
+                os.path.join(path_to_project, "models", "database_restdb.py")
             )
     else:
         parser.error(f"The {path_to_project} project already exists")
@@ -795,7 +802,7 @@ def create_main_with_hotreload() -> None:
             "\nfrom kivy.properties import StringProperty\n"
             if use_localization == "yes"
             else "",
-            "\nfrom Model.database import DataBase"
+            "\nfrom models.database import DataBase"
             if name_database != "no"
             else "",
             "\nfrom libs.translation import Translation\n"
@@ -839,7 +846,7 @@ def create_main() -> None:
         "\nfrom libs.translation import Translation"
         if use_localization == "yes"
         else "",
-        "from Model.database import DataBase\n"
+        "from models.database import DataBase\n"
         if name_database != "no"
         else "",
         project_name,
@@ -851,7 +858,7 @@ def create_main() -> None:
         "\n        )" % project_name
         if use_localization == "yes"
         else "",
-        "self.database = DataBase()\n" if name_database != "no" else "",
+        "\nself.database = DataBase()\n" if name_database != "no" else "",
         "self.database" if name_database != "no" else "",
         "\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
         "        self.translation.switch_lang(lang_value)\n"
@@ -884,14 +891,14 @@ def create_model(
             module_name=module_name, name_screen=name_screen
         )
 
-    model_module = os.path.join(path_to_project, "Model", module_name)
+    model_module = os.path.join(path_to_project, "models", module_name)
     with open(f"{model_module}.py", "w", encoding="utf-8") as module:
         module.write(code_model)
 
 
 def create_basemodel() -> None:
     with open(
-        os.path.join(path_to_project, "Model", "base_model.py"),
+        os.path.join(path_to_project, "models", "base_model.py"),
         "w",
         encoding="utf-8",
     ) as module_basemodel:
@@ -900,7 +907,7 @@ def create_basemodel() -> None:
 
 def create_module_basescreen() -> None:
     with open(
-        os.path.join(path_to_project, "View", "base_screen.py"),
+        os.path.join(path_to_project, "views", "base_screen.py"),
         "w",
         encoding="utf-8",
     ) as base_screen:
@@ -911,7 +918,7 @@ def create_controller(
     name_screen: str, module_name: str, use_hotreload: str, path_to_project: str
 ) -> None:
     name_view = (
-        f"View.{name_screen}.{module_name}.{name_screen}View"
+        f"views.{module_name}.{module_name}.{name_screen}View"
         if use_hotreload == "yes"
         else f"{name_screen}View"
     )
@@ -920,23 +927,23 @@ def create_controller(
         module_name=module_name,
         import_module=""
         f"import importlib\n\n"
-        f"import View.{name_screen}.{module_name}\n\n"
+        f"import views.{module_name}.{module_name}\n\n"
         f"# We have to manually reload the view module in order to apply the\n"
         f"# changes made to the code on a subsequent hot reload.\n"
         f"# If you no longer need a hot reload, you can delete this instruction.\n"
-        f"importlib.reload(View.{name_screen}.{module_name})\n\n"
+        f"importlib.reload(views.{module_name}.{module_name})\n\n"
         if use_hotreload == "yes"
-        else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",
+        else f"\nfrom views.{module_name}.{module_name} import {name_screen}View",
         name_view=name_view,
-        get_view=f"View.{name_screen}.{module_name}"
+        get_view=f"views.{module_name}.{module_name}"
         if use_hotreload == "yes"
         else f"{name_screen}View",
     )
 
-    path_to_controller = os.path.join(path_to_project, "Controller")
+    path_to_controller = os.path.join(path_to_project, "controllers")
     if not os.path.exists(path_to_controller):
         os.mkdir(path_to_controller)
-    controller_module = os.path.join(path_to_project, "Controller", module_name)
+    controller_module = os.path.join(path_to_project, "controllers", module_name)
     with open(f"{controller_module}.py", "w", encoding="utf-8") as module:
         module.write(code_controller)
 
@@ -953,10 +960,10 @@ def create_makefile_data(name_screen: str, module_name: str) -> None:
     global temp_makefile_files
 
     temp_makefile_files += (
-        f"                View/{name_screen}/{module_name}.py \\\n"
+        f"                views/{name_screen}/{module_name}.py \\\n"
     )
     temp_makefile_files += (
-        f"                View/{name_screen}/{module_name}.kv \\\n"
+        f"                views/{name_screen}/{module_name}.kv \\\n"
     )
 
 
@@ -965,8 +972,8 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
     global temp_screens_data
 
     temp_screens_imports += (
-        f"from Model.{module_name} import {name_screen}Model\n"
-        f"from Controller.{module_name} import {name_screen}Controller\n"
+        f"from models.{module_name} import {name_screen}Model\n"
+        f"from controllers.{module_name} import {name_screen}Controller\n"
     )
     temp_screens_data += (
         '\n    %s: {\n        "model": %s,'
@@ -980,7 +987,7 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
 
 
 def create_module_screens() -> None:
-    path_to_module_screens = os.path.join(path_to_project, "View", "screens.py")
+    path_to_module_screens = os.path.join(path_to_project, "views", "screens.py")
     with open(path_to_module_screens, "w", encoding="utf-8") as module_screens:
         module_screens.write(
             "%s\nscreens = {%s}" % (temp_screens_imports, temp_screens_data)
@@ -992,7 +999,7 @@ def create_common_responsive_module(
 ) -> None:
     for name_screen in use_responsive:
         path_to_init_common = os.path.join(
-            path_to_project, "View", name_screen, "components", "common"
+            path_to_project, "views", name_screen, "components", "common"
         )
         os.makedirs(path_to_init_common)
         with open(
@@ -1011,7 +1018,7 @@ def create_view(
     use_responsive: list,
     path_to_project: str,
 ) -> None:
-    path_to_view = os.path.join(path_to_project, "View", name_screen)
+    path_to_view = os.path.join(path_to_project, "views", module_name)
     path_to_components = os.path.join(path_to_view, "components")
     view_module = os.path.join(path_to_view, module_name)
     os.makedirs(path_to_view)
@@ -1029,16 +1036,16 @@ def create_view(
         )
 
     if name_screen in use_responsive:
-        for name_platform in ["DesktopScreen", "MobileScreen", "TabletScreen"]:
+        for name_platform in ["desktop_screen", "mobile_screen", "tablet_screen"]:
             path_to_init_components = os.path.join(
                 path_to_project,
-                "View",
-                name_screen,
+                "views",
+                module_name,
                 "components",
                 "__init__.py",
             )
             path_to_platforms = os.path.join(
-                path_to_project, "View", name_screen, "components", "platforms"
+                path_to_project, "views", module_name, "components", "platforms"
             )
             path_to_platform = os.path.join(path_to_platforms, name_platform)
             path_to_platform_components = os.path.join(
@@ -1086,7 +1093,7 @@ def create_view(
 
 
 def create_package_utility() -> None:
-    path_to_utility = os.path.join(path_to_project, "Utility")
+    path_to_utility = os.path.join(path_to_project, "utilities")
     os.mkdir(path_to_utility)
 
     with open(
@@ -1158,12 +1165,12 @@ def check_databases() -> None:
     databases = {"firebase": "restdb", "restdb": "firebase"}
     os.remove(
         os.path.join(
-            path_to_project, "Model", f"database_{databases[name_database]}.py"
+            path_to_project, "models", f"database_{databases[name_database]}.py"
         )
     )
     os.rename(
-        os.path.join(path_to_project, "Model", f"database_{name_database}.py"),
-        os.path.join(path_to_project, "Model", "database.py"),
+        os.path.join(path_to_project, "models", f"database_{name_database}.py"),
+        os.path.join(path_to_project, "models", "database.py"),
     )
 
 

@@ -943,7 +943,11 @@ def create_controller(
     path_to_controller = os.path.join(path_to_project, "controllers")
     if not os.path.exists(path_to_controller):
         os.mkdir(path_to_controller)
-    controller_module = os.path.join(path_to_project, "controllers", module_name)
+    controller_module = os.path.join(
+        path_to_project,
+        "controllers",
+        module_name,
+    )
     with open(f"{controller_module}.py", "w", encoding="utf-8") as module:
         module.write(code_controller)
 
@@ -987,7 +991,11 @@ def create_screens_data(name_screen: str, module_name: str) -> None:
 
 
 def create_module_screens() -> None:
-    path_to_module_screens = os.path.join(path_to_project, "views", "screens.py")
+    path_to_module_screens = os.path.join(
+        path_to_project,
+        "views",
+        "screens.py",
+    )
     with open(path_to_module_screens, "w", encoding="utf-8") as module_screens:
         module_screens.write(
             "%s\nscreens = {%s}" % (temp_screens_imports, temp_screens_data)
@@ -1036,7 +1044,11 @@ def create_view(
         )
 
     if name_screen in use_responsive:
-        for name_platform in ["desktop_screen", "mobile_screen", "tablet_screen"]:
+        for name_platform in [
+            "desktop_screen",
+            "mobile_screen",
+            "tablet_screen",
+        ]:
             path_to_init_components = os.path.join(
                 path_to_project,
                 "views",

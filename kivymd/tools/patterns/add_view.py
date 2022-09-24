@@ -51,7 +51,7 @@ from kivy import Logger
 
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
 from kivymd.tools.patterns.create_project import (
-    check_camel_case_name_project,
+    check_pascal_case_name_project,
     create_common_responsive_module,
     create_controller,
     create_model,
@@ -103,10 +103,10 @@ def main():
         if "database.py" in os.listdir(os.path.join(path_to_project, "Model"))
         else "no"
     )
-    module_name = check_camel_case_name_project(name_view)
+    module_name = check_pascal_case_name_project(name_view)
     if not module_name:
         parser.error(
-            "The name of the screen should be written in camel case style. "
+            "The name of the screen should be written in PascalCase style. "
             "\nFor example - 'MyFirstScreen'"
         )
     module_name = "_".join([name.lower() for name in module_name])

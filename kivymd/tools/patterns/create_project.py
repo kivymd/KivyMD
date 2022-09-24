@@ -700,10 +700,10 @@ def main():
         create_main()
 
         for name in name_screen:
-            module_name = check_camel_case_name_project(name)
+            module_name = check_pascal_case_name_project(name)
             if not module_name:
                 parser.error(
-                    "The name of the screen should be written in camel case style. "
+                    "The name of the screen should be written in PascalCase style. "
                     "\nFor example - 'MyFirstScreen'"
                 )
             module_name = "_".join([name.lower() for name in module_name])
@@ -1174,7 +1174,7 @@ def check_databases() -> None:
     )
 
 
-def check_camel_case_name_project(name_project) -> Union[bool, list]:
+def check_pascal_case_name_project(name_project) -> Union[bool, list]:
     result = re.findall("[A-Z][a-z]*", name_project)
     if len(result) == 1:
         return False

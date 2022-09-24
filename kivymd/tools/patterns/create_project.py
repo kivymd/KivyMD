@@ -6,7 +6,7 @@ Script creates a project with the MVC pattern
 
 .. seealso::
 
-    `MVC pattern <https://en.wikipedia.org/wiki/Model–view–controller>`_
+    `MVC pattern <https://en.wikipedia.org/wiki/Model-view-controller>`_
 
 .. rubric:: Use a clean architecture for your applications.
 

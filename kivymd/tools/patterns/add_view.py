@@ -51,7 +51,7 @@ from kivy import Logger
 
 from kivymd.tools.argument_parser import ArgumentParserWithHelp
 from kivymd.tools.patterns.create_project import (
-    chek_camel_case_name_project,
+    check_camel_case_name_project,
     create_common_responsive_module,
     create_controller,
     create_model,
@@ -63,7 +63,7 @@ screens_data = """%s
 screens = {%s
 }"""
 
-screns_comment = """# The screen's dictionary contains the objects of the models and controllers
+screens_comment = """# The screen's dictionary contains the objects of the models and controllers
 # of the screens of the application.
 """
 
@@ -103,7 +103,7 @@ def main():
         if "database.py" in os.listdir(os.path.join(path_to_project, "Model"))
         else "no"
     )
-    module_name = chek_camel_case_name_project(name_view)
+    module_name = check_camel_case_name_project(name_view)
     if not module_name:
         parser.error(
             "The name of the screen should be written in camel case style. "
@@ -172,7 +172,7 @@ def create_screens_data(
         imports.append(
             f"from Controller.{module_name} import {name_view}Controller"
         )
-        imports.insert(0, screns_comment)
+        imports.insert(0, screens_comment)
         screens = screens_data % ("\n".join(imports), screens)
 
         with open(

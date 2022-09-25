@@ -6,28 +6,29 @@
     background_normal: ""
     background_down: ""
     dir_or_file_name: ""
+    icon_color: 0, 0, 0, 0
     _selected: False
     events_callback: lambda x: None
     orientation: "vertical"
 
     ModifiedOneLineIconListItem:
         text: root.dir_or_file_name
+        on_release: root.events_callback(root.path, root)
         bg_color:
             self.theme_cls.bg_darkest \
-            if root._selected else self.theme_cls.bg_normal
-        on_release: root.events_callback(root.path, root)
+            if root._selected else \
+            self.theme_cls.bg_normal
 
         IconLeftWidget:
             icon: root.icon
-            theme_text_color: "Custom"
-            text_color: self.theme_cls.primary_color
+            theme_icon_color: "Custom"
+            icon_color: root.icon_color
 
     MDSeparator:
 
 
 <LabelContent@MDLabel>
-    size_hint_y: None
-    height: self.texture_size[1]
+    adaptive_height: True
     shorten: True
     shorten_from: "center"
     halign: "center"
@@ -61,23 +62,6 @@
         text: root.name
 
 
-<FloatButton>
-    anchor_x: "right"
-    anchor_y: "bottom"
-    size_hint_y: None
-    height: dp(56)
-    padding: dp(10)
-
-    MDFloatingActionButton:
-        size_hint: None, None
-        size:dp(56), dp(56)
-        icon: root.icon
-        opposite_colors: True
-        elevation: 4
-        on_release: root.callback()
-        md_bg_color: root.md_bg_color
-
-
 <MDFileManager>
     md_bg_color: root.theme_cls.bg_normal
 
@@ -90,7 +74,11 @@
             title: root.current_path
             right_action_items: [["close-box", lambda x: root.exit_manager(1)]]
             left_action_items: [["chevron-left", lambda x: root.back()]]
-            elevation: 4
+            elevation: 3
+            md_bg_color:
+                app.theme_cls.primary_color \
+                if not root.background_color_toolbar else \
+                root.background_color_toolbar
 
         RecycleView:
             id: rv

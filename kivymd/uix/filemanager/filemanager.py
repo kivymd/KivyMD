@@ -167,9 +167,7 @@ with open(
 
 
 class BodyManager(MDBoxLayout):
-    """
-    Base class for folders and files icons.
-    """
+    """Base class for folders and files icons."""
 
 
 class BodyManagerWithPreview(MDBoxLayout):
@@ -201,12 +199,26 @@ class ModifiedOneLineIconListItem(BaseListItem):
     _txt_bot_pad = NumericProperty("15dp")
     _num_lines = 1
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.height = dp(48)
 
 
-class MDFileManager(ThemableBehavior, MDRelativeLayout):
+class MDFileManager(MDRelativeLayout, ThemableBehavior):
+    """
+    Implements a modal dialog with a file manager.
+
+    :Events:
+        `on_pre_open`:
+            Called before the MDFileManager is opened.
+        `on_open`:
+            Called when the MDFileManager is opened.
+        `on_pre_dismiss`:
+            Called before the MDFileManager is closed.
+        `on_dismiss`:
+            Called when the MDFileManager is closed.
+    """
+
     icon = StringProperty("check")
     """
     The icon that will be used on the directory selection button.
@@ -295,9 +307,9 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         "name", options=["nothing", "name", "date", "size", "type"]
     )
     """
-    It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files by option
-    By default, sort by name.
-    Available options are: `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
+    It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files
+    by option. By default, sort by name. Available options are:
+    `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
 
     :attr:`sort_by` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `name`.
@@ -325,15 +337,20 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
     """
     Contains the list of files that are currently selected.
 
-    :attr:`selection` is a read-only :class:`~kivy.properties.ListProperty` and
-    defaults to `[]`.
+    :attr:`selection` is a read-only :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
     """
 
     _window_manager = None
     _window_manager_open = False
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.register_event_type("on_pre_open")
+        self.register_event_type("on_open")
+        self.register_event_type("on_pre_dismiss")
+        self.register_event_type("on_dismiss")
+
         toolbar_label = self.ids.toolbar.children[1].children[0]
         toolbar_label.font_style = "Subtitle1"
         if (
@@ -400,15 +417,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                 }
             )
         self.ids.rv.data = manager_list
-
-        if not self._window_manager:
-            self._window_manager = ModalView(
-                size_hint=self.size_hint, auto_dismiss=False
-            )
-            self._window_manager.add_widget(self)
-        if not self._window_manager_open:
-            self._window_manager.open()
-            self._window_manager_open = True
+        self._show()
 
     def show(self, path: str) -> None:
         """
@@ -492,15 +501,7 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
                     }
                 )
         self.ids.rv.data = manager_list
-
-        if not self._window_manager:
-            self._window_manager = ModalView(
-                size_hint=self.size_hint, auto_dismiss=False
-            )
-            self._window_manager.add_widget(self)
-        if not self._window_manager_open:
-            self._window_manager.open()
-            self._window_manager_open = True
+        self._show()
 
     def get_access_string(self, path: str) -> str:
         access_string = ""
@@ -557,7 +558,9 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
     def close(self) -> None:
         """Closes the file manager window."""
 
+        self.dispatch("on_pre_dismiss")
         self._window_manager.dismiss()
+        self.dispatch("on_dismiss")
         self._window_manager_open = False
 
     def select_dir_or_file(
@@ -608,6 +611,49 @@ class MDFileManager(ThemableBehavior, MDRelativeLayout):
         else:
             if self.selector == "folder" or self.selector == "any":
                 self.select_path(self.current_path)
+
+    def on_pre_open(self, *args):
+        """
+        Default pre-open event handler.
+
+        .. versionadded:: 1.1.0
+        """
+
+    def on_open(self, *args):
+        """
+        Default open event handler.
+
+        .. versionadded:: 1.1.0
+        """
+
+    def on_pre_dismiss(self, *args):
+        """
+        Default pre-dismiss event handler.
+
+        .. versionadded:: 1.1.0
+        """
+
+    def on_dismiss(self, *args):
+        """
+        Default dismiss event handler.
+
+        .. versionadded:: 1.1.0
+        """
+
+    def _show(self):
+        if not self._window_manager:
+            self._window_manager = ModalView(
+                size_hint=self.size_hint, auto_dismiss=False
+            )
+            self.size_hint = (1, 1)
+            self._window_manager.add_widget(self)
+
+        if not self._window_manager_open:
+            self._window_manager.open()
+            self._window_manager_open = True
+
+        self.dispatch("on_pre_open")
+        self.dispatch("on_open")
 
     def __sort_files(self, files):
         def sort_by_name(files):

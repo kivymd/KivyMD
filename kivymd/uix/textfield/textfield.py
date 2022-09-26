@@ -279,9 +279,9 @@ Clickable icon for MDTextField
 
 __all__ = ("MDTextField", "MDTextFieldRect")
 
-from datetime import date
 import os
 import re
+from datetime import date
 from typing import Union
 
 from kivy.animation import Animation
@@ -406,7 +406,7 @@ class Validator:
             "dd/mm/yyyy",
             "mm/dd/yyyy",
             "yyyy/mm/dd",
-        ]
+        ],
     )
 
     """
@@ -432,7 +432,7 @@ class Validator:
 
     def is_date_valid(self, text: str) -> bool:
         if not self.date_format:
-            raise Exception('TextInput date_format was not defined.')
+            raise Exception("TextInput date_format was not defined.")
 
         # Regex strings.
         dd = "[0][1-9]|[1-2][0-9]|[3][0-1]"
@@ -443,11 +443,8 @@ class Validator:
         # Access  the local variables  dict in the correct format based on
         # date_format split. Example: "mm/dd/yyyy" -> ["mm", "dd", "yyyy"]
         # largs[fmt[0]] would be largs["mm"] so the month regex string.
-        if (
-            re.match(
-                f"^({largs[fmt[0]]})/({largs[fmt[1]]})/({largs[fmt[2]]})$",
-                text
-            )
+        if re.match(
+            f"^({largs[fmt[0]]})/({largs[fmt[1]]})/({largs[fmt[2]]})$", text
         ):
             input_split = text.split("/")
             largs[fmt[0]] = input_split[0]
@@ -459,20 +456,17 @@ class Validator:
             # using datetime objects.
             try:
                 datetime = date(
-                    int(largs['yyyy']),
-                    int(largs['mm']),
-                    int(largs['dd'])
+                    int(largs["yyyy"]), int(largs["mm"]), int(largs["dd"])
                 )
             except ValueError:
                 return True
 
             if self.date_interval:
                 if (
-                    self.date_interval[0] and
-                    not self.date_interval[0] <= datetime
-                    or
-                    self.date_interval[1] and
-                    not datetime <= self.date_interval[1]
+                    self.date_interval[0]
+                    and not self.date_interval[0] <= datetime
+                    or self.date_interval[1]
+                    and not datetime <= self.date_interval[1]
                 ):
                     return True
 
@@ -485,38 +479,32 @@ class Validator:
 
         def on_date_interval():
             if not self.date_format:
-                raise Exception('TextInput date_format was not defined.')
+                raise Exception("TextInput date_format was not defined.")
 
             fmt = self.date_format.split("/")
             largs = {}
             # Convert string inputs into datetime.date objects and store
             # them back into self.date_interval.
             try:
-                if (
-                    self.date_interval[0] and
-                    not isinstance(self.date_interval[0], date)
+                if self.date_interval[0] and not isinstance(
+                    self.date_interval[0], date
                 ):
                     split = self.date_interval[0].split("/")
                     largs[fmt[0]] = split[0]
                     largs[fmt[1]] = split[1]
                     largs[fmt[2]] = split[2]
                     self.date_interval[0] = date(
-                        int(largs['yyyy']),
-                        int(largs['mm']),
-                        int(largs['dd'])
+                        int(largs["yyyy"]), int(largs["mm"]), int(largs["dd"])
                     )
-                if (
-                    self.date_interval[1] and
-                    not isinstance(self.date_interval[1], date)
+                if self.date_interval[1] and not isinstance(
+                    self.date_interval[1], date
                 ):
                     split = self.date_interval[1].split("/")
                     largs[fmt[0]] = split[0]
                     largs[fmt[1]] = split[1]
                     largs[fmt[2]] = split[2]
                     self.date_interval[1] = date(
-                        int(largs['yyyy']),
-                        int(largs['mm']),
-                        int(largs['dd'])
+                        int(largs["yyyy"]), int(largs["mm"]), int(largs["dd"])
                     )
 
             except Exception:
@@ -527,9 +515,8 @@ class Validator:
                 )
 
             # Test if the interval is valid.
-            if (
-                isinstance(self.date_interval[0], date) and
-                isinstance(self.date_interval[1], date)
+            if isinstance(self.date_interval[0], date) and isinstance(
+                self.date_interval[1], date
             ):
                 if self.date_interval[0] >= self.date_interval[1]:
                     raise Exception(
@@ -667,15 +654,7 @@ class MDTextField(
 
     phone_mask = StringProperty("")
 
-    validator = OptionProperty(
-        None,
-        options=[
-            "date",
-            "email",
-            "time",
-            "phone"
-        ]
-    )
+    validator = OptionProperty(None, options=["date", "email", "time", "phone"])
     """
     The type of text field for entering Email, time, etc.
     Automatically sets the type of the text field as "error" if the user input
@@ -1661,7 +1640,7 @@ class MDTextField(
             has_error = {
                 "date": self.is_date_valid,
                 "email": self.is_email_valid,
-                "time": self.is_time_valid
+                "time": self.is_time_valid,
             }[self.validator](self.text)
             return has_error
         if self.max_text_length and len(self.text) > self.max_text_length:
@@ -1678,9 +1657,9 @@ class MDTextField(
 
 
 if __name__ == "__main__":
+    from kivy.core.window import Window
     from kivy.lang import Builder
     from kivy.uix.textinput import TextInput
-    from kivy.core.window import Window
 
     Window.size = (800, 750)
 

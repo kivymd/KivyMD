@@ -279,6 +279,7 @@ Clickable icon for MDTextField
 
 __all__ = ("MDTextField", "MDTextFieldRect")
 
+from datetime import date
 import os
 import re
 from typing import Union
@@ -377,6 +378,45 @@ class AutoFormatTelephoneNumber:
 class Validator:
     """Container class for various validation methods."""
 
+    datetime_date = ObjectProperty()
+    """
+    The last valid date as a <class 'datetime.date'> object.
+
+    :attr:`datetime_date` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    date_interval = ListProperty([None, None])
+    """
+    The date interval that is valid for input. 
+    Can be entered as <class 'datetime.date'> objects or a string format.
+    Both values or just one value can be entered.
+    
+    In string format, must follow the current date_format.
+    Example: Given date_format -> "mm/dd/yyyy" 
+    Input examples -> "12/31/1900", "12/31/2100" or "12/31/1900", None
+
+    :attr:`date_interval` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[None, None]`.
+    """
+
+    date_format = OptionProperty(
+        None,
+        options=[
+            "dd/mm/yyyy",
+            "mm/dd/yyyy",
+            "yyyy/mm/dd",
+        ]
+    )
+
+    """
+    Format of date strings that will be entered.
+    Available options are: `'dd/mm/yyyy'`, `'mm/dd/yyyy'`, `'yyyy/mm/dd'`.
+
+    :attr:`date_format` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
+    """
+
     def is_email_valid(self, text: str) -> bool:
         if not re.match(r"[^@]+@[^@]+\.[^@]+", text):
             return True
@@ -389,6 +429,115 @@ class Validator:
             return False
 
         return True
+
+    def is_date_valid(self, text: str) -> bool:
+        if not self.date_format:
+            raise Exception('TextInput date_format was not defined.')
+
+        # Regex strings.
+        dd = "[0][1-9]|[1-2][0-9]|[3][0-1]"
+        mm = "[0][1-9]|[1][0-2]"
+        yyyy = "[0-9][0-9][0-9][0-9]"
+        fmt = self.date_format.split("/")
+        largs = locals()
+        # Access  the local variables  dict in the correct format based on
+        # date_format split. Example: "mm/dd/yyyy" -> ["mm", "dd", "yyyy"]
+        # largs[fmt[0]] would be largs["mm"] so the month regex string.
+        if (
+            re.match(
+                f"^({largs[fmt[0]]})/({largs[fmt[1]]})/({largs[fmt[2]]})$",
+                text
+            )
+        ):
+            input_split = text.split("/")
+            largs[fmt[0]] = input_split[0]
+            largs[fmt[1]] = input_split[1]
+            largs[fmt[2]] = input_split[2]
+            # Organize input  into correct slots and try to convert
+            # to datetime  object. This way February exceptions are
+            # tested. Also tests with the date_interval are simpler
+            # using datetime objects.
+            try:
+                datetime = date(
+                    int(largs['yyyy']),
+                    int(largs['mm']),
+                    int(largs['dd'])
+                )
+            except ValueError:
+                return True
+
+            if self.date_interval:
+                if (
+                    self.date_interval[0] and
+                    not self.date_interval[0] <= datetime
+                    or
+                    self.date_interval[1] and
+                    not datetime <= self.date_interval[1]
+                ):
+                    return True
+
+            self.datetime_date = datetime
+            return False
+        return True
+
+    def on_date_interval(self, *args) -> None:
+        """Default event handler for date_interval input."""
+
+        def on_date_interval():
+            if not self.date_format:
+                raise Exception('TextInput date_format was not defined.')
+
+            fmt = self.date_format.split("/")
+            largs = {}
+            # Convert string inputs into datetime.date objects and store
+            # them back into self.date_interval.
+            try:
+                if (
+                    self.date_interval[0] and
+                    not isinstance(self.date_interval[0], date)
+                ):
+                    split = self.date_interval[0].split("/")
+                    largs[fmt[0]] = split[0]
+                    largs[fmt[1]] = split[1]
+                    largs[fmt[2]] = split[2]
+                    self.date_interval[0] = date(
+                        int(largs['yyyy']),
+                        int(largs['mm']),
+                        int(largs['dd'])
+                    )
+                if (
+                    self.date_interval[1] and
+                    not isinstance(self.date_interval[1], date)
+                ):
+                    split = self.date_interval[1].split("/")
+                    largs[fmt[0]] = split[0]
+                    largs[fmt[1]] = split[1]
+                    largs[fmt[2]] = split[2]
+                    self.date_interval[1] = date(
+                        int(largs['yyyy']),
+                        int(largs['mm']),
+                        int(largs['dd'])
+                    )
+
+            except Exception:
+                raise Exception(
+                    r"TextInput date_interval was defined incorrectly, it must "
+                    r"be composed of <class 'datetime.date'> objects or strings"
+                    r" following current date_format."
+                )
+
+            # Test if the interval is valid.
+            if (
+                isinstance(self.date_interval[0], date) and
+                isinstance(self.date_interval[1], date)
+            ):
+                if self.date_interval[0] >= self.date_interval[1]:
+                    raise Exception(
+                        "TextInput date_interval last date must be greater"
+                        " than the first date or set to None."
+                    )
+
+        Clock.schedule_once(lambda x: on_date_interval())
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
@@ -518,12 +667,22 @@ class MDTextField(
 
     phone_mask = StringProperty("")
 
-    validator = OptionProperty(None, options=["email", "time", "phone"])
+    validator = OptionProperty(
+        None,
+        options=[
+            "date",
+            "email",
+            "time",
+            "phone"
+        ]
+    )
     """
     The type of text field for entering Email, time, etc.
     Automatically sets the type of the text field as "error" if the user input
     does not match any of the set validation types.
-    Available options are: `'email'`, `'time'`.
+    Available options are: `'date'`, `'email'`, `'time'`.
+    
+    When using `'date'`, :attr:`date_format` must be defined.
 
     .. versionadded:: 1.1.0
 
@@ -1500,8 +1659,9 @@ class MDTextField(
 
         if self.validator and self.validator != "phone":
             has_error = {
+                "date": self.is_date_valid,
                 "email": self.is_email_valid,
-                "time": self.is_time_valid,
+                "time": self.is_time_valid
             }[self.validator](self.text)
             return has_error
         if self.max_text_length and len(self.text) > self.max_text_length:
@@ -1520,6 +1680,9 @@ class MDTextField(
 if __name__ == "__main__":
     from kivy.lang import Builder
     from kivy.uix.textinput import TextInput
+    from kivy.core.window import Window
+
+    Window.size = (800, 750)
 
     from kivymd.app import MDApp
 
@@ -1536,41 +1699,53 @@ MDScreen:
 
         MDTextField:
             hint_text: "Label"
-            helper_text: "Error massage"
+            helper_text: "Error message"
             mode: "rectangle"
             max_text_length: 5
 
         MDTextField:
             icon_left: "git"
             hint_text: "Label"
-            helper_text: "Error massage"
+            helper_text: "Error message"
             mode: "rectangle"
 
         MDTextField:
             icon_left: "git"
             hint_text: "Label"
-            helper_text: "Error massage"
+            helper_text: "Error message"
             mode: "fill"
 
         MDTextField:
             hint_text: "Label"
-            helper_text: "Error massage"
+            helper_text: "Error message"
             mode: "fill"
 
         MDTextField:
             hint_text: "Label"
-            helper_text: "Error massage"
+            helper_text: "Error message"
 
         MDTextField:
             icon_left: "git"
             hint_text: "Label"
-            helper_text: "Error massage"
+            helper_text: "Error message"
 
         MDTextField:
             hint_text: "Round mode"
             mode: "round"
             max_text_length: 15
-            helper_text: "Massage"
+            helper_text: "Message"
+            
+        MDTextField:
+            hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
+            helper_text: "Enter a valid dd/mm/yyyy date"
+            validator: "date"
+            date_format: "dd/mm/yyyy"
+            date_interval: "01/01/1900", "01/01/2100"
+            
+        MDTextField:
+            hint_text: "Email"
+            helper_text: "user@gmail.com"
+            validator: "email"
 
         MDFlatButton:
             text: "SET TEXT"

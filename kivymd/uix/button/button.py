@@ -558,6 +558,8 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
+from kivy.weakproxy import WeakProxy
+
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
@@ -1836,6 +1838,8 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
     and defaults to `False`.
     """
 
+    stack_buttons = DictProperty()
+
     _label_pos_y_set = False
     _anim_buttons_data = {}
     _anim_labels_data = {}
@@ -1894,6 +1898,9 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                             if (
                                 instance_button.icon
                                 == self.data[f"{widget.text}"]
+                                or
+                                instance_button.icon
+                                == self.data[f"{widget.text}"][0]
                             ):
                                 Animation(
                                     opacity=1,
@@ -1910,7 +1917,10 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
 
         def on_data(*args):
             # Bottom buttons.
-            for name, name_icon in data.items():
+            for name, parameters in data.items():
+                name_icon = parameters if (type(parameters) is str) \
+                    else parameters[0]
+
                 bottom_button = MDFloatingBottomButton(
                     icon=name_icon,
                     on_enter=self.on_enter,
@@ -1923,8 +1933,18 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                         "on_release_stack_button"
                     ),
                 )
+
+                if "on_press" in parameters:
+                    callback = parameters[parameters.index("on_press") + 1]
+                    bottom_button.bind(on_press=callback)
+
+                if "on_release" in parameters:
+                    callback = parameters[parameters.index("on_release") + 1]
+                    bottom_button.bind(on_release=callback)
+
                 self.set_pos_bottom_buttons(bottom_button)
                 self.add_widget(bottom_button)
+                self.stack_buttons[name] = WeakProxy(bottom_button)
                 # Labels.
                 floating_text = name
                 if floating_text:
@@ -1944,6 +1964,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
             self.add_widget(root_button)
 
         self.clear_widgets()
+        self.stack_buttons = {}
         self._anim_buttons_data = {}
         self._anim_labels_data = {}
         self._label_pos_y_set = False

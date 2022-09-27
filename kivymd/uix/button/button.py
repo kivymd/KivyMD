@@ -1513,7 +1513,9 @@ class MDFloatingLabel(MDLabel):
     bg_color = ColorProperty([0, 0, 0, 0])
 
 
-class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
+class MDFloatingActionButtonSpeedDial(
+    DeclarativeBehavior, ThemableBehavior, FloatLayout
+):
     """
     :Events:
         :attr:`on_open`

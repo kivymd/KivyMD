@@ -22,3 +22,4 @@ Unreleased
   - `background_color_selection_button <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.background_color_selection_button>`_ - background color of the current directory/path selection button;
   - `background_color_toolbar <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.background_color_toolbar>`_ - background color of the file manager toolbar;
   - `icon_color <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.icon_color>`_ - color of the folder icon when the `preview` property is set to False;
+* Add binds to `MDFloatingActionButtonSpeedDial <https://kivymd.readthedocs.io/en/latest/components/button/#mdfloatingactionbuttonspeeddial>`_ `individual <https://kivymd.readthedocs.io/en/latest/components/button/#binds-to-individual-buttons>`_ buttons;

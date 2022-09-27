@@ -16,3 +16,9 @@ Unreleased
 * `Fix <https://github.com/kivymd/KivyMD/issues/1332>`_ memory leak when dynamically adding and removing `KivyMD` widgets.
 * `Fix <https://github.com/kivymd/KivyMD/pull/1344>`_ `MDBottomNavigation <https://kivymd.readthedocs.io/en/latest/components/bottomnavigation/>`_ slide transition direction.
 * Add a default value for the `icon <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp.icon>`_ attribute of `MDApp <https://kivymd.readthedocs.io/en/latest/themes/material-app/#kivymd.app.MDApp>`_ class.
+* Add new properties to `MDFileManager <https://kivymd.readthedocs.io/en/latest/components/filemanager/>`_ class:
+
+  - `icon_selection_button <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.icon_selection_button>`_ - icon that will be used on the directory selection button;
+  - `background_color_selection_button <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.background_color_selection_button>`_ - background color of the current directory/path selection button;
+  - `background_color_toolbar <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.background_color_toolbar>`_ - background color of the file manager toolbar;
+  - `icon_color <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.icon_color>`_ - color of the folder icon when the `preview` property is set to False;

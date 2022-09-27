@@ -768,7 +768,12 @@ class BaseButton(
     ButtonBehavior,
     AnchorLayout,
 ):
-    """Base class for all buttons."""
+    """
+    Base class for all buttons.
+
+    For more information, see in the
+    :class:`~kivy.uix.anchorlayout.AnchorLayout` class documentation.
+    """
 
     padding = VariableListProperty([dp(16), dp(8), dp(16), dp(8)])
     """
@@ -1630,6 +1635,9 @@ class MDFloatingActionButtonSpeedDial(
     DeclarativeBehavior, ThemableBehavior, FloatLayout
 ):
     """
+    For more information, see in the
+    :class:`~kivy.uix.floatlayout.FloatLayout` class documentation.
+
     :Events:
         :attr:`on_open`
             Called when a stack is opened.

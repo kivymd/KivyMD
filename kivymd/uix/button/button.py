@@ -558,11 +558,10 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
-from kivy.weakproxy import WeakProxy
-
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
+from kivy.weakproxy import WeakProxy
 
 from kivymd import uix_path
 from kivymd.color_definitions import text_colors
@@ -1898,8 +1897,7 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
                             if (
                                 instance_button.icon
                                 == self.data[f"{widget.text}"]
-                                or
-                                instance_button.icon
+                                or instance_button.icon
                                 == self.data[f"{widget.text}"][0]
                             ):
                                 Animation(
@@ -1918,8 +1916,9 @@ class MDFloatingActionButtonSpeedDial(ThemableBehavior, FloatLayout):
         def on_data(*args):
             # Bottom buttons.
             for name, parameters in data.items():
-                name_icon = parameters if (type(parameters) is str) \
-                    else parameters[0]
+                name_icon = (
+                    parameters if (type(parameters) is str) else parameters[0]
+                )
 
                 bottom_button = MDFloatingBottomButton(
                     icon=name_icon,

@@ -394,7 +394,7 @@ class Validator:
     
     In string format, must follow the current date_format.
     Example: Given date_format -> "mm/dd/yyyy" 
-    Input examples -> "12/31/1900", "12/31/2100" or "12/31/1900", None
+    Input examples -> "12/31/1900", "12/31/2100" or "12/31/1900", None.
 
     :attr:`date_interval` is an :class:`~kivy.properties.ListProperty`
     and defaults to `[None, None]`.
@@ -673,6 +673,147 @@ class MDTextField(
             validator: "email"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-validator.png
+        :align: center
+
+    .. tabs::
+
+        .. tab:: Declarative KV style
+
+            .. code-block:: python
+
+                from kivy.lang import Builder
+
+                from kivymd.app import MDApp
+
+                KV = '''
+                MDScreen:
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: "20dp"
+                        adaptive_height: True
+                        size_hint_x: .8
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDTextField:
+                            hint_text: "Date dd/mm/yyyy without limits"
+                            helper_text: "Enter a valid dd/mm/yyyy date"
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+
+                        MDTextField:
+                            hint_text: "Date mm/dd/yyyy without limits"
+                            helper_text: "Enter a valid mm/dd/yyyy date"
+                            validator: "date"
+                            date_format: "mm/dd/yyyy"
+
+                        MDTextField:
+                            hint_text: "Date yyyy/mm/dd without limits"
+                            helper_text: "Enter a valid yyyy/mm/dd date"
+                            validator: "date"
+                            date_format: "yyyy/mm/dd"
+
+                        MDTextField:
+                            hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
+                            helper_text: "Enter a valid dd/mm/yyyy date"
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            date_interval: "01/01/1900", "01/01/2100"
+
+                        MDTextField:
+                            hint_text: "Date dd/mm/yyyy in [01/01/1900, None] interval"
+                            helper_text: "Enter a valid dd/mm/yyyy date"
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            date_interval: "01/01/1900", None
+
+                        MDTextField:
+                            hint_text: "Date dd/mm/yyyy in [None, 01/01/2100] interval"
+                            helper_text: "Enter a valid dd/mm/yyyy date"
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            date_interval: None, "01/01/2100"
+                '''
+
+
+                class Test(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return Builder.load_string(KV)
+
+
+                Test().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.boxlayout import MDBoxLayout
+                from kivymd.uix.screen import MDScreen
+                from kivymd.uix.textfield import MDTextField
+
+
+                class Test(MDApp):
+                    def build(self):
+                        self.theme_cls.theme_style = "Dark"
+                        self.theme_cls.primary_palette = "Orange"
+                        return (
+                            MDScreen(
+                                MDBoxLayout(
+                                    MDTextField(
+                                        hint_text="Date dd/mm/yyyy without limits",
+                                        helper_text="Enter a valid dd/mm/yyyy date",
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                    ),
+                                    MDTextField(
+                                        hint_text="Date mm/dd/yyyy without limits",
+                                        helper_text="Enter a valid mm/dd/yyyy date",
+                                        validator="date",
+                                        date_format="mm/dd/yyyy",
+                                    ),
+                                    MDTextField(
+                                        hint_text="Date yyyy/mm/dd without limits",
+                                        helper_text="Enter a valid yyyy/mm/dd date",
+                                        validator="date",
+                                        date_format="yyyy/mm/dd",
+                                    ),
+                                    MDTextField(
+                                        hint_text="Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval",
+                                        helper_text="Enter a valid dd/mm/yyyy date",
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                        date_interval=["01/01/1900", "01/01/2100"],
+                                    ),
+                                    MDTextField(
+                                        hint_text="Date dd/mm/yyyy in [01/01/1900, None] interval",
+                                        helper_text="Enter a valid dd/mm/yyyy date",
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                        date_interval=["01/01/1900", None],
+                                    ),
+                                    MDTextField(
+                                        hint_text="Date dd/mm/yyyy in [None, 01/01/2100] interval",
+                                        helper_text="Enter a valid dd/mm/yyyy date",
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                        date_interval=[None, "01/01/2100"],
+                                    ),
+                                    orientation="vertical",
+                                    spacing="20dp",
+                                    adaptive_height=True,
+                                    size_hint_x=0.8,
+                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                )
+                            )
+                        )
+
+
+                Test().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-validator-date.png
         :align: center
 
     :attr:`validator` is an :class:`~kivy.properties.OptionProperty`

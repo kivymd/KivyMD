@@ -476,6 +476,9 @@ class MDHeroFrom(MDBoxLayout):
     """
     The container from which the hero begins his flight.
 
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
+
     :Events:
         `on_transform_in`
             when the hero flies from screen **A** to screen **B**.
@@ -504,4 +507,9 @@ class MDHeroFrom(MDBoxLayout):
 
 
 class MDHeroTo(MDBoxLayout):
-    """The container in which the hero comes."""
+    """
+    The container in which the hero comes.
+
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
+    """

@@ -93,6 +93,8 @@ from kivymd.uix.behaviors import DeclarativeBehavior
 
 class MDBoxLayout(DeclarativeBehavior, BoxLayout, MDAdaptiveWidget):
     """
-    Box layout class. For more information, see in the
+    Box layout class.
+
+    For more information, see in the
     :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
     """

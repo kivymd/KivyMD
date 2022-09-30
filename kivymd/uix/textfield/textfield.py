@@ -388,12 +388,12 @@ class Validator:
 
     date_interval = ListProperty([None, None])
     """
-    The date interval that is valid for input. 
+    The date interval that is valid for input.
     Can be entered as <class 'datetime.date'> objects or a string format.
     Both values or just one value can be entered.
-    
+
     In string format, must follow the current date_format.
-    Example: Given date_format -> "mm/dd/yyyy" 
+    Example: Given date_format -> "mm/dd/yyyy"
     Input examples -> "12/31/1900", "12/31/2100" or "12/31/1900", None.
 
     :attr:`date_interval` is an :class:`~kivy.properties.ListProperty`
@@ -660,7 +660,7 @@ class MDTextField(
     Automatically sets the type of the text field as "error" if the user input
     does not match any of the set validation types.
     Available options are: `'date'`, `'email'`, `'time'`.
-    
+
     When using `'date'`, :attr:`date_format` must be defined.
 
     .. versionadded:: 1.1.0
@@ -1854,14 +1854,14 @@ MDScreen:
             mode: "round"
             max_text_length: 15
             helper_text: "Message"
-            
+
         MDTextField:
             hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
             helper_text: "Enter a valid dd/mm/yyyy date"
             validator: "date"
             date_format: "dd/mm/yyyy"
             date_interval: "01/01/1900", "01/01/2100"
-            
+
         MDTextField:
             hint_text: "Email"
             helper_text: "user@gmail.com"

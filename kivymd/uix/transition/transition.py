@@ -35,7 +35,9 @@ __all__ = (
     "MDTransitionBase",
 )
 
+from kivy import Logger
 from kivy.animation import Animation, AnimationTransition
+from kivy.properties import DictProperty
 from kivy.uix.screenmanager import (
     ScreenManagerException,
     SlideTransition,
@@ -43,13 +45,41 @@ from kivy.uix.screenmanager import (
     TransitionBase,
 )
 
+from kivymd.uix.hero import MDHeroFrom, MDHeroTo
 from kivymd.uix.screenmanager import MDScreenManager
 
 
 class MDTransitionBase(TransitionBase):
+    """
+    TransitionBase is used to animate 2 screens within the
+    :class:`~kivymd.uix.screenmanager.MDScreenManager`.
+
+    For more
+    information, see in the :class:`~kivy.uix.screenmanager.TransitionBase`
+    class documentation.
+    """
+
     _direction = "in"
-    hero_widget = None
-    hero_from_widget = None  # kivymd.uix.hero.MDHeroFrom object
+    # Collection of child widgets of all 'MDHeroFrom' widgets that are
+    # on the screen, for example:
+    #
+    #     MDScreen:
+    #
+    #         MDHeroFrom:
+    #             tag: "kivymd"
+    #
+    #             FitImage:
+    #
+    #         MDHeroFrom:
+    #             tag: "kivy"
+    #
+    #             FitImage:
+    #
+    # {
+    #     'kivy':   <kivymd.uix.fitimage.fitimage.FitImage object>,
+    #     'kivymd': <kivymd.uix.fitimage.fitimage.FitImage object>,
+    # }
+    _hero_from_widget_children = DictProperty()
 
     def start(self, instance_screen_manager: MDScreenManager) -> None:
         super().start(instance_screen_manager)
@@ -59,66 +89,159 @@ class MDTransitionBase(TransitionBase):
         ]()
 
     def animated_hero_in(self) -> None:
-        if self.manager._heroes_data and self.manager.current_hero:
-            self.hero_from_widget = self.manager.get_hero_from_widget()
-            self._check_widget_properties()
-            self.hero_widget = self.hero_from_widget.children[0]
-            self.hero_from_widget.remove_widget(self.hero_widget)
+        """Animates the flight of heroes from screen **A** to screen **B**."""
 
-            self.hero_widget.pos = self.screen_out.to_widget(
-                *self.hero_from_widget.to_window(*self.hero_from_widget.pos)
-            )
-            self.hero_widget.size = self.hero_from_widget.size
-            self.manager.get_root_window().add_widget(self.hero_widget)
+        if self.manager._heroes_data and self.manager.current_heroes:
+            for hero_from_widget in self.manager.get_hero_from_widget():
+                for heroes_tag in self.manager.current_heroes:
+                    if heroes_tag == hero_from_widget.tag:
+                        self._check_widget_properties(hero_from_widget)
 
-            Animation(
-                size=self.screen_in.hero_to.size,
-                d=self.duration,
-                pos=self.screen_in.hero_to.pos,
-            ).start(self.hero_widget)
-            self.hero_from_widget.dispatch(
-                "on_transform_in", self.hero_widget, self.duration
-            )
+                        # Get child widget of the 'MDHeroFrom' container.
+                        hero_widget = hero_from_widget.children[0]
+                        self._hero_from_widget_children[
+                            hero_from_widget.tag
+                        ] = hero_widget
+
+                        # Removing the child widget from the 'MDHeroFrom'
+                        # container.
+                        hero_from_widget.remove_widget(hero_widget)
+
+                        # We set the size, position of the child widget of the
+                        # 'MDHeroFrom' container and add this widget to the
+                        # root window.
+                        hero_widget.pos = self.screen_out.to_widget(
+                            *hero_from_widget.to_window(*hero_from_widget.pos)
+                        )
+                        hero_widget.size = hero_from_widget.size
+                        self.manager.get_root_window().add_widget(hero_widget)
+
+                        # Animating widgets added to the root window.
+                        if self.screen_in.heroes_to:
+                            for hero_to_widget in self.screen_in.heroes_to:
+                                self._check_hero_to_widget_tag(
+                                    hero_to_widget, hero_from_widget
+                                )
+                                if hero_to_widget.tag == heroes_tag:
+                                    Animation(
+                                        size=hero_to_widget.size,
+                                        d=self.duration,
+                                        pos=hero_to_widget.pos,
+                                    ).start(hero_widget)
+                                    hero_from_widget.dispatch(
+                                        "on_transform_in",
+                                        hero_widget,
+                                        self.duration,
+                                    )
 
     def animated_hero_out(self) -> None:
-        if self.manager._heroes_data and self.manager.current_hero:
-            self.screen_out.hero_to.remove_widget(self.hero_widget)
-            self.manager.get_root_window().add_widget(self.hero_widget)
+        """Animates the flight of heroes from screen **B** to screen **A**."""
 
-            self.hero_from_widget.dispatch(
-                "on_transform_out", self.hero_widget, self.duration
-            )
-            Animation(
-                pos=self.screen_in.to_widget(
-                    *self.hero_from_widget.to_window(*self.hero_from_widget.pos)
-                ),
-                size=self.hero_from_widget.size,
-                d=self.duration,
-            ).start(self.hero_widget)
+        if (
+            self.manager._heroes_data
+            and self.manager.current_heroes
+            and self.screen_out.heroes_to
+        ):
+
+            for heroes_tag in self.manager.current_heroes:
+                for hero_to_widget in self.screen_out.heroes_to:
+                    if hero_to_widget.tag == heroes_tag:
+                        hero_from_children = self._hero_from_widget_children[
+                            heroes_tag
+                        ]
+                        hero_to_widget.remove_widget(hero_from_children)
+                        self.manager.get_root_window().add_widget(
+                            hero_from_children
+                        )
+
+                        for (
+                            hero_from_widget
+                        ) in self.manager.get_hero_from_widget():
+                            hero_from_widget.dispatch(
+                                "on_transform_out",
+                                self._hero_from_widget_children[
+                                    hero_from_widget.tag
+                                ],
+                                self.duration,
+                            )
+                            Animation(
+                                pos=self.screen_in.to_widget(
+                                    *hero_from_widget.to_window(
+                                        *hero_from_widget.pos
+                                    )
+                                ),
+                                size=hero_from_widget.size,
+                                d=self.duration,
+                            ).start(
+                                self._hero_from_widget_children[
+                                    hero_from_widget.tag
+                                ]
+                            )
 
     def on_complete(self) -> None:
+        """
+        Override method.
+        See :attr:`kivy.uix.screenmanager.TransitionBase.on_complete'.
+        """
+
         super().on_complete()
+
+        if self.manager._heroes_data and self.manager.current_heroes:
+            for hero_from_widget in self.manager.get_hero_from_widget():
+                for heroes_tag in self.manager.current_heroes:
+                    if heroes_tag == hero_from_widget.tag:
+                        hero_from_children = self._hero_from_widget_children[
+                            heroes_tag
+                        ]
+                        self.manager.get_root_window().remove_widget(
+                            hero_from_children
+                        )
+
+                        # Adding a child widget from the 'MDHeraFrom' container
+                        # to the 'MDHeroTo' container.
+                        if self._direction == "in":
+                            for hero_to_widget in self.screen_in.heroes_to:
+                                if hero_to_widget.tag == heroes_tag:
+                                    hero_to_widget.add_widget(
+                                        hero_from_children
+                                    )
+                        # Restores the child widget for the 'MDHeraFrom'
+                        # container.
+                        elif self._direction == "out":
+                            hero_from_widget.add_widget(hero_from_children)
 
         if self._direction == "out":
             self._direction = "in"
-            if self.manager._heroes_data and self.manager.current_hero:
-                self.manager.get_root_window().remove_widget(self.hero_widget)
-                self.hero_from_widget.add_widget(self.hero_widget)
         else:
             self._direction = "out"
-            if self.manager._heroes_data and self.manager.current_hero:
-                self.manager.get_root_window().remove_widget(self.hero_widget)
-                self.screen_in.hero_to.add_widget(self.hero_widget)
 
-    def _check_widget_properties(self):
-        if not self.screen_in.hero_to:
+    # Checks the attributes for the 'self.screen_in' screen.
+    # Called from the animated_hero_in method.
+    def _check_widget_properties(self, hero_from_widget: MDHeroFrom):
+        if not self.screen_in.heroes_to:
             raise Exception(
-                f"The `hero_to` attribute is not specified for screen {self.screen_in}"
+                f"The `heroes_to` attribute is not specified for screen "
+                f"{self.screen_in}"
             )
-        if len(self.hero_from_widget.children) > 1:
+        # The 'MDHeroFrom' widget allows you to place only one widget in
+        # itself.
+        if len(hero_from_widget.children) > 1:
             raise Exception(
-                f"{self.hero_from_widget.__class__} accept only one widget"
+                f"{hero_from_widget.__class__} accept only one widget"
             )
+
+    # For new API support.
+    def _check_hero_to_widget_tag(
+        self, hero_to_widget: MDHeroTo, hero_from_widget: MDHeroFrom
+    ) -> None:
+        if not hero_to_widget.tag:
+            Logger.warning(
+                "KivyMD: "
+                f"Set the tag '{hero_from_widget.tag}' "
+                f"for the {hero_to_widget} widget to the same "
+                f"as for the {hero_from_widget} widget"
+            )
+            hero_to_widget.tag = hero_from_widget.tag
 
 
 class MDSwapTransition(SwapTransition, MDTransitionBase):

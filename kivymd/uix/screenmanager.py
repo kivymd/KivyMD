@@ -83,12 +83,13 @@ class MDScreenManager(DeclarativeBehavior, ScreenManager):
 
         hero_from_widget = []
 
-        for hero_widget in self._heroes_data:
-            if isinstance(hero_widget, MDHeroFrom) or issubclass(
-                hero_widget.__class__, MDHeroFrom
-            ):
-                if hero_widget.tag in self.current_heroes:
-                    hero_from_widget.append(hero_widget)
+        for name_hero in self.current_heroes:
+            for hero_widget in self._heroes_data:
+                if isinstance(hero_widget, MDHeroFrom) or issubclass(
+                    hero_widget.__class__, MDHeroFrom
+                ):
+                    if hero_widget.tag == name_hero:
+                        hero_from_widget.append(hero_widget)
 
         return hero_from_widget
 

@@ -355,12 +355,14 @@
                 if root.theme_cls.device_orientation == "portrait" \
                 else \
                 (dp(32), dp(28)) \
-                if self.index in [6, 13, 20, 27, 30] or self.owner._date_range \
+                if self.index in [6, 13, 20, 27, 34] or self.owner._date_range \
                 and self.text and self.owner._date_range[-1] == date( \
                 self.current_year, \
                 self.current_month, \
                 int(self.text) \
                 ) \
+                or self.text and int(self.text) == \
+                calendar.monthrange(self.current_year, self.current_month)[1] \
                 else (dp(46), dp(28))
             pos:
                 (self.x - dp(1.5), self.y + dp(5)) \

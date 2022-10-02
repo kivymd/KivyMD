@@ -23,3 +23,4 @@ Unreleased
   - `background_color_toolbar <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.background_color_toolbar>`_ - background color of the file manager toolbar;
   - `icon_color <https://kivymd.readthedocs.io/en/latest/components/filemanager/#kivymd.uix.filemanager.filemanager.MDFileManager.icon_color>`_ - color of the folder icon when the `preview` property is set to False;
 * Add binds to `MDFloatingActionButtonSpeedDial <https://kivymd.readthedocs.io/en/latest/components/button/#mdfloatingactionbuttonspeeddial>`_ `individual <https://kivymd.readthedocs.io/en/latest/components/button/#binds-to-individual-buttons>`_ buttons;
+* Added functionality for using `multiple heroes <https://kivymd.readthedocs.io/en/latest/components/hero/#using-multiple-heroes-at-the-same-time>`_.

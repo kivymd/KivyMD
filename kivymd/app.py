@@ -43,6 +43,7 @@ __all__ = ("MDApp",)
 import os
 
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.properties import ObjectProperty, StringProperty
@@ -56,13 +57,16 @@ class FpsMonitoring:
     def fps_monitor_start(self) -> None:
         """Adds a monitor to the main application window."""
 
-        from kivy.core.window import Window
+        def add_monitor(*args):
+            from kivy.core.window import Window
 
-        from kivymd.utils.fpsmonitor import FpsMonitor
+            from kivymd.utils.fpsmonitor import FpsMonitor
 
-        monitor = FpsMonitor()
-        monitor.start()
-        Window.add_widget(monitor)
+            monitor = FpsMonitor()
+            monitor.start()
+            Window.add_widget(monitor)
+
+        Clock.schedule_once(add_monitor)
 
 
 class MDApp(App, FpsMonitoring):

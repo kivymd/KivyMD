@@ -1600,9 +1600,3 @@ class MDDatePicker(BaseDialogPicker):
             else self.year
         )
         self.update_calendar(year, month)
-        if self.sel_day:
-            x = calendar.monthrange(year, month)[1]
-            if x < self.sel_day:
-                self.sel_day = (
-                    x if year <= self.sel_year and month <= self.sel_year else 1
-                )

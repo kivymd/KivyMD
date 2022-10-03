@@ -1603,7 +1603,8 @@ class MDDatePicker(BaseDialogPicker):
 
         # TODO: perhaps this PR - https://github.com/kivymd/KivyMD/pull/1366 -
         #  does not take into account all the nuances.
-        # Therefore, the code that was removed by this PR has been added and commented out
+        #  Therefore, the code that was removed by this PR has been added
+        #  and commented out.
         # if self.sel_day:
         #     x = calendar.monthrange(year, month)[1]
         #     if x < self.sel_day:

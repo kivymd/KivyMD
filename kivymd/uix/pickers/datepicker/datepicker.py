@@ -771,7 +771,7 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
         if super().on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos) and self.selectable:
-            self.owner.year = int(self.text)
+            self.owner.sel_year = int(self.text)
             # self.owner.sel_year = self.owner.year
             self.owner.ids.label_full_date.text = self.owner.set_text_full_date(
                 self.owner.sel_year,
@@ -1077,10 +1077,10 @@ class MDDatePicker(BaseDialogPicker):
 
         self._calendar_layout.clear_widgets()
         self.generate_list_widgets_days()
-        self.update_calendar(self.year, self.month)
+        self.update_calendar(self.sel_year, self.sel_month)
 
         if self.mode != "range":
-            self.set_month_day(self.day)
+            self.set_month_day(self.sel_day)
             self._sel_day_widget.dispatch("on_release")
 
     def transformation_to_dialog_select_year(self) -> None:
@@ -1529,7 +1529,6 @@ class MDDatePicker(BaseDialogPicker):
     def set_month_day(self, day) -> None:
         for idx in range(len(self._calendar_list)):
             if str(day) == str(self._calendar_list[idx].text):
-                self._sel_day_widget = self._calendar_list[idx]
                 self.sel_day = int(self._calendar_list[idx].text)
                 if self._sel_day_widget:
                     self._sel_day_widget.is_selected = False

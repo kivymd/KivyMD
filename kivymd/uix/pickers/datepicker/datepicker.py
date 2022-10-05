@@ -1062,6 +1062,10 @@ class MDDatePicker(BaseDialogPicker):
 
         self._calendar_layout.clear_widgets()
         self.generate_list_widgets_days()
+        # Move selection to the same day and month of the selected year.
+        self.sel_year = self.year
+        last_day = calendar.monthrange(self.year, self.sel_month)[1]
+        self.sel_day = min(self.sel_day, last_day)
         self.update_calendar(self.year, self.month)
 
     def transformation_to_dialog_select_year(self) -> None:

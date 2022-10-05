@@ -961,7 +961,6 @@ class MDDatePicker(BaseDialogPicker):
     _enter_data_field_two = None
     _enter_data_field_container = None
     _date_range = []
-    _sel_day_widget = ObjectProperty()
     _scale_calendar_layout = NumericProperty(1)
     _scale_year_layout = NumericProperty(0)
     _shift_dialog_height = NumericProperty(0)
@@ -1003,16 +1002,6 @@ class MDDatePicker(BaseDialogPicker):
 
         self.generate_list_widgets_days()
         self.update_calendar(self.sel_year, self.sel_month)
-
-        if (
-            not self.max_date
-            and not self.min_date
-            and not self._date_range
-            and self.mode != "range"
-        ):
-            # Mark the current day.
-            self.set_month_day(self.sel_day)
-            self._sel_day_widget.dispatch("on_release")
 
     def on_device_orientation(
         self, instance_theme_manager: ThemeManager, orientation_value: str
@@ -1074,10 +1063,6 @@ class MDDatePicker(BaseDialogPicker):
         self._calendar_layout.clear_widgets()
         self.generate_list_widgets_days()
         self.update_calendar(self.year, self.month)
-
-        if self.mode != "range":
-            self.set_month_day(self.day)
-            self._sel_day_widget.dispatch("on_release")
 
     def transformation_to_dialog_select_year(self) -> None:
         def disabled_chevron_buttons(*args):
@@ -1206,13 +1191,10 @@ class MDDatePicker(BaseDialogPicker):
         if not self.min_date and not self.max_date:
             list_date = self._enter_data_field.get_list_date()
             if len(list_date) == 3 and len(list_date[2]) == 4:
-                # self._sel_day_widget.is_selected = False
-                self.update_calendar(int(list_date[2]), int(list_date[1]))
-                self.set_month_day(int(list_date[0]))
-                # self._sel_day_widget.dispatch("on_release")
-                if self.mode != "range":
-                    self._sel_day_widget.is_selected = False
-                    self._sel_day_widget.dispatch("on_release")
+                self.sel_day = int(list_date[0])
+                self.sel_month = int(list_date[1])
+                self.sel_year = int(list_date[2])
+                self.update_calendar(self.sel_year, self.sel_month)
         elif self.min_date and self.max_date:
             list_min_date = self._enter_data_field.get_list_date()
             list_max_date = self._enter_data_field_two.get_list_date()
@@ -1477,23 +1459,17 @@ class MDDatePicker(BaseDialogPicker):
                 )
 
     def set_selected_widget(self, widget) -> None:
-        if self._sel_day_widget:
-            self._sel_day_widget.is_selected = False
-
-        widget.is_selected = True
-        self.sel_month = int(self.month)
-        self.sel_year = int(self.year)
+        self.sel_year = self.year
+        self.sel_month = self.month
         self.sel_day = int(widget.text)
-        self._sel_day_widget = widget
+        self.update_calendar(self.sel_year, self.sel_month)
 
     def set_month_day(self, day) -> None:
-        for idx in range(len(self._calendar_list)):
-            if str(day) == str(self._calendar_list[idx].text):
-                self._sel_day_widget = self._calendar_list[idx]
-                self.sel_day = int(self._calendar_list[idx].text)
-                if self._sel_day_widget:
-                    self._sel_day_widget.is_selected = False
-                self._sel_day_widget = self._calendar_list[idx]
+        # This method is no longer used. The code bellow repeats the behavior
+        # that was previously required of it for backward compatibility
+        # reasons.
+        self.sel_day = day
+        self.update_calendar(self.sel_year, self.sel_month)
 
     def set_position_to_current_year(self) -> None:
         # TODO: Add the feature to set the position of the list of years

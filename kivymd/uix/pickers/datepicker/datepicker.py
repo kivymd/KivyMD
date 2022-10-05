@@ -986,11 +986,6 @@ class MDDatePicker(BaseDialogPicker):
         self.month = self.sel_month
         self.year = self.sel_year
         self.day = self.sel_day
-        self._current_selected_date = (
-            self.sel_day,
-            self.sel_month,
-            self.sel_year,
-        )
         super().__init__(**kwargs)
         self.theme_cls.bind(device_orientation=self.on_device_orientation)
 
@@ -1489,11 +1484,6 @@ class MDDatePicker(BaseDialogPicker):
         self.sel_month = int(self.month)
         self.sel_year = int(self.year)
         self.sel_day = int(widget.text)
-        self._current_selected_date = (
-            self.sel_day,
-            self.sel_month,
-            self.sel_year,
-        )
         self._sel_day_widget = widget
 
     def set_month_day(self, day) -> None:

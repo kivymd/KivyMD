@@ -8,6 +8,20 @@ Components/ScreenManager
 If you want to use Hero animations you need to use
 :class:`~kivymd.uix.screenmanager.MDScreenManager` not
 :class:`~kivy.uix.screenmanager.ScreenManager` class.
+
+Transition
+----------
+
+:class:`~kivymd.uix.screenmanager.MDScreenManager` class supports the following
+transitions:
+
+- :class:`~kivymd.uix.transition.MDFadeSlideTransition`
+- :class:`~kivymd.uix.transition.MDSlideTransition`
+- :class:`~kivymd.uix.transition.MDSwapTransition`
+
+You need to use the :class:`~kivymd.uix.screenmanager.MDScreenManager` class
+when you want to use hero animations on your screens. If you don't need hero
+animation use the :class:`~kivy.uix.screenmanager.ScreenManager` class.
 """
 
 from kivy import Logger

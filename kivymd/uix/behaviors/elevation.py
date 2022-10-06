@@ -611,7 +611,7 @@ class CommonElevationBehavior(Widget):
         with self.context:
             self.rect = RoundedRectangle(pos=self.pos, size=self.size)
 
-        Clock.schedule_once(self.after_init)
+        self.after_init()
 
     def after_init(self, *args):
         Clock.schedule_once(self.check_for_relative_behavior)

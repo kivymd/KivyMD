@@ -1545,6 +1545,7 @@ class MDDatePicker(BaseDialogPicker):
         pass
 
     def generate_list_widgets_years(self) -> None:
+        self.ids._year_layout.data = []
         for i, number_year in enumerate(range(self.min_year, self.max_year)):
             self.ids._year_layout.data.append(
                 {

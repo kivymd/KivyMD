@@ -1409,10 +1409,7 @@ class MDDatePicker(BaseDialogPicker):
                 "set_text_full_date:\n\t" f"Month [{month}] out of range."
             )
         if int(day) > calendar.monthrange(int(year), (month))[1]:
-            raise ValueError(
-                "set_text_full_date:\n\t"
-                f"Day [{day}] out of range for the month {month}"
-            )
+            return ""
         date = datetime.date(int(year), int(month), int(day))
         separator = (
             "\n"

@@ -1099,6 +1099,9 @@ class MDDatePicker(BaseDialogPicker):
         self.ids.triangle.icon = "menu-up"
         self.generate_list_widgets_years()
         self.set_position_to_current_year()
+        if self.min_year <= self.year < self.max_year:
+            index = self.year - self.min_year
+            self.ids._year_layout.children[0].select_node(index)
 
     def transformation_to_dialog_input_date(self) -> None:
         def set_date_to_input_field():

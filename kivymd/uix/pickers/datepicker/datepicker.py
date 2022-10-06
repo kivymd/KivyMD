@@ -199,6 +199,7 @@ import datetime
 import os
 import time
 from datetime import date
+from itertools import zip_longest
 from typing import Union
 
 from kivy import Logger
@@ -960,7 +961,6 @@ class MDDatePicker(BaseDialogPicker):
     _enter_data_field_two = None
     _enter_data_field_container = None
     _date_range = []
-    _sel_day_widget = ObjectProperty()
     _scale_calendar_layout = NumericProperty(1)
     _scale_year_layout = NumericProperty(0)
     _shift_dialog_height = NumericProperty(0)
@@ -985,11 +985,6 @@ class MDDatePicker(BaseDialogPicker):
         self.month = self.sel_month
         self.year = self.sel_year
         self.day = self.sel_day
-        self._current_selected_date = (
-            self.sel_day,
-            self.sel_month,
-            self.sel_year,
-        )
         super().__init__(**kwargs)
         self.theme_cls.bind(device_orientation=self.on_device_orientation)
 
@@ -1007,16 +1002,6 @@ class MDDatePicker(BaseDialogPicker):
 
         self.generate_list_widgets_days()
         self.update_calendar(self.sel_year, self.sel_month)
-
-        if (
-            not self.max_date
-            and not self.min_date
-            and not self._date_range
-            and self.mode != "range"
-        ):
-            # Mark the current day.
-            self.set_month_day(self.sel_day)
-            self._sel_day_widget.dispatch("on_release")
 
     def on_device_orientation(
         self, instance_theme_manager: ThemeManager, orientation_value: str
@@ -1077,11 +1062,11 @@ class MDDatePicker(BaseDialogPicker):
 
         self._calendar_layout.clear_widgets()
         self.generate_list_widgets_days()
+        # Move selection to the same day and month of the selected year.
+        self.sel_year = self.year
+        last_day = calendar.monthrange(self.year, self.sel_month)[1]
+        self.sel_day = min(self.sel_day, last_day)
         self.update_calendar(self.year, self.month)
-
-        if self.mode != "range":
-            self.set_month_day(self.day)
-            self._sel_day_widget.dispatch("on_release")
 
     def transformation_to_dialog_select_year(self) -> None:
         def disabled_chevron_buttons(*args):
@@ -1213,13 +1198,10 @@ class MDDatePicker(BaseDialogPicker):
         if not self.min_date and not self.max_date:
             list_date = self._enter_data_field.get_list_date()
             if len(list_date) == 3 and len(list_date[2]) == 4:
-                # self._sel_day_widget.is_selected = False
-                self.update_calendar(int(list_date[2]), int(list_date[1]))
-                self.set_month_day(int(list_date[0]))
-                # self._sel_day_widget.dispatch("on_release")
-                if self.mode != "range":
-                    self._sel_day_widget.is_selected = False
-                    self._sel_day_widget.dispatch("on_release")
+                self.sel_day = int(list_date[0])
+                self.sel_month = int(list_date[1])
+                self.sel_year = int(list_date[2])
+                self.update_calendar(self.sel_year, self.sel_month)
         elif self.min_date and self.max_date:
             list_min_date = self._enter_data_field.get_list_date()
             list_max_date = self._enter_data_field_two.get_list_date()
@@ -1290,61 +1272,30 @@ class MDDatePicker(BaseDialogPicker):
             )
 
     def update_calendar(self, year, month) -> None:
-        try:
-            dates = [x for x in self.calendar.itermonthdates(year, month)]
-        except ValueError as e:
-            if str(e) == "year is out of range":
-                pass
-        else:
-            self.year = year
-            self.month = month
-            for idx in range(len(self._calendar_list)):
-                self._calendar_list[idx].current_month = int(self.month)
-                self._calendar_list[idx].current_year = int(self.year)
-
-                # Dates of the month not in the range 1-31.
-                if idx >= len(dates) or dates[idx].month != month:
-                    # self._calendar_list[idx].disabled = True
-                    self._calendar_list[idx].text = ""
-                # Dates of the month in the range 1-31.
-                else:
-                    self._calendar_list[idx].disabled = False
-                    self._calendar_list[idx].text = str(dates[idx].day)
-                    self._calendar_list[idx].is_today = dates[idx] == self.today
-                # The marked date widget has a True value in the `is_selected`
-                # attribute. In the KV file it is checked if the date widget
-                # (DatePickerDaySelectableItem) has the `is_selected = False`
-                # attribute value, then the date widget is not highlighted.
-                if (
-                    0
-                    if not self._calendar_list[idx].text
-                    else int(self._calendar_list[idx].text),
-                    self._calendar_list[idx].current_month,
-                    self._calendar_list[idx].current_year,
-                ) == self._current_selected_date:
-                    self._calendar_list[idx].is_selected = True
-                else:
-                    self._calendar_list[idx].is_selected = False
-                # Dates outside the set range - disabled.
-                if (
-                    self.mode == "picker"
-                    and self._date_range
-                    and self._calendar_list[idx].text
-                ) or (
-                    self.mode == "range"
-                    and self._start_range_date
-                    and self._end_range_date
-                    and self._calendar_list[idx].text
-                ):
-                    if (
-                        date(
-                            self._calendar_list[idx].current_year,
-                            self._calendar_list[idx].current_month,
-                            int(self._calendar_list[idx].text),
-                        )
-                        not in self._date_range
-                    ):
-                        self._calendar_list[idx].disabled = True
+        self.year, self.month = year, month
+        selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+        dates = self.calendar.itermonthdates(year, month)
+        for widget, widget_date in zip_longest(self._calendar_list, dates):
+            # Only widgets whose dates are in the displayed month are visible.
+            visible = (
+                widget_date is not None
+                and widget_date.month == month
+                and widget_date.year == year
+            )
+            widget.text = str(widget_date.day) if visible else ""
+            widget.current_year = year
+            widget.current_month = month
+            widget.is_today = visible and widget_date == self.today
+            widget.is_selected = visible and widget_date == selected_date
+            # I don't understand why, but this line is important. Without this
+            # line, some widgets that we are trying to disable remain enabled.
+            widget.disabled = False
+            widget.disabled = (
+                not visible
+                or self.mode == "range"
+                and self._date_range
+                and widget_date not in self._date_range
+            )
 
     def get_field(self) -> MDTextField:
         """Creates and returns a text field object used to enter dates."""
@@ -1512,28 +1463,17 @@ class MDDatePicker(BaseDialogPicker):
                 )
 
     def set_selected_widget(self, widget) -> None:
-        if self._sel_day_widget:
-            self._sel_day_widget.is_selected = False
-
-        widget.is_selected = True
-        self.sel_month = int(self.month)
-        self.sel_year = int(self.year)
+        self.sel_year = self.year
+        self.sel_month = self.month
         self.sel_day = int(widget.text)
-        self._current_selected_date = (
-            self.sel_day,
-            self.sel_month,
-            self.sel_year,
-        )
-        self._sel_day_widget = widget
+        self.update_calendar(self.sel_year, self.sel_month)
 
     def set_month_day(self, day) -> None:
-        for idx in range(len(self._calendar_list)):
-            if str(day) == str(self._calendar_list[idx].text):
-                self._sel_day_widget = self._calendar_list[idx]
-                self.sel_day = int(self._calendar_list[idx].text)
-                if self._sel_day_widget:
-                    self._sel_day_widget.is_selected = False
-                self._sel_day_widget = self._calendar_list[idx]
+        # This method is no longer used. The code bellow repeats the behavior
+        # that was previously required of it for backward compatibility
+        # reasons.
+        self.sel_day = day
+        self.update_calendar(self.sel_year, self.sel_month)
 
     def set_position_to_current_year(self) -> None:
         # TODO: Add the feature to set the position of the list of years

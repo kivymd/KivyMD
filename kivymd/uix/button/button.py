@@ -2171,9 +2171,14 @@ class MDFloatingActionButtonSpeedDial(
         Called when the application's root window is resized.
         """
 
-        if self.anchor == "right":
-            instance_floating_root_button.y = dp(20)
-            instance_floating_root_button.x = Window.width - (dp(56) + dp(20))
+        def set_pos_root_button(*args):
+            if self.anchor == "right":
+                instance_floating_root_button.y = dp(20)
+                instance_floating_root_button.x = self.parent.width - (
+                    dp(56) + dp(20)
+                )
+
+        Clock.schedule_once(set_pos_root_button)
 
     def set_pos_bottom_buttons(
         self, instance_floating_bottom_button: MDFloatingBottomButton

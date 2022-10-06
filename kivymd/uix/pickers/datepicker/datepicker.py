@@ -196,6 +196,7 @@ __all__ = ("MDDatePicker", "BaseDialogPicker", "DatePickerInputField")
 
 import calendar
 import datetime
+import math
 import os
 import time
 from datetime import date
@@ -1536,13 +1537,33 @@ class MDDatePicker(BaseDialogPicker):
                 self._sel_day_widget = self._calendar_list[idx]
 
     def set_position_to_current_year(self) -> None:
-        # TODO: Add the feature to set the position of the list of years
-        #  for the current year. This is not currently possible because the
-        #  ``RecycleView`` class does not support this functionality.
-        #  There is a solution to this problem
-        #  - https://github.com/Bakterija/log_fruit/blob/dev/src/app_modules/widgets/app_recycleview/recycleview.py.
-        #  But I have not been able to get it to work.
-        pass
+        year_layout = self.ids._year_layout
+        # When this method is called for the first time, RecycleView has not
+        # yet added widgets to the year list, so we use the default height.
+        widget_height = year_layout.children[0].default_size[1]
+        cols_amount = year_layout.children[0].cols
+        rows_amount = math.ceil((self.max_year - self.min_year) / cols_amount)
+        row_index = (self.year - self.min_year) // cols_amount
+        # To find the middle of the current year widget, we add the height of
+        # the rows under this widget with half the widget height.
+        widget_center_y = (rows_amount - row_index - 1 + 0.5) * widget_height
+        viewport_height = year_layout.height
+        year_list_height = rows_amount * widget_height
+        # If there are too few years in the list to fill the entire viewport,
+        # RecycleView displays additional empty space outside the list.
+        # We have to move the viewport up so that this space is displayed
+        # under the years list. Also, this guard condition protects against
+        # the division by zero error below.
+        if viewport_height >= year_list_height:
+            year_layout.scroll_y = 1
+            return
+        viewport_bottom = widget_center_y - 0.5 * viewport_height
+        # We set scroll_y property to the ratio of the actual lifting height
+        # of the viewport to the maximum possible, and clamp this ratio in the
+        # range from 0 to 1 so that the viewport still is in a valid position
+        # if it is impossible to show the widget in the middle.
+        scroll_y = viewport_bottom / (year_list_height - viewport_height)
+        year_layout.scroll_y = min(1, max(0, scroll_y))
 
     def generate_list_widgets_years(self) -> None:
         for i, number_year in enumerate(range(self.min_year, self.max_year)):

@@ -1057,9 +1057,7 @@ class MDDatePicker(BaseDialogPicker):
         Animation(opacity=1, d=0.15).start(self.ids.chevron_left)
         Animation(opacity=1, d=0.15).start(self.ids.chevron_right)
         Animation(_scale_year_layout=0, d=0.15).start(self)
-        Animation(
-            _shift_dialog_height=dp(0), _scale_calendar_layout=1, d=0.15
-        ).start(self)
+        Animation(_scale_calendar_layout=1, d=0.15).start(self)
 
         self._calendar_layout.clear_widgets()
         self.generate_list_widgets_days()
@@ -1076,9 +1074,9 @@ class MDDatePicker(BaseDialogPicker):
 
         self._select_year_dialog_open = True
         self.ids._year_layout.disabled = False
-        self._scale_calendar_layout = 0
         Animation(opacity=0, d=0.15).start(self.ids.chevron_left)
         Animation(opacity=0, d=0.15).start(self.ids.chevron_right)
+        Animation(_scale_calendar_layout=0, d=0.15).start(self)
         anim = Animation(_scale_year_layout=1, d=0.15)
         anim.bind(on_complete=disabled_chevron_buttons)
         anim.start(self)

@@ -14,7 +14,6 @@ https://iquilezles.org/articles/distfunctions
 
 float custom_smoothstep(float a, float b, float x) {
     float t = clamp((x - a) / (b - a), 0.0, 1.0);
-
     return t * t * (3.0 - 2.0 * t);
 }
 

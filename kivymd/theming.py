@@ -1667,6 +1667,11 @@ class ThemableBehavior(EventDispatcher):
             self.theme_cls = App.get_running_app().theme_cls
         super().__init__(**kwargs)
 
+        # Fix circular imports.
+        from kivymd.uix.behaviors import CommonElevationBehavior
+
+        self.common_elevation_behavior = CommonElevationBehavior
+
     def dec_disabled(self, *args, **kwargs) -> None:
         callabacks = self.theme_cls.get_property_observers("theme_style")
 
@@ -1685,5 +1690,10 @@ class ThemableBehavior(EventDispatcher):
                         )
             except ReferenceError:
                 pass
+
+        # Canceling the schedule of calling the on_pos method for objects
+        # that inherited the elevation behavior.
+        if issubclass(self.__class__, self.common_elevation_behavior):
+            Clock.unschedule(self.on_pos)
 
         super().dec_disabled(*args, **kwargs)

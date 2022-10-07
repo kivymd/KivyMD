@@ -364,16 +364,13 @@ import os
 
 from kivy import Logger
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.graphics import RenderContext, RoundedRectangle
 from kivy.properties import (
     AliasProperty,
-    BooleanProperty,
     BoundedNumericProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
-    ObjectProperty,
     VariableListProperty,
 )
 from kivy.uix.widget import Widget
@@ -588,20 +585,18 @@ class CommonElevationBehavior(Widget):
     and defaults to `[0.4, 0.4, 0.4, 0.8]`.
     """
 
-    _transition_ref = ObjectProperty()
-    _has_relative_position = BooleanProperty(defaultvalue=False)
     _elevation = 0
     _shadow_color = [0.0, 0.0, 0.0, 0.0]
 
-    def _get_window_pos(self, *args):
-        window_pos = self.to_window(*self.pos)
+    def _get_widget_pos(self, *args):
+        widget_pos = self.to_window(*self.pos)
         # To list, so it can be compared to self.pos directly.
-        return [window_pos[0], window_pos[1]]
+        return [widget_pos[0], widget_pos[1]]
 
-    def _set_window_pos(self, value):
-        self.window_pos = value
+    def _set_widget_pos(self, value):
+        self.widget_pos = value
 
-    window_pos = AliasProperty(_get_window_pos, _set_window_pos)
+    widget_pos = AliasProperty(_get_widget_pos, _set_widget_pos)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -611,67 +606,17 @@ class CommonElevationBehavior(Widget):
         with self.context:
             self.rect = RoundedRectangle(pos=self.pos, size=self.size)
 
-        self.after_init()
-
-    def after_init(self, *args):
-        Clock.schedule_once(self.check_for_relative_behavior)
         Clock.schedule_once(self.set_shader_string)
         Clock.schedule_once(lambda x: self.on_elevation(self, self.elevation))
-        self.on_pos()
-
-    def check_for_relative_behavior(self, *args) -> None:
-        """
-        Checks if the widget has relative properties and if necessary
-        binds Window.on_draw and screen events to fix behavior
-        """
-
-        if self.pos != self.window_pos:
-            self._has_relative_position = True
-
-        # Loops to check if its inside screenmanager or bottom_navigation.
-        widget = self
-        while True:
-            # Checks if has screen event function
-            # works for Screen and MDTab objects.
-            if hasattr(widget, "on_pre_enter"):
-                widget.bind(on_pre_enter=self.apply_correction)
-                widget.bind(on_pre_leave=self.apply_correction)
-                widget.bind(on_enter=self.reset_correction)
-                widget.bind(on_leave=self.reset_correction)
-                self._has_relative_position = True
-
-                # Save refs to objects with transition property.
-                if hasattr(widget, "header"):  # specific to bottom_nav
-                    self._transition_ref = widget.header.panel
-                elif hasattr(widget, "manager"):  # specific to screen
-                    if widget.manager:  # manager cant be None
-                        self._transition_ref = widget.manager
-                break
-
-            elif widget.parent and str(widget) != str(widget.parent):
-                widget = widget.parent
-            else:
-                break
-
-        if self._has_relative_position:
-            Window.bind(on_draw=self.update_window_position)
-
-    def apply_correction(self, *args):
-        if self._transition_ref:
-            transition = str(self._transition_ref.transition)
-            # Slide and Card transitions only need _has_relative_pos to be
-            # always on.
-            if (
-                "SlideTransition" in transition
-                or "CardTransition" in transition
-            ):
-                self.context.use_parent_modelview = False
-            else:
-                self.context.use_parent_modelview = True
-
-    def reset_correction(self, *args):
-        self.context.use_parent_modelview = False
-        self.update_window_position()
+        # FIXME: [CRITICAL] [Clock]
+        #  Warning, too much iteration done before the next frame.
+        #  Check your code, or increase the Clock.max_iteration attribute.
+        #  Remaining events:
+        #  <ClockEvent (-1.0) callback=<bound method CommonElevationBehavior.on_pos of <object>>>.
+        #  If we set the value of the schedule call to more than -1, then the
+        #  rendering of the shadow canvas will lag behind the widget,
+        #  if the widget, for example, is placed in ScrollView layout.
+        Clock.schedule_interval(self.on_pos, -1)
 
     def get_shader_string(self) -> str:
         shader_string = ""
@@ -731,33 +676,17 @@ class CommonElevationBehavior(Widget):
 
     def on_shadow_offset(self, instance, value) -> None:
         self.on_size()
-        self.on_pos()
-
-    def update_window_position(self, *args) -> None:
-        """
-        This function is used only when the widget has relative position
-        properties.
-        """
-
-        self.on_pos()
+        # self.on_pos()
 
     def on_pos(self, *args) -> None:
         if not hasattr(self, "rect"):
             return
 
-        if (
-            self._has_relative_position
-            and not self.context.use_parent_modelview
-        ):
-            pos = self.window_pos
-        else:
-            pos = self.pos
-
         self.rect.pos = [
-            pos[0]
+            self.widget_pos[0]
             - ((self.rect.size[0] - self.width) / 2)
             - self.shadow_offset[0],
-            pos[1]
+            self.widget_pos[1]
             - ((self.rect.size[1] - self.height) / 2)
             - self.shadow_offset[1],
         ]

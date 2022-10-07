@@ -1057,9 +1057,7 @@ class MDDatePicker(BaseDialogPicker):
         Animation(opacity=1, d=0.15).start(self.ids.chevron_left)
         Animation(opacity=1, d=0.15).start(self.ids.chevron_right)
         Animation(_scale_year_layout=0, d=0.15).start(self)
-        Animation(
-            _shift_dialog_height=dp(0), _scale_calendar_layout=1, d=0.15
-        ).start(self)
+        Animation(_scale_calendar_layout=1, d=0.15).start(self)
 
         self._calendar_layout.clear_widgets()
         self.generate_list_widgets_days()
@@ -1076,9 +1074,9 @@ class MDDatePicker(BaseDialogPicker):
 
         self._select_year_dialog_open = True
         self.ids._year_layout.disabled = False
-        self._scale_calendar_layout = 0
         Animation(opacity=0, d=0.15).start(self.ids.chevron_left)
         Animation(opacity=0, d=0.15).start(self.ids.chevron_right)
+        Animation(_scale_calendar_layout=0, d=0.15).start(self)
         anim = Animation(_scale_year_layout=1, d=0.15)
         anim.bind(on_complete=disabled_chevron_buttons)
         anim.start(self)
@@ -1545,31 +1543,9 @@ class MDDatePicker(BaseDialogPicker):
         Called when "chevron-left" and "chevron-right" buttons are pressed.
         Switches the calendar to the previous/next month.
         """
-
-        operation = 1 if operation == "next" else -1
-        month = (
-            12
-            if self.month + operation == 0
-            else 1
-            if self.month + operation == 13
-            else self.month + operation
-        )
-        year = (
-            self.year - 1
-            if self.month + operation == 0
-            else self.year + 1
-            if self.month + operation == 13
-            else self.year
-        )
+        month_delta = 1 if operation == "next" else -1
+        year = self.year + (self.month - 1 + month_delta) // 12
+        month = (self.month - 1 + month_delta) % 12 + 1
+        if year <= 0:
+            year, month = 1, 1
         self.update_calendar(year, month)
-
-        # TODO: perhaps this PR - https://github.com/kivymd/KivyMD/pull/1366 -
-        #  does not take into account all the nuances.
-        #  Therefore, the code that was removed by this PR has been added
-        #  and commented out.
-        # if self.sel_day:
-        #     x = calendar.monthrange(year, month)[1]
-        #     if x < self.sel_day:
-        #         self.sel_day = (
-        #             x if year <= self.sel_year and month <= self.sel_year else 1
-        #         )

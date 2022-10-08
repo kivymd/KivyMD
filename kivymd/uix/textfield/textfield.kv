@@ -148,9 +148,14 @@
         # Cursor blink.
         Color:
             rgba:
-                (self.text_color_focus if self.focus else self._text_color_normal) \
+                ( \
+                (self.text_color_focus if not self.error else self.error_color) \
+                if self.focus \
+                else self._text_color_normal \
+                ) \
                 if self.focus and not self._cursor_blink \
-                else (0, 0, 0, 0)
+                else \
+                (0, 0, 0, 0)
         Rectangle:
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height

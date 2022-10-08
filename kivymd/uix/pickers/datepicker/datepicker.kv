@@ -307,34 +307,6 @@
         else (dp(32), dp(32))
     disabled: True
 
-    canvas:
-        Color:
-            rgba:
-                ( \
-                ( \
-                self.theme_cls.primary_color if not root.owner.selector_color \
-                else root.owner.selector_color \
-                ) \
-                if root.is_selected and not self.disabled \
-                else (0, 0, 0, 0) \
-                ) \
-                if self.owner.mode != "range" else \
-                ( \
-                ( \
-                self.theme_cls.primary_color if not root.owner.selector_color \
-                else root.owner.selector_color \
-                ) \
-                if root.is_selected and not self.disabled \
-                and (self.owner.mode == "range" and self.owner._start_range_date) \
-                else (0, 0, 0, 0) \
-                )
-        Ellipse:
-            size:
-                (dp(42), dp(42)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(32), dp(32))
-            pos: self.pos
-
     # Fill marking the available dates of the range, if using the `range` mode
     # or use `min_date/max_date`.
     canvas.before:
@@ -397,29 +369,15 @@
                 else [0, 0, 0, 0]) \
                 )
 
-        # Circle marking the beginning and end of the date range if the "range"
-        # mode is used.
+        # Selection circle.
         Color:
             rgba:
-                [0, 0, 0, 0] if not self.owner._date_range else \
-                (
                 ( \
                 self.theme_cls.primary_color if not root.owner.selector_color \
                 else root.owner.selector_color \
                 ) \
-                if self.text and self.owner._date_range[0] == date( \
-                self.current_year, \
-                self.current_month, \
-                int(self.text) \
-                ) \
-                or \
-                self.text and self.owner._date_range[-1] == date( \
-                self.current_year, \
-                self.current_month, \
-                int(self.text) \
-                ) \
-                else (0, 0, 0, 0) \
-                )
+                if root.is_selected and not self.disabled \
+                else (0, 0, 0, 0)
         Ellipse:
             size:
                 (dp(42), dp(42)) \

@@ -760,8 +760,6 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
     """Implements an item for a pick list of the year."""
 
     index = None
-    selected = BooleanProperty(False)
-    selectable = BooleanProperty(True)
     selected_color = ColorProperty([0, 0, 0, 0])
     owner = ObjectProperty()
 
@@ -772,7 +770,7 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
     def on_touch_down(self, touch):
         if super().on_touch_down(touch):
             return True
-        if self.collide_point(*touch.pos) and self.selectable:
+        if self.collide_point(*touch.pos):
             self.owner.year = int(self.text)
             # self.owner.sel_year = self.owner.year
             self.owner.ids.label_full_date.text = self.owner.set_text_full_date(
@@ -784,7 +782,6 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
             return self.parent.select_with_touch(self.index, touch)
 
     def apply_selection(self, table_data, index, is_selected):
-        self.selected = is_selected
         if is_selected:
             self.selected_color = (
                 self.owner.selector_color
@@ -1511,7 +1508,6 @@ class MDDatePicker(BaseDialogPicker):
                     "owner": self,
                     "text": str(number_year),
                     "index": i,
-                    "selectable": True,
                     "viewclass": "DatePickerYearSelectableItem",
                 }
             )

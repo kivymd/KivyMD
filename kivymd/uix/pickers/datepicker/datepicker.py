@@ -1267,7 +1267,11 @@ class MDDatePicker(BaseDialogPicker):
 
     def update_calendar(self, year, month) -> None:
         self.year, self.month = year, month
-        selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+        if self.mode == "picker":
+            selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+            selected_dates = {selected_date}
+        else:
+            selected_dates = {self._start_range_date, self._end_range_date}
         dates = self.calendar.itermonthdates(year, month)
         for widget, widget_date in zip_longest(self._calendar_list, dates):
             # Only widgets whose dates are in the displayed month are visible.
@@ -1280,7 +1284,7 @@ class MDDatePicker(BaseDialogPicker):
             widget.current_year = year
             widget.current_month = month
             widget.is_today = visible and widget_date == self.today
-            widget.is_selected = visible and widget_date == selected_date
+            widget.is_selected = visible and widget_date in selected_dates
             # I don't understand why, but this line is important. Without this
             # line, some widgets that we are trying to disable remain enabled.
             widget.disabled = False

@@ -1056,8 +1056,6 @@ class MDDatePicker(BaseDialogPicker):
         Animation(_scale_year_layout=0, d=0.15).start(self)
         Animation(_scale_calendar_layout=1, d=0.15).start(self)
 
-        self._calendar_layout.clear_widgets()
-        self.generate_list_widgets_days()
         # Move selection to the same day and month of the selected year.
         self.sel_year = self.year
         last_day = calendar.monthrange(self.year, self.sel_month)[1]
@@ -1237,8 +1235,6 @@ class MDDatePicker(BaseDialogPicker):
     def update_calendar_for_date_range(self) -> None:
         # self.compare_date_range()
         self._date_range = self.get_date_range()
-        self._calendar_layout.clear_widgets()
-        self.generate_list_widgets_days()
         self.update_calendar(self.year, self.month)
 
     def update_text_full_date(self, list_date) -> None:

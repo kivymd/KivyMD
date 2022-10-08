@@ -699,16 +699,11 @@ class DatePickerDaySelectableItem(
     owner = ObjectProperty()
     is_today = BooleanProperty(False)
     is_selected = BooleanProperty(False)
-    current_month = NumericProperty()
-    current_year = NumericProperty()
-    index = NumericProperty(0)
-
-    def check_date(self, year: int, month: int, day: int):
-        try:
-            return date(year, month, day) in self.owner._date_range
-        except ValueError as error:
-            if str(error) == "day is out of range for month":
-                return False
+    is_in_range = BooleanProperty(False)
+    is_range_start = BooleanProperty(False)
+    is_range_end = BooleanProperty(False)
+    is_month_end = BooleanProperty(False)
+    is_week_end = BooleanProperty(False)
 
     def on_release(self):
         if (
@@ -723,7 +718,7 @@ class DatePickerDaySelectableItem(
         ):
             if self.owner.mode == "range" and not self.owner._start_range_date:
                 self.owner._start_range_date = date(
-                    self.current_year, self.current_month, int(self.text)
+                    self.owner.year, self.owner.month, int(self.text)
                 )
                 self.owner.min_date = self.owner._start_range_date
             elif (
@@ -732,7 +727,7 @@ class DatePickerDaySelectableItem(
                 and self.owner._start_range_date
             ):
                 self.owner._end_range_date = date(
-                    self.current_year, self.current_month, int(self.text)
+                    self.owner.year, self.owner.month, int(self.text)
                 )
                 if self.owner._end_range_date <= self.owner.min_date:
                     toast(self.owner.date_range_text_error)
@@ -1272,6 +1267,7 @@ class MDDatePicker(BaseDialogPicker):
             selected_dates = {selected_date}
         else:
             selected_dates = {self._start_range_date, self._end_range_date}
+        month_end = date(year, month, calendar.monthrange(year, month)[1])
         dates = self.calendar.itermonthdates(year, month)
         for widget, widget_date in zip_longest(self._calendar_list, dates):
             # Only widgets whose dates are in the displayed month are visible.
@@ -1281,8 +1277,6 @@ class MDDatePicker(BaseDialogPicker):
                 and widget_date.year == year
             )
             widget.text = str(widget_date.day) if visible else ""
-            widget.current_year = year
-            widget.current_month = month
             widget.is_today = visible and widget_date == self.today
             widget.is_selected = visible and widget_date in selected_dates
             # I don't understand why, but this line is important. Without this
@@ -1294,6 +1288,20 @@ class MDDatePicker(BaseDialogPicker):
                 and self._date_range
                 and widget_date not in self._date_range
             )
+            widget.is_in_range = (
+                visible and self._date_range and widget_date in self._date_range
+            )
+            widget.is_range_start = (
+                visible
+                and self._start_range_date
+                and widget_date == self._start_range_date
+            )
+            widget.is_range_end = (
+                visible
+                and self._end_range_date
+                and widget_date == self._end_range_date
+            )
+            widget.is_month_end = widget_date == month_end
 
     def get_field(self) -> MDTextField:
         """Creates and returns a text field object used to enter dates."""
@@ -1525,12 +1533,10 @@ class MDDatePicker(BaseDialogPicker):
             )
             weekday_label.font_name = self.font_name
             self._calendar_layout.add_widget(weekday_label)
-        for i, j in enumerate(range(6 * 7)):  # 6 weeks, 7 days a week
+        for i in range(6 * 7):  # 6 weeks, 7 days a week
             day_selectable_item = DatePickerDaySelectableItem(
-                index=i,
+                is_week_end=i % 7 == 6,
                 owner=self,
-                current_month=int(self.month),
-                current_year=int(self.year),
             )
             calendar_list.append(day_selectable_item)
             self._calendar_layout.add_widget(day_selectable_item)

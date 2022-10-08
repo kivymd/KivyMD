@@ -1083,6 +1083,8 @@ class MDDatePicker(BaseDialogPicker):
         if self.min_year <= self.year < self.max_year:
             index = self.year - self.min_year
             self.ids._year_layout.children[0].select_node(index)
+        else:
+            self.ids._year_layout.children[0].clear_selection()
 
     def transformation_to_dialog_input_date(self) -> None:
         def set_date_to_input_field():

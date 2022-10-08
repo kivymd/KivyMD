@@ -760,8 +760,6 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
     """Implements an item for a pick list of the year."""
 
     index = None
-    selected = BooleanProperty(False)
-    selectable = BooleanProperty(True)
     selected_color = ColorProperty([0, 0, 0, 0])
     owner = ObjectProperty()
 
@@ -772,7 +770,7 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
     def on_touch_down(self, touch):
         if super().on_touch_down(touch):
             return True
-        if self.collide_point(*touch.pos) and self.selectable:
+        if self.collide_point(*touch.pos):
             self.owner.year = int(self.text)
             # self.owner.sel_year = self.owner.year
             self.owner.ids.label_full_date.text = self.owner.set_text_full_date(
@@ -784,7 +782,6 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
             return self.parent.select_with_touch(self.index, touch)
 
     def apply_selection(self, table_data, index, is_selected):
-        self.selected = is_selected
         if is_selected:
             self.selected_color = (
                 self.owner.selector_color
@@ -1059,8 +1056,6 @@ class MDDatePicker(BaseDialogPicker):
         Animation(_scale_year_layout=0, d=0.15).start(self)
         Animation(_scale_calendar_layout=1, d=0.15).start(self)
 
-        self._calendar_layout.clear_widgets()
-        self.generate_list_widgets_days()
         # Move selection to the same day and month of the selected year.
         self.sel_year = self.year
         last_day = calendar.monthrange(self.year, self.sel_month)[1]
@@ -1086,6 +1081,8 @@ class MDDatePicker(BaseDialogPicker):
         if self.min_year <= self.year < self.max_year:
             index = self.year - self.min_year
             self.ids._year_layout.children[0].select_node(index)
+        else:
+            self.ids._year_layout.children[0].clear_selection()
 
     def transformation_to_dialog_input_date(self) -> None:
         def set_date_to_input_field():
@@ -1238,8 +1235,6 @@ class MDDatePicker(BaseDialogPicker):
     def update_calendar_for_date_range(self) -> None:
         # self.compare_date_range()
         self._date_range = self.get_date_range()
-        self._calendar_layout.clear_widgets()
-        self.generate_list_widgets_days()
         self.update_calendar(self.year, self.month)
 
     def update_text_full_date(self, list_date) -> None:
@@ -1272,7 +1267,11 @@ class MDDatePicker(BaseDialogPicker):
 
     def update_calendar(self, year, month) -> None:
         self.year, self.month = year, month
-        selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+        if self.mode == "picker":
+            selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+            selected_dates = {selected_date}
+        else:
+            selected_dates = {self._start_range_date, self._end_range_date}
         dates = self.calendar.itermonthdates(year, month)
         for widget, widget_date in zip_longest(self._calendar_list, dates):
             # Only widgets whose dates are in the displayed month are visible.
@@ -1285,7 +1284,7 @@ class MDDatePicker(BaseDialogPicker):
             widget.current_year = year
             widget.current_month = month
             widget.is_today = visible and widget_date == self.today
-            widget.is_selected = visible and widget_date == selected_date
+            widget.is_selected = visible and widget_date in selected_dates
             # I don't understand why, but this line is important. Without this
             # line, some widgets that we are trying to disable remain enabled.
             widget.disabled = False
@@ -1511,7 +1510,6 @@ class MDDatePicker(BaseDialogPicker):
                     "owner": self,
                     "text": str(number_year),
                     "index": i,
-                    "selectable": True,
                     "viewclass": "DatePickerYearSelectableItem",
                 }
             )

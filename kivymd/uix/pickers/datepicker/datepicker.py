@@ -767,13 +767,6 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
             return True
         if self.collide_point(*touch.pos):
             self.owner.year = int(self.text)
-            # self.owner.sel_year = self.owner.year
-            self.owner.ids.label_full_date.text = self.owner.set_text_full_date(
-                self.owner.sel_year,
-                self.owner.sel_month,
-                self.owner.sel_day,
-                self.owner.theme_cls.device_orientation,
-            )
             return self.parent.select_with_touch(self.index, touch)
 
     def apply_selection(self, table_data, index, is_selected):

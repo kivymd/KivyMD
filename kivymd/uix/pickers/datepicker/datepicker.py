@@ -708,38 +708,35 @@ class DatePickerDaySelectableItem(
     def on_release(self):
         if (
             self.owner.mode == "range"
-            and self.owner._end_range_date
-            and self.owner._start_range_date
+            and self.owner.min_date
+            and self.owner.max_date
         ):
             return
         if (
             not self.owner._input_date_dialog_open
             and not self.owner._select_year_dialog_open
         ):
-            if self.owner.mode == "range" and not self.owner._start_range_date:
-                self.owner._start_range_date = date(
+            if self.owner.mode == "range" and not self.owner.min_date:
+                self.owner.min_date = date(
                     self.owner.year, self.owner.month, int(self.text)
                 )
-                self.owner.min_date = self.owner._start_range_date
             elif (
                 self.owner.mode == "range"
-                and not self.owner._end_range_date
-                and self.owner._start_range_date
+                and not self.owner.max_date
+                and self.owner.min_date
             ):
-                self.owner._end_range_date = date(
+                self.owner.max_date = date(
                     self.owner.year, self.owner.month, int(self.text)
                 )
-                if self.owner._end_range_date <= self.owner.min_date:
+                if self.owner.max_date <= self.owner.min_date:
                     toast(self.owner.date_range_text_error)
                     Logger.error(
                         "`Data Picker: max_date` value cannot be less than "
                         "or equal to 'min_date' value."
                     )
-                    self.owner._start_range_date = 0
-                    self.owner._end_range_date = 0
-                    return
-                self.owner.max_date = self.owner._end_range_date
-                self.owner.update_calendar_for_date_range()
+                    self.owner.min_date = None
+                    self.owner.max_date = None
+                self.owner.update_calendar(self.owner.year, self.owner.month)
 
             self.owner.set_selected_widget(self)
 
@@ -862,7 +859,7 @@ class MDDatePicker(BaseDialogPicker):
     and defaults to `picker`.
     """
 
-    min_date = ObjectProperty()
+    min_date = ObjectProperty(allownone=True)
     """
     The minimum value of the date range for the `'mode`' parameter.
     Must be an object <class 'datetime.date'>.
@@ -873,7 +870,7 @@ class MDDatePicker(BaseDialogPicker):
     and defaults to `None`.
     """
 
-    max_date = ObjectProperty()
+    max_date = ObjectProperty(allownone=True)
     """
     The minimum value of the date range for the `'mode`' parameter.
     Must be an object <class 'datetime.date'>.
@@ -931,14 +928,11 @@ class MDDatePicker(BaseDialogPicker):
     _enter_data_field = None
     _enter_data_field_two = None
     _enter_data_field_container = None
-    _date_range = []
     _scale_calendar_layout = NumericProperty(1)
     _scale_year_layout = NumericProperty(0)
     _shift_dialog_height = NumericProperty(0)
     _input_date_dialog_open = BooleanProperty(False)
     _select_year_dialog_open = False
-    _start_range_date = 0
-    _end_range_date = 0
 
     def __init__(
         self,
@@ -969,7 +963,6 @@ class MDDatePicker(BaseDialogPicker):
                     "'max_date' must be of class <class 'datetime.date'>"
                 )
             self.compare_date_range()
-            self._date_range = self.get_date_range()
 
         self.generate_list_widgets_days()
         self.update_calendar(self.sel_year, self.sel_month)
@@ -1004,7 +997,7 @@ class MDDatePicker(BaseDialogPicker):
         self.dispatch(
             "on_save",
             date(self.sel_year, self.sel_month, self.sel_day),
-            self._date_range,
+            self.get_date_range(),
         )
 
     def is_date_valaid(self, date: str) -> bool:
@@ -1206,8 +1199,7 @@ class MDDatePicker(BaseDialogPicker):
             )
 
     def update_calendar_for_date_range(self) -> None:
-        # self.compare_date_range()
-        self._date_range = self.get_date_range()
+        # This method is no longer used, use update_calendar instead.
         self.update_calendar(self.year, self.month)
 
     def update_text_full_date(self, list_date) -> None:
@@ -1244,7 +1236,7 @@ class MDDatePicker(BaseDialogPicker):
             selected_date = date(self.sel_year, self.sel_month, self.sel_day)
             selected_dates = {selected_date}
         else:
-            selected_dates = {self._start_range_date, self._end_range_date}
+            selected_dates = {self.min_date, self.max_date}
         month_end = date(year, month, calendar.monthrange(year, month)[1])
         dates = self.calendar.itermonthdates(year, month)
         for widget, widget_date in zip_longest(self._calendar_list, dates):
@@ -1263,21 +1255,25 @@ class MDDatePicker(BaseDialogPicker):
             widget.disabled = (
                 not visible
                 or self.mode == "range"
-                and self._date_range
-                and widget_date not in self._date_range
+                and self.min_date is not None
+                and self.max_date is not None
+                and not self.min_date <= widget_date <= self.max_date
             )
             widget.is_in_range = (
-                visible and self._date_range and widget_date in self._date_range
+                visible
+                and self.min_date is not None
+                and self.max_date is not None
+                and self.min_date <= widget_date <= self.max_date
             )
             widget.is_range_start = (
                 visible
-                and self._start_range_date
-                and widget_date == self._start_range_date
+                and self.min_date is not None
+                and widget_date == self.min_date
             )
             widget.is_range_end = (
                 visible
-                and self._end_range_date
-                and widget_date == self._end_range_date
+                and self.max_date is not None
+                and widget_date == self.max_date
             )
             widget.is_month_end = widget_date == month_end
 
@@ -1326,6 +1322,8 @@ class MDDatePicker(BaseDialogPicker):
             )
 
     def get_date_range(self) -> list:
+        if not self.min_date or not self.max_date:
+            return []
         date_range = [
             self.min_date + datetime.timedelta(days=x)
             for x in range((self.max_date - self.min_date).days + 1)
@@ -1375,7 +1373,7 @@ class MDDatePicker(BaseDialogPicker):
                     + str(self.max_date.day).lstrip("0")
                 )
         elif self.mode == "range":
-            if self._start_range_date and self._end_range_date:
+            if self.min_date and self.max_date:
                 if (
                     orientation == "landscape"
                     and "-" in self.ids.label_full_date.text
@@ -1421,7 +1419,7 @@ class MDDatePicker(BaseDialogPicker):
                             + date.strftime("%b ").capitalize()
                             + str(day).lstrip("0")
                         )
-            elif self._start_range_date and not self._end_range_date:
+            elif self.min_date and not self.max_date:
                 return (
                     (
                         date.strftime("%b ").capitalize()
@@ -1437,7 +1435,7 @@ class MDDatePicker(BaseDialogPicker):
                         )
                     )
                 )
-            elif not self._start_range_date and not self._end_range_date:
+            elif not self.min_date and not self.max_date:
                 return (
                     "Start - End"
                     if orientation != "landscape"

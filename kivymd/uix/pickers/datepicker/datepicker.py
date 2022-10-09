@@ -755,7 +755,7 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
     """Implements an item for a pick list of the year."""
 
     index = None
-    selected_color = ColorProperty([0, 0, 0, 0])
+    selected = BooleanProperty(False)
     owner = ObjectProperty()
 
     def refresh_view_attrs(self, rv, index, data):
@@ -777,22 +777,7 @@ class DatePickerYearSelectableItem(RecycleDataViewBehavior, MDLabel):
             return self.parent.select_with_touch(self.index, touch)
 
     def apply_selection(self, table_data, index, is_selected):
-        if is_selected:
-            self.selected_color = (
-                self.owner.selector_color
-                if self.owner.selector_color
-                else self.theme_cls.primary_color
-            )
-            self.text_color = (1, 1, 1, 1)
-        else:
-            if int(self.text) == self.owner.sel_year:
-                self.text_color = (
-                    self.theme_cls.primary_color
-                    if not self.owner.text_current_color
-                    else self.owner.text_current_color
-                )
-            self.selected_color = [0, 0, 0, 0]
-            self.text_color = (0, 0, 0, 1)
+        self.selected = is_selected
 
 
 # TODO: Add the feature to embed the `MDDatePicker` class in other layouts

@@ -94,9 +94,7 @@
                 dp(24) if not root._input_date_dialog_open else dp(168) + dp(24), \
                 root.height - self.height - dp(96) \
                 )
-            text:
-                root.set_text_full_date(root.sel_year, root.sel_month, root.sel_day, \
-                root.theme_cls.device_orientation)
+            text: root._date_label_text
             text_color:
                 root.text_toolbar_color or root.specific_text_color \
                 if root.theme_cls.device_orientation == "portrait" else \

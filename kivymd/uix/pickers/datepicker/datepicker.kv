@@ -31,9 +31,7 @@
 
         canvas:
             Color:
-                rgb:
-                    app.theme_cls.primary_color \
-                    if not root.primary_color else root.primary_color
+                rgb: root.primary_color or app.theme_cls.primary_color
             RoundedRectangle:
                 size:
                     (dp(328), dp(120)) \
@@ -48,9 +46,7 @@
                     if root.theme_cls.device_orientation == "portrait" \
                     else (root.radius[0], dp(0), dp(0), root.radius[3])
             Color:
-                rgba:
-                    app.theme_cls.bg_normal \
-                    if not root.accent_color else root.accent_color
+                rgba: root.accent_color or app.theme_cls.bg_normal
             RoundedRectangle:
                 size:
                     (dp(328), dp(512) - dp(120) - root._shift_dialog_height) \
@@ -79,9 +75,7 @@
                 (dp(24), root.height - self.height - dp(18)) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else (dp(24), root.height - self.height - dp(24))
-            text_color:
-                root.specific_text_color \
-                if not root.text_toolbar_color else root.text_toolbar_color
+            text_color: root.text_toolbar_color or root.specific_text_color
 
         MDLabel:
             id: label_full_date
@@ -100,28 +94,13 @@
                 dp(24) if not root._input_date_dialog_open else dp(168) + dp(24), \
                 root.height - self.height - dp(96) \
                 )
-            text:
-                root.set_text_full_date(root.sel_year, root.sel_month, root.sel_day, \
-                root.theme_cls.device_orientation)
+            text: root._date_label_text
             text_color:
-                ( \
-                root.specific_text_color \
-                if not root.text_toolbar_color else root.text_toolbar_color \
-                ) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else \
-                ( \
-                ( \
-                self.theme_cls.primary_color \
-                if not root.primary_color else root.primary_color \
-                ) \
-                if root._input_date_dialog_open \
-                else \
-                ( \
-                root.specific_text_color \
-                if not root.text_toolbar_color else root.text_toolbar_color \
-                ) \
-                )
+                root.text_toolbar_color or root.specific_text_color \
+                if root.theme_cls.device_orientation == "portrait" else \
+                root.primary_color or self.theme_cls.primary_color \
+                if root._input_date_dialog_open else \
+                root.text_toolbar_color or root.specific_text_color
 
         RecycleView:
             id: _year_layout
@@ -164,9 +143,7 @@
                 (root.height - dp(120) + dp(12)) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else  dp(12)
-            text_color:
-                root.specific_text_color \
-                if not root.text_toolbar_color else root.text_toolbar_color
+            text_color: root.text_toolbar_color or root.specific_text_color
 
         MDLabel:
             id: label_month_selector
@@ -180,9 +157,7 @@
                 (dp(24), root.height - dp(120) - self.height - dp(20)) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else (dp(168) + dp(24), label_title.y)
-            text_color:
-                app.theme_cls.text_color \
-                if not root.text_color else root.text_color
+            text_color: root.text_color or app.theme_cls.text_color
 
         DatePickerIconTooltipButton:
             id: triangle
@@ -199,9 +174,7 @@
                 (label_month_selector.width + dp(14), root.height - dp(123) - self.height) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else (dp(180) + label_month_selector.width, label_title.y - dp(14))
-            text_color:
-                app.theme_cls.text_color \
-                if not root.text_color else root.text_color
+            text_color: root.text_color or app.theme_cls.text_color
             md_bg_color_disabled: 0, 0, 0, 0
 
         DatePickerIconTooltipButton:
@@ -218,9 +191,7 @@
                 root.height - dp(120) - self.height / 2 - dp(30) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else dp(272)
-            text_color:
-                app.theme_cls.text_color \
-                if not root.text_color else root.text_color
+            text_color: root.text_color or app.theme_cls.text_color
 
         DatePickerIconTooltipButton:
             id: chevron_right
@@ -236,9 +207,7 @@
                 root.height - dp(120) - self.height / 2 - dp(30) \
                 if root.theme_cls.device_orientation == "portrait" \
                 else dp(272)
-            text_color:
-                app.theme_cls.text_color \
-                if not root.text_color else root.text_color
+            text_color: root.text_color or app.theme_cls.text_color
 
         # TODO: Replace the GridLayout with a RecycleView
         # if it improves performance.
@@ -280,10 +249,7 @@
             text: "OK"
             theme_text_color: "Custom"
             font_name: root.font_name
-            text_color:
-                root.theme_cls.primary_color \
-                if not root.text_button_color else \
-                root.text_button_color
+            text_color: root.text_button_color or root.theme_cls.primary_color
             on_release: root.on_ok_button_pressed()
 
         MDFlatButton:
@@ -293,10 +259,7 @@
             theme_text_color: "Custom"
             pos: root.width - self.width - ok_button.width - dp(10), dp(10)
             font_name: root.font_name
-            text_color:
-                root.theme_cls.primary_color \
-                if not root.text_button_color else \
-                root.text_button_color
+            text_color: root.text_button_color or root.theme_cls.primary_color
 
 
 <DatePickerDaySelectableItem>
@@ -312,11 +275,7 @@
     canvas.before:
         Color:
             rgba:
-                (\
-                self.owner.selector_color[:-1] + [.3] \
-                if self.owner.selector_color \
-                else self.theme_cls.primary_color[:-1] + [.3] \
-                ) \
+                (self.owner.selector_color or self.theme_cls.primary_color)[:-1] + [.3] \
                 if self.is_in_range \
                 else (0, 0, 0, 0)
         RoundedRectangle:
@@ -342,10 +301,7 @@
         # Selection circle.
         Color:
             rgba:
-                ( \
-                self.theme_cls.primary_color if not root.owner.selector_color \
-                else root.owner.selector_color \
-                ) \
+                root.owner.selector_color or self.theme_cls.primary_color \
                 if root.is_selected and not self.disabled \
                 else (0, 0, 0, 0)
         Ellipse:
@@ -363,25 +319,11 @@
         font_name: root.owner.font_name
         theme_text_color: "Custom"
         text_color:
-            ( \
-            root.theme_cls.primary_color \
-            if not root.owner.text_current_color \
-            else root.owner.text_current_color \
-            ) \
-            if root.is_today and not root.is_selected \
-            else ( \
-            ( \
-            root.theme_cls.text_color \
-            if not root.is_selected or root.owner.mode == "range" \
-            else (1, 1, 1, 1) \
-            ) \
-            if not root.owner.text_color \
-            else \
-            ( \
-            root.owner.text_color \
-            if not root.is_selected else (1, 1, 1, 1)) \
-            )
-
+            root.owner.accent_color or root.theme_cls.bg_normal \
+            if root.is_selected else \
+            root.owner.text_current_color or root.theme_cls.primary_color \
+            if root.is_today else \
+            root.owner.text_color or root.theme_cls.text_color
 
 <DatePickerWeekdayLabel>
     font_style: "Caption"
@@ -395,9 +337,7 @@
     size:
         (dp(40), dp(40)) if root.theme_cls.device_orientation == "portrait" \
         else (dp(32), dp(32))
-    text_color:
-        app.theme_cls.disabled_hint_text_color \
-        if not root.owner.text_weekday_color else root.owner.text_weekday_color
+    text_color: root.owner.text_weekday_color or app.theme_cls.disabled_hint_text_color
 
 
 <DatePickerYearSelectableItem>
@@ -406,13 +346,21 @@
     valign: "middle"
     halign: "center"
     text: root.text
+    theme_text_color: "Custom"
+    text_color:
+        (0, 0, 0, 0) \
+        if self.owner is None else \
+        self.owner.accent_color or self.owner.theme_cls.bg_normal \
+        if self.selected else \
+        self.owner.text_color or self.owner.theme_cls.text_color
     on_text: root.font_name = root.owner.font_name
 
     canvas.before:
         Color:
             rgba:
-                root.selected_color if root.selected_color \
-                else self.theme_cls.primary_color
+                self.owner.selector_color or self.theme_cls.primary_color \
+                if self.selected else \
+                (0, 0, 0, 0)
         RoundedRectangle:
             pos: self.x + dp(12), self.y
             size: self.width - dp(24), self.height
@@ -441,7 +389,4 @@
     opacity: 0
     hint_text: "dd/mm/yyyy"
     input_filter: root.input_filter
-    fill_color:
-        (0, 0, 0, .15) \
-        if not self.owner.input_field_background_color \
-        else root.owner.input_field_background_color
+    fill_color: root.owner.input_field_background_color or (0, 0, 0, .15)

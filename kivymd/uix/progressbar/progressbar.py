@@ -179,7 +179,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
 
     color = ColorProperty(None)
     """
-    Progress bar color in ``rgba`` format.
+    Progress bar color in (r, g, b, a) or string format.
 
     :attr:`color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -187,7 +187,7 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
 
     back_color = ColorProperty(None)
     """
-    Progress bar back color in ``rgba`` format.
+    Progress bar back color in (r, g, b, a) or string format.
 
     .. versionadded:: 1.0.0
 

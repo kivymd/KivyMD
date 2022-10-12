@@ -544,7 +544,7 @@ class CommonElevationBehavior(Widget):
         :align: center
 
     But this is still not the result we expected. But it's still not the
-    result we expected. And if we keep increasing the value of 
+    result we expected. And if we keep increasing the value of
     :attr:`shadow_softness`, then we won't be able to change the result much:
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-softness-step-4.png

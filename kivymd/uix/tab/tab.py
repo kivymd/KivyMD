@@ -1518,7 +1518,7 @@ class MDTabs(
 
     background_color = ColorProperty(None)
     """
-    Background color of tabs in ``rgba`` format.
+    Background color of tabs in (r, g, b, a) or string format.
 
     :attr:`background_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -1526,7 +1526,7 @@ class MDTabs(
 
     underline_color = ColorProperty([0, 0, 0, 0])
     """
-    Underline color of tabs in ``rgba`` format.
+    Underline color of tabs in (r, g, b, a) or string format.
 
     :attr:`underline_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.
@@ -1534,7 +1534,7 @@ class MDTabs(
 
     text_color_normal = ColorProperty(None)
     """
-    Text color of the label when it is not selected.
+    Text color in (r, g, b, a) or string format of the label when it is not selected.
 
     :attr:`text_color_normal` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -1542,7 +1542,7 @@ class MDTabs(
 
     text_color_active = ColorProperty(None)
     """
-    Text color of the label when it is selected.
+    Text color in (r, g, b, a) or string format of the label when it is selected.
 
     :attr:`text_color_active` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -1592,7 +1592,7 @@ class MDTabs(
 
     indicator_color = ColorProperty(None)
     """
-    Color indicator in ``rgba`` format.
+    Color indicator in (r, g, b, a) or string format.
 
     :attr:`indicator_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

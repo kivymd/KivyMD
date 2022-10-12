@@ -398,8 +398,8 @@ class MDColorPicker(BaseDialog):
 
     default_color = ColorProperty(None, allownone=True)
     """
-    Default color value The set color value will be used when you open the
-    dialog.
+    Default color value in (r, g, b, a) or string format. The set color value
+    will be used when you open the dialog.
 
     :attr:`default_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -416,7 +416,8 @@ class MDColorPicker(BaseDialog):
 
     background_down_button_selected_type_color = ColorProperty([1, 1, 1, 0.3])
     """
-    Button background for choosing a color type ('RGBA', 'HEX', 'HSL', 'RGB').
+    Button background for choosing a color type ('RGBA', 'HEX', 'HSL', 'RGB')
+    in (r, g, b, a) or string format.
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/color-picker-background-down-button-selected-type-color.png
         :align: center

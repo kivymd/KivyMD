@@ -292,7 +292,7 @@ class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
 
     background_color = ColorProperty(None)
     """
-    Background color of toolbar in (r, g, b, a) format.
+    Background color of toolbar in (r, g, b, a) or string format.
 
     .. code-block:: kv
 

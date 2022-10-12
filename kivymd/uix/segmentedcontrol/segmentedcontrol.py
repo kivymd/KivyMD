@@ -159,7 +159,7 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
 
     md_bg_color = ColorProperty([0, 0, 0, 0])
     """
-    Background color of the segment panel.
+    Background color of the segment panel in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
@@ -175,7 +175,7 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
 
     segment_color = ColorProperty([0, 0, 0, 0])
     """
-    Color of the active segment.
+    Color of the active segment in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
@@ -220,7 +220,8 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
 
     separator_color = ColorProperty(None)
     """
-    The color of the separator between the segments.
+    The color of the separator between the segments in (r, g, b, a) or string
+    format.
 
     .. code-block:: kv
 

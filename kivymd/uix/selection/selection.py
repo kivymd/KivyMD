@@ -548,7 +548,8 @@ class MDSelectionList(MDList):
 
     icon_bg_color = ColorProperty([1, 1, 1, 1])
     """
-    Background color of the icon that will mark the selected list item.
+    Background color in (r, g, b, a) or string format of the icon that will
+    mark the selected list item.
 
     :attr:`icon_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 1]`.
@@ -556,7 +557,8 @@ class MDSelectionList(MDList):
 
     icon_check_color = ColorProperty([0, 0, 0, 1])
     """
-    Color of the icon that will mark the selected list item.
+    Color in (r, g, b, a) or string format of the icon that will mark the
+    selected list item.
 
     :attr:`icon_check_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 1]`.
@@ -564,7 +566,7 @@ class MDSelectionList(MDList):
 
     overlay_color = ColorProperty([0, 0, 0, 0.2])
     """
-    The overlay color of the selected list item..
+    The overlay color in (r, g, b, a) or string format of the selected list item.
 
     :attr:`overlay_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.2]]`.
@@ -580,7 +582,8 @@ class MDSelectionList(MDList):
 
     progress_round_color = ColorProperty(None)
     """
-    Color of the spinner for switching of `selected_mode` mode.
+    Color in (r, g, b, a) or string format of the spinner for switching of
+    `selected_mode` mode.
 
     :attr:`progress_round_color` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.

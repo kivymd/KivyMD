@@ -365,7 +365,7 @@ class MDChip(
 
     text_color = ColorProperty(None)
     """
-    Chip's text color in ``rgba`` format.
+    Chip's text color in (r, g, b, a) or string format.
 
     :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -373,7 +373,7 @@ class MDChip(
 
     icon_right_color = ColorProperty(None)
     """
-    Chip's right icon color in ``rgba`` format.
+    Chip's right icon color in (r, g, b, a) or string format.
 
     .. versionadded:: 1.0.0
 
@@ -383,7 +383,7 @@ class MDChip(
 
     icon_left_color = ColorProperty(None)
     """
-    Chip's left icon color in ``rgba`` format.
+    Chip's left icon color in (r, g, b, a) or string format.
 
     .. versionadded:: 1.0.0
 
@@ -393,7 +393,7 @@ class MDChip(
 
     icon_check_color = ColorProperty(None)
     """
-    Chip's check icon color in ``rgba`` format.
+    Chip's check icon color in (r, g, b, a) or string format.
 
     .. versionadded:: 1.0.0
 

@@ -253,7 +253,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     color_active = ColorProperty(None)
     """
-    Color when the checkbox is in the active state.
+    Color in (r, g, b, a) or string format when the checkbox is in the active state.
 
     .. versionadded:: 1.0.0
 
@@ -271,7 +271,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     color_inactive = ColorProperty(None)
     """
-    Color when the checkbox is in the inactive state.
+    Color in (r, g, b, a) or string format when the checkbox is in the inactive state.
 
     .. versionadded:: 1.0.0
 
@@ -289,7 +289,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     disabled_color = ColorProperty(None)
     """
-    Color when the checkbox is in the disabled state.
+    Color in (r, g, b, a) or string format when the checkbox is in the disabled state.
 
     .. code-block:: kv
 
@@ -309,7 +309,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     selected_color = ColorProperty(None, deprecated=True)
     """
-    Color when the checkbox is in the active state.
+    Color in (r, g, b, a) or string format when the checkbox is in the active state.
 
     .. deprecated:: 1.0.0
         Use :attr:`color_active` instead.
@@ -320,7 +320,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
 
     unselected_color = ColorProperty(None, deprecated=True)
     """
-    Color when the checkbox is in the inactive state.
+    Color in (r, g, b, a) or string format when the checkbox is in the inactive state.
 
     .. deprecated:: 1.0.0
         Use :attr:`color_inactive` instead.
@@ -490,7 +490,8 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     icon_active_color = ColorProperty(None)
     """
-    Thumb icon color when the switch is in the active state (only M3 style).
+    Thumb icon color in (r, g, b, a) or string format when the switch is in the
+    active state (only M3 style).
 
     .. versionadded:: 1.0.0
 
@@ -510,7 +511,8 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     icon_inactive_color = ColorProperty(None)
     """
-    Thumb icon color when the switch is in an inactive state (only M3 style).
+    Thumb icon color in (r, g, b, a) or string format when the switch is in an
+    inactive state (only M3 style).
 
     .. versionadded:: 1.0.0
 
@@ -529,7 +531,7 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     thumb_color_active = ColorProperty(None)
     """
-    The color of the thumb when the switch is active.
+    The color in (r, g, b, a) or string format of the thumb when the switch is active.
 
     .. versionadded:: 1.0.0
 
@@ -548,7 +550,7 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     thumb_color_inactive = ColorProperty(None)
     """
-    The color of the thumb when the switch is inactive.
+    The color in (r, g, b, a) or string format of the thumb when the switch is inactive.
 
     .. versionadded:: 1.0.0
 
@@ -566,7 +568,8 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     thumb_color_disabled = ColorProperty(None)
     """
-    The color of the thumb when the switch is in the disabled state.
+    The color in (r, g, b, a) or string format of the thumb when the switch is
+    in the disabled state.
 
     .. code-block:: kv
 
@@ -584,7 +587,7 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     track_color_active = ColorProperty(None)
     """
-    The color of the track when the switch is active.
+    The color in (r, g, b, a) or string format of the track when the switch is active.
 
     .. code-block:: kv
 
@@ -601,7 +604,7 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     track_color_inactive = ColorProperty(None)
     """
-    The color of the track when the switch is inactive.
+    The color in (r, g, b, a) or string format of the track when the switch is inactive.
 
     .. versionadded:: 1.0.0
 
@@ -619,7 +622,8 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
     track_color_disabled = ColorProperty(None)
     """
-    The color of the track when the switch is in the disabled state.
+    The color in (r, g, b, a) or string format of the track when the switch is
+    in the disabled state.
 
     .. code-block:: kv
 

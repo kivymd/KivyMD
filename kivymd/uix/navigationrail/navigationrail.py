@@ -941,7 +941,8 @@ class MDNavigationRail(MDCard):
 
     text_color_item_normal = ColorProperty(None)
     """
-    The text color of the normal menu item (:class:`~MDNavigationRailItem`).
+    The text color in (r, g, b, a) or string format of the normal menu item
+    (:class:`~MDNavigationRailItem`).
 
     .. code-block:: kv
 
@@ -960,7 +961,8 @@ class MDNavigationRail(MDCard):
 
     text_color_item_active = ColorProperty(None)
     """
-    The text color of the active menu item (:class:`~MDNavigationRailItem`).
+    The text color in (r, g, b, a) or string format of the active menu item
+    (:class:`~MDNavigationRailItem`).
 
     .. code-block:: kv
 
@@ -979,7 +981,8 @@ class MDNavigationRail(MDCard):
 
     icon_color_item_normal = ColorProperty(None)
     """
-    The icon color of the normal menu item (:class:`~MDNavigationRailItem`).
+    The icon color in (r, g, b, a) or string format of the normal menu item
+    (:class:`~MDNavigationRailItem`).
 
     .. code-block:: kv
 
@@ -998,7 +1001,8 @@ class MDNavigationRail(MDCard):
 
     icon_color_item_active = ColorProperty(None)
     """
-    The icon color of the active menu item (:class:`~MDNavigationRailItem`).
+    The icon color in (r, g, b, a) or string format of the active menu item
+    (:class:`~MDNavigationRailItem`).
 
     .. code-block:: kv
 

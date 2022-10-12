@@ -52,7 +52,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     color = ColorProperty(None)
     """
-    Color slider.
+    Color slider in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
@@ -84,7 +84,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     hint_bg_color = ColorProperty(None)
     """
-    Hint rectangle color in (r.g.b.a) format.
+    Hint rectangle color in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
@@ -101,7 +101,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     hint_text_color = ColorProperty(None)
     """
-    Hint text color in (r.g.b.a) format.
+    Hint text color in in (r, g, b, a) or string format.
 
     .. code-block:: kv
 
@@ -138,7 +138,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     thumb_color_active = ColorProperty(None)
     """
-    The color of the thumb when the slider is active.
+    The color in (r, g, b, a) or string format of the thumb when the slider is active.
 
     .. versionadded:: 1.0.0
 
@@ -156,7 +156,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     thumb_color_inactive = ColorProperty(None)
     """
-    The color of the thumb when the slider is inactive.
+    The color in (r, g, b, a) or string format of the thumb when the slider is inactive.
 
     .. versionadded:: 1.0.0
 
@@ -174,7 +174,8 @@ class MDSlider(ThemableBehavior, Slider):
 
     thumb_color_disabled = ColorProperty(None)
     """
-    The color of the thumb when the slider is in the disabled state.
+    The color in (r, g, b, a) or string format of the thumb when the slider is
+    in the disabled state.
 
     .. versionadded:: 1.0.0
 
@@ -194,7 +195,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     track_color_active = ColorProperty(None)
     """
-    The color of the track when the slider is active.
+    The color in (r, g, b, a) or string format of the track when the slider is active.
 
     .. versionadded:: 1.0.0
 
@@ -212,7 +213,7 @@ class MDSlider(ThemableBehavior, Slider):
 
     track_color_inactive = ColorProperty(None)
     """
-    The color of the track when the slider is inactive.
+    The color in (r, g, b, a) or string format of the track when the slider is inactive.
 
     .. versionadded:: 1.0.0
 
@@ -230,7 +231,8 @@ class MDSlider(ThemableBehavior, Slider):
 
     track_color_disabled = ColorProperty(None)
     """
-    The color of the track when the slider is in the disabled state.
+    The color in (r, g, b, a) or string format of the track when the slider is
+    in the disabled state.
 
     .. versionadded:: 1.0.0
 

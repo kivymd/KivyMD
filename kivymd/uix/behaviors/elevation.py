@@ -364,6 +364,7 @@ import os
 
 from kivy import Logger
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.graphics import RenderContext, RoundedRectangle
 from kivy.properties import (
     AliasProperty,
@@ -608,15 +609,7 @@ class CommonElevationBehavior(Widget):
 
         Clock.schedule_once(self.set_shader_string)
         Clock.schedule_once(lambda x: self.on_elevation(self, self.elevation))
-        # FIXME: [CRITICAL] [Clock]
-        #  Warning, too much iteration done before the next frame.
-        #  Check your code, or increase the Clock.max_iteration attribute.
-        #  Remaining events:
-        #  <ClockEvent (-1.0) callback=<bound method CommonElevationBehavior.on_pos of <object>>>.
-        #  If we set the value of the schedule call to more than -1, then the
-        #  rendering of the shadow canvas will lag behind the widget,
-        #  if the widget, for example, is placed in ScrollView layout.
-        Clock.schedule_interval(self.on_pos, -1)
+        Window.bind(on_draw=self.on_pos)
 
     def get_shader_string(self) -> str:
         shader_string = ""

@@ -496,6 +496,78 @@ class CommonElevationBehavior(Widget):
     and defaults to `12`.
     """
 
+    shadow_softness_size = BoundedNumericProperty(2, min=2)
+    """
+    The value of the softness of the shadow.
+
+    .. versionadded:: 1.1.0
+
+    Since we can't properly adjust  the :attr:`shadow_softness` value and the
+    :attr:`elevation` value, we added the :attr:`shadow_softness_size`
+    attribute to control the shadow size.
+
+    Examples of shadow settings
+    ---------------------------
+
+    .. code-block:: kv
+
+        MDCard:
+            elevation: 4
+            shadow_radius: 8
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-softness-step-1.png
+        :align: center
+
+    But if we need to increase the elevation value:
+
+    .. code-block:: kv
+
+        MDCard:
+            elevation: 8
+            shadow_radius: 16
+
+    ... we will get a sharp dark shadow:
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-softness-step-2.png
+        :align: center
+
+    To soften the shadow, we need to use the :attr:`shadow_softness` value:
+
+    .. code-block:: kv
+
+        MDCard:
+            elevation: 8
+            shadow_radius: 16
+            shadow_softness: 24
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-softness-step-3.png
+        :align: center
+
+    But this is still not the result we expected. But it's still not the
+    result we expected. And if we keep increasing the value of 
+    :attr:`shadow_softness`, then we won't be able to change the result much:
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-softness-step-4.png
+        :align: center
+
+    We need to use the :attr:`shadow_softness_size` value if we have increased
+    the :attr:`elevation` value and want to get the smoothness of the shadow:
+
+    .. code-block:: kv
+
+        MDCard:
+            elevation: 8
+            shadow_radius: 24
+            shadow_softness: 56
+            shadow_softness_size: 3.5
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-softness-step-5.png
+        :align: center
+
+    :attr:`shadow_softness_size` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `2`.
+    """
+
     shadow_offset = ListProperty((0, 2))
     """
     Offset of the shadow.
@@ -699,8 +771,18 @@ class CommonElevationBehavior(Widget):
         width = self.size[0] if self.elevation else 0
         height = self.size[1] if self.elevation else 0
         self.rect.size = (
-            width + (self._elevation * self.shadow_softness / 2),
-            height + (self._elevation * self.shadow_softness / 2),
+            width
+            + (
+                self._elevation
+                * self.shadow_softness
+                / self.shadow_softness_size
+            ),
+            height
+            + (
+                self._elevation
+                * self.shadow_softness
+                / self.shadow_softness_size
+            ),
         )
 
         self.context["mouse"] = [self.rect.pos[0], 0.0, 0.0, 0.0]

@@ -336,7 +336,7 @@ class MDBottomSheet(ThemableBehavior, ModalView):
 
     bg_color = ColorProperty(None)
     """
-    Dialog background color in ``rgba`` format.
+    Dialog background color in in (r, g, b, a) or string format.
 
     :attr:`bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -344,7 +344,8 @@ class MDBottomSheet(ThemableBehavior, ModalView):
 
     value_transparent = ColorProperty([0, 0, 0, 0.8])
     """
-    Background transparency value when opening a dialog.
+    Background color in (r, g, b, a) or string format transparency value when
+    opening a dialog.
 
     :attr:`value_transparent` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.8]`.

@@ -248,7 +248,8 @@ class MDFileManager(MDRelativeLayout, ThemableBehavior):
 
     background_color_selection_button = ColorProperty(None)
     """
-    Background color of the current directory/path selection button.
+    Background color in (r, g, b, a) or string format of the current
+    directory/path selection button.
 
     .. versionadded:: 1.1.0
 
@@ -268,7 +269,7 @@ class MDFileManager(MDRelativeLayout, ThemableBehavior):
 
     background_color_toolbar = ColorProperty(None)
     """
-    Background color of the file manager toolbar.
+    Background color in (r, g, b, a) or string format of the file manager toolbar.
 
     .. versionadded:: 1.1.0
 
@@ -307,7 +308,8 @@ class MDFileManager(MDRelativeLayout, ThemableBehavior):
 
     icon_color = ColorProperty(None)
     """
-    Color of the folder icon when the :attr:`preview` property is set to False.
+    Color in (r, g, b, a) or string format of the folder icon when the
+    :attr:`preview` property is set to False.
 
     .. versionadded:: 1.1.0
 

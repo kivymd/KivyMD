@@ -99,7 +99,7 @@ with open(
 class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
     tooltip_bg_color = ColorProperty(None)
     """
-    Tooltip background color in ``rgba`` format.
+    Tooltip background color in (r, g, b, a) or string format
 
     :attr:`tooltip_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
@@ -107,7 +107,7 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
     tooltip_text_color = ColorProperty(None)
     """
-    Tooltip text color in ``rgba`` format.
+    Tooltip text color in (r, g, b, a) or string format
 
     :attr:`tooltip_text_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

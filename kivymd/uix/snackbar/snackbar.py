@@ -338,7 +338,7 @@ class BaseSnackbar(MDCard):
 
     bg_color = ColorProperty(None)
     """
-    Snackbar background.
+    Snackbar background color in (r, g, b, a) or string format.
 
     :attr:`bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

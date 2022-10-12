@@ -649,6 +649,20 @@ class DatePickerInputField(MDTextField):
     helper_text_mode = StringProperty("on_error")
     owner = ObjectProperty()  # MDDatePicker object
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.bind(text=self._on_text_check_errors)
+
+    def _on_text_check_errors(self, widget, text):
+        if text == "":
+            self.error = False
+            return
+        try:
+            datetime.datetime.strptime(text, "%d/%m/%Y")
+            self.error = False
+        except ValueError:
+            self.error = True
+
     def set_error(self):
         """Sets a text field to an error state."""
 
@@ -893,9 +907,7 @@ class MDDatePicker(BaseDialogPicker):
 
     _calendar_layout = ObjectProperty()
     _calendar_list = None
-    _enter_data_field = None
-    _enter_data_field_two = None
-    _enter_data_field_container = None
+    _fields_container = None
     _scale_calendar_layout = NumericProperty(1)
     _scale_year_layout = NumericProperty(0)
     _shift_dialog_height = NumericProperty(0)
@@ -952,18 +964,8 @@ class MDDatePicker(BaseDialogPicker):
         """
         Called when the 'OK' button is pressed to confirm the date entered.
         """
-
-        if self._enter_data_field and not self.is_date_valaid(
-            self._enter_data_field.text
-        ):
-            self._enter_data_field.set_error()
+        if self._input_date_dialog_open and not self._try_apply_input():
             return
-        if self._enter_data_field_two and not self.is_date_valaid(
-            self._enter_data_field_two.text
-        ):
-            self._enter_data_field_two.set_error()
-            return
-
         self.dispatch(
             "on_save",
             date(self.sel_year, self.sel_month, self.sel_day),
@@ -1021,55 +1023,24 @@ class MDDatePicker(BaseDialogPicker):
             self.ids._year_layout.children[0].clear_selection()
 
     def transformation_to_dialog_input_date(self) -> None:
-        def set_date_to_input_field():
-            if not self._enter_data_field_two:
-                # Date of current day.
-                self._enter_data_field.text = (
-                    f"{'' if self.sel_day >= 10 else '0'}"
-                    f"{self.sel_day}/"
-                    f"{'' if self.sel_month >= 10 else '0'}"
-                    f"{self.sel_month}/{self.sel_year}"
-                )
-            else:
-                # Range start date.
-                self._enter_data_field.text = (
-                    f"{'' if self.min_date.day >= 10 else '0'}"
-                    f"{self.min_date.day}/"
-                    f"{'' if self.min_date.month >= 10 else '0'}"
-                    f"{self.min_date.month}/{self.min_date.year}"
-                )
-
-        def set_date_to_input_field_two() -> None:
-            # Range end date.
-            self._enter_data_field_two.text = (
-                f"{'' if self.max_date.day >= 10 else '0'}"
-                f"{self.max_date.day}/"
-                f"{'' if self.max_date.month >= 10 else '0'}"
-                f"{self.max_date.month}/{self.max_date.year}"
-            )
-
         self.ids.triangle.disabled = True
         if self._select_year_dialog_open:
             self.transformation_from_dialog_select_year()
         self._input_date_dialog_open = True
-
-        self._enter_data_field_container = DatePickerInputFieldContainer(
-            owner=self
-        )
-        self._enter_data_field = self.get_field()
-        if self.min_date and self.max_date:
-            self._enter_data_field_two = self.get_field()
-            set_date_to_input_field_two()
-        set_date_to_input_field()
-        self._enter_data_field_container.add_widget(self._enter_data_field)
-        if self._enter_data_field_two:
-            self._enter_data_field_container.add_widget(
-                self._enter_data_field_two
-            )
-
-        self.ids.container.add_widget(self._enter_data_field_container)
         self.ids.edit_icon.icon = "calendar"
         self.ids.label_title.text = self.title_input
+
+        self._fields_container = DatePickerInputFieldContainer(owner=self)
+        if self.mode == "picker":
+            selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+            selected_dates = [selected_date]
+        else:
+            selected_dates = [self.min_date, self.max_date]
+        for selected_date in selected_dates:
+            field = self.get_field(selected_date)
+            field.bind(text=self._on_date_field_text_changes)
+            self._fields_container.add_widget(field)
+        self.ids.container.add_widget(self._fields_container)
 
         Animation(
             _shift_dialog_height=dp(250)
@@ -1088,9 +1059,7 @@ class MDDatePicker(BaseDialogPicker):
         ).start(self.ids.chevron_right)
         Animation(opacity=0, d=0.15).start(self.ids.label_month_selector)
         Animation(opacity=0, d=0.15).start(self.ids.triangle)
-        Animation(opacity=1, d=0.15).start(self._enter_data_field)
-        if self._enter_data_field_two:
-            Animation(opacity=1, d=0.15).start(self._enter_data_field_two)
+        Animation(opacity=1, d=0.15).start(self._fields_container)
         # The label text separator in landscape orientation depends on the
         # open dialog.
         self._update_date_label_text()
@@ -1098,9 +1067,14 @@ class MDDatePicker(BaseDialogPicker):
     def transformation_from_dialog_input_date(
         self, interval: Union[int, float]
     ) -> None:
+        if not self._try_apply_input():
+            return
         self._input_date_dialog_open = False
         self.ids.triangle.disabled = False
-        self.ids.container.remove_widget(self._enter_data_field_container)
+        self.ids.edit_icon.icon = "pencil"
+        self.ids.label_title.text = self.title
+        self.ids.container.remove_widget(self._fields_container)
+        self._fields_container = None
         Animation(
             _shift_dialog_height=dp(0), _scale_calendar_layout=1, d=0.15
         ).start(self)
@@ -1114,34 +1088,58 @@ class MDDatePicker(BaseDialogPicker):
         ).start(self.ids.chevron_right)
         Animation(opacity=1, d=0.15).start(self.ids.label_month_selector)
         Animation(opacity=1, d=0.15).start(self.ids.triangle)
-        Animation(opacity=0, d=0.15).start(self._enter_data_field)
-        self.ids.edit_icon.icon = "pencil"
-        self.ids.label_title.text = self.title
+        # The label text separator in landscape orientation depends on the
+        # open dialog.
+        self._update_date_label_text()
 
-        if not self.min_date and not self.max_date:
-            list_date = self._enter_data_field.get_list_date()
-            if len(list_date) == 3 and len(list_date[2]) == 4:
-                self.sel_day = int(list_date[0])
-                self.sel_month = int(list_date[1])
-                self.sel_year = int(list_date[2])
-                self.update_calendar(self.sel_year, self.sel_month)
-        elif self.min_date and self.max_date:
-            list_min_date = self._enter_data_field.get_list_date()
-            list_max_date = self._enter_data_field_two.get_list_date()
+    def _get_dates_from_fields(self):
+        """Return a list of dates entered by the user in the input fields.
 
-            if len(list_min_date) == 3 and len(list_min_date[2]) == 4:
-                self.min_date = date(
-                    int(list_min_date[2]),
-                    int(list_min_date[1]),
-                    int(list_min_date[0]),
-                )
-            if len(list_max_date) == 3 and len(list_max_date[2]) == 4:
-                self.max_date = date(
-                    int(list_max_date[2]),
-                    int(list_max_date[1]),
-                    int(list_max_date[0]),
-                )
-            self.update_calendar(self.year, self.month)
+        If there is an error in the field or the field is empty, None will be
+        in its place in the list. The length of the list will be 0 if the input
+        dialog is closed, otherwise 1 in picker mode or 2 in range mode.
+        """
+        if not self._fields_container:
+            return []
+        dates = []
+        # Widgets are arranged in the reverse order of their addition.
+        for field in reversed(self._fields_container.children):
+            try:
+                date = datetime.datetime.strptime(field.text, "%d/%m/%Y").date()
+            except ValueError:
+                date = None
+            dates.append(date)
+        return dates
+
+    def _try_apply_input(self) -> bool:
+        """Apply the dates entered by the user, update the calendar and return
+        True. If there are errors in the fields, do nothing and return False.
+        """
+        dates = self._get_dates_from_fields()
+        if not dates:
+            return True
+        # Widgets are arranged in the reverse order of their addition.
+        fields = reversed(self._fields_container.children)
+        if any(d is None and f.text for f, d in zip(fields, dates)):
+            return False
+        if self.mode == "picker":
+            selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+            selected_date = dates[0] or selected_date
+            self.sel_year = selected_date.year
+            self.sel_month = selected_date.month
+            self.sel_day = selected_date.day
+            self.update_calendar(self.sel_year, self.sel_month)
+        elif self.mode == "range":
+            date1, date2 = dates[0] or self.min_date, dates[1] or self.max_date
+            ends = list(filter(bool, [date1, date2]))
+            if ends:
+                self.min_date = min(ends)
+                self.max_date = max(ends)
+                self.update_calendar(self.year, self.month)
+        return True
+
+    def _on_date_field_text_changes(self, *args):
+        self._update_date_label_text()
 
     def compare_date_range(self) -> None:
         # TODO: Add behavior if the minimum date range exceeds the maximum
@@ -1212,7 +1210,7 @@ class MDDatePicker(BaseDialogPicker):
             )
             widget.is_month_end = widget_date == month_end
 
-    def get_field(self) -> MDTextField:
+    def get_field(self, date=None) -> MDTextField:
         """Creates and returns a text field object used to enter dates."""
 
         if issubclass(self.input_field_cls, MDTextField):
@@ -1239,6 +1237,7 @@ class MDDatePicker(BaseDialogPicker):
 
             field = self.input_field_cls(
                 owner=self,
+                text=date.strftime("%d/%m/%Y") if date else "",
                 helper_text=self.helper_text,
                 fill_color_normal=fill_color_normal,
                 fill_color_focus=fill_color_focus,
@@ -1279,13 +1278,19 @@ class MDDatePicker(BaseDialogPicker):
         def date_repr(date):
             return date.strftime("%b").capitalize() + " " + str(date.day)
 
+        input_dates = self._get_dates_from_fields()
         if self.mode == "picker":
             selected_date = date(self.sel_year, self.sel_month, self.sel_day)
+            if input_dates:
+                selected_date = input_dates[0] or selected_date
             weekday_repr = selected_date.strftime("%a").capitalize()
             separator = ", " if horizontal else ",\n"
             return weekday_repr + separator + date_repr(selected_date)
         elif self.mode == "range":
-            ends = [end for end in (self.min_date, self.max_date) if end]
+            start, end = self.min_date, self.max_date
+            if input_dates:
+                start, end = input_dates[0] or start, input_dates[1] or end
+            ends = [end for end in (start, end) if end]
             if len(ends) == 0:
                 start_repr, end_repr = "Start", "End"
             else:

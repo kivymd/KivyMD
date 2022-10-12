@@ -763,7 +763,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     md_bg_bottom_color = ColorProperty(None)
     """
-    The background color in (r, g, b, a) format for the toolbar with the
+    The background color in (r, g, b, a) or string format for the toolbar with the
     ``bottom`` mode.
 
     .. versionadded:: 1.0.0
@@ -895,7 +895,8 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     icon_color = ColorProperty()
     """
-    Color action button. Only for :class:`~MDBottomAppBar` class.
+    Color in (r, g, b, a) or string format action button. Only for
+    :class:`~MDBottomAppBar` class.
 
     :attr:`icon_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[]`.
@@ -924,7 +925,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     headline_text_color = ColorProperty(None)
     """
-    Headline text color.
+    Headline text color in (r, g, b, a) or string format.
 
     .. versionadded:: 1.0.0
 
@@ -1369,7 +1370,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 class MDBottomAppBar(DeclarativeBehavior, FloatLayout):
     md_bg_color = ColorProperty([0, 0, 0, 0])
     """
-    Color toolbar.
+    Color toolbar in (r, g, b, a) or string format.
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.

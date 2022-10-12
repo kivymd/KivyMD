@@ -1694,6 +1694,6 @@ class ThemableBehavior(EventDispatcher):
         # Canceling the schedule of calling the on_pos method for objects
         # that inherited the elevation behavior.
         if issubclass(self.__class__, self.common_elevation_behavior):
-            Clock.unschedule(self.on_pos)
+            Window.unbind(on_draw=self.on_pos)
 
         super().dec_disabled(*args, **kwargs)

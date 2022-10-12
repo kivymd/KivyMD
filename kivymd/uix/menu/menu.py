@@ -706,7 +706,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     background_color = ColorProperty(None)
     """
-    Color of the background of the menu.
+    Color in (r, g, b, a) or string format of the background of the menu.
 
     .. code-block:: python
 

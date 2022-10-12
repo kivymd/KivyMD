@@ -725,7 +725,7 @@ class MDSeparator(ThemableBehavior, MDBoxLayout):
 
     color = ColorProperty(None)
     """
-    Separator color.
+    Separator color in (r, g, b, a) or string format.
 
     :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

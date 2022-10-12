@@ -94,6 +94,8 @@ An example of the implementation of a card in the style of material design versi
                                 style=style,
                                 text=style.capitalize(),
                                 md_bg_color=styles[style],
+                                shadow_softness=2 if style == "elevated" else 12,
+                                shadow_offset=(0, 1) if style == "elevated" else (0, 2),
                             )
                         )
 
@@ -156,6 +158,8 @@ An example of the implementation of a card in the style of material design versi
                                 size_hint=(None, None),
                                 size=("200dp", "100dp"),
                                 md_bg_color=styles[style],
+                                shadow_softness=2 if style == "elevated" else 12,
+                                shadow_offset=(0, 1) if style == "elevated" else (0, 2),
                             )
                         )
 

@@ -184,7 +184,7 @@ class MDSpinner(ThemableBehavior, Widget):
 
     color = ColorProperty(None, allownone=True)
     """
-    Spinner color.
+    Spinner color in (r, g, b, a) or string format.
 
     :attr:`color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0]`.

@@ -203,7 +203,6 @@ from datetime import date
 from itertools import zip_longest
 from typing import Union
 
-from kivy import Logger
 from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.metrics import dp

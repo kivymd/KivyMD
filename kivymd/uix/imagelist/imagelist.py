@@ -139,7 +139,8 @@ class MDSmartTile(MDRelativeLayout, ThemableBehavior):
 
     box_color = ColorProperty((0, 0, 0, 0.5))
     """
-    Sets the color and opacity for the information box.
+    Sets the color in (r, g, b, a) or string format and opacity for the
+    information box.
 
     .. code-block:: kv
 

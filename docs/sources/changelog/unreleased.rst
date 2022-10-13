@@ -8,3 +8,7 @@ Unreleased
        pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
+* Fix `MDDatePicker <https://kivymd.readthedocs.io/en/1.1.1/components/datepicker/>`_ widget:
+
+  - `Make day widgets non-clickable when another dialog is open <https://github.com/kivymd/KivyMD/pull/1391>`_;
+  - `Refactor input fields and fix some bugs <https://github.com/kivymd/KivyMD/pull/1390>`_;

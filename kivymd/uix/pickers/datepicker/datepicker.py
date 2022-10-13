@@ -1303,6 +1303,8 @@ class MDDatePicker(BaseDialogPicker):
         )
 
     def set_selected_widget(self, widget) -> None:
+        if self._select_year_dialog_open or self._input_date_dialog_open:
+            return
         try:
             widget_date = date(self.year, self.month, int(widget.text))
         except ValueError:

@@ -371,6 +371,7 @@
     adaptive_height: True
     size_hint_x: None
     spacing: dp(8)
+    opacity: 0
     width:
         self.owner.width - dp(48) \
         if root.owner.theme_cls.device_orientation == "portrait" \
@@ -386,7 +387,6 @@
 
 <DatePickerInputField>
     mode: "fill"
-    opacity: 0
     hint_text: "dd/mm/yyyy"
     input_filter: root.input_filter
     fill_color: root.owner.input_field_background_color or (0, 0, 0, .15)

@@ -951,6 +951,7 @@ class MDDatePicker(BaseDialogPicker):
         self, instance_theme_manager: ThemeManager, orientation_value: str
     ) -> None:
         """Called when the device's screen orientation changes."""
+
         # Separators of the label text depend on the orientation.
         self._update_date_label_text()
         if self._input_date_dialog_open:
@@ -963,6 +964,7 @@ class MDDatePicker(BaseDialogPicker):
         """
         Called when the 'OK' button is pressed to confirm the date entered.
         """
+
         if self._input_date_dialog_open and not self._try_apply_input():
             return
         self.dispatch(
@@ -1092,14 +1094,17 @@ class MDDatePicker(BaseDialogPicker):
         self._update_date_label_text()
 
     def _get_dates_from_fields(self):
-        """Return a list of dates entered by the user in the input fields.
+        """
+        Return a list of dates entered by the user in the input fields.
 
         If there is an error in the field or the field is empty, None will be
         in its place in the list. The length of the list will be 0 if the input
         dialog is closed, otherwise 1 in picker mode or 2 in range mode.
         """
+
         if not self._fields_container:
             return []
+
         dates = []
         # Widgets are arranged in the reverse order of their addition.
         for field in reversed(self._fields_container.children):
@@ -1108,19 +1113,24 @@ class MDDatePicker(BaseDialogPicker):
             except ValueError:
                 date = None
             dates.append(date)
+
         return dates
 
     def _try_apply_input(self) -> bool:
-        """Apply the dates entered by the user, update the calendar and return
+        """
+        Apply the dates entered by the user, update the calendar and return
         True. If there are errors in the fields, do nothing and return False.
         """
+
         dates = self._get_dates_from_fields()
         if not dates:
             return True
+
         # Widgets are arranged in the reverse order of their addition.
         fields = reversed(self._fields_container.children)
         if any(d is None and f.text for f, d in zip(fields, dates)):
             return False
+
         if self.mode == "picker":
             selected_date = date(self.sel_year, self.sel_month, self.sel_day)
             selected_date = dates[0] or selected_date
@@ -1135,6 +1145,7 @@ class MDDatePicker(BaseDialogPicker):
                 self.min_date = min(ends)
                 self.max_date = max(ends)
                 self.update_calendar(self.year, self.month)
+
         return True
 
     def _on_date_field_text_changes(self, *args):
@@ -1158,6 +1169,7 @@ class MDDatePicker(BaseDialogPicker):
         Updates the title of the week, month and number day name
         in an open date input dialog.
         """
+
         # This method no longer used, use update_calendar instead.
         year = int(list_date[2]) if len(list_date) > 2 else self.sel_year
         month = int(list_date[1]) if len(list_date) > 1 else self.sel_month
@@ -1269,6 +1281,7 @@ class MDDatePicker(BaseDialogPicker):
         choose and a string like "Feb 15 - Mar 23" or "Feb 15,\nMar 23" for
         a date range.
         """
+
         # In portrait orientation, the label is stretched in width, so we
         # should not insert line breaks. When the input dialog is open, the
         # label moves to the right and also stretches in width.
@@ -1410,9 +1423,11 @@ class MDDatePicker(BaseDialogPicker):
         Called when "chevron-left" and "chevron-right" buttons are pressed.
         Switches the calendar to the previous/next month.
         """
+
         month_delta = 1 if operation == "next" else -1
         year = self.year + (self.month - 1 + month_delta) // 12
         month = (self.month - 1 + month_delta) % 12 + 1
+
         if year <= 0:
             year, month = 1, 1
         self.update_calendar(year, month)

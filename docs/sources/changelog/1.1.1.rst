@@ -1,7 +1,7 @@
 1.1.1
 ------
 
-    See on GitHub: `tag 1.1.1 <https://github.com/kivymd/KivyMD/tree/1.1.1>`_ | `compare 1.1.0/1.1.1 <https://github.com/kivymd/KivyMD/compare/1.1.0...1.1.1>`_
+    See on GitHub: `tag 1.1.1 <https://github.com/kivymd/KivyMD/tree/1.1.1>`_ | `compare 1.0.2/1.1.1 <https://github.com/kivymd/KivyMD/compare/1.1.0...1.1.1>`_
 
     .. code-block:: bash
 

@@ -626,8 +626,15 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-overflow-text.png
         :align: center
+        
+    ``icon color`` - icon color:
 
-    Both the ``callback`` and ``tooltip text`` and ``overflow text`` are
+    .. code-block:: kv
+
+        MDTopAppBar:
+            right_action_items: [["dots-vertical", callback, "tooltip text", "overflow text", (1, 1, 1, 1)]]
+
+    Both the ``callback`` and ``tooltip text`` and ``overflow text`` and ``icon color`` are
     optional but the order must be preserved.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
@@ -1333,7 +1340,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",
-                    text_color=self.specific_text_color,
+                    text_color=self.specific_text_color if not (len(item) == 5 and item[4]) else item[4],
                     opposite_colors=self.opposite_colors,
                 )
             )

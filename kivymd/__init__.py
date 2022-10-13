@@ -26,10 +26,10 @@ import os
 import kivy
 from kivy.logger import Logger
 
-__version__ = "1.1.1"
+__version__ = "1.2.0.dev0"
 """KivyMD version."""
 
-release = True
+release = False
 kivy.require("2.0.0")
 
 try:

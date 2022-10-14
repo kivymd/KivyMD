@@ -1333,21 +1333,17 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             if len(item) == 3:
                 if isinstance(item[2], tuple):
                     item.insert(2, "")
-                    item.insert(3, "")
-            elif len(item) == 4:
-                if isinstance(item[2], str) and isinstance(item[3], tuple):
-                    item.insert(2, "")
 
             instance_box_layout.add_widget(
                 ActionTopAppBarButton(
                     icon=item[0],
                     on_release=item[1],
                     tooltip_text=item[2],
-                    overflow_text=item[3] if len(item) == 4 else "",
+                    overflow_text=item[3] if (len(item) == 4 and isinstance(item[3], str)) else "",
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",
-                    text_color=self.specific_text_color if not (len(item) == 5 and item[4]) else item[4],
+                    text_color=self.specific_text_color if not (len(item) == 4 and isinstance(item[3], tuple)) else item[3],
                     opposite_colors=self.opposite_colors,
                 )
             )

@@ -626,7 +626,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-overflow-text.png
         :align: center
-        
+
     ``icon color`` - icon color:
 
     .. code-block:: kv

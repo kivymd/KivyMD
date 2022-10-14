@@ -224,6 +224,7 @@ from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.clipboard import Clipboard
 from kivy.graphics import Color, Rectangle
 from kivy.lang import Builder
 from kivy.metrics import sp
@@ -238,7 +239,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.label import Label
-from kivy.core.clipboard import Clipboard
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
@@ -265,7 +265,13 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDLabel(DeclarativeBehavior, ThemableBehavior, TouchBehavior, Label, MDAdaptiveWidget):
+class MDLabel(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    TouchBehavior,
+    Label,
+    MDAdaptiveWidget,
+):
     font_style = StringProperty("Body1")
     """
     Label font style.
@@ -351,7 +357,7 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, TouchBehavior, Label, MDAda
             font_style=self.update_font_style,
             can_capitalize=self.update_font_style,
         )
-        self.register_event_type('on_copy')
+        self.register_event_type("on_copy")
         self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style(None, "")
         self.on_opposite_colors(None, self.opposite_colors)

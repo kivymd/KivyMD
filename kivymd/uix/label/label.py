@@ -238,12 +238,13 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.label import Label
+from kivy.core.clipboard import Clipboard
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.theming_dynamic_text import get_contrast_text_color
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, TouchBehavior
 from kivymd.uix.floatlayout import MDFloatLayout
 
 __MDLabel_colors__ = {
@@ -264,7 +265,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
+class MDLabel(DeclarativeBehavior, ThemableBehavior, TouchBehavior, Label, MDAdaptiveWidget):
     font_style = StringProperty("Body1")
     """
     Label font style.
@@ -322,6 +323,22 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
     and defaults to `None`.
     """
 
+    allow_copy = BooleanProperty(False)
+    """
+    Label allow copy flag.
+
+    :attr:`allow_copy` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `None`.
+    """
+
+    on_copy = ObjectProperty()
+    """
+    Label on copy event.
+
+    :attr:`on_copy` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
     _text_color_str = StringProperty()
 
     parent_background = ColorProperty(None)
@@ -334,6 +351,7 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
             font_style=self.update_font_style,
             can_capitalize=self.update_font_style,
         )
+        self.register_event_type('on_copy')
         self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style(None, "")
         self.on_opposite_colors(None, self.opposite_colors)
@@ -362,6 +380,14 @@ class MDLabel(DeclarativeBehavior, ThemableBehavior, Label, MDAdaptiveWidget):
 
         # TODO: Add letter spacing change
         # self.letter_spacing = font_info[3]
+
+    def on_long_touch(self, *args):
+        if self.allow_copy:
+            Clipboard.copy(self.text)
+            self.dispatch("on_copy")
+
+    def on_copy(self):
+        pass
 
     def on_theme_text_color(
         self, instance_label, theme_text_color: str

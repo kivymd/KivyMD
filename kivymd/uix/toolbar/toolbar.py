@@ -982,9 +982,10 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     def set_headline_font_style(self, interval: Union[int, float]) -> None:
         if self.type_height in ("medium", "large"):
-            self.ids.label_headline.font_style = {"medium": "H6", "large": "H5",}[
-                self.type_height
-            ]
+            self.ids.label_headline.font_style = {
+                "medium": "H6",
+                "large": "H5",
+            }[self.type_height]
 
     def on_width(self, instance_toolbar, width: float) -> None:
         """
@@ -1255,7 +1256,8 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     def set_notch(self) -> None:
         anim = Animation(d=0.1) + Animation(
-            notch_radius=self.action_button.width / 2 + dp(8), d=0.1,
+            notch_radius=self.action_button.width / 2 + dp(8),
+            d=0.1,
         )
         anim.start(self)
 

@@ -337,14 +337,6 @@ class MDLabel(
     and defaults to `None`.
     """
 
-    on_copy = ObjectProperty()
-    """
-    Label on copy event.
-
-    :attr:`on_copy` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `None`.
-    """
-
     _text_color_str = StringProperty()
 
     parent_background = ColorProperty(None)

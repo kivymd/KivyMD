@@ -366,9 +366,7 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.tooltip import MDTooltip
 from kivymd.utils.set_bars_colors import set_bars_colors
 
-with open(
-    os.path.join(uix_path, "toolbar", "toolbar.kv"), encoding="utf-8"
-) as kv_file:
+with open(os.path.join(uix_path, "toolbar", "toolbar.kv"), encoding="utf-8") as kv_file:
     Builder.load_string(kv_file.read())
 
 
@@ -478,12 +476,8 @@ class NotchedBox(
             right_circle_pos,
         )
 
-        left_vertices, left_indices = self._make_vertices_indices(
-            raw_vertices_left
-        )
-        right_vertices, right_indices = self._make_vertices_indices(
-            raw_vertices_right
-        )
+        left_vertices, left_indices = self._make_vertices_indices(raw_vertices_left)
+        right_vertices, right_indices = self._make_vertices_indices(raw_vertices_right)
 
         self._update_mesh(left_vertices, left_indices, "left")
         self._update_mesh(right_vertices, right_indices, "right")
@@ -988,10 +982,9 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     def set_headline_font_style(self, interval: Union[int, float]) -> None:
         if self.type_height in ("medium", "large"):
-            self.ids.label_headline.font_style = {
-                "medium": "H6",
-                "large": "H5",
-            }[self.type_height]
+            self.ids.label_headline.font_style = {"medium": "H6", "large": "H5",}[
+                self.type_height
+            ]
 
     def on_width(self, instance_toolbar, width: float) -> None:
         """
@@ -1042,9 +1035,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
         self.ids.right_actions.add_widget(
             ActionOverFlowButton(
-                theme_text_color="Custom"
-                if not self.opposite_colors
-                else "Primary",
+                theme_text_color="Custom" if not self.opposite_colors else "Primary",
                 text_color=self.specific_text_color,
                 opposite_colors=self.opposite_colors,
                 on_release=lambda x: self.overflow_cls.open(),
@@ -1058,10 +1049,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
         overflow.
         """
 
-        if (
-            not self.ids.right_actions.children[0].__class__
-            is ActionOverFlowButton
-        ):
+        if not self.ids.right_actions.children[0].__class__ is ActionOverFlowButton:
             return False
         return True
 
@@ -1103,9 +1091,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             self.action_button.bind(
                 on_release=lambda x: self.dispatch("on_action_button")
             )
-            self.action_button.x = (
-                Window.width / 2 - self.action_button.width / 2
-            )
+            self.action_button.x = Window.width / 2 - self.action_button.width / 2
             self.action_button.y = (
                 (self.center[1] - self.height / 2)
                 + self.theme_cls.standard_increment / 2
@@ -1157,9 +1143,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                 self.md_bg_color = [0, 0, 0, 0]
             else:
                 if self.set_bars_color:
-                    set_bars_colors(
-                        color_value, None, self.theme_cls.theme_style
-                    )
+                    set_bars_colors(color_value, None, self.theme_cls.theme_style)
 
         Clock.schedule_once(on_md_bg_color)
 
@@ -1174,9 +1158,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
         Clock.schedule_once(on_left_action_items)
 
-    def on_right_action_items(
-        self, instance_toolbar, items_value: list
-    ) -> None:
+    def on_right_action_items(self, instance_toolbar, items_value: list) -> None:
         """
         Called when the value of the  :attr:`right_action_items` attribute
         changes.
@@ -1199,9 +1181,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
         self.action_button.md_bg_color = icon_name
 
-    def on_md_bg_bottom_color(
-        self, instance_toolbar, color_value: list
-    ) -> None:
+    def on_md_bg_bottom_color(self, instance_toolbar, color_value: list) -> None:
         """
         Called when the value of the  :attr:`md_bg_bottom_color` attribute
         changes.
@@ -1263,9 +1243,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                 x = Window.width / 2 - self.action_button.width / 2
                 y = self.action_button.height + self.action_button.height / 2
             self.remove_shadow()
-            anim = Animation(
-                scale_value_x=0, scale_value_y=0, scale_value_z=0, d=0.1
-            )
+            anim = Animation(scale_value_x=0, scale_value_y=0, scale_value_z=0, d=0.1)
             anim.bind(on_complete=set_button_pos)
             anim.start(self.action_button)
 
@@ -1277,8 +1255,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     def set_notch(self) -> None:
         anim = Animation(d=0.1) + Animation(
-            notch_radius=self.action_button.width / 2 + dp(8),
-            d=0.1,
+            notch_radius=self.action_button.width / 2 + dp(8), d=0.1,
         )
         anim.start(self)
 
@@ -1313,9 +1290,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             self.anchor_title = "left"
         return self.anchor_title
 
-    def update_action_bar(
-        self, instance_box_layout, action_bar_items: list
-    ) -> None:
+    def update_action_bar(self, instance_box_layout, action_bar_items: list) -> None:
         instance_box_layout.clear_widgets()
         new_width = 0
 
@@ -1339,11 +1314,15 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                     icon=item[0],
                     on_release=item[1],
                     tooltip_text=item[2],
-                    overflow_text=item[3] if (len(item) == 4 and isinstance(item[3], str)) else "",
+                    overflow_text=item[3]
+                    if (len(item) == 4 and isinstance(item[3], str))
+                    else "",
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",
-                    text_color=self.specific_text_color if not (len(item) == 4 and isinstance(item[3], tuple)) else item[3],
+                    text_color=self.specific_text_color
+                    if not (len(item) == 4 and isinstance(item[3], tuple))
+                    else item[3],
                     opposite_colors=self.opposite_colors,
                 )
             )
@@ -1372,9 +1351,9 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             [0.0, 0.0, 0.0, 1.0],
             [1.0, 1.0, 1.0, 1.0],
         ):
-            self.specific_text_color = text_colors[
-                self.theme_cls.primary_palette
-            ][self.theme_cls.primary_hue]
+            self.specific_text_color = text_colors[self.theme_cls.primary_palette][
+                self.theme_cls.primary_hue
+            ]
 
 
 class MDBottomAppBar(DeclarativeBehavior, FloatLayout):

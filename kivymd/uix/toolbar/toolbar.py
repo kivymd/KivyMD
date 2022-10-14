@@ -1326,7 +1326,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             if len(item) > 1 and not item[1]:
                 item[1] = lambda x: None
             if len(item) == 2:
-                if isinstance(item[1], str):
+                if isinstance(item[1], str) or isinstance(item[1], tuple):
                     item.insert(1, lambda x: None)
                 else:
                     item.append("")
@@ -1334,6 +1334,9 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                 if isinstance(item[2], tuple):
                     item.insert(2, "")
                     item.insert(3, "")
+            elif len(item) == 4:
+                if isinstance(item[2], str) and isinstance(item[3], tuple):
+                    item.insert(2, "")
 
             instance_box_layout.add_widget(
                 ActionTopAppBarButton(

@@ -218,6 +218,8 @@ pytest kivymd/tests --timeout=600 --cov=kivymd --cov-report=term
 
 pre-commit will format modified files with Black and sort imports with isort.
 
+Before committing file/make PR run `black {source_file_or_directory}`
+
 ## Sister projects
 
 <img align="left" width="128" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_extensions.png"/>

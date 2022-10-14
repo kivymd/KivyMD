@@ -627,7 +627,14 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-overflow-text.png
         :align: center
 
-    Both the ``callback`` and ``tooltip text`` and ``overflow text`` are
+    ``icon color`` - icon color:
+
+    .. code-block:: kv
+
+        MDTopAppBar:
+            right_action_items: [["dots-vertical", callback, "tooltip text", "overflow text", (1, 1, 1, 1)]]
+
+    Both the ``callback`` and ``tooltip text`` and ``overflow text`` and ``icon color`` are
     optional but the order must be preserved.
 
     :attr:`left_action_items` is an :class:`~kivy.properties.ListProperty`
@@ -1319,21 +1326,28 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
             if len(item) > 1 and not item[1]:
                 item[1] = lambda x: None
             if len(item) == 2:
-                if type(item[1]) is str:
+                if isinstance(item[1], str) or isinstance(item[1], tuple):
                     item.insert(1, lambda x: None)
                 else:
                     item.append("")
+            if len(item) == 3:
+                if isinstance(item[2], tuple):
+                    item.insert(2, "")
 
             instance_box_layout.add_widget(
                 ActionTopAppBarButton(
                     icon=item[0],
                     on_release=item[1],
                     tooltip_text=item[2],
-                    overflow_text=item[3] if len(item) == 4 else "",
+                    overflow_text=item[3]
+                    if (len(item) == 4 and isinstance(item[3], str))
+                    else "",
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",
-                    text_color=self.specific_text_color,
+                    text_color=self.specific_text_color
+                    if not (len(item) == 4 and isinstance(item[3], tuple))
+                    else item[3],
                     opposite_colors=self.opposite_colors,
                 )
             )

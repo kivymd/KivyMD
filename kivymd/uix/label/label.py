@@ -379,8 +379,8 @@ class MDLabel(
         # TODO: Add letter spacing change
         # self.letter_spacing = font_info[3]
 
-    def on_long_touch(self, *args):
-        if self.allow_copy:
+    def on_double_tap(self, touch, *args):
+        if self.allow_copy and self.collide_point(*touch.pos):
             Clipboard.copy(self.text)
             self.dispatch("on_copy")
 

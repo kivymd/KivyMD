@@ -385,7 +385,11 @@ class MDLabel(
             self.dispatch("on_copy")
 
     def on_copy(self):
-        pass
+        """
+        On copy event.
+
+        .. versionadded:: 1.2.0
+        """
 
     def on_theme_text_color(
         self, instance_label, theme_text_color: str

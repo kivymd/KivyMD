@@ -37,6 +37,7 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    BoundedNumericProperty,
     ColorProperty,
     DictProperty,
     ListProperty,
@@ -44,6 +45,7 @@ from kivy.properties import (
     ObjectProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
@@ -1299,10 +1301,66 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
     elevation = NumericProperty(4)
     """
-    Table elevation.
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
+    attribute.
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `4`.
+    """
+
+    shadow_radius = VariableListProperty([6], length=4)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_radius`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[6]`.
+    """
+
+    shadow_softness = NumericProperty(12)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `12`.
+    """
+
+    shadow_softness_size = BoundedNumericProperty(2, min=2)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness_size`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_softness_size` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `2`.
+    """
+
+    shadow_offset = ListProperty((0, 2))
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `(0, 2)`.
+    """
+
+    shadow_color = ColorProperty([0, 0, 0, 0.6])
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_color`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.6]`.
     """
 
     rows_num = NumericProperty(5)
@@ -1624,6 +1682,77 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
             Example().run()
 
         .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-add-remove-row.gif
+            :align: center
+
+        Deleting checked rows
+        ---------------------
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+            from kivy.lang import Builder
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.datatables import MDDataTable
+            from kivymd.uix.screen import MDScreen
+
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
+                padding: "56dp"
+                spacing: "24dp"
+
+                MDData:
+                    id: table_screen
+
+                MDRaisedButton:
+                    text: "DELETE CHECKED ROWS"
+                    on_release: table_screen.delete_checked_rows()
+            '''
+
+
+            class MDData(MDScreen):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.data = [
+                        ["1", "Asep Sudrajat", "Male", "Soccer"],
+                        ["2", "Egy", "Male", "Soccer"],
+                        ["3", "Tanos", "Demon", "Soccer"],
+                    ]
+                    self.data_tables = MDDataTable(
+                        use_pagination=True,
+                        check=True,
+                        column_data=[
+                            ("No", dp(30)),
+                            ("No Urut.", dp(30)),
+                            ("Alamat Pengirim", dp(30)),
+                            ("No Surat", dp(60)),
+                        ]
+                    )
+                    self.data_tables.row_data = self.data
+                    self.add_widget(self.data_tables)
+
+                def delete_checked_rows(self):
+                    def deselect_rows(*args):
+                        self.data_tables.table_data.select_all("normal")
+
+                    for data in self.data_tables.get_row_checks():
+                        self.data_tables.remove_row(data)
+
+                    Clock.schedule_once(deselect_rows)
+
+
+            class MyApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Orange"
+                    return Builder.load_string(KV)
+
+
+            MyApp().run()
+
+        .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-deleting-checked-rows.gif
             :align: center
 
         .. versionadded:: 1.0.0

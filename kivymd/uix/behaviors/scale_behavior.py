@@ -110,7 +110,7 @@ KivyMD
 __all__ = ("ScaleBehavior",)
 
 from kivy.lang import Builder
-from kivy.properties import NumericProperty, ListProperty
+from kivy.properties import ListProperty, NumericProperty
 
 Builder.load_string(
     """

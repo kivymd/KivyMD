@@ -272,6 +272,19 @@ class MDLabel(
     Label,
     MDAdaptiveWidget,
 ):
+    """
+    Label class.
+    For more information, see in the
+    :class:`~kivy.uix.label.Label` class documentation.
+
+    :Events:
+        `on_ref_press`
+            Called when the user clicks on a word referenced with a
+            ``[ref]`` tag in a text markup.
+        `on_copy`
+            Called when double-tapping on the label.
+    """
+
     font_style = StringProperty("Body1")
     """
     Label font style.
@@ -386,7 +399,7 @@ class MDLabel(
 
     def on_copy(self):
         """
-        On copy event.
+        Called when double-tapping on the label.
 
         .. versionadded:: 1.2.0
         """

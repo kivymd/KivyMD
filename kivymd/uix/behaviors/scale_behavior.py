@@ -161,9 +161,9 @@ class ScaleBehavior:
     scale_value_center = ListProperty()
     """
     Origin of the scale.
-    
+
     .. versionadded:: 1.2.0
-    
+
     The format of the origin can be either (x, y) or (x, y, z).
 
     :attr:`scale_value_center` is an :class:`~kivy.properties.NumericProperty`

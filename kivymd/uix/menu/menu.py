@@ -472,10 +472,10 @@ from typing import Union
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BoundedNumericProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
@@ -783,48 +783,86 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     elevation = NumericProperty(4)
     """
-    Elevation value of menu dialog.
-
-    .. versionadded:: 1.0.0
-
-    .. code-block:: python
-
-        self.menu = MDDropdownMenu(
-            elevation=4,
-            ...,
-        )
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-elevation.png
-        :align: center
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
+    attribute.
 
     :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `4`.
     """
 
+    shadow_radius = VariableListProperty([6], length=4)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_radius`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[6]`.
+    """
+
+    shadow_softness = NumericProperty(12)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `12`.
+    """
+
+    shadow_softness_size = BoundedNumericProperty(2.5, min=2)
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness_size`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_softness_size` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `2`.
+    """
+
+    shadow_offset = ListProperty((0, 2))
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `(0, 2)`.
+    """
+
+    shadow_color = ColorProperty([0, 0, 0, 0.6])
+    """
+    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_color`
+    attribute.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`shadow_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.6]`.
+    """
+
     _start_coords = []
     _calculate_complete = False
     _calculate_process = False
+    _elevation = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Window.bind(on_resize=self.check_position_caller)
-        Window.bind(on_maximize=self.set_menu_properties)
-        Window.bind(on_restore=self.set_menu_properties)
-        Clock.schedule_once(self.ajust_radius)
+        Window.bind(
+            on_resize=self.set_menu_properties,
+            on_maximize=self.set_menu_properties,
+            on_restore=self.set_menu_properties,
+        )
+        Clock.schedule_once(self.adjust_radius)
         self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
         self.target_height = 0
 
-    def check_position_caller(
-        self, instance_window: WindowSDL, width: int, height: int
-    ) -> None:
-        """Called when the application root window is resized."""
-
-        # FIXME: Menu position is not recalculated when changing the size of
-        #  the root application window.
-        self.set_menu_properties(0)
-
-    def set_menu_properties(self, interval: Union[int, float] = 0) -> None:
+    def set_menu_properties(self, *args) -> None:
         """Sets the size and position for the menu window."""
 
         if self.caller:
@@ -836,9 +874,9 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             )
             self.target_width = self.width_mult * m_res.STANDARD_INCREMENT
 
-            # If we're wider than the Window...
+            # If we're wider than the Window reduce our multiplier to max
+            # allowed.
             if self.target_width > Window.width:
-                # ...reduce our multiplier to max allowed.
                 self.target_width = (
                     int(Window.width / m_res.STANDARD_INCREMENT)
                     * m_res.STANDARD_INCREMENT
@@ -850,7 +888,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             for item in self.ids.md_menu.data:
                 self.target_height += item.get("height", dp(72))
 
-            # If we're over max_height...
+            # If we're over max_height.
             if 0 < self.max_height < self.target_height:
                 self.target_height = self.max_height
 
@@ -858,13 +896,13 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             if self.ver_growth is not None:
                 ver_growth = self.ver_growth
             else:
-                # If there's enough space below us:
+                # If there's enough space below us.
                 if (
                     self.target_height
                     <= self._start_coords[1] - self.border_margin
                 ):
                     ver_growth = "down"
-                # if there's enough space above us:
+                # If there's enough space above us.
                 elif (
                     self.target_height
                     < Window.height - self._start_coords[1] - self.border_margin
@@ -873,7 +911,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 # Otherwise, let's pick the one with more space and adjust
                 # ourselves.
                 else:
-                    # If there"s more space below us:
+                    # If there's more space below us.
                     if (
                         self._start_coords[1]
                         >= Window.height - self._start_coords[1]
@@ -882,7 +920,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                         self.target_height = (
                             self._start_coords[1] - self.border_margin
                         )
-                    # If there's more space above us:
+                    # If there's more space above us.
                     else:
                         ver_growth = "up"
                         self.target_height = (
@@ -894,13 +932,13 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             if self.hor_growth is not None:
                 hor_growth = self.hor_growth
             else:
-                # If there's enough space to the right:
+                # If there's enough space to the right.
                 if (
                     self.target_width
                     <= Window.width - self._start_coords[0] - self.border_margin
                 ):
                     hor_growth = "right"
-                # if there's enough space to the left:
+                # if there's enough space to the left.
                 elif (
                     self.target_width
                     < self._start_coords[0] - self.border_margin
@@ -909,7 +947,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 # Otherwise, let's pick the one with more space and adjust
                 # ourselves.
                 else:
-                    # if there"s more space to the right:
+                    # if there's more space to the right.
                     if (
                         Window.width - self._start_coords[0]
                         >= self._start_coords[0]
@@ -920,7 +958,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                             - self._start_coords[0]
                             - self.border_margin
                         )
-                    # if there"s more space to the left:
+                    # If there's more space to the left.
                     else:
                         hor_growth = "left"
                         self.target_width = (
@@ -936,26 +974,53 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                 self.tar_x = self._start_coords[0]
             else:  # should always be "left"
                 self.tar_x = self._start_coords[0] - self.target_width
-            self._calculate_complete = True
 
-    def ajust_radius(self, interval: Union[int, float]) -> None:
+            self._calculate_complete = True
+            self.set_menu_pos()
+
+    def set_menu_pos(self) -> None:
+        if self.position == "auto":
+            self.menu.x = self.tar_x
+            self.menu.y = self.tar_y - (
+                self.header_cls.height if self.header_cls else 0
+            )
+        else:
+            if self.position == "center":
+                self.menu.pos = (
+                    self._start_coords[0] - self.target_width / 2,
+                    self._start_coords[1] - self.target_height / 2,
+                )
+            elif self.position == "bottom":
+                self.menu.pos = (
+                    self._start_coords[0] - self.target_width / 2,
+                    self._start_coords[1]
+                    - (self.target_height + self.caller.height / 2),
+                )
+            elif self.position == "top":
+                self.menu.pos = (
+                    self._start_coords[0] - self.target_width / 2,
+                    self._start_coords[1]
+                    + (self.caller.height - self.caller.height / 2),
+                )
+
+    def adjust_radius(self, interval: Union[int, float]) -> None:
         """
         Adjusts the radius of the first and last items in the menu list
         according to the radius that is set for the menu.
         """
 
         if self.items:
-            radius_for_firt_item = self.radius[:2]
+            radius_for_first_item = self.radius[:2]
             radius_for_last_item = self.radius[2:]
 
-            firt_data_item = self.items[0]
+            first_data_item = self.items[0]
             last_data_item = self.items[-1]
 
-            firt_data_item["radius"] = radius_for_firt_item + [0, 0]
+            first_data_item["radius"] = radius_for_first_item + [0, 0]
             last_data_item["radius"] = [0, 0] + radius_for_last_item
             last_data_item["divider"] = None
 
-            self.items[0] = firt_data_item
+            self.items[0] = first_data_item
             self.items[-1] = last_data_item
 
             # For all other elements of the list, except for the first and
@@ -971,22 +1036,27 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         of screen.
         """
 
-        target_width = self.target_width
         target_height = self.target_height
         caller = self.caller
         position = self.position
 
         if (
-            caller.x < target_width
-            or caller.x + target_width > Window.width
-            or caller.y + target_height > Window.height
-            or (caller.y < target_height and position == "center")
+            (
+                self._start_coords[1] - target_height / 2 < 0
+                and position == "center"
+            )  # "center"
+            or self._start_coords[1]
+            + (caller.height - caller.height / 2)
+            + target_height
+            > Window.height  # "top"
+            or self._start_coords[1] - (target_height + caller.height / 2)
+            < 0  # "bottom"
         ):
             position = "auto"
             if self.hor_growth or self.ver_growth:
                 self.hor_growth = None
                 self.ver_growth = None
-                self.set_menu_properties()
+
         return position
 
     def open(self) -> None:
@@ -996,10 +1066,10 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             if not self._calculate_complete:
                 return
 
-            position = self.adjust_position()
+            self.position = self.adjust_position()
 
-            if position == "auto":
-                self.menu.pos = self._start_coords
+            if self.position == "auto":
+                self.set_menu_pos()
                 anim = Animation(
                     x=self.tar_x,
                     y=self.tar_y
@@ -1010,23 +1080,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     opacity=1,
                     transition=self.opening_transition,
                 )
-                anim.start(self.menu)
             else:
-                if position == "center":
-                    self.menu.pos = (
-                        self._start_coords[0] - self.target_width / 2,
-                        self._start_coords[1] - self.target_height / 2,
-                    )
-                elif position == "bottom":
-                    self.menu.pos = (
-                        self._start_coords[0] - self.target_width / 2,
-                        self.caller.pos[1] - self.target_height,
-                    )
-                elif position == "top":
-                    self.menu.pos = (
-                        self._start_coords[0] - self.target_width / 2,
-                        self.caller.pos[1] + self.caller.height,
-                    )
+                self.set_menu_pos()
                 anim = Animation(
                     width=self.target_width,
                     height=self.target_height,
@@ -1034,6 +1089,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     opacity=1,
                     transition=self.opening_transition,
                 )
+            anim.bind(on_complete=self.set_elevation)
             anim.start(self.menu)
             Window.add_widget(self)
             Clock.unschedule(open)
@@ -1043,6 +1099,13 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         if not self._calculate_process:
             self._calculate_process = True
             Clock.schedule_interval(open, 0)
+
+    def set_elevation(self, *args) -> None:
+        Animation(
+            _elevation=self.elevation,
+            opacity=1,
+            duration=self.opening_time,
+        ).start(self)
 
     def on_header_cls(
         self, instance_dropdown_menu, instance_user_menu_header
@@ -1077,6 +1140,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.width = 0
         self.menu.height = 0
         self.menu.opacity = 0
+        self._elevation = 0
 
     def dismiss(self, *args) -> None:
         """Closes the menu."""

@@ -12,4 +12,8 @@ Unreleased
 
   - `Make day widgets non-clickable when another dialog is open <https://github.com/kivymd/KivyMD/pull/1391>`_;
   - `Refactor input fields and fix some bugs <https://github.com/kivymd/KivyMD/pull/1390>`_;
-* `Added <https://github.com/kivymd/KivyMD/pull/1392>`_ icon color property to `right_action_items/left_action_items` in `MDTopAppBar <https://kivymd.readthedocs.io/en/1.1.1/components/toolbar/>`_ class.
+* `Add <https://github.com/kivymd/KivyMD/pull/1392>`_ icon color property to `right_action_items/left_action_items` in `MDTopAppBar <https://kivymd.readthedocs.io/en/1.1.1/components/toolbar/>`_ class.
+* `Fix <https://github.com/kivymd/KivyMD/commit/e9ec26283fd6ddf5f436168f918797de16f46c79>`_ `MDDropdownMenu position isn't working <https://github.com/kivymd/KivyMD/issues/1333>`_.
+* `Add feature for changing the scale of the shadow <https://github.com/kivymd/KivyMD/commit/5b14aea97ca67efbab9bd814ed0a7cc7bcb57863>`_ for `CommonElevationBehavior <https://kivymd.readthedocs.io/en/1.1.1/behaviors/elevation/#kivymd.uix.behaviors.elevation.CommonElevationBehavior>`_ class.
+* `Add <https://github.com/kivymd/KivyMD/commit/86d206f4e5122d3af6968a00a8cc2144b2697955>`_ `elevation properties <https://kivymd.readthedocs.io/en/latest/components/datatables/#kivymd.uix.datatables.datatables.MDDataTable.shadow_radius>`_ to `MDDataTable <https://kivymd.readthedocs.io/en/latest/components/datatables/#api-kivymd-uix-datatables-datatables>`_ class.
+* `Add <https://kivymd.readthedocs.io/en/latest/components/menu/#kivymd.uix.menu.menu.MDDropdownMenu.shadow_radius>`_ to `MDDropdownMenu <https://kivymd.readthedocs.io/en/latest/components/menu/#api-kivymd-uix-menu-menu>`_ class.

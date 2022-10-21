@@ -36,7 +36,13 @@
     MenuContainer:
         id: card
         orientation: "vertical"
-        elevation: root.elevation
+        elevation: root._elevation
+        shadow_radius: root.shadow_radius
+        shadow_softness: root.shadow_softness
+        shadow_offset: root.shadow_offset
+        shadow_color: root.shadow_color
+        shadow_color: root.shadow_color
+        shadow_softness_size: root.shadow_softness_size
         size_hint: None, None
         size: md_menu.size[0], md_menu.size[1] + content_header.height
         pos: md_menu.pos

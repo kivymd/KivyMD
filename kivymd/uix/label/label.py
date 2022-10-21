@@ -334,7 +334,7 @@ class MDLabel(
     Label allow copy flag.
 
     :attr:`allow_copy` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `None`.
+    and defaults to `False`.
     """
 
     _text_color_str = StringProperty()

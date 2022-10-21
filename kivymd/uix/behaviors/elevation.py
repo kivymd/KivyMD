@@ -764,12 +764,23 @@ class CommonElevationBehavior(Widget):
         if not hasattr(self, "rect"):
             return
 
+        scale_value_x = (
+            self.scale_value_x
+            if (hasattr(self, "scale_value_x") and self.scale_value_x)
+            else 1
+        )
+        scale_value_y = (
+            self.scale_value_y
+            if (hasattr(self, "scale_value_y") and self.scale_value_x)
+            else 1
+        )
         # If the elevation value is 0, set the canvas size to zero.
         # Because even with a zero elevation value, the shadow is displayed
         # under the widget. This is visible if we change the scale
         # of the widget.
-        width = self.size[0] if self.elevation else 0
-        height = self.size[1] if self.elevation else 0
+        width = (self.size[0] * scale_value_x) if self.elevation else 0
+        height = (self.size[1] * scale_value_y) if self.elevation else 0
+
         self.rect.size = (
             width
             + (

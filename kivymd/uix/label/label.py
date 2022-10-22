@@ -455,6 +455,7 @@ class MDLabel(
 
     def on_md_bg_color(self, instance_label, color: Union[list, str]) -> None:
         self.canvas.remove_group("Background_instruction")
+        self.canvas.before.clear()
         with self.canvas.before:
             Color(rgba=color)
             self.canvas_bg = Rectangle(pos=self.pos, size=self.size)

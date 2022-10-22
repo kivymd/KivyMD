@@ -265,11 +265,11 @@ You can highlight labels by double tap on the label:
 You can copy the label text by double clicking on it:
 -----------------------------------------------------
 
-.. code-block:: python
+.. tabs::
 
-    .. tabs::
+    .. tab:: Declarative KV style
 
-        .. tab:: Declarative KV style
+        .. code-block:: python
 
             from kivy.lang.builder import Builder
 
@@ -298,7 +298,9 @@ You can copy the label text by double clicking on it:
 
             Example().run()
 
-        .. tab:: Declarative Python style
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
 
             from kivy.lang.builder import Builder
 

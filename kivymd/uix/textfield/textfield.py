@@ -1588,9 +1588,15 @@ class MDTextField(
                 self.helper_text_mode in ("on_focus", "persistent")
                 and self.helper_text
             ):
-                self.set_helper_text_color(self.helper_text_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(
+                        self.helper_text_color_focus
+                    )
+                )
             if self.mode == "fill":
-                self.set_fill_color(self.fill_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_fill_color(self.fill_color_focus)
+                )
             self.set_active_underline_width(self.width)
 
             self.set_pos_hint_text(
@@ -1598,30 +1604,58 @@ class MDTextField(
                 if self.mode != "rectangle"
                 else dp(10)
             )
-            self.set_hint_text_color(focus)
+            Clock.schedule_once(lambda x: self.set_hint_text_color(focus))
             self.set_hint_text_font_size(sp(12))
 
             if self.max_text_length:
-                self.set_max_length_text_color(self.max_length_text_color)
+                Clock.schedule_once(
+                    lambda x: self.set_max_length_text_color(
+                        self.max_length_text_color
+                    )
+                )
             if self.icon_right:
-                self.set_icon_right_color(self.icon_right_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_right_color(
+                        self.icon_right_color_focus
+                    )
+                )
             if self.icon_left:
-                self.set_icon_left_color(self.icon_left_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_left_color(
+                        self.icon_left_color_focus
+                    )
+                )
 
             if self.error:
                 if self.hint_text:
-                    self.set_hint_text_color(focus, self.error)
+                    Clock.schedule_once(
+                        lambda x: self.set_hint_text_color(focus, self.error)
+                    )
                 if self.helper_text:
-                    self.set_helper_text_color(self.error_color)
+                    Clock.schedule_once(
+                        lambda x: self.set_helper_text_color(self.error_color)
+                    )
                 if self.max_text_length:
-                    self.set_max_length_text_color(self.error_color)
+                    Clock.schedule_once(
+                        lambda x: self.set_max_length_text_color(
+                            self.error_color
+                        )
+                    )
                 if self.icon_right:
-                    self.set_icon_right_color(self.error_color)
+                    Clock.schedule_once(
+                        lambda x: self.set_icon_right_color(self.error_color)
+                    )
                 if self.icon_left:
-                    self.set_icon_left_color(self.error_color)
+                    Clock.schedule_once(
+                        lambda x: self.set_icon_left_color(self.error_color)
+                    )
         else:
             if self.helper_text_mode == "persistent" and self.helper_text:
-                self.set_helper_text_color(self.helper_text_color_normal)
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(
+                        self.helper_text_color_normal
+                    )
+                )
             if self.mode == "rectangle" and not self.text:
                 self.set_notch_rectangle(joining=True)
             if not self.text:
@@ -1635,23 +1669,41 @@ class MDTextField(
                 self.set_pos_hint_text(y)
                 self.set_hint_text_font_size(sp(16))
             if self.icon_right:
-                self.set_icon_right_color(self.icon_right_color_normal)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_right_color(
+                        self.icon_right_color_normal
+                    )
+                )
             if self.icon_left:
-                self.set_icon_left_color(self.icon_left_color_normal)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_left_color(
+                        self.icon_left_color_normal
+                    )
+                )
             if self.hint_text:
-                self.set_hint_text_color(focus, self.error)
+                Clock.schedule_once(
+                    lambda x: self.set_hint_text_color(focus, self.error)
+                )
 
             self.set_active_underline_width(0)
-            self.set_max_length_text_color([0, 0, 0, 0])
+            Clock.schedule_once(
+                lambda x: self.set_max_length_text_color([0, 0, 0, 0])
+            )
 
             if self.mode == "fill":
-                self.set_fill_color(self.fill_color_normal)
+                Clock.schedule_once(
+                    lambda x: self.set_fill_color(self.fill_color_normal)
+                )
 
             self.error = self._get_has_error() or self.error
             if self.error:
                 self.set_static_underline_color(self.error_color)
             else:
-                self.set_static_underline_color(self.line_color_normal)
+                Clock.schedule_once(
+                    lambda x: self.set_static_underline_color(
+                        self.line_color_normal
+                    )
+                )
 
     def on_icon_left(self, instance_text_field, icon_name: str) -> None:
         self._icon_left_label.icon = icon_name
@@ -1669,33 +1721,65 @@ class MDTextField(
         """
 
         if error:
-            self.set_max_length_text_color(self.error_color)
+            Clock.schedule_once(
+                lambda x: self.set_max_length_text_color(self.error_color)
+            )
             self.set_active_underline_color(self.error_color)
             if self.hint_text:
                 self.set_hint_text_color(self.focus, self.error)
             if self.helper_text:
-                self.set_helper_text_color(self.error_color)
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(self.error_color)
+                )
             if self.icon_right:
-                self.set_icon_right_color(self.error_color)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_right_color(self.error_color)
+                )
             if self.icon_left:
-                self.set_icon_left_color(self.error_color)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_left_color(self.error_color)
+                )
             if self.helper_text_mode == "on_error":
-                self.set_helper_text_color(self.error_color)
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(self.error_color)
+                )
         else:
-            self.set_max_length_text_color(self.max_length_text_color)
+            Clock.schedule_once(
+                lambda x: self.set_max_length_text_color(
+                    self.max_length_text_color
+                )
+            )
             self.set_active_underline_color(self.line_color_focus)
             if self.hint_text:
                 self.set_hint_text_color(self.focus)
             if self.helper_text:
-                self.set_helper_text_color(self.helper_text_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(
+                        self.helper_text_color_focus
+                    )
+                )
             if self.icon_right:
-                self.set_icon_right_color(self.icon_right_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_right_color(
+                        self.icon_right_color_focus
+                    )
+                )
             if self.icon_left:
-                self.set_icon_left_color(self.icon_left_color_focus)
+                Clock.schedule_once(
+                    lambda x: self.set_icon_left_color(
+                        self.icon_left_color_focus
+                    )
+                )
             if self.helper_text_mode in ("on_focus", "on_error"):
-                self.set_helper_text_color([0, 0, 0, 0])
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color([0, 0, 0, 0])
+                )
             elif self.helper_text_mode == "persistent":
-                self.set_helper_text_color(self.helper_text_color_normal)
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(
+                        self.helper_text_color_normal
+                    )
+                )
 
     def on_hint_text(self, instance_text_field, hint_text: str) -> None:
         if hint_text:
@@ -1715,32 +1799,32 @@ class MDTextField(
 
     def on_text_color_normal(
         self, instance_text_field, color: Union[list, str]
-    ):
+    ) -> None:
         self._text_color_normal = color
 
     def on_hint_text_color_normal(
         self, instance_text_field, color: Union[list, str]
-    ):
+    ) -> None:
         self._hint_text_color = color
 
     def on_helper_text_color_normal(
         self, instance_text_field, color: Union[list, str]
-    ):
+    ) -> None:
         self._helper_text_color = color
 
     def on_icon_right_color_normal(
         self, instance_text_field, color: Union[list, str]
-    ):
+    ) -> None:
         self._icon_right_color = color
 
     def on_line_color_normal(
         self, instance_text_field, color: Union[list, str]
-    ):
+    ) -> None:
         self._line_color_normal = color
 
     def on_max_length_text_color(
         self, instance_text_field, color: Union[list, str]
-    ):
+    ) -> None:
         self._max_length_text_color = color
 
     def _set_color(self, attr_name: str, color: str, updated: bool) -> None:

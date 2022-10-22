@@ -1669,8 +1669,10 @@ class ThemableBehavior(EventDispatcher):
 
         # Fix circular imports.
         from kivymd.uix.behaviors import CommonElevationBehavior
+        from kivymd.uix.label import MDLabel
 
         self.common_elevation_behavior = CommonElevationBehavior
+        self.md_label = MDLabel
 
     def dec_disabled(self, *args, **kwargs) -> None:
         callabacks = self.theme_cls.get_property_observers("theme_style")
@@ -1695,5 +1697,12 @@ class ThemableBehavior(EventDispatcher):
         # that inherited the elevation behavior.
         if issubclass(self.__class__, self.common_elevation_behavior):
             Window.unbind(on_draw=self.on_pos)
+        # Canceling a scheduled method call on_window_touch for MDLabel
+        # objects.
+        if (
+            issubclass(self.__class__, self.md_label)
+            and self.md_label.allow_selection
+        ):
+            Window.unbind(on_touch_down=self.on_window_touch)
 
         super().dec_disabled(*args, **kwargs)

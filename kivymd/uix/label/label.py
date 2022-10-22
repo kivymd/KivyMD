@@ -198,11 +198,11 @@ Highlighting and copying labels
 You can highlight labels by double tap on the label:
 ----------------------------------------------------
 
-.. code-block:: python
+.. tabs::
 
-    .. tabs::
+    .. tab:: Declarative KV style
 
-        .. tab:: Declarative KV style
+        .. code-block:: python
 
             from kivy.lang.builder import Builder
 
@@ -229,7 +229,9 @@ You can highlight labels by double tap on the label:
 
             Example().run()
 
-        .. tab:: Declarative Python style
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
 
             from kivy.lang.builder import Builder
 

@@ -21,3 +21,4 @@ Unreleased
 * `Fix <https://github.com/kivymd/KivyMD/commit/e9ec26283fd6ddf5f436168f918797de16f46c79>`_ `MDDropdownMenu position isn't working <https://github.com/kivymd/KivyMD/issues/1333>`_.
 * `Fix <https://github.com/kivymd/KivyMD/commit/905611d6c5d8553c4ca6bd5ee1c4d2d7ee726c8d>`_ `switching between a dark and light theme causes most of the MDTextField widget elements not to update their colors when changing the theme <https://github.com/kivymd/KivyMD/pull/740#issuecomment-1287252715>`_.
 * `Fix <https://github.com/kivymd/KivyMD/commit/2af018b00ca6897b42ca01bbed687dab62efd7fd>`_ `incorrect md_bd_color behavior <https://github.com/kivymd/KivyMD/issues/1396>`_ of `MDLabel <https://kivymd.readthedocs.io/en/1.1.1/components/label/#mdlabel>`_ class.
+* `Fix <https://github.com/kivymd/KivyMD/commit/b4eef1a52a24e540b8a2863fbd9f43c45291cbbe>`_ `changing theme doesn't work as expected with MDDataTable <https://github.com/kivymd/KivyMD/issues/1399>`_.

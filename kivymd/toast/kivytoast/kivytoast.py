@@ -82,7 +82,7 @@ class Toast(BaseDialog):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.label_toast = Label(size_hint=(None, None), opacity=0)
+        self.label_toast = Label(size_hint=(None, None), markup=True, opacity=0)
         self.label_toast.bind(texture_size=self.label_check_texture_size)
         self.add_widget(self.label_toast)
 

@@ -1040,19 +1040,23 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         caller = self.caller
         position = self.position
 
-        if (
-            (
-                self._start_coords[1] - target_height / 2 < 0
-                and position == "center"
-            )  # "center"
-            or self._start_coords[1]
-            + (caller.height - caller.height / 2)
-            + target_height
-            > Window.height  # "top"
-            or self._start_coords[1] - (target_height + caller.height / 2)
-            < 0  # "bottom"
-        ):
-            position = "auto"
+        if position == "bottom":
+            if self._start_coords[1] - (target_height + caller.height / 2) < 0:
+                position = "auto"
+                return position
+        elif position == "top":
+            if (
+                self._start_coords[1]
+                + (caller.height - caller.height / 2)
+                + target_height
+                > Window.height
+            ):
+                position = "auto"
+        elif position == "center":
+            if self._start_coords[1] - target_height / 2 < 0:
+                position = "auto"
+
+        if position == "auto":
             if self.hor_growth or self.ver_growth:
                 self.hor_growth = None
                 self.ver_growth = None

@@ -22,7 +22,7 @@ Usage
     from kivymd.uix.button import MDRaisedButton
 
     KV = '''
-    Screen:
+    MDScreen:
 
         MyButton:
             text: "PRESS ME"
@@ -74,9 +74,10 @@ class TouchBehavior:
 
     def create_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):
-            callback = partial(self.on_long_touch, touch)
-            Clock.schedule_once(callback, self.duration_long_touch)
-            touch.ud["event"] = callback
+            if "event" not in touch.ud:
+                callback = partial(self.on_long_touch, touch)
+                Clock.schedule_once(callback, self.duration_long_touch)
+                touch.ud["event"] = callback
 
         if touch.is_double_tap:
             self.on_double_tap(touch, *args)
@@ -85,10 +86,9 @@ class TouchBehavior:
 
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):
-            try:
+            if "event" in touch.ud:
                 Clock.unschedule(touch.ud["event"])
-            except KeyError:
-                pass
+                del touch.ud["event"]
 
     def on_long_touch(self, touch, *args):
         """Called when the widget is pressed for a long time."""

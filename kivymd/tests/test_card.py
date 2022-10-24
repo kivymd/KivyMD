@@ -3,11 +3,10 @@ from kivymd.tests.base_test import BaseTest
 
 class CardTest(BaseTest):
     def test_card_m3_style_raw_app(self):
-        from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
         from kivymd.uix.card import MDCard
         from kivymd.uix.screen import MDScreen
 
-        class MD3Card(MDCard, RoundedRectangularElevationBehavior):
+        class MD3Card(MDCard):
             pass
 
         self.app.theme_cls.material_style = "M3"

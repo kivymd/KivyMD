@@ -1043,7 +1043,6 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         if position == "bottom":
             if self._start_coords[1] - (target_height + caller.height / 2) < 0:
                 position = "auto"
-                return position
         elif position == "top":
             if (
                 self._start_coords[1]

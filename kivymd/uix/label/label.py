@@ -701,7 +701,11 @@ class MDLabel(
         self.update_font_style(None, "")
         self.on_opposite_colors(None, self.opposite_colors)
         Clock.schedule_once(self.check_font_styles)
-        self.theme_cls.bind(theme_style=self._do_update_theme_color)
+        self.theme_cls.bind(
+            theme_style=lambda *args: Clock.schedule_once(
+                self._do_update_theme_color
+            )
+        )
 
     def check_font_styles(self, interval: Union[int, float] = 0) -> bool:
         if self.font_style not in list(self.theme_cls.font_styles.keys()):

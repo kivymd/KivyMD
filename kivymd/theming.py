@@ -1691,7 +1691,8 @@ class ThemableBehavior(EventDispatcher):
                             }
                         )
                 if (
-                    issubclass(self.__class__, self.md_label)
+                    self.__class__ is self.md_label
+                    and self.text
                     and hasattr(callaback, "proxy")
                     and callaback.proxy is None
                     and callaback.method_name is None

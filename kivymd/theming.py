@@ -1690,6 +1690,13 @@ class ThemableBehavior(EventDispatcher):
                                 )
                             }
                         )
+                if (
+                    issubclass(self.__class__, self.md_label)
+                    and hasattr(callaback, "proxy")
+                    and callaback.proxy is None
+                    and callaback.method_name is None
+                ):
+                    self.theme_cls.unbind(**{"theme_style": callaback.method})
             except ReferenceError:
                 pass
 

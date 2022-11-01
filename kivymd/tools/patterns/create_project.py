@@ -1077,7 +1077,9 @@ def create_view(
             init_components.write(temp_responsive_component_imports)
 
     with open(f"{view_module}.kv", "w", encoding="utf-8") as view_file:
-        view_file.write(f"<{name_screen}View>\n")
+        screen_name_list = chek_camel_case_name_project(name_screen)
+        screen_name = " ".join(screen_name_list).lower()
+        view_file.write(f"<{name_screen}View>\n\tname: '{screen_name}'")
 
     if name_screen not in use_responsive:
         shutil.copy(

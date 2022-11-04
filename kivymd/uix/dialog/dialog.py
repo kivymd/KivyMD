@@ -563,7 +563,8 @@ class MDDialog(BaseDialog):
         :align: center
 
     :attr:`content_cls` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `'None'`.
+    and defaults to `'None'`. This attribute is only available when
+    :attr:`type` is set to `'custom'`.
     """
 
     md_bg_color = ColorProperty(None)

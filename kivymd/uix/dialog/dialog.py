@@ -422,7 +422,8 @@ class MDDialog(BaseDialog):
 
     content_cls = ObjectProperty()
     """
-    Custom content class.
+    Custom content class. This attribute is only available when :attr:`type` is
+    set to `'custom'`.
 
     .. tabs::
 

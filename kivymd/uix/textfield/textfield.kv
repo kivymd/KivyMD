@@ -207,7 +207,7 @@
         # Text color.
         Color:
             rgba:
-                self.disabled_foreground_color if self.disabled else \
+                self.theme_cls.disabled_hint_text_color if self.disabled else \
                 ( \
                 self.text_color_focus if self.focus else self._text_color_normal
                 ) \

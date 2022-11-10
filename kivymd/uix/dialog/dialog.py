@@ -422,7 +422,8 @@ class MDDialog(BaseDialog):
 
     content_cls = ObjectProperty()
     """
-    Custom content class.
+    Custom content class. This attribute is only available when :attr:`type` is
+    set to `'custom'`.
 
     .. tabs::
 
@@ -563,8 +564,7 @@ class MDDialog(BaseDialog):
         :align: center
 
     :attr:`content_cls` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `'None'`. This attribute is only available when
-    :attr:`type` is set to `'custom'`.
+    and defaults to `'None'`.
     """
 
     md_bg_color = ColorProperty(None)

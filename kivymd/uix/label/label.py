@@ -552,9 +552,9 @@ with open(
 class MDLabel(
     DeclarativeBehavior,
     ThemableBehavior,
-    TouchBehavior,
     Label,
     MDAdaptiveWidget,
+    TouchBehavior,
 ):
     """
     Label class.

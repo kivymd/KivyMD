@@ -1,4 +1,4 @@
-<-STScrollView>
+<-MDScrollView>
     _handle_y_pos: (self.right - self.bar_width - self.bar_margin) if self.bar_pos_y == 'right' else (self.x + self.bar_margin), self.y + self.height * self.vbar[0]
     _handle_y_size: min(self.bar_width, self.width), self.height * self.vbar[1]
     _handle_x_pos: self.x + self.width * self.hbar[0], (self.y + self.bar_margin) if self.bar_pos_x == 'bottom' else (self.top - self.bar_margin - self.bar_width)
@@ -9,12 +9,12 @@
             rgba: self._bar_color if (self.do_scroll_y and self.viewport_size[1] > self.height) else [0, 0, 0, 0]
         RoundedRectangle:
             pos: root._handle_y_pos or (0, 0)
-            size: max(root._handle_y_size, (1, 1)) or (0, 0)
+            size: root._handle_y_size or (0, 0)
             radius: root.bar_radius
 
         Color:
             rgba: self._bar_color if (self.do_scroll_x and self.viewport_size[0] > self.width) else [0, 0, 0, 0]
         RoundedRectangle:
             pos: root._handle_x_pos or (0, 0)
-            size: max(root._handle_x_size, (1, 1)) or (0, 0)
+            size: root._handle_x_size or (0, 0)
             radius: root.bar_radius

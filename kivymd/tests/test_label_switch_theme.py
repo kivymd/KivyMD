@@ -1,7 +1,7 @@
 # Test for https://github.com/kivymd/KivyMD/issues/1403 issue.
 
-from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.clock import Clock
 
 from kivymd.app import MDApp
 
@@ -11,24 +11,18 @@ MDScreenManager:
     MDScreen:
         name: "screen one"
 
-        MDBoxLayout:
-            orientation: "vertical"
-
-            MDLabel:
-                text: "This is MDLabel"
-                halign: "center"
+        MDLabel:
+            text: "This is MDLabel"
+            halign: "center"
 
     MDScreen:
         name: "screen two"
         on_enter: app.callback_change_theme()
 
-        MDBoxLayout:
-            orientation: "vertical"
-
-            MDLabel:
-                id: label_two
-                text: "This is MDLabel"
-                halign: "center"
+        MDLabel:
+            id: label_two
+            text: "This is MDLabel"
+            halign: "center"
 '''
 
 

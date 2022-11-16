@@ -1,11 +1,11 @@
 # Test for https://github.com/kivymd/KivyMD/issues/1403 issue.
 
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
-UI = '''
+UI = """
 MDScreenManager:
 
     MDScreen:
@@ -23,12 +23,12 @@ MDScreenManager:
             id: label_two
             text: "This is MDLabel"
             halign: "center"
-'''
+"""
 
 
 class TestLabelSwitchTheme(MDApp):
     def check_label_color(self, *args):
-        assert (self.root.ids.label_two.color == [1.0, 1.0, 1.0, 1.0])
+        assert self.root.ids.label_two.color == [1.0, 1.0, 1.0, 1.0]
         self.stop()
 
     def callback_change_theme(self):

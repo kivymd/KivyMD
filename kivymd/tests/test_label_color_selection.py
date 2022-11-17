@@ -4,7 +4,7 @@ from kivy.lang.builder import Builder
 
 from kivymd.app import MDApp
 
-KV = '''
+KV = """
 MDScreen:
 
     MDLabel:
@@ -13,7 +13,7 @@ MDScreen:
         text: "MDLabel"
         allow_selection: True
         color_selection: "red"
-'''
+"""
 
 
 class TestLabelColorSelection(MDApp):

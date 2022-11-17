@@ -25,7 +25,9 @@ class TestLabelColorDeselection(MDApp):
         self.stop()
 
     def on_start(self):
-        self.touch = MouseMotionEvent("mouse", "button", self.root.ids.label.pos)
+        self.touch = MouseMotionEvent(
+            "mouse", "button", self.root.ids.label.pos
+        )
         self.root.ids.label.on_double_tap(self.touch, ())
         Clock.schedule_once(self.check_selection)
 

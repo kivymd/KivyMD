@@ -12,13 +12,14 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.stacklayout import MDStackLayout
 from kivymd.uix.widget import MDWidget
+from kivymd.utils import asynckivy
 
 
 class TestMdBgColorLayouts(MDApp):
     def build(self):
         return MDScreen()
 
-    def on_start(self):
+    async def generate_layouts(self):
         for layout in [
             MDBoxLayout,
             MDRelativeLayout,
@@ -32,12 +33,16 @@ class TestMdBgColorLayouts(MDApp):
             MDFloatLayout,
             MDAnchorLayout,
         ]:
+            await asynckivy.sleep(0)
             layout = layout(md_bg_color="red")
-
             self.root.clear_widgets()
             self.root.add_widget(layout)
             self.check_md_bg_color(layout)
+
         self.stop()
+
+    def on_start(self):
+        asynckivy.start(self.generate_layouts())
 
     def check_md_bg_color(self, widget):
         for instruction in widget.canvas.children:

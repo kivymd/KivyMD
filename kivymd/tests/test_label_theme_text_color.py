@@ -3,7 +3,7 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
-KV = '''
+KV = """
 MDScreen:
 
     MDLabel:
@@ -12,7 +12,7 @@ MDScreen:
         halign: "center"
         theme_text_color: "Custom"
         text_color: "red"
-'''
+"""
 
 
 class TestLabelThemeTextColor(MDApp):
@@ -21,7 +21,7 @@ class TestLabelThemeTextColor(MDApp):
 
     def on_start(self):
         def on_start(*args):
-            assert (self.root.ids.label.text_color == [1.0, 0.0, 0.0, 1.0])
+            assert self.root.ids.label.text_color == [1.0, 0.0, 0.0, 1.0]
             self.stop()
 
         Clock.schedule_once(on_start, 2)

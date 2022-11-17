@@ -17,7 +17,7 @@ class TestLabelDefaultThemeTextColor(MDApp):
 
     def on_start(self):
         def check_color():
-            assert (label.color == self.color_data[name_color])
+            assert label.color == self.color_data[name_color]
 
         for name_color in self.color_data.keys():
             label = MDLabel(text="MDLabel", theme_text_color=name_color)

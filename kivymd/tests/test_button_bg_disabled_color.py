@@ -3,14 +3,15 @@ from kivy.graphics import Color
 
 from kivymd.app import MDApp
 from kivymd.uix.button import (
-    MDRaisedButton,
+    MDFillRoundFlatButton,
+    MDFillRoundFlatIconButton,
     MDFlatButton,
+    MDFloatingActionButton,
+    MDIconButton,
+    MDRaisedButton,
     MDRectangleFlatButton,
     MDRoundFlatButton,
     MDRoundFlatIconButton,
-    MDFillRoundFlatButton,
-    MDFillRoundFlatIconButton,
-    MDFloatingActionButton, MDIconButton,
 )
 from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
@@ -34,7 +35,8 @@ class TestButtonBgDisabledColor(MDApp):
         ]:
             await asynckivy.sleep(0)
             button = button(
-                disabled=True, pos_hint={"center_x": 0.5, "center_y": 0.5},
+                disabled=True,
+                pos_hint={"center_x": 0.5, "center_y": 0.5},
             )
             self.root.clear_widgets()
             self.root.add_widget(button)

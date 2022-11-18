@@ -16,7 +16,7 @@ MDScreen:
 """
 
 
-class TestLabelColorSelection(MDApp):
+class TestColorSelection(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Red"
         return Builder.load_string(KV)
@@ -31,4 +31,4 @@ class TestLabelColorSelection(MDApp):
         Clock.schedule_once(self.check_selection)
 
 
-TestLabelColorSelection().run()
+TestColorSelection().run()

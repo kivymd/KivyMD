@@ -4,7 +4,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
 
 
-class TestLabelDefaultThemeTextColor(MDApp):
+class TestDefaultThemeTextColor(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.color_data = {
@@ -29,4 +29,4 @@ class TestLabelDefaultThemeTextColor(MDApp):
         asynckivy.start(self.generate_labels())
 
 
-TestLabelDefaultThemeTextColor().run()
+TestDefaultThemeTextColor().run()

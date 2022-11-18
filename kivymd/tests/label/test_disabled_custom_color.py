@@ -15,7 +15,7 @@ MDScreen:
 """
 
 
-class TestLabelDisabledCustomColor(MDApp):
+class TestDisabledCustomColor(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
@@ -32,4 +32,4 @@ class TestLabelDisabledCustomColor(MDApp):
         Clock.schedule_once(self.check_disabled_color, 1)
 
 
-TestLabelDisabledCustomColor().run()
+TestDisabledCustomColor().run()

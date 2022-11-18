@@ -15,7 +15,7 @@ MDScreen:
 """
 
 
-class TestLabelThemeTextColor(MDApp):
+class TestThemeTextColor(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
@@ -27,4 +27,4 @@ class TestLabelThemeTextColor(MDApp):
         Clock.schedule_once(on_start, 2)
 
 
-TestLabelThemeTextColor().run()
+TestThemeTextColor().run()

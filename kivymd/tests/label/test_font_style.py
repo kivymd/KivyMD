@@ -18,7 +18,7 @@ MDScreen:
 """
 
 
-class TestLabelFontStyle(MDApp):
+class TestFontStyle(MDApp):
     def build(self):
         LabelBase.register(
             name="Danger",
@@ -44,4 +44,4 @@ class TestLabelFontStyle(MDApp):
         Clock.schedule_once(on_start, 2)
 
 
-TestLabelFontStyle().run()
+TestFontStyle().run()

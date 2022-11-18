@@ -17,7 +17,7 @@ MDScreen:
 """
 
 
-class TestLabelAllowCopy(MDApp):
+class TestAllowCopy(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
@@ -33,4 +33,4 @@ class TestLabelAllowCopy(MDApp):
         Clock.schedule_once(on_start, 1)
 
 
-TestLabelAllowCopy().run()
+TestAllowCopy().run()

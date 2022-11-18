@@ -15,7 +15,7 @@ MDScreen:
 """
 
 
-class TestLabelColorDeselection(MDApp):
+class TestColorDeselection(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
@@ -32,4 +32,4 @@ class TestLabelColorDeselection(MDApp):
         Clock.schedule_once(self.check_selection)
 
 
-TestLabelColorDeselection().run()
+TestColorDeselection().run()

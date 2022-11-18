@@ -17,7 +17,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
 
 
-class TestButtonMdBgColorDisabled(MDApp):
+class TestMdBgColorDisabled(MDApp):
     def build(self):
         return MDScreen()
 
@@ -57,4 +57,4 @@ class TestButtonMdBgColorDisabled(MDApp):
         asynckivy.start(self.generate_buttons())
 
 
-TestButtonMdBgColorDisabled().run()
+TestMdBgColorDisabled().run()

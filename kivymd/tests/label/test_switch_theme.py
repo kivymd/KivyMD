@@ -26,7 +26,7 @@ MDScreenManager:
 """
 
 
-class TestLabelSwitchTheme(MDApp):
+class TestSwitchTheme(MDApp):
     def check_label_color(self, *args):
         assert self.root.ids.label_two.color == [1.0, 1.0, 1.0, 1.0]
         self.stop()
@@ -45,4 +45,4 @@ class TestLabelSwitchTheme(MDApp):
         return Builder.load_string(UI)
 
 
-TestLabelSwitchTheme().run()
+TestSwitchTheme().run()

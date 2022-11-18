@@ -14,7 +14,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
 
 
-class TestButtonSizeHint(MDApp):
+class TestSizeHint(MDApp):
     def build(self):
         return MDScreen()
 
@@ -43,4 +43,4 @@ class TestButtonSizeHint(MDApp):
         asynckivy.start(self.generate_buttons())
 
 
-TestButtonSizeHint().run()
+TestSizeHint().run()

@@ -64,7 +64,7 @@ MDScreenManager:
 """
 
 
-class TestHeroWithFirstScreenWithoutHero(MDApp):
+class TestWithFirstScreenWithoutHero(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
@@ -92,4 +92,4 @@ class TestHeroWithFirstScreenWithoutHero(MDApp):
         Clock.schedule_once(self.set_screen_with_hero_from, 1)
 
 
-TestHeroWithFirstScreenWithoutHero().run()
+TestWithFirstScreenWithoutHero().run()

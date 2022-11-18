@@ -2,13 +2,13 @@ from kivy.clock import Clock
 
 from kivymd.app import MDApp
 from kivymd.uix.button import (
-    MDRaisedButton,
+    MDFillRoundFlatButton,
+    MDFillRoundFlatIconButton,
     MDFlatButton,
+    MDRaisedButton,
     MDRectangleFlatButton,
     MDRoundFlatButton,
     MDRoundFlatIconButton,
-    MDFillRoundFlatButton,
-    MDFillRoundFlatIconButton,
 )
 from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
@@ -105,8 +105,14 @@ class TestTextHalignValign(MDApp):
 
     def check_button_text_pos(self, button):
         button_name = button.__class__.__name__
-        assert self.data["halign"][button.halign][button_name] == button.ids.lbl_txt.x
-        assert self.data["valign"][button.valign][button_name] == button.ids.lbl_txt.y
+        assert (
+            self.data["halign"][button.halign][button_name]
+            == button.ids.lbl_txt.x
+        )
+        assert (
+            self.data["valign"][button.valign][button_name]
+            == button.ids.lbl_txt.y
+        )
 
         self.root.clear_widgets()
         self.exit_flag += 1

@@ -23,7 +23,9 @@ class TestFontStyle(MDApp):
         LabelBase.register(
             name="Danger",
             fn_regular=os.path.join(
-                os.path.dirname(__file__).split("label")[0], "data", "danger.ttf"
+                os.path.dirname(__file__).split("label")[0],
+                "data",
+                "danger.ttf",
             ),
         )
 

@@ -10,7 +10,7 @@ from kivymd.uix.button import (
     MDRoundFlatIconButton,
     MDFillRoundFlatButton,
     MDFillRoundFlatIconButton,
-    MDFloatingActionButton,
+    MDFloatingActionButton, MDIconButton,
 )
 from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
@@ -30,6 +30,7 @@ class TestButtonBgDisabledColor(MDApp):
             MDRectangleFlatButton,
             MDRoundFlatButton,
             MDRoundFlatIconButton,
+            MDIconButton,
         ]:
             await asynckivy.sleep(0)
             button = button(
@@ -41,7 +42,7 @@ class TestButtonBgDisabledColor(MDApp):
                 lambda y, x=button: self.check_button_bg_disabled_color(x), 1
             )
 
-        self.stop()
+        Clock.schedule_once(lambda x: self.stop(), 2)
 
     def check_button_bg_disabled_color(self, button):
         if isinstance(
@@ -77,7 +78,7 @@ class TestButtonBgDisabledColor(MDApp):
                             instruction.rgba
                             == self.theme_cls.disabled_primary_color
                         )
-                    elif isinstance(button, MDFlatButton):
+                    elif isinstance(button, (MDFlatButton, MDIconButton)):
                         assert instruction.rgba == [
                             0.0,
                             0.0,

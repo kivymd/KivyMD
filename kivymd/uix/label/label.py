@@ -697,7 +697,7 @@ class MDLabel(
         self.register_event_type("on_copy")
         self.register_event_type("on_selection")
         self.register_event_type("on_cancel_selection")
-        # self.on_theme_text_color(None, self.theme_text_color)
+        self.on_theme_text_color(None, self.theme_text_color)
         self.update_font_style(None, "")
         self.on_opposite_colors(None, self.opposite_colors)
         Clock.schedule_once(self.check_font_styles)

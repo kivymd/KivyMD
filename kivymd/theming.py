@@ -1697,6 +1697,8 @@ class ThemableBehavior(EventDispatcher):
                     and callaback.proxy is None
                     and callaback.method_name is None
                 ):
+                    pass
+                    # print(self, self.text)
                     self.theme_cls.unbind(**{"theme_style": callaback.method})
             except ReferenceError:
                 pass

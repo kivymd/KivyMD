@@ -2,6 +2,7 @@
     canvas:
         Clear
         Color:
+            group: "bg-color"
             rgba:
                 self._md_bg_color \
                 if not self.disabled else \
@@ -12,6 +13,7 @@
             source: self.source if hasattr(self, "source") else ""
             radius: [root._radius, ]
         Color:
+            group: "outline-color"
             rgba:
                 root._line_color \
                 if not root.disabled else \

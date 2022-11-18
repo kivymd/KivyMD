@@ -14,7 +14,7 @@ from kivymd.uix.screen import MDScreen
 from kivymd.utils import asynckivy
 
 
-class TestButtonTextHalignValign(MDApp):
+class TestTextHalignValign(MDApp):
     data = {
         "halign": {
             "left": {
@@ -122,4 +122,4 @@ class TestButtonTextHalignValign(MDApp):
         asynckivy.start(self.generate_buttons(halign="right", valign="center"))
 
 
-TestButtonTextHalignValign().run()
+TestTextHalignValign().run()

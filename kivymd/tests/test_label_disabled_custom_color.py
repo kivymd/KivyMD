@@ -20,7 +20,12 @@ class TestLabelDisabledCustomColor(MDApp):
         return Builder.load_string(KV)
 
     def check_disabled_color(self, *args):
-        assert self.root.ids.label._label.options["color"] == [1.0, 0.0, 0.0, 1.0]
+        assert self.root.ids.label._label.options["color"] == [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+        ]
         self.stop()
 
     def on_start(self):

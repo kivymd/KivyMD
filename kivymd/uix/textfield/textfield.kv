@@ -7,6 +7,7 @@
 
         # "round" mode.
         Color:
+            group: "round-color"
             rgba: self._fill_color if self.mode == "round" else (0, 0, 0, 0)
         Ellipse:
             angle_start: 180
@@ -62,6 +63,7 @@
 
         # "fill" mode.
         Color:
+            group: "fill-color"
             rgba: self._fill_color if self.mode == "fill" else (0, 0, 0, 0)
         RoundedRectangle:
             pos: self.x, self.y
@@ -70,6 +72,7 @@
 
         # Static underline texture.
         Color:
+            group: "static-underline-color"
             rgba:
                 (self._line_color_normal \
                 if self.line_color_normal else self.theme_cls.divider_color) \
@@ -82,6 +85,7 @@
 
         # Active underline (on focus) texture.
         Color:
+            group: "active-underline-color"
             rgba:
                 self._line_color_focus \
                 if self.mode in ("line", "fill") and self.active_line \
@@ -94,6 +98,7 @@
 
         # Helper text texture.
         Color:
+            group: "helper-text-color"
             rgba:
                 self._helper_text_color
         Rectangle:
@@ -106,6 +111,7 @@
 
         # Right/left icon texture.
         Color:
+            group: "right-left-icons-color"
             rgba:
                 self.theme_cls.disabled_hint_text_color \
                 if self.disabled else \
@@ -140,6 +146,7 @@
 
         # Max length texture.
         Color:
+            group: "max-length-color"
             rgba: self._max_length_text_color
         Rectangle:
             texture: self._max_length_label.texture
@@ -165,6 +172,7 @@
 
         # Hint text texture.
         Color:
+            group: "hint-text-color"
             rgba:
                 self._hint_text_color
         Rectangle:
@@ -189,6 +197,7 @@
 
         # "rectangle" mode
         Color:
+            group: "rectangle-color"
             rgba:
                 (self.line_color_focus if not self.error else self.error_color) \
                 if self.focus else \
@@ -209,6 +218,7 @@
 
         # Text color.
         Color:
+            group: "text-color"
             rgba:
                 self.theme_cls.disabled_hint_text_color if self.disabled else \
                 ( \

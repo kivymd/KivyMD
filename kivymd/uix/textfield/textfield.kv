@@ -100,6 +100,8 @@
         Color:
             group: "helper-text-color"
             rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
                 self._helper_text_color
         Rectangle:
             texture: self._helper_text_label.texture
@@ -147,7 +149,10 @@
         # Max length texture.
         Color:
             group: "max-length-color"
-            rgba: self._max_length_text_color
+            rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
+                self._max_length_text_color
         Rectangle:
             texture: self._max_length_label.texture
             size: self._max_length_label.texture_size
@@ -174,6 +179,8 @@
         Color:
             group: "hint-text-color"
             rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
                 self._hint_text_color
         Rectangle:
             texture: self._hint_text_label.texture

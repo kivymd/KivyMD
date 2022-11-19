@@ -4,7 +4,7 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFloatingActionButton
 
-KV = '''
+KV = """
 MDScreen:
     md_bg_color: "#f7f2fa"
 
@@ -13,7 +13,7 @@ MDScreen:
         spacing: "56dp"
         adaptive_size: True
         pos_hint: {"center_x": .5, "center_y": .5}
-'''
+"""
 
 
 class TestFabSizeM3Style(MDApp):

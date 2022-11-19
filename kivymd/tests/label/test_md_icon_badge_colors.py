@@ -3,7 +3,7 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
-KV = '''
+KV = """
 MDScreen:
 
     MDIcon:
@@ -13,7 +13,7 @@ MDScreen:
         badge_icon_color: "red"
         badge_bg_color: "black"
         pos_hint: {"center_x": .5, "center_y": .5}
-'''
+"""
 
 
 class TestMDIconBadgeColors(MDApp):

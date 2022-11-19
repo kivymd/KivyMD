@@ -3,7 +3,7 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
-KV = '''
+KV = """
 MDScreen:
 
     MDIcon:
@@ -11,7 +11,7 @@ MDScreen:
         icon: "mail"
         badge_icon: "numeric-10"
         pos_hint: {"center_x": .5, "center_y": .5}
-'''
+"""
 
 
 class TestMDIconBadgeSize(MDApp):

@@ -12,7 +12,9 @@ class TextFieldPotentialMemoryLeak(MDTextField):
         global len_callbacks
 
         super().dec_disabled()
-        len_callbacks = len(self.theme_cls.get_property_observers("theme_style"))
+        len_callbacks = len(
+            self.theme_cls.get_property_observers("theme_style")
+        )
 
 
 class TestTextFieldMemoryLeak(MDApp):

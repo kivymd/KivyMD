@@ -106,7 +106,10 @@
 
         # Right/left icon texture.
         Color:
-            rgba: self._icon_right_color if self.icon_right else self._icon_left_color
+            rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
+                (self._icon_right_color if self.icon_right else self._icon_left_color)
         Rectangle:
             texture:
                 self._icon_right_label.texture if self.icon_right else self._icon_left_label.texture

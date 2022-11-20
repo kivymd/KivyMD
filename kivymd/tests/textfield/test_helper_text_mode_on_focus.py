@@ -1,3 +1,9 @@
+# Test task:
+#
+# - helper text is not displayed (text fields without focus);
+# - helper text is displayed (text fields with focus);
+# - helper text is not displayed (text fields without focus);
+
 from kivy.lang import Builder
 from kivy.clock import Clock
 

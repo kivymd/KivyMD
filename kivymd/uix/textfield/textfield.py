@@ -1656,6 +1656,12 @@ class MDTextField(
                         self.helper_text_color_normal
                     )
                 )
+            if self.helper_text_mode == "on_focus" and self.helper_text:
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(
+                        [0.0, 0.0, 0.0, 0.0]
+                    )
+                )
             if self.mode == "rectangle" and not self.text:
                 self.set_notch_rectangle(joining=True)
             if not self.text:

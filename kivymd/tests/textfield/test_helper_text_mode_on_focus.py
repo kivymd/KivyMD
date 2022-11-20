@@ -23,20 +23,19 @@ class TestHelperTextModeOnFocus(MDApp):
         return Builder.load_string(KV)
 
     def check_helper_text_focus(self, *args):
-        if self.state == "checked":
-            self.stop()
-
         field = self.root.ids.field
         focus = field.focus
 
         for instruction in self.root.ids.field.canvas.before.children:
             if instruction.group == "helper-text-color":
-
                 assert instruction.rgba == (
                     [0.0, 0.0, 0.0, 0.0]
                     if not focus
                     else self.theme_cls.disabled_hint_text_color
                 )
+
+        if self.state == "checked":
+            self.stop()
 
         if field.focus:
             field.focus = False

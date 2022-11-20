@@ -1882,79 +1882,75 @@ class MDTextField(
 
 
 if __name__ == "__main__":
-    from kivy.core.window import Window
     from kivy.lang import Builder
     from kivy.uix.textinput import TextInput
-
-    Window.size = (800, 750)
 
     from kivymd.app import MDApp
 
     KV = """
 MDScreen:
 
-    MDBoxLayout:
-        id: box
-        orientation: "vertical"
-        spacing: "20dp"
-        adaptive_height: True
-        size_hint_x: .8
-        pos_hint: {"center_x": .5, "center_y": .5}
+    MDScrollView:
 
-        MDTextField:
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "rectangle"
-            max_text_length: 5
-
-        MDTextField:
-            icon_left: "git"
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "rectangle"
-
-        MDTextField:
-            icon_left: "git"
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "fill"
-
-        MDTextField:
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "fill"
-
-        MDTextField:
-            hint_text: "Label"
-            helper_text: "Error message"
-
-        MDTextField:
-            icon_left: "git"
-            hint_text: "Label"
-            helper_text: "Error message"
-
-        MDTextField:
-            hint_text: "Round mode"
-            mode: "round"
-            max_text_length: 15
-            helper_text: "Message"
-
-        MDTextField:
-            hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
-            helper_text: "Enter a valid dd/mm/yyyy date"
-            validator: "date"
-            date_format: "dd/mm/yyyy"
-            date_interval: "01/01/1900", "01/01/2100"
-
-        MDTextField:
-            hint_text: "Email"
-            helper_text: "user@gmail.com"
-            validator: "email"
-
-        MDFlatButton:
-            text: "SET TEXT"
-            pos_hint: {"center_x": .5}
-            on_release: app.set_text()
+        MDList:
+            id: box
+            spacing: "32dp"
+            padding: "56dp", "12dp", "56dp", "12dp"
+    
+            MDTextField:
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "rectangle"
+                max_text_length: 5
+    
+            MDTextField:
+                icon_left: "git"
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "rectangle"
+    
+            MDTextField:
+                icon_left: "git"
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "fill"
+    
+            MDTextField:
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "fill"
+    
+            MDTextField:
+                hint_text: "Label"
+                helper_text: "Error message"
+    
+            MDTextField:
+                icon_left: "git"
+                hint_text: "Label"
+                helper_text: "Error message"
+    
+            MDTextField:
+                hint_text: "Round mode"
+                mode: "round"
+                max_text_length: 15
+                helper_text: "Message"
+    
+            MDTextField:
+                hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
+                helper_text: "Enter a valid dd/mm/yyyy date"
+                validator: "date"
+                date_format: "dd/mm/yyyy"
+                date_interval: "01/01/1900", "01/01/2100"
+    
+            MDTextField:
+                hint_text: "Email"
+                helper_text: "user@gmail.com"
+                validator: "email"
+    
+            MDFlatButton:
+                text: "SET TEXT"
+                pos_hint: {"center_x": .5}
+                on_release: app.set_text()
 """
 
     class Test(MDApp):

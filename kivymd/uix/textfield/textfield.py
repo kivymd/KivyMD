@@ -1536,7 +1536,7 @@ class MDTextField(
             if self.mode == "rectangle":
                 self.set_notch_rectangle()
 
-        if not self.text and not self.focus:
+        if (not self.text and not self.focus) or (self.text and not self.focus):
             self.on_focus(instance_text_field, False)
 
         if self.mode == "round" and self.text:
@@ -1776,11 +1776,7 @@ class MDTextField(
                         self.icon_left_color_focus
                     )
                 )
-            if self.helper_text_mode in ("on_focus", "on_error"):
-                Clock.schedule_once(
-                    lambda x: self.set_helper_text_color([0, 0, 0, 0])
-                )
-            elif self.helper_text_mode == "persistent":
+            if self.helper_text_mode == "persistent":
                 Clock.schedule_once(
                     lambda x: self.set_helper_text_color(
                         self.helper_text_color_normal

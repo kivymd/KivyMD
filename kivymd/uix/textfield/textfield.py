@@ -1674,13 +1674,13 @@ class MDTextField(
 
                 self.set_pos_hint_text(y)
                 self.set_hint_text_font_size(sp(16))
-            if self.icon_right:
+            if self.icon_right and not self.error:
                 Clock.schedule_once(
                     lambda x: self.set_icon_right_color(
                         self.icon_right_color_normal
                     )
                 )
-            if self.icon_left:
+            if self.icon_left and not self.error:
                 Clock.schedule_once(
                     lambda x: self.set_icon_left_color(
                         self.icon_left_color_normal

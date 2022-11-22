@@ -1277,6 +1277,7 @@ class MDTextField(
             _hint_text_font_size=self._hint_text_label.setter("font_size"),
             _icon_right_color=self._icon_right_label.setter("text_color"),
             _icon_left_color=self._icon_left_label.setter("text_color"),
+            font_name_hint_text=self._hint_text_label.setter("font_name"),
             text=self.set_text,
         )
         self.theme_cls.bind(

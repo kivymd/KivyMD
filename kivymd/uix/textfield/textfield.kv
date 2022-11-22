@@ -27,8 +27,10 @@
             rgba:
                 ( \
                 (self.line_color_focus if not self.error else self.error_color) \
-                if self.focus \
-                else self.theme_cls.disabled_hint_text_color \
+                if self.focus else ( \
+                self.theme_cls.disabled_hint_text_color \
+                if not self.line_color_normal else \
+                self.line_color_normal) \
                 ) \
                 if self.mode == "round" else \
                 (0, 0, 0, 0)

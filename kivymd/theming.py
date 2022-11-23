@@ -1665,39 +1665,44 @@ class ThemableBehavior(EventDispatcher):
                     "https://github.com/kivymd/KivyMD/wiki/Modules-Material-App#exceptions"
                 )
             self.theme_cls = App.get_running_app().theme_cls
+
         super().__init__(**kwargs)
 
         # Fix circular imports.
         from kivymd.uix.behaviors import CommonElevationBehavior
         from kivymd.uix.label import MDLabel
+        from kivymd.uix.textfield import MDTextField
 
         self.common_elevation_behavior = CommonElevationBehavior
         self.md_label = MDLabel
+        self.md_textfield = MDTextField
 
     def dec_disabled(self, *args, **kwargs) -> None:
-        callabacks = self.theme_cls.get_property_observers("theme_style")
+        callbacks = self.theme_cls.get_property_observers("theme_style")
 
-        for callaback in callabacks:
+        for callback in callbacks:
             try:
-                if hasattr(callaback, "proxy") and hasattr(
-                    callaback.proxy, "theme_cls"
+                if hasattr(callback, "proxy") and hasattr(
+                    callback.proxy, "theme_cls"
                 ):
-                    for property_name in self.unbind_properties:
+                    if issubclass(self.__class__, self.md_textfield):
                         self.theme_cls.unbind(
                             **{
-                                property_name: getattr(
-                                    callaback.proxy, callaback.method_name
+                                "theme_style": getattr(
+                                    callback.proxy, callback.method_name
                                 )
                             }
                         )
-                if (
-                    self.__class__ is self.md_label
-                    and self.text
-                    and hasattr(callaback, "proxy")
-                    and callaback.proxy is None
-                    and callaback.method_name is None
-                ):
-                    self.theme_cls.unbind(**{"theme_style": callaback.method})
+
+                    for property_name in self.unbind_properties:
+                        if self == callback.proxy:
+                            self.theme_cls.unbind(
+                                **{
+                                    property_name: getattr(
+                                        callback.proxy, callback.method_name
+                                    )
+                                }
+                            )
             except ReferenceError:
                 pass
 

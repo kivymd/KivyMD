@@ -16,6 +16,7 @@
         Color:
             rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
         Rectangle:
+            group: "rectangle"
             source: self.source if self.source else None
             pos:
                 self.pos \
@@ -32,6 +33,7 @@
 
     # Badge icon.
     MDLabel:
+        id: badge
         font_style: "Icon"
         adaptive_size: True
         opposite_icon_color: True
@@ -62,6 +64,7 @@
                     if root.badge_icon else \
                     (0, 0, 0, 0)
             RoundedRectangle:
+                group: "badge"
                 radius: [self.width / 2,]
                 pos: self.pos
                 size: self.size

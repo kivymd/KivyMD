@@ -7,6 +7,7 @@
 
         # "round" mode.
         Color:
+            group: "round-color"
             rgba: self._fill_color if self.mode == "round" else (0, 0, 0, 0)
         Ellipse:
             angle_start: 180
@@ -19,15 +20,17 @@
             pos: (self.width - dp(18)) + self.x - self.height / 2.0, self.y
             size: self.height, self.height
         Rectangle:
-            pos: self.x + dp(9), self.y
-            size: self.width - dp(18), self.height
+            pos: self.x + dp(14), self.y
+            size: self.width - dp(28), self.height
 
         Color:
             rgba:
                 ( \
                 (self.line_color_focus if not self.error else self.error_color) \
-                if self.focus \
-                else self.theme_cls.disabled_hint_text_color \
+                if self.focus else ( \
+                self.theme_cls.disabled_hint_text_color \
+                if not self.line_color_normal else \
+                self.line_color_normal) \
                 ) \
                 if self.mode == "round" else \
                 (0, 0, 0, 0)
@@ -62,6 +65,7 @@
 
         # "fill" mode.
         Color:
+            group: "fill-color"
             rgba: self._fill_color if self.mode == "fill" else (0, 0, 0, 0)
         RoundedRectangle:
             pos: self.x, self.y
@@ -70,6 +74,7 @@
 
         # Static underline texture.
         Color:
+            group: "static-underline-color"
             rgba:
                 (self._line_color_normal \
                 if self.line_color_normal else self.theme_cls.divider_color) \
@@ -82,6 +87,7 @@
 
         # Active underline (on focus) texture.
         Color:
+            group: "active-underline-color"
             rgba:
                 self._line_color_focus \
                 if self.mode in ("line", "fill") and self.active_line \
@@ -94,7 +100,10 @@
 
         # Helper text texture.
         Color:
+            group: "helper-text-color"
             rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
                 self._helper_text_color
         Rectangle:
             texture: self._helper_text_label.texture
@@ -106,7 +115,11 @@
 
         # Right/left icon texture.
         Color:
-            rgba: self._icon_right_color if self.icon_right else self._icon_left_color
+            group: "right-left-icons-color"
+            rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
+                (self._icon_right_color if self.icon_right else self._icon_left_color)
         Rectangle:
             texture:
                 self._icon_right_label.texture if self.icon_right else self._icon_left_label.texture
@@ -137,7 +150,11 @@
 
         # Max length texture.
         Color:
-            rgba: self._max_length_text_color
+            group: "max-length-color"
+            rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
+                self._max_length_text_color
         Rectangle:
             texture: self._max_length_label.texture
             size: self._max_length_label.texture_size
@@ -162,7 +179,10 @@
 
         # Hint text texture.
         Color:
+            group: "hint-text-color"
             rgba:
+                self.theme_cls.disabled_hint_text_color \
+                if self.disabled else \
                 self._hint_text_color
         Rectangle:
             texture: self._hint_text_label.texture
@@ -186,6 +206,7 @@
 
         # "rectangle" mode
         Color:
+            group: "rectangle-color"
             rgba:
                 (self.line_color_focus if not self.error else self.error_color) \
                 if self.focus else \
@@ -206,6 +227,7 @@
 
         # Text color.
         Color:
+            group: "text-color"
             rgba:
                 self.theme_cls.disabled_hint_text_color if self.disabled else \
                 ( \

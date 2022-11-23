@@ -1277,6 +1277,7 @@ class MDTextField(
             _hint_text_font_size=self._hint_text_label.setter("font_size"),
             _icon_right_color=self._icon_right_label.setter("text_color"),
             _icon_left_color=self._icon_left_label.setter("text_color"),
+            font_name_hint_text=self._hint_text_label.setter("font_name"),
             text=self.set_text,
         )
         self.theme_cls.bind(
@@ -1536,7 +1537,7 @@ class MDTextField(
             if self.mode == "rectangle":
                 self.set_notch_rectangle()
 
-        if not self.text and not self.focus:
+        if (not self.text and not self.focus) or (self.text and not self.focus):
             self.on_focus(instance_text_field, False)
 
         if self.mode == "round" and self.text:
@@ -1656,6 +1657,12 @@ class MDTextField(
                         self.helper_text_color_normal
                     )
                 )
+            if self.helper_text_mode == "on_focus" and self.helper_text:
+                Clock.schedule_once(
+                    lambda x: self.set_helper_text_color(
+                        [0.0, 0.0, 0.0, 0.0]
+                    )
+                )
             if self.mode == "rectangle" and not self.text:
                 self.set_notch_rectangle(joining=True)
             if not self.text:
@@ -1668,13 +1675,13 @@ class MDTextField(
 
                 self.set_pos_hint_text(y)
                 self.set_hint_text_font_size(sp(16))
-            if self.icon_right:
+            if self.icon_right and not self.error:
                 Clock.schedule_once(
                     lambda x: self.set_icon_right_color(
                         self.icon_right_color_normal
                     )
                 )
-            if self.icon_left:
+            if self.icon_left and not self.error:
                 Clock.schedule_once(
                     lambda x: self.set_icon_left_color(
                         self.icon_left_color_normal
@@ -1770,11 +1777,7 @@ class MDTextField(
                         self.icon_left_color_focus
                     )
                 )
-            if self.helper_text_mode in ("on_focus", "on_error"):
-                Clock.schedule_once(
-                    lambda x: self.set_helper_text_color([0, 0, 0, 0])
-                )
-            elif self.helper_text_mode == "persistent":
+            if self.helper_text_mode == "persistent":
                 Clock.schedule_once(
                     lambda x: self.set_helper_text_color(
                         self.helper_text_color_normal
@@ -1882,79 +1885,75 @@ class MDTextField(
 
 
 if __name__ == "__main__":
-    from kivy.core.window import Window
     from kivy.lang import Builder
     from kivy.uix.textinput import TextInput
-
-    Window.size = (800, 750)
 
     from kivymd.app import MDApp
 
     KV = """
 MDScreen:
 
-    MDBoxLayout:
-        id: box
-        orientation: "vertical"
-        spacing: "20dp"
-        adaptive_height: True
-        size_hint_x: .8
-        pos_hint: {"center_x": .5, "center_y": .5}
+    MDScrollView:
 
-        MDTextField:
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "rectangle"
-            max_text_length: 5
-
-        MDTextField:
-            icon_left: "git"
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "rectangle"
-
-        MDTextField:
-            icon_left: "git"
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "fill"
-
-        MDTextField:
-            hint_text: "Label"
-            helper_text: "Error message"
-            mode: "fill"
-
-        MDTextField:
-            hint_text: "Label"
-            helper_text: "Error message"
-
-        MDTextField:
-            icon_left: "git"
-            hint_text: "Label"
-            helper_text: "Error message"
-
-        MDTextField:
-            hint_text: "Round mode"
-            mode: "round"
-            max_text_length: 15
-            helper_text: "Message"
-
-        MDTextField:
-            hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
-            helper_text: "Enter a valid dd/mm/yyyy date"
-            validator: "date"
-            date_format: "dd/mm/yyyy"
-            date_interval: "01/01/1900", "01/01/2100"
-
-        MDTextField:
-            hint_text: "Email"
-            helper_text: "user@gmail.com"
-            validator: "email"
-
-        MDFlatButton:
-            text: "SET TEXT"
-            pos_hint: {"center_x": .5}
-            on_release: app.set_text()
+        MDList:
+            id: box
+            spacing: "32dp"
+            padding: "56dp", "12dp", "56dp", "12dp"
+    
+            MDTextField:
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "rectangle"
+                max_text_length: 5
+    
+            MDTextField:
+                icon_left: "git"
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "rectangle"
+    
+            MDTextField:
+                icon_left: "git"
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "fill"
+    
+            MDTextField:
+                hint_text: "Label"
+                helper_text: "Error message"
+                mode: "fill"
+    
+            MDTextField:
+                hint_text: "Label"
+                helper_text: "Error message"
+    
+            MDTextField:
+                icon_left: "git"
+                hint_text: "Label"
+                helper_text: "Error message"
+    
+            MDTextField:
+                hint_text: "Round mode"
+                mode: "round"
+                max_text_length: 15
+                helper_text: "Message"
+    
+            MDTextField:
+                hint_text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
+                helper_text: "Enter a valid dd/mm/yyyy date"
+                validator: "date"
+                date_format: "dd/mm/yyyy"
+                date_interval: "01/01/1900", "01/01/2100"
+    
+            MDTextField:
+                hint_text: "Email"
+                helper_text: "user@gmail.com"
+                validator: "email"
+    
+            MDFlatButton:
+                text: "SET TEXT"
+                pos_hint: {"center_x": .5}
+                on_release: app.set_text()
 """
 
     class Test(MDApp):

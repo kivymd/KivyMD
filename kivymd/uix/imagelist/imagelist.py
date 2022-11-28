@@ -71,6 +71,7 @@ __all__ = [
 
 import os
 
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import (
     BooleanProperty,
@@ -271,4 +272,4 @@ class MDSmartTile(MDRelativeLayout, ThemableBehavior):
             if isinstance(widget, MDLabel):
                 widget.shorten = True
                 widget.shorten_from = "right"
-            self.ids.box.add_widget(widget)
+            Clock.schedule_once(lambda x: self.ids.box.add_widget(widget))

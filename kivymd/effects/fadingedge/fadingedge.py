@@ -164,6 +164,9 @@ class FadingEdgeEffect(ThemableBehavior):
                         index,
                     ),
                 )
+                self.update_canvas(
+                    self, self.size, rectangle_top, rectangle_bottom, i
+                )
 
     def update_canvas(
         self,

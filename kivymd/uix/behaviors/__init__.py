@@ -28,3 +28,4 @@ from .stencil_behavior import StencilBehavior
 from .touch_behavior import TouchBehavior
 
 from .hover_behavior import HoverBehavior  # isort:skip
+from .focus_behavior import FocusBehavior

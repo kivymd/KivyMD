@@ -15,8 +15,9 @@ Usage
     from kivy.lang import Builder
 
     from kivymd.app import MDApp
-    from kivymd.uix.behaviors import RectangularElevationBehavior, FocusBehavior
+    from kivymd.uix.behaviors import RectangularElevationBehavior
     from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 
     KV = '''
     MDScreen:

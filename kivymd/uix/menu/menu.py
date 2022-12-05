@@ -858,7 +858,10 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             on_restore=self.set_menu_properties,
         )
         Clock.schedule_once(self.adjust_radius)
+        self.register_event_type("on_pre_dismiss")
         self.register_event_type("on_dismiss")
+        self.register_event_type("on_pre_open")
+        self.register_event_type("on_open")
         self.menu = self.ids.md_menu
         self.target_height = 0
 
@@ -1064,6 +1067,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     def open(self) -> None:
         """Animate the opening of a menu window."""
+        self.dispatch("on_pre_open")
 
         def open(interval):
             if not self._calculate_complete:
@@ -1103,6 +1107,8 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             self._calculate_process = True
             Clock.schedule_interval(open, 0)
 
+        self.dispatch("on_open")
+
     def set_elevation(self, *args) -> None:
         Animation(
             _elevation=self.elevation,
@@ -1123,7 +1129,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
 
     def on_touch_down(self, touch):
         if not self.menu.collide_point(*touch.pos):
-            self.dispatch("on_dismiss")
+            self.dismiss()
             return True
         super().on_touch_down(touch)
         return True
@@ -1136,8 +1142,10 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         super().on_touch_up(touch)
         return True
 
-    def on_dismiss(self) -> None:
-        """Called when the menu is closed."""
+    def dismiss(self, *args) -> None:
+        """Closes the menu."""
+
+        self.dispatch("on_pre_dismiss")
 
         Window.remove_widget(self)
         self.menu.width = 0
@@ -1145,10 +1153,19 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.opacity = 0
         self._elevation = 0
 
-    def dismiss(self, *args) -> None:
-        """Closes the menu."""
+        self.dispatch("on_dismiss")
 
-        self.on_dismiss()
+    def on_pre_dismiss(self) -> None:
+        pass
+
+    def on_dismiss(self) -> None:
+        pass
+
+    def on_pre_open(self) -> None:
+        pass
+
+    def on_open(self) -> None:
+        pass
 
 
 if __name__ == "__main__":

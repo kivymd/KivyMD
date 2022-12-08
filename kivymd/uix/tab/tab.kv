@@ -70,6 +70,7 @@
             anim_move_duration: root.anim_duration
             on_index: root.on_carousel_index(*args)
             on__offset: tab_bar.android_animation(*args)
+            scroll_timeout: 0 if root.lock_swiping else 200
 
     MDTabsBar:
         id: tab_bar

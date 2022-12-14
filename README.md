@@ -80,6 +80,26 @@ pip install .
 use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
+### How to fix a shader bug on an android device
+
+In the latest versions of the `KivyMD` library, there were problems with the shader for elevation behavior.
+[This PR](https://github.com/kivy/kivy/pull/8056) adds elevation behavior to the `Kivy` framework.
+And this is the best solution, than what was used in the `KivyM`D library.
+Therefore, we have refactored the Common Elevation Behavior class according to this PR.
+While this PR is not merged with the main branch of Kivy.
+But you can use it in the following way:
+
+```bash
+pip install git+https://github.com/DexerBR/kivy.git@boxshadow_instruction
+pip install https://github.com/kivymd/KivyMD/archive/master.zip
+```
+
+And use with `Buildozer`:
+
+```ini
+requirements = git+https://github.com/DexerBR/kivy.git@boxshadow_instruction, https://github.com/kivymd/KivyMD/archive/master.zip
+```
+
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini

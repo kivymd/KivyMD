@@ -713,62 +713,6 @@ theme_text_color_options = (
     "ContrastParentBackground",
 )
 
-# FIXME: If you set a new elevation value for the button
-#  (press the "Set elevation" button), then disable the button
-#  (press the "Disabled" button), and then enable the button
-#  (press the "Undisabled" button), then the previously set elevation value is
-#  reset to zero.
-#  In addition, if you set a new elevation value
-#  (press the "Set elevation" button) and click on the button for which we set
-#  the elevation value, then the new elevation value will receive the previous
-#  elevation value. This problem is only related to the buttons.
-#  For example, there is no such problem for the MDCard widget.
-
-"""
-from kivy.lang import Builder
-
-from kivymd.app import MDApp
-
-KV = '''
-MDScreen:
-
-    MDRaisedButton:
-        size_hint: .5, .5
-        id: button
-        pos_hint: {"center_x": .5, "center_y": .5}
-        elevation: 0
-
-    MDBoxLayout:
-        adaptive_size: True
-        pos_hint: {"center_x": .5}
-        spacing: 12
-        padding: 12
-
-        MDRaisedButton:
-            text: "Set elevation"
-            pos_hint: {"center_x": .5, "bottom": 1}
-            on_release: button.elevation = 4
-
-        MDRaisedButton:
-            text: "Disabled"
-            pos_hint: {"center_x": .5, "bottom": 1}
-            on_release: button.disabled = True
-
-        MDRaisedButton:
-            text: "Undisabled"
-            pos_hint: {"center_x": .5, "bottom": 1}
-            on_release: button.disabled = False
-'''
-
-
-class Test(MDApp):
-    def build(self):
-        return Builder.load_string(KV)
-
-
-Test().run()
-"""
-
 
 class BaseButton(
     DeclarativeBehavior,

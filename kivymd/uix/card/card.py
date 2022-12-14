@@ -94,7 +94,8 @@ An example of the implementation of a card in the style of material design versi
                                 style=style,
                                 text=style.capitalize(),
                                 md_bg_color=styles[style],
-                                shadow_offset=(0, -1),
+                                shadow_softness=2 if style == "elevated" else 12,
+                                shadow_offset=(0, 1) if style == "elevated" else (0, 2),
                             )
                         )
 
@@ -153,9 +154,12 @@ An example of the implementation of a card in the style of material design versi
                                 ),
                                 line_color=(0.2, 0.2, 0.2, 0.8),
                                 style=style,
-                                text=style.capitalize(),
+                                padding="4dp",
+                                size_hint=(None, None),
+                                size=("200dp", "100dp"),
                                 md_bg_color=styles[style],
-                                shadow_offset=(0, -1),
+                                shadow_softness=2 if style == "elevated" else 12,
+                                shadow_offset=(0, 1) if style == "elevated" else (0, 2),
                             )
                         )
 
@@ -699,10 +703,6 @@ from kivy.utils import get_color_from_hex
 
 from kivymd import uix_path
 from kivymd.color_definitions import colors
-from kivymd.material_resources import (
-    CARD_STYLE_ELEVATED_M3_ELEVATION,
-    CARD_STYLE_OUTLINED_FILLED_M3_ELEVATION,
-)
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
@@ -828,9 +828,9 @@ class MDCard(
     def set_elevation(self) -> None:
         if self.theme_cls.material_style == "M3":
             if self.style == "outlined" or self.style == "filled":
-                self.elevation = CARD_STYLE_OUTLINED_FILLED_M3_ELEVATION
+                self.elevation = 0
             elif self.style == "elevated":
-                self.elevation = CARD_STYLE_ELEVATED_M3_ELEVATION
+                self.elevation = 2
 
     def set_radius(self) -> None:
         if (

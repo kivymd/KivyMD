@@ -1,3 +1,6 @@
+#:import window kivy.core.window
+
+
 <BaseSnackbar>
     size_hint_y: None
     height: "58dp"
@@ -19,6 +22,8 @@
 
     MDLabel:
         id: text_bar
+        size_hint_y: None
+        height: self.texture_size[1]
         text: root.text
         font_size: root.font_size
         theme_text_color: "Custom"
@@ -26,3 +31,4 @@
         shorten: True
         shorten_from: "right"
         markup: True
+        pos_hint: {"center_y": .5}

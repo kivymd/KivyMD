@@ -679,15 +679,6 @@ from kivy.weakproxy import WeakProxy
 from kivymd import uix_path
 from kivymd.color_definitions import text_colors
 from kivymd.font_definitions import theme_font_styles
-from kivymd.material_resources import (
-    FLOATING_ACTION_BUTTON_M2_ELEVATION,
-    FLOATING_ACTION_BUTTON_M2_OFFSET,
-    FLOATING_ACTION_BUTTON_M3_ELEVATION,
-    FLOATING_ACTION_BUTTON_M3_OFFSET,
-    FLOATING_ACTION_BUTTON_M3_SOFTNESS,
-    RAISED_BUTTON_OFFSET,
-    RAISED_BUTTON_SOFTNESS,
-)
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
@@ -1217,7 +1208,7 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
 
     _elevation_raised = NumericProperty()
     _anim_raised = ObjectProperty(None, allownone=True)
-    _default_elevation = 2
+    _default_elevation = 3
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1229,11 +1220,8 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         self.on_disabled(self, self.disabled)
 
     def create_anim_raised(self, *args) -> None:
-        pass
-        # FIXME: shadow animation is displayed crookedly - uncomment this
-        #  and check.
-        # self._elevation_raised = self.elevation + 1.2
-        # self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
+        self._elevation_raised = self.elevation + 1.2
+        self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
 
     def on_touch_down(self, touch):
         if not self.disabled:
@@ -1244,10 +1232,7 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
             if self in touch.ud:
                 return False
             if self._anim_raised:
-                pass
-                # FIXME: shadow animation is displayed crookedly -
-                #  uncomment this and check.
-                # self._anim_raised.start(self)
+                self._anim_raised.start(self)
         return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
@@ -1259,11 +1244,8 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         return super().on_touch_up(touch)
 
     def stop_elevation_anim(self):
-        pass
-        # FIXME: shadow animation is displayed crookedly - uncomment this
-        #  and check.
-        # Animation.cancel_all(self, "elevation")
-        # self.elevation -= 1
+        Animation.cancel_all(self, "elevation")
+        self.elevation = self._elevation_raised - 1
 
 
 class ButtonContentsText:
@@ -1363,9 +1345,9 @@ class MDRaisedButton(BaseButton, ButtonElevationBehaviour, ButtonContentsText):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.shadow_softness = RAISED_BUTTON_SOFTNESS
-        self.shadow_offset = RAISED_BUTTON_OFFSET
-        # self.shadow_radius = self._radius * 2
+        self.shadow_softness = 8
+        self.shadow_offset = (0, 2)
+        self.shadow_radius = self._radius * 2
 
 
 class MDRectangleFlatButton(BaseButton, ButtonContentsText):
@@ -1548,13 +1530,10 @@ class MDFloatingActionButton(
     def set__radius(self, *args) -> None:
         if self.theme_cls.material_style == "M2":
             self.shadow_radius = self.height / 2
-            self.elevation = FLOATING_ACTION_BUTTON_M2_ELEVATION
-            self.shadow_offset = FLOATING_ACTION_BUTTON_M2_OFFSET
             self.rounded_button = True
         else:
-            self.shadow_softness = FLOATING_ACTION_BUTTON_M3_SOFTNESS
-            self.shadow_offset = FLOATING_ACTION_BUTTON_M3_OFFSET
-            self.elevation = FLOATING_ACTION_BUTTON_M3_ELEVATION
+            self.shadow_softness = 8
+            self.shadow_offset = (0, 2)
             self.rounded_button = False
 
             if self.type == "small":

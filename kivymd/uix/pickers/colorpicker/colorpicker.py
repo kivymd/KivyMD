@@ -123,11 +123,9 @@ class TypeColorButton(MDRaisedButton, MDToggleButton):
     'RGBA', 'HEX', 'RGB'.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.theme_text_color = "Custom"
-        self.text_color = (0, 0, 0, 1)
-        self.elevation = 0
+    theme_text_color = "Custom"
+    text_color = (0, 0, 0, 1)
+    elevation = 0
 
 
 class SelectAlphaChannelWidget(MDBoxLayout):

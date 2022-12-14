@@ -781,7 +781,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `'[dp(7)]'`.
     """
 
-    elevation = NumericProperty(m_res.DROP_DOWN_MENU_ELEVATION)
+    elevation = NumericProperty(4)
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
     attribute.
@@ -801,7 +801,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `[6]`.
     """
 
-    shadow_softness = NumericProperty(m_res.DROP_DOWN_MENU_SOFTNESS)
+    shadow_softness = NumericProperty(12)
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
     attribute.
@@ -823,7 +823,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     and defaults to `2`.
     """
 
-    shadow_offset = ListProperty(m_res.DROP_DOWN_MENU_OFFSET)
+    shadow_offset = ListProperty((0, 2))
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
     attribute.
@@ -848,7 +848,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
     _start_coords = []
     _calculate_complete = False
     _calculate_process = False
-    # _elevation = NumericProperty(0)
+    _elevation = NumericProperty(0)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1092,7 +1092,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
                     opacity=1,
                     transition=self.opening_transition,
                 )
-            # anim.bind(on_complete=self.set_elevation)
+            anim.bind(on_complete=self.set_elevation)
             anim.start(self.menu)
             Window.add_widget(self)
             Clock.unschedule(open)
@@ -1103,12 +1103,12 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
             self._calculate_process = True
             Clock.schedule_interval(open, 0)
 
-    # def set_elevation(self, *args) -> None:
-    #     Animation(
-    #         _elevation=self.elevation,
-    #         opacity=1,
-    #         duration=self.opening_time,
-    #     ).start(self)
+    def set_elevation(self, *args) -> None:
+        Animation(
+            _elevation=self.elevation,
+            opacity=1,
+            duration=self.opening_time,
+        ).start(self)
 
     def on_header_cls(
         self, instance_dropdown_menu, instance_user_menu_header
@@ -1143,7 +1143,7 @@ class MDDropdownMenu(ThemableBehavior, FloatLayout):
         self.menu.width = 0
         self.menu.height = 0
         self.menu.opacity = 0
-        # self._elevation = 0
+        self._elevation = 0
 
     def dismiss(self, *args) -> None:
         """Closes the menu."""

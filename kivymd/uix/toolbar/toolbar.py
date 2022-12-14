@@ -352,6 +352,7 @@ from kivy.uix.floatlayout import FloatLayout
 
 from kivymd import uix_path
 from kivymd.color_definitions import text_colors
+from kivymd.material_resources import TOP_APP_BAR_ELEVATION
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
@@ -411,7 +412,7 @@ class NotchedBox(
     SpecificBackgroundColorBehavior,
     BoxLayout,
 ):
-    elevation = NumericProperty(4)
+    elevation = NumericProperty(TOP_APP_BAR_ELEVATION)
     notch_radius = NumericProperty()
     notch_center_x = NumericProperty("100dp")
 

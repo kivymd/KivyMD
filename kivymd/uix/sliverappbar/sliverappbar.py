@@ -97,7 +97,7 @@ Example
     class CardItem(MDCard):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.elevation = 3
+            self.elevation = 1
 
 
     class Example(MDApp):
@@ -254,7 +254,7 @@ class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
         class CardItem(MDCard):
             def __init__(self, *args, **kwargs):
                 super().__init__(*args, **kwargs)
-                self.elevation = 3
+                self.elevation = 1
 
 
         class SliverToolbar(MDTopAppBar):

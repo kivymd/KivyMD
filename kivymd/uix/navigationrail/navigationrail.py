@@ -137,9 +137,8 @@ Example
 
 
             <ExtendedButton>
-                elevation: 3.5
+                elevation: 1
                 shadow_radius: 12
-                shadow_softness: 4
                 -height: "56dp"
 
 
@@ -207,9 +206,9 @@ Example
 
                 MDNavigationDrawer:
                     id: nav_drawer
-                    radius: (0, 16, 16, 0)
+                    radius: 0, 16, 16, 0
                     md_bg_color: "#fffcf4"
-                    elevation: 4
+                    elevation: 2
                     width: "240dp"
 
                     MDNavigationDrawerMenu:
@@ -218,14 +217,18 @@ Example
                             orientation: "vertical"
                             adaptive_height: True
                             spacing: "12dp"
-                            padding: "3dp", 0, 0, "12dp"
+                            padding: 0, 0, 0, "12dp"
 
                             MDIconButton:
                                 icon: "menu"
 
-                            ExtendedButton:
-                                text: "Compose"
-                                icon: "pencil"
+                            MDBoxLayout:
+                                adaptive_height: True
+                                padding: "12dp", 0, 0, 0
+
+                                ExtendedButton:
+                                    text: "Compose"
+                                    icon: "pencil"
 
                         DrawerClickableItem:
                             text: "Python"
@@ -269,7 +272,9 @@ Example
 
                 def set_radius(self, *args):
                     if self.rounded_button:
-                        self._radius = self.radius = self.height / 4
+                        value = self.height / 4
+                        self.radius = [value, value, value, value]
+                        self._radius = value
 
 
             class Example(MDApp):
@@ -357,9 +362,8 @@ Example
                 def __init__(self, *args, **kwargs):
                     super().__init__(*args, **kwargs)
                     self.padding = "16dp"
-                    self.elevation = 3.5
+                    self.elevation = 1
                     self.shadow_radius = 12
-                    self.shadow_softness = 4
                     self.height = dp(56)
                     Clock.schedule_once(self.set_spacing)
 
@@ -439,9 +443,13 @@ Example
                                     MDIconButton(
                                         icon="menu",
                                     ),
-                                    ExtendedButton(
-                                        text="Compose",
-                                        icon="pencil",
+                                    MDBoxLayout(
+                                        ExtendedButton(
+                                            text="Compose",
+                                            icon="pencil",
+                                        ),
+                                        adaptive_height=True,
+                                        padding=["12dp", 0, 0, 0],
                                     ),
                                     orientation="vertical",
                                     adaptive_height=True,

@@ -4,8 +4,8 @@
 # - helper text is displayed (text fields with focus);
 # - helper text is not displayed (text fields without focus);
 
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 

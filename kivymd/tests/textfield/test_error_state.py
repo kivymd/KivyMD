@@ -12,8 +12,8 @@
 # - check the color of the right icon;
 # - check the color of the text max length;
 
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
@@ -40,9 +40,13 @@ class TestErrorState(MDApp):
     def check_field_color(self, *args):
         for instruction in self.root.ids.field.canvas.before.children:
             if instruction.group in ["helper-text-color", "max-length-color"]:
-                assert instruction.rgba == self.theme_cls.disabled_hint_text_color
+                assert (
+                    instruction.rgba == self.theme_cls.disabled_hint_text_color
+                )
             elif instruction.group in [
-                "active-underline-color", "text-color",  "hint-text-color"
+                "active-underline-color",
+                "text-color",
+                "hint-text-color",
             ]:
                 assert instruction.rgba == self.theme_cls.primary_color
 

@@ -1,5 +1,5 @@
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
@@ -28,7 +28,9 @@ class TestHelperTextModePersistent(MDApp):
 
         for instruction in self.root.ids.field.canvas.before.children:
             if instruction.group == "helper-text-color":
-                assert instruction.rgba == self.theme_cls.disabled_hint_text_color
+                assert (
+                    instruction.rgba == self.theme_cls.disabled_hint_text_color
+                )
 
         self.root.ids.field.focus = True
         Clock.schedule_once(self.check_helper_text_without_focus, 2)

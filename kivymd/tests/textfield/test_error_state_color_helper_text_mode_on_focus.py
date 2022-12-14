@@ -4,8 +4,8 @@
 # - helper text is displayed (red color, text fields with focus);
 # - helper text is not displayed (text fields without focus);
 
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
@@ -40,7 +40,7 @@ class TestErrorStateColorHelperTextModeOnFocus(MDApp):
                 )
 
         if self.state == "checked":
-           self.stop()
+            self.stop()
 
         if field.focus:
             field.focus = False

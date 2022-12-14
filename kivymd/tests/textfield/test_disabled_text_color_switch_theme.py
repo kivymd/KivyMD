@@ -1,5 +1,5 @@
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
@@ -32,7 +32,9 @@ class TestDisabledTextColorSwitchTheme(MDApp):
                 "right-left-icons-color",
                 "helper-text-color",
             ]:
-                assert instruction.rgba == self.theme_cls.disabled_hint_text_color
+                assert (
+                    instruction.rgba == self.theme_cls.disabled_hint_text_color
+                )
 
         self.stop()
 

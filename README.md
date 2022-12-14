@@ -48,7 +48,7 @@ pip install kivymd==1.1.1
 
 ### Dependencies:
 
-- [Kivy](https://github.com/kivy/kivy) >= 2.0.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
+- [Kivy](https://github.com/kivy/kivy) >= 2.2.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
 - [Python 3.7+](https://www.python.org/)
 - [Pillow](https://github.com/python-pillow/Pillow/) (for [MDColorPicker](https://kivymd.readthedocs.io/en/latest/components/colorpicker/) class)
 

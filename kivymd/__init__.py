@@ -49,9 +49,6 @@ images_path = os.path.join(path, f"images{os.sep}")
 uix_path = os.path.join(path, "uix")
 """Path to uix directory."""
 
-glsl_path = os.path.join(path, "data", "glsl")
-"""Path to glsl directory."""
-
 _log_message = (
     "KivyMD:"
     + (" Release" if release else "")

@@ -84,7 +84,7 @@ to save time. If you need full commit history, then remove `--depth 1`.
 
 In the latest versions of the `KivyMD` library, there were problems with the shader for elevation behavior.
 [This PR](https://github.com/kivy/kivy/pull/8056) adds elevation behavior to the `Kivy` framework.
-And this is the best solution, than what was used in the `KivyM`D library.
+And this is the best solution, than what was used in the `KivyMD` library.
 Therefore, we have refactored the `CommonElevationBehavior` class according to this PR.
 While this PR is not merged with the main branch of Kivy.
 But you can use it in the following way:

@@ -92,7 +92,7 @@ pip install https://github.com/kivymd/KivyMD/archive/master.zip
 And use with `Buildozer`:
 
 ```ini
-requirements = https://github.com/kivy/kivy/archive/master.zip, https://github.com/kivymd/KivyMD/archive/master.zip
+requirements = kivy==master, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)

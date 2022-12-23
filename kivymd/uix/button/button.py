@@ -1833,7 +1833,7 @@ class MDFloatingActionButtonSpeedDial(
     """
     Background color of root button in (r, g, b, a) or string format.
 
-    .. code-clock:: kv
+    .. code-block:: kv
 
         MDFloatingActionButtonSpeedDial:
             bg_color_root_button: "red"
@@ -1849,7 +1849,7 @@ class MDFloatingActionButtonSpeedDial(
     """
     Background color of the stack buttons in (r, g, b, a) or string format.
 
-    .. code-clock:: kv
+    .. code-block:: kv
 
         MDFloatingActionButtonSpeedDial:
             bg_color_root_button: "red"
@@ -1866,7 +1866,7 @@ class MDFloatingActionButtonSpeedDial(
     """
     The color icon of the stack buttons in (r, g, b, a) or string format.
 
-    .. code-clock:: kv
+    .. code-block:: kv
 
         MDFloatingActionButtonSpeedDial:
             bg_color_root_button: "red"
@@ -1884,7 +1884,7 @@ class MDFloatingActionButtonSpeedDial(
     """
     The color icon of the root button in (r, g, b, a) or string format.
 
-    .. code-clock:: kv
+    .. code-block:: kv
 
         MDFloatingActionButtonSpeedDial:
             bg_color_root_button: "red"
@@ -1904,7 +1904,7 @@ class MDFloatingActionButtonSpeedDial(
     Background color for the floating text of the buttons in (r, g, b, a)
     or string format.
 
-    .. code-clock:: kv
+    .. code-block:: kv
 
         MDFloatingActionButtonSpeedDial:
             bg_hint_color: "red"

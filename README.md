@@ -123,11 +123,6 @@ downloaded packages).
 
 - Install [Ubuntu WSL](https://ubuntu.com/wsl) and follow [Linux steps](#On-Linux).
 
-#### On Windows without WSL
-
-- Install VirtualBox and follow steps from 
-[here](https://github.com/kivymd/KivyMD/blob/9b969f39d8bb03c73de105b82e66de3820020eb9/README.md#building-with-vm).
-
 #### Build automatically via GitHub Actions
 
 - Use [ArtemSBulgakov/buildozer-action@v1](https://github.com/ArtemSBulgakov/buildozer-action)

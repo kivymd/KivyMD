@@ -1,7 +1,10 @@
 # NOQA F401
 from .bottomsheet import (
-    GridBottomSheetItem,
     MDBottomSheet,
+    MDBottomSheetContent,
+    MDBottomSheetDragHandle,
+    MDBottomSheetDragHandleButton,
+    MDBottomSheetDragHandleTitle,
     MDCustomBottomSheet,
     MDGridBottomSheet,
     MDListBottomSheet,

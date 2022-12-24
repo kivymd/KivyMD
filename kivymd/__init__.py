@@ -30,7 +30,8 @@ __version__ = "1.2.0.dev0"
 """KivyMD version."""
 
 release = False
-kivy.require("2.2.0")
+if "READTHEDOCS" not in os.environ:
+    kivy.require("2.2.0")
 
 try:
     from kivymd._version import __date__, __hash__, __short_hash__

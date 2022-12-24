@@ -721,7 +721,13 @@ with open(
 
 
 class MDSeparator(ThemableBehavior, MDBoxLayout):
-    """A separator line."""
+    """
+    A separator line.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes documentation.
+    """
 
     color = ColorProperty(None)
     """
@@ -754,6 +760,20 @@ class MDCard(
     FocusBehavior,
     BoxLayout,
 ):
+    """
+    Card class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.BackgroundColorBehavior` and
+    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.CommonElevationBehavior` and
+    :class:`~kivymd.uix.behaviors.FocusBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` and
+    classes documentation.
+    """
+
     focus_behavior = BooleanProperty(False)
     """
     Using focus when hovering over a card.
@@ -852,6 +872,11 @@ class MDCard(
 
 class MDCardSwipe(MDRelativeLayout):
     """
+    Card swipe class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
+
     :Events:
         :attr:`on_swipe_complete`
             Called when a swipe of card is completed.
@@ -1069,7 +1094,11 @@ class MDCardSwipe(MDRelativeLayout):
 
 
 class MDCardSwipeFrontBox(MDCard):
-    pass
+    """
+    Card swipe front box.
+
+    For more information, see in the :class:`~MDCard` class documentation.
+    """
 
 
 class MDCardSwipeLayerBox(MDBoxLayout):

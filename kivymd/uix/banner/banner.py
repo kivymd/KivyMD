@@ -177,6 +177,13 @@ with open(
 
 
 class MDBanner(MDCard):
+    """
+    Banner class.
+
+    For more information, see in the :class:`~kivymd.uix.card.MDCard`
+    class documentation.
+    """
+
     vertical_pad = NumericProperty(dp(68))
     """
     Indent the banner at the top of the screen.

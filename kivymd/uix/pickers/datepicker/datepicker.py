@@ -252,6 +252,12 @@ class BaseDialogPicker(
     Base class for :class:`~kivymd.uix.picker.MDDatePicker` and
     :class:`~kivymd.uix.picker.MDTimePicker` classes.
 
+    For more information, see in the
+    :class:`~kivymd.uix.dialog.BaseDialog` and
+    :class:`~kivymd.uix.behaviors.CommonElevationBehavior` and
+    :class:`~kivymd.uix.behaviors.SpecificBackgroundColorBehavior`
+    classes documentation.
+
     :Events:
         `on_save`
             Events called when the "OK" dialog box button is clicked.
@@ -643,7 +649,12 @@ class DatePickerTypeDateError(Exception):
 
 
 class DatePickerInputField(MDTextField):
-    """Implements date input in dd/mm/yyyy format."""
+    """
+    Implements date input in dd/mm/yyyy format.
+
+    For more information, see in the
+    :class:`~kivymd.uix.textfield.MDTextField` class documentation.
+    """
 
     helper_text_mode = StringProperty("on_error")
     owner = ObjectProperty()  # MDDatePicker object

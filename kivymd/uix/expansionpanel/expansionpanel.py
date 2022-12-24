@@ -185,20 +185,38 @@ class MDExpansionChevronRight(IRightBodyTouch, MDIconButton):
 
 
 class MDExpansionPanelOneLine(OneLineAvatarIconListItem):
-    """Single line panel."""
+    """
+    Single line panel.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.OneLineAvatarIconListItem` class documentation.
+    """
 
 
 class MDExpansionPanelTwoLine(TwoLineAvatarIconListItem):
-    """Two-line panel."""
+    """
+    Two-line panel.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.TwoLineAvatarIconListItem` class documentation.
+    """
 
 
 class MDExpansionPanelThreeLine(ThreeLineAvatarIconListItem):
-    """Three-line panel."""
+    """
+    Three-line panel.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.ThreeLineAvatarIconListItem` class documentation.
+    """
 
 
 class MDExpansionPanelLabel(TwoLineListItem):
     """
     Label panel.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.TwoLineListItem` class documentation.
 
     ..warning:: This class is created for use in the
         :class:`~kivymd.uix.stepper.MDStepperVertical` and
@@ -217,6 +235,11 @@ class MDExpansionPanelLabel(TwoLineListItem):
 
 class MDExpansionPanel(RelativeLayout):
     """
+    Expansion panel class.
+
+    For more information, see in the
+    :class:`~kivy.uix.relativelayout.RelativeLayout` classes documentation.
+
     :Events:
         :attr:`on_open`
             Called when a panel is opened.

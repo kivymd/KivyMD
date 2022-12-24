@@ -399,7 +399,12 @@ Builder.load_string(
 
 
 class CommonElevationBehavior(Widget):
-    """Common base class for rectangular and circular elevation behavior."""
+    """
+    Common base class for rectangular and circular elevation behavior.
+
+    For more information, see in the :class:`~kivy.uix.widget.Widget`
+    class documentation.
+    """
 
     elevation = BoundedNumericProperty(0, min=0, errorvalue=0)
     """

@@ -511,6 +511,12 @@ class MDMenu(RecycleView):
 
 class MDDropdownMenu(ThemableBehavior, FloatLayout):
     """
+    Dropdown menu class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout` classes documentation.
+
     :Events:
         `on_release`
             The method that will be called when you click menu items.

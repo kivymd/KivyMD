@@ -97,6 +97,16 @@ with open(
 
 
 class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
+    """
+    Tooltip class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior and
+    :class:`~kivymd.uix.behaviors.HoverBehavior` and
+    :class:`~kivymd.uix.behaviors.TouchBehavior`
+    classes documentation.
+    """
+
     tooltip_bg_color = ColorProperty(None)
     """
     Tooltip background color in (r, g, b, a) or string format
@@ -330,6 +340,15 @@ class MDTooltip(ThemableBehavior, HoverBehavior, TouchBehavior):
 
 
 class MDTooltipViewClass(ThemableBehavior, BoxLayout):
+    """
+    Tooltip view class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout`
+    classes documentation.
+    """
+
     tooltip_bg_color = ColorProperty(None)
     """
     See :attr:`~MDTooltip.tooltip_bg_color`.

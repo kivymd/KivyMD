@@ -108,6 +108,11 @@ class MDSmartTile(MDRelativeLayout, ThemableBehavior):
     """
     A tile for more complex needs.
 
+    For more information, see in the
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout`
+    :class:`~kivymd.theming.ThemableBehavior` and
+    classes documentation.
+
     Includes an image, a container to place overlays and a box that can act
     as a header or a footer, as described in the Material Design specs.
 

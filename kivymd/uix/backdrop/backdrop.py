@@ -216,6 +216,10 @@ with open(
 
 class MDBackdrop(MDFloatLayout, ThemableBehavior):
     """
+    For more information, see in the
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout` and
+    :class:`~kivymd.theming.ThemableBehavior` classes documentation.
+
     :Events:
         :attr:`on_open`
             When the front layer drops.
@@ -512,15 +516,30 @@ class MDBackdrop(MDFloatLayout, ThemableBehavior):
 
 
 class MDBackdropToolbar(MDTopAppBar):
-    """Implements a toolbar for back content."""
+    """
+    Implements a toolbar for back content.
+
+    For more information, see in the
+    :class:`~kivymd.uix.toolbar.toolbar.MDTopAppBar` classes documentation.
+    """
 
 
 class MDBackdropFrontLayer(MDBoxLayout):
-    """Container for front content."""
+    """
+    Container for front content.
+
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes documentation.
+    """
 
 
 class MDBackdropBackLayer(MDBoxLayout):
-    """Container for back content."""
+    """
+    Container for back content.
+
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
+    """
 
 
 class _BackLayer(BoxLayout):

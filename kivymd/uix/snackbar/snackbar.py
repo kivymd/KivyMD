@@ -295,6 +295,11 @@ with open(
 
 class BaseSnackbar(MDCard):
     """
+    Base snack bar class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.card.MDCard`  class documentation.
+
     :Events:
         :attr:`on_open`
             Called when a dialog is opened.

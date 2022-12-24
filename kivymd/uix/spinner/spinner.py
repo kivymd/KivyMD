@@ -138,6 +138,10 @@ class MDSpinner(ThemableBehavior, Widget):
     :class:`MDSpinner` is an implementation of the circular progress
     indicator in `Google's Material Design`.
 
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.widget.Widget` classes documentation.
+
     It can be used either as an indeterminate indicator that loops while
     the user waits for something to happen, or as a determinate indicator.
 

@@ -151,6 +151,13 @@ class _RefreshScrollEffect(DampedScrollEffect):
 
 
 class MDScrollViewRefreshLayout(MDScrollView):
+    """
+    Refresh layout class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.scrollview.MDScrollView` class documentation.
+    """
+
     root_layout = ObjectProperty()
     """
     The spinner will be attached to this layout.

@@ -599,7 +599,12 @@ class RippleWidget(MDWidget, ScaleBehavior):
 
 
 class MDNavigationRailFabButton(MDFloatingActionButton):
-    """Implements an optional floating action button (FAB)."""
+    """
+    Implements an optional floating action button (FAB).
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.MDFloatingActionButton` class documentation.
+    """
 
     icon = StringProperty("pencil")
     """
@@ -621,7 +626,12 @@ class MDNavigationRailFabButton(MDFloatingActionButton):
 
 
 class MDNavigationRailMenuButton(MDIconButton):
-    """Implements a menu button."""
+    """
+    Implements a menu button.
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.MDIconButton` classes documentation.
+    """
 
     icon = StringProperty("menu")
     """
@@ -643,7 +653,15 @@ class MDNavigationRailMenuButton(MDIconButton):
 
 
 class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
-    """Implements a menu item with an icon and text."""
+    """
+    Implements a menu item with an icon and text.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout`
+    classes documentation.
+    """
 
     navigation_rail = ObjectProperty()
     """
@@ -822,6 +840,11 @@ class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
 
 class MDNavigationRail(MDCard):
     """
+    Navigation rail class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.card.MDCard` class documentation.
+
     :Events:
         :attr:`on_item_press`
             Called on the `on_press` event of menu item -

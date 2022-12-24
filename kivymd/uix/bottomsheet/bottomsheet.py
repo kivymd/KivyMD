@@ -691,6 +691,7 @@ class MDBottomSheet(MDBoxLayout, CommonElevationBehavior, TouchBehavior):
 
     For more information, see in the
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` and
+    :class:`~kivymd.uix.behaviors.touch_behavior.CommonElevationBehavior` and
     :class:`~kivymd.uix.behaviors.touch_behavior.TouchBehavior`
     classes documentation.
 

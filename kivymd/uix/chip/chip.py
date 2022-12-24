@@ -335,6 +335,19 @@ class MDChip(
     CommonElevationBehavior,
     TouchBehavior,
 ):
+    """
+    Chip class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.behaviors.CommonElevationBehavior` and
+    :class:`~kivymd.uix.behaviors.CommonElevationBehavior`
+    classes documentation.
+    """
+
     text = StringProperty()
     """
     Chip text.

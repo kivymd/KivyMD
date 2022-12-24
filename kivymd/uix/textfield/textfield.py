@@ -528,6 +528,15 @@ class Validator:
 
 
 class MDTextFieldRect(ThemableBehavior, TextInput):
+    """
+    Textfield rect class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.textinput.TextInput`
+    classes documentation.
+    """
+
     line_anim = BooleanProperty(True)
     """
     If True, then text field shows animated line when on focus.
@@ -606,6 +615,18 @@ class MDTextField(
     Validator,
     AutoFormatTelephoneNumber,
 ):
+    """
+    Textfield class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.textinput.TextInput` and
+    :class:`~Validator` and
+    :class:`~AutoFormatTelephoneNumber`
+    classes documentation.
+    """
+
     helper_text = StringProperty()
     """
     Text for ``helper_text`` mode.

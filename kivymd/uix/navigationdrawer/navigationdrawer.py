@@ -575,8 +575,8 @@ class NavigationDrawerContentError(Exception):
 
 class MDNavigationLayout(MDFloatLayout):
     """
-    For more information, see in the :class:`~kivymd.uix.floatlayout.MDFloatLayout`
-    class documentation.
+    For more information, see in the
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout` class documentation.
     """
 
     _scrim_color = ObjectProperty(None)
@@ -893,7 +893,9 @@ class MDNavigationDrawerItem(OneLineAvatarIconListItem, FocusBehavior):
     Implements an item for the :class:`~MDNavigationDrawer` menu list.
 
     For more information, see in the
-    :class:`~kivymd.uix.list.OneLineAvatarIconListItem` class documentation.
+    :class:`~kivymd.uix.list.OneLineAvatarIconListItem` and
+    :class:`~kivymd.uix.behaviors.FocusBehavior`
+    class documentation.
 
     .. versionadded:: 1.0.0
 

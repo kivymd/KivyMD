@@ -68,6 +68,17 @@ class _Triangle(Widget):
 class MDDropDownItem(
     DeclarativeBehavior, ThemableBehavior, ButtonBehavior, BoxLayout
 ):
+    """
+    Dropdown item class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout`
+    classes documentation.
+    """
+
     text = StringProperty()
     """
     Text item.

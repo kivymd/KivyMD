@@ -514,6 +514,11 @@ class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
 
 class MDSelectionList(MDList):
     """
+    Selection list class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.MDList` classes documentation.
+
     :Events:
         `on_selected`
             Called when a list item is selected.

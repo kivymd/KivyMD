@@ -202,7 +202,9 @@ class MDFileManager(MDRelativeLayout, ThemableBehavior):
     Implements a modal dialog with a file manager.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` and
+    :class:`~kivymd.theming.ThemableBehavior`
+    class documentation.
 
     :Events:
         `on_pre_open`:

@@ -159,6 +159,16 @@ class BaseDialog(ThemableBehavior, ModalView, CommonElevationBehavior):
 
 
 class MDDialog(BaseDialog):
+    """
+    Dialog class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.modalview.ModalView` and
+    :class:`~kivymd.uix.behaviors.CommonElevationBehavior`
+    classes documentation.
+    """
+
     title = StringProperty()
     """
     Title dialog.

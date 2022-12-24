@@ -145,7 +145,13 @@ class MDSliverAppbarException(Exception):
 
 
 class MDSliverAppbarContent(ThemableBehavior, MDBoxLayout):
-    """Implements a box for a scrollable list of custom items."""
+    """
+    Implements a box for a scrollable list of custom items.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes documentation.
+    """
 
     md_bg_color = ColorProperty([0, 0, 0, 0])
     """
@@ -165,13 +171,22 @@ class MDSliverAppbarContent(ThemableBehavior, MDBoxLayout):
 
 
 class MDSliverAppbarHeader(MDBoxLayout):
-    pass
+    """
+    Sliver app bar header class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
+    """
 
 
 class MDSliverAppbar(MDBoxLayout, ThemableBehavior):
     """
-    MDSliverAppbar class.
-    See module documentation for more information.
+    Sliver app bar class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout`
+    classes documentation.
 
     :Events:
         :attr:`on_scroll_content`

@@ -380,7 +380,15 @@ class ActionBottomAppBarButton(MDFloatingActionButton, ScaleBehavior):
 
 
 class ActionTopAppBarButton(MDIconButton, MDTooltip):
-    """Implements action buttons on the toolbar."""
+    """
+    Implements action buttons on the toolbar.
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.MDIconButton` and
+    :class:`~kivymd.uix.tooltip.MDTooltip`
+    classes documentation.
+
+    """
 
     # The text of the menu item of the corresponding action button that will
     # be displayed in the `OverFlowMenu` menu.
@@ -557,6 +565,14 @@ class NotchedBox(
 
 class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
     """
+    Top app bar class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~NotchedBox` and
+    :class:`~kivymd.uix.controllers.WindowController`
+    classes documentation.
+
     :Events:
         `on_action_button`
             Method for the button used for the :class:`~MDBottomAppBar` class.
@@ -1383,6 +1399,15 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
 
 class MDBottomAppBar(DeclarativeBehavior, FloatLayout):
+    """
+    Bottom app bar class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
+    """
+
     md_bg_color = ColorProperty([0, 0, 0, 0])
     """
     Color toolbar in (r, g, b, a) or string format.

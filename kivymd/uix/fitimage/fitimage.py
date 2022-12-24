@@ -137,6 +137,14 @@ from kivymd.uix.boxlayout import MDBoxLayout
 
 
 class FitImage(MDBoxLayout, StencilBehavior):
+    """
+    Fit image class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.boxlayout.MDLayout` and
+    :class:`~kivymd.uix.behaviors.StencilBehavior` classes documentation.
+    """
+
     source = ObjectProperty()
     """
     Filename/source of your image.

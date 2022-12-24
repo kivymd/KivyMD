@@ -413,7 +413,12 @@ class CommonRipple:
 
 
 class RectangularRippleBehavior(CommonRipple):
-    """Class implements a rectangular ripple effect."""
+    """
+    Class implements a rectangular ripple effect.
+
+    For more information, see in the :class:`~kivymd.uix.behavior.CommonRipple`
+    class documentation.
+    """
 
     ripple_scale = NumericProperty(2.75)
     """
@@ -472,7 +477,12 @@ class RectangularRippleBehavior(CommonRipple):
 
 
 class CircularRippleBehavior(CommonRipple):
-    """Class implements a circular ripple effect."""
+    """
+    Class implements a circular ripple effect.
+
+    For more information, see in the :class:`~kivymd.uix.behavior.CommonRipple`
+    class documentation.
+    """
 
     ripple_scale = NumericProperty(1)
     """

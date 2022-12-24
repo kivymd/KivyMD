@@ -149,8 +149,10 @@ class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
     """
     Implements a segmented control panel.
 
-    Relative layout class. For more information, see in the
-    :class:`~kivy.uix.relativelayout.RelativeLayout` class documentation.
+    For more information, see in the
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` and
+    :class:`~kivymd.theming.ThemableBehavior`
+    classes documentation.
 
     :Events:
         `on_active`

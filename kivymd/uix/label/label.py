@@ -558,8 +558,14 @@ class MDLabel(
 ):
     """
     Label class.
+
     For more information, see in the
-    :class:`~kivy.uix.label.Label` class documentation.
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.label.Label` and
+    :class:`~kivymd.uix.MDAdaptiveWidget` and
+    :class:`~kivymd.uix.behaviors.TouchBehavior`
+    classes documentation.
 
     :Events:
         `on_ref_press`
@@ -867,6 +873,13 @@ class MDLabel(
 
 
 class MDIcon(MDFloatLayout, MDLabel):
+    """
+    Icon class.
+
+    For more information, see in the :class:`~MDLabel` and
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout` classes documentation.
+    """
+
     icon = StringProperty("android")
     """
     Label icon name.

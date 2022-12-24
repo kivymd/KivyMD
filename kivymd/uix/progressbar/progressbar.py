@@ -158,6 +158,15 @@ with open(
 
 
 class MDProgressBar(ThemableBehavior, ProgressBar):
+    """
+    Progressbar class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.progressbar.ProgressBar`
+    classes documentation.
+    """
+
     reversed = BooleanProperty(False)
     """
     Reverse the direction the progressbar moves.

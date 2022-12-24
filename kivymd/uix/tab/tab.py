@@ -1412,7 +1412,15 @@ class MDTabs(
     AnchorLayout,
 ):
     """
+    Tabs class.
     You can use this class to create your own tabbed panel.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.SpecificBackgroundColorBehavior` and
+    :class:`~kivy.uix.anchorlayout.AnchorLayout`
+    classes documentation.
 
     :Events:
         `on_tab_switch`

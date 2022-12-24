@@ -725,7 +725,12 @@ class BaseButton(
     Base class for all buttons.
 
     For more information, see in the
-    :class:`~kivy.uix.anchorlayout.AnchorLayout` class documentation.
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivy.uix.anchorlayout.AnchorLayout`
+    classes documentation.
     """
 
     padding = VariableListProperty([dp(16), dp(8), dp(16), dp(8)])
@@ -1275,6 +1280,10 @@ class MDFlatButton(BaseButton, ButtonContentsText):
     """
     A flat rectangular button with (by default) no border or background.
     Text is the default text color.
+
+    For more information, see in the
+    :class:`~BaseButton` and :class:`~ButtonContentsText`
+    classes documentation.
     """
 
     padding = VariableListProperty([dp(8), dp(8), dp(8), dp(8)])
@@ -1296,6 +1305,12 @@ class MDRaisedButton(BaseButton, ButtonElevationBehaviour, ButtonContentsText):
     """
     A flat button with (by default) a primary color fill and matching
     color text.
+
+    For more information, see in the
+    :class:`~BaseButton` and
+    :class:`~ButtonElevationBehaviour` and
+    :class:`~ButtonContentsText`
+    classes documentation.
     """
 
     # FIXME: Move the underlying attributes to the :class:`~BaseButton` class.
@@ -1316,6 +1331,10 @@ class MDRectangleFlatButton(BaseButton, ButtonContentsText):
     """
     A flat button with (by default) a primary color border and primary
     color text.
+
+    For more information, see in the
+    :class:`~BaseButton` and :class:`~ButtonContentsText`
+    classes documentation.
     """
 
     _default_line_color = None
@@ -1330,6 +1349,12 @@ class MDRectangleFlatIconButton(
     """
     A flat button with (by default) a primary color border, primary color text
     and a primary color icon on the left.
+
+    For more information, see in the
+    :class:`~BaseButton` and
+    :class:`~OldButtonIconMixin` and
+    :class:`~ButtonContentsIconText`
+    classes documentation.
     """
 
     _default_line_color = None
@@ -1344,6 +1369,10 @@ class MDRoundFlatButton(BaseButton, ButtonContentsText):
     """
     A flat button with (by default) fully rounded corners, a primary
     color border and primary color text.
+
+    For more information, see in the
+    :class:`~BaseButton` and :class:`~ButtonContentsText`
+    classes documentation.
     """
 
     _default_line_color = None
@@ -1362,6 +1391,12 @@ class MDRoundFlatIconButton(
     """
     A flat button with (by default) rounded corners, a primary color border,
     primary color text and a primary color icon on the left.
+
+    For more information, see in the
+    :class:`~BaseButton` and
+    :class:`~OldButtonIconMixin` and
+    :class:`~ButtonContentsIconText`
+    classes documentation.
     """
 
     _default_line_color = None
@@ -1380,6 +1415,10 @@ class MDFillRoundFlatButton(BaseButton, ButtonContentsText):
     """
     A flat button with (by default) rounded corners, a primary color fill
     and primary color text.
+
+    For more information, see in the
+    :class:`~BaseButton` and :class:`~ButtonContentsText`
+    classes documentation.
     """
 
     _default_md_bg_color = None
@@ -1398,6 +1437,12 @@ class MDFillRoundFlatIconButton(
     """
     A flat button with (by default) rounded corners, a primary color fill,
     primary color text and a primary color icon on the left.
+
+    For more information, see in the
+    :class:`~BaseButton` and
+    :class:`~OldButtonIconMixin` and
+    :class:`~ButtonContentsIconText`
+    classes documentation.
     """
 
     _default_md_bg_color = None
@@ -1413,7 +1458,14 @@ class MDFillRoundFlatIconButton(
 
 
 class MDIconButton(BaseButton, OldButtonIconMixin, ButtonContentsIcon):
-    """A simple rounded icon button."""
+    """
+    A simple rounded icon button.
+
+    For more information, see in the
+    :class:`~BaseButton` and
+    :class:`~OldButtonIconMixin` and
+    :class:`~ButtonContentsIcon` classes documentation.
+    """
 
     icon = StringProperty("checkbox-blank-circle")
     """
@@ -1451,6 +1503,12 @@ class MDFloatingActionButton(
     Implementation
     `FAB <https://m3.material.io/components/floating-action-button/overview>`_
     button.
+
+    For more information, see in the
+    :class:`~BaseButton` and
+    :class:`~OldButtonIconMixin` and
+    :class:`~ButtonElevationBehaviour` and
+    :class:`~ButtonContentsIcon` classes documentation.
     """
 
     type = OptionProperty("standard", options=["small", "large", "standard"])
@@ -1531,6 +1589,14 @@ class MDFloatingActionButton(
 
 
 class MDTextButton(ButtonBehavior, MDLabel):
+    """
+    Text button class.
+
+    For more information, see in the
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.label.MDLabel` classes documentation.
+    """
+
     color = ColorProperty(None)
     """
     Button color in (r, g, b, a) or string format.
@@ -1602,6 +1668,12 @@ class MDFloatingActionButtonSpeedDial(
     """
     For more information, see in the
     :class:`~kivy.uix.floatlayout.FloatLayout` class documentation.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    lasses documentation.
 
     :Events:
         :attr:`on_open`

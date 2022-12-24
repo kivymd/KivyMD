@@ -207,6 +207,15 @@ with open(
 
 
 class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
+    """
+    Checkbox class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.CircularRippleBehavior` and
+    :class:`~kivy.uix.behaviors.ToggleButtonBehavior` and
+    :class:`~kivymd.uix.label.MDIcon`
+    classes documentation.
+    """
     active = BooleanProperty(False)
     """
     Indicates if the checkbox is active or inactive.
@@ -443,6 +452,14 @@ class Thumb(
 
 
 class MDSwitch(ThemableBehavior, FloatLayout):
+    """
+    Switch class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout` classes documentation.
+    """
+
     active = BooleanProperty(False)
     """
     Indicates if the switch is active or inactive.

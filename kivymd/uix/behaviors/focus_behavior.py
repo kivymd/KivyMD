@@ -73,6 +73,18 @@ from kivymd.uix.behaviors import HoverBehavior
 
 
 class FocusBehavior(HoverBehavior, ButtonBehavior):
+    """
+    Focus behavior class.
+
+    For more information, see in the :class:`~kivymd.uix.behavior.HoverBehavior`
+    and :class:`~kivy.uix.button.ButtonBehavior` classes documentation.
+
+    :Events:
+        :attr:`on_enter`
+            Called when mouse enters the bbox of the widget AND the widget is visible
+        :attr:`on_leave`
+            Called when the mouse exits the widget AND the widget is visible
+    """
 
     focus_behavior = BooleanProperty(True)
     """

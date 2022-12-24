@@ -779,8 +779,11 @@ class TablePagination(ThemableBehavior, MDBoxLayout):
 
 class MDDataTable(ThemableBehavior, AnchorLayout):
     """
-    See :class:`~kivy.uix.anchorlayout.AnchorLayout` class documentation for
-    more information.
+    Datatable class.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.anchorlayout.AnchorLayout` classes documentation.
 
     :Events:
         :attr:`on_row_press`

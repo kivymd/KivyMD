@@ -59,6 +59,8 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
         else:
             if not isinstance(self, (FloatLayout, Screen)):
                 self.bind(minimum_height=self.setter("height"))
+                if not self.children:
+                    self.height = 0
 
     def on_adaptive_width(self, md_widget, value: bool) -> None:
         self.size_hint_x = None
@@ -71,6 +73,8 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
         else:
             if not isinstance(self, (FloatLayout, Screen)):
                 self.bind(minimum_width=self.setter("width"))
+                if not self.children:
+                    self.width = 0
 
     def on_adaptive_size(self, md_widget, value: bool) -> None:
         self.size_hint = (None, None)
@@ -84,3 +88,5 @@ class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
         else:
             if not isinstance(self, (FloatLayout, Screen)):
                 self.bind(minimum_size=self.setter("size"))
+                if not self.children:
+                    self.size = (0, 0)

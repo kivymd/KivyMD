@@ -30,3 +30,7 @@ Unreleased
 * `Fix text colors <https://github.com/kivymd/KivyMD/commit/fd444ed2adecaa4bfe5cea1aeebeb9b4c09efcb3>`_ - when the `MDTextField <https://kivymd.readthedocs.io/en/latest/components/textfield/>`_ is in the disabled state nd at the same time in the error state, the colors of the hint text, helper text, max text length have not changed.
 * `Fix <https://github.com/kivymd/KivyMD/commit/0aba528c44f5419a04b6f3e5144ac3d7a86e2b61>`_ `Bug on android related to shaders <https://github.com/kivymd/KivyMD/issues/1352>`_.
 * `MDBottomSheet <https://kivymd.readthedocs.io/en/latest/components/bottomsheet/>`_ `API break <https://github.com/kivymd/KivyMD/commit/5f3e17017987981ff7a4d05362951c3a924199e2>`_. Now the `MDBottomSheet` class implements only the behavior of the bottom sheet. All custom content must be implemented by self.
+* `Fix <https://github.com/kivymd/KivyMD/compare/2298a6a5b701...d446b5425d24>`_ `Cannot set font_size when instantiating MDLabel <https://github.com/kivymd/KivyMD/issues/1435>`_.
+* `Fix <https://github.com/kivymd/KivyMD/commit/b7cebbb945c07d7ecee81255b8dd8775d71ccf67>`_ widget size adjustment:
+
+  - When we use the `adaptive_height/adaptive_width/adaptive_size` parameters, if the widget did not contain child widgets, then its size would be 100.

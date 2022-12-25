@@ -691,7 +691,6 @@ class MDLabel(
     """
 
     _text_color_str = StringProperty()
-    _custom_font_size = BooleanProperty(False)
 
     parent_background = ColorProperty(None)
     can_capitalize = BooleanProperty(True)
@@ -721,15 +720,11 @@ class MDLabel(
         else:
             return True
 
-    def on_font_size(self, instance_label, font_size: str | float) -> None:
-        self._custom_font_size = True
-
     def update_font_style(self, instance_label, font_style: str) -> None:
         if self.check_font_styles() is True:
-
             font_info = self.theme_cls.font_styles[self.font_style]
             self.font_name = font_info[0]
-            if not self._custom_font_size:
+            if font_style in self.theme_cls.font_styles:
                 self.font_size = sp(font_info[1])
 
             if font_info[2] and self.can_capitalize:

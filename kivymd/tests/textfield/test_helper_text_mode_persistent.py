@@ -33,7 +33,7 @@ class TestHelperTextModePersistent(MDApp):
                 )
 
         self.root.ids.field.focus = True
-        Clock.schedule_once(self.check_helper_text_without_focus, 2)
+        Clock.schedule_once(self.check_helper_text_without_focus, 5)
 
     def on_start(self):
         Clock.schedule_once(self.check_helper_text_without_focus, 2)

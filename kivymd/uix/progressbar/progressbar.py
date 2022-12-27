@@ -145,6 +145,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.progressbar import ProgressBar
 
@@ -165,6 +166,16 @@ class MDProgressBar(ThemableBehavior, ProgressBar):
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivy.uix.progressbar.ProgressBar`
     classes documentation.
+    """
+
+    radius = VariableListProperty([0], length=4)
+    """
+    Progress line radius.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[0, 0, 0, 0]`.
     """
 
     reversed = BooleanProperty(False)

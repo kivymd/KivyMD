@@ -6,7 +6,8 @@
                 self.theme_cls.divider_color \
                 if not self.back_color else \
                 self.back_color
-        Rectangle:
+        RoundedRectangle:
+            radius: root.radius
             size:
                 (self.width, self.height) \
                 if self.orientation == "horizontal" else \
@@ -18,7 +19,8 @@
         Color:
             rgba:
                 self.theme_cls.primary_color if not self.color else self.color
-        Rectangle:
+        RoundedRectangle:
+            radius: root.radius
             size:
                 (self.width * self.value_normalized, self.height if self.height else dp(4)) \
                 if self.orientation == "horizontal" else \

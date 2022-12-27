@@ -1678,6 +1678,9 @@ class ThemableBehavior(EventDispatcher):
         self.md_textfield = MDTextField
 
     def remove_widget(self, widget) -> None:
+        if not hasattr(widget, "theme_cls"):
+            return
+
         callbacks = widget.theme_cls.get_property_observers("theme_style")
 
         for callback in callbacks:

@@ -216,6 +216,7 @@ class MDCheckbox(CircularRippleBehavior, ToggleButtonBehavior, MDIcon):
     :class:`~kivymd.uix.label.MDIcon`
     classes documentation.
     """
+
     active = BooleanProperty(False)
     """
     Indicates if the checkbox is active or inactive.

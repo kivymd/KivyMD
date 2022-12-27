@@ -39,7 +39,9 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDRecycleView(DeclarativeBehavior, ThemableBehavior, RecycleView, MDAdaptiveWidget):
+class MDRecycleView(
+    DeclarativeBehavior, ThemableBehavior, RecycleView, MDAdaptiveWidget
+):
     """
     Recycle view class. For more information, see in the
     :class:`~kivy.uix.recycleview.RecycleView` class documentation.

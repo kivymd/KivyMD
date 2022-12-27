@@ -17,15 +17,13 @@ class TestFontSizeInPythonCode(MDApp):
         self.stop()
 
     def build(self):
-        return (
-            MDBoxLayout(
-                MDLabel(
-                    id="label",
-                    text="MDLabel",
-                    font_style="H5",
-                    font_size=40,
-                ),
-            )
+        return MDBoxLayout(
+            MDLabel(
+                id="label",
+                text="MDLabel",
+                font_style="H5",
+                font_size=40,
+            ),
         )
 
     def on_start(self):

@@ -40,7 +40,9 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDFloatLayout(DeclarativeBehavior, ThemableBehavior, FloatLayout, MDAdaptiveWidget):
+class MDFloatLayout(
+    DeclarativeBehavior, ThemableBehavior, FloatLayout, MDAdaptiveWidget
+):
     """
     Float layout class. For more information, see in the
     :class:`~kivy.uix.floatlayout.FloatLayout` class documentation.

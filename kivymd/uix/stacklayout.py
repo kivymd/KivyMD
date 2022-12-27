@@ -92,7 +92,9 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDStackLayout(DeclarativeBehavior, ThemableBehavior, StackLayout, MDAdaptiveWidget):
+class MDStackLayout(
+    DeclarativeBehavior, ThemableBehavior, StackLayout, MDAdaptiveWidget
+):
     """
     Stack layout class. For more information, see in the
     :class:`~kivy.uix.stacklayout.StackLayout` class documentation.

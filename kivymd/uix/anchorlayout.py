@@ -38,7 +38,9 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDAnchorLayout(DeclarativeBehavior, ThemableBehavior, AnchorLayout, MDAdaptiveWidget):
+class MDAnchorLayout(
+    DeclarativeBehavior, ThemableBehavior, AnchorLayout, MDAdaptiveWidget
+):
     """
     Anchor layout class. For more information, see in the
     :class:`~kivy.uix.anchorlayout.AnchorLayout` class documentation.

@@ -92,7 +92,9 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDBoxLayout(DeclarativeBehavior, ThemableBehavior, BoxLayout, MDAdaptiveWidget):
+class MDBoxLayout(
+    DeclarativeBehavior, ThemableBehavior, BoxLayout, MDAdaptiveWidget
+):
     """
     Box layout class.
 

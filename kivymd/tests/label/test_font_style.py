@@ -15,6 +15,7 @@ MDScreen:
         text: "Danger"
         font_style: "Danger"
         halign: "center"
+        font_size: "66sp"
 """
 
 

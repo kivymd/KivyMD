@@ -34,3 +34,4 @@ Unreleased
 * `Fix <https://github.com/kivymd/KivyMD/commit/b7cebbb945c07d7ecee81255b8dd8775d71ccf67>`_ widget size adjustment:
 
   - When we use the `adaptive_height/adaptive_width/adaptive_size` parameters, if the widget did not contain child widgets, then its size would be 100.
+* `Add <https://github.com/kivymd/KivyMD/commit/81cd0bbb19be7bb6b67dfe6c0d0258a862ede1a2>`_ `radius` property to `MDProgressBar <https://kivymd.readthedocs.io/en/latest/components/progressbar/>`_ class.

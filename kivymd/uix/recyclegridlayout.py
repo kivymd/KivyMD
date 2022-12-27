@@ -85,12 +85,13 @@ Equivalent
 
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
 class MDRecycleGridLayout(
-    DeclarativeBehavior, RecycleGridLayout, MDAdaptiveWidget
+    DeclarativeBehavior, ThemableBehavior, RecycleGridLayout, MDAdaptiveWidget
 ):
     """
     Recycle grid layout layout class. For more information, see in the

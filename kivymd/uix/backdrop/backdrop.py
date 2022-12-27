@@ -201,7 +201,6 @@ from kivy.properties import (
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -214,11 +213,10 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDBackdrop(MDFloatLayout, ThemableBehavior):
+class MDBackdrop(MDFloatLayout):
     """
     For more information, see in the
-    :class:`~kivymd.uix.floatlayout.MDFloatLayout` and
-    :class:`~kivymd.theming.ThemableBehavior` classes documentation.
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout` class documentation.
 
     :Events:
         :attr:`on_open`

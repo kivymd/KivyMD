@@ -33,11 +33,12 @@ __all__ = ("MDAnchorLayout",)
 
 from kivy.uix.anchorlayout import AnchorLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDAnchorLayout(DeclarativeBehavior, AnchorLayout, MDAdaptiveWidget):
+class MDAnchorLayout(DeclarativeBehavior, ThemableBehavior, AnchorLayout, MDAdaptiveWidget):
     """
     Anchor layout class. For more information, see in the
     :class:`~kivy.uix.anchorlayout.AnchorLayout` class documentation.

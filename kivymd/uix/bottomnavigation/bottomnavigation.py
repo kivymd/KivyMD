@@ -274,14 +274,11 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDBottomNavigationHeader(
-    ThemableBehavior, ButtonBehavior, MDAnchorLayout
-):
+class MDBottomNavigationHeader(ButtonBehavior, MDAnchorLayout):
     """
     Bottom navigation header class.
 
     For more information, see in the
-    :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.uix.anchorlayout.MDAnchorLayout`
     classes documentation.
@@ -396,14 +393,13 @@ class MDBottomNavigationHeader(
             )
 
 
-class MDTab(MDScreen, ThemableBehavior):
+class MDTab(MDScreen):
     """
     A tab is simply a screen with meta information that defines the content
     that goes in the tab header.
 
     For more information, see in the
-    :class:`~kivymd.uix.screen.MDScreen` and
-    :class:`~kivymd.theming.ThemableBehavior` classes documentation.
+    :class:`~kivymd.uix.screen.MDScreen` class documentation.
     """
 
     __events__ = (
@@ -880,7 +876,5 @@ class MDBottomNavigation(DeclarativeBehavior, TabbedPanelBase):
         return bottom_navigation_item
 
 
-class MDBottomNavigationBar(
-    ThemableBehavior, CommonElevationBehavior, MDFloatLayout
-):
+class MDBottomNavigationBar(CommonElevationBehavior, MDFloatLayout):
     pass

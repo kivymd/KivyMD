@@ -121,7 +121,6 @@ from kivy.properties import (
 )
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.card import MDSeparator
@@ -145,14 +144,12 @@ class MDSegmentedControlItem(MDLabel):
 
 
 # TODO: Add an attribute for the color of the active segment label.
-class MDSegmentedControl(MDRelativeLayout, ThemableBehavior):
+class MDSegmentedControl(MDRelativeLayout):
     """
     Implements a segmented control panel.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` and
-    :class:`~kivymd.theming.ThemableBehavior`
-    classes documentation.
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
 
     :Events:
         `on_active`

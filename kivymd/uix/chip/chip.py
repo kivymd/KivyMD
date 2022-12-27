@@ -311,7 +311,6 @@ from kivy.properties import BooleanProperty, ColorProperty, StringProperty
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     RectangularRippleBehavior,
@@ -329,7 +328,6 @@ with open(
 
 class MDChip(
     MDBoxLayout,
-    ThemableBehavior,
     RectangularRippleBehavior,
     ButtonBehavior,
     CommonElevationBehavior,
@@ -340,7 +338,6 @@ class MDChip(
 
     For more information, see in the
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` and
-    :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.uix.behaviors.CommonElevationBehavior` and

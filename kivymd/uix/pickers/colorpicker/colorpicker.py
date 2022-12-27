@@ -100,7 +100,6 @@ from PIL import ImageDraw
 from kivymd import uix_path
 from kivymd.color_definitions import colors as _colors
 from kivymd.color_definitions import text_colors
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -188,7 +187,7 @@ class SliderTab(MDBoxLayout):
         """Basic event handler for changing the slider value."""
 
 
-class GradientTab(ThemableBehavior, MDBoxLayout):
+class GradientTab(MDBoxLayout):
     """
     The class implements a tab with a gradient, a color selection scale and
     a scale for setting the transparency value of the selected color.

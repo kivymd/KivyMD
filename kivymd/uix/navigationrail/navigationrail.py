@@ -564,7 +564,6 @@ from kivy.properties import (
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import ScaleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
@@ -652,12 +651,11 @@ class MDNavigationRailMenuButton(MDIconButton):
     """
 
 
-class MDNavigationRailItem(ThemableBehavior, ButtonBehavior, MDBoxLayout):
+class MDNavigationRailItem(ButtonBehavior, MDBoxLayout):
     """
     Implements a menu item with an icon and text.
 
     For more information, see in the
-    :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.uix.boxlayout.MDBoxLayout`
     classes documentation.

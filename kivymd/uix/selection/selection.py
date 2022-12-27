@@ -276,7 +276,6 @@ from kivy.properties import (
 )
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import TouchBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.list import MDList
@@ -295,7 +294,7 @@ class SelectionIconCheck(MDIconButton):
     icon_check_color = ColorProperty([0, 0, 0, 1])
 
 
-class SelectionItem(ThemableBehavior, MDRelativeLayout, TouchBehavior):
+class SelectionItem(MDRelativeLayout, TouchBehavior):
     selected = BooleanProperty(False)
     """
     Whether or not an item is checked.

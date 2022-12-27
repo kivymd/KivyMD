@@ -87,11 +87,12 @@ __all__ = ("MDBoxLayout",)
 
 from kivy.uix.boxlayout import BoxLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDBoxLayout(DeclarativeBehavior, BoxLayout, MDAdaptiveWidget):
+class MDBoxLayout(DeclarativeBehavior, ThemableBehavior, BoxLayout, MDAdaptiveWidget):
     """
     Box layout class.
 

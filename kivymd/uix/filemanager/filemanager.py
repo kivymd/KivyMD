@@ -158,7 +158,6 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.modalview import ModalView
 
 from kivymd import images_path, uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFloatingActionButton
@@ -197,14 +196,12 @@ class ModifiedOneLineIconListItem(BaseListItem):
         self.height = dp(48)
 
 
-class MDFileManager(MDRelativeLayout, ThemableBehavior):
+class MDFileManager(MDRelativeLayout):
     """
     Implements a modal dialog with a file manager.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` and
-    :class:`~kivymd.theming.ThemableBehavior`
-    class documentation.
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
 
     :Events:
         `on_pre_open`:

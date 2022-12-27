@@ -38,11 +38,12 @@ __all__ = ("MDWidget",)
 
 from kivy.uix.widget import Widget
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDWidget(DeclarativeBehavior, MDAdaptiveWidget, Widget):
+class MDWidget(DeclarativeBehavior, ThemableBehavior, MDAdaptiveWidget, Widget):
     """
     See :class:`~kivy.uix.Widget` class documentation for more information.
 

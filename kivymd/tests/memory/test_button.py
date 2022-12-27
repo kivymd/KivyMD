@@ -7,11 +7,11 @@ from kivymd.uix.screen import MDScreen
 len_callbacks = 0
 
 
-class ButtonPotentialMemoryLeak(MDRaisedButton):
-    def dec_disabled(self, *args, **kwargs) -> None:
+class MyScreen(MDScreen):
+    def remove_widget(self, *args, **kwargs) -> None:
         global len_callbacks
 
-        super().dec_disabled()
+        super().remove_widget(*args, **kwargs)
         len_callbacks = len(
             self.theme_cls.get_property_observers("theme_style")
         )
@@ -23,7 +23,7 @@ class TestButtonMemoryLeak(MDApp):
 
     def build(self):
         Clock.schedule_interval(self.add_items, 0.5)
-        return MDScreen()
+        return MyScreen()
 
     def add_items(self, *args):
         if len_callbacks:
@@ -31,9 +31,7 @@ class TestButtonMemoryLeak(MDApp):
 
         self.counter += 1
         self.root.clear_widgets()
-        self.root.add_widget(
-            ButtonPotentialMemoryLeak(text=f"Count {self.counter}")
-        )
+        self.root.add_widget(MDRaisedButton(text=f"Count {self.counter}"))
 
         if self.counter > 10:
             Clock.unschedule(self.add_items)

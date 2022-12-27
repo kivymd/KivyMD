@@ -83,7 +83,6 @@ from kivy.properties import (
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.fitimage import FitImage
@@ -104,14 +103,12 @@ class SmartTileOverlayBox(MDBoxLayout):
     """Implements a container for custom widgets to be added to the tile."""
 
 
-class MDSmartTile(MDRelativeLayout, ThemableBehavior):
+class MDSmartTile(MDRelativeLayout):
     """
     A tile for more complex needs.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.MDRelativeLayout`
-    :class:`~kivymd.theming.ThemableBehavior` and
-    classes documentation.
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
 
     Includes an image, a container to place overlays and a box that can act
     as a header or a footer, as described in the Material Design specs.

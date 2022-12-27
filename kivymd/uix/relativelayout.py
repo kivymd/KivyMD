@@ -31,11 +31,12 @@ MDRelativeLayout
 
 from kivy.uix.relativelayout import RelativeLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDRelativeLayout(DeclarativeBehavior, RelativeLayout, MDAdaptiveWidget):
+class MDRelativeLayout(DeclarativeBehavior, ThemableBehavior, RelativeLayout, MDAdaptiveWidget):
     """
     Relative layout class. For more information, see in the
     :class:`~kivy.uix.relativelayout.RelativeLayout` class documentation.

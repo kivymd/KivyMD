@@ -1677,41 +1677,44 @@ class ThemableBehavior(EventDispatcher):
         self.md_label = MDLabel
         self.md_textfield = MDTextField
 
-    def dec_disabled(self, *args, **kwargs) -> None:
-        callbacks = self.theme_cls.get_property_observers("theme_style")
+    def remove_widget(self, widget) -> None:
+        callbacks = widget.theme_cls.get_property_observers("theme_style")
 
         for callback in callbacks:
             try:
                 if hasattr(callback, "proxy") and hasattr(
                     callback.proxy, "theme_cls"
                 ):
-                    if issubclass(self.__class__, self.md_textfield):
-                        self.theme_cls.unbind(
+                    if issubclass(widget.__class__, self.md_textfield):
+                        widget.theme_cls.unbind(
                             **{
                                 "theme_style": getattr(
                                     callback.proxy, callback.method_name
                                 )
                             }
                         )
-
                     for property_name in self.unbind_properties:
-                        if self == callback.proxy:
-                            self.theme_cls.unbind(
+                        if widget == callback.proxy:
+                            widget.theme_cls.unbind(
                                 **{
                                     property_name: getattr(
                                         callback.proxy, callback.method_name
                                     )
                                 }
                             )
+                            # KivyMD widgets may contain other MD widgets.
+                            for children in widget.children:
+                                if hasattr(children, "theme_cls"):
+                                    self.remove_widget(children)
             except ReferenceError:
                 pass
 
         # Canceling a scheduled method call on_window_touch for MDLabel
         # objects.
         if (
-            issubclass(self.__class__, self.md_label)
+            issubclass(widget.__class__, self.md_label)
             and self.md_label.allow_selection
         ):
-            Window.unbind(on_touch_down=self.on_window_touch)
+            Window.unbind(on_touch_down=widget.on_window_touch)
 
-        super().dec_disabled(*args, **kwargs)
+        super().remove_widget(widget)

@@ -32,12 +32,13 @@ MDScreen
 from kivy.properties import ListProperty, ObjectProperty
 from kivy.uix.screenmanager import Screen
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.hero import MDHeroTo
 
 
-class MDScreen(DeclarativeBehavior, Screen, MDAdaptiveWidget):
+class MDScreen(DeclarativeBehavior, ThemableBehavior, Screen, MDAdaptiveWidget):
     """
     Screen is an element intended to be used with a
     :class:`~kivymd.uix.screenmanager.MDScreenManager`. For more information,

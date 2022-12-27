@@ -166,7 +166,6 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.vector import Vector
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.circularlayout import MDCircularLayout
 from kivymd.uix.label import MDLabel
@@ -185,7 +184,7 @@ class AmPmSelectorLabel(ButtonBehavior, MDLabel):
     pass
 
 
-class AmPmSelector(ThemableBehavior, MDBoxLayout):
+class AmPmSelector(MDBoxLayout):
     border_radius = NumericProperty()
     border_color = ColorProperty()
     bg_color = ColorProperty()

@@ -11,13 +11,13 @@ In `KV file`:
 
 .. code-block:: kv
 
-    <HoverItem@MDBoxLayout+ThemableBehavior+HoverBehavior>
+    <HoverItem@MDBoxLayout+HoverBehavior>
 
 In `python file`:
 
 .. code-block:: python
 
-    class HoverItem(MDBoxLayout, ThemableBehavior, HoverBehavior):
+    class HoverItem(MDBoxLayout, HoverBehavior):
         '''Custom item implementing hover behavior.'''
 
 After creating a class, you must define two methods for it:
@@ -38,7 +38,6 @@ the widget.
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import HoverBehavior
     from kivymd.uix.boxlayout import MDBoxLayout
-    from kivymd.theming import ThemableBehavior
 
     KV = '''
     Screen
@@ -51,7 +50,7 @@ the widget.
     '''
 
 
-    class HoverItem(MDBoxLayout, ThemableBehavior, HoverBehavior):
+    class HoverItem(MDBoxLayout, HoverBehavior):
         '''Custom item implementing hover behavior.'''
 
         def on_enter(self, *args):

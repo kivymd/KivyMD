@@ -87,11 +87,12 @@ __all__ = ("MDStackLayout",)
 
 from kivy.uix.stacklayout import StackLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDStackLayout(DeclarativeBehavior, StackLayout, MDAdaptiveWidget):
+class MDStackLayout(DeclarativeBehavior, ThemableBehavior, StackLayout, MDAdaptiveWidget):
     """
     Stack layout class. For more information, see in the
     :class:`~kivy.uix.stacklayout.StackLayout` class documentation.

@@ -765,7 +765,7 @@ class TableData(RecycleView):
     #        instance_pagination.ids.button_forward.disabled = True
 
 
-class TablePagination(ThemableBehavior, MDBoxLayout):
+class TablePagination(MDBoxLayout):
     """Pagination Container."""
 
     table_data = ObjectProperty()
@@ -1897,7 +1897,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
 
 class CellRow(
-    ThemableBehavior,
     RecycleDataViewBehavior,
     HoverBehavior,
     ButtonBehavior,

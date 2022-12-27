@@ -381,13 +381,12 @@ class {name_screen}Controller:
 temp_base_screen = '''from kivy.properties import ObjectProperty
 
 from kivymd.app import MDApp
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.screen import MDScreen
 
 from Utility.observer import Observer
 
 
-class BaseScreenView(ThemableBehavior, MDScreen, Observer):
+class BaseScreenView(MDScreen, Observer):
     """
     A base class that implements a visual representation of the model data.
     The view class must be inherited from this class.

@@ -720,13 +720,12 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDSeparator(ThemableBehavior, MDBoxLayout):
+class MDSeparator(MDBoxLayout):
     """
     A separator line.
 
     For more information, see in the
-    :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes documentation.
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
     """
 
     color = ColorProperty(None)

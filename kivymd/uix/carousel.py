@@ -57,10 +57,11 @@ MDCarousel
 from kivy.animation import Animation
 from kivy.uix.carousel import Carousel
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class MDCarousel(DeclarativeBehavior, Carousel):
+class MDCarousel(DeclarativeBehavior, ThemableBehavior, Carousel):
     """
     based on kivy's carousel.
 

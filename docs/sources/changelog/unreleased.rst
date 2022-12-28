@@ -35,3 +35,4 @@ Unreleased
 
   - When we use the `adaptive_height/adaptive_width/adaptive_size` parameters, if the widget did not contain child widgets, then its size would be 100.
 * `Add <https://github.com/kivymd/KivyMD/commit/81cd0bbb19be7bb6b67dfe6c0d0258a862ede1a2>`_ `radius` property to `MDProgressBar <https://kivymd.readthedocs.io/en/latest/components/progressbar/>`_ class.
+* The material design style has been `changed <https://github.com/kivymd/KivyMD/commit/fbb087e01eb9fe116f945c717fcac617f792e6aa>`_. By default now `M3 <https://m3.material.io>`_.

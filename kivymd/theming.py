@@ -606,12 +606,15 @@ class ThemeManager(EventDispatcher):
     readonly.
     """
 
-    material_style = OptionProperty("M2", options=["M2", "M3"])
+    material_style = OptionProperty("M3", options=["M2", "M3"])
     """
     Material design style.
     Available options are: 'M2', 'M3'.
 
     .. versionadded:: 1.0.0
+
+    .. versionchanged:: 1.2.0
+        By default now '`M3'`.
 
     .. seealso::
 
@@ -620,7 +623,7 @@ class ThemeManager(EventDispatcher):
 
 
     :attr:`material_style` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'M2'`.
+    and defaults to `'M3'`.
     """
 
     theme_style_switch_animation = BooleanProperty(False)

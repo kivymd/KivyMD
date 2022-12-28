@@ -614,7 +614,7 @@ class ThemeManager(EventDispatcher):
     .. versionadded:: 1.0.0
 
     .. versionchanged:: 1.2.0
-        By default now '`M3'`.
+        By default now `'M3'`.
 
     .. seealso::
 

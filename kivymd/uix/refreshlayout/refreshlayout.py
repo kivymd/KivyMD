@@ -237,7 +237,7 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
     Color of ellipse around the spinner in (r, g, b, a) or string format.
 
     :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `theme_cls.primary_dark`.
+    and defaults to `None`.
     """
 
     # kivymd.refreshlayout.MDScrollViewRefreshLayout object

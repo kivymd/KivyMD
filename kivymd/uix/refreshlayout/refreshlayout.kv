@@ -15,7 +15,7 @@
         canvas:
             Clear
             Color:
-                rgba: root.theme_cls.primary_dark
+                rgba: root.circle_color
             Ellipse:
                 pos: self.pos
                 size: self.size
@@ -24,4 +24,4 @@
             id: spinner
             size_hint: None, None
             size: dp(30), dp(30)
-            color: 1, 1, 1, 1
+            color: root.spinner_color

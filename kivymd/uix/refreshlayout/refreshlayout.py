@@ -40,6 +40,8 @@ Example
                 left_action_items: [['menu', lambda x: x]]
 
             MDScrollViewRefreshLayout:
+                spinner_color: (245/255, 40/255, 145/255, 0.8)
+                circle_color: (0, 0, 0, 1)
                 id: refresh_layout
                 refresh_callback: app.refresh_callback
                 root_layout: root
@@ -150,7 +152,7 @@ class _RefreshScrollEffect(DampedScrollEffect):
             return False
 
 
-class MDScrollViewRefreshLayout(MDScrollView):
+class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
     """
     Refresh layout class.
 
@@ -175,8 +177,26 @@ class MDScrollViewRefreshLayout(MDScrollView):
     and defaults to `None`.
     """
 
+    spinner_color = ColorProperty()
+    """
+    Color of spinner in (r, g, b, a) or string format.
+
+    :attr:`spinner_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    circle_color = ColorProperty(None)
+    """
+    Color of ellipse around the spinner in (r, g, b, a) or string format.
+
+    :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        if not self.circle_color:
+            self.circle_color = self.theme_cls.primary_dark
         self.effect_cls = _RefreshScrollEffect
         self._work_spinner = False
         self._did_overscroll = False
@@ -187,7 +207,9 @@ class MDScrollViewRefreshLayout(MDScrollView):
             if self.refresh_callback:
                 self.refresh_callback()
             if not self.refresh_spinner:
-                self.refresh_spinner = RefreshSpinner(_refresh_layout=self)
+                self.refresh_spinner = RefreshSpinner(_refresh_layout=self,
+                                                      spinner_color=self.spinner_color,
+                                                      circle_color=self.circle_color)
                 self.root_layout.add_widget(self.refresh_spinner)
             self.refresh_spinner.start_anim_spinner()
             self._work_spinner = True
@@ -207,6 +229,14 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
     Color of spinner in (r, g, b, a) or string format.
 
     :attr:`spinner_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1, 1, 1, 1]`.
+    """
+
+    circle_color = ColorProperty()
+    """
+    Color of ellipse around the spinner in (r, g, b, a) or string format.
+
+    :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
 

@@ -177,9 +177,9 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
     and defaults to `None`.
     """
 
-    spinner_color = ColorProperty()
+    spinner_color = ColorProperty([1, 1, 1, 1])
     """
-    Color of spinner in (r, g, b, a) or string format.
+    Color of the spinner in (r, g, b, a) or string format.
 
     :attr:`spinner_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 1]`.
@@ -187,10 +187,10 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
 
     circle_color = ColorProperty(None)
     """
-    Color of ellipse around the spinner in (r, g, b, a) or string format.
+    Color of the ellipse around the spinner in (r, g, b, a) or string format.
 
     :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `theme_cls.primary_dark`.
+    and defaults to `None`.
     """
 
     def __init__(self, *args, **kwargs):
@@ -226,7 +226,7 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
 class RefreshSpinner(ThemableBehavior, FloatLayout):
     spinner_color = ColorProperty([1, 1, 1, 1])
     """
-    Color of spinner in (r, g, b, a) or string format.
+    Color of the spinner in (r, g, b, a) or string format.
 
     :attr:`spinner_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 1]`.
@@ -234,7 +234,7 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
 
     circle_color = ColorProperty()
     """
-    Color of ellipse around the spinner in (r, g, b, a) or string format.
+    Color of the ellipse around the spinner in (r, g, b, a) or string format.
 
     :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

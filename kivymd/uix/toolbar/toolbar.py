@@ -1951,7 +1951,7 @@ class MDBottomAppBar(
         """
         Checks the scrolling direction.
         Depending on the scrolling direction, hides or shows the
-        class:`~MDBottomAppBar` panel.
+        :class:`~MDBottomAppBar` panel.
         """
 
         if round(y, 1) < self._scroll_cls_y and not self.bar_is_hidden:
@@ -1962,7 +1962,7 @@ class MDBottomAppBar(
         self._scroll_cls_y = round(y, 1)
 
     def show_bar(self) -> None:
-        """Show class:`~MDBottomAppBar` panel."""
+        """Show :class:`~MDBottomAppBar` panel."""
 
         def on_complete(*args):
             self.dispatch("on_show_bar")
@@ -2001,7 +2001,7 @@ class MDBottomAppBar(
         anim.start(self)
 
     def hide_bar(self) -> None:
-        """Hide class:`~MDBottomAppBar` panel."""
+        """Hide :class:`~MDBottomAppBar` panel."""
 
         def on_complete(*args):
             self.dispatch("on_hide_bar")

@@ -40,11 +40,11 @@ Example
                 left_action_items: [['menu', lambda x: x]]
 
             MDScrollViewRefreshLayout:
-                spinner_color: (245/255, 40/255, 145/255, 0.8)
-                circle_color: (0, 0, 0, 1)
                 id: refresh_layout
                 refresh_callback: app.refresh_callback
                 root_layout: root
+                spinner_color: "brown"
+                circle_color: "white"
 
                 MDGridLayout:
                     id: box
@@ -68,6 +68,8 @@ Example
         y = 15
 
         def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Orange"
             self.screen = Factory.Example()
             self.set_list()
 
@@ -83,8 +85,10 @@ Example
             asynckivy.start(set_list())
 
         def refresh_callback(self, *args):
-            '''A method that updates the state of your application
-            while the spinner remains on the screen.'''
+            '''
+            A method that updates the state of your application
+            while the spinner remains on the screen.
+            '''
 
             def refresh_callback(interval):
                 self.screen.ids.box.clear_widgets()
@@ -181,6 +185,8 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
     """
     Color of the spinner in (r, g, b, a) or string format.
 
+    .. versionadded:: 1.2.0
+
     :attr:`spinner_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 1]`.
     """
@@ -188,6 +194,8 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
     circle_color = ColorProperty(None)
     """
     Color of the ellipse around the spinner in (r, g, b, a) or string format.
+
+    .. versionadded:: 1.2.0
 
     :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.

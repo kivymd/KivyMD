@@ -1840,7 +1840,7 @@ class MDBottomAppBar(
     .. versionadded:: 1.2.0
 
     :attr:`show_transition` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'in_cubic'`.
+    and defaults to `'linear'`.
     """
 
     hide_transition = StringProperty("in_back")

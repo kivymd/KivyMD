@@ -98,7 +98,7 @@ requirements = kivy==master, https://github.com/kivymd/KivyMD/archive/master.zip
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini
-requirements = kivy==2.1.0, kivymd==1.1.1, sdl2_ttf == 2.0.15, pillow
+requirements = kivy==2.1.0, kivymd==1.1.1
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).

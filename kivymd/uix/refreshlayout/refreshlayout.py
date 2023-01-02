@@ -116,7 +116,12 @@ from kivy.core.window import Window
 from kivy.effects.dampedscroll import DampedScrollEffect
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ColorProperty, NumericProperty, ObjectProperty
+from kivy.properties import (
+    ColorProperty,
+    NumericProperty,
+    ObjectProperty,
+    StringProperty,
+)
 from kivy.uix.floatlayout import FloatLayout
 
 from kivymd import uix_path
@@ -161,7 +166,9 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
     Refresh layout class.
 
     For more information, see in the
-    :class:`~kivymd.uix.scrollview.MDScrollView` class documentation.
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.scrollview.MDScrollView`
+    class documentation.
     """
 
     root_layout = ObjectProperty()
@@ -201,6 +208,46 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
     and defaults to `None`.
     """
 
+    show_transition = StringProperty("out_elastic")
+    """
+    Transition of the spinner's opening.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`show_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_elastic'`.
+    """
+
+    show_duration = NumericProperty(0.8)
+    """
+    Duration of the spinner display.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`show_duration` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.8`.
+    """
+
+    hide_transition = StringProperty("out_elastic")
+    """
+    Transition of hiding the spinner.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`hide_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_elastic'`.
+    """
+
+    hide_duration = NumericProperty(0.8)
+    """
+    Duration of hiding the spinner.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`hide_duration` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.8`.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.circle_color:
@@ -215,9 +262,15 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
             if self.refresh_callback:
                 self.refresh_callback()
             if not self.refresh_spinner:
-                self.refresh_spinner = RefreshSpinner(_refresh_layout=self,
-                                                      spinner_color=self.spinner_color,
-                                                      circle_color=self.circle_color)
+                self.refresh_spinner = RefreshSpinner(
+                    _refresh_layout=self,
+                    spinner_color=self.spinner_color,
+                    circle_color=self.circle_color,
+                    show_transition=self.show_transition,
+                    show_duration=self.show_duration,
+                    hide_transition=self.hide_transition,
+                    hide_duration=self.hide_duration,
+                )
                 self.root_layout.add_widget(self.refresh_spinner)
             self.refresh_spinner.start_anim_spinner()
             self._work_spinner = True
@@ -232,21 +285,18 @@ class MDScrollViewRefreshLayout(ThemableBehavior, MDScrollView):
 
 
 class RefreshSpinner(ThemableBehavior, FloatLayout):
+    # Color of the spinner in (r, g, b, a) or string format.
     spinner_color = ColorProperty([1, 1, 1, 1])
-    """
-    Color of the spinner in (r, g, b, a) or string format.
-
-    :attr:`spinner_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[1, 1, 1, 1]`.
-    """
-
+    # Color of the ellipse around the spinner in (r, g, b, a) or string format.
     circle_color = ColorProperty()
-    """
-    Color of the ellipse around the spinner in (r, g, b, a) or string format.
-
-    :attr:`circle_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
+    # Transition of the spinner's opening.
+    show_transition = StringProperty()
+    # The duration of the spinner display.
+    show_duration = NumericProperty(0.8)
+    # Transition of hiding the spinner.
+    hide_transition = StringProperty()
+    # Duration of hiding the spinner.
+    hide_duration = NumericProperty(0.8)
 
     # kivymd.refreshlayout.MDScrollViewRefreshLayout object
     _refresh_layout = ObjectProperty()
@@ -255,13 +305,15 @@ class RefreshSpinner(ThemableBehavior, FloatLayout):
         spinner = self.ids.body_spinner
         Animation(
             y=spinner.y - self.theme_cls.standard_increment * 2 + dp(10),
-            d=0.8,
-            t="out_elastic",
+            d=self.show_duration,
+            t=self.show_transition,
         ).start(spinner)
 
     def hide_anim_spinner(self) -> None:
         spinner = self.ids.body_spinner
-        anim = Animation(y=Window.height, d=0.8, t="out_elastic")
+        anim = Animation(
+            y=Window.height, d=self.hide_duration, t=self.hide_transition
+        )
         anim.bind(on_complete=self.set_spinner)
         anim.start(spinner)
 

@@ -90,7 +90,7 @@ class BackgroundColorBehavior:
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    md_bg_color = ColorProperty([1, 1, 1, 0])
+    md_bg_color = ColorProperty(None)
     """
     The background color of the widget (:class:`~kivy.uix.widget.Widget`)
     that will be inherited from the :attr:`BackgroundColorBehavior` class.
@@ -115,7 +115,7 @@ class BackgroundColorBehavior:
             md_bg_color: 0, 1, 1, 1
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[1, 1, 1, 0]`.
+    and defaults to `None`.
     """
 
     line_color = ColorProperty([0, 0, 0, 0])

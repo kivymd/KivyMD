@@ -177,6 +177,61 @@
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height
 
+        # "rectangle" mode
+        Color:
+            group: "rectangle-color"
+            rgba:
+                ( \
+                (self.line_color_focus if not self.error else self.error_color) \
+                if self.focus else \
+                self.line_color_normal \
+                ) \
+                if self.mode == "rectangle" else \
+                (0, 0, 0, 0)
+        SmoothLine:
+            width: dp(1)
+            rounded_rectangle:
+                self.x, \
+                self.y, \
+                self.width, \
+                self.height - self._hint_text_label.texture_size[1] // 2, \
+                12
+
+        # The background color line of the widget on which the text field
+        # is placed (for background hint text texture).
+        Color:
+            rgba:
+                ( \
+                ( \
+                self.parent.md_bg_color \
+                if hasattr(self.parent, "md_bg_color") \
+                and self.parent.md_bg_color else \
+                self.theme_cls.bg_normal \
+                ) \
+                if self.focus else \
+                (0, 0, 0, 0) \
+                ) \
+                if self.mode == "rectangle" else \
+                (0, 0, 0, 0)
+        SmoothLine:
+            width: dp(2)
+            points:
+                self.x + dp(10), \
+                self.top - self._hint_text_label.texture_size[1] // 2, \
+                self.x + dp(16) + self._hint_text_label.texture_size[0], \
+                self.top - self._hint_text_label.texture_size[1] // 2
+
+        # Text color.
+        Color:
+            group: "text-color"
+            rgba:
+                self.theme_cls.disabled_hint_text_color if self.disabled else \
+                ( \
+                self.text_color_focus if self.focus else self._text_color_normal
+                ) \
+                if not self.error else self.error_color
+
+    canvas.after:
         # Hint text texture.
         Color:
             group: "hint-text-color"
@@ -204,36 +259,6 @@
                 if self.mode != "line" else \
                 dp(-6)) if self.mode != "rectangle" else dp(-4)) - self._hint_y
 
-        # "rectangle" mode
-        Color:
-            group: "rectangle-color"
-            rgba:
-                (self.line_color_focus if not self.error else self.error_color) \
-                if self.focus else \
-                self.line_color_normal
-        Line:
-            width: dp(1) if self.mode == "rectangle" else dp(0.00001)
-            points:
-                (
-                self.x + self._line_blank_space_right_point,
-                self.top - self._hint_text_label.texture_size[1] // 2,
-                self.right, self.top - self._hint_text_label.texture_size[1] // 2,
-                self.right, self.y,
-                self.x, self.y,
-                self.x, self.top - self._hint_text_label.texture_size[1] // 2,
-                self.x + self._line_blank_space_left_point,
-                self.top - self._hint_text_label.texture_size[1] // 2
-                )
-
-        # Text color.
-        Color:
-            group: "text-color"
-            rgba:
-                self.theme_cls.disabled_hint_text_color if self.disabled else \
-                ( \
-                self.text_color_focus if self.focus else self._text_color_normal
-                ) \
-                if not self.error else self.error_color
 
     font_name: "Roboto" if not self.font_name else self.font_name
     foreground_color: self.theme_cls.text_color

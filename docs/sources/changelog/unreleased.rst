@@ -37,3 +37,11 @@ Unreleased
 * `Add <https://github.com/kivymd/KivyMD/commit/81cd0bbb19be7bb6b67dfe6c0d0258a862ede1a2>`_ `radius` property to `MDProgressBar <https://kivymd.readthedocs.io/en/latest/components/progressbar/>`_ class.
 * The material design style has been `changed <https://github.com/kivymd/KivyMD/commit/fbb087e01eb9fe116f945c717fcac617f792e6aa>`_. By default now `M3 <https://m3.material.io>`_.
 * `Add <https://github.com/kivymd/KivyMD/commit/039536de44dc8a20bd280334be9e1a8ed9aa3b60>`_ `MDBottomAppBar <https://kivymd.readthedocs.io/en/latest/components/toolbar/#m3-style-bottom-app-bar>`_ `M3 <https://m3.material.io/components/bottom-app-bar/overview>`_ style.
+* `Add <https://github.com/kivymd/KivyMD/commit/c5c1af1beba499644ec6352bede8f89a8914780f>`_ `new <https://github.com/kivymd/KivyMD/pull/1443>`_ properties to `MDScrollViewRefreshLayout <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#module-kivymd.uix.refreshlayout.refreshlayout>`_ class:
+
+  - `spinner_color <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#kivymd.uix.refreshlayout.refreshlayout.MDScrollViewRefreshLayout.spinner_color>`_;
+  - `circle_color <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#kivymd.uix.refreshlayout.refreshlayout.MDScrollViewRefreshLayout.circle_color>`_;
+  - `show_transition <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#kivymd.uix.refreshlayout.refreshlayout.MDScrollViewRefreshLayout.show_transition>`_;
+  - `show_duration <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#kivymd.uix.refreshlayout.refreshlayout.MDScrollViewRefreshLayout.show_duration>`_;
+  - `hide_transition <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#kivymd.uix.refreshlayout.refreshlayout.MDScrollViewRefreshLayout.hide_transition>`_;
+  - `hide_duration <https://kivymd.readthedocs.io/en/latest/components/refreshlayout/#kivymd.uix.refreshlayout.refreshlayout.MDScrollViewRefreshLayout.hide_duration>`_;

@@ -686,9 +686,9 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     CommonElevationBehavior,
     DeclarativeBehavior,
+    RotateBehavior,
     ScaleBehavior,
     SpecificBackgroundColorBehavior,
-    RotateBehavior,
 )
 from kivymd.uix.button import MDFloatingActionButton, MDIconButton
 from kivymd.uix.controllers import WindowController
@@ -1995,9 +1995,7 @@ class MDBottomAppBar(
             d=self.show_duration,
             t=self.show_transition,
         )
-        anim.bind(
-            on_progress=on_progress, on_complete=on_complete
-        )
+        anim.bind(on_progress=on_progress, on_complete=on_complete)
         anim.start(self)
 
     def hide_bar(self) -> None:

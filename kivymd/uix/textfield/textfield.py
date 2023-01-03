@@ -1210,7 +1210,7 @@ class MDTextField(
 
     radius = ListProperty([10, 10, 0, 0])
     """
-    The corner radius for a text field in `fill` mode.
+    The corner radius for a text field in `fill/rectangle` mode.
 
     :attr:`radius` is a :class:`~kivy.properties.ListProperty` and
     defaults to `[10, 10, 0, 0]`.

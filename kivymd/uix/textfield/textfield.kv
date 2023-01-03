@@ -189,7 +189,15 @@
                 self.theme_cls.bg_normal \
                 ) \
                 if self.focus else \
-                (0, 0, 0, 0) \
+                ( \
+                (0, 0, 0, 0) if not self.text else \
+                ( \
+                self.parent.md_bg_color \
+                if hasattr(self.parent, "md_bg_color") \
+                and self.parent.md_bg_color else \
+                self.theme_cls.bg_normal \
+                ) \
+                ) \
                 ) \
                 if self.mode == "rectangle" else \
                 (0, 0, 0, 0)

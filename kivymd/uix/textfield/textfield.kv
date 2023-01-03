@@ -34,34 +34,14 @@
                 ) \
                 if self.mode == "round" else \
                 (0, 0, 0, 0)
-        Line:
-            points:
-                self.x + dp(18), \
+        SmoothLine:
+            width: dp(1)
+            rounded_rectangle:
+                self.x, \
                 self.y, \
-                self.x + self.width - dp(18), \
-                self.y
-        Line:
-            points:
-                self.x + dp(18), \
-                self.y + self.height, \
-                self.x + self.width - dp(18), \
-                self.y + self.height
-        Line:
-            ellipse:
-                self.x - self.height / 2 + dp(18), \
-                self.y, \
+                self.width, \
                 self.height, \
-                self.height, \
-                180, \
-                360
-        Line:
-            ellipse:
-                self.width + self.x - self.height / 2.0 - dp(18), \
-                self.y, \
-                self.height, \
-                self.height, \
-                360, \
-                540
+                self.height / 2
 
         # "fill" mode.
         Color:

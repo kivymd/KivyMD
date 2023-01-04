@@ -89,6 +89,8 @@ class BackgroundColorBehavior:
     and defaults to `[0, 0, 0, 0]`.
     """
 
+    # FIXME: in this case, we will not be able to animate this property
+    #  using the `Animation` class.
     md_bg_color = ColorProperty(None)
     """
     The background color of the widget (:class:`~kivy.uix.widget.Widget`)

@@ -58,7 +58,6 @@ Builder.load_string(
                 self.width, \
                 self.height, \
                 *self.radius, \
-                100, \
                 ]
         PopMatrix
 """,

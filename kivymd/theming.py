@@ -650,9 +650,8 @@ class ThemeManager(EventDispatcher):
                         padding: 0, 0, 0 , "36dp"
                         size_hint: .5, .5
                         pos_hint: {"center_x": .5, "center_y": .5}
-                        elevation: 4
-                        shadow_radius: 6
-                        shadow_offset: 0, 2
+                        elevation: 2
+                        shadow_offset: 0, -2
 
                         MDLabel:
                             text: "Theme style - {}".format(app.theme_cls.theme_style)
@@ -723,9 +722,8 @@ class ThemeManager(EventDispatcher):
                                     padding=(0, 0, 0, "36dp"),
                                     size_hint=(0.5, 0.5),
                                     pos_hint={"center_x": 0.5, "center_y": 0.5},
-                                    elevation=4,
-                                    shadow_radius=6,
-                                    shadow_offset=(0, 2),
+                                    elevation=2,
+                                    shadow_offset=(0, -2),
                                 )
                             )
                         )

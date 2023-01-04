@@ -91,7 +91,7 @@ class BackgroundColorBehavior:
 
     # FIXME: in this case, we will not be able to animate this property
     #  using the `Animation` class.
-    md_bg_color = ColorProperty(None)
+    md_bg_color = ColorProperty([1, 1, 1, 0])
     """
     The background color of the widget (:class:`~kivy.uix.widget.Widget`)
     that will be inherited from the :attr:`BackgroundColorBehavior` class.
@@ -116,7 +116,7 @@ class BackgroundColorBehavior:
             md_bg_color: 0, 1, 1, 1
 
     :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
+    and defaults to `[1, 1, 1, 0]`.
     """
 
     line_color = ColorProperty([0, 0, 0, 0])

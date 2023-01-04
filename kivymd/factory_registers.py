@@ -5,8 +5,8 @@ Register KivyMD widgets to use without import.
 from kivy.factory import Factory
 
 register = Factory.register
-register("MDSegmentButton", module="kivymd.uix.segmentedbutton")
-register("MDSegmentButtonItem", module="kivymd.uix.segmentedbutton")
+register("MDSegmentedButton", module="kivymd.uix.segmentedbutton")
+register("MDSegmentedButtonItem", module="kivymd.uix.segmentedbutton")
 register("MDScrollView", module="kivymd.uix.scrollview")
 register("MDRecycleView", module="kivymd.uix.recycleview")
 register("MDResponsiveLayout", module="kivymd.uix.responsivelayout")

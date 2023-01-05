@@ -1,0 +1,32 @@
+<MDSegmentedButton>
+    size_hint: None, None
+    height: "40dp"
+    opacity: 0
+
+
+<MDSegmentedButtonItem>
+    size_hint: None, None
+    height: self.parent.height
+    line_color:
+        self.theme_cls.disabled_hint_text_color \
+        if self.parent.line_color == [0, 0, 0, 0] else \
+        self.parent.line_color
+
+    SegmentButtonIcon:
+        id: scale_icon
+        icon: root.icon
+        size_hint: None, None
+        size: "24dp", "24dp"
+        pos_hint: {"center_y": .5}
+        scale_value_x: 1 if root.icon else 0
+        scale_value_y: 1 if root.icon else 0
+        x: label_text.x - dp(32)
+
+    MDLabel:
+        id: label_text
+        text: root.text
+        adaptive_size: True
+        pos_hint: {"center_y": .5}
+        x:
+            root.center_x - (self.texture_size[0] / 2) \
+            + (dp(16) if root.icon else 0)

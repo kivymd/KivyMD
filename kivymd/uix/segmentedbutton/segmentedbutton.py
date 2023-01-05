@@ -612,6 +612,8 @@ class MDSegmentedButton(MDBoxLayout):
                 self.dispatch("on_unmarked", segment_item, segment_item.active)
 
     def mark_item(self, segment_item: MDSegmentedButtonItem) -> None:
+        if segment_item.active and not self.multiselect:
+            return
         if not self.multiselect and self.selected_items:
             self.uncheck_item()
         else:

@@ -48,3 +48,4 @@ Unreleased
 * `Fix <https://github.com/kivymd/KivyMD/commit/fd40967d0e0bc5ad28bd5883247883870b2ab716>`_ `Adaptive_width and md_bg_color properties of MDLabel are not working correctly <https://github.com/kivymd/KivyMD/issues/1096>`_.
 * `Add <https://github.com/kivymd/KivyMD/commit/57bfb2c4cf6026f4683b6a4ceb56c5d4c95ab6b4>`_ rounded corners for a `rectangle` type to `MDTextField <https://kivymd.readthedocs.io/en/latest/components/textfield/>`_ class.
 * `Remove <https://github.com/kivymd/KivyMD/commit/e53778a75c9064dae11b5c282c47509a25125e3b>`_ `glsl_path` from `data` from `hook-kivymd.py` module.
+* `Add <https://github.com/kivymd/KivyMD/commit/b1a9ae883f42faf09070dfeb1440fd95f45e8af9>`_ `SegmentedButton <https://kivymd.readthedocs.io/en/latest/components/segmentedbutton/>`_ widget.

@@ -724,7 +724,7 @@ class MDLabel(
         if self.check_font_styles() is True:
             font_info = self.theme_cls.font_styles[self.font_style]
             self.font_name = font_info[0]
-            if font_style in list(self.theme_cls.font_styles.keys())[0:14]:
+            if self.font_style in list(self.theme_cls.font_styles.keys())[0:14]:
                 self.font_size = sp(font_info[1])
 
             if font_info[2] and self.can_capitalize:

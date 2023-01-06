@@ -512,14 +512,35 @@ class MDSnackbar(MDCard, StencilBehavior):
             widget.icon_size = "20sp"
             check_color("white")
             self.ids.close_container.add_widget(widget)
+            if len(self.ids.close_container.children) >= 2:
+                Logger.warning(
+                    "KivyMD: "
+                    "Do not use more than one button to close the snackbar. "
+                    "This is contrary to the material design rules "
+                    "of version 3"
+                )
         if isinstance(widget, MDSnackbarActionButton):
             self.ids.action_container.add_widget(widget)
             check_color(self.theme_cls.primary_color)
+            if len(self.ids.action_container.children) >= 2:
+                Logger.warning(
+                    "KivyMD: "
+                    "Do not use more than one action button. "
+                    "This is contrary to the material design rules "
+                    "of version 3"
+                )
         if isinstance(widget, MDLabel):
             widget.adaptive_height = True
             widget.pos_hint = {"center_y": 0.5}
             check_color("white")
             self.ids.label_container.add_widget(widget)
+            if len(self.ids.label_container.children) >= 4:
+                Logger.warning(
+                    "KivyMD: "
+                    "Do not use more than three lines in the snackbar. "
+                    "This is contrary to the material design rules "
+                    "of version 3"
+                )
         elif isinstance(
             widget,
             (

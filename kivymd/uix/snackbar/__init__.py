@@ -1,1 +1,6 @@
-from .snackbar import BaseSnackbar, Snackbar  # NOQA F401
+from .snackbar import (  # NOQA F401
+    MDSnackbar,
+    MDSnackbarActionButton,
+    MDSnackbarCloseButton,
+    Snackbar,
+)

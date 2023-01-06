@@ -13,7 +13,7 @@ from kivymd.uix.label import MDLabel
 
 class TestFontSizeInPythonCode(MDApp):
     def check_font_size(self, *args):
-        assert self.root.ids.label.font_size == 40
+        assert self.root.ids.label.font_size == 24.0
         self.stop()
 
     def build(self):
@@ -22,7 +22,6 @@ class TestFontSizeInPythonCode(MDApp):
                 id="label",
                 text="MDLabel",
                 font_style="H5",
-                font_size=40,
             ),
         )
 

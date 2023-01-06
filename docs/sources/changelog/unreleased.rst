@@ -52,3 +52,4 @@ Unreleased
 * `MDSnackbar <https://kivymd.readthedocs.io/en/latest/components/snackbar/>`_ `API break <https://github.com/kivymd/KivyMD/commit/0a99c45c59d5e546f655a81bf225cb54b71aa34e>`_:
 
     - now the widget has become more customizable and closer to the standards of material design version 3.
+* `Improved animation performance <https://github.com/kivymd/KivyMD/commit/528affe35163f7f0b7ede98fcdfade1ca01e6487>`_ for animate the `MDCheckbox <https://kivymd.readthedocs.io/en/latest/components/selectioncontrols/#mdcheckbox>`_ widget.

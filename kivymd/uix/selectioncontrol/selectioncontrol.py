@@ -10,9 +10,6 @@ Components/SelectionControls
 
 .. rubric:: Selection controls allow the user to select options.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/selection-controll.png
-    :align: center
-
 `KivyMD` provides the following selection controls classes for use:
 
 - MDCheckbox_

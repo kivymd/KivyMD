@@ -49,3 +49,6 @@ Unreleased
 * `Add <https://github.com/kivymd/KivyMD/commit/57bfb2c4cf6026f4683b6a4ceb56c5d4c95ab6b4>`_ rounded corners for a `rectangle` type to `MDTextField <https://kivymd.readthedocs.io/en/latest/components/textfield/>`_ class.
 * `Remove <https://github.com/kivymd/KivyMD/commit/e53778a75c9064dae11b5c282c47509a25125e3b>`_ `glsl_path` from `data` from `hook-kivymd.py` module.
 * `Add <https://github.com/kivymd/KivyMD/commit/b1a9ae883f42faf09070dfeb1440fd95f45e8af9>`_ `SegmentedButton <https://kivymd.readthedocs.io/en/latest/components/segmentedbutton/>`_ widget.
+* `MDSnackbar <https://kivymd.readthedocs.io/en/latest/components/snackbar/>`_ `API break <https://github.com/kivymd/KivyMD/commit/0a99c45c59d5e546f655a81bf225cb54b71aa34e>`_:
+
+    - now the widget has become more customizable and closer to the standards of material design version 3.

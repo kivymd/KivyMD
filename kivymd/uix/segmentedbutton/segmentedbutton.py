@@ -389,6 +389,7 @@ class MDSegmentedButtonItem(
 #  Density: Each step down in density removes 4dp from the height -
 #      https://m3.material.io/components/segmented-buttons/specs#2d5cab36-1deb-40bd-9e37-bc2bb1657009
 
+
 class MDSegmentedButton(MDBoxLayout):
     """
     Segment button panel.
@@ -601,7 +602,6 @@ class MDSegmentedButton(MDBoxLayout):
 
     def set_selected_segment_list(self, segment_item) -> None:
         segment_item.active = not segment_item.active
-
 
         if segment_item.active:
             self.selected_items.append(segment_item)

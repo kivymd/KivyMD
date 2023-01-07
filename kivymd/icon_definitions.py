@@ -7330,7 +7330,7 @@ if __name__ == "__main__":
     from kivymd.uix.list import OneLineIconListItem
 
     Builder.load_string(
-        '''
+        """
 #:import images_path kivymd.images_path
 
 
@@ -7370,18 +7370,15 @@ if __name__ == "__main__":
                 size_hint_y: None
                 height: self.minimum_height
                 orientation: 'vertical'
-    '''
+    """
     )
-
 
     class CustomOneLineIconListItem(OneLineIconListItem):
         icon = StringProperty()
 
-
     class PreviousMDIcons(Screen):
-
         def set_list_md_icons(self, text="", search=False):
-            '''Builds a list of icons for the screen MDIcons.'''
+            """Builds a list of icons for the screen MDIcons."""
 
             def add_icon_item(name_icon):
                 self.ids.rv.data.append(
@@ -7401,7 +7398,6 @@ if __name__ == "__main__":
                 else:
                     add_icon_item(name_icon)
 
-
     class MainApp(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
@@ -7412,6 +7408,5 @@ if __name__ == "__main__":
 
         def on_start(self):
             self.screen.set_list_md_icons()
-
 
     MainApp().run()

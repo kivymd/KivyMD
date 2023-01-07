@@ -53,3 +53,4 @@ Unreleased
 
     - now the widget has become more customizable and closer to the standards of material design version 3.
 * `Improved animation performance <https://github.com/kivymd/KivyMD/commit/528affe35163f7f0b7ede98fcdfade1ca01e6487>`_ for animate the `MDCheckbox <https://kivymd.readthedocs.io/en/latest/components/selectioncontrols/#mdcheckbox>`_ widget.
+* `Added the feature to use parent and child checkboxes <https://github.com/kivymd/KivyMD/commit/9d1be15a4d6362acba4a99a85b2fb7491827d678>`_ for `MDCheckbox <https://kivymd.readthedocs.io/en/latest/components/selectioncontrols/#mdcheckbox>`_.

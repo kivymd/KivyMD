@@ -113,6 +113,116 @@ MDCheckbox with group
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-group.gif
     :align: center
 
+Parent and child checkboxes
+---------------------------
+
+Checkboxes can have a parent-child relationship with other checkboxes. When
+the parent checkbox is checked, all child checkboxes are checked. If a parent
+checkbox is unchecked, all child checkboxes are unchecked. If some, but not all,
+child checkboxes are checked, the parent checkbox becomes an indeterminate
+checkbox.
+
+Usage
+-----
+
+.. code-block:: kv
+
+    MDCheckbox:
+        group: "root"  # this is a required name for the parent checkbox group
+
+    MDCheckbox:
+        group: "child"  # this is a required name for a group of child checkboxes
+
+    MDCheckbox:
+        group: "child"  # this is a required name for a group of child checkboxes
+
+Example
+-------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
+
+    from kivymd.app import MDApp
+    from kivymd.uix.boxlayout import MDBoxLayout
+
+    KV = '''
+    <CheckItem>
+        adaptive_height: True
+
+        MDCheckbox:
+            size_hint: None, None
+            size: "48dp", "48dp"
+            group: root.group
+
+        MDLabel:
+            text: root.text
+            adaptive_height: True
+            theme_text_color: "Custom"
+            text_color: "#B2B6AE"
+            pos_hint: {"center_y": .5}
+
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: "#141612"
+
+        MDTopAppBar:
+            md_bg_color: "#21271F"
+            specific_text_color: "#B2B6AE"
+            elevation: 0
+            title: "Meal options"
+            left_action_items: [["arrow-left", lambda x: x]]
+            anchor_title: "left"
+
+        MDBoxLayout:
+            orientation: "vertical"
+            adaptive_height: True
+            padding: "12dp", "36dp", 0, 0
+
+            CheckItem:
+                text: "Recieve emails"
+                group: "root"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                adaptive_height: True
+                padding: "24dp", 0, 0, 0
+
+                CheckItem:
+                    text: "Daily"
+                    group: "child"
+
+                CheckItem:
+                    text: "Weekly"
+                    group: "child"
+
+                CheckItem:
+                    text: "Monthly"
+                    group: "child"
+
+        MDWidget:
+    '''
+
+
+    class CheckItem(MDBoxLayout):
+        text = StringProperty()
+        group = StringProperty()
+
+
+    class Example(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Teal"
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-parent-child.png
+    :align: center
+
 .. MDSwitch:
 MDSwitch
 --------
@@ -179,6 +289,7 @@ from kivymd.uix.behaviors import (
 )
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
+from kivymd.utils import asynckivy
 
 with open(
     os.path.join(uix_path, "selectioncontrol", "selectioncontrol.kv"),
@@ -199,6 +310,9 @@ class MDCheckbox(
     :class:`~kivymd.uix.label.MDIcon`
     classes documentation.
     """
+
+    __allow_child_checkboxes_active = True
+    __allow_root_checkbox_active = True
 
     active = BooleanProperty(False)
     """
@@ -386,12 +500,16 @@ class MDCheckbox(
 
         if self.state == "down":
             self.icon = (
-                self.radio_icon_down if self.group else self.checkbox_icon_down
+                self.radio_icon_down
+                if self.group and self.group not in ["root", "child"]
+                else self.checkbox_icon_down
+                if self.group != "root"
+                else "minus-box"
             )
         else:
             self.icon = (
                 self.radio_icon_normal
-                if self.group
+                if self.group and self.group not in ["root", "child"]
                 else self.checkbox_icon_normal
             )
 
@@ -434,6 +552,41 @@ class MDCheckbox(
         """Called when the values of :attr:`active` change."""
 
         self.state = "down" if self.active else "normal"
+
+        if (
+            self.group
+            and self.group == "root"
+            and MDCheckbox.__allow_root_checkbox_active
+        ):
+            self.set_child_active(self.active)
+        elif self.group and self.group == "child":
+            if MDCheckbox.__allow_child_checkboxes_active:
+                self.set_root_active()
+
+    def set_root_active(self) -> None:
+        root_checkbox = self.get_widgets("root")
+        if root_checkbox:
+            MDCheckbox.__allow_root_checkbox_active = False
+            root_checkbox[0].active = True in [
+                child.active for child in self.get_widgets("child")
+            ]
+            MDCheckbox.__allow_root_checkbox_active = True
+
+    def set_child_active(self, active: bool):
+        for child in self.get_widgets("child"):
+            child.active = active
+        MDCheckbox.__allow_child_checkboxes_active = True
+
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            if self.group and self.group == "root":
+                MDCheckbox.__allow_child_checkboxes_active = False
+        return super().on_touch_down(touch)
+
+    def _release_group(self, current):
+        if self.group and self.group in ["root", "child"]:
+            return
+        super()._release_group(current)
 
 
 class ThumbIcon(MDIcon):

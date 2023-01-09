@@ -1332,7 +1332,7 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
 
     .. versionadded:: 1.0.0
 
-    Available options are: 'small', 'large', 'small'.
+    Available options are: 'medium', 'large', 'small'.
 
     :attr:`type_height` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'small'`.

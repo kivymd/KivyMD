@@ -185,7 +185,7 @@
                 ( \
                 self.parent.md_bg_color \
                 if hasattr(self.parent, "md_bg_color") \
-                and self.parent.md_bg_color else \
+                and self.parent.md_bg_color != [1, 1, 1, 0] else \
                 self.theme_cls.bg_normal \
                 ) \
                 if self.focus else \
@@ -194,7 +194,7 @@
                 ( \
                 self.parent.md_bg_color \
                 if hasattr(self.parent, "md_bg_color") \
-                and self.parent.md_bg_color else \
+                and self.parent.md_bg_color != [1, 1, 1, 0] else \
                 self.theme_cls.bg_normal \
                 ) \
                 ) \

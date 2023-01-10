@@ -1680,6 +1680,7 @@ class ThemableBehavior(EventDispatcher):
 
     def remove_widget(self, widget) -> None:
         if not hasattr(widget, "theme_cls"):
+            super().remove_widget(widget)
             return
 
         callbacks = widget.theme_cls.get_property_observers("theme_style")

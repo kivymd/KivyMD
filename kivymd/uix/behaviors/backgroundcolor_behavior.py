@@ -49,6 +49,8 @@ Builder.load_string(
             source: root.background
         Color:
             rgba: self.line_color if self.line_color else (0, 0, 0, 0)
+        # TODO: maybe we should use SmoothLine,
+        #  but this should be tested on all widgets.
         Line:
             width: root.line_width
             rounded_rectangle:

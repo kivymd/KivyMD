@@ -233,6 +233,52 @@ Icon (optional close affordance):
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-optional-close-affordance.gif
     :align: center
+
+API break
+=========
+
+1.1.1 version
+-------------
+
+.. code-block:: python
+
+    snackbar = Snackbar(
+        text="First string",
+        snackbar_x="10dp",
+        snackbar_y="24dp",
+    )
+    snackbar.size_hint_x = (
+        Window.width - (snackbar.snackbar_x * 2)
+    ) / Window.width
+    snackbar.buttons = [
+        MDFlatButton(
+            text="Done",
+            theme_text_color="Custom",
+            text_color="#8E353C",
+            on_release=snackbar.dismiss,
+        ),
+    ]
+    snackbar.open()
+
+1.2.0 version
+-------------
+
+.. code-block:: python
+
+MDSnackbar(
+    MDLabel(
+        text="First string",
+    ),
+    MDSnackbarActionButton(
+        text="Done",
+        theme_text_color="Custom",
+        text_color="#8E353C",
+    ),
+    y=dp(24),
+    pos_hint={"center_x": 0.5},
+    size_hint_x=0.5,
+    md_bg_color="#E8D8D7",
+).open()
 """
 
 __all__ = (

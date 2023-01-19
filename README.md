@@ -182,7 +182,7 @@ If you need assistance or you have a question, you can ask for help on our maili
 
 - **Discord server:** https://discord.gg/wu3qBST (English #support, Russian #ru-support)
 - **StackOverflow tag:** [kivymd](https://stackoverflow.com/tags/kivymd)
-- **Email:** kivydevelopment@gmail.com
+- **Email:** KivyMD-library@yandex.com
 
 ## Settings
 

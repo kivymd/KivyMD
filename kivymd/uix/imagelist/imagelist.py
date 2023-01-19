@@ -253,6 +253,8 @@ class MDSmartTile(MDRelativeLayout):
     and defaults to `False`.
     """
 
+    _no_ripple_effect = BooleanProperty(False)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_release")

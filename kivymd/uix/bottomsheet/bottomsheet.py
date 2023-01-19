@@ -887,7 +887,7 @@ class MDBottomSheet(MDBoxLayout, CommonElevationBehavior, TouchBehavior):
     # There was a touch to the bottom sheet.
     _touch_sheet = False
     # kivymd.uix.bottomsheet.bottomsheet.BottomSheetScrimLayer object.
-    _scrim_layer = ObjectProperty()
+    _scrim_layer = ObjectProperty(None, allownone=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -976,6 +976,9 @@ class MDBottomSheet(MDBoxLayout, CommonElevationBehavior, TouchBehavior):
 
         return super().on_touch_move(touch)
 
+    def on_type(self, *args) -> None:
+        self.add_scrim_layer()
+
     def add_scrim_layer(self, *args) -> None:
         """
         Adds a scrim layer to the parent widget on which the bottom sheet
@@ -986,6 +989,9 @@ class MDBottomSheet(MDBoxLayout, CommonElevationBehavior, TouchBehavior):
             self._scrim_layer = BottomSheetScrimLayer()
             self.parent.add_widget(self._scrim_layer, index=1)
             self._scrim_layer.bind(on_touch_down=self._on_touch_down_layer)
+        if self._scrim_layer and self.type == "standard":
+            self.parent.remove_widget(self._scrim_layer)
+            self._scrim_layer = None
 
     def check_max_opening_height(self, *args) -> None:
         if (

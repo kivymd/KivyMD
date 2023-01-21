@@ -446,6 +446,9 @@ class MDExpansionPanel(RelativeLayout):
         self._anim_playing = True
         self._state = "open"
 
+        if self.content.height > 580:
+            self.content.height = 560
+
         anim = Animation(
             height=self.content.height + self.height,
             d=self.opening_time,

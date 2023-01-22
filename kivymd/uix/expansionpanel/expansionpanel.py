@@ -446,6 +446,7 @@ class MDExpansionPanel(RelativeLayout):
         self._anim_playing = True
         self._state = "open"
 
+        print(f"Lazza - Content height is {self.content.height} is it greater than 580 ?")
         if self.content.height > 580:
             self.content.height = 560
 

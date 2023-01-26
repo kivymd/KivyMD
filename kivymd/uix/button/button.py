@@ -2211,11 +2211,6 @@ class MDFloatingActionButtonSpeedDial(
         def set_pos_root_button(*args):
             if self.anchor == "right":
                 instance_floating_root_button.y = dp(20)
-                self.startupcheck = False
-                print(f"Lazza - speedDial Button parent width is {self.parent.width} is it less than 130 ?")
-                if not self.startupcheck and self.parent.width < 130:
-                    self.parent.width = 430
-                    self.startupcheck = True
                 instance_floating_root_button.x = self.parent.width - (
                     dp(56) + dp(20)
                 )

@@ -381,7 +381,7 @@ class MDExpansionPanel(RelativeLayout):
     def check_open_panel(
             self,
             instance_panel: [
-                MDExpansionPanelThreeLine,
+                MDExpansionPanelOneLine,
                 MDExpansionPanelTwoLine,
                 MDExpansionPanelThreeLine,
                 MDExpansionPanelLabel,

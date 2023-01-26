@@ -149,15 +149,15 @@ __all__ = (
 import os
 from typing import Union
 
+from kivy.properties import NumericProperty, ObjectProperty, StringProperty
+
+import kivymd.material_resources as m_res
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import NumericProperty, ObjectProperty, StringProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.widget import WidgetException
-
-import kivymd.material_resources as m_res
 from kivymd import uix_path
 from kivymd.icon_definitions import md_icons
 from kivymd.uix.button import MDIconButton
@@ -172,8 +172,8 @@ from kivymd.uix.list import (
 )
 
 with open(
-    os.path.join(uix_path, "expansionpanel", "expansionpanel.kv"),
-    encoding="utf-8",
+        os.path.join(uix_path, "expansionpanel", "expansionpanel.kv"),
+        encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
 
@@ -224,9 +224,11 @@ class MDExpansionPanelLabel(TwoLineListItem):
         been tested for use outside of these classes.
     """
 
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_once(self.set_paddings)
+
 
     def set_paddings(self, interval: Union[int, float]) -> None:
         self._txt_bot_pad = dp(36)
@@ -313,24 +315,25 @@ class MDExpansionPanel(RelativeLayout):
     _state = StringProperty("close")
     _anim_playing = False
 
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.register_event_type("on_open")
         self.register_event_type("on_close")
 
         if self.panel_cls and isinstance(
-            self.panel_cls,
-            (
-                MDExpansionPanelOneLine,
-                MDExpansionPanelTwoLine,
-                MDExpansionPanelThreeLine,
-                MDExpansionPanelLabel,
-            ),
+                self.panel_cls,
+                (
+                        MDExpansionPanelOneLine,
+                        MDExpansionPanelTwoLine,
+                        MDExpansionPanelThreeLine,
+                        MDExpansionPanelLabel,
+                ),
         ):
             self.panel_cls.pos_hint = {"top": 1}
             self.panel_cls._no_ripple_effect = True
             self.panel_cls.bind(
-                on_release=lambda x: self.check_open_panel(self.panel_cls)
+                on_release=lambda x: self.check_open_panel(self.panel_cls, True)
             )
             if not isinstance(self.panel_cls, MDExpansionPanelLabel):
                 self.chevron = MDExpansionChevronRight()
@@ -366,20 +369,23 @@ class MDExpansionPanel(RelativeLayout):
                 "MDExpansionPanelThreeLine]"
             )
 
+
     def on_open(self, *args):
         """Called when a panel is opened."""
+
 
     def on_close(self, *args):
         """Called when a panel is closed."""
 
+
     def check_open_panel(
-        self,
-        instance_panel: [
-            MDExpansionPanelThreeLine,
-            MDExpansionPanelTwoLine,
-            MDExpansionPanelThreeLine,
-            MDExpansionPanelLabel,
-        ],
+            self,
+            instance_panel: [
+                MDExpansionPanelThreeLine,
+                MDExpansionPanelTwoLine,
+                MDExpansionPanelThreeLine,
+                MDExpansionPanelLabel,
+            ], pressed_current_panel: bool
     ) -> None:
         """
         Called when you click on the panel. Called methods to open or close
@@ -390,17 +396,19 @@ class MDExpansionPanel(RelativeLayout):
         for panel in self.parent.children:
             if isinstance(panel, MDExpansionPanel):
                 if len(panel.children) == 2:
+                    press_current_panel = pressed_current_panel
                     if instance_panel is panel.children[1]:
                         press_current_panel = True
                     panel.remove_widget(panel.children[0])
                     if not isinstance(self.panel_cls, MDExpansionPanelLabel):
                         chevron = panel.children[0].children[0].children[0]
                         self.set_chevron_up(chevron)
-                    self.close_panel(panel, press_current_panel)
+                    self.close_panel_animation(panel, press_current_panel)
                     self.dispatch("on_close")
                     break
         if not press_current_panel:
             self.set_chevron_down()
+
 
     def set_chevron_down(self) -> None:
         """Sets the chevron down."""
@@ -410,16 +418,26 @@ class MDExpansionPanel(RelativeLayout):
         self.open_panel()
         self.dispatch("on_open")
 
+
     def set_chevron_up(self, instance_chevron: MDExpansionChevronRight) -> None:
         """Sets the chevron up."""
 
         if not isinstance(self.panel_cls, MDExpansionPanelLabel):
             Animation(_angle=0, d=self.closing_time).start(instance_chevron)
 
+
     def close_panel(
-        self, instance_expansion_panel, press_current_panel: bool
+            self, instance_expansion_panel, press_current_panel: bool
     ) -> None:
-        """Method closes the panel."""
+        """Method triggers closing the panel."""
+
+        self.check_open_panel(instance_expansion_panel, press_current_panel)
+
+
+    def close_panel_animation(
+            self, instance_expansion_panel, press_current_panel: bool
+    ) -> None:
+        """Method does the actual closing of the panel."""
 
         if self._anim_playing:
             return
@@ -437,6 +455,7 @@ class MDExpansionPanel(RelativeLayout):
         anim.bind(on_complete=self._disable_anim)
         anim.start(instance_expansion_panel)
 
+
     def open_panel(self, *args) -> None:
         """Method opens a panel."""
 
@@ -445,10 +464,6 @@ class MDExpansionPanel(RelativeLayout):
 
         self._anim_playing = True
         self._state = "open"
-
-        print(f"Lazza - Content height is {self.content.height} is it greater than 580 ?")
-        if self.content.height > 580:
-            self.content.height = 560
 
         anim = Animation(
             height=self.content.height + self.height,
@@ -459,26 +474,30 @@ class MDExpansionPanel(RelativeLayout):
         anim.bind(on_complete=self._disable_anim)
         anim.start(self)
 
+
     def get_state(self) -> str:
         """Returns the state of panel. Can be `close` or `open` ."""
 
         return self._state
 
+
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(
-            widget,
-            (
-                MDExpansionPanelOneLine,
-                MDExpansionPanelTwoLine,
-                MDExpansionPanelThreeLine,
-                MDExpansionPanelLabel,
-            ),
+                widget,
+                (
+                        MDExpansionPanelOneLine,
+                        MDExpansionPanelTwoLine,
+                        MDExpansionPanelThreeLine,
+                        MDExpansionPanelLabel,
+                ),
         ):
             self.height = widget.height
         return super().add_widget(widget)
 
+
     def _disable_anim(self, *args):
         self._anim_playing = False
+
 
     def _add_content(self, *args):
         if self.content:

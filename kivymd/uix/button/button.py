@@ -2211,11 +2211,12 @@ class MDFloatingActionButtonSpeedDial(
         def set_pos_root_button(*args):
             if self.anchor == "right":
                 instance_floating_root_button.y = dp(20)
+                print(f"INSTANCE X VALYE is {instance_floating_root_button.x}")
                 instance_floating_root_button.x = self.parent.width - (
                     dp(56) + dp(20)
                 )
-
-        Clock.schedule_once(set_pos_root_button)
+                print(f"X VALUE IS --> {self.parent.width - (dp(56) + dp(20))}")
+        Clock.schedule_once(set_pos_root_button, 8)
 
     def set_pos_bottom_buttons(
         self, instance_floating_bottom_button: MDFloatingBottomButton

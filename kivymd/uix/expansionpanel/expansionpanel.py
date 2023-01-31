@@ -330,7 +330,7 @@ class MDExpansionPanel(RelativeLayout):
             self.panel_cls.pos_hint = {"top": 1}
             self.panel_cls._no_ripple_effect = True
             self.panel_cls.bind(
-                on_release=lambda x: self.check_open_panel(self.panel_cls)
+                on_press=lambda x: self.check_open_panel(self.panel_cls)
             )
             if not isinstance(self.panel_cls, MDExpansionPanelLabel):
                 self.chevron = MDExpansionChevronRight()

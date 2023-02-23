@@ -388,7 +388,7 @@ Builder.load_string(
             pos: self.pos
             size: self.size
             offset: root.shadow_offset
-            spread_radius: -(root.shadow_softness)
+            spread_radius: -(root.shadow_softness), -(root.shadow_softness)
             blur_radius: root.elevation * 10
             border_radius:
                 (root.radius if hasattr(self, "radius") else [0, 0, 0, 0]) \

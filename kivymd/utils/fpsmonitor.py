@@ -11,7 +11,7 @@ application :
 
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import NumericProperty, StringProperty
+from kivy.properties import NumericProperty, StringProperty, OptionProperty
 from kivy.uix.label import Label
 
 Builder.load_string(
@@ -20,7 +20,7 @@ Builder.load_string(
     size_hint_y: None
     height: self.texture_size[1]
     text: root._fsp_value
-    pos_hint: {"top": 1}
+    pos_hint: {root.anchor: 1}
 
     canvas.before:
         Color:
@@ -35,6 +35,9 @@ Builder.load_string(
 class FpsMonitor(Label):
     updated_interval = NumericProperty(0.5)
     """FPS refresh rate."""
+
+    anchor = OptionProperty("top", options=["top", "bottom"])
+    """Monitor position."""
 
     _fsp_value = StringProperty()
 

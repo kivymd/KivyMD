@@ -560,6 +560,7 @@ from kivy.properties import (
     OptionProperty,
     StringProperty,
     VariableListProperty,
+    BoundedNumericProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 
@@ -585,6 +586,47 @@ class PanelRoot(MDFloatLayout):
     buttons and a :class:`~Paneltems` container with menu items.
     """
 
+class Separator (MDWidget):
+    """
+    Separator
+    """
+class MDNavigationTrail (MDBoxLayout):
+    """
+    Contains a list of :class:`~MDNavigationRailItem`s at the bottom part the
+    Navigation rail.
+    """
+    _max_railitems = BoundedNumericProperty(-1, min = -1, max = 3)
+    """
+    Maximum number of :class:`~MDNavigationRailItem`s to place in the :class:`~MDNavigationTrail`.
+    _max_railitems is of type :class:`~BoundedNumericProperty` with a maximum value of 3.
+    """
+
+    separator = BooleanProperty(True)
+    """
+    choose whether to set a separator between the trailer items and the panel items. 
+    separator is a :class:`~BooleanProperty` type and defaults to `True`
+    """
+
+    navigation_rail = ObjectProperty()
+    """
+    :class:`~MDNavigationRail` object.
+
+    :attr:`navigation_rail` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    def add_widget(self, widget, *args, **kwargs):
+
+        try:
+            self._max_railitems += 1
+        except ValueError:
+            return
+        else:
+            if isinstance(widget,Separator):
+                return super().add_widget(widget, *args, **kwargs)
+            elif isinstance(widget,MDNavigationRailItem):
+                widget.navigation_rail = self.navigation_rail
+                return super().add_widget(widget, *args, **kwargs)
 
 class PanelItems(MDBoxLayout):
     """Box for menu items."""
@@ -1270,5 +1312,8 @@ class MDNavigationRail(MDCard):
         elif isinstance(widget, MDNavigationRailItem):
             widget.navigation_rail = self
             self.ids.box_items.add_widget(widget)
+        elif isinstance(widget,MDNavigationTrail):
+            widget.navigation_rail = self
+            self.ids.box_trailer.add_widget(widget)
         elif isinstance(widget, (PanelRoot, PanelItems)):
             return super().add_widget(widget)

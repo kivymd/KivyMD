@@ -20,7 +20,28 @@
             spacing: "12dp"
             adaptive_size: True
             pos_hint: {"center_x": .5}
+        
+        MDBoxLayout:
+            id:box_trailer
+            orientation: "vertical"
+            adaptive_size: True
+            pos_hint: {"center_x": .5, "center_y":0}
 
+
+<MDNavigationTrail>:
+    orientation:"vertical"
+    spacing: "10dp"
+    adaptive_size:True
+    Separator:
+        canvas.before:
+            Color:
+                rgba: (0.2,0.2,0.2,0.2) if root.separator else (1,1,1,1)
+            Line:
+                points:
+                    (                    \
+                    self.x, self.y,      \
+                    self.x + 10, self.y, \
+                    )
 
 <MDNavigationRailItem>
     orientation: "vertical"

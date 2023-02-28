@@ -30,7 +30,7 @@
 
 <MDNavigationTrail>:
     orientation:"vertical"
-    spacing: "10dp"
+    spacing: "12dp"
     adaptive_size:True
     Separator:
         canvas.before:
@@ -38,9 +38,9 @@
                 rgba: (0.2,0.2,0.2,0.2) if root.separator else (1,1,1,1)
             Line:
                 points:
-                    (                    \
-                    self.x, self.y,      \
-                    self.x + 10, self.y, \
+                    (                                \
+                    self.x + 10, self.y,             \
+                    self.x + self.width -10, self.y, \
                     )
 
 <MDNavigationRailItem>

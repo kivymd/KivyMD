@@ -625,6 +625,11 @@ class MDNavigationTrail (MDBoxLayout):
             if isinstance(widget,Separator):
                 return super().add_widget(widget, *args, **kwargs)
             elif isinstance(widget,MDNavigationRailItem):
+                self.parent.pos_hint = {"center_y":0}                \
+                                        if (self._max_railitems <=1) \
+                                        else {"center_y":0.07}       \
+                                        if (self._max_railitems == 2)\
+                                        else {"center_y":0.13}
                 widget.navigation_rail = self.navigation_rail
                 return super().add_widget(widget, *args, **kwargs)
 

@@ -1245,7 +1245,11 @@ class MDNavigationRail(MDCard):
         elif self.anchor == "center":
             self.ids.box_items.pos_hint = {"center_y": 0.5}
         elif self.anchor == "bottom":
-            self.ids.box_items.y = dp(12)
+            trailer = self.ids.box_trailer
+            if len(trailer.children):
+                self.ids.box_items.y = trailer.height + 15   # use +15 to prevent panel items from crossing the separator when window is maximized
+            else:
+                self.ids.box_items.y = dp(12)
 
     def set_current_selected_item(self, interval: Union[int, float]) -> None:
         """Sets the active menu list item (:class:`~MDNavigationRailItem`)."""

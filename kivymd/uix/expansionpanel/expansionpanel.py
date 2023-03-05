@@ -334,6 +334,10 @@ class MDExpansionPanel(RelativeLayout):
             )
             if not isinstance(self.panel_cls, MDExpansionPanelLabel):
                 self.chevron = MDExpansionChevronRight()
+                self.chevron._no_ripple_effect = True
+                self.chevron.bind(
+                    on_release=lambda x: self.check_open_panel(self.panel_cls)
+                )
                 self.panel_cls.add_widget(self.chevron)
                 if self.icon:
                     if self.icon in md_icons.keys():

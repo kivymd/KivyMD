@@ -545,6 +545,7 @@ __all__ = (
 
 import os
 from typing import Union
+from itertools import chain
 
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -1210,8 +1211,10 @@ class MDNavigationRail(MDCard):
         (:class:`~MDNavigationRailItem`) except the selected item.
         Called when a menu item is touched.
         """
+        trailer = self.ids.box_trailer
+        trail_items = [item for item in trailer.children[0].children] if len(trailer.children) else []
 
-        for navigation_rail_item in self.ids.box_items.children:
+        for navigation_rail_item in chain(self.ids.box_items.children,trail_items):
             if selected_navigation_rail_item is not navigation_rail_item:
                 navigation_rail_item.active = False
 

@@ -219,10 +219,8 @@ class CellHeader(MDTooltip, BoxLayout):
     def set_sort_btn(self, instance_cell_header) -> None:
         btn = instance_cell_header.ids.box.children[-1]
         if btn.opacity:
-            btn.size = [dp(24), dp(0)]
             btn.opacity = 0
         else:
-            btn.size = [dp(24), dp(24)]
             btn.opacity = 1
 
     def _sort_release(self, inst):
@@ -245,7 +243,6 @@ class CellHeader(MDTooltip, BoxLayout):
                 self.unbind(on_leave=self.set_sort_btn)
             else:
                 btn = each.ids.box.children[-1]
-                btn.size = [dp(24), dp(0)]
                 btn.opacity = 0
                 each.bind(on_enter=each.set_sort_btn)
                 each.bind(on_leave=each.set_sort_btn)

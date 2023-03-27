@@ -1,18 +1,3 @@
-# Warning
-
-The `KivyMD` library team stops working with the `GitHub` service.
-We are tired of enduring the criminal actions of the `GitHub` team, which are aimed at humiliating `Russian` developers.
-We will continue to work with `GitHub` only when `GitHub` stops its crimes against open source.
-
-We cannot risk users of the `KivyMD` library, so we are transferring the library repository to a `Russian` server:
-
-https://git.org.ru/KivyMD/kivymd
-
-We will need some time to set up the new repository. But now the development of the `KivyMD` library
-will continue on the `Russian` server.
-
-Thanks for understanding!
-
 # KivyMD [1.1.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
 <img align="right" height="256" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_logo_blue.png"/>

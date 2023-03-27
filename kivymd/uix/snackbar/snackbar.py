@@ -265,20 +265,20 @@ API break
 
 .. code-block:: python
 
-MDSnackbar(
-    MDLabel(
-        text="First string",
-    ),
-    MDSnackbarActionButton(
-        text="Done",
-        theme_text_color="Custom",
-        text_color="#8E353C",
-    ),
-    y=dp(24),
-    pos_hint={"center_x": 0.5},
-    size_hint_x=0.5,
-    md_bg_color="#E8D8D7",
-).open()
+    MDSnackbar(
+        MDLabel(
+            text="First string",
+        ),
+        MDSnackbarActionButton(
+            text="Done",
+            theme_text_color="Custom",
+            text_color="#8E353C",
+        ),
+        y=dp(24),
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+        md_bg_color="#E8D8D7",
+    ).open()
 """
 
 __all__ = (

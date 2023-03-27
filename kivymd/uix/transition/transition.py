@@ -142,7 +142,6 @@ class MDTransitionBase(TransitionBase):
             and self.manager.current_heroes
             and self.screen_out.heroes_to
         ):
-
             for heroes_tag in self.manager.current_heroes:
                 for hero_to_widget in self.screen_out.heroes_to:
                     if hero_to_widget.tag == heroes_tag:

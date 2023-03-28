@@ -855,6 +855,12 @@ class MDChip(
     """
 
     radius = VariableListProperty([dp(8)], length=4)
+    """
+    Chip radius.
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(8), dp(8), dp(8), dp(8)]`.
+    """
 
     text = StringProperty(deprecated=True)
     """

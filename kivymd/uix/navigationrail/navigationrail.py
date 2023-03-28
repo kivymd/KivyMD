@@ -548,6 +548,7 @@ from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.metrics import dp
@@ -1140,6 +1141,7 @@ class MDNavigationRail(MDCard):
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_pos_menu_fab_buttons)
         Clock.schedule_once(self.set_current_selected_item)
+        Window.bind(on_resize=self.set_pos_menu_fab_buttons)
         self.register_event_type("on_item_press")
         self.register_event_type("on_item_release")
 
@@ -1221,7 +1223,7 @@ class MDNavigationRail(MDCard):
             items[index].dispatch("on_press")
             items[index].dispatch("on_release")
 
-    def set_pos_menu_fab_buttons(self, interval: Union[int, float]) -> None:
+    def set_pos_menu_fab_buttons(self, *args) -> None:
         """
         Sets the position of the :class:`~MDNavigationRailFabButton` and
         :class:`~MDNavigationRailMenuButton` buttons on the panel.

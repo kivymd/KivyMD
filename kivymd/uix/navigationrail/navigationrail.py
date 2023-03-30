@@ -116,11 +116,6 @@ Anatomy
 7. Large badge label (optional)
 8. Menu icon (optional)
 
-
-
-
-
-
 Example
 =======
 

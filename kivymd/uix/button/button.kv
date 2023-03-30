@@ -94,9 +94,11 @@
             root.theme_cls.disabled_hint_text_color \
             if not root.disabled_color else \
             root.disabled_color
-
-        on_icon:
-            if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
+        # Fix https://github.com/kivymd/KivyMD/issues/1448
+        # TODO: Perhaps this change may affect other widgets.
+        #  You need to create tests.
+        # on_icon:
+        #     if self.icon not in md_icons.keys(): self.size_hint = (1, 1)
         theme_text_color: root._theme_icon_color
 
 

@@ -8,26 +8,14 @@ Components/NavigationRail
 
     `Material Design spec, Navigation rail <https://m3.material.io/components/navigation-rail/specs>`_
 
-.. rubric::
-
-    Navigation rails provide access to primary destinations in apps when using
-    tablet and desktop screens.
+.. rubric:: Navigation rails provide access to primary destinations in apps
+    when using tablet and desktop screens.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail.png
     :align: center
 
 Usage
-=====
-
-.. code-block:: kv
-
-    MDNavigationRail:
-
-        MDNavigationRailItem:
-
-        MDNavigationRailItem:
-
-        MDNavigationRailItem:
+-----
 
 .. tabs::
 
@@ -112,6 +100,26 @@ Usage
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-usage.png
     :align: center
+
+Anatomy
+-------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy.png
+    :align: center
+
+1. Container
+2. Label text (optional)
+3. Icon
+4. Active indicator
+5. Badge (optional)
+6. Large badge (optional)
+7. Large badge label (optional)
+8. Menu icon (optional)
+
+
+
+
+
 
 Example
 =======

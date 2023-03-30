@@ -1144,9 +1144,11 @@ class MDNavigationRail(MDCard):
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_pos_menu_fab_buttons)
         Clock.schedule_once(self.set_current_selected_item)
-        Window.bind(on_resize=self.set_pos_menu_fab_buttons)
         self.register_event_type("on_item_press")
         self.register_event_type("on_item_release")
+
+    def on_size(self, *args):
+        Clock.schedule_once(self.set_pos_menu_fab_buttons)
 
     def on_item_press(self, *args) -> None:
         """

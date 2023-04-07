@@ -619,15 +619,9 @@ class MDTimePicker(BaseDialogPicker):
     def set_time(self, time_obj) -> None:
         """Manually set time dialog with the specified time."""
 
-        hour = time_obj.hour
-        minute = time_obj.minute
-        if hour > 12:
-            hour -= 12
-            mode = "pm"
-        else:
-            mode = "am"
-        hour = str(hour)
-        minute = str(minute)
+        hour, minute, mode = time_obj.strftime("%I %M %P").split()
+        hour, minute = map(str, map(int, (hour, minute)))
+
         self._set_time_input(hour, minute)
         self._set_dial_time(hour, minute)
         self._set_am_pm(mode)

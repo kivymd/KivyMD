@@ -1225,8 +1225,9 @@ class MDNavigationRail(MDCard):
             else:
                 index = self.current_selected_item
 
-            items[index].dispatch("on_press")
-            items[index].dispatch("on_release")
+            items[index].active = True
+            items[index]._release = True
+            items[index].animation_size_ripple_area(0)
 
     def set_pos_menu_fab_buttons(self, *args) -> None:
         """

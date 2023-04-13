@@ -105,6 +105,10 @@ KivyMD
 
 
     Test().run()
+
+.. warning:: Do not use `ScaleBehavior` class with classes that inherited`
+    from `CommonElevationBehavior` class. `CommonElevationBehavior` classes
+    by default contains attributes for scale widget.
 """
 
 __all__ = ("ScaleBehavior",)
@@ -120,7 +124,7 @@ Builder.load_string(
         Scale:
             x: self.scale_value_x
             y: self.scale_value_y
-            z: self.scale_value_x
+            z: self.scale_value_z
             origin:
                 self.center \
                 if not self.scale_value_center else \

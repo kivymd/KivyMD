@@ -91,6 +91,10 @@ KivyMD
 
 
     Test().run()
+
+.. warning:: Do not use `RotateBehavior` class with classes that inherited`
+    from `CommonElevationBehavior` class. `CommonElevationBehavior` classes
+    by default contains attributes for rotate widget.
 """
 
 __all__ = ("RotateBehavior",)

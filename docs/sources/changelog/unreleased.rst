@@ -54,3 +54,11 @@ Unreleased
     - now the widget has become more customizable and closer to the standards of material design version 3.
 * `Improved animation performance <https://github.com/kivymd/KivyMD/commit/528affe35163f7f0b7ede98fcdfade1ca01e6487>`_ for animate the `MDCheckbox <https://kivymd.readthedocs.io/en/latest/components/selectioncontrols/#mdcheckbox>`_ widget.
 * `Add <https://github.com/kivymd/KivyMD/commit/9d1be15a4d6362acba4a99a85b2fb7491827d678>`_ the `feature to use parent and child checkboxes <https://kivymd.readthedocs.io/en/latest/components/selectioncontrols/#parent-and-child-checkboxes>`_ for `MDCheckbox <https://kivymd.readthedocs.io/en/latest/components/selectioncontrols/#mdcheckbox>`_.
+* `MDChip <https://kivymd.readthedocs.io/en/latest/components/snackbar/>`_ `API break <https://github.com/kivymd/KivyMD/commit/0a99c45c59d5e546f655a81bf225cb54b71aa34e>`_:
+
+    - now the widget has become more customizable and closer to the standards of material design version 3.
+* `Fixed <https://github.com/kivymd/KivyMD/commit/d59f8e7112a943ae95c9c1cb4ca081a19b3fc14e>`_ elevation animation for buttons;
+* `Improved performance <https://github.com/kivymd/KivyMD/commit/6d61cc70f8e40b15c0cee45ff701da364614ddf7>`_ and behavior of the `MDDropdownMenu <https://kivymd.readthedocs.io/en/latest/components/menu/>`_ class;
+* `MDDropdownMenu <https://kivymd.readthedocs.io/en/latest/components/menu/>`_ `API break <>https://kivymd.readthedocs.io/en/latest/components/menu/#api-break`_;
+* Added the `motion_behavior <https://kivymd.readthedocs.io/en/latest/behaviors/motion/#api-kivymd-uix-behaviors-motion-behavior>`_ module to the `behaviors` package to control the display/hide behavior of widgets;
+* `Fixed <https://github.com/kivymd/KivyMD/commit/9d2e837a161ca45e0ac09d24cad2f22dd032aa4f>`_ scaling and rotation of widgets with elevation behavior;

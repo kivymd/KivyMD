@@ -1430,14 +1430,7 @@ if __name__ == "__main__":
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = MDScreen()
-            menu_items = [
-                {
-                    "viewclass": "OneLineListItem",
-                    "height": dp(56),
-                    "text": f"Item {i}",
-                }
-                for i in range(55)
-            ]
+            menu_items = [{"text": f"Item {i}"} for i in range(55)]
             self.menu = MDDropdownMenu(items=menu_items, width_mult=4)
 
         def open_menu(self, caller):

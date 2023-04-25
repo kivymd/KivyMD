@@ -1178,8 +1178,9 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         self.on_disabled(self, self.disabled)
 
     def create_anim_raised(self, *args) -> None:
-        self._elevation_raised = self.elevation
-        self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
+        if self.elevation:
+            self._elevation_raised = self.elevation
+            self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
 
     def on_touch_down(self, touch):
         if not self.disabled:
@@ -1189,7 +1190,7 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
                 return False
             if self in touch.ud:
                 return False
-            if self._anim_raised:
+            if self._anim_raised and self.elevation:
                 self._anim_raised.start(self)
         return super().on_touch_down(touch)
 
@@ -1202,7 +1203,8 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
 
     def stop_elevation_anim(self):
         Animation.cancel_all(self, "elevation")
-        self.elevation = self._elevation_raised
+        if self._anim_raised and self.elevation:
+            self.elevation = self._elevation_raised
 
 
 class ButtonContentsText:

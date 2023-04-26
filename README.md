@@ -50,7 +50,8 @@ pip install kivymd==1.1.1
 
 - [Kivy](https://github.com/kivy/kivy) >= 2.2.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
 - [Python 3.7+](https://www.python.org/)
-- [Pillow](https://github.com/python-pillow/Pillow/) (for [MDColorPicker](https://kivymd.readthedocs.io/en/latest/components/colorpicker/) class)
+- [Pillow](https://github.com/python-pillow/Pillow/)
+- [MaterialColor](https://github.com/T-Dynamos/materialyoucolor-pyhton)
 
 ### How to install
 

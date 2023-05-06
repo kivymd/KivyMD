@@ -622,6 +622,7 @@ import os
 
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -664,7 +665,7 @@ class MDMenu(RecycleView):
     """
 
 
-class BaseDropdownItem(RectangularRippleBehavior, MDBoxLayout):
+class BaseDropdownItem(RectangularRippleBehavior, ButtonBehavior, MDBoxLayout):
     """
     Base class for menu items.
 

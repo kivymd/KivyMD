@@ -220,8 +220,10 @@ class CellHeader(MDTooltip, BoxLayout):
         btn = instance_cell_header.ids.box.children[-1]
         if btn.opacity:
             btn.opacity = 0
+            btn.enabled = False
         else:
             btn.opacity = 1
+            btn.enabled = True
 
     def _sort_release(self, inst):
         inst.icon = "arrow-down" if inst.icon == "arrow-up" else "arrow-up"
@@ -244,6 +246,7 @@ class CellHeader(MDTooltip, BoxLayout):
             else:
                 btn = each.ids.box.children[-1]
                 btn.opacity = 0
+                btn.enabled = False
                 each.bind(on_enter=each.set_sort_btn)
                 each.bind(on_leave=each.set_sort_btn)
 

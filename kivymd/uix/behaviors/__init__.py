@@ -20,6 +20,11 @@ from .elevation import (
     RectangularElevationBehavior,
     RoundedRectangularElevationBehavior,
 )
+from .motion_behavior import (
+    MotionDialogBehavior,
+    MotionShackBehavior,
+    MotionDropDownMenuBehavior,
+)
 from .magic_behavior import MagicBehavior
 from .ripple_behavior import CircularRippleBehavior, RectangularRippleBehavior
 from .rotate_behavior import RotateBehavior

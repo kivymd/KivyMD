@@ -913,7 +913,6 @@ class NotchedBox(
             raise Exception("Invalid value for start angle")
 
         for degree in range(start_angle, end_angle, step):
-
             angle = radians(degree)
             x = center[0] + (radius * cos(angle))
             y = center[1] + (radius * sin(angle))

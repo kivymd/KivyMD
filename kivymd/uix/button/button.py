@@ -1178,11 +1178,9 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
         self.on_disabled(self, self.disabled)
 
     def create_anim_raised(self, *args) -> None:
-        pass
-        # FIXME: shadow animation is displayed crookedly - uncomment this
-        #  and check.
-        # self._elevation_raised = self.elevation + 1.2
-        # self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
+        if self.elevation:
+            self._elevation_raised = self.elevation
+            self._anim_raised = Animation(elevation=self.elevation + 1, d=0.15)
 
     def on_touch_down(self, touch):
         if not self.disabled:
@@ -1192,27 +1190,21 @@ class ButtonElevationBehaviour(CommonElevationBehavior):
                 return False
             if self in touch.ud:
                 return False
-            if self._anim_raised:
-                pass
-                # FIXME: shadow animation is displayed crookedly -
-                #  uncomment this and check.
-                # self._anim_raised.start(self)
+            if self._anim_raised and self.elevation:
+                self._anim_raised.start(self)
         return super().on_touch_down(touch)
 
     def on_touch_up(self, touch):
         if not self.disabled:
-            if touch.grab_current is not self:
+            if self in touch.ud:
                 self.stop_elevation_anim()
                 return super().on_touch_up(touch)
-            self.stop_elevation_anim()
         return super().on_touch_up(touch)
 
     def stop_elevation_anim(self):
-        pass
-        # FIXME: shadow animation is displayed crookedly - uncomment this
-        #  and check.
-        # Animation.cancel_all(self, "elevation")
-        # self.elevation -= 1
+        Animation.cancel_all(self, "elevation")
+        if self._anim_raised and self.elevation:
+            self.elevation = self._elevation_raised
 
 
 class ButtonContentsText:

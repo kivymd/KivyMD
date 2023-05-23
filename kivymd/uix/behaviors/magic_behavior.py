@@ -118,7 +118,6 @@ Builder.load_string(
 
 
 class MagicBehavior:
-
     magic_speed = NumericProperty(1)
     """
     Animation playback speed.

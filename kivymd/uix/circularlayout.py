@@ -53,7 +53,6 @@ from kivymd.uix.floatlayout import MDFloatLayout
 
 
 class MDCircularLayout(MDFloatLayout):
-
     degree_spacing = NumericProperty(30)
     """
     The space between children in degree.

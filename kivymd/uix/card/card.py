@@ -704,6 +704,7 @@ from kivymd.material_resources import (
     CARD_STYLE_OUTLINED_FILLED_M3_ELEVATION,
 )
 from kivymd.theming import ThemableBehavior
+from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     CommonElevationBehavior,
@@ -752,6 +753,7 @@ class MDSeparator(MDBoxLayout):
 
 class MDCard(
     DeclarativeBehavior,
+    MDAdaptiveWidget,
     ThemableBehavior,
     BackgroundColorBehavior,
     RectangularRippleBehavior,
@@ -764,6 +766,7 @@ class MDCard(
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.uix.MDAdaptiveWidget` and
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.BackgroundColorBehavior` and
     :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and

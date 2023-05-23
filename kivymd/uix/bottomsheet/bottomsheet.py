@@ -948,7 +948,8 @@ class MDBottomSheet(MDBoxLayout, CommonElevationBehavior, TouchBehavior):
             #  sometimes the bottom sheet is dragged as needed, and sometimes
             #  it's position does not correspond to the cursor coordinates.
             y = -(
-                (self.height - touch.y) - 0  # self._diff_between_touch_height_sheet
+                (self.height - touch.y)
+                - 0  # self._diff_between_touch_height_sheet
             )
 
             if y > 0:

@@ -8,26 +8,14 @@ Components/NavigationRail
 
     `Material Design spec, Navigation rail <https://m3.material.io/components/navigation-rail/specs>`_
 
-.. rubric::
-
-    Navigation rails provide access to primary destinations in apps when using
-    tablet and desktop screens.
+.. rubric:: Navigation rails provide access to primary destinations in apps
+    when using tablet and desktop screens.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail.png
     :align: center
 
 Usage
-=====
-
-.. code-block:: kv
-
-    MDNavigationRail:
-
-        MDNavigationRailItem:
-
-        MDNavigationRailItem:
-
-        MDNavigationRailItem:
+-----
 
 .. tabs::
 
@@ -112,6 +100,21 @@ Usage
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-usage.png
     :align: center
+
+Anatomy
+-------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy.png
+    :align: center
+
+1. Container
+2. Label text (optional)
+3. Icon
+4. Active indicator
+5. Badge (optional)
+6. Large badge (optional)
+7. Large badge label (optional)
+8. Menu icon (optional)
 
 Example
 =======
@@ -548,6 +551,7 @@ from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.metrics import dp
@@ -1143,6 +1147,9 @@ class MDNavigationRail(MDCard):
         self.register_event_type("on_item_press")
         self.register_event_type("on_item_release")
 
+    def on_size(self, *args):
+        Clock.schedule_once(self.set_pos_menu_fab_buttons)
+
     def on_item_press(self, *args) -> None:
         """
         Called on the `on_press` event of menu item -
@@ -1221,7 +1228,7 @@ class MDNavigationRail(MDCard):
             items[index].dispatch("on_press")
             items[index].dispatch("on_release")
 
-    def set_pos_menu_fab_buttons(self, interval: Union[int, float]) -> None:
+    def set_pos_menu_fab_buttons(self, *args) -> None:
         """
         Sets the position of the :class:`~MDNavigationRailFabButton` and
         :class:`~MDNavigationRailMenuButton` buttons on the panel.

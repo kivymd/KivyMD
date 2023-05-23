@@ -89,7 +89,7 @@ from kivy.uix.modalview import ModalView
 from kivymd import uix_path
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import CommonElevationBehavior
+from kivymd.uix.behaviors import CommonElevationBehavior, MotionDialogBehavior
 from kivymd.uix.button import BaseButton
 from kivymd.uix.card import MDSeparator
 from kivymd.uix.list import BaseListItem
@@ -100,7 +100,9 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class BaseDialog(ThemableBehavior, ModalView, CommonElevationBehavior):
+class BaseDialog(
+    ThemableBehavior, MotionDialogBehavior, ModalView, CommonElevationBehavior
+):
     elevation = NumericProperty(3)
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
@@ -648,6 +650,7 @@ class MDDialog(BaseDialog):
     def on_open(self) -> None:
         # TODO: Add scrolling text.
         self.height = self.ids.container.height
+        super().on_open()
 
     def get_normal_height(self) -> float:
         return (

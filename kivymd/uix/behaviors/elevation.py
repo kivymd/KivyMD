@@ -379,6 +379,19 @@ Builder.load_string(
     """
 <CommonElevationBehavior>
     canvas.before:
+        PushMatrix
+        Scale:
+            x: self.scale_value_x
+            y: self.scale_value_y
+            z: self.scale_value_x
+            origin:
+                self.center \
+                if not self.scale_value_center else \
+                self.scale_value_center
+        Rotate:
+            angle: self.rotate_value_angle
+            axis: tuple(self.rotate_value_axis)
+            origin: self.center
         Color:
             rgba:
                 (0, 0, 0, 0) \
@@ -394,6 +407,8 @@ Builder.load_string(
                 (root.radius if hasattr(self, "radius") else [0, 0, 0, 0]) \
                 if root.shadow_radius == [0.0, 0.0, 0.0, 0.0] else \
                 root.shadow_radius
+    canvas.after:
+        PopMatrix
 """
 )
 
@@ -612,6 +627,68 @@ class CommonElevationBehavior(Widget):
 
     :attr:`shadow_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.6]`.
+    """
+
+    scale_value_x = NumericProperty(1)
+    """
+    X-axis value.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`scale_value_x` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    scale_value_y = NumericProperty(1)
+    """
+    Y-axis value.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`scale_value_y` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    scale_value_z = NumericProperty(1)
+    """
+    Z-axis value.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`scale_value_z` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    scale_value_center = ListProperty()
+    """
+    Origin of the scale.
+
+    .. versionadded:: 1.2.0
+
+    The format of the origin can be either (x, y) or (x, y, z).
+
+    :attr:`scale_value_center` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `[]`.
+    """
+
+    rotate_value_angle = NumericProperty(0)
+    """
+    Property for getting/setting the angle of the rotation.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`rotate_value_angle` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
+    rotate_value_axis = ListProperty((0, 0, 1))
+    """
+    Property for getting/setting the axis of the rotation.
+
+    .. versionadded:: 1.2.0
+
+    :attr:`rotate_value_axis` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `(0, 0, 1)`.
     """
 
     _elevation = 0

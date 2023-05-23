@@ -265,20 +265,20 @@ API break
 
 .. code-block:: python
 
-MDSnackbar(
-    MDLabel(
-        text="First string",
-    ),
-    MDSnackbarActionButton(
-        text="Done",
-        theme_text_color="Custom",
-        text_color="#8E353C",
-    ),
-    y=dp(24),
-    pos_hint={"center_x": 0.5},
-    size_hint_x=0.5,
-    md_bg_color="#E8D8D7",
-).open()
+    MDSnackbar(
+        MDLabel(
+            text="First string",
+        ),
+        MDSnackbarActionButton(
+            text="Done",
+            theme_text_color="Custom",
+            text_color="#8E353C",
+        ),
+        y=dp(24),
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+        md_bg_color="#E8D8D7",
+    ).open()
 """
 
 __all__ = (
@@ -304,7 +304,7 @@ from kivy.properties import (
 )
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import StencilBehavior
+from kivymd.uix.behaviors import MotionShackBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton, MDIconButton
 from kivymd.uix.card import MDCard
@@ -357,7 +357,7 @@ class MDSnackbarActionButton(MDFlatButton):
             self.pos_hint = {"center_y": 0.5}
 
 
-class MDSnackbar(MDCard, StencilBehavior):
+class MDSnackbar(MotionShackBehavior, MDCard):
     """
     Snackbar class.
 
@@ -374,46 +374,6 @@ class MDSnackbar(MDCard, StencilBehavior):
             Called when a snackbar opened.
         :attr:`on_dismiss`
             Called when a snackbar closes.
-    """
-
-    show_transition = StringProperty("linear")
-    """
-    The type of transition of the snackbar opening.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`show_transition` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'linear'`.
-    """
-
-    show_duration = NumericProperty(0.2)
-    """
-    Duration of snackbar display transition.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`show_duration` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.2`.
-    """
-
-    hide_transition = StringProperty("linear")
-    """
-    The type of transition of the snackbar closing.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`hide_transition` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'linear'`.
-    """
-
-    hide_duration = NumericProperty(0.2)
-    """
-    Duration of snackbar closing transition.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`hide_duration` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.2`.
     """
 
     duration = NumericProperty(3)
@@ -496,8 +456,6 @@ class MDSnackbar(MDCard, StencilBehavior):
     and defaults to `0`.
     """
 
-    _interval = 0
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_open")
@@ -507,46 +465,17 @@ class MDSnackbar(MDCard, StencilBehavior):
     def dismiss(self, *args) -> None:
         """Dismiss the snackbar."""
 
-        def remove_snackbar(*args):
-            Window.parent.remove_widget(self)
-            self.dispatch("on_dismiss")
-
-        Clock.unschedule(self._wait_interval)
-        anim = Animation(
-            opacity=0,
-            height=0,
-            t=self.hide_transition,
-            d=self.hide_duration,
-        )
-        anim.bind(on_complete=remove_snackbar)
-        anim.start(self)
+        super().on_dismiss()
 
     def open(self) -> None:
         """Show the snackbar."""
 
-        def open(*args):
-            _height = self.height
-            self.height = 0
-            anim = Animation(
-                opacity=1,
-                height=_height,
-                t=self.show_transition,
-                d=self.show_duration,
-            )
-            anim.bind(
-                on_complete=lambda *args: Clock.schedule_interval(
-                    self._wait_interval, 1
-                )
-            )
-            anim.start(self)
-            self.dispatch("on_open")
-
         for widget in Window.parent.children:
-            if widget is self:
+            if widget.__class__ is MDSnackbar:
                 return
 
         Window.parent.add_widget(self)
-        Clock.schedule_once(open)
+        super().on_open()
 
     def add_widget(self, widget, *args, **kwargs):
         def check_color(color):
@@ -602,12 +531,6 @@ class MDSnackbar(MDCard, StencilBehavior):
 
     def on_dismiss(self, *args) -> None:
         """Called when a snackbar closed."""
-
-    def _wait_interval(self, interval):
-        self._interval += interval
-        if self._interval > self.duration:
-            self.dismiss()
-            self._interval = 0
 
 
 class Snackbar(MDSnackbar):

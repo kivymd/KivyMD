@@ -1781,7 +1781,7 @@ class MDTextField(
             if self.helper_text:
                 Clock.schedule_once(
                     lambda x: self.set_helper_text_color(
-                        self.helper_text_color_focus
+                        [0, 0, 0, 0]
                     )
                 )
             if self.icon_right:

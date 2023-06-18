@@ -68,6 +68,9 @@ class TouchBehavior:
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.register_event_type("on_long_touch")
+        self.register_event_type("on_double_tap")
+        self.register_event_type("on_triple_tap")
         self.bind(
             on_touch_down=self.create_clock, on_touch_up=self.delete_clock
         )
@@ -75,14 +78,14 @@ class TouchBehavior:
     def create_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):
             if "event" not in touch.ud:
-                callback = partial(self.on_long_touch, touch)
+                callback = partial(self.dispatch, "on_long_touch", touch)
                 Clock.schedule_once(callback, self.duration_long_touch)
                 touch.ud["event"] = callback
 
         if touch.is_double_tap:
-            self.on_double_tap(touch, *args)
+            Clock.schedule_once(partial(self.dispatch, "on_double_tap", touch, *args))
         if touch.is_triple_tap:
-            self.on_triple_tap(touch, *args)
+            Clock.schedule_once(partial(self.dispatch, "on_triple_tap", touch, *args))
 
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y):

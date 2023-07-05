@@ -1725,14 +1725,14 @@ class MDTopAppBar(DeclarativeBehavior, NotchedBox, WindowController):
                     on_release=item[1],
                     tooltip_text=item[2],
                     overflow_text=item[3]
-                    if (len(item) == 4 and isinstance(item[3], str))
+                    if (len(item) >= 4 and isinstance(item[3], str))
                     else "",
                     theme_text_color="Custom"
                     if not self.opposite_colors
                     else "Primary",
                     text_color=self.specific_text_color
-                    if not (len(item) == 4 and isinstance(item[3], tuple))
-                    else item[3],
+                    if not (len(item) == 5 and isinstance(item[4], tuple))
+                    else item[4],
                     opposite_colors=self.opposite_colors,
                 )
             )

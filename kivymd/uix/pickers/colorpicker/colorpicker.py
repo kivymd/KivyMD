@@ -562,6 +562,8 @@ class MDColorPicker(BaseDialog):
             self._current_tab = self.gradient_tab
             self.ids.bottom_navigation_gradient.add_widget(self.gradient_tab)
 
+        super().on_open()
+
     def on_select_color(self, color: list) -> None:
         """Called when a gradient image is clicked."""
 

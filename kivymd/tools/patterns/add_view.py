@@ -162,7 +162,7 @@ def create_screens_data(
                         "\n        'controller': %s,"
                         "\n    },"
                         % (
-                            f"{" ".join(res).lower()}",
+                            f'{" ".join(res).lower()}',
                             f'{"".join(res)}Model',
                             f'{"".join(res)}Controller',
                         )

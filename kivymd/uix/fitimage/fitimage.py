@@ -130,21 +130,16 @@ from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.uix.image import AsyncImage
+from kivy.loader import Loader
 from kivy.uix.widget import Widget
 
 from kivymd.uix.behaviors import StencilBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.spinner  import MDSpinner
 
 
-class FitImage(MDBoxLayout, StencilBehavior):
-    """
-    Fit image class.
-
-    For more information, see in the
-    :class:`~kivymd.uix.boxlayout.MDLayout` and
-    :class:`~kivymd.uix.behaviors.StencilBehavior` classes documentation.
-    """
-
+class FitImage(MDFloatLayout, StencilBehavior):
     source = ObjectProperty()
     """
     Filename/source of your image.
@@ -168,6 +163,7 @@ class FitImage(MDBoxLayout, StencilBehavior):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.orientation = 'vertical'
         Clock.schedule_once(self._late_init)
 
     def _late_init(self, *args):
@@ -185,29 +181,44 @@ class Container(Widget):
 
     def __init__(self, source, mipmap, **kwargs):
         super().__init__(**kwargs)
-        self.image = AsyncImage(mipmap=mipmap)
-        self.loader_clock = Clock.schedule_interval(
-            self.adjust_size, self.image.anim_delay
-        )
-        self.image.bind(
-            on_load=lambda inst: (
-                self.adjust_size(),
-                self.loader_clock.cancel(),
-            )
-        )
+        self.image = AsyncImage(source=source, mipmap=mipmap)
+        self.image.bind(on_load=self.load)
+        self.spinner = MDSpinner(
+                                pos_hint={"center_x":0.5, 'center_y':0.5},
+                                size_hint=(None,None),
+                                size=(48,48),
+                                determinate=False)
         self.source = source
         self.bind(size=self.adjust_size, pos=self.adjust_size)
+    def load(self, image):
+        if image.texture:
+            self.image.texture = image.texture
+            self.parent.remove_widget(self.spinner)
+            self.adjust_size()
+            Clock.unschedule(self.animate_load)
+
+    def animate_load(self, *args):
+
+        self.spinner.size = self.parent.width*0.3, self.parent.height*0.3
+        if self.spinner in self.parent.children[:]:
+            # dont add the spinner it already exists
+            pass 
+        else:
+            self.parent.add_widget(self.spinner)
 
     def on_source(self, instance, value):
-        if isinstance(value, str):
-            self.image.source = value
+        print(value)
+        if self.parent:
+            self.animate_load()
         else:
-            self.image.texture = value
-        self.adjust_size()
+            Clock.schedule_once(self.animate_load, 1)
 
     def adjust_size(self, *args):
         if not self.parent or not self.image.texture:
             return
+        if self.spinner in self.parent.children[:]:
+            self.spinner.size = self.parent.width*0.3, self.parent.height*0.3
+
 
         (par_x, par_y) = self.parent.size
 
@@ -236,3 +247,6 @@ class Container(Widget):
             self.canvas.clear()
             Color(1, 1, 1)
             Rectangle(texture=subtexture, pos=self.pos, size=(par_x, par_y))
+
+
+

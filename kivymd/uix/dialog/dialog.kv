@@ -1,90 +1,114 @@
-#:import images_path kivymd.images_path
-
-
-<BaseDialog>
-    background: '{}/transparent.png'.format(images_path)
-
-    canvas.before:
-        PushMatrix
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: root.radius
-        Scale:
-            origin: self.center
-            x: root._scale_x
-            y: root._scale_y
-    canvas.after:
-        PopMatrix
-
-
-<DialogContainer@MDCard>
-    shadow_color: 0.0, 0.0, 0.0, 0.0
-    elevation: 0
-    shadow_softness: 0
-    shadow_offset: 0, 0
-
-
 <MDDialog>
+    radius: root.radius
+    size_hint_min_x: "280dp"
+    size_hint_max_x: "560dp"
+    pos_hint: {"center_x": .5, "center_y": .5}
+    size_hint_y: None
+    height: container.height
+    theme_shadow_color: "Custom"
+    shadow_color: self.theme_cls.transparentColor
+    focus_behavior: False
 
-    DialogContainer:
-        id: container
-        orientation: "vertical"
+    RelativeLayout:
         size_hint_y: None
-        height: self.minimum_height
-        padding: "24dp", "24dp", "8dp", "8dp"
-        radius: root.radius
-        md_bg_color:
-            root.theme_cls.bg_dark \
-            if not root.md_bg_color else root.md_bg_color
-
-        MDLabel:
-            id: title
-            text: root.title
-            font_style: "H6"
-            bold: True
-            markup: True
-            size_hint_y: None
-            height: self.texture_size[1]
-            valign: "top"
+        height: container.height
 
         BoxLayout:
-            id: spacer_top_box
+            id: container
+            orientation: "vertical"
             size_hint_y: None
-            height: root._spacer_top
+            height: self.minimum_height + button_container.height + dp(24)
+            spacing: "16dp"
+            padding: "24dp"
+            y: button_container.height + dp(24)
 
-        MDLabel:
-            id: text
-            text: root.text
-            font_style: "Body1"
-            theme_text_color: "Custom"
-            text_color: root.theme_cls.disabled_hint_text_color
-            size_hint_y: None
-            height: self.texture_size[1]
-            markup: True
+            AnchorLayout:
+                id: icon_container
+                size_hint_y: None
+                anchor_x: "center"
+                height: self.children[0].height if self.children else 0
 
-        ScrollView:
-            id: scroll
-            size_hint_y: None
-            height: root._scroll_height
+            BoxLayout:
+                id: headline_container
+                size_hint_y: None
+                height: self.minimum_height
 
-            MDGridLayout:
-                id: box_items
-                adaptive_height: True
-                cols: 1
+            BoxLayout:
+                id: supporting_text_container
+                size_hint_y: None
+                height: self.minimum_height
+
+            BoxLayout:
+                id: content_container
+                size_hint_y: None
+                height: self.minimum_height
 
         BoxLayout:
-            id: spacer_bottom_box
+            id: button_container
             size_hint_y: None
             height: self.minimum_height
+            y: content_container.y
 
-        AnchorLayout:
-            id: root_button_box
-            size_hint_y: None
-            height: "52dp"
-            anchor_x: "right"
 
-            MDBoxLayout:
-                id: button_box
-                adaptive_size: True
-                spacing: "8dp"
+<MDDialogIcon>
+    size_hint: None, None
+    size: "24dp", "24dp"
+    theme_font_size: "Custom"
+    font_size: "24sp"
+    icon_color:
+        self.theme_cls.secondaryColor \
+        if self.theme_icon_color == "Primary" else \
+        ( \
+        self.icon_color \
+        if self.icon_color else self.theme_cls.transparentColor \
+        )
+
+
+<MDDialogHeadlineText>
+    adaptive_height: True
+    halign: "center"
+    font_style: "Headline"
+    role: "small"
+    markup: True
+    color:
+        self.theme_cls.onSurfaceColor \
+        if self.theme_text_color == "Primary" else ( \
+        self.text_color \
+        if self.text_color != self.theme_cls.transparentColor else \
+        self.theme_cls.onSurfaceColor \
+        )
+
+
+<MDDialogSupportingText>
+    adaptive_height: True
+    halign: "center"
+    font_style: "Body"
+    role: "medium"
+    markup: True
+    text_color:
+        self.theme_cls.onSurfaceVariantColor \
+        if self.theme_text_color == "Primary" else ( \
+        self.text_color \
+        if self.text_color != self.theme_cls.transparentColor else \
+        self.theme_cls.onSurfaceVariantColor \
+        )
+
+
+<MDDialogContentContainer>
+    size_hint_y: None
+    height: self.minimum_height
+
+
+<MDDialogButtonContainer>
+    size_hint_y: None
+    height: self.minimum_height
+    padding: "24dp", 0, "24dp", 0
+
+
+<MDDialogScrim>
+    canvas:
+        Color:
+            rgba: self.color[:-1] + [self.alpha]
+        Rectangle:
+            pos: self.pos
+            size: self.size

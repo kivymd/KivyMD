@@ -125,25 +125,16 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 - :class:`~kivymd.uix.button.MDFillRoundFlatIconButton`
 """
 
-__all__ = ("MDToggleButton",)
+__all__ = ("MDToggleButtonBehavior",)
 
+from kivy import Logger
 from kivy.properties import BooleanProperty, ColorProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
-from kivymd.uix.button import (
-    ButtonContentsIconText,
-    MDFillRoundFlatButton,
-    MDFillRoundFlatIconButton,
-    MDFlatButton,
-    MDRaisedButton,
-    MDRectangleFlatButton,
-    MDRectangleFlatIconButton,
-    MDRoundFlatButton,
-    MDRoundFlatIconButton,
-)
+from kivymd.uix.button import MDButton, MDIconButton, MDFabButton, BaseButton
 
 
-class MDToggleButton(ToggleButtonBehavior):
+class MDToggleButtonBehavior(ToggleButtonBehavior):
     background_normal = ColorProperty(None)
     """
     Color of the button in ``rgba`` format for the 'normal' state.
@@ -180,38 +171,29 @@ class MDToggleButton(ToggleButtonBehavior):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        classinfo = (
-            MDRaisedButton,
-            MDFlatButton,
-            MDRectangleFlatButton,
-            MDRectangleFlatIconButton,
-            MDRoundFlatButton,
-            MDRoundFlatIconButton,
-            MDFillRoundFlatButton,
-            MDFillRoundFlatIconButton,
-        )
+        classinfo = (MDButton, MDIconButton, MDFabButton)
         # Do the object inherited from the "supported" buttons?
         if not issubclass(self.__class__, classinfo):
             raise ValueError(
                 f"Class {self.__class__} must be inherited from one of the "
                 f"classes in the list {classinfo}"
             )
+        else:
+            print(666, self.md_bg_color)
+            # self.theme_bg_color = "Custom"
         if (
             not self.background_normal
         ):  # This means that if the value == [] or None will return True.
             # If the object inherits from buttons with background:
-            if isinstance(
-                self,
-                (
-                    MDRaisedButton,
-                    MDFillRoundFlatButton,
-                    MDFillRoundFlatIconButton,
-                ),
-            ):
+            if isinstance(self, BaseButton):
+                print(111)
                 self.__is_filled = True
-                self.background_normal = self.theme_cls.primary_color
+                self.background_normal = (
+                    "yellow"  # self.theme_cls.primary_color
+                )
             # If not background_normal must be the same as the inherited one.
             else:
+                print(222)
                 self.background_normal = (
                     self.md_bg_color[:] if self.md_bg_color else (0, 0, 0, 0)
                 )
@@ -228,25 +210,44 @@ class MDToggleButton(ToggleButtonBehavior):
         # self.bind(state=self._update_bg)
         self.fbind("state", self._update_bg)
 
-    def _update_bg(self, ins, val):
+    def _update_bg(self, instance, value):
         """Updates the color of the background."""
 
-        if val == "down":
-            self.md_bg_color = self.background_down
-            if (
-                self.__is_filled is False
-            ):  # If the background is transparent, and the button it toggled,
-                # the font color must be withe [1, 1, 1, 1].
-                self.text_color = self.font_color_down
+        if self.theme_bg_color == "Primary":
+            self.theme_bg_color = "Custom"
+        if self.theme_icon_color == "Primary":
+            self.theme_icon_color = "Custom"
+
+        if value == "down":
+            if isinstance(self, MDIconButton):
+                self.md_bg_color = self.theme_cls.primaryColor
+                self.icon_color = self.theme_cls.onPrimaryColor
+
+            # if (
+            #     self.__is_filled is False
+            # ):
+            #     self.text_color = self.font_color_down
             if self.group:
                 self._release_group(self)
         else:
-            self.md_bg_color = self.background_normal
-            if (
-                self.__is_filled is False
-            ):  # If the background is transparent, the font color must be the
-                # primary color.
-                self.text_color = self.font_color_normal
+            if isinstance(self, MDIconButton):
+                self.md_bg_color = self.theme_cls.surfaceContainerHighestColor
+                self.icon_color = self.theme_cls.primaryColor
 
-        if issubclass(self.__class__, ButtonContentsIconText):
-            self.icon_color = self.text_color
+            # if (
+            #     self.__is_filled is False
+            # ):
+            #     self.text_color = self.font_color_normal
+
+        # if issubclass(self.__class__, ButtonContentsIconText):
+        #     self.icon_color = self.text_color
+
+
+class MDToggleButton(MDToggleButtonBehavior):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Logger.warning(
+            f"KivyMD: "
+            f"The `{self.__class__.__name__}` class has been deprecated. "
+            f"Use the `MDToggleButtonBehavior` class instead."
+        )

@@ -1,29 +1,91 @@
+<BaseChipIcon>
+    icon_color:
+        ( \
+        { \
+        "filter": app.theme_cls.onSurfaceVariantColor, \
+        "suggestion": app.theme_cls.onSurfaceVariantColor, \
+        "input": app.theme_cls.onSurfaceVariantColor, \
+        "assist": app.theme_cls.primaryColor, \
+        }[self._type] \
+        if self.theme_icon_color == "Primary" else self.icon_color \
+        ) \
+        if not root.disabled else self.disabled_color
+    disabled_color:
+        { \
+        "filter": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_icon], \
+        "suggestion": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_icon], \
+        "input": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_icon], \
+        "assist": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_icon], \
+        }[self._type] \
+        if not self.icon_color_disabled else self.icon_color_disabled
+
+
+<MDChipText>
+    font_style: "Label"
+    role: "large"
+    text_color:
+        ( \
+        { \
+        "filter": app.theme_cls.onSurfaceVariantColor, \
+        "suggestion": app.theme_cls.onSurfaceVariantColor, \
+        "input": app.theme_cls.onSurfaceVariantColor, \
+        "assist": app.theme_cls.onSurfaceColor, \
+        }[self._type] \
+        if root.theme_text_color == "Primary" else root.text_color \
+        ) \
+        if not root.disabled else self.disabled_color
+    disabled_color:
+        { \
+        "filter": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_text], \
+        "suggestion": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_text], \
+        "input": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_text], \
+        "assist": app.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_text], \
+        }[self._type] \
+        if not self.text_color_disabled else self.text_color_disabled
+
+
 <MDChip>
     size_hint_y: None
     height: "32dp"
     adaptive_width: True
     radius:
-        16 \
+        dp(16) \
         if self.radius == [0, 0, 0, 0] else \
-        (max(self.radius) if max(self.radius) < self.height / 2 else 16)
-    md_bg_color:
-        ( \
-        ( \
-        app.theme_cls.bg_darkest \
-        if app.theme_cls.theme_style == "Light" else \
-        app.theme_cls.bg_light \
-        ) \
-        if not self._origin_md_bg_color else \
-        self._origin_md_bg_color
-        ) \
-        if not self.disabled else app.theme_cls.disabled_primary_color
+        (max(self.radius) if max(self.radius) < self.height / 2 else dp(16))
     line_color:
-        app.theme_cls.disabled_hint_text_color \
-        if self.disabled else ( \
-        self._origin_line_color \
-        if self._origin_line_color else \
-        self.line_color \
+        ( \
+        ( \
+        self.theme_cls.outlineColor \
+        if not self.disabled else \
+        self.theme_cls.onSurfaceColor[:-1] + \
+        [self.chip_opacity_value_disabled_container] \
+        ) \
+        if self.type != "filter" else \
+        self.theme_cls.transparentColor \
+        ) \
+        if self.theme_line_color == "Primary" else \
+        self._line_color if not self.disabled else \
+        ( \
+        self.line_color_disabled \
+        if self.line_color_disabled else \
+        self._line_color \
         )
+    md_bg_color:
+        { \
+        "filter": self.theme_cls.surfaceContainerLowColor, \
+        "suggestion": self.theme_cls.surfaceContainerLowColor, \
+        "input": self.theme_cls.surfaceContainerLowColor, \
+        "assist": self.theme_cls.surfaceContainerLowColor, \
+        }[self.type] \
+        if self.theme_bg_color == "Primary" else self.md_bg_color
 
     LeadingIconContainer:
         id: leading_icon_container

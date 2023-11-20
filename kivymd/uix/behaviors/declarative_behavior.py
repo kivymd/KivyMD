@@ -293,6 +293,15 @@ from kivy.properties import StringProperty
 from kivy.uix.widget import Widget
 
 
+class _Dict(dict):
+    """Implements access to dictionary values via a dot."""
+
+    def __getattr__(self, name):
+        return self[name]
+
+
+# TODO: Add cleaning of the `__ids` collection when removing child widgets
+#  from the parent.
 class DeclarativeBehavior:
     """
     Implements the creation and addition of child widgets as declarative
@@ -307,6 +316,8 @@ class DeclarativeBehavior:
     and defaults to `''`.
     """
 
+    __ids = _Dict()
+
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
 
@@ -314,4 +325,12 @@ class DeclarativeBehavior:
             if issubclass(child.__class__, Widget):
                 self.add_widget(child)
                 if hasattr(child, "id") and child.id:
-                    self.ids[child.id] = child
+                    self.__ids[child.id] = child
+
+    def get_ids(self) -> dict:
+        """
+        Returns a dictionary of widget IDs defined in Python
+        code that is written in a declarative style.
+        """
+
+        return self.__ids

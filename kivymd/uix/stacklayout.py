@@ -16,7 +16,7 @@ StackLayout
 
         canvas:
             Color:
-                rgba: app.theme_cls.primary_color
+                rgba: app.theme_cls.primaryColor
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -28,7 +28,7 @@ MDStackLayout
 
     MDStackLayout:
         adaptive_height: True
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.theme_cls.primaryColor
 
 Available options are:
 ----------------------
@@ -89,13 +89,24 @@ from kivy.uix.stacklayout import StackLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 
 
 class MDStackLayout(
-    DeclarativeBehavior, ThemableBehavior, StackLayout, MDAdaptiveWidget
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    StackLayout,
+    MDAdaptiveWidget,
 ):
     """
-    Stack layout class. For more information, see in the
-    :class:`~kivy.uix.stacklayout.StackLayout` class documentation.
+    Stack layout class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.stacklayout.StackLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
     """

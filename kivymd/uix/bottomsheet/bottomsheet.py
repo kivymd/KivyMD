@@ -579,6 +579,7 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd import uix_path
 from kivymd.uix.behaviors import CommonElevationBehavior, TouchBehavior
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
@@ -589,7 +590,7 @@ with open(
     os.path.join(uix_path, "bottomsheet", "bottomsheet.kv"),
     encoding="utf-8",
 ) as kv_file:
-    Builder.load_string(kv_file.read())
+    Builder.load_string(kv_file.read(), filename="MDBottomSheet.kv")
 
 
 class BottomSheetDragHandle(MDWidget):
@@ -685,13 +686,16 @@ class MDBottomSheetDragHandle(MDBoxLayout):
             return super().add_widget(widget)
 
 
-class MDBottomSheet(MDBoxLayout, CommonElevationBehavior, TouchBehavior):
+class MDBottomSheet(
+    MDBoxLayout, CommonElevationBehavior, StateLayerBehavior, TouchBehavior
+):
     """
     Bottom sheet class.
 
     For more information, see in the
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` and
     :class:`~kivymd.uix.behaviors.touch_behavior.CommonElevationBehavior` and
+    :class:`~kivymd.uix.behaviors.StateLayerBehavior` and
     :class:`~kivymd.uix.behaviors.touch_behavior.TouchBehavior`
     classes documentation.
 

@@ -31,7 +31,7 @@ For example, let's create a button with a rectangular elevation effect:
             )
 
             KV = '''
-            <RectangularElevationButton>
+            <ElevationWidget>
                 size_hint: None, None
                 size: "250dp", "50dp"
 
@@ -39,19 +39,19 @@ For example, let's create a button with a rectangular elevation effect:
             MDScreen:
 
                 # With elevation effect
-                RectangularElevationButton:
+                ElevationWidget:
                     pos_hint: {"center_x": .5, "center_y": .6}
                     elevation: 4
                     shadow_offset: 0, -6
                     shadow_softness: 4
 
                 # Without elevation effect
-                RectangularElevationButton:
+                ElevationWidget:
                     pos_hint: {"center_x": .5, "center_y": .4}
             '''
 
 
-            class RectangularElevationButton(
+            class ElevationWidget(
                 RectangularRippleBehavior,
                 CommonElevationBehavior,
                 ButtonBehavior,
@@ -84,7 +84,7 @@ For example, let's create a button with a rectangular elevation effect:
             from kivymd.uix.screen import MDScreen
 
 
-            class RectangularElevationButton(
+            class ElevationWidget(
                 RectangularRippleBehavior,
                 CommonElevationBehavior,
                 ButtonBehavior,
@@ -101,13 +101,13 @@ For example, let's create a button with a rectangular elevation effect:
                 def build(self):
                     return (
                         MDScreen(
-                            RectangularElevationButton(
+                            ElevationWidget(
                                 pos_hint={"center_x": .5, "center_y": .6},
                                 elevation=4,
                                 shadow_softness=4,
                                 shadow_offset=(0, -6),
                             ),
-                            RectangularElevationButton(
+                            ElevationWidget(
                                 pos_hint={"center_x": .5, "center_y": .4},
                             ),
                         )
@@ -271,7 +271,7 @@ Animating the elevation
                     size: 100, 100
                     md_bg_color: 0, 0, 1, 1
                     elevation: 2
-                    radius: 18
+                    radius: dp(18)
             '''
 
 
@@ -306,6 +306,7 @@ Animating the elevation
 
             from kivy.animation import Animation
             from kivy.uix.behaviors import ButtonBehavior
+            from kivy.metrics import dp
 
             from kivymd.app import MDApp
             from kivymd.uix.behaviors import CommonElevationBehavior, RectangularRippleBehavior
@@ -341,7 +342,7 @@ Animating the elevation
                                 size=(100, 100),
                                 md_bg_color="blue",
                                 elevation=2,
-                                radius=18,
+                                radius=dp(18),
                             )
                         )
                     )
@@ -355,23 +356,17 @@ Animating the elevation
 
 from __future__ import annotations
 
-__all__ = (
-    "CommonElevationBehavior",
-    "RectangularElevationBehavior",
-    "CircularElevationBehavior",
-    "RoundedRectangularElevationBehavior",
-    "FakeRectangularElevationBehavior",
-    "FakeCircularElevationBehavior",
-)
+__all__ = ("CommonElevationBehavior",)
 
-from kivy import Logger
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
     BoundedNumericProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
     VariableListProperty,
+    DictProperty,
 )
 from kivy.uix.widget import Widget
 
@@ -393,18 +388,16 @@ Builder.load_string(
             axis: tuple(self.rotate_value_axis)
             origin: self.center
         Color:
-            rgba:
-                (0, 0, 0, 0) \
-                if self.disabled or not self.elevation else \
-                root.shadow_color
+            rgba: root.shadow_color
         BoxShadow:
-            pos: self.pos
+            pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             size: self.size
             offset: root.shadow_offset
             spread_radius: -(root.shadow_softness), -(root.shadow_softness)
-            blur_radius: root.elevation * 10
+            blur_radius: root.elevation_levels[root.elevation_level] * 2.5
+            # blur_radius: root.elevation * 10
             border_radius:
-                (root.radius if hasattr(self, "radius") else [0, 0, 0, 0]) \
+                (root.radius if hasattr(self, "radius") and root.radius else [0, 0, 0, 0]) \
                 if root.shadow_radius == [0.0, 0.0, 0.0, 0.0] else \
                 root.shadow_radius
     canvas.after:
@@ -419,6 +412,29 @@ class CommonElevationBehavior(Widget):
 
     For more information, see in the :class:`~kivy.uix.widget.Widget`
     class documentation.
+    """
+
+    elevation_level = BoundedNumericProperty(0, min=0, max=5)
+    """
+    Elevation level (values from 0 to 5)
+
+    .. versionadded:: 1.2.0
+
+    :attr:`elevation_level` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `0`.
+    """
+
+    elevation_levels = DictProperty(
+        {0: 0, 1: dp(1.5), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}
+    )
+    """
+    Elevation is measured as the distance between components along the z-axis
+    in density-independent pixels (dps).
+
+    .. versionadded:: 1.2.0
+
+    :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
+    and defaults to `{0: dp(0), 1: dp(1), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
     """
 
     elevation = BoundedNumericProperty(0, min=0, errorvalue=0)
@@ -449,7 +465,7 @@ class CommonElevationBehavior(Widget):
         MDScreen:
 
             MDCard:
-                radius: 12, 46, 12, 46
+                radius: dp(12), dp(46), dp(12), dp(46)
                 size_hint: .5, .3
                 pos_hint: {"center_x": .5, "center_y": .5}
                 elevation: 2
@@ -486,26 +502,26 @@ class CommonElevationBehavior(Widget):
         from kivymd.uix.behaviors import BackgroundColorBehavior, CommonElevationBehavior
 
         KV = '''
-        <RectangularElevationButton>
+        <ElevationWidget>
             size_hint: None, None
             size: "250dp", "50dp"
 
 
         MDScreen:
 
-            RectangularElevationButton:
+            ElevationWidget:
                 pos_hint: {"center_x": .5, "center_y": .6}
                 elevation: 6
                 shadow_softness: 6
 
-            RectangularElevationButton:
+            ElevationWidget:
                 pos_hint: {"center_x": .5, "center_y": .4}
                 elevation: 6
                 shadow_softness: 12
         '''
 
 
-        class RectangularElevationButton(CommonElevationBehavior, BackgroundColorBehavior):
+        class ElevationWidget(CommonElevationBehavior, BackgroundColorBehavior):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
                 self.md_bg_color = "blue"
@@ -522,19 +538,7 @@ class CommonElevationBehavior(Widget):
         :align: center
 
     :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `12`.
-    """
-
-    shadow_softness_size = BoundedNumericProperty(2, min=2, deprecated=True)
-    """
-    The value of the softness of the shadow.
-
-    .. versionadded:: 1.1.0
-
-    .. deprecated:: 1.2.0
-
-    :attr:`shadow_softness_size` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `2`.
+    and defaults to `0.0`.
     """
 
     shadow_offset = ListProperty((0, 0))
@@ -551,23 +555,23 @@ class CommonElevationBehavior(Widget):
         from kivymd.uix.behaviors import BackgroundColorBehavior, CommonElevationBehavior
 
         KV = '''
-        <RectangularElevationButton>
+        <ElevationWidget>
             size_hint: None, None
             size: "100dp", "100dp"
 
 
         MDScreen:
 
-            RectangularElevationButton:
+            ElevationWidget:
                 pos_hint: {"center_x": .5, "center_y": .5}
                 elevation: 6
-                shadow_radius: 6
+                shadow_radius: dp(6)
                 shadow_softness: 12
                 shadow_offset: -12, -12
         '''
 
 
-        class RectangularElevationButton(CommonElevationBehavior, BackgroundColorBehavior):
+        class ElevationWidget(CommonElevationBehavior, BackgroundColorBehavior):
             def __init__(self, **kwargs):
                 super().__init__(**kwargs)
                 self.md_bg_color = "blue"
@@ -585,7 +589,7 @@ class CommonElevationBehavior(Widget):
 
     .. code-block:: kv
 
-        RectangularElevationButton:
+        ElevationWidget:
             shadow_offset: 12, -12
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-offset-2.png
@@ -593,7 +597,7 @@ class CommonElevationBehavior(Widget):
 
     .. code-block:: kv
 
-        RectangularElevationButton:
+        ElevationWidget:
             shadow_offset: 12, 12
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-offset-3.png
@@ -601,7 +605,7 @@ class CommonElevationBehavior(Widget):
 
     .. code-block:: kv
 
-        RectangularElevationButton:
+        ElevationWidget:
             shadow_offset: -12, 12
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-offset-4.png
@@ -619,7 +623,7 @@ class CommonElevationBehavior(Widget):
 
     .. code-block:: python
 
-        RectangularElevationButton:
+        ElevationWidget:
             shadow_color: 0, 0, 1, .8
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadow-color.png
@@ -691,82 +695,10 @@ class CommonElevationBehavior(Widget):
     and defaults to `(0, 0, 1)`.
     """
 
-    _elevation = 0
+    # _elevation = 0
+    _elevation_level = 0
+    _shadow_softness = 0
+    _shadow_color = (0, 0, 0, 0)
 
-    def on_elevation(self, instance, value) -> None:
-        self._elevation = value
-
-
-class RectangularElevationBehavior(CommonElevationBehavior):
-    """
-    .. deprecated:: 1.1.0
-        Use :class:`~CommonElevationBehavior` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `RectangularElevationBehavior` class has been deprecated. "
-            "Use the `CommonElevationBehavior` class instead.`"
-        )
-
-
-class CircularElevationBehavior(CommonElevationBehavior):
-    """
-    .. deprecated:: 1.1.0
-        Use :class:`~CommonElevationBehavior` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `CircularElevationBehavior` class has been deprecated. "
-            "Use the `CommonElevationBehavior` class instead.`"
-        )
-
-
-class RoundedRectangularElevationBehavior(CommonElevationBehavior):
-    """
-    .. deprecated:: 1.1.0
-        Use :class:`~CommonElevationBehavior` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `RoundedRectangularElevationBehavior` class has been "
-            "deprecated. Use the `CommonElevationBehavior` class instead.`"
-        )
-
-
-class FakeRectangularElevationBehavior(CommonElevationBehavior):
-    """
-    .. deprecated:: 1.1.0
-        Use :class:`~CommonElevationBehavior` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `FakeRectangularElevationBehavior` class has been "
-            "deprecated. Use the `CommonElevationBehavior` class instead."
-        )
-
-
-class FakeCircularElevationBehavior(CommonElevationBehavior):
-    """
-    .. deprecated:: 1.1.0
-        Use :class:`~CommonElevationBehavior` class instead.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `FakeCircularElevationBehavior` class has been deprecated. "
-            "Use the `CommonElevationBehavior` class instead."
-        )
+    # def on_elevation(self, instance, value) -> None:
+    #     self._elevation = value

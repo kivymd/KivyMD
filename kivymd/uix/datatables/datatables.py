@@ -58,11 +58,12 @@ from kivy.uix.scrollview import ScrollView
 
 from kivymd import uix_path
 from kivymd.effects.stiffscroll import StiffScrollEffect
-from kivymd.material_resources import (
-    DATA_TABLE_ELEVATION,
-    DATA_TABLE_OFFSET,
-    DATA_TABLE_SOFTNESS,
-)
+
+# from kivymd.material_resources import (
+#     DATA_TABLE_ELEVATION,
+#     DATA_TABLE_OFFSET,
+#     DATA_TABLE_SOFTNESS,
+# )
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import HoverBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -1307,7 +1308,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `False`.
     """
 
-    elevation = NumericProperty(DATA_TABLE_ELEVATION)
+    elevation = NumericProperty(0)
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
     attribute.
@@ -1327,7 +1328,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `[6]`.
     """
 
-    shadow_softness = NumericProperty(DATA_TABLE_SOFTNESS)
+    shadow_softness = NumericProperty(0)
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
     attribute.
@@ -1349,7 +1350,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `2`.
     """
 
-    shadow_offset = ListProperty(DATA_TABLE_OFFSET)
+    shadow_offset = ListProperty([0, 0])
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
     attribute.

@@ -1,1 +1,0 @@
-from .rotatewidget import RotateWidget

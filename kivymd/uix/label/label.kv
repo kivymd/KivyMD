@@ -2,67 +2,36 @@
 
 
 <MDLabel>
-    disabled_color: self.theme_cls.disabled_hint_text_color
     text_size:
         (self.width if not self.adaptive_width else None) \
         if not self.adaptive_size else None, \
         None
+    color:
+        self.text_color \
+        if self.text_color else \
+        self.theme_cls.onSurfaceColor
+    disabled_color:
+        app.theme_cls.onSurfaceColor[:-1] + \
+        [self.label_opacity_value_disabled_text]
+    font_size:
+        self.theme_cls.font_styles[self.font_style][self.role]["font-size"] \
+        if self.theme_font_size == "Primary" else self.font_size
+    line_height:
+        self.theme_cls.font_styles[self.font_style][self.role]["line-height"] \
+        if self.theme_line_height == "Primary" else self.line_height
+    font_name:
+        self.theme_cls.font_styles[self.font_style][self.role]["font-name"] \
+        if self.theme_font_name == "Primary" else self.font_name
 
 
-<MDIcon>:
-    canvas:
-        Color:
-            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
-        Rectangle:
-            group: "rectangle"
-            source: self.source if self.source else None
-            pos:
-                self.pos \
-                if not self.source else \
-                (self.x - self._size[0] / 2, self.y)
-            size:
-                self._size \
-                if self.source else \
-                self.size
-
+<MDIcon>
     font_style: "Icon"
     text: u"{}".format(md_icons[root.icon]) if root.icon in md_icons else "blank"
     source: None if root.icon in md_icons else root.icon
+    adaptive_size: True
+    color:
+        self.icon_color \
+        if self.icon_color else \
+        self.theme_cls.onSurfaceVariantColor
 
-    # Badge icon.
-    MDLabel:
-        id: badge
-        font_style: "Icon"
-        adaptive_size: True
-        opposite_icon_color: True
-        color: root.badge_icon_color
-        text:
-            u"{}".format(md_icons[root.badge_icon]) \
-            if root.badge_icon in md_icons else \
-            ""
-        pos:
-            root.x + root.width / 2 + self.width / 2 - dp(6), \
-            root.y + self.texture_size[1] / 2 + dp(6)
-        font_size:
-            ( \
-            root.font_size / 1.5 \
-            if not root.badge_font_size else \
-            root.badge_font_size \
-            ) \
-            if root.badge_icon and root.badge_icon != "blank" else 0
 
-        canvas.before:
-            Color:
-                rgba:
-                    ( \
-                    root.badge_bg_color \
-                    if root.badge_bg_color else \
-                    app.theme_cls.error_color \
-                    ) \
-                    if root.badge_icon else \
-                    (0, 0, 0, 0)
-            RoundedRectangle:
-                group: "badge"
-                radius: [self.width / 2,]
-                pos: self.pos
-                size: self.size

@@ -62,3 +62,4 @@ Unreleased
 * `MDDropdownMenu <https://kivymd.readthedocs.io/en/latest/components/menu/>`_ `API break <>https://kivymd.readthedocs.io/en/latest/components/menu/#api-break`_;
 * Added the `motion_behavior <https://kivymd.readthedocs.io/en/latest/behaviors/motion/#api-kivymd-uix-behaviors-motion-behavior>`_ module to the `behaviors` package to control the display/hide behavior of widgets;
 * `Fixed <https://github.com/kivymd/KivyMD/commit/9d2e837a161ca45e0ac09d24cad2f22dd032aa4f>`_ scaling and rotation of widgets with elevation behavior;
+* Removed `MDBanner` widget;

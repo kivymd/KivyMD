@@ -3,23 +3,23 @@
 
 <CellRow>
     orientation: "vertical"
-    md_bg_color:
-        ( \
-        ( \
-        root.theme_cls.bg_darkest \
-        if root.theme_cls.theme_style == "Light" else \
-        root.theme_cls.bg_light \
-        ) \
-        if not root.background_color_selected_cell \
-        else root.background_color_selected_cell \
-        ) \
-        if self.selected \
-        else \
-        ( \
-        root.theme_cls.bg_normal \
-        if not root.background_color_cell \
-        else root.background_color_cell \
-        )
+#    md_bg_color:
+#        ( \
+#        ( \
+#        root.theme_cls.bg_darkest \
+#        if root.theme_cls.theme_style == "Light" else \
+#        root.theme_cls.bg_light \
+#        ) \
+#        if not root.background_color_selected_cell \
+#        else root.background_color_selected_cell \
+#        ) \
+#        if self.selected \
+#        else \
+#        ( \
+#        root.theme_cls.bg_normal \
+#        if not root.background_color_cell \
+#        else root.background_color_cell \
+#        )
     on_press: if DEVICE_TYPE != "desktop": root.table.on_mouse_select(self)
     on_enter: if DEVICE_TYPE == "desktop": root.table.on_mouse_select(self)
 
@@ -57,7 +57,7 @@
                     if root.theme_cls.theme_style == "Dark" else \
                     (0, 0, 0, 1)
 
-    MDSeparator:
+    MDDivider:
 
 
 <CellHeader>
@@ -83,7 +83,7 @@
                 if root.theme_cls.theme_style == "Dark" else \
                 (0, 0, 0, 1)
 
-    MDSeparator:
+    MDDivider:
         id: separator
 
 
@@ -109,10 +109,10 @@
         cols_minimum: root.cols_minimum
         adaptive_size: True
         padding: 0, "8dp", 0, 0
-        md_bg_color:
-            root.theme_cls.bg_light \
-            if not root.background_color_header \
-            else root.background_color_header
+#        md_bg_color:
+#            root.theme_cls.bg_light \
+#            if not root.background_color_header \
+#            else root.background_color_header
 
         MDBoxLayout:
             orientation: "vertical"
@@ -132,7 +132,7 @@
                 CellHeader:
                     id: first_cell
 
-            MDSeparator:
+            MDDivider:
 
 
 <TableData>

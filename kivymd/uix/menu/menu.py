@@ -636,14 +636,14 @@ from kivy.properties import (
 )
 from kivy.uix.recycleview import RecycleView
 
-import kivymd.material_resources as m_res
 from kivymd import uix_path
 from kivymd.uix.behaviors import StencilBehavior, RectangularRippleBehavior
 from kivymd.uix.behaviors.motion_behavior import MotionDropDownMenuBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
-from kivymd.uix.list import IRightBody
+
+# from kivymd.uix.list import IRightBody
 
 with open(
     os.path.join(uix_path, "menu", "menu.kv"), encoding="utf-8"
@@ -762,7 +762,7 @@ class BaseDropdownItem(RectangularRippleBehavior, ButtonBehavior, MDBoxLayout):
     """
 
 
-class MDTrailingTextContainer(BaseDropdownItem, IRightBody, MDLabel):
+class MDTrailingTextContainer(BaseDropdownItem, MDLabel):
     """
     Implements a container for trailing text.
 
@@ -775,7 +775,7 @@ class MDTrailingTextContainer(BaseDropdownItem, IRightBody, MDLabel):
     """
 
 
-class MDTrailingIconTextContainer(BaseDropdownItem, IRightBody, MDBoxLayout):
+class MDTrailingIconTextContainer(BaseDropdownItem, MDBoxLayout):
     """
     Implements a container for trailing icons and trailing text.
 
@@ -1056,42 +1056,6 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
 
     :attr:`radius` is a :class:`~kivy.properties.VariableListProperty`
     and defaults to `'[dp(7)]'`.
-    """
-
-    elevation = NumericProperty(m_res.DROP_DOWN_MENU_ELEVATION)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
-    attribute.
-
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `2`.
-    """
-
-    shadow_radius = VariableListProperty([6], length=4)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_radius`
-    attribute.
-
-    :attr:`shadow_radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[6]`.
-    """
-
-    shadow_softness = NumericProperty(m_res.DROP_DOWN_MENU_SOFTNESS)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
-    attribute.
-
-    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `6`.
-    """
-
-    shadow_offset = ListProperty(m_res.DROP_DOWN_MENU_OFFSET)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
-    attribute.
-
-    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `(0, -2)`.
     """
 
     _items = []
@@ -1424,7 +1388,7 @@ if __name__ == "__main__":
     from kivy.metrics import dp
 
     from kivymd.app import MDApp
-    from kivymd.uix.button import MDRaisedButton
+    from kivymd.uix.button import MDButton
     from kivymd.uix.screen import MDScreen
 
     class Test(MDApp):
@@ -1452,7 +1416,11 @@ if __name__ == "__main__":
             ]
             for pos_hint in pos_hints:
                 self.screen.add_widget(
-                    MDRaisedButton(pos_hint=pos_hint, on_release=self.open_menu)
+                    MDButton(
+                        text="Press me",
+                        pos_hint=pos_hint,
+                        on_release=self.open_menu,
+                    )
                 )
 
         def build(self):

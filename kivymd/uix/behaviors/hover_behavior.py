@@ -85,23 +85,25 @@ __all__ = ("HoverBehavior",)
 
 from kivy.core.window import Window
 from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.widget import Widget
 
 
-class HoverBehavior(object):
+class HoverBehavior:
     """
     :Events:
         :attr:`on_enter`
-            Called when mouse enters the bbox of the widget AND the widget is visible
+            Fired when mouse enters the bbox of the widget AND the widget is
+            visible.
         :attr:`on_leave`
-            Called when the mouse exits the widget AND the widget is visible
+            Fired when the mouse exits the widget AND the widget is visible.
     """
 
     hovering = BooleanProperty(False)
     """
     `True`, if the mouse cursor is within the borders of the widget.
 
-    Note that this is set and cleared even if the widget is not visible
+    Note that this is set and cleared even if the widget is not visible.
 
     :attr:`hover` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -109,7 +111,7 @@ class HoverBehavior(object):
 
     hover_visible = BooleanProperty(False)
     """
-    `True` if hovering is True AND is the current widget is visible
+    `True` if hovering is True AND is the current widget is visible.
 
     :attr:`hover_visible` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -118,7 +120,7 @@ class HoverBehavior(object):
     enter_point = ObjectProperty(allownone=True)
     """
     Holds the last position where the mouse pointer crossed into the Widget
-    if the Widget is visible and is currently in a hovering state
+    if the Widget is visible and is currently in a hovering state.
 
     :attr:`enter_point` is a :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
@@ -132,22 +134,24 @@ class HoverBehavior(object):
     and defaults to  `True`.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.register_event_type("on_enter")
         self.register_event_type("on_leave")
         Window.bind(mouse_pos=self.on_mouse_update)
-        super(HoverBehavior, self).__init__(**kwargs)
+        super().__init__(*args, **kwargs)
 
     def on_mouse_update(self, *args):
-        #  If the Widget currently has no parent, do nothing
+        #  If the Widget currently has no parent, do nothing.
         if not self.get_root_window():
             return
         pos = args[1]
-        #
-        #  is the pointer in the same position as the widget?
-        #  If not - then issue an on_exit event if needed
-        #
-        if not self.collide_point(*self.to_widget(*pos)):
+        # Is the pointer in the same position as the widget?
+        # If not - then issue an on_exit event if needed.
+        if not self.collide_point(
+            *self.to_widget(*pos)
+            if not isinstance(self, RelativeLayout)
+            else (pos[0], pos[1])
+        ):
             self.hovering = False
             self.enter_point = None
             if self.hover_visible:
@@ -155,33 +159,21 @@ class HoverBehavior(object):
                 self.dispatch("on_leave")
             return
 
-        #
         # The pointer is in the same position as the widget
-        #
-
         if self.hovering:
-            #
-            #  nothing to do here. Not - this does not handle the case where
-            #  a popup comes over an existing hover event.
-            #  This seems reasonable
-            #
+            # Nothing to do here. Not - this does not handle the case where
+            # a popup comes over an existing hover event.
+            # This seems reasonable
             return
 
-        #
         # Otherwise - set the hovering attribute
-        #
         self.hovering = True
 
-        #
-        # We need to traverse the tree to see if the Widget is visible
-        #
-        # This is a two stage process:
-        # - first go up the tree to the root Window.
-        #   At each stage - check that the Widget is actually visible
-        # - Second - At the root Window check that there is not another branch
-        #   covering the Widget
-        #
-
+        # We need to traverse the tree to see if the Widget is visible.
+        # This is a two stage process - first go up the tree to the root
+        # Window. At each stage - check that the Widget is actually visible.
+        # Second - at the root Window check that there is not another branch
+        #  covering the Widget.
         self.hover_visible = True
         if self.detect_visible:
             widget: Widget = self
@@ -190,37 +182,35 @@ class HoverBehavior(object):
                 parent = widget.parent
                 try:
                     # See if the mouse point collides with the parent
-                    # using both local and glabal coordinates to cover absoluet and relative layouts
+                    # using both local and global coordinates to cover absolute
+                    # and relative layouts.
                     pinside = parent.collide_point(
                         *parent.to_widget(*pos)
                     ) or parent.collide_point(*pos)
                 except Exception:
-                    # The collide_point will error when you reach the root Window
+                    # The collide_point will error when you reach the root
+                    # Window.
                     break
                 if not pinside:
                     self.hover_visible = False
                     break
-                # Iterate upwards
+                # Iterate upwards.
                 widget = parent
 
-            #
             #  parent = root window
             #  widget = first Widget on the current branch
-            #
-
             children = parent.children
             for child in children:
-                # For each top level widget - check if is current branch
+                # For each top level widget - check if is current branch.
                 # If it is - then break.
-                # If not then - since we start at 0 - this widget is visible
-                #
-                # Check to see if it should take the hover
-                #
+                # If not then - since we start at 0 - this widget is visible.
+                # Check to see if it should take the hover.
                 if child == widget:
-                    # this means that the current widget is visible
+                    # This means that the current widget is visible.
                     break
                 if child.collide_point(*pos):
-                    #  this means that the current widget is covered by a modal or popup
+                    # This means that the current widget is covered by a modal
+                    # or popup.
                     self.hover_visible = False
                     break
         if self.hover_visible:
@@ -228,7 +218,7 @@ class HoverBehavior(object):
             self.dispatch("on_enter")
 
     def on_enter(self):
-        """Called when mouse enters the bbox of the widget AND the widget is visible."""
+        """Fired when mouse enter the bbox of the widget."""
 
     def on_leave(self):
-        """Called when the mouse exits the widget AND the widget is visible."""
+        """Fired when the mouse goes outside the widget border."""

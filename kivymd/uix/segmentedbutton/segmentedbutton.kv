@@ -1,32 +1,124 @@
 <MDSegmentedButton>
-    size_hint: None, None
-    height: "40dp"
-    opacity: 0
+    size_hint_y: None
+    height: self.minimum_height
+    radius: [self.height / 2, ]
+
+    # FIXME: The use of an additional container is due to the Kivy bug -
+    #  https://github.com/kivy/kivy/issues/8470
+    MDSegmentedButtonContainer:
+        id: container
+        size_hint: 1, None
+        opacity: 1
+        size_hint_min_x: 0
+        height:
+            { \
+            "large": "40dp", \
+            "normal": "36dp", \
+            "medium": "32dp", \
+            "small": "28dp", \
+            }[root.type]
+
+
+<MDSegmentButtonLabel>
+    font_style: "Label"
+    role: "large"
+    theme_line_height: "Custom"
+    line_height: 1
+    markup: True
+    adaptive_width: True
+    pos_hint: {"center_y": .5}
+    padding: "12dp", 0, "12dp", 0
+    text_color:
+        ( \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.ids.container.parent.active else \
+        self.theme_cls.onSurfaceColor \
+        ) \
+        if self.theme_text_color == "Primary" else \
+        ( \
+        self.text_color \
+        if self.text_color else app.theme_cls.transparentColor \
+        ) \
+        ) \
+        if self.parent else app.theme_cls.transparentColor
+
+
+<MDSegmentButtonIcon>
+    theme_font_size: "Custom"
+    font_size: "18sp"
+    pos_hint: {"center_y": .5}
+    padding:
+        "12dp", \
+        0, \
+        0 \
+        if self.parent.parent.ids.container.parent._label else \
+        "12dp", \
+        0
+    icon_color:
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.ids.container.parent.active else \
+        self.theme_cls.onSurfaceColor \
+        ) \
+        if self.theme_icon_color == "Primary" else self.icon_color
 
 
 <MDSegmentedButtonItem>
-    size_hint: None, None
-    height: self.parent.height
+    md_bg_color:
+        ( \
+        self.theme_cls.transparentColor \
+        if not self.active else \
+        ( \
+        self.theme_cls.secondaryContainerColor \
+        if not self.selected_color else self.selected_color \
+        ) \
+        ) \
+        if not self.disabled else \
+        ( \
+        ( \
+        self.theme_cls.onSurfaceColor[:-1] \
+        + [self.segmented_button_opacity_value_disabled_container] \
+        if not self.md_bg_color_disabled else self.md_bg_color_disabled \
+        ) \
+        if not self.active else \
+        ( \
+        self.md_bg_color[:-1] \
+        + [self.segmented_button_opacity_value_disabled_container_active] \
+        if not self.md_bg_color_disabled else self.md_bg_color_disabled \
+        ) \
+        )
     line_color:
-        self.theme_cls.disabled_hint_text_color \
-        if self.parent.line_color == [0, 0, 0, 0] else \
-        self.parent.line_color
+        ( \
+        self.theme_cls.outlineColor \
+        if self.theme_line_color == "Primary" else \
+        ( \
+        self._line_color \
+        if self._line_color else \
+        self.line_color \
+        ) \
+        ) \
+        if not self.disabled else \
+        self.theme_cls.onSurfaceColor[:-1] + \
+        [self.segmented_button_opacity_value_disabled_line]
 
-    SegmentButtonIcon:
-        id: scale_icon
-        icon: root.icon
-        size_hint: None, None
-        size: "24dp", "24dp"
-        pos_hint: {"center_y": .5}
-        scale_value_x: 1 if root.icon else 0
-        scale_value_y: 1 if root.icon else 0
-        x: label_text.x - dp(32)
+    MDSegmentedButtonItemContainer:
+        id: container
+        size_hint_x: None
+        width: self.minimum_width
+        pos_hint: {"center_x": .5}
 
-    MDLabel:
-        id: label_text
-        text: root.text
-        adaptive_size: True
-        pos_hint: {"center_y": .5}
-        x:
-            root.center_x - (self.texture_size[0] / 2) \
-            + (dp(16) if root.icon else 0)
+
+<MDSegmentButtonSelectedIcon>
+    icon: "check"
+    pos_hint: {"center_y": .5}
+    theme_font_size: "Custom"
+    font_size: 0
+    icon_color:
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self._item.active else \
+        self.theme_cls.onSurfaceColor \
+        ) \
+        if not self._segmented_button.selected_icon_color else \
+        self._segmented_button.selected_icon_color

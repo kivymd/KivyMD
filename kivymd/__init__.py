@@ -26,6 +26,7 @@ import os
 import kivy
 from kivy.logger import Logger
 
+
 __version__ = "1.2.0.dev0"
 """KivyMD version."""
 

@@ -16,65 +16,119 @@ Components/SegmentedButton
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-preview.png
     :align: center
 
-Usage
+- Segmented buttons can contain icons, label text, or both
+- Two types: single-select and multi-select
+- Use for simple choices between two to five items (for more items or complex
+  choices, use chips)
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-types.png
+    :align: center
+
+1. Single-select segmented button
+2. Multi-select segmented button
+
+Anatomy
+-------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-anatomy.png
+    :align: center
+
+Icons
 -----
+
+Icons may be used as labels by themselves or alongside text.
+If an icon is used without label text, it must clearly communicate the option
+it represents.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-icons.png
+    :align: center
+
+Use with text and icon
+----------------------
 
 .. code-block:: kv
 
-    MDScreen:
+    MDSegmentedButton:
 
-        MDSegmentedButton:
+        MDSegmentedButtonItem:
 
-            MDSegmentedButtonItem:
-                icon: ...
-                text: ...
+            MDSegmentButtonIcon:
+                icon: "language-python"
 
-            MDSegmentedButtonItem:
-                icon: ...
-                text: ...
+            MDSegmentButtonLabel:
+                text: "Python"
 
-            MDSegmentedButtonItem:
-                icon: ...
-                text: ...
+        MDSegmentedButtonItem:
 
-Example
--------
+            MDSegmentButtonIcon:
+                icon: "language-javascript"
 
-.. code-block:: python
+            MDSegmentButtonLabel:
+                text: "Java-Script"
 
-    from kivy.lang import Builder
+        MDSegmentedButtonItem:
 
-    from kivymd.app import MDApp
+            MDSegmentButtonIcon:
+                icon: "language-swift"
 
-    KV = '''
-    MDScreen:
+            MDSegmentButtonLabel:
+                text: "Swift"
 
-        MDSegmentedButton:
-            pos_hint: {"center_x": .5, "center_y": .5}
-
-            MDSegmentedButtonItem:
-                text: "Walking"
-
-            MDSegmentedButtonItem:
-                text: "Transit"
-
-            MDSegmentedButtonItem:
-                text: "Driving"
-    '''
-
-
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
-
-
-    Example().run()
-
-By default, segmented buttons support single marking of elements:
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-multiselect-false.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-use-with-text-and-icon.gif
     :align: center
+
+Use without text with an icon
+----------------------------
+
+.. code-block:: kv
+
+    MDSegmentedButton:
+
+        MDSegmentedButtonItem:
+
+            MDSegmentButtonIcon:
+                icon: "language-python"
+
+        MDSegmentedButtonItem:
+
+            MDSegmentButtonIcon:
+                icon: "language-javascript"
+
+        MDSegmentedButtonItem:
+
+            MDSegmentButtonIcon:
+                icon: "language-swift"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-use-without-text-with-an-icon.gif
+    :align: center
+
+Use only text
+-------------
+
+.. code-block:: kv
+
+    MDSegmentedButton:
+
+        MDSegmentedButtonItem:
+
+            MDSegmentButtonLabel:
+                text: "Python"
+
+        MDSegmentedButtonItem:
+
+            MDSegmentButtonLabel:
+                text: "Java-Script"
+
+        MDSegmentedButtonItem:
+
+            MDSegmentButtonLabel:
+                text: "Swift"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-use-only-text.gif
+    :align: center
+
+Multiselect
+-----------
 
 For multiple marking of elements, use the
 :attr:`kivymd.uix.segmentedbutton.segmentedbutton.MDSegmentedButton.multiselect`
@@ -88,59 +142,83 @@ parameter:
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-multiselect-true.gif
     :align: center
 
-Control width
--------------
+Type
+----
 
-The width of the panel of segmented buttons will be equal to the width
-of the texture of the widest button multiplied by the number of buttons:
+Density can be used in denser UIs where space is limited. Density is only
+applied to the height. Each step down in density removes 4dp from the height.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-width-by-default.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-type.png
     :align: center
-
-But you can use the `size_hint_x` parameter to specify the relative width:
-
-.. code-block:: kv
-
-    MDSegmentedButton:
-        size_hint_x: .9
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-width-size-hint-x.png
-    :align: center
-
-Customization
--------------
-
-You can see below in the documentation from which classes the
-:class:`~kivymd.uix.segmentedbutton.segmentedbutton.MDSegmentedButton` and
-:class:`~kivymd.uix.segmentedbutton.segmentedbutton.MDSegmentedButtonItem`
-classes are inherited and use all their attributes such as
-`md_bg_color`, `md_bg_color` etc. for additional customization of segments.
-
-Events
-------
-
-- on_marked
-    The method is called when a segment is marked.
-
-- on_unmarked
-    The method is called when a segment is unmarked.
-
-.. code-block:: kv
-
-    MDSegmentedButton:
-        on_marked: app.on_marked(*args)
 
 .. code-block:: python
 
-    def on_marked(
-        self,
-        segment_button: MDSegmentedButton,
-        segment_item: MDSegmentedButtonItem,
-        marked: bool,
-    ) -> None:
-        print(segment_button)
-        print(segment_item)
-        print(marked)
+    from kivy.lang import Builder
+
+    from kivymd.uix.label import MDLabel
+    from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.uix.segmentedbutton import (
+        MDSegmentedButton,
+        MDSegmentedButtonItem,
+        MDSegmentButtonLabel,
+    )
+    from kivymd.app import MDApp
+
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDBoxLayout:
+            id: box
+            orientation: "vertical"
+            size_hint_x: .7
+            adaptive_height: True
+            spacing: "24dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+    '''
+
+
+    class Example(MDApp):
+        def on_start(self):
+            for segment_type in ["large", "normal", "medium", "small"]:
+                self.root.ids.box.add_widget(
+                    MDBoxLayout(
+                        MDLabel(
+                            text=f"Type '{segment_type}'",
+                            adaptive_height=True,
+                            bold=True,
+                            pos_hint={"center_y": 0.5},
+                            halign="center",
+                        ),
+                        MDSegmentedButton(
+                            MDSegmentedButtonItem(
+                                MDSegmentButtonLabel(
+                                    text="Songs",
+                                ),
+                            ),
+                            MDSegmentedButtonItem(
+                                MDSegmentButtonLabel(
+                                    text="Albums",
+                                ),
+                            ),
+                            MDSegmentedButtonItem(
+                                MDSegmentButtonLabel(
+                                    text="Podcasts",
+                                ),
+                            ),
+                            type=segment_type,
+                        ),
+                        orientation="vertical",
+                        spacing="12dp",
+                        adaptive_height=True,
+                    )
+                )
+
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
 
 A practical example
 -------------------
@@ -157,37 +235,30 @@ A practical example
 
     from kivymd.app import MDApp
     from kivymd.uix.boxlayout import MDBoxLayout
-    from kivymd.uix.segmentedbutton import MDSegmentedButton, MDSegmentedButtonItem
     from kivymd.utils import asynckivy
 
     KV = '''
     <UserCard>
         adaptive_height: True
-        md_bg_color: "#343930"
         radius: 16
 
-        TwoLineAvatarListItem:
-            id: item
-            divider: None
-            _no_ripple_effect: True
-            text: root.name
-            secondary_text: root.path_to_file
-            theme_text_color: "Custom"
-            text_color: "#8A8D79"
-            secondary_theme_text_color: self.theme_text_color
-            secondary_text_color: self.text_color
-            on_size:
-                self.ids._left_container.size = (item.height, item.height)
-                self.ids._left_container.x = dp(6)
-                self._txt_right_pad = item.height + dp(12)
+        MDListItem:
+            radius: 16
+            theme_bg_color: "Custom"
+            md_bg_color: self.theme_cls.secondaryContainerColor
 
-            ImageLeftWidget:
+            MDListItemLeadingAvatar:
                 source: root.album
-                radius: root.radius
+
+            MDListItemHeadlineText:
+                text: root.name
+
+            MDListItemSupportingText:
+                text: root.path_to_file
 
 
     MDScreen:
-        md_bg_color: "#151514"
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDBoxLayout:
             orientation: "vertical"
@@ -197,25 +268,31 @@ A practical example
             MDLabel:
                 adaptive_height: True
                 text: "Your downloads"
-                font_style: "H5"
-                theme_text_color: "Custom"
-                text_color: "#8A8D79"
+                theme_font_style: "Custom"
+                font_style: "Display"
+                role: "small"
 
             MDSegmentedButton:
                 size_hint_x: 1
-                selected_color: "#303A29"
-                line_color: "#343930"
-                on_marked: app.on_marked(*args)
 
                 MDSegmentedButtonItem:
-                    text: "Songs"
-                    active: True
+                    on_active: app.generate_card()
+
+                    MDSegmentButtonLabel:
+                        text: "Songs"
+                        active: True
 
                 MDSegmentedButtonItem:
-                    text: "Albums"
+                    on_active: app.generate_card()
+
+                    MDSegmentButtonLabel:
+                        text: "Albums"
 
                 MDSegmentedButtonItem:
-                    text: "Podcasts"
+                    on_active: app.generate_card()
+
+                    MDSegmentButtonLabel:
+                        text: "Podcasts"
 
             RecycleView:
                 id: card_list
@@ -242,15 +319,8 @@ A practical example
     class Example(MDApp):
         def build(self):
             self.theme_cls.theme_style = "Dark"
+            self.theme_cls.primary_palette = "Olive"
             return Builder.load_string(KV)
-
-        def on_marked(
-            self,
-            segment_button: MDSegmentedButton,
-            segment_item: MDSegmentedButtonItem,
-            marked: bool,
-        ) -> None:
-            self.generate_card()
 
         def generate_card(self):
             async def generate_card():
@@ -273,68 +343,126 @@ A practical example
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-practical-example.gif
     :align: center
+
+API break
+=========
+
+1.2.0 version
+-------------
+
+.. code-block:: kv
+
+    MDSegmentedButton:
+        on_marked: func(*args)
+
+        MDSegmentedButtonItem:
+            icon: ...
+            text: ...
+
+2.0.0 version
+-------------
+
+.. code-block:: kv
+
+    MDSegmentedButton:
+
+        MDSegmentedButtonItem:
+            on_active: func(*args)
+
+            MDSegmentButtonIcon:
+                icon: ...
+
+            MDSegmentButtonLabel:
+                text: ...
+
 """
 
 from __future__ import annotations
 
-__all__ = ("MDSegmentedButton", "MDSegmentedButtonItem")
+__all__ = (
+    "MDSegmentedButton",
+    "MDSegmentedButtonItem",
+    "MDSegmentButtonLabel",
+    "MDSegmentButtonIcon",
+)
 
 import os
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
     StringProperty,
-    VariableListProperty,
+    OptionProperty,
+    ObjectProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd import uix_path
-from kivymd.uix.behaviors import RectangularRippleBehavior, ScaleBehavior
+from kivymd.uix.behaviors import (
+    RectangularRippleBehavior,
+    DeclarativeBehavior,
+    BackgroundColorBehavior,
+)
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.label import MDIcon
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "segmentedbutton", "segmentedbutton.kv"),
     encoding="utf-8",
 ) as kv_file:
-    Builder.load_string(kv_file.read())
+    Builder.load_string(kv_file.read(), filename="MDSegmentedButton")
 
 
 class MDSegmentedButtonItem(
-    RectangularRippleBehavior, ButtonBehavior, MDFloatLayout
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    RectangularRippleBehavior,
+    ButtonBehavior,
+    StateLayerBehavior,
+    RelativeLayout,
 ):
     """
     Segment button item.
 
-    For more information, see in the
-    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.boxlayout.MDBoxLayout`
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
+    :class:`~kivy.uix.relativelayout.RelativeLayout` and
     class documentation.
     """
 
-    icon = StringProperty()
+    selected_color = ColorProperty(None)
     """
-    Icon segment.
+    Color of the marked segment.
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
+    .. versionadded:: 2.0.0
+
+    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    text = StringProperty()
+    md_bg_color_disabled = ColorProperty(None)
     """
-    Text segment.
+    The background color in (r, g, b, a) or string format of the list item when
+    the list item is disabled.
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
+    :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
     active = BooleanProperty(False)
@@ -345,49 +473,100 @@ class MDSegmentedButtonItem(
     and defaults to `False`.
     """
 
-    disabled_color = ColorProperty(None)
-    """
-    Is active segment.
+    _icon = ObjectProperty()  # MDSegmentButtonIcon object
+    _label = ObjectProperty()  # MDSegmentButtonLabel object
+    _segmented_button = ObjectProperty()  # MDSegmentedButton object
+    _line_color = ColorProperty(None)
 
-    :attr:`active` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
+    def add_widget(self, widget, *args, **kwargs):
+        def add_selected_icon(container: MDSegmentedButtonItemContainer):
+            selected_icon = MDSegmentButtonSelectedIcon(
+                _segmented_button=self._segmented_button, _item=self
+            )
+            container.add_widget(selected_icon, index=1)
 
-    _no_ripple_effect = BooleanProperty(True)
-    _current_icon = ""
-    _current_md_bg_color = None
+        if isinstance(
+            widget,
+            (MDSegmentButtonLabel, MDSegmentButtonIcon),
+        ):
+            if isinstance(widget, MDSegmentButtonLabel):
+                self._label = widget
+            elif isinstance(widget, MDSegmentButtonIcon):
+                self._icon = widget
+            Clock.schedule_once(
+                lambda x: self._segmented_button._set_size_hint_min_x(widget)
+            )
+            self.ids.container.add_widget(widget)
+        elif isinstance(widget, MDSegmentedButtonItemContainer):
+            Clock.schedule_once(lambda x: add_selected_icon(widget))
+            return super().add_widget(widget)
 
-    def on_disabled(self, instance, value: bool) -> None:
-        def on_disabled(*args):
-            if value:
-                if not self._current_md_bg_color:
-                    self._current_md_bg_color = self.md_bg_color
-                self.md_bg_color = (
-                    self.theme_cls.disabled_hint_text_color
-                    if not self.disabled_color
-                    else self.disabled_color
+    def on_line_color(self, instance, value) -> None:
+        """Fired when the values of :attr:`line_color` change."""
+
+        if not self.disabled and self.theme_line_color == "Custom":
+            self._line_color = value
+
+    def on_active(self, instance, value) -> None:
+        """
+        Fired when the :attr:`active` value changes.
+        Animates the marker icon for the element.
+        """
+
+        def set_active(*args):
+            t = (
+                self._segmented_button.opening_icon_transition
+                if value
+                else self._segmented_button.hiding_icon_transition
+            )
+            d = (
+                self._segmented_button.opening_icon_duration
+                if value
+                else self._segmented_button.hiding_icon_duration
+            )
+
+            if self._icon and self._segmented_button:
+                if self._label:
+                    Animation(font_size=0 if value else sp(18), t=t, d=d).start(
+                        self._icon
+                    )
+
+            selected_icon = self._get_selected_icon_from_container()
+            if selected_icon:
+                Animation(font_size=sp(18) if value else 0, t=t, d=d).start(
+                    selected_icon
                 )
-            else:
-                if self._current_md_bg_color:
-                    self.md_bg_color = self._current_md_bg_color
-                    self._current_md_bg_color = None
 
-        Clock.schedule_once(on_disabled)
+        Clock.schedule_once(set_active, 0.5)
 
-    def on_icon(self, instance, icon_name: str):
-        if icon_name != "check":
-            self._current_icon = icon_name
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the :attr:`disabled` value changes."""
 
+        selected_icon = None
 
-# TODO:
-#  Add the feature to use both text and icons in segments -
-#      https://m3.material.io/components/segmented-buttons/guidelines#26abac1c-c6bd-44c1-a969-8c910c880b98
-#  Icons: optional check icon to indicate selected state -
-#      https://m3.material.io/components/segmented-buttons/overview#7b80f313-7d3a-4865-b26c-1f7ec98ba694
-#  Hovered: add a color for the hovered segment -
-#      https://m3.material.io/components/segmented-buttons/specs#d730b3ba-c59e-4ef8-b652-20979fe20b67
-#  Density: Each step down in density removes 4dp from the height -
-#      https://m3.material.io/components/segmented-buttons/specs#2d5cab36-1deb-40bd-9e37-bc2bb1657009
+        if self._icon and self._segmented_button:
+            selected_icon = self._get_selected_icon_from_item()
+        elif not self._icon and self._segmented_button:
+            selected_icon = self._get_selected_icon_from_container()
+
+        if selected_icon:
+            selected_icon.state_layer_color = self.theme_cls.transparentColor
+
+    def _get_selected_icon_from_container(self):
+        selected_icon = None
+        for item in self.ids.container.children:
+            if isinstance(item, MDSegmentButtonSelectedIcon):
+                selected_icon = item
+                break
+        return selected_icon
+
+    def _get_selected_icon_from_item(self):
+        selected_icon = None
+        for item in self.children:
+            if isinstance(item, MDSegmentButtonSelectedIcon):
+                selected_icon = item
+                break
+        return selected_icon
 
 
 class MDSegmentedButton(MDBoxLayout):
@@ -396,20 +575,6 @@ class MDSegmentedButton(MDBoxLayout):
 
     For more information, see in the
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
-
-    :Events:
-        `on_marked`
-            The method is called when a segment is marked.
-        `on_unmarked`
-            The method is called when a segment is unmarked.
-    """
-
-    radius = VariableListProperty([20], length=4)
-    """
-    Panel radius.
-
-    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[20, 20, 20, 20]`.
     """
 
     multiselect = BooleanProperty(False)
@@ -428,12 +593,12 @@ class MDSegmentedButton(MDBoxLayout):
     and defaults to `'linear'`.
     """
 
-    hiding_icon_duration = NumericProperty(0.05)
+    hiding_icon_duration = NumericProperty(0.1)
     """
     Duration of hiding the current icon.
 
     :attr:`hiding_icon_duration` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.05`.
+    and defaults to `1`.
     """
 
     opening_icon_transition = StringProperty("linear")
@@ -444,210 +609,162 @@ class MDSegmentedButton(MDBoxLayout):
     and defaults to `'linear'`.
     """
 
-    opening_icon_duration = NumericProperty(0.05)
+    opening_icon_duration = NumericProperty(0.1)
     """
     The duration of opening a new icon of the "marked" type.
 
     :attr:`opening_icon_duration` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.05`.
+    and defaults to `0.1`.
     """
 
-    selected_items = ListProperty()
+    selected_segments = ListProperty()
     """
     The list of :class:`~MDSegmentedButtonItem` objects that are currently
     marked.
 
-    :attr:`selected_items` is a :class:`~kivy.properties.ListProperty`
+    :attr:`selected_segments` is a :class:`~kivy.properties.ListProperty`
     and defaults to `[]`.
     """
 
-    selected_color = ColorProperty(None)
+    type = OptionProperty(
+        "large", options=["large", "normal", "medium", "small"]
+    )
     """
-    Color of the marked segment.
+    Density can be used in denser UIs where space is limited.
+    Density is only applied to the height. Each step down in density removes
+    '4dp' from the height.
 
-    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
+    .. versionadded:: 2.0.0
+
+    Available options are: 'large', 'normal', 'medium', 'small'.
+
+    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'large'`.
+    """
+
+    selected_icon_color = ColorProperty(None)
+    """
+    Color in (r, g, b, a) or string format of the icon of the marked segment.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`selected_icon_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.register_event_type("on_marked")
-        self.register_event_type("on_unmarked")
-        Clock.schedule_once(self.mark_segment)
-        Clock.schedule_once(self.adjust_segment_radius)
-        Clock.schedule_once(self.adjust_segment_panel_width, 2)
+    def get_marked_items(self) -> list:
+        """Returns a list of active item objects."""
 
-    def mark_segment(self, *args) -> None:
-        """Programmatically marks a segment."""
+        return [item for item in self.ids.container.children if item.active]
 
-        for widget in self.children:
-            if widget.active:
-                widget.active = False
-                widget.dispatch("on_release")
+    def get_items(self) -> list:
+        """Returns a list of item objects."""
 
-                if not self.multiselect:
-                    break
+        return [item for item in self.ids.container.children]
 
     def adjust_segment_radius(self, *args) -> None:
         """Rounds off the first and last elements."""
 
-        if self.children[0].radius == [0, 0, 0, 0]:
-            self.children[0].radius = (0, self.height / 2, self.height / 2, 0)
-        if self.children[-1].radius == [0, 0, 0, 0]:
-            self.children[-1].radius = (self.height / 2, 0, 0, self.height / 2)
-
-    def adjust_segment_panel_width(self, *args) -> None:
-        """
-        Sets the width of all segments and the width of the panel
-        by the widest segment.
-        """
-
-        if not self.size_hint_x:
-            width_list = [
-                widget.ids.label_text.texture_size[0]
-                + (dp(72) if widget.icon else dp(48))
-                for widget in self.children
-            ]
-            max_width = max(width_list)
-            self.width = max_width * len(width_list)
-        else:
-            max_width = self.width / len(self.children)
-
-        for widget in self.children:
-            widget.width = max_width
-
-        self.opacity = 1
-
-        for widget in self.children:
-            if widget.active:
-                widget.dispatch("on_release")
-
-    def shift_segment_text(self, segment_item: MDSegmentedButtonItem) -> None:
-        """
-        Shifts the segment text to the right, thus freeing up space
-        for the icon (when the segment is marked).
-        """
-
-        Animation(
-            x=(
-                segment_item.ids.label_text.x
-                + (
-                    dp(16)
-                    if not segment_item.icon and not segment_item.active
-                    else 0
-                )
+        if self.ids.container.children[0].radius == [0, 0, 0, 0]:
+            self.ids.container.children[0].radius = (
+                0,
+                self.height / 2,
+                self.height / 2,
+                0,
             )
-            if not segment_item.active
-            else (
-                segment_item.ids.label_text.x
-                - (
-                    dp(16)
-                    if not segment_item.icon and segment_item.active
-                    else 0
-                )
-            ),
-            d=0.2,
-        ).start(segment_item.ids.label_text)
-
-    def show_icon_marked_segment(
-        self, segment_item: MDSegmentedButtonItem
-    ) -> None:
-        """
-        Sets the icon for the marked segment and changes the icon scale
-        to the normal scale.
-        """
-
-        segment_item.ids.scale_icon.icon = "check"
-        if segment_item.ids.scale_icon.icon == "check" and segment_item.active:
-            segment_item.ids.scale_icon.icon = segment_item._current_icon
-
-        Animation(
-            scale_value_x=1,
-            scale_value_y=1,
-            d=self.opening_icon_duration,
-            t=self.opening_icon_transition,
-        ).start(segment_item.ids.scale_icon)
-
-        self.shift_segment_text(segment_item)
-        self.set_selected_segment_list(segment_item)
-        self.set_bg_marked_segment(segment_item)
-
-    def hide_icon_marked_segment(
-        self, segment_item: MDSegmentedButtonItem
-    ) -> None:
-        """Changes the scale of the icon of the marked segment to zero."""
-
-        anim = Animation(
-            scale_value_x=0,
-            scale_value_y=0,
-            d=self.hiding_icon_duration,
-            t=self.hiding_icon_transition,
-        )
-        anim.bind(
-            on_complete=lambda x, y: self.show_icon_marked_segment(segment_item)
-        )
-        anim.start(segment_item.ids.scale_icon)
-
-    def restore_bg_segment(self, segment_item) -> None:
-        Animation(md_bg_color=self.md_bg_color, d=0.2).start(segment_item)
-
-    def set_bg_marked_segment(self, segment_item) -> None:
-        if segment_item.active:
-            Animation(
-                md_bg_color=self.selected_color
-                if self.selected_color
-                else self.theme_cls.primary_color,
-                d=0.2,
-            ).start(segment_item)
-
-    def set_selected_segment_list(self, segment_item) -> None:
-        segment_item.active = not segment_item.active
-
-        if segment_item.active:
-            self.selected_items.append(segment_item)
-            self.dispatch("on_marked", segment_item, segment_item.active)
-        else:
-            if segment_item in self.selected_items:
-                self.selected_items.remove(segment_item)
-                self.dispatch("on_unmarked", segment_item, segment_item.active)
+        if self.ids.container.children[-1].radius == [0, 0, 0, 0]:
+            self.ids.container.children[-1].radius = (
+                self.height / 2,
+                0,
+                0,
+                self.height / 2,
+            )
 
     def mark_item(self, segment_item: MDSegmentedButtonItem) -> None:
-        if segment_item.active and not self.multiselect:
-            return
-        if not self.multiselect and self.selected_items:
-            self.uncheck_item()
-        else:
-            if segment_item.active:
-                self.restore_bg_segment(segment_item)
+        """Fired when a segment element is clicked (`on_release` event)."""
 
-        self.hide_icon_marked_segment(segment_item)
+        if not segment_item.disabled:
+            if not segment_item.active and not self.multiselect:
+                segment_item.active = True
+            elif self.multiselect:
+                segment_item.active = not segment_item.active
 
-    def uncheck_item(self) -> None:
-        for item in self.children:
-            if item.active:
-                self.hide_icon_marked_segment(item)
-                self.restore_bg_segment(item)
-                break
+            if not self.multiselect:
+                for widget in self.ids.container.children:
+                    if segment_item is not widget:
+                        widget.active = False
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDSegmentedButtonItem):
+            widget._segmented_button = self
             widget.bind(on_release=self.mark_item)
+            self.ids.container.add_widget(widget)
+            Clock.schedule_once(self.adjust_segment_radius)
+        elif isinstance(widget, MDSegmentedButtonContainer):
             return super().add_widget(widget)
 
-    def on_size(self, instance_segment_button, size: list) -> None:
-        """Called when the root screen is resized."""
-
-        if self.size_hint_x:
-            max_width = size[0] / len(self.children)
-            for widget in self.children:
-                widget.width = max_width
-
-    def on_marked(self, *args):
-        """The method is called when a segment is marked."""
-
-    def on_unmarked(self, *args):
-        """The method is called when a segment is unmarked."""
+    def _set_size_hint_min_x(
+        self, widget: MDSegmentButtonLabel | MDSegmentButtonIcon
+    ):
+        self.ids.container.size_hint_min_x += widget.texture_size[0] + dp(36)
 
 
-class SegmentButtonIcon(MDIcon, ScaleBehavior):
-    """Implements an icon with scaling behavior."""
+class MDSegmentedButtonContainer(BoxLayout):
+    """
+    Implements a container for placing :class:`~MDSegmentedButtonItem`
+    elements.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    """
+
+
+class MDSegmentedButtonItemContainer(BoxLayout):
+    """
+    Implements a container for placing :class:`~MDSegmentButtonLabel`
+    and :class:`~MDSegmentButtonLabel` elements.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    """
+
+
+class MDSegmentButtonSelectedIcon(MDIcon):
+    """
+    Implements the selected icon with scaling behavior
+    for :class:`~MDSegmentedButtonItem` class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+    _segmented_button = ObjectProperty()  # MDSegmentedButton object
+    _item = ObjectProperty()  # MDSegmentedButtonItem object
+
+
+class MDSegmentButtonIcon(MDIcon):
+    """
+    Implements a icon for :class:`~MDSegmentedButtonItem` class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+
+class MDSegmentButtonLabel(MDLabel):
+    """
+    Implements a label for :class:`~MDSegmentedButtonItem` class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+    """

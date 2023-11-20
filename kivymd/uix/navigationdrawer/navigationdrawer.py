@@ -4,19 +4,22 @@ Components/NavigationDrawer
 
 .. seealso::
 
-    `Material Design 2 spec, Navigation drawer <https://material.io/components/navigation-drawer>`_ and
-    `Material Design 3 spec, Navigation drawer <https://m3.material.io/components/navigation-drawer/overview>`_
+    `Material Design, Navigation drawer <https://m3.material.io/components/navigation-drawer/overview>`_
 
 .. rubric:: Navigation drawers provide access to destinations in your app.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer.png
     :align: center
 
+- Use navigation drawers in expanded layouts and modal navigation drawers in compact and medium layouts
+- Can be open or closed by default
+- Two types: standard and modal
+
 When using the class :class:`~MDNavigationDrawer` skeleton of your `KV` markup
 should look like this:
 
-Anatomy
--------
+Usage
+-----
 
 .. code-block:: kv
 
@@ -32,8 +35,8 @@ Anatomy
 
             MDNavigationDrawer:
 
-                # This custom rule should implement what will be appear in your
-                # MDNavigationDrawer.
+                # This custom rule should implement what will be displayed in
+                # your MDNavigationDrawer.
                 ContentNavigationDrawer:
 
 A simple example
@@ -47,11 +50,11 @@ A simple example
 
             from kivy.lang import Builder
 
-            from kivymd.uix.boxlayout import MDBoxLayout
             from kivymd.app import MDApp
 
             KV = '''
             MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
                 MDNavigationLayout:
 
@@ -59,31 +62,39 @@ A simple example
 
                         MDScreen:
 
-                            MDTopAppBar:
-                                title: "Navigation Drawer"
-                                elevation: 4
-                                pos_hint: {"top": 1}
-                                md_bg_color: "#e7e4c0"
-                                specific_text_color: "#4a4939"
-                                left_action_items:
-                                    [['menu', lambda x: nav_drawer.set_state("open")]]
+                            MDButton:
+                                pos_hint: {"center_x": .5, "center_y": .5}
+                                on_release: nav_drawer.set_state("toggle")
 
+                                MDButtonText:
+                                    text: "Open Drawer"
 
                     MDNavigationDrawer:
                         id: nav_drawer
-                        radius: (0, 16, 16, 0)
+                        radius: 0, dp(16), dp(16), 0
 
-                        ContentNavigationDrawer:
+                        MDNavigationDrawerMenu:
+
+                            MDNavigationDrawerLabel:
+                                text: "Mail"
+
+                            MDNavigationDrawerItem:
+
+                                MDNavigationDrawerItemLeadingIcon:
+                                    icon: "account"
+
+                                MDNavigationDrawerItemText:
+                                    text: "Inbox"
+
+                                MDNavigationDrawerItemTrailingText:
+                                    text: "24"
+
+                            MDNavigationDrawerDivider:
             '''
-
-
-            class ContentNavigationDrawer(MDBoxLayout):
-                pass
 
 
             class Example(MDApp):
                 def build(self):
-                    self.theme_cls.theme_style = "Dark"
                     return Builder.load_string(KV)
 
 
@@ -93,454 +104,416 @@ A simple example
 
         .. code-block:: python
 
-            from kivymd.app import MDApp
-            from kivymd.uix.boxlayout import MDBoxLayout
-            from kivymd.uix.navigationdrawer import MDNavigationLayout, MDNavigationDrawer
-            from kivymd.uix.screen import MDScreen
+            from kivy.metrics import dp
+
+            from kivymd.uix.button import MDButton, MDButtonText
             from kivymd.uix.screenmanager import MDScreenManager
-            from kivymd.uix.toolbar import MDTopAppBar
-
-
-            class ContentNavigationDrawer(MDBoxLayout):
-                pass
+            from kivymd.uix.navigationdrawer import (
+                MDNavigationLayout,
+                MDNavigationDrawer,
+                MDNavigationDrawerMenu,
+                MDNavigationDrawerLabel,
+                MDNavigationDrawerItem,
+                MDNavigationDrawerItemLeadingIcon,
+                MDNavigationDrawerItemText,
+                MDNavigationDrawerItemTrailingText,
+                MDNavigationDrawerDivider,
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.app import MDApp
 
 
             class Example(MDApp):
                 def build(self):
-                    self.theme_cls.theme_style = "Dark"
-                    return(
-                        MDScreen(
-                            MDNavigationLayout(
-                                MDScreenManager(
-                                    MDScreen(
-                                        MDTopAppBar(
-                                            title="Navigation Drawer",
-                                            elevation=4,
-                                            pos_hint={"top": 1},
-                                            md_bg_color="#e7e4c0",
-                                            specific_text_color="#4a4939",
-                                            left_action_items=[
-                                                ['menu', lambda x: self.nav_drawer_open()]
-                                            ],
-                                        )
-
-                                    )
-                                ),
-                                MDNavigationDrawer(
-                                    ContentNavigationDrawer(),
-                                    id="nav_drawer",
-                                    radius=(0, 16, 16, 0),
+                    return MDScreen(
+                        MDNavigationLayout(
+                            MDScreenManager(
+                                MDScreen(
+                                    MDButton(
+                                        MDButtonText(
+                                            text="Open Drawer",
+                                        ),
+                                        on_release=lambda x: self.root.get_ids().nav_drawer.set_state(
+                                            "toggle"
+                                        ),
+                                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                    ),
                                 ),
                             ),
+                            MDNavigationDrawer(
+                                MDNavigationDrawerMenu(
+                                    MDNavigationDrawerLabel(
+                                        text="Mail",
+                                    ),
+                                    MDNavigationDrawerItem(
+                                        MDNavigationDrawerItemLeadingIcon(
+                                            icon="account",
+                                        ),
+                                        MDNavigationDrawerItemText(
+                                            text="Inbox",
+                                        ),
+                                        MDNavigationDrawerItemTrailingText(
+                                            text="24",
+                                        ),
+                                    ),
+                                    MDNavigationDrawerDivider(
+                                    ),
+                                ),
+                                id="nav_drawer",
+                                radius=(0, dp(16), dp(16), 0),
+                            ),
                         ),
+                        md_bg_color=self.theme_cls.backgroundColor,
                     )
-
-                def nav_drawer_open(self, *args):
-                    nav_drawer = self.root.children[0].ids.nav_drawer
-                    nav_drawer.set_state("open")
 
 
             Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer.gif
+Anatomy
+-------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-anatomy.png
     :align: center
 
 .. Note:: :class:`~MDNavigationDrawer` is an empty
     :class:`~kivymd.uix.card.MDCard` panel.
 
-Standard content for the navigation bar
----------------------------------------
+Item anatomy
+------------
 
-.. tabs::
+.. code-block:: kv
 
-    .. tab:: Declarative KV styles
+    MDNavigationDrawerItem:
 
-        .. code-block:: python
+        MDNavigationDrawerItemLeadingIcon:
+            icon: "account"
 
-            from kivy.lang import Builder
+        MDNavigationDrawerItemText:
+            text: "Inbox"
 
-            from kivymd.app import MDApp
+        MDNavigationDrawerItemTrailingText:
+            text: "24"
 
-            KV = '''
-            <DrawerClickableItem@MDNavigationDrawerItem>
-                focus_color: "#e7e4c0"
-                text_color: "#4a4939"
-                icon_color: "#4a4939"
-                ripple_color: "#c5bdd2"
-                selected_color: "#0c6c4d"
-
-
-            <DrawerLabelItem@MDNavigationDrawerItem>
-                text_color: "#4a4939"
-                icon_color: "#4a4939"
-                focus_behavior: False
-                selected_color: "#4a4939"
-                _no_ripple_effect: True
-
-
-            MDScreen:
-
-                MDNavigationLayout:
-
-                    MDScreenManager:
-
-                        MDScreen:
-
-                            MDTopAppBar:
-                                title: "Navigation Drawer"
-                                elevation: 4
-                                pos_hint: {"top": 1}
-                                md_bg_color: "#e7e4c0"
-                                specific_text_color: "#4a4939"
-                                left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-
-                    MDNavigationDrawer:
-                        id: nav_drawer
-                        radius: (0, 16, 16, 0)
-
-                        MDNavigationDrawerMenu:
-
-                            MDNavigationDrawerHeader:
-                                title: "Header title"
-                                title_color: "#4a4939"
-                                text: "Header text"
-                                spacing: "4dp"
-                                padding: "12dp", 0, 0, "56dp"
-
-                            MDNavigationDrawerLabel:
-                                text: "Mail"
-
-                            DrawerClickableItem:
-                                icon: "gmail"
-                                right_text: "+99"
-                                text_right_color: "#4a4939"
-                                text: "Inbox"
-
-                            DrawerClickableItem:
-                                icon: "send"
-                                text: "Outbox"
-
-                            MDNavigationDrawerDivider:
-
-                            MDNavigationDrawerLabel:
-                                text: "Labels"
-
-                            DrawerLabelItem:
-                                icon: "information-outline"
-                                text: "Label"
-
-                            DrawerLabelItem:
-                                icon: "information-outline"
-                                text: "Label"
-            '''
-
-
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.theme_style = "Dark"
-                    return Builder.load_string(KV)
-
-
-            Example().run()
-
-    .. tab:: Declarative python styles
-
-        .. code-block:: python
-
-            from kivymd.app import MDApp
-            from kivymd.uix.navigationdrawer import (
-                MDNavigationLayout,
-                MDNavigationDrawer,
-                MDNavigationDrawerMenu,
-                MDNavigationDrawerHeader,
-                MDNavigationDrawerLabel,
-                MDNavigationDrawerDivider,
-                MDNavigationDrawerItem,
-            )
-            from kivymd.uix.screen import MDScreen
-            from kivymd.uix.screenmanager import MDScreenManager
-            from kivymd.uix.toolbar import MDTopAppBar
-
-
-            class BaseNavigationDrawerItem(MDNavigationDrawerItem):
-                def __init__(self, **kwargs):
-                    super().__init__(**kwargs)
-                    self.radius = 24
-                    self.text_color = "#4a4939"
-                    self.icon_color = "#4a4939"
-                    self.focus_color = "#e7e4c0"
-
-
-            class DrawerLabelItem(BaseNavigationDrawerItem):
-                def __init__(self, **kwargs):
-                    super().__init__(**kwargs)
-                    self.focus_behavior = False
-                    self._no_ripple_effect = True
-                    self.selected_color = "#4a4939"
-
-
-            class DrawerClickableItem(BaseNavigationDrawerItem):
-                def __init__(self, **kwargs):
-                    super().__init__(**kwargs)
-                    self.ripple_color = "#c5bdd2"
-                    self.selected_color = "#0c6c4d"
-
-
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.theme_style = "Dark"
-                    return(
-                        MDScreen(
-                            MDNavigationLayout(
-                                MDScreenManager(
-                                    MDScreen(
-                                        MDTopAppBar(
-                                            title="Navigation Drawer",
-                                            elevation=4,
-                                            pos_hint={"top": 1},
-                                            md_bg_color="#e7e4c0",
-                                            specific_text_color="#4a4939",
-                                            left_action_items=[
-                                                ['menu', lambda x: self.nav_drawer_open()]
-                                            ],
-                                        )
-
-                                    )
-                                ),
-                                MDNavigationDrawer(
-                                    MDNavigationDrawerMenu(
-                                        MDNavigationDrawerHeader(
-                                            title="Header title",
-                                            title_color="#4a4939",
-                                            text="Header text",
-                                            spacing="4dp",
-                                            padding=("12dp", 0, 0, "56dp"),
-                                        ),
-                                        MDNavigationDrawerLabel(
-                                            text="Mail",
-                                        ),
-                                        DrawerClickableItem(
-                                            icon="gmail",
-                                            right_text="+99",
-                                            text_right_color="#4a4939",
-                                            text="Inbox",
-                                        ),
-                                        DrawerClickableItem(
-                                            icon="send",
-                                            text="Outbox",
-                                        ),
-                                        MDNavigationDrawerDivider(),
-                                        MDNavigationDrawerLabel(
-                                            text="Labels",
-                                        ),
-                                        DrawerLabelItem(
-                                            icon="information-outline",
-                                            text="Label",
-                                        ),
-                                        DrawerLabelItem(
-                                            icon="information-outline",
-                                            text="Label",
-                                        ),
-                                    ),
-                                    id="nav_drawer",
-                                    radius=(0, 16, 16, 0),
-                                )
-                            )
-                        )
-                    )
-
-                def nav_drawer_open(self, *args):
-                    nav_drawer = self.root.children[0].ids.nav_drawer
-                    nav_drawer.set_state("open")
-
-
-            Example().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-standatd-content.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-item-anatomy.png
     :align: center
 
-Switching screens in the ``ScreenManager`` and using the common ``MDTopAppBar``
------------------------------------------------------------------------------
+Type drawer
+===========
 
-.. tabs::
+Standard
+--------
 
-    .. tab:: Declarative KV styles
+.. code-block:: kv
 
-        .. code-block:: python
+    MDNavigationDrawer:
+        drawer_type: "standard"
 
-            from kivy.lang import Builder
-            from kivy.properties import ObjectProperty
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-type-standard.gif
+    :align: center
 
-            from kivymd.app import MDApp
-            from kivymd.uix.scrollview import MDScrollView
+Modal
+-----
 
-            KV = '''
-            <ContentNavigationDrawer>
+.. code-block:: kv
 
-                MDList:
+    MDNavigationDrawer:
+        drawer_type: "modal"
 
-                    OneLineListItem:
-                        text: "Screen 1"
-                        on_press:
-                            root.nav_drawer.set_state("close")
-                            root.screen_manager.current = "scr 1"
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-type-modal.gif
+    :align: center
 
-                    OneLineListItem:
-                        text: "Screen 2"
-                        on_press:
-                            root.nav_drawer.set_state("close")
-                            root.screen_manager.current = "scr 2"
+Anchoring screen edge for drawer
+================================
 
+    Left
+    ----
 
-            MDScreen:
+    .. code-block:: kv
 
-                MDTopAppBar:
-                    pos_hint: {"top": 1}
-                    elevation: 4
-                    title: "MDNavigationDrawer"
-                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+        MDNavigationDrawer:
+            anchor: "left"
 
-                MDNavigationLayout:
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-ancjor-left.png
+        :align: center
 
-                    MDScreenManager:
-                        id: screen_manager
+    Right
+    -----
 
-                        MDScreen:
-                            name: "scr 1"
+    .. code-block:: kv
 
-                            MDLabel:
-                                text: "Screen 1"
-                                halign: "center"
+        MDNavigationDrawer:
+            anchor: "right"
 
-                        MDScreen:
-                            name: "scr 2"
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-ancjor-right.png
+        :align: center
 
-                            MDLabel:
-                                text: "Screen 2"
-                                halign: "center"
+API break
+=========
 
-                    MDNavigationDrawer:
-                        id: nav_drawer
-                        radius: (0, 16, 16, 0)
+1.2.0 version
+-------------
 
-                        ContentNavigationDrawer:
-                            screen_manager: screen_manager
-                            nav_drawer: nav_drawer
-            '''
+.. code-block:: python
 
+    from kivy.lang import Builder
 
-            class ContentNavigationDrawer(MDScrollView):
-                screen_manager = ObjectProperty()
-                nav_drawer = ObjectProperty()
+    from kivymd.app import MDApp
+
+    KV = '''
+    <DrawerClickableItem@MDNavigationDrawerItem>
+        focus_color: "#e7e4c0"
+        text_color: "#4a4939"
+        icon_color: "#4a4939"
+        ripple_color: "#c5bdd2"
+        selected_color: "#0c6c4d"
 
 
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.primary_palette = "Orange"
-                    self.theme_cls.theme_style = "Dark"
-                    return Builder.load_string(KV)
+    <DrawerLabelItem@MDNavigationDrawerItem>
+        text_color: "#4a4939"
+        icon_color: "#4a4939"
+        focus_behavior: False
+        selected_color: "#4a4939"
+        _no_ripple_effect: True
 
 
-            Example().run()
+    MDScreen:
 
-    .. tab:: Declarative python styles
+        MDNavigationLayout:
 
-        .. code-block:: python
+            MDScreenManager:
 
-            from kivymd.app import MDApp
-            from kivymd.uix.label import MDLabel
-            from kivymd.uix.list import MDList, OneLineListItem
-            from kivymd.uix.navigationdrawer import MDNavigationLayout, MDNavigationDrawer
-            from kivymd.uix.screen import MDScreen
-            from kivymd.uix.screenmanager import MDScreenManager
-            from kivymd.uix.scrollview import MDScrollView
-            from kivymd.uix.toolbar import MDTopAppBar
+                MDScreen:
 
+                    MDRaisedButton:
+                        text: "Open Drawer"
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        on_release: nav_drawer.set_state("toggle")
 
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.primary_palette = "Orange"
-                    self.theme_cls.theme_style = "Dark"
-                    return (
-                        MDScreen(
-                            MDTopAppBar(
-                                pos_hint={"top": 1},
-                                elevation=4,
-                                title="MDNavigationDrawer",
-                                left_action_items=[["menu", lambda x: self.nav_drawer_open()]],
-                            ),
-                            MDNavigationLayout(
-                                MDScreenManager(
-                                    MDScreen(
-                                        MDLabel(
-                                            text="Screen 1",
-                                            halign="center",
-                                        ),
-                                        name="scr 1",
-                                    ),
-                                    MDScreen(
-                                        MDLabel(
-                                            text="Screen 2",
-                                            halign="center",
-                                        ),
-                                        name="scr 2",
-                                    ),
-                                    id="screen_manager",
-                                ),
-                                MDNavigationDrawer(
-                                    MDScrollView(
-                                        MDList(
-                                            OneLineListItem(
-                                                text="Screen 1",
-                                                on_press=self.switch_screen,
-                                            ),
-                                            OneLineListItem(
-                                                text="Screen 2",
-                                                on_press=self.switch_screen,
-                                            ),
-                                        ),
-                                    ),
-                                    id="nav_drawer",
-                                    radius=(0, 16, 16, 0),
-                                ),
-                                id="navigation_layout",
-                            )
-                        )
-                    )
+            MDNavigationDrawer:
+                id: nav_drawer
+                radius: (0, dp(16), dp(16), 0)
 
-                def switch_screen(self, instance_list_item: OneLineListItem):
-                    self.root.ids.navigation_layout.ids.screen_manager.current = {
-                        "Screen 1": "scr 1", "Screen 2": "scr 2"
-                    }[instance_list_item.text]
-                    self.root.children[0].ids.nav_drawer.set_state("close")
+                MDNavigationDrawerMenu:
 
-                def nav_drawer_open(self):
-                    nav_drawer = self.root.children[0].ids.nav_drawer
-                    nav_drawer.set_state("open")
+                    MDNavigationDrawerHeader:
+                        title: "Header title"
+                        title_color: "#4a4939"
+                        text: "Header text"
+                        spacing: "4dp"
+                        padding: "12dp", 0, 0, "56dp"
+
+                    MDNavigationDrawerLabel:
+                        text: "Mail"
+
+                    DrawerClickableItem:
+                        icon: "gmail"
+                        right_text: "+99"
+                        text_right_color: "#4a4939"
+                        text: "Inbox"
+
+                    DrawerClickableItem:
+                        icon: "send"
+                        text: "Outbox"
+
+                    MDNavigationDrawerDivider:
+
+                    MDNavigationDrawerLabel:
+                        text: "Labels"
+
+                    DrawerLabelItem:
+                        icon: "information-outline"
+                        text: "Label"
+
+                    DrawerLabelItem:
+                        icon: "information-outline"
+                        text: "Label"
+    '''
 
 
-            Example().run()
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+2.2.0 version
+-------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty, ColorProperty
+
+    from kivymd.app import MDApp
+    from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.uix.navigationdrawer import (
+        MDNavigationDrawerItem, MDNavigationDrawerItemTrailingText
+    )
+
+    KV = '''
+    <DrawerItem>
+        active_indicator_color: "#e7e4c0"
+
+        MDNavigationDrawerItemLeadingIcon:
+            icon: root.icon
+            theme_icon_color: "Custom"
+            icon_color: "#4a4939"
+
+        MDNavigationDrawerItemText:
+            text: root.text
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+
+
+    <DrawerLabel>
+        adaptive_height: True
+        padding: "18dp", 0, 0, "12dp"
+
+        MDNavigationDrawerItemLeadingIcon:
+            icon: root.icon
+            theme_icon_color: "Custom"
+            icon_color: "#4a4939"
+            pos_hint: {"center_y": .5}
+
+        MDNavigationDrawerLabel:
+            text: root.text
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+            pos_hint: {"center_y": .5}
+            padding: "6dp", 0, "16dp", 0
+            theme_line_height: "Custom"
+            line_height: 0
+
+
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDNavigationLayout:
+
+            MDScreenManager:
+
+                MDScreen:
+
+                    MDButton:
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        on_release: nav_drawer.set_state("toggle")
+
+                        MDButtonText:
+                            text: "Open Drawer"
+
+            MDNavigationDrawer:
+                id: nav_drawer
+                radius: 0, dp(16), dp(16), 0
+
+                MDNavigationDrawerMenu:
+
+                    MDNavigationDrawerHeader:
+                        orientation: "vertical"
+                        padding: 0, 0, 0, "12dp"
+                        adaptive_height: True
+
+                        MDLabel:
+                            text: "Header title"
+                            theme_text_color: "Custom"
+                            theme_line_height: "Custom"
+                            line_height: 0
+                            text_color: "#4a4939"
+                            adaptive_height: True
+                            padding_x: "16dp"
+                            font_style: "Display"
+                            role: "small"
+
+                        MDLabel:
+                            text: "Header text"
+                            padding_x: "18dp"
+                            adaptive_height: True
+                            font_style: "Title"
+                            role: "large"
+
+                    MDNavigationDrawerDivider:
+
+                    DrawerItem:
+                        icon: "gmail"
+                        text: "Inbox"
+                        trailing_text: "+99"
+                        trailing_text_color: "#4a4939"
+
+                    DrawerItem:
+                        icon: "send"
+                        text: "Outbox"
+
+                    MDNavigationDrawerDivider:
+
+                    MDNavigationDrawerLabel:
+                        text: "Labels"
+                        padding_y: "12dp"
+
+                    DrawerLabel:
+                        icon: "information-outline"
+                        text: "Label"
+
+                    DrawerLabel:
+                        icon: "information-outline"
+                        text: "Label"
+    '''
+
+
+    class DrawerLabel(MDBoxLayout):
+        icon = StringProperty()
+        text = StringProperty()
+
+
+    class DrawerItem(MDNavigationDrawerItem):
+        icon = StringProperty()
+        text = StringProperty()
+        trailing_text = StringProperty()
+        trailing_text_color = ColorProperty()
+
+        _trailing_text_obj = None
+
+        def on_trailing_text(self, instance, value):
+            self._trailing_text_obj = MDNavigationDrawerItemTrailingText(
+                text=value,
+                theme_text_color="Custom",
+                text_color=self.trailing_text_color,
+            )
+            self.add_widget(self._trailing_text_obj)
+
+        def on_trailing_text_color(self, instance, value):
+            self._trailing_text_obj.text_color = value
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Example().run()
 """
 
 __all__ = (
     "MDNavigationLayout",
     "MDNavigationDrawer",
     "MDNavigationDrawerItem",
+    "MDNavigationDrawerItemLeadingIcon",
+    "MDNavigationDrawerItemTrailingText",
+    "MDNavigationDrawerItemText",
     "MDNavigationDrawerMenu",
     "MDNavigationDrawerHeader",
     "MDNavigationDrawerLabel",
     "MDNavigationDrawerDivider",
+    "BaseNavigationDrawerItem",
 )
 
 import os
-from typing import Union
 
 from kivy.animation import Animation, AnimationTransition
-from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.graphics.context_instructions import Color
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -551,16 +524,24 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager
 
+from kivymd.uix.appbar import MDTopAppBar
+from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.label import MDLabel
 from kivymd import uix_path
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.list import MDList, OneLineAvatarIconListItem
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemLeadingIcon,
+    MDListItemSupportingText,
+    MDListItemTrailingSupportingText,
+)
 from kivymd.uix.scrollview import MDScrollView
-from kivymd.uix.toolbar import MDTopAppBar
 
 with open(
     os.path.join(uix_path, "navigationdrawer", "navigationdrawer.kv"),
@@ -573,10 +554,33 @@ class NavigationDrawerContentError(Exception):
     pass
 
 
-class MDNavigationLayout(MDFloatLayout):
+class BaseNavigationDrawerItem:
+    """
+    Implement the base class for the menu list item.
+
+    .. versionadded:: 2.0.0
+    """
+
+    selected = BooleanProperty(False)
+    """
+    Is the item selected.
+
+    :attr:`selected` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    # kivymd.uix.navigationdrawer.MDNavigationDrawerMenu object.
+    _drawer_menu = ObjectProperty()
+    # kivymd.uix.navigationdrawer.MDNavigationDrawerItem object.
+    _drawer_item = ObjectProperty()
+
+
+class MDNavigationLayout(DeclarativeBehavior, FloatLayout):
     """
     For more information, see in the
-    :class:`~kivymd.uix.floatlayout.MDFloatLayout` class documentation.
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
     """
 
     _scrim_color = ObjectProperty(None)
@@ -593,7 +597,7 @@ class MDNavigationLayout(MDFloatLayout):
         manager = self._screen_manager
         if not drawer or not manager:
             return
-        if drawer.type == "standard":
+        if drawer.drawer_type == "standard":
             manager.size_hint_x = None
             if drawer.anchor == "left":
                 manager.x = drawer.width + drawer.x
@@ -601,7 +605,7 @@ class MDNavigationLayout(MDFloatLayout):
             else:
                 manager.x = 0
                 manager.width = drawer.x
-        elif drawer.type == "modal":
+        elif drawer.drawer_type == "modal":
             manager.size_hint_x = None
             manager.x = 0
             if drawer.anchor == "left":
@@ -634,7 +638,8 @@ class MDNavigationLayout(MDFloatLayout):
         """
 
         if not isinstance(
-            widget, (MDNavigationDrawer, ScreenManager, MDTopAppBar)
+            widget,
+            (MDNavigationDrawer, ScreenManager, MDTopAppBar),
         ):
             raise NavigationDrawerContentError(
                 "The MDNavigationLayout must contain "
@@ -656,323 +661,141 @@ class MDNavigationLayout(MDFloatLayout):
         return super().add_widget(widget)
 
 
-class MDNavigationDrawerLabel(MDBoxLayout):
+class MDNavigationDrawerLabel(MDLabel):
     """
-    Implements a label for a menu for :class:`~MDNavigationDrawer` class.
+    Implements a label class.
 
-    For more information, see in the :class:`~kivymd.uix.boxlayout.MDBoxLayout`
+    For more information, see in the :class:`~kivymd.uix.label.label.MDLabel`
     class documentation.
 
     .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-
-            MDNavigationDrawerMenu:
-
-                MDNavigationDrawerLabel:
-                    text: "Mail"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-label.png
-        :align: center
-    """
-
-    text = StringProperty()
-    """
-    Text label.
-
-    :attr:`text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    padding = VariableListProperty(["20dp", 0, 0, "8dp"])
-    """
-    Padding between layout box and children: [padding_left, padding_top,
-    padding_right, padding_bottom].
-
-    Padding also accepts a two argument form [padding_horizontal,
-    padding_vertical] and a one argument form [padding].
-
-    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
-    and defaults to `['20dp', 0, 0, '8dp']`.
     """
 
 
-class MDNavigationDrawerDivider(MDBoxLayout):
+class MDNavigationDrawerDivider(BoxLayout):
     """
-    Implements a divider for a menu for :class:`~MDNavigationDrawer` class.
+    Implements a divider class.
 
-    For more information, see in the :class:`~kivymd.uix.boxlayout.MDBoxLayout`
-    class documentation.
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
 
     .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-
-            MDNavigationDrawerMenu:
-
-                MDNavigationDrawerLabel:
-                    text: "Mail"
-
-                MDNavigationDrawerDivider:
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-divider.png
-        :align: center
-    """
-
-    padding = VariableListProperty(["20dp", "12dp", 0, "12dp"])
-    """
-    Padding between layout box and children: [padding_left, padding_top,
-    padding_right, padding_bottom].
-
-    Padding also accepts a two argument form [padding_horizontal,
-    padding_vertical] and a one argument form [padding].
-
-    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
-    and defaults to `['20dp', '12dp', 0, '12dp']`.
-    """
-
-    color = ColorProperty(None)
-    """
-    Divider color in (r, g, b, a) or string format.
-
-    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
     """
 
 
-class MDNavigationDrawerHeader(MDBoxLayout):
+class MDNavigationDrawerHeader(DeclarativeBehavior, BoxLayout):
     """
-    Implements a header for a menu for :class:`~MDNavigationDrawer` class.
+    Implements a header class.
 
-    For more information, see in the :class:`~kivymd.uix.boxlayout.MDBoxLayout`
-    class documentation.
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout`
+    classes documentation.
 
     .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-
-            MDNavigationDrawerMenu:
-
-                MDNavigationDrawerHeader:
-                    title: "Header title"
-                    text: "Header text"
-                    spacing: "4dp"
-                    padding: "12dp", 0, 0, "56dp"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-header.png
-        :align: center
     """
 
-    source = StringProperty()
-    """
-    Image logo path.
 
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-
-            MDNavigationDrawerMenu:
-
-                MDNavigationDrawerHeader:
-                    title: "Header title"
-                    text: "Header text"
-                    source: "logo.png"
-                    spacing: "4dp"
-                    padding: "12dp", 0, 0, "56dp"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-header-source.png
-        :align: center
-
-    :attr:`source` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    title = StringProperty()
-    """
-    Title shown in the first line.
-
-    :attr:`title` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    title_halign = StringProperty("left")
-    """
-    Title halign first line.
-
-    :attr:`title_halign` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'left'`.
-    """
-
-    title_color = ColorProperty(None)
-    """
-    Title text color in (r, g, b, a) or string format.
-
-    :attr:`title_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    title_font_style = StringProperty("H4")
-    """
-    Title shown in the first line.
-
-    :attr:`title_font_style` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'H4'`.
-    """
-
-    title_font_size = StringProperty("34sp")
-    """
-    Title shown in the first line.
-
-    :attr:`title_font_size` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'34sp'`.
-    """
-
-    text = StringProperty()
-    """
-    Text shown in the second line.
-
-    :attr:`text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    text_halign = StringProperty("left")
-    """
-    Text halign first line.
-
-    :attr:`text_halign` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'left'`.
-    """
-
-    text_color = ColorProperty(None)
-    """
-    Title text color in (r, g, b, a) or string format.
-
-    :attr:`text_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    text_font_style = StringProperty("H6")
-    """
-    Title shown in the first line.
-
-    :attr:`text_font_style` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'H6'`.
-    """
-
-    text_font_size = StringProperty("20sp")
-    """
-    Title shown in the first line.
-
-    :attr:`text_font_size` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'20sp'`.
-    """
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Clock.schedule_once(self.check_content)
-
-    def check_content(self, interval: Union[int, float]) -> None:
-        """Removes widgets that the user has not added to the container."""
-
-        if not self.title:
-            self.ids.label_box.remove_widget(self.ids.title)
-        if not self.text:
-            self.ids.label_box.remove_widget(self.ids.text)
-        if not self.source:
-            self.remove_widget(self.ids.logo)
-
-
-class MDNavigationDrawerItem(OneLineAvatarIconListItem, FocusBehavior):
+class MDNavigationDrawerItem(
+    MDListItem, FocusBehavior, BaseNavigationDrawerItem
+):
     """
     Implements an item for the :class:`~MDNavigationDrawer` menu list.
 
     For more information, see in the
-    :class:`~kivymd.uix.list.OneLineAvatarIconListItem` and
-    :class:`~kivymd.uix.behaviors.FocusBehavior`
-    class documentation.
+    :class:`~kivymd.uix.list.list.MDListItem` and
+    :class:`~kivymd.uix.behaviors.focus_behavior.FocusBehavior` and
+    :class:`~BaseNavigationDrawerItem`
+    classes documentation.
 
     .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-
-            MDNavigationDrawerMenu:
-
-                MDNavigationDrawerHeader:
-                    title: "Header title"
-                    text: "Header text"
-                    spacing: "4dp"
-                    padding: "12dp", 0, 0, "56dp"
-
-                MDNavigationDrawerItem
-                    icon: "gmail"
-                    right_text: "+99"
-                    text: "Inbox"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-item.png
-        :align: center
     """
 
-    selected = BooleanProperty(False)
+    active_indicator_color = ColorProperty(None)
     """
-    Is the item selected.
+    The active indicator color in (r, g, b, a) or string format.
 
-    :attr:`selected` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
+    .. versionadded:: 2.0.0
 
-    icon = StringProperty()
-    """
-    Icon item.
-
-    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    icon_color = ColorProperty(None)
-    """
-    Icon color in (r, g, b, a) or string format item.
-
-    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
+    :attr:`active_indicator_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    selected_color = ColorProperty([0, 0, 0, 1])
+    inactive_indicator_color = ColorProperty(None)
     """
-    The color in (r, g, b, a) or string format of the icon and text of the
-    selected item.
+    The inactive indicator color in (r, g, b, a) or string format.
 
-    :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 1]`.
-    """
+    .. versionadded:: 2.0.0
 
-    right_text = StringProperty()
-    """
-    Right text item.
-
-    :attr:`right_text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    text_right_color = ColorProperty(None)
-    """
-    Right text color item in (r, g, b, a) or string format.
-
-    :attr:`text_right_color` is a :class:`~kivy.properties.ColorProperty`
+    :attr:`inactive_indicator_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    _text_color = None
-    _text_right_color = None
-    # kivymd.uix.navigationdrawer.navigationdrawer.MDNavigationDrawerMenu
-    _drawer_menu = ObjectProperty()
+    def add_widget(self, widget, *args, **kwargs):
+        if isinstance(
+            widget,
+            (
+                MDNavigationDrawerItemLeadingIcon,
+                MDNavigationDrawerItemText,
+                MDNavigationDrawerItemTrailingText,
+            ),
+        ):
+            widget._drawer_item = self
+        return super().add_widget(widget)
+
+    def on_release(self, *args) -> None:
+        """
+        Fired when the item is released
+        (i.e. the touch/click that pressed the item goes away).
+        """
+
+        self.selected = not self.selected
+        self._drawer_menu.update_items_color(self)
+
+
+class MDNavigationDrawerItemLeadingIcon(
+    MDListItemLeadingIcon, BaseNavigationDrawerItem
+):
+    """
+    Implements the leading icon for the menu list item.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.list.MDListItemLeadingIcon` and
+    :class:`~BaseNavigationDrawerItem`
+    classes documentation.
+
+    .. versionadded:: 2.0.0
+    """
+
+
+class MDNavigationDrawerItemText(
+    MDListItemSupportingText, BaseNavigationDrawerItem
+):
+    """
+    Implements the text for the menu list item.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.list.MDListItemSupportingText` and
+    :class:`~BaseNavigationDrawerItem`
+    classes documentation.
+
+    .. versionadded:: 2.0.0
+    """
+
+
+class MDNavigationDrawerItemTrailingText(
+    MDListItemTrailingSupportingText, BaseNavigationDrawerItem
+):
+    """
+    Implements the supporting text for the menu list item.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.list.MDListItemTrailingSupportingText` and
+    :class:`~BaseNavigationDrawerItem`
+    classes documentation.
+
+    .. versionadded:: 2.0.0
+    """
 
 
 class MDNavigationDrawerMenu(MDScrollView):
@@ -1004,63 +827,59 @@ class MDNavigationDrawerMenu(MDScrollView):
     """
 
     def add_widget(self, widget, *args, **kwargs):
-        if isinstance(widget, MDList):
+        if isinstance(widget, GridLayout):
             return super().add_widget(widget, *args, **kwargs)
         else:
             if isinstance(widget, MDNavigationDrawerItem):
                 widget._drawer_menu = self
             self.ids.menu.add_widget(widget)
 
-    def reset_active_color(self, item: MDNavigationDrawerItem) -> None:
+    def update_items_color(self, item: MDNavigationDrawerItem) -> None:
         for widget in self.ids.menu.children:
             if issubclass(widget.__class__, MDNavigationDrawerItem):
-                if widget != item:
-                    widget.selected = False
+                if widget is not item:
+                    widget.md_bg_color = (
+                        widget.theme_cls.surfaceContainerLowColor
+                        if not widget.inactive_indicator_color
+                        else widget.inactive_indicator_color
+                    )
                 else:
-                    widget.selected = True
-
-            if (
-                issubclass(widget.__class__, MDNavigationDrawerItem)
-                and widget != item
-            ):
-                if widget._text_color:
-                    widget.text_color = widget._text_color
+                    widget.md_bg_color = (
+                        widget.theme_cls.secondaryContainerColor
+                        if not widget.active_indicator_color
+                        else widget.active_indicator_color
+                    )
 
 
 class MDNavigationDrawer(MDCard):
-    type = OptionProperty("modal", options=("standard", "modal"))
+    """
+    Navigation drawer class.
+
+    For more information, see in the :class:`~kivymd.uix.card.card.MDCard`
+    class documentation.
+
+    :Events:
+
+        .. versionadded:: 2.0.0
+
+        `on_open`:
+            Fired when the navigation drawer is opened.
+        `on_close`:
+            Fired when the navigation drawer is closed.
+    """
+
+    drawer_type = OptionProperty("modal", options=("standard", "modal"))
     """
     Type of drawer. Modal type will be on top of screen. Standard type will be
     at left or right of screen. Also it automatically disables
     :attr:`close_on_click` and :attr:`enable_swiping` to prevent closing
     drawer for standard type.
 
-    For more information, see in the :class:`~kivymd.uix.card.MDCard`
-    class documentation.
+    .. versionchanged:: 2.0.0
 
-    Standard
-    --------
+        Rename from `type` to `drawer_type`.
 
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-            type: "standard"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-standard.gif
-        :align: center
-
-    Modal
-    -----
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-            type: "modal"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-modal.gif
-        :align: center
-
-    :attr:`type` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`drawer_type` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'modal'`.
     """
 
@@ -1068,28 +887,6 @@ class MDNavigationDrawer(MDCard):
     """
     Anchoring screen edge for drawer. Set it to `'right'` for right-to-left
     languages. Available options are: `'left'`, `'right'`.
-
-    Left
-    ----
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-            anchor: "left"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-type-left.png
-        :align: center
-
-    Right
-    -----
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-            anchor: "right"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-type-right.png
-        :align: center
 
     :attr:`anchor` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'left'`.
@@ -1102,20 +899,11 @@ class MDNavigationDrawer(MDCard):
     multiplied with :attr:`_scrim_alpha`. Set fourth channel to 0 if you want
     to disable scrim.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-scrim-color.png
-        :align: center
-
-    .. code-block:: kv
-
-        MDNavigationDrawer:
-            scrim_color: 0, 0, 0, .8
-            # scrim_color: 0, 0, 0, .2
-
     :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.5]`.
     """
 
-    padding = VariableListProperty([16, 16, 12, 16])
+    padding = VariableListProperty([dp(16), dp(16), dp(12), dp(16)])
     """
     Padding between layout box and children: [padding_left, padding_top,
     padding_right, padding_bottom].
@@ -1128,13 +916,13 @@ class MDNavigationDrawer(MDCard):
     .. code-block:: kv
 
         MDNavigationDrawer:
-            padding: 56, 56, 12, 16
+            padding: "56dp"
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-padding.png
         :align: center
 
     :attr:`padding` is a :class:`~kivy.properties.VariableListProperty` and
-    defaults to '[16, 16, 12, 16]'.
+    defaults to '[dp(16), dp(16), dp(12), dp(16)]'.
     """
 
     close_on_click = BooleanProperty(True)
@@ -1215,7 +1003,7 @@ class MDNavigationDrawer(MDCard):
 
     def _get_scrim_alpha(self):
         _scrim_alpha = 0
-        if self.type == "modal":
+        if self.drawer_type == "modal":
             _scrim_alpha = self._scrim_alpha_transition(self.open_progress)
         if (
             isinstance(self.parent, MDNavigationLayout)
@@ -1288,14 +1076,51 @@ class MDNavigationDrawer(MDCard):
     and defaults to `0.2`.
     """
 
+    background_color = ColorProperty(None)
+    """
+    The drawer background color in (r, g, b, a) or string format.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`background_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    theme_elevation_level = "Custom"
+    """
+    Drawer elevation level scheme name.
+
+    .. versionadded:: 2.0.0
+
+    Available options are: `'Primary'`, `'Custom'`.
+
+    :attr:`theme_elevation_level` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'Custom'`.
+    """
+
+    elevation_level = 1
+    """
+    Drawer elevation level (values from 0 to 5)
+
+    .. versionadded:: 2.2.0
+
+    :attr:`elevation_level` is an :class:`~kivy.properties.BoundedNumericProperty`
+    and defaults to `2`.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.register_event_type("on_open")
+        self.register_event_type("on_close")
         self.bind(
             open_progress=self.update_status,
             status=self.update_status,
             state=self.update_status,
         )
         Window.bind(on_keyboard=self._handle_keyboard)
+
+    def set_properties_widget(self) -> None:
+        pass
 
     def set_state(self, new_state="toggle", animation=True) -> None:
         """
@@ -1310,26 +1135,30 @@ class MDNavigationDrawer(MDCard):
             Animation.cancel_all(self, "open_progress")
             self.status = "opening_with_animation"
             if animation:
-                Animation(
+                anim = Animation(
                     open_progress=1.0,
                     d=self.opening_time * (1 - self.open_progress),
                     t=self.opening_transition,
-                ).start(self)
+                )
+                anim.bind(on_complete=self._check_state)
+                anim.start(self)
             else:
                 self.open_progress = 1
         else:  # "close"
             Animation.cancel_all(self, "open_progress")
             self.status = "closing_with_animation"
             if animation:
-                Animation(
+                anim = Animation(
                     open_progress=0.0,
                     d=self.closing_time * self.open_progress,
                     t=self.closing_transition,
-                ).start(self)
+                )
+                anim.bind(on_complete=self._check_state)
+                anim.start(self)
             else:
                 self.open_progress = 0
 
-    def update_status(self, *_) -> None:
+    def update_status(self, *args) -> None:
         status = self.status
         if status == "closed":
             self.state = "close"
@@ -1365,7 +1194,7 @@ class MDNavigationDrawer(MDCard):
             for child in self.children[:]:
                 if child.dispatch("on_touch_down", touch):
                     return True
-        if self.type == "standard" and not self.collide_point(
+        if self.drawer_type == "standard" and not self.collide_point(
             touch.ox, touch.oy
         ):
             return False
@@ -1412,7 +1241,7 @@ class MDNavigationDrawer(MDCard):
                 touch.ox, touch.oy
             ):
                 self.set_state("close", animation=True)
-            elif self.type == "standard" and not self.collide_point(
+            elif self.drawer_type == "standard" and not self.collide_point(
                 touch.ox, touch.oy
             ):
                 return False
@@ -1421,17 +1250,35 @@ class MDNavigationDrawer(MDCard):
         return True
 
     def on_radius(self, instance_navigation_drawer, radius_value: list) -> None:
+        """Fired when the :attr:`radius` value changes."""
+
         self._radius = radius_value
 
-    def on_type(self, instance_navigation_drawer, drawer_type: str) -> None:
-        if self.type == "standard":
+    def on_drawer_type(
+        self, instance_navigation_drawer, drawer_type: str
+    ) -> None:
+        """Fired when the :attr:`drawer_type` value changes."""
+
+        if self.drawer_type == "standard":
             self.enable_swiping = False
             self.close_on_click = False
         else:
             self.enable_swiping = True
             self.close_on_click = True
 
+    def on_open(self, *args) -> None:
+        """Fired when the navigation drawer is opened."""
+
+    def on_close(self, *args) -> None:
+        """Fired when the navigation drawer is closed."""
+
     def _handle_keyboard(self, window, key, *largs):
         if key == 27 and self.status == "opened" and self.close_on_click:
             self.set_state("close")
             return True
+
+    def _check_state(self, *args):
+        if self.state == "open":
+            self.dispatch("on_open")
+        elif self.state == "close":
+            self.dispatch("on_close")

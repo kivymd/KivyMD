@@ -91,10 +91,10 @@ class TouchBehavior:
                 del touch.ud["event"]
 
     def on_long_touch(self, touch, *args):
-        """Called when the widget is pressed for a long time."""
+        """Fired when the widget is pressed for a long time."""
 
     def on_double_tap(self, touch, *args):
-        """Called by double clicking on the widget."""
+        """Fired by double-clicking on the widget."""
 
     def on_triple_tap(self, touch, *args):
-        """Called by triple clicking on the widget."""
+        """Fired by triple clicking on the widget."""

@@ -2,7 +2,7 @@
 Components/Label
 ================
 
-.. rubric:: The :class:`MDLabel` widget is for rendering text.
+.. rubric:: The `MDLabel` widget is for rendering text.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/label.png
     :align: center
@@ -14,9 +14,8 @@ Components/Label
 MDLabel
 -------
 
-Class :class:`MDLabel` inherited from the :class:`~kivy.uix.label.Label` class
-but for :class:`MDLabel` the ``text_size`` parameter is ``(self.width, None)``
-and default is positioned on the left:
+Example
+-------
 
 .. tabs::
 
@@ -30,20 +29,21 @@ and default is positioned on the left:
 
             KV = '''
             MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
                 MDLabel:
                     text: "MDLabel"
+                    halign: "center"
             '''
 
 
-            class Test(MDApp):
+            class Example(MDApp):
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
                     return Builder.load_string(KV)
 
 
-            Test().run()
+            Example().run()
 
     .. tab:: Declarative Python style
 
@@ -59,83 +59,24 @@ and default is positioned on the left:
             class Test(MDApp):
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
                     return (
                         MDScreen(
                             MDLabel(
-                                text="MDLabel"
-                            )
+                                text="MDLabel",
+                                halign="center",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
                         )
                     )
 
 
             Test().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-to-left.png
-    :align: center
-
-.. Note:: See :attr:`~kivy.uix.label.Label.halign`
-    and :attr:`~kivy.uix.label.Label.valign` attributes
-    of the :class:`~kivy.uix.label.Label` class
-
-.. code-block:: kv
-
-        MDLabel:
-            text: "MDLabel"
-            halign: "center"
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-to-center.png
-    :align: center
-
-:class:`~MDLabel` color:
-------------------------
-
-:class:`~MDLabel` provides standard color themes for label color management:
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-    from kivymd.uix.label import MDLabel
-
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
-    '''
-
-
-    class Test(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            screen = Builder.load_string(KV)
-
-            # Names of standard color themes.
-            for name_theme in [
-                "Primary",
-                "Secondary",
-                "Hint",
-                "Error",
-                "ContrastParentBackground",
-            ]:
-                screen.add_widget(
-                    MDLabel(
-                        text=name_theme,
-                        halign="center",
-                        theme_text_color=name_theme,
-                    )
-                )
-            return screen
-
-
-    Test().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-theme-text-color.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/label-example.png
     :align: center
 
 To use a custom color for :class:`~MDLabel`, use a theme `'Custom'`.
-After that, you can specify the desired color in the ``rgba`` format
-in the ``text_color`` parameter:
+After that, you can specify the desired color in the ``text_color`` parameter:
 
 .. code-block:: kv
 
@@ -143,53 +84,93 @@ in the ``text_color`` parameter:
         text: "Custom color"
         halign: "center"
         theme_text_color: "Custom"
-        text_color: "blue"
+        text_color: "red"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-custom-color.png
     :align: center
 
 :class:`~MDLabel` provides standard font styles for labels. To do this,
 specify the name of the desired style in the :attr:`~MDLabel.font_style`
-parameter:
+and :attr:`~MDLabel.role` parameters:
+
+.. code-block:: kv
+
+    MDLabel:
+        text: "Display, role - 'large'"
+        font_style: "Display"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-font-style-display-large.png
+    :align: center
+
+.. code-block:: kv
+
+    MDLabel:
+        text: "Display, role - 'small'"
+        font_style: "Display"
+        role: "small"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-font-style-display-small.png
+    :align: center
+
+.. seealso::
+
+    `Material Design spec, Typography <https://m3.material.io/styles/typography/type-scale-tokens>`_
+
+
+All styles
+----------
 
 .. code-block:: python
 
     from kivy.lang import Builder
 
-    from kivymd.app import MDApp
-    from kivymd.uix.label import MDLabel
     from kivymd.font_definitions import theme_font_styles
+    from kivymd.app import MDApp
 
     KV = '''
-    MDScrollView:
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
 
-        MDList:
-            id: box
-            spacing: "8dp"
+        MDRecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'
+
+            RecycleBoxLayout:
+                padding: dp(10)
+                spacing: dp(10)
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
     '''
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         def build(self):
             self.theme_cls.theme_style = "Dark"
-            screen = Builder.load_string(KV)
+            return Builder.load_string(KV)
 
-            # Names of standard font styles.
-            for name_style in theme_font_styles[:-1]:
-                screen.ids.box.add_widget(
-                    MDLabel(
-                        text=f"{name_style} style",
-                        halign="center",
-                        font_style=name_style,
-                        adaptive_height=True,
-                    )
-                )
-            return screen
+        def on_start(self):
+            for style in theme_font_styles:
+                if style != "Icon":
+                    for role in theme_font_styles[style]:
+                        font_size = int(theme_font_styles[style][role]["font-size"])
+                        self.root.ids.rv.data.append(
+                            {
+                                "viewclass": "MDLabel",
+                                "text": f"{style} {role} {font_size} sp",
+                                "adaptive_height": "True",
+                                "font_style": style,
+                                "role": role,
+                            }
+                        )
 
 
-    Test().run()
+    Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-font-style.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/label-font-style-preview.png
     :align: center
 
 Highlighting and copying labels
@@ -210,11 +191,12 @@ You can highlight labels by double tap on the label:
 
             KV = '''
             MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
                 MDLabel:
                     adaptive_size: True
                     pos_hint: {"center_x": .5, "center_y": .5}
-                    text: "MDLabel"
+                    text: "Do a double click on me"
                     allow_selection: True
                     padding: "4dp", "4dp"
             '''
@@ -223,7 +205,6 @@ You can highlight labels by double tap on the label:
             class Example(MDApp):
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
                     return Builder.load_string(KV)
 
 
@@ -233,7 +214,7 @@ You can highlight labels by double tap on the label:
 
         .. code-block:: python
 
-            from kivy.lang.builder import Builder
+            from kivy.clock import Clock
 
             from kivymd.app import MDApp
             from kivymd.uix.label import MDLabel
@@ -241,18 +222,23 @@ You can highlight labels by double tap on the label:
 
 
             class Example(MDApp):
+                def on_start(self):
+                    def on_start(dt):
+                        self.root.md_bg_color = self.theme_cls.backgroundColor
+
+                    Clock.schedule_once(on_start)
+
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
                     return (
                         MDScreen(
                             MDLabel(
                                 adaptive_size=True,
-                                pos_hint={"center_x": .5, "center_y": .5},
-                                text="MDLabel",
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                text="Do a double click on me",
                                 allow_selection=True,
                                 padding=("4dp", "4dp"),
-                            )
+                            ),
                         )
                     )
 
@@ -481,7 +467,6 @@ The :class:`~MDIcon` class is inherited from
 
     MDIcon:
         icon: "gmail"
-        pos_hint: {"center_x": .5, "center_y": .5}
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon.png
     :align: center
@@ -493,8 +478,9 @@ MDIcon with badge icon
 
     MDIcon:
         icon: "gmail"
-        badge_icon: "numeric-10"
-        pos_hint: {"center_x": .5, "center_y": .5}
+
+        MDBadge:
+            text: "10+"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-badge.png
     :align: center
@@ -505,45 +491,34 @@ from __future__ import annotations
 __all__ = ("MDLabel", "MDIcon")
 
 import os
-from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.core.window import Window
-from kivy.graphics import Color, Rectangle
+from kivy.graphics import Color, RoundedRectangle
 from kivy.lang import Builder
-from kivy.metrics import sp
+
 from kivy.properties import (
-    AliasProperty,
     BooleanProperty,
     ColorProperty,
-    ListProperty,
-    NumericProperty,
     ObjectProperty,
-    OptionProperty,
     StringProperty,
+    VariableListProperty,
+    OptionProperty,
 )
 from kivy.uix.label import Label
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
-from kivymd.theming_dynamic_text import get_contrast_text_color
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, TouchBehavior
-from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
+    TouchBehavior,
+    BackgroundColorBehavior,
+)
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 
-__MDLabel_colors__ = {
-    "Primary": "text_color",
-    "Secondary": "secondary_text_color",
-    "Hint": "disabled_hint_text_color",
-    "Error": "error_color",
-    "OP": {
-        "Primary": "opposite_text_color",
-        "Secondary": "opposite_secondary_text_color",
-        "Hint": "opposite_disabled_hint_text_color",
-    },
-}
 
 with open(
     os.path.join(uix_path, "label", "label.kv"), encoding="utf-8"
@@ -554,80 +529,68 @@ with open(
 class MDLabel(
     DeclarativeBehavior,
     ThemableBehavior,
+    BackgroundColorBehavior,
     Label,
     MDAdaptiveWidget,
     TouchBehavior,
+    StateLayerBehavior,
 ):
     """
     Label class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
     :class:`~kivy.uix.label.Label` and
     :class:`~kivymd.uix.MDAdaptiveWidget` and
-    :class:`~kivymd.uix.behaviors.TouchBehavior`
+    :class:`~kivymd.uix.behaviors.touch_behavior.TouchBehavior` and
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior`
     classes documentation.
 
     :Events:
         `on_ref_press`
-            Called when the user clicks on a word referenced with a
+            Fired when the user clicks on a word referenced with a
             ``[ref]`` tag in a text markup.
         `on_copy`
-            Called when double-tapping on the label.
+            Fired when double-tapping on the label.
         `on_selection`
-            Called when double-tapping on the label.
+            Fired when double-tapping on the label.
         `on_cancel_selection`
-            Called when the highlighting is removed from the label text.
+            Fired when the highlighting is removed from the label text.
     """
 
-    font_style = StringProperty("Body1")
+    font_style = StringProperty("Body")
     """
     Label font style.
 
-    Available vanilla font_style are: `'H1'`, `'H2'`, `'H3'`, `'H4'`, `'H5'`,
-    `'H6'`, `'Subtitle1'`, `'Subtitle2'`, `'Body1'`, `'Body2'`, `'Button'`,
-    `'Caption'`, `'Overline'`, `'Icon'`.
+    .. versionchanged:: 2.0.0
+
+    Available vanilla font_style are: `'Display'`, `'Headline'`, `'Title'`,
+    `'Label'`, `'Body'``.
 
     :attr:`font_style` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'Body1'`.
+    and defaults to `'Body'`.
     """
 
-    _capitalizing = BooleanProperty(False)
-
-    def _get_text(self):
-        if self._capitalizing:
-            return self._text.upper()
-        return self._text
-
-    def _set_text(self, value):
-        self._text = value
-
-    _text = StringProperty()
-
-    text = AliasProperty(_get_text, _set_text, bind=["_text", "_capitalizing"])
-    """Text of the label."""
-
-    theme_text_color = OptionProperty(
-        "Primary",
-        allownone=True,
-        options=[
-            "Primary",
-            "Secondary",
-            "Hint",
-            "Error",
-            "Custom",
-            "ContrastParentBackground",
-        ],
-    )
+    role = OptionProperty("large", options=["large", "medium", "small"])
     """
-    Label color scheme name.
+    Role of font style.
 
-    Available options are: `'Primary'`, `'Secondary'`, `'Hint'`, `'Error'`,
-    `'Custom'`, `'ContrastParentBackground'`.
+    .. versionadded:: 2.0.0
 
-    :attr:`theme_text_color` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `None`.
+    Available options are: `'large'`, `'medium'`, `'small'`.
+
+    :attr:`role` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'large'`.
+    """
+
+    text = StringProperty()
+    """
+    Text of the label.
+
+    :attr:`text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
     """
 
     text_color = ColorProperty(None)
@@ -690,55 +653,26 @@ class MDLabel(
     and defaults to `False`.
     """
 
-    _text_color_str = StringProperty()
+    radius = VariableListProperty([0], length=4)
+    """
+    Label radius.
 
-    parent_background = ColorProperty(None)
-    can_capitalize = BooleanProperty(True)
-    canvas_bg = ObjectProperty()
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
+
+    _canvas_bg = ObjectProperty()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.bind(
-            font_style=self.update_font_style,
-            can_capitalize=self.update_font_style,
-        )
-        self.theme_cls.bind(theme_style=self._do_update_theme_color)
         self.register_event_type("on_copy")
         self.register_event_type("on_selection")
         self.register_event_type("on_cancel_selection")
-        self.on_theme_text_color(None, self.theme_text_color)
-        self.update_font_style(None, "")
-        self.on_opposite_colors(None, self.opposite_colors)
-        Clock.schedule_once(self.check_font_styles)
-
-    def check_font_styles(self, interval: Union[int, float] = 0) -> bool:
-        if self.font_style not in list(self.theme_cls.font_styles.keys()):
-            raise ValueError(
-                f"MDLabel.font_style is set to an invalid option '{self.font_style}'."
-                f"Must be one of: {list(self.theme_cls.font_styles)}"
-            )
-        else:
-            return True
-
-    def update_font_style(self, instance_label, font_style: str) -> None:
-        if self.check_font_styles() is True:
-            font_info = self.theme_cls.font_styles[self.font_style]
-            self.font_name = font_info[0]
-            if self.font_style in list(self.theme_cls.font_styles.keys())[0:14]:
-                self.font_size = sp(font_info[1])
-
-            if font_info[2] and self.can_capitalize:
-                self._capitalizing = True
-            else:
-                self._capitalizing = False
-
-        # TODO: Add letter spacing change
-        # self.letter_spacing = font_info[3]
 
     def do_selection(self) -> None:
         if not self.is_selected:
             self.md_bg_color = (
-                self.theme_cls.primary_light
+                self.theme_cls.secondaryContainerColor
                 if not self.color_selection
                 else self.color_selection
             )
@@ -746,7 +680,7 @@ class MDLabel(
     def cancel_selection(self) -> None:
         if self.is_selected:
             self.md_bg_color = (
-                self.theme_cls.bg_normal
+                self.parent.md_bg_color
                 if not self.color_deselection
                 else self.color_deselection
             )
@@ -754,6 +688,8 @@ class MDLabel(
             self.is_selected = False
 
     def on_double_tap(self, touch, *args) -> None:
+        """Fired by double-clicking on the widget."""
+
         if self.allow_copy and self.collide_point(*touch.pos):
             Clipboard.copy(self.text)
             self.dispatch("on_copy")
@@ -762,73 +698,44 @@ class MDLabel(
             self.dispatch("on_selection")
             self.is_selected = True
 
-    def on_window_touch(self, *args):
+    def on_window_touch(self, *args) -> None:
+        """Fired at the on_touch_down event."""
+
         if self.is_selected:
             self.cancel_selection()
 
     def on_copy(self, *args) -> None:
         """
-        Called when double-tapping on the label.
+        Fired when double-tapping on the label.
 
         .. versionadded:: 1.2.0
         """
 
     def on_selection(self, *args) -> None:
         """
-        Called when double-tapping on the label.
+        Fired when double-tapping on the label.
 
         .. versionadded:: 1.2.0
         """
 
     def on_cancel_selection(self, *args) -> None:
         """
-        Called when the highlighting is removed from the label text.
+        Fired when the highlighting is removed from the label text.
 
         .. versionadded:: 1.2.0
         """
 
     def on_allow_selection(self, instance_label, selection: bool) -> None:
+        """Fired when the :attr:`allow_selection` value changes."""
+
         if selection:
             Window.bind(on_touch_down=self.on_window_touch)
         else:
             Window.unbind(on_touch_down=self.on_window_touch)
 
-    def on_theme_text_color(
-        self, instance_label, theme_text_color: str
-    ) -> None:
-        op = self.opposite_colors
-        if op:
-            self._text_color_str = __MDLabel_colors__.get("OP", "").get(
-                theme_text_color, ""
-            )
-        else:
-            self._text_color_str = __MDLabel_colors__.get(theme_text_color, "")
-        if self._text_color_str:
-            self._do_update_theme_color()
-        else:
-            # 'Custom' and 'ContrastParentBackground' lead here, as well as the
-            # generic None value it's not yet been set
-            self._text_color_str = ""
-            if theme_text_color == "Custom" and self.text_color:
-                color = self.text_color
-            elif (
-                theme_text_color == "ContrastParentBackground"
-                and self.parent_background
-            ):
-                color = get_contrast_text_color(self.parent_background)
-            else:
-                color = [0, 0, 0, 1]
+    def on_text_color(self, instance_label, color: list | str) -> None:
+        """Fired when the :attr:`text_color` value changes."""
 
-            if self.theme_cls.theme_style_switch_animation:
-                Animation(
-                    color=color,
-                    d=self.theme_cls.theme_style_switch_animation_duration,
-                    t="linear",
-                ).start(self)
-            else:
-                self.color = color
-
-    def on_text_color(self, instance_label, color: Union[list, str]) -> None:
         if self.theme_text_color == "Custom":
             if self.theme_cls.theme_style_switch_animation:
                 Animation(
@@ -839,96 +746,55 @@ class MDLabel(
             else:
                 self.color = self.text_color
 
-    def on_opposite_colors(self, *args) -> None:
-        self.on_theme_text_color(self, self.theme_text_color)
+    def on_md_bg_color(self, instance_label, color: list | str) -> None:
+        """Fired when the :attr:`md_bg_color` value changes."""
 
-    def on_md_bg_color(self, instance_label, color: Union[list, str]) -> None:
-        self.canvas.remove_group("Background_instruction")
-        self.canvas.before.clear()
-        with self.canvas.before:
-            Color(rgba=color)
-            self.canvas_bg = Rectangle(pos=self.pos, size=self.size)
-            self.bind(pos=self.update_canvas_bg_pos)
+        def on_md_bg_color(*args) -> None:
+            from kivymd.uix.selectioncontrol import MDCheckbox
+
+            if not issubclass(self.__class__, (MDCheckbox, MDIcon)):
+                self.canvas.remove_group("Background_instruction")
+
+                # FIXME: IndexError
+                # try:
+                #     self.canvas.before.clear()
+                # except IndexError:
+                #     pass
+
+                with self.canvas.before:
+                    Color(rgba=color)
+                    self._canvas_bg = RoundedRectangle(
+                        pos=self.pos, size=self.size, radius=self.radius
+                    )
+                    self.bind(pos=self.update_canvas_bg_pos)
+
+        Clock.schedule_once(on_md_bg_color)
 
     def on_size(self, instance_label, size: list) -> None:
-        if self.canvas_bg:
-            self.canvas_bg.size = size
+        """Fired when the parent window of the application is resized."""
+
+        if self._canvas_bg:
+            self._canvas_bg.size = size
 
     def update_canvas_bg_pos(self, instance_label, pos: list) -> None:
-        if self.canvas_bg:
-            self.canvas_bg.pos = pos
-
-    def _do_update_theme_color(self, *args):
-        if self._text_color_str:
-            if not self.disabled:
-                color = getattr(self.theme_cls, self._text_color_str)
-            else:
-                color = getattr(self.theme_cls, "disabled_hint_text_color")
-
-            if self.theme_cls.theme_style_switch_animation:
-                Animation(
-                    color=color,
-                    d=self.theme_cls.theme_style_switch_animation_duration,
-                    t="linear",
-                ).start(self)
-            else:
-                self.color = color
+        if self._canvas_bg:
+            self._canvas_bg.pos = pos
 
 
-class MDIcon(MDFloatLayout, MDLabel):
+class MDIcon(MDLabel):
     """
     Icon class.
 
-    For more information, see in the :class:`~MDLabel` and
-    :class:`~kivymd.uix.floatlayout.MDFloatLayout` classes documentation.
+    For more information, see in the
+    :class:`~MDLabel` class documentation.
     """
 
-    icon = StringProperty("android")
+    icon = StringProperty("blank")
     """
     Label icon name.
 
     :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'android'`.
-    """
-
-    badge_icon = StringProperty()
-    """
-    Label badge icon name.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`badge_icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    badge_icon_color = ColorProperty([1, 1, 1, 1])
-    """
-    Badge icon color in (r, g, b, a) or string format.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`badge_icon_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    badge_bg_color = ColorProperty(None)
-    """
-    Badge icon background color in (r, g, b, a) or string format.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`badge_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    badge_font_size = NumericProperty()
-    """
-    Badge font size.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`badge_font_size` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
+    and defaults to `'blank'`.
     """
 
     source = StringProperty(None, allownone=True)
@@ -939,16 +805,33 @@ class MDIcon(MDFloatLayout, MDLabel):
     and defaults to `None`.
     """
 
-    _size = ListProperty((0, 0))
+    icon_color = ColorProperty(None)
+    """
+    Icon color in (r, g, b, a) or string format.
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        Clock.schedule_once(self.adjust_size)
+    .. versionadded:: 2.0.0
 
-    def adjust_size(self, *args) -> None:
-        from kivymd.uix.selectioncontrol import MDCheckbox
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
 
-        if not isinstance(self, MDCheckbox):
-            self.size_hint = (None, None)
-            self._size = self.texture_size[1], self.texture_size[1]
-            self.adaptive_size = True
+    icon_color_disabled = ColorProperty(None)
+    """
+    The icon color in (r, g, b, a) or string format of the button when
+    the button is disabled.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`icon_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # kivymd.uix.badge.badge.MDBadge object.
+    _badge = ObjectProperty()
+
+    def add_widget(self, widget, index=0, canvas=None):
+        from kivymd.uix.badge import MDBadge
+
+        if isinstance(widget, MDBadge):
+            self._badge = widget
+            return super().add_widget(widget)

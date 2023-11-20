@@ -1,0 +1,10 @@
+<MDDivider>
+    canvas:
+        Color:
+            rgba:
+                app.theme_cls.outlineVariantColor \
+                if not self.color else \
+                self.color
+        Rectangle:
+            size: self.size
+            pos: self.pos

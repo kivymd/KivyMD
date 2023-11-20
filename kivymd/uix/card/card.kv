@@ -1,9 +1,78 @@
 <MDCardSwipeLayerBox>:
-    md_bg_color: app.theme_cls.divider_color
-
-
-<MDSeparator>
     md_bg_color:
-        self.theme_cls.divider_color \
-        if not root.color \
-        else root.color
+        app.theme_cls.secondaryContainerColor \
+        if self.theme_bg_color == "Primary" else \
+        self.md_bg_color
+
+
+<MDCard>
+    shadow_radius: [dp(14), ]
+    shadow_color:
+        ( \
+        self.theme_cls.shadowColor \
+        if self.theme_shadow_color == "Primary" else \
+        self.shadow_color \
+        ) \
+        if not self.disabled else \
+        { \
+        "filled": \
+        self.theme_cls.shadowColor[:-1] + [.5] \
+        if self.theme_shadow_color == "Primary" else \
+        self.shadow_color[:-1] + [.5], \
+        "outlined": self.theme_cls.transparentColor, \
+        "elevated": self.theme_cls.shadowColor[:-1] + [.5] \
+        if self.theme_shadow_color == "Primary" else \
+        self.shadow_color[:-1] + [.5],
+        }[self.style]
+    shadow_offset:
+        ( \
+        { \
+        "filled": [0, 0], \
+        "outlined": [0, 0], \
+        "elevated": [0, -1], \
+        }[self.style] \
+        if not self.disabled else \
+        { \
+        "filled": [0, -1], \
+        "outlined": [0, 0], \
+        "elevated": [0, -1], \
+        }[self.style] \
+        ) \
+        if self.theme_shadow_offset == "Primary" else self.shadow_offset
+    elevation_level:
+        (
+        { \
+        "filled": 0, \
+        "outlined": 0, \
+        "elevated": self.elevation_level if self.elevation_level else 1, \
+        }[self.style] \
+        ) \
+        if not self.disabled else \
+        { \
+        "filled": 1, \
+        "outlined": 0, \
+        "elevated": self.elevation_level if self.elevation_level else 1, \
+        }[self.style]
+    elevation: self.elevation_levels[self.elevation_level]
+    line_color:
+        (\
+        ( \
+        self.theme_cls.outlineColor \
+        if not self.disabled else \
+        self.theme_cls.onSurfaceColor[:-1] + \
+        [self.button_outlined_opacity_value_disabled_line] \
+        ) \
+        if self.style == "outlined" else \
+        self.theme_cls.transparentColor \
+        ) \
+        if self.theme_line_color == "Primary" else self.line_color
+    md_bg_color:
+        ( \
+        { \
+        "filled": app.theme_cls.surfaceContainerHighestColor, \
+        "outlined": app.theme_cls.surfaceColor, \
+        "elevated": app.theme_cls.surfaceContainerLowColor, \
+        }[self.style] \
+        if self.theme_bg_color == "Primary" else \
+        self.md_bg_color \
+        )

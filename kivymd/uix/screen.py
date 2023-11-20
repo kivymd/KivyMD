@@ -13,7 +13,7 @@ Screen
     Screen:
         canvas:
             Color:
-                rgba: app.theme_cls.primary_color
+                rgba: app.theme_cls.primaryColor
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
@@ -26,7 +26,7 @@ MDScreen
 
     MDScreen:
         radius: [25, 0, 0, 0]
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: self.theme_cls.primaryColor
 """
 
 from kivy.properties import ListProperty, ObjectProperty
@@ -50,9 +50,9 @@ class MDScreen(
     :class:`~kivymd.uix.screenmanager.MDScreenManager`.
 
     For more information see in the
-    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.uix.behaviors.BackgroundColorBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
     :class:`~kivy.uix.screenmanager.Screen` and
     :class:`~kivymd.uix.MDAdaptiveWidget`
     classes documentation.

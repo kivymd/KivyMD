@@ -751,8 +751,11 @@ class MDLabel(
 
         def on_md_bg_color(*args) -> None:
             from kivymd.uix.selectioncontrol import MDCheckbox
+            from kivymd.uix.tooltip import MDTooltipPlain
 
-            if not issubclass(self.__class__, (MDCheckbox, MDIcon)):
+            if not issubclass(
+                self.__class__, (MDCheckbox, MDIcon, MDTooltipPlain)
+            ):
                 self.canvas.remove_group("Background_instruction")
 
                 # FIXME: IndexError

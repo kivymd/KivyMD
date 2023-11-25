@@ -667,6 +667,9 @@ class MDTopAppBarTrailingButtonContainer(BaseTopAppBarButtonContainer):
     """
 
 
+# FIXME: The on_enter/on_leave event is not triggered for
+#  MDActionTopAppBarButton buttons in the MDTopAppBarTrailingButtonContainer
+#  container.
 class MDTopAppBar(
     DeclarativeBehavior,
     ThemableBehavior,

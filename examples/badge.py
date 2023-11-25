@@ -4,7 +4,7 @@ from kivymd.app import MDApp
 
 from examples.common_app import CommonApp
 
-KV = '''
+KV = """
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
 
@@ -21,7 +21,7 @@ MDScreen:
 
         MDBadge:
             text: "12"
-'''
+"""
 
 
 class Example(MDApp, CommonApp):

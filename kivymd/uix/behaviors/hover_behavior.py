@@ -27,9 +27,13 @@ the widget.
 
 .. note::
 
-    :class:`~HoverBehavior` will by default check to see if the current Widget is visible (i.e. not covered by a modal or popup and not a part of a Relative Layout, MDTab or Carousel that is not currently visible etc) and will only issue events if the widget is visible.
+    :class:`~HoverBehavior` will by default check to see if the current Widget
+    is visible (i.e. not covered by a modal or popup and not a part of a
+    RelativeLayout, MDTab or Carousel that is not currently visible etc)
+    and will only issue events if the widget is visible.
 
-    To get the legacy behavior that the events are always triggered, you can set `detect_visible` on the Widget to `False`.
+    To get the legacy behavior that the events are always triggered, you can
+    set `detect_visible` on the Widget to `False`.
 
 .. code-block:: python
 
@@ -40,13 +44,14 @@ the widget.
     from kivymd.uix.boxlayout import MDBoxLayout
 
     KV = '''
-    Screen
+    MDScreen
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDBoxLayout:
             id: box
             pos_hint: {'center_x': .5, 'center_y': .5}
             size_hint: .8, .8
-            md_bg_color: app.theme_cls.bg_darkest
+            md_bg_color: self.theme_cls.secondaryContainerColor
     '''
 
 
@@ -54,19 +59,23 @@ the widget.
         '''Custom item implementing hover behavior.'''
 
         def on_enter(self, *args):
-            '''The method will be called when the mouse cursor
-            is within the borders of the current widget.'''
+            '''
+            The method will be called when the mouse cursor
+            is within the borders of the current widget.
+            '''
 
-            self.md_bg_color = (1, 1, 1, 1)
+            self.md_bg_color = "white"
 
         def on_leave(self, *args):
-            '''The method will be called when the mouse cursor goes beyond
-            the borders of the current widget.'''
+            '''
+            The method will be called when the mouse cursor goes beyond
+            the borders of the current widget.
+            '''
 
-            self.md_bg_color = self.theme_cls.bg_darkest
+            self.md_bg_color = self.theme_cls.secondaryContainerColor
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         def build(self):
             self.screen = Builder.load_string(KV)
             for i in range(5):
@@ -74,10 +83,9 @@ the widget.
             return self.screen
 
 
-    Test().run()
+    Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hover-behavior.gif
-   :width: 250 px
    :align: center
 """
 
@@ -93,10 +101,10 @@ class HoverBehavior:
     """
     :Events:
         :attr:`on_enter`
-            Fired when mouse enters the bbox of the widget AND the widget is
+            Fired when mouse enters the bbox of the widget and the widget is
             visible.
         :attr:`on_leave`
-            Fired when the mouse exits the widget AND the widget is visible.
+            Fired when the mouse exits the widget and the widget is visible.
     """
 
     hovering = BooleanProperty(False)
@@ -111,7 +119,7 @@ class HoverBehavior:
 
     hover_visible = BooleanProperty(False)
     """
-    `True` if hovering is True AND is the current widget is visible.
+    `True` if hovering is `True` and is the current widget is visible.
 
     :attr:`hover_visible` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -159,26 +167,27 @@ class HoverBehavior:
                 self.dispatch("on_leave")
             return
 
-        # The pointer is in the same position as the widget
+        # The pointer is in the same position as the widget.
         if self.hovering:
             # Nothing to do here. Not - this does not handle the case where
             # a popup comes over an existing hover event.
-            # This seems reasonable
+            # This seems reasonable.
             return
 
         # Otherwise - set the hovering attribute
         self.hovering = True
 
         # We need to traverse the tree to see if the Widget is visible.
-        # This is a two stage process - first go up the tree to the root
+        # This is a two stage process - first go up the tree to the root.
         # Window. At each stage - check that the Widget is actually visible.
         # Second - at the root Window check that there is not another branch
-        #  covering the Widget.
+        # covering the Widget.
         self.hover_visible = True
+
         if self.detect_visible:
             widget: Widget = self
             while True:
-                # Walk up the Widget tree from the target Widget
+                # Walk up the Widget tree from the target Widget.
                 parent = widget.parent
                 try:
                     # See if the mouse point collides with the parent

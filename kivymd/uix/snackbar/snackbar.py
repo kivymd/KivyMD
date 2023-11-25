@@ -275,7 +275,8 @@ from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ListProperty,
-    NumericProperty, ColorProperty,
+    NumericProperty,
+    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget

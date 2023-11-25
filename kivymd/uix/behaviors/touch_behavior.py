@@ -16,21 +16,32 @@ Usage
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.properties import StringProperty
 
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import TouchBehavior
-    from kivymd.uix.button import MDRaisedButton
+    from kivymd.uix.button import MDButton
 
     KV = '''
-    MDScreen:
+    <TouchBehaviorButton>
+        style: "elevated"
 
-        MyButton:
-            text: "PRESS ME"
+        MDButtonText:
+            text: root.text
+
+
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        TouchBehaviorButton:
+            text: "TouchBehavior"
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
 
 
-    class MyButton(MDRaisedButton, TouchBehavior):
+    class TouchBehaviorButton(MDButton, TouchBehavior):
+        text = StringProperty()
+
         def on_long_touch(self, *args):
             print("<on_long_touch> event")
 
@@ -41,12 +52,12 @@ Usage
             print("<on_triple_tap> event")
 
 
-    class MainApp(MDApp):
+    class Example(MDApp):
         def build(self):
             return Builder.load_string(KV)
 
 
-    MainApp().run()
+    Example().run()
 """
 
 __all__ = ("TouchBehavior",)
@@ -85,6 +96,8 @@ class TouchBehavior:
             self.on_triple_tap(touch, *args)
 
     def delete_clock(self, widget, touch, *args):
+        """Removes a key event from `touch.ud`."""
+
         if self.collide_point(touch.x, touch.y):
             if "event" in touch.ud:
                 Clock.unschedule(touch.ud["event"])

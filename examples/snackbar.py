@@ -44,14 +44,10 @@ class Example(MDApp, CommonApp):
 
     def on_start(self):
         data = {
-            "Single-line snackbar":
-                self.show_snack_single_line,
-            "Single-line snackbar with action":
-                self.show_snack_single_line_with_action,
-            "Single-line snackbar with action and close buttons":
-                self.show_snack_single_line_with_action_and_close_button,
-            "Two-line snackbar with action and close buttons at the bottom":
-                self.show_snack_two_line_with_action_and_close_button_at_botton,
+            "Single-line snackbar": self.show_snack_single_line,
+            "Single-line snackbar with action": self.show_snack_single_line_with_action,
+            "Single-line snackbar with action and close buttons": self.show_snack_single_line_with_action_and_close_button,
+            "Two-line snackbar with action and close buttons at the bottom": self.show_snack_two_line_with_action_and_close_button_at_botton,
         }
 
         for text_button, function in data.items():

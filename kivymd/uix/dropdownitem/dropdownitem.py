@@ -60,11 +60,6 @@ API break
 
 .. code-block:: kv
 
-    MDFloatingActionButton:
-        icon: "plus"
-
-.. code-block:: kv
-
     MDDropDownItem:
         text: 'Item'
         on_release: print(*args)

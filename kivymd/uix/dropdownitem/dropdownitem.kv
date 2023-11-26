@@ -8,7 +8,7 @@
 
     canvas:
         Color:
-            rgba: app.theme_cls.onSurfaceColor
+            group: "drop-down-item-color"
         Rectangle:
             group: "drop-down-item-text"
             texture:
@@ -21,6 +21,8 @@
                 (0, 0)
             pos:
                 self.x, self.y + dp(8)
+        Color:
+            group: "drop-down-item-triangle-color"
         Triangle:
             points:
                 [ \

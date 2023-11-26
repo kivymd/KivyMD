@@ -121,6 +121,19 @@ class MDDropDownItem(
         drop_down_item_text.pos = (self.x, self.y + dp(8))
         self._size = self._drop_down_text.texture_size
 
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the values of :attr:`disabled` change."""
+
+        self._drop_down_text.disabled = value
+        drop_down_item_triangle_color = self.canvas.get_group(
+            "drop-down-item-triangle-color"
+        )[0]
+        drop_down_item_triangle_color.rgba = (
+            self._drop_down_text.disabled_color
+            if value
+            else self._drop_down_text.color
+        )
+
     def on__drop_down_text(self, instance, value) -> None:
         """Fired when the values of :attr:`_drop_down_text` change."""
 

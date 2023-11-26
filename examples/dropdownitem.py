@@ -5,7 +5,7 @@ from kivymd.app import MDApp
 
 from examples.common_app import CommonApp
 
-KV = '''
+KV = """
 MDScreen
     md_bg_color: self.theme_cls.backgroundColor
 
@@ -23,7 +23,7 @@ MDScreen
         MDDropDownItemText:
             id: drop_text
             text: "Item"
-'''
+"""
 
 
 class Example(MDApp, CommonApp):
@@ -34,7 +34,8 @@ class Example(MDApp, CommonApp):
             {
                 "text": f"{i}",
                 "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-            } for i in range(5)
+            }
+            for i in range(5)
         ]
         if not self.drop_item_menu:
             self.drop_item_menu = MDDropdownMenu(

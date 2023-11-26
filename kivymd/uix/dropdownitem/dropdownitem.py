@@ -51,6 +51,34 @@ Usage
 .. seealso::
 
     `Work with the class MDDropdownMenu see here <https://kivymd.readthedocs.io/en/latest/components/menu/index.html#center-position>`_
+
+API break
+=========
+
+1.2.0 version
+-------------
+
+.. code-block:: kv
+
+    MDFloatingActionButton:
+        icon: "plus"
+
+.. code-block:: kv
+
+    MDDropDownItem:
+        text: 'Item'
+        on_release: print(*args)
+
+2.0.0 version
+-------------
+
+.. code-block:: kv
+
+    MDDropDownItem:
+        on_release:  print(*args)
+
+        MDDropDownItemText:
+            text: "Item text"
 """
 
 __all__ = ("MDDropDownItem", "MDDropDownItemText")

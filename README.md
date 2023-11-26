@@ -52,6 +52,7 @@ pip install kivymd==1.1.1
 - [Python 3.7+](https://www.python.org/)
 - [Pillow](https://github.com/python-pillow/Pillow/)
 - [MaterialColor](https://github.com/T-Dynamos/materialyoucolor-pyhton)
+- [asynckivy](https://github.com/asyncgui/asynckivy)
 
 ### How to install
 

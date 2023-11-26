@@ -21,10 +21,11 @@ Builder.load_string(
     height: self.texture_size[1]
     text: root._fsp_value
     pos_hint: {root.anchor: 1}
+    color: app.theme_cls.surfaceColor
 
     canvas.before:
         Color:
-            rgba: app.theme_cls.primary_dark
+            rgba: app.theme_cls.onBackgroundColor
         Rectangle:
             pos: self.pos
             size: self.size

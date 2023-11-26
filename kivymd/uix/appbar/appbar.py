@@ -542,9 +542,9 @@ from kivymd.uix.behaviors import (
 from kivymd.uix.button import MDFabButton, MDIconButton
 from kivymd.uix.controllers import WindowController
 from kivymd.uix.label import MDLabel
-
-from kivymd.utils import asynckivy
 from kivymd.utils.set_bars_colors import set_bars_colors
+
+import asynckivy
 
 with open(
     os.path.join(uix_path, "appbar", "appbar.kv"), encoding="utf-8"

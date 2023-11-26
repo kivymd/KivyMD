@@ -242,7 +242,8 @@ Example of filtering
     from kivymd.uix.list import OneLineIconListItem
     from kivymd.icon_definitions import md_icons
     from kivymd.uix.screen import MDScreen
-    from kivymd.utils import asynckivy
+
+    import asynckivy
 
     Builder.load_string(
         '''
@@ -371,7 +372,8 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
     from kivymd.app import MDApp
     from kivymd.uix.chip import MDChip, MDChipText
     from kivymd.uix.screen import MDScreen
-    from kivymd.utils import asynckivy
+
+    import asynckivy
 
     Builder.load_string(
         '''
@@ -456,7 +458,8 @@ menus:
     from kivymd.app import MDApp
     from kivymd.uix.chip import MDChip, MDChipText
     from kivymd.uix.screen import MDScreen
-    from kivymd.utils import asynckivy
+
+    import asynckivy
 
     Builder.load_string(
         '''

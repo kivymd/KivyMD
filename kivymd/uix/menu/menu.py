@@ -405,50 +405,47 @@ Center position
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.metrics import dp
-
-    from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
 
+    from kivymd.app import MDApp
+
     KV = '''
-    MDScreen:
+    MDScreen
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDDropDownItem:
-            id: drop_item
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            text: 'Item 0'
-            on_release: app.menu.open()
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.open_menu(self)
+
+            MDDropDownItemText:
+                id: drop_text
+                text: "Item"
     '''
 
 
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
+    class Example(MDApp):
+        menu = None
+
+        def open_menu(self, item):
             menu_items = [
                 {
-                    "text": f"Item {i}",
-                    "on_release": lambda x=f"Item {i}": self.set_item(x),
+                    "text": f"{i}",
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
                 } for i in range(5)
             ]
             self.menu = MDDropdownMenu(
-                caller=self.screen.ids.drop_item,
-                items=menu_items,
-                position="center",
-            )
-            self.menu.bind()
+                caller=item, items=menu_items, position="center"
+            ).open()
 
-        def set_item(self, text_item):
-            self.screen.ids.drop_item.set_item(text_item)
+        def menu_callback(self, text_item):
+            self.root.ids.drop_text.text = text_item
             self.menu.dismiss()
 
         def build(self):
-            self.theme_cls.primary_palette = "Orange"
-            self.theme_cls.theme_style = "Dark"
-            return self.screen
+            return Builder.load_string(KV)
 
 
-    Test().run()
+    Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position-center.gif
     :align: center

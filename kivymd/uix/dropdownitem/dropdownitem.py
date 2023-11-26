@@ -75,6 +75,10 @@ with open(
     Builder.load_string(kv_file.read())
 
 
+# FIXME: When resizing the texture of the `MDDropDownItemText` widget,
+#  the canvas instruction that implements the triangle looks terrible.
+#  You need to edit the Triangle instructions according to the size
+#  of the `MDDropDownItemText` texture.
 class MDDropDownItemText(MDLabel):
     """
     Base texture for :class:`~MDDropDownItem` class (item text).

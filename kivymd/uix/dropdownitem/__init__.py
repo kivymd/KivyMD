@@ -1,1 +1,1 @@
-from .dropdownitem import MDDropDownItem  # NOQA F401
+from .dropdownitem import MDDropDownItem, MDDropDownItemText  # NOQA F401

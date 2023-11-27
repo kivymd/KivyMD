@@ -331,32 +331,31 @@ Example of copying/cutting labels using the context menu
     from kivy.lang.builder import Builder
     from kivy.metrics import dp
 
+    from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
     from kivymd.app import MDApp
     from kivymd.uix.label import MDLabel
     from kivymd.uix.menu import MDDropdownMenu
-    from kivymd.toast import toast
 
     KV = '''
     MDBoxLayout:
         orientation: "vertical"
         spacing: "12dp"
         padding: "24dp"
+        md_bg_color: self.theme_cls.backgroundColor
 
-        MDScrollView:
-
-            MDBoxLayout:
-                id: box
-                orientation: "vertical"
-                padding: "24dp"
-                spacing: "12dp"
-                adaptive_height: True
+        MDBoxLayout:
+            id: box
+            orientation: "vertical"
+            padding: "24dp"
+            spacing: "12dp"
+            adaptive_height: True
 
         MDTextField:
             max_height: "200dp"
-            mode: "fill"
+            mode: "filled"
             multiline: True
 
-        MDWidget:
+        Widget:
     '''
 
     data = [
@@ -367,8 +366,18 @@ Example of copying/cutting labels using the context menu
         "Nisl rhoncus mattis rhoncus urna neque. Orci nulla pellentesque "
         "dignissim enim. Ac auctor augue mauris augue neque gravida in fermentum. "
         "Lacus suspendisse faucibus interdum posuere."
-
     ]
+
+
+    def toast(text):
+        MDSnackbar(
+            MDSnackbarText(
+                text=text,
+            ),
+            y=dp(24),
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.3,
+        ).open()
 
 
     class CopyLabel(MDLabel):
@@ -376,25 +385,18 @@ Example of copying/cutting labels using the context menu
             super().__init__(*args, **kwargs)
             self.allow_selection = True
             self.adaptive_height = True
-            self.theme_text_color = "Custom"
-            self.text_color = self.theme_cls.text_color
 
 
     class Example(MDApp):
         context_menu = None
 
         def build(self):
-            self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "Orange"
             return Builder.load_string(KV)
 
         def on_start(self):
             for text in data:
                 copy_label = CopyLabel(text=text)
-                copy_label.bind(
-                    on_selection=self.open_context_menu,
-                    on_cancel_selection=self.restore_text_color,
-                )
+                copy_label.bind(on_selection=self.open_context_menu)
                 self.root.ids.box.add_widget(copy_label)
 
         def click_item_context_menu(
@@ -410,24 +412,17 @@ Example of copying/cutting labels using the context menu
             if self.context_menu:
                 self.context_menu.dismiss()
 
-        def restore_text_color(self, instance_label: CopyLabel) -> None:
-            instance_label.text_color = self.theme_cls.text_color
-
         def open_context_menu(self, instance_label: CopyLabel) -> None:
             instance_label.text_color = "black"
             menu_items = [
                 {
                     "text": "Copy text",
-                    "viewclass": "OneLineListItem",
-                    "height": dp(48),
                     "on_release": lambda: self.click_item_context_menu(
                         "copy", instance_label
                     ),
                 },
                 {
                     "text": "Cut text",
-                    "viewclass": "OneLineListItem",
-                    "height": dp(48),
                     "on_release": lambda: self.click_item_context_menu(
                         "cut", instance_label
                     ),

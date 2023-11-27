@@ -685,6 +685,7 @@ class MDLabel(
             )
             self.dispatch("on_cancel_selection")
             self.is_selected = False
+            self._canvas_bg = None
 
     def on_double_tap(self, touch, *args) -> None:
         """Fired by double-clicking on the widget."""

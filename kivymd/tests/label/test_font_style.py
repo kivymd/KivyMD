@@ -3,9 +3,9 @@ import os
 from kivy.clock import Clock
 from kivy.core.text import LabelBase
 from kivy.lang import Builder
+from kivy.metrics import sp
 
 from kivymd.app import MDApp
-from kivymd.font_definitions import theme_font_styles
 
 KV = """
 MDScreen:
@@ -14,6 +14,7 @@ MDScreen:
         id: label
         text: "Danger"
         font_style: "Danger"
+        role: "large"
         halign: "center"
         font_size: "66sp"
 """
@@ -30,18 +31,33 @@ class TestFontStyle(MDApp):
             ),
         )
 
-        theme_font_styles.append("Danger")
-        self.theme_cls.font_styles["Danger"] = [
-            "Danger",
-            66,
-            False,
-            0.15,
-        ]
+        self.theme_cls.font_styles["Danger"] = {
+            "large": {
+                "line-height": 1.64,
+                "font-name": "Danger",
+                "font-size": sp(57),
+            },
+            "medium": {
+                "line-height": 1.52,
+                "font-name": "Danger",
+                "font-size": sp(45),
+            },
+            "small": {
+                "line-height": 1.44,
+                "font-name": "Danger",
+                "font-size": sp(36),
+            },
+        }
         return Builder.load_string(KV)
 
     def on_start(self):
         def on_start(*args):
-            assert 100 < self.root.ids.label.texture_size[1]
+            assert (
+                sp(57)
+                == self.theme_cls.font_styles["Danger"][
+                    self.root.ids.label.role
+                ]["font-size"]
+            )
             self.stop()
 
         Clock.schedule_once(on_start, 2)

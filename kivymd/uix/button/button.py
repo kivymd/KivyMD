@@ -533,11 +533,15 @@ With icon
             btn.fab_state = "expand" \\
             if btn.fab_state == "collapse" else "collapse"
 
-        MDExtendedFabButton:
-            id: btn
-            icon: "heart"
-            text: "Compose"
-            pos_hint: {"center_x": .5, "center_y": .5}
+            MDExtendedFabButton:
+                id: btn
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDExtendedFabButtonIcon:
+                    icon: "pencil-outline"
+
+                MDExtendedFabButtonText:
+                    text: "Compose"
     '''
 
 
@@ -558,8 +562,10 @@ Without icon
 .. code-block:: kv
 
     MDExtendedFabButton:
-        text: "Compose"
         fab_state: "expand"
+
+        MDExtendedFabButtonText:
+            text: "Compose"
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/extended-fab-button-without-icon.png
     :align: center

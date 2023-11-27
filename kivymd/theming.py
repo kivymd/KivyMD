@@ -174,26 +174,29 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
                 KV = '''
                 MDScreen:
+                    md_bg_color: self.theme_cls.backgroundColor
 
                     MDCard:
                         orientation: "vertical"
                         padding: 0, 0, 0 , "36dp"
                         size_hint: .5, .5
+                        style: "elevated"
                         pos_hint: {"center_x": .5, "center_y": .5}
-                        elevation: 2
-                        shadow_offset: 0, -2
 
                         MDLabel:
                             text: "Theme style - {}".format(app.theme_cls.theme_style)
                             halign: "center"
                             valign: "center"
                             bold: True
-                            font_style: "H5"
+                            font_style: "Display"
+                            role: "small"
 
-                        MDRaisedButton:
-                            text: "Set theme"
+                        MDButton:
                             on_release: app.switch_theme_style()
                             pos_hint: {"center_x": .5}
+
+                            MDButtonText:
+                                text: "Set theme"
                 '''
 
 
@@ -219,8 +222,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
             .. code-block:: python
 
+                from kivy.clock import Clock
+
                 from kivymd.app import MDApp
-                from kivymd.uix.button import MDRaisedButton
+                from kivymd.uix.button import MDButton, MDButtonText
                 from kivymd.uix.card import MDCard
                 from kivymd.uix.label import MDLabel
                 from kivymd.uix.screen import MDScreen
@@ -236,14 +241,18 @@ class ThemeManager(EventDispatcher, DynamicColor):
                                 MDCard(
                                     MDLabel(
                                         id="label",
-                                        text="Theme style - {}".format(self.theme_cls.theme_style),
+                                        text="Theme style - {}".format(
+                                            self.theme_cls.theme_style),
                                         halign="center",
                                         valign="center",
                                         bold=True,
-                                        font_style="H5",
+                                        font_style="Display",
+                                        role="small",
                                     ),
-                                    MDRaisedButton(
-                                        text="Set theme",
+                                    MDButton(
+                                        MDButtonText(
+                                            text="Set theme",
+                                        ),
                                         on_release=self.switch_theme_style,
                                         pos_hint={"center_x": 0.5},
                                     ),
@@ -252,11 +261,16 @@ class ThemeManager(EventDispatcher, DynamicColor):
                                     padding=(0, 0, 0, "36dp"),
                                     size_hint=(0.5, 0.5),
                                     pos_hint={"center_x": 0.5, "center_y": 0.5},
-                                    elevation=2,
-                                    shadow_offset=(0, -2),
+                                    style="elevated",
                                 )
                             )
                         )
+
+                    def on_start(self):
+                        def on_start(*args):
+                            self.root.md_bg_color = self.theme_cls.backgroundColor
+
+                        Clock.schedule_once(on_start)
 
                     def switch_theme_style(self, *args):
                         self.theme_cls.primary_palette = (
@@ -265,7 +279,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                         self.theme_cls.theme_style = (
                             "Dark" if self.theme_cls.theme_style == "Light" else "Light"
                         )
-                        self.root.ids.card.ids.label.text = (
+                        self.root.get_ids().label.text = (
                             "Theme style - {}".format(self.theme_cls.theme_style)
                         )
 
@@ -304,58 +318,37 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
     App theme style.
 
-    .. tabs::
+    .. code-block:: python
 
-        .. tab:: Imperative python style
+        from kivy.clock import Clock
 
-            .. code-block:: python
-
-                from kivymd.app import MDApp
-                from kivymd.uix.screen import MDScreen
-                from kivymd.uix.button import MDRectangleFlatButton
+        from kivymd.app import MDApp
+        from kivymd.uix.screen import MDScreen
+        from kivymd.uix.button import MDButton, MDButtonText
 
 
-                class MainApp(MDApp):
-                    def build(self):
-                        self.theme_cls.primary_palette = "Orange"
-                        self.theme_cls.theme_style = "Dark"  # "Light"
-                        screen = MDScreen()
-                        screen.add_widget(
-                            MDRectangleFlatButton(
-                                text="Hello, World",
-                                pos_hint={"center_x": 0.5, "center_y": 0.5},
-                            )
-                        )
-                        return screen
+        class Example(MDApp):
+            def build(self):
+                self.theme_cls.primary_palette = "Orange"
+                self.theme_cls.theme_style = "Light"  # "Dark"
+                return MDScreen(
+                    MDButton(
+                        MDButtonText(
+                            text="Hello, World",
+                        ),
+                        style="outlined",
+                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                    )
+                )
+
+            def on_start(self):
+                def on_start(*args):
+                    self.root.md_bg_color = self.theme_cls.backgroundColor
+
+                Clock.schedule_once(on_start)
 
 
-                MainApp().run()
-
-        .. tab:: Declarative python style
-
-            .. code-block:: python
-
-                from kivymd.app import MDApp
-                from kivymd.uix.button import MDRectangleFlatButton
-                from kivymd.uix.screen import MDScreen
-
-
-                class Example(MDApp):
-                    def build(self):
-                        self.theme_cls.primary_palette = "Orange"
-                        self.theme_cls.theme_style = "Dark"  # "Light"
-
-                        return (
-                            MDScreen(
-                                MDRectangleFlatButton(
-                                    text="Hello, World",
-                                    pos_hint={"center_x": 0.5, "center_y": 0.5},
-                                ),
-                            )
-                        )
-
-
-                Example().run()
+        Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/theme-style.png
         :align: center

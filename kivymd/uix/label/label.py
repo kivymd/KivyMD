@@ -679,10 +679,9 @@ class MDLabel(
 
     def cancel_selection(self) -> None:
         if self.is_selected:
-            self.md_bg_color = (
-                self.parent.md_bg_color
-                if not self.color_deselection
-                else self.color_deselection
+            self.canvas.before.remove_group("md-label-selection-color")
+            self.canvas.before.remove_group(
+                "md-label-selection-color-rectangle"
             )
             self.dispatch("on_cancel_selection")
             self.is_selected = False
@@ -765,9 +764,12 @@ class MDLabel(
                 #     pass
 
                 with self.canvas.before:
-                    Color(rgba=color)
+                    Color(rgba=color, group="md-label-selection-color")
                     self._canvas_bg = RoundedRectangle(
-                        pos=self.pos, size=self.size, radius=self.radius
+                        pos=self.pos,
+                        size=self.size,
+                        radius=self.radius,
+                        group="md-label-selection-color-rectangle",
                     )
                     self.bind(pos=self.update_canvas_bg_pos)
 

@@ -214,17 +214,8 @@
     halign: "center"
     valign: "center"
     size_hint: None, None
-    size:
-        (dp(40), dp(40)) \
-        if self.theme_font_size == "Primary" else \
-        ( \
-        self.texture_size[0] + self.texture_size[0] / 2, \
-        self.texture_size[1] + self.texture_size[0] / 2, \
-        )
-    text_size:
-        self.size \
-        if self.theme_font_size == "Primary" else \
-        (None, None)
+    size: dp(40), dp(40)
+    text_size: self.size
     line_color:
         ( \
         ( \

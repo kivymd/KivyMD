@@ -24,7 +24,9 @@ class TestMdIconButtonMdBgColorDisabled(MDApp):
         Clock.schedule_once(lambda x: self.stop(), 2)
 
     def check_button_md_bg_color_disabled(self, button):
-        assert button.canvas.before.get_group("md-icon-button-bg-color")[0].rgba == [1.0, 0.0, 0.0, 1.0]
+        assert button.canvas.before.get_group("md-icon-button-bg-color")[
+            0
+        ].rgba == [1.0, 0.0, 0.0, 1.0]
 
     def on_start(self):
         self.generate_buttons()

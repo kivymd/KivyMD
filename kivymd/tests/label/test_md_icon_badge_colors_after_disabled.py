@@ -9,11 +9,11 @@ MDScreen:
     MDIcon:
         id: icon
         icon: "mail"
-        badge_icon: "numeric-10"
-        badge_icon_color: "red"
-        badge_bg_color: "black"
         pos_hint: {"center_x": .5, "center_y": .5}
-        disabled: True
+
+        MDBadge:
+            id: badge
+            text: "12"
 """
 
 
@@ -25,8 +25,8 @@ class TestMDIconBadgeColorsAfterDisabled(MDApp):
         self.root.ids.icon.disabled = False
 
     def check_badge_colors(self, *args):
-        assert self.root.ids.icon.badge_icon_color == [1.0, 0.0, 0.0, 1.0]
-        assert self.root.ids.icon.badge_bg_color == [0.0, 0.0, 0.0, 1.0]
+        assert self.root.ids.badge.text_color == self.theme_cls.onErrorColor
+        assert self.root.ids.badge.md_bg_color == self.theme_cls.errorColor
 
         self.stop()
 

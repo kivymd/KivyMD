@@ -661,7 +661,7 @@ class MDLabel(
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    _canvas_bg = ObjectProperty()
+    _canvas_bg = ObjectProperty(allownone=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -682,6 +682,11 @@ class MDLabel(
             self.canvas.before.remove_group("md-label-selection-color")
             self.canvas.before.remove_group(
                 "md-label-selection-color-rectangle"
+            )
+            self.md_bg_color = (
+                self.parent.md_bg_color
+                if not self.color_deselection
+                else self.color_deselection
             )
             self.dispatch("on_cancel_selection")
             self.is_selected = False

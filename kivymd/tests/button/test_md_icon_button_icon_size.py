@@ -10,7 +10,10 @@ MDScreen:
         id: button
         icon: "language-python"
         theme_font_size: "Custom"
-        font_size: "56sp"
+        font_size: "48sp"
+        radius: [self.height / 2, ]
+        size_hint: None, None
+        size: "84dp", "84dp"
         pos_hint: {"center_x": .5, "center_y": .5}
 """
 

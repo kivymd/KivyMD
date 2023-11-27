@@ -19,8 +19,10 @@ class TestDisabledColor(MDApp):
         return Builder.load_string(KV)
 
     def check_disabled_color(self, *args):
-        assert self.root.ids.label._label.options["color"] == getattr(
-            self.theme_cls, "disabled_hint_text_color"
+        assert (
+            self.root.ids.label.disabled_color
+            == self.theme_cls.onSurfaceColor[:-1]
+            + [self.root.ids.label.label_opacity_value_disabled_text]
         )
         self.stop()
 

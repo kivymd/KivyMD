@@ -9,7 +9,8 @@ MDScreen:
     MDIconButton:
         id: button
         icon: "language-python"
-        icon_size: "56sp"
+        theme_font_size: "Custom"
+        font_size: "56sp"
         pos_hint: {"center_x": .5, "center_y": .5}
 """
 

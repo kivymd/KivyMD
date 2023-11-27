@@ -8,26 +8,27 @@ AndroidToast
 
     # Will be automatically used native implementation of the toast
     # if your application is running on an Android device.
-    # Otherwise, will be used toast implementation
-    # from the kivymd/toast/kivytoast package.
+    # On desktop use `MDSnackbar < https://kivymd.readthedocs.io/en/latest/components/snackbar/>`_
 
     from kivy.lang import Builder
-    from kivy.uix.screenmanager import ScreenManager
 
     from kivymd.toast import toast
     from kivymd.app import MDApp
 
     KV = '''
     MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
 
-         MDFlatButton:
-             text: "My Toast"
+         MDButton:
              pos_hint:{"center_x": .5, "center_y": .5}
              on_press: app.show_toast()
+
+             MDButtonText:
+                 text: "Make toast"
     '''
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         def build(self):
             return Builder.load_string(KV)
 
@@ -35,7 +36,7 @@ AndroidToast
             toast("Hello World", True, 80, 200, 0)
 
 
-    Test().run()
+    Example().run()
 """
 
 __all__ = ("toast",)

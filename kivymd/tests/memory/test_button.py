@@ -33,12 +33,8 @@ class TestButtonMemoryLeak(MDApp):
         self.root.clear_widgets()
         self.root.add_widget(
             MDButton(
-                MDButtonIcon(
-                    icon="plus"
-                ),
-                MDButtonText(
-                    text=f"Count {self.counter}"
-                ),
+                MDButtonIcon(icon="plus"),
+                MDButtonText(text=f"Count {self.counter}"),
             )
         )
 

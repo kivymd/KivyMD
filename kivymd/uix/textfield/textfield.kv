@@ -379,7 +379,7 @@
         )
     multiline: False
     size_hint_y: None
-    height: dp(56)
+    height: dp(56) if not self.multiline else (dp(10) + self.minimum_height)
 
 
 <BaseTextFieldIcon>

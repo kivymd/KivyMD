@@ -8,7 +8,6 @@ MDScreen:
 
     MDButton:
         id: button
-        icon: "android"
         theme_line_color: "Custom"
         line_color: "red"
         pos_hint: {"center_x": .5, "center_y": .5}

@@ -1,3 +1,4 @@
+from kivy.clock import Clock
 from kivy.graphics import Color
 
 from kivymd.app import MDApp
@@ -12,7 +13,8 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.stacklayout import MDStackLayout
 from kivymd.uix.widget import MDWidget
-from kivymd.utils import asynckivy
+
+import asynckivy
 
 
 class TestMdBgColorLayouts(MDApp):
@@ -37,7 +39,7 @@ class TestMdBgColorLayouts(MDApp):
             layout = layout(md_bg_color="red")
             self.root.clear_widgets()
             self.root.add_widget(layout)
-            self.check_md_bg_color(layout)
+            Clock.schedule_once(lambda x: self.check_md_bg_color(layout), 2)
 
         self.stop()
 
@@ -45,10 +47,9 @@ class TestMdBgColorLayouts(MDApp):
         asynckivy.start(self.generate_layouts())
 
     def check_md_bg_color(self, widget):
-        for instruction in widget.canvas.children:
-            if isinstance(instruction, Color):
-                assert instruction.rgba == [1.0, 0.0, 0.0, 1.0]
-                break
+        assert widget.canvas.get_group(
+            "backgroundcolor-behavior-bg-color"
+        )[0].rgba == [1.0, 0.0, 0.0, 1.0]
 
 
 TestMdBgColorLayouts().run()

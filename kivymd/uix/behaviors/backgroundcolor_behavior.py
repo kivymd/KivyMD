@@ -32,6 +32,7 @@ Builder.load_string(
             angle: self.angle
             origin: self._background_origin
         Color:
+            group: "backgroundcolor-behavior-bg-color"
             rgba: self._md_bg_color
         RoundedRectangle:
             group: "Background_instruction"

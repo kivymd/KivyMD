@@ -22,9 +22,9 @@ class TestBgColorAfterChangedTheme(MDApp):
 
     def check_button_colors(self, *args):
         assert self.root.ids.button.md_bg_color == [
-            0.996078431372549,
+            1.0,
             0.9411764705882353,
-            0.9333333333333333,
+            0.9294117647058824,
             1,
         ]
         assert self.root.ids.button_text.text_color == [

@@ -125,7 +125,7 @@ if __name__ == "__main__":
             "kivy>=2.0.0",
             "pillow",
             "materialyoucolor",
-            "asynckivy",
+            "asynckivy>=0.6,<0.7",
         ],
         setup_requires=[],
         python_requires=">=3.7",

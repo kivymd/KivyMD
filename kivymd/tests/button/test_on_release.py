@@ -7,11 +7,13 @@ from kivymd.app import MDApp
 KV = """
 MDScreen:
 
-    MDRaisedButton:
+    MDButton:
         id: button
-        text: "Button"
         pos_hint: {"center_x": .5, "center_y": .5}
         on_release: app.flag = True
+
+        MDButtonText:
+            text: "Text"
 """
 
 

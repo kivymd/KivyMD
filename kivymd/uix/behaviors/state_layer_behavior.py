@@ -196,6 +196,10 @@ class StateLayerBehavior(FocusBehavior):
         NumericProperty(0)
     )
     text_field_opacity_value_disabled_max_length_label = NumericProperty(0.60)
+    text_field_opacity_value_disabled_helper_text_label = NumericProperty(0.60)
+    text_field_opacity_value_disabled_hint_text_label = NumericProperty(0.60)
+    text_field_opacity_value_disabled_leading_icon = NumericProperty(0.60)
+    text_field_opacity_value_disabled_trailing_icon = NumericProperty(0.60)
     text_field_opacity_value_disabled_line = NumericProperty(0.12)
 
     _state = 0.0

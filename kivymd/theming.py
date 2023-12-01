@@ -582,6 +582,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
             for color_key in self.schemes_name_colors:
                 color = color_theme[style_theme.lower()][color_key]
                 exec(f"self.{color_key}Color = {rgba(color)}")
+        self.disabledTextColor = self._get_disabled_hint_text_color()
 
     def switch_theme(self) -> None:
         """Switches the theme from light to dark."""
@@ -626,6 +627,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
         for color_key in self.schemes_name_colors:
             color = default_theme[self.theme_style.lower()][color_key]
             exec(f"self.{color_key}Color = {rgba(color)}")
+            # print(f"self.{color_key}Color = {rgba(color)}")
         self.disabledTextColor = self._get_disabled_hint_text_color()
 
     def _set_palette_color(self) -> None:

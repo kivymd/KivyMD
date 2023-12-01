@@ -1574,32 +1574,13 @@ class MDTextField(
 
         super().on_disabled(instance, disabled)
 
-        if self._max_length_label and disabled:
-            Clock.schedule_once(
-                lambda x: self.set_texture_color(
-                    self._max_length_label,
-                    self.canvas.before.get_group("max-length-color")[0],
-                    (
-                        self._max_length_label.color
-                        if not self.error
-                        else self.theme_cls.disabledTextColor
-                    )[:-1]
-                    + [self.text_field_opacity_value_disabled_max_length_label],
-                )
-            )
-        elif self._max_length_label and not disabled:
-            Clock.schedule_once(
-                lambda x: self.set_texture_color(
-                    self._max_length_label,
-                    self.canvas.before.get_group("max-length-color")[0],
-                    (
-                        self._max_length_label.color
-                        if not self.error
-                        else self._get_error_color()
-                    )[:-1]
-                    + [1],
-                )
-            )
+        def on_disabled(*args):
+            if disabled:
+                self._set_disabled_colors()
+            else:
+                self._set_enabled_colors()
+
+        Clock.schedule_once(on_disabled)
 
     def on_error(self, instance, error: bool) -> None:
         """
@@ -1649,6 +1630,124 @@ class MDTextField(
     def on_height(self, instance, value_height: float) -> None:
         if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
+
+    def _set_enabled_colors(self):
+        def schedule_set_texture_color(widget, group_name, color):
+            Clock.schedule_once(
+                lambda x: self.set_texture_color(widget, group_name, color)
+            )
+
+        max_length_label_group = self.canvas.before.get_group(
+            "max-length-color"
+        )
+        helper_text_label_group = self.canvas.before.get_group(
+            "helper-text-color"
+        )
+        hint_text_label_group = self.canvas.after.get_group("hint-text-color")
+        leading_icon_group = self.canvas.before.get_group("leading-icons-color")
+        trailing_icon_group = self.canvas.before.get_group(
+            "trailing-icons-color"
+        )
+
+        error_color = self._get_error_color()
+        on_surface_variant_color = self.theme_cls.onSurfaceVariantColor
+
+        schedule_set_texture_color(
+            self._max_length_label,
+            max_length_label_group[0],
+            self._max_length_label.color[:-1] + [1]
+            if not self.error
+            else error_color,
+        )
+        schedule_set_texture_color(
+            self._helper_text_label,
+            helper_text_label_group[0],
+            on_surface_variant_color
+            if not self._helper_text_label.text_color_focus
+            else self._helper_text_label.text_color_focus
+            if not self.error
+            else error_color,
+        )
+        schedule_set_texture_color(
+            self._hint_text_label,
+            hint_text_label_group[0],
+            on_surface_variant_color
+            if not self._hint_text_label.text_color_normal
+            else self._hint_text_label.text_color_normal
+            if not self.error
+            else error_color,
+        )
+        schedule_set_texture_color(
+            self._leading_icon,
+            leading_icon_group[0],
+            on_surface_variant_color
+            if self._leading_icon.theme_icon_color == "Primary"
+            or not self._leading_icon.icon_color_normal
+            else self._leading_icon.icon_color_normal,
+        )
+        schedule_set_texture_color(
+            self._trailing_icon,
+            trailing_icon_group[0],
+            on_surface_variant_color
+            if self._trailing_icon.theme_icon_color == "Primary"
+            or not self._trailing_icon.icon_color_normal
+            else self._trailing_icon.icon_color_normal
+            if not self.error
+            else error_color,
+        )
+
+    def _set_disabled_colors(self):
+        def schedule_set_texture_color(widget, group_name, color, opacity):
+            Clock.schedule_once(
+                lambda x: self.set_texture_color(
+                    widget, group_name, color + [opacity]
+                )
+            )
+
+        max_length_label_group = self.canvas.before.get_group(
+            "max-length-color"
+        )
+        helper_text_label_group = self.canvas.before.get_group(
+            "helper-text-color"
+        )
+        hint_text_label_group = self.canvas.after.get_group("hint-text-color")
+        leading_icon_group = self.canvas.before.get_group("leading-icons-color")
+        trailing_icon_group = self.canvas.before.get_group(
+            "trailing-icons-color"
+        )
+
+        disabled_color = (self.theme_cls.disabledTextColor)[:-1]
+
+        schedule_set_texture_color(
+            self._max_length_label,
+            max_length_label_group[0],
+            disabled_color,
+            self.text_field_opacity_value_disabled_max_length_label,
+        )
+        schedule_set_texture_color(
+            self._helper_text_label,
+            helper_text_label_group[0],
+            disabled_color,
+            self.text_field_opacity_value_disabled_helper_text_label,
+        )
+        schedule_set_texture_color(
+            self._hint_text_label,
+            hint_text_label_group[0],
+            disabled_color,
+            self.text_field_opacity_value_disabled_hint_text_label,
+        )
+        schedule_set_texture_color(
+            self._leading_icon,
+            leading_icon_group[0],
+            disabled_color,
+            self.text_field_opacity_value_disabled_leading_icon,
+        )
+        schedule_set_texture_color(
+            self._trailing_icon,
+            trailing_icon_group[0],
+            disabled_color,
+            self.text_field_opacity_value_disabled_trailing_icon,
+        )
 
     def _get_has_error(self) -> bool:
         """

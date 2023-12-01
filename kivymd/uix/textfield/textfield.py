@@ -1716,7 +1716,7 @@ class MDTextField(
             "trailing-icons-color"
         )
 
-        disabled_color = (self.theme_cls.disabledTextColor)[:-1]
+        disabled_color = self.theme_cls.disabledTextColor[:-1]
 
         schedule_set_texture_color(
             self._max_length_label,

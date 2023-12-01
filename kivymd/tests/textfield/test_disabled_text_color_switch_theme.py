@@ -5,18 +5,30 @@ from kivymd.app import MDApp
 
 KV = """
 MDScreen:
+    md_bg_color: self.theme_cls.backgroundColor
+    on_touch_down: field.disabled = not field.disabled
 
     MDTextField:
         id: field
-        text: "Text"
-        hint_text: "Hint text"
-        helper_text: "Helper text"
-        helper_text_mode: "persistent"
-        icon_right: "gmail"
-        size_hint_x: .5
-        max_text_length: 3
         pos_hint: {"center_x": .5, "center_y": .5}
+        size_hint_x: .6
         disabled: True
+
+        MDTextFieldLeadingIcon:
+            icon: "account"
+
+        MDTextFieldHintText:
+            text: "Hint text"
+
+        MDTextFieldHelperText:
+            text: "Helper text"
+            mode: "persistent"
+
+        MDTextFieldTrailingIcon:
+            icon: "information"
+
+        MDTextFieldMaxLengthText:
+            max_text_length: 10
 """
 
 
@@ -25,17 +37,21 @@ class TestDisabledTextColorSwitchTheme(MDApp):
         return Builder.load_string(KV)
 
     def check_colors(self, *args):
-        for instruction in self.root.ids.field.canvas.before.children:
-            if instruction.group in [
-                "hint-text-color",
-                "max-length-color",
-                "right-left-icons-color",
-                "helper-text-color",
-            ]:
-                assert (
-                    instruction.rgba == self.theme_cls.disabled_hint_text_color
-                )
+        for group_name in [
+            "helper-text-color",
+            "leading-icons-color",
+            "trailing-icons-color",
+            "max-length-color",
+        ]:
+            group = self.root.ids.field.canvas.before.get_group(group_name)[0]
+            assert (
+                group.rgba, self.theme_cls.disabledTextColor[:-1] + [0.60]
+            )
 
+        group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
+        assert (
+            group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
+        )
         self.stop()
 
     def change_theme(self, *args):

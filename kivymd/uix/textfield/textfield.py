@@ -1231,7 +1231,10 @@ class MDTextField(
         """Fired when the `primary_palette` or `theme_style` value changes."""
 
         def update_colors(*args):
-            self.on_focus(self, self.focus)
+            if not self.disabled:
+                self.on_focus(self, self.focus)
+            else:
+                self.on_disabled(self, self.disabled)
 
         Clock.schedule_once(update_colors, 1)
 
@@ -1580,7 +1583,7 @@ class MDTextField(
             else:
                 self._set_enabled_colors()
 
-        Clock.schedule_once(on_disabled)
+        Clock.schedule_once(on_disabled, 0.2)
 
     def on_error(self, instance, error: bool) -> None:
         """

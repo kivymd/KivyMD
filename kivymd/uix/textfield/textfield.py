@@ -1325,26 +1325,29 @@ class MDTextField(
     def set_text(self, instance, text: str) -> None:
         """Fired when text is entered into a text field."""
 
-        self.text = re.sub("\n", " ", text) if not self.multiline else text
-        self.set_max_text_length()
+        def set_text(*args):
+            self.text = re.sub("\n", " ", text) if not self.multiline else text
+            self.set_max_text_length()
 
-        if self.text and self._get_has_error() or self._get_has_error():
-            self.error = True
-        elif self.text and not self._get_has_error():
-            self.error = False
+            if self.text and self._get_has_error() or self._get_has_error():
+                self.error = True
+            elif self.text and not self._get_has_error():
+                self.error = False
 
-        # Start the appropriate texture animations when programmatically
-        # pasting text into a text field.
-        if len(self.text) != 0 and not self.focus:
-            if self._hint_text_label:
-                self._hint_text_label.font_size = theme_font_styles[
-                    self._hint_text_label.font_style
-                ]["small"]["font-size"]
-                self._hint_text_label.texture_update()
-                self.set_hint_text_font_size()
+            # Start the appropriate texture animations when programmatically
+            # pasting text into a text field.
+            if len(self.text) != 0 and not self.focus:
+                if self._hint_text_label:
+                    self._hint_text_label.font_size = theme_font_styles[
+                        self._hint_text_label.font_style
+                    ]["small"]["font-size"]
+                    self._hint_text_label.texture_update()
+                    self.set_hint_text_font_size()
 
-        if (not self.text and not self.focus) or (self.text and not self.focus):
-            self.on_focus(instance, False)
+            if (not self.text and not self.focus) or (self.text and not self.focus):
+                self.on_focus(instance, False)
+
+        Clock.schedule_once(set_text)
 
     def on_focus(self, instance, focus: bool) -> None:
         """Fired when the `focus` value changes."""

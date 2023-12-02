@@ -16,6 +16,7 @@ MDScreen:
     MDTextField:
         id: field
         pos_hint: {"center_x": .5, "center_y": .5}
+        text: "Text"
         size_hint_x: .6
 
         MDTextFieldLeadingIcon:
@@ -48,7 +49,7 @@ class TestErrorStateColorHelperTextModeOnFocus(MDApp):
 
         instruction = self.root.ids.field.canvas.before.get_group("helper-text-color")[0]
         assert instruction.rgba == (
-            [0.0, 0.0, 0.0, 0.0] if not focus else self.theme_cls.onSurfaceVariantColor
+            [0.0, 0.0, 0.0, 0.0] if not focus else self.theme_cls.errorColor
         )
 
         if self.state == "checked":

@@ -11,15 +11,28 @@ from kivymd.app import MDApp
 
 KV = """
 MDScreen:
+    md_bg_color: self.theme_cls.backgroundColor
 
     MDTextField:
         id: field
-        text: "Text"
-        helper_text: "Helper text"
-        helper_text_mode: "on_focus"
-        max_text_length: 3
-        size_hint_x: .5
         pos_hint: {"center_x": .5, "center_y": .5}
+        size_hint_x: .6
+
+        MDTextFieldLeadingIcon:
+            icon: "account"
+
+        MDTextFieldHintText:
+            text: "Hint text"
+
+        MDTextFieldHelperText:
+            text: "Helper text"
+            mode: "on_focus"
+
+        MDTextFieldTrailingIcon:
+            icon: "information"
+
+        MDTextFieldMaxLengthText:
+            max_text_length: 3
 """
 
 
@@ -33,11 +46,10 @@ class TestErrorStateColorHelperTextModeOnFocus(MDApp):
         field = self.root.ids.field
         focus = field.focus
 
-        for instruction in self.root.ids.field.canvas.before.children:
-            if instruction.group == "helper-text-color":
-                assert instruction.rgba == (
-                    [0.0, 0.0, 0.0, 0.0] if not focus else field.error_color
-                )
+        instruction = self.root.ids.field.canvas.before.get_group("helper-text-color")[0]
+        assert instruction.rgba == (
+            [0.0, 0.0, 0.0, 0.0] if not focus else self.theme_cls.onSurfaceVariantColor
+        )
 
         if self.state == "checked":
             self.stop()

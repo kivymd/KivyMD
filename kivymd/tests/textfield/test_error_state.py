@@ -19,17 +19,28 @@ from kivymd.app import MDApp
 
 KV = """
 MDScreen:
+    md_bg_color: self.theme_cls.backgroundColor
 
     MDTextField:
         id: field
-        text: "Text"
-        icon_right: "gmail"
-        hint_text: "Hint text"
-        helper_text: "Helper text"
-        helper_text_mode: "on_focus"
-        max_text_length: 3
-        size_hint_x: .5
         pos_hint: {"center_x": .5, "center_y": .5}
+        size_hint_x: .6
+
+        MDTextFieldLeadingIcon:
+            icon: "account"
+
+        MDTextFieldHintText:
+            text: "Hint text"
+
+        MDTextFieldHelperText:
+            text: "Helper text"
+            mode: "persistent"
+
+        MDTextFieldTrailingIcon:
+            icon: "information"
+
+        MDTextFieldMaxLengthText:
+            max_text_length: 3
 """
 
 
@@ -37,26 +48,32 @@ class TestErrorState(MDApp):
     def build(self):
         return Builder.load_string(KV)
 
-    def check_field_color(self, *args):
-        for instruction in self.root.ids.field.canvas.before.children:
-            if instruction.group in ["helper-text-color", "max-length-color"]:
-                assert (
-                    instruction.rgba == self.theme_cls.disabled_hint_text_color
-                )
-            elif instruction.group in [
-                "active-underline-color",
-                "text-color",
-                "hint-text-color",
-            ]:
-                assert instruction.rgba == self.theme_cls.primary_color
+    def check_colors(self, *args):
+        for group_name in [
+            "helper-text-color",
+            "trailing-icons-color",
+            "max-length-color",
+        ]:
+            group = self.root.ids.field.canvas.before.get_group(group_name)[0]
+            assert (
+                group.rgba == self.theme_cls.errorColor
+            )
 
+        group = self.root.ids.field.canvas.before.get_group("leading-icons-color")[0]
+        assert (
+            group.rgba == self.theme_cls.onSurfaceVariantColor
+        )
+        group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
+        assert (
+            group.rgba == self.theme_cls.errorColor
+        )
         self.stop()
 
     def set_max_text_length(self, *args):
         field = self.root.ids.field
         field.focus = True
-        field.text = "Tex"
-        Clock.schedule_once(self.check_field_color, 2)
+        field.text = "Text"
+        Clock.schedule_once(self.check_colors, 2)
 
     def on_start(self):
         Clock.schedule_once(self.set_max_text_length, 2)

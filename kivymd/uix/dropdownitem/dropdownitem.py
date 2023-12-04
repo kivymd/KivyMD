@@ -134,6 +134,7 @@ class MDDropDownItem(
         if isinstance(widget, MDDropDownItemText):
             self._drop_down_text = widget
             widget.bind(text=self.update_text_item)
+            Clock.schedule_once(lambda x: self.on_disabled(self, self.disabled))
         else:
             return super().add_widget(widget)
 

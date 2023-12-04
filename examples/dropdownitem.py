@@ -41,7 +41,7 @@ class Example(MDApp, CommonApp):
             self.drop_item_menu = MDDropdownMenu(
                 caller=item, items=menu_items, position="center"
             )
-            self.drop_item_menu.open()
+        self.drop_item_menu.open()
 
     def menu_callback(self, text_item):
         self.root.ids.drop_text.text = text_item

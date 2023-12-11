@@ -3,14 +3,15 @@ Themes/Material App
 ===================
 
 This module contains :class:`MDApp` class that is inherited from
-:class:`~kivy.app.App`. :class:`MDApp` has some properties needed for ``KivyMD``
-library (like :attr:`~MDApp.theme_cls`). You can turn on the monitor displaying
-the current ``FPS`` value in your application:
+:class:`~kivy.app.App`. :class:`MDApp` has some properties needed for `KivyMD`
+library (like :attr:`~MDApp.theme_cls`). You can turn on the monitor
+displaying the current `FP` value in your application:
 
 .. code-block:: python
 
     KV = '''
     MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDLabel:
             text: "Hello, World!"
@@ -55,7 +56,12 @@ class FpsMonitoring:
     """Implements a monitor to display the current FPS in the toolbar."""
 
     def fps_monitor_start(self, anchor: str = "top") -> None:
-        """Adds a monitor to the main application window."""
+        """
+        Adds a monitor to the main application window.
+
+        :type anchor: str;
+        :param anchor: anchor FPS panel ('top' or 'bottom');
+        """
 
         def add_monitor(*args):
             from kivy.core.window import Window
@@ -128,8 +134,8 @@ class MDApp(App, FpsMonitoring):
             if "kivymd" in path_to_directory:
                 Logger.critical(
                     "KivyMD: "
-                    "Do not use the word 'kivymd' in the name of the directory "
-                    "from where you download KV files"
+                    "Do not use the word 'kivymd' in the name of the "
+                    "directory from where you download KV files"
                 )
             if (
                 "venv" in path_to_dir

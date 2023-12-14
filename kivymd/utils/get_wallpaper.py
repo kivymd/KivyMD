@@ -33,7 +33,9 @@ def get_wallpaper(
             return f"{user_data_dir}/wallpaper.png"
         except Exception as exc:
             Logger.error(
-                f"KivyMD: Dynamic color will not be used. The default palette is set. {exc}"
+                f"KivyMD: Dynamic color will not be used. "
+                f"The default palette is set. "
+                f"{exc}"
             )
             return False
     else:

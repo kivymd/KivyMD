@@ -2,12 +2,6 @@
 Components/FitImage
 ===================
 
-Feature to automatically crop a `Kivy` image to fit your layout
-Write by Benedikt Zwölfer
-
-Referene - https://gist.github.com/benni12er/95a45eb168fc33a4fcd2d545af692dad
-
-
 Example:
 ========
 
@@ -36,11 +30,11 @@ Example:
 
             MDBoxLayout(
                 FitImage(
-                    size_hint_y=.3,
+                    size_hint_y=0.3,
                     source='images/img1.jpg',
                 ),
                 FitImage(
-                    size_hint_y=.7,
+                    size_hint_y=0.7,
                     source='images/img2.jpg',
                 ),
                 size_hint_y=None,
@@ -68,7 +62,7 @@ Example with round corners:
             MDScreen:
 
                 MDCard:
-                    radius: 36
+                    radius: dp(36)
                     md_bg_color: "grey"
                     pos_hint: {"center_x": .5, "center_y": .5}
                     size_hint: .4, .8
@@ -77,7 +71,7 @@ Example with round corners:
                         source: "bg.jpg"
                         size_hint_y: .35
                         pos_hint: {"top": 1}
-                        radius: 36, 36, 0, 0
+                        radius: dp(36), dp(36), 0, 0
             '''
 
 
@@ -92,6 +86,8 @@ Example with round corners:
     .. tab:: Declarative python styles
 
         .. code-block:: python
+
+            from kivy.metrics import dp
 
             from kivymd.app import MDApp
             from kivymd.uix.card import MDCard
@@ -109,11 +105,11 @@ Example with round corners:
                                     source="bg.jpg",
                                     size_hint_y=0.35,
                                     pos_hint={"top": 1},
-                                    radius=(36, 36, 0, 0),
+                                    radius=(dp(36), dp(36), 0, 0),
                                 ),
-                                radius=36,
+                                radius=dp(36),
                                 md_bg_color="grey",
-                                pos_hint={"center_x": .5, "center_y": .5},
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
                                 size_hint=(0.4, 0.8),
                             ),
                         )
@@ -125,114 +121,30 @@ Example with round corners:
 
 __all__ = ("FitImage",)
 
-from kivy.clock import Clock
-from kivy.graphics.context_instructions import Color
-from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.properties import OptionProperty
 from kivy.uix.image import AsyncImage
-from kivy.uix.widget import Widget
 
 from kivymd.uix.behaviors import StencilBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
 
 
-class FitImage(MDBoxLayout, StencilBehavior):
+class FitImage(AsyncImage, StencilBehavior):
     """
     Fit image class.
 
     For more information, see in the
-    :class:`~kivymd.uix.boxlayout.MDLayout` and
-    :class:`~kivymd.uix.behaviors.StencilBehavior` classes documentation.
+    :class:`~kivy.uix.image.AsyncImage` and
+    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior`
+    classes documentation.
     """
 
-    source = ObjectProperty()
+    fit_mode = OptionProperty(
+        "cover", options=["scale-down", "fill", "contain", "cover"]
+    )
     """
-    Filename/source of your image.
+    Image will be stretched horizontally or vertically to fill the widget box,
+    **maintaining its aspect ratio**. If the image has a different aspect ratio
+    than the widget, then the image will be clipped to fit.
 
-    :attr:`source` is a :class:`~kivy.properties.StringProperty`
-    and defaults to None.
+    :attr:`fit_mode` is a :class:`~kivy.properties.OptionProperty` and
+    defaults to `'cover'`.
     """
-
-    mipmap = BooleanProperty(False)
-    """
-    Indicate if you want OpenGL mipmapping to be applied to the texture.
-    Read :ref:`mipmap` for more information.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
-    _container = ObjectProperty()
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Clock.schedule_once(self._late_init)
-
-    def _late_init(self, *args):
-        self._container = Container(self.source, self.mipmap)
-        self.bind(source=self._container.setter("source"))
-        self.add_widget(self._container)
-
-    def reload(self):
-        self._container.image.reload()
-
-
-class Container(Widget):
-    source = ObjectProperty()
-    image = ObjectProperty()
-
-    def __init__(self, source, mipmap, **kwargs):
-        super().__init__(**kwargs)
-        self.image = AsyncImage(mipmap=mipmap)
-        self.loader_clock = Clock.schedule_interval(
-            self.adjust_size, self.image.anim_delay
-        )
-        self.image.bind(
-            on_load=lambda inst: (
-                self.adjust_size(),
-                self.loader_clock.cancel(),
-            )
-        )
-        self.source = source
-        self.bind(size=self.adjust_size, pos=self.adjust_size)
-
-    def on_source(self, instance, value):
-        if isinstance(value, str):
-            self.image.source = value
-        else:
-            self.image.texture = value
-        self.adjust_size()
-
-    def adjust_size(self, *args):
-        if not self.parent or not self.image.texture:
-            return
-
-        (par_x, par_y) = self.parent.size
-
-        if par_x == 0 or par_y == 0:
-            with self.canvas:
-                self.canvas.clear()
-            return
-
-        par_scale = par_x / par_y
-        (img_x, img_y) = self.image.texture.size
-        img_scale = img_x / img_y
-
-        if par_scale > img_scale:
-            (img_x_new, img_y_new) = (img_x, img_x / par_scale)
-        else:
-            (img_x_new, img_y_new) = (img_y * par_scale, img_y)
-
-        crop_pos_x = (img_x - img_x_new) / 2
-        crop_pos_y = (img_y - img_y_new) / 2
-
-        subtexture = self.image.texture.get_region(
-            crop_pos_x, crop_pos_y, img_x_new, img_y_new
-        )
-
-        with self.canvas:
-            self.canvas.clear()
-            Color(1, 1, 1)
-            Rectangle(texture=subtexture, pos=self.pos, size=(par_x, par_y))

@@ -286,6 +286,12 @@ class CommonRipple:
     """
 
     ripple_effect = BooleanProperty(True)
+    """
+    Should I use the ripple effect.
+
+    :attr:`ripple_effect` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
 
     _ripple_rad = NumericProperty()
     _doing_ripple = BooleanProperty(False)

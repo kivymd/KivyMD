@@ -600,8 +600,11 @@ class MDNavigationLayout(DeclarativeBehavior, FloatLayout):
         if drawer.drawer_type == "standard":
             manager.size_hint_x = None
             if drawer.anchor == "left":
-                manager.x = drawer.width + drawer.x
-                manager.width = self.width - manager.x
+                if self._navigation_drawer.__class__.__name__ != "MDBottomSheet":
+                    manager.x = drawer.width + drawer.x
+                    manager.width = self.width - manager.x
+                else:
+                    manager.width = self.width - manager.x
             else:
                 manager.x = 0
                 manager.width = drawer.x

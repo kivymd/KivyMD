@@ -11,7 +11,7 @@ MDScreen:
     MDIconButton:
         on_release: app.open_menu(self)
         pos_hint: {"top": .98}
-        x: root.width - (self.width + dp(24))
+        x: dp(12)
         icon: "menu"
 
     MDNavigationLayout:

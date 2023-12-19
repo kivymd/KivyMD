@@ -2,51 +2,8 @@
 Components/FitImage
 ===================
 
-Example:
-========
-
-.. tabs::
-
-    .. tab:: Declarative KV styles
-
-        .. code-block:: kv
-
-            MDBoxLayout:
-                size_hint_y: None
-                height: "200dp"
-                orientation: 'vertical'
-
-                FitImage:
-                    size_hint_y: 3
-                    source: 'images/img1.jpg'
-
-                FitImage:
-                    size_hint_y: 1
-                    source: 'images/img2.jpg'
-
-    .. tab:: Declarative python styles
-
-        .. code-block:: python
-
-            MDBoxLayout(
-                FitImage(
-                    size_hint_y=0.3,
-                    source='images/img1.jpg',
-                ),
-                FitImage(
-                    size_hint_y=0.7,
-                    source='images/img2.jpg',
-                ),
-                size_hint_y=None,
-                height="200dp",
-                orientation='vertical',
-            )
-
-Example with round corners:
-===========================
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
-    :align: center
+Example
+=======
 
 .. tabs::
 
@@ -60,28 +17,29 @@ Example with round corners:
 
             KV = '''
             MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-                MDCard:
-                    radius: dp(36)
-                    md_bg_color: "grey"
+                MDBoxLayout:
+                    radius: "36dp"
                     pos_hint: {"center_x": .5, "center_y": .5}
                     size_hint: .4, .8
+                    md_bg_color: self.theme_cls.onSurfaceVariantColor
 
                     FitImage:
-                        source: "bg.jpg"
+                        source: "image.png"
                         size_hint_y: .35
                         pos_hint: {"top": 1}
-                        radius: dp(36), dp(36), 0, 0
+                        radius: "36dp", "36dp", 0, 0
             '''
 
 
             class Example(MDApp):
                 def build(self):
-                    self.theme_cls.theme_style = "Dark"
                     return Builder.load_string(KV)
 
 
             Example().run()
+
 
     .. tab:: Declarative python styles
 
@@ -97,18 +55,17 @@ Example with round corners:
 
             class Example(MDApp):
                 def build(self):
-                    self.theme_cls.theme_style = "Dark"
                     return (
                         MDScreen(
-                            MDCard(
+                            MDBoxLayout(
                                 FitImage(
-                                    source="bg.jpg",
+                                    source="image.png",
                                     size_hint_y=0.35,
                                     pos_hint={"top": 1},
                                     radius=(dp(36), dp(36), 0, 0),
                                 ),
                                 radius=dp(36),
-                                md_bg_color="grey",
+                                md_bg_color=self.theme_cls.onSurfaceVariantColor,
                                 pos_hint={"center_x": 0.5, "center_y": 0.5},
                                 size_hint=(0.4, 0.8),
                             ),
@@ -117,6 +74,9 @@ Example with round corners:
 
 
             Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fitimage-round-corners.png
+    :align: center
 """
 
 __all__ = ("FitImage",)

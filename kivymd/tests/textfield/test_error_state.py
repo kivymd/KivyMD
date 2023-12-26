@@ -55,18 +55,14 @@ class TestErrorState(MDApp):
             "max-length-color",
         ]:
             group = self.root.ids.field.canvas.before.get_group(group_name)[0]
-            assert (
-                group.rgba == self.theme_cls.errorColor
-            )
+            assert group.rgba == self.theme_cls.errorColor
 
-        group = self.root.ids.field.canvas.before.get_group("leading-icons-color")[0]
-        assert (
-            group.rgba == self.theme_cls.onSurfaceVariantColor
-        )
+        group = self.root.ids.field.canvas.before.get_group(
+            "leading-icons-color"
+        )[0]
+        assert group.rgba == self.theme_cls.onSurfaceVariantColor
         group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
-        assert (
-            group.rgba == self.theme_cls.errorColor
-        )
+        assert group.rgba == self.theme_cls.errorColor
         self.stop()
 
     def set_max_text_length(self, *args):

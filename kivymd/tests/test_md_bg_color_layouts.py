@@ -47,9 +47,9 @@ class TestMdBgColorLayouts(MDApp):
         asynckivy.start(self.generate_layouts())
 
     def check_md_bg_color(self, widget):
-        assert widget.canvas.get_group(
-            "backgroundcolor-behavior-bg-color"
-        )[0].rgba == [1.0, 0.0, 0.0, 1.0]
+        assert widget.canvas.get_group("backgroundcolor-behavior-bg-color")[
+            0
+        ].rgba == [1.0, 0.0, 0.0, 1.0]
 
 
 TestMdBgColorLayouts().run()

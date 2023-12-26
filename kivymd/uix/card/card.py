@@ -17,8 +17,8 @@ Components/Card
 - MDCardSwipe_
 
 .. note:: :class:`~MDCard` inherited from
-    :class:`~kivymd.uix.boxlayout.MDBoxLayout`. You can use all parameters and
-    attributes of the :class:`~kivymd.uix.boxlayout.MDBoxLayout` class in the
+    :class:`~kivy.uix.boxlayout.BoxLayout`. You can use all parameters and
+    attributes of the :class:`~kivy.uix.boxlayout.BoxLayout` class in the
     :class:`~MDCard` class.
 
 .. MDCard:

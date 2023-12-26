@@ -548,7 +548,6 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     ScaleBehavior,
     CircularRippleBehavior,
-    DeclarativeBehavior,
     RotateBehavior,
     CommonElevationBehavior,
 )
@@ -1385,16 +1384,13 @@ class MDDockedDatePickerMenuSelectionItem(RecycleDataViewBehavior, BoxLayout):
         rv.data[index]["selected"] = is_selected
 
 
-class MDDockedDatePicker(
-    DeclarativeBehavior, CommonElevationBehavior, MDBaseDatePicker
-):
+class MDDockedDatePicker(CommonElevationBehavior, MDBaseDatePicker):
     """
     Implements docked date picker.
 
     .. versionchanged:: 2.0.0
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
     :class:`~MDBaseDatePicker`
     classes documentation.
@@ -1515,16 +1511,13 @@ class MDDockedDatePicker(
 ###############################################################################
 
 
-class MDModalDatePicker(
-    DeclarativeBehavior, CommonElevationBehavior, MDBaseDatePicker
-):
+class MDModalDatePicker(CommonElevationBehavior, MDBaseDatePicker):
     """
     Implements modal date picker.
 
     .. versionchanged:: 2.0.0
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
     :class:`~MDBaseDatePicker`
     classes documentation.
@@ -1745,16 +1738,13 @@ class MDModalDatePickerContainerMenuYearSelection(
 ###############################################################################
 
 
-class MDModalInputDatePicker(
-    DeclarativeBehavior, CommonElevationBehavior, MDBaseDatePicker
-):
+class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
     """
     Implements modal input date picker.
 
     .. versionchanged:: 2.0.0
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
     :class:`~MDBaseDatePicker`
     classes documentation.

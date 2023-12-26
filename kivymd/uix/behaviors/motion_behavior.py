@@ -18,16 +18,15 @@ __all__ = (
     "MotionDropDownMenuBehavior",
     "MotionDialogBehavior",
     "MotionShackBehavior",
+    "MotionDatePickerBehavior",
 )
 
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import StringProperty, NumericProperty, OptionProperty
+from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from kivymd.uix.behaviors.scale_behavior import ScaleBehavior
-
-from kivymd.uix.behaviors.stencil_behavior import StencilBehavior
 
 
 class MotionBase:
@@ -280,7 +279,10 @@ class MotionDialogBehavior(ScaleBehavior, MotionBase):
     """
     Base class for dialog movement behavior.
 
-    For more information, see in the :class:`~MotionBase` class documentation.
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior`
+    :class:`~MotionBase`
+    classes documentation.
     """
 
     show_transition = StringProperty("out_expo")
@@ -364,6 +366,56 @@ class MotionDialogBehavior(ScaleBehavior, MotionBase):
                 Animation(alpha=0.4, d=self.show_duration).start(self._scrim)
 
         Clock.schedule_once(open)
+
+
+class MotionDatePickerBehavior(MotionDialogBehavior):
+    """
+    Base class for date picker movement behavior.
+
+    For more information, see in the
+    :class:`~MotionDialogBehavior` class documentation.
+    """
+
+    _scrim = ObjectProperty()
+
+    def on_open(self, *args):
+        """Fired when a dialog opened."""
+
+        def open(*args):
+            self.scale_value_y = 0
+            self.scale_value_center = (0, self.center[1] + self.height / 2)
+            Animation(
+                opacity=1,
+                scale_value_y=1,
+                t=self.show_transition,
+                d=self.show_duration,
+            ).start(self)
+
+            if self._scrim:
+                Animation(alpha=0.4, d=self.show_duration).start(self._scrim)
+
+        Clock.schedule_once(open)
+
+    def on_dismiss(self, *args):
+        """Fired when a dialog closed."""
+
+        def remove_dialog(*args):
+            Window.remove_widget(self)
+            if self._scrim:
+                Window.remove_widget(self._scrim)
+            self.dispatch("on_dismiss")
+
+        if self._scrim:
+            Animation(alpha=0, d=self.hide_duration).start(self._scrim)
+
+        anim = Animation(
+            opacity=0,
+            scale_value_y=0,
+            t=self.hide_transition,
+            d=self.hide_duration,
+        )
+        anim.bind(on_complete=remove_dialog)
+        anim.start(self)
 
 
 class MotionShackBehavior(MotionBase):

@@ -50,7 +50,7 @@ def PythonPythonMapper_pathname(self: PythonPythonMapper):
 def PythonSphinxMapper_output_rst(
     self: PythonSphinxMapper, root, source_suffix
 ):
-    for _, obj in sphinx.util.status_iterator(
+    for _, obj in sphinx.util.display.status_iterator(
         self.objects.items(),
         bold("[AutoAPI] ") + "Rendering Data... ",
         length=len(self.objects),

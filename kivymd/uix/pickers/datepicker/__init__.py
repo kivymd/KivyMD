@@ -1,5 +1,5 @@
 from .datepicker import (  # NOQA F401
-    BaseDialogPicker,
-    DatePickerInputField,
-    MDDatePicker,
+    MDDockedDatePicker,
+    MDModalDatePicker,
+    MDModalInputDatePicker,
 )

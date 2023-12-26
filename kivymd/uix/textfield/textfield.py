@@ -1344,7 +1344,9 @@ class MDTextField(
                     self._hint_text_label.texture_update()
                     self.set_hint_text_font_size()
 
-            if (not self.text and not self.focus) or (self.text and not self.focus):
+            if (not self.text and not self.focus) or (
+                self.text and not self.focus
+            ):
                 self.on_focus(instance, False)
 
         Clock.schedule_once(set_text)

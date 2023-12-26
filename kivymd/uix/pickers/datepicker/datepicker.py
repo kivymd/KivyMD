@@ -1038,7 +1038,7 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
 
 class MDDatePickerButtonsContainer(BoxLayout):
     """
-    Implements a container with buttons for date picker dialog dialogs.
+    Implements a container with buttons for date picker dialogs.
 
     .. versionchanged:: 2.0.0
 

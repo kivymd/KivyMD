@@ -231,7 +231,7 @@ API break
         md_bg_color="#E8D8D7",
     ).open()
 
-2.2.0 version
+2.0.0 version
 -------------
 
 .. code-block:: python

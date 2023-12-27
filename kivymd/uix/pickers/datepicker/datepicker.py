@@ -504,6 +504,7 @@ API break
 """
 
 # TODO: Should we implement a full-screen date picker dialog?
+#  Implement a tooltip for time picker elements.
 #  Should we implement the feature to settings custom colors for the
 #  date picker dialogs?
 

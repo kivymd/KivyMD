@@ -505,7 +505,7 @@ API break
 
 # TODO: Should we implement a full-screen date picker dialog?
 #  Should we implement the feature to settings custom colors for the
-#  date picker dialog?
+#  date picker dialogs?
 
 from __future__ import annotations
 

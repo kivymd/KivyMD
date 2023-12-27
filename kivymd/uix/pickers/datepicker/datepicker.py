@@ -29,7 +29,8 @@ KivyMD provides the following date pickers classes for use:
 - MDModalDatePicker_
 - MDModalInputDatePicker_
 
-.. MDDockedDatePicker:
+.. _MDDockedDatePicker:
+
 MDDockedDatePicker
 ------------------
 
@@ -96,7 +97,8 @@ dates.
 
     Example().run()
 
-.. MDModalDatePicker:
+.. _MDModalDatePicker:
+
 MDModalDatePicker
 -----------------
 
@@ -145,7 +147,8 @@ a docked datepicker instead.
 
     Example().run()
 
-.. MDModalInputDatePicker:
+.. _MDModalInputDatePicker:
+
 MDModalInputDatePicker
 ----------------------
 
@@ -594,7 +597,7 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
         :attr:`on_ok`
             Fired when the 'Ok' button is pressed.
         :attr:`on_edit`
-            Fired is called when you click on the date editing icon.
+            Fired when you click on the date editing icon.
         :attr:`on_dismiss`
             Fired when a date picker closes.
     """
@@ -1068,7 +1071,7 @@ class MDDatePickerBaseMenuSelectionButton(
     For more information, see in the
     :class:`~kivymd.uix.behaviors.rotate_behavior.RotateBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.label.label.MDIcon` and
+    :class:`~kivymd.uix.label.label.MDIcon`
     classes documentation.
     """
 

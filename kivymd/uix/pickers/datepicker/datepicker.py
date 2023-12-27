@@ -1017,7 +1017,7 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
         """Fired when the 'Ok' button is pressed."""
 
     def on_edit(self, *args) -> None:
-        """Fired is called when you click on the date editing icon."""
+        """Fired when you click on the date editing icon."""
 
     def on_dismiss(self, *args) -> None:
         """Fired when a date picker closes."""

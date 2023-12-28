@@ -626,6 +626,8 @@ class MDTopAppBarTitle(MDLabel):
     _appbar = ObjectProperty()
     _title_width = NumericProperty(0)
 
+    # FIXME: When changing the text, the texture_size property returns an
+    #  incorrect value, which causes the panel title to shift.
     def on_text(self, instance, value) -> None:
         """Fired when the :attr:`text` value changes."""
 

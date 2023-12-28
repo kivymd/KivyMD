@@ -455,7 +455,7 @@ Events
                     text="Selected dates is:",
                 ),
                 MDSnackbarSupportingText(
-                    text="\n".join(str(date) for date in instance_date_picker.get_date()),
+                    text="\\n".join(str(date) for date in instance_date_picker.get_date()),
                     padding=[0, 0, 0, dp(12)],
                 ),
                 y=dp(124),

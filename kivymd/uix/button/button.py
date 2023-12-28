@@ -1124,7 +1124,7 @@ class MDExtendedFabButtonIcon(MDIcon):
 
 class MDExtendedFabButtonText(MDLabel):
     """
-    Implements the text for the class :class:`~MDExtendedFabButton' class.
+    Implements the text for the class :class:`~MDExtendedFabButton` class.
 
     .. versionadded:: 2.0.0
     """

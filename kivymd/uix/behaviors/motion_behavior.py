@@ -19,6 +19,7 @@ __all__ = (
     "MotionDialogBehavior",
     "MotionShackBehavior",
     "MotionDatePickerBehavior",
+    "MotionTimePickerBehavior",
 )
 
 from kivy.animation import Animation
@@ -368,9 +369,9 @@ class MotionDialogBehavior(ScaleBehavior, MotionBase):
         Clock.schedule_once(open)
 
 
-class MotionDatePickerBehavior(MotionDialogBehavior):
+class MotionPickerBehavior(MotionDialogBehavior):
     """
-    Base class for date picker movement behavior.
+    Base class for date/time pickers movement behavior.
 
     For more information, see in the
     :class:`~MotionDialogBehavior` class documentation.
@@ -416,6 +417,24 @@ class MotionDatePickerBehavior(MotionDialogBehavior):
         )
         anim.bind(on_complete=remove_dialog)
         anim.start(self)
+
+
+class MotionTimePickerBehavior(MotionPickerBehavior):
+    """
+    Base class for time picker movement behavior.
+
+    For more information, see in the
+    :class:`~MotionPickerBehavior` class documentation.
+    """
+
+
+class MotionDatePickerBehavior(MotionPickerBehavior):
+    """
+    Base class for date picker movement behavior.
+
+    For more information, see in the
+    :class:`~MotionPickerBehavior` class documentation.
+    """
 
 
 class MotionShackBehavior(MotionBase):

@@ -22,6 +22,7 @@ Components/Card
     :class:`~MDCard` class.
 
 .. MDCard:
+
 MDCard
 ------
 
@@ -255,6 +256,7 @@ Customization of card
     :align: center
 
 .. MDCardSwipe:
+
 MDCardSwipe
 -----------
 

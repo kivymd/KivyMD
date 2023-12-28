@@ -122,8 +122,8 @@ from kivy.properties import (
 
 from kivymd import uix_path
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDRaisedButton
-from kivymd.uix.card import MDSeparator
+# from kivymd.uix.button import MDRaisedButton
+# from kivymd.uix.card import MDSeparator
 from kivymd.uix.label import MDLabel
 from kivymd.uix.relativelayout import MDRelativeLayout
 

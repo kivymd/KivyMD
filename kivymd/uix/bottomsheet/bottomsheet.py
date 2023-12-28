@@ -33,6 +33,7 @@ The bottom sheet has two types:
 - Modal_
 
 .. Standard:
+
 Standard
 --------
 
@@ -51,6 +52,7 @@ Standard bottom sheets are elevated above the main UI region so their
 visibility is not affected by panning or scrolling.
 
 .. Modal:
+
 Modal
 -----
 

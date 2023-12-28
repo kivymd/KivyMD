@@ -17,6 +17,7 @@ Components/Appbar
 - BottomAppBar_
 
 .. TopAppBar_:
+
 TopAppBar
 ---------
 
@@ -155,6 +156,7 @@ Configurations
     :align: center
 
 .. BottomAppBar:
+
 BottomAppBar
 ------------
 

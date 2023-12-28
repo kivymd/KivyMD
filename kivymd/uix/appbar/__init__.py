@@ -1,12 +1,11 @@
 # NOQA F401
 from .appbar import (
+    MDTopAppBar,
+    MDTopAppBarTitle,
+    MDBottomAppBar,
     MDActionTopAppBarButton,
     MDActionBottomAppBarButton,
-    MDBottomAppBar,
     MDFabBottomAppBarButton,
-    MDTopAppBar,
     MDTopAppBarLeadingButtonContainer,
-    MDActionTopAppBarButton,
-    MDTopAppBarTitle,
     MDTopAppBarTrailingButtonContainer,
 )

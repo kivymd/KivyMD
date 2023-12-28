@@ -38,6 +38,7 @@ Available options are:
 - adaptive_size_
 
 .. adaptive_height:
+
 adaptive_height
 ---------------
 
@@ -53,6 +54,7 @@ Equivalent
     height: self.minimum_height
 
 .. adaptive_width:
+
 adaptive_width
 --------------
 
@@ -68,6 +70,7 @@ Equivalent
     height: self.minimum_width
 
 .. adaptive_size:
+
 adaptive_size
 -------------
 

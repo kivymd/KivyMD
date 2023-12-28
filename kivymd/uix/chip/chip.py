@@ -106,6 +106,7 @@ The following types of chips are available:
 - Suggestion_
 
 .. Assist:
+
 Assist
 ------
 
@@ -216,6 +217,7 @@ Example of assist
     :align: center
 
 .. Filter:
+
 Filter
 ------
 
@@ -536,6 +538,7 @@ menus:
     :align: center
 
 .. Input:
+
 Input
 -----
 
@@ -589,6 +592,7 @@ Example of input
     :align: center
 
 .. Suggestion:
+
 Suggestion
 ----------
 

@@ -31,10 +31,6 @@ Common buttons
 .. rubric:: Buttons help people take action, such as sending an email, sharing
     a document, or liking a comment.
 
-.. seealso::
-
-    `Material Design spec, Buttons <https://m3.material.io/components/buttons/overview>`_
-
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/common-buttons.png
     :align: center
 
@@ -44,13 +40,14 @@ Common buttons
 4. Outlined button
 5. Text button
 
-- Elevated_
-- Filled_
-- Tonal_
-- Outlined_
-- Text_
+Elevated_
+Filled_
+Tonal_
+Outlined_
+Text_
 
 .. Elevated:
+
 Elevated
 --------
 
@@ -134,6 +131,7 @@ Common buttons can contain an icon or be without an icon:
     :align: center
 
 .. Filled:
+
 Filled
 ------
 
@@ -149,6 +147,7 @@ Filled
     :align: center
 
 .. Tonal:
+
 Tonal
 -----
 
@@ -164,6 +163,7 @@ Tonal
     :align: center
 
 .. Outlined:
+
 Outlined
 --------
 
@@ -179,8 +179,9 @@ Outlined
     :align: center
 
 .. Text:
+
 Text
---------
+----
 
 .. code-block:: kv
 
@@ -290,12 +291,13 @@ Icon buttons
 1. Standard icon button
 2. Contained icon button (including filled, filled tonal, and outlined styles)
 
-- StandardIcon_
-- FilledIcon_
-- TonalIcon_
-- OutlinedIcon_
+StandardIcon_
+FilledIcon_
+TonalIcon_
+OutlinedIcon_
 
 .. StandardIcon:
+
 StandardIcon
 ------------
 
@@ -309,6 +311,7 @@ StandardIcon
     :align: center
 
 .. FilledIcon:
+
 FilledIcon
 ----------
 
@@ -322,6 +325,7 @@ FilledIcon
     :align: center
 
 .. TonalIcon:
+
 TonalIcon
 ---------
 
@@ -335,6 +339,7 @@ TonalIcon
     :align: center
 
 .. OutlinedIcon:
+
 OutlinedIcon
 ------------
 
@@ -399,11 +404,12 @@ FAB buttons
 
 There are three sizes of floating action buttons: FAB, small FAB, and large FAB:
 
-- Standard_
-- Small_
-- Large_
+Standard_
+Small_
+Large_
 
 .. Standard:
+
 Standard
 --------
 
@@ -417,6 +423,7 @@ Standard
     :align: center
 
 .. Small:
+
 Small
 -----
 
@@ -430,6 +437,7 @@ Small
     :align: center
 
 .. Large:
+
 Large
 -----
 
@@ -508,7 +516,7 @@ Extended FAB
 
 .. seealso::
 
-    `Material Design spec, FAB buttons <https://m3.material.io/components/extended-fab/overview>`_
+    `Material Design spec, FAB extended buttons <https://m3.material.io/components/extended-fab/overview>`_
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/extended-fab-button.png
     :align: center
@@ -602,7 +610,6 @@ API break
     MDFillRoundFlatIconButton
         text: "Filled with icon"
         icon: "plus"
-
 
 2.0.0 version
 -------------

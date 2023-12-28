@@ -131,7 +131,7 @@ from kivy.properties import (
 
 from kivymd import uix_path
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.toolbar import MDTopAppBar
+# from kivymd.uix.toolbar import MDTopAppBar
 
 with open(
     os.path.join(uix_path, "sliverappbar", "sliverappbar.kv"), encoding="utf-8"

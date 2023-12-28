@@ -26,7 +26,7 @@ from sphinx.util.osutil import ensuredir
 
 def PythonPythonMapper_include_dir(self: PythonPythonMapper, root):
     if os.path.isabs(root):
-        parts = [self.app.confdir]
+        parts = [str(self.app.confdir)]
     else:
         parts = [""]  # Config root folder
     parts.extend(self.pathname.split(os.path.sep))
@@ -54,7 +54,7 @@ def PythonSphinxMapper_output_rst(
         self.objects.items(),
         bold("[AutoAPI] ") + "Rendering Data... ",
         length=len(self.objects),
-        verbosity="INFO",
+        verbosity=1,
         stringify_func=(lambda x: x[0]),
     ):
         rst = obj.render(

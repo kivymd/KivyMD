@@ -544,7 +544,7 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
     """
     Implements the base class of the time picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.ThemableBehavior` and
@@ -853,7 +853,7 @@ class MDTimePickerInput(CommonElevationBehavior, MDBaseTimePicker):
     """
     Implements input time picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
@@ -866,7 +866,7 @@ class MDTimePickerDialVertical(CommonElevationBehavior, MDBaseTimePicker):
     """
     Implements vertical time picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
@@ -879,7 +879,7 @@ class MDTimePickerDialHorizontal(CommonElevationBehavior, MDBaseTimePicker):
     """
     Implements horizontal time picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
@@ -899,7 +899,7 @@ class MDTimePickerCircularSelectorLabel(MDLabel):
     """
     Implements a label for the :class:`~MDTimePickerCircularSelector` class.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.label.label.MDLabel` class documentation.
@@ -1094,7 +1094,7 @@ class MDTimePickerScrim(Widget):
     """
     Implements scrim for the time picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.widget.Widget` and class documentation.
@@ -1108,7 +1108,7 @@ class MDTimePickerButtonsContainer(BoxLayout):
     """
     Implements a container with buttons for time picker dialogs.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
@@ -1135,7 +1135,7 @@ class MDTimePickerAmPmSelectorLabel(ButtonBehavior, MDLabel):
     """
     Implements a label for the :class:`~MDTimePickerAmPmSelector` class.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
@@ -1150,7 +1150,7 @@ class MDTimePickerAmPmSelector(
     """
     Implements a container for AM/PM switching elements.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.ThemableBehavior` and
@@ -1173,7 +1173,7 @@ class MDTimePickerInputContainer(BoxLayout):
     """
     Implements a container for the hours and minutes text input fields.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
@@ -1232,7 +1232,7 @@ class MDTimePickerInputTextField(MDTextField):
     """
     Implements a text field for entering hour and minute values.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.textfield.textfield.MDTextField` class documentation.

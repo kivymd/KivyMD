@@ -578,7 +578,7 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
     """
     Implements the base class of the date picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.ThemableBehavior` and
@@ -1044,7 +1044,7 @@ class MDDatePickerButtonsContainer(BoxLayout):
     """
     Implements a container with buttons for date picker dialogs.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
@@ -1067,7 +1067,7 @@ class MDDatePickerBaseMenuSelectionButton(
     :class:`~MDDatePickerMonthSelectionButton` and
     :class:`~MDDatePickerYearSelectionButton` classes.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.rotate_behavior.RotateBehavior` and
@@ -1089,7 +1089,7 @@ class MDDatePickerWeekdayLabel(MDLabel):
     """
     Implements labels for the names of the days of the week.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.label.label.MDLabel` class documentation.
@@ -1108,7 +1108,7 @@ class MDCalendarLayout(ScaleBehavior, ThemableBehavior, GridLayout):
     """
     Implements a grid for calendar dates.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
@@ -1124,7 +1124,7 @@ class MDDatePickerDaySelectableItem(
     """
     Implements an element for a grid of calendar dates.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
@@ -1158,7 +1158,7 @@ class MDDockedDatePickerBaseSelectionContainer(BoxLayout):
     Implements a basic container for switching month/year items and selecting
     the month/year list menu.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.boxlayout.BoxLayout` class documentation.
@@ -1201,7 +1201,7 @@ class MDDockedDatePickerMonthSelectionItem(
     Implements a container with buttons for switching months and selecting
     the month list menu.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~MDDockedDatePickerBaseSelectionContainer` class documentation.
@@ -1244,7 +1244,7 @@ class MDDockedDatePickerYearSelectionItem(
     Implements a container with buttons for switching years and selecting
     the year list menu.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~MDDockedDatePickerBaseSelectionContainer` class documentation.
@@ -1296,7 +1296,7 @@ class MDDockedDatePickerMenuMonthYearSelection(ScaleBehavior, RecycleView):
     """
     Implements a menu with a list of months/years.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
@@ -1311,7 +1311,7 @@ class MDDockedDatePickerContainerMenuMonthYearSelection(
     """
     Implements a container for the month/year list menu.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.behaviors.FocusBehavior` and
@@ -1325,7 +1325,7 @@ class MDDockedDatePickerMenuSelectionItem(RecycleDataViewBehavior, BoxLayout):
     """
     Implements an item for the month selection list menu.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.recycleview.views.RecycleDataViewBehavior` and
@@ -1392,7 +1392,7 @@ class MDDockedDatePicker(CommonElevationBehavior, MDBaseDatePicker):
     """
     Implements docked date picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
@@ -1519,7 +1519,7 @@ class MDModalDatePicker(CommonElevationBehavior, MDBaseDatePicker):
     """
     Implements modal date picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
@@ -1644,7 +1644,7 @@ class MDModalDatePickerYearSelectionItem(ScaleBehavior, BoxLayout):
     """
     Implements a container for switching month items.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
@@ -1696,7 +1696,7 @@ class MDModalDatePickerScrim(Widget):
     """
     Implements scrim for the modal date picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.widget.Widget` and class documentation.
@@ -1710,7 +1710,7 @@ class MDModalDatePickerMenuYearSelection(ScaleBehavior, RecycleView):
     """
     Implements a menu with a list of years.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
@@ -1725,7 +1725,7 @@ class MDModalDatePickerContainerMenuYearSelection(
     """
     Implements a container for the year list menu.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.behaviors.FocusBehavior` and
@@ -1746,7 +1746,7 @@ class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
     """
     Implements modal input date picker.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
@@ -1933,7 +1933,7 @@ class MDModalInputDatePickerInputDateFieldContainer(BoxLayout):
     """
     Implements a text field for entering the date manually.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
@@ -1944,7 +1944,7 @@ class MDModalInputDatePickerInputField(MDTextField):
     """
     Implements date input.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.textfield.textfield.MDTextField` class documentation.

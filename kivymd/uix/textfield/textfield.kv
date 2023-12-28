@@ -34,6 +34,7 @@
                 ) \
                 if self.mode == "filled" else self.theme_cls.transparentColor
         RoundedRectangle:
+            group: "fill-color-rounded-rectangle"
             pos: self.x, self.y
             size: self.width, self.height
             radius: self.radius[0], self.radius[1], 0, 0
@@ -179,6 +180,7 @@
                 else \
                 (0, 0, 0, 0)
         Rectangle:
+            group: "rectangle-cursor-blink"
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height
 

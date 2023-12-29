@@ -11,7 +11,7 @@
                 ) \
                 if not self.disabled else \
                 self.theme_cls.onSurfaceColor[:-1] + [.12]
-        Rectangle:
+        SmoothRectangle:
             size:
                 ( \
                 self.width - self.padding * 2, \
@@ -43,7 +43,7 @@
                 ) \
                 if not self.disabled else \
                 self.theme_cls.onSurfaceColor[:-1] + [.38]
-        Rectangle:
+        SmoothRectangle:
             size:
                 ( \
                 (self.width - self.padding * 2) * self.value_normalized, \
@@ -132,7 +132,7 @@
                 self.md_bg_color \
                 ) \
                 if not self.disabled else self.theme_cls.onSurfaceColor
-        RoundedRectangle:
+        SmoothRoundedRectangle:
             radius: self.radius
             size: self.size
             pos: self.pos
@@ -148,7 +148,7 @@
                     if not root.state_layer_color else \
                     root.state_layer_color \
                     )[:-1] + [0.38]
-            RoundedRectangle:
+            SmoothRoundedRectangle:
                 radius: [root.state_layer_size[0] / 2, ]
                 size:  root.state_layer_size
                 pos:
@@ -160,17 +160,17 @@
     canvas:
         Color:
             rgba: app.theme_cls.primaryColor
-        RoundedRectangle:
+        SmoothRoundedRectangle:
             radius: [self.size[0] / 2, ]
             pos: self.pos
             size: self.size
 
-        Triangle:
+        SmoothTriangle:
             points:
                 [ \
                 self.x + 18, self.y - 6, \
-                self.x + 32, self.y + 8, \
-                self.x + 2, self.y + 8 \
+                self.x + 32, self.y + 9, \
+                self.x + 5, self.y + 8 \
                 ]
 
         # Label texture.

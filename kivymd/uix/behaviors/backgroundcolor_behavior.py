@@ -34,7 +34,7 @@ Builder.load_string(
         Color:
             group: "backgroundcolor-behavior-bg-color"
             rgba: self._md_bg_color
-        RoundedRectangle:
+        SmoothRoundedRectangle:
             group: "Background_instruction"
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)

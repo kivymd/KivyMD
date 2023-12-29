@@ -491,7 +491,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.core.window import Window
-from kivy.graphics import Color, RoundedRectangle
+from kivy.graphics import Color, SmoothRoundedRectangle
 from kivy.lang import Builder
 
 from kivy.properties import (
@@ -766,7 +766,7 @@ class MDLabel(
 
                 with self.canvas.before:
                     Color(rgba=color, group="md-label-selection-color")
-                    self._canvas_bg = RoundedRectangle(
+                    self._canvas_bg = SmoothRoundedRectangle(
                         pos=self.pos,
                         size=self.size,
                         radius=self.radius,

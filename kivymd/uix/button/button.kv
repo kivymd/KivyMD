@@ -75,7 +75,7 @@
                 }[self.color_map] \
                 if self.theme_bg_color == "Primary" else \
                 self.md_bg_color
-        RoundedRectangle:
+        SmoothRoundedRectangle:
             size: self.size
             pos: self.pos
             radius: self.radius
@@ -170,7 +170,7 @@
                 }[self.style] \
                 if self.theme_bg_color == "Primary" else \
                 self.md_bg_color
-        RoundedRectangle:
+        SmoothRoundedRectangle:
             size: self.size
             pos: 0, 0
             radius: self.radius
@@ -205,7 +205,7 @@
                 ) \
                 if not self.md_bg_color_disabled else self.md_bg_color_disabled \
                 )
-        RoundedRectangle:
+        SmoothRoundedRectangle:
             size: self.size
             pos: self.pos
             radius: self.radius

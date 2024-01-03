@@ -129,9 +129,7 @@ API break
             [...]
 """
 
-__all__ = [
-    "MDSmartTile", "MDSmartTileOverlayContainer", "MDSmartTileImage"
-]
+__all__ = ["MDSmartTile", "MDSmartTileOverlayContainer", "MDSmartTileImage"]
 
 import os
 

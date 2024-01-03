@@ -6,7 +6,7 @@ from kivymd.uix.imagelist import MDSmartTile
 
 from examples.common_app import CommonApp
 
-KV = '''
+KV = """
 <SmartTile>
     size_hint: None, None
     size: "320dp", "320dp"
@@ -59,7 +59,7 @@ MDScreen:
             overlap: False
             image_radius: [dp(24), dp(24), 0, 0]
             container_radius: [0, 0, dp(24), dp(24)]
-'''
+"""
 
 
 class SmartTile(MDSmartTile):

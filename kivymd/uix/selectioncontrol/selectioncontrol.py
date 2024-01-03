@@ -522,6 +522,7 @@ class MDCheckbox(
             if MDCheckbox.__allow_child_checkboxes_active:
                 self.set_root_active()
 
+    # FIXME: https://github.com/kivymd/KivyMD/issues/1574
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
             if self.group and self.group == "root":

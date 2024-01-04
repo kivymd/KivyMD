@@ -579,6 +579,7 @@ class MDCircularProgressIndicator(ThemableBehavior, Widget):
         self._angle_end = 0
         self._rotation_angle = 360
         self._alpha = 0
+        Clock.schedule_once(self._start_determinate)
 
     def check_determinate(self, *args) -> None:
         """Fired when the class is initialized."""

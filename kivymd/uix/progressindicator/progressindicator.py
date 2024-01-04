@@ -411,6 +411,11 @@ class MDLinearProgressIndicator(ThemableBehavior, ProgressBar):
             self.reversed = True
         self.catching_anim.start(self)
 
+    # FIXME: This method fixes a bug: the indicator values are not set to 0.
+    def on_value(self, instance, value):
+        if not value:
+            self.value = 0.01
+
     def _create_determinate_animations(self):
         self.running_anim = Animation(
             value=100,

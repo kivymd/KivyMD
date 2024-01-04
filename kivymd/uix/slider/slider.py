@@ -136,6 +136,7 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
     .. versionadded:: 2.0.0
 
     .. versionchanged:: 2.0.0
+
         Rename from `track_color_active` to `track_active_color`
 
     :attr:`track_active_color` is an :class:`~kivy.properties.ColorProperty`
@@ -169,6 +170,7 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
     .. versionadded:: 2.0.0
 
     .. versionchanged:: 2.0.0
+
         Rename from `track_color_inactive` to `track_inactive_color`
 
     :attr:`track_active_color` is an :class:`~kivy.properties.ColorProperty`

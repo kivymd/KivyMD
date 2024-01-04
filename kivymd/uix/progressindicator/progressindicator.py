@@ -448,6 +448,7 @@ class MDLinearProgressIndicator(ThemableBehavior, ProgressBar):
 
     def _set_default_value(self, interval):
         self._x = 0
+        self.opacity = 1
         self.value = 0
         self.reversed = False
 

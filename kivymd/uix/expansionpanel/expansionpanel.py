@@ -355,6 +355,9 @@ class MDExpansionPanelHeader(DeclarativeBehavior, BoxLayout):
     """
 
 
+# TODO: Add a successor from kivymd.uix.behaviors.motion_behavior.MotionBase
+#  to the MDExpansionPanel class to control the properties of the panel
+#  opening/closing animation.
 class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
     """
     Expansion panel class.

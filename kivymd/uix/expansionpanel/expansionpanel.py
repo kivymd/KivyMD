@@ -452,12 +452,15 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
         """
 
         def set_content_height(*args):
-            Animation(
+            anim_height = Animation(
                 height=0,
                 t=self.opening_transition,
                 d=self.opening_time,
-            ).start(self._content)
-            self.remove_widget(self._content)
+            )
+            anim_height.bind(
+                on_complete=lambda *args: self.remove_widget(self._content)
+            )
+            anim_height.start(self._content)
             self.is_open = False
             self.dispatch("on_close")
 

@@ -114,7 +114,7 @@ if __name__ == "__main__":
             ],
             "docs": [
                 "sphinx",
-                "sphinx-autoapi==1.4.0",
+                "sphinx-autoapi",
                 "furo",
                 "sphinx-notfound-page",
                 "sphinx-copybutton",

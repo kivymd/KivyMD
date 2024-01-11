@@ -486,6 +486,7 @@ class StateLayerBehavior(FocusBehavior):
         from kivymd.uix.selectioncontrol import MDSwitch, MDCheckbox
         from kivymd.uix.list import BaseListItem
         from kivymd.uix.textfield import MDTextField
+        from kivymd.uix.tab.tab import MDTabsItemBase
 
         target_color = self._get_target_color()
         if (
@@ -502,6 +503,7 @@ class StateLayerBehavior(FocusBehavior):
                     MDSwitch,
                     MDCheckbox,
                     BaseListItem,
+                    MDTabsItemBase,
                 ),
             )
             or isinstance(self.parent, MDSegmentedButtonContainer)

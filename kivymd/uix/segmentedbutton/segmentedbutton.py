@@ -78,7 +78,7 @@ Use with text and icon
     :align: center
 
 Use without text with an icon
-----------------------------
+-----------------------------
 
 .. code-block:: kv
 

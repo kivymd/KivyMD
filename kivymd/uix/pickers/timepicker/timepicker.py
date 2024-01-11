@@ -257,7 +257,7 @@ Events
     Example().run()
 
 **on_hour_select** event
------------------------
+------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-hour-select.gif
     :align: center
@@ -283,7 +283,7 @@ Events
         time_picker_vertical.open()
 
 **on_minute_select** event
------------------------
+--------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-minute-select.gif
     :align: center
@@ -309,7 +309,7 @@ Events
         time_picker_vertical.open()
 
 **on_am_pm** event
--------------------------
+------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-am-pm.gif
     :align: center
@@ -335,7 +335,7 @@ Events
         time_picker_vertical.open()
 
 **on_selector_hour** event
-------------------------
+--------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-selector-hour.gif
     :align: center
@@ -361,7 +361,7 @@ Events
         time_picker_vertical.open()
 
 **on_selector_minute** event
-------------------------
+----------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-selector-minute.gif
     :align: center

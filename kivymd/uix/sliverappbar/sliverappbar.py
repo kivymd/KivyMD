@@ -282,6 +282,8 @@ class MDSliverAppbar(ThemableBehavior, BoxLayout):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/sliver-appbar-hide-appbar-false.gif
         :align: center
 
+    .. code-block:: kv
+
         MDSliverAppbar:
             hide_appbar: True
 

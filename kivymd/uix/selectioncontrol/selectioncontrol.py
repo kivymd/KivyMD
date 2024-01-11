@@ -16,6 +16,7 @@ Components/SelectionControls
 - MDSwitch_
 
 .. MDCheckbox:
+
 MDCheckbox
 ----------
 
@@ -214,6 +215,7 @@ Example
     :align: center
 
 .. MDSwitch:
+
 MDSwitch
 --------
 

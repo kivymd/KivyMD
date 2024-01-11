@@ -813,6 +813,7 @@ class MDTextFieldTrailingIcon(BaseTextFieldIcon):
     """
 
 
+# TODO: Add a custom color for the disabled state of the text field.
 class MDTextField(
     DeclarativeBehavior,
     StateLayerBehavior,

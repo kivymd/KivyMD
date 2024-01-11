@@ -567,14 +567,6 @@ class MDNavigationRailItem(
         if value:
             Clock.schedule_once(self.on_leave)
 
-    def on_leave(self, *args) -> None:
-        """Fired when the mouse goes outside the widget border."""
-
-        Animation(
-            _selected_region_width=0,
-            d=0.2,
-        ).start(self._icon_item)
-
     def on_enter(self, *args) -> None:
         """Fired when mouse enter the bbox of the widget."""
 

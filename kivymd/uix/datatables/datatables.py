@@ -2,20 +2,15 @@
 Components/DataTables
 =====================
 
-.. seealso::
-
-    `Material Design spec, DataTables <https://material.io/components/data-tables>`_
-
 .. rubric:: Data tables display sets of data across rows and columns.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-previous.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-m3-previous.png
     :align: center
 
 .. note:: `MDDataTable` allows developers to sort the data provided by column.
     This happens thanks to the use of an external function that you can bind
     while you're defining the table columns. Be aware that the sorting function
-    must return a 2 value list in the format of:
-        `[Index, Sorted_Row_Data]`
+    must return a 2 value list in the format of: `[Index, Sorted_Row_Data]`
 
     This is because the index list is needed to allow MDDataTable to keep track
     of the selected rows. and, after the data is sorted, update the row
@@ -58,14 +53,9 @@ from kivy.uix.scrollview import ScrollView
 
 from kivymd import uix_path
 from kivymd.effects.stiffscroll import StiffScrollEffect
-
-# from kivymd.material_resources import (
-#     DATA_TABLE_ELEVATION,
-#     DATA_TABLE_OFFSET,
-#     DATA_TABLE_SOFTNESS,
-# )
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import HoverBehavior
+from kivymd.uix.behaviors import HoverBehavior, CommonElevationBehavior
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.menu import MDDropdownMenu
@@ -140,7 +130,7 @@ class TableRecycleGridLayout(
             self.select_node(nodes[x])
 
 
-class CellHeader(MDTooltip, BoxLayout):
+class CellHeader(BoxLayout):
     """
     Implements the label text in the column header panel from
     :attr:`~MDDataTable.column_data` data.
@@ -273,6 +263,16 @@ class CellHeader(MDTooltip, BoxLayout):
             self.table_data.table_header.ids.check.state = "normal"
 
 
+class CellHeaderTooltipPlain(MDTooltip):
+    """Implements your plain tooltip base class."""
+
+    tooltip_text = StringProperty()
+
+
+class CellHeaderTooltip(CellHeaderTooltipPlain, CellHeader):
+    """Implements a item with tooltip plain behavior."""
+
+
 class TableHeader(ThemableBehavior, ScrollView):
     """
     Implements a panel for column heading labels -
@@ -334,11 +334,16 @@ class TableHeader(ThemableBehavior, ScrollView):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Create cells.
+
+        Clock.schedule_once(self.generate_cells)
+
+    def generate_cells(self, *args):
+        # print(self.table_data.check)
         for i, col_heading in enumerate(self.column_data):
             self.cols_minimum[i] = col_heading[1] * 5
             self._col_headings.append(col_heading[0])
             if i:
+                # CellHeaderTooltip
                 self.ids.header.add_widget(
                     (
                         CellHeader(
@@ -360,6 +365,7 @@ class TableHeader(ThemableBehavior, ScrollView):
                         if len(col_heading) == 3
                         else CellHeader(
                             text=col_heading[0],
+                            sort_action=lambda x: None,
                             width=self.cols_minimum[i],
                             table_data=self.table_data,
                         )
@@ -525,8 +531,8 @@ class TableData(RecycleView):
         self.recycle_data = []
         self.data_first_cells = []
 
+        # print("self._row_data_parts", self._row_data_parts)
         if self._row_data_parts:
-            # for row in self.row_data:
             for row in self._row_data_parts[self._rows_number]:
                 for i in range(len(row)):
                     data.append([row[i], row[0], [low, high]])
@@ -572,9 +578,7 @@ class TableData(RecycleView):
                     ) and len(x[0]) == 2:
                         r_data["icon"] = x[0][0]
                         r_data["text"] = str(x[0][1])
-
                         self.recycle_data.append(r_data)
-
                     else:
                         r_data["text"] = str(x[0])
                         self.recycle_data.append(r_data)
@@ -721,6 +725,7 @@ class TableData(RecycleView):
                 self.ids.row_controller.select_current(self)
 
     def on_rows_num(self, instance_table_date, value_rows_num: int) -> None:
+        # print(5555)
         if not self._to_value:
             self._to_value = value_rows_num
 
@@ -766,7 +771,7 @@ class TableData(RecycleView):
     #        instance_pagination.ids.button_forward.disabled = True
 
 
-class TablePagination(MDBoxLayout):
+class TablePagination(BoxLayout):
     """Pagination Container."""
 
     table_data = ObjectProperty()
@@ -778,7 +783,7 @@ class TablePagination(MDBoxLayout):
     """
 
 
-class MDDataTable(ThemableBehavior, AnchorLayout):
+class MDDataTable(ThemableBehavior, CommonElevationBehavior, AnchorLayout):
     """
     Datatable class.
 
@@ -1091,6 +1096,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     Example:
 
     .. code-block:: python
+
         [...]
         row_data = [
 
@@ -1308,68 +1314,15 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `False`.
     """
 
-    elevation = NumericProperty(0)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
-    attribute.
-
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `4`.
-    """
-
-    shadow_radius = VariableListProperty([6], length=4)
+    radius = VariableListProperty([dp(6)], length=4)
     """
     See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_radius`
     attribute.
 
     .. versionadded:: 1.2.0
 
-    :attr:`shadow_radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[6]`.
-    """
-
-    shadow_softness = NumericProperty(0)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
-    attribute.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `12`.
-    """
-
-    shadow_softness_size = BoundedNumericProperty(2, min=2)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness_size`
-    attribute.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`shadow_softness_size` is an :class:`~kivy.properties.BoundedNumericProperty`
-    and defaults to `2`.
-    """
-
-    shadow_offset = ListProperty([0, 0])
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
-    attribute.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `(0, 2)`.
-    """
-
-    shadow_color = ColorProperty([0, 0, 0, 0.6])
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_color`
-    attribute.
-
-    .. versionadded:: 1.2.0
-
-    :attr:`shadow_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0.6]`.
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(6), dp(6), dp(6), dp(6)]`.
     """
 
     rows_num = NumericProperty(5)
@@ -1417,7 +1370,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
     and defaults to `'140dp'`.
     """
 
-    background_color = ColorProperty([0, 0, 0, 0])
+    background_color = ColorProperty(None)
     """
     Background color in the format (r, g, b, a) or string format.
     See :attr:`~kivy.uix.modalview.ModalView.background_color`.
@@ -1473,7 +1426,7 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         :align: center
 
     :attr:`background_color` is a :class:`~kivy.properties.ColorProperty` and
-    defaults to `[0, 0, 0, 0]`.
+    defaults to `None`.
     """
 
     background_color_header = ColorProperty(None)
@@ -1873,8 +1826,6 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
         menu_items = [
             {
                 "text": f"{i}",
-                "viewclass": "OneLineListItem",
-                "height": dp(56),
                 "on_release": lambda x=f"{i}": self.table_data.set_number_displayed_lines(
                     x
                 ),
@@ -1898,10 +1849,11 @@ class MDDataTable(ThemableBehavior, AnchorLayout):
 
 
 class CellRow(
+    ThemableBehavior,
     RecycleDataViewBehavior,
-    HoverBehavior,
+    StateLayerBehavior,
     ButtonBehavior,
-    MDBoxLayout,
+    BoxLayout,
 ):
     """Implements a data row from :attr:`~MDDataTable.column_data`."""
 

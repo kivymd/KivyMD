@@ -29,6 +29,8 @@ MDRelativeLayout
         md_bg_color: app.theme_cls.primaryColor
 """
 
+__all__ = ("MDRelativeLayout",)
+
 from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd.theming import ThemableBehavior

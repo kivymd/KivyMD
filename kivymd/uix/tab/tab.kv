@@ -1,19 +1,24 @@
-<MDTabs>
-    size_hint_y: None
+#:import DampedScrollEffect kivy.effects.dampedscroll.DampedScrollEffect
 
-    canvas.before:
-        Color:
-            rgba:
-                self.md_bg_color \
-                if self.md_bg_color and self.theme_bg_color == "Custom" else \
-                self.theme_cls.surfaceColor
-        Rectangle:
-            pos: self.pos
-            size: self.size
+
+<MDTabsPrimary>
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
 
     MDTabsScrollView:
         id: tab_scroll
-        bar_width: 0
+        do_scroll_x: False if container.width <= self.width else True
+
+        canvas.before:
+            Color:
+                rgba:
+                    root.md_bg_color \
+                    if root.md_bg_color and root.theme_bg_color == "Custom" else \
+                    root.theme_cls.surfaceColor
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
         GridLayout:
             id: container
@@ -22,6 +27,19 @@
             width: self.minimum_width
             height: root.height
 
+            canvas.before:
+                Color:
+                    rgba: root.theme_cls.primaryColor
+                SmoothRoundedRectangle:
+                    group: "md-tabs-rounded-rectangle"
+                    pos:
+                        self.x, \
+                        self.y \
+                        if not root._tabs_carousel else \
+                        root._tabs_carousel.height
+                    size: 0, root.indicator_height
+                    radius: root.indicator_radius
+
 
 <MDTabsItemIcon>
     pos_hint: {"center_x": .5}
@@ -29,10 +47,12 @@
     icon_color: self.theme_cls.onSurfaceVariantColor
 
 
-<MDTabsItemLabel>
+<MDTabsItemText>
     adaptive_size: True
-    pos_hint: {"center_x": .5}
+    pos_hint: {"center_x": .5, "center_y": .5}
     padding_x: "36dp"
+    font_style: "Title"
+    role: "small"
     theme_text_color: "Custom"
     text_color: self.theme_cls.onSurfaceVariantColor
 
@@ -42,6 +62,33 @@
     size_hint: None, None
     height: self.minimum_height
     spacing: "4dp"
-    padding: 0, "8dp", 0, "8dp"
+    padding: 0, "12dp", 0, "8dp"
 
 
+<MDTabsItemSecondaryContainer>
+
+
+<MDTabsItemSecondary>
+    size_hint: None, None
+    height: "48dp"
+    anchor_x: "center"
+    anchor_y: "center"
+
+    MDTabsItemSecondaryContainer:
+        id: box_container
+        size_hint: None, None
+        size: self.minimum_size
+        spacing: "8dp"
+
+
+<MDTabsScrollView>
+    size_hint: 1, None
+    do_scroll_y: False
+    bar_width: 0
+    effect_cls: DampedScrollEffect
+
+
+<MDTabsBadge>
+
+
+<MDTabsCarousel>

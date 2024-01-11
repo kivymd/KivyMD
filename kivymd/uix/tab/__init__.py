@@ -1,6 +1,10 @@
 from .tab import (
-    MDTabs,
+    MDTabsPrimary,
+    MDTabsSecondary,
     MDTabsItem,
+    MDTabsItemSecondary,
     MDTabsItemIcon,
-    MDTabsItemLabel,
+    MDTabsItemText,
+    MDTabsCarousel,
+    MDTabsBadge,
 )  # NOQA F401

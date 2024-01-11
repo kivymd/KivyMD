@@ -122,7 +122,7 @@ if __name__ == "__main__":
             ],
         },
         install_requires=[
-            "kivy>=2.0.0",
+            "kivy>=2.3.0",
             "pillow",
             "materialyoucolor",
             "asynckivy>=0.6,<0.7",

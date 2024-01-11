@@ -205,6 +205,7 @@ You can use the following parameters to customize the menu items:
     :align: center
 
 .. Header:
+
 Header
 ------
 
@@ -338,6 +339,7 @@ for both the righthand and lefthand menus.
     :align: center
 
 .. Position:
+
 Position
 ========
 

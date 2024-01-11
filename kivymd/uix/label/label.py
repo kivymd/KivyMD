@@ -11,6 +11,7 @@ Components/Label
 - MDIcon_
 
 .. MDLabel:
+
 MDLabel
 -------
 
@@ -440,6 +441,7 @@ Example of copying/cutting labels using the context menu
     :align: center
 
 .. MDIcon:
+
 MDIcon
 -------
 

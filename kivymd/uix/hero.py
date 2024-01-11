@@ -30,12 +30,13 @@ following:
 - On screen **A**, place the :class:`~MDHeroFrom` container.
 - Sets a tag (string) for the :class:`~MDHeroFrom` container.
 - Place a hero in the :class:`~MDHeroFrom` container.
-- On screen **B**, place the :class:`~MDHeroTo` container - our hero from screen **A **will fly into this container.
+- On screen **B**, place the :class:`~MDHeroTo` container - our hero from screen **A** will fly into this container.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hero-base.png
     :align: center
 
 .. warning::
+
     :class:`~MDHeroFrom` container cannot have more than one child widget.
 
 Base example

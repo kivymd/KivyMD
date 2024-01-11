@@ -275,7 +275,7 @@ List item with trailing icon
     :align: center
 
 List item with trailing check
-----------------------------
+-----------------------------
 
 .. tabs::
 

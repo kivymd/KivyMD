@@ -538,7 +538,7 @@ class MDLabel(
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
     :class:`~kivy.uix.label.Label` and
     :class:`~kivymd.uix.MDAdaptiveWidget` and
     :class:`~kivymd.uix.behaviors.touch_behavior.TouchBehavior` and

@@ -547,7 +547,7 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
     .. versionadded:: 2.0.0
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.ThemableBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.motion_behavior.MotionTimePickerBehavior` and
     :class:`~kivy.uix.boxlayout.BoxLayout` and
     classes documentation.

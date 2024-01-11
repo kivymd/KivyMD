@@ -587,7 +587,7 @@ class MDTabsCarousel(Carousel):
     Implements a carousel for user-generated content.
 
     For more information, see in the
-    :class:`~kivymd.uix.carousel.Carousel` class documentation.
+    :class:`~kivy.uix.carousel.Carousel` class documentation.
     """
 
     lock_swiping = BooleanProperty(False)

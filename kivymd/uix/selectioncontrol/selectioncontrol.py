@@ -294,11 +294,11 @@ class MDCheckbox(
     Checkbox class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.StateLayerBehavior` and
-    :class:`~kivymd.uix.behaviors.CircularRippleBehavior` and
-    :class:`~kivymd.uix.behaviors.ScaleBehavior` and
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
     :class:`~kivy.uix.behaviors.ToggleButtonBehavior` and
-    :class:`~kivymd.uix.label.MDIcon`
+    :class:`~kivymd.uix.label.label.MDIcon`
     classes documentation.
     """
 
@@ -567,7 +567,7 @@ class MDSwitch(StateLayerBehavior, MDFloatLayout):
     Switch class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.StateLayerBehavior` and
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
     :class:`~kivymd.uix.floatlayout.MDFloatLayout`
     classes documentation.
     """

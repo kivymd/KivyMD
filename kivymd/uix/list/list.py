@@ -529,7 +529,7 @@ class MDListItemLeadingAvatar(
     Implements a class for leading avatar class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.ThemableBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.uix.fitimage.fitimage.FitImage`

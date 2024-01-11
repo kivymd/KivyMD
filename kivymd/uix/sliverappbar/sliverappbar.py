@@ -214,7 +214,7 @@ class MDSliverAppbarContent(MDBoxLayout):
     Implements a box for a scrollable list of custom items.
 
     For more information, see in the
-    :class:`~kivymd.uix.boxlayout.boxlayout.MDBoxLayout` class documentation.
+    :class:`~kivymd.uix.boxlayout.MDBoxLayout` class documentation.
     """
 
 

@@ -673,7 +673,7 @@ class BaseDropdownItem(RectangularRippleBehavior, ButtonBehavior, MDBoxLayout):
     .. versionadded:: 1.2.0
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes.
     """
 
@@ -878,9 +878,9 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     Dropdown menu class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.MotionDropDownMenuBehavior` and
-    :class:`~kivymd.uix.behaviors.StencilBehavior` and
-    :class:`~kivymd.uix.card.MDCard`
+    :class:`~kivymd.uix.behaviors.motion_behavior.MotionDropDownMenuBehavior` and
+    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior` and
+    :class:`~kivymd.uix.card.card.MDCard`
     classes documentation.
 
     :Events:

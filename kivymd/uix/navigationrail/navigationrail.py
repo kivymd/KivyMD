@@ -535,7 +535,7 @@ class MDNavigationRailItem(
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.uix.behaviors.behaviors.focus_behavior.FocusBehavior`
+    :class:`~kivymd.uix.behaviors.focus_behavior.FocusBehavior`
     :class:`~kivy.uix.boxlayout.BoxLayout`
     classes documentation.
     """

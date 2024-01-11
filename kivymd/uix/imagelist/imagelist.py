@@ -179,7 +179,7 @@ class MDSmartTileOverlayContainer(MDBoxLayout):
         `MDSmartTileOverlayContainer`.
 
     For more information, see in the
-    :class:`~kivymd.uix.boxlayout.boxlayout.BoxLayout` class documentation.
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
     """
 
     _smart_tile = ObjectProperty()
@@ -190,7 +190,7 @@ class MDSmartTile(MDRelativeLayout):
     A tile for more complex needs.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.relativelayout.MDRelativeLayout`
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout`
     class documentation.
 
     Includes an image, a container to place overlays and a box that can act

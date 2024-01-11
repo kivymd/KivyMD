@@ -63,7 +63,7 @@ KivyMD
     #:import images_path kivymd.images_path
 
 
-    MDCarousel:
+    Carousel:
 
         StencilImage:
             size_hint: .9, .8

@@ -15,6 +15,7 @@ as dialogs, dropdown menu, snack bars, and so on.
 
 __all__ = (
     "MotionBase",
+    "MotionExtendedFabButtonBehavior",
     "MotionDropDownMenuBehavior",
     "MotionDialogBehavior",
     "MotionShackBehavior",

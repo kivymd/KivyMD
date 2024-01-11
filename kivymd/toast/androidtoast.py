@@ -48,10 +48,10 @@ if platform != "android":
         f"{platform.capitalize()} platform does not support Android Toast"
     )
 
+from android import mActivity
 from android.runnable import run_on_ui_thread
 from jnius import autoclass
 
-activity = autoclass("org.kivy.android.PythonActivity").mActivity
 Toast = autoclass("android.widget.Toast")
 String = autoclass("java.lang.String")
 
@@ -77,6 +77,6 @@ def toast(text, length_long=False, gravity=0, y=0, x=0):
     """
 
     duration = Toast.LENGTH_SHORT if length_long else Toast.LENGTH_LONG
-    t = Toast.makeText(activity, String(text), duration)
+    t = Toast.makeText(mActivity, String(text), duration)
     t.setGravity(gravity, x, y)
     t.show()

@@ -11,19 +11,12 @@ def get_wallpaper(
     if platform == "android":
         try:
             from jnius import autoclass, cast
+            from android import mActivity
 
-            PythonActivity = autoclass("org.kivy.android.PythonActivity")
             CompressFormat = autoclass("android.graphics.Bitmap$CompressFormat")
             FileOutputStream = autoclass("java.io.FileOutputStream")
-            CurrentActivity = cast(
-                "android.app.Activity", PythonActivity.mActivity
-            )
             WallpaperManager = autoclass("android.app.WallpaperManager")
-            Context = cast(
-                "android.content.Context",
-                CurrentActivity.getApplicationContext(),
-            )
-
+            Context = mActivity.getApplicationContext() 
             mWallpaperManager = WallpaperManager.getInstance(Context)
             mWallpaperManager.getBitmap().compress(
                 CompressFormat.PNG,

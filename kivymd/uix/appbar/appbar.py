@@ -266,6 +266,8 @@ A practical example
 
 .. code-block:: python
 
+    import asynckivy
+
     from kivy.clock import Clock
     from kivy.lang import Builder
     from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
@@ -277,7 +279,6 @@ A practical example
     from kivymd.uix.appbar import MDActionBottomAppBarButton
     from kivymd.uix.boxlayout import MDBoxLayout
     from kivymd.app import MDApp
-    from kivymd.utils import asynckivy
 
     from faker import Faker  # pip install Faker
 
@@ -397,7 +398,7 @@ A practical example
         icon_color = "#8A8D79"
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         selected_cards = False
 
         def build(self):
@@ -444,7 +445,7 @@ A practical example
             Clock.schedule_once(lambda x: asynckivy.start(generate_card()))
 
 
-    Test().run()
+    Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-app-bar-m3-style-4.gif
     :align: center

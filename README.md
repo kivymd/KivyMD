@@ -48,7 +48,7 @@ pip install kivymd==1.1.1
 
 ### Dependencies:
 
-- [Kivy](https://github.com/kivy/kivy) >= 2.2.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
+- [Kivy](https://github.com/kivy/kivy) >= 2.3.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
 - [Python 3.7+](https://www.python.org/)
 - [Pillow](https://github.com/python-pillow/Pillow/)
 - [MaterialColor](https://github.com/T-Dynamos/materialyoucolor-pyhton)
@@ -82,25 +82,16 @@ pip install .
 use a shallow clone (`git clone https://github.com/kivymd/KivyMD.git --depth 1`)
 to save time. If you need full commit history, then remove `--depth 1`.
 
-### How to fix a shader bug on an android device
-
-Use `Kivy` from master branch or `Kivy` >= `2.2.0` and `KivyMD` (from master branch):
-
-```bash
-pip install https://github.com/kivy/kivy/archive/master.zip
-pip install https://github.com/kivymd/KivyMD/archive/master.zip
-```
-
-And use with `Buildozer`:
-
-```ini
-requirements = kivy==master, https://github.com/kivymd/KivyMD/archive/master.zip
-```
-
 ### How to use with [Buildozer](https://github.com/kivy/buildozer)
 
 ```ini
-requirements = kivy==2.1.0, kivymd==1.1.1
+requirements = python3,
+    kivy,
+    https://github.com/kivymd/KivyMD/archive/master.zip,
+    materialyoucolor,
+    exceptiongroup,
+    asyncgui,
+    asynckivy
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
@@ -109,7 +100,7 @@ If you want to use development version from [master](https://github.com/kivymd/K
 branch, you should specify link to zip archive:
 
 ```ini
-requirements = kivy==2.1.0, https://github.com/kivymd/KivyMD/archive/master.zip
+requirements = kivy, https://github.com/kivymd/KivyMD/archive/master.zip
 ```
 
 Do not forget to run `buildozer android clean` or remove `.buildozer` directory

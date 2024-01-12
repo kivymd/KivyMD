@@ -78,18 +78,24 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
                 KV = '''
                 MDScreen:
+                    md_bg_color: self.theme_cls.backgroundColor
 
-                    MDRectangleFlatButton:
-                        text: "Hello, World"
+                    MDButton:
+                        style: "elevated"
                         pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDButtonIcon:
+                            icon: "plus"
+
+                        MDButtonText:
+                            text: "Button"
                 '''
 
 
                 class Example(MDApp):
                     def build(self):
                         self.theme_cls.theme_style = "Dark"
-                        self.theme_cls.primary_palette = "Red"  # "Purple", "Red"
-
+                        self.theme_cls.primary_palette = "Olive"  # "Purple", "Red"
                         return Builder.load_string(KV)
 
 
@@ -100,28 +106,35 @@ class ThemeManager(EventDispatcher, DynamicColor):
             .. code-block:: python
 
                 from kivymd.app import MDApp
-                from kivymd.uix.button import MDRectangleFlatButton
+                from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
                 from kivymd.uix.screen import MDScreen
 
 
                 class Example(MDApp):
                     def build(self):
                         self.theme_cls.theme_style = "Dark"
-                        self.theme_cls.primary_palette = "Orange"  # "Purple", "Red"
+                        self.theme_cls.primary_palette = "Olive"  # "Purple", "Red"
 
                         return (
                             MDScreen(
-                                MDRectangleFlatButton(
-                                    text="Hello, World",
+                                MDButton(
+                                    MDButtonIcon(
+                                        icon="plus",
+                                    ),
+                                    MDButtonText(
+                                        text="Button",
+                                    ),
+                                    style="elevated",
                                     pos_hint={"center_x": 0.5, "center_y": 0.5},
-                                )
+                                ),
+                                md_bg_color=self.theme_cls.backgroundColor,
                             )
                         )
 
 
                 Example().run()
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-palette.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-palette-m3.png
         :align: center
 
     :attr:`primary_palette` is an :class:`~kivy.properties.OptionProperty`
@@ -134,11 +147,86 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
     Enables or disables dynamic color.
 
-    .. versionchanged:: 2.0.0
+    .. versionadded:: 2.0.0
 
     .. seealso::
     
         `Material Design spec, Dynamic color <https://m3.material.io/styles/color/dynamic-color/overview>`_
+
+    To build the color scheme of your application from user wallpapers, you
+    must enable the `READ_EXTERNAL_STORAGE
+    <https://github.com/Android-for-Python/Android-for-Python-Users?tab=readme-ov-file#storage-permissions>`_
+    permission:
+
+    .. code-block:: python
+
+        from kivy import platform
+        from kivy.lang import Builder
+        from kivy.clock import Clock
+
+        from kivymd.app import MDApp
+
+        KV = '''
+        MDScreen:
+            md_bg_color: app.theme_cls.surfaceColor
+
+            MDButton:
+                style: "elevated"
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDButtonIcon:
+                    icon: "plus"
+
+                MDButtonText:
+                    text: "Elevated"
+        '''
+
+
+        class Example(MDApp):
+            def build(self):
+                return Builder.load_string(KV)
+
+            def on_resume(self, *args):
+                '''Updating the color scheme when the application resumes.'''
+
+                self.theme_cls.set_colors()
+
+            def set_dynamic_color(self, *args) -> None:
+                '''
+                When sets the `dynamic_color` value, the self method will be
+                `called.theme_cls.set_colors()` which will generate a color
+                scheme from a custom wallpaper if `dynamic_color` is `True`.
+                '''
+
+                self.theme_cls.dynamic_color = True
+
+            def on_start(self) -> None:
+                '''
+                It is fired at the start of the application and requests the
+                necessary permissions.
+                '''
+
+                def callback(permission, results):
+                    if all([res for res in results]):
+                        Clock.schedule_once(self.set_dynamic_color)
+
+                if platform == "android":
+                    from android.permissions import Permission, request_permissions
+
+                    permissions = [Permission.READ_EXTERNAL_STORAGE]
+                    request_permissions(permissions, callback)
+
+
+        Example().run()
+
+    .. nate::
+
+        Please note that at the moment, the
+        `materialyoucolor <https://github.com/T-Dynamos/materialyoucolor-pyhton>`_
+        library generates a color scheme from a custom wallpaper from one to
+        six seconds, depending on the performance of the smartphone. We hope
+        that the library will be rewritten in C/C++ soon
+        (this process has already begun).
 
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
@@ -537,6 +625,11 @@ class ThemeManager(EventDispatcher, DynamicColor):
         # Clock.schedule_once(self.sync_theme_styles)
         Clock.schedule_once(self.set_colors)
 
+    def on_dynamic_color(self, *args) -> None:
+        """Fired when the `dynamic_color` value changes."""
+
+        self.set_colors()
+
     def set_colors(self, *args) -> None:
         """Calls methods for setting a new color scheme."""
 
@@ -599,7 +692,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
             theme_font_styles.append(style)
 
     def _set_dynamic_color(self, path_to_wallpaper: str) -> None:
-        print("_set_dynamic_color")
         dynamic_theme = themeFromSourceColor(
             getDominantColors(path_to_wallpaper, quality=10, default_chunk=128)[
                 0
@@ -627,7 +719,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
         for color_key in self.schemes_name_colors:
             color = default_theme[self.theme_style.lower()][color_key]
             exec(f"self.{color_key}Color = {rgba(color)}")
-            # print(f"self.{color_key}Color = {rgba(color)}")
         self.disabledTextColor = self._get_disabled_hint_text_color()
 
     def _set_palette_color(self) -> None:

@@ -219,7 +219,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
         Example().run()
 
-    .. nate::
+    .. note::
 
         Please note that at the moment, the
         `materialyoucolor <https://github.com/T-Dynamos/materialyoucolor-pyhton>`_

@@ -9,8 +9,9 @@ Behaviors/State Layer
    `Material Design spec, State layers <https://m3.material.io/foundations/interaction/states/state-layers>`_
 """
 
+from kivy import platform
 from kivy.lang import Builder
-from kivy.properties import ColorProperty, NumericProperty, ObjectProperty
+from kivy.properties import ColorProperty, NumericProperty
 
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 
@@ -360,7 +361,11 @@ class StateLayerBehavior(FocusBehavior):
         (i.e. the touch/click that pressed the button goes away).
         """
 
-        self.on_enter()
+        if platform in ["android", "ios"]:
+            self._state = 0.0
+            self.set_properties_widget()
+        else:
+            self.on_enter()
 
     def _on_press(self, *args):
         """Fired when the button is pressed."""

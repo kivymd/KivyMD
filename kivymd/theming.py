@@ -44,13 +44,9 @@ from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS
 from kivymd.utils.get_wallpaper import get_wallpaper
 
-from materialyoucolor.utils.string_utils import argbFromRgb
-from materialyoucolor.utils.theme_utils import (
-    getDefaultTheme,
-    getDominantColors,
-    themeFromSourceColor,
-)
-
+from materialyoucolor.utils.theme_utils import theme_from_source_color
+from materialyoucolor.utils.image_utils import source_color_from_image
+from materialyoucolor.utils.color_utils import argb_from_rgb
 
 class ThemeManager(EventDispatcher, DynamicColor):
     primary_palette = OptionProperty(
@@ -692,11 +688,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
             theme_font_styles.append(style)
 
     def _set_dynamic_color(self, path_to_wallpaper: str) -> None:
-        dynamic_theme = themeFromSourceColor(
-            getDominantColors(path_to_wallpaper, quality=10, default_chunk=128)[
-                0
-            ]
-        )
+        dynamic_theme = {"schemes":theme_from_source_color(source_color_from_image(path_to_wallpaper), custom_colors=[]).schemes}
         self.current_color_theme = dynamic_theme
         self.schemes_name_colors = list(
             dynamic_theme["schemes"][self.theme_style.lower()].props.keys()
@@ -710,7 +702,8 @@ class ThemeManager(EventDispatcher, DynamicColor):
         self.disabledTextColor = self._get_disabled_hint_text_color()
 
     def _set_default_color(self) -> None:
-        default_theme = getDefaultTheme()
+        # Default blue of Google
+        default_theme = {"schemes":theme_from_source_color(0xFF4285F4).schemes}
         self.current_color_theme = default_theme
         self.schemes_name_colors = list(
             default_theme[self.theme_style.lower()].keys()
@@ -724,9 +717,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
     def _set_palette_color(self) -> None:
         if not self.primary_palette:
             self.primary_palette = "Blue"
-        color_theme = themeFromSourceColor(
+
+        color_theme = {"schemes":theme_from_source_color(
             [
-                argbFromRgb(
+                argb_from_rgb(
                     *[
                         int(c * 255)
                         for c in get_color_from_hex(
@@ -734,13 +728,13 @@ class ThemeManager(EventDispatcher, DynamicColor):
                         )
                     ][:3]
                 )
-            ][0]
-        )
+            ][0],
+            fix_if_disliked=True
+        ).schemes}
         self.current_color_theme = color_theme
         self.schemes_name_colors = list(
             color_theme["schemes"][self.theme_style.lower()].props.keys()
         )
-
         for color_key in self.schemes_name_colors:
             color = color_theme["schemes"][self.theme_style.lower()].props[
                 color_key

@@ -28,15 +28,30 @@ displaying the current `FP` value in your application:
             return Builder.load_string(KV)
 
         def on_start(self):
+            super().on_start()
             self.fps_monitor_start()
 
 
     MainApp().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fps-monitor.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fps-monitor-dark.png
     :width: 350 px
     :align: center
 
+.. note::
+
+    Note that if you override the built-in on_start method, you will
+    definitely need to call the super method:
+
+    .. code-block:: python
+
+        class MainApp(MDApp):
+            def build(self):
+                [...]
+
+            def on_start(self):
+                super().on_start()
+                [...]
 """
 
 __all__ = ("MDApp",)
@@ -119,6 +134,28 @@ class MDApp(App, FpsMonitoring):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
+
+    def on_start(self):
+        """
+        Event handler for the `on_start` event which is fired after
+        initialization (after build() has been called) but before the
+        application has started running.
+
+        .. versionadded:: 2.0.0
+        """
+
+        def on_start(*args):
+            self.theme_cls.bind(
+                theme_style=lambda *x: Clock.schedule_once(
+                    self.theme_cls.update_theme_colors, 0.1
+                ),
+                primary_palette=lambda *x: Clock.schedule_once(
+                    self.theme_cls.set_colors, 0.1
+                ),
+            )
+            self.theme_cls.set_colors()
+
+        Clock.schedule_once(on_start)
 
     def load_all_kv_files(self, path_to_directory: str) -> None:
         """

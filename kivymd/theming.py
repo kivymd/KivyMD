@@ -721,20 +721,18 @@ class ThemeManager(EventDispatcher, DynamicColor):
                     "blue" if not default_color else default_color.lower()
                 ]
             )
-            color = argb_from_rgb(*color[:-1])
+            color = argb_from_rgb(*[c * 255 for c in color[:-1]])
 
         scheme = SchemeTonalSpot(
             Hct.from_int(color),  # the color of current theme in int form
             False if self.theme_style == "Light" else True,  # dark mode
             0.0,  # contrast level
         )
-        default_theme = {}
 
         for color_name in vars(MaterialDynamicColors).keys():
             attr = getattr(MaterialDynamicColors, color_name)
             if hasattr(attr, "get_hct"):
                 color_value = rgba(attr.get_hct(scheme).to_rgba())
-                default_theme[color_name] = color_value
                 exec(f"self.{color_name}Color = {color_value}")
 
         self.disabledTextColor = self._get_disabled_hint_text_color()

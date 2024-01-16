@@ -31,13 +31,14 @@ MDCircularLayout
             return Builder.load_string(KV)
 
         def on_start(self):
+            super().on_start()
             for x in range(1, 49):
                 self.root.ids.container.add_widget(Label(text=f"{x}")
 
 
     Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout-dark.png
     :align: center
 """
 
@@ -198,6 +199,7 @@ MDScreen:
             return Builder.load_string(KV)
 
         def on_start(self):
+            super().on_start()
             for x in range(1, 49):
                 self.root.ids.container.add_widget(Label(text=f"{x}"))
 

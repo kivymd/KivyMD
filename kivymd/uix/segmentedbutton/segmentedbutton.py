@@ -180,6 +180,7 @@ applied to the height. Each step down in density removes 4dp from the height.
 
     class Example(MDApp):
         def on_start(self):
+            super().on_start()
             for segment_type in ["large", "normal", "medium", "small"]:
                 self.root.ids.box.add_widget(
                     MDBoxLayout(

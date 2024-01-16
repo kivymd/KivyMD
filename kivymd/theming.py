@@ -146,7 +146,18 @@ class ThemeManager(EventDispatcher, DynamicColor):
     and defaults to `None`.
     """
 
-    current_color_theme = DictProperty()
+    dynamic_color_quality = NumericProperty(10)
+    """
+    The quality of the generated color scheme from the system wallpaper.
+
+    .. warning::
+
+        Remember that by increasing the quality value, you also increase the
+        generation time of the color scheme.
+
+    :attr:`dynamic_color_quality` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `10`.
+    """
 
     dynamic_color = BooleanProperty(False)
     """
@@ -638,7 +649,9 @@ class ThemeManager(EventDispatcher, DynamicColor):
             if path_to_wallpaper:
                 size_wallpaper = os.path.getsize(path_to_wallpaper)
                 if size_wallpaper != self._size_current_wallpaper:
-                    self._size_current_wallpaper = os.path.getsize(path_to_wallpaper)
+                    self._size_current_wallpaper = os.path.getsize(
+                        path_to_wallpaper
+                    )
                     self._set_dynamic_color(path_to_wallpaper)
                 else:
                     Logger.info(
@@ -673,7 +686,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
         image = Image.open(path_to_wallpaper)
         pixel_len = image.width * image.height
         image_data = image.getdata()
-        pixel_array = [image_data[_] for _ in range(0, pixel_len, 10)]
+        pixel_array = [
+            image_data[_]
+            for _ in range(0, pixel_len, self.dynamic_color_quality)
+        ]
         end_time = default_timer()
 
         Logger.info(

@@ -12,6 +12,7 @@ class Example(MDApp, CommonApp):
         return Builder.load_string(KV)
 
     def on_start(self):
+        super().on_start()
         for chip_type in ["assist", "input", "suggestion", "filter"]:
             self.root.ids.widget_box.add_widget(
                 MDChip(

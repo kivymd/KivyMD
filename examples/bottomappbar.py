@@ -14,7 +14,7 @@ from kivymd.app import MDApp
 
 from faker import Faker  # pip install Faker
 
-KV = '''
+KV = """
 #:import MDFabBottomAppBarButton kivymd.uix.appbar.MDFabBottomAppBarButton
 
 
@@ -89,7 +89,7 @@ MDFloatLayout:
             md_bg_color: "#373A22"
             theme_icon_color: "Custom"
             icon_color: "#ffffff"
-'''
+"""
 
 
 class UserCard(RecycleDataViewBehavior, MDBoxLayout):
@@ -172,6 +172,7 @@ class Example(MDApp):
                     }
                 )
 
+        super().on_start()
         self.on_tap_card()
         fake = Faker()
         Clock.schedule_once(lambda x: asynckivy.start(generate_card()))

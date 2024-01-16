@@ -424,6 +424,7 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
     # Height of the MDExpansionPanelContent widget.
     _original_content_height = NumericProperty()
     _allow_add_content = False
+    _panel_is_process_opening = False
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -492,18 +493,21 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
                 d=self.opening_time,
             ).start(self._content)
             self.is_open = True
+            self._panel_is_process_opening = False
             self.dispatch("on_open")
 
-        self._allow_add_content = True
-        self.add_widget(self._content)
+        if not self._panel_is_process_opening:
+            self._allow_add_content = True
+            self._panel_is_process_opening = True
+            self.add_widget(self._content)
 
-        anim_height = Animation(
-            height=self._original_content_height,
-            t=self.opening_transition,
-            d=self.opening_time,
-        )
-        anim_height.bind(on_complete=set_content_opacity)
-        anim_height.start(self._content)
+            anim_height = Animation(
+                height=self._original_content_height,
+                t=self.opening_transition,
+                d=self.opening_time,
+            )
+            anim_height.bind(on_complete=set_content_opacity)
+            anim_height.start(self._content)
 
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDExpansionPanelHeader):

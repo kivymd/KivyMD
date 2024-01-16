@@ -192,6 +192,7 @@ class Example(MDApp, CommonApp):
             button.disabled = not button.disabled
 
     def on_start(self):
+        super().on_start()
         styles = ["standard", "filled", "outlined", "tonal"]
         color_disabled = [
             0.4627450980392157,

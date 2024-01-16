@@ -163,6 +163,7 @@ Example of dynamic color from the list of standard color schemes
                 )
 
         def on_start(self):
+            super().on_start()
             Clock.schedule_once(self.generate_cards)
 
 
@@ -266,6 +267,7 @@ Example of a dynamic color from an image
                 )
 
         def on_start(self):
+            super().on_start()
             Clock.schedule_once(self.generate_cards)
 
 

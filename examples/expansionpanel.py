@@ -32,7 +32,7 @@ KV = """
     MDExpansionPanelContent:
         orientation: "vertical"
         padding: "12dp", 0, "12dp", "12dp"
-        md_bg_color: self.theme_cls.surfaceContainerLowestColor
+        md_bg_color: self.theme_cls.surfaceContainerLowColor
 
         MDLabel:
             text: "Channel information"
@@ -42,7 +42,7 @@ KV = """
 
         MDListItem:
             theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.surfaceContainerLowestColor
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
 
             MDListItemLeadingIcon:
                 icon: "email"
@@ -55,7 +55,7 @@ KV = """
 
         MDListItem:
             theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.surfaceContainerLowestColor
+            md_bg_color: self.theme_cls.surfaceContainerLowColor
 
             MDListItemLeadingIcon:
                 icon: "instagram"

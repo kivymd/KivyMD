@@ -22,6 +22,7 @@ class TestSizeHint(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         self.generate_buttons()
 
 

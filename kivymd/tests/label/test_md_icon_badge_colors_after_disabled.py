@@ -31,6 +31,7 @@ class TestMDIconBadgeColorsAfterDisabled(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.icon_undisabled, 1)
         Clock.schedule_once(self.check_badge_colors, 2)
 

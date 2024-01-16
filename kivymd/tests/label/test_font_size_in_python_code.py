@@ -27,6 +27,7 @@ class TestFontSizeInPythonCode(MDApp):
         )
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.check_font_size, 1.2)
 
 

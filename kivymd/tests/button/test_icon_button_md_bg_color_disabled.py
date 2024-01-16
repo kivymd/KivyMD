@@ -29,6 +29,7 @@ class TestMdIconButtonMdBgColorDisabled(MDApp):
         ].rgba == [1.0, 0.0, 0.0, 1.0]
 
     def on_start(self):
+        super().on_start()
         self.generate_buttons()
 
 

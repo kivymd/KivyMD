@@ -27,6 +27,7 @@ class TestMDIconBadgeColors(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.check_badge_colors, 2)
 
 

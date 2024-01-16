@@ -26,6 +26,7 @@ class TestColorDeselection(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         self.touch = MouseMotionEvent(
             "mouse", "button", self.root.ids.label.pos
         )

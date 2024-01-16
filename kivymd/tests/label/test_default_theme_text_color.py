@@ -29,6 +29,7 @@ class TestDefaultThemeTextColor(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         asynckivy.start(self.generate_labels())
 
 

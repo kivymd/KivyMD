@@ -39,6 +39,7 @@ class TestSwitchTheme(MDApp):
         self.root.current = "screen two"
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.switch_screen_two, 1)
 
     def build(self):

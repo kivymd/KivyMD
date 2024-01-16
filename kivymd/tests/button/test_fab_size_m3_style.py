@@ -31,6 +31,7 @@ class TestFabSizeM3Style(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         styles = ["standard", "small", "large"]
         for style in styles:
             self.root.ids.box.add_widget(

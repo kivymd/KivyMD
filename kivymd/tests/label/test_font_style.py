@@ -60,6 +60,7 @@ class TestFontStyle(MDApp):
             )
             self.stop()
 
+        super().on_start()
         Clock.schedule_once(on_start, 2)
 
 

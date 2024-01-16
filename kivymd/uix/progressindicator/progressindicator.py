@@ -105,6 +105,7 @@ track, in sync with the process’s progress.
 
     class Example(MDApp):
         def on_start(self):
+            super().on_start()
             self.root.ids.progress.start()
 
         def build(self):

@@ -46,6 +46,7 @@ class Example(MDApp, CommonApp):
         return Builder.load_string(KV)
 
     def on_start(self):
+        super().on_start()
         color_disabled = [
             0.4627450980392157,
             0.47058823529411764,

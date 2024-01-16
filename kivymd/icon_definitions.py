@@ -4,9 +4,9 @@ Themes/Icon Definitions
 
 .. seealso::
 
-   `Material Design Icons <https://materialdesignicons.com/>`_
+   `Material Design Icons <https://m3.material.io/styles/icons/overview>`_
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/material-icons.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/material-m3-icons.png
     :align: center
 
 List of icons from materialdesignicons.com. These expanded material design
@@ -21,25 +21,28 @@ To preview the icons and their names, you can use the following application:
 
     from kivy.lang import Builder
     from kivy.properties import StringProperty
-    from kivy.uix.screenmanager import Screen
 
     from kivymd.icon_definitions import md_icons
+    from kivymd.uix.screen import MDScreen
     from kivymd.app import MDApp
-    from kivymd.uix.list import OneLineIconListItem
-
+    from kivymd.uix.list import MDListItem
 
     Builder.load_string(
         '''
     #:import images_path kivymd.images_path
 
 
-    <CustomOneLineIconListItem>
+    <IconItem>
 
-        IconLeftWidget:
+        MDListItemLeadingIcon:
             icon: root.icon
+
+        MDListItemSupportingText:
+            text: root.text
 
 
     <PreviousMDIcons>
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDBoxLayout:
             orientation: 'vertical'
@@ -51,6 +54,7 @@ To preview the icons and their names, you can use the following application:
 
                 MDIconButton:
                     icon: 'magnify'
+                    pos_hint: {'center_y': .5}
 
                 MDTextField:
                     id: search_field
@@ -63,7 +67,7 @@ To preview the icons and their names, you can use the following application:
                 key_size: 'height'
 
                 RecycleBoxLayout:
-                    padding: dp(10)
+                    padding: dp(10), dp(10), 0, dp(10)
                     default_size: None, dp(48)
                     default_size_hint: 1, None
                     size_hint_y: None
@@ -73,19 +77,19 @@ To preview the icons and their names, you can use the following application:
     )
 
 
-    class CustomOneLineIconListItem(OneLineIconListItem):
+    class IconItem(MDListItem):
         icon = StringProperty()
+        text = StringProperty()
 
 
-    class PreviousMDIcons(Screen):
-
+    class PreviousMDIcons(MDScreen):
         def set_list_md_icons(self, text="", search=False):
             '''Builds a list of icons for the screen MDIcons.'''
 
             def add_icon_item(name_icon):
                 self.ids.rv.data.append(
                     {
-                        "viewclass": "CustomOneLineIconListItem",
+                        "viewclass": "IconItem",
                         "icon": name_icon,
                         "text": name_icon,
                         "callback": lambda x: x,
@@ -110,12 +114,13 @@ To preview the icons and their names, you can use the following application:
             return self.screen
 
         def on_start(self):
+            super().on_start()
             self.screen.set_list_md_icons()
 
 
     MainApp().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icons-previous.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/m3-icons-previous.gif
     :align: center
 
 """
@@ -7378,9 +7383,11 @@ if __name__ == "__main__":
     """
     )
 
+
     class IconItem(MDListItem):
         icon = StringProperty()
         text = StringProperty()
+
 
     class PreviousMDIcons(MDScreen):
         def set_list_md_icons(self, text="", search=False):
@@ -7404,6 +7411,7 @@ if __name__ == "__main__":
                 else:
                     add_icon_item(name_icon)
 
+
     class MainApp(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
@@ -7413,6 +7421,7 @@ if __name__ == "__main__":
             return self.screen
 
         def on_start(self):
+            super().on_start()
             self.screen.set_list_md_icons()
 
     MainApp().run()

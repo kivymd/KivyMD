@@ -126,6 +126,7 @@ if __name__ == "__main__":
             "pillow",
             "materialyoucolor",
             "asynckivy>=0.6,<0.7",
+            "setuphelpers==0.1.2",
         ],
         setup_requires=[],
         python_requires=">=3.7",

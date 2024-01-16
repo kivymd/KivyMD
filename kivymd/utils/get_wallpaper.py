@@ -16,7 +16,7 @@ def get_wallpaper(
             CompressFormat = autoclass("android.graphics.Bitmap$CompressFormat")
             FileOutputStream = autoclass("java.io.FileOutputStream")
             WallpaperManager = autoclass("android.app.WallpaperManager")
-            Context = mActivity.getApplicationContext() 
+            Context = mActivity.getApplicationContext()
             mWallpaperManager = WallpaperManager.getInstance(Context)
             mWallpaperManager.getBitmap().compress(
                 CompressFormat.PNG,

@@ -1389,13 +1389,13 @@ if __name__ == "__main__":
     from kivy.metrics import dp
 
     from kivymd.app import MDApp
-    from kivymd.uix.button import MDButton
+    from kivymd.uix.button import MDButton, MDButtonText
     from kivymd.uix.screen import MDScreen
 
     class Test(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            self.screen = MDScreen()
+            self.screen = MDScreen(md_bg_color=self.theme_cls.backgroundColor)
             menu_items = [{"text": f"Item {i}"} for i in range(55)]
             self.menu = MDDropdownMenu(items=menu_items, width_mult=4)
 
@@ -1404,6 +1404,7 @@ if __name__ == "__main__":
             self.menu.open()
 
         def on_start(self):
+            super().on_start()
             pos_hints = [
                 {"top": 1, "left": 0.1},
                 {"top": 1, "center_x": 0.5},
@@ -1418,7 +1419,9 @@ if __name__ == "__main__":
             for pos_hint in pos_hints:
                 self.screen.add_widget(
                     MDButton(
-                        text="Press me",
+                        MDButtonText(
+                            text="Press me",
+                        ),
                         pos_hint=pos_hint,
                         on_release=self.open_menu,
                     )

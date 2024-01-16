@@ -232,6 +232,7 @@ Use with ScrollView
                     await asynckivy.sleep(0)
                     self.root.ids.container.add_widget(ExpansionPanelItem())
 
+            super().on_start()
             asynckivy.start(set_panel_list())
 
         def build(self):

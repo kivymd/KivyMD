@@ -148,7 +148,9 @@ class MDDivider(BoxLayout):
         super().__init__(**kwargs)
         Clock.schedule_once(self.on_orientation)
 
-    def on_orientation(self, *args):
+    def on_orientation(self, *args) -> None:
+        """Fired when the values of :attr:`orientation` change."""
+
         if self.orientation == "vertical":
             self.size_hint_x = None
             self.width = self.divider_width

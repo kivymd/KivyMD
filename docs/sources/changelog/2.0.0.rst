@@ -1,11 +1,11 @@
-Unreleased
-----------
+2.0.0
+------
 
-    See on GitHub: `branch master <https://github.com/kivymd/KivyMD/tree/master>`_ | `compare 1.1.1/master <https://github.com/kivymd/KivyMD/compare/1.1.1...master>`_
+    See on GitHub: `tag 2.0.0 <https://github.com/kivymd/KivyMD/tree/2.0.0>`_ | `compare 1.1.1/2.0.0 <https://github.com/kivymd/KivyMD/compare/1.1.1...2.0.0>`_
 
     .. code-block:: bash
 
-       pip install https://github.com/kivymd/KivyMD/archive/master.zip
+       pip install kivymd==2.0.0
 
 * Bug fixes and other minor improvements.
 * `Add <https://github.com/kivymd/KivyMD/pull/1392>`_ icon color property to `right_action_items/left_action_items` in `MDTopAppBar <https://kivymd.readthedocs.io/en/latest/components/toolbar/>`_ class.

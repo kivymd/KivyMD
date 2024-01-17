@@ -1,4 +1,4 @@
-# KivyMD [1.1.1](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
+# KivyMD [2.0.0](https://kivymd.readthedocs.io/en/latest/changelog/index.html)
 
 <img align="right" height="256" src="https://github.com/kivymd/internal/raw/main/logo/kivymd_logo_blue.png"/>
 
@@ -43,7 +43,7 @@ may be offered to you without asking too.
 ## Installation
 
 ```bash
-pip install kivymd==1.1.1
+pip install kivymd==2.0.0
 ```
 
 ### Dependencies:

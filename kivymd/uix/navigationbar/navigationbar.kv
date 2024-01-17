@@ -1,0 +1,133 @@
+<MDNavigationBar>
+    size_hint_y: None
+    height: "80dp"
+    elevation_level: 0
+    md_bg_color:
+        self.theme_cls.surfaceContainerColor \
+        if root.theme_bg_color == "Primary" else \
+        root.md_bg_color
+
+
+<MDNavigationItemIcon>
+    size_hint: None, None
+    size: "24sp", "24sp"
+    # theme_text_color: "Custom"
+    icon_color:
+        ( \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.active else \
+        self.theme_cls.onSurfaceVariantColor \
+        ) \
+        if self.theme_icon_color == "Primary" else \
+        ( \
+        self.icon_color_active if self.icon_color_active else \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.active else \
+        self.theme_cls.onSurfaceVariantColor \
+        ) \
+        ) \
+        if self.parent.parent.active else \
+        ( \
+        self.icon_color_normal if self.icon_color_normal else \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.active else \
+        self.theme_cls.onSurfaceVariantColor \
+        ) \
+        ) \
+        ) \
+        if self.parent else self.theme_cls.transparentColor
+    on_icon:
+        if self.icon not in md_icons.keys(): \
+        self.size_hint = (None, None); \
+        self.width = self.font_size; \
+        self.height = self.font_size
+
+    canvas.before:
+        Color:
+            rgba:
+                ( \
+                ( \
+                self.theme_cls.secondaryContainerColor \
+                if not self.parent.parent.indicator_color else \
+                self.parent.parent.indicator_color \
+                ) \
+                if self.parent.parent.active else \
+                self.theme_cls.transparentColor \
+                ) \
+                if self.parent else self.theme_cls.transparentColor
+        RoundedRectangle:
+            radius: [16,]
+            size:
+                ( \
+                (self.parent.parent._selected_region_width, dp(32)) \
+                ) \
+                if self.parent else (0, dp(32))
+            pos:
+                ( \
+                (self.center_x - self.parent.parent._selected_region_width / 2, \
+                self.center_y - dp(16)) \
+                ) \
+                if self.parent else (0, 0)
+
+
+<MDNavigationItemLabel>
+    adaptive_size: True
+    role: "medium"
+    text_color:
+        ( \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.active else \
+        self.theme_cls.onSurfaceVariantColor \
+        ) \
+        if self.theme_text_color == "Primary" else \
+        ( \
+        self.text_color_active if self.text_color_active else \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.active else \
+        self.theme_cls.onSurfaceVariantColor \
+        ) \
+        ) \
+        if self.parent.parent.active else \
+        ( \
+        self.text_color_normal if self.text_color_normal else \
+        ( \
+        self.theme_cls.onSecondaryContainerColor \
+        if self.parent.parent.active else \
+        self.theme_cls.onSurfaceVariantColor \
+        ) \
+        ) \
+        ) \
+        if self.parent else self.theme_cls.transparentColor
+
+
+<MDNavigationItem>
+
+    MDNavigationItemIconContainer:
+        id: icon_container
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {"center_x": .5}
+        y:
+            ( \
+            (root.parent.height - (self.height + dp(16))) \
+            if len(label_container.children) else \
+            (root.parent.height / 2 - self.height / 2) \
+            ) \
+            if root.parent else 0
+
+    MDNavigationItemLabelContainer:
+        id: label_container
+        size_hint: None, None
+        size: self.minimum_size
+        pos_hint: {"center_x": .5}
+        y:
+            "16dp" \
+            if len(icon_container.children) else \
+            ( \
+            (root.parent.height / 2 - self.height / 2) if root.parent else 0 \
+            )

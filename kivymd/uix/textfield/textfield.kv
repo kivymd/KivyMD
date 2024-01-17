@@ -1,317 +1,408 @@
+#:import theme_font_styles kivymd.font_definitions.theme_font_styles
+
+
 <MDTextField>
     input_filter: self.field_filter
     do_backspace: self.do_backspace
 
     canvas.before:
         Clear
-
-        # "round" mode.
-        Color:
-            group: "round-color"
-            rgba: self._fill_color if self.mode == "round" else (0, 0, 0, 0)
-        Ellipse:
-            angle_start: 180
-            angle_end: 360
-            pos: self.x - self.height / 2 + dp(18), self.y
-            size: self.height, self.height
-        Ellipse:
-            angle_start: 360
-            angle_end: 540
-            pos: (self.width - dp(18)) + self.x - self.height / 2.0, self.y
-            size: self.height, self.height
-        Rectangle:
-            pos: self.x + dp(14), self.y
-            size: self.width - dp(28), self.height
-
-        Color:
-            rgba:
-                ( \
-                (self.line_color_focus if not self.error else self.error_color) \
-                if self.focus else ( \
-                self.theme_cls.disabled_hint_text_color \
-                if not self.line_color_normal else \
-                self.line_color_normal) \
-                ) \
-                if self.mode == "round" else \
-                (0, 0, 0, 0)
-        SmoothLine:
-            width: dp(1)
-            rounded_rectangle:
-                self.x, \
-                self.y, \
-                self.width, \
-                self.height, \
-                self.height / 2
-
-        # "fill" mode.
+        # Filled mode.
         Color:
             group: "fill-color"
-            rgba: self._fill_color if self.mode == "fill" else (0, 0, 0, 0)
+            rgba:
+                ( \
+                ( \
+                self.theme_cls.surfaceVariantColor \
+                if self.theme_bg_color == "Primary" else
+                ( \
+                self.fill_color_normal \
+                if self.fill_color_normal else \
+                self.theme_cls.surfaceVariantColor \
+                ) \
+                ) \
+                if not self.focus else \
+                ( \
+                self.theme_cls.surfaceVariantColor \
+                if self.theme_bg_color == "Primary" else
+                ( \
+                self.fill_color_focus \
+                if self.fill_color_focus else \
+                self.theme_cls.onSurfaceVariantColor \
+                ) \
+                ) \
+                ) \
+                if self.mode == "filled" else self.theme_cls.transparentColor
         RoundedRectangle:
+            group: "fill-color-rounded-rectangle"
             pos: self.x, self.y
             size: self.width, self.height
-            radius: self.radius
+            radius: self.radius[0], self.radius[1], 0, 0
 
-        # Static underline texture.
+        # Active indicator.
         Color:
-            group: "static-underline-color"
+            group: "active-indicator-color"
             rgba:
-                (self._line_color_normal \
-                if self.line_color_normal else self.theme_cls.divider_color) \
-                if self.mode == "line" else (0, 0, 0, 0)
+                ( \
+                ( \
+                ( \
+                ( \
+                self.theme_cls.onSurfaceVariantColor \
+                if self.theme_line_color == "Primary" else \
+                ( \
+                self.line_color_normal \
+                if self.line_color_normal else \
+                self.theme_cls.onSurfaceVariantColor \
+                ) \
+                ) \
+                if not self.focus else \
+                ( \
+                self.theme_cls.primaryColor \
+                if self.theme_line_color == "Primary" else \
+                ( \
+                self.line_color_focus \
+                if self.line_color_focus else \
+                self.theme_cls.primaryColor \
+                ) \
+                ) \
+                ) \
+                if not self.error else self._get_error_color()
+                ) \
+                if not self.disabled else self.theme_cls.disabledTextColor \
+                ) \
+                if self.mode == "filled" else self.theme_cls.transparentColor
         Line:
-            points: self.x, self.y + dp(16), self.x + self.width, self.y + dp(16)
-            width: 1
-            dash_length: dp(3)
-            dash_offset: 2 if self.disabled else 0
-
-        # Active underline (on focus) texture.
-        Color:
-            group: "active-underline-color"
-            rgba:
-                self._line_color_focus \
-                if self.mode in ("line", "fill") and self.active_line \
-                else (0, 0, 0, 0)
-        Rectangle:
-            size: self._underline_width, dp(1)
-            pos:
-                self.center_x - (self._underline_width / 2), \
-                self.y + (dp(16) if self.mode != "fill" else 0)
+            width: self._indicator_height
+            points:
+                self.x + dp(1 if self.focus else 0), \
+                self.y, \
+                self.x - dp(1 if self.focus else 0) + self.width, \
+                self.y
 
         # Helper text texture.
         Color:
             group: "helper-text-color"
-            rgba:
-                self.theme_cls.disabled_hint_text_color \
-                if self.disabled else \
-                self._helper_text_color
-        Rectangle:
-            texture: self._helper_text_label.texture
-            size: self._helper_text_label.texture_size
-            pos:
-                self.x + (dp(16) if self.mode == "fill" else \
-                (0 if self.mode not in ("round", "rectangle") else dp(12))), \
-                self.y + (dp(-18) if self.mode in ("fill", "rectangle", "round") else dp(-2))
-
-        # Right/left icon texture.
-        Color:
-            group: "right-left-icons-color"
-            rgba:
-                self.theme_cls.disabled_hint_text_color \
-                if self.disabled else \
-                (self._icon_right_color if self.icon_right else self._icon_left_color)
         Rectangle:
             texture:
-                self._icon_right_label.texture if self.icon_right else self._icon_left_label.texture
+                self._helper_text_label.texture \
+                if self._helper_text_label else \
+                None
             size:
-                (0, 0) if (not self.icon_right and not self.icon_left) else \
-                (self._icon_right_label.texture_size if self.icon_right else self._icon_left_label.texture_size)
+                self._helper_text_label.texture_size \
+                if self._helper_text_label else \
+                (0, 0)
+            pos:
+                self.x + (dp(16) if self.mode == "filled" else \
+                (0 if self.mode == "filled" else dp(12))), \
+                self.y + dp(-18)
+
+        # Leading icon texture.
+        Color:
+            group: "leading-icons-color"
+        Rectangle:
+            texture:
+                self._leading_icon.texture if self._leading_icon else None
+            size:
+                self._leading_icon.texture_size \
+                if self._leading_icon else \
+                (0, 0)
             pos:
                 ( \
-                (self.width + self.x - (0 if self.mode != "round" else dp(4))) - \
-                (self._icon_right_label.texture_size[1]) - dp(8), \
-                self.center[1] - self._icon_right_label.texture_size[1] / 2 + ((dp(8) \
-                if self.mode != "round" else 0) if self.mode != "fill" else 0) \
-                if self.mode != "rectangle" else \
-                self.center[1] - self._icon_right_label.texture_size[1] / 2 - dp(4) \
-                ) \
-                if self.icon_right else \
                 ( \
-                self.x + ((dp((0 if self.mode != "round" else 12)) \
-                if self.mode != "rectangle" else dp(12)) \
-                if self.mode != "fill" else (dp(4) if not self.icon_left else dp(16))), \
+                self.x + \
+                ( \
+                ( \
+                0 if self.mode != "outlined" else dp(12) \
+                ) \
+                if self.mode != "filled" else \
+                ( \
+                dp(4) if not self._leading_icon else dp(16) \
+                ) \
+                ), \
 
-                self.center[1] - self._icon_left_label.texture_size[1] / 2 + (((dp(4) \
-                if self.mode != "round" else 0) if self.mode not in ("rectangle", "fill") \
-                else dp(8)) if self.mode != "fill" else 0) \
-                if self.mode != "rectangle" else \
-                self.center[1] - self._icon_left_label.texture_size[1] / 2 - dp(4) \
-                )
+                self.center_y - self._leading_icon.texture_size[1] / 2 \
+                ) \
+                ) \
+                if self._leading_icon else (0, 0)
+
+        # Trailing icon texture.
+        Color:
+            group: "trailing-icons-color"
+        Rectangle:
+            texture:
+                self._trailing_icon.texture if self._trailing_icon else None
+            size:
+                self._trailing_icon.texture_size \
+                if self._trailing_icon else \
+                (0, 0)
+            pos:
+                ( \
+                (self.width + self.x) - \
+                (self._trailing_icon.texture_size[1]) - dp(14), \
+                self.center_y - self._trailing_icon.texture_size[1] / 2 \
+                ) \
+                if self._trailing_icon else (0, 0)
 
         # Max length texture.
         Color:
             group: "max-length-color"
-            rgba:
-                self.theme_cls.disabled_hint_text_color \
-                if self.disabled else \
-                self._max_length_text_color
         Rectangle:
-            texture: self._max_length_label.texture
-            size: self._max_length_label.texture_size
+            group: "max-length-rect"
+            texture:
+                self._max_length_label.texture \
+                if self._max_length_label else \
+                None
+            size:
+                self._max_length_label.texture_size \
+                if self._max_length_label else \
+                (0, 0)
             pos:
-                self.x + self.width - self._max_length_label.texture_size[0] - dp(12), \
-                self.y - (dp(2) if self.mode == "line" else dp(18))
+                ( \
+                (self.x + self.width) \
+                - (self._max_length_label.texture_size[0] + dp(16)), \
+                self.y - dp(18) \
+                ) \
+                if self._max_length_label else (0, 0)
 
         # Cursor blink.
         Color:
             rgba:
                 ( \
-                (self.text_color_focus if not self.error else self.error_color) \
+                ( \
+                self.theme_cls.primaryColor \
+                if not self.error else \
+                self._get_error_color() \
+                ) \
                 if self.focus \
-                else self._text_color_normal \
+                else self.theme_cls.primaryColor \
                 ) \
                 if self.focus and not self._cursor_blink \
                 else \
                 (0, 0, 0, 0)
         Rectangle:
+            group: "rectangle-cursor-blink"
             pos: (int(x) for x in self.cursor_pos)
             size: 1, -self.line_height
 
-        # "rectangle" mode
+        # Outlined mode.
         Color:
             group: "rectangle-color"
             rgba:
                 ( \
-                (self.line_color_focus if not self.error else self.error_color) \
+                ( \
+                ( \
+                ( \
+                self.theme_cls.primaryColor \
+                if self.theme_line_color == "Primary" else \
+                self.line_color_focus \
+                if self.line_color_focus else \
+                self.theme_cls.primaryColor \
+                ) \
                 if self.focus else \
+                ( \
+                self.theme_cls.outlineColor \
+                if self.theme_line_color == "Primary" else \
                 self.line_color_normal \
+                if self.line_color_normal else \
+                self.theme_cls.outlineColor \
                 ) \
-                if self.mode == "rectangle" else \
-                (0, 0, 0, 0)
-        SmoothLine:
-            width: dp(1)
-            rounded_rectangle:
-                self.x, \
-                self.y, \
-                self.width, \
-                self.height - self._hint_text_label.texture_size[1] // 2, \
-                root.radius[0]
+                ) \
+                if not self.error else self._get_error_color() \
+                ) \
+                if not self.disabled else \
+                app.theme_cls.onSurfaceColor[:-1] + \
+                [self.text_field_opacity_value_disabled_line]
+                ) \
+                if self.mode != "filled" else self.theme_cls.transparentColor
 
-        # The background color line of the widget on which the text field
-        # is placed (for background hint text texture).
-        Color:
-            rgba:
-                ( \
-                ( \
-                self.parent.md_bg_color \
-                if hasattr(self.parent, "md_bg_color") \
-                and self.parent.md_bg_color != [1, 1, 1, 0] else \
-                self.theme_cls.bg_normal \
-                ) \
-                if self.focus else \
-                ( \
-                (0, 0, 0, 0) if not self.text else \
-                ( \
-                self.parent.md_bg_color \
-                if hasattr(self.parent, "md_bg_color") \
-                and self.parent.md_bg_color != [1, 1, 1, 0] else \
-                self.theme_cls.bg_normal \
-                ) \
-                ) \
-                ) \
-                if self.mode == "rectangle" else \
-                (0, 0, 0, 0)
+        # Top right corner.
+        # ------------------------------------------------------─╮
         SmoothLine:
-            width: dp(2)
+            width: self._outline_height
+            circle:
+                self.x + self.width - self.radius[1], \
+                self.y + self.height - self.radius[1], \
+                self.radius[1], \
+                0, \
+                90
+
+        # Bottom corner.
+        # -----------------------------------------------------─╯
+        SmoothLine:
+            width: self._outline_height
+            circle:
+                self.x + self.width - self.radius[2], \
+                self.y + self.radius[2], \
+                -self.radius[2], \
+                0, \
+                -90
+
+        # Top left corner.
+        # ╭─------------------------------------------------------
+        SmoothLine:
+            width: self._outline_height
+            circle:
+                self.x + self.radius[0], \
+                self.y + self.height - self.radius[0], \
+                -self.radius[0], \
+                180, \
+                90
+
+        # Bottom left corner.
+        # ╰─-----------------------------------------------------
+        SmoothLine:
+            width: self._outline_height
+            circle:
+                self.x + self.radius[3], \
+                self.y + self.radius[3], \
+                -self.radius[3], \
+                0, \
+                90
+
+       # Left vertical line.
+       # │
+       # │
+       # ╰─------------------------------------------------------
+        SmoothLine:
+            width: self._outline_height
             points:
-                self.x + dp(10), \
-                self.top - self._hint_text_label.texture_size[1] // 2, \
-                self.x + dp(16) + self._hint_text_label.texture_size[0], \
-                self.top - self._hint_text_label.texture_size[1] // 2
+                self.x, \
+                self.y + self.radius[3], \
+                self.x, \
+                self.y + (self.height - self.radius[0])
+
+        # Right vertical line.
+        #                                                       │
+        #                                                       │
+        # -----------------------------------------------------─╯
+        SmoothLine:
+            width: self._outline_height
+            points:
+                self.x + self.width, \
+                self.y + self.radius[2], \
+                self.x + self.width, \
+                self.y + (self.height - self.radius[1])
+
+        # Bottom horizontal line.
+        # ——————————————————————————————————————————————————————─╯
+        SmoothLine:
+            width: self._outline_height
+            points:
+                self.x + self.radius[3], \
+                self.y, \
+                self.x + self.width - self.radius[2], \
+                self.y
+
+        # Top (left) part of the line.
+        # ╭─-----------------------------------------------------
+        SmoothLine:
+            width: self._outline_height
+            points:
+                self.x + self.radius[0], \
+                self.y + self.height, \
+                self.x + self._left_x_axis_pos, \
+                self.y + self.height
+
+        # Top (right) part of the line.
+        # ╭─-----------—————————————————————————————————————————─╮
+        SmoothLine:
+            width: self._outline_height
+            points:
+                self.x + self._right_x_axis_pos, \
+                self.y + self.height, \
+                self.x + self.width - self.radius[1], \
+                self.y + self.height
 
         # Text color.
         Color:
             group: "text-color"
             rgba:
-                self.theme_cls.disabled_hint_text_color if self.disabled else \
-                ( \
-                self.text_color_focus if self.focus else self._text_color_normal
-                ) \
-                if not self.error else self.error_color
-
-    canvas.after:
-        # Hint text texture.
-        Color:
-            group: "hint-text-color"
-            rgba:
                 self.theme_cls.disabled_hint_text_color \
                 if self.disabled else \
-                self._hint_text_color
-        Rectangle:
-            texture: self._hint_text_label.texture
-            size: self._hint_text_label.texture_size
-            pos:
                 ( \
-                self.x + ((dp(16) if not self.icon_left else dp(52)) \
-                if self.mode == "fill" else ( \
-                ((0 if self.mode != "round" else dp(12)) if self.mode != "rectangle" else dp(12)) \
-                if not self.icon_left else \
-                (dp(36 if self.mode != "round" else 42) if self.mode != "rectangle" else dp(42)))) \
-                if not self.focus and not self.text else \
-                self.x + ((dp(16) if self.mode != "round" else dp(36 if not self.icon_left else 42)) \
-                if self.mode in ("fill", "rectangle", "round") and \
-                self.icon_left else (0 if self.mode != "round" else dp(12))) + self._hint_x
-                ), \
+                self.text_color_focus \
+                if self.text_color_focus and self.theme_text_color == "Custom" \
+                else self.theme_cls.onSurfaceColor \
+                ) \
+                if self.focus else \
+                ( \
+                self.text_color_normal \
+                if self.text_color_normal and self.theme_text_color == "Custom" \
+                else self.theme_cls.onSurfaceVariantColor \
+                )
 
-                self.y + self.height + (((dp(4) if self.mode != "round" else dp(10)) \
-                if self.mode != "line" else \
-                dp(-6)) if self.mode != "rectangle" else dp(-4)) - self._hint_y
-
-
-    font_name: "Roboto" if not self.font_name else self.font_name
-    foreground_color: self.theme_cls.text_color
-    bold: False
-    padding:
-        ( \
-        ((0 if self.mode != "round" else "12dp") \
-        if self.mode != "rectangle" else "12dp") \
-        if not self.icon_left else \
-        (("36dp" if self.mode != "round" else "42dp") \
-        if self.mode != "rectangle" else "42dp") \
-        ) \
-        if self.mode != "fill" else \
-        ("16dp" if not self.icon_left else "52dp"), \
-
-        "24dp" if self.mode != "round" else "8dp", \
-
-        ((0 if self.mode != "round" and not self.icon_left else dp(12)) \
-        if self.mode != "rectangle" else "12dp") \
-        if self.mode != "fill" and not self.icon_right else \
-        ( \
-        "14dp" \
-        if not self.icon_right else \
-        self._icon_right_label.texture_size[1] + (dp(20) \
-        if self.mode != "round" else dp(24))), \
-
-        "8dp" if self.mode == "fill" else \
-        (("22dp" if self.mode != "round" else "8dp") \
-        if self.icon_left and self.mode != "rectangle" else \
-        ("16dp" if self.mode in ("fill", "rectangle") else \
-        "20dp" if self.mode != "round" else "8dp"))
-    multiline: False
-    size_hint_y: None
-    height: self.minimum_height
-
-
-<TextfieldLabel>
-    size_hint_x: None
-    width: self.texture_size[0]
-    shorten: True
-    shorten_from: "right"
-
-
-<MDTextFieldRect>
-    on_focus:
-        self.anim_rect((self.x, self.y, self.right, self.y, self.right, \
-        self.top, self.x, self.top, self.x, self.y), 1) if self.focus \
-        else self.anim_rect((self.x - dp(60), self.y - dp(60), \
-        self.right + dp(60), self.y - dp(60),
-        self.right + dp(60), self.top + dp(60), \
-        self.x - dp(60), self.top + dp(60), \
-        self.x - dp(60), self.y - dp(60)), 0)
-
+    # Hint texture.
     canvas.after:
         Color:
-            group: "color"
-            rgba: self._primary_color
-        Line:
-            group: "rectangle"
-            width: dp(1.5)
-            points:
-                (
-                self.x - dp(60), self.y - dp(60),
-                self.right + dp(60), self.y - dp(60),
-                self.right + dp(60), self.top + dp(60),
-                self.x - dp(60), self.top + dp(60),
-                self.x - dp(60), self.y - dp(60)
-                )
+            group: "hint-text-color"
+        Rectangle:
+            group: "hint-text-rectangle"
+            texture:
+                self._hint_text_label.texture \
+                if self._hint_text_label else \
+                None
+            size:
+                self._hint_text_label.texture_size \
+                if self._hint_text_label else \
+                (0, 0)
+            pos:
+                ( \
+                self.x + \
+                ( \
+                dp(16) \
+                if not self._leading_icon else \
+                self._leading_icon.texture_size[0] + dp(28) + self._hint_x \
+                ), \
+
+                self.y + self.height \
+                + (self._hint_text_label.texture_size[1] / 2) \
+                - (self.height / 2) \
+                - self._hint_y  \
+                ) \
+                if self._hint_text_label else (0, 0)
+
+    bold: False
+    font_name: theme_font_styles[self.font_style][self.role]["font-name"]
+    font_size: theme_font_styles[self.font_style][self.role]["font-size"]
+    padding:
+        ( \
+        dp(16) if not self._leading_icon else dp(42) \
+        if self.mode != "filled" else \
+        (dp(16) if not self._leading_icon else dp(52)), \
+
+        (self.height / 2.0 - (self.line_height / 2.0) * len(self._lines)) \
+        + dp(8 if self.mode == "filled" else 0), \
+
+        dp(16) \
+        if not self._trailing_icon else \
+        self._trailing_icon.texture_size[0] + dp(28), \
+
+        0 \
+        )
+    multiline: False
+    size_hint_y: None
+    height: dp(56) if not self.multiline else (dp(10) + self.minimum_height)
+
+
+<BaseTextFieldIcon>
+    size_hint: None, None
+    size: "20dp", "20dp"
+    size_hint_x: None
+    width: self.texture_size[0]
+    theme_text_color: "Custom"
+
+
+<MDTextFieldHintText>
+    role: "large"
+    theme_font_size: "Custom"
+
+
+<BaseTextFieldLabel>
+    size_hint_x: None
+    width: self.texture_size[0]
+    adaptive_width: True
+    shorten: True
+    shorten_from: "right"
+    font_style: "Body"
+    role: "small"
+    theme_text_color: "Custom"

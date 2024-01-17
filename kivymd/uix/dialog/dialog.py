@@ -4,182 +4,157 @@ Components/Dialog
 
 .. seealso::
 
-    `Material Design spec, Dialogs <https://material.io/components/dialogs>`_
+    `Material Design spec, Dialogs <https://m3.material.io/components/dialogs/overview>`_
 
 
-.. rubric:: Dialogs inform users about a task and can contain critical
-    information, require decisions, or involve multiple tasks.
+.. rubric:: Dialogs provide important prompts in a user flow.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialogs.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-preview.png
     :align: center
 
-Usage
------
+- Use dialogs to make sure users act on information
+- Two types: basic and full-screen (full-screen not provided in KivyMD)
+- Should be dedicated to completing a single task
+- Can also display information relevant to the task
+- Commonly used to confirm high-risk actions like deleting progress
+
+Anatomy
+=======
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-anatomy.png
+    :align: center
+
+Example
+=======
 
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivy.uix.widget import Widget
+
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDButton, MDButtonText
+    from kivymd.uix.dialog import (
+        MDDialog,
+        MDDialogIcon,
+        MDDialogHeadlineText,
+        MDDialogSupportingText,
+        MDDialogButtonContainer,
+        MDDialogContentContainer,
+    )
+    from kivymd.uix.divider import MDDivider
+    from kivymd.uix.list import (
+        MDListItem,
+        MDListItemLeadingIcon,
+        MDListItemSupportingText,
+    )
+
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDButton:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_alert_dialog()
+
+            MDButtonText:
+                text: "Show dialog"
+    '''
+
+
+    class Example(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+        def show_alert_dialog(self):
+            MDDialog(
+                # ----------------------------Icon-----------------------------
+                MDDialogIcon(
+                    icon="refresh",
+                ),
+                # -----------------------Headline text-------------------------
+                MDDialogHeadlineText(
+                    text="Reset settings?",
+                ),
+                # -----------------------Supporting text-----------------------
+                MDDialogSupportingText(
+                    text="This will reset your app preferences back to their "
+                    "default settings. The following accounts will also "
+                    "be signed out:",
+                ),
+                # -----------------------Custom content------------------------
+                MDDialogContentContainer(
+                    MDDivider(),
+                    MDListItem(
+                        MDListItemLeadingIcon(
+                            icon="gmail",
+                        ),
+                        MDListItemSupportingText(
+                            text="KivyMD-library@yandex.com",
+                        ),
+                        theme_bg_color="Custom",
+                        md_bg_color=self.theme_cls.transparentColor,
+                    ),
+                    MDListItem(
+                        MDListItemLeadingIcon(
+                            icon="gmail",
+                        ),
+                        MDListItemSupportingText(
+                            text="kivydevelopment@gmail.com",
+                        ),
+                        theme_bg_color="Custom",
+                        md_bg_color=self.theme_cls.transparentColor,
+                    ),
+                    MDDivider(),
+                    orientation="vertical",
+                ),
+                # ---------------------Button container------------------------
+                MDDialogButtonContainer(
+                    Widget(),
+                    MDButton(
+                        MDButtonText(text="Cancel"),
+                        style="text",
+                    ),
+                    MDButton(
+                        MDButtonText(text="Accept"),
+                        style="text",
+                    ),
+                    spacing="8dp",
+                ),
+                # -------------------------------------------------------------
+            ).open()
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-example.gif
+    :align: center
+
+.. warning:: Do not try to use the MDDialog widget in KV files.
+
+API break
+=========
+
+1.2.0 version
+-------------
+
+.. code-block:: python
+
+    from kivy.uix.widget import Widget
 
     from kivymd.app import MDApp
     from kivymd.uix.button import MDFlatButton
     from kivymd.uix.dialog import MDDialog
 
-    KV = '''
-    MDFloatLayout:
-
-        MDFlatButton:
-            text: "ALERT DIALOG"
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_alert_dialog()
-    '''
-
 
     class Example(MDApp):
-        dialog = None
-
         def build(self):
-            self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "Orange"
-            return Builder.load_string(KV)
+            return Widget()
 
-        def show_alert_dialog(self):
-            if not self.dialog:
-                self.dialog = MDDialog(
-                    text="Discard draft?",
-                    buttons=[
-                        MDFlatButton(
-                            text="CANCEL",
-                            theme_text_color="Custom",
-                            text_color=self.theme_cls.primary_color,
-                        ),
-                        MDFlatButton(
-                            text="DISCARD",
-                            theme_text_color="Custom",
-                            text_color=self.theme_cls.primary_color,
-                        ),
-                    ],
-                )
-            self.dialog.open()
-
-
-    Example().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/alert-dialog.png
-    :align: center
-"""
-
-__all__ = ("MDDialog", "BaseDialog")
-
-import os
-
-from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.lang import Builder
-from kivy.metrics import dp
-from kivy.properties import (
-    ColorProperty,
-    ListProperty,
-    NumericProperty,
-    ObjectProperty,
-    OptionProperty,
-    StringProperty,
-)
-from kivy.uix.modalview import ModalView
-
-from kivymd import uix_path
-from kivymd.material_resources import DEVICE_TYPE
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import CommonElevationBehavior, MotionDialogBehavior
-from kivymd.uix.button import BaseButton
-from kivymd.uix.card import MDSeparator
-from kivymd.uix.list import BaseListItem
-
-with open(
-    os.path.join(uix_path, "dialog", "dialog.kv"), encoding="utf-8"
-) as kv_file:
-    Builder.load_string(kv_file.read())
-
-
-class BaseDialog(
-    ThemableBehavior, MotionDialogBehavior, ModalView, CommonElevationBehavior
-):
-    elevation = NumericProperty(3)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
-    attribute for more information.
-
-    .. versionadded:: 1.1.0
-
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `3`.
-    """
-
-    shadow_softness = NumericProperty(24)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
-    attribute for more information.
-
-    .. versionadded:: 1.1.0
-
-    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `24`.
-    """
-
-    shadow_offset = ListProperty((0, 4))
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
-    attribute for more information.
-
-    .. versionadded:: 1.1.0
-
-    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[0, 4]`.
-    """
-
-    radius = ListProperty([dp(7), dp(7), dp(7), dp(7)])
-    """
-    Dialog corners rounding value.
-
-    .. code-block:: python
-
-        [...]
-            self.dialog = MDDialog(
-                text="Oops! Something seems to have gone wrong!",
-                radius=[20, 7, 20, 7],
-            )
-            [...]
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-radius.png
-        :align: center
-
-    :attr:`radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[7, 7, 7, 7]`.
-    """
-
-    _scale_x = NumericProperty(1)
-    _scale_y = NumericProperty(1)
-
-
-class MDDialog(BaseDialog):
-    """
-    Dialog class.
-
-    For more information, see in the
-    :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivy.uix.modalview.ModalView` and
-    :class:`~kivymd.uix.behaviors.CommonElevationBehavior`
-    classes documentation.
-    """
-
-    title = StringProperty()
-    """
-    Title dialog.
-
-    .. code-block:: python
-
-        [...]
-            self.dialog = MDDialog(
-                title="Reset settings?",
+        def on_start(self):
+            super().on_start()
+            MDDialog(
+                title="Discard draft?",
                 buttons=[
                     MDFlatButton(
                         text="CANCEL",
@@ -187,30 +162,36 @@ class MDDialog(BaseDialog):
                         text_color=self.theme_cls.primary_color,
                     ),
                     MDFlatButton(
-                        text="ACCEPT",
+                        text="DISCARD",
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                     ),
                 ],
-            )
-            [...]
+            ).open()
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-title.png
-        :align: center
 
-    :attr:`title` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
+    Example().run()
 
-    text = StringProperty()
-    """
-    Text dialog.
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-api-break-1-2-0.png
+    :align: center
 
-    .. code-block:: python
+.. code-block:: python
 
-        [...]
-            self.dialog = MDDialog(
-                title="Reset settings?",
+    from kivy.uix.widget import Widget
+
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDFlatButton
+    from kivymd.uix.dialog import MDDialog
+
+
+    class Example(MDApp):
+        def build(self):
+            return Widget()
+
+        def on_start(self):
+            super().on_start()
+            MDDialog(
+                title="Discard draft?",
                 text="This will reset your device to its default factory settings.",
                 buttons=[
                     MDFlatButton(
@@ -219,198 +200,270 @@ class MDDialog(BaseDialog):
                         text_color=self.theme_cls.primary_color,
                     ),
                     MDFlatButton(
-                        text="ACCEPT",
+                        text="DISCARD",
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                     ),
                 ],
-            )
-            [...]
+            ).open()
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-text.png
-        :align: center
 
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
+    Example().run()
 
-    buttons = ListProperty()
-    """
-    List of button objects for dialog.
-    Objects must be inherited from :class:`~kivymd.uix.button.BaseButton` class.
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/2-dialog-api-break-1-2-0.png
+    :align: center
 
-    .. code-block:: python
+.. code-block:: python
 
-        [...]
-            self.dialog = MDDialog(
-                text="Discard draft?",
-                buttons=[
-                    MDFlatButton(text="CANCEL"), MDRaisedButton(text="DISCARD"),
+    from kivy.lang import Builder
+    from kivy.properties import StringProperty
+    from kivy.uix.widget import Widget
+
+    from kivymd import images_path
+    from kivymd.app import MDApp
+    from kivymd.uix.dialog import MDDialog
+    from kivymd.uix.list import OneLineAvatarListItem
+
+    KV = '''
+    <Item>
+
+        ImageLeftWidget:
+            source: root.source
+    '''
+
+
+    class Item(OneLineAvatarListItem):
+        divider = None
+        source = StringProperty()
+
+
+    class Example(MDApp):
+        def build(self):
+            Builder.load_string(KV)
+            return Widget()
+
+        def on_start(self):
+            super().on_start()
+            MDDialog(
+                title="Set backup account",
+                type="simple",
+                items=[
+                    Item(text="user01@gmail.com", source=f"{images_path}/logo/kivymd-icon-128.png"),
+                    Item(text="user02@gmail.com", source="data/logo/kivy-icon-128.png"),
                 ],
-            )
-            [...]
+            ).open()
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-buttons.png
-        :align: center
 
-    :attr:`buttons` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/3-dialog-api-break-1-2-0.png
+    :align: center
+
+2.2.0 version
+-------------
+
+.. code-block:: python
+
+    from kivy.uix.widget import Widget
+
+    from kivymd.uix.widget import MDWidget
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDButton, MDButtonText
+    from kivymd.uix.dialog import MDDialog, MDDialogHeadlineText, MDDialogButtonContainer
+
+
+    class Example(MDApp):
+        def build(self):
+            return MDWidget(md_bg_color=self.theme_cls.backgroundColor)
+
+        def on_start(self):
+            super().on_start()
+            MDDialog(
+                MDDialogHeadlineText(
+                    text="Discard draft?",
+                    halign="left",
+                ),
+                MDDialogButtonContainer(
+                    Widget(),
+                    MDButton(
+                        MDButtonText(text="Cancel"),
+                        style="text",
+                    ),
+                    MDButton(
+                        MDButtonText(text="Discard"),
+                        style="text",
+                    ),
+                    spacing="8dp",
+                ),
+            ).open()
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-api-break-2-2-0.png
+    :align: center
+
+.. code-block:: python
+
+    from kivy.uix.widget import Widget
+
+    from kivymd.uix.widget import MDWidget
+    from kivymd.app import MDApp
+    from kivymd.uix.button import MDButton, MDButtonText
+    from kivymd.uix.dialog import MDDialog, MDDialogHeadlineText, MDDialogButtonContainer
+
+
+    class Example(MDApp):
+        def build(self):
+            return MDWidget(md_bg_color=self.theme_cls.backgroundColor)
+
+        def on_start(self):
+            super().on_start()
+            MDDialog(
+                MDDialogHeadlineText(
+                    text="Discard draft?",
+                    halign="left",
+                ),
+                MDDialogSupportingText(
+                    text="This will reset your device to its default factory settings.",
+                    halign="left",
+                ),
+                MDDialogButtonContainer(
+                    Widget(),
+                    MDButton(
+                        MDButtonText(text="Cancel"),
+                        style="text",
+                    ),
+                    MDButton(
+                        MDButtonText(text="Discard"),
+                        style="text",
+                    ),
+                    spacing="8dp",
+                ),
+            ).open()
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/2-dialog-api-break-2-2-0.png
+    :align: center
+
+.. code-block:: python
+
+    from kivymd import images_path
+    from kivymd.uix.widget import MDWidget
+    from kivymd.app import MDApp
+    from kivymd.uix.dialog import (
+        MDDialog,
+        MDDialogHeadlineText,
+        MDDialogContentContainer,
+    )
+    from kivymd.uix.list import (
+        MDListItem,
+        MDListItemLeadingAvatar,
+        MDListItemSupportingText,
+    )
+
+
+    class Example(MDApp):
+        def build(self):
+            return MDWidget(md_bg_color=self.theme_cls.backgroundColor)
+
+        def on_start(self):
+            super().on_start()
+            MDDialog(
+                MDDialogHeadlineText(
+                    text="Set backup account",
+                    halign="left",
+                ),
+                MDDialogContentContainer(
+                    MDListItem(
+                        MDListItemLeadingAvatar(
+                            source=f"{images_path}/logo/kivymd-icon-128.png",
+                        ),
+                        MDListItemSupportingText(
+                            text="user01@gmail.com",
+                        ),
+                        theme_bg_color="Custom",
+                        md_bg_color=self.theme_cls.transparentColor,
+                    ),
+                    MDListItem(
+                        MDListItemLeadingAvatar(
+                            source="data/logo/kivy-icon-128.png",
+                        ),
+                        MDListItemSupportingText(
+                            text="user01@gmail.com",
+                        ),
+                        theme_bg_color="Custom",
+                        md_bg_color=self.theme_cls.transparentColor,
+                    ),
+                    orientation="vertical",
+                ),
+            ).open()
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/3-dialog-api-break-2-2-0.png
+    :align: center
+
+"""
+
+__all__ = [
+    "MDDialog",
+    "MDDialogIcon",
+    "MDDialogHeadlineText",
+    "MDDialogSupportingText",
+    "MDDialogContentContainer",
+    "MDDialogButtonContainer",
+]
+
+import os
+
+from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.metrics import dp
+from kivy.properties import (
+    VariableListProperty,
+    NumericProperty,
+    ColorProperty,
+    ObjectProperty,
+)
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
+
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDIcon, MDLabel
+from kivymd import uix_path
+from kivymd.material_resources import DEVICE_TYPE
+from kivymd.uix.behaviors import MotionDialogBehavior, DeclarativeBehavior
+
+with open(
+    os.path.join(uix_path, "dialog", "dialog.kv"), encoding="utf-8"
+) as kv_file:
+    Builder.load_string(kv_file.read())
+
+
+class MDDialog(MDCard, MotionDialogBehavior):
     """
+    Dialog class.
 
-    items = ListProperty()
-    """
-    List of items objects for dialog.
-    Objects must be inherited from :class:`~kivymd.uix.list.BaseListItem` class.
+    For more information, see in the
+    :class:`~kivymd.uix.card.card.MDCard` and
+    :class:`~kivymd.uix.behaviors.motion_behavior.MotionDialogBehavior`
+    classes documentation.
 
-    With type 'simple'
-    ~~~~~~~~~~~~~~~~~~
-
-    .. code-block:: python
-
-        from kivy.lang import Builder
-        from kivy.properties import StringProperty
-
-        from kivymd.app import MDApp
-        from kivymd.uix.dialog import MDDialog
-        from kivymd.uix.list import OneLineAvatarListItem
-
-        KV = '''
-        <Item>
-
-            ImageLeftWidget:
-                source: root.source
-
-
-        MDFloatLayout:
-
-            MDFlatButton:
-                text: "ALERT DIALOG"
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                on_release: app.show_simple_dialog()
-        '''
-
-
-        class Item(OneLineAvatarListItem):
-            divider = None
-            source = StringProperty()
-
-
-        class Example(MDApp):
-            dialog = None
-
-            def build(self):
-                self.theme_cls.theme_style = "Dark"
-                self.theme_cls.primary_palette = "Orange"
-                return Builder.load_string(KV)
-
-            def show_simple_dialog(self):
-                if not self.dialog:
-                    self.dialog = MDDialog(
-                        title="Set backup account",
-                        type="simple",
-                        items=[
-                            Item(text="user01@gmail.com", source="kivymd/images/logo/kivymd-icon-128.png"),
-                            Item(text="user02@gmail.com", source="data/logo/kivy-icon-128.png"),
-                        ],
-                    )
-                self.dialog.open()
-
-
-        Example().run()
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-items.png
-        :align: center
-
-    With type 'confirmation'
-    ~~~~~~~~~~~~~~~~~~~~~~~~
-
-    .. code-block:: python
-
-        from kivy.lang import Builder
-
-        from kivymd.app import MDApp
-        from kivymd.uix.button import MDFlatButton
-        from kivymd.uix.dialog import MDDialog
-        from kivymd.uix.list import OneLineAvatarIconListItem
-
-        KV = '''
-        <ItemConfirm>
-            on_release: root.set_icon(check)
-
-            CheckboxLeftWidget:
-                id: check
-                group: "check"
-
-
-        MDFloatLayout:
-
-            MDFlatButton:
-                text: "ALERT DIALOG"
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                on_release: app.show_confirmation_dialog()
-        '''
-
-
-        class ItemConfirm(OneLineAvatarIconListItem):
-            divider = None
-
-            def set_icon(self, instance_check):
-                instance_check.active = True
-                check_list = instance_check.get_widgets(instance_check.group)
-                for check in check_list:
-                    if check != instance_check:
-                        check.active = False
-
-
-        class Example(MDApp):
-            dialog = None
-
-            def build(self):
-                self.theme_cls.theme_style = "Dark"
-                self.theme_cls.primary_palette = "Orange"
-                return Builder.load_string(KV)
-
-            def show_confirmation_dialog(self):
-                if not self.dialog:
-                    self.dialog = MDDialog(
-                        title="Phone ringtone",
-                        type="confirmation",
-                        items=[
-                            ItemConfirm(text="Callisto"),
-                            ItemConfirm(text="Luna"),
-                            ItemConfirm(text="Night"),
-                            ItemConfirm(text="Solo"),
-                            ItemConfirm(text="Phobos"),
-                            ItemConfirm(text="Diamond"),
-                            ItemConfirm(text="Sirena"),
-                            ItemConfirm(text="Red music"),
-                            ItemConfirm(text="Allergio"),
-                            ItemConfirm(text="Magic"),
-                            ItemConfirm(text="Tic-tac"),
-                        ],
-                        buttons=[
-                            MDFlatButton(
-                                text="CANCEL",
-                                theme_text_color="Custom",
-                                text_color=self.theme_cls.primary_color,
-                            ),
-                            MDFlatButton(
-                                text="OK",
-                                theme_text_color="Custom",
-                                text_color=self.theme_cls.primary_color,
-                            ),
-                        ],
-                    )
-                self.dialog.open()
-
-
-        Example().run()
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-confirmation.png
-        :align: center
-
-    :attr:`items` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`.
+    :Events:
+        `on_pre_open`:
+            Fired before the MDDialog is opened. When this event is fired
+            MDDialog is not yet added to window.
+        `on_open`:
+            Fired when the MDDialog is opened.
+        `on_pre_dismiss`:
+            Fired before the MDDialog is closed.
+        `on_dismiss`:
+            Fired when the MDDialog is closed. If the callback returns True,
+            the dismiss will be canceled.
     """
 
     width_offset = NumericProperty(dp(48))
@@ -421,270 +474,149 @@ class MDDialog(BaseDialog):
     and defaults to `dp(48)`.
     """
 
-    type = OptionProperty(
-        "alert", options=["alert", "simple", "confirmation", "custom"]
-    )
+    radius = VariableListProperty(dp(28), lenght=4)
     """
-    Dialog type.
-    Available option are `'alert'`, `'simple'`, `'confirmation'`, `'custom'`.
+    Dialog corners rounding value.
 
-    :attr:`type` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'alert'`.
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(28), dp(28), dp(28), dp(28)]`.
     """
 
-    content_cls = ObjectProperty()
+    scrim_color = ColorProperty([0, 0, 0, 0.5])
     """
-    Custom content class. This attribute is only available when :attr:`type` is
-    set to `'custom'`.
+    Color for scrim in (r, g, b, a) or string format.
 
-    .. tabs::
-
-        .. tab:: Declarative KV style
-
-            .. code-block:: python
-
-                from kivy.lang import Builder
-                from kivy.uix.boxlayout import BoxLayout
-
-                from kivymd.app import MDApp
-                from kivymd.uix.button import MDFlatButton
-                from kivymd.uix.dialog import MDDialog
-
-                KV = '''
-                <Content>
-                    orientation: "vertical"
-                    spacing: "12dp"
-                    size_hint_y: None
-                    height: "120dp"
-
-                    MDTextField:
-                        hint_text: "City"
-
-                    MDTextField:
-                        hint_text: "Street"
-
-
-                MDFloatLayout:
-
-                    MDFlatButton:
-                        text: "ALERT DIALOG"
-                        pos_hint: {'center_x': .5, 'center_y': .5}
-                        on_release: app.show_confirmation_dialog()
-                '''
-
-
-                class Content(BoxLayout):
-                    pass
-
-
-                class Example(MDApp):
-                    dialog = None
-
-                    def build(self):
-                        self.theme_cls.theme_style = "Dark"
-                        self.theme_cls.primary_palette = "Orange"
-                        return Builder.load_string(KV)
-
-                    def show_confirmation_dialog(self):
-                        if not self.dialog:
-                            self.dialog = MDDialog(
-                                title="Address:",
-                                type="custom",
-                                content_cls=Content(),
-                                buttons=[
-                                    MDFlatButton(
-                                        text="CANCEL",
-                                        theme_text_color="Custom",
-                                        text_color=self.theme_cls.primary_color,
-                                    ),
-                                    MDFlatButton(
-                                        text="OK",
-                                        theme_text_color="Custom",
-                                        text_color=self.theme_cls.primary_color,
-                                    ),
-                                ],
-                            )
-                        self.dialog.open()
-
-
-                Example().run()
-
-        .. tab:: Declarative Python style
-
-            .. code-block:: python
-
-                from kivymd.app import MDApp
-                from kivymd.uix.boxlayout import MDBoxLayout
-                from kivymd.uix.button import MDFlatButton
-                from kivymd.uix.dialog import MDDialog
-                from kivymd.uix.floatlayout import MDFloatLayout
-                from kivymd.uix.textfield import MDTextField
-
-
-                class Example(MDApp):
-                    dialog = None
-
-                    def build(self):
-                        self.theme_cls.theme_style = "Dark"
-                        self.theme_cls.primary_palette = "Orange"
-                        return (
-                            MDFloatLayout(
-                                MDFlatButton(
-                                    text="ALERT DIALOG",
-                                    pos_hint={'center_x': 0.5, 'center_y': 0.5},
-                                    on_release=self.show_confirmation_dialog,
-                                )
-                            )
-                        )
-
-                    def show_confirmation_dialog(self, *args):
-                        if not self.dialog:
-                            self.dialog = MDDialog(
-                                title="Address:",
-                                type="custom",
-                                content_cls=MDBoxLayout(
-                                    MDTextField(
-                                        hint_text="City",
-                                    ),
-                                    MDTextField(
-                                        hint_text="Street",
-                                    ),
-                                    orientation="vertical",
-                                    spacing="12dp",
-                                    size_hint_y=None,
-                                    height="120dp",
-                                ),
-                                buttons=[
-                                    MDFlatButton(
-                                        text="CANCEL",
-                                        theme_text_color="Custom",
-                                        text_color=self.theme_cls.primary_color,
-                                    ),
-                                    MDFlatButton(
-                                        text="OK",
-                                        theme_text_color="Custom",
-                                        text_color=self.theme_cls.primary_color,
-                                    ),
-                                ],
-                            )
-                        self.dialog.open()
-
-
-                Example().run()
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-custom.png
-        :align: center
-
-    :attr:`content_cls` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `'None'`.
+    :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.5]`.
     """
 
-    md_bg_color = ColorProperty(None)
-    """
-    Background color in the (r, g, b, a) or string format.
+    _scrim = ObjectProperty()  # kivymd.uix.dialog.dialog.MDDialogScrim object
+    _is_open = False  # is the dialog currently open or closed.
 
-    :attr:`md_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    _scroll_height = NumericProperty("28dp")
-    _spacer_top = NumericProperty("24dp")
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.register_event_type("on_open")
+        self.register_event_type("on_pre_open")
+        self.register_event_type("on_dismiss")
+        self.register_event_type("on_pre_dismiss")
+        self.opacity = 0
         Window.bind(on_resize=self.update_width)
 
-        if self.size_hint == [1, 1] and (
-            DEVICE_TYPE == "desktop" or DEVICE_TYPE == "tablet"
-        ):
-            self.size_hint = (None, None)
-            self.width = min(dp(560), Window.width - self.width_offset)
-        elif self.size_hint == [1, 1] and DEVICE_TYPE == "mobile":
-            self.size_hint = (None, None)
-            self.width = min(dp(280), Window.width - self.width_offset)
-
-        if not self.title:
-            self._spacer_top = 0
-
-        if not self.buttons:
-            self.ids.root_button_box.height = 0
-        else:
-            self.create_buttons()
-
-        update_height = False
-        if self.type in ("simple", "confirmation"):
-            if self.type == "confirmation":
-                self.ids.spacer_top_box.add_widget(MDSeparator())
-                self.ids.spacer_bottom_box.add_widget(MDSeparator())
-            self.create_items()
-        if self.type == "custom":
-            if self.content_cls:
-                self.ids.container.remove_widget(self.ids.scroll)
-                self.ids.container.remove_widget(self.ids.text)
-                self.ids.spacer_top_box.add_widget(self.content_cls)
-                self.ids.spacer_top_box.padding = (0, "24dp", "16dp", 0)
-                update_height = True
-        if self.type == "alert":
-            self.ids.scroll.bar_width = 0
-
-        if update_height:
-            Clock.schedule_once(self.update_height)
-
     def update_width(self, *args) -> None:
-        self.width = max(
-            self.height + self.width_offset,
+        self.size_hint_max_x = max(
+            self.width_offset,
             min(
                 dp(560) if DEVICE_TYPE != "mobile" else dp(280),
                 Window.width - self.width_offset,
             ),
         )
 
-    def update_height(self, *args) -> None:
-        self._spacer_top = self.content_cls.height + dp(24)
+    def add_widget(self, widget, *args, **kwargs):
+        if isinstance(widget, MDDialogIcon):
+            self.ids.icon_container.add_widget(widget)
+        elif isinstance(widget, MDDialogHeadlineText):
+            self.ids.headline_container.add_widget(widget)
+        elif isinstance(widget, MDDialogSupportingText):
+            self.ids.supporting_text_container.add_widget(widget)
+        elif isinstance(widget, MDDialogContentContainer):
+            self.ids.content_container.add_widget(widget)
+        elif isinstance(widget, MDDialogButtonContainer):
+            self.ids.button_container.add_widget(widget)
+        else:
+            return super().add_widget(widget)
 
-    def update_items(self, items: list) -> None:
-        self.ids.box_items.clear_widgets()
-        self.items = items
-        self.create_items()
+    def open(self) -> None:
+        """Show the dialog."""
 
-    def on_open(self) -> None:
-        # TODO: Add scrolling text.
-        self.height = self.ids.container.height
+        if self._is_open:
+            return
+
+        self.dispatch("on_pre_open")
+        self._is_open = True
+
+        if not self._scrim:
+            self._scrim = MDDialogScrim(color=self.scrim_color)
+
+        Window.add_widget(self._scrim)
+        Window.add_widget(self)
         super().on_open()
+        self.dispatch("on_open")
 
-    def get_normal_height(self) -> float:
-        return (
-            (Window.height * 80 / 100)
-            - self._spacer_top
-            - dp(52)
-            - self.ids.container.padding[1]
-            - self.ids.container.padding[-1]
-            - 100
-        )
+    def on_pre_open(self, *args) -> None:
+        """Fired when a dialog pre opened."""
 
-    def edit_padding_for_item(self, instance_item) -> None:
-        instance_item.ids._left_container.x = 0
-        instance_item._txt_left_pad = "56dp"
+    def on_open(self, *args) -> None:
+        """Fired when a dialog opened."""
 
-    def create_items(self) -> None:
-        if not self.text:
-            self.ids.container.remove_widget(self.ids.text)
-            height = 0
-        else:
-            height = self.ids.text.height
+    def on_dismiss(self, *args) -> None:
+        """Fired when a dialog dismiss."""
 
-        for item in self.items:
-            if issubclass(item.__class__, BaseListItem):
-                height += item.height  # calculate height contents
-                self.edit_padding_for_item(item)
-                self.ids.box_items.add_widget(item)
+    def on_pre_dismiss(self, *args) -> None:
+        """Fired when a dialog pre-dismiss."""
 
-        if height > Window.height:
-            self.ids.scroll.height = self.get_normal_height()
-        else:
-            self.ids.scroll.height = height
+    def on_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            self.dismiss()
+            return True
+        super().on_touch_down(touch)
+        return True
 
-    def create_buttons(self) -> None:
-        for button in self.buttons:
-            if issubclass(button.__class__, BaseButton):
-                self.ids.button_box.add_widget(button)
+    def dismiss(self, *args) -> None:
+        """Closes the dialog."""
+
+        self.dispatch("on_pre_dismiss")
+        super().on_dismiss()
+        self._is_open = False
+        self.dispatch("on_dismiss")
+
+
+class MDDialogIcon(MDIcon):
+    """
+    The class implements an icon.
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+
+class MDDialogHeadlineText(MDLabel):
+    """
+    The class implements the headline text.
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+    """
+
+
+class MDDialogSupportingText(MDLabel):
+    """
+    The class implements the supporting text.
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+    """
+
+
+class MDDialogContentContainer(DeclarativeBehavior, BoxLayout):
+    """
+    The class implements the container for custom widgets.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
+    """
+
+
+class MDDialogButtonContainer(DeclarativeBehavior, BoxLayout):
+    """
+    The class implements a container for placing dialog buttons.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
+    """
+
+
+class MDDialogScrim(Widget):
+    color = ColorProperty(None)
+    alpha = NumericProperty(0)

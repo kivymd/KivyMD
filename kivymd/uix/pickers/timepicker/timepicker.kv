@@ -1,132 +1,275 @@
-<TimeInputLabel@MDLabel>:
-    theme_text_color: "Custom"
-    font_size: dp(10)
-    halign: "left"
-    valign: "bottom"
-    adaptive_size: True
+###############################################################################
+#
+#                                 INPUT RULES
+#
+###############################################################################
 
-
-<AmPmSelectorLabel>
-    halign: "center"
-    valign: "center"
-    theme_text_color: "Custom"
-
-
-<AmPmSelector>
+<MDTimePickerInput>
     size_hint: None, None
+    size: dp(328), dp(248)
+    _time_input: _time_input
+    # _selector: _selector
+    _am_pm_selector: _am_pm_selector
 
+    MDLabel:
+        adaptive_size: True
+        text: root.headline_text
+        font_style: "Label"
+        role: "large"
+        padding: 0, 0, 0, dp(20)
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: dp(20)
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+
+            MDTimePickerInputContainer:
+                id: _time_input
+                time_picker: root
+                _readonly: False
+                # root._get_time_input(*self.get_time())
+
+            BoxLayout:
+                size_hint_y: None
+                height: self.minimum_height
+                padding: 0, dp(8), 0, 0
+
+                MDLabel:
+                    role: "small"
+                    adaptive_height: True
+                    text: "Hour"
+
+                MDLabel:
+                    role: "small"
+                    adaptive_height: True
+                    text: "Minute"
+                    padding_x: dp(20)
+
+        BoxLayout:
+            size_hint: None, None
+            size: self.minimum_size
+            padding: 0, 0, 0, dp(26)
+
+            MDTimePickerAmPmSelector:
+                id: _am_pm_selector
+                size_hint: None, None
+                size: dp(52), dp(80)
+                on_selected:
+                    root.dispatch("on_am_pm", self.selected)
+                    root._get_am_pm(self.selected)
+
+    MDTimePickerButtonsContainer:
+        time_picker: root
+        icon: "clock-outline"
+
+###############################################################################
+#
+#                                 DIAL RULES
+#
+###############################################################################
+
+<MDTimePickerDialHorizontal>
+    size_hint: None, None
+    size: dp(574), dp(380)
+    _time_input: _time_input
+    _selector: _selector
+    _am_pm_selector: _am_pm_selector
+
+    MDLabel:
+        adaptive_size: True
+        text: root.headline_text
+        font_style: "Label"
+        role: "large"
+        padding: 0, 0, 0, dp(20)
+
+    BoxLayout:
+        spacing: dp(52)
+
+        BoxLayout:
+            orientation: "vertical"
+            spacing: dp(16)
+            padding: 0, 0, 0, dp(52)
+
+            MDTimePickerInputContainer:
+                id: _time_input
+                time_picker: root
+                on_minute_select: _selector.switch_mode("minute")
+                on_hour_select: _selector.switch_mode("hour")
+
+            MDTimePickerAmPmSelector:
+                id: _am_pm_selector
+                orientation: "horizontal"
+                size_hint: None, None
+                size: _time_input.width, dp(38)
+                on_selected:
+                    root.dispatch("on_am_pm", self.selected)
+                    root._get_am_pm(self.selected)
+
+        MDTimePickerCircularSelector:
+            id: _selector
+            time_picker: root
+
+    MDTimePickerButtonsContainer:
+        time_picker: root
+
+
+<MDTimePickerDialVertical>
+    size_hint: None, None
+    size: dp(324), dp(520)
+    _time_input: _time_input
+    _selector: _selector
+    _am_pm_selector: _am_pm_selector
+
+    MDLabel:
+        adaptive_size: True
+        text: root.headline_text
+        font_style: "Label"
+        role: "large"
+        padding: 0, 0, 0, dp(20)
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: dp(20)
+
+        MDTimePickerInputContainer:
+            id: _time_input
+            time_picker: root
+            on_minute_select: _selector.switch_mode("minute")
+            on_hour_select: _selector.switch_mode("hour")
+
+        MDTimePickerAmPmSelector:
+            id: _am_pm_selector
+            size_hint: None, None
+            size: dp(52), dp(80)
+            on_selected:
+                root.dispatch("on_am_pm", self.selected)
+                root._get_am_pm(self.selected)
+
+    Widget:
+        size_hint_x: None
+        width: dp(20)
+
+    MDTimePickerCircularSelector:
+        id: _selector
+        time_picker: root
+
+    MDTimePickerButtonsContainer:
+        time_picker: root
+
+###############################################################################
+#
+#                                COMMON RULES
+#
+###############################################################################
+
+<MDBaseTimePicker>
     canvas.before:
         Color:
-            rgba: root.border_color
+            rgba:
+                self.theme_cls.surfaceContainerHighColor
         RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.radius
+
+    orientation: "vertical"
+    elevation_level: 0
+    shadow_color: self.theme_cls.transparentColor
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    padding: dp(24)
+    opacity: 0
+
+
+<MDTimePickerButtonsContainer>
+    size_hint_y: None
+    height: self.minimum_height
+    padding: 0, dp(24), 0, 0
+
+    MDIconButton:
+        icon: root.icon
+        on_release: root.time_picker.dispatch("on_edit")
+
+    Widget:
+
+    MDButton:
+        style: "text"
+        on_release: root.time_picker.dispatch("on_cancel")
+
+        MDButtonText:
+            text:
+                root.time_picker.text_button_cancel \
+                if root.time_picker else \
+                ""
+
+    MDButton:
+        style: "text"
+        on_release: root.time_picker.dispatch("on_ok")
+
+        MDButtonText:
+            text:
+                root.time_picker.text_button_ok \
+                if root.time_picker else \
+                ""
+
+<MDTimePickerScrim>
+    canvas:
+        Color:
+            rgba: self.color[:-1] + [self.alpha]
+        Rectangle:
             pos: self.pos
             size: self.size
-            radius: [root.border_radius, ]
 
-        #AM
+
+<MDTimePickerInputTextField>
+    canvas.after:
         Color:
-            rgba: root._am_bg_color
-        RoundedRectangle:
-            pos:
+            rgba:
+                self.theme_cls.primaryColor \
+                if self.focus else \
+                self.theme_cls.transparentColor
+        SmoothLine:
+            width: 1
+            rounded_rectangle:
                 [ \
-                self.pos[0] + root.border_width, \
-                self.pos[1] + self.height/2 + self.border_width * 0.5 \
-                ] if self.orientation == "vertical" else \
-                [ \
-                self.pos[0] + root.border_width, \
-                self.pos[1] + root.border_width \
+                self.x,
+                self.y, \
+                self.width, \
+                self.height, \
+                *self.radius, \
                 ]
-            size:
-                [ \
-                self.size[0] - root.border_width * 2, \
-                self.size[1] / 2 - self.border_width * 1.5 \
-                ] if self.orientation == "vertical" else \
-                [ \
-                self.size[0] / 2 - root.border_width * 1.5, \
-                self.size[1] - root.border_width * 2 \
-                ]
-            radius:
-                [root.border_radius, root.border_radius, 0, 0] \
-                if self.orientation == "vertical" else \
-                [root.border_radius, 0, 0, root.border_radius]
 
-        #PM
-        Color:
-            rgba: root._pm_bg_color
-        RoundedRectangle:
-            pos:
-                [ \
-                self.pos[0] + root.border_width, \
-                self.pos[1] + self.border_width \
-                ] if self.orientation == "vertical" else \
-                [ \
-                self.pos[0] + root.size[0] / 2 + root.border_width / 2, \
-                self.pos[1] + root.border_width \
-                ]
-            size:
-                [ \
-                self.size[0] - root.border_width * 2, \
-                self.size[1] / 2 - self.border_width * 1.5 \
-                ] if self.orientation == "vertical" else \
-                [ \
-                self.size[0] / 2 - root.border_width * 1.5, \
-                self.size[1] - root.border_width * 2 \
-                ]
-            radius:
-                [0, 0, root.border_radius, root.border_radius] \
-                if self.orientation == "vertical" else \
-                [0 ,root.border_radius, root.border_radius, 0]
-
-    # AM
-    AmPmSelectorLabel:
-        text: "AM"
-        on_release: root.selected = "am"
-        text_color: root.text_color
-
-    AmPmSelectorLabel:
-        text: "PM"
-        on_release: root.selected = "pm"
-        text_color: root.text_color
-
-
-<TimeInputTextField>
-    size_hint: None, 1
-    width: dp(96)
-    mode: "fill"
-    active_line: False
+    mode: "filled"
     font_size: dp(56)
-    radius: [dp(10), ]
-    fill_color_normal:
-        root.parent.parent.parent.accent_color \
-        if root.parent.parent.parent.accent_color else \
-        ( \
-        [*root.parent.bg_color_active[:3], 0.5] \
-        if root.parent.state in ["hour", "minute"] else \
-        [*root.bg_color[:3], 0.5] \
-        )
-    fill_color_focus:
-        (1, 1, 1, 0.5) \
-        if root.parent.parent.parent.primary_color else \
-        self.theme_cls.bg_dark
-    text_color_focus:
-        root.parent.parent.parent.accent_color \
-        if root.parent.parent.parent.accent_color else \
-        self.theme_cls.primary_color
-
-
-<TimeInput>
+    radius: [dp(12), ]
     size_hint: None, None
+    theme_bg_color: "Custom"
+    fill_color_focus: self.theme_cls.primaryContainerColor
+    fill_color_normal: self.theme_cls.surfaceContainerHighestColor
+    width: "96dp"
+    selection_color: self.theme_cls.transparentColor
+    -height: "80dp"
+    -padding: [dp(16 if self.text else 48), dp(6), dp(16), dp(6)]
+
+
+<MDTimePickerInputContainer>
+    size_hint_y: None
+    height: "80dp"
     _hour: hour
     _minute: minute
 
-    TimeInputTextField:
+    MDTimePickerInputTextField:
         id: hour
         num_type: "hour"
-        pos: 0, 0
-        text_color: root.text_color
-        disabled: root.disabled
-        on_text: root.dispatch("on_time_input")
-        radius: root.hour_radius
+        readonly: root._readonly
+        on_text:
+            root.time_picker._get_time_input(*root.get_time())
+            root.time_picker.dispatch("on_time_input", "hour", self.text)
         on_select:
             root.dispatch("on_hour_select")
             root.state = "hour"
@@ -137,29 +280,100 @@
         size: dp(24), dp(80)
         halign: "center"
         valign: "center"
+        theme_font_size: "Custom"
         font_size: dp(50)
-        pos: dp(96), 0
-        theme_text_color: "Custom"
-        text_color: root.text_color
 
-    TimeInputTextField:
+    MDTimePickerInputTextField:
         id: minute
         num_type: "minute"
-        pos: dp(120), 0
-        text_color: root.text_color
-        disabled: root.disabled
-        on_text: root.dispatch("on_time_input")
-        radius: root.minute_radius
+        readonly: root._readonly
+        on_text:
+            root.time_picker._get_time_input(*root.get_time())
+            root.time_picker.dispatch("on_time_input", "minute", self.text)
         on_select:
             root.dispatch("on_minute_select")
             root.state = "minute"
 
 
-<CircularSelector>
+<MDTimePickerAmPmSelectorLabel>
+    halign: "center"
+    valign: "center"
+
+
+<MDTimePickerAmPmSelector>
+    orientation: "vertical"
+    line_color: self.theme_cls.outlineColor
+    radius: [dp(12), ]
+
+    canvas.before:
+        # AM
+        Color:
+            rgba:
+                self.theme_cls.tertiaryContainerColor \
+                if self.selected == "am" else \
+                self.theme_cls.surfaceContainerHighColor
+        RoundedRectangle:
+            pos:
+                [self.pos[0], self.pos[1] + self.height / 2] \
+                if self.orientation == "vertical" else \
+                [self.pos[0], self.pos[1]]
+            size:
+                [self.size[0], self.size[1] / 2] \
+                if self.orientation == "vertical" else \
+                [self.size[0] / 2, self.size[1]]
+            radius:
+                [dp(12), dp(12), 0, 0] \
+                if self.orientation == "vertical" else \
+                [dp(12), 0, 0, dp(12)]
+
+        # PM
+        Color:
+            rgba:
+                self.theme_cls.tertiaryContainerColor \
+                if self.selected == "pm" else \
+                self.theme_cls.surfaceContainerHighColor
+        RoundedRectangle:
+            pos:
+                [self.pos[0], self.pos[1]] \
+                if self.orientation == "vertical" else \
+                [self.pos[0] + root.size[0] / 2, self.pos[1]]
+            size:
+                [self.size[0], self.size[1] / 2] \
+                if self.orientation == "vertical" else \
+                [self.size[0] / 2, self.size[1]]
+            radius:
+                [0, 0, dp(12), dp(12)] \
+                if self.orientation == "vertical" else \
+                [0, dp(12), dp(12), 0]
+
+    MDTimePickerAmPmSelectorLabel:
+        id: am_label
+        text: "AM"
+        on_release: root.selected = "am"
+
+    MDDivider:
+        color: root.theme_cls.outlineColor
+        orientation:
+            "vertical" \
+            if root.orientation == "horizontal" else \
+            "horizontal"
+
+    MDTimePickerAmPmSelectorLabel:
+        id: pm_label
+        text: "PM"
+        on_release: root.selected = "pm"
+
+
+<MDTimePickerCircularSelectorLabel>
+    adaptive_size: True
+
+
+<MDTimePickerCircularSelector>
     circular_padding: dp(28)
     size_hint: None, None
-    size: [dp(256), dp(256)]
+    size: dp(256), dp(256)
     row_spacing: dp(40)
+    on_selector_change: self.time_picker._get_dial_time(self)
 
     canvas.before:
         PushMatrix
@@ -168,7 +382,7 @@
             x: root.scale
             y: root.scale
         Color:
-            rgba: root.bg_color
+            rgba: self.theme_cls.surfaceContainerHighestColor
         Ellipse:
             size: self.size
             pos: self.pos
@@ -178,7 +392,7 @@
             x: root.content_scale
             y: root.content_scale
         Color:
-            rgb: root.selector_color
+            rgb: self.theme_cls.primaryColor
             a: 0 if self.selector_pos == [0, 0] else 1
         Ellipse:
             size: self.selector_size, self.selector_size
@@ -188,153 +402,9 @@
         Ellipse:
             size: dp(10), dp(10)
             pos: [self.center[0] - dp(5), self.center[1] - dp(5)]
-        Line:
+        SmoothLine:
             points: [self.center, self.selector_pos]
             width: dp(1)
     canvas.after:
         PopMatrix
         PopMatrix
-
-
-<SelectorLabel>
-    halign: "center"
-    valign: "center"
-    adaptive_size: True
-    theme_text_color: "Custom"
-
-
-<MDTimePicker>
-    auto_dismiss: True
-    size_hint: None, None
-    _time_input: _time_input
-    _selector: _selector
-    _am_pm_selector: _am_pm_selector
-    _minute_label: _minute_label
-    _hour_label: _hour_label
-
-    MDRelativeLayout:
-        canvas.before:
-            Color:
-                rgba:
-                    root.primary_color \
-                    if root.primary_color \
-                    else root.theme_cls.bg_normal
-
-            RoundedRectangle:
-                size: self.size
-                radius: root.radius
-
-        MDLabel:
-            id: label_title
-            font_style: "Body2"
-            bold: True
-            theme_text_color: "Custom"
-            size_hint_x: None
-            width: root.width
-            adaptive_height: True
-            text: root.title
-            font_name: root.font_name
-            pos: (dp(24), root.height - self.height - dp(18))
-            text_color:
-                root.text_toolbar_color if root.text_toolbar_color \
-                else root.theme_cls.text_color
-
-        TimeInput:
-            id: _time_input
-            bg_color:
-                root.accent_color if root.accent_color else \
-                root.theme_cls.primary_light
-            bg_color_active:
-                root.selector_color if root.selector_color \
-                else root.theme_cls.primary_color
-            text_color:
-                root.input_field_text_color if root.input_field_text_color else \
-                root.theme_cls.text_color
-            on_time_input: root._get_time_input(*self.get_time())
-            on_hour_select: _selector.switch_mode("hour")
-            on_minute_select: _selector.switch_mode("minute")
-            minute_radius: root.minute_radius
-            hour_radius: root.hour_radius
-
-        TimeInputLabel:
-            id: _hour_label
-            text: "Hour"
-            opacity: 0
-            text_color:
-                root.text_toolbar_color if root.text_toolbar_color else \
-                root.theme_cls.secondary_text_color
-
-        TimeInputLabel:
-            id: _minute_label
-            text: "Minute"
-            opacity: 0
-            text_color:
-                root.text_toolbar_color if root.text_toolbar_color else \
-                root.theme_cls.secondary_text_color
-
-        AmPmSelector:
-            id: _am_pm_selector
-            owner: root
-            border_color:
-                root.accent_color if root.accent_color else \
-                root.theme_cls.primary_color
-            border_radius: root.am_pm_radius
-            bg_color:
-                root.primary_color if root.primary_color else \
-                root.theme_cls.bg_normal
-            border_width: root.am_pm_border_width
-            bg_color_active:
-                root.selector_color if root.selector_color else \
-                root.theme_cls.primary_light
-            text_color:
-                root.input_field_text_color if root.input_field_text_color else \
-                root.theme_cls.text_color
-            on_selected: root._get_am_pm(self.selected)
-
-        CircularSelector:
-            id: _selector
-            text_color:
-                root.text_color if root.text_color else \
-                root.theme_cls.text_color
-            bg_color:
-                root.accent_color if root.accent_color else \
-                root.theme_cls.primary_light
-            selector_color:
-                root.primary_color if root.primary_color else \
-                root.theme_cls.primary_color
-            font_name: root.font_name
-            on_selector_change: root._get_dial_time(_selector)
-
-        MDIconButton:
-            id: input_clock_switch
-            icon: "keyboard"
-            pos: dp(12), dp(8)
-            theme_icon_color: "Custom"
-            icon_size: "24dp"
-            on_release: root._switch_input()
-            icon_color:
-                root.text_toolbar_color if root.text_toolbar_color else \
-                root.theme_cls.secondary_text_color
-
-        MDFlatButton:
-            id: cancel_button
-            text: "CANCEL"
-            on_release: root.dispatch("on_cancel", None)
-            theme_text_color: "Custom"
-            pos: root.width - self.width - ok_button.width - dp(10), dp(10)
-            font_name: root.font_name
-            text_color:
-                root.theme_cls.primary_color \
-                if not root.text_button_color else root.text_button_color
-
-        MDFlatButton:
-            id: ok_button
-            width: dp(32)
-            pos: root.width - self.width, dp(10)
-            text: "OK"
-            theme_text_color: "Custom"
-            font_name: root.font_name
-            text_color:
-                root.theme_cls.primary_color \
-                if not root.text_button_color else root.text_button_color
-            on_release: root.dispatch("on_save", root._get_data())

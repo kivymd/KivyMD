@@ -1,28 +1,78 @@
-#:import SNACK_BAR_ELEVATION kivymd.material_resources.SNACK_BAR_ELEVATION
-#:import SNACK_BAR_OFFSET kivymd.material_resources.SNACK_BAR_OFFSET
-
-
 <MDSnackbar>
     padding: 0, 0, "8dp", 0
+    theme_bg_color: "Custom"
+    theme_elevation_level: "Custom"
+    theme_elevation_level: "Custom"
+    style: "elevated"
+    shadow_radius: self.radius
+    elevation_level: 3
     size_hint_y: None
     height: self.minimum_height
-    md_bg_color: "#323232"
-    elevation: SNACK_BAR_ELEVATION
-    shadow_offset: SNACK_BAR_OFFSET
+    orientation: "vertical"
+    md_bg_color:
+        self.theme_cls.inverseSurfaceColor \
+        if not self.background_color else \
+        self.background_color
 
-    SnackbarLabelContainer:
+    BoxLayout:
         id: label_container
         padding: "16dp", "15dp", 0, "15dp"
         orientation: "vertical"
-        adaptive_height: True
-        pos_hint: {"center_y": .5}
+        size_hint_y: None
+        height: self.minimum_height
+        pos_hint: {"top": 1}
         spacing: "4dp"
 
-    SnackbarActionButtonContainer:
-        id: action_container
+    BoxLayout:
+        id: button_container
         size_hint_x: None
+        width: self.minimum_width
 
-    SnackbarCloseButtonContainer:
-        id: close_container
-        size_hint_x: None
-        width: "38dp"
+
+<MDSnackbarButtonContainer>
+    size_hint_y: None
+    height: self.minimum_height
+
+
+<MDSnackbarText>
+    adaptive_size: True
+    font_style: "Label"
+    role: "large"
+    markup: True
+    text_color:
+        self.theme_cls.inversePrimaryColor \
+        if self.theme_text_color == "Primary" else \
+        self.text_color
+
+
+<MDSnackbarSupportingText>
+    adaptive_height: True
+    font_style: "Body"
+    role: "medium"
+    markup: True
+    text_color:
+        self.theme_cls.inverseOnSurfaceColor \
+        if self.theme_text_color == "Primary" else \
+        self.text_color
+
+<MDSnackbarActionButton>
+    style: "text"
+    pos_hint: {"right": 1}
+
+
+<MDSnackbarCloseButton>
+    text_color:
+        self.theme_cls.inverseOnSurfaceColor \
+        if self.theme_icon_color == "Primary" else \
+        self.icon_color
+
+
+<MDSnackbarActionButtonText>
+    adaptive_size: True
+    font_style: "Label"
+    role: "large"
+    markup: True
+    color:
+        self.theme_cls.inversePrimaryColor \
+        if self.theme_text_color == "Primary" else \
+        self.text_color

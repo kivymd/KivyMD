@@ -47,28 +47,22 @@ Example
 
     from kivy.core.window import Window
     from kivy.lang import Builder
+    from kivy.metrics import dp
 
     from kivymd.app import MDApp
     from kivymd.uix.filemanager import MDFileManager
-    from kivymd.toast import toast
-
+    from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 
     KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
 
-        MDTopAppBar:
-            title: "MDFileManager"
-            left_action_items: [["menu", lambda x: None]]
-            elevation: 3
+        MDButton:
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.file_manager_open()
 
-        MDFloatLayout:
-
-            MDRoundFlatIconButton:
+            MDButtonText:
                 text: "Open manager"
-                icon: "folder"
-                pos_hint: {"center_x": .5, "center_y": .5}
-                on_release: app.file_manager_open()
     '''
 
 
@@ -83,11 +77,11 @@ Example
 
         def build(self):
             self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "Orange"
             return Builder.load_string(KV)
 
         def file_manager_open(self):
-            self.file_manager.show(os.path.expanduser("~"))  # output manager to the screen
+            self.file_manager.show(
+                os.path.expanduser("~"))  # output manager to the screen
             self.manager_open = True
 
         def select_path(self, path: str):
@@ -99,7 +93,14 @@ Example
             '''
 
             self.exit_manager()
-            toast(path)
+            MDSnackbar(
+                MDSnackbarText(
+                    text=path,
+                ),
+                y=dp(24),
+                pos_hint={"center_x": 0.5},
+                size_hint_x=0.8,
+            ).open()
 
         def exit_manager(self, *args):
             '''Called when the user reaches the root of the directory tree.'''
@@ -133,6 +134,8 @@ Not tested on `iOS`.
     :align: center
 """
 
+from __future__ import annotations
+
 __all__ = ("MDFileManager",)
 
 import locale
@@ -142,28 +145,27 @@ from typing import List, Tuple, Union
 
 from kivy import platform
 from kivy.clock import Clock
-from kivy.factory import Factory
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     ListProperty,
-    NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.modalview import ModalView
+from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd import images_path, uix_path
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFloatingActionButton
+from kivymd.uix.button import MDFabButton
 from kivymd.uix.fitimage import FitImage
-from kivymd.uix.list import BaseListItem
-from kivymd.uix.relativelayout import MDRelativeLayout
+from kivymd.uix.list import MDListItem
 
 with open(
     os.path.join(uix_path, "filemanager", "filemanager.kv"), encoding="utf-8"
@@ -171,37 +173,57 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class BodyManager(MDBoxLayout):
-    """Base class for folders and files icons."""
-
-
-class BodyManagerWithPreview(MDBoxLayout):
+class MDFileManagerItem(MDListItem):
     """
-    Base class for folder icons and thumbnails images in ``preview`` mode.
+    Base class for folders and files icons.
+
+    .. versionchanged:: 2.0.0
+
+        The `BodyManager` class has been renamed to `MDFileManagerItem`.
+
+    For more information, see in the
+    :class:`~kivymd.uix.list.list.MDListItem` class documentation.
     """
 
 
-class IconButton(CircularRippleBehavior, ButtonBehavior, FitImage):
-    """Folder icons/thumbnails images in ``preview`` mode."""
+class MDFileManagerItemPreview(BoxLayout):
+    """
+    Base class for folder icons and thumbnails images in `preview` mode.
+
+    .. versionchanged:: 2.0.0
+
+        The `BodyManagerWithPreview` class has been renamed
+        to `MDFileManagerItemPreview`.
+
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    """
 
 
-class ModifiedOneLineIconListItem(BaseListItem):
-    _txt_left_pad = NumericProperty("72dp")
-    _txt_top_pad = NumericProperty("16dp")
-    _txt_bot_pad = NumericProperty("15dp")
-    _num_lines = 1
+class MDFileManagerThumbnail(CircularRippleBehavior, ButtonBehavior, FitImage):
+    """
+    Folder icons/thumbnails images in `preview` mode.
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.height = dp(48)
+    .. versionchanged:: 2.0.0
+
+        The `IconButton` class has been renamed to `MDFileManagerThumbnail`.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.fitimage.fitimage.FitImage`
+    classes documentation.
+    """
 
 
-class MDFileManager(MDRelativeLayout):
+class MDFileManager(ThemableBehavior, RelativeLayout):
     """
     Implements a modal dialog with a file manager.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.relativelayout.RelativeLayout`
+    classes documentation.
 
     :Events:
         `on_pre_open`:
@@ -400,8 +422,8 @@ class MDFileManager(MDRelativeLayout):
     )
     """
     It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files
-    by option. By default, sort by name. Available options are:
-    `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
+    by option. By default, sort by name. 
+    Available options are: `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
 
     :attr:`sort_by` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `name`.
@@ -452,9 +474,6 @@ class MDFileManager(MDRelativeLayout):
         self.register_event_type("on_open")
         self.register_event_type("on_pre_dismiss")
         self.register_event_type("on_dismiss")
-
-        toolbar_label = self.ids.toolbar.children[1].children[0]
-        toolbar_label.font_style = "Subtitle1"
         Clock.schedule_once(self._create_selection_button)
 
         if self.preview:
@@ -499,7 +518,7 @@ class MDFileManager(MDRelativeLayout):
 
             manager_list.append(
                 {
-                    "viewclass": "BodyManager",
+                    "viewclass": "MDFileManagerItem",
                     "path": disk,
                     "icon": icon,
                     "dir_or_file_name": disk,
@@ -532,7 +551,7 @@ class MDFileManager(MDRelativeLayout):
             for name_dir in self.__sort_files(dirs):
                 manager_list.append(
                     {
-                        "viewclass": "BodyManagerWithPreview",
+                        "viewclass": "MDFileManagerItemPreview",
                         "path": self.icon_folder,
                         "realpath": os.path.join(path),
                         "type": "folder",
@@ -549,7 +568,7 @@ class MDFileManager(MDRelativeLayout):
                 ):
                     manager_list.append(
                         {
-                            "viewclass": "BodyManagerWithPreview",
+                            "viewclass": "MDFileManagerItemPreview",
                             "path": os.path.join(path, name_file),
                             "name": name_file,
                             "type": "files",
@@ -569,12 +588,12 @@ class MDFileManager(MDRelativeLayout):
 
                 manager_list.append(
                     {
-                        "viewclass": "BodyManager",
+                        "viewclass": "MDFileManagerItem",
                         "path": _path,
                         "icon": icon,
                         "dir_or_file_name": name,
                         "events_callback": self.select_dir_or_file,
-                        "icon_color": self.theme_cls.primary_color
+                        "icon_color": self.theme_cls.primaryColor
                         if not self.icon_color
                         else self.icon_color,
                         "_selected": False,
@@ -586,17 +605,18 @@ class MDFileManager(MDRelativeLayout):
 
                 manager_list.append(
                     {
-                        "viewclass": "BodyManager",
+                        "viewclass": "MDFileManagerItem",
                         "path": name,
                         "icon": "file-outline",
                         "dir_or_file_name": os.path.split(name)[1],
                         "events_callback": self.select_dir_or_file,
-                        "icon_color": self.theme_cls.primary_color
+                        "icon_color": self.theme_cls.primaryColor
                         if not self.icon_color
                         else self.icon_color,
                         "_selected": False,
                     }
                 )
+
         self.ids.rv.data = manager_list
         self._show()
 
@@ -663,8 +683,8 @@ class MDFileManager(MDRelativeLayout):
     def select_dir_or_file(
         self,
         path: str,
-        widget: Union[BodyManagerWithPreview, Factory.BodyManager],
-    ):
+        widget: MDFileManagerItemPreview | MDFileManagerItem,
+    ) -> None:
         """Called by tap on the name of the directory or file."""
 
         if os.path.isfile(os.path.join(self.current_path, path)):
@@ -715,39 +735,39 @@ class MDFileManager(MDRelativeLayout):
         self.icon_selection_button = icon_name
 
     def on_background_color_toolbar(
-        self, instance_file_manager, color: Union[str, list]
+        self, instance_file_manager, color: str | list
     ) -> None:
         """
         Called when the :attr:`background_color_toolbar` property is changed.
         """
 
-        def on_background_color_toolbar(*args):
+        def on_background_color_toolbar(*args) -> None:
             self.ids.toolbar.md_bg_color = color
 
         Clock.schedule_once(on_background_color_toolbar)
 
-    def on_pre_open(self, *args):
+    def on_pre_open(self, *args) -> None:
         """
         Default pre-open event handler.
 
         .. versionadded:: 1.1.0
         """
 
-    def on_open(self, *args):
+    def on_open(self, *args) -> None:
         """
         Default open event handler.
 
         .. versionadded:: 1.1.0
         """
 
-    def on_pre_dismiss(self, *args):
+    def on_pre_dismiss(self, *args) -> None:
         """
         Default pre-dismiss event handler.
 
         .. versionadded:: 1.1.0
         """
 
-    def on_dismiss(self, *args):
+    def on_dismiss(self, *args) -> None:
         """
         Default dismiss event handler.
 
@@ -775,15 +795,15 @@ class MDFileManager(MDRelativeLayout):
             or self.selector == "multi"
             or self.selector == "folder"
         ):
-            self.selection_button = MDFloatingActionButton(
+            self.selection_button = MDFabButton(
                 on_release=self.select_directory_on_press_button,
-                md_bg_color=self.theme_cls.primary_color
+                theme_bg_color="Custom",
+                md_bg_color=self.theme_cls.primaryColor
                 if not self.background_color_selection_button
                 else self.background_color_selection_button,
                 icon=self.icon_selection_button,
                 pos_hint={"right": 0.99},
                 y=dp(12),
-                elevation=0,
             )
             self.add_widget(self.selection_button)
 

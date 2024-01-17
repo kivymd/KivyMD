@@ -5,21 +5,11 @@ Behaviors
 Modules and classes implementing various behaviors for buttons etc.
 """
 
-from .backgroundcolor_behavior import (
-    BackgroundColorBehavior,
-    SpecificBackgroundColorBehavior,
-)
+from .backgroundcolor_behavior import BackgroundColorBehavior
 
 # flake8: NOQA
 from .declarative_behavior import DeclarativeBehavior
-from .elevation import (
-    CircularElevationBehavior,
-    CommonElevationBehavior,
-    FakeCircularElevationBehavior,
-    FakeRectangularElevationBehavior,
-    RectangularElevationBehavior,
-    RoundedRectangularElevationBehavior,
-)
+from .elevation import CommonElevationBehavior
 from .motion_behavior import (
     MotionDialogBehavior,
     MotionShackBehavior,

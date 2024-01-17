@@ -1,0 +1,103 @@
+<MDTopAppBarLeadingButtonContainer>
+    size_hint_x: None
+    width: self.minimum_width
+    padding: "8dp", 0, "16dp", 0
+
+
+<MDTopAppBarTrailingButtonContainer>
+    size_hint_x: None
+    width: self.minimum_width
+    padding: "16dp", 0, "16dp", 0
+    spacing: "4dp"
+
+
+<MDActionTopAppBarButton>
+    pos_hint: {"center_y": .5}
+    color:
+        self.theme_cls.onSurfaceVariantColor \
+        if self.theme_icon_color == "Primary" else \
+        self.icon_color
+
+
+<MDTopAppBarTitle>
+    font_style:
+        { \
+        "small": "Title", \
+        "medium": "Headline", \
+        "large": "Headline", \
+        }[self._appbar.type if self._appbar else "small"]
+    role:
+        { \
+        "small": "large", \
+        "medium": "small", \
+        "large": "medium", \
+        }[self._appbar.type if self._appbar else "large"]
+    adaptive_width:
+        ( \
+        True \
+        if self._appbar.type == "small" else \
+        False \
+        ) \
+        if self._appbar else True
+    size_hint_x:
+        ( \
+        None \
+        if self._appbar.type == "small" else \
+        1 \
+        ) \
+        if self._appbar else None
+
+
+<MDTopAppBar>
+    canvas:
+        Color:
+            group: "md-top-app-bar-color"
+            rgba:
+                self.theme_cls.surfaceColor \
+                if self.theme_bg_color == "Primary" else \
+                self.md_bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    orientation:
+        "vertical" \
+        if self.type in ("medium", "large") else \
+        "horizontal"
+    size_hint_y: None
+    height:
+        { \
+        "small": "64dp", \
+        "medium": "112dp", \
+        "large": "152dp", \
+        }[self.type]
+
+    BoxLayout:
+        id: root_box
+
+    BoxLayout:
+        id: title_box
+        padding: "16dp", 0, "16dp", 0
+
+
+<MDFabBottomAppBarButton>
+    elevation_level: 0
+    theme_shadow_color: "Custom"
+    shadow_color: self.theme_cls.transparentColor
+
+
+<MDBottomAppBar>
+    size_hint_y: None
+    height: "80dp"
+    elevation_level:
+        2 \
+        if self.theme_elevation_level == "Primary" else \
+        self.elevation_level
+    shadow_softness:
+        2 \
+        if self.theme_shadow_softness == "Primary" else \
+        self.shadow_softness
+    md_bg_color:
+        self.theme_cls.surfaceContainerColor \
+        if self.theme_bg_color == "Primary" else \
+        self.md_bg_color

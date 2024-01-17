@@ -285,11 +285,18 @@ class CommonRipple:
     and defaults to `'ripple_func_out'`.
     """
 
+    ripple_effect = BooleanProperty(True)
+    """
+    Should I use the ripple effect.
+
+    :attr:`ripple_effect` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
     _ripple_rad = NumericProperty()
     _doing_ripple = BooleanProperty(False)
     _finishing_ripple = BooleanProperty(False)
     _fading_out = BooleanProperty(False)
-    _no_ripple_effect = BooleanProperty(False)
     _round_rad = ListProperty([0, 0, 0, 0])
 
     def lay_canvas_instructions(self) -> NoReturn:
@@ -333,6 +340,8 @@ class CommonRipple:
             anim.start(self)
 
     def anim_complete(self, *args) -> None:
+        """Fired when the "fade_out" animation complete."""
+
         self._doing_ripple = False
         self._finishing_ripple = False
         self._fading_out = False
@@ -378,7 +387,7 @@ class CommonRipple:
         if self.ripple_color:
             pass
         elif hasattr(self, "theme_cls"):
-            self.ripple_color = self.theme_cls.ripple_color
+            self.ripple_color = self.theme_cls.rippleColor
         else:
             # If no theme, set Gray 300.
             self.ripple_color = [
@@ -429,7 +438,11 @@ class RectangularRippleBehavior(CommonRipple):
     """
 
     def lay_canvas_instructions(self) -> None:
-        if self._no_ripple_effect:
+        """
+        Adds graphic instructions to the canvas to implement ripple animation.
+        """
+
+        if not self.ripple_effect:
             return
 
         with self.canvas.after if self.ripple_canvas_after else self.canvas.before:
@@ -493,7 +506,7 @@ class CircularRippleBehavior(CommonRipple):
     """
 
     def lay_canvas_instructions(self) -> None:
-        if self._no_ripple_effect:
+        if not self.ripple_effect:
             return
 
         with self.canvas.after if self.ripple_canvas_after else self.canvas.before:

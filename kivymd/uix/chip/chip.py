@@ -4,7 +4,7 @@ Components/Chip
 
 .. seealso::
 
-    `Material Design spec, Chips <https://m3.material.io/components/chips/overview>`_
+    `Material Design 3 spec, Chips <https://m3.material.io/components/chips/overview>`_
 
 .. rubric:: Chips can show multiple interactive elements together in the same
     area, such as a list of selectable movie times, or a series of email
@@ -16,6 +16,25 @@ Components/Chip
 
 Usage
 -----
+
+.. code-block:: kv
+
+    MDChip:
+
+        MDChipLeadingAvatar:  # MDChipLeadingIcon
+
+        MDChipText:
+
+        MDChipTrailingIcon:
+
+Anatomy
+=======
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip-anatomy.png
+    :align: center
+
+Example
+-------
 
 .. tabs::
 
@@ -75,34 +94,6 @@ Usage
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/chip.png
     :align: center
 
-Anatomy
--------
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/anatomy-chip.png
-    :align: center
-
-1. Container
-2. Label text
-3. Leading icon or image (optional)
-4. Trailing remove icon (optional, input & filter chips only)
-
-Container
----------
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/radius-chip.png
-    :align: center
-
-All chips are slightly rounded with an 8dp corner.
-
-Shadows and elevation
----------------------
-
-Chip containers can be elevated if the placement requires protection, such as
-on top of an image.
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/shadows-elevation-chip.png
-    :align: center
-
 The following types of chips are available:
 -------------------------------------------
 
@@ -115,6 +106,7 @@ The following types of chips are available:
 - Suggestion_
 
 .. Assist:
+
 Assist
 ------
 
@@ -225,6 +217,7 @@ Example of assist
     :align: center
 
 .. Filter:
+
 Filter
 ------
 
@@ -251,7 +244,8 @@ Example of filtering
     from kivymd.uix.list import OneLineIconListItem
     from kivymd.icon_definitions import md_icons
     from kivymd.uix.screen import MDScreen
-    from kivymd.utils import asynckivy
+
+    import asynckivy
 
     Builder.load_string(
         '''
@@ -362,6 +356,7 @@ Example of filtering
             return self.screen
 
         def on_start(self) -> None:
+            super().on_start()
             self.screen.set_list_md_icons()
             self.screen.set_filter_chips()
 
@@ -380,7 +375,8 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
     from kivymd.app import MDApp
     from kivymd.uix.chip import MDChip, MDChipText
     from kivymd.uix.screen import MDScreen
-    from kivymd.utils import asynckivy
+
+    import asynckivy
 
     Builder.load_string(
         '''
@@ -446,6 +442,7 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
             return self.screen
 
         def on_start(self) -> None:
+            super().on_start()
             asynckivy.start(self.screen.create_chips())
 
 
@@ -465,7 +462,8 @@ menus:
     from kivymd.app import MDApp
     from kivymd.uix.chip import MDChip, MDChipText
     from kivymd.uix.screen import MDScreen
-    from kivymd.utils import asynckivy
+
+    import asynckivy
 
     Builder.load_string(
         '''
@@ -533,6 +531,7 @@ menus:
             return self.screen
 
         def on_start(self) -> None:
+            super().on_start()
             asynckivy.start(self.screen.create_chips())
 
 
@@ -542,6 +541,7 @@ menus:
     :align: center
 
 .. Input:
+
 Input
 -----
 
@@ -595,6 +595,7 @@ Example of input
     :align: center
 
 .. Suggestion:
+
 Suggestion
 ----------
 
@@ -641,7 +642,7 @@ Example of suggestion
 API break
 =========
 
-1.1.1 version
+1.2.0 version
 -------------
 
 .. code-block:: python
@@ -670,7 +671,7 @@ API break
 
     Test().run()
 
-1.2.0 version
+2.0.0 version
 -------------
 
 .. code-block:: python
@@ -724,7 +725,6 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     OptionProperty,
-    StringProperty,
     VariableListProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
@@ -738,6 +738,7 @@ from kivymd.uix.behaviors import (
     ScaleBehavior,
     TouchBehavior,
 )
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon, MDLabel
 
@@ -750,6 +751,29 @@ with open(
 class BaseChipIcon(
     CircularRippleBehavior, ScaleBehavior, ButtonBehavior, MDIcon
 ):
+    icon_color = ColorProperty(None)
+    """
+    Button icon color in (r, g, b, a) or string format.
+
+    :attr:`icon_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    icon_color_disabled = ColorProperty(None)
+    """
+    The icon color in (r, g, b, a) or string format of the chip when
+    the chip is disabled.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`icon_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _type = OptionProperty(
+        "suggestion", options=["assist", "filter", "input", "suggestion"]
+    )
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.ripple_scale = 1.5
@@ -760,7 +784,8 @@ class BaseChipIcon(
         # icon size according to the standards of material design version 3.
         if (
             self.font_name == "Icons"
-            and self.theme_cls.font_styles["Icon"][1] == self.font_size
+            and self.theme_cls.font_styles["Icon"]["large"]["font-size"]
+            == self.font_size
         ):
             self.font_size = (
                 "18sp"
@@ -792,10 +817,10 @@ class MDChipLeadingAvatar(BaseChipIcon):
     Implements the leading avatar for the chip.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.CircularRippleBehavior` and
-    :class:`~kivymd.uix.behaviors.ScaleBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.label.MDIcon`
+    :class:`~kivymd.uix.label.label.MDIcon`
     classes documentation.
     """
 
@@ -805,10 +830,10 @@ class MDChipLeadingIcon(BaseChipIcon):
     Implements the leading icon for the chip.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.CircularRippleBehavior` and
-    :class:`~kivymd.uix.behaviors.ScaleBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.label.MDIcon`
+    :class:`~kivymd.uix.label.label.MDIcon`
     classes documentation.
     """
 
@@ -818,10 +843,10 @@ class MDChipTrailingIcon(BaseChipIcon):
     Implements the trailing icon for the chip.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.CircularRippleBehavior` and
-    :class:`~kivymd.uix.behaviors.ScaleBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.label.MDIcon`
+    :class:`~kivymd.uix.label.label.MDIcon`
     classes documentation.
     """
 
@@ -831,8 +856,23 @@ class MDChipText(MDLabel):
     Implements the label for the chip.
 
     For more information, see in the
-    :class:`~kivymd.uix.label.MDLabel` classes documentation.
+    :class:`~kivymd.uix.label.label.MDLabel` classes documentation.
     """
+
+    text_color_disabled = ColorProperty(None)
+    """
+    The text color in (r, g, b, a) or string format of the chip when
+    the chip is disabled.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`text_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _type = OptionProperty(
+        "suggestion", options=["assist", "filter", "input", "suggestion"]
+    )
 
 
 class MDChip(
@@ -841,16 +881,17 @@ class MDChip(
     ButtonBehavior,
     CommonElevationBehavior,
     TouchBehavior,
+    StateLayerBehavior,
 ):
     """
     Chip class.
 
     For more information, see in the
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` and
-    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.behaviors.CommonElevationBehavior` and
-    :class:`~kivymd.uix.behaviors.TouchBehavior`
+    :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
+    :class:`~kivymd.uix.behaviors.touch_behavior.TouchBehavior`
     classes documentation.
     """
 
@@ -862,96 +903,18 @@ class MDChip(
     and defaults to `[dp(8), dp(8), dp(8), dp(8)]`.
     """
 
-    text = StringProperty(deprecated=True)
-    """
-    Chip text.
-
-    .. deprecated:: 1.2.0
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
     type = OptionProperty(
         "suggestion", options=["assist", "filter", "input", "suggestion"]
     )
     """
     Type of chip.
 
-    .. versionadded:: 1.2.0
+    .. versionadded:: 2.0.0
 
     Available options are: `'assist'`, `'filter'`, `'input'`, `'suggestion'`.
 
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'suggestion'`.
-    """
-
-    icon_left = StringProperty(deprecated=True)
-    """
-    Chip left icon.
-
-    .. versionadded:: 1.0.0
-
-    .. deprecated:: 1.2.0
-
-    :attr:`icon_left` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    icon_right = StringProperty(deprecated=True)
-    """
-    Chip right icon.
-
-    .. versionadded:: 1.0.0
-
-    .. deprecated:: 1.2.0
-
-    :attr:`icon_right` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    text_color = ColorProperty(None, deprecated=True)
-    """
-    Chip's text color in (r, g, b, a) or string format.
-
-    .. deprecated:: 1.2.0
-
-    :attr:`text_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    icon_right_color = ColorProperty(None, deprecated=True)
-    """
-    Chip's right icon color in (r, g, b, a) or string format.
-
-    .. versionadded:: 1.0.0
-
-    .. deprecated:: 1.2.0
-
-    :attr:`icon_right_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    icon_left_color = ColorProperty(None, deprecated=True)
-    """
-    Chip's left icon color in (r, g, b, a) or string format.
-
-    .. versionadded:: 1.0.0
-
-    .. deprecated:: 1.2.0
-
-    :attr:`icon_left_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    icon_check_color = ColorProperty(None)
-    """
-    Chip's check icon color in (r, g, b, a) or string format.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`icon_check_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
     """
 
     active = BooleanProperty(False)
@@ -969,12 +932,23 @@ class MDChip(
     The background color of the chip in the marked state in (r, g, b, a)
     or string format.
 
-    .. versionadded:: 1.2.0
+    .. versionadded:: 2.0.0
 
     :attr:`selected_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
+    line_color_disabled = ColorProperty(None)
+    """
+    The color of the outline in the disabled state
+
+    .. versionadded:: 2.0.0
+
+    :attr:`line_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _line_color = ColorProperty(None)
     _current_md_bg_color = ColorProperty(None)
     # A flag that disallow ripple animation of the chip
     # at the time of clicking the chip icons.
@@ -986,11 +960,19 @@ class MDChip(
         super().__init__(*args, **kwargs)
 
     def on_long_touch(self, *args) -> None:
+        """Fired when the widget is pressed for a long time."""
+
         if self.type == "filter":
             self.active = not self.active
 
+    def on_line_color(self, instance, value) -> None:
+        """Fired when the values of :attr:`line_color` change."""
+
+        if not self.disabled:
+            self._line_color = value
+
     def on_type(self, instance, value: str) -> None:
-        """Called when the values of :attr:`type` change."""
+        """Fired when the values of :attr:`type` change."""
 
         def adjust_padding(*args):
             """
@@ -1069,7 +1051,14 @@ class MDChip(
             self.set_chip_bg_color(
                 self.selected_color
                 if self.selected_color
-                else self.theme_cls.primary_color
+                else {
+                    "filter": self.theme_cls.surfaceContainerLowColor,
+                    "suggestion": self.theme_cls.surfaceContainerLowColor,
+                    "input": self.theme_cls.surfaceContainerLowColor,
+                    "assist": self.theme_cls.surfaceContainerLowColor,
+                }[self.type]
+                if self.theme_bg_color == "Primary"
+                else self.md_bg_color
             )
         else:
             if (
@@ -1125,11 +1114,26 @@ class MDChip(
             Animation(md_bg_color=color, d=0.2).start(self)
         self._anim_complete = not self._anim_complete
 
-    def on_press(self, *args):
+    def on_press(self, *args) -> None:
+        """Fired when the button is pressed."""
+
         if self.active:
             self.active = False
 
+        self._on_press(args)
+
+    def on_release(self, *args) -> None:
+        """
+        Fired when the button is released
+        (i.e. the touch/click that pressed the button goes away).
+        """
+
+        self._on_release(args)
+
     def add_widget(self, widget, *args, **kwargs):
+        def set_type(*args):
+            widget._type = self.type
+
         def add_icon_leading_trailing(container):
             if len(container.children):
                 type_icon = (
@@ -1213,6 +1217,7 @@ class MDChip(
             container.add_widget(widget)
 
         if isinstance(widget, MDChipText):
+            Clock.schedule_once(set_type)
             widget.adaptive_size = True
             widget.pos_hint = {"center_y": 0.5}
             if self.type == "suggestion":
@@ -1221,12 +1226,14 @@ class MDChip(
                 lambda x: self.ids.label_container.add_widget(widget)
             )
         elif isinstance(widget, (MDChipLeadingIcon, MDChipLeadingAvatar)):
+            Clock.schedule_once(set_type)
             Clock.schedule_once(
                 lambda x: add_icon_leading_trailing(
                     self.ids.leading_icon_container
                 )
             )
         elif isinstance(widget, MDChipTrailingIcon):
+            Clock.schedule_once(set_type)
             Clock.schedule_once(
                 lambda x: add_icon_leading_trailing(
                     self.ids.trailing_icon_container
@@ -1236,6 +1243,10 @@ class MDChip(
             widget,
             (LabelTextContainer, LeadingIconContainer, TrailingIconContainer),
         ):
+            if isinstance(
+                widget, (LeadingIconContainer, TrailingIconContainer)
+            ):
+                Clock.schedule_once(set_type)
             return super().add_widget(widget)
 
     def _set_allow_chip_ripple(

@@ -1,8 +1,7 @@
 #:import os os
-#:import FILE_MANAGER_TOP_APP_BAR_ELEVATION kivymd.material_resources.FILE_MANAGER_TOP_APP_BAR_ELEVATION
 
 
-<BodyManager>
+<MDFileManagerItem>
     icon: "folder"
     path: ""
     background_normal: ""
@@ -10,34 +9,18 @@
     dir_or_file_name: ""
     icon_color: 0, 0, 0, 0
     _selected: False
-    events_callback: lambda x: None
-    orientation: "vertical"
+    on_release: root.events_callback(root.path, root)
 
-    ModifiedOneLineIconListItem:
+    MDListItemLeadingIcon:
+        icon: root.icon
+        theme_icon_color: "Custom"
+        icon_color: root.icon_color
+
+    MDListItemSupportingText:
         text: root.dir_or_file_name
-        on_release: root.events_callback(root.path, root)
-        bg_color:
-            self.theme_cls.bg_darkest \
-            if root._selected else \
-            self.theme_cls.bg_normal
-
-        IconLeftWidget:
-            icon: root.icon
-            theme_icon_color: "Custom"
-            icon_color: root.icon_color
-
-    MDSeparator:
 
 
-<LabelContent@MDLabel>
-    adaptive_height: True
-    shorten: True
-    shorten_from: "center"
-    halign: "center"
-    text_size: self.width, None
-
-
-<BodyManagerWithPreview>
+<MDFileManagerItemPreview>
     name: ""
     path: ""
     realpath: ""
@@ -46,48 +29,68 @@
     _selected: False
     orientation: "vertical"
     size_hint_y: None
-    hright: root.height
-    padding: dp(20)
+    height: root.height
+    padding: "20dp"
+    spacing: "12dp"
 
-    IconButton:
+    MDFileManagerThumbnail:
         mipmap: True
         source: root.path
-        bg_color:
-            app.theme_cls.bg_darkest \
-            if root._selected else app.theme_cls.bg_normal
         on_release:
             root.events_callback( \
             os.path.join(root.path if root.type != "folder" \
             else root.realpath, root.name), root)
 
-    LabelContent:
+    MDLabel:
         text: root.name
+        adaptive_height: True
+        shorten: True
+        shorten_from: "center"
+        halign: "center"
+        text_size: self.width, None
 
 
 <MDFileManager>
-    md_bg_color: root.theme_cls.bg_normal
+    canvas:
+        Color:
+            rgba: self.theme_cls.backgroundColor
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
-    MDBoxLayout:
+    BoxLayout:
         orientation: "vertical"
         spacing: dp(5)
 
         MDTopAppBar:
             id: toolbar
-            title: root.current_path
-            right_action_items: [["close-box", lambda x: root.exit_manager(1)]]
-            left_action_items: [["chevron-left", lambda x: root.back()]]
-            elevation: FILE_MANAGER_TOP_APP_BAR_ELEVATION
             md_bg_color:
-                app.theme_cls.primary_color \
+                app.theme_cls.surfaceColor \
                 if not root.background_color_toolbar else \
                 root.background_color_toolbar
+
+            MDTopAppBarLeadingButtonContainer:
+                padding: "12dp", 0, 0, 0
+
+                MDActionTopAppBarButton:
+                    icon: "chevron-left"
+                    on_release: root.back()
+
+            MDTopAppBarTitle:
+                text: root.current_path
+
+            MDTopAppBarTrailingButtonContainer:
+
+                MDActionTopAppBarButton:
+                    icon: "close-box"
+                    on_release: root.exit_manager(1)
 
         RecycleView:
             id: rv
             key_viewclass: "viewclass"
             key_size: "height"
             bar_width: dp(4)
-            bar_color: root.theme_cls.primary_color
+            bar_color: root.theme_cls.primaryColor
 
             RecycleGridLayout:
                 padding: "10dp"
@@ -97,13 +100,3 @@
                 default_size_hint: 1, None
                 size_hint_y: None
                 height: self.minimum_height
-
-
-<ModifiedOneLineIconListItem>
-
-    BoxLayout:
-        id: _left_container
-        size_hint: None, None
-        x: root.x + dp(16)
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(48), dp(48)

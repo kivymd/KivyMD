@@ -16,7 +16,7 @@ RecycleGridLayout
 
         canvas:
             Color:
-                rgba: app.theme_cls.primary_color
+                rgba: app.theme_cls.primaryColor
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -28,7 +28,7 @@ MDRecycleGridLayout
 
     MDRecycleGridLayout:
         adaptive_height: True
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.theme_cls.primaryColor
 
 Available options are:
 ----------------------
@@ -38,6 +38,7 @@ Available options are:
 - adaptive_size_
 
 .. adaptive_height:
+
 adaptive_height
 ---------------
 
@@ -53,6 +54,7 @@ Equivalent
     height: self.minimum_height
 
 .. adaptive_width:
+
 adaptive_width
 --------------
 
@@ -68,6 +70,7 @@ Equivalent
     width: self.minimum_width
 
 .. adaptive_size:
+
 adaptive_size
 -------------
 
@@ -87,13 +90,24 @@ from kivy.uix.recyclegridlayout import RecycleGridLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 
 
 class MDRecycleGridLayout(
-    DeclarativeBehavior, ThemableBehavior, RecycleGridLayout, MDAdaptiveWidget
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    RecycleGridLayout,
+    MDAdaptiveWidget,
 ):
     """
-    Recycle grid layout layout class. For more information, see in the
-    :class:`~kivy.uix.recyclegridlayout.RecycleGridLayout` class documentation.
+    Recycle grid layout class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.recyclegridlayout.RecycleGridLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
     """

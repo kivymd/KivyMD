@@ -23,28 +23,25 @@ Example
 
 .. code-block:: python
 
-    from kivymd.app import MDApp
     from kivy.lang.builder import Builder
+
+    from kivymd.app import MDApp
 
     kv = '''
     <MySwiper@MDSwiperItem>
 
         FitImage:
-            source: "guitar.png"
-            radius: [20,]
+            source: "bg.jpg"
+            radius: [dp(20),]
+
 
     MDScreen:
-
-        MDTopAppBar:
-            id: toolbar
-            title: "MDSwiper"
-            elevation: 4
-            pos_hint: {"top": 1}
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDSwiper:
             size_hint_y: None
-            height: root.height - toolbar.height - dp(40)
-            y: root.height - self.height - toolbar.height - dp(20)
+            height: root.height - dp(40)
+            y: root.height - self.height - dp(20)
 
             MySwiper:
 
@@ -60,11 +57,13 @@ Example
 
     class Main(MDApp):
         def build(self):
+            self.theme_cls.theme_style = "Dark"
             return Builder.load_string(kv)
+
 
     Main().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mdswiper-example.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/swiper-example.gif
     :align: center
 
 .. warning::
@@ -96,103 +95,6 @@ Example
         on_overswipe_left: print("on_overswipe_left")
         on_swipe_left: print("on_swipe_left")
         on_swipe_right: print("on_swipe_right")
-
-Example
-=======
-
-.. code-block:: python
-
-    from kivy.lang.builder import Builder
-
-    from kivymd.app import MDApp
-
-    kv = '''
-    <MagicButton@MagicBehavior+MDIconButton>
-
-
-    <MySwiper@MDSwiperItem>
-
-        RelativeLayout:
-
-            FitImage:
-                source: "guitar.png"
-                radius: [20,]
-
-            MDBoxLayout:
-                adaptive_height: True
-                spacing: "12dp"
-
-                MagicButton:
-                    id: icon
-                    icon: "weather-sunny"
-                    user_font_size: "56sp"
-                    opposite_colors: True
-
-                MDLabel:
-                    text: "MDLabel"
-                    font_style: "H5"
-                    size_hint_y: None
-                    height: self.texture_size[1]
-                    pos_hint: {"center_y": .5}
-                    opposite_colors: True
-
-
-    MDScreen:
-
-        MDTopAppBar:
-            id: toolbar
-            title: "MDSwiper"
-            elevation: 4
-            pos_hint: {"top": 1}
-
-        MDSwiper:
-            size_hint_y: None
-            height: root.height - toolbar.height - dp(40)
-            y: root.height - self.height - toolbar.height - dp(20)
-            on_swipe: self.get_current_item().ids.icon.shake()
-
-            MySwiper:
-
-            MySwiper:
-
-            MySwiper:
-
-            MySwiper:
-
-            MySwiper:
-    '''
-
-
-    class Main(MDApp):
-        def build(self):
-            return Builder.load_string(kv)
-
-
-    Main().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/mdswiper-on-swipe.gif
-    :align: center
-
-How to automatically switch a SwiperItem?
-=========================================
-
-Use method :attr:`~MDSwiper.set_current` which takes the index of :class:`MDSwiperItem` as argument.
-
-Example
-=======
-
-.. code-block:: kv
-
-    MDSwiper:
-        id: swiper
-
-        MDSwiperItem: # First widget with index 0
-
-        MDSwiperItem: # Second widget with index 1
-
-    MDRaisedButton:
-        text: "Go to Second"
-        on_release: swiper.set_current(1)
 """
 
 __all__ = ("MDSwiperItem", "MDSwiper")
@@ -223,6 +125,8 @@ with open(
     Builder.load_string(kv_file.read())
 
 
+# TODO: Redesign this module according to the specification -
+#  https://m3.material.io/components/carousel/overview
 class _ScrollViewHardStop(DampedScrollEffect):
     def stop(self, val, t=None):
         return super().stop(val, t=0.01)

@@ -1,0 +1,17 @@
+<MDBadge>
+    font_style: "Label"
+    role: "small"
+    radius: [self.texture_size[1] / 2, ]
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    padding: "4dp", "2dp"
+    halign: "center"
+    valign: "center"
+    adaptive_size: True
+    md_bg_color: self.theme_cls.errorColor
+    text_color: self.theme_cls.onErrorColor
+    pos:
+        ( \
+        self.parent.x + (self.parent.width / 2), \
+        self.parent.y + (self.parent.height / 2) \
+        ) \
+        if self.parent else (0, 0)

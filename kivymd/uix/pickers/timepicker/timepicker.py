@@ -4,152 +4,507 @@ Components/TimePicker
 
 .. seealso::
 
-    `Material Design spec, Time picker <https://material.io/components/time-pickers>`_
+    `Material Design spec, Date picker <https://m3.material.io/components/time-pickers/overview>`_
 
-.. rubric:: Includes time picker.
+.. rubric:: Time pickers help users select and set a specific time.
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/picker-previous.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker.png
     :align: center
 
-.. warning:: The widget is under testing. Therefore, we would be grateful if
-    you would let us know about the bugs found.
+- Time pickers are modal and cover the main content
+- Two types: dial and input
+- Users can select hours, minutes, or periods of time
+- Make sure time can easily be selected by hand on a mobile device
 
-.. rubric:: Usage
-
-.. tabs::
-
-    .. tab:: Declarative KV style
-
-        .. code-block:: python
-
-            from kivy.lang import Builder
-
-            from kivymd.app import MDApp
-            from kivymd.uix.pickers import MDTimePicker
-
-            KV = '''
-            MDFloatLayout:
-
-                MDRaisedButton:
-                    text: "Open time picker"
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-                    on_release: app.show_time_picker()
-            '''
-
-
-            class Test(MDApp):
-                def build(self):
-                    self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
-                    return Builder.load_string(KV)
-
-                def show_time_picker(self):
-                    '''Open time picker dialog.'''
-
-                    time_dialog = MDTimePicker()
-                    time_dialog.open()
-
-
-            Test().run()
-
-    .. tab:: Declarative python style
-
-        .. code-block:: python
-
-            from kivymd.app import MDApp
-            from kivymd.uix.button import MDRaisedButton
-            from kivymd.uix.pickers import MDTimePicker
-            from kivymd.uix.screen import MDScreen
-
-
-            class Test(MDApp):
-                def build(self):
-                    self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
-                    return (
-                        MDScreen(
-                            MDRaisedButton(
-                                text="Open time picker",
-                                pos_hint={'center_x': .5, 'center_y': .5},
-                                on_release=self.show_time_picker,
-                            )
-                        )
-                    )
-
-                def show_time_picker(self, *args):
-                    '''Open time picker dialog.'''
-
-                    MDTimePicker().open()
-
-
-            Test().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/MDTimePicker.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-types.png
     :align: center
 
-Binding method returning set time
----------------------------------
+1. Vertical dial time picker
+2. Horizontal dial time picker
+3. Time picker input
+
+KivyMD provides the following date pickers classes for use:
+
+- MDTimePickerDialVertical_
+- MDTimePickerDialHorizontal_
+- MDTimePickerInput_
+
+.. _MDTimePickerDialVertical:
+
+MDTimePickerDialVertical
+------------------------
+
+Time pickers allow people to enter a specific time value. They’re displayed in
+dialogs and can be used to select hours, minutes, or periods of time.
+
+They can be used for a wide range of scenarios. Common use cases include:
+
+- Setting an alarm
+- Scheduling a meeting
+
+Time pickers are not ideal for nuanced or granular time selection, such as
+milliseconds for a stopwatch application.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/vertical-time-picker-preview.gif
+    :align: center
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.pickers import MDTimePickerDialVertical
+
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDButton:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_time_picker()
+
+            MDButtonText:
+                text: "Open time picker"
+    '''
+
+
+    class Example(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+        def show_time_picker(self):
+            time_picker = MDTimePickerDialVertical()
+            time_picker.open()
+
+
+    Example().run()
+
+.. _MDTimePickerDialHorizontal:
+
+MDTimePickerDialHorizontal
+--------------------------
+
+The clock dial interface adapts to a device’s orientation. In landscape mode,
+the stacked input and selection options are positioned side-by-side.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/horizontal-time-picker-preview.gif
+    :align: center
 
 .. code-block:: python
 
     def show_time_picker(self):
-        time_dialog = MDTimePicker()
-        time_dialog.bind(time=self.get_time)
-        time_dialog.open()
+        MDTimePickerDialHorizontal().open()
 
-    def get_time(self, instance, time):
-        '''
-        The method returns the set time.
+.. note:: You must control the orientation of the time picker yourself.
 
-        :type instance: <kivymd.uix.picker.MDTimePicker object>
-        :type time: <class 'datetime.time'>
-        '''
+.. code-block:: python
 
-        return time
+    from typing import Literal
 
-Open time dialog with the specified time
-----------------------------------------
+    from kivy.clock import Clock
+    from kivy.lang import Builder
+    from kivy.properties import ObjectProperty
 
-Use the :attr:`~MDTimePicker.set_time` method of the
-:class:`~MDTimePicker.` class.
+    from kivymd.app import MDApp
+    from kivymd.theming import ThemeManager
+    from kivymd.uix.pickers import (
+        MDTimePickerDialHorizontal,
+        MDTimePickerDialVertical,
+    )
+
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDButton:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release:
+                app.open_time_picker_horizontal("1", "10") \
+                if self.theme_cls.device_orientation == "landscape" else \
+                app.open_time_picker_vertical("1", "10")
+
+            MDButtonText:
+                text: "Open time picker"
+    '''
+
+
+    class Example(MDApp):
+        ORIENTATION = Literal["portrait", "landscape"]
+        time_picker_horizontal: MDTimePickerDialHorizontal = ObjectProperty(
+            allownone=True
+        )
+        time_picker_vertical: MDTimePickerDialHorizontal = ObjectProperty(
+            allownone=True
+        )
+
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            self.theme_cls.bind(device_orientation=self.check_orientation)
+            return Builder.load_string(KV)
+
+        def check_orientation(
+            self, instance: ThemeManager, orientation: ORIENTATION
+        ):
+            if orientation == "portrait" and self.time_picker_horizontal:
+                self.time_picker_horizontal.dismiss()
+                hour = str(self.time_picker_horizontal.time.hour)
+                minute = str(self.time_picker_horizontal.time.minute)
+                Clock.schedule_once(
+                    lambda x: self.open_time_picker_vertical(hour, minute),
+                    0.1,
+                )
+            elif orientation == "landscape" and self.time_picker_vertical:
+                self.time_picker_vertical.dismiss()
+                hour = str(self.time_picker_vertical.time.hour)
+                minute = str(self.time_picker_vertical.time.minute)
+                Clock.schedule_once(
+                    lambda x: self.open_time_picker_horizontal(hour, minute),
+                    0.1,
+                )
+
+        def open_time_picker_horizontal(self, hour, minute):
+            self.time_picker_vertical = None
+            self.time_picker_horizontal = MDTimePickerDialHorizontal(
+                hour=hour, minute=minute
+            )
+            self.time_picker_horizontal.open()
+
+        def open_time_picker_vertical(self, hour, minute):
+            self.time_picker_horizontal = None
+            self.time_picker_vertical = MDTimePickerDialVertical(
+                hour=hour, minute=minute
+            )
+            self.time_picker_vertical.open()
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-control-orientation.gif
+    :align: center
+
+.. _MDTimePickerInput:
+
+MDTimePickerInput
+-----------------
+
+Time input pickers allow people to specify a time using keyboard numbers.
+This input option should be accessible from any other mobile time picker
+interface by tapping the keyboard icon.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/input-time-picker-preview.gif
+    :align: center
 
 .. code-block:: python
 
     def show_time_picker(self):
-        from datetime import datetime
+        MDTimePickerInput().open()
 
-        # Must be a datetime object
-        previous_time = datetime.strptime("03:20:00", '%H:%M:%S').time()
-        time_dialog = MDTimePicker()
-        time_dialog.set_time(previous_time)
-        time_dialog.open()
+Events
+======
 
-.. note:: For customization of the :class:`~MDTimePicker` class, see the
-    documentation in the :class:`~kivymd.uix.pickers.datepicker.datepicker.BaseDialogPicker` class.
+**on_edit** event
+-----------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-edit.gif
+    :align: center
 
 .. code-block:: python
 
-        MDTimePicker(
-            primary_color="brown",
-            accent_color="red",
-            text_button_color="white",
+    from kivy.clock import Clock
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.pickers import MDTimePickerDialVertical, MDTimePickerInput
+
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDButton:
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: app.show_time_picker_vertical()
+
+            MDButtonText:
+                text: "Open time picker"
+    '''
+
+
+    class Example(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+        def on_edit_time_picker_input(self, time_picker_input):
+            time_picker_input.dismiss()
+            Clock.schedule_once(self.show_time_picker_vertical, 0.2)
+
+        def show_time_picker_input(self, *args):
+            time_picker_input = MDTimePickerInput()
+            time_picker_input.bind(on_edit=self.on_edit_time_picker_input)
+            time_picker_input.open()
+
+        def on_edit_time_picker_vertical(self, time_picker_vertical):
+            time_picker_vertical.dismiss()
+            Clock.schedule_once(self.show_time_picker_input, 0.2)
+
+        def show_time_picker_vertical(self, *args):
+            time_picker_vertical = MDTimePickerDialVertical()
+            time_picker_vertical.bind(on_edit=self.on_edit_time_picker_vertical)
+            time_picker_vertical.open()
+
+
+    Example().run()
+
+**on_hour_select** event
+------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-hour-select.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_hour_select(
+        self, time_picker_vertical: MDTimePickerDialVertical, mode: str
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"On '{mode}' select",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
         ).open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-customization.png
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_hour_select=self.on_hour_select)
+        time_picker_vertical.open()
+
+**on_minute_select** event
+--------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-minute-select.gif
     :align: center
+
+.. code-block:: python
+
+    def on_minute_select(
+        self, time_picker_vertical: MDTimePickerDialVertical, mode: str
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"On '{mode}' select",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
+        ).open()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_minute_select=self.on_minute_select)
+        time_picker_vertical.open()
+
+**on_am_pm** event
+------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-am-pm.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_am_pm(
+        self, time_picker_vertical: MDTimePickerDialVertical, am_pm: str
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"'{am_pm.upper()}' select",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
+        ).open()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_am_pm=self.on_am_pm)
+        time_picker_vertical.open()
+
+**on_selector_hour** event
+--------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-selector-hour.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_selector_hour(
+        self, time_picker_vertical: MDTimePickerDialVertical, hour: str
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"The value of the hour is `{hour}` select",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
+        ).open()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_selector_hour=self.on_selector_hour)
+        time_picker_vertical.open()
+
+**on_selector_minute** event
+----------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-selector-minute.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_selector_minute(
+        self, time_picker_vertical: MDTimePickerDialVertical, minute: str
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"The value of the hour is `{minute}` select",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
+        ).open()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_selector_minute=self.on_selector_minute)
+        time_picker_vertical.open()
+
+**on_cancel** event
+-------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-cancel.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_cancel(
+        self, time_picker_vertical: MDTimePickerDialVertical
+    ):
+        time_picker_vertical.dismiss()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_cancel=self.on_cancel)
+        time_picker_vertical.open()
+
+**on_ok** event
+---------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-ok.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_ok(
+        self, time_picker_vertical: MDTimePickerDialVertical
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"Time is `{time_picker_vertical.time}`",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
+        ).open()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerDialVertical()
+        time_picker_vertical.bind(on_ok=self.on_ok)
+        time_picker_vertical.open()
+
+**on_time_input** event
+-----------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-input-event-on-time-input.gif
+    :align: center
+
+.. code-block:: python
+
+    def on_time_input(
+        self,
+        time_picker_vertical: MDTimePickerInput,
+        type_time: str,
+        value: str,
+    ):
+        MDSnackbar(
+            MDSnackbarSupportingText(
+                text=f"The {type_time} value is set to {value}",
+            ),
+            y=dp(24),
+            orientation="horizontal",
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.5,
+        ).open()
+
+    def show_time_picker_vertical(self, *args):
+        time_picker_vertical = MDTimePickerInput()
+        time_picker_vertical.bind(on_time_input=self.on_time_input)
+        time_picker_vertical.open()
+
+API break
+=========
+
+1.2.0 version
+-------------
+
+.. code-block:: python
+
+    time_picker_dialog = MDTimePicker()
+    time_picker_dialog.open()
+
+2.0.0 version
+-------------
+
+.. code-block:: python
+
+    # time_picker_dialog = MDTimePickerDialVertical()
+    # time_picker_dialog = MDTimePickerDialHorizontal()
+
+    time_picker_dialog = MDTimePickerInput()
+    time_picker_dialog.open()
 """
 
-__all__ = ("MDTimePicker",)
+# TODO: Implement 24h input.
+#  Implement a tooltip for time picker elements.
+#  Should we implement the feature to settings custom colors for the
+#  time picker dialogs?
+
+from __future__ import annotations
+
+__all__ = (
+    "MDBaseTimePicker",
+    "MDTimePickerInput",
+    "MDTimePickerDialVertical",
+    "MDTimePickerDialHorizontal",
+)
 
 import datetime
 import os
 import re
 import time
-from typing import List, Union
+from typing import List
 
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.event import EventDispatcher
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -163,14 +518,19 @@ from kivy.properties import (
     VariableListProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
 from kivy.vector import Vector
 
 from kivymd import uix_path
-from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    CommonElevationBehavior,
+    BackgroundColorBehavior,
+)
+from kivymd.uix.behaviors.motion_behavior import MotionTimePickerBehavior
 from kivymd.uix.circularlayout import MDCircularLayout
 from kivymd.uix.label import MDLabel
-from kivymd.uix.pickers.datepicker import BaseDialogPicker
-from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.textfield import MDTextField
 
 with open(
@@ -180,181 +540,401 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class AmPmSelectorLabel(ButtonBehavior, MDLabel):
-    pass
+class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
+    """
+    Implements the base class of the time picker.
 
+    .. versionadded:: 2.0.0
 
-class AmPmSelector(MDBoxLayout):
-    border_radius = NumericProperty()
-    border_color = ColorProperty()
-    bg_color = ColorProperty()
-    bg_color_active = ColorProperty()
-    border_width = NumericProperty()
-    am = ObjectProperty()
-    am = ObjectProperty()
-    owner = ObjectProperty()
-    text_color = ColorProperty()
-    selected = StringProperty()
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.motion_behavior.MotionTimePickerBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` and
+    classes documentation.
 
-    _am_bg_color = ColorProperty()
-    _pm_bg_color = ColorProperty()
+    :Events:
+        :attr:`on_cancel`
+            Fired when the 'Cancel' button is pressed.
+        :attr:`on_ok`
+            Fired when the 'Ok' button is pressed.
+        :attr:`on_dismiss`
+            Fired when a date picker closes.
+        :attr:`on_edit`
+            Fired when you click on the date editing icon.
+        :attr:`on_hour_select`
+            Fired when the hour input field container is clicked.
+        :attr:`on_minute_select`
+            Fired when the minute input field container is clicked.
+        :attr:`on_am_pm`
+            Fired when the AP/PM switching elements are pressed.
+        :attr:`on_selector_hour`
+            Fired when switching the hour value in the clock face container.
+        :attr:`on_selector_minute`
+            Fired when switching the minute value in the clock face container.
+    """
+
+    hour = StringProperty("12")
+    """
+    Current hour.
+
+    :attr:`hour` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'12'`.
+    """
+
+    minute = StringProperty("0")
+    """
+    Current minute.
+
+    :attr:`minute` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `0`.
+    """
+
+    am_pm = OptionProperty("am", options=["am", "pm"])
+    """
+    Current AM/PM mode.
+
+    :attr:`am_pm` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'am'`.
+    """
+
+    animation_duration = NumericProperty(0.3)
+    """
+    Duration of the animations.
+
+    :attr:`animation_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    animation_transition = StringProperty("out_quad")
+    """
+    Transition type of the animations.
+
+    :attr:`animation_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_quad'`.
+    """
+
+    time = ObjectProperty(allownone=True)
+    """
+    Returns the current time object.
+
+    :attr:`time` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    headline_text = StringProperty("Select time")
+    """
+    Headline text.
+
+    :attr:`headline_text` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'Select time'`.
+    """
+
+    text_button_ok = StringProperty("Ok")
+    """
+    The text of the confirmation button.
+
+    :attr:`text_button_ok` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'Ok'`.
+    """
+
+    text_button_cancel = StringProperty("Cancel")
+    """
+    The text of the cancel button.
+
+    :attr:`text_button_cancel` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'Cancel'`.
+    """
+
+    radius = VariableListProperty([dp(16)], length=4)
+    """
+    Container radius.
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(16), dp(16), dp(16), dp(16)]`.
+    """
+
+    is_open = BooleanProperty(False)
+    """
+    Is the date picker dialog open.
+
+    :attr:`is_open` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    scrim_color = ColorProperty([0, 0, 0, 0.5])
+    """
+    Color for scrim in (r, g, b, a) or string format.
+
+    :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.5]`.
+    """
+
+    _selector = ObjectProperty()
+    _time_input = ObjectProperty()
+    _am_pm_selector = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(selected=self._upadte_color)
-        Clock.schedule_once(self._upadte_color)
-
-    def _upadte_color(self, *args):
-        bg_color = (
-            self.owner.accent_color
-            if self.owner.accent_color
-            else self.bg_color_active
+        self.bind(
+            hour=self._set_current_time,
+            minute=self._set_current_time,
+            am_pm=self._set_current_time,
         )
-        if self.selected == "am":
-            self._am_bg_color = bg_color
-            self._pm_bg_color = (
-                self.owner.primary_color
-                if self.owner.accent_color
-                else self.bg_color
-            )
-        elif self.selected == "pm":
-            self._am_bg_color = (
-                self.owner.primary_color
-                if self.owner.accent_color
-                else self.bg_color
-            )
-            self._pm_bg_color = bg_color
-
-
-class TimeInputTextField(MDTextField):
-    num_type = OptionProperty("hour", options=["hour", "minute"])
-    hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
-    minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        Clock.schedule_once(self.set_text)
-        self.register_event_type("on_select")
-        self.bind(text_color_focus=self.setter("hint_text_color_normal"))
-
-    def validate_time(self, text) -> Union[None, re.Match]:
-        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
-        return re.match(reg, text)
-
-    def insert_text(self, text, from_undo=False):
-        strip_text = self.text.strip()
-        current_string = "".join([strip_text, text])
-        if not self.validate_time(current_string):
-            text = ""
-        return super().insert_text(text, from_undo=from_undo)
-
-    def set_text(self, *args) -> None:
-        """
-        Texts should be center aligned. Now we are setting the padding of text
-        to somehow make them aligned.
-        """
-
-        def set_text(*args):
-            if not self.text:
-                self.text = " "
-
-            self._refresh_text(self.text)
-            max_size = max(self._lines_rects, key=lambda r: r.size[0]).size
-            dx = (self.width - max_size[0]) / 2.0
-            dy = (self.height - max_size[1]) / 2.0
-            self.padding = [dx, dy, dx, dy]
-
-            if len(self.text) > 1:
-                self.text = self.text.replace(" ", "")
-
-        Clock.schedule_once(set_text)
-
-    def on_focus(self, *args) -> None:
-        super().on_focus(*args)
-        if self.text.strip():
-            if (
-                not self.focus
-                and int(self.text) == 0
-                and self.num_type == "hour"
-            ):
-                self.text = "12"
-        else:
-            self.text = " 12" if self.num_type == "hour" else " 00"
-
-    def on_select(self, *args) -> None:
-        pass
-
-    def on_touch_down(self, touch):
-        if self.collide_point(*touch.pos):
-            self.dispatch("on_select")
-            super().on_touch_down(touch)
-
-
-class TimeInput(MDRelativeLayout):
-    """Implements two text fields for displaying and entering a time value."""
-
-    bg_color = ColorProperty()
-    bg_color_active = ColorProperty()
-    text_color = ColorProperty()
-    disabled = BooleanProperty(True)
-    minute_radius = ListProperty([0, 0, 0, 0])
-    hour_radius = ListProperty([0, 0, 0, 0])
-    state = StringProperty("hour")
-
-    _hour = ObjectProperty()
-    _minute = ObjectProperty()
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.register_event_type("on_time_input")
+        self.register_event_type("on_dismiss")
+        self.register_event_type("on_cancel")
+        self.register_event_type("on_ok")
+        self.register_event_type("on_edit")
         self.register_event_type("on_hour_select")
         self.register_event_type("on_minute_select")
+        self.register_event_type("on_am_pm")
+        self.register_event_type("on_selector_hour")
+        self.register_event_type("on_selector_minute")
+        self.register_event_type("on_time_input")
+        Clock.schedule_once(
+            lambda x: self.set_time(
+                datetime.time(hour=int(self.hour), minute=int(self.minute))
+            )
+        )  # default time
 
-    def set_time(self, time_list) -> None:
-        hour, minute = time_list
-        self._hour.text = hour
-        self._minute.text = minute
+    def set_time(self, time_obj: datetime.time) -> None:
+        """Manually set time dialog with the specified time."""
 
-    def get_time(self) -> List[str]:
-        hour = self._hour.text.strip()
-        minute = self._minute.text.strip()
-        return [hour, minute]
+        hour = time_obj.hour
+        minute = time_obj.minute
 
-    def on_time_input(self, *args) -> None:
-        pass
+        if hour > 12:
+            hour -= 12
+            mode = "pm"
+        else:
+            mode = "am"
 
-    def on_minute_select(self, *args) -> None:
-        pass
+        hour = str(hour)
+        minute = str(minute)
+        self._set_time_input(hour, minute)
+        self._set_dial_time(hour, minute)
+        self._set_am_pm(mode)
+        self._set_current_time()
+
+    def open(self) -> None:
+        """Show the dialog time picker."""
+
+        if not self.is_open:
+            if not self._scrim:
+                self._scrim = MDTimePickerScrim(color=self.scrim_color)
+
+            Window.add_widget(self._scrim)
+            Window.add_widget(self)
+            super().on_open()
+            self.is_open = True
+
+    def _get_dial_time(self, instance):
+        mode = instance.mode
+        if mode == "hour":
+            self.hour = instance.selected_hour
+            self.dispatch("on_selector_hour", self.hour)
+        elif mode == "minute":
+            self.minute = instance.selected_minute
+            self.dispatch("on_selector_minute", self.minute)
+        else:
+            raise Exception("invalid mode for MDTimePicker: " % mode)
+
+        self._set_time_input(self.hour, self.minute)
+
+    def _set_dial_time(self, hour, minute):
+        if self._selector:
+            self._selector.selected_minute = minute
+            self._selector.selected_hour = hour
+        else:
+            self.hour, self.minute = hour, minute
+            self._set_current_time()
+
+    def _get_time_input(self, hour, minute):
+        if hour:
+            self.hour = f"{int(hour):01d}"
+            self.dispatch("on_time_input", "hour", self.hour)
+        if minute:
+            self.minute = f"{int(minute):01d}"
+            self.dispatch("on_time_input", "minute", self.minute)
+
+        self._set_dial_time(self.hour, self.minute)
+
+    def _set_time_input(self, hour, minute):
+        hour = f"{int(hour):02d}"
+        minute = f"{int(minute):02d}"
+
+        if self._time_input:
+            self._time_input.set_time([hour, minute])
+
+    def _get_am_pm(self, selected):
+        self.am_pm = selected
+
+    def _set_am_pm(self, selected: str) -> None:
+        """Used by set_time() to manually set the mode to "am" or "pm"."""
+
+        self.am_pm = selected
+        self._am_pm_selector.mode = self.am_pm
+        self._am_pm_selector.selected = self.am_pm
+
+    def on_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            self.dismiss()
+            return True
+        super().on_touch_down(touch)
+        return True
+
+    def dismiss(self, *args) -> None:
+        """Dismiss the dialog time picker."""
+
+        super().on_dismiss()
+        self.is_open = False
+
+    def on_dismiss(self, *args) -> None:
+        """Fired when a time picker closes."""
+
+    def on_cancel(self, *args) -> None:
+        """Fired when the 'Cancel' button is pressed."""
+
+    def on_ok(self, *args) -> None:
+        """Fired when the 'Ok' button is pressed."""
 
     def on_hour_select(self, *args) -> None:
-        pass
+        """Fired when the hour input field container is clicked."""
 
-    def _update_padding(self, *args):
-        self._hour.set_text()
-        self._minute.set_text()
+    def on_minute_select(self, *args) -> None:
+        """Fired when the minute input field container is clicked."""
+
+    def on_am_pm(self, *args) -> None:
+        """Fired when the AP/PM switching elements are pressed."""
+
+    def on_edit(self, *args) -> None:
+        """Fired when you click on the time editing icon."""
+
+    def on_selector_hour(self, *args) -> None:
+        """Fired when switching the hour value in the clock face container."""
+
+    def on_selector_minute(self, *args) -> None:
+        """
+        Fired when switching the minute value in the clock face container.
+        """
+
+    def on_time_input(self, *args) -> None:
+        """
+        Fired when switching the minute value in the clock face container.
+        """
+
+    def _get_data(self):
+        try:
+            if time.strftime("%p"):
+                result = datetime.datetime.strptime(
+                    f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
+                    "%I:%M %p",
+                ).time()
+            else:
+                result = datetime.datetime.strptime(
+                    f"{int(self.hour):02d}:{int(self.minute):02d}",
+                    "%I:%M",
+                ).time()
+            return result
+        except ValueError:
+            return None  # hour is zero
+
+    def _set_current_time(self, *args):
+        self.time = self._get_data()
 
 
-class SelectorLabel(MDLabel):
-    pass
+###############################################################################
+#
+#                                 PICKER CLASSES
+#
+###############################################################################
 
 
-class CircularSelector(MDCircularLayout, EventDispatcher):
-    """Implements clock face display."""
+class MDTimePickerInput(CommonElevationBehavior, MDBaseTimePicker):
+    """
+    Implements input time picker.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
+    :class:`~MDBaseTimePicker`
+    classes documentation.
+    """
+
+
+class MDTimePickerDialVertical(CommonElevationBehavior, MDBaseTimePicker):
+    """
+    Implements vertical time picker.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
+    :class:`~MDBaseTimePicker`
+    classes documentation.
+    """
+
+
+class MDTimePickerDialHorizontal(CommonElevationBehavior, MDBaseTimePicker):
+    """
+    Implements horizontal time picker.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and
+    :class:`~MDBaseTimePicker`
+    classes documentation.
+    """
+
+
+###############################################################################
+#
+#                                COMMON CLASSES
+#
+###############################################################################
+
+
+class MDTimePickerCircularSelectorLabel(MDLabel):
+    """
+    Implements a label for the :class:`~MDTimePickerCircularSelector` class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+    """
+
+
+class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
+    """
+    Implements clock face display.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.ThemableBehavior` and
+    :class:`~kivymd.uix.circularlayout.MDCircularLayout`
+    classes documentation.
+    """
 
     mode = OptionProperty("hour", options=["hour", "minute"])  # and military
-    text_color = ColorProperty()
     selected_hour = StringProperty("12")
     selected_minute = StringProperty("0")
     selector_size = NumericProperty("48dp")
     selector_pos = ListProperty([0, 0])
-    selector_color = ColorProperty()
-    bg_color = ColorProperty()
     font_name = StringProperty()
     scale = NumericProperty(1)
     content_scale = NumericProperty(1)
     t = StringProperty("out_quad")
     d = NumericProperty(0.2)
     scale_origin = ListProperty([100, 100])
+
+    time_picker: MDBaseTimePicker = ObjectProperty()
+    """
+    Time picker object -
+
+    :attr:`time_picker` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
 
     _centers_pos = ListProperty()
 
@@ -377,13 +957,13 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
         widget = None
         for wid in self.children:
-            wid.text_color = self.text_color
+            wid.text_color = self.theme_cls.onSurfaceColor
             if wid.text == selected:
                 widget = wid
         if not widget:
             return False
         self.selector_pos = widget.center
-        widget.text_color = [1, 1, 1, 1]
+        widget.text_color = self.theme_cls.onPrimaryColor
         self.dispatch("on_selector_change")
         return True
 
@@ -406,6 +986,11 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
         if mode != self.mode:
             self.mode = mode
 
+        if self.mode == "hour":
+            self.time_picker.dispatch("on_hour_select", self.mode)
+        elif self.mode == "minute":
+            self.time_picker.dispatch("on_minute_select", self.mode)
+
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             touch.grab(self)
@@ -424,7 +1009,7 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
             return True
 
     def on_selector_change(self, *args):
-        pass
+        ...
 
     def _update_labels(self, animate=True, *args):
         """
@@ -462,20 +1047,19 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
 
         self.clear_widgets()
         i = 0
+
         for x in range(start, end + 1):
-            label = SelectorLabel(
+            label = MDTimePickerCircularSelectorLabel(
                 text=f"{x}",
             )
             if i % step != 0:
                 label.opacity = 0
-            self.bind(
-                text_color=label.setter("text_color"),
-                font_name=label.setter("font_name"),
-            )
             self.add_widget(label)
             i += 1
+
         Clock.schedule_once(self.update_time)
         Clock.schedule_once(self._get_centers, 0.1)
+
         anim = Animation(content_scale=1, t=self.t, d=self.d)
         anim.start(self)
 
@@ -486,6 +1070,7 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
         """
 
         self._centers_pos = []
+
         for child in self.children:
             self._centers_pos.append(child.center)
 
@@ -496,337 +1081,232 @@ class CircularSelector(MDCircularLayout, EventDispatcher):
         """
 
         distance = [Vector(pos).distance(point) for point in self._centers_pos]
+
         if not distance:
             return False
+
         index = distance.index(min(distance))
+
         return self.children[index]
 
 
-class MDTimePicker(BaseDialogPicker):
-    hour = StringProperty("12")
+class MDTimePickerScrim(Widget):
     """
-    Current hour.
+    Implements scrim for the time picker.
 
-    :attr:`hour` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'12'`.
-    """
+    .. versionadded:: 2.0.0
 
-    minute = StringProperty("0")
-    """
-    Current minute.
-
-    :attr:`minute` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `0`.
+    For more information, see in the
+    :class:`~kivy.uix.widget.Widget` and class documentation.
     """
 
-    minute_radius = VariableListProperty(dp(5), length=4)
+    color = ColorProperty(None)
+    alpha = NumericProperty(0)
+
+
+class MDTimePickerButtonsContainer(BoxLayout):
     """
-    Radius of the minute input field.
+    Implements a container with buttons for time picker dialogs.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-minute-radius.png
-        :align: center
+    .. versionadded:: 2.0.0
 
-    :attr:`minute_radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[dp(5), dp(5), dp(5), dp(5)]`.
-    """
-
-    hour_radius = VariableListProperty(dp(5), length=4)
-    """
-    Radius of the hour input field.
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-hour-radius.png
-        :align: center
-
-    :attr:`hour_radius` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `[dp(5), dp(5), dp(5), dp(5)]`.
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
     """
 
-    am_pm_radius = NumericProperty("5dp")
+    icon = StringProperty("keyboard")
     """
-    Radius of the AM/PM selector.
+    The leading container icon.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-am-pm-radius.png
-        :align: center
-
-    :attr:`am_pm_radius` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `dp(5)`.
+    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'keyboard'`.
     """
 
-    am_pm_border_width = NumericProperty("1dp")
+    time_picker: MDBaseTimePicker = ObjectProperty()
     """
-    Width of the AM/PM selector's borders.
+    Time picker object -
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-am-pm-border-width.png
-        :align: center
-
-    :attr:`am_pm_border_width` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `dp(1)`.
-    """
-
-    am_pm = OptionProperty("am", options=["am", "pm"])
-    """
-    Current AM/PM mode.
-
-    :attr:`am_pm` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'am'`.
-    """
-
-    animation_duration = NumericProperty(0.3)
-    """
-    Duration of the animations.
-
-    :attr:`animation_duration` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.2`.
-    """
-
-    animation_transition = StringProperty("out_quad")
-    """
-    Transition type of the animations.
-
-    :attr:`animation_transition` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'out_quad'`.
-    """
-
-    time = ObjectProperty(allownone=True)
-    """
-    Returns the current time object.
-
-    :attr:`time` is an :class:`~kivy.properties.ObjectProperty`
+    :attr:`time_picker` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
     """
 
-    _state = StringProperty()
-    _selector = ObjectProperty()
-    _time_input = ObjectProperty()
-    _am_pm_selector = ObjectProperty()
-    _hour_label = ObjectProperty()
-    _minute_label = ObjectProperty()
-    _anim_playing = BooleanProperty(False)
+
+class MDTimePickerAmPmSelectorLabel(ButtonBehavior, MDLabel):
+    """
+    Implements a label for the :class:`~MDTimePickerAmPmSelector` class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.label.label.MDLabel`
+    classes documentation.
+    """
+
+
+class MDTimePickerAmPmSelector(
+    ThemableBehavior, BackgroundColorBehavior, BoxLayout
+):
+    """
+    Implements a container for AM/PM switching elements.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout`
+    classes documentation.
+    """
+
+    selected = StringProperty()
+    """
+    Time type status - AM/PM.
+    Real value - 'am/pm'
+
+    :attr:`selected` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `''`.
+    """
+
+
+class MDTimePickerInputContainer(BoxLayout):
+    """
+    Implements a container for the hours and minutes text input fields.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    """
+
+    time_picker: MDBaseTimePicker = ObjectProperty()
+    """
+    Time picker object -
+
+    :attr:`time_picker` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    state = OptionProperty("hour", options=["hour", "minute"])
+    """
+    Container status: entering hours or minutes.
+    Available options are: 'hour', 'minute'.
+
+    :attr:`state` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'hour'`.
+    """
+
+    # State of the text fields for entering hours/minutes.
+    _readonly = BooleanProperty(True)
+    # MDTimePickerInputTextField objects.
+    _hour = ObjectProperty()
+    _minute = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.bind(
-            hour=self._set_current_time,
-            minute=self._set_current_time,
-            am_pm=self._set_current_time,
-        )
-        self.theme_cls.bind(device_orientation=self._check_orienation)
-        if self.title == "SELECT DATE":
-            self.title = "SELECT TIME"
-        self.set_time(datetime.time(hour=12, minute=0))  # default time
-        self._check_orienation()
+        self.register_event_type("on_time_input")
+        self.register_event_type("on_hour_select")
+        self.register_event_type("on_minute_select")
 
-    def set_time(self, time_obj) -> None:
-        """Manually set time dialog with the specified time."""
+    def set_time(self, time_list) -> None:
+        hour, minute = time_list
+        self._hour.text = hour
+        self._minute.text = minute
 
-        hour = time_obj.hour
-        minute = time_obj.minute
-        if hour > 12:
-            hour -= 12
-            mode = "pm"
-        else:
-            mode = "am"
-        hour = str(hour)
-        minute = str(minute)
-        self._set_time_input(hour, minute)
-        self._set_dial_time(hour, minute)
-        self._set_am_pm(mode)
+    def get_time(self) -> List[str]:
+        hour = self._hour.text.strip()
+        minute = self._minute.text.strip()
+        return [hour, minute]
 
-    def get_state(self) -> str:
+    def on_time_input(self, *args) -> None:
+        ...
+
+    def on_minute_select(self, *args) -> None:
+        pass
+
+    def on_hour_select(self, *args) -> None:
+        pass
+
+
+class MDTimePickerInputTextField(MDTextField):
+    """
+    Implements a text field for entering hour and minute values.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.textfield.textfield.MDTextField` class documentation.
+    """
+
+    num_type = OptionProperty("hour", options=["hour", "minute"])
+    hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
+    minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.register_event_type("on_select")
+        Clock.schedule_once(self._override_properties, 0)
+
+    def validate_time(self, text) -> None | re.Match:
+        reg = self.hour_regx if self.num_type == "hour" else self.minute_regx
+        return re.match(reg, text)
+
+    def insert_text(self, text, from_undo=False):
         """
-        Returns the current state of TimePicker.
-        Can be one of `portrait`, `landscape` or `input`.
+        Insert new text at the current cursor position. Override this
+        function in order to pre-process text for input validation.
         """
 
-        return self._state
+        strip_text = self.text.strip()
+        current_string = "".join([strip_text, text])
+        if not self.validate_time(current_string):
+            text = ""
+        return super().insert_text(text, from_undo=from_undo)
 
-    def _get_dial_time(self, instance):
-        mode = instance.mode
-        if mode == "hour":
-            self.hour = instance.selected_hour
-        elif mode == "minute":
-            self.minute = instance.selected_minute
+    def set_text(self, instance, text: str) -> None:
+        """
+        Just override the method since its work in this class is not needed.
+        """
+
+    def on_focus(self, *args) -> None:
+        """Fired when the `focus` value changes."""
+
+        super().on_focus(*args)
+        Clock.schedule_once(self._override_properties, -1)
+
+        if self.text.strip():
+            if (
+                not self.focus
+                and int(self.text) == 0
+                and self.num_type == "hour"
+            ):
+                self.text = "12"
         else:
-            raise Exception("invalid mode for MDTimePicker: " % mode)
-        self._set_time_input(self.hour, self.minute)
+            self.text = "12" if self.num_type == "hour" else "00"
 
-    def _set_dial_time(self, hour, minute):
-        self._selector.selected_minute = minute
-        self._selector.selected_hour = hour
+    def on_select(self, *args) -> None:
+        """Fired when the hour/minute input field container is clicked."""
 
-    def _get_time_input(self, hour, minute):
-        if hour:
-            self.hour = f"{int(hour):01d}"
-        if minute:
-            self.minute = f"{int(minute):01d}"
-        self._set_dial_time(self.hour, self.minute)
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.dispatch("on_select")
+            return super().on_touch_down(touch)
 
-    def _set_time_input(self, hour, minute):
-        hour = f"{int(hour):02d}"
-        minute = f"{int(minute):02d}"
-        if self._state != "input":
-            self._time_input.set_time([hour, minute])
-
-    def _get_am_pm(self, selected):
-        self.am_pm = selected
-
-    def _set_am_pm(self, selected: str) -> None:
-        """Used by set_time() to manually set the mode to "am" or "pm"."""
-        self.am_pm = selected
-        self._am_pm_selector.mode = self.am_pm
-        self._am_pm_selector.selected = self.am_pm
-
-    def _get_data(self):
-        try:
-            if time.strftime("%p"):
-                result = datetime.datetime.strptime(
-                    f"{int(self.hour):02d}:{int(self.minute):02d} {self.am_pm}",
-                    "%I:%M %p",
-                ).time()
-            else:
-                result = datetime.datetime.strptime(
-                    f"{int(self.hour):02d}:{int(self.minute):02d}",
-                    "%I:%M",
-                ).time()
-            return result
-        except ValueError:
-            return None  # hour is zero
-
-    def _check_orienation(self, *args, do_anim=False):
-        orientation = self.theme_cls.device_orientation
-        if self._state != "input" and orientation != self._state:
-            self._update_pos_size(orientation, anim=do_anim)
-
-    def _update_pos_size(self, orientation, anim=False):
-        d = self.animation_duration
-        # time input
-        time_input_pos = (
-            [dp(24), dp(368)]
-            if orientation == "portrait"
-            else (
-                [dp(24), dp(178)]
-                if orientation == "landscape"
-                else [dp(24), dp(96)]
+    def _override_properties(self, *args):
+        if self.readonly:
+            self.canvas.before.get_group("rectangle-cursor-blink")[0].size = (
+                0,
+                0,
             )
+
+        self.canvas.before.get_group("active-indicator-color")[0].rgba = (
+            0,
+            0,
+            0,
+            0,
         )
-        if anim:
-            _time_input = Animation(
-                pos=time_input_pos,
-                d=d,
-                t=self.animation_transition,  # 80 - 8,
-            )
-            _time_input.start(self._time_input)
-        else:
-            self._time_input.pos = time_input_pos
-
-        self._time_input.disabled = False if orientation == "input" else True
-        self._time_input.size = (
-            [dp(216), dp(62)] if orientation == "input" else [dp(216), dp(72)]
-        )
-        Clock.schedule_once(self._time_input._update_padding)
-
-        # Circular selector.
-        if orientation == "input":
-            if self.theme_cls.device_orientation == "portrait":
-                selector_pos = [dp(34), dp(-256)]
-                self._selector.scale_origin = [dp(162), dp(200)]
-            else:
-                selector_pos = [dp(324), dp(-19)]
-                self._selector.scale_origin = [dp(292), dp(109)]
-        elif orientation == "portrait":
-            self._selector.pos = selector_pos = [dp(36), dp(76)]
-        else:
-            self._selector.pos = selector_pos = [dp(304), dp(76)]
-
-        Animation(
-            pos=selector_pos,
-            scale=0 if orientation == "input" else 1,
-            opacity=0 if orientation == "input" else 1,
-            d=d,
-            t=self.animation_transition,
-        ).start(self._selector)
-
-        # AM/PM selector.
-        am_pm_pos = (
-            [dp(252), dp(368)]
-            if orientation == "portrait"
-            else (
-                [dp(24), dp(126)]
-                if orientation == "landscape"
-                else [dp(252), dp(96)]
-            )
-        )
-        am_pm_size = (
-            [dp(52), dp(80)]
-            if orientation == "portrait"
-            else (
-                [dp(216), dp(40)]
-                if orientation == "landscape"
-                else [dp(48), dp(70)]
-            )
-        )
-        if anim:
-            Animation(
-                pos=am_pm_pos,
-                size=am_pm_size,
-                d=d,
-                t=self.animation_transition,
-            ).start(self._am_pm_selector)
-        else:
-            self._am_pm_selector.pos = am_pm_pos
-            self._am_pm_selector.size = am_pm_size
-
-        self._am_pm_selector.orientation = (
-            "horizontal" if orientation == "landscape" else "vertical"
-        )
-
-        # MDTimePicker.
-        time_picker_size = (
-            [dp(328), dp(500)]
-            if orientation == "portrait"
-            else (
-                [dp(584), dp(368)]
-                if orientation == "landscape"
-                else [dp(324), dp(218)]
-            )
-        )
-        if anim:
-            Animation(
-                size=time_picker_size,
-                d=d,
-                t=self.animation_transition,
-            ).start(self)
-        else:
-            self.size = time_picker_size
-
-        # Minute label.
-        Animation(
-            pos=[dp(144), dp(76)],
-            opacity=1 if orientation == "input" else 0,
-            d=d,
-            t=self.animation_transition,
-        ).start(self._minute_label)
-
-        # Hour label.
-        Animation(
-            pos=[dp(24), dp(76)],
-            opacity=1 if orientation == "input" else 0,
-            d=d,
-            t=self.animation_transition,
-        ).start(self._hour_label)
-
-        self._state = orientation
-        self.ids.input_clock_switch.icon = (
-            "clock-time-four-outline" if orientation == "input" else "keyboard"
-        )
-
-    def _set_current_time(self, *args):
-        self.time = self._get_data()
-
-    def _switch_input(self):
-        self._update_pos_size(
-            self.theme_cls.device_orientation
-            if self._state == "input"
-            else "input",
-            anim=True,
-        )
+        self.canvas.before.get_group("fill-color-rounded-rectangle")[
+            0
+        ].radius = [
+            dp(12),
+        ]

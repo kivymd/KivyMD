@@ -13,7 +13,7 @@ Screen
     Screen:
         canvas:
             Color:
-                rgba: app.theme_cls.primary_color
+                rgba: app.theme_cls.primaryColor
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
@@ -26,7 +26,7 @@ MDScreen
 
     MDScreen:
         radius: [25, 0, 0, 0]
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: self.theme_cls.primaryColor
 """
 
 from kivy.properties import ListProperty, ObjectProperty
@@ -34,15 +34,28 @@ from kivy.uix.screenmanager import Screen
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 from kivymd.uix.hero import MDHeroTo
 
 
-class MDScreen(DeclarativeBehavior, ThemableBehavior, Screen, MDAdaptiveWidget):
+class MDScreen(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    Screen,
+    MDAdaptiveWidget,
+):
     """
     Screen is an element intended to be used with a
-    :class:`~kivymd.uix.screenmanager.MDScreenManager`. For more information,
-    see in the :class:`~kivy.uix.screenmanager.Screen` class documentation.
+    :class:`~kivymd.uix.screenmanager.MDScreenManager`.
+
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.screenmanager.Screen` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
     """
 
     hero_to = ObjectProperty(deprecated=True)
@@ -71,7 +84,7 @@ class MDScreen(DeclarativeBehavior, ThemableBehavior, Screen, MDAdaptiveWidget):
     """
 
     def on_hero_to(self, screen, widget: MDHeroTo) -> None:
-        """Called when the value of the :attr:`hero_to` attribute changes."""
+        """Fired when the value of the :attr:`hero_to` attribute changes."""
 
         if not isinstance(widget, MDHeroTo) or not issubclass(
             widget.__class__, MDHeroTo

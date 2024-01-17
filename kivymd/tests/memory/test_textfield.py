@@ -2,12 +2,23 @@ from kivy.clock import Clock
 
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.textfield import (
+    MDTextField,
+    MDTextFieldLeadingIcon,
+    MDTextFieldHintText,
+    MDTextFieldHelperText,
+    MDTextFieldTrailingIcon,
+    MDTextFieldMaxLengthText,
+)
 
 len_callbacks = 0
 
 
 class MyScreen(MDScreen):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.md_bg_color = self.theme_cls.backgroundColor
+
     def remove_widget(self, *args, **kwargs) -> None:
         global len_callbacks
 
@@ -31,7 +42,26 @@ class TestTextFieldMemoryLeak(MDApp):
 
         self.counter += 1
         self.root.clear_widgets()
-        self.root.add_widget(MDTextField(text=f"Count {self.counter}"))
+        self.root.add_widget(
+            MDTextField(
+                MDTextFieldLeadingIcon(
+                    icon="account",
+                ),
+                MDTextFieldHintText(
+                    text="Hint text",
+                ),
+                MDTextFieldHelperText(
+                    text="Helper text",
+                    mode="persistent",
+                ),
+                MDTextFieldTrailingIcon(
+                    icon="information",
+                ),
+                MDTextFieldMaxLengthText(
+                    max_text_length=10,
+                ),
+            )
+        )
 
         if self.counter > 10:
             Clock.unschedule(self.add_items)

@@ -9,7 +9,11 @@ MDScreen:
     MDIconButton:
         id: button
         icon: "language-python"
-        icon_size: "56sp"
+        theme_font_size: "Custom"
+        font_size: "48sp"
+        radius: [self.height / 2, ]
+        size_hint: None, None
+        size: "84dp", "84dp"
         pos_hint: {"center_x": .5, "center_y": .5}
 """
 
@@ -23,6 +27,7 @@ class TestMDIconButtonIconSize(MDApp):
         self.stop()
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.check_icon_size, 1.2)
 
 

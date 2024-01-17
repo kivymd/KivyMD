@@ -1,38 +1,43 @@
-<_Triangle>:
+<MDDropDownItem>
+    size_hint: None, None
+    size:
+        (self._size[0] + dp(12), self._size[1] + dp(8)) \
+        if self._size else \
+        (0, 0)
+    md_bg_color: "red"
+
     canvas:
         Color:
-            rgba: app.theme_cls.text_color
+            group: "drop-down-item-color"
+        Rectangle:
+            group: "drop-down-item-text"
+            texture:
+                self._drop_down_text.texture \
+                if self._drop_down_text else \
+                None
+            size:
+                self._drop_down_text.texture_size \
+                if self._drop_down_text else \
+                (0, 0)
+            pos:
+                self.x, self.y + dp(8)
+        Color:
+            group: "drop-down-item-triangle-color"
         Triangle:
             points:
                 [ \
-                self.right-dp(14), self.y+dp(7), \
-                self.right-dp(7), self.y+dp(7), \
-                self.right-dp(7), self.y+dp(14) \
+                self.right + dp(0), self.y + dp(12), \
+                self.right - dp(6), self.y + dp(12), \
+                self.right - dp(6), self.y + root.height - dp(3) \
                 ]
 
-
-<MDDropDownItem>
-    orientation: "vertical"
-    size_hint: None, None
-    size: self.minimum_size
-    spacing: "5dp"
-    padding: "5dp", "5dp", "5dp", 0
-
-    MDBoxLayout:
-        adaptive_size: True
-        spacing: "10dp"
-
-        Label:
-            id: label_item
-            size_hint: None, None
-            size: self.texture_size
-            color: root.theme_cls.text_color
-            disabled_color: root.theme_cls.disabled_hint_text_color
-            font_size: root.font_size
+    MDDivider:
+        size_hint_x: None
+        width: root._size[0] + dp(14) if root._size else 0
 
 
-        _Triangle:
-            size_hint: None, None
-            size: "20dp", "20dp"
-
-    MDSeparator:
+<MDDropDownItemText>
+    size_hint_x: None
+    width: self.texture_size[0]
+    adaptive_width: True
+    role: "small"

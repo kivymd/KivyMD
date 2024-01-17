@@ -11,46 +11,83 @@ Usage
 .. code-block:: python
 
     from kivy.lang import Builder
+    from kivymd.uix.menu import MDDropdownMenu
 
     from kivymd.app import MDApp
 
     KV = '''
     MDScreen
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDDropDownItem:
-            id: drop_item
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            text: 'Item'
-            on_release: print("Press item")
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.open_menu(self)
+
+            MDDropDownItemText:
+                id: drop_text
+                text: "Item"
     '''
 
 
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
+    class Example(MDApp):
+        def open_menu(self, item):
+            menu_items = [
+                {
+                    "text": f"{i}",
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                } for i in range(5)
+            ]
+            MDDropdownMenu(caller=item, items=menu_items).open()
+
+        def menu_callback(self, text_item):
+            self.root.ids.drop_text.text = text_item
 
         def build(self):
-            return self.screen
+            return Builder.load_string(KV)
 
 
-    Test().run()
+    Example().run()
 
 .. seealso::
 
     `Work with the class MDDropdownMenu see here <https://kivymd.readthedocs.io/en/latest/components/menu/index.html#center-position>`_
+
+API break
+=========
+
+1.2.0 version
+-------------
+
+.. code-block:: kv
+
+    MDDropDownItem:
+        text: 'Item'
+        on_release: print(*args)
+
+2.0.0 version
+-------------
+
+.. code-block:: kv
+
+    MDDropDownItem:
+        on_release:  print(*args)
+
+        MDDropDownItemText:
+            text: "Item text"
 """
 
-__all__ = ("MDDropDownItem",)
+__all__ = ("MDDropDownItem", "MDDropDownItemText")
 
 import os
 
+from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import NumericProperty, StringProperty
+from kivy.metrics import dp
+from kivy.properties import ObjectProperty, ListProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import Widget
 
+from kivymd.uix.label import MDLabel
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
@@ -61,8 +98,19 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class _Triangle(Widget):
-    pass
+# FIXME: When resizing the texture of the `MDDropDownItemText` widget,
+#  the canvas instruction that implements the triangle looks terrible.
+#  You need to edit the Triangle instructions according to the size
+#  of the `MDDropDownItemText` texture.
+class MDDropDownItemText(MDLabel):
+    """
+    Base texture for :class:`~MDDropDownItem` class (item text).
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+
+    .. versionadded:: 2.0.0
+    """
 
 
 class MDDropDownItem(
@@ -72,42 +120,52 @@ class MDDropDownItem(
     Dropdown item class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivy.uix.boxlayout.BoxLayout`
     classes documentation.
     """
 
-    text = StringProperty()
-    """
-    Text item.
+    _drop_down_text = ObjectProperty()
+    _size = ListProperty()
 
-    :attr:`text` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
+    def add_widget(self, widget, *args, **kwargs):
+        if isinstance(widget, MDDropDownItemText):
+            self._drop_down_text = widget
+            widget.bind(text=self.update_text_item)
+            Clock.schedule_once(lambda x: self.on_disabled(self, self.disabled))
+        else:
+            return super().add_widget(widget)
 
-    current_item = StringProperty()
-    """
-    Current name item.
+    def update_text_item(self, instance, value) -> None:
+        """Updates the text of the item."""
 
-    :attr:`current_item` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
+        self._drop_down_text.texture_update()
+        drop_down_item_text = self.canvas.get_group("drop-down-item-text")[0]
+        drop_down_item_text.texture = None
+        drop_down_item_text.texture = self._drop_down_text.texture
+        drop_down_item_text.size = self._drop_down_text.texture_size
+        drop_down_item_text.pos = (self.x, self.y + dp(8))
+        self._size = self._drop_down_text.texture_size
 
-    font_size = NumericProperty("16sp")
-    """
-    Item font size.
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the values of :attr:`disabled` change."""
 
-    :attr:`font_size` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `'16sp'`.
-    """
+        self._drop_down_text.disabled = value
+        drop_down_item_triangle_color = self.canvas.get_group(
+            "drop-down-item-triangle-color"
+        )[0]
+        drop_down_item_triangle_color.rgba = (
+            self._drop_down_text.disabled_color
+            if value
+            else self._drop_down_text.color
+        )
 
-    def on_text(self, instance_drop_down_item, text_item: str) -> None:
-        self.ids.label_item.text = text_item
+    def on__drop_down_text(self, instance, value) -> None:
+        """Fired when the values of :attr:`_drop_down_text` change."""
 
-    def set_item(self, name_item: str) -> None:
-        """Sets new text for an item."""
+        def set_size(*args):
+            self._size = value.texture_size
 
-        self.ids.label_item.text = name_item
-        self.current_item = name_item
+        Clock.schedule_once(set_size)

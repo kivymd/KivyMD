@@ -16,7 +16,7 @@ MDCircularLayout
 
     from kivymd.app import MDApp
 
-    kv = '''
+    KV = '''
     MDScreen:
 
         MDCircularLayout:
@@ -26,20 +26,19 @@ MDCircularLayout
     '''
 
 
-    class Main(MDApp):
+    class Example(MDApp):
         def build(self):
-            return Builder.load_string(kv)
+            return Builder.load_string(KV)
 
         def on_start(self):
+            super().on_start()
             for x in range(1, 49):
-                self.root.ids.container.add_widget(
-                    Label(text=f"{x}", color=[0, 0, 0, 1])
-                )
+                self.root.ids.container.add_widget(Label(text=f"{x}")
 
 
-    Main().run()
+    Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout-dark.png
     :align: center
 """
 
@@ -48,11 +47,10 @@ __all__ = ("MDCircularLayout",)
 from math import atan2, cos, degrees, radians, sin
 
 from kivy.properties import BooleanProperty, NumericProperty
+from kivy.uix.floatlayout import FloatLayout
 
-from kivymd.uix.floatlayout import MDFloatLayout
 
-
-class MDCircularLayout(MDFloatLayout):
+class MDCircularLayout(FloatLayout):
     degree_spacing = NumericProperty(30)
     """
     The space between children in degree.
@@ -63,7 +61,8 @@ class MDCircularLayout(MDFloatLayout):
 
     circular_radius = NumericProperty(None, allownone=True)
     """
-    Radius of circle. Radius will be the greatest value in the layout if `circular_radius` if not specified.
+    Radius of circle. Radius will be the greatest value in the layout
+    if `circular_radius` if not specified.
 
     :attr:`circular_radius` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `None`.
@@ -79,7 +78,8 @@ class MDCircularLayout(MDFloatLayout):
 
     max_degree = NumericProperty(360)
     """
-    Maximum range in degree allowed for each row of widgets before jumping to the next row.
+    Maximum range in degree allowed for each row of widgets before jumping
+    to the next row.
 
     :attr:`max_degree` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `360`.
@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     from kivymd.app import MDApp
 
-    kv = """
+    KV = """
 MDScreen:
 
     MDCircularLayout:
@@ -194,14 +194,13 @@ MDScreen:
         row_spacing: min(self.size) * 0.1
     """
 
-    class Main(MDApp):
+    class Example(MDApp):
         def build(self):
-            return Builder.load_string(kv)
+            return Builder.load_string(KV)
 
         def on_start(self):
+            super().on_start()
             for x in range(1, 49):
-                self.root.ids.container.add_widget(
-                    Label(text=f"{x}", color=[0, 0, 0, 1])
-                )
+                self.root.ids.container.add_widget(Label(text=f"{x}"))
 
-    Main().run()
+    Example().run()

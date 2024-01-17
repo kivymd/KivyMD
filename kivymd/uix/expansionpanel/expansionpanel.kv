@@ -1,18 +1,15 @@
-<MDExpansionChevronRight>:
-    icon: "chevron-right"
-    disabled: True
-    md_bg_color_disabled: 0, 0, 0, 0
-
-    canvas.before:
-        PushMatrix
-        Rotate:
-            angle: self._angle
-            axis: (0, 0, 1)
-            origin: self.center
-    canvas.after:
-        PopMatrix
-
-
 <MDExpansionPanel>
+    orientation: "vertical"
     size_hint_y: None
-    # height: dp(68)
+    height: self.minimum_height
+
+
+<MDExpansionPanelHeader>
+    size_hint_y: None
+    height: self.minimum_height
+
+
+<MDExpansionPanelContent>
+    size_hint_y: None
+    height: self.minimum_height
+    opacity: 0

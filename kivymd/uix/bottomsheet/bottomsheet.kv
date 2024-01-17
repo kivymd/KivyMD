@@ -1,6 +1,4 @@
-<MDBottomSheetContent>
-    size_hint_y: None
-    height: self.minimum_height
+#:import Window kivy.core.window.Window
 
 
 <MDBottomSheetDragHandle>
@@ -10,13 +8,19 @@
     padding: "16dp", "8dp", "16dp", "16dp"
 
     BottomSheetDragHandle:
-        md_bg_color:
-            app.theme_cls.disabled_hint_text_color \
-            if not root.drag_handle_color else \
-            root.drag_handle_color
+        canvas:
+            Color:
+                rgba:
+                    app.theme_cls.disabled_hint_text_color \
+                    if not root.drag_handle_color else \
+                    root.drag_handle_color
+            SmoothRoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [dp(4), ]
+
         size_hint: None, None
         size: "32dp", "4dp"
-        radius: 4
         pos_hint: {"center_x": .5}
 
     BottomSheetDragHandleContainer:
@@ -27,16 +31,14 @@
 
 <MDBottomSheet>
     orientation: "vertical"
-    md_bg_color: root.bg_color if root.bg_color else app.theme_cls.bg_darkest
-    radius: 16, 16, 0, 0
+    radius: "16dp", "16dp", 0, 0
     padding: 0, "8dp", 0, 0
+    -x: 0
+    width: Window.width if Window.width <= dp(640) else dp(640)
+    pos_hint: {"center_x": .5}
+    y: self.height * (self.open_progress - 1)
 
-    MDBoxLayout:
+    BoxLayout:
         id: drag_handle_container
-        size_hint_y: None
-        height: self.minimum_height
-
-    MDBoxLayout:
-        id: container
         size_hint_y: None
         height: self.minimum_height

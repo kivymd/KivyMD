@@ -22,7 +22,6 @@
         MDLabel:
             text: root.text
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             size_hint_x: None
@@ -34,25 +33,26 @@
                 + container.padding[2] \
                 + container.spacing \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
         MDTrailingTextContainer:
             id: trailing_container
             text: root.trailing_text
             adaptive_width: True
-            theme_text_color: "Custom" if root.trailing_text_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.trailing_text_color \
-                if root.trailing_text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.trailing_text_color else \
+                root.trailing_text_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -74,16 +74,15 @@
             size_hint: None, None
             size: "48dp", "48dp"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.leading_icon_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.leading_icon_color \
-                if root.leading_icon_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.leading_icon_color else \
+                root.leading_icon_color
 
         MDLabel:
             text: root.text
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             size_hint_x: None
@@ -97,10 +96,11 @@
                 + container.spacing \
                 + dp(18) \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
         Widget:
 
@@ -108,16 +108,16 @@
             id: trailing_container
             text: root.trailing_text
             adaptive_width: True
-            theme_text_color: "Custom" if root.trailing_text_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.trailing_text_color \
-                if root.trailing_text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.trailing_text_color else \
+                root.trailing_text_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -140,7 +140,6 @@
             size_hint_x: None
             shorten_from: "right"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             width:
@@ -152,10 +151,11 @@
                 + container.spacing \
                 + dp(18) \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
         Widget:
 
@@ -165,16 +165,16 @@
             size: "48dp", "48dp"
             pos_hint: {"center_y": .5}
             icon: root.trailing_icon
-            theme_text_color: "Custom" if root.trailing_icon_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.trailing_icon_color \
-                if root.trailing_icon_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.trailing_icon_color else \
+                root.trailing_icon_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -190,21 +190,21 @@
         size_hint: None, None
         size: "48dp", "48dp"
         pos_hint: {"center_y": .5}
-        theme_text_color: "Custom" if root.trailing_icon_color else "Primary"
+        theme_text_color: "Custom"
         text_color:
-            root.trailing_icon_color \
-            if root.trailing_icon_color else \
-            app.theme_cls.text_color
+            app.theme_cls.onSurfaceVariantColor \
+            if not root.trailing_icon_color else \
+            root.trailing_icon_color
 
     MDLabel:
         text: root.trailing_text
         adaptive_size: True
         pos_hint: {"center_y": .5}
-        theme_text_color: "Custom" if root.trailing_text_color else "Primary"
+        theme_text_color: "Custom"
         text_color:
-            root.trailing_text_color \
-            if root.trailing_text_color else \
-            app.theme_cls.text_color
+            app.theme_cls.onSurfaceVariantColor \
+            if not root.text_color else \
+            root.text_color
 
 
 <MDDropdownTrailingIconTextItem>
@@ -222,7 +222,6 @@
             size_hint_x: None
             shorten_from: "right"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             width:
@@ -233,10 +232,11 @@
                 + container.padding[2] \
                 + container.spacing \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
         MDTrailingIconTextContainer:
             id: trailing_container
@@ -245,10 +245,10 @@
             trailing_text_color: root.trailing_text_color
             trailing_icon_color: root.trailing_icon_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -263,18 +263,18 @@
         text: root.text
         valign: "center"
         padding_x: "12dp"
-        theme_text_color: "Custom" if root.text_color else "Primary"
         shorten: True
         shorten_from: "right"
+        theme_text_color: "Custom"
         text_color:
-            root.text_color \
-            if root.text_color else \
-            app.theme_cls.text_color
+            app.theme_cls.onSurfaceVariantColor \
+            if not root.text_color else \
+            root.text_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -296,16 +296,15 @@
             size_hint: None, None
             size: "48dp", "48dp"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.leading_icon_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.leading_icon_color \
-                if root.leading_icon_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.leading_icon_color else \
+                root.leading_icon_color
 
         MDLabel:
             text: root.text
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             size_hint_x: None
@@ -319,10 +318,11 @@
                 + container.spacing \
                 + dp(18) \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
         Widget:
 
@@ -333,10 +333,10 @@
             trailing_icon_color: root.trailing_icon_color
             trailing_text_color: root.trailing_text_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -358,11 +358,11 @@
             size_hint: None, None
             size: "48dp", "48dp"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.leading_icon_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.leading_icon_color \
-                if root.leading_icon_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.leading_icon_color else \
+                root.leading_icon_color
 
         MDLabel:
             id: label
@@ -371,7 +371,6 @@
             size_hint_x: None
             shorten_from: "right"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             width:
@@ -384,10 +383,11 @@
                 + container.spacing \
                 + dp(18) \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
         Widget:
 
@@ -397,16 +397,16 @@
             size: "48dp", "48dp"
             pos_hint: {"center_y": .5}
             icon: root.trailing_icon
-            theme_text_color: "Custom" if root.trailing_icon_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.trailing_icon_color \
-                if root.trailing_icon_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.trailing_icon_color else \
+                root.trailing_icon_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -428,11 +428,11 @@
             size_hint: None, None
             size: "48dp", "48dp"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.leading_icon_color else "Primary"
+            theme_text_color: "Custom"
             text_color:
-                root.leading_icon_color \
-                if root.leading_icon_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.leading_icon_color else \
+                root.leading_icon_color
 
         MDLabel:
             id: label
@@ -441,7 +441,6 @@
             size_hint_x: None
             shorten_from: "right"
             pos_hint: {"center_y": .5}
-            theme_text_color: "Custom" if root.text_color else "Primary"
             shorten: True
             shorten_from: "right"
             width:
@@ -452,15 +451,16 @@
                 + container.padding[2] \
                 + container.spacing \
                 )
+            theme_text_color: "Custom"
             text_color:
-                root.text_color \
-                if root.text_color else \
-                app.theme_cls.text_color
+                app.theme_cls.onSurfaceVariantColor \
+                if not root.text_color else \
+                root.text_color
 
-    MDSeparator:
+    MDDivider:
         md_bg_color:
             ( \
-            self.theme_cls.divider_color \
+            app.theme_cls.outlineVariantColor \
             if not root.divider_color \
             else root.divider_color \
             ) \
@@ -470,14 +470,18 @@
 
 <MDDropdownMenu>
     orientation: "vertical"
-    elevation: root.elevation
-    shadow_radius: root.shadow_radius
-    shadow_softness: root.shadow_softness
-    shadow_offset: root.shadow_offset
-    shadow_color: root.shadow_color
-    shadow_color: root.shadow_color
-    radius: root.radius
     size_hint: None, None
+    focus_behavior: False
+    style: "elevated"
+    elevation_level: 2
+    shadow_softness: 1.5
+    shadow_radius: 4
+    theme_bg_color: root.theme_bg_color
+#    md_bg_color:
+#        app.theme_cls.surfaceContainerColor \
+#        if root.theme_bg_color == "Primary" else \
+#        root.md_bg_color
+
 
     MDBoxLayout:
         id: content_header

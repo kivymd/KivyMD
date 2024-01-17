@@ -1,38 +1,78 @@
-<MDTooltipViewClass>
-    size_hint: None, None
-    width: self.minimum_width
-    height: self.minimum_height + root.padding[1]
+<MDTooltipPlain>
+    adaptive_size: True
     opacity: 0
+    font_style: "Body"
+    role: "small"
+    padding: "8dp", "4dp", "8dp", "4dp"
+    radius: [dp(4), ]
+    scale_value_x: 0
+    scale_value_y: 0
+    text_color:
+        self.theme_cls.inverseOnSurfaceColor \
+        if self.theme_text_color == "Primary" else \
+        self.text_color
 
     canvas.before:
-        PushMatrix
         Color:
             rgba:
-                root.theme_cls.opposite_bg_dark if not root.tooltip_bg_color \
-                else root.tooltip_bg_color
+                self.theme_cls.inverseSurfaceColor \
+                if self.theme_bg_color == "Primary" else \
+                self.md_bg_color
         RoundedRectangle:
-            pos: self.pos
             size: self.size
-            radius: root.tooltip_radius
-        Scale:
-            origin: self.center
-            x: root._scale_x
-            y: root._scale_y
-    canvas.after:
-        PopMatrix
+            pos: self.pos
+            radius: self.radius
 
-    MDLabel:
-        id: label_tooltip
-        text: root.tooltip_text
-        size_hint: None, None
-        -text_size: None, None
-        size: self.texture_size
-        bold: True
-        theme_text_color: "Custom"
-        font_style: root.tooltip_font_style
-        markup: True
-        pos_hint: {"center_y": .5}
-        text_color:
-            ([0, 0, 0, 1] if not root.tooltip_text_color else root.tooltip_text_color) \
-            if root.theme_cls.theme_style == "Dark" else \
-            ([1, 1, 1, 1] if not root.tooltip_text_color else root.tooltip_text_color)
+
+<MDTooltipRich>
+    orientation: "vertical"
+    scale_value_x: 0
+    scale_value_y: 0
+    opacity: 0
+    radius: [dp(12), ]
+    size_hint: None, None
+    size: self.minimum_size
+    padding: "16dp", "12dp", "16dp", "8dp"
+    spacing: "4dp"
+    elevation_level: 2
+    elevation: self.elevation_levels[self.elevation_level]
+    md_bg_color:
+        self.theme_cls.surfaceContainerColor \
+        if self.theme_bg_color == "Primary" else \
+        self.md_bg_color
+    shadow_softness:
+        2 \
+        if self.theme_shadow_softness == "Primary" else \
+        self.shadow_softness
+    shadow_offset:
+        (0, -1) \
+        if self.theme_shadow_offset == "Primary" else \
+        self.shadow_offset
+    shadow_radius: [value - 2 for value in self.radius]
+
+<MDTooltipRichSubhead>
+    bold: True
+    adaptive_size: True
+    font_style: "Title"
+    role: "small"
+    text_color:
+        self.theme_cls.onSurfaceVariantColor \
+        if self.theme_text_color == "Primary" else \
+        self.text_color
+
+
+<MDTooltipRichActionButton>
+    style: "text"
+    _text_left_pad: 0
+    _text_right_pad: 0
+    ripple_effect: False
+
+
+<MDTooltipRichSupportingText>
+    adaptive_size: True
+    font_style: "Body"
+    role: "medium"
+    text_color:
+        self.theme_cls.onSurfaceVariantColor \
+        if self.theme_text_color == "Primary" else \
+        self.text_color

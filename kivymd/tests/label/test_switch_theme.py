@@ -28,7 +28,7 @@ MDScreenManager:
 
 class TestSwitchTheme(MDApp):
     def check_label_color(self, *args):
-        assert self.root.ids.label_two.color == [1.0, 1.0, 1.0, 1.0]
+        assert self.root.ids.label_two.color == self.theme_cls.onSurfaceColor
         self.stop()
 
     def callback_change_theme(self):
@@ -39,6 +39,7 @@ class TestSwitchTheme(MDApp):
         self.root.current = "screen two"
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.switch_screen_two, 1)
 
     def build(self):

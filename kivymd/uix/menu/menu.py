@@ -205,6 +205,7 @@ You can use the following parameters to customize the menu items:
     :align: center
 
 .. Header:
+
 Header
 ------
 
@@ -338,6 +339,7 @@ for both the righthand and lefthand menus.
     :align: center
 
 .. Position:
+
 Position
 ========
 
@@ -405,50 +407,49 @@ Center position
 .. code-block:: python
 
     from kivy.lang import Builder
-    from kivy.metrics import dp
 
-    from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
+    from kivymd.app import MDApp
 
     KV = '''
-    MDScreen:
+    MDScreen
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDDropDownItem:
-            id: drop_item
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            text: 'Item 0'
-            on_release: app.menu.open()
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.open_drop_item_menu(self)
+
+            MDDropDownItemText:
+                id: drop_text
+                text: "Item"
     '''
 
 
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
+    class Example(MDApp, CommonApp):
+        drop_item_menu: MDDropdownMenu = None
+
+        def open_drop_item_menu(self, item):
             menu_items = [
                 {
-                    "text": f"Item {i}",
-                    "on_release": lambda x=f"Item {i}": self.set_item(x),
+                    "text": f"{i}",
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
                 } for i in range(5)
             ]
-            self.menu = MDDropdownMenu(
-                caller=self.screen.ids.drop_item,
-                items=menu_items,
-                position="center",
-            )
-            self.menu.bind()
+            if not self.drop_item_menu:
+                self.drop_item_menu = MDDropdownMenu(
+                    caller=item, items=menu_items, position="center"
+                )
+                self.drop_item_menu.open()
 
-        def set_item(self, text_item):
-            self.screen.ids.drop_item.set_item(text_item)
-            self.menu.dismiss()
+        def menu_callback(self, text_item):
+            self.root.ids.drop_text.text = text_item
+            self.drop_item_menu.dismiss()
 
         def build(self):
-            self.theme_cls.primary_palette = "Orange"
-            self.theme_cls.theme_style = "Dark"
-            return self.screen
+            return Builder.load_string(KV)
 
 
-    Test().run()
+    Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position-center.gif
     :align: center
@@ -636,14 +637,14 @@ from kivy.properties import (
 )
 from kivy.uix.recycleview import RecycleView
 
-import kivymd.material_resources as m_res
 from kivymd import uix_path
 from kivymd.uix.behaviors import StencilBehavior, RectangularRippleBehavior
 from kivymd.uix.behaviors.motion_behavior import MotionDropDownMenuBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
-from kivymd.uix.list import IRightBody
+
+# from kivymd.uix.list import IRightBody
 
 with open(
     os.path.join(uix_path, "menu", "menu.kv"), encoding="utf-8"
@@ -672,7 +673,7 @@ class BaseDropdownItem(RectangularRippleBehavior, ButtonBehavior, MDBoxLayout):
     .. versionadded:: 1.2.0
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.RectangularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes.
     """
 
@@ -762,7 +763,7 @@ class BaseDropdownItem(RectangularRippleBehavior, ButtonBehavior, MDBoxLayout):
     """
 
 
-class MDTrailingTextContainer(BaseDropdownItem, IRightBody, MDLabel):
+class MDTrailingTextContainer(BaseDropdownItem, MDLabel):
     """
     Implements a container for trailing text.
 
@@ -775,7 +776,7 @@ class MDTrailingTextContainer(BaseDropdownItem, IRightBody, MDLabel):
     """
 
 
-class MDTrailingIconTextContainer(BaseDropdownItem, IRightBody, MDBoxLayout):
+class MDTrailingIconTextContainer(BaseDropdownItem, MDBoxLayout):
     """
     Implements a container for trailing icons and trailing text.
 
@@ -877,9 +878,9 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     Dropdown menu class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.MotionDropDownMenuBehavior` and
-    :class:`~kivymd.uix.behaviors.StencilBehavior` and
-    :class:`~kivymd.uix.card.MDCard`
+    :class:`~kivymd.uix.behaviors.motion_behavior.MotionDropDownMenuBehavior` and
+    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior` and
+    :class:`~kivymd.uix.card.card.MDCard`
     classes documentation.
 
     :Events:
@@ -1056,42 +1057,6 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
 
     :attr:`radius` is a :class:`~kivy.properties.VariableListProperty`
     and defaults to `'[dp(7)]'`.
-    """
-
-    elevation = NumericProperty(m_res.DROP_DOWN_MENU_ELEVATION)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.elevation`
-    attribute.
-
-    :attr:`elevation` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `2`.
-    """
-
-    shadow_radius = VariableListProperty([6], length=4)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_radius`
-    attribute.
-
-    :attr:`shadow_radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[6]`.
-    """
-
-    shadow_softness = NumericProperty(m_res.DROP_DOWN_MENU_SOFTNESS)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_softness`
-    attribute.
-
-    :attr:`shadow_softness` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `6`.
-    """
-
-    shadow_offset = ListProperty(m_res.DROP_DOWN_MENU_OFFSET)
-    """
-    See :attr:`kivymd.uix.behaviors.elevation.CommonElevationBehavior.shadow_offset`
-    attribute.
-
-    :attr:`shadow_offset` is an :class:`~kivy.properties.ListProperty`
-    and defaults to `(0, -2)`.
     """
 
     _items = []
@@ -1424,13 +1389,13 @@ if __name__ == "__main__":
     from kivy.metrics import dp
 
     from kivymd.app import MDApp
-    from kivymd.uix.button import MDRaisedButton
+    from kivymd.uix.button import MDButton, MDButtonText
     from kivymd.uix.screen import MDScreen
 
     class Test(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
-            self.screen = MDScreen()
+            self.screen = MDScreen(md_bg_color=self.theme_cls.backgroundColor)
             menu_items = [{"text": f"Item {i}"} for i in range(55)]
             self.menu = MDDropdownMenu(items=menu_items, width_mult=4)
 
@@ -1439,6 +1404,7 @@ if __name__ == "__main__":
             self.menu.open()
 
         def on_start(self):
+            super().on_start()
             pos_hints = [
                 {"top": 1, "left": 0.1},
                 {"top": 1, "center_x": 0.5},
@@ -1452,7 +1418,13 @@ if __name__ == "__main__":
             ]
             for pos_hint in pos_hints:
                 self.screen.add_widget(
-                    MDRaisedButton(pos_hint=pos_hint, on_release=self.open_menu)
+                    MDButton(
+                        MDButtonText(
+                            text="Press me",
+                        ),
+                        pos_hint=pos_hint,
+                        on_release=self.open_menu,
+                    )
                 )
 
         def build(self):

@@ -1,1 +1,10 @@
-from .tab import MDTabs, MDTabsBase, MDTabsLabel  # NOQA F401
+from .tab import (
+    MDTabsPrimary,
+    MDTabsSecondary,
+    MDTabsItem,
+    MDTabsItemSecondary,
+    MDTabsItemIcon,
+    MDTabsItemText,
+    MDTabsCarousel,
+    MDTabsBadge,
+)  # NOQA F401

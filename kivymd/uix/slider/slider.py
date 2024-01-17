@@ -4,29 +4,81 @@ Components/Slider
 
 .. seealso::
 
-    `Material Design spec, Sliders <https://material.io/components/sliders>`_
+    `Material Design spec, Sliders <https://m3.material.io/components/sliders/overview>`_
 
 .. rubric:: Sliders allow users to make selections from a range of values.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider.png
     :align: center
+
+- Sliders should present the full range of choices that are available
+- Two types: continuous and discrete
+- The slider should immediately reflect any input made by a user
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/sliders-types.png
+    :align: center
+
+1. Continuous slider
+2. Discrete slider
+
+Usage
+-----
+
+.. code-block:: python
+
+    MDSlider(
+        MDSliderHandle(
+        ),
+        MDSliderValueLabel(
+        ),
+        step=10,
+        value=50,
+    )
+
+.. code-block:: kv
+
+    MDSlider:
+        step: 10
+        value: 50
+
+        MDSliderHandle:
+
+        MDSliderValueLabel:
+
+
+Anatomy
+-------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-anatomy.png
+    :align: center
 """
 
-__all__ = ("MDSlider",)
+__all__ = ("MDSlider", "MDSliderHandle", "MDSliderValueLabel")
 
 import os
 
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    BooleanProperty,
-    ColorProperty,
     ListProperty,
     VariableListProperty,
+    StringProperty,
+    NumericProperty,
+    ObjectProperty,
+    ColorProperty,
 )
 from kivy.uix.slider import Slider
+from kivy.uix.widget import Widget
 
+from kivymd.uix.label import MDLabel
+from kivymd.uix.behaviors import (
+    ScaleBehavior,
+    DeclarativeBehavior,
+    BackgroundColorBehavior,
+)
+from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 
@@ -36,282 +88,490 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDSlider(ThemableBehavior, Slider):
+class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
     """
-    Class for creating a Slider widget. See in the
-    :class:`~kivy.uix.slider.Slider` class documentation.
-    """
+    Slider class.
 
-    active = BooleanProperty(False)
-    """
-    If the slider is clicked.
-
-    :attr:`active` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.slider.Slider`
+    classes documentation.
     """
 
-    color = ColorProperty(None)
+    track_active_width = NumericProperty(dp(4))
     """
-    Color slider in (r, g, b, a) or string format.
+    Width of the active track.
 
-    .. code-block:: kv
+    .. versionadded:: 2.0.0
 
-        MDSlider
-            color: "red"
+    :attr:`track_active_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(4)`.
+    """
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-color.png
-        :align: center
+    track_inactive_width = NumericProperty(dp(4))
+    """
+    Width of the inactive track.
 
-    :attr:`color` is an :class:`~kivy.properties.ColorProperty`
+    .. versionadded:: 2.0.0
+
+    :attr:`track_inactive_width` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(4)`.
+    """
+
+    step_point_size = NumericProperty(dp(1))
+    """
+    Step point size.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`step_point_size` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(1)`.
+    """
+
+    track_active_color = ColorProperty(None)
+    """
+    Color of the active track.
+
+    .. versionadded:: 2.0.0
+
+    .. versionchanged:: 2.0.0
+
+        Rename from `track_color_active` to `track_active_color`
+
+    :attr:`track_active_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    hint = BooleanProperty(True)
+    track_active_step_point_color = ColorProperty(None)
     """
-    If True, then the current value is displayed above the slider.
+    Color of step points on active track.
 
-    .. code-block:: kv
+    .. versionadded:: 2.0.0
 
-        MDSlider
-            hint: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint.png
-        :align: center
-
-    :attr:`hint` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `True`.
-    """
-
-    hint_bg_color = ColorProperty(None)
-    """
-    Hint rectangle color in (r, g, b, a) or string format.
-
-    .. code-block:: kv
-
-        MDSlider
-            hint: True
-            hint_bg_color: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint-bg-color.png
-        :align: center
-
-    :attr:`hint_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0, 0, 0, 0]`.
-    """
-
-    hint_text_color = ColorProperty(None)
-    """
-    Hint text color in in (r, g, b, a) or string format.
-
-    .. code-block:: kv
-
-        MDSlider
-            hint: True
-            hint_bg_color: "red"
-            hint_text_color: "white"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint-text-color.png
-        :align: center
-
-    :attr:`hint_text_color` is an :class:`~kivy.properties.ColorProperty`
+    :attr:`track_active_step_point_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
-    hint_radius = VariableListProperty([dp(4), dp(4), dp(4), dp(4)])
+    track_inactive_step_point_color = ColorProperty(None)
     """
-    Hint radius.
+    Color of step points on inactive track.
 
-    .. code-block:: kv
+    .. versionadded:: 2.0.0
 
-        MDSlider
-            hint: True
-            hint_bg_color: "red"
-            hint_text_color: "white"
-            hint_radius: [6, 0, 6, 0]
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-hint-radius.png
-        :align: center
-
-    :attr:`hint_radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[dp(4), dp(4), dp(4), dp(4)]`.
+    :attr:`track_inactive_step_point_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    thumb_color_active = ColorProperty(None)
+    track_inactive_color = ColorProperty(None)
     """
-    The color in (r, g, b, a) or string format of the thumb when the slider is active.
+    Color of the inactive track.
 
-    .. versionadded:: 1.0.0
+    .. versionadded:: 2.0.0
 
-    .. code-block:: kv
+    .. versionchanged:: 2.0.0
 
-        MDSlider
-            thumb_color_active: "red"
+        Rename from `track_color_inactive` to `track_inactive_color`
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-thumb-color-active.png
-        :align: center
-
-    :attr:`thumb_color_active` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
+    :attr:`track_active_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
-    thumb_color_inactive = ColorProperty(None)
+    value_container_show_anim_duration = NumericProperty(0.2)
     """
-    The color in (r, g, b, a) or string format of the thumb when the slider is inactive.
+    Duration of the animation opening of the label value.
 
-    .. versionadded:: 1.0.0
+    .. versionadded:: 2.0.0
 
-    .. code-block:: kv
-
-        MDSlider
-            thumb_color_inactive: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-thumb-color-inactive.png
-        :align: center
-
-    :attr:`thumb_color_inactive` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
+    :attr:`value_container_show_anim_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
     """
 
-    thumb_color_disabled = ColorProperty(None)
+    value_container_hide_anim_duration = NumericProperty(0.2)
     """
-    The color in (r, g, b, a) or string format of the thumb when the slider is
-    in the disabled state.
+    Duration of closing the animation of the label value.
 
-    .. versionadded:: 1.0.0
+    .. versionadded:: 2.0.0
 
-    .. code-block:: kv
-
-        MDSlider
-            value: 55
-            disabled: True
-            thumb_color_disabled: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-thumb-color-disabled.png
-        :align: center
-
-    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
+    :attr:`value_container_hide_anim_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
     """
 
-    track_color_active = ColorProperty(None)
+    value_container_show_anim_transition = StringProperty("out_circ")
     """
-    The color in (r, g, b, a) or string format of the track when the slider is active.
+    The type of the opening animation of the label value.
 
-    .. versionadded:: 1.0.0
+    .. versionadded:: 2.0.0
 
-    .. code-block:: kv
-
-        MDSlider
-            track_color_active: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-track-color-active.png
-        :align: center
-
-    :attr:`track_color_active` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
+    :attr:`value_container_show_anim_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_circ'`.
     """
 
-    track_color_inactive = ColorProperty(None)
+    value_container_hide_anim_transition = StringProperty("out_circ")
     """
-    The color in (r, g, b, a) or string format of the track when the slider is inactive.
+    The type of the closing animation of the label value.
 
-    .. versionadded:: 1.0.0
+    .. versionadded:: 2.0.0
 
-    .. code-block:: kv
-
-        MDSlider
-            track_color_inactive: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-track-color-inactive.png
-        :align: center
-
-    :attr:`track_color_inactive` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
+    :attr:`value_container_hide_anim_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_circ'`.
     """
 
-    track_color_disabled = ColorProperty(None)
+    handle_anim_transition = StringProperty("out_circ")
     """
-    The color in (r, g, b, a) or string format of the track when the slider is
-    in the disabled state.
+    Handle animation type.
 
-    .. versionadded:: 1.0.0
+    .. versionadded:: 2.0.0
 
-    .. code-block:: kv
-
-        MDSlider
-            disabled: True
-            track_color_disabled: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slide-track-color-disabled.png
-        :align: center
-
-    :attr:`track_color_disabled` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
+    :attr:`handle_anim_transition` is an :class:`~kivy.properties.StringProperty`
+    and defaults to `'out_circ'`.
     """
 
-    show_off = BooleanProperty(True)
+    handle_anim_duration = NumericProperty(0.2)
     """
-    Show the `'off'` ring when set to minimum value.
+    Handle animation duration.
 
-    :attr:`show_off` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `True`.
+    .. versionadded:: 2.0.0
+
+    :attr:`handle_anim_duration` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
     """
 
-    _thumb_pos = ListProperty([0, 0])
-    # Internal state of ring.
-    _is_off = BooleanProperty(False)
-    # Internal adjustment to reposition sliders for ring.
-    _offset = ListProperty((0, 0))
+    _value_label_container_size = ListProperty([0, 0])  # value label texture
+    _value_label = ObjectProperty()  # value label texture
+    _value_container = ObjectProperty()  # MDSliderValueContainer object
+    _value_container_y = NumericProperty(0)  # MDSliderValueContainer object
+    _handle = ObjectProperty()  # MDSliderHandle object
+    # List of points displayed on the slider when using the `step` for th
+    # active/inactive tracks.
+    _active_points = ListProperty()
+    _inactive_points = ListProperty()
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        Clock.schedule_once(self.set_thumb_icon)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        Clock.schedule_once(self._update_state_layer_pos, 0.5)
+        Clock.schedule_once(self.on_size)
 
-    def set_thumb_icon(self, *args) -> None:
-        self.ids.thumb.ids.icon.icon = "blank"
+    def add_widget(self, widget, index=0, canvas=None):
+        def set_value_container_y(*args):
+            self._value_container_y = self.ids.handle_container.y
 
-    def on_hint(self, instance, value) -> None:
-        def on_hint(*args):
-            if not value:
-                self.remove_widget(self.ids.hint_box)
+        if isinstance(widget, MDSliderValueLabel):
+            self._value_label = widget
+            self._value_container = MDSliderValueContainer(_slider=self)
+            self.ids.value_container.add_widget(self._value_container)
+            Clock.schedule_once(set_value_container_y)
+        elif isinstance(widget, MDSliderHandle):
+            widget._slider = self
+            self._handle = widget
+            self.ids.handle_container.add_widget(widget)
+        else:
+            return super().add_widget(widget)
 
-        # Schedule using for declarative style.
-        # Otherwise get AttributeError exception.
-        Clock.schedule_once(on_hint)
+    def update_points(self, instance, step) -> None:
+        """Draws the step points on the slider."""
 
-    def on_value_normalized(self, *args) -> None:
-        """
-        When the ``value == min`` set it to `'off'` state and make slider
-        a ring.
-        """
+        def update_points(*args):
+            y = self.center_y - self.track_active_width / 2
+            slider_length = self.width - (self.padding * 2)
+            slider_max_value = int(self.max)
+            multiplier = slider_length / slider_max_value
+            active_track_width = (
+                self.width - self.padding * 2
+            ) * self.value_normalized
 
-        self._update_is_off()
+            for i in range(0, slider_max_value + 1, step):
+                x = i * multiplier
 
-    def on_show_off(self, *args) -> None:
-        self._update_is_off()
+                if x < active_track_width:
+                    points = self._inactive_points
+                else:
+                    points = self._active_points
 
-    def on__is_off(self, *args) -> None:
-        self._update_offset()
+                points.append(
+                    self.x
+                    + x
+                    + self.padding
+                    + (
+                        (self.ids.handle_container.width / 2)
+                        if i != self.max and i
+                        else 0
+                    )
+                )
+                points.append(y)
 
-    def on_active(self, *args) -> None:
-        self._update_offset()
+        Clock.schedule_once(update_points)
+
+    def on_size(self, *args) -> None:
+        """Fired when the widget is resized."""
+
+        self._update_points()
 
     def on_touch_down(self, touch):
-        if super().on_touch_down(touch):
-            self.active = True
+        if self.disabled or not self.collide_point(*touch.pos):
+            return
+        if touch.is_mouse_scrolling:
+            if "down" in touch.button or "left" in touch.button:
+                if self.step:
+                    self.value = min(self.max, self.value + self.step)
+                else:
+                    self.value = min(
+                        self.max, self.value + (self.max - self.min) / 20
+                    )
+            if "up" in touch.button or "right" in touch.button:
+                if self.step:
+                    self.value = max(self.min, self.value - self.step)
+                else:
+                    self.value = max(
+                        self.min, self.value - (self.max - self.min) / 20
+                    )
+        elif self.sensitivity == "handle":
+            if self.children[0].collide_point(*touch.pos):
+                touch.grab(self)
+        else:
+            touch.grab(self)
+            Clock.schedule_once(self._update_state_layer_pos)
+            Animation(value_pos=touch.pos, d=0.2).start(self)
+
+        return True
+
+    def on_value_pos(self, *args) -> None:
+        """
+        Fired when the `value_pos` value changes.
+        Sets a new value for the value label texture.
+        """
+
+        self._update_points()
+
+        if self._value_label and self._value_container:
+            # FIXME: I do not know how else I can update the texture.
+            self._value_label.text = ""
+            self._value_label.text = f"{int(self.value)}"
+            self._value_label.texture_update()
+            label_value_rect = self._value_container.canvas.get_group(
+                "md-slider-label-value-rect"
+            )[0]
+            label_value_rect.texture = None
+            label_value_rect.texture = self._value_label.texture
+            label_value_rect.size = self._value_label.texture_size
 
     def on_touch_up(self, touch):
-        if super().on_touch_up(touch):
-            self.active = False
+        if touch.grab_current == self:
+            if self._handle:
+                self._handle.on_leave()
+            return True
 
-    def _update_offset(self):
+    def on_touch_move(self, touch):
+        if self.collide_point(touch.x, touch.y):
+            if self._handle:
+                self._update_state_layer_pos()
+            if self._handle and not self._handle._active:
+                self._handle.on_enter()
+        return super().on_touch_move(touch)
+
+    def on_handle_enter(self) -> None:
+        """Scales the container of the label value."""
+
+        if self._handle and self._value_label:
+            Animation(
+                scale_value_x=1,
+                scale_value_y=1,
+                t=self.value_container_show_anim_transition,
+                d=self.value_container_show_anim_duration,
+            ).start(self._value_container)
+            Animation(
+                _value_container_y=self.ids.handle_container.y + dp(32),
+                t=self.value_container_show_anim_transition,
+                d=self.value_container_show_anim_duration,
+            ).start(self)
+
+    def on_handle_leave(self) -> None:
+        """Scales the container of the label value."""
+
+        if self._handle and self._value_label:
+            Animation(
+                scale_value_x=0,
+                scale_value_y=0,
+                # opacity=1,
+                d=self.value_container_hide_anim_duration,
+                t=self.value_container_hide_anim_transition,
+            ).start(self._value_container)
+            Animation(
+                _value_container_y=self._value_container_y - dp(24),
+                t=self.value_container_hide_anim_transition,
+                d=self.value_container_hide_anim_duration,
+            ).start(self)
+
+    def _update_points(self, *args) -> None:
+        if self.step:
+            self._active_points = []
+            self._inactive_points = []
+            self.update_points(self, self.step)
+
+    def _update_state_layer_pos(self, *args):
+        if self._handle:
+            self._handle.ids.state_layer.scale_value_center = (
+                self.ids.handle_container.center
+            )
+
+
+class MDSliderHandle(
+    ThemableBehavior, BackgroundColorBehavior, FocusBehavior, Widget
+):
+    """
+    Handle class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivymd.uix.behaviors.focus_behavior.FocusBehavior` and
+    :class:`~kivy.uix.widget.Widget`
+    classes documentation.
+    """
+
+    radius = VariableListProperty([dp(10)], length=4)
+    """
+    Handle radius.
+
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(10), dp(10), dp(10), dp(10)]`.
+    """
+
+    size = ListProperty([dp(20), dp(20)])
+    """
+    Handle size.
+
+    :attr:`size` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(20), dp(20)]`.
+    """
+
+    state_layer_size = ListProperty([dp(40), dp(40)])
+    """
+    Handle state layer size.
+
+    :attr:`state_layer_size` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(40), dp(40)]`.
+    """
+
+    state_layer_color = ColorProperty(None)
+    """
+    Handle state layer color.
+
+    :attr:`state_layer_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _slider = ObjectProperty()  # MDSlider object
+    _active = False  # is the layer currently displayed
+    _state_layer = ObjectProperty()  # MDSliderStateLayer object
+
+    def on_enter(self) -> None:
         """
-        Offset is used to shift the sliders so the background color
-        shows through the off circle.
+        Fired when mouse enter the bbox of the widget.
+        Animates the display of the slider handle layer.
         """
 
-        d = 2 if self.active else 0
-        self._offset = (dp(11 + d), dp(11 + d)) if self._is_off else (0, 0)
+        if self._slider:
+            if self._state_layer and not self._slider.disabled:
+                self._active = True
+                anim = Animation(scale_value_x=1, scale_value_y=1, d=0.2)
+                anim.bind(on_complete=self._slider._update_state_layer_pos)
+                anim.start(self._state_layer)
+            if not self._slider.disabled:
+                self._slider.on_handle_enter()
 
-    def _update_is_off(self):
-        self._is_off = self.show_off and (self.value_normalized == 0)
+    def on_leave(self) -> None:
+        """
+        Fired when the mouse goes outside the widget border.
+        Animates the hiding of the slider handle layer.
+        """
+
+        if self._slider:
+            if self._state_layer and not self._slider.disabled:
+                self._active = False
+                anim = Animation(scale_value_x=0, scale_value_y=0, d=0.2)
+                anim.bind(on_complete=self._slider._update_state_layer_pos)
+                anim.start(self._state_layer)
+            if not self._slider.disabled:
+                self._slider.on_handle_leave()
+
+
+class MDSliderHandleStateLayer(ScaleBehavior, Widget):
+    """
+    Slider state layer class.
+
+    .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
+    :class:`~kivy.uix.widget.Widget`
+    classes documentation.
+    """
+
+    scale_value_x = NumericProperty(0)
+    """
+    X-axis value.
+
+    :attr:`scale_value_x` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    scale_value_y = NumericProperty(0)
+    """
+    Y-axis value.
+
+    :attr:`scale_value_y` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+
+class MDSliderValueLabel(MDLabel):
+    """
+    Implements the value label.
+
+    For more information, see in the :class:`~kivymd.uix.label.label.MDLabel`
+    class documentation.
+
+    .. versionadded:: 2.0.0
+    """
+
+    size = ListProperty([dp(36), dp(36)])
+    """
+    Container size for the label value.
+
+    :attr:`handle_anim_transition` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[dp(36), dp(36)]`.
+    """
+
+
+class MDSliderValueContainer(ScaleBehavior, Widget):
+    """
+    Implements the container for value label.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
+    :class:`~kivy.uix.widget.Widget`
+    classes documentation.
+
+    .. versionadded:: 2.0.0
+    """
+
+    scale_value_x = NumericProperty(0)
+    """
+    X-axis value.
+
+    :attr:`scale_value_x` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    scale_value_y = NumericProperty(0)
+    """
+    Y-axis value.
+
+    :attr:`scale_value_y` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+    _slider = ObjectProperty()  # MDSlider object

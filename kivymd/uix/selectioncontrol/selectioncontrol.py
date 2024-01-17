@@ -16,6 +16,7 @@ Components/SelectionControls
 - MDSwitch_
 
 .. MDCheckbox:
+
 MDCheckbox
 ----------
 
@@ -152,34 +153,24 @@ Example
         adaptive_height: True
 
         MDCheckbox:
-            size_hint: None, None
-            size: "48dp", "48dp"
             group: root.group
 
         MDLabel:
             text: root.text
             adaptive_height: True
-            theme_text_color: "Custom"
-            text_color: "#B2B6AE"
+            padding_x: "12dp"
             pos_hint: {"center_y": .5}
 
 
     MDBoxLayout:
         orientation: "vertical"
-        md_bg_color: "#141612"
-
-        MDTopAppBar:
-            md_bg_color: "#21271F"
-            specific_text_color: "#B2B6AE"
-            elevation: 0
-            title: "Meal options"
-            left_action_items: [["arrow-left", lambda x: x]]
-            anchor_title: "left"
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDBoxLayout:
             orientation: "vertical"
             adaptive_height: True
             padding: "12dp", "36dp", 0, 0
+            spacing: "12dp"
 
             CheckItem:
                 text: "Recieve emails"
@@ -189,6 +180,7 @@ Example
                 orientation: "vertical"
                 adaptive_height: True
                 padding: "24dp", 0, 0, 0
+                spacing: "12dp"
 
                 CheckItem:
                     text: "Daily"
@@ -213,7 +205,6 @@ Example
 
     class Example(MDApp):
         def build(self):
-            self.theme_cls.theme_style = "Dark"
             self.theme_cls.primary_palette = "Teal"
             return Builder.load_string(KV)
 
@@ -224,6 +215,7 @@ Example
     :align: center
 
 .. MDSwitch:
+
 MDSwitch
 --------
 
@@ -270,7 +262,7 @@ import os
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import dp, sp
+from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
@@ -278,18 +270,12 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.uix.floatlayout import FloatLayout
 
 from kivymd import uix_path
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import (
-    CircularRippleBehavior,
-    CommonElevationBehavior,
-    ScaleBehavior,
-)
+from kivymd.uix.behaviors import CircularRippleBehavior, ScaleBehavior
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
-from kivymd.utils import asynckivy
 
 with open(
     os.path.join(uix_path, "selectioncontrol", "selectioncontrol.kv"),
@@ -299,15 +285,20 @@ with open(
 
 
 class MDCheckbox(
-    CircularRippleBehavior, ScaleBehavior, ToggleButtonBehavior, MDIcon
+    CircularRippleBehavior,
+    ScaleBehavior,
+    ToggleButtonBehavior,
+    MDIcon,
 ):
     """
     Checkbox class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.CircularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
+    :class:`~kivymd.uix.behaviors.ripple_behavior.CircularRippleBehavior` and
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
     :class:`~kivy.uix.behaviors.ToggleButtonBehavior` and
-    :class:`~kivymd.uix.label.MDIcon`
+    :class:`~kivymd.uix.label.label.MDIcon`
     classes documentation.
     """
 
@@ -394,25 +385,29 @@ class MDCheckbox(
     and defaults to `None`.
     """
 
-    disabled_color = ColorProperty(None)
+    color_disabled = ColorProperty(None)
     """
     Color in (r, g, b, a) or string format when the checkbox is in the disabled state.
 
-    .. code-block:: kv
+    .. versionadded:: 2.0.0
+        Use :attr:`color_disabled` instead.
 
-        MDCheckbox:
-            disabled_color: "lightgrey"
-            disabled: True
-            active: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-disabled-color.png
-        :align: center
-
-    :attr:`disabled_color` is a :class:`~kivy.properties.ColorProperty`
+    :attr:`color_disabled` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
     # Deprecated property.
+
+    disabled_color = ColorProperty(None)
+    """
+    Color in (r, g, b, a) or string format when the checkbox is in the disabled state.
+
+    .. deprecated:: 2.0.0
+        Use :attr:`color_disabled` instead.
+
+    :attr:`disabled_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
 
     selected_color = ColorProperty(None, deprecated=True)
     """
@@ -446,10 +441,6 @@ class MDCheckbox(
             scale_value_x=1, scale_value_y=1, duration=0.1, t="out_quad"
         )
         super().__init__(**kwargs)
-        self.color_active = self.theme_cls.primary_color
-        self.color_inactive = self.theme_cls.secondary_text_color
-        self.disabled_color = self.theme_cls.divider_color
-        self._current_color = self.color_inactive
         self.check_anim_out.bind(
             on_complete=lambda *x: self.check_anim_in.start(self)
         )
@@ -459,38 +450,12 @@ class MDCheckbox(
             radio_icon_normal=self.update_icon,
             radio_icon_down=self.update_icon,
             group=self.update_icon,
-            color_active=self.update_color,
-            color_inactive=self.update_color,
-            disabled_color=self.update_color,
-            disabled=self.update_color,
-            state=self.update_color,
-        )
-        self.theme_cls.bind(
-            theme_style=self.update_primary_color,
-            primary_color=self.update_primary_color,
         )
         self.update_icon()
-        self.update_color()
-
-    def update_primary_color(self, instance, value) -> None:
-        """
-        Called when the values of
-        :attr:`kivymd.theming.ThemableBehavior.theme_cls.theme_style` and
-        :attr:`kivymd.theming.ThemableBehavior.theme_cls.primary_color`
-        change.
-        """
-
-        if value in ("Dark", "Light"):
-            if not self.disabled:
-                self.color = self.theme_cls.primary_color
-            else:
-                self.color = self.disabled_color
-        else:
-            self.color_active = value
 
     def update_icon(self, *args) -> None:
         """
-        Called when the values of
+        Fired when the values of
         :attr:`checkbox_icon_normal` and
         :attr:`checkbox_icon_down` and
         :attr:`radio_icon_normal` and
@@ -513,26 +478,22 @@ class MDCheckbox(
                 else self.checkbox_icon_normal
             )
 
-    def update_color(self, *args) -> None:
-        """
-        Called when the values of
-        :attr:`color_active` and
-        :attr:`color_inactive` and
-        :attr:`disabled_color` and
-        :attr:`disabled` and
-        :attr:`state`
-        change.
-        """
+    def set_root_active(self) -> None:
+        root_checkbox = self.get_widgets("root")
+        if root_checkbox:
+            MDCheckbox.__allow_root_checkbox_active = False
+            root_checkbox[0].active = True in [
+                child.active for child in self.get_widgets("child")
+            ]
+            MDCheckbox.__allow_root_checkbox_active = True
 
-        if self.disabled:
-            self._current_color = self.disabled_color
-        elif self.state == "down":
-            self._current_color = self.color_active
-        else:
-            self._current_color = self.color_inactive
+    def set_child_active(self, active: bool):
+        for child in self.get_widgets("child"):
+            child.active = active
+        MDCheckbox.__allow_child_checkboxes_active = True
 
     def on_state(self, *args) -> None:
-        """Called when the values of :attr:`state` change."""
+        """Fired when the values of :attr:`state` change."""
 
         if self.state == "down":
             self.check_anim_in.cancel(self)
@@ -549,7 +510,7 @@ class MDCheckbox(
             self.active = False
 
     def on_active(self, *args) -> None:
-        """Called when the values of :attr:`active` change."""
+        """Fired when the values of :attr:`active` change."""
 
         self.state = "down" if self.active else "normal"
 
@@ -563,20 +524,7 @@ class MDCheckbox(
             if MDCheckbox.__allow_child_checkboxes_active:
                 self.set_root_active()
 
-    def set_root_active(self) -> None:
-        root_checkbox = self.get_widgets("root")
-        if root_checkbox:
-            MDCheckbox.__allow_root_checkbox_active = False
-            root_checkbox[0].active = True in [
-                child.active for child in self.get_widgets("child")
-            ]
-            MDCheckbox.__allow_root_checkbox_active = True
-
-    def set_child_active(self, active: bool):
-        for child in self.get_widgets("child"):
-            child.active = active
-        MDCheckbox.__allow_child_checkboxes_active = True
-
+    # FIXME: https://github.com/kivymd/KivyMD/issues/1574
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
             if self.group and self.group == "root":
@@ -597,7 +545,7 @@ class ThumbIcon(MDIcon):
     """
 
 
-class Thumb(CommonElevationBehavior, CircularRippleBehavior, MDFloatLayout):
+class Thumb(CircularRippleBehavior, MDFloatLayout):
     """Implements a thumb for the :class:`~MDSwitch` widget."""
 
     def _set_ellipse(self, instance, value):
@@ -614,13 +562,34 @@ class Thumb(CommonElevationBehavior, CircularRippleBehavior, MDFloatLayout):
         )
 
 
-class MDSwitch(ThemableBehavior, FloatLayout):
+class MDSwitch(StateLayerBehavior, MDFloatLayout):
     """
     Switch class.
 
     For more information, see in the
-    :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivy.uix.floatlayout.FloatLayout` classes documentation.
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout`
+    classes documentation.
+    """
+
+    md_bg_color_disabled = ColorProperty(None)
+    """
+    The background color in (r, g, b, a) or string format of the switch when
+    the switch is disabled.
+
+    :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    ripple_effect = BooleanProperty(True)
+    """
+    Allows or does not allow the ripple effect when activating/deactivating
+    the switch.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`ripple_effect` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
     """
 
     active = BooleanProperty(False)
@@ -818,20 +787,27 @@ class MDSwitch(ThemableBehavior, FloatLayout):
     and default to `None`.
     """
 
+    line_color_disabled = ColorProperty(None)
+    """
+    The color of the outline in the disabled state
+
+    .. versionadded:: 2.0.0
+
+    :attr:`line_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     _thumb_pos = ListProperty([0, 0])
+    _line_color = ColorProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(icon_active=self.set_icon, icon_inactive=self.set_icon)
-        self.size_hint = (None, None)
-        self.size = (dp(36), dp(48))
-        Clock.schedule_once(self._check_style)
-        Clock.schedule_once(lambda x: self._update_thumb_pos(animation=False))
         Clock.schedule_once(lambda x: self.on_active(self, self.active))
 
     def set_icon(self, instance_switch, icon_value: str) -> None:
         """
-        Called when the values of
+        Fired when the values of
         :attr:`icon_active` and :attr:`icon_inactive` change.
         """
 
@@ -841,43 +817,29 @@ class MDSwitch(ThemableBehavior, FloatLayout):
 
         Clock.schedule_once(set_icon, 0.2)
 
+    def on_line_color(self, instance, value) -> None:
+        """Fired when the values of :attr:`line_color` change."""
+
+        if not self.disabled:
+            self._line_color = value
+
     def on_active(self, instance_switch, active_value: bool) -> None:
-        """Called when the values of :attr:`active` change."""
+        """Fired when the values of :attr:`active` change."""
 
-        if self.theme_cls.material_style == "M3" and self.widget_style != "ios":
-            size = (
-                (
-                    (dp(16), dp(16))
-                    if not self.icon_inactive
-                    else (dp(24), dp(24))
-                )
-                if not active_value
-                else (dp(24), dp(24))
-            )
-            icon = "blank"
-            color = (0, 0, 0, 0)
+        size = (
+            ((dp(16), dp(16)) if not self.icon_inactive else (dp(24), dp(24)))
+            if not active_value
+            else (dp(24), dp(24))
+        )
+        icon = "blank"
 
-            if self.icon_active and active_value:
-                icon = self.icon_active
-                color = (
-                    self.icon_active_color
-                    if self.icon_active_color
-                    else self.theme_cls.text_color
-                )
-            elif self.icon_inactive and not active_value:
-                icon = self.icon_inactive
-                color = (
-                    self.icon_inactive_color
-                    if self.icon_inactive_color
-                    else self.theme_cls.text_color
-                )
+        if self.icon_active and active_value:
+            icon = self.icon_active
+        elif self.icon_inactive and not active_value:
+            icon = self.icon_inactive
 
-            Animation(size=size, t="out_quad", d=0.2).start(self.ids.thumb)
-            Animation(color=color, t="out_quad", d=0.2).start(
-                self.ids.thumb.ids.icon
-            )
-            self.set_icon(self, icon)
-
+        Animation(size=size, t="out_quad", d=0.2).start(self.ids.thumb)
+        self.set_icon(self, icon)
         self._update_thumb_pos()
 
     # FIXME: If you move the cursor from the switch during the
@@ -885,63 +847,28 @@ class MDSwitch(ThemableBehavior, FloatLayout):
     #  the previous size does not work. The following code fixes this.
     def on_thumb_down(self) -> None:
         """
-        Called at the on_touch_down event of the :class:`~Thumb` object.
+        Fired at the on_touch_down event of the :class:`~Thumb` object.
         Indicates the state of the switch "on/off" by an animation of
         increasing the size of the thumb.
         """
 
-        if self.widget_style != "ios" and self.theme_cls.material_style == "M3":
-            if self.active:
-                size = (dp(28), dp(28))
-                pos = (
-                    self.ids.thumb.pos[0] - dp(2),
-                    self.ids.thumb.pos[1] - dp(1.8),
-                )
-            else:
-                size = (dp(26), dp(26))
-                pos = (
-                    (
-                        self.ids.thumb.pos[0] - dp(5),
-                        self.ids.thumb.pos[1] - dp(5),
-                    )
-                    if not self.icon_inactive
-                    else (
-                        self.ids.thumb.pos[0] + dp(1),
-                        self.ids.thumb.pos[1] - dp(1),
-                    )
-                )
-            Animation(size=size, pos=pos, t="out_quad", d=0.2).start(
-                self.ids.thumb
-            )
+        if self.active:
+            size = (dp(28), dp(28))
+        else:
+            size = (dp(24), dp(24))
+
+        Animation(size=size, t="out_quad", d=0.2).start(self.ids.thumb)
 
     def _update_thumb_pos(self, *args, animation=True):
         if self.active:
             _thumb_pos = (
-                self.width
-                - (
-                    dp(14)
-                    if self.widget_style == "ios"
-                    or self.theme_cls.material_style == "M2"
-                    else dp(28)
-                ),
-                self.height / 2
-                - (
-                    dp(12)
-                    if self.widget_style == "ios"
-                    or self.theme_cls.material_style == "M2"
-                    else dp(16)
-                ),
+                self.width - dp(46 if self.icon_inactive else 40),
+                self.height / 2 - dp(16),
             )
         else:
             _thumb_pos = (
                 0 if not self.icon_inactive else dp(-14),
-                self.height / 2
-                - (
-                    dp(12)
-                    if self.widget_style == "ios"
-                    or self.theme_cls.material_style == "M2"
-                    else dp(16)
-                ),
+                self.height / 2 - dp(16),
             )
         Animation.cancel_all(self, "_thumb_pos")
 
@@ -951,7 +878,3 @@ class MDSwitch(ThemableBehavior, FloatLayout):
             )
         else:
             self._thumb_pos = _thumb_pos
-
-    def _check_style(self, *args):
-        if self.widget_style == "ios" or self.theme_cls.material_style == "M2":
-            self.set_icon(self, "")

@@ -1,5 +1,4 @@
 #:import ScrollEffect kivy.effects.scroll.ScrollEffect
-#:import get_color_from_hex kivy.utils.get_color_from_hex
 
 
 <MDSliverAppbar>
@@ -13,7 +12,7 @@
                     rgba:
                         root.background_color \
                         if root.background_color else \
-                        root.theme_cls.primary_color
+                        root.theme_cls.primaryColor
                     a: root._opacity
                 Rectangle:
                     pos: self.pos
@@ -31,11 +30,20 @@
             on_scroll_start:
                 if not root._scroll_was_moving: root._scroll_was_moving = True
 
-            MDBoxLayout:
+            BoxLayout:
                 id: scroll_box
-                adaptive_height: True
                 orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
 
                 BoxLayout:
                     size_hint_y: None
                     height: root.max_height
+
+
+<MDSliverAppbarContent>
+    adaptive_height: True
+    md_bg_color:
+        self.theme_cls.surfaceColor \
+        if self.theme_bg_color == "Primary" else \
+        self.md_bg_color

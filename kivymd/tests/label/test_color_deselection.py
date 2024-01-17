@@ -6,6 +6,7 @@ from kivymd.app import MDApp
 
 KV = """
 MDScreen:
+    md_bg_color: self.theme_cls.backgroundColor
 
     MDLabel:
         id: label
@@ -21,10 +22,11 @@ class TestColorDeselection(MDApp):
 
     def check_selection(self, *args):
         self.root.ids.label.cancel_selection()
-        assert self.root.ids.label.md_bg_color == self.theme_cls.bg_normal
+        assert self.root.ids.label.md_bg_color == self.theme_cls.backgroundColor
         self.stop()
 
     def on_start(self):
+        super().on_start()
         self.touch = MouseMotionEvent(
             "mouse", "button", self.root.ids.label.pos
         )

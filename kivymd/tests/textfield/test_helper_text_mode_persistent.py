@@ -5,14 +5,29 @@ from kivymd.app import MDApp
 
 KV = """
 MDScreen:
+    md_bg_color: self.theme_cls.backgroundColor
 
     MDTextField:
         id: field
-        text: "Text"
-        helper_text: "Helper text"
-        helper_text_mode: "persistent"
-        size_hint_x: .5
         pos_hint: {"center_x": .5, "center_y": .5}
+        text: "Text"
+        size_hint_x: .6
+
+        MDTextFieldLeadingIcon:
+            icon: "account"
+
+        MDTextFieldHintText:
+            text: "Hint text"
+
+        MDTextFieldHelperText:
+            text: "Helper text"
+            mode: "on_focus"
+
+        MDTextFieldTrailingIcon:
+            icon: "information"
+
+        MDTextFieldMaxLengthText:
+            max_text_length: 10
 """
 
 
@@ -26,16 +41,16 @@ class TestHelperTextModePersistent(MDApp):
 
         assert self.root.ids.field._helper_text_label.texture_size != [0, 0]
 
-        for instruction in self.root.ids.field.canvas.before.children:
-            if instruction.group == "helper-text-color":
-                assert (
-                    instruction.rgba == self.theme_cls.disabled_hint_text_color
-                )
-
+        instruction = self.root.ids.field.canvas.before.get_group(
+            "helper-text-color"
+        )[0]
+        if self.root.ids.field.focus:
+            assert instruction.rgba == self.theme_cls.onSurfaceVariantColor
         self.root.ids.field.focus = True
         Clock.schedule_once(self.check_helper_text_without_focus, 5)
 
     def on_start(self):
+        super().on_start()
         Clock.schedule_once(self.check_helper_text_without_focus, 2)
 
 

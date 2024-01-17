@@ -6,16 +6,19 @@ Components/NavigationRail
 
 .. seealso::
 
-    `Material Design spec, Navigation rail <https://m3.material.io/components/navigation-rail/specs>`_
-
-.. rubric:: Navigation rails provide access to primary destinations in apps
-    when using tablet and desktop screens.
+    `Material Design spec, Navigation rail <https://m3.material.io/components/navigation-rail/overview>`_
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail.png
     :align: center
 
-Usage
------
+.. rubric:: Navigation rails let people switch between UI views on mid-sized
+    devices.
+
+- Can contain 3-7 destinations plus an optional FAB
+- Always put the rail in the same place, even on different screens of an app
+
+Example
+-------
 
 .. tabs::
 
@@ -24,32 +27,52 @@ Usage
         .. code-block:: python
 
             from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
             from kivymd.app import MDApp
+            from kivymd.uix.navigationrail import MDNavigationRailItem
 
             KV = '''
+            <CommonNavigationRailItem>
+
+                MDNavigationRailItemIcon:
+                    icon: root.icon
+
+                MDNavigationRailItemLabel:
+                    text: root.text
+
+
             MDBoxLayout:
 
                 MDNavigationRail:
+                    type: "selected"
 
-                    MDNavigationRailItem:
-                        text: "Python"
-                        icon: "language-python"
+                    MDNavigationRailMenuButton:
+                        icon: "menu"
 
-                    MDNavigationRailItem:
-                        text: "JavaScript"
-                        icon: "language-javascript"
+                    MDNavigationRailFabButton:
+                        icon: "home"
 
-                    MDNavigationRailItem:
-                        text: "CPP"
-                        icon: "language-cpp"
+                    CommonNavigationRailItem:
+                        icon: "folder-outline"
+                        text: "Files"
 
-                    MDNavigationRailItem:
-                        text: "Git"
-                        icon: "git"
+                    CommonNavigationRailItem:
+                        icon: "bookmark-outline"
+                        text: "Bookmark"
+
+                    CommonNavigationRailItem:
+                        icon: "library-outline"
+                        text: "Library"
 
                 MDScreen:
+                    md_bg_color: self.theme_cls.secondaryContainerColor
             '''
+
+
+            class CommonNavigationRailItem(MDNavigationRailItem):
+                text = StringProperty()
+                icon = StringProperty()
 
 
             class Example(MDApp):
@@ -63,36 +86,64 @@ Usage
 
         .. code-block:: python
 
+            from kivy.clock import Clock
+            from kivy.properties import StringProperty
+
             from kivymd.app import MDApp
             from kivymd.uix.boxlayout import MDBoxLayout
-            from kivymd.uix.navigationrail import MDNavigationRail, MDNavigationRailItem
+            from kivymd.uix.navigationrail import (
+                MDNavigationRailItem,
+                MDNavigationRail,
+                MDNavigationRailMenuButton,
+                MDNavigationRailFabButton,
+                MDNavigationRailItemIcon,
+                MDNavigationRailItemLabel,
+            )
+            from kivymd.uix.screen import MDScreen
+
+
+            class CommonNavigationRailItem(MDNavigationRailItem):
+                text = StringProperty()
+                icon = StringProperty()
+
+                def on_icon(self, instance, value):
+                    def on_icon(*ars):
+                        self.add_widget(MDNavigationRailItemIcon(icon=value))
+                    Clock.schedule_once(on_icon)
+
+                def on_text(self, instance, value):
+                    def on_text(*ars):
+                        self.add_widget(MDNavigationRailItemLabel(text=value))
+                    Clock.schedule_once(on_text)
 
 
             class Example(MDApp):
                 def build(self):
-                    self.theme_cls.theme_style = "Dark"
-                    self.theme_cls.primary_palette = "Orange"
-                    return (
-                        MDBoxLayout(
-                            MDNavigationRail(
-                                MDNavigationRailItem(
-                                    text="Python",
-                                    icon="language-python",
-                                ),
-                                MDNavigationRailItem(
-                                    text="JavaScript",
-                                    icon="language-javascript",
-                                ),
-                                MDNavigationRailItem(
-                                    text="CPP",
-                                    icon="language-cpp",
-                                ),
-                                MDNavigationRailItem(
-                                    text="Git",
-                                    icon="git",
-                                ),
-                            )
-                        )
+                    return MDBoxLayout(
+                        MDNavigationRail(
+                            MDNavigationRailMenuButton(
+                                icon="menu",
+                            ),
+                            MDNavigationRailFabButton(
+                                icon="home",
+                            ),
+                            CommonNavigationRailItem(
+                                icon="bookmark-outline",
+                                text="Files",
+                            ),
+                            CommonNavigationRailItem(
+                                icon="folder-outline",
+                                text="Bookmark",
+                            ),
+                            CommonNavigationRailItem(
+                                icon="library-outline",
+                                text="Library",
+                            ),
+                            type="selected",
+                        ),
+                        MDScreen(
+                            md_bg_color=self.theme_cls.secondaryContainerColor,
+                        ),
                     )
 
 
@@ -104,476 +155,220 @@ Usage
 Anatomy
 -------
 
+.. code-block:: kv
+
+    MDNavigationRail:
+
+        # Optional.
+        MDNavigationRailMenuButton:
+            icon: "menu"
+
+        # Optional.
+        MDNavigationRailFabButton:
+            icon: "home"
+
+        MDNavigationRailItem
+
+            MDNavigationRailItemIcon:
+                icon: icon
+
+            MDNavigationRailItemLabel:
+                text: text
+
+        [...]
+
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy.png
     :align: center
 
-1. Container
-2. Label text (optional)
-3. Icon
-4. Active indicator
-5. Badge (optional)
-6. Large badge (optional)
-7. Large badge label (optional)
-8. Menu icon (optional)
+Anatomy item
+------------
 
-Example
-=======
+.. code-block:: kv
 
-.. tabs::
+    MDNavigationRailItem
 
-    .. tab:: Declarative KV and imperative python styles
+        MDNavigationRailItemIcon:
+            icon: icon
 
-        .. code-block:: python
+        MDNavigationRailItemLabel:
+            text: text
 
-            from kivy.clock import Clock
-            from kivy.lang import Builder
-
-            from kivymd.app import MDApp
-            from kivymd.uix.behaviors import CommonElevationBehavior
-            from kivymd.uix.boxlayout import MDBoxLayout
-            from kivymd.uix.button import MDFillRoundFlatIconButton
-            from kivymd.uix.label import MDLabel
-            from kivymd.uix.screen import MDScreen
-
-            KV = '''
-            #:import FadeTransition kivy.uix.screenmanager.FadeTransition
-
-
-            <ExtendedButton>
-                elevation: 1
-                shadow_radius: 12
-                -height: "56dp"
-
-
-            <DrawerClickableItem@MDNavigationDrawerItem>
-                focus_color: "#e7e4c0"
-                unfocus_color: "#fffcf4"
-
-
-            MDScreen:
-
-                MDNavigationLayout:
-
-                    ScreenManager:
-
-                        MDScreen:
-
-                            MDBoxLayout:
-                                orientation: "vertical"
-
-                                MDBoxLayout:
-                                    adaptive_height: True
-                                    md_bg_color: "#fffcf4"
-                                    padding: "12dp"
-
-                                    MDLabel:
-                                        text: "12:00"
-                                        adaptive_height: True
-                                        pos_hint: {"center_y": .5}
-
-                                MDBoxLayout:
-
-                                    MDNavigationRail:
-                                        id: navigation_rail
-                                        md_bg_color: "#fffcf4"
-                                        selected_color_background: "#e7e4c0"
-                                        ripple_color_item: "#e7e4c0"
-                                        on_item_release: app.switch_screen(*args)
-
-                                        MDNavigationRailMenuButton:
-                                            on_release: nav_drawer.set_state("open")
-
-                                        MDNavigationRailFabButton:
-                                            md_bg_color: "#b0f0d6"
-
-                                        MDNavigationRailItem:
-                                            text: "Python"
-                                            icon: "language-python"
-
-                                        MDNavigationRailItem:
-                                            text: "JavaScript"
-                                            icon: "language-javascript"
-
-                                        MDNavigationRailItem:
-                                            text: "CPP"
-                                            icon: "language-cpp"
-
-                                        MDNavigationRailItem:
-                                            text: "Swift"
-                                            icon: "language-swift"
-
-                                    ScreenManager:
-                                        id: screen_manager
-                                        transition:
-                                            FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
-
-                MDNavigationDrawer:
-                    id: nav_drawer
-                    radius: 0, 16, 16, 0
-                    md_bg_color: "#fffcf4"
-                    elevation: 2
-                    width: "240dp"
-
-                    MDNavigationDrawerMenu:
-
-                        MDBoxLayout:
-                            orientation: "vertical"
-                            adaptive_height: True
-                            spacing: "12dp"
-                            padding: 0, 0, 0, "12dp"
-
-                            MDIconButton:
-                                icon: "menu"
-
-                            MDBoxLayout:
-                                adaptive_height: True
-                                padding: "12dp", 0, 0, 0
-
-                                ExtendedButton:
-                                    text: "Compose"
-                                    icon: "pencil"
-
-                        DrawerClickableItem:
-                            text: "Python"
-                            icon: "language-python"
-
-                        DrawerClickableItem:
-                            text: "JavaScript"
-                            icon: "language-javascript"
-
-                        DrawerClickableItem:
-                            text: "CPP"
-                            icon: "language-cpp"
-
-                        DrawerClickableItem:
-                            text: "Swift"
-                            icon: "language-swift"
-            '''
-
-
-            class ExtendedButton(MDFillRoundFlatIconButton, CommonElevationBehavior):
-                '''
-                Implements a button of type
-                `Extended FAB <https://m3.material.io/components/extended-fab/overview>`_.
-
-                .. rubric::
-                    Extended FABs help people take primary actions.
-                    They're wider than FABs to accommodate a text label and larger target
-                    area.
-
-                This type of buttons is not yet implemented in the standard widget set
-                of the KivyMD library, so we will implement it ourselves in this class.
-                '''
-
-                def __init__(self, *args, **kwargs):
-                    super().__init__(*args, **kwargs)
-                    self.padding = "16dp"
-                    Clock.schedule_once(self.set_spacing)
-
-                def set_spacing(self, interval):
-                    self.ids.box.spacing = "12dp"
-
-                def set_radius(self, *args):
-                    if self.rounded_button:
-                        value = self.height / 4
-                        self.radius = [value, value, value, value]
-                        self._radius = value
-
-
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.material_style = "M3"
-                    self.theme_cls.primary_palette = "Orange"
-                    return Builder.load_string(KV)
-
-                def switch_screen(
-                    self, instance_navigation_rail, instance_navigation_rail_item
-                ):
-                    '''
-                    Called when tapping on rail menu items. Switches application screens.
-                    '''
-
-                    self.root.ids.screen_manager.current = (
-                        instance_navigation_rail_item.icon.split("-")[1].lower()
-                    )
-
-                def on_start(self):
-                    '''Creates application screens.'''
-
-                    navigation_rail_items = self.root.ids.navigation_rail.get_items()[:]
-                    navigation_rail_items.reverse()
-
-                    for widget in navigation_rail_items:
-                        name_screen = widget.icon.split("-")[1].lower()
-                        screen = MDScreen(
-                            name=name_screen,
-                            md_bg_color="#edd769",
-                            radius=[18, 0, 0, 0],
-                        )
-                        box = MDBoxLayout(padding="12dp")
-                        label = MDLabel(
-                            text=name_screen.capitalize(),
-                            font_style="H1",
-                            halign="right",
-                            adaptive_height=True,
-                            shorten=True,
-                        )
-                        box.add_widget(label)
-                        screen.add_widget(box)
-                        self.root.ids.screen_manager.add_widget(screen)
-
-
-            Example().run()
-
-    .. tab:: Declarative python style
-
-        .. code-block:: python
-
-            from kivy.clock import Clock
-            from kivy.metrics import dp
-
-            from kivymd.app import MDApp
-            from kivymd.uix.behaviors import CommonElevationBehavior
-            from kivymd.uix.boxlayout import MDBoxLayout
-            from kivymd.uix.button import MDFillRoundFlatIconButton, MDIconButton
-            from kivymd.uix.label import MDLabel
-            from kivymd.uix.navigationdrawer import (
-                MDNavigationDrawerItem,
-                MDNavigationLayout,
-                MDNavigationDrawer,
-                MDNavigationDrawerMenu,
-            )
-            from kivymd.uix.navigationrail import (
-                MDNavigationRail,
-                MDNavigationRailMenuButton,
-                MDNavigationRailFabButton,
-                MDNavigationRailItem,
-            )
-            from kivymd.uix.screen import MDScreen
-            from kivymd.uix.screenmanager import MDScreenManager
-
-
-            class DrawerClickableItem(MDNavigationDrawerItem):
-                def __init__(self, *args, **kwargs):
-                    super().__init__(*args, **kwargs)
-                    self.focus_color = "#e7e4c0"
-                    self.unfocus_color = self.theme_cls.bg_light
-                    self.radius = 24
-
-
-            class ExtendedButton(MDFillRoundFlatIconButton, CommonElevationBehavior):
-                def __init__(self, *args, **kwargs):
-                    super().__init__(*args, **kwargs)
-                    self.padding = "16dp"
-                    self.elevation = 1
-                    self.shadow_radius = 12
-                    self.height = dp(56)
-                    Clock.schedule_once(self.set_spacing)
-
-                def set_spacing(self, interval):
-                    self.ids.box.spacing = "12dp"
-
-                def set_radius(self, *args):
-                    if self.rounded_button:
-                        self._radius = self.radius = self.height / 4
-
-
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.material_style = "M3"
-                    self.theme_cls.primary_palette = "Orange"
-                    return MDScreen(
-                        MDNavigationLayout(
-                            MDScreenManager(
-                                MDScreen(
-                                    MDBoxLayout(
-                                        MDBoxLayout(
-                                            MDLabel(
-                                                text="12:00",
-                                                adaptive_height=True,
-                                                pos_hint={"center_y": 0.5},
-                                            ),
-                                            adaptive_height=True,
-                                            md_bg_color="#fffcf4",
-                                            padding="12dp",
-                                        ),
-                                        MDBoxLayout(
-                                            MDNavigationRail(
-                                                MDNavigationRailMenuButton(
-                                                    on_release=self.open_nav_drawer,
-                                                ),
-                                                MDNavigationRailFabButton(
-                                                    md_bg_color="#b0f0d6",
-                                                ),
-                                                MDNavigationRailItem(
-                                                    text="Python",
-                                                    icon="language-python",
-                                                ),
-                                                MDNavigationRailItem(
-                                                    text="JavaScript",
-                                                    icon="language-javascript",
-                                                ),
-                                                MDNavigationRailItem(
-                                                    text="CPP",
-                                                    icon="language-cpp",
-                                                ),
-                                                MDNavigationRailItem(
-                                                    text="Swift",
-                                                    icon="language-swift",
-                                                ),
-                                                id="navigation_rail",
-                                                md_bg_color="#fffcf4",
-                                                selected_color_background="#e7e4c0",
-                                                ripple_color_item="#e7e4c0",
-                                            ),
-                                            MDScreenManager(
-                                                id="screen_manager_content",
-                                            ),
-                                            id="root_box",
-                                        ),
-                                        id="box_rail",
-                                        orientation="vertical",
-                                    ),
-                                    id="box",
-                                ),
-                                id="screen",
-                            ),
-                            id="screen_manager",
-                        ),
-                        MDNavigationDrawer(
-                            MDNavigationDrawerMenu(
-                                MDBoxLayout(
-                                    MDIconButton(
-                                        icon="menu",
-                                    ),
-                                    MDBoxLayout(
-                                        ExtendedButton(
-                                            text="Compose",
-                                            icon="pencil",
-                                        ),
-                                        adaptive_height=True,
-                                        padding=["12dp", 0, 0, 0],
-                                    ),
-                                    orientation="vertical",
-                                    adaptive_height=True,
-                                    spacing="12dp",
-                                    padding=("3dp", 0, 0, "12dp"),
-                                ),
-                                DrawerClickableItem(
-                                    text="Python",
-                                    icon="language-python",
-                                ),
-                                DrawerClickableItem(
-                                    text="JavaScript",
-                                    icon="language-javascript",
-                                ),
-                                DrawerClickableItem(
-                                    text="CPP",
-                                    icon="language-cpp",
-                                ),
-                                DrawerClickableItem(
-                                    text="Swift",
-                                    icon="language-swift",
-                                ),
-                            ),
-                            id="nav_drawer",
-                            radius=(0, 16, 16, 0),
-                            elevation=4,
-                            width="240dp",
-                        ),
-                    )
-
-                def switch_screen(self, *args, screen_manager_content=None):
-                    '''
-                    Called when tapping on rail menu items. Switches application screens.
-                    '''
-
-                    instance_navigation_rail, instance_navigation_rail_item = args
-                    screen_manager_content.current = (
-                        instance_navigation_rail_item.icon.split("-")[1].lower()
-                    )
-
-                def open_nav_drawer(self, *args):
-                    self.root.ids.nav_drawer.set_state("open")
-
-                def on_start(self):
-                    '''Creates application screens.'''
-
-                    screen_manager = self.root.ids.screen_manager
-                    root_box = screen_manager.ids.screen.ids.box.ids.box_rail.ids.root_box
-                    navigation_rail = root_box.ids.navigation_rail
-                    screen_manager_content = root_box.ids.screen_manager_content
-                    navigation_rail_items = navigation_rail.get_items()[:]
-                    navigation_rail_items.reverse()
-                    navigation_rail.bind(
-                        on_item_release=lambda *args: self.switch_screen(
-                            *args, screen_manager_content=screen_manager_content
-                        )
-                    )
-
-                    for widget in navigation_rail_items:
-                        name_screen = widget.icon.split("-")[1].lower()
-                        screen_manager_content.add_widget(
-                            MDScreen(
-                                MDBoxLayout(
-                                    MDLabel(
-                                        text=name_screen.capitalize(),
-                                        font_style="H1",
-                                        halign="right",
-                                        adaptive_height=True,
-                                        shorten=True,
-                                    ),
-                                    padding="12dp",
-                                ),
-                                name=name_screen,
-                                md_bg_color="#edd769",
-                                radius=[18, 0, 0, 0],
-                            ),
-                        )
-
-
-            Example().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-example.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy-item.png
     :align: center
 
+Configurations
+==============
+
+Rail types
+----------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type.png
+    :align: center
+
+1. Selected
+2. Unselected
+3. Labeled
+
+Selected
+--------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+        type: "selected"  # default
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-selected.gif
+    :align: center
+
+Unselected
+----------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+        type: "unselected"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-unselected.gif
+    :align: center
+
+Labeled
+-------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+        type: "labeled"
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-labeled.gif
+    :align: center
+
+Rail anchored
+-------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anchored.png
+    :align: center
+
+1. Top
+2. Center
+3. Bottom
+
+Top
+---
+
+.. code-block:: kv
+
+    MDNavigationRail:
+        anchor: "top"
+
+Center
+------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+        anchor: "center"  # default
+
+Bottom
+------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+        anchor: "bottom"
+
+API break
+=========
+
+1.2.0 version
+-------------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+
+        MDNavigationRailMenuButton:
+            icon: "menu"
+
+        MDNavigationRailFabButton:
+            icon: "home"
+
+        MDNavigationRailItem:
+            icon: icon
+            text: text
+
+        [...]
+
+2.2.0 version
+-------------
+
+.. code-block:: kv
+
+    MDNavigationRail:
+
+        MDNavigationRailMenuButton:
+            icon: "menu"
+
+        MDNavigationRailFabButton:
+            icon: "home"
+
+        MDNavigationRailItem
+
+            MDNavigationRailItemIcon:
+                icon: icon
+
+            MDNavigationRailItemLabel:
+                text: text
+
+        [...]
 """
 
 __all__ = (
     "MDNavigationRail",
     "MDNavigationRailItem",
+    "MDNavigationRailItemIcon",
+    "MDNavigationRailItemLabel",
     "MDNavigationRailFabButton",
     "MDNavigationRailMenuButton",
 )
 
 import os
-from typing import Union
 
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.core.window import Window
+from kivy.graphics import (
+    StencilPush,
+    RoundedRectangle,
+    StencilUse,
+    Color,
+    Ellipse,
+    StencilUnUse,
+    StencilPop,
+)
 from kivy.lang import Builder
-from kivy.logger import Logger
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
-    ListProperty,
     NumericProperty,
-    ObjectProperty,
     OptionProperty,
-    StringProperty,
     VariableListProperty,
+    ObjectProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import ScaleBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFloatingActionButton, MDIconButton
-from kivymd.uix.card import MDCard
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.widget import MDWidget
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    ScaleBehavior,
+    DeclarativeBehavior,
+    BackgroundColorBehavior,
+    RectangularRippleBehavior,
+)
+from kivymd.uix.behaviors.focus_behavior import FocusBehavior
+from kivymd.uix.button import MDFabButton, MDIconButton
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "navigationrail", "navigationrail.kv"),
@@ -582,49 +377,22 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class PanelRoot(MDFloatLayout):
+class MDNavigationRailFabButton(MDFabButton):
     """
-    Contains
-    :class:`~MDNavigationRailFabButton`, :class:`~MDNavigationRailMenuButton`
-    buttons and a :class:`~Paneltems` container with menu items.
-    """
-
-
-class PanelItems(MDBoxLayout):
-    """Box for menu items."""
-
-
-class RippleWidget(MDWidget, ScaleBehavior):
-    """
-    Implements a background color for a menu item -
-    (:class:`~MDNavigationRailItem`).
-    """
-
-
-class MDNavigationRailFabButton(MDFloatingActionButton):
-    """
-    Implements an optional floating action button (FAB).
+    Implements a floating action button (FAB).
 
     For more information, see in the
-    :class:`~kivymd.uix.button.MDFloatingActionButton` class documentation.
+    :class:`~kivymd.uix.button.button.MDFabButton`
+    class documentation.
     """
 
-    icon = StringProperty("pencil")
+    md_bg_color_disabled = ColorProperty(None)
     """
-    Button icon name.
+    The background color in (r, g, b, a) or string format of the switch when
+    the widget is disabled.
 
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailFabButton:
-                icon: "home"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-fab-button-icon.png
-        :align: center
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'pencil'`.
+    :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
 
@@ -633,164 +401,143 @@ class MDNavigationRailMenuButton(MDIconButton):
     Implements a menu button.
 
     For more information, see in the
-    :class:`~kivymd.uix.button.MDIconButton` classes documentation.
+    :class:`~kivymd.uix.button.button.MDIconButton` class documentation.
     """
 
-    icon = StringProperty("menu")
+    md_bg_color_disabled = ColorProperty(None)
     """
-    Button icon name.
+    The background color in (r, g, b, a) or string format of the switch when
+    the widget is disabled.
 
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailMenuButton:
-                icon: "home"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-menu-button-icon.png
-        :align: center
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'menu'`.
+    :attr:`md_bg_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
     """
 
 
-class MDNavigationRailItem(ButtonBehavior, MDBoxLayout):
+class MDNavigationRailItemIcon(RectangularRippleBehavior, MDIcon):
+    """
+    Implements an icon for the :class:`~MDNavigationRailItem` class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
+    :class:`~kivymd.uix.label.label.MDIcon`
+    classes documentation.
+
+    .. versionchanged:: 2.0.0
+    """
+
+    active_indicator_color = ColorProperty(None)
+    """
+    Background color of the active indicator in (r, g, b, a) or string format.
+
+    :attr:`active_indicator_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    _alpha = NumericProperty(0)
+    _active = BooleanProperty(False)
+    _navigation_rail = ObjectProperty()
+    _navigation_item = ObjectProperty()
+    _layer_color = ColorProperty([0, 0, 0, 0])
+    _selected_region_width = NumericProperty(dp(0))
+
+    def anim_complete(self, *args):
+        super().anim_complete()
+        self._navigation_rail.set_active_item(self._navigation_item)
+
+    def lay_canvas_instructions(self) -> None:
+        if not self.ripple_effect:
+            return
+
+        canvas_rectangle = self.canvas.before.get_group(
+            "navigation-rail-rounded-rectangle"
+        )[0]
+
+        with self.canvas.after if self.ripple_canvas_after else self.canvas.before:
+            if hasattr(self, "radius"):
+                self.radius = [
+                    canvas_rectangle.radius[0][0],
+                ]
+                self._round_rad = self.radius
+            StencilPush(group="rectangular_ripple_behavior")
+            RoundedRectangle(
+                pos=canvas_rectangle.pos,
+                size=canvas_rectangle.size,
+                radius=self._round_rad,
+                group="rectangular_ripple_behavior",
+            )
+            StencilUse(group="rectangular_ripple_behavior")
+            self.col_instruction = Color(
+                rgba=self.ripple_color, group="rectangular_ripple_behavior"
+            )
+            self.ellipse = Ellipse(
+                size=(self._ripple_rad, self._ripple_rad),
+                pos=(
+                    self.ripple_pos[0] - self._ripple_rad / 2.0,
+                    self.ripple_pos[1] - self._ripple_rad / 2.0,
+                ),
+                group="rectangular_ripple_behavior",
+            )
+            StencilUnUse(group="rectangular_ripple_behavior")
+            RoundedRectangle(
+                pos=self.pos,
+                size=self.size,
+                radius=self._round_rad,
+                group="rectangular_ripple_behavior",
+            )
+            StencilPop(group="rectangular_ripple_behavior")
+        self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
+
+
+class MDNavigationRailItemLabel(ScaleBehavior, MDLabel):
+    """
+    Implements an label for the :class:`~MDNavigationRailItem` class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior` and
+    :class:`~kivymd.uix.label.label.MDLabel`
+    classes documentation.
+
+    .. versionchanged:: 2.0.0
+    """
+
+    scale_value_y = NumericProperty(0)
+    """
+    Y-axis value.
+
+    :attr:`scale_value_y` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
+    _active = BooleanProperty(False)
+
+    def on__active(self, instance, value) -> None:
+        """Fired when the :attr:`_active` value changes."""
+
+        self.text_color = (
+            self.theme_cls.onSurfaceColor
+            if value
+            else self.theme_cls.onSurfaceVariantColor
+        )
+
+
+class MDNavigationRailItem(
+    DeclarativeBehavior,
+    ButtonBehavior,
+    ThemableBehavior,
+    FocusBehavior,
+    BoxLayout,
+):
     """
     Implements a menu item with an icon and text.
 
     For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.boxlayout.MDBoxLayout`
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.focus_behavior.FocusBehavior`
+    :class:`~kivy.uix.boxlayout.BoxLayout`
     classes documentation.
-    """
-
-    navigation_rail = ObjectProperty()
-    """
-    :class:`~MDNavigationRail` object.
-
-    :attr:`navigation_rail` is an :class:`~kivy.properties.ObjectProperty`
-    and defaults to `None`.
-    """
-
-    icon = StringProperty("checkbox-blank-circle")
-    """
-    Icon item.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                icon: "language-python"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-icon.png
-        :align: center
-
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'checkbox-blank'`.
-    """
-
-    text = StringProperty()
-    """
-    Text item.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-text.png
-        :align: center
-
-    :attr:`text` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    badge_icon = StringProperty()
-    """
-    Badge icon name.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
-                badge_icon: "plus"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-badge-icon.png
-        :align: center
-
-    :attr:`badge_icon` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    badge_icon_color = ColorProperty(None)
-    """
-    Badge icon color in (r, g, b, a) format.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
-                badge_icon: "plus"
-                badge_icon_color: 0, 0, 1, 1
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-badge-icon-color.png
-        :align: center
-
-    :attr:`badge_icon_color` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `None`.
-    """
-
-    badge_bg_color = ColorProperty(None)
-    """
-    Badge icon background color in (r, g, b, a) format.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
-                badge_icon: "plus"
-                badge_bg_color: "#b0f0d6"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-badge-bg-color.png
-        :align: center
-
-    :attr:`badge_bg_color` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    badge_font_size = NumericProperty(0)
-    """
-    Badge icon font size.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
-                badge_icon: "plus"
-                badge_font_size: "24sp"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-item-badge-font-size.png
-        :align: center
-
-    :attr:`badge_font_size` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
     """
 
     active = BooleanProperty(False)
@@ -801,60 +548,73 @@ class MDNavigationRailItem(ButtonBehavior, MDBoxLayout):
     and defaults to `False`.
     """
 
-    _selected_region_width = NumericProperty("56dp")
-    _ripple_size = ListProperty([0, 0])
-    _release = BooleanProperty(False)
+    radius = VariableListProperty(0, length=4)
+    """
+    Item radius.
 
-    def on_active(
-        self, instance_navigation_rail_item, value_active: bool
-    ) -> None:
-        """Called when the value of `active` changes."""
+    .. versionchanged:: 2.0.0
 
-        self.animation_size_ripple_area(1 if value_active else 0)
+    :attr:`radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[0, 0, 0, 0]`.
+    """
 
-    def animation_size_ripple_area(self, value: int) -> None:
-        """Animates the size/fade of the ripple area."""
+    _navigation_rail = ObjectProperty()
+    _icon_item = ObjectProperty()
 
-        Animation(
-            scale_value_x=value,
-            scale_value_y=value,
-            scale_value_z=value,
-            opacity=value,
-            d=0.25,
-            t=self.navigation_rail.ripple_transition,
-        ).start(self.ids.ripple_widget)
+    def on_active(self, instance, value) -> None:
+        """Fired when the :attr:`active` value changes."""
 
-    def on_press(self) -> None:
-        """Called when pressed on a panel element."""
+        if value:
+            Clock.schedule_once(self.on_leave)
 
-        self._release = False
-        self.active = True
-        self.navigation_rail.deselect_item(self)
-        self.navigation_rail.dispatch("on_item_press", self)
+    def on_enter(self, *args) -> None:
+        """Fired when mouse enter the bbox of the widget."""
 
-    def on_release(self) -> None:
-        """Called when released on a panel element."""
+        if not self.active:
+            # FIXME: Move layer creation to
+            #  kivymd/uix/behaviors/state_layer_behavior.py module.
+            self._icon_item._layer_color = self.theme_cls.onSurfaceColor[
+                :-1
+            ] + [0.12]
+            Animation(
+                _selected_region_width=self._icon_item.width + dp(32),
+                d=0.2,
+            ).start(self._icon_item)
 
-        self._release = True
-        self.animation_size_ripple_area(0)
-        self.navigation_rail.dispatch("on_item_release", self)
+    def on_leave(self, *args) -> None:
+        """Fired when the mouse goes outside the widget border."""
+
+        self._icon_item._layer_color = self.theme_cls.transparentColor
+
+    def add_widget(self, widget, *args, **kwargs):
+        if isinstance(widget, MDNavigationRailItemLabel):
+            Clock.schedule_once(lambda x: self._check_type_rail(widget))
+        elif isinstance(widget, MDNavigationRailItemIcon):
+            widget._navigation_rail = self._navigation_rail
+            widget._navigation_item = self
+            self._icon_item = widget
+        return super().add_widget(widget)
+
+    def _check_type_rail(self, instance: MDNavigationRailItemLabel):
+        if self._navigation_rail.type == "labeled":
+            instance.scale_value_y = 1
 
 
-class MDNavigationRail(MDCard):
+class MDNavigationRail(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    RelativeLayout,
+):
     """
     Navigation rail class.
 
     For more information, see in the
-    :class:`~kivymd.uix.card.MDCard` class documentation.
-
-    :Events:
-        :attr:`on_item_press`
-            Called on the `on_press` event of menu item -
-            :class:`~MDNavigationRailItem`.
-
-        :attr:`on_item_release`
-            Called on the `on_release` event of menu item -
-            :class:`~MDNavigationRailItem`.
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.relativelayout.RelativeLayout`
+    classes documentation.
     """
 
     radius = VariableListProperty(0, length=4)
@@ -865,417 +625,145 @@ class MDNavigationRail(MDCard):
     and defaults to `[0, 0, 0, 0]`.
     """
 
-    padding = VariableListProperty([0, "36dp", 0, "36dp"], length=4)
-    """
-    Padding between layout box and children:
-    [padding_left, padding_top, padding_right, padding_bottom].
-
-    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[0, '36dp', 0, '36dp']`.
-    """
-
-    anchor = OptionProperty("top", options=["top", "bottom", "center"])
+    anchor = OptionProperty("center", options=["top", "bottom", "center"])
     """
     The position of the panel with menu items.
     Available options are: `'top'`, `'bottom'`, `'center'`.
-
-    .. rubric:: Top
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            anchor: "top"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anchor-top.png
-        :align: center
-
-    .. rubric:: Center
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            anchor: "center"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-center.png
-        :align: center
-
-    .. rubric:: Bottom
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            anchor: "bottom"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-bottom.png
-        :align: center
 
     :attr:`anchor` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'top'`.
     """
 
     type = OptionProperty(
-        "labeled", options=["labeled", "selected", "unselected"]
+        "selected", options=["labeled", "selected", "unselected"]
     )
     """
     Type of switching menu items.
     Available options are: `'labeled'`, `'selected'`, `'unselected'`.
 
-    .. rubric:: Labeled
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            type: "labeled"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-labeled.png
-        :align: center
-
-    .. rubric:: Selected
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            type: "selected"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-selected.gif
-        :align: center
-
-    .. rubric:: Unselected
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            type: "unselected"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-type-unselected.gif
-        :align: center
-
     :attr:`type` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `'labeled'`.
     """
 
-    text_color_item_normal = ColorProperty(None)
-    """
-    The text color in (r, g, b, a) or string format of the normal menu item
-    (:class:`~MDNavigationRailItem`).
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            text_color_item_normal: app.theme_cls.primary_color
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-text-color-item-normal.png
-        :align: center
-
-    :attr:`text_color_item_normal` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    text_color_item_active = ColorProperty(None)
-    """
-    The text color in (r, g, b, a) or string format of the active menu item
-    (:class:`~MDNavigationRailItem`).
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            text_color_item_active: app.theme_cls.primary_color
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-text-color-item-active.png
-        :align: center
-
-    :attr:`text_color_item_active` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    icon_color_item_normal = ColorProperty(None)
-    """
-    The icon color in (r, g, b, a) or string format of the normal menu item
-    (:class:`~MDNavigationRailItem`).
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            icon_color_item_normal: app.theme_cls.primary_color
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-icon-color-item-normal.png
-        :align: center
-
-    :attr:`icon_color_item_normal` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    icon_color_item_active = ColorProperty(None)
-    """
-    The icon color in (r, g, b, a) or string format of the active menu item
-    (:class:`~MDNavigationRailItem`).
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            icon_color_item_active: app.theme_cls.primary_color
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-icon-color-item-active.png
-        :align: center
-
-    :attr:`icon_color_item_active` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    selected_color_background = ColorProperty(None)
-    """
-    Background color which will highlight the icon of the active menu item -
-    :class:`~MDNavigationRailItem` - in (r, g, b, a) format.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            selected_color_background: "#e7e4c0"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-selected-color-background.png
-        :align: center
-
-    :attr:`selected_color_background` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    ripple_color_item = ColorProperty(None)
-    """
-    Ripple effect color of menu items (:class:`~MDNavigationRailItem`)
-    in (r, g, b, a) format.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            ripple_color_item: "#e7e4c0"
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-ripple-color-item.png
-        :align: center
-
-    :attr:`ripple_color_item` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `None`.
-    """
-
-    ripple_transition = StringProperty("out_cubic")
-    """
-    Type of animation of the ripple effect when a menu item is selected.
-
-    :attr:`ripple_transition` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `'ripple_transition'`.
-    """
-
-    current_selected_item = NumericProperty(0)
-    """
-    Index of the menu list item (:class:`~MDNavigationRailItem`) that will be
-    active by default
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-            current_selected_item: 1
-
-            MDNavigationRailItem:
-                ...
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-current-selected-item.png
-        :align: center
-
-    :attr:`current_selected_item` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
-    """
-
-    font_name = StringProperty("Roboto")
-    """
-    Font path for menu item (:class:`~MDNavigationRailItem`) text.
-
-    .. code-block:: kv
-
-        MDNavigationRail:
-
-            MDNavigationRailItem:
-                text: "Python"
-                icon: "language-python"
-                font_name: "nasalization-rg.ttf"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-font-name.png
-        :align: center
-
-    :attr:`font_name` is an :class:`~kivy.properties.StringProperty`
-    and defaults to `'Roboto'`.
-    """
+    fab_button: MDNavigationRailFabButton = ObjectProperty()
+    menu_button: MDNavigationRailFabButton = ObjectProperty()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        Clock.schedule_once(self.set_pos_menu_fab_buttons)
-        Clock.schedule_once(self.set_current_selected_item)
-        self.register_event_type("on_item_press")
-        self.register_event_type("on_item_release")
+        Clock.schedule_once(self._check_anchor)
 
-    def on_size(self, *args):
-        Clock.schedule_once(self.set_pos_menu_fab_buttons)
+    def on_size(self, *args) -> None:
+        """Fired when the application screen size changes."""
 
-    def on_item_press(self, *args) -> None:
-        """
-        Called on the `on_press` event of menu item -
-        :class:`~MDNavigationRailItem`.
-        """
-
-    def on_item_release(self, *args) -> None:
-        """
-        Called on the `on_release` event of menu item -
-        :class:`~MDNavigationRailItem`.
-        """
-
-    def deselect_item(
-        self, selected_navigation_rail_item: MDNavigationRailItem
-    ) -> None:
-        """
-        Sets the `active` value to `False` for all menu items
-        (:class:`~MDNavigationRailItem`) except the selected item.
-        Called when a menu item is touched.
-        """
-
-        for navigation_rail_item in self.ids.box_items.children:
-            if selected_navigation_rail_item is not navigation_rail_item:
-                navigation_rail_item.active = False
+        Clock.schedule_once(self._set_pos_menu_fab_buttons)
+        Clock.schedule_once(self._check_anchor)
 
     def get_items(self) -> list:
-        """Returns a list of :class:`~MDNavigationRailItem` objects"""
+        """Returns a list of :class:`~MDNavigationRailItem` objects."""
 
         return self.ids.box_items.children
 
-    def set_pos_panel_items(
-        self,
-        instance_fab_button: Union[None, MDNavigationRailFabButton],
-        instance_menu_button: Union[None, MDNavigationRailFabButton],
-    ) -> None:
-        """Set :class:`~Paneltems` panel position with menu items."""
+    def set_active_item(self, item: MDNavigationRailItem) -> None:
+        """Sets the active menu list item."""
 
-        if self.anchor == "top":
-            if instance_fab_button:
-                self.ids.box_items.y = instance_fab_button.y - (
-                    len(self.ids.box_items.children) * dp(56)
-                    + self.padding[1] * 2
-                    + dp(24)
-                )
+        for widget in self.ids.box_items.children:
+            if item is widget:
+                widget.active = not widget.active
+
+                for widget_item in item.children:
+                    if isinstance(widget_item, MDNavigationRailItemLabel):
+                        widget_item._active = widget.active
+                        if self.type == "selected":
+                            Animation(
+                                scale_value_y=1 if widget.active else 0,
+                                height=widget_item.texture_size[1]
+                                if widget.active
+                                else 0,
+                                d=0.2,
+                            ).start(widget_item)
+                    if isinstance(widget_item, MDNavigationRailItemIcon):
+                        widget_item._active = widget.active
+                        widget_item._alpha = 1 if widget.active else 0
+                        widget_item._selected_region_width = 0
+                        Animation(
+                            _selected_region_width=widget_item.width + dp(32)
+                            if widget.active
+                            else 0,
+                            d=0.2,
+                        ).start(widget_item)
             else:
-                if not instance_menu_button:
-                    self.ids.box_items.pos_hint = {"top": 1}
-                else:
-                    self.ids.box_items.y = instance_menu_button.y - (
-                        len(self.ids.box_items.children) * dp(56)
-                        + self.padding[1] * 2
-                    )
-        elif self.anchor == "center":
-            self.ids.box_items.pos_hint = {"center_y": 0.5}
-        elif self.anchor == "bottom":
-            self.ids.box_items.y = dp(12)
-
-    def set_current_selected_item(self, interval: Union[int, float]) -> None:
-        """Sets the active menu list item (:class:`~MDNavigationRailItem`)."""
-
-        if self.ids.box_items.children:
-            items = self.ids.box_items.children[:]
-            items.reverse()
-
-            if len(items) <= self.current_selected_item:
-                Logger.error(
-                    f"MDNavigationRail:You have "
-                    f"{len(self.ids.box_items.children)} menu items, but you "
-                    f"set {self.current_selected_item} as the active item. "
-                    f"The very first menu item will be set active."
-                )
-                index = 0
-            else:
-                index = self.current_selected_item
-
-            items[index].dispatch("on_press")
-            items[index].dispatch("on_release")
-
-    def set_pos_menu_fab_buttons(self, *args) -> None:
-        """
-        Sets the position of the :class:`~MDNavigationRailFabButton` and
-        :class:`~MDNavigationRailMenuButton` buttons on the panel.
-        """
-
-        fab_button = None  # MDNavigationRailFabButton
-        menu_button = None  # MDNavigationRailMenuButton
-
-        for widget in self.ids.box_buttons.children:
-            if isinstance(widget, MDNavigationRailFabButton):
-                fab_button = widget
-            if isinstance(widget, MDNavigationRailMenuButton):
-                menu_button = widget
-
-        if fab_button and menu_button:
-
-            def set_fab_button_y(interval):
-                fab_button.y = self.parent.height - (
-                    menu_button.height
-                    + fab_button.height
-                    + self.padding[1]
-                    + dp(18)
-                )
-                self.set_pos_panel_items(fab_button, menu_button)
-
-            Clock.schedule_once(set_fab_button_y)
-        elif fab_button and not menu_button:
-
-            def set_fab_button_y(interval):
-                fab_button.y = self.parent.height - (
-                    self.padding[1] + fab_button.height
-                )
-                self.set_pos_panel_items(fab_button, menu_button)
-
-            Clock.schedule_once(set_fab_button_y)
-        else:
-            Clock.schedule_once(
-                lambda x: self.set_pos_panel_items(fab_button, menu_button)
-            )
+                widget.active = False
+                for widget_item in widget.children:
+                    widget_item._active = widget.active
+                    if isinstance(widget_item, MDNavigationRailItemLabel):
+                        if self.type == "selected":
+                            Animation(scale_value_y=0, height=0, d=0.2).start(
+                                widget_item
+                            )
+                    if isinstance(widget_item, MDNavigationRailItemIcon):
+                        Animation(
+                            _selected_region_width=0,
+                            _alpha=0,
+                            d=0.2,
+                        ).start(widget_item)
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDNavigationRailFabButton):
-            self.ids.box_buttons.add_widget(widget)
+            self.fab_button = widget
+            super().add_widget(widget)
         elif isinstance(widget, MDNavigationRailMenuButton):
-            self.ids.box_buttons.add_widget(widget)
+            self.menu_button = widget
+            super().add_widget(widget)
         elif isinstance(widget, MDNavigationRailItem):
-            widget.navigation_rail = self
             self.ids.box_items.add_widget(widget)
-        elif isinstance(widget, (PanelRoot, PanelItems)):
+            widget._navigation_rail = self
+            widget._navigation_item = widget
+            widget.bind(on_release=self.set_active_item)
+        else:
             return super().add_widget(widget)
+
+    def _set_pos_menu_fab_buttons(self, *args):
+        def set_pos_menu_fab_buttons(*args):
+            if self.fab_button and not self.menu_button:
+                self.fab_button.y = self.height - (
+                    self.fab_button.height + dp(48)
+                )
+            elif self.menu_button and not self.fab_button:
+                self.menu_button.y = self.height - (
+                    self.menu_button.height + dp(38)
+                )
+            elif self.fab_button and self.menu_button:
+                self.menu_button.y = self.height - (
+                    self.menu_button.height + dp(38)
+                )
+                self.fab_button.y = self.height - (
+                    self.fab_button.height + dp(48) + dp(48)
+                )
+
+        Clock.schedule_once(set_pos_menu_fab_buttons)
+
+    def _check_anchor(self, *args):
+        def set_top_pos(*args):
+            anchor_button = None
+            if (
+                self.fab_button
+                and not self.menu_button
+                or self.fab_button
+                and self.menu_button
+            ):
+                anchor_button = self.fab_button
+            elif self.menu_button and not self.fab_button:
+                anchor_button = self.menu_button
+
+            self.ids.box_items.y = (
+                anchor_button.y
+                - (len(self.ids.box_items.children) * dp(56))
+                - dp(56)
+            )
+
+        if self.anchor == "center":
+            self.ids.box_items.pos_hint = {"center_y": 0.5}
+        elif self.anchor == "top":
+            Clock.schedule_once(set_top_pos)
+        elif self.anchor == "bottom":
+            self.ids.box_items.y = dp(56)

@@ -1,28 +1,37 @@
 <MDSmartTile>
 
-    SmartTileImage:
-        id: image
-        mipmap: root.mipmap
-        source: root.source
-        radius: root.radius if root.radius else [0, 0, 0, 0]
-        size_hint_y: 1 if root.overlap else None
-        height: root.height if root.overlap else root.height - box.height
-        pos:
-            ((0, 0) if root.overlap else (0, box.height)) \
-            if root.box_position == "footer" else \
-            (0, 0)
-        on_release: root.dispatch("on_release")
-        on_press: root.dispatch("on_press")
-        _no_ripple_effect: root._no_ripple_effect
 
-    SmartTileOverlayBox:
-        id: box
-        md_bg_color: root.box_color
-        size_hint_y: None
-        padding: "8dp"
-        radius: root.box_radius
-        height: "68dp" if root.lines == 2 else "48dp"
-        pos:
-            (0, 0) \
-            if root.box_position == "footer" else \
-            (0, root.height - self.height)
+<MDSmartTileImage>
+    size_hint_y:
+        (1 if self._smart_tile.overlap else None) \
+        if self._smart_tile else None
+    height:
+        ( \
+        self._smart_tile.height \
+        if self._smart_tile.overlap else \
+        self._smart_tile.height - (self._overlay_container.height if self._overlay_container else 0) \
+        ) \
+        if self._smart_tile else 0
+    pos:
+        ( \
+        ( \
+        (0, 0) \
+        if self._smart_tile.overlap else \
+        (0, (self._overlay_container.height if self._overlay_container else 0)) \
+        ) \
+        if self._smart_tile.overlay_mode == "footer" else \
+        (0, 0) \
+        ) \
+        if self._smart_tile else (0, 0)
+    on_release: self._smart_tile.dispatch("on_release")
+    on_press: self._smart_tile.dispatch("on_press")
+
+
+<MDSmartTileOverlayContainer>
+    pos:
+        ( \
+        (0, 0) \
+        if self._smart_tile.overlay_mode == "footer" else \
+        (0, self._smart_tile.height - self.height) \
+        ) \
+        if self._smart_tile else (0, 0)

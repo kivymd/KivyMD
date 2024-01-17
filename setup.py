@@ -114,14 +114,19 @@ if __name__ == "__main__":
             ],
             "docs": [
                 "sphinx",
-                "sphinx-autoapi==1.4.0",
+                "sphinx-autoapi",
                 "furo",
                 "sphinx-notfound-page",
                 "sphinx-copybutton",
                 "sphinx-tabs",
             ],
         },
-        install_requires=["kivy>=2.0.0", "pillow", "materialyoucolor"],
+        install_requires=[
+            "kivy>=2.3.0",
+            "pillow",
+            "materialyoucolor",
+            "asynckivy>=0.6,<0.7",
+        ],
         setup_requires=[],
         python_requires=">=3.7",
         entry_points={

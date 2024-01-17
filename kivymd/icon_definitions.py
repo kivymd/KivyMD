@@ -4,15 +4,19 @@ Themes/Icon Definitions
 
 .. seealso::
 
-   `Material Design Icons <https://materialdesignicons.com/>`_
+   `Material Design Icons <https://m3.material.io/styles/icons/overview>`_
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/material-icons.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/material-m3-icons.png
     :align: center
 
 List of icons from materialdesignicons.com. These expanded material design
 icons are maintained by Austin Andrews (Templarian on Github).
 
+<<<<<<< HEAD
 LAST UPDATED: Version 7.4.47
+=======
+LAST UPDATED: Version 7.1.96
+>>>>>>> 2.0.0
 
 To preview the icons and their names, you can use the following application:
 ----------------------------------------------------------------------------
@@ -21,25 +25,28 @@ To preview the icons and their names, you can use the following application:
 
     from kivy.lang import Builder
     from kivy.properties import StringProperty
-    from kivy.uix.screenmanager import Screen
 
     from kivymd.icon_definitions import md_icons
+    from kivymd.uix.screen import MDScreen
     from kivymd.app import MDApp
-    from kivymd.uix.list import OneLineIconListItem
-
+    from kivymd.uix.list import MDListItem
 
     Builder.load_string(
         '''
     #:import images_path kivymd.images_path
 
 
-    <CustomOneLineIconListItem>
+    <IconItem>
 
-        IconLeftWidget:
+        MDListItemLeadingIcon:
             icon: root.icon
+
+        MDListItemSupportingText:
+            text: root.text
 
 
     <PreviousMDIcons>
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDBoxLayout:
             orientation: 'vertical'
@@ -51,6 +58,7 @@ To preview the icons and their names, you can use the following application:
 
                 MDIconButton:
                     icon: 'magnify'
+                    pos_hint: {'center_y': .5}
 
                 MDTextField:
                     id: search_field
@@ -63,7 +71,7 @@ To preview the icons and their names, you can use the following application:
                 key_size: 'height'
 
                 RecycleBoxLayout:
-                    padding: dp(10)
+                    padding: dp(10), dp(10), 0, dp(10)
                     default_size: None, dp(48)
                     default_size_hint: 1, None
                     size_hint_y: None
@@ -73,19 +81,19 @@ To preview the icons and their names, you can use the following application:
     )
 
 
-    class CustomOneLineIconListItem(OneLineIconListItem):
+    class IconItem(MDListItem):
         icon = StringProperty()
+        text = StringProperty()
 
 
-    class PreviousMDIcons(Screen):
-
+    class PreviousMDIcons(MDScreen):
         def set_list_md_icons(self, text="", search=False):
             '''Builds a list of icons for the screen MDIcons.'''
 
             def add_icon_item(name_icon):
                 self.ids.rv.data.append(
                     {
-                        "viewclass": "CustomOneLineIconListItem",
+                        "viewclass": "IconItem",
                         "icon": name_icon,
                         "text": name_icon,
                         "callback": lambda x: x,
@@ -110,12 +118,13 @@ To preview the icons and their names, you can use the following application:
             return self.screen
 
         def on_start(self):
+            super().on_start()
             self.screen.set_list_md_icons()
 
 
     MainApp().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icons-previous.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/m3-icons-previous.gif
     :align: center
 
 """
@@ -788,7 +797,6 @@ md_icons = {
     "aurora": "\U000F1BB9",
     "auto-download": "\U000F137E",
     "auto-fix": "\U000F0068",
-    "auto-mode": "\U000F1C20",
     "auto-upload": "\U000F0069",
     "autorenew": "\U000F006A",
     "autorenew-off": "\U000F19E7",
@@ -890,7 +898,6 @@ md_icons = {
     "baseball-bat": "\U000F0853",
     "baseball-diamond": "\U000F15EC",
     "baseball-diamond-outline": "\U000F15ED",
-    "baseball-outline": "\U000F1C5A",
     "bash": "\U000F1183",
     "basket": "\U000F0076",
     "basket-check": "\U000F18E5",
@@ -1057,8 +1064,6 @@ md_icons = {
     "bell-ring-outline": "\U000F009F",
     "bell-sleep": "\U000F00A0",
     "bell-sleep-outline": "\U000F0A93",
-    "bench": "\U000F1C21",
-    "bench-back": "\U000F1C22",
     "beta": "\U000F00A1",
     "betamax": "\U000F09CB",
     "biathlon": "\U000F0E14",
@@ -1069,9 +1074,6 @@ md_icons = {
     "bicycle-penny-farthing": "\U000F15E9",
     "bike": "\U000F00A3",
     "bike-fast": "\U000F111F",
-    "bike-pedal": "\U000F1C23",
-    "bike-pedal-clipless": "\U000F1C24",
-    "bike-pedal-mountain": "\U000F1C25",
     "billboard": "\U000F1010",
     "billiards": "\U000F0B61",
     "billiards-rack": "\U000F0B62",
@@ -1432,7 +1434,6 @@ md_icons = {
     "calendar-search": "\U000F094C",
     "calendar-search-outline": "\U000F1B6E",
     "calendar-star": "\U000F09D3",
-    "calendar-star-four-points": "\U000F1C1F",
     "calendar-star-outline": "\U000F1B53",
     "calendar-start": "\U000F166D",
     "calendar-start-outline": "\U000F1B6F",
@@ -1662,7 +1663,6 @@ md_icons = {
     "cash-marker": "\U000F0DB8",
     "cash-minus": "\U000F1260",
     "cash-multiple": "\U000F0116",
-    "cash-off": "\U000F1C79",
     "cash-plus": "\U000F1261",
     "cash-refund": "\U000F0A9C",
     "cash-register": "\U000F0CF4",
@@ -1784,8 +1784,6 @@ md_icons = {
     "check-underline-circle": "\U000F0E20",
     "check-underline-circle-outline": "\U000F0E21",
     "checkbook": "\U000F0A9D",
-    "checkbook-arrow-left": "\U000F1C1D",
-    "checkbook-arrow-right": "\U000F1C1E",
     "checkbox-blank": "\U000F012E",
     "checkbox-blank-badge": "\U000F1176",
     "checkbox-blank-badge-outline": "\U000F0117",
@@ -1798,8 +1796,6 @@ md_icons = {
     "checkbox-intermediate-variant": "\U000F1B54",
     "checkbox-marked": "\U000F0132",
     "checkbox-marked-circle": "\U000F0133",
-    "checkbox-marked-circle-auto-outline": "\U000F1C26",
-    "checkbox-marked-circle-minus-outline": "\U000F1C27",
     "checkbox-marked-circle-outline": "\U000F0134",
     "checkbox-marked-circle-plus-outline": "\U000F1927",
     "checkbox-marked-outline": "\U000F0135",
@@ -1895,7 +1891,6 @@ md_icons = {
     "circle-small": "\U000F09DF",
     "circular-saw": "\U000F0E22",
     "city": "\U000F0146",
-    "city-switch": "\U000F1C28",
     "city-variant": "\U000F0A36",
     "city-variant-outline": "\U000F0A37",
     "clipboard": "\U000F0147",
@@ -1976,8 +1971,6 @@ md_icons = {
     "clock-plus-outline": "\U000F1862",
     "clock-remove": "\U000F1865",
     "clock-remove-outline": "\U000F1866",
-    "clock-star-four-points": "\U000F1C29",
-    "clock-star-four-points-outline": "\U000F1C2A",
     "clock-start": "\U000F0155",
     "clock-time-eight": "\U000F1446",
     "clock-time-eight-outline": "\U000F1452",
@@ -2080,7 +2073,6 @@ md_icons = {
     "cloud-upload-outline": "\U000F0B7E",
     "clouds": "\U000F1B95",
     "clover": "\U000F0816",
-    "clover-outline": "\U000F1C62",
     "coach-lamp": "\U000F1020",
     "coach-lamp-variant": "\U000F1A37",
     "coat-rack": "\U000F109E",
@@ -2291,7 +2283,6 @@ md_icons = {
     "cradle-outline": "\U000F1991",
     "crane": "\U000F0862",
     "creation": "\U000F0674",
-    "creation-outline": "\U000F1C2B",
     "creative-commons": "\U000F0D6B",
     "credit-card": "\U000F0FEF",
     "credit-card-check": "\U000F13D0",
@@ -2605,7 +2596,6 @@ md_icons = {
     "domain-off": "\U000F0D6F",
     "domain-plus": "\U000F10AD",
     "domain-remove": "\U000F10AE",
-    "domain-switch": "\U000F1C2C",
     "dome-light": "\U000F141E",
     "domino-mask": "\U000F1023",
     "donkey": "\U000F07C2",
@@ -2726,7 +2716,6 @@ md_icons = {
     "email-edit-outline": "\U000F0EE4",
     "email-fast": "\U000F186F",
     "email-fast-outline": "\U000F1870",
-    "email-heart-outline": "\U000F1C5B",
     "email-lock": "\U000F01F1",
     "email-lock-outline": "\U000F1B61",
     "email-mark-as-unread": "\U000F0B92",
@@ -2738,7 +2727,6 @@ md_icons = {
     "email-off": "\U000F13E3",
     "email-off-outline": "\U000F13E4",
     "email-open": "\U000F01EF",
-    "email-open-heart-outline": "\U000F1C5C",
     "email-open-multiple": "\U000F0EE9",
     "email-open-multiple-outline": "\U000F0EEA",
     "email-open-outline": "\U000F05EF",
@@ -2976,8 +2964,6 @@ md_icons = {
     "file-document-outline": "\U000F09EE",
     "file-document-plus": "\U000F1A9D",
     "file-document-plus-outline": "\U000F1A9E",
-    "file-document-refresh": "\U000F1C7A",
-    "file-document-refresh-outline": "\U000F1C7B",
     "file-document-remove": "\U000F1A9F",
     "file-document-remove-outline": "\U000F1AA0",
     "file-download": "\U000F0965",
@@ -3063,8 +3049,6 @@ md_icons = {
     "file-settings-outline": "\U000F107A",
     "file-sign": "\U000F19C3",
     "file-star": "\U000F103A",
-    "file-star-four-points": "\U000F1C2D",
-    "file-star-four-points-outline": "\U000F1C2E",
     "file-star-outline": "\U000F103B",
     "file-swap": "\U000F0FB4",
     "file-swap-outline": "\U000F0FB5",
@@ -3365,7 +3349,6 @@ md_icons = {
     "football-australian": "\U000F025E",
     "football-helmet": "\U000F025F",
     "forest": "\U000F1897",
-    "forest-outline": "\U000F1C63",
     "forklift": "\U000F07C9",
     "form-dropdown": "\U000F1400",
     "form-select": "\U000F1401",
@@ -3927,8 +3910,6 @@ md_icons = {
     "home-off": "\U000F1A46",
     "home-off-outline": "\U000F1A47",
     "home-outline": "\U000F06A1",
-    "home-percent": "\U000F1C7C",
-    "home-percent-outline": "\U000F1C7D",
     "home-plus": "\U000F0975",
     "home-plus-outline": "\U000F13D6",
     "home-remove": "\U000F1247",
@@ -3938,10 +3919,6 @@ md_icons = {
     "home-search-outline": "\U000F13B1",
     "home-silo": "\U000F1BA0",
     "home-silo-outline": "\U000F1BA1",
-    "home-sound-in": "\U000F1C2F",
-    "home-sound-in-outline": "\U000F1C30",
-    "home-sound-out": "\U000F1C31",
-    "home-sound-out-outline": "\U000F1C32",
     "home-switch": "\U000F1794",
     "home-switch-outline": "\U000F1795",
     "home-thermometer": "\U000F0F54",
@@ -4043,7 +4020,6 @@ md_icons = {
     "image-filter-drama-outline": "\U000F1BFF",
     "image-filter-frames": "\U000F02F4",
     "image-filter-hdr": "\U000F02F5",
-    "image-filter-hdr-outline": "\U000F1C64",
     "image-filter-none": "\U000F02F6",
     "image-filter-tilt-shift": "\U000F02F7",
     "image-filter-vintage": "\U000F02F8",
@@ -4094,22 +4070,10 @@ md_icons = {
     "induction": "\U000F184C",
     "infinity": "\U000F06E4",
     "information": "\U000F02FC",
-    "information-box": "\U000F1C65",
-    "information-box-outline": "\U000F1C66",
     "information-off": "\U000F178C",
     "information-off-outline": "\U000F178D",
     "information-outline": "\U000F02FD",
-    "information-slab-box": "\U000F1C67",
-    "information-slab-box-outline": "\U000F1C68",
-    "information-slab-circle": "\U000F1C69",
-    "information-slab-circle-outline": "\U000F1C6A",
-    "information-slab-symbol": "\U000F1C6B",
-    "information-symbol": "\U000F1C6C",
     "information-variant": "\U000F064E",
-    "information-variant-box": "\U000F1C6D",
-    "information-variant-box-outline": "\U000F1C6E",
-    "information-variant-circle": "\U000F1C6F",
-    "information-variant-circle-outline": "\U000F1C70",
     "instagram": "\U000F02FE",
     "instrument-triangle": "\U000F104E",
     "integrated-circuit-chip": "\U000F1913",
@@ -4284,7 +4248,6 @@ md_icons = {
     "land-plots": "\U000F1AB3",
     "land-plots-circle": "\U000F1AB4",
     "land-plots-circle-variant": "\U000F1AB5",
-    "land-plots-marker": "\U000F1C5D",
     "land-rows-horizontal": "\U000F1AB6",
     "land-rows-vertical": "\U000F1AB7",
     "landslide": "\U000F1A48",
@@ -4772,7 +4735,6 @@ md_icons = {
     "monitor-speaker": "\U000F0F5F",
     "monitor-speaker-off": "\U000F0F60",
     "monitor-star": "\U000F0DDC",
-    "monitor-vertical": "\U000F1C33",
     "moon-first-quarter": "\U000F0F61",
     "moon-full": "\U000F0F62",
     "moon-last-quarter": "\U000F0F63",
@@ -4925,9 +4887,7 @@ md_icons = {
     "nas": "\U000F08F3",
     "nativescript": "\U000F0880",
     "nature": "\U000F038E",
-    "nature-outline": "\U000F1C71",
     "nature-people": "\U000F038F",
-    "nature-people-outline": "\U000F1C72",
     "navigation": "\U000F0390",
     "navigation-outline": "\U000F1607",
     "navigation-variant": "\U000F18F0",
@@ -5118,13 +5078,7 @@ md_icons = {
     "octagon": "\U000F03C3",
     "octagon-outline": "\U000F03C4",
     "octagram": "\U000F06F9",
-    "octagram-edit": "\U000F1C34",
-    "octagram-edit-outline": "\U000F1C35",
-    "octagram-minus": "\U000F1C36",
-    "octagram-minus-outline": "\U000F1C37",
     "octagram-outline": "\U000F0775",
-    "octagram-plus": "\U000F1C38",
-    "octagram-plus-outline": "\U000F1C39",
     "octahedron": "\U000F1950",
     "octahedron-off": "\U000F1951",
     "odnoklassniki": "\U000F03C5",
@@ -5408,8 +5362,6 @@ md_icons = {
     "pine-tree": "\U000F0405",
     "pine-tree-box": "\U000F0406",
     "pine-tree-fire": "\U000F141A",
-    "pine-tree-variant": "\U000F1C73",
-    "pine-tree-variant-outline": "\U000F1C74",
     "pinterest": "\U000F0407",
     "pinwheel": "\U000F0AD5",
     "pinwheel-outline": "\U000F0AD6",
@@ -5427,7 +5379,6 @@ md_icons = {
     "plane-train": "\U000F1B00",
     "play": "\U000F040A",
     "play-box": "\U000F127A",
-    "play-box-edit-outline": "\U000F1C3A",
     "play-box-lock": "\U000F1A16",
     "play-box-lock-open": "\U000F1A17",
     "play-box-lock-open-outline": "\U000F1A18",
@@ -5510,8 +5461,6 @@ md_icons = {
     "power-off": "\U000F0902",
     "power-on": "\U000F0903",
     "power-plug": "\U000F06A5",
-    "power-plug-battery": "\U000F1C3B",
-    "power-plug-battery-outline": "\U000F1C3C",
     "power-plug-off": "\U000F06A6",
     "power-plug-off-outline": "\U000F1424",
     "power-plug-outline": "\U000F1425",
@@ -5601,8 +5550,6 @@ md_icons = {
     "progress-pencil": "\U000F1787",
     "progress-question": "\U000F1522",
     "progress-star": "\U000F1788",
-    "progress-star-four-points": "\U000F1C3D",
-    "progress-tag": "\U000F1D0D",
     "progress-upload": "\U000F0998",
     "progress-wrench": "\U000F0CBD",
     "projector": "\U000F042E",
@@ -5678,7 +5625,6 @@ md_icons = {
     "radioactive-circle-outline": "\U000F185E",
     "radioactive-off": "\U000F0EC1",
     "radiobox-blank": "\U000F043D",
-    "radiobox-indeterminate-variant": "\U000F1C5E",
     "radiobox-marked": "\U000F043E",
     "radiology-box": "\U000F14C5",
     "radiology-box-outline": "\U000F14C6",
@@ -5701,22 +5647,10 @@ md_icons = {
     "react": "\U000F0708",
     "read": "\U000F0447",
     "receipt": "\U000F0824",
-    "receipt-clock": "\U000F1C3E",
-    "receipt-clock-outline": "\U000F1C3F",
     "receipt-outline": "\U000F04F7",
-    "receipt-send": "\U000F1C40",
-    "receipt-send-outline": "\U000F1C41",
     "receipt-text": "\U000F0449",
-    "receipt-text-arrow-left": "\U000F1C42",
-    "receipt-text-arrow-left-outline": "\U000F1C43",
-    "receipt-text-arrow-right": "\U000F1C44",
-    "receipt-text-arrow-right-outline": "\U000F1C45",
     "receipt-text-check": "\U000F1A63",
     "receipt-text-check-outline": "\U000F1A64",
-    "receipt-text-clock": "\U000F1C46",
-    "receipt-text-clock-outline": "\U000F1C47",
-    "receipt-text-edit": "\U000F1C48",
-    "receipt-text-edit-outline": "\U000F1C49",
     "receipt-text-minus": "\U000F1A65",
     "receipt-text-minus-outline": "\U000F1A66",
     "receipt-text-outline": "\U000F19DC",
@@ -5724,8 +5658,6 @@ md_icons = {
     "receipt-text-plus-outline": "\U000F1A68",
     "receipt-text-remove": "\U000F1A69",
     "receipt-text-remove-outline": "\U000F1A6A",
-    "receipt-text-send": "\U000F1C4A",
-    "receipt-text-send-outline": "\U000F1C4B",
     "record": "\U000F044A",
     "record-circle": "\U000F0EC2",
     "record-circle-outline": "\U000F0EC3",
@@ -5924,7 +5856,6 @@ md_icons = {
     "run-fast": "\U000F046E",
     "rv-truck": "\U000F11D4",
     "sack": "\U000F0D2E",
-    "sack-outline": "\U000F1C4C",
     "sack-percent": "\U000F0D2F",
     "safe": "\U000F0A6A",
     "safe-square": "\U000F127C",
@@ -6043,10 +5974,6 @@ md_icons = {
     "send-lock": "\U000F07ED",
     "send-lock-outline": "\U000F1166",
     "send-outline": "\U000F1165",
-    "send-variant": "\U000F1C4D",
-    "send-variant-clock": "\U000F1C7E",
-    "send-variant-clock-outline": "\U000F1C7F",
-    "send-variant-outline": "\U000F1C4E",
     "serial-port": "\U000F065C",
     "server": "\U000F048B",
     "server-minus": "\U000F048C",
@@ -6080,7 +6007,6 @@ md_icons = {
     "shape-outline": "\U000F0832",
     "shape-oval-plus": "\U000F11FA",
     "shape-plus": "\U000F0495",
-    "shape-plus-outline": "\U000F1C4F",
     "shape-polygon-plus": "\U000F065E",
     "shape-rectangle-plus": "\U000F065F",
     "shape-square-plus": "\U000F0660",
@@ -6399,7 +6325,6 @@ md_icons = {
     "sphere": "\U000F1954",
     "sphere-off": "\U000F1955",
     "spider": "\U000F11EA",
-    "spider-outline": "\U000F1C75",
     "spider-thread": "\U000F11EB",
     "spider-web": "\U000F0BCA",
     "spirit-level": "\U000F14F1",
@@ -6416,7 +6341,6 @@ md_icons = {
     "sprout-outline": "\U000F0E67",
     "square": "\U000F0764",
     "square-circle": "\U000F1500",
-    "square-circle-outline": "\U000F1C50",
     "square-edit-outline": "\U000F090C",
     "square-medium": "\U000F0A13",
     "square-medium-outline": "\U000F0A14",
@@ -6461,12 +6385,7 @@ md_icons = {
     "star-david": "\U000F097A",
     "star-face": "\U000F09A5",
     "star-four-points": "\U000F0AE2",
-    "star-four-points-box": "\U000F1C51",
-    "star-four-points-box-outline": "\U000F1C52",
-    "star-four-points-circle": "\U000F1C53",
-    "star-four-points-circle-outline": "\U000F1C54",
     "star-four-points-outline": "\U000F0AE3",
-    "star-four-points-small": "\U000F1C55",
     "star-half": "\U000F0246",
     "star-half-full": "\U000F04D0",
     "star-minus": "\U000F1564",
@@ -6700,7 +6619,6 @@ md_icons = {
     "tag-faces": "\U000F04FA",
     "tag-heart": "\U000F068B",
     "tag-heart-outline": "\U000F0BCF",
-    "tag-hidden": "\U000F1C76",
     "tag-minus": "\U000F0910",
     "tag-minus-outline": "\U000F121F",
     "tag-multiple": "\U000F04FB",
@@ -6758,7 +6676,6 @@ md_icons = {
     "temple-hindu-outline": "\U000F1B09",
     "tennis": "\U000F0DA0",
     "tennis-ball": "\U000F0507",
-    "tennis-ball-outline": "\U000F1C5F",
     "tent": "\U000F0508",
     "terraform": "\U000F1062",
     "terrain": "\U000F0509",
@@ -6813,7 +6730,6 @@ md_icons = {
     "thermostat-auto": "\U000F1B17",
     "thermostat-box": "\U000F0891",
     "thermostat-box-auto": "\U000F1B18",
-    "thermostat-cog": "\U000F1C80",
     "thought-bubble": "\U000F07F6",
     "thought-bubble-outline": "\U000F07F7",
     "thumb-down": "\U000F0511",
@@ -6943,7 +6859,6 @@ md_icons = {
     "torch": "\U000F1606",
     "tortoise": "\U000F0D3B",
     "toslink": "\U000F12B8",
-    "touch-text-outline": "\U000F1C60",
     "tournament": "\U000F09AE",
     "tow-truck": "\U000F083C",
     "tower-beach": "\U000F0681",
@@ -7032,7 +6947,6 @@ md_icons = {
     "tray-plus": "\U000F1298",
     "tray-remove": "\U000F1299",
     "treasure-chest": "\U000F0726",
-    "treasure-chest-outline": "\U000F1C77",
     "tree": "\U000F0531",
     "tree-outline": "\U000F0E69",
     "trello": "\U000F0532",
@@ -7040,8 +6954,6 @@ md_icons = {
     "trending-neutral": "\U000F0534",
     "trending-up": "\U000F0535",
     "triangle": "\U000F0536",
-    "triangle-down": "\U000F1C56",
-    "triangle-down-outline": "\U000F1C57",
     "triangle-outline": "\U000F0537",
     "triangle-small-down": "\U000F1A09",
     "triangle-small-up": "\U000F1A0A",
@@ -7256,7 +7168,6 @@ md_icons = {
     "view-gallery": "\U000F1888",
     "view-gallery-outline": "\U000F1889",
     "view-grid": "\U000F0570",
-    "view-grid-compact": "\U000F1C61",
     "view-grid-outline": "\U000F11D9",
     "view-grid-plus": "\U000F0F8D",
     "view-grid-plus-outline": "\U000F11DA",
@@ -7319,8 +7230,6 @@ md_icons = {
     "wall-sconce-round-variant": "\U000F091E",
     "wall-sconce-round-variant-outline": "\U000F17CD",
     "wallet": "\U000F0584",
-    "wallet-bifold": "\U000F1C58",
-    "wallet-bifold-outline": "\U000F1C59",
     "wallet-giftcard": "\U000F0585",
     "wallet-membership": "\U000F0586",
     "wallet-outline": "\U000F0BDD",
@@ -7396,7 +7305,6 @@ md_icons = {
     "weather-hail": "\U000F0592",
     "weather-hazy": "\U000F0F30",
     "weather-hurricane": "\U000F0898",
-    "weather-hurricane-outline": "\U000F1C78",
     "weather-lightning": "\U000F0593",
     "weather-lightning-rainy": "\U000F067E",
     "weather-moonset": "\U000F1D15",
@@ -7575,23 +7483,27 @@ md_icons = {
 if __name__ == "__main__":
     from kivy.lang import Builder
     from kivy.properties import StringProperty
-    from kivy.uix.screenmanager import Screen
 
+    from kivymd.uix.screen import MDScreen
     from kivymd.app import MDApp
-    from kivymd.uix.list import OneLineIconListItem
+    from kivymd.uix.list import MDListItem
 
     Builder.load_string(
         """
 #:import images_path kivymd.images_path
 
 
-<CustomOneLineIconListItem>
+<IconItem>
 
-    IconLeftWidget:
+    MDListItemLeadingIcon:
         icon: root.icon
+
+    MDListItemSupportingText:
+        text: root.text
 
 
 <PreviousMDIcons>
+    md_bg_color: self.theme_cls.backgroundColor
 
     MDBoxLayout:
         orientation: 'vertical'
@@ -7603,6 +7515,7 @@ if __name__ == "__main__":
 
             MDIconButton:
                 icon: 'magnify'
+                pos_hint: {'center_y': .5}
 
             MDTextField:
                 id: search_field
@@ -7615,7 +7528,7 @@ if __name__ == "__main__":
             key_size: 'height'
 
             RecycleBoxLayout:
-                padding: dp(10)
+                padding: dp(10), dp(10), 0, dp(10)
                 default_size: None, dp(48)
                 default_size_hint: 1, None
                 size_hint_y: None
@@ -7624,17 +7537,20 @@ if __name__ == "__main__":
     """
     )
 
-    class CustomOneLineIconListItem(OneLineIconListItem):
-        icon = StringProperty()
 
-    class PreviousMDIcons(Screen):
+    class IconItem(MDListItem):
+        icon = StringProperty()
+        text = StringProperty()
+
+
+    class PreviousMDIcons(MDScreen):
         def set_list_md_icons(self, text="", search=False):
             """Builds a list of icons for the screen MDIcons."""
 
             def add_icon_item(name_icon):
                 self.ids.rv.data.append(
                     {
-                        "viewclass": "CustomOneLineIconListItem",
+                        "viewclass": "IconItem",
                         "icon": name_icon,
                         "text": name_icon,
                         "callback": lambda x: x,
@@ -7649,6 +7565,7 @@ if __name__ == "__main__":
                 else:
                     add_icon_item(name_icon)
 
+
     class MainApp(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
@@ -7658,6 +7575,7 @@ if __name__ == "__main__":
             return self.screen
 
         def on_start(self):
+            super().on_start()
             self.screen.set_list_md_icons()
 
     MainApp().run()

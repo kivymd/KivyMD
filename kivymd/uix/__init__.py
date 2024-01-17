@@ -5,10 +5,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen
 
-from kivymd.uix.behaviors import SpecificBackgroundColorBehavior
 
-
-class MDAdaptiveWidget(SpecificBackgroundColorBehavior):
+class MDAdaptiveWidget:
     adaptive_height = BooleanProperty(False)
     """
     If `True`, the following properties will be applied to the widget:

@@ -16,7 +16,7 @@ Widget
 
         canvas:
             Color:
-                rgba: app.theme_cls.primary_color
+                rgba: app.theme_cls.primaryColor
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
@@ -31,7 +31,7 @@ MDWidget
         size_hint: .5, None
         height: self.width
         radius: self.height / 2
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.theme_cls.primaryColor
 """
 
 __all__ = ("MDWidget",)
@@ -40,12 +40,26 @@ from kivy.uix.widget import Widget
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 
 
-class MDWidget(DeclarativeBehavior, ThemableBehavior, MDAdaptiveWidget, Widget):
+class MDWidget(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    MDAdaptiveWidget,
+    Widget,
+):
     """
-    See :class:`~kivy.uix.Widget` class documentation for more information.
+    Widget class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivymd.uix.MDAdaptiveWidget` and
+    :class:`~kivy.uix.widget.Widget` and
+    classes documentation.
 
     .. versionadded:: 1.0.0
     """

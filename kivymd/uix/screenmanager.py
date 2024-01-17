@@ -29,18 +29,30 @@ from kivy.clock import Clock
 from kivy.properties import ListProperty, StringProperty
 from kivy.uix.screenmanager import ScreenManager
 
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.theming import ThemableBehavior
+from kivymd.uix import MDAdaptiveWidget
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 from kivymd.uix.hero import MDHeroFrom
 
 
-class MDScreenManager(DeclarativeBehavior, ScreenManager):
+class MDScreenManager(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    ScreenManager,
+    MDAdaptiveWidget,
+):
     """
     Screen manager. This is the main class that will control your
     :class:`~kivymd.uix.screen.MDScreen` stack and memory.
 
-    For more
-    information, see in the :class:`~kivy.uix.screenmanager.ScreenManager`
-    class documentation.
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.screenmanager.ScreenManager` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
     """
 
     current_hero = StringProperty(None, deprecated=True)
@@ -109,7 +121,7 @@ class MDScreenManager(DeclarativeBehavior, ScreenManager):
 
     def on_current_hero(self, instance, value: str) -> None:
         """
-        Called when the value of the :attr:`current_hero` attribute changes.
+        Fired when the value of the :attr:`current_hero` attribute changes.
         """
 
         Logger.warning(

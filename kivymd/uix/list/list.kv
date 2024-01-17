@@ -1,173 +1,152 @@
-#:import m_res kivymd.material_resources
-
-
 <MDList>
     cols: 1
     adaptive_height: True
     padding: 0, self._list_vertical_padding
 
 
-<BaseListItem>
-    size_hint_y: None
-
-    canvas:
+<MDListItem>
+    # Divider.
+    canvas.after:
         Color:
             rgba:
                 ( \
-                self.theme_cls.divider_color \
-                if root.divider is not None \
-                else (0, 0, 0, 0) \
-                ) \
-                if not root.divider_color \
-                else \
-                root.divider_color
-
-        Line:
-            points:
                 ( \
-                root.x ,root.y, root.x + self.width, root.y) \
-                if root.divider == "Full" else \
-                (root.x + root._txt_left_pad, root.y, \
-                root.x + self.width - root._txt_left_pad-root._txt_right_pad, \
-                root.y \
-                )
-        Color:
-            rgba: root.bg_color if root.bg_color else (0, 0, 0, 0)
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: root.radius
+                self.theme_cls.surfaceVariantColor \
+                if not self.disabled else \
+                self.theme_cls.onSurfaceColor \
+                ) \
+                if self.theme_divider_color == "Primary" else \
+                self.divider_color
+                ) \
+
+                if self.divider else self.theme_cls.transparentColor
+        Line:
+            width: 1
+            points: self.x ,self.y, self.x + self.width, self.y
+
+    size_hint_y: None
+    spacing: "16dp"
+    padding:
+        "16dp", \
+        "12dp" if len(text_container.children) == 3 else "8dp", \
+        "24dp", \
+        "12dp" if len(text_container.children) == 3 else "8dp"
+    # FIXME: The design of the material suggests specifying the
+    #  background color of the disabled widget as the "onSurface"
+    #  color when hovering the mouse cursor. But this color is very
+    #  dark/light. So I chose the color "onSurfaceColor" color with 12
+    #  percent transparency.
+    md_bg_color:
+        self.theme_cls.surfaceColor \
+        if self.theme_bg_color == "Primary" else \
+        self.md_bg_color
+    height:
+        { \
+        0: "100dp", \
+        1: "56dp", \
+        2: "72dp", \
+        3: "88dp", \
+        } \
+        [len(text_container.children)]
+    on_disabled:
+        leading_container.children[0].disabled = args[1]
+
 
     BoxLayout:
-        id: _text_container
-        orientation: "vertical"
-        pos: root.pos
-        padding:
-            root._txt_left_pad, root._txt_top_pad, \
-            root._txt_right_pad, root._txt_bot_pad
+        id: leading_container
+        size_hint_x: None
+        width: 0
 
-        MDLabel:
-            id: _lbl_primary
-            text: root.text
-            font_style: root.font_style
-            theme_text_color: root.theme_text_color
-            text_color: root.text_color
+    AnchorLayout:
+        anchor_y: "center"
+
+        BoxLayout:
+            id: text_container
+            orientation: "vertical"
             size_hint_y: None
-            height: self.texture_size[1]
-            markup: True
-            shorten_from: "right"
-            shorten: True
-
-        MDLabel:
-            id: _lbl_secondary
-            text: "" if root._num_lines == 1 else root.secondary_text
-            font_style: root.secondary_font_style
-            theme_text_color: root.secondary_theme_text_color
-            text_color: root.secondary_text_color
-            size_hint_y: None
-            height: 0 if root._num_lines == 1 else self.texture_size[1]
-            shorten: True
-            shorten_from: "right"
-            markup: True
-
-        MDLabel:
-            id: _lbl_tertiary
-            text: "" if root._num_lines == 1 else root.tertiary_text
-            font_style: root.tertiary_font_style
-            theme_text_color: root.tertiary_theme_text_color
-            text_color: root.tertiary_text_color
-            size_hint_y: None
-            height: 0 if root._num_lines == 1 else self.texture_size[1]
-            shorten: True
-            shorten_from: "right"
-            markup: True
-
-
-<OneLineAvatarListItem>
+            height: self.minimum_height
+            spacing: "2dp"
+            on_children:
+                if leading_container.children: \
+                leading_container.children[0].pos_hint = {"top": 1} \
+                if len(args[1]) == 3 else {"center_y": .5}
 
     BoxLayout:
-        id: _left_container
-        size_hint: None, None
-        x: root.x + dp(16)
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(40), dp(40)
+        id: trailing_container
+        size_hint_x: None
+        width: 0
+        on_children:
+            if text_container.children: \
+            self.children[0].pos_hint = {"top": 1} \
+            if len(text_container.children) == 3 else {"center_y": .5}
 
 
-<ThreeLineAvatarListItem>
-
-    BoxLayout:
-        id: _left_container
-        size_hint: None, None
-        x: root.x + dp(16)
-        y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
-        size: dp(40), dp(40)
-
-
-<OneLineIconListItem>
-
-    BoxLayout:
-        id: _left_container
-        size_hint: None, None
-        x: root.x + dp(16)
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(48), dp(48)
-
-
-<ThreeLineIconListItem>
-
-    BoxLayout:
-        id: _left_container
-        size_hint: None, None
-        x: root.x + dp(16)
-        y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
-        size: dp(48), dp(48)
+<BaseListItemIcon>
+    size_hint: None, None
+    size: "24dp", "24dp"
+    text_color:
+        ( \
+        self.theme_cls.onSurfaceVariantColor \
+        if self.theme_icon_color == "Primary" else \
+        ( \
+        self.icon_color \
+        if self.icon_color else \
+        self.theme_cls.transparentColor \
+        ) \
+        ) \
+        if not self.disabled else self.disabled_color
+    disabled_color:
+        self.theme_cls.onSurfaceColor[:-1] + \
+        [self.icon_button_standard_opacity_value_disabled_icon] \
+        if not self.icon_color_disabled else self.icon_color_disabled
 
 
-<OneLineRightIconListItem>
-
-    BoxLayout:
-        id: _right_container
-        size_hint: None, None
-        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(48), dp(48)
+<MDListItemTrailingSupportingText>
+    adaptive_width: True
+    font_style: "Label"
+    role: "small"
 
 
-<ThreeLineRightIconListItem>
-
-    BoxLayout:
-        id: _right_container
-        size_hint: None, None
-        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(48), dp(48)
-
-
-<OneLineAvatarIconListItem>
-
-    BoxLayout:
-        id: _right_container
-        size_hint: None, None
-        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(48), dp(48)
-
-
-<TwoLineAvatarIconListItem>
-
-    BoxLayout:
-        id: _right_container
-        size_hint: None, None
-        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height / 2 - self.height / 2
-        size: dp(48), dp(48)
+<MDListItemLeadingAvatar>
+    size_hint: None, None
+    size: "40dp", "40dp"
+    radius: self.height / 2
+    # FIXME: The design of the material suggests specifying the
+    #  background color of the disabled widget as the "onSurface"
+    #  color when hovering the mouse cursor. But this color is very
+    #  dark/light. So I chose the color "onSurfaceColor" color with 12
+    #  percent transparency.
+    md_bg_color:
+        self.theme_cls.primaryContainerColor \
+        if not self.disabled else \
+        self.theme_cls.onSurfaceColor[:-1] \
+        + ( \
+        [self._list_item.list_opacity_value_disabled_leading_avatar] \
+        if self._list_item else [0] \
+        )
 
 
-<ThreeLineAvatarIconListItem>
+<BaseListItemText>
+    adaptive_height: True
+    markup: True
+    shorten_from: "right"
+    font_style: "Body"
+    role: "medium"
+    shorten: True
+    text_color:
+        self.theme_cls.onSurfaceVariantColor \
+        if root.theme_text_color == "Primary" else \
+        ( \
+        root.text_color \
+        if root.text_color else \
+        self.theme_cls.onSurfaceVariantColor \
+        )
 
-    BoxLayout:
-        id: _right_container
-        size_hint: None, None
-        x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-        y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
-        size: dp(48), dp(48)
+
+<MDListItemHeadlineText>
+    font_style: "Body"
+    role: "large"
+    bold: True
+    # FIXME: `RecursionError: maximum recursion depth exceeded while calling
+    #  a Python object` when use `text_color` property.
+    -text_color: self.theme_cls.onSurfaceColor if root.theme_text_color == "Primary" else (root.text_color if root.text_color else self.theme_cls.onSurfaceColor)

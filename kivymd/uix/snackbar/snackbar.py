@@ -12,227 +12,178 @@ Components/Snackbar
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar.png
     :align: center
 
+- Snackbars shouldn’t interrupt the user’s experience
+- Usually appear at the bottom of the UI
+- Can disappear on their own or remain on screen until the user takes action
+
 Usage
 -----
 
 .. code-block:: python
 
     MDSnackbar(
-        MDLabel(
-            text="First string",
-            theme_text_color="Custom",
-            text_color="#393231",
+        MDSnackbarText(
+            text="Text",
         ),
+        y=dp(24),
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
     ).open()
 
-Example
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-anatomy-detail.png
+    :align: center
+
+1. Container
+2. Supporting text
+3. Action (optional)
+4. Icon (optional close affordance)
+
+Anatomy
 -------
 
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-anatomy.png
+    :align: center
+
+Configurations
+==============
+
+1. Single line
+--------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-configurations-single-line.png
+    :align: center
+
 .. code-block:: python
 
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-    from kivymd.uix.label import MDLabel
-    from kivymd.uix.snackbar import MDSnackbar
-
-
-    KV = '''
-    MDScreen:
-
-        MDRaisedButton:
-            text: "Create simple snackbar"
-            on_release: app.open_snackbar()
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+    MDSnackbar(
+        MDSnackbarText(
+            text="Single-line snackbar",
+        ),
+        y=dp(24),
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+    ).open()
 
 
-    class Example(MDApp):
-        def open_snackbar(self):
-            MDSnackbar(
-                MDLabel(
-                    text="First string",
+2. Single-line snackbar with action
+-----------------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-configurations-single-line-with-action.png
+    :align: center
+
+.. code-block:: python
+
+    MDSnackbar(
+        MDSnackbarSupportingText(
+            text="Single-line snackbar with action",
+        ),
+        MDSnackbarButtonContainer(
+            MDSnackbarActionButton(
+                MDSnackbarActionButtonText(
+                    text="Action button"
                 ),
-            ).open()
-
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "Orange"
-            return Builder.load_string(KV)
-
-
-    Example().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-simple.gif
-    :align: center
-
-Control width and pos
----------------------
-
-.. code-block:: python
-
-    MDSnackbar(
-        MDLabel(
-            text="First string",
-        ),
-        pos=(dp(24), dp(56)),
-        size_hint_x=0.5,
-    ).open()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-widith-and-pos.gif
-    :align: center
-
-On mobile, use up to two lines of text to communicate the snackbar message:
-
-.. code-block:: python
-
-    MDSnackbar(
-        MDLabel(
-            text="First string",
-            theme_text_color="Custom",
-            text_color="#393231",
-        ),
-        MDLabel(
-            text="Second string",
-            theme_text_color="Custom",
-            text_color="#393231",
-        ),
-        y=dp(24),
-        pos_hint={"center_x": 0.5},
-        size_hint_x=0.5,
-        md_bg_color="#E8D8D7",
-    ).open()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-two-line.gif
-    :align: center
-
-Usage action button
--------------------
-
-A snackbar can contain a single action. "Dismiss" or "cancel" actions are
-optional:
-
-.. code-block:: python
-
-    MDSnackbar(
-        MDLabel(
-            text="First string",
-            theme_text_color="Custom",
-            text_color="#393231",
-        ),
-        MDSnackbarActionButton(
-            text="Done",
-            theme_text_color="Custom",
-            text_color="#8E353C",
-        ),
-        y=dp(24),
-        pos_hint={"center_x": 0.5},
-        size_hint_x=0.5,
-        md_bg_color="#E8D8D7",
-    ).open()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-action-button.gif
-    :align: center
-
-Callback action button
-----------------------
-
-.. code-block:: python
-
-    def snackbar_action_button_callback(self, *args):
-        print("Snackbar callback action button")
-
-    def open_snackbar(self):
-        self.snackbar = MDSnackbar(
-            MDLabel(
-                text="First string",
-                theme_text_color="Custom",
-                text_color="#393231",
             ),
+            pos_hint={"center_y": 0.5}
+        ),
+        y=dp(24),
+        orientation="horizontal",
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+    ).open()
+
+3. Single-line snackbar with action and close buttons
+-----------------------------------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-configurations-single-line-with-action-and-close-buttons.png
+    :align: center
+
+.. code-block:: python
+
+    MDSnackbar(
+        MDSnackbarSupportingText(
+            text="Single-line snackbar with action and close buttons",
+        ),
+        MDSnackbarButtonContainer(
             MDSnackbarActionButton(
-                text="Done",
-                theme_text_color="Custom",
-                text_color="#8E353C",
-                _no_ripple_effect=True,
-                on_release=self.snackbar_action_button_callback,
-            ),
-            y=dp(24),
-            pos_hint={"center_x": 0.5},
-            size_hint_x=0.5,
-            md_bg_color="#E8D8D7",
-        )
-        self.snackbar.open()
-
-If an action is long, it can be displayed on a third line:
-
-.. code-block:: python
-
-    MDSnackbar(
-        MDLabel(
-            text="If an action is long, it can be displayed",
-            theme_text_color="Custom",
-            text_color="#393231",
-        ),
-        MDLabel(
-            text="on a third line.",
-            theme_text_color="Custom",
-            text_color="#393231",
-        ),
-        MDLabel(
-            text=" ",
-        ),
-        MDSnackbarActionButton(
-            text="Action button",
-            theme_text_color="Custom",
-            text_color="#8E353C",
-            y=dp(8),
-            _no_ripple_effect=True,
-        ),
-        y=dp(24),
-        pos_hint={"center_x": 0.5},
-        size_hint_x=0.5,
-        md_bg_color="#E8D8D7",
-    ).open()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-action-button-on-thrid-line.gif
-    :align: center
-
-Icon (optional close affordance):
-
-.. code-block:: python
-
-    def snackbar_close(self, *args):
-        self.snackbar.dismiss()
-
-    def open_snackbar(self):
-        self.snackbar = MDSnackbar(
-            MDLabel(
-                text="Icon (optional close affordance)",
-                theme_text_color="Custom",
-                text_color="#393231",
-            ),
-            MDSnackbarActionButton(
-                text="Action button",
-                theme_text_color="Custom",
-                text_color="#8E353C",
-                _no_ripple_effect=True,
+                MDSnackbarActionButtonText(
+                    text="Action button"
+                ),
             ),
             MDSnackbarCloseButton(
                 icon="close",
-                theme_text_color="Custom",
-                text_color="#8E353C",
-                _no_ripple_effect=True,
-                on_release=self.snackbar_close,
             ),
-            y=dp(24),
-            pos_hint={"center_x": 0.5},
-            size_hint_x=0.5,
-            md_bg_color="#E8D8D7",
-        )
-        self.snackbar.open()
+            pos_hint={"center_y": 0.5}
+        ),
+        y=dp(24),
+        orientation="horizontal",
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+    ).open()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snackbar-optional-close-affordance.gif
+4. Two-line snackbar with action and close buttons
+--------------------------------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-configurations-two-line-with-action-and-close-buttons.png
     :align: center
+
+.. code-block:: python
+
+    MDSnackbar(
+        MDSnackbarText(
+            text="Single-line snackbar",
+        ),
+        MDSnackbarSupportingText(
+            text="with action and close buttons",
+        ),
+        MDSnackbarButtonContainer(
+            MDSnackbarActionButton(
+                MDSnackbarActionButtonText(
+                    text="Action button"
+                ),
+            ),
+            MDSnackbarCloseButton(
+                icon="close",
+            ),
+            pos_hint={"center_y": 0.5}
+        ),
+        y=dp(24),
+        orientation="horizontal",
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+    ).open()
+
+5. Two-line snackbar with action and close buttons at the bottom
+----------------------------------------------------------------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/snakbar-configurations-two-line-with-action-and-close-buttons-bottom.png
+    :align: center
+
+.. code-block:: python
+
+    MDSnackbar(
+        MDSnackbarText(
+            text="Single-line snackbar with action",
+        ),
+        MDSnackbarSupportingText(
+            text="and close buttons at the bottom",
+            padding=[0, 0, 0, dp(56)],
+        ),
+        MDSnackbarButtonContainer(
+            Widget(),
+            MDSnackbarActionButton(
+                MDSnackbarActionButtonText(
+                    text="Action button"
+                ),
+            ),
+            MDSnackbarCloseButton(
+                icon="close",
+            ),
+        ),
+        y=dp(124),
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+        padding=[0, 0, "8dp", "8dp"],
+    ).open()
 
 API break
 =========
@@ -279,37 +230,62 @@ API break
         size_hint_x=0.5,
         md_bg_color="#E8D8D7",
     ).open()
+
+2.0.0 version
+-------------
+
+.. code-block:: python
+
+    MDSnackbar(
+        MDSnackbarSupportingText(
+            text="Single-line snackbar with action",
+        ),
+        MDSnackbarButtonContainer(
+            MDSnackbarActionButton(
+                MDSnackbarActionButtonText(
+                    text="Action button"
+                ),
+            ),
+            pos_hint={"center_y": 0.5}
+        ),
+        y=dp(24),
+        orientation="horizontal",
+        pos_hint={"center_x": 0.5},
+        size_hint_x=0.5,
+        background_color=self.theme_cls.onPrimaryContainerColor,
+    ).open()
 """
 
 __all__ = (
     "MDSnackbar",
+    "MDSnackbarText",
+    "MDSnackbarSupportingText",
+    "MDSnackbarButtonContainer",
     "MDSnackbarActionButton",
+    "MDSnackbarActionButtonText",
     "MDSnackbarCloseButton",
 )
 
 import os
 
-from kivy import Logger
-from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
+from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    ColorProperty,
     ListProperty,
     NumericProperty,
-    OptionProperty,
-    StringProperty,
+    ColorProperty,
 )
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import MotionShackBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDFlatButton, MDIconButton
+from kivymd.uix.behaviors import MotionShackBehavior, DeclarativeBehavior
+from kivymd.uix.button import MDButton, MDIconButton, MDButtonText
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
-from kivymd.uix.relativelayout import MDRelativeLayout
 
 with open(
     os.path.join(uix_path, "snackbar", "snackbar.kv"), encoding="utf-8"
@@ -317,16 +293,25 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class SnackbarLabelContainer(MDBoxLayout):
-    """Container for placing snackbar text."""
+class MDSnackbarButtonContainer(DeclarativeBehavior, BoxLayout):
+    """
+    The class implements a container for placing snackbar buttons.
 
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
+    """
 
-class SnackbarActionButtonContainer(MDRelativeLayout):
-    """Container for placing snackbar action button."""
+    def add_widget(self, widget, *args, **kwargs):
+        def set_container_width(w):
+            self.parent.width += w.width
 
+        if isinstance(
+            widget, (MDSnackbarActionButton, MDSnackbarCloseButton, Widget)
+        ):
+            Clock.schedule_once(lambda x: set_container_width(widget), 0.2)
 
-class SnackbarCloseButtonContainer(MDRelativeLayout):
-    """Container for placing snackbar close button."""
+        return super().add_widget(widget)
 
 
 class MDSnackbarCloseButton(MDIconButton):
@@ -334,27 +319,29 @@ class MDSnackbarCloseButton(MDIconButton):
     Snackbar closed button class.
 
     For more information, see in the
-    :class:`~kivymd.uix.button.MDIconButton` class documentation.
+    :class:`~kivymd.uix.button.button.MDIconButton` class documentation.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not self.y and not self.pos_hint:
-            self.pos_hint = {"center_y": 0.5}
+
+class MDSnackbarActionButtonText(MDButtonText):
+    """
+    The class implements the text for the :class:`~MDSnackbarActionButton`
+    class.
+
+    .. versionchanged:: 2.2.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.button.MDButtonText` class documentation.
+    """
 
 
-class MDSnackbarActionButton(MDFlatButton):
+class MDSnackbarActionButton(MDButton):
     """
     Snackbar action button class.
 
     For more information, see in the
-    :class:`~kivymd.uix.button.MDFlatButton` class documentation.
+    :class:`~kivymd.uix.button.button.MDButton` class documentation.
     """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not self.y and not self.pos_hint:
-            self.pos_hint = {"center_y": 0.5}
 
 
 class MDSnackbar(MotionShackBehavior, MDCard):
@@ -365,15 +352,15 @@ class MDSnackbar(MotionShackBehavior, MDCard):
         Rename `BaseSnackbar` to `MDSnackbar` class.
 
     For more information, see in the
-    :class:`~kivymd.uix.card.MDCard` and
-    :class:`~kivymd.uix.behaviors.StencilBehavior`
+    :class:`~kivymd.uix.behaviors.motion_behavior.MotionShackBehavior` and
+    :class:`~kivymd.uix.card.card.MDCard` and
     class documentation.
 
     :Events:
         :attr:`on_open`
-            Called when a snackbar opened.
+            Fired when a snackbar opened.
         :attr:`on_dismiss`
-            Called when a snackbar closes.
+            Fired when a snackbar closes.
     """
 
     duration = NumericProperty(3)
@@ -392,68 +379,20 @@ class MDSnackbar(MotionShackBehavior, MDCard):
     and defaults to `True`.
     """
 
-    radius = ListProperty([5, 5, 5, 5])
+    radius = ListProperty([dp(4), dp(4), dp(4), dp(4)])
     """
     Snackbar radius.
 
     :attr:`radius` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[5, 5, 5, 5]`
+    and defaults to `[dp(4), dp(4), dp(4), dp(4)]`
     """
 
-    bg_color = ColorProperty(None, deprecated=True)
+    background_color = ColorProperty(None)
     """
-    Snackbar background color in (r, g, b, a) or string format.
+    The background color in (r, g, b, a) or string format of the snackbar.
 
-    .. deprecated:: 1.2.0
-        Use 'md_bg_color` instead.
-
-    :attr:`bg_color` is a :class:`~kivy.properties.ColorProperty`
+    :attr:`background_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
-    """
-
-    buttons = ListProperty(deprecated=True)
-    """
-    Snackbar buttons.
-
-    .. deprecated:: 1.2.0
-
-    :attr:`buttons` is a :class:`~kivy.properties.ListProperty`
-    and defaults to `[]`
-    """
-
-    snackbar_animation_dir = OptionProperty(
-        "Bottom",
-        options=["Top", "Bottom", "Left", "Right"],
-        deprecated=True,
-    )
-    """
-    Snackbar animation direction.
-    Available options are: `'Top'`, `'Bottom'`, `'Left'`, `'Right'`.
-
-    .. deprecated:: 1.2.0
-
-    :attr:`snackbar_animation_dir` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'Bottom'`.
-    """
-
-    snackbar_x = NumericProperty(0, deprecated=True)
-    """
-    The snackbar x position in the screen
-
-    .. deprecated:: 1.2.0
-
-    :attr:`snackbar_x` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
-    """
-
-    snackbar_y = NumericProperty(0, deprecated=True)
-    """
-    The snackbar x position in the screen
-
-    .. deprecated:: 1.2.0
-
-    :attr:`snackbar_y` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `0`.
     """
 
     def __init__(self, *args, **kwargs):
@@ -470,80 +409,40 @@ class MDSnackbar(MotionShackBehavior, MDCard):
     def open(self) -> None:
         """Show the snackbar."""
 
-        for widget in Window.parent.children:
-            if widget.__class__ is MDSnackbar:
-                return
-
-        Window.parent.add_widget(self)
+        Window.add_widget(self)
         super().on_open()
 
     def add_widget(self, widget, *args, **kwargs):
-        def check_color(color):
-            if not widget.text_color:
-                widget.theme_text_color = "Custom"
-                widget.text_color = color
-
-        if isinstance(widget, MDSnackbarCloseButton):
-            widget.icon_size = "20sp"
-            check_color("white")
-            self.ids.close_container.add_widget(widget)
-            if len(self.ids.close_container.children) >= 2:
-                Logger.warning(
-                    "KivyMD: "
-                    "Do not use more than one button to close the snackbar. "
-                    "This is contrary to the material design rules "
-                    "of version 3"
-                )
-        if isinstance(widget, MDSnackbarActionButton):
-            self.ids.action_container.add_widget(widget)
-            check_color(self.theme_cls.primary_color)
-            if len(self.ids.action_container.children) >= 2:
-                Logger.warning(
-                    "KivyMD: "
-                    "Do not use more than one action button. "
-                    "This is contrary to the material design rules "
-                    "of version 3"
-                )
-        if isinstance(widget, MDLabel):
-            widget.adaptive_height = True
-            widget.pos_hint = {"center_y": 0.5}
-            check_color("white")
+        if isinstance(widget, (MDSnackbarText, MDSnackbarSupportingText)):
             self.ids.label_container.add_widget(widget)
-            if len(self.ids.label_container.children) >= 4:
-                Logger.warning(
-                    "KivyMD: "
-                    "Do not use more than three lines in the snackbar. "
-                    "This is contrary to the material design rules "
-                    "of version 3"
-                )
-        elif isinstance(
-            widget,
-            (
-                SnackbarLabelContainer,
-                SnackbarActionButtonContainer,
-                SnackbarCloseButtonContainer,
-            ),
-        ):
+        elif isinstance(widget, MDSnackbarButtonContainer):
+            self.ids.button_container.size_hint_x = (
+                1 if self.orientation == "vertical" else None
+            )
+            self.ids.button_container.add_widget(widget)
+        else:
             return super().add_widget(widget)
 
     def on_open(self, *args) -> None:
-        """Called when a snackbar opened."""
+        """Fired when a snackbar opened."""
 
     def on_dismiss(self, *args) -> None:
-        """Called when a snackbar closed."""
+        """Fired when a snackbar closed."""
 
 
-class Snackbar(MDSnackbar):
+class MDSnackbarText(MDLabel):
     """
-    .. deprecated:: 1.2.0
-        Use :class:`~kivymd.uix.snackbar.MDSnackbar`
-        class instead.
+    The class implements the text.
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `Snackbar` class has been deprecated. "
-            "Use the `MDSnackbar` class instead."
-        )
+
+class MDSnackbarSupportingText(MDLabel):
+    """
+    The class implements the supporting text.
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+    """

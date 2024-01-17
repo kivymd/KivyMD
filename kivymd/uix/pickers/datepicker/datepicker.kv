@@ -1,392 +1,448 @@
-#:import os os
-#:import date datetime.date
-#:import calendar calendar
-#:import platform platform
 #:import Clock kivy.clock.Clock
-#:import images_path kivymd.images_path
+
+###############################################################################
+#
+#                               MODAL INPUT RULES
+#
+###############################################################################
+
+<MDModalInputDatePickerInputField>
+    mode: "outlined"
+    validator: "date"
 
 
-<DatePickerBaseTooltip>
-    on_enter:
-        self.tooltip_text = "" if self.owner \
-        and self.owner._input_date_dialog_open \
-        or self.owner._select_year_dialog_open \
-        else self.hint_text
-
-
-<DatePickerIconTooltipButton>
-
-
-<MDDatePicker>
-    _calendar_layout: _calendar_layout
+<MDModalInputDatePicker>
+    orientation: "vertical"
+    padding: 0, dp(16), 0, dp(16)
     size_hint: None, None
-    size:
-        (dp(328), dp(512) - root._shift_dialog_height) \
-        if root.theme_cls.device_orientation == "portrait" \
-        else (dp(528), dp(328) - root._shift_dialog_height)
+    size: dp(328), dp(280)
+    pos_hint: {"center_x": .5, "center_y": .5}
 
-    MDRelativeLayout:
-        id: container
-        background: os.path.join(images_path, "transparent.png")
+    MDLabel:
+        id: supporting_label
+        adaptive_size: True
+        text: root.supporting_text
+        padding: dp(16), 0, 0, dp(36)
+        font_style: "Label"
+        role: "large"
 
-        canvas:
-            Color:
-                rgb: root.primary_color or app.theme_cls.primary_color
-            RoundedRectangle:
-                size:
-                    (dp(328), dp(120)) \
-                    if root.theme_cls.device_orientation == "portrait" \
-                    else (dp(168), dp(328) - root._shift_dialog_height)
-                pos:
-                    (0, root.height - dp(120)) \
-                    if root.theme_cls.device_orientation == "portrait" \
-                    else (0, 0)
-                radius:
-                    (root.radius[0], root.radius[1], dp(0), dp(0)) \
-                    if root.theme_cls.device_orientation == "portrait" \
-                    else (root.radius[0], dp(0), dp(0), root.radius[3])
-            Color:
-                rgba: root.accent_color or app.theme_cls.bg_normal
-            RoundedRectangle:
-                size:
-                    (dp(328), dp(512) - dp(120) - root._shift_dialog_height) \
-                    if root.theme_cls.device_orientation == "portrait" \
-                    else (dp(360), dp(328) - root._shift_dialog_height)
-                pos:
-                    (0, 0) \
-                    if root.theme_cls.device_orientation == "portrait" \
-                    else (dp(168), 0)
-                radius:
-                    (dp(0), dp(0), root.radius[2], root.radius[3]) \
-                    if root.theme_cls.device_orientation == "portrait" \
-                    else (dp(0), root.radius[1], root.radius[2], dp(0))
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        padding: dp(16), 0, dp(8),  dp(16)
 
         MDLabel:
-            id: label_title
-            font_style: "Body2"
-            bold: True
-            theme_text_color: "Custom"
-            size_hint_x: None
-            width: root.width
-            adaptive_height: True
-            text: root.title
-            font_name: root.font_name
-            pos:
-                (dp(24), root.height - self.height - dp(18)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(24), root.height - self.height - dp(24))
-            text_color: root.text_toolbar_color or root.specific_text_color
+            id: current_month_name
+            adaptive_size: True
+            text: root._current_month_name
+            text_color: self.theme_cls.onSurfaceVariantColor
+            font_style: "Headline"
+            role: "large"
+            theme_line_height: "Custom"
+            line_height: 1
+            theme_font_size: "Custom"
+            font_size: "32sp" if root.mode == "picker" else "20sp"
+            pos_hint: {"center_y": .5}
 
-        MDLabel:
-            id: label_full_date
-            font_style: "H4"
-            theme_text_color: "Custom"
-            size_hint_x: None
-            width: root.width
-            adaptive_height: True
-            font_name: root.font_name
-            markup: True
-            pos:
-                (dp(24), root.height - dp(120) + dp(18)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else \
-                ( \
-                dp(24) if not root._input_date_dialog_open else dp(168) + dp(24), \
-                root.height - self.height - dp(96) \
-                )
-            text: root._date_label_text
-            text_color:
-                root.text_toolbar_color or root.specific_text_color \
-                if root.theme_cls.device_orientation == "portrait" else \
-                root.primary_color or self.theme_cls.primary_color \
-                if root._input_date_dialog_open else \
-                root.text_toolbar_color or root.specific_text_color
-
-        RecycleView:
-            id: _year_layout
-            key_viewclass: "viewclass"
-            size_hint: None, None
-            size: _calendar_layout.size
-            pos: _calendar_layout.pos
-            disabled: True
-
-            canvas.before:
-                PushMatrix
-                Scale:
-                    x: root._scale_year_layout
-                    y: root._scale_year_layout
-                    origin: self.center
-            canvas.after:
-                PopMatrix
-
-            SelectYearList:
-                cols: 3
-                default_size: dp(170), dp(36)
-                default_size_hint: 1, None
-                size_hint_y: None
-                height: self.minimum_height
+        Widget:
 
         MDIconButton:
-            id: edit_icon
-            icon: "pencil"
-            icon_size: "24sp"
-            theme_icon_color: "Custom"
-            on_release:
-                root.transformation_to_dialog_input_date() \
-                if not root._input_date_dialog_open else \
-                Clock.schedule_once(root.transformation_from_dialog_input_date, .15)
-            x:
-                (root.width - self.width - dp(12)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else dp(12)
-            y:
-                (root.height - dp(120) + dp(12)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else  dp(12)
-            text_color: root.text_toolbar_color or root.specific_text_color
+            id: icon_button
+            icon: "calendar"
+            on_release: root.dispatch("on_edit")
+
+    MDDivider:
+
+    MDModalInputDatePickerInputDateFieldContainer
+        id: input_date_container
+        padding: dp(16), 0, dp(16), dp(24)
+
+        MDModalInputDatePickerInputField:
+            id: input_date_field
+            date_picker: root
+            date_format: root.date_format
+
+            MDTextFieldHintText:
+                text: root.date_format
+
+            MDTextFieldHelperText:
+                text: root.error_text
+                mode: "on_error"
+
+    MDDatePickerButtonsContainer:
+        date_picker: root
+
+###############################################################################
+#
+#                                 MODAL RULES
+#
+###############################################################################
+
+<MDModalDatePickerYearSelectableItem>
+    size_hint_x: None
+    valign: "middle"
+    halign: "center"
+    text_color:
+        self.theme_cls.onSurfaceColor \
+        if not root.selected else \
+        self.theme_cls.onPrimaryColor
+
+    canvas.before:
+        Color:
+            rgba:
+                self.theme_cls.primaryColor \
+                if self.selected else \
+                self.theme_cls.transparentColor
+        RoundedRectangle:
+            pos: self.x + dp(12), self.y + dp(6)
+            size: self.width - dp(24), self.height - dp(8)
+            radius: [(root.height / 2) - dp(4), ]
+
+
+<MDModalDatePickerMenuYearSelection>
+    scale_value_x: 1.5
+    scale_value_y: 1.5
+    key_viewclass: "viewclass"
+    key_size: "height"
+    bar_width: 0
+
+    MDModalDatePickerContainerMenuYearSelection:
+        cols: 3
+        padding: dp(32), 0, 0, 0
+        default_size: None, dp(48)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        multiselect: False
+        touch_multiselect: True
+
+
+<MDModalDatePickerScrim>
+    canvas:
+        Color:
+            rgba: self.color[:-1] + [self.alpha]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<MDModalDatePickerYearSelectionItem>
+    size_hint_y: None
+    height: dp(48)
+
+    MDLabel:
+        id: label
+        adaptive_size: True
+        text: root.text
+        pos_hint: {"center_y": .5}
+        padding: 0, 0, "8dp", 0
+        font_style: "Label"
+        role: "large"
+
+    MDDatePickerBaseMenuSelectionButton
+        id: menu_selection_button
+        pos_hint: {"center_y": .5}
+        icon: "menu-right"
+        date_picker: root.date_picker
+        on_release: root.dispatch("on_open_menu")
+
+    Widget:
+
+    MDIconButton:
+        id: chevron_left
+        icon: "chevron-left"
+        pos_hint: {"center_y": .5}
+        on_release: root.dispatch("on_release", "prev")
+
+    MDIconButton:
+        id: chevron_right
+        icon: "chevron-right"
+        pos_hint: {"center_y": .5}
+        on_release: root.dispatch("on_release", "next")
+
+
+<MDModalDatePicker>
+    calendar_layout: calendar_layout
+    orientation: "vertical"
+    padding: 0, 0, 0, "12dp"
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    size_hint: None, None
+    size: calendar_layout.width - self.padding[0] / 2, dp(520)
+
+    MDLabel:
+        id: supporting_label
+        adaptive_size: True
+        text: root.supporting_text
+        padding: dp(24), 0, 0, dp(36)
+        font_style: "Label"
+        role: "large"
+
+    BoxLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        padding: dp(24), 0, dp(12),  dp(16)
 
         MDLabel:
-            id: label_month_selector
-            font_style: "Body2"
-            -text_size: None, None
-            theme_text_color: "Custom"
+            id: current_month_name
             adaptive_size: True
-            text: calendar.month_name[root.month].capitalize() + " " + str(root.year)
-            font_name: root.font_name
-            pos:
-                (dp(24), root.height - dp(120) - self.height - dp(20)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(168) + dp(24), label_title.y)
-            text_color: root.text_color or app.theme_cls.text_color
+            text: root._current_month_name
+            text_color: self.theme_cls.onSurfaceVariantColor
+            font_style: "Headline"
+            role: "large"
 
-        DatePickerIconTooltipButton:
-            id: triangle
-            owner: root
-            icon: "menu-down"
-            ripple_scale: .5
-            theme_icon_color: "Custom"
-            hint_text: "Choose year"
-            on_release:
-                root.transformation_to_dialog_select_year() \
-                if not root._select_year_dialog_open else \
-                root.transformation_from_dialog_select_year()
-            pos:
-                (label_month_selector.width + dp(14), root.height - dp(123) - self.height) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(180) + label_month_selector.width, label_title.y - dp(14))
-            text_color: root.text_color or app.theme_cls.text_color
-            md_bg_color_disabled: 0, 0, 0, 0
+        Widget:
 
-        DatePickerIconTooltipButton:
-            id: chevron_left
-            owner: root
-            icon: "chevron-left"
-            on_release: root.change_month("prev")
-            theme_icon_color: "Custom"
-            hint_text: "Previous month"
-            x:
-                dp(228) if root.theme_cls.device_orientation == "portrait" \
-                else dp(418)
-            y:
-                root.height - dp(120) - self.height / 2 - dp(30) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else dp(272)
-            text_color: root.text_color or app.theme_cls.text_color
+        MDIconButton:
+            id: icon_button
+            icon: "pencil"
+            on_release: root.dispatch("on_edit")
 
-        DatePickerIconTooltipButton:
-            id: chevron_right
-            owner: root
-            icon: "chevron-right"
-            on_release: root.change_month("next")
-            theme_icon_color: "Custom"
-            hint_text: "Next month"
-            x:
-                dp(272) if root.theme_cls.device_orientation == "portrait" \
-                else dp(464)
-            y:
-                root.height - dp(120) - self.height / 2 - dp(30) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else dp(272)
-            text_color: root.text_color or app.theme_cls.text_color
+    MDDivider:
 
-        # TODO: Replace the GridLayout with a RecycleView
-        # if it improves performance.
-        GridLayout:
-            id: _calendar_layout
-            cols: 7
+    MDModalDatePickerYearSelectionItem:
+        id: year_selection_items
+        text: root._current_full_month_name
+        date_picker: root
+        padding: dp(24), 0, dp(12), 0
+
+    RelativeLayout:
+        size_hint: None, None
+        size: calendar_layout.size
+
+        MDCalendarLayout:
+            id: calendar_layout
+            padding: dp(12), 0, dp(12), 0
+
+        MDModalDatePickerMenuYearSelection
+            id: year_selection_layout
             size_hint: None, None
-            size:
-                (dp(44 * 7), dp(40 * 7)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(46 * 7), dp(32 * 7))
-            col_default_width:
-                dp(42) if root.theme_cls.device_orientation == "portrait" \
-                else dp(39)
-            padding:
-                (dp(2), 0) if root.theme_cls.device_orientation == "portrait" \
-                else (dp(7), 0)
-            spacing:
-                (dp(2), 0) if root.theme_cls.device_orientation == "portrait" \
-                else (dp(7), 0)
-            pos:
-                (dp(10), dp(56)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(168) + dp(20), dp(44))
+            size: 0, 0
 
-            canvas.before:
-                PushMatrix
-                Scale:
-                    x: root._scale_calendar_layout
-                    y: root._scale_calendar_layout
-                    origin: self.center
-            canvas.after:
-                PopMatrix
+    MDDatePickerButtonsContainer:
+        date_picker: root
 
-        MDFlatButton:
-            id: ok_button
-            width: dp(32)
-            pos: root.width - self.width, dp(10)
-            text: "OK"
-            theme_text_color: "Custom"
-            font_name: root.font_name
-            text_color: root.text_button_color or root.theme_cls.primary_color
-            on_release: root.on_ok_button_pressed()
+###############################################################################
+#
+#                                DOCKED RULES
+#
+###############################################################################
 
-        MDFlatButton:
-            id: cancel_button
-            text: "CANCEL"
-            on_release: root.dispatch("on_cancel", None)
-            theme_text_color: "Custom"
-            pos: root.width - self.width - ok_button.width - dp(10), dp(10)
-            font_name: root.font_name
-            text_color: root.text_button_color or root.theme_cls.primary_color
-
-
-<DatePickerDaySelectableItem>
+<MDDockedDatePicker>
+    calendar_layout: calendar_layout
     size_hint: None, None
-    size:
-        (dp(42), dp(42)) \
-        if root.theme_cls.device_orientation == "portrait" \
-        else (dp(32), dp(32))
-    disabled: True
+    size: calendar_layout.width - self.padding[0] / 2, dp(406)
+    orientation: "vertical"
+    padding: "12dp", 0, "12dp", "12dp"
+
+    BoxLayout:
+        id: month_year_selection_items_container
+        size_hint_y: None
+        height: self.minimum_height
+        padding: 0, 0, 0, "12dp"
+
+        MDDockedDatePickerMonthSelectionItem:
+            id: month_selection_items
+            text: root._current_month_name
+            date_picker: root
+
+        Widget:
+
+        MDDockedDatePickerYearSelectionItem:
+            id: year_selection_items
+            text: str(root.year)
+            date_picker: root
+
+    RelativeLayout:
+        size_hint: None, None
+        size: calendar_layout.size
+
+        MDCalendarLayout:
+            id: calendar_layout
+
+        MDDockedDatePickerMenuMonthYearSelection
+            id: month_year_selection_layout
+            size_hint: None, None
+            size: 0, 0
+
+    MDDatePickerButtonsContainer:
+        id: button_container
+        date_picker: root
+
+
+<MDDockedDatePickerMenuMonthYearSelection>
+    scale_value_x: 0
+    scale_value_y: 0
+    key_viewclass: "viewclass"
+    key_size: "height"
+    bar_width: 0
+
+    MDDockedDatePickerContainerMenuMonthYearSelection:
+        padding: dp(8), 0, 0, 0
+        default_size: None, dp(48)
+        default_size_hint: 1, None
+        size_hint_y: None
+        height: self.minimum_height
+        orientation: "vertical"
+        multiselect: False
+        touch_multiselect: True
+
+
+<MDDockedDatePickerMenuSelectionItem>
+    spacing: "8dp"
+    size_hint_y: None
+
+    MDIcon:
+        icon: "check"
+        pos_hint: {"center_y": .5}
+        icon_color:
+            self.theme_cls.transparentColor \
+            if not root.selected else \
+            self.theme_cls.onSurfaceColor
+
+    MDLabel:
+        text: root.month_year_name
+
+
+<MDDockedDatePickerBaseSelectionContainer>
+    size_hint: None, None
+    size: self.minimum_size
+
+    MDIconButton:
+        id: chevron_left
+        icon: "chevron-left"
+        on_release: root.dispatch("on_release", "prev")
+
+    MDLabel:
+        id: label
+        adaptive_size: True
+        text: root.text
+        pos_hint: {"center_y": .5}
+        padding: 0, 0, "8dp", 0
+        font_style: "Label"
+        role: "large"
+
+    MDDatePickerBaseMenuSelectionButton
+        id: menu_selection_button
+        pos_hint: {"center_y": .5}
+        icon: "menu-right"
+        date_picker: root.date_picker
+        on_release: root.dispatch("on_open_menu")
+
+    MDIconButton:
+        id: chevron_right
+        icon: "chevron-right"
+        on_release: root.dispatch("on_release", "next")
+
+###############################################################################
+#
+#                                COMMON RULES
+#
+###############################################################################
+
+<MDBaseDatePicker>
+    elevation_level: 0
+    shadow_color: self.theme_cls.transparentColor
+
+    canvas.before:
+        Color:
+            rgba:
+                self.theme_cls.surfaceContainerHighColor
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
+            radius: self.radius
+
+
+<MDCalendarLayout>
+    cols: 7
+    size_hint: None, None
+    width: dp(46 * 7)
+    height: self.minimum_height
+
+
+<MDDatePickerButtonsContainer>
+    size_hint_y: None
+    height: self.minimum_height
+    padding: 0, 0, dp(12), 0
+
+    Widget:
+
+    MDButton:
+        style: "text"
+        on_release: root.date_picker.dispatch("on_cancel")
+
+        MDButtonText:
+            text:
+                root.date_picker.text_button_cancel \
+                if root.date_picker else \
+                ""
+
+    MDButton:
+        style: "text"
+        on_release: root.date_picker.dispatch("on_ok")
+
+        MDButtonText:
+            text:
+                root.date_picker.text_button_ok \
+                if root.date_picker else \
+                ""
+
+
+<MDDatePickerMenuButton>
+    icon: "menu-right"
+
+
+<MDDatePickerWeekdayLabel>
+    size_hint: None, None
+    text_size: self.size
+    halign: "center"
+    valign: "middle"
+    size: dp(40), dp(40)
+
+
+<MDDatePickerDaySelectableItem>
+    size_hint: None, None
+    size: dp(42), dp(42)
+    halign: "center"
+    radius: self.height / 2
+    line_color:
+        self.theme_cls.primaryColor \
+        if self.is_today and self.date_picker.mark_today else \
+        self.theme_cls.transparentColor
+    text_color:
+        self.theme_cls.onSurfaceColor \
+        if not root.is_selected else \
+        self.theme_cls.onPrimaryColor
 
     # Fill marking the available dates of the range, if using the `range` mode
     # or use `min_date/max_date`.
     canvas.before:
         Color:
             rgba:
-                (self.owner.selector_color or self.theme_cls.primary_color)[:-1] + [.3] \
+                self.theme_cls.primaryColor[:-1] + [.3] \
                 if self.is_in_range \
-                else (0, 0, 0, 0)
+                else \
+                self.theme_cls.transparentColor
         RoundedRectangle:
             size:
-                (dp(44), dp(32)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else \
-                (dp(32), dp(28)) \
+                (dp(42), dp(32)) \
                 if self.is_range_end or self.is_week_end or self.is_month_end \
-                else (dp(46), dp(28))
-            pos:
-                (self.x - dp(1.5), self.y + dp(5)) \
-                if root.theme_cls.device_orientation == "portrait" else \
-                (self.x, self.y + 1)
+                else (dp(42), dp(32))
+            pos: self.x, self.y + dp(6)
             radius:
                 [
-                self.width / 2 if self.is_range_start else 0,
-                self.width / 2 if self.is_range_end else 0,
-                self.width / 2 if self.is_range_end else 0,
-                self.width / 2 if self.is_range_start else 0,
+                dp(32) / 2 if self.is_range_start else 0,
+                dp(32) / 2 if self.is_range_end else 0,
+                dp(32) / 2 if self.is_range_end else 0,
+                dp(32) / 2 if self.is_range_start else 0,
                 ]
 
         # Selection circle.
         Color:
             rgba:
-                root.owner.selector_color or self.theme_cls.primary_color \
+                self.theme_cls.primaryColor \
                 if root.is_selected and not self.disabled \
-                else (0, 0, 0, 0)
+                else self.theme_cls.transparentColor
         Ellipse:
-            size:
-                (dp(42), dp(42)) \
-                if root.theme_cls.device_orientation == "portrait" \
-                else (dp(32), dp(32))
+            size: dp(42), dp(42)
             pos: self.pos
-
-    MDLabel:
-        font_style: "Caption"
-        size_hint_x: None
-        halign: "center"
-        text: root.text
-        font_name: root.owner.font_name
-        theme_text_color: "Custom"
-        text_color:
-            root.owner.accent_color or root.theme_cls.bg_normal \
-            if root.is_selected else \
-            root.owner.text_current_color or root.theme_cls.primary_color \
-            if root.is_today else \
-            root.owner.text_color or root.theme_cls.text_color
-
-<DatePickerWeekdayLabel>
-    font_style: "Caption"
-    theme_text_color: "Custom"
-    size_hint: None, None
-    text_size: self.size
-    halign: "center"
-    valign:
-        "middle" if root.theme_cls.device_orientation == "portrait" \
-        else "center"
-    size:
-        (dp(40), dp(40)) if root.theme_cls.device_orientation == "portrait" \
-        else (dp(32), dp(32))
-    text_color: root.owner.text_weekday_color or app.theme_cls.disabled_hint_text_color
-
-
-<DatePickerYearSelectableItem>
-    font_style: "Caption"
-    size_hint_x: None
-    valign: "middle"
-    halign: "center"
-    text: root.text
-    theme_text_color: "Custom"
-    text_color:
-        (0, 0, 0, 0) \
-        if self.owner is None else \
-        self.owner.accent_color or self.owner.theme_cls.bg_normal \
-        if self.selected else \
-        self.owner.text_color or self.owner.theme_cls.text_color
-    on_text: root.font_name = root.owner.font_name
-
-    canvas.before:
-        Color:
-            rgba:
-                self.owner.selector_color or self.theme_cls.primary_color \
-                if self.selected else \
-                (0, 0, 0, 0)
-        RoundedRectangle:
-            pos: self.x + dp(12), self.y
-            size: self.width - dp(24), self.height
-            radius: [root.height / 2, ]
-
-
-<DatePickerInputFieldContainer>
-    adaptive_height: True
-    size_hint_x: None
-    spacing: dp(8)
-    opacity: 0
-    width:
-        self.owner.width - dp(48) \
-        if root.owner.theme_cls.device_orientation == "portrait" \
-        else self.owner.width - dp(168) - dp(48)
-    y:
-        self.owner.height - dp(123) - self.height - dp(20) \
-        if root.owner.theme_cls.device_orientation == "portrait" \
-        else self.owner.height - self.height - dp(24)
-    x:
-        dp(24) if root.owner.theme_cls.device_orientation == "portrait" \
-        else dp(168) + dp(24)
-
-
-<DatePickerInputField>
-    mode: "fill"
-    hint_text: "dd/mm/yyyy"
-    input_filter: root.input_filter
-    fill_color: root.owner.input_field_background_color or (0, 0, 0, .15)

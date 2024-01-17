@@ -4,5 +4,4 @@ from .card import (
     MDCardSwipe,
     MDCardSwipeFrontBox,
     MDCardSwipeLayerBox,
-    MDSeparator,
 )

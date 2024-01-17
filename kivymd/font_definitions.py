@@ -1,5 +1,5 @@
 """
-Themes/Font Definitions
+Themes/Font definitions
 =======================
 
 .. seealso::
@@ -8,6 +8,7 @@ Themes/Font Definitions
 """
 
 from kivy.core.text import LabelBase
+from kivy.metrics import sp
 
 from kivymd import fonts_path
 
@@ -48,22 +49,102 @@ fonts = [
 for font in fonts:
     LabelBase.register(**font)
 
-theme_font_styles = [
-    "H1",
-    "H2",
-    "H3",
-    "H4",
-    "H5",
-    "H6",
-    "Subtitle1",
-    "Subtitle2",
-    "Body1",
-    "Body2",
-    "Button",
-    "Caption",
-    "Overline",
-    "Icon",
-]
+# TODO: Add `weight` properties.
+theme_font_styles = {
+    "Icon": {
+        "large": {
+            "line-height": 1,
+            "font-name": "Icons",
+            "font-size": sp(24),
+        },
+    },
+    "Display": {
+        "large": {
+            "line-height": 1.64,
+            "font-name": "Roboto",
+            "font-size": sp(57),
+        },
+        "medium": {
+            "line-height": 1.52,
+            "font-name": "Roboto",
+            "font-size": sp(45),
+        },
+        "small": {
+            "line-height": 1.44,
+            "font-name": "Roboto",
+            "font-size": sp(36),
+        },
+    },
+    "Headline": {
+        "large": {
+            "line-height": 1.40,
+            "font-name": "Roboto",
+            "font-size": sp(32),
+        },
+        "medium": {
+            "line-height": 1.36,
+            "font-name": "Roboto",
+            "font-size": sp(28),
+        },
+        "small": {
+            "line-height": 1.32,
+            "font-name": "Roboto",
+            "font-size": sp(24),
+        },
+    },
+    "Title": {
+        "large": {
+            "line-height": 1.28,
+            "font-name": "Roboto",
+            "font-size": sp(22),
+        },
+        "medium": {
+            "line-height": 1.24,
+            "font-name": "Roboto",
+            "font-size": sp(16),
+        },
+        "small": {
+            "line-height": 1.20,
+            "font-name": "Roboto",
+            "font-size": sp(14),
+        },
+    },
+    "Body": {
+        "large": {
+            "line-height": 1.24,
+            "font-name": "Roboto",
+            "font-size": sp(16),
+        },
+        "medium": {
+            "line-height": 1.20,
+            "font-name": "Roboto",
+            "font-size": sp(14),
+        },
+        "small": {
+            "line-height": 1.16,
+            "font-name": "Roboto",
+            "font-size": sp(12),
+        },
+    },
+    "Label": {
+        "large": {
+            "line-height": 1.20,
+            "font-name": "Roboto",
+            "font-size": sp(14),
+        },
+        "medium": {
+            "line-height": 1.16,
+            "font-name": "Roboto",
+            "font-size": sp(12),
+        },
+        "small": {
+            "line-height": 1.16,
+            "font-name": "Roboto",
+            "font-size": sp(11),
+        },
+    },
+}
 """
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/font-styles-2.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/label-font-style-preview.png
+    :align: center
 """

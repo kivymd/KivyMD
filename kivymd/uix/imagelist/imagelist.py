@@ -11,10 +11,31 @@ Components/ImageList
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list.png
     :align: center
 
-`KivyMD` provides the following tile classes for use:
-
 Usage
 -----
+
+.. code-block:: kv
+
+    MDSmartTile:
+        [...]
+
+        MDSmartTileImage:
+            [...]
+
+        MDSmartTileOverlayContainer:
+            [...]
+
+            # Content
+            [...]
+
+Anatomy
+-------
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list-anatomy.png
+    :align: center
+
+Example
+-------
 
 .. code-block:: python
 
@@ -24,69 +45,103 @@ Usage
 
     KV = '''
     MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
 
         MDSmartTile:
-            radius: 24
-            box_radius: [0, 0, 24, 24]
-            box_color: 1, 1, 1, .2
-            source: "cats.jpg"
             pos_hint: {"center_x": .5, "center_y": .5}
             size_hint: None, None
             size: "320dp", "320dp"
+            overlap: False
 
-            MDIconButton:
-                icon: "heart-outline"
-                theme_icon_color: "Custom"
-                icon_color: 1, 0, 0, 1
-                pos_hint: {"center_y": .5}
-                on_release: self.icon = "heart" if self.icon == "heart-outline" else "heart-outline"
+            MDSmartTileImage:
+                source: "bg.jpg"
+                radius: [dp(24), dp(24), 0, 0]
 
-            MDLabel:
-                text: "Julia and Julie"
-                bold: True
-                color: 1, 1, 1, 1
+            MDSmartTileOverlayContainer:
+                md_bg_color: 0, 0, 0, .5
+                adaptive_height: True
+                padding: "8dp"
+                spacing: "8dp"
+                radius: [0, 0, dp(24), dp(24)]
+
+                MDIconButton:
+                    icon: "heart-outline"
+                    theme_icon_color: "Custom"
+                    icon_color: 1, 0, 0, 1
+                    pos_hint: {"center_y": .5}
+                    on_release:
+                        self.icon = "heart" \\
+                        if self.icon == "heart-outline" else \\
+                        "heart-outline"
+
+                MDLabel:
+                    text: "Ibanez GRG121DX-BKF"
+                    theme_text_color: "Custom"
+                    text_color: "white"
     '''
 
 
-    class MyApp(MDApp):
+    class Example(MDApp):
         def build(self):
+            self.theme_cls.theme_style = "Dark"
             return Builder.load_string(KV)
 
 
-    MyApp().run()
+    Example().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-usage.gif
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list-example.png
     :align: center
 
-Implementation
---------------
+API break
+=========
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-usage-sceleton.png
-    :align: center
+1.2.0 version
+-------------
+
+.. code-block:: kv
+
+    MDSmartTile:
+        [...]
+
+        # Content.
+        MDIconButton:
+            [...]
+
+        MDLabel:
+            [...]
+
+
+2.0.0 version
+-------------
+
+.. code-block:: kv
+
+    MDSmartTile:
+        [...]
+
+        MDSmartTileImage:
+            [...]
+
+        MDSmartTileOverlayContainer:
+            [...]
+
+            # Content.
+            [...]
 """
 
-__all__ = [
-    "MDSmartTile",
-]
+__all__ = ["MDSmartTile", "MDSmartTileOverlayContainer", "MDSmartTileImage"]
 
 import os
 
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import (
-    BooleanProperty,
-    ColorProperty,
-    OptionProperty,
-    StringProperty,
-    VariableListProperty,
-)
+from kivy.properties import BooleanProperty, OptionProperty, ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.fitimage import FitImage
-from kivymd.uix.label import MDLabel
 from kivymd.uix.relativelayout import MDRelativeLayout
 
 with open(
@@ -95,12 +150,39 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class SmartTileImage(RectangularRippleBehavior, ButtonBehavior, FitImage):
-    """Implements the tile image."""
+class MDSmartTileImage(RectangularRippleBehavior, ButtonBehavior, FitImage):
+    """
+    Implements the tile image.
+
+    .. versionchanged:: 2.0.0
+
+        The `SmartTileImage` class has been renamed to `MDSmartTileImage`.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.fitimage.fitimage.FitImage`
+    classes documentation.
+    """
+
+    _smart_tile = ObjectProperty()
+    _overlay_container = ObjectProperty()
 
 
-class SmartTileOverlayBox(MDBoxLayout):
-    """Implements a container for custom widgets to be added to the tile."""
+class MDSmartTileOverlayContainer(MDBoxLayout):
+    """
+    Implements a container for custom widgets to be added to the tile.
+
+    .. versionchanged:: 2.0.0
+
+        The `SmartTileOverlayBox` class has been renamed to
+        `MDSmartTileOverlayContainer`.
+
+    For more information, see in the
+    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    """
+
+    _smart_tile = ObjectProperty()
 
 
 class MDSmartTile(MDRelativeLayout):
@@ -108,73 +190,33 @@ class MDSmartTile(MDRelativeLayout):
     A tile for more complex needs.
 
     For more information, see in the
-    :class:`~kivymd.uix.relativelayout.MDRelativeLayout` class documentation.
+    :class:`~kivymd.uix.relativelayout.MDRelativeLayout`
+    class documentation.
 
     Includes an image, a container to place overlays and a box that can act
     as a header or a footer, as described in the Material Design specs.
 
     :Events:
         `on_press`
-            Called when the button is pressed.
+            Fired when the button is pressed.
         `on_release`
-            Called when the button is released (i.e. the touch/click that
+            Fired when the button is released (i.e. the touch/click that
             pressed the button goes away).
     """
 
-    box_radius = VariableListProperty([0], length=4)
-    """
-    Box radius.
-
-    .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDSmartTile:
-            radius: 24
-            box_radius: [0, 0, 24, 24]
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-box-radius.png
-        :align: center
-
-    :attr:`box_radius` is an :class:`~kivy.properties.VariableListProperty`
-    and defaults to `[0, 0, 0, 0]`.
-    """
-
-    box_color = ColorProperty((0, 0, 0, 0.5))
-    """
-    Sets the color in (r, g, b, a) or string format and opacity for the
-    information box.
-
-    .. code-block:: kv
-
-        MDSmartTile:
-            radius: 24
-            box_radius: [0, 0, 24, 24]
-            box_color: 0, 1, 0, .5
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-box-color.png
-        :align: center
-
-    :attr:`box_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `(0, 0, 0, 0.5)`.
-    """
-
-    box_position = OptionProperty("footer", options=["footer", "header"])
+    overlay_mode = OptionProperty("footer", options=["footer", "header"])
     """
     Determines weather the information box acts as a header or footer to the
     image. Available are options: `'footer'`, `'header'`.
 
-    .. code-block:: kv
+    .. versionchanged:: 2.0.0
 
-        MDSmartTile:
-            radius: 24
-            box_radius: [24, 24, 0, 0]
-            box_position: "header"
+        The `box_position` attribute has been renamed to `overlay_mode`.
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-box-position.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list-overlay-mode.png
         :align: center
 
-    :attr:`box_position` is a :class:`~kivy.properties.OptionProperty`
+    :attr:`overlay_mode` is a :class:`~kivy.properties.OptionProperty`
     and defaults to `'footer'`.
     """
 
@@ -182,98 +224,42 @@ class MDSmartTile(MDRelativeLayout):
     """
     Determines if the `header/footer` overlaps on top of the image or not.
 
-    .. code-block:: kv
-
-        MDSmartTile:
-            radius: [24, 24, 0, 0]
-            box_radius: [0, 0, 24, 24]
-            overlap: False
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-overlap.png
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list-overlap.png
         :align: center
 
     :attr:`overlap` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
     """
 
-    lines = OptionProperty(1, options=[1, 2])
-    """
-    Number of lines in the `header/footer`. As per `Material Design specs`,
-    only 1 and 2 are valid values. Available are options: `1`, `2`.
-    This parameter just increases the height of the container for custom
-    elements.
-
-    .. code-block:: kv
-
-        MDSmartTile:
-            radius: 24
-            box_radius: [0, 0, 24, 24]
-            lines: 2
-            source: "cats.jpg"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint: None, None
-            size: "320dp", "320dp"
-
-            MDIconButton:
-                icon: "heart-outline"
-                theme_icon_color: "Custom"
-                icon_color: 1, 0, 0, 1
-                pos_hint: {"center_y": .5}
-                on_release: self.icon = "heart" if self.icon == "heart-outline" else "heart-outline"
-
-            TwoLineListItem:
-                text: "[color=#ffffff][b]My cats[/b][/color]"
-                secondary_text: "[color=#808080][b]Julia and Julie[/b][/color]"
-                pos_hint: {"center_y": .5}
-                _no_ripple_effect: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-smart-tile-lines.png
-        :align: center
-
-    :attr:`lines` is a :class:`~kivy.properties.OptionProperty`
-    and defaults to `1`.
-    """
-
-    source = StringProperty()
-    """
-    Path to tile image. See :attr:`~kivy.uix.image.Image.source`.
-
-    :attr:`source` is a :class:`~kivy.properties.StringProperty`
-    and defaults to `''`.
-    """
-
-    mipmap = BooleanProperty(False)
-    """
-    Indicate if you want OpenGL mipmapping to be applied to the texture.
-    Read :ref:`mipmap` for more information.
-
-    .. versionadded:: 1.0.0
-
-    :attr:`mipmap` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
     _no_ripple_effect = BooleanProperty(False)
+    _overlay_container = ObjectProperty()
+    _image = ObjectProperty()
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.register_event_type("on_release")
         self.register_event_type("on_press")
 
     def on_release(self, *args):
         """
-        Called when the button is released (i.e. the touch/click that
+        Fired when the button is released (i.e. the touch/click that
         pressed the button goes away).
         """
 
     def on_press(self, *args):
-        """Called when the button is pressed."""
+        """Fired when the button is pressed."""
 
     def add_widget(self, widget, *args, **kwargs):
-        if isinstance(widget, (SmartTileImage, SmartTileOverlayBox)):
+        def set_overlay_container(_widget):
+            _widget._overlay_container = self._overlay_container
+
+        if isinstance(widget, MDSmartTileOverlayContainer):
+            widget._smart_tile = self
+            self._overlay_container = widget
             return super().add_widget(widget, *args, **kwargs)
-        else:
-            if isinstance(widget, MDLabel):
-                widget.shorten = True
-                widget.shorten_from = "right"
-            Clock.schedule_once(lambda x: self.ids.box.add_widget(widget))
+        elif isinstance(widget, MDSmartTileImage):
+            self._image = widget
+            widget._smart_tile = self
+            widget._overlay_container = self._overlay_container
+            Clock.schedule_once(lambda x: set_overlay_container(widget), 0.5)
+            return super().add_widget(widget, *args, **kwargs)

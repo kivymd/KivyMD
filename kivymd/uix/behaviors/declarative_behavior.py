@@ -33,31 +33,35 @@ Imperative style
 .. code-block:: python
 
     from kivymd.app import MDApp
-    from kivymd.uix.bottomnavigation import MDBottomNavigation, MDBottomNavigationItem
-    from kivymd.uix.label import MDLabel
+    from kivymd.uix.navigationbar import (
+        MDNavigationBar,
+        MDNavigationItem,
+        MDNavigationItemIcon,
+        MDNavigationItemLabel,
+    )
     from kivymd.uix.screen import MDScreen
 
 
     class Example(MDApp):
         def build(self):
             screen = MDScreen()
-            bottom_navigation = MDBottomNavigation(
-                panel_color="#eeeaea",
-                selected_color_background="#97ecf8",
-                text_color_active="white",
-            )
+            bottom_navigation = MDNavigationBar()
 
-            data = {
-                "screen 1": {"text": "Mail", "icon": "gmail"},
-                "screen 2": {"text": "Discord", "icon": "discord"},
-                "screen 3": {"text": "LinkedIN", "icon": "linkedin"},
-            }
-            for key in data.keys():
-                text = data[key]["text"]
-                navigation_item = MDBottomNavigationItem(
-                    name=key, text=text, icon=data[key]["icon"]
+            datas = [
+                {"text": "Mail", "icon": "gmail"},
+                {"text": "GitHub", "icon": "git"},
+                {"text": "LinkedIN", "icon": "linkedin"},
+            ]
+            for data in datas:
+                text = data["text"]
+                navigation_item = MDNavigationItem(
+                    MDNavigationItemIcon(
+                        icon=data["icon"],
+                    ),
+                    MDNavigationItemLabel(
+                        text=text,
+                    ),
                 )
-                navigation_item.add_widget(MDLabel(text=text, halign="center"))
                 bottom_navigation.add_widget(navigation_item)
 
             screen.add_widget(bottom_navigation)
@@ -65,9 +69,6 @@ Imperative style
 
 
     Example().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-styles-programming.png
-    :align: center
 
 Take a look at the above code example. This is a very simple UI. But looking
 at this code, you will not be able to figure the widget tree and understand
@@ -87,51 +88,42 @@ Declarative style with KV language
     from kivymd.app import MDApp
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         def build(self):
             return Builder.load_string(
                 '''
     MDScreen:
 
-        MDBottomNavigation:
-            panel_color: "#eeeaea"
-            selected_color_background: "#97ecf8"
-            text_color_active: "white"
+        MDNavigationBar:
 
-            MDBottomNavigationItem:
-                name: "screen 1"
-                text: "Mail"
-                icon: "gmail"
+            MDNavigationItem:
 
-                MDLabel:
+                MDNavigationItemIcon:
+                    icon: "gmail"
+
+                MDNavigationItemLabel:
                     text: "Mail"
-                    halign: "center"
 
-            MDBottomNavigationItem:
-                name: "screen 2"
-                text: "Discord"
-                icon: "discord"
+            MDNavigationItem:
 
-                MDLabel:
-                    text: "Discord"
-                    halign: "center"
+                MDNavigationItemIcon:
+                    icon: "git"
 
-            MDBottomNavigationItem:
-                name: "screen 3"
-                text: "LinkedIN"
-                icon: "linkedin"
+                MDNavigationItemLabel:
+                    text: "GitHub"
 
-                MDLabel:
+            MDNavigationItem:
+
+                MDNavigationItemIcon:
+                    icon: "linkedin"
+
+                MDNavigationItemLabel:
                     text: "LinkedIN"
-                    halign: "center"
     '''
             )
 
 
-    Test().run()
-
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-navigation-styles-programming.png
-    :align: center
+    Example().run()
 
 Looking at this code, we can now clearly see the widget tree and their properties.
 We can quickly navigate through the components of the screen and quickly
@@ -146,48 +138,41 @@ Declarative style with Python code
 .. code-block:: python
 
     from kivymd.app import MDApp
-    from kivymd.uix.bottomnavigation import MDBottomNavigation, MDBottomNavigationItem
-    from kivymd.uix.label import MDLabel
-    from kivymd.uix.screen import MDScreen
+    from kivymd.uix.navigationbar import (
+        MDNavigationBar,
+        MDNavigationItemIcon,
+        MDNavigationItem,
+        MDNavigationItemLabel,
+    )
 
 
     class Example(MDApp):
         def build(self):
-            return (
-                MDScreen(
-                    MDBottomNavigation(
-                        MDBottomNavigationItem(
-                            MDLabel(
-                                text="Mail",
-                                halign="center",
-                            ),
-                            name="screen 1",
-                            text="Mail",
-                            icon="gmail",
-                        ),
-                        MDBottomNavigationItem(
-                            MDLabel(
-                                text="Discord",
-                                halign="center",
-                            ),
-                            name="screen 2",
-                            text="Discord",
-                            icon="discord",
-                        ),
-                        MDBottomNavigationItem(
-                            MDLabel(
-                                text="LinkedIN",
-                                halign="center",
-                            ),
-                            name="screen 3",
-                            text="LinkedIN",
-                            icon="linkedin",
-                        ),
-                        panel_color="#eeeaea",
-                        selected_color_background="#97ecf8",
-                        text_color_active="white",
-                    )
-                )
+            return MDNavigationBar(
+                MDNavigationItem(
+                    MDNavigationItemIcon(
+                        icon="gmail",
+                    ),
+                    MDNavigationItemLabel(
+                        text="Mail",
+                    ),
+                ),
+                MDNavigationItem(
+                    MDNavigationItemIcon(
+                        icon="twitter",
+                    ),
+                    MDNavigationItemLabel(
+                        text="Twitter",
+                    ),
+                ),
+                MDNavigationItem(
+                    MDNavigationItemIcon(
+                        icon="linkedin",
+                    ),
+                    MDNavigationItemLabel(
+                        text="LinkedIN",
+                    ),
+                ),
             )
 
 
@@ -239,7 +224,7 @@ get to the desired id:
 
     from kivymd.app import MDApp
     from kivymd.uix.boxlayout import MDBoxLayout
-    from kivymd.uix.button import MDRaisedButton
+    from kivymd.uix.button import MDButton, MDButtonText
     from kivymd.uix.floatlayout import MDFloatLayout
 
 
@@ -248,18 +233,22 @@ get to the desired id:
             return (
                 MDBoxLayout(
                     MDFloatLayout(
-                        MDRaisedButton(
+                        MDButton(
+                            MDButtonText(
+                                text="Button 1",
+                            ),
                             id="button_1",
-                            text="Button 1",
                             pos_hint={"center_x": 0.5, "center_y": 0.5},
                         ),
                         id="box_container_1",
                     ),
                     MDBoxLayout(
                         MDFloatLayout(
-                            MDRaisedButton(
+                            MDButton(
+                                MDButtonText(
+                                    text="Button 2",
+                                ),
                                 id="button_2",
-                                text="Button 2",
                                 pos_hint={"center_x": 0.5, "center_y": 0.5},
                             ),
                             id="float_container",
@@ -271,13 +260,14 @@ get to the desired id:
 
         def on_start(self):
             # {
-            #     'box_container_1': <kivymd.uix.floatlayout.MDFloatLayout>,
-            #     'box_container_2': <kivymd.uix.boxlayout.MDBoxLayout object>
+            #     'button_1': <kivymd.uix.button.button.MDButton object at 0x11d93c9e0>,
+            #     'button_2': <kivymd.uix.button.button.MDButton object at 0x11da128f0>,
+            #     'float_container': <kivymd.uix.floatlayout.MDFloatLayout object at 0x11da228f0>,
+            #     'box_container_1': <kivymd.uix.floatlayout.MDFloatLayout object at 0x11d9fc3c0>,
+            #     'box_container_2': <kivymd.uix.boxlayout.MDBoxLayout object at 0x11dbf06d0>,
             # }
-            print(self.root.ids)
-
-            # <kivymd.uix.button.button.MDRaisedButton>
-            print(self.root.ids.box_container_2.ids.float_container.ids.button_2)
+            super().on_start()
+            print(self.root.get_ids())
 
 
     Example().run()
@@ -293,6 +283,15 @@ from kivy.properties import StringProperty
 from kivy.uix.widget import Widget
 
 
+class _Dict(dict):
+    """Implements access to dictionary values via a dot."""
+
+    def __getattr__(self, name):
+        return self[name]
+
+
+# TODO: Add cleaning of the `__ids` collection when removing child widgets
+#  from the parent.
 class DeclarativeBehavior:
     """
     Implements the creation and addition of child widgets as declarative
@@ -307,6 +306,8 @@ class DeclarativeBehavior:
     and defaults to `''`.
     """
 
+    __ids = _Dict()
+
     def __init__(self, *args, **kwargs):
         super().__init__(**kwargs)
 
@@ -314,4 +315,12 @@ class DeclarativeBehavior:
             if issubclass(child.__class__, Widget):
                 self.add_widget(child)
                 if hasattr(child, "id") and child.id:
-                    self.ids[child.id] = child
+                    self.__ids[child.id] = child
+
+    def get_ids(self) -> dict:
+        """
+        Returns a dictionary of widget IDs defined in Python
+        code that is written in a declarative style.
+        """
+
+        return self.__ids

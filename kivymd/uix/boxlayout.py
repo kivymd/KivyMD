@@ -16,7 +16,7 @@ BoxLayout
 
         canvas:
             Color:
-                rgba: app.theme_cls.primary_color
+                rgba: app.theme_cls.primaryColor
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -28,7 +28,7 @@ MDBoxLayout
 
     MDBoxLayout:
         adaptive_height: True
-        md_bg_color: app.theme_cls.primary_color
+        md_bg_color: app.theme_cls.primaryColor
 
 Available options are:
 ----------------------
@@ -38,6 +38,7 @@ Available options are:
 - adaptive_size_
 
 .. adaptive_height:
+
 adaptive_height
 ---------------
 
@@ -53,6 +54,7 @@ Equivalent
     height: self.minimum_height
 
 .. adaptive_width:
+
 adaptive_width
 --------------
 
@@ -68,6 +70,7 @@ Equivalent
     height: self.minimum_width
 
 .. adaptive_size:
+
 adaptive_size
 -------------
 
@@ -89,15 +92,24 @@ from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 
 
 class MDBoxLayout(
-    DeclarativeBehavior, ThemableBehavior, BoxLayout, MDAdaptiveWidget
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    BoxLayout,
+    MDAdaptiveWidget,
 ):
     """
     Box layout class.
 
-    For more information, see in the
-    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
     """

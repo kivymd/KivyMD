@@ -16,17 +16,20 @@ import re
 import autoapi
 import sphinx
 import unidecode
+from autoapi.directives import NestedParse
 from autoapi.extension import LOGGER
 from autoapi.extension import setup as autoapi_setup
 from autoapi.mappers.python.mapper import PythonSphinxMapper
 from autoapi.mappers.python.objects import PythonPythonMapper
+from docutils import nodes
 from sphinx.util.console import bold, darkgreen
+from sphinx.util.nodes import nested_parse_with_titles
 from sphinx.util.osutil import ensuredir
 
 
 def PythonPythonMapper_include_dir(self: PythonPythonMapper, root):
     if os.path.isabs(root):
-        parts = [self.app.confdir]
+        parts = [str(self.app.confdir)]
     else:
         parts = [""]  # Config root folder
     parts.extend(self.pathname.split(os.path.sep))
@@ -50,11 +53,11 @@ def PythonPythonMapper_pathname(self: PythonPythonMapper):
 def PythonSphinxMapper_output_rst(
     self: PythonSphinxMapper, root, source_suffix
 ):
-    for _, obj in sphinx.util.status_iterator(
+    for _, obj in sphinx.util.display.status_iterator(
         self.objects.items(),
         bold("[AutoAPI] ") + "Rendering Data... ",
         length=len(self.objects),
-        verbosity="INFO",
+        verbosity=1,
         stringify_func=(lambda x: x[0]),
     ):
         rst = obj.render(
@@ -128,7 +131,21 @@ def extension_build_finished(app, exception):
                     break
 
 
+def patched_nested_parse_run(self):
+    node = nodes.container()
+    node.document = self.state.document
+    nested_parse_with_titles(self.state, self.content, node)
+    try:
+        title_node = node[0][0]
+        if isinstance(title_node, nodes.title):
+            title_node.children.pop(0)
+    except IndexError:
+        pass
+    return node.children
+
+
 def setup(app):
+    NestedParse.run = patched_nested_parse_run
     PythonPythonMapper.pathname = property(PythonPythonMapper_pathname)
     PythonPythonMapper.include_dir = PythonPythonMapper_include_dir
     PythonSphinxMapper.output_rst = PythonSphinxMapper_output_rst

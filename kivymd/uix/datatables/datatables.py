@@ -335,11 +335,12 @@ class TableHeader(ThemableBehavior, ScrollView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        Clock.schedule_once(self.generate_cells)
-
-    def generate_cells(self, *args):
-        # print(self.table_data.check)
+        #     Clock.schedule_once(self.generate_cells)
+        #
+        # def generate_cells(self, *args):
+        #     # print(self.table_data.check)
         for i, col_heading in enumerate(self.column_data):
+            print(i, col_heading)
             self.cols_minimum[i] = col_heading[1] * 5
             self._col_headings.append(col_heading[0])
             if i:

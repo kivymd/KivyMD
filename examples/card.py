@@ -41,7 +41,6 @@ class MyCard(MDCard):
 
 class Example(MDApp, CommonApp):
     def build(self):
-        self.theme_cls.dynamic_color = True
         self.theme_cls.primary_palette = "Red"
         return Builder.load_string(KV)
 

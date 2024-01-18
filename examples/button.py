@@ -175,7 +175,6 @@ MDScreen:
 
 class Example(MDApp, CommonApp):
     def build(self):
-        self.theme_cls.dynamic_color = True
         return Builder.load_string(KV)
 
     def disabled_widgets(self):

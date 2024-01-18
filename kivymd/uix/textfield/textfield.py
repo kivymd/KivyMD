@@ -222,6 +222,8 @@ API break
             max_text_length: 10
 """
 
+from __future__ import annotations
+
 __all__ = (
     "BaseTextFieldIcon",
     "BaseTextFieldLabel",

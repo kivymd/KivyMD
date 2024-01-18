@@ -1,0 +1,47 @@
+1.2.0
+-----
+
+* Bug fixes and other minor improvements.
+* [`pull 1392 <https://github.com/kivymd/KivyMD/pull/1392>`_] Add icon color property to `right_action_items` and `left_action_items` in `MDTopAppBar` class.
+* [`commit 5b14aea <https://github.com/kivymd/KivyMD/commit/5b14aea97ca67efbab9bd814ed0a7cc7bcb57863>`_] Add feature for changing the scale of the shadow  for `CommonElevationBehavior` class.
+* [`commit 86d206f <https://github.com/kivymd/KivyMD/commit/86d206f4e5122d3af6968a00a8cc2144b2697955>`_] Add elevation properties to `MDDataTable` class.
+* `Add `shadow_radius` to `MDDropdownMenu` class.
+* [`pull 1394 <https://github.com/kivymd/KivyMD/pull/1394>`_] Add on_copy event to `MDLabel` class.
+* [`commit 6c44843 <https://github.com/kivymd/KivyMD/commit/6c4484326f8d38aa288bba890c2b4b868909ab6e>`_] Add feature to highlight a label with a double tap to `MDLabel` class.
+* [`commit fbb01d8 <https://github.com/kivymd/KivyMD/commit/fbb01d8e54cb9534b2d661be5a64bb8f119d887a>`_] Add feature to use text markup in the `toast` label.
+
+* Fix `MDDatePicker` widget:
+
+  - [`pull 1391 <https://github.com/kivymd/KivyMD/pull/1391>`_] Make day widgets non-clickable when another dialog is open;
+  - [`pull 1390 <https://github.com/kivymd/KivyMD/pull/1390>`_] Refactor input fields and fix some bugs;
+
+* [`commit e9ec262 <https://github.com/kivymd/KivyMD/commit/e9ec26283fd6ddf5f436168f918797de16f46c79>`_] Fix `MDDropdownMenu` position isn't working.
+* [`commit 905611d <https://github.com/kivymd/KivyMD/commit/905611d6c5d8553c4ca6bd5ee1c4d2d7ee726c8d>`_] Fix switching between a dark and light theme causes most of the `MDTextField` widget elements not to update their colors when changing the theme [`issuecomment: 1287252715 <https://github.com/kivymd/KivyMD/pull/740#issuecomment-1287252715>`_].
+* [`commit 2af018b <https://github.com/kivymd/KivyMD/commit/2af018b00ca6897b42ca01bbed687dab62efd7fd>`_] Fix incorrect `md_bd_color` behavior [`pull 1396 <https://github.com/kivymd/KivyMD/issues/1396>`_] of `MDLabel` class.
+* [`commit b4eef1a <https://github.com/kivymd/KivyMD/commit/b4eef1a52a24e540b8a2863fbd9f43c45291cbbe>`_] Fix changing theme doesn't work as expected with `MDDataTable` [`issues 1399 <https://github.com/kivymd/KivyMD/issues/1399>`_].
+* [`commit 90d7e1b <https://github.com/kivymd/KivyMD/commit/90d7e1b992ea9e4d07abe9f11917141a5980711b>`_] Fix on_long_touch method call for `TouchBehavior` class - the `on_long_touch` method was called at the `on_touch_down` event.
+* [`commit 941f52e <https://github.com/kivymd/KivyMD/commit/941f52e94c5793eb1c1d02f2c9f6ba284860853b>`_] Fix `MDTextField` gets text color to black when disabled using dark theme [`issues 1410 <https://github.com/kivymd/KivyMD/issues/1410>`_].
+* [`commit 9f428d8 <https://github.com/kivymd/KivyMD/commit/9f428d88c333f4922fd4d29edd25feb94d589fd5>`_] Fix `MDLabel` not change its color [`commit 4335dfb <https://github.com/kivymd/KivyMD/commit/4335dfbefb4e4c9677c9b1afc0c41186cdf6a538>`_] when theme is switched to "Dark" after switching screens [`issues 1403 <https://github.com/kivymd/KivyMD/issues/1403>`_].
+* [`commit 04d3ef9 <https://github.com/kivymd/KivyMD/commit/04d3ef99ac0c5f0e33d44da02a4bc7e539a38e86>`_] Fix right/left icons color  when the `MDTextField` is in the disabled state, the icon color has not changed.
+* [`commit fd444ed <https://github.com/kivymd/KivyMD/commit/fd444ed2adecaa4bfe5cea1aeebeb9b4c09efcb3>`_] Fix text colors when the `MDTextField` is in the disabled state nd at the same time in the error state, the colors of the hint text, helper text, max text length have not changed.
+* [`commit 0aba528 <https://github.com/kivymd/KivyMD/commit/0aba528c44f5419a04b6f3e5144ac3d7a86e2b61>`_] Fix Bug on android related to shaders [`issues 1352 <https://github.com/kivymd/KivyMD/issues/1352>`_].
+* [`commit 5f3e170 <https://github.com/kivymd/KivyMD/commit/5f3e17017987981ff7a4d05362951c3a924199e2>`_] `MDBottomSheet` API break . Now the `MDBottomSheet` class implements only the behavior of the bottom sheet. All custom content must be implemented by self.
+* [`commit d1d37df <https://github.com/kivymd/KivyMD/commit/d1d37df7206ba7dd2565a97b2dd9d1819a7cdf0e>`_] Fix cannot set font_size  when instantiating `MDLabel` [`issues 1435 <https://github.com/kivymd/KivyMD/issues/1435>`_].
+* [`commit b7cebbb <https://github.com/kivymd/KivyMD/commit/b7cebbb945c07d7ecee81255b8dd8775d71ccf67>`_] Fix  widget size adjustment when we use the `adaptive_height/adaptive_width/adaptive_size` parameters, if the widget did not contain child widgets, then its size would be 100.
+* [`commit 81cd0bb <https://github.com/kivymd/KivyMD/commit/81cd0bbb19be7bb6b67dfe6c0d0258a862ede1a2>`_] Add radius property to  MDProgressBar` class.
+* [`commit fbb087e <https://github.com/kivymd/KivyMD/commit/fbb087e01eb9fe116f945c717fcac617f792e6aa>`_] The material design style has been changed. By default now `M3 <https://m3.material.io>`_.
+* [`commit 039536d <https://github.com/kivymd/KivyMD/commit/039536de44dc8a20bd280334be9e1a8ed9aa3b60>`_] Add `MDBottomAppBar` M3 style.
+* [`commit c5c1af1 <https://github.com/kivymd/KivyMD/commit/c5c1af1beba499644ec6352bede8f89a8914780f>`_] Add new properties to  `MDScrollViewRefreshLayout` class:
+* [`commit fd40967 <https://github.com/kivymd/KivyMD/commit/fd40967d0e0bc5ad28bd5883247883870b2ab716>`_] Fix `adaptive_width` and `md_bg_color` properties  `MDLabel` are not working correctly [`issues 1096 <https://github.com/kivymd/KivyMD/issues/1096>`_].
+* [`commit 57bfb2c <https://github.com/kivymd/KivyMD/commit/57bfb2c4cf6026f4683b6a4ceb56c5d4c95ab6b4>`_] Add rounded corners  for a `rectangle` type to `MDTextField` class.
+* [`commit e53778a <https://github.com/kivymd/KivyMD/commit/e53778a75c9064dae11b5c282c47509a25125e3b>`_] Remove  `glsl_path` from `data` from `hook-kivymd.py` module.
+* [`commit b1a9ae8 <https://github.com/kivymd/KivyMD/commit/b1a9ae883f42faf09070dfeb1440fd95f45e8af9>`_] Add new  `SegmentedButton` widget.
+* [`commit 0a99c45 <https://github.com/kivymd/KivyMD/commit/0a99c45c59d5e546f655a81bf225cb54b71aa34e>`_] `MDSnackbar` AP break - now the widget has become more customizable and closer to the standards of material design version 3.
+* [`commit 528affe <https://github.com/kivymd/KivyMD/commit/528affe35163f7f0b7ede98fcdfade1ca01e6487>`_] Improved animation performance  for animate the `MDCheckbox` widget.
+* [`commit 9d1be15 <https://github.com/kivymd/KivyMD/commit/9d1be15a4d6362acba4a99a85b2fb7491827d678>`_] Add the feature to use parent and child checkboxes for `MDCheckbox` widget.
+* [`commit 0a99c45 <https://github.com/kivymd/KivyMD/commit/0a99c45c59d5e546f655a81bf225cb54b71aa34e>`_] `MDChip` API break - now the widget has become more customizable and closer to the standards of material design version 3.
+* [`commit d59f8e7 <https://github.com/kivymd/KivyMD/commit/d59f8e7112a943ae95c9c1cb4ca081a19b3fc14e>`_] Fix elevation animation for buttons.
+* [`commit 6d61cc7 <https://github.com/kivymd/KivyMD/commit/6d61cc70f8e40b15c0cee45ff701da364614ddf7>`_] Improved performance and behavior of the `MDDropdownMenu` class.
+* [`commit 9d2e837 <https://github.com/kivymd/KivyMD/commit/9d2e837a161ca45e0ac09d24cad2f22dd032aa4f>`_] Fix scaling and rotation of widgets with elevation behavior.
+* [`pull 1582 <https://github.com/kivymd/KivyMD/pull/1582>`_] Fix docs generation.
+* [`pull 1580 <https://github.com/kivymd/KivyMD/pull/1580>`_] Use `mActivity` provided by android module.

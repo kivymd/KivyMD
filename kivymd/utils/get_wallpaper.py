@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import math
 
 from kivy import platform, Logger
 
@@ -16,9 +17,31 @@ def get_wallpaper(
             CompressFormat = autoclass("android.graphics.Bitmap$CompressFormat")
             FileOutputStream = autoclass("java.io.FileOutputStream")
             WallpaperManager = autoclass("android.app.WallpaperManager")
+            Bitmap = autoclass("android.graphics.Bitmap")
+            
             Context = mActivity.getApplicationContext()
             mWallpaperManager = WallpaperManager.getInstance(Context)
-            mWallpaperManager.getBitmap().compress(
+            bitmap = mWallpaperManager.getBitmap()
+
+            # Scale the bitmap down as needed
+            # Taken from:
+            # https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-main/palette/palette/src/main/java/androidx/palette/graphics/Palette.java#890
+            DEFAULT_RESIZE_BITMAP_AREA = 112 * 112 # Android default
+            bitmapArea = bitmap.getWidth() * bitmap.getHeight()
+            scaleRatio = -1
+
+            if bitmapArea > DEFAULT_RESIZE_BITMAP_AREA:
+                    scaleRatio = math.sqrt(DEFAULT_RESIZE_BITMAP_AREA / bitmapArea)
+
+            if scaleRatio >= 0:
+                bitmap = Bitmap.createScaledBitmap(
+                    bitmap,
+                    math.ceil(bitmap.getWidth() * scaleRatio),
+                    math.ceil(bitmap.getHeight() * scaleRatio),
+                    False
+                )
+
+            bitmap.compress(
                 CompressFormat.PNG,
                 100,
                 FileOutputStream(f"{user_data_dir}/wallpaper.png"),

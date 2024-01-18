@@ -485,6 +485,81 @@ MDIcon with badge icon
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-badge.png
     :align: center
+
+MDIcon with a custom font icon
+------------------------------
+
+You can use custom fonts to display icons. Such as for example
+`Material Symbols <https://fonts.google.com/icons?icon=>`_. You can find the
+necessary fonts in the
+`materialsymbols-python <https://github.com/T-Dynamos/materialsymbols-python>`_
+repository
+
+.. code-block:: python
+
+    from kivy.core.text import LabelBase
+    from kivy.lang import Builder
+    from kivy.metrics import sp
+
+    from kivymd.app import MDApp
+
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
+
+        MDIcon:
+            icon: "music_video"
+            theme_font_name: "Custom"
+            font_name: "MaterialSymbols"
+            pos_hint: {"center_x": .5, "center_y": .58}
+
+        MDButton:
+            pos_hint: {"center_x": .5, "center_y": .47}
+
+            MDButtonIcon:
+                icon: "music_video"
+                theme_font_name: "Custom"
+                font_name: "MaterialSymbols"
+
+            MDButtonText:
+                text: "Elevated"
+    '''
+
+
+    class Example(MDApp):
+        def build(self):
+            self.theme_cls.theme_style = "Dark"
+
+            LabelBase.register(
+                name="MaterialSymbols",
+                fn_regular="Material_Symbols_Outlined-20-200-1_200.ttf",
+            )
+
+            self.theme_cls.font_styles["MaterialSymbols"] = {
+                "large": {
+                    "line-height": 1.64,
+                    "font-name": "MaterialSymbols",
+                    "font-size": sp(57),
+                },
+                "medium": {
+                    "line-height": 1.52,
+                    "font-name": "MaterialSymbols",
+                    "font-size": sp(45),
+                },
+                "small": {
+                    "line-height": 1.44,
+                    "font-name": "MaterialSymbols",
+                    "font-size": sp(36),
+                },
+            }
+
+            return Builder.load_string(KV)
+
+
+    Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-castom-font.png
+    :align: center
 """
 
 from __future__ import annotations

@@ -26,12 +26,16 @@
 
 <MDIcon>
     font_style: "Icon"
-    text: u"{}".format(md_icons[root.icon]) if root.icon in md_icons else "blank"
-    source: None if root.icon in md_icons else root.icon
+    source: None if self.icon in md_icons else self.icon
     adaptive_size: True
+    text:
+        ( \
+        u"{}".format(md_icons[self.icon]) \
+        if self.icon in md_icons else \
+        "blank" \
+        ) \
+        if self.font_name == "Icons" else self.icon
     color:
         self.icon_color \
         if self.icon_color else \
         self.theme_cls.onSurfaceVariantColor
-
-

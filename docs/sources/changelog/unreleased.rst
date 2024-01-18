@@ -9,3 +9,4 @@ Unreleased
 
 * Bug fixes and other minor improvements.
 * [`commit 25f242e <https://github.com/kivymd/KivyMD/commit/25f242ed22b825deac4f02bc057be2415357e343>`_] Added the feature to use icons from custom fonts.
+* [`pull 1584 <https://github.com/kivymd/KivyMD/pull/1584>`_] Implement bitmap scale down.

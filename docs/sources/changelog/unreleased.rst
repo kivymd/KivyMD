@@ -8,5 +8,6 @@ Unreleased
        pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
-* [`commit 25f242e <https://github.com/kivymd/KivyMD/commit/25f242ed22b825deac4f02bc057be2415357e343>`_] Added the feature to use icons from custom fonts.
+* [`compare <https://github.com/kivymd/KivyMD/compare/3bf651d53ab2...6623c8d0f310>`_] Add supports `Google's Material Design 3` and the `Material You` concept.
+* [`commit 25f242e <https://github.com/kivymd/KivyMD/commit/25f242ed22b825deac4f02bc057be2415357e343>`_] Add the feature to use icons from custom fonts.
 * [`pull 1584 <https://github.com/kivymd/KivyMD/pull/1584>`_] Implement bitmap scale down.

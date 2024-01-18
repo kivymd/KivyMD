@@ -2,7 +2,7 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 
-KV = '''
+KV = """
 MDScreenManager:
 
     MDScreen:
@@ -53,7 +53,7 @@ MDScreenManager:
 
             MDButtonText:
                 text: "Move Hero To Screen A"
-'''
+"""
 
 
 class Example(MDApp):

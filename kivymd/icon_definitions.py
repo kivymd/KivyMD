@@ -7634,11 +7634,9 @@ if __name__ == "__main__":
     """
     )
 
-
     class IconItem(MDListItem):
         icon = StringProperty()
         text = StringProperty()
-
 
     class PreviousMDIcons(MDScreen):
         def set_list_md_icons(self, text="", search=False):
@@ -7661,7 +7659,6 @@ if __name__ == "__main__":
                         add_icon_item(name_icon)
                 else:
                     add_icon_item(name_icon)
-
 
     class MainApp(MDApp):
         def __init__(self, **kwargs):

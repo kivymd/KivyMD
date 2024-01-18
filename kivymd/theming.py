@@ -22,6 +22,7 @@ The main application class inherited from the :class:`~kivymd.app.MDApp` class
 has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
 the material properties of your application.
 """
+
 import os.path
 from timeit import default_timer
 

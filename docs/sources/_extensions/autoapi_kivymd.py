@@ -15,7 +15,7 @@ import re
 
 import autoapi
 import sphinx
-import unidecode
+# import unidecode
 from autoapi.directives import NestedParse
 from autoapi.extension import LOGGER
 from autoapi.extension import setup as autoapi_setup
@@ -41,7 +41,7 @@ def PythonPythonMapper_pathname(self: PythonPythonMapper):
         slug = self.summary
     except AttributeError:
         return os.path.join(*self.name.split("."))
-    slug = unidecode.unidecode(slug)
+    # slug = unidecode.unidecode(slug)
     slug = slug.lower()
     slug = re.sub(r"[^\w\./]+", "-", slug).strip("-")
     slug_split = slug.split("/")

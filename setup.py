@@ -10,7 +10,7 @@ from setuptools import find_packages, setup
 assert sys.version_info >= (3, 7, 0), "KivyMD requires Python 3.7+"
 
 try:
-    # __version__ is defined in _version.py, imported above
+    # __version__ is defined in _version.py, imported by exec() below
     # this is just so linter doesn't complain
     __version__ = ""
     with open(
@@ -76,7 +76,6 @@ def glob_paths(pattern):
             if file.endswith(pattern):
                 filepath = os.path.join(str(Path(*Path(root).parts[1:])), file)
 
-                # FIXME: https://github.com/kivymd/KivyMD/issues/1305
                 try:
                     out_files.append(filepath.split(f"kivymd{os.sep}")[1])
                 except IndexError:

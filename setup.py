@@ -1,5 +1,4 @@
 import os
-import re
 import subprocess
 import sys
 from datetime import datetime
@@ -10,27 +9,29 @@ from setuptools import find_packages, setup
 
 assert sys.version_info >= (3, 7, 0), "KivyMD requires Python 3.7+"
 
+try:
+    # __version__ is defined in _version.py, imported above
+    # this is just so linter doesn't complain
+    __version__ = ""
+    with open(
+        Path(__file__).parent / "kivymd" / "_version.py", encoding="utf-8"
+    ) as f:
+        exec(f.read())
+except FileNotFoundError:
+    raise
+
 
 def get_version() -> str:
-    """Get __version__ from __init__.py file."""
+    """Return version string."""
 
-    version_file = os.path.join(
-        os.path.dirname(__file__), "kivymd", "__init__.py"
-    )
-    version_file_data = open(version_file, "rt", encoding="utf-8").read()
-    version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
-    try:
-        version = re.findall(version_regex, version_file_data, re.M)[0]
-        return version
-    except IndexError:
-        raise ValueError(f"Unable to find version string in {version_file}.")
+    # keeping this for compatibility with previous versions of KivyMD
+    return __version__
 
 
-def write_version_info():
+def update_version_info():
     """Create _version.py file with git revision and date."""
 
     filename = os.path.join(os.path.dirname(__file__), "kivymd", "_version.py")
-    version = get_version()
     epoch = int(os.environ.get("SOURCE_DATE_EPOCH", time()))
     date = datetime.utcfromtimestamp(epoch).strftime("%Y-%m-%d")
     try:
@@ -52,11 +53,15 @@ def write_version_info():
         git_revision = "Unknown"
 
     version_info = (
-        f"# THIS FILE IS GENERATED FROM KIVYMD SETUP.PY\n"
-        f"__version__ = '{version}'\n"
-        f"__hash__ = '{git_revision}'\n"
-        f"__short_hash__ = '{git_revision[:7]}'\n"
-        f"__date__ = '{date}'\n"
+        "\n".join(
+            [
+                f'__version__ = "{__version__}"',
+                f'__hash__ = "{git_revision}"',
+                f'__short_hash__ = "{git_revision[:7]}"',
+                f'__date__ = "{date}"',
+            ]
+        )
+        + "\n"
     )
 
     open(filename, "wt", encoding="utf-8").write(version_info)
@@ -82,9 +87,9 @@ def glob_paths(pattern):
 
 if __name__ == "__main__":
     # Static strings are in setup.cfg
-    write_version_info()
+    update_version_info()
     setup(
-        version=get_version(),
+        version=__version__,
         packages=find_packages(
             include=["kivymd", "kivymd.*"], exclude=["kivymd.tools.release"]
         ),

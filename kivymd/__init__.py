@@ -26,10 +26,8 @@ import os
 import kivy
 from kivy.logger import Logger
 
-__version__ = "2.0.1.dev0"
-"""KivyMD version."""
+from kivymd._version import __version__, release
 
-release = False
 if "READTHEDOCS" not in os.environ:
     kivy.require("2.3.0")
 

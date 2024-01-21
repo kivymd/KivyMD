@@ -14,14 +14,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 
 import autoapi_kivymd  # NOQA. from _extensions
 
-import kivymd  # NOQA
+from kivymd._version import __version__ as KIVYMD_VERSION  # NOQA
 
 # Project information.
 project = "KivyMD"
 copyright = "2022, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
-version = kivymd.__version__
-release = kivymd.__version__
+version = KIVYMD_VERSION
+release = KIVYMD_VERSION
 
 # General configuration.
 master_doc = "index"

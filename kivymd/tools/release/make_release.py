@@ -59,21 +59,21 @@ def replace_in_file(pattern, repl, file):
     return not file_content == new_file_content
 
 
-def update_version_py(version, is_release, test: bool = False):
-    """Change version in `kivymd/_version.py`."""
+def update_init_py(version, is_release, test: bool = False):
+    """Change version in `kivymd/__init__.py`."""
 
-    init_file = os.path.abspath("kivymd/_version.py")
+    init_file = os.path.abspath("kivymd/__init__.py")
     init_version_regex = r"(?<=^__version__ = ['\"])[^'\"]+(?=['\"]$)"
     success = replace_in_file(init_version_regex, version, init_file)
 
     if test and not success:
-        print("Couldn't update _version.py file.", file=sys.stderr)
+        print("Couldn't update __init__.py file.", file=sys.stderr)
 
     init_version_regex = r"(?<=^release = )(True|False)(?=$)"
     success = replace_in_file(init_version_regex, str(is_release), init_file)
 
     if test and not success:
-        print("Couldn't update _version.py file.", file=sys.stderr)
+        print("Couldn't update __init__.py file.", file=sys.stderr)
 
 
 def update_readme(previous_version, version, test: bool = False):
@@ -264,7 +264,7 @@ def main():
         git_push([], ask=ask, push=push)
         return
 
-    update_version_py(version, is_release=True, test=test)
+    update_init_py(version, is_release=True, test=test)
     update_readme(previous_version, version, test=test)
 
     changelog_index_file = os.path.join(
@@ -303,7 +303,7 @@ def main():
         version,
         test=test,
     )
-    update_version_py(next_version, is_release=False, test=test)
+    update_init_py(next_version, is_release=False, test=test)
     git_commit(f"KivyMD {next_version}")
     git_push(branches_to_push, ask=ask, push=push)
 

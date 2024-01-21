@@ -55,7 +55,8 @@ def update_version_info():
     version_info = (
         "\n".join(
             [
-                f"release = False" f'__version__ = "{__version__}"',
+                "release = False",
+                f'__version__ = "{__version__}"',
                 f'__hash__ = "{git_revision}"',
                 f'__short_hash__ = "{git_revision[:7]}"',
                 f'__date__ = "{date}"',

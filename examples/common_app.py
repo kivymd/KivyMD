@@ -1,5 +1,6 @@
 from kivy.utils import hex_colormap
 
+from materialyoucolor.utils.platform_utils import SCHEMES
 from kivymd.uix.menu import MDDropdownMenu
 
 KV = """
@@ -55,7 +56,8 @@ class CommonApp:
         menu_items = []
         for item, method in {
             "Set palette": lambda: self.set_palette(),
-            "Switch theme style": lambda: self.theme_cls.switch_theme(),
+            "Switch theme style": lambda: self.switch_theme(),
+            "Switch scheme type": lambda: self.set_scheme_type(),
             "Disabled widgets": lambda: self.disabled_widgets(),
         }.items():
             menu_items.append(
@@ -69,9 +71,9 @@ class CommonApp:
             items=menu_items,
         )
         self.menu.open()
-
-    def switch_palette(self, selected_palette):
-        self.theme_cls.primary_palette = selected_palette
+    
+    def switch_theme(self):
+        self.theme_cls.switch_theme()
 
     def switch_palette(self, selected_palette):
         self.theme_cls.primary_palette = selected_palette
@@ -94,6 +96,25 @@ class CommonApp:
             caller=instance_from_menu,
             items=menu_items,
         ).open()
+
+    def set_scheme_type(self):
+        instance_from_menu = self.get_instance_from_menu("Switch scheme type")
+
+        menu_items = []
+        for scheme_name in SCHEMES.keys():
+            menu_items.append(
+                {
+                    "text": scheme_name,
+                    "on_release": lambda x=scheme_name: self.update_scheme_name(x),
+                }
+            )
+        MDDropdownMenu(
+            caller=instance_from_menu,
+            items=menu_items,
+        ).open()
+    
+    def update_scheme_name(self, scheme_name):
+        self.theme_cls.dynamic_scheme_name = scheme_name
 
     def get_instance_from_menu(self, name_item):
         index = 0

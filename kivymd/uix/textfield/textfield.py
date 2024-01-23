@@ -1446,12 +1446,26 @@ class MDTextField(
                 self.set_pos_hint_text(
                     0 if self.mode != "outlined" else dp(-14),
                     (
-                        -(self._leading_icon.texture_size[0] + dp(12))
+                        -(
+                            (
+                                self._leading_icon.texture_size[0]
+                                if self._leading_icon
+                                else 0
+                            )
+                            + dp(12)
+                        )
                         if self._leading_icon
                         else 0
                     )
                     if self.mode == "outlined"
-                    else -(self._leading_icon.texture_size[0] - dp(24)),
+                    else -(
+                        (
+                            self._leading_icon.texture_size[0]
+                            if self._leading_icon
+                            else 0
+                        )
+                        - dp(24)
+                    ),
                 )
                 self._hint_text_label.font_size = theme_font_styles[
                     self._hint_text_label.font_style
@@ -1557,12 +1571,26 @@ class MDTextField(
                     self.set_pos_hint_text(
                         0 if self.mode != "outlined" else dp(-14),
                         (
-                            -(self._leading_icon.texture_size[0] + dp(12))
+                            -(
+                                (
+                                    self._leading_icon.texture_size[0]
+                                    if self._leading_icon
+                                    else 0
+                                )
+                                + dp(12)
+                            )
                             if self._leading_icon
                             else 0
                         )
                         if self.mode == "outlined"
-                        else -(self._leading_icon.texture_size[0] - dp(24)),
+                        else -(
+                            (
+                                self._leading_icon.texture_size[0]
+                                if self._leading_icon
+                                else 0
+                            )
+                            - dp(24)
+                        ),
                     )
 
             if self._hint_text_label:

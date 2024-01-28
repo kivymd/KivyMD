@@ -394,8 +394,7 @@ Builder.load_string(
             size: self.size
             offset: root.shadow_offset
             spread_radius: -(root.shadow_softness), -(root.shadow_softness)
-            blur_radius: root.elevation_levels[root.elevation_level] * 2.5
-            # blur_radius: root.elevation * 10
+            blur_radius: root.elevation_levels[root.elevation_level]
             border_radius:
                 (root.radius if hasattr(self, "radius") and root.radius else [0, 0, 0, 0]) \
                 if root.shadow_radius == [0.0, 0.0, 0.0, 0.0] else \
@@ -425,7 +424,14 @@ class CommonElevationBehavior(Widget):
     """
 
     elevation_levels = DictProperty(
-        {0: 0, 1: dp(1.5), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}
+        {
+            0: 0,
+            1: dp(8),
+            2: dp(12),
+            3: dp(16),
+            4: dp(20),
+            5: dp(24),
+        }
     )
     """
     Elevation is measured as the distance between components along the z-axis
@@ -434,7 +440,7 @@ class CommonElevationBehavior(Widget):
     .. versionadded:: 1.2.0
 
     :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
-    and defaults to `{0: dp(0), 1: dp(1), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
+    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
     """
 
     elevation = BoundedNumericProperty(0, min=0, errorvalue=0)

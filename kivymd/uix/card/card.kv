@@ -6,19 +6,18 @@
 
 
 <MDCard>
-    shadow_radius: [dp(14), ]
+    shadow_radius: [(self.radius[0] / 2) + dp(2), ]
     shadow_color:
-        ( \
-        self.theme_cls.shadowColor \
+        { \
+        "filled": self.theme_cls.transparentColor, \
+        "outlined": self.theme_cls.transparentColor, \
+        "elevated": self.theme_cls.shadowColor \
         if self.theme_shadow_color == "Primary" else \
-        self.shadow_color \
-        ) \
+        self.shadow_color, \
+        }[self.style] \
         if not self.disabled else \
         { \
-        "filled": \
-        self.theme_cls.shadowColor[:-1] + [.5] \
-        if self.theme_shadow_color == "Primary" else \
-        self.shadow_color[:-1] + [.5], \
+        "filled": self.theme_cls.transparentColor, \
         "outlined": self.theme_cls.transparentColor, \
         "elevated": self.theme_cls.shadowColor[:-1] + [.5] \
         if self.theme_shadow_color == "Primary" else \
@@ -29,23 +28,41 @@
         { \
         "filled": [0, 0], \
         "outlined": [0, 0], \
-        "elevated": [0, -1], \
+        "elevated": [0, -2], \
         }[self.style] \
         if not self.disabled else \
         { \
-        "filled": [0, -1], \
+        "filled": [0, 0], \
         "outlined": [0, 0], \
-        "elevated": [0, -1], \
+        "elevated": [0, -2], \
         }[self.style] \
         ) \
         if self.theme_shadow_offset == "Primary" else self.shadow_offset
+    shadow_softness:
+        ( \
+        { \
+        "filled": 0, \
+        "outlined": 0, \
+        "elevated": dp(4), \
+        }[self.style] \
+        if not self.disabled else \
+        { \
+        "filled": 0, \
+        "outlined": 0, \
+        "elevated": dp(4), \
+        }[self.style] \
+        ) \
+        if self.theme_shadow_softness == "Primary" else self.shadow_softness
     elevation_level:
-        (
+        ( \
+        ( \
         { \
         "filled": 0, \
         "outlined": 0, \
         "elevated": self.elevation_level if self.elevation_level else 1, \
         }[self.style] \
+        ) \
+        if self.theme_elevation_level == "Primary" else self.elevation_level \
         ) \
         if not self.disabled else \
         { \

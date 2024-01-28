@@ -687,7 +687,7 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty,
+    ObjectProperty, DictProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
@@ -716,6 +716,26 @@ class BaseFabButton:
     :class:`~MDExtendedFabButton` and :class:`~MDFabButton` classes.
 
     .. versionadded:: 2.0.0
+    """
+
+    elevation_levels = DictProperty(
+        {
+            0: 0,
+            1: dp(4),
+            2: dp(8),
+            3: dp(12),
+            4: dp(16),
+            5: dp(18),
+        }
+    )
+    """
+    Elevation is measured as the distance between components along the z-axis
+    in density-independent pixels (dps).
+
+    .. versionadded:: 1.2.0
+
+    :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
+    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
     """
 
     color_map = OptionProperty(
@@ -801,6 +821,26 @@ class BaseButton(
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior`
     classes documentation.
+    """
+
+    elevation_levels = DictProperty(
+        {
+            0: 0,
+            1: dp(4),
+            2: dp(8),
+            3: dp(12),
+            4: dp(16),
+            5: dp(18),
+        }
+    )
+    """
+    Elevation is measured as the distance between components along the z-axis
+    in density-independent pixels (dps).
+
+    .. versionadded:: 1.2.0
+
+    :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
+    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
     """
 
     md_bg_color_disabled = ColorProperty(None)
@@ -968,34 +1008,35 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
 
         super().set_properties_widget()
 
-        if not self.disabled:
-            if self._state == self.state_hover and self.focus_behavior:
-                if self.style == "filled":
-                    self.elevation_level = 1
-                    self.shadow_softness = 0
-                elif self.style == "tonal":
-                    self.elevation_level = 1
-                else:
-                    self.elevation_level = 2
-                    self.shadow_softness = 2
-            elif self._state == self.state_press:
-                if self.style == "elevated":
-                    self.elevation_level = 2
-                    self.shadow_softness = 2
-                elif self.style == "tonal":
-                    self.elevation_level = 0
-                elif self.style == "filled":
-                    self.elevation_level = 0
-                    self.shadow_softness = 0
-            elif not self._state:
-                if self.style == "elevated":
-                    self.elevation_level = 1
-                    self.shadow_softness = 0
-                elif self.style == "tonal":
-                    self.elevation_level = 0
-                elif self.style == "filled":
-                    self.elevation_level = 0
-                    self.shadow_softness = 0
+        if (
+            self._state == self.state_hover
+            and self.focus_behavior
+            or self._state == self.state_press
+        ):
+            self._elevation_level = (
+                1
+                if self.theme_elevation_level == "Primary"
+                else self.elevation_level
+            )
+            self._shadow_softness = (
+                0
+                if self.theme_shadow_softness == "Primary"
+                else self.shadow_softness
+            )
+
+            if not self.disabled:
+                if self._state == self.state_hover and self.focus_behavior:
+                    if self.style == "elevated":
+                        self.elevation_level = 2
+                        self.shadow_softness = 2
+                elif self._state == self.state_press:
+                    if self.style == "elevated":
+                        self.elevation_level = 2
+                        self.shadow_softness = 2
+                elif not self._state:
+                    if self.style == "elevated":
+                        self.elevation_level = 1
+                        self.shadow_softness = 0
 
 
 class MDButtonText(MDLabel):
@@ -1102,17 +1143,34 @@ class MDFabButton(
 
         super().set_properties_widget()
 
+        if (
+            self._state == self.state_hover
+            and self.focus_behavior
+            or self._state == self.state_press
+        ):
+            self._elevation_level = (
+                1
+                if self.theme_elevation_level == "Primary"
+                else self.elevation_level
+            )
+            self._shadow_softness = (
+                0
+                if self.theme_shadow_softness == "Primary"
+                else self.shadow_softness
+            )
+
         if not self.disabled:
             if (
-                self._state == self.state_hover
-                and self.focus_behavior
-                or not self._state
+                self._state == self.state_hover and self.focus_behavior
             ):
+                self.elevation_level = 1
+                self.shadow_softness = 0
+            elif self._state == self.state_press:
                 self.elevation_level = 2
                 self.shadow_softness = 2
-            if self._state == self.state_press:
-                self.elevation_level = 3
-                self.shadow_softness = 4
+            elif not self._state:
+                self.elevation_level = 1
+                self.shadow_softness = 0
 
 
 class MDExtendedFabButtonIcon(MDIcon):
@@ -1162,6 +1220,26 @@ class MDExtendedFabButton(
             Fired when the button is collapsed.
         `on_expand`
             Fired when the button is expanded.
+    """
+
+    elevation_levels = DictProperty(
+        {
+            0: 0,
+            1: dp(4),
+            2: dp(8),
+            3: dp(12),
+            4: dp(16),
+            5: dp(18),
+        }
+    )
+    """
+    Elevation is measured as the distance between components along the z-axis
+    in density-independent pixels (dps).
+
+    .. versionadded:: 1.2.0
+
+    :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
+    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
     """
 
     _icon = ObjectProperty()

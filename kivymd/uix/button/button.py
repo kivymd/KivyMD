@@ -735,7 +735,7 @@ class BaseFabButton:
     .. versionadded:: 1.2.0
 
     :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
-    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
+    and defaults to `{0: dp(0), 1: dp(4), 2: dp(8), 3: dp(12), 4: dp(16), 5: dp(18)}`.
     """
 
     color_map = OptionProperty(
@@ -840,7 +840,7 @@ class BaseButton(
     .. versionadded:: 1.2.0
 
     :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
-    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
+    and defaults to `{0: dp(0), 1: dp(4), 2: dp(8), 3: dp(12), 4: dp(16), 5: dp(18)}`.
     """
 
     md_bg_color_disabled = ColorProperty(None)
@@ -1239,7 +1239,7 @@ class MDExtendedFabButton(
     .. versionadded:: 1.2.0
 
     :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
-    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
+    and defaults to `{0: dp(0), 1: dp(4), 2: dp(8), 3: dp(12), 4: dp(16), 5: dp(18)}`.
     """
 
     _icon = ObjectProperty()

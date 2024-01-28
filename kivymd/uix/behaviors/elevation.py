@@ -440,7 +440,7 @@ class CommonElevationBehavior(Widget):
     .. versionadded:: 1.2.0
 
     :attr:`elevation_levels` is an :class:`~kivy.properties.DictProperty`
-    and defaults to `{0: dp(0), 1: dp(8), 2: dp(3), 3: dp(6), 4: dp(8), 5: dp(12)}`.
+    and defaults to `{0: dp(0), 1: dp(8), 2: dp(23), 3: dp(16), 4: dp(20), 5: dp(24)}`.
     """
 
     elevation = BoundedNumericProperty(0, min=0, errorvalue=0)

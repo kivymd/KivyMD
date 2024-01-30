@@ -1352,7 +1352,7 @@ class MDTextField(
             ):
                 self.on_focus(instance, False)
 
-        Clock.schedule_once(set_text)
+        set_text()
 
     def on_focus(self, instance, focus: bool) -> None:
         """Fired when the `focus` value changes."""

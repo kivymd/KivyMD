@@ -23,7 +23,6 @@ KV = """
 
 
 MDScreen:
-    md_bg_color: app.theme_cls.backgroundColor
 
     MDIconButton:
         on_release: app.open_menu(self)
@@ -120,12 +119,11 @@ class Example(MDApp):
 
     def generate_cards(self, *args):
         self.root.ids.card_list.data = []
-        for color in self.theme_cls.schemes_name_colors:
-            value = f"{color}Color"
+        for name_color in self.theme_cls.current_schemes_color_data:
             self.root.ids.card_list.data.append(
                 {
-                    "bg_color": getattr(self.theme_cls, value),
-                    "text": value,
+                    "bg_color": getattr(self.theme_cls, name_color),
+                    "text": name_color,
                 }
             )
 

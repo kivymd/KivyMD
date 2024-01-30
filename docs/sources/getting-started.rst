@@ -148,7 +148,7 @@ create a custom button in `Kivy`:
 
     from kivymd.app import MDApp
     from kivymd.uix.screen import MDScreen
-    from kivymd.uix.button import MDRectangleFlatButton
+    from kivymd.uix.button import MDButton, MDButtonText
 
 
     class MainApp(MDApp):
@@ -158,8 +158,10 @@ create a custom button in `Kivy`:
 
             return (
                 MDScreen(
-                    MDRectangleFlatButton(
-                        text="Hello, World",
+                    MDButton(
+                        MDButtonText(
+                            text="Hello, World",
+                        ),
                         pos_hint={"center_x": 0.5, "center_y": 0.5},
                     )
                 )

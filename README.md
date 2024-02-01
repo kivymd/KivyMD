@@ -51,7 +51,7 @@ pip install kivymd==2.0.0
 - [Kivy](https://github.com/kivy/kivy) >= 2.3.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
 - [Python 3.7+](https://www.python.org/)
 - [Pillow](https://github.com/python-pillow/Pillow/)
-- [MaterialColor](https://github.com/T-Dynamos/materialyoucolor-pyhton)
+- [MaterialColor](https://github.com/T-Dynamos/materialyoucolor-python)
 - [asynckivy](https://github.com/asyncgui/asynckivy)
 
 ### How to install

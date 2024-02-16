@@ -9,18 +9,23 @@ from kivymd.dynamic_color import DynamicColor
 from examples.common_app import CommonApp, KV
 
 Builder.load_string("""
+#:import Clipboard kivy.core.clipboard.Clipboard
+
 <DynamicColorInfo>:
     name: "primaryColor"
     color:[0,0,0,0]
     size_hint_y:None
-    height:dp(120)
+    height:dp(130)
     orientation:"vertical"
+    spacing:dp(10)
     BoxLayout:
         spacing:dp(10)
         MDIconButton:
-            icon:"clipboard-text"
+            icon:"content-copy"
             size_hint_x:None
             width:dp(50)
+            on_release:
+                Clipboard.copy(root.name)
         MDLabel:
             text:root.name
             adaptive_height:True
@@ -46,11 +51,10 @@ class DynamicColorInfo(BoxLayout):
 class Example(MDApp, CommonApp):
 
     def build(self):
-        #self.theme_cls.dynamic_color = True
-        #self.theme_cls.path_to_wallpaper = "/home/tdynamos/Downloads/fortuti.png"
+        self.theme_cls.dynamic_color = True
+        self.theme_cls.path_to_wallpaper = "path_to_some_image.png"
         self.theme_cls.on_colors = lambda : Clock.schedule_once(self.refresh)
         return Builder.load_string(KV)
-
 
     def on_start(self):
         super().on_start()

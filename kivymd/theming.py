@@ -643,6 +643,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
 
     _size_current_wallpaper = NumericProperty(0)
+    _dark_mode = lambda self : False if self.theme_style == "Light" else True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -659,7 +660,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 self._set_palette_color()
         else:
             system_scheme = get_dynamic_scheme(
-                dark_mode=False if self.theme_style == "Light" else True,
+                dark_mode=self._dark_mode(),
                 contrast=self.dynamic_scheme_contrast,
                 dynamic_color_quality=self.dynamic_color_quality,
                 fallback_wallpaper_path=self.path_to_wallpaper,
@@ -713,9 +714,9 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
         self._set_color_names(
             SCHEMES[self.dynamic_scheme_name](
-                Hct.from_int(color),  # the color of current theme in int form
-                False if self.theme_style == "Light" else True,  # dark mode
-                0.0,  # contrast level
+                Hct.from_int(color),
+                self._dark_mode(),
+                self.dynamic_scheme_contrast,
             )
         )
 

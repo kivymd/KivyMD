@@ -17,26 +17,20 @@
         }[self.style]
     shadow_radius:
         { \
-        "standard": [dp(12), ], \
-        "small": [dp(8), ], \
-        "large": [dp(24), ], \
+        "standard": [dp(14), ], \
+        "small": [dp(10), ], \
+        "large": [dp(26), ], \
         }[self.style]
     shadow_offset: 0, -1
-    shadow_softness:
-        { \
-        "standard": 2, \
-        "small": 2, \
-        "large": 2, \
-        }[self.style]
     elevation_level:
         { \
-        "standard": 2, \
-        "small": 2, \
-        "large": 2, \
+        "standard": 1, \
+        "small": 1, \
+        "large": 1, \
         }[self.style]
     shadow_color:
         ( \
-        self.theme_cls.shadowColor \
+        self.theme_cls.shadowColor[:-1] + [.5] \
         if self.theme_shadow_color == "Primary" else \
         self.shadow_color \
         ) \
@@ -131,10 +125,10 @@
     size_hint: None, None
     size: "56dp", "56dp"
     radius: [dp(16), ]
-    shadow_radius: [dp(12), ]
+    shadow_radius: [dp(14), ]
     shadow_offset: 0, -1
-    shadow_softness: 2
-    elevation_level: 2
+    # shadow_softness: 2
+    elevation_level: 1
     shadow_color:
         ( \
         self.theme_cls.shadowColor \
@@ -289,7 +283,7 @@
     shadow_color:
         ( \
         ( \
-        self.theme_cls.shadowColor \
+        self.theme_cls.shadowColor[:-1] + [.5] \
         if self.theme_shadow_color == "Primary" else \
         self.shadow_color \
         ) \

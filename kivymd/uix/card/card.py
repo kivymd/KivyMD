@@ -668,7 +668,7 @@ class MDCard(
                     if self.theme_elevation_level == "Primary":
                         self.elevation_level = 2
                     if self.theme_shadow_softness == "Primary":
-                        self.shadow_softness = 1
+                        self.shadow_softness = dp(4)
                     if self.theme_shadow_offset == "Primary":
                         self.shadow_offset = [0, -2]
             elif self._state == self.state_press:
@@ -682,7 +682,7 @@ class MDCard(
                 if self.theme_shadow_softness == "Primary":
                     self.shadow_softness = 0
                 if self.theme_shadow_offset == "Primary":
-                    self.shadow_offset = [0, -1]
+                    self.shadow_offset = [0, -2]
                 self.md_bg_color = self._bg_color
 
 

@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 
 from kivymd.app import MDApp
+
 from kivymd.dynamic_color import DynamicColor
 from examples.common_app import CommonApp, KV
 
@@ -43,11 +44,13 @@ class DynamicColorInfo(BoxLayout):
     pass
 
 class Example(MDApp, CommonApp):
+
     def build(self):
         #self.theme_cls.dynamic_color = True
         #self.theme_cls.path_to_wallpaper = "/home/tdynamos/Downloads/fortuti.png"
         self.theme_cls.on_colors = lambda : Clock.schedule_once(self.refresh)
         return Builder.load_string(KV)
+
 
     def on_start(self):
         super().on_start()

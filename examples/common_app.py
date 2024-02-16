@@ -75,9 +75,6 @@ class CommonApp:
     def switch_theme(self):
         self.theme_cls.switch_theme()
 
-    def switch_palette(self, selected_palette):
-        self.theme_cls.primary_palette = selected_palette
-
     def set_palette(self):
         instance_from_menu = self.get_instance_from_menu("Set palette")
         available_palettes = [

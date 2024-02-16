@@ -235,15 +235,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
         Example().run()
 
-    .. note::
-
-        Please note that at the moment, the
-        `materialyoucolor <https://github.com/T-Dynamos/materialyoucolor-pyhton>`_
-        library generates a color scheme from a custom wallpaper from one to
-        six seconds, depending on the performance of the smartphone. We hope
-        that the library will be rewritten in C/C++ soon
-        (this process has already begun).
-
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """

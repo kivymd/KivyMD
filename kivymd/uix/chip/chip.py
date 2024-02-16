@@ -241,7 +241,7 @@ Example of filtering
 
     from kivymd.app import MDApp
     from kivymd.uix.chip import MDChip, MDChipText
-    from kivymd.uix.list import OneLineIconListItem
+    from kivymd.uix.list import MDListItem
     from kivymd.icon_definitions import md_icons
     from kivymd.uix.screen import MDScreen
 
@@ -251,8 +251,11 @@ Example of filtering
         '''
     <CustomOneLineIconListItem>
 
-        IconLeftWidget:
+        MDListItemLeadingIcon:
             icon: root.icon
+
+        MDListItemHeadlineText:
+            text: root.text
 
 
     <PreviewIconsScreen>
@@ -264,10 +267,14 @@ Example of filtering
 
             MDTextField:
                 id: search_field
-                hint_text: "Search icon"
-                mode: "rectangle"
-                icon_left: "magnify"
+                mode: "outlined"
                 on_text: root.set_list_md_icons(self.text, True)
+
+                MDTextFieldLeadingIcon:
+                    icon: "magnify"
+
+                MDTextFieldHintText:
+                    text: "Search icon"
 
             MDBoxLayout:
                 id: chip_box
@@ -288,18 +295,19 @@ Example of filtering
                     orientation: "vertical"
         '''
     )
-    
-    
-    class CustomOneLineIconListItem(OneLineIconListItem):
+
+
+    class CustomOneLineIconListItem(MDListItem):
         icon = StringProperty()
-    
-    
+        text = StringProperty()
+
+
     class PreviewIconsScreen(MDScreen):
         filter = ListProperty()  # list of tags for filtering icons
-    
+
         def set_filter_chips(self):
             '''Asynchronously creates and adds chips to the container.'''
-    
+
             async def set_filter_chips():
                 for tag in ["Outline", "Off", "On"]:
                     await asynckivy.sleep(0)
@@ -312,7 +320,7 @@ Example of filtering
                     )
                     chip.bind(active=lambda x, y, z=tag: self.set_filter(y, z))
                     self.ids.chip_box.add_widget(chip)
-    
+
             asynckivy.start(set_filter_chips())
 
         def set_filter(self, active: bool, tag: str) -> None:
@@ -352,7 +360,6 @@ Example of filtering
 
         def build(self) -> PreviewIconsScreen:
             self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "LightGreen"
             return self.screen
 
         def on_start(self) -> None:
@@ -398,10 +405,12 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
 
             MDWidget:
 
-        MDFlatButton:
-            text: "Uncheck chips"
+        MDButton:
             pos: "20dp", "20dp"
             on_release: root.unchecks_chips()
+
+            MDButtonText:
+                text: "Uncheck chips"
         '''
     )
 
@@ -438,7 +447,6 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
 
         def build(self) -> ChipScreen:
             self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "LightGreen"
             return self.screen
 
         def on_start(self) -> None:
@@ -482,11 +490,6 @@ menus:
                 id: chip_box
                 spacing: "12dp"
                 adaptive_height: True
-
-            MDFillRoundFlatButton:
-                text: "Add to cart"
-                md_bg_color: "green"
-                size_hint_x: 1
 
             MDWidget:
         '''

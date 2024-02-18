@@ -45,18 +45,14 @@ from kivy.utils import get_color_from_hex, rgba, hex_colormap
 from kivymd.dynamic_color import DynamicColor
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS
-from kivymd.utils.get_wallpaper import get_wallpaper
 
-from PIL import Image
-
-from materialyoucolor.utils.color_utils import argb_from_rgb
+from materialyoucolor.utils.color_utils import argb_from_rgba_01
 from materialyoucolor.dynamiccolor.material_dynamic_colors import (
     MaterialDynamicColors,
 )
-from materialyoucolor.scheme.scheme_tonal_spot import SchemeTonalSpot
+from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
 from materialyoucolor.hct import Hct
-from materialyoucolor.quantize import QuantizeCelebi
-from materialyoucolor.score.score import Score
+from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
@@ -150,7 +146,8 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     dynamic_color_quality = NumericProperty(1 if platform == "android" else 10)
     """
-    The quality of the generated color scheme from the system wallpaper.
+    The quality of the generated color scheme from the system wallpaper. 
+    It is equal to or higher than `1`, with `1` representing the maximum quality.
 
     .. warning::
 
@@ -174,7 +171,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     To build the color scheme of your application from user wallpapers, you
     must enable the `READ_EXTERNAL_STORAGE
     <https://github.com/Android-for-Python/Android-for-Python-Users?tab=readme-ov-file#storage-permissions>`_
-    permission:
+    permission if your android version is below 8.1:
 
     .. code-block:: python
 
@@ -240,6 +237,24 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
+    """
+    
+    dynamic_scheme_name = OptionProperty("TONAL_SPOT", options=SCHEMES.keys())
+    """
+    Name of the dynamic scheme. Availabe schemes `TONAL_SPOT`, `SPRITZ`
+    `VIBRANT`, `EXPRESSIVE`, `FRUIT_SALAD`, `RAINBOW`, `MONOCHROME`, `FIDELITY`
+    and `CONTENT`.
+
+    :attr:`dynamic_scheme_name` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'TONAL_SPOT'`.
+    """
+
+    dynamic_scheme_contrast = NumericProperty(0.0)
+    """
+    The contrast of the generated color scheme.
+
+    :attr:`dynamic_scheme_contrast` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
     """
 
     path_to_wallpaper = StringProperty()
@@ -620,7 +635,15 @@ class ThemeManager(EventDispatcher, DynamicColor):
     :attr:`font_styles` is an :class:`~kivy.properties.DictProperty`.
     """
 
+    on_colors = None
+    """
+    A Helper function called when colors are changed.
+
+    :attr: `on_colors` defaults to `None`.
+    """
+
     _size_current_wallpaper = NumericProperty(0)
+    _dark_mode = lambda self : False if self.theme_style == "Light" else True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -636,29 +659,33 @@ class ThemeManager(EventDispatcher, DynamicColor):
             else:
                 self._set_palette_color()
         else:
-            path_to_wallpaper = get_wallpaper(
-                App.get_running_app().user_data_dir, self.path_to_wallpaper
+            system_scheme = get_dynamic_scheme(
+                dark_mode=self._dark_mode(),
+                contrast=self.dynamic_scheme_contrast,
+                dynamic_color_quality=self.dynamic_color_quality,
+                fallback_wallpaper_path=self.path_to_wallpaper,
+                fallback_scheme_name=self.dynamic_scheme_name,
+                message_logger=Logger.info,
+                logger_head="KivyMD"
             )
-            if path_to_wallpaper:
-                size_wallpaper = os.path.getsize(path_to_wallpaper)
-                if size_wallpaper != self._size_current_wallpaper:
-                    self._size_current_wallpaper = os.path.getsize(
-                        path_to_wallpaper
-                    )
-                    self._set_dynamic_color(path_to_wallpaper)
-                else:
-                    Logger.info(
-                        "KivyMD: "
-                        f"Color scheme generation. The color scheme of these "
-                        f"wallpapers has already been generated. Skip it."
-                    )
+            if system_scheme:
+                self._set_color_names(system_scheme)
             else:
-                self._set_palette_color()
+                self._set_application_scheme()
 
     def update_theme_colors(self, *args) -> None:
         """Fired when the `theme_style` value changes."""
 
-        self._set_application_scheme(self.primary_palette)
+        self.set_colors()
+
+    def on_dynamic_scheme_name(self, *args):
+        self.set_colors()
+
+    def on_dynamic_scheme_contrast(self, *args):
+        self.set_colors()
+
+    def on_path_to_wallpaper(self, *args):
+        self.set_colors()
 
     def switch_theme(self) -> None:
         """Switches the theme from light to dark."""
@@ -674,54 +701,26 @@ class ThemeManager(EventDispatcher, DynamicColor):
         for style in self.font_styles.keys():
             theme_font_styles.append(style)
 
-    def _set_dynamic_color(self, path_to_wallpaper: str) -> None:
-        start_time = default_timer()
-        image = Image.open(path_to_wallpaper)
-        pixel_len = image.width * image.height
-        image_data = image.getdata()
-        pixel_array = [
-            image_data[_]
-            for _ in range(0, pixel_len, self.dynamic_color_quality)
-        ]
-        end_time = default_timer()
-
-        Logger.info(
-            "KivyMD: "
-            f"Color scheme generation. Creating an array of pixels from a "
-            f"system wallpaper file - {end_time - start_time} sec."
-        )
-
-        start_time = default_timer()
-        colors = QuantizeCelebi(pixel_array, 128)
-        selected = Score.score(colors)
-        end_time = default_timer()
-
-        Logger.info(
-            "KivyMD: "
-            f"Color scheme generation. Get dominant colors - "
-            f"{end_time - start_time} sec."
-        )
-        self._set_application_scheme(color=selected[0])
-
     def _set_application_scheme(
-        self, default_color: str = None, color: int = None
+        self,
+        color = "blue", # Google default
     ) -> None:
-        # Default blue of Google.
-        start_time = default_timer()
         if not color:
-            color = get_color_from_hex(
-                hex_colormap[
-                    "blue" if not default_color else default_color.lower()
-                ]
-            )
-            color = argb_from_rgb(*[c * 255 for c in color[:-1]])
+            color = "blue"
+        
+        color = get_color_from_hex(hex_colormap[color.lower()])
+        color = Hct.from_int(argb_from_rgba_01(color))
+        color = DislikeAnalyzer.fix_if_disliked(color).to_int()
 
-        scheme = SchemeTonalSpot(
-            Hct.from_int(color),  # the color of current theme in int form
-            False if self.theme_style == "Light" else True,  # dark mode
-            0.0,  # contrast level
+        self._set_color_names(
+            SCHEMES[self.dynamic_scheme_name](
+                Hct.from_int(color),
+                self._dark_mode(),
+                self.dynamic_scheme_contrast,
+            )
         )
 
+    def _set_color_names(self, scheme) -> None:
         for color_name in vars(MaterialDynamicColors).keys():
             attr = getattr(MaterialDynamicColors, color_name)
             if hasattr(attr, "get_hct"):
@@ -729,13 +728,8 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 exec(f"self.{color_name}Color = {color_value}")
 
         self.disabledTextColor = self._get_disabled_hint_text_color()
-        end_time = default_timer()
-
-        Logger.info(
-            "KivyMD: "
-            f"Color scheme generation. Get a color scheme from an installed "
-            f"palette - {end_time - start_time} sec."
-        )
+        if self.on_colors:
+            self.on_colors()
 
     def _set_palette_color(self) -> None:
         if not self.primary_palette:

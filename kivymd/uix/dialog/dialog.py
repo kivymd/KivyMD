@@ -428,6 +428,7 @@ from kivy.properties import (
     NumericProperty,
     ColorProperty,
     ObjectProperty,
+    BooleanProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
@@ -488,6 +489,15 @@ class MDDialog(MDCard, MotionDialogBehavior):
 
     :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[0, 0, 0, 0.5]`.
+    """
+
+    auto_dismiss = BooleanProperty(True)
+    """
+    This property determines if the dialog is automatically
+    dismissed when the user clicks outside it.
+
+    :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty` and
+    defaults to True.
     """
 
     _scrim = ObjectProperty()  # kivymd.uix.dialog.dialog.MDDialogScrim object
@@ -555,7 +565,7 @@ class MDDialog(MDCard, MotionDialogBehavior):
         """Fired when a dialog pre-dismiss."""
 
     def on_touch_down(self, touch):
-        if not self.collide_point(*touch.pos):
+        if not self.collide_point(*touch.pos) and self.auto_dismiss:
             self.dismiss()
             return True
         super().on_touch_down(touch)

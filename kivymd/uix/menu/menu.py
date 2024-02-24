@@ -1346,6 +1346,9 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
             items.append(data)
 
         self._items = items
+        # Update items in view
+        if hasattr(self, "menu"):
+            self.menu.data = self._items
 
     def on_header_cls(
         self, instance_dropdown_menu, instance_user_menu_header

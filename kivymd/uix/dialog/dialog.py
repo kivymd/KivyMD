@@ -496,6 +496,8 @@ class MDDialog(MDCard, MotionDialogBehavior):
     This property determines if the dialog is automatically
     dismissed when the user clicks outside it.
 
+    ..versionadded:: 2.0.0
+
     :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty` and
     defaults to True.
     """

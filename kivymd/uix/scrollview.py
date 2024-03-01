@@ -144,7 +144,7 @@ class StretchOverScrollStencil(ScrollEffect):
     def convert_overscroll(self, touch):
         if (
             self.scroll_view
-            and self.target_widget.collide_point(*touch.pos)
+            and self.scroll_view.collide_point(*touch.pos)
             and self.is_top_or_bottom()
             and getattr(self.scroll_view, "do_scroll_" + self.scale_axis)
             and self.velocity == 0

@@ -1,0 +1,22 @@
+<MDCarouselImageItem>:
+    text:""
+    canvas:
+        Color:
+            rgba:[1,1,1,0.5]
+        RoundedRectangle:
+            size:self.size
+            pos:self.pos
+            radius:[dp(25)] * 4
+    MDLabel:
+        text:root.text
+        halign:"center"
+    
+<MDCarousel>:
+    MDBoxLayout:
+        id:_container
+        is_horizontal:root.is_horizontal
+        alignment:root.alignment
+        spacing:dp(8)
+        padding:[0, dp(8)]
+        size_hint:1,1
+        adaptive_width:True

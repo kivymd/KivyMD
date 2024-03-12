@@ -76,7 +76,7 @@
         size_hint_x: None
         width: 0
         on_children:
-            if text_container.children: \
+            if text_container.children and self.children: \
             self.children[0].pos_hint = {"top": 1} \
             if len(text_container.children) == 3 else {"center_y": .5}
 

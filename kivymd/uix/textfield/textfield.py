@@ -1691,49 +1691,54 @@ class MDTextField(
         error_color = self._get_error_color()
         on_surface_variant_color = self.theme_cls.onSurfaceVariantColor
 
-        schedule_set_texture_color(
-            self._max_length_label,
-            max_length_label_group[0],
-            self._max_length_label.color[:-1] + [1]
-            if not self.error
-            else error_color,
-        )
-        schedule_set_texture_color(
-            self._helper_text_label,
-            helper_text_label_group[0],
-            on_surface_variant_color
-            if not self._helper_text_label.text_color_focus
-            else self._helper_text_label.text_color_focus
-            if not self.error
-            else error_color,
-        )
-        schedule_set_texture_color(
-            self._hint_text_label,
-            hint_text_label_group[0],
-            on_surface_variant_color
-            if not self._hint_text_label.text_color_normal
-            else self._hint_text_label.text_color_normal
-            if not self.error
-            else error_color,
-        )
-        schedule_set_texture_color(
-            self._leading_icon,
-            leading_icon_group[0],
-            on_surface_variant_color
-            if self._leading_icon.theme_icon_color == "Primary"
-            or not self._leading_icon.icon_color_normal
-            else self._leading_icon.icon_color_normal,
-        )
-        schedule_set_texture_color(
-            self._trailing_icon,
-            trailing_icon_group[0],
-            on_surface_variant_color
-            if self._trailing_icon.theme_icon_color == "Primary"
-            or not self._trailing_icon.icon_color_normal
-            else self._trailing_icon.icon_color_normal
-            if not self.error
-            else error_color,
-        )
+        if self._max_length_label:
+            schedule_set_texture_color(
+                self._max_length_label,
+                max_length_label_group[0],
+                self._max_length_label.color[:-1] + [1]
+                if not self.error
+                else error_color,
+            )
+        if self._helper_text_label:
+            schedule_set_texture_color(
+                self._helper_text_label,
+                helper_text_label_group[0],
+                on_surface_variant_color
+                if not self._helper_text_label.text_color_focus
+                else self._helper_text_label.text_color_focus
+                if not self.error
+                else error_color,
+            )
+        if self._hint_text_label:   
+            schedule_set_texture_color(
+                self._hint_text_label,
+                hint_text_label_group[0],
+                on_surface_variant_color
+                if not self._hint_text_label.text_color_normal
+                else self._hint_text_label.text_color_normal
+                if not self.error
+                else error_color,
+            )
+        if self._leading_icon:
+            schedule_set_texture_color(
+                self._leading_icon,
+                leading_icon_group[0],
+                on_surface_variant_color
+                if self._leading_icon.theme_icon_color == "Primary"
+                or not self._leading_icon.icon_color_normal
+                else self._leading_icon.icon_color_normal,
+            )
+        if self._trailing_icon:
+            schedule_set_texture_color(
+                self._trailing_icon,
+                trailing_icon_group[0],
+                on_surface_variant_color
+                if self._trailing_icon.theme_icon_color == "Primary"
+                or not self._trailing_icon.icon_color_normal
+                else self._trailing_icon.icon_color_normal
+                if not self.error
+                else error_color,
+            )
 
     def _set_disabled_colors(self):
         def schedule_set_texture_color(widget, group_name, color, opacity):
@@ -1757,36 +1762,41 @@ class MDTextField(
 
         disabled_color = self.theme_cls.disabledTextColor[:-1]
 
-        schedule_set_texture_color(
-            self._max_length_label,
-            max_length_label_group[0],
-            disabled_color,
-            self.text_field_opacity_value_disabled_max_length_label,
-        )
-        schedule_set_texture_color(
-            self._helper_text_label,
-            helper_text_label_group[0],
-            disabled_color,
-            self.text_field_opacity_value_disabled_helper_text_label,
-        )
-        schedule_set_texture_color(
-            self._hint_text_label,
-            hint_text_label_group[0],
-            disabled_color,
-            self.text_field_opacity_value_disabled_hint_text_label,
-        )
-        schedule_set_texture_color(
-            self._leading_icon,
-            leading_icon_group[0],
-            disabled_color,
-            self.text_field_opacity_value_disabled_leading_icon,
-        )
-        schedule_set_texture_color(
-            self._trailing_icon,
-            trailing_icon_group[0],
-            disabled_color,
-            self.text_field_opacity_value_disabled_trailing_icon,
-        )
+        if self._max_length_label:
+            schedule_set_texture_color(
+                self._max_length_label,
+                max_length_label_group[0],
+                disabled_color,
+                self.text_field_opacity_value_disabled_max_length_label,
+            )
+        if self._helper_text_label:
+            schedule_set_texture_color(
+                self._helper_text_label,
+                helper_text_label_group[0],
+                disabled_color,
+                self.text_field_opacity_value_disabled_helper_text_label,
+            )
+        if self._hint_text_label:
+            schedule_set_texture_color(
+                self._hint_text_label,
+                hint_text_label_group[0],
+                disabled_color,
+                self.text_field_opacity_value_disabled_hint_text_label,
+            )
+        if self._leading_icon:
+            schedule_set_texture_color(
+                self._leading_icon,
+                leading_icon_group[0],
+                disabled_color,
+                self.text_field_opacity_value_disabled_leading_icon,
+            )
+        if self._trailing_icon:
+            schedule_set_texture_color(
+                self._trailing_icon,
+                trailing_icon_group[0],
+                disabled_color,
+                self.text_field_opacity_value_disabled_trailing_icon,
+            )
 
     def _get_has_error(self) -> bool:
         """

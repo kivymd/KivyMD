@@ -58,6 +58,7 @@
         text_color:
             ( \
             ( \
+            ( \
             root.parent.icon_active_color \
             if root.parent.icon_active_color \
             else self.theme_cls.onPrimaryContainerColor \
@@ -76,7 +77,9 @@
             if root.parent.icon_active else \
             self.theme_cls.surfaceContainerHighestColor[:-1] \
             + [root.parent.switch_opacity_value_disabled_icon] \
-            )
+            ) \
+            ) \
+            if root.parent else self.theme_cls.transparentColor
 
 
 <MDSwitch>

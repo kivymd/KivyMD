@@ -49,6 +49,7 @@
         } \
         [len(text_container.children)]
     on_disabled:
+        if leading_container.children: \
         leading_container.children[0].disabled = args[1]
 
 

@@ -181,97 +181,98 @@ Example of a dynamic color from an image
 
 .. code-block:: python
 
-    import os
+  import os
 
-    from kivy.clock import Clock
-    from kivy.core.window import Window
-    from kivy.core.window.window_sdl2 import WindowSDL
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty, ColorProperty
+from kivy.clock import Clock
+from kivy.core.window import Window
+from kivy.core.window.window_sdl2 import WindowSDL
+from kivy.lang import Builder
+from kivy.properties import StringProperty, ColorProperty
 
-    from kivymd.uix.boxlayout import MDBoxLayout
-    from kivymd.app import MDApp
-
-
-    KV = '''
-    <ColorCard>
-        orientation: "vertical"
-
-        MDLabel:
-            text: root.text
-            color: "grey"
-            adaptive_height: True
-
-        MDCard:
-            theme_bg_color: "Custom"
-            md_bg_color: root.bg_color
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.app import MDApp
 
 
-    MDScreen:
-        md_bg_color: app.theme_cls.backgroundColor
+KV = '''
+<ColorCard>
+    orientation: "vertical"
 
-        MDRecycleView:
-            id: card_list
-            viewclass: "ColorCard"
-            bar_width: 0
+    MDLabel:
+        text: root.text
+        color: "grey"
+        adaptive_height: True
 
-            RecycleGridLayout:
-                cols: 3
-                spacing: "16dp"
-                padding: "16dp"
-                default_size: None, dp(56)
-                default_size_hint: 1, None
-                size_hint_y: None
-                height: self.minimum_height
-    '''
+    MDCard:
+        theme_bg_color: "Custom"
+        md_bg_color: root.bg_color
 
 
-    class ColorCard(MDBoxLayout):
-        text = StringProperty()
-        bg_color = ColorProperty()
+MDScreen:
+    md_bg_color: app.theme_cls.bg_dark
+
+    MDRecycleView:
+        id: card_list
+        viewclass: "ColorCard"
+        bar_width: 0
+
+        RecycleGridLayout:
+            cols: 3
+            spacing: "16dp"
+            padding: "16dp"
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+'''
 
 
-    class Example(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            Window.bind(on_dropfile=self.on_drop_file)
+class ColorCard(MDBoxLayout):
+    text = StringProperty()
+    bg_color = ColorProperty()
 
-        def on_drop_file(self, sdl: WindowSDL, path_to_file: str) -> None:
-            ext = os.path.splitext(path_to_file)[1]
-            if isinstance(path_to_file, bytes):
-                path_to_file = path_to_file.decode()
-            if isinstance(ext, bytes):
-                ext = ext.decode()
-            if ext in [".png", ".jpg"]:
-                self.theme_cls.path_to_wallpaper = path_to_file
-                Clock.schedule_once(self.generate_cards, 0.5)
 
-        def build(self):
-            self.theme_cls.dynamic_color = True
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+class Example(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Window.bind(on_dropfile=self.on_drop_file)
 
-        def theme_switch(self) -> None:
-            self.theme_cls.switch_theme()
+    def on_drop_file(self, sdl: WindowSDL, path_to_file: str) -> None:
+        ext = os.path.splitext(path_to_file)[1]
+        if isinstance(path_to_file, bytes):
+            path_to_file = path_to_file.decode()
+        if isinstance(ext, bytes):
+            ext = ext.decode()
+        if ext in [".png", ".jpg"]:
+            self.theme_cls.path_to_wallpaper = path_to_file
             Clock.schedule_once(self.generate_cards, 0.5)
 
-        def generate_cards(self, *args):
-            self.root.ids.card_list.data = []
-            for color in self.theme_cls.schemes_name_colors:
-                value = f"{color}Color"
-                self.root.ids.card_list.data.append(
-                    {
-                        "bg_color": getattr(self.theme_cls, value),
-                        "text": value,
-                    }
-                )
+    def build(self):
+        self.theme_cls.dynamic_color = True
+        self.theme_cls.theme_style = "Dark"
+        return Builder.load_string(KV)
 
-        def on_start(self):
-            super().on_start()
-            Clock.schedule_once(self.generate_cards)
+    def theme_switch(self) -> None:
+        self.theme_cls.theme_style = "Light" if self.theme_cls.theme_style == "Dark" else "Dark"
+        Clock.schedule_once(self.generate_cards, 0.5)
+
+    def generate_cards(self, *args):
+        self.root.ids.card_list.data = []
+        for color in self.theme_cls.primary_palette:
+            value = f"{color}"
+            self.root.ids.card_list.data.append(
+                {
+                    "bg_color": getattr(self.theme_cls, value),
+                    "text": value,
+                }
+            )
+
+    def on_start(self):
+        super().on_start()
+        Clock.schedule_once(self.generate_cards)
 
 
-    Example().run()
+Example().run()
+
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dynamic-color-path-to_wallpapper.gif
     :align: center

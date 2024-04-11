@@ -1253,7 +1253,7 @@ class MDNavigationDrawer(MDCard):
                 return False
         elif self.status == "closed":
             return False
-        return True
+        return super().on_touch_up(touch)
 
     def on_radius(self, instance_navigation_drawer, radius_value: list) -> None:
         """Fired when the :attr:`radius` value changes."""

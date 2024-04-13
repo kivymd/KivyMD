@@ -33,17 +33,26 @@ __all__ = (
     "MDSlideTransition",
     "MDSwapTransition",
     "MDTransitionBase",
+    "MDSharedAxisTransition",
 )
 
 from kivy import Logger
 from kivy.animation import Animation, AnimationTransition
-from kivy.properties import DictProperty
+from kivy.properties import (
+    DictProperty,
+    OptionProperty,
+    NumericProperty,
+    BooleanProperty,
+)
 from kivy.uix.screenmanager import (
     ScreenManagerException,
     SlideTransition,
     SwapTransition,
     TransitionBase,
 )
+from kivy.graphics import PopMatrix, PushMatrix, Scale
+from kivy.animation import Animation, AnimationTransition
+from kivy.metrics import dp
 
 from kivymd.uix.hero import MDHeroFrom, MDHeroTo
 from kivymd.uix.screenmanager import MDScreenManager
@@ -298,3 +307,165 @@ class MDFadeSlideTransition(MDSlideTransition):
                 self.manager.y - self.manager.height * progression
             )
             self.screen_out.opacity = 1 - progression
+
+
+class MDSharedAxisTransition(MDTransitionBase):
+    """Android default screen transition"""
+
+    transition_axis = OptionProperty("x", options=["x", "y", "z"])
+    """ 
+    Axis of the transition. Available values "x", "y", and "z".
+    
+    .. image:: https://github.com/kivymd/KivyMD/assets/68729523/063e478c-9e23-40d4-a8ce-4663b428b575 
+        :height: 350px
+        :align: left
+
+    :attr:`transition_axis` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `"x"`.
+    """
+
+    duration = NumericProperty(0.15)
+    """
+    Duration in seconds of the transition. Android recommends these intervals:
+
+    .. list-table:: Android transition values (in seconds)
+        :align: left
+        :header-rows: 1
+
+        * - Name
+          - value
+        * - small_1 
+          - 0.075
+        * - small_2 
+          - 0.15
+        * - medium_1
+          - 0.2
+        * - medium_2
+          - 0.25
+        * - large_1 
+          - 0.3
+        * - large_2
+          - 0.35
+
+    :attr:`duration` is a :class:`~kivy.properties.NumericProperty` and
+    defaults to 0.15 (= 150ms).
+    """
+
+    slide_distance = NumericProperty(dp(15))
+    """
+    Distance to which it slides left, right, bottom or up depending on axis.
+    
+    :attr:`slide_distance` is a :class:`~kivy.properties.NumericProperty` and
+    defaults to `dp(15)`.
+    """
+
+    opposite = BooleanProperty(False)
+    """
+    Decides Transition direction.
+
+    :attr:`opposite` is a :class:`~kivy.properties.BooleanProperty` and
+    defaults to `False`.
+    """
+
+    _s_map = {}  # scale instruction map
+    _slide_diff = 0
+
+    def start(self, manager):
+        # Transition internal working (for developer only):
+        # x:
+        #    First half: screen_out opacity 1 ->  0, pos_x: 0 -> - slide distance
+        #    Second half: screen_in opacity 0 -> 1, pos_x: slide distance -> 0
+        # y:
+        #    First half: screen_out opacity 1 ->  0, pos_y: 0 -> - slide distance
+        #    Second half: screen_in opacity 0 -> 1, pos_y: slide distance -> 0
+        # z:
+        #   First half: screen_out opacity 1 -> 0, scale: 1 -> relative subtracted area
+        #   Second half: screen_in opacity 0 -> 1, scale: relative subtracted area -> 1
+
+        # Save hash of the objects
+        self.ih = hash(self.screen_in)
+        self.oh = hash(self.screen_out)
+
+        if self.transition_axis == "z":
+            if self.ih not in self._s_map.keys():
+                # Save scale instructions
+                with self.screen_in.canvas.before:
+                    PushMatrix()
+                    self._s_map[self.ih] = Scale()
+                with self.screen_in.canvas.after:
+                    PopMatrix()
+                with self.screen_out.canvas.before:
+                    PushMatrix()
+                    self._s_map[self.oh] = Scale()
+                with self.screen_out.canvas.after:
+                    PopMatrix()
+
+            self._s_map[self.oh].origin = [
+                (manager.pos[0] + manager.width) / 2,
+                (manager.pos[1] + manager.height) / 2,
+            ]
+            self._s_map[self.ih].origin = self._s_map[self.oh].origin
+            # relative subtracted area
+            self._slide_diff = (manager.width - self.slide_distance) * (
+                manager.height - self.slide_distance
+            ) / (manager.width * manager.height) - 1
+        elif self.transition_axis in ["x", "y"]:
+            # slide distance with opposite logic
+            self._slide_diff = (
+                (1 if self.opposite else -1) * self.slide_distance * 2
+            )
+        super().start(manager)
+
+    def on_progress(self, progress):
+        # This code could be simplyfied with setattr, but it's slow
+        progress = AnimationTransition.out_cubic(progress)
+        progress_i = progress - 1
+        progress_d = progress * 2
+        # first half
+        if progress <= 0.5:
+            # Screen out animation
+            if self.transition_axis == "z":
+                self._s_map[self.oh].xyz = (
+                    *[1 + self._slide_diff * progress_d] * 2,
+                    1,
+                )
+            elif self.transition_axis == "x":
+                self.screen_out.pos = [
+                    self.manager.pos[0] + self._slide_diff * progress,
+                    self.manager.pos[1],
+                ]
+            else:
+                self.screen_out.pos = [
+                    self.manager.pos[0],
+                    self.manager.pos[1] - self._slide_diff * progress,
+                ]
+            self.screen_out.opacity = 1 - progress_d
+            self.screen_in.opacity = 0
+        # second half
+        else:
+            if self.transition_axis == "z":
+                self._s_map[self.ih].xyz = (
+                    *[1 - self._slide_diff * progress_i * 2] * 2,
+                    1,
+                )
+            elif self.transition_axis == "x":
+                self.screen_in.pos = [
+                    self.manager.pos[0] + self._slide_diff * progress_i,
+                    self.manager.pos[1],
+                ]
+            else:
+                self.screen_in.pos = [
+                    self.manager.pos[0],
+                    self.manager.pos[1] - self._slide_diff * progress_i,
+                ]
+            self.screen_in.opacity = progress_d - 1
+            self.screen_out.opacity = 0
+
+    def on_complete(self):
+        self.screen_in.pos = self.manager.pos
+        self.screen_out.pos = self.manager.pos
+        if self.oh in self._s_map.keys():
+            self._s_map[self.oh].xyz = (1, 1, 1)
+        if self.ih in self._s_map.keys():
+            self._s_map[self.ih].xyz = (1, 1, 1)
+        super().on_complete()

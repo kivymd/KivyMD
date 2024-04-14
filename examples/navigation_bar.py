@@ -26,7 +26,6 @@ class Example(MDApp, CommonApp):
         ...
 
     def on_start(self):
-        super().on_start()
         self.root.ids.widget_box.height = dp(80)
         self.root.ids.widget_box.add_widget(
             MDNavigationBar(

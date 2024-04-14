@@ -1407,7 +1407,6 @@ if __name__ == "__main__":
             self.menu.open()
 
         def on_start(self):
-            super().on_start()
             pos_hints = [
                 {"top": 1, "left": 0.1},
                 {"top": 1, "center_x": 0.5},

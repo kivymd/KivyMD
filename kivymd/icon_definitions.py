@@ -114,7 +114,6 @@ To preview the icons and their names, you can use the following application:
             return self.screen
 
         def on_start(self):
-            super().on_start()
             self.screen.set_list_md_icons()
 
 
@@ -7669,7 +7668,6 @@ if __name__ == "__main__":
             return self.screen
 
         def on_start(self):
-            super().on_start()
             self.screen.set_list_md_icons()
 
     MainApp().run()

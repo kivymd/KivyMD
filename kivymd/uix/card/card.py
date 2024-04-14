@@ -93,7 +93,6 @@ Example
                     return Builder.load_string(KV)
 
                 def on_start(self):
-                    super().on_start()
                     for style in ("elevated", "filled", "outlined"):
                         self.root.ids.box.add_widget(
                             MyCard(style=style, text=style.capitalize())
@@ -135,7 +134,6 @@ Example
                     )
 
                 def on_start(self):
-                    super().on_start()
                     for style in ("elevated", "filled", "outlined"):
                         self.root.ids.box.add_widget(
                             MyCard(
@@ -353,7 +351,6 @@ Example
                     self.screen.ids.md_list.remove_widget(instance)
 
                 def on_start(self):
-                    super().on_start()
                     for i in range(20):
                         self.screen.ids.md_list.add_widget(
                             SwipeToDeleteItem(text=f"One-line item {i}")
@@ -395,7 +392,6 @@ Example
                 def on_start(self):
                     '''Creates a list of cards.'''
 
-                    super().on_start()
                     for i in range(20):
                         self.root.ids.scroll.ids.md_list.add_widget(
                             MDCardSwipe(

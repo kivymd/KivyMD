@@ -496,7 +496,6 @@ Usage with ScrollView
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for i in range(12):
                 hero_item = HeroItem(
                     text=f"Item {i + 1}", tag=f"Tag {i}", manager=self.root

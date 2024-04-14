@@ -123,7 +123,6 @@ Example
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for x in range(10):
                 self.root.ids.content.add_widget(GuitarItem())
 

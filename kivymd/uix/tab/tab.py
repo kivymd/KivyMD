@@ -54,7 +54,6 @@ Primary tabs should be used when just one set of tabs are needed.
 
     class Example(MDApp):
         def on_start(self):
-            super().on_start()
             for tab_icon, tab_name in {
                 "airplane": "Flights",
                 "treasure-chest": "Trips",
@@ -135,7 +134,6 @@ identical to primary tabs.
 
     class Example(MDApp):
         def on_start(self):
-            super().on_start()
             for tab_icon, tab_name in {
                 "airplane": "Flights",
                 "treasure-chest": "Trips",
@@ -218,7 +216,6 @@ Use tabs to group related content, not sequential content.
 
     class Example(MDApp):
         def on_start(self):
-            super().on_start()
             for tab_icon, tab_name in {
                 "airplane": "Flights",
                 "treasure-chest": "Trips",
@@ -286,7 +283,6 @@ browsing on touch interfaces.
 
     class Example(MDApp):
         def on_start(self):
-            super().on_start()
             for tab_name in [
                 "Moscow",
                 "Saint Petersburg",
@@ -347,7 +343,6 @@ swipe left or right in the content area.
 
     class Example(MDApp):
         def on_start(self):
-            super().on_start()
             for tab_name in [
                 "Moscow", "Saint Petersburg", "Novosibirsk"
             ]:
@@ -451,7 +446,6 @@ API break
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for name_tab in self.icons:
                 self.root.ids.tabs.add_widget(
                     Tab(title=name_tab, icon=name_tab)
@@ -493,7 +487,6 @@ API break
 
     class Example(MDApp):
         def on_start(self):
-            super().on_start()
             for name_tab in list(md_icons.keys())[15:30]:
                 self.root.ids.tabs.add_widget(
                     MDTabsItem(

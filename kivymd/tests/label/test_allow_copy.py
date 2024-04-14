@@ -30,7 +30,6 @@ class TestAllowCopy(MDApp):
             touch = MouseMotionEvent("mouse", "button", self.root.ids.label.pos)
             self.root.ids.label.on_double_tap(touch, ())
 
-        super().on_start()
         Clock.schedule_once(on_start, 1)
 
 

@@ -84,7 +84,6 @@ class Example(MDApp):
             )
 
     def on_start(self):
-        super().on_start()
         Clock.schedule_once(self.generate_cards)
 
 

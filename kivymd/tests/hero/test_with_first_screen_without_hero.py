@@ -89,7 +89,6 @@ class TestWithFirstScreenWithoutHero(MDApp):
         Clock.schedule_once(self.move_hero_to_another_screen, 1)
 
     def on_start(self):
-        super().on_start()
         Clock.schedule_once(self.set_screen_with_hero_from, 1)
 
 

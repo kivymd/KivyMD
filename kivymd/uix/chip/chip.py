@@ -363,7 +363,6 @@ Example of filtering
             return self.screen
 
         def on_start(self) -> None:
-            super().on_start()
             self.screen.set_list_md_icons()
             self.screen.set_filter_chips()
 
@@ -450,7 +449,6 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
             return self.screen
 
         def on_start(self) -> None:
-            super().on_start()
             asynckivy.start(self.screen.create_chips())
 
 
@@ -534,7 +532,6 @@ menus:
             return self.screen
 
         def on_start(self) -> None:
-            super().on_start()
             asynckivy.start(self.screen.create_chips())
 
 

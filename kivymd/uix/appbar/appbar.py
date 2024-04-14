@@ -440,7 +440,6 @@ A practical example
                         }
                     )
 
-            super().on_start()
             self.on_tap_card()
             fake = Faker()
             Clock.schedule_once(lambda x: asynckivy.start(generate_card()))

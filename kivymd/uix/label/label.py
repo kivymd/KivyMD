@@ -154,7 +154,6 @@ All styles
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for style in theme_font_styles:
                 if style != "Icon":
                     for role in theme_font_styles[style]:
@@ -228,7 +227,6 @@ You can highlight labels by double tap on the label:
                     def on_start(dt):
                         self.root.md_bg_color = self.theme_cls.backgroundColor
 
-                    super().on_start()
                     Clock.schedule_once(on_start)
 
                 def build(self):
@@ -317,7 +315,6 @@ You can copy the label text by double clicking on it:
                     )
 
                 def on_start(self):
-                    super().on_start()
                     self.root.ids.label.bind(on_copy=self.on_copy)
 
                 def on_copy(self, instance_label: MDLabel):
@@ -398,7 +395,6 @@ Example of copying/cutting labels using the context menu
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for text in data:
                 copy_label = CopyLabel(text=text)
                 copy_label.bind(on_selection=self.open_context_menu)

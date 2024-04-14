@@ -71,7 +71,6 @@ class TestDisableList(MDApp):
             self.root.ids.item4.disabled = True
             Clock.schedule_once(_enabled, 1)
 
-        super().on_start()
         Clock.schedule_once(_disable, 1)
 
 

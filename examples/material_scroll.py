@@ -83,7 +83,6 @@ class Example(MDApp, CommonApp):
         return Builder.load_string(MAIN_KV)
 
     def on_start(self):
-        super().on_start()
         info = {
             "Name": [
                 os.name,

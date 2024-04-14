@@ -72,7 +72,6 @@ class TestErrorState(MDApp):
         Clock.schedule_once(self.check_colors, 2)
 
     def on_start(self):
-        super().on_start()
         Clock.schedule_once(self.set_max_text_length, 2)
 
 

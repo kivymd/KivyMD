@@ -31,7 +31,6 @@ MDCircularLayout
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for x in range(1, 49):
                 self.root.ids.container.add_widget(Label(text=f"{x}")
 
@@ -199,7 +198,6 @@ MDScreen:
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             for x in range(1, 49):
                 self.root.ids.container.add_widget(Label(text=f"{x}"))
 

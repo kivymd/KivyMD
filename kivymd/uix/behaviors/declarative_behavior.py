@@ -266,7 +266,6 @@ get to the desired id:
             #     'box_container_1': <kivymd.uix.floatlayout.MDFloatLayout object at 0x11d9fc3c0>,
             #     'box_container_2': <kivymd.uix.boxlayout.MDBoxLayout object at 0x11dbf06d0>,
             # }
-            super().on_start()
             print(self.root.get_ids())
 
 

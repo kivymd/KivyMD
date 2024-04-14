@@ -152,7 +152,6 @@ API break
             return Widget()
 
         def on_start(self):
-            super().on_start()
             MDDialog(
                 title="Discard draft?",
                 buttons=[
@@ -189,7 +188,6 @@ API break
             return Widget()
 
         def on_start(self):
-            super().on_start()
             MDDialog(
                 title="Discard draft?",
                 text="This will reset your device to its default factory settings.",
@@ -243,7 +241,6 @@ API break
             return Widget()
 
         def on_start(self):
-            super().on_start()
             MDDialog(
                 title="Set backup account",
                 type="simple",
@@ -277,7 +274,6 @@ API break
             return MDWidget(md_bg_color=self.theme_cls.backgroundColor)
 
         def on_start(self):
-            super().on_start()
             MDDialog(
                 MDDialogHeadlineText(
                     text="Discard draft?",
@@ -318,7 +314,6 @@ API break
             return MDWidget(md_bg_color=self.theme_cls.backgroundColor)
 
         def on_start(self):
-            super().on_start()
             MDDialog(
                 MDDialogHeadlineText(
                     text="Discard draft?",
@@ -370,7 +365,6 @@ API break
             return MDWidget(md_bg_color=self.theme_cls.backgroundColor)
 
         def on_start(self):
-            super().on_start()
             MDDialog(
                 MDDialogHeadlineText(
                     text="Set backup account",

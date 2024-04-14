@@ -24,7 +24,6 @@ class TestThemeTextColor(MDApp):
             assert self.root.ids.label.text_color == [1.0, 0.0, 0.0, 1.0]
             self.stop()
 
-        super().on_start()
         Clock.schedule_once(on_start, 2)
 
 

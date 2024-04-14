@@ -44,7 +44,6 @@ class TestMdBgColorLayouts(MDApp):
         self.stop()
 
     def on_start(self):
-        super().on_start()
         asynckivy.start(self.generate_layouts())
 
     def check_md_bg_color(self, widget):

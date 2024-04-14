@@ -50,7 +50,6 @@ class TestHelperTextModePersistent(MDApp):
         Clock.schedule_once(self.check_helper_text_without_focus, 5)
 
     def on_start(self):
-        super().on_start()
         Clock.schedule_once(self.check_helper_text_without_focus, 2)
 
 

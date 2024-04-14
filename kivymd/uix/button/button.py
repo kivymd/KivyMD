@@ -489,7 +489,6 @@ so the color mapping you use depends on style alone.
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             styles = {
                 "standard": "surface",
                 "small": "secondary",

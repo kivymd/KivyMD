@@ -49,7 +49,6 @@ MDScreen:
 
 class Example(MDApp, CommonApp):
     def on_start(self):
-        super().on_start()
         for type_tabs in ["primary", "secondary"]:
             if type_tabs == "primary":
                 tabs = self.root.ids.primary_tabs

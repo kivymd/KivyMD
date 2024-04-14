@@ -55,7 +55,6 @@ class TestDisabledTextColorSwitchTheme(MDApp):
         Clock.schedule_once(self.check_colors, 3)
 
     def on_start(self):
-        super().on_start()
         Clock.schedule_once(self.change_theme, 2)
 
 

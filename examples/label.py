@@ -61,7 +61,6 @@ class Example(MDApp, CommonApp):
                     )
 
     def on_start(self):
-        super().on_start()
         self.create_widgets()
 
 

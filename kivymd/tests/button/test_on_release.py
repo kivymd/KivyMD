@@ -32,7 +32,6 @@ class TestOnRelease(MDApp):
         Clock.schedule_once(self.check_release_flag, 2)
 
     def on_start(self):
-        super().on_start()
         Clock.schedule_once(self.press_button, 1)
 
 

@@ -225,7 +225,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
                     if all([res for res in results]):
                         Clock.schedule_once(self.set_dynamic_color)
 
-                super().on_start()
                 if platform == "android":
                     from android.permissions import Permission, request_permissions
 
@@ -383,7 +382,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
                         def on_start(*args):
                             self.root.md_bg_color = self.theme_cls.backgroundColor
 
-                        super().on_start()
                         Clock.schedule_once(on_start)
 
                     def switch_theme_style(self, *args):
@@ -459,7 +457,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 def on_start(*args):
                     self.root.md_bg_color = self.theme_cls.backgroundColor
 
-                super().on_start()
                 Clock.schedule_once(on_start)
 
 

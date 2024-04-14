@@ -28,7 +28,6 @@ displaying the current `FP` value in your application:
             return Builder.load_string(KV)
 
         def on_start(self):
-            super().on_start()
             self.fps_monitor_start()
 
 
@@ -50,7 +49,6 @@ displaying the current `FP` value in your application:
                 [...]
 
             def on_start(self):
-                super().on_start()
                 [...]
 """
 
@@ -135,27 +133,13 @@ class MDApp(App, FpsMonitoring):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
 
-    def on_start(self):
-        """
-        Event handler for the `on_start` event which is fired after
-        initialization (after build() has been called) but before the
-        application has started running.
-
-        .. versionadded:: 2.0.0
-        """
-
-        def on_start(*args):
-            self.theme_cls.bind(
-                theme_style=lambda *x: Clock.schedule_once(
-                    self.theme_cls.update_theme_colors, 0.1
-                ),
-                primary_palette=lambda *x: Clock.schedule_once(
-                    self.theme_cls.set_colors, 0.1
-                ),
-            )
-            self.theme_cls.set_colors()
-
-        Clock.schedule_once(on_start)
+    def _run_prepare(self):
+        self.theme_cls.bind(
+            theme_style=self.theme_cls.update_theme_colors,
+            primary_palette=self.theme_cls.set_colors
+        )
+        self.theme_cls.set_colors()
+        super()._run_prepare()
 
     def load_all_kv_files(self, path_to_directory: str) -> None:
         """

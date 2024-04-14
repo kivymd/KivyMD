@@ -43,7 +43,6 @@ class Example(MDApp, CommonApp):
         ...
 
     def on_start(self):
-        super().on_start()
         data = {
             "Single-line snackbar": self.show_snack_single_line,
             "Single-line snackbar with action": self.show_snack_single_line_with_action,

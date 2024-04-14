@@ -24,7 +24,6 @@ class Example(MDApp, CommonApp):
         print("on_tap_list_item")
 
     def on_start(self):
-        super().on_start()
         self.root.ids.widget_box.orientation = "vertical"
         self.root.ids.widget_box.add_widget(
             MDListItem(

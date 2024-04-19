@@ -388,7 +388,7 @@ Builder.load_string(
             axis: tuple(self.rotate_value_axis)
             origin: self.center
         Color:
-            rgba: root.shadow_color
+            rgba: self.shadow_color[:3] + [self.shadow_color[3]*(1/(1+100*(.8**((self.opacity-.7)*100))))]
         BoxShadow:
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)
             size: self.size

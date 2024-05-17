@@ -2,91 +2,50 @@ import os
 import sys
 
 from kivy.core.window import Window
-from kivy.metrics import dp
-from kivy.uix.boxlayout import BoxLayout
-from kivy.lang import Builder
 from kivy import __version__ as kv__version__
-from kivymd import __version__
+from kivy.lang import Builder
+from kivy.metrics import dp
+
 from kivymd.app import MDApp
+from kivymd import __version__
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemHeadlineText,
+    MDListItemSupportingText,
+    MDListItemLeadingIcon,
+)
+
 from materialyoucolor import __version__ as mc__version__
 
 from examples.common_app import CommonApp
 
 MAIN_KV = """
-<Item>:
-    size_hint_y: None
-    height: "50dp"
-    text: ""
-    sub_text: ""
-    icon: ""
-    spacing: "5dp"
-
-    MDIcon:
-        icon: root.icon
-        size_hint: None, 1
-        width: self.height
-
-    BoxLayout:
-        orientation: "vertical"
-
-        MDLabel:
-            text: root.text
-
-        MDLabel:
-            adaptive_height: True
-            text: root.sub_text
-            font_style: "Body"
-            role: "medium"
-            shorten: True
-            shorten_from: "right"
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.onSurfaceVariantColor[:-1] + [0.9]
-
 MDScreen:
     md_bg_color: app.theme_cls.backgroundColor
 
-    BoxLayout:
-        orientation: "vertical"
+    MDScrollView:
+        do_scroll_x: False
 
-        MDScrollView:
-            do_scroll_x: False
+        MDBoxLayout:
+            id: main_scroll
+            orientation: "vertical"
+            adaptive_height: True
 
             MDBoxLayout:
-                id: main_scroll
-                spacing: "20dp"
-                orientation: "vertical"
-                adaptive_height: True
-                padding: "10dp", 0
+                adaptive_height: True 
 
-                MDBoxLayout:
-                    adaptive_height: True 
+                MDLabel:
+                    theme_font_size: "Custom"
+                    text: "OS Info"
+                    font_size: "55sp"
+                    adaptive_height: True
+                    padding: "10dp", "20dp", 0, 0
 
-                    MDLabel:
-                        theme_font_size: "Custom"
-                        text: "OS Info"
-                        font_size: "55sp"
-                        adaptive_height: True
-                        padding: "10dp", "20dp", 0, 0
-
-                    BoxLayout:
-                        orientation: "vertical"
-                        size_hint_x: None
-                        width: dp(70)
-                        padding: 0, "20dp", "10dp", 0
-
-                        MDIconButton:
-                            on_release: app.open_menu(self)
-                            size_hint: None, None
-                            size: [dp(50)] * 2
-                            icon: "menu"
-                            pos_hint: {"center_x": .8, "center_y": .9}
-
-                        Widget:
+                MDIconButton:
+                    icon: "menu"
+                    on_release: app.open_menu(self)
+                    pos_hint: {"center_y": .5}
 """
-
-
-class Item(BoxLayout):
-    pass
 
 
 class Example(MDApp, CommonApp):
@@ -124,11 +83,20 @@ class Example(MDApp, CommonApp):
             pass
 
         for info_item in info:
-            widget = Item()
-            widget.text = info_item
-            widget.sub_text = str(info[info_item][0])
-            widget.icon = info[info_item][1]
-            self.root.ids.main_scroll.add_widget(widget)
+            self.root.ids.main_scroll.add_widget(
+                MDListItem(
+                    MDListItemLeadingIcon(
+                        icon=info[info_item][1],
+                    ),
+                    MDListItemHeadlineText(
+                        text=info_item,
+                    ),
+                    MDListItemSupportingText(
+                        text=str(info[info_item][0]),
+                    ),
+                    pos_hint={"center_x": .5, "center_y": .5},
+                )
+            )
 
         Window.size = [dp(350), dp(600)]
 

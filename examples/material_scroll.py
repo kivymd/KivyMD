@@ -10,65 +10,77 @@ from kivymd import __version__
 from kivymd.app import MDApp
 from materialyoucolor import __version__ as mc__version__
 
-from examples.common_app import CommonApp, KV
+from examples.common_app import CommonApp
 
 MAIN_KV = """
 <Item>:
-    size_hint_y:None
-    height:dp(50)
-    text:""
-    sub_text:""
-    icon:""
-    spacing:dp(5)
+    size_hint_y: None
+    height: "50dp"
+    text: ""
+    sub_text: ""
+    icon: ""
+    spacing: "5dp"
+
     MDIcon:
-        icon:root.icon
-        size_hint:None, 1
-        width:self.height
+        icon: root.icon
+        size_hint: None, 1
+        width: self.height
+
     BoxLayout:
-        orientation:"vertical"
+        orientation: "vertical"
+
         MDLabel:
-            text:root.text
+            text: root.text
+
         MDLabel:
-            adaptive_height:True
-            text:root.sub_text
-            font_style:"Body"
-            role:"medium"
-            shorten:True
-            shorten_from:"right"
-            theme_text_color:"Custom"
-            text_color:app.theme_cls.onSurfaceVariantColor[:-1] + [0.9]
+            adaptive_height: True
+            text: root.sub_text
+            font_style: "Body"
+            role: "medium"
+            shorten: True
+            shorten_from: "right"
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.onSurfaceVariantColor[:-1] + [0.9]
 
 MDScreen:
     md_bg_color: app.theme_cls.backgroundColor
+
     BoxLayout:
-        orientation:"vertical"
+        orientation: "vertical"
+
         MDScrollView:
-            do_scroll_x:False
+            do_scroll_x: False
+
             MDBoxLayout:
-                spacing:dp(20)
-                orientation:"vertical"
-                adaptive_height:True
-                id:main_scroll
-                padding:[dp(10), 0]
+                id: main_scroll
+                spacing: "20dp"
+                orientation: "vertical"
+                adaptive_height: True
+                padding: "10dp", 0
+
                 MDBoxLayout:
-                    adaptive_height:True 
+                    adaptive_height: True 
+
                     MDLabel:
-                        theme_font_size:"Custom"
-                        text:"OS Info"
-                        font_size:"55sp"
-                        adaptive_height:True
-                        padding:[dp(10),dp(20),0,0]
+                        theme_font_size: "Custom"
+                        text: "OS Info"
+                        font_size: "55sp"
+                        adaptive_height: True
+                        padding: "10dp", "20dp", 0, 0
+
                     BoxLayout:
-                        orientation:"vertical"
-                        size_hint_x:None
-                        width:dp(70)
-                        padding:[0, dp(20), dp(10),0]
+                        orientation: "vertical"
+                        size_hint_x: None
+                        width: dp(70)
+                        padding: 0, "20dp", "10dp", 0
+
                         MDIconButton:
                             on_release: app.open_menu(self)
                             size_hint: None, None
-                            size:[dp(50)] * 2
+                            size: [dp(50)] * 2
                             icon: "menu"
-                            pos_hint:{"center_x":0.8, "center_y":0.9}
+                            pos_hint: {"center_x": .8, "center_y": .9}
+
                         Widget:
 """
 
@@ -98,7 +110,7 @@ class Example(MDApp, CommonApp):
             "Kivy Version": ["v" + kv__version__, "alpha-k-circle-outline"],
             "KivyMD Version": ["v" + __version__, "material-design"],
             "MaterialYouColor Version": ["v" + mc__version__, "invert-colors"],
-            "Pillow Version":["Unknown", "image"],
+            "Pillow Version": ["Unknown", "image"],
             "Working Directory": [os.getcwd(), "folder"],
             "Home Directory": [os.path.expanduser("~"), "folder-account"],
             "Environment Variables": [os.environ, "code-json"],
@@ -106,7 +118,8 @@ class Example(MDApp, CommonApp):
 
         try:
             from PIL import __version__ as pil__version_
-            info["Pillow Version"] = ["v" + pil__version_ ,"image"] 
+
+            info["Pillow Version"] = ["v" + pil__version_, "image"]
         except Exception:
             pass
 

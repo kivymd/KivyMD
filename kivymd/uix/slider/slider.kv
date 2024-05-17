@@ -87,11 +87,6 @@
             points: self._active_points
             pointsize: self.step_point_size
 
-    size_hint_y: None
-    height:
-        handle_container.children[0].height \
-        if handle_container.children else 0
-
     # Label container.
     BoxLayout:
         id: value_container
@@ -185,13 +180,21 @@
             pos:
                 ( \
                 ( \
-                self._slider.value_pos[0] - (self._slider._value_label.texture_size[0] / 2) + dp(10), \
+                # X.
+                self._slider.value_pos[0] \
+                - (self._slider._value_label.texture_size[0] / 2) + dp(10), \
+                # Y.
                 self._slider.center_y + dp(28) \
                 ) \
                 if self._slider.orientation == "horizontal" else \
                 ( \
-                self._slider.center_x - self.width / 2, \
-                self._slider.value_pos[1] - dp(0) \
+                # X.
+                self._slider.center_x \
+                - (self._slider._value_label.texture_size[0] / 2) - dp(2), \
+                # Y.
+                self._slider.value_pos[1] + \
+                self._slider._value_label.texture_size[1] \
+                + self._slider._handle.state_layer_size[1] / 2, \
                 ) \
                 ) \
                 if self._slider and self._slider._value_label else (0, 0)
@@ -200,7 +203,6 @@
                 if self._slider and self._slider._value_label else (0, 0)
 
     size_hint: None, None
-    # opacity: 0
     size:
         self._slider._value_label.size \
         if self._slider and self._slider._value_label else \

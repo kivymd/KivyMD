@@ -93,6 +93,7 @@ class FitImage(DeclarativeBehavior, StencilBehavior, AsyncImage):
     Fit image class.
 
     For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivy.uix.image.AsyncImage` and
     :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior`
     classes documentation.

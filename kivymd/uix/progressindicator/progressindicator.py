@@ -204,6 +204,7 @@ from kivy.uix.widget import Widget
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 with open(
     os.path.join(uix_path, "progressindicator", "progressindicator.kv"),
@@ -212,11 +213,12 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDLinearProgressIndicator(ThemableBehavior, ProgressBar):
+class MDLinearProgressIndicator(DeclarativeBehavior, ThemableBehavior, ProgressBar):
     """
     Implementation of the linear progress indicator.
 
     For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivy.uix.progressbar.ProgressBar`
     classes documentation.

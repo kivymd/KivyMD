@@ -675,6 +675,8 @@ class MDTopAppBarTrailingButtonContainer(BaseTopAppBarButtonContainer):
 # FIXME: The on_enter/on_leave event is not triggered for
 #  MDActionTopAppBarButton buttons in the MDTopAppBarTrailingButtonContainer
 #  container.
+#  When the screen size is changed on desktop devices, the position of the
+#  trailing container is shifted until the screen size change is completed.
 class MDTopAppBar(
     DeclarativeBehavior,
     ThemableBehavior,

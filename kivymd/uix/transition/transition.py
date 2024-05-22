@@ -311,15 +311,18 @@ class MDFadeSlideTransition(MDSlideTransition):
 
 
 class MDSharedAxisTransition(MDTransitionBase):
-    """Android default screen transition"""
+    """
+    Android default screen transition.
+
+    .. versionadded:: 2.0.0
+    """
 
     transition_axis = OptionProperty("x", options=["x", "y", "z"])
     """ 
     Axis of the transition. Available values "x", "y", and "z".
     
-    .. image:: https://github.com/kivymd/KivyMD/assets/68729523/063e478c-9e23-40d4-a8ce-4663b428b575 
-        :height: 350px
-        :align: left
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/transition_axis.gif
+        :align: center
 
     :attr:`transition_axis` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `"x"`.
@@ -409,7 +412,7 @@ class MDSharedAxisTransition(MDTransitionBase):
 
         if self.transition_axis == "z":
             if self.ih not in self._s_map.keys():
-                # Save scale instructions
+                # Save scale instructions.
                 with self.screen_in.canvas.before:
                     PushMatrix()
                     self._s_map[self.ih] = Scale()
@@ -426,12 +429,12 @@ class MDSharedAxisTransition(MDTransitionBase):
                 (manager.pos[1] + manager.height) / 2,
             ]
             self._s_map[self.ih].origin = self._s_map[self.oh].origin
-            # relative subtracted area
+            # Relative subtracted area.
             self._slide_diff = (manager.width - self.slide_distance) * (
                 manager.height - self.slide_distance
             ) / (manager.width * manager.height) - 1
         elif self.transition_axis in ["x", "y"]:
-            # slide distance with opposite logic
+            # Slide distance with opposite logic.
             self._slide_diff = (
                 (1 if self.opposite else -1) * self.slide_distance * 2
             )
@@ -442,9 +445,9 @@ class MDSharedAxisTransition(MDTransitionBase):
         progress = getattr(MDAnimationTransition, self.switch_animation)(progress)
         progress_i = progress - 1
         progress_d = progress * 2
-        # first half
+        # First half.
         if progress <= 0.5:
-            # Screen out animation
+            # Screen out animation.
             if self.transition_axis == "z":
                 self._s_map[self.oh].xyz = (
                     *[1 + self._slide_diff * progress_d] * 2,
@@ -462,7 +465,7 @@ class MDSharedAxisTransition(MDTransitionBase):
                 ]
             self.screen_out.opacity = 1 - progress_d
             self.screen_in.opacity = 0
-        # second half
+        # Second half.
         else:
             if self.transition_axis == "z":
                 self._s_map[self.ih].xyz = (

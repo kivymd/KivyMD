@@ -272,12 +272,23 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
         """Draws the step points on the slider."""
 
         def update_points(*args):
-            y = self.center_y - self.track_active_width / 2
-            slider_length = self.width - (self.padding * 2)
+            y = (
+                self.center_y
+                if self.orientation == "horizontal"
+                else self.center_x
+            ) - self.track_active_width / 2
+            slider_length = (
+                self.width if self.orientation == "horizontal" else self.height
+            ) - (self.padding * 2)
             slider_max_value = int(self.max)
             multiplier = slider_length / slider_max_value
             active_track_width = (
-                self.width - self.padding * 2
+                (
+                    self.width
+                    if self.orientation == "horizontal"
+                    else self.height
+                )
+                - self.padding * 2
             ) * self.value_normalized
 
             for i in range(0, slider_max_value + 1, step):
@@ -288,8 +299,11 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
                 else:
                     points = self._active_points
 
+                if self.orientation == "vertical":
+                    points.append(y)
+
                 points.append(
-                    self.x
+                    (self.x if self.orientation == "horizontal" else self.y)
                     + x
                     + self.padding
                     + (
@@ -298,7 +312,8 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
                         else 0
                     )
                 )
-                points.append(y)
+                if self.orientation == "horizontal":
+                    points.append(y)
 
         Clock.schedule_once(update_points)
 
@@ -392,7 +407,6 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
             Animation(
                 scale_value_x=0,
                 scale_value_y=0,
-                # opacity=1,
                 d=self.value_container_hide_anim_duration,
                 t=self.value_container_hide_anim_transition,
             ).start(self._value_container)

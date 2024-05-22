@@ -85,13 +85,15 @@ from kivy.properties import OptionProperty
 from kivy.uix.image import AsyncImage
 
 from kivymd.uix.behaviors import StencilBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 
-class FitImage(AsyncImage, StencilBehavior):
+class FitImage(DeclarativeBehavior, StencilBehavior, AsyncImage):
     """
     Fit image class.
 
     For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivy.uix.image.AsyncImage` and
     :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior`
     classes documentation.

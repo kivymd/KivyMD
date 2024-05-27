@@ -56,6 +56,7 @@ from kivy.metrics import dp
 
 from kivymd.uix.hero import MDHeroFrom, MDHeroTo
 from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.animation import MDAnimationTransition
 
 
 class MDTransitionBase(TransitionBase):
@@ -354,6 +355,22 @@ class MDSharedAxisTransition(MDTransitionBase):
     defaults to 0.15 (= 150ms).
     """
 
+    switch_animation = OptionProperty(
+        "easing_decelerated",
+        options=[
+            "easing_standard",
+            "easing_decelerated",
+            "easing_accelerated",
+            "easing_linear",
+        ],
+    )
+    """ 
+    Custom material design animation transition.
+    
+    :attr:`switch_animation` is a :class:`~kivy.properties.OptionProperty` and
+    defaults to `"easing_decelerated"`.
+    """
+
     slide_distance = NumericProperty(dp(15))
     """
     Distance to which it slides left, right, bottom or up depending on axis.
@@ -389,6 +406,10 @@ class MDSharedAxisTransition(MDTransitionBase):
         self.ih = hash(self.screen_in)
         self.oh = hash(self.screen_out)
 
+        # Init pos
+        self.screen_in.pos = manager.pos
+        self.screen_out.pos = manager.pos
+
         if self.transition_axis == "z":
             if self.ih not in self._s_map.keys():
                 # Save scale instructions.
@@ -420,8 +441,8 @@ class MDSharedAxisTransition(MDTransitionBase):
         super().start(manager)
 
     def on_progress(self, progress):
-        # This code could be simplyfied with setattr, but it's slow.
-        progress = AnimationTransition.out_cubic(progress)
+        # This code could be simplyfied with setattr, but it's slow
+        progress = getattr(MDAnimationTransition, self.switch_animation)(progress)
         progress_i = progress - 1
         progress_d = progress * 2
         # First half.
@@ -467,6 +488,8 @@ class MDSharedAxisTransition(MDTransitionBase):
     def on_complete(self):
         self.screen_in.pos = self.manager.pos
         self.screen_out.pos = self.manager.pos
+        self.screen_out.opacity = 1
+        self.screen_in.opacity = 1
         if self.oh in self._s_map.keys():
             self._s_map[self.oh].xyz = (1, 1, 1)
         if self.ih in self._s_map.keys():

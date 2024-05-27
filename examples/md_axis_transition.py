@@ -41,8 +41,7 @@ KV = """
             text:root.subtext
             font_style:"Label"
             role:"large"
-            theme_text_color:"Custom"
-            text_color:app.theme_cls.surfaceContainerLowestColor[:-1] + [0.5]
+            text_color:app.theme_cls.onSurfaceVariantColor
     
 <SettingsScreen@MDScreen>:
     name:"main"
@@ -96,7 +95,7 @@ KV = """
                 font_style:"Body"
                 role:"large"
                 theme_text_color:"Custom"
-                text_color:app.theme_cls.surfaceContainerLowestColor[:-1] + [0.5]
+                text_color:app.theme_cls.onSurfaceVariantColor
             Image:
                 size_hint_y:1
                 source:app.image_path

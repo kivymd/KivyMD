@@ -60,4 +60,5 @@ Logger.info(_log_message)
 
 import kivymd.factory_registers  # NOQA
 import kivymd.font_definitions  # NOQA
+import kivymd.animation  # NOQA 
 from kivymd.tools.packaging.pyinstaller import hooks_path  # NOQA

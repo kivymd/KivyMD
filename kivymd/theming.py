@@ -26,50 +26,46 @@ the material properties of your application.
 import os.path
 from timeit import default_timer
 
-import kivy.utils
-from kivy import platform
 from kivy.app import App
+from kivy.logger import Logger
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
-from kivy.logger import Logger
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
-    ColorProperty,
     DictProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
 )
+from kivy import platform
 from kivy.utils import get_color_from_hex, rgba, hex_colormap
-from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
-from materialyoucolor.dynamiccolor.material_dynamic_colors import (
-    MaterialDynamicColors,
-)
-from materialyoucolor.hct import Hct
-from materialyoucolor.scheme.scheme_android import SchemeAndroid
-from materialyoucolor.utils.color_utils import argb_from_rgba_01
-from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
 
 from kivymd.dynamic_color import DynamicColor
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS
 
-
-# A small patch to support color names even when they are not in lower case
-kivy.utils.colormap = type("_colormap",(),{
-"get": staticmethod(
-    lambda value, *args: kivy.utils.colormap.get(value.lower(), *args)
-)},)()
+from materialyoucolor.utils.color_utils import argb_from_rgba_01
+from materialyoucolor.dynamiccolor.material_dynamic_colors import (
+    MaterialDynamicColors,
+)
+from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
+from materialyoucolor.hct import Hct
+from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
-    primary_palette = ColorProperty("blue")
+    primary_palette = OptionProperty(
+        None,
+        options=[name_color.capitalize() for name_color in hex_colormap.keys()],
+    )
     """
-    The color which will be used to generate scheme.
+    The name of the color scheme that the application will use.
     All major `material` components will have the color
-    of the generated color scheme.
+    of the specified color theme.
+
+    See :attr:`kivy.utils.hex_colormap` keys for available values.
 
     To change the color scheme of an application:
 
@@ -144,8 +140,8 @@ class ThemeManager(EventDispatcher, DynamicColor):
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/primary-palette-m3.png
         :align: center
 
-    :attr:`primary_palette` is an :class:`~kivy.properties.ColorProperty`
-    and defaults to `blue`.
+    :attr:`primary_palette` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `None`.
     """
 
     dynamic_color_quality = NumericProperty(1 if platform == "android" else 10)
@@ -241,7 +237,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
-
+    
     dynamic_scheme_name = OptionProperty("TONAL_SPOT", options=SCHEMES.keys())
     """
     Name of the dynamic scheme. Availabe schemes `TONAL_SPOT`, `SPRITZ`
@@ -644,7 +640,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
 
     _size_current_wallpaper = NumericProperty(0)
-    _dark_mode = lambda self: False if self.theme_style == "Light" else True
+    _dark_mode = lambda self : False if self.theme_style == "Light" else True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -667,7 +663,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 fallback_wallpaper_path=self.path_to_wallpaper,
                 fallback_scheme_name=self.dynamic_scheme_name,
                 message_logger=Logger.info,
-                logger_head="KivyMD",
+                logger_head="KivyMD"
             )
             if system_scheme:
                 self._set_color_names(system_scheme)
@@ -704,10 +700,12 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     def _set_application_scheme(
         self,
-        color=[0, 0, 1, 1],  # Google default
+        color = "blue", # Google default
     ) -> None:
         if not color:
-            color = [0, 0, 1, 1]
+            color = "blue"
+        
+        color = get_color_from_hex(hex_colormap[color.lower()])
         color = Hct.from_int(argb_from_rgba_01(color))
         color = DislikeAnalyzer.fix_if_disliked(color).to_int()
 
@@ -720,22 +718,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
         )
 
     def _set_color_names(self, scheme) -> None:
-        # Dynamic colors
-        _added_colors = []
         for color_name in vars(MaterialDynamicColors).keys():
             attr = getattr(MaterialDynamicColors, color_name)
             if hasattr(attr, "get_hct"):
                 color_value = rgba(attr.get_hct(scheme).to_rgba())
-                _added_colors.append(color_name)
-                exec(f"self.{color_name}Color = {color_value}")
-
-        # Static colors
-        static_scheme = getattr(SchemeAndroid, self.theme_style.lower())(
-            scheme.source_color_argb
-        )
-        for color_name in static_scheme.props.keys():
-            if color_name not in _added_colors:  # prefer dynamic
-                color_value = rgba(static_scheme.props[color_name])
                 exec(f"self.{color_name}Color = {color_value}")
 
         self.disabledTextColor = self._get_disabled_hint_text_color()

@@ -666,20 +666,21 @@ class MDSegmentedButton(MDBoxLayout):
     def adjust_segment_radius(self, *args) -> None:
         """Rounds off the first and last elements."""
 
-        if self.ids.container.children[0].radius == [0, 0, 0, 0]:
-            self.ids.container.children[0].radius = (
-                0,
-                self.height / 2,
-                self.height / 2,
-                0,
-            )
-        if self.ids.container.children[-1].radius == [0, 0, 0, 0]:
-            self.ids.container.children[-1].radius = (
-                self.height / 2,
-                0,
-                0,
-                self.height / 2,
-            )
+        _rad = self.height / 2
+
+        _last_radius = [0, _rad, _rad, 0]
+        _first_radius = [_rad, 0, 0, _rad]
+        _optimal_radius = [0, 0, 0, 0]
+
+        _child_count = len(self.ids.container.children)
+
+        for count, child in enumerate(self.ids.container.children):
+            if count == 0:
+                child.radius = _last_radius
+            elif count == _child_count - 1:
+                child.radius = _first_radius
+            else:
+                child.radius = _optimal_radius
 
     def mark_item(self, segment_item: MDSegmentedButtonItem) -> None:
         """Fired when a segment element is clicked (`on_release` event)."""
@@ -700,14 +701,28 @@ class MDSegmentedButton(MDBoxLayout):
             widget._segmented_button = self
             widget.bind(on_release=self.mark_item)
             self.ids.container.add_widget(widget)
-            Clock.schedule_once(self.adjust_segment_radius)
+            self.adjust_segment_radius()
         elif isinstance(widget, MDSegmentedButtonContainer):
             return super().add_widget(widget)
 
+    def remove_widget(self, widget, *args, **kwargs):
+        if isinstance(widget, MDSegmentedButtonItem):
+            for child in widget.children[0].children:
+                if isinstance(child, MDSegmentButtonLabel) or isinstance(
+                    child, MDSegmentButtonIcon
+                ):
+                    self._set_size_hint_min_x(child, sign=-1)
+            self.ids.container.remove_widget(widget)
+            self.adjust_segment_radius()
+        elif isinstance(widget, MDSegmentedButtonContainer):
+            return super().remove_widget(widget)
+
     def _set_size_hint_min_x(
-        self, widget: MDSegmentButtonLabel | MDSegmentButtonIcon
+        self, widget: MDSegmentButtonLabel | MDSegmentButtonIcon, sign: int = 1
     ):
-        self.ids.container.size_hint_min_x += widget.texture_size[0] + dp(36)
+        self.ids.container.size_hint_min_x += sign * (
+            widget.texture_size[0] + dp(36)
+        )
 
 
 class MDSegmentedButtonContainer(BoxLayout):

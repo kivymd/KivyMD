@@ -22,9 +22,9 @@
 <MDTopAppBarTitle>
     padding:
         [
-        self._appbar._left_padding,
+        self._appbar._left_padding if self._appbar else 0,
         0,
-        self._appbar._right_padding,
+        self._appbar._right_padding if self._appbar else 0,
         0,
         ]
     font_style:

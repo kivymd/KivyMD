@@ -113,11 +113,11 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.scrollview import ScrollView
 from kivy.utils import platform
 
 from kivymd import uix_path
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.scrollview import MDScrollView
 
 with open(
     os.path.join(uix_path, "swiper", "swiper.kv"), encoding="utf-8"
@@ -198,12 +198,12 @@ class MDSwiperItem(MDBoxLayout):
         anim.start(self)
 
 
-class MDSwiper(MDScrollView):
+class MDSwiper(ScrollView):
     """
     Swiper class.
 
     For more information, see in the
-    :class:`~kivymd.uix.scrollview.MDScrollView` class documentation.
+    :class:`~kivy.uix.scrollview.ScrollView` class documentation.
     """
 
     items_spacing = NumericProperty("20dp")

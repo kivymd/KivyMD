@@ -95,10 +95,15 @@ Adds new transitions to the :class:`~kivy.animation.AnimationTransition` class:
 """
 
 import math
+import sys
 import kivy.animation
 
 float_epsilon = 8.3446500e-7
 
+if sys.version_info < (3, 11):
+    cbrt = lambda number: (abs(number) ** (1/3)) * (-1 if number < 0 else 1)
+else:
+    cbrt = math.cbrt
 
 class CubicBezier:
     """Ported from Android source code"""
@@ -165,7 +170,7 @@ class CubicBezier:
             t = -q2 / r
             cos_phi = max(-1.0, min(t, 1.0))
             phi = math.acos(cos_phi)
-            t1 = 2.0 * math.cbrt(r)
+            t1 = 2.0 * cbrt(r)
             root = self.clamp_range(t1 * math.cos(phi / 3.0) - a3)
             if not math.isnan(root):
                 return root
@@ -179,15 +184,15 @@ class CubicBezier:
             )
 
         elif self.close_to(discriminant, 0.0):
-            u1 = -math.cbrt(q2)
+            u1 = -cbrt(q2)
             root = self.clamp_range(2.0 * u1 - a3)
             if not math.isnan(root):
                 return root
             return self.clamp_range(-u1 - a3)
 
         sd = math.sqrt(discriminant)
-        u1 = math.cbrt(-q2 + sd)
-        v1 = math.cbrt(q2 + sd)
+        u1 = cbrt(-q2 + sd)
+        v1 = cbrt(q2 + sd)
         return self.clamp_range(u1 - v1 - a3)
 
     def t(self, value: float):

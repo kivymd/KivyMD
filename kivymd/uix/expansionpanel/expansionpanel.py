@@ -525,5 +525,5 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
             return super().add_widget(widget)
 
     def _set_content_height(self, *args):
-        self._original_content_height = self._content.height - dp(88)
+        self._original_content_height = self._content.height 
         self._content.height = 0

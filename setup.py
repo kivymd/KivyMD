@@ -118,9 +118,10 @@ if __name__ == "__main__":
                 "pyinstaller[hook_testing]",
             ],
             "docs": [
-                "sphinx",
-                "sphinx-autoapi",
-                "furo",
+                "sphinx==7.3.7",
+                "sphinx-autoapi==3.0.0",
+                # "furo",
+                "sphinx-book-theme",
                 "sphinx-notfound-page",
                 "sphinx-copybutton",
                 "sphinx-tabs",

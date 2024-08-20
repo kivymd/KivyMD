@@ -27,7 +27,7 @@ import autoapi_kivymd  # NOQA. from _extensions
 
 # Project information.
 project = "KivyMD"
-copyright = "2022, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
+copyright = "2024, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
 version = __version__
 release = __version__
@@ -40,7 +40,8 @@ locale_dirs = ["_locales"]
 language = "Python"
 
 # HTML Theme.
-html_theme = "furo"
+# html_theme = "furo"
+html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
 html_favicon = "_static/logo-kivymd.png"
 html_logo = "_static/logo-kivymd.png"
@@ -49,6 +50,20 @@ html_theme_options = {
     "navigation_depth": 2,
     "collapse_navigation": False,
     "titles_only": True,
+    "announcement": '''<h6>KivyMD Library Sponsors:</h6>
+<p>
+    <a href="https://github.com/PeterSurda" target="_blank">
+        <img width="25" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/peter.png" alt="Peter Šurda">
+        Peter Šurda
+    </a>
+</p>
+<p>
+    <a href="https://route4me.com" target="_blank">
+        <img width="100" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/route4me.png" alt="Best Route Planner">
+        Best Route Planner - Route Optimization Software
+    </a>
+</p>
+''',
 }
 
 # Pygments style.

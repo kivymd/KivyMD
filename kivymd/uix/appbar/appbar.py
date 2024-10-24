@@ -566,7 +566,7 @@ class BaseTopAppBarButtonContainer(DeclarativeBehavior, BoxLayout):
         return super().add_widget(widget)
 
     def _check_icon_color(self, widget):
-        if widget.theme_icon_color == "Primary" and widget.icon_color == None:
+        if widget.theme_icon_color == "Primary" and widget.icon_color is None:
             widget.theme_icon_color = "Custom"
             widget.icon_color = widget.theme_cls.onSurfaceColor
 
@@ -625,25 +625,6 @@ class MDTopAppBarTitle(MDLabel):
     """
 
     _appbar = ObjectProperty()
-    _title_width = NumericProperty(0)
-
-    # FIXME: When changing the text, the texture_size property returns an
-    #  incorrect value, which causes the panel title to shift.
-    def on_text(self, instance, value) -> None:
-        """Fired when the :attr:`text` value changes."""
-
-        def set_title_width(*args) -> None:
-            self._title_width = self.texture_size[0]
-
-        Clock.schedule_once(set_title_width)
-
-    def on_pos_hint(self, instance, value) -> None:
-        """Fired when the :attr:`pos_hint` value changes."""
-
-        if self._appbar:
-            Clock.schedule_once(
-                lambda x: self._appbar._set_padding_title(value)
-            )
 
 
 class MDTopAppBarLeadingButtonContainer(BaseTopAppBarButtonContainer):
@@ -672,11 +653,6 @@ class MDTopAppBarTrailingButtonContainer(BaseTopAppBarButtonContainer):
     """
 
 
-# FIXME: The on_enter/on_leave event is not triggered for
-#  MDActionTopAppBarButton buttons in the MDTopAppBarTrailingButtonContainer
-#  container.
-#  When the screen size is changed on desktop devices, the position of the
-#  trailing container is shifted until the screen size change is completed.
 class MDTopAppBar(
     DeclarativeBehavior,
     ThemableBehavior,
@@ -731,149 +707,31 @@ class MDTopAppBar(
     _trailing_button_container = ObjectProperty()
     _leading_button_container = ObjectProperty()
     _appbar_title = ObjectProperty()
-    _right_padding = NumericProperty(0)
-    _left_padding = NumericProperty(0)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        Clock.schedule_once(lambda x: self.on_size(self, (0, 0)))
-
-    def on_type(self, instance, value) -> None:
-        def on_type(*args):
-            if value in ("medium", "large"):
-                self.ids.root_box.add_widget(Widget(), index=1)
-
-        Clock.schedule_once(on_type, 0.5)
-
-    def on_size(self, instance, size) -> None:
-        """Fired when the application screen size changes."""
-
-        if self._appbar_title:
-            if not self._appbar_title._title_width:
-                self._appbar_title._title_width = (
-                    self._appbar_title.texture_size[0]
-                )
-            self._right_padding = 0
-            self._left_padding = 0
-            self._appbar_title.on_pos_hint(
-                self._appbar_title, self._appbar_title.pos_hint
-            )
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDTopAppBarTitle):
             widget._appbar = self
             self._appbar_title = widget
-            widget.bind(text=lambda *x: self.on_size(*x))
             Clock.schedule_once(lambda x: self._add_title(widget))
         elif isinstance(widget, MDTopAppBarTrailingButtonContainer):
             self._trailing_button_container = widget
             widget._appbar = self
             Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget))
         elif isinstance(widget, MDTopAppBarLeadingButtonContainer):
-            widget._appbar = self
             self._leading_button_container = widget
-            Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget))
+            widget._appbar = self
+            Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget, len(self.ids.root_box.children)))
         else:
             return super().add_widget(widget)
 
     def _add_title(self, widget):
         if self.type == "small":
-            self.ids.root_box.add_widget(widget)
+            self.ids.text_box.add_widget(widget)
         else:
             self.ids.title_box.add_widget(widget)
-
-    def _set_padding_title(self, value):
-        if value.get("center_x", 0) == 0.5 and self.type == "small":
-            if (
-                not self._trailing_button_container
-                and self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2)
-                    - (
-                        self._leading_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._left_padding
-            elif (
-                self._trailing_button_container
-                and not self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2) - (self._appbar_title._title_width // 2)
-                ) - self._left_padding
-                self._right_padding = (
-                    (self.width // 2)
-                    - (
-                        self._trailing_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._right_padding
-            elif (
-                not self._trailing_button_container
-                and not self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2) - (self._appbar_title._title_width // 2)
-                ) - self._left_padding
-                self._right_padding = (
-                    (self.width // 2) - (self._appbar_title._title_width // 2)
-                ) - self._right_padding
-            elif (
-                self._trailing_button_container
-                and self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2)
-                    - (
-                        self._leading_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._left_padding
-                self._right_padding = (
-                    (self.width // 2)
-                    - (
-                        self._trailing_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._right_padding
-        elif (
-            not value
-            and self._trailing_button_container
-            and self._leading_button_container
-        ):
-            if self.type == "small":
-
-                self._right_padding = (
-                    self.width
-                    - (
-                        self._trailing_button_container.width
-                        + self._leading_button_container.width
-                        + self._appbar_title._title_width
-                    )
-                    - self._right_padding
-                )
-        elif (
-            not value
-            and self._trailing_button_container
-            and not self._leading_button_container
-        ):
-            if self.type == "small":
-                self._right_padding = (
-                    self.width
-                    - (
-                        self._trailing_button_container.width
-                        + self._appbar_title._title_width
-                    )
-                    - self._right_padding
-                )
-                self._left_padding = dp(16)
-        elif (
-            not value
-            and not self._trailing_button_container
-            and not self._leading_button_container
-        ):
-            self._left_padding = dp(16)
 
 
 class MDBottomAppBar(

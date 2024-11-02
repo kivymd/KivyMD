@@ -52,7 +52,7 @@ Usage
 
         MDTopAppBarTitle:
             text: "AppBar Center-aligned"
-            pos_hint: {"center_x": .5}
+            halign: "center"
 
         MDTopAppBarTrailingButtonContainer:
 
@@ -88,7 +88,7 @@ Configurations
 
             MDTopAppBarTitle:
                 text: "AppBar small"
-                pos_hint: {"center_x": .5}
+                halign: "center"
 
             MDTopAppBarTrailingButtonContainer:
 

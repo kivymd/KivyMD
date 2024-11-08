@@ -24,7 +24,7 @@ may be offered to you without asking too.
 
 [![PyPI version](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
-[![Downloads](https://pepy.tech/badge/kivymd)](https://pepy.tech/project/kivymd)
+[![Downloads](https://img.shields.io/badge/downloads-KivyMD-brightgreen?logo=download&style=flat))](https://pepy.tech/project/kivymd)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 [![Discord](https://img.shields.io/discord/566880874789076992?logo=discord)](https://discord.gg/wu3qBST)

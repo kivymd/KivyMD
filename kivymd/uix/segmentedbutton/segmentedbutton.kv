@@ -52,13 +52,15 @@
         "12dp", \
         0, \
         0 \
-        if self.parent.parent.ids.container.parent._label else \
+        if self.parent and self.parent.parent and \
+        self.parent.parent.ids.container.parent._label else \
         "12dp", \
         0
     icon_color:
         ( \
         self.theme_cls.onSecondaryContainerColor \
-        if self.parent.parent.ids.container.parent.active else \
+        if self.parent and self.parent.parent and \
+        self.parent.parent.ids.container.parent.active else \
         self.theme_cls.onSurfaceColor \
         ) \
         if self.theme_icon_color == "Primary" else self.icon_color

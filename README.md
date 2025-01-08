@@ -22,7 +22,7 @@ project without forking for easier collaboration), have at least one PR
 approved and ask for it. If you contribute regularly to the project the role
 may be offered to you without asking too.
 
-[![PyPI version](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd)
+[![PyPI version](https://img.shields.io/pypi/v/kivymd.svg)](https://pypi.org/project/kivymd2)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/kivymd.svg)](#Installation)
 [![Downloads](https://pepy.tech/badge/kivymd)](https://pepy.tech/project/kivymd)
 [![Code style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -43,7 +43,7 @@ may be offered to you without asking too.
 ## Installation
 
 ```bash
-pip install kivymd==2.0.0
+pip install kivymd2==2.0.1
 ```
 
 ### Dependencies:
@@ -57,7 +57,7 @@ pip install kivymd==2.0.0
 ### How to install
 
 Command [above](#installation) will install latest release version of KivyMD from 
-[PyPI](https://pypi.org/project/kivymd).
+[PyPI](https://pypi.org/project/kivymd2).
 
 If you want to install development version from 
 [master](https://github.com/kivymd/KivyMD/tree/master/)
@@ -94,7 +94,7 @@ requirements = python3,
     asynckivy
 ```
 
-This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
+This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd2).
 
 If you want to use development version from [master](https://github.com/kivymd/KivyMD/tree/master/)
 branch, you should specify link to zip archive:

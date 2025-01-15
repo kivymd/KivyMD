@@ -1,0 +1,76 @@
+#: import images_path kivymd.images_path
+
+<MDSearchTrailingAvatar>:
+    size_hint_x: None
+    width: dp(30)
+
+<MDSearchTrailingIcon>:
+    size_hint: [None, 1]
+    width: dp(24)
+    theme_icon_color: "Custom"
+    icon_color: app.theme_cls.onSurfaceColor
+
+<MDSearchView>:
+    overlay_color: [0] * 4
+    background: f"{images_path}/transparent.png"
+    boder: [0] * 4
+    _anim_duration: 0
+    FloatLayout
+        MDBoxLayout:
+            id: root_container
+            orientation: 'vertical'
+            md_bg_color: app.theme_cls.surfaceContainerHighColor
+            adaptive_height: True
+            size_hint_x: None
+            canvas:
+                Color:
+                    rgba: app.theme_cls.outlineColor
+                Line:
+                    points:
+                        [[self.x,self.y-root._header_height+self.height],
+                        [self.x+self.width, self.y-root._header_height+self.height]]
+            BoxLayout:
+                size_hint_y: None
+                height: root._header_height
+                spacing: dp(16)
+                padding: [dp(16), 0]
+                MDIconButton:
+                    icon: "arrow-left"
+                    size_hint: [None, 1]
+                    width: dp(24)
+                    on_release: root.close_view()
+                    theme_icon_color: "Custom"
+                    icon_color: app.theme_cls.onSurfaceColor
+
+            BoxLayout:
+                size_hint: [None, None]
+                size:[ dp(360), dp(240)]
+
+<MDSearchBar>:
+    size_hint_y: None
+    height: dp(56)
+    md_bg_color: app.theme_cls.surfaceContainerHighColor
+    radius: dp(28)
+    spacing: dp(16)
+    padding: [dp(16), 0]
+    adaptive_width: False
+    on_release: self._search_view.open_view()
+    MDIconButton:
+        icon: root.leading_icon
+        size_hint: [None, 1]
+        width: dp(24)
+        on_release: root.on_leading_icon_release()
+        on_press: root.on_leading_icon_press()
+        theme_icon_color: "Custom"
+        icon_color: app.theme_cls.onSurfaceColor
+    MDLabel:
+        text: root.supporting_text
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.onSurfaceVariantColor
+        theme_font_size: "Custom"
+        font_style: "Title"
+        role: "medium"
+        size_hint_x: None
+        padding: root._supporting_text_padding if root.adaptive_width else 0
+        adaptive_width:root.adaptive_width
+        size_hint_x: 1 if not root.adaptive_width else None

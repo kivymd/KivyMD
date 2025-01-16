@@ -9,18 +9,38 @@ MAIN_KV = """
 MDScreen:
     md_bg_color:app.theme_cls.backgroundColor
     BoxLayout:
-        padding:[dp(10), dp(10)]
+        padding:[dp(10), dp(50)]
         orientation:"vertical"
         
         MDSearchBar:
-            id:bar
+            id: search_bar
             supporting_text: "Search in text"
-            # if you want it to be of fixed size
-            # adaptive_width:True
-            MDSearchTrailingIcon:
-                icon:"microphone"
-            MDSearchTrailingAvatar:
-                source:f"{images_path}/logo/kivymd-icon-128.png"
+            view_root: root
+            
+            # Search Bar
+            MDSearchBarLeadingContainer:
+                MDSearchLeadingIcon:
+                    icon:"magnify"
+
+            MDSearchBarTrailingContainer:
+                MDSearchTrailingIcon:
+                    icon:"microphone"
+                MDSearchTrailingAvatar:
+                    source:f"{images_path}/logo/kivymd-icon-128.png"
+            
+            # Search View
+            MDSearchViewLeadingContainer:
+                MDSearchLeadingIcon:
+                    icon:"arrow-left"
+                    on_release: search_bar.close_view()
+
+            MDSearchViewTrailingContainer:
+                MDSearchTrailingIcon:
+                    icon:"window-close"
+
+            MDSearchViewContainer:
+                MDLabel:
+                    text:"Hello World!"
 
         Widget:
         MDSwitch:

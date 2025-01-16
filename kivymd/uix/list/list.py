@@ -397,7 +397,7 @@ class MDList(MDGridLayout):
 
 class BaseListItem(
     DeclarativeBehavior,
-    BackgroundColorBehavior,
+    # BackgroundColorBehavior,
     RectangularRippleBehavior,
     ButtonBehavior,
     ThemableBehavior,

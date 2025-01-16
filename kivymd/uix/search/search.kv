@@ -44,6 +44,7 @@
                 [self.x+self.width, self.y+self.height]]
 
 <MDSearchWidget>:
+    size_hint:[1,1]
     MDBoxLayout:
         id: root_container
         orientation: 'vertical'
@@ -67,7 +68,6 @@
                 multiline: False
                 font_size: root._font_style["font-size"]
                 on_focus: if args[-1]: root.switch_state("open")
-        Widget: 
 <MDSearchBar>:
     size_hint_y: None
     height: dp(56)

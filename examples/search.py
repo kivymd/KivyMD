@@ -1,15 +1,29 @@
 from kivy.lang import Builder
 from kivymd.app import MDApp
+from kivymd.uix.list import MDListItem
 from examples.common_app import CommonApp
-from faker import Faker
+from kivy.properties import StringProperty
+from kivymd.icon_definitions import md_icons
+
+class IconItem(MDListItem):
+    icon = StringProperty()
+    text = StringProperty()
 
 MAIN_KV = """
 #: import images_path kivymd.images_path
 
+<IconItem>
+    divider: True
+    MDListItemLeadingIcon:
+        icon: root.icon
+
+    MDListItemSupportingText:
+        text: root.text
+
 MDScreen:
     md_bg_color:app.theme_cls.backgroundColor
     BoxLayout:
-        padding:[dp(10), dp(50)]
+        padding:[dp(10), dp(30), dp(10), dp(10)]
         orientation:"vertical"
         
         MDSearchBar:
@@ -20,7 +34,8 @@ MDScreen:
             # Search Bar
             MDSearchBarLeadingContainer:
                 MDSearchLeadingIcon:
-                    icon:"magnify"
+                    icon: "menu"
+                    on_release: app.open_menu(self)
 
             MDSearchBarTrailingContainer:
                 MDSearchTrailingIcon:
@@ -39,20 +54,56 @@ MDScreen:
                     icon:"window-close"
 
             MDSearchViewContainer:
-                MDLabel:
-                    text:"Hello World!"
+                RecycleView:
+                    id: rv
+                    key_viewclass: 'viewclass'
+                    key_size: 'height'
 
+                    RecycleBoxLayout:
+                        default_size: None, dp(48)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: 'vertical'
         Widget:
-        MDSwitch:
-            on_active:app.theme_cls.theme_style = "Dark" if app.theme_cls.theme_style == "Light" else "Light"
-        Widget:
-    
 
+        BoxLayout:
+            size_hint_y:None
+            height:dp(30)
+            padding:[dp(50), 0]
+            spacing:dp(10)
+            MDLabel:
+                text:"Bar dock"
+                halign:"right"
+            MDSwitch:
+                on_active:search_bar.docked = args[-1]
 """
 
 class Example(MDApp, CommonApp):
-    fake = Faker()
+
     def build(self):
         return Builder.load_string(MAIN_KV)
+
+    def on_start(self):
+        self.set_list_md_icons()
+
+    def set_list_md_icons(self, text="", search=False):
+        def add_icon_item(name_icon):
+            self.root.ids.rv.data.append(
+                {
+                    "viewclass": "IconItem",
+                    "icon": name_icon,
+                    "text": name_icon,
+                    "callback": lambda x: x,
+                }
+            )
+
+        self.root.ids.rv.data = []
+        for name_icon in md_icons.keys():
+            if search:
+                if text in name_icon:
+                    add_icon_item(name_icon)
+            else:
+                add_icon_item(name_icon)
 
 Example().run()

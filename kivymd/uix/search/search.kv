@@ -1,5 +1,3 @@
-#: import images_path kivymd.images_path
-
 <MDSearchTrailingAvatar>:
     size_hint_x: None
     width: dp(30)
@@ -7,70 +5,69 @@
 <MDSearchTrailingIcon>:
     size_hint: [None, 1]
     width: dp(24)
-    theme_icon_color: "Custom"
     icon_color: app.theme_cls.onSurfaceColor
 
-<MDSearchView>:
-    overlay_color: [0] * 4
-    background: f"{images_path}/transparent.png"
-    boder: [0] * 4
-    _anim_duration: 0
-    FloatLayout
-        MDBoxLayout:
-            id: root_container
-            orientation: 'vertical'
-            md_bg_color: app.theme_cls.surfaceContainerHighColor
-            adaptive_height: True
-            size_hint_x: None
-            canvas:
-                Color:
-                    rgba: app.theme_cls.outlineColor
-                Line:
-                    points:
-                        [[self.x,self.y-root._header_height+self.height],
-                        [self.x+self.width, self.y-root._header_height+self.height]]
-            BoxLayout:
-                size_hint_y: None
-                height: root._header_height
-                spacing: dp(16)
-                padding: [dp(16), 0]
-                MDIconButton:
-                    icon: "arrow-left"
-                    size_hint: [None, 1]
-                    width: dp(24)
-                    on_release: root.close_view()
-                    theme_icon_color: "Custom"
-                    icon_color: app.theme_cls.onSurfaceColor
+<MDSearchLeadingIcon>:
+    size_hint: [None, 1]
+    width: dp(24)
+    icon_color: app.theme_cls.onSurfaceColor
 
-            BoxLayout:
-                size_hint: [None, None]
-                size:[ dp(360), dp(240)]
+<MDSearchBarTrailingContainer>:
+    size_hint_x: None
+    width: self.minimum_width
+    spacing: dp(16)
 
+<MDSearchBarLeadingContainer>:
+    size_hint_x: None
+    width: self.minimum_width
+    spacing: dp(16)
+
+<MDSearchViewTrailingContainer>:
+    size_hint_x: None
+    width: self.minimum_width
+    spacing: dp(16)
+
+<MDSearchViewLeadingContainer>:
+    size_hint_x: None
+    width: self.minimum_width
+    spacing: dp(16)
+
+<MDSearchViewContainer>:
+    size_hint_y:None
+    height:dp(55)
+    canvas:
+        Color:
+            rgba: app.theme_cls.outlineColor
+        Line:
+            points:
+                [[self.x,self.y+self.height],
+                [self.x+self.width, self.y+self.height]]
+
+<MDSearchWidget>:
+    MDBoxLayout:
+        id: root_container
+        orientation: 'vertical'
+        md_bg_color: app.theme_cls.surfaceContainerHighColor
+        size_hint: [None, None]
+        orientation: 'vertical'
+        # header
+        BoxLayout:
+            id: header
+            padding: [dp(16), 0]
+            spacing: dp(16)
+            size_hint_y: None
+            height: dp(56)
+            TextInput:
+                id: text_input
+                background_color:[0,0,0,0]
+                foreground_color: app.theme_cls.onSurfaceColor
+                cursor_color:app.theme_cls.outlineColor
+                hint_text_color: app.theme_cls.onSurfaceVariantColor
+                padding: [0, (self.parent.height - self.font_size - dp(3)) / 2]
+                multiline: False
+                font_size: root._font_style["font-size"]
+                on_focus: if args[-1]: root.switch_state("open")
+        Widget: 
 <MDSearchBar>:
     size_hint_y: None
     height: dp(56)
-    md_bg_color: app.theme_cls.surfaceContainerHighColor
-    radius: dp(28)
-    spacing: dp(16)
-    padding: [dp(16), 0]
-    adaptive_width: False
-    on_release: self._search_view.open_view()
-    MDIconButton:
-        icon: root.leading_icon
-        size_hint: [None, 1]
-        width: dp(24)
-        on_release: root.on_leading_icon_release()
-        on_press: root.on_leading_icon_press()
-        theme_icon_color: "Custom"
-        icon_color: app.theme_cls.onSurfaceColor
-    MDLabel:
-        text: root.supporting_text
-        theme_text_color: "Custom"
-        text_color: app.theme_cls.onSurfaceVariantColor
-        theme_font_size: "Custom"
-        font_style: "Title"
-        role: "medium"
-        size_hint_x: None
-        padding: root._supporting_text_padding if root.adaptive_width else 0
-        adaptive_width:root.adaptive_width
-        size_hint_x: 1 if not root.adaptive_width else None

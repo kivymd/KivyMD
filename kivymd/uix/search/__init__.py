@@ -1,6 +1,1 @@
-from .search import (
-    MDSearchBar,
-    MDSearchTrailingAvatar,
-    MDSearchTrailingIcon,
-    MDSearchView,
-)
+from .search import *

@@ -261,6 +261,7 @@ https://github.com/kivymd/KivyMDBuilder
   [SIL Open Font License 1.1](http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)
 
 ## Contributors
+[<img src="https://avatars.githubusercontent.com/u/108749445?s=64&v=4" width="64" height="64" alt="0x_varadacode">](https://github.com/0x_varadacode)
 
 ### KivyMD Team
 

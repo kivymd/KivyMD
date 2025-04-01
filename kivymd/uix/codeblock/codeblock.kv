@@ -1,0 +1,31 @@
+<MDCodeBlock>
+    md_bg_color: self.theme_cls.surfaceContainerLowColor
+    _icon_bg_color_active: self.icon_bg_color_active if self.icon_bg_color_active else self.theme_cls.surfaceContainerHighestColor
+    line_color: self.theme_cls.outlineColor
+
+    CodeInput:
+        id: codeblock_input
+        background_normal: ""
+        background_active: ""
+        background_color: [1, 1, 1, 0]
+        size_hint: None, None
+        height: root.height - root.line_width
+        width: root.width - root.line_width
+        pos_hint: {'center_x': 0.5,'center_y': 0.5}
+        text: root.text
+        lexer: root.lexer
+        style_name: root.style_name
+        style: root.style if root.style else self.style
+        radius: root.radius
+    
+
+    MDIconButton:
+        id: codeblock_input_copy_button
+        icon: "content-copy"
+        theme_bg_color: "Custom"
+        md_bg_color: root.icon_bg_color
+        color: root.icon_color if root.icon_color else self.color
+        radius: [0]
+        pos_hint: {'right': 0.98,'top': 0.95}
+        on_press:
+            root.on_copy(codeblock_input.text)

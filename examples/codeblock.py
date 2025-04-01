@@ -19,6 +19,8 @@ MDScreen:
                 size_hint: 1, None
                 adaptive_height: True
                 text: "import os"
+                style_name: "monokai"
+                icon_color: "white"
 """
 
 

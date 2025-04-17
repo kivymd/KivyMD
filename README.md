@@ -277,6 +277,8 @@ This project exists thanks to all the people who contribute.
 *[How to contribute](#Contributing)*
 
 <a href="https://github.com/kivymd/KivyMD/graphs/contributors">
+  https://github.com/VaradScript
+
     <img src="https://opencollective.com/kivymd/contributors.svg?width=890&button=false"/>
 </a>
 

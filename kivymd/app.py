@@ -2,16 +2,15 @@
 Themes/Material App
 ===================
 
-This module contains :class:`MDApp` class that is inherited from
-:class:`~kivy.app.App`. :class:`MDApp` has some properties needed for `KivyMD`
-library (like :attr:`~MDApp.theme_cls`). You can turn on the monitor
-displaying the current `FP` value in your application:
+This module contains the :class:`MDApp` class, inherited from
+:class:`~kivy.app.App`. :class:`MDApp` provides properties required for the
+``KivyMD`` library (like :attr:`~MDApp.theme_cls`). You can enable an on-screen
+FPS monitor for debugging:
 
 .. code-block:: python
 
     KV = '''
     MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
 
         MDLabel:
             text: "Hello, World!"
@@ -19,9 +18,7 @@ displaying the current `FP` value in your application:
     '''
 
     from kivy.lang import Builder
-
     from kivymd.app import MDApp
-
 
     class MainApp(MDApp):
         def build(self):
@@ -30,26 +27,11 @@ displaying the current `FP` value in your application:
         def on_start(self):
             self.fps_monitor_start()
 
-
     MainApp().run()
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fps-monitor-dark.png
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fps-monitor.png
     :width: 350 px
     :align: center
-
-.. note::
-
-    Note that if you override the built-in on_start method, you will
-    definitely need to call the super method:
-
-    .. code-block:: python
-
-        class MainApp(MDApp):
-            def build(self):
-                [...]
-
-            def on_start(self):
-                [...]
 """
 
 __all__ = ("MDApp",)
@@ -69,16 +51,10 @@ class FpsMonitoring:
     """Implements a monitor to display the current FPS in the toolbar."""
 
     def fps_monitor_start(self, anchor: str = "top") -> None:
-        """
-        Adds a monitor to the main application window.
-
-        :type anchor: str;
-        :param anchor: anchor FPS panel ('top' or 'bottom');
-        """
+        """Adds a monitor to the main application window."""
 
         def add_monitor(*args):
             from kivy.core.window import Window
-
             from kivymd.utils.fpsmonitor import FpsMonitor
 
             monitor = FpsMonitor(anchor=anchor)
@@ -100,28 +76,25 @@ class MDApp(App, FpsMonitoring):
 
     .. versionadded:: 1.1.0
 
-    :attr:`icon` is an :class:`~kivy.properties.StringProperty`
-    adn default to `kivymd/images/logo/kivymd-icon-512.png`.
+    :attr:`icon` is a :class:`~kivy.properties.StringProperty`
+    and defaults to 'kivymd/images/logo/kivymd-icon-512.png'.
     """
 
     theme_cls = ObjectProperty()
     """
-    Instance of :class:`~ThemeManager` class.
+    Instance of :class:`~ThemeManager`.
 
-    .. Warning:: The :attr:`~theme_cls` attribute is already available
-        in a class that is inherited from the :class:`~MDApp` class.
-        The following code will result in an error!
+    .. warning:: The :attr:`~theme_cls` attribute is already available
+        in a class inherited from :class:`~MDApp`. Do not redeclare it directly!
 
     .. code-block:: python
 
+        # ❌ This will result in an error!
         class MainApp(MDApp):
             theme_cls = ThemeManager()
             theme_cls.primary_palette = "Teal"
 
-    .. Note:: Correctly do as shown below!
-
-    .. code-block:: python
-
+        # ✅ Correct usage:
         class MainApp(MDApp):
             def build(self):
                 self.theme_cls.primary_palette = "Teal"
@@ -133,30 +106,19 @@ class MDApp(App, FpsMonitoring):
         super().__init__(**kwargs)
         self.theme_cls = ThemeManager()
 
-    def _run_prepare(self):
-        self.theme_cls.bind(
-            theme_style=self.theme_cls.update_theme_colors,
-            primary_palette=self.theme_cls.set_colors
-        )
-        self.theme_cls.set_colors()
-        super()._run_prepare()
-
     def load_all_kv_files(self, path_to_directory: str) -> None:
         """
-        Recursively loads KV files from the selected directory.
+        Recursively loads all .kv files from the selected directory.
 
         .. versionadded:: 1.0.0
         """
-
         for path_to_dir, dirs, files in os.walk(path_to_directory):
-            # When using the `load_all_kv_files` method, all KV files
-            # from the `KivyMD` library were loaded twice, which leads to
-            # failures when using application built using `PyInstaller`.
+            # Avoid loading from virtual environments or internal KivyMD folders
             if "kivymd" in path_to_directory:
                 Logger.critical(
                     "KivyMD: "
-                    "Do not use the word 'kivymd' in the name of the "
-                    "directory from where you download KV files"
+                    "Do not use the word 'kivymd' in the name of the directory "
+                    "from where you load KV files"
                 )
             if (
                 "venv" in path_to_dir
@@ -164,11 +126,12 @@ class MDApp(App, FpsMonitoring):
                 or os.path.join("kivymd") in path_to_dir
             ):
                 continue
+
             for name_file in files:
                 if (
                     os.path.splitext(name_file)[1] == ".kv"
-                    and name_file != "style.kv"  # if use PyInstaller
-                    and "__MACOS" not in path_to_dir  # if use Mac OS
+                    and name_file != "style.kv"        # For PyInstaller
+                    and "__MACOS" not in path_to_dir    # MacOS-specific ignore
                 ):
                     path_to_kv_file = os.path.join(path_to_dir, name_file)
                     Builder.load_file(path_to_kv_file)

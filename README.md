@@ -272,7 +272,7 @@ They spent a lot of time to improve KivyMD.
 - Andrés Rodríguez [@mixedCase](https://github.com/mixedCase) - First author of KivyMD project, contributor
 
 ### Code Contributors
-
+https://github.com/VaradScript
 This project exists thanks to all the people who contribute.
 *[How to contribute](#Contributing)*
 

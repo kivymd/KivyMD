@@ -43,7 +43,7 @@ may be offered to you without asking too.
 ## Installation
 
 ```bash
-pip install kivymd==2.0.0
+pip install kivymd2
 ```
 
 ### Dependencies:
@@ -57,7 +57,7 @@ pip install kivymd==2.0.0
 ### How to install
 
 Command [above](#installation) will install latest release version of KivyMD from 
-[PyPI](https://pypi.org/project/kivymd).
+[PyPI](https://pypi.org/project/kivymd2/).
 
 If you want to install development version from 
 [master](https://github.com/kivymd/KivyMD/tree/master/)

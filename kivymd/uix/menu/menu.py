@@ -1143,8 +1143,10 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
         """
         Set the target height of the menu depending on the size of each item.
         """
-
-        self.target_height = 0
+        if self.header_cls:
+            self.target_height += self.header_cls.height
+        else:
+            self.target_height = 0
         for item in self.menu.data:
             self.target_height += item.get("height", self.min_height)
 
@@ -1359,7 +1361,7 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
             self.ids.content_header.clear_widgets()
             self.ids.content_header.add_widget(instance_user_menu_header)
 
-        Clock.schedule_once(add_content_header_cls, 1)
+        Clock.schedule_once(add_content_header_cls, 0.1)
 
     def on_touch_down(self, touch):
         if not self.menu.collide_point(*touch.pos):

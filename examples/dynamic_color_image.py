@@ -6,10 +6,10 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.core.window.window_sdl2 import WindowSDL
 from kivy.lang import Builder
-from kivy.properties import StringProperty, ColorProperty
+from kivy.properties import ColorProperty, StringProperty
 
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = """
 <ColorCard>

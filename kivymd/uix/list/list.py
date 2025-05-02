@@ -348,27 +348,27 @@ from kivy import Logger
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import (
-    NumericProperty,
-    ObjectProperty,
     BooleanProperty,
     ColorProperty,
+    NumericProperty,
+    ObjectProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CircularRippleBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.label import MDLabel, MDIcon
+from kivymd.uix.label import MDIcon, MDLabel
+from kivymd.uix.selectioncontrol import MDCheckbox
 
 with open(
     os.path.join(uix_path, "list", "list.kv"), encoding="utf-8"

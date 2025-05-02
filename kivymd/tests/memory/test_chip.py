@@ -1,7 +1,7 @@
 from kivy.clock import Clock
 
-from kivymd.uix.chip import MDChip, MDChipLeadingIcon, MDChipText
 from kivymd.app import MDApp
+from kivymd.uix.chip import MDChip, MDChipLeadingIcon, MDChipText
 from kivymd.uix.screen import MDScreen
 
 len_callbacks = 0

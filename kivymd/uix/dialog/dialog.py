@@ -418,20 +418,20 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    VariableListProperty,
-    NumericProperty,
-    ColorProperty,
-    ObjectProperty,
     BooleanProperty,
+    ColorProperty,
+    NumericProperty,
+    ObjectProperty,
+    VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
-from kivymd.uix.card import MDCard
-from kivymd.uix.label import MDIcon, MDLabel
 from kivymd import uix_path
 from kivymd.material_resources import DEVICE_TYPE
-from kivymd.uix.behaviors import MotionDialogBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, MotionDialogBehavior
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "dialog", "dialog.kv"), encoding="utf-8"

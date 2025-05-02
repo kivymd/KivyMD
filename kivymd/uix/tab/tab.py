@@ -528,37 +528,37 @@ __all__ = (
 
 import os
 
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.carousel import Carousel
-from kivy.uix.widget import Widget
-from kivy.utils import boundary
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ObjectProperty,
+    AliasProperty,
     BooleanProperty,
     ColorProperty,
     NumericProperty,
-    AliasProperty,
+    ObjectProperty,
     StringProperty,
     VariableListProperty,
 )
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.carousel import Carousel
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.widget import Widget
+from kivy.utils import boundary
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.badge import MDBadge
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
-from kivymd.uix.label import MDLabel, MDIcon
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(os.path.join(uix_path, "tab", "tab.kv"), encoding="utf-8") as kv_file:
     Builder.load_string(kv_file.read())

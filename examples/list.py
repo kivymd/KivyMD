@@ -1,19 +1,17 @@
 from kivy.lang import Builder
 
+from examples.common_app import KV, CommonApp
 from kivymd import images_path
+from kivymd.app import MDApp
 from kivymd.uix.list import (
     MDListItem,
     MDListItemHeadlineText,
-    MDListItemSupportingText,
-    MDListItemTrailingCheckbox,
     MDListItemLeadingAvatar,
-    MDListItemTertiaryText,
     MDListItemLeadingIcon,
+    MDListItemSupportingText,
+    MDListItemTertiaryText,
+    MDListItemTrailingCheckbox,
 )
-
-from kivymd.app import MDApp
-
-from examples.common_app import CommonApp, KV
 
 
 class Example(MDApp, CommonApp):

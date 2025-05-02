@@ -517,9 +517,9 @@ __all__ = (
     "MDModalInputDatePicker",
 )
 
-import os
 import calendar
 import datetime
+import os
 from datetime import date
 from itertools import zip_longest
 
@@ -529,12 +529,12 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    NumericProperty,
-    OptionProperty,
-    ObjectProperty,
     BooleanProperty,
-    StringProperty,
     ColorProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
     VariableListProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
@@ -550,17 +550,17 @@ from kivy.uix.widget import Widget
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    ScaleBehavior,
     CircularRippleBehavior,
-    RotateBehavior,
     CommonElevationBehavior,
+    RotateBehavior,
+    ScaleBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionDatePickerBehavior
-from kivymd.uix.label import MDLabel, MDIcon
+from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.uix.textfield import (
     MDTextField,
-    MDTextFieldHintText,
     MDTextFieldHelperText,
+    MDTextFieldHintText,
 )
 
 with open(
@@ -1167,7 +1167,7 @@ class MDDockedDatePickerBaseSelectionContainer(BoxLayout):
     text = StringProperty()
     """
     The current name of the month or the current year.
-    
+
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """

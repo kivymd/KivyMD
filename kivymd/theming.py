@@ -26,10 +26,11 @@ the material properties of your application.
 import os.path
 from timeit import default_timer
 
+from kivy import platform
 from kivy.app import App
-from kivy.logger import Logger
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
+from kivy.logger import Logger
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -39,20 +40,18 @@ from kivy.properties import (
     OptionProperty,
     StringProperty,
 )
-from kivy import platform
-from kivy.utils import get_color_from_hex, rgba, hex_colormap
+from kivy.utils import get_color_from_hex, hex_colormap, rgba
+from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
+from materialyoucolor.dynamiccolor.material_dynamic_colors import (
+    MaterialDynamicColors,
+)
+from materialyoucolor.hct import Hct
+from materialyoucolor.utils.color_utils import argb_from_rgba_01
+from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
 
 from kivymd.dynamic_color import DynamicColor
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS
-
-from materialyoucolor.utils.color_utils import argb_from_rgba_01
-from materialyoucolor.dynamiccolor.material_dynamic_colors import (
-    MaterialDynamicColors,
-)
-from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
-from materialyoucolor.hct import Hct
-from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
@@ -146,7 +145,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     dynamic_color_quality = NumericProperty(1 if platform == "android" else 10)
     """
-    The quality of the generated color scheme from the system wallpaper. 
+    The quality of the generated color scheme from the system wallpaper.
     It is equal to or higher than `1`, with `1` representing the maximum quality.
 
     .. warning::
@@ -165,7 +164,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     .. versionadded:: 2.0.0
 
     .. seealso::
-    
+
         `Material Design spec, Dynamic color <https://m3.material.io/styles/color/dynamic-color/overview>`_
 
     To build the color scheme of your application from user wallpapers, you
@@ -237,7 +236,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
-    
+
     dynamic_scheme_name = OptionProperty("TONAL_SPOT", options=SCHEMES.keys())
     """
     Name of the dynamic scheme. Availabe schemes `TONAL_SPOT`, `SPRITZ`
@@ -534,7 +533,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 KV = '''
                 MDScreen:
                     md_bg_color: self.theme_cls.backgroundColor
-                
+
                     MDLabel:
                         text: "MDLabel"
                         halign: "center"
@@ -640,7 +639,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
 
     _size_current_wallpaper = NumericProperty(0)
-    _dark_mode = lambda self : False if self.theme_style == "Light" else True
+    _dark_mode = lambda self: False if self.theme_style == "Light" else True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -663,7 +662,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 fallback_wallpaper_path=self.path_to_wallpaper,
                 fallback_scheme_name=self.dynamic_scheme_name,
                 message_logger=Logger.info,
-                logger_head="KivyMD"
+                logger_head="KivyMD",
             )
             if system_scheme:
                 self._set_color_names(system_scheme)
@@ -700,11 +699,11 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     def _set_application_scheme(
         self,
-        color = "blue", # Google default
+        color="blue",  # Google default
     ) -> None:
         if not color:
             color = "blue"
-        
+
         color = get_color_from_hex(hex_colormap[color.lower()])
         color = Hct.from_int(argb_from_rgba_01(color))
         color = DislikeAnalyzer.fix_if_disliked(color).to_int()

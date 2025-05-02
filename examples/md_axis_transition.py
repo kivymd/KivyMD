@@ -1,11 +1,13 @@
-from kivy.lang import Builder
 import os
-import kivymd
-from kivymd.app import MDApp
+
+from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
+
+import kivymd
+from examples.common_app import CommonApp
+from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 from kivymd.uix.transition import MDSharedAxisTransition
-from examples.common_app import CommonApp
 
 KV = """
 <Check@MDCheckbox>:
@@ -42,7 +44,7 @@ KV = """
             font_style:"Label"
             role:"large"
             text_color:app.theme_cls.onSurfaceVariantColor
-    
+
 <SettingsScreen@MDScreen>:
     name:"main"
     md_bg_color:app.theme_cls.surfaceContainerLowColor
@@ -196,7 +198,7 @@ KV = """
             app.root.transition.opposite = True
             app.root.current = "main"
         MDButtonText:
-            text: "Go Back" 
+            text: "Go Back"
 
 MDScreenManager:
     id:s_m

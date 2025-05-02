@@ -1,15 +1,14 @@
 from kivy.lang import Builder
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
 from kivymd.uix.tab import (
-    MDTabsItemIcon,
-    MDTabsItemText,
     MDTabsItem,
+    MDTabsItemIcon,
     MDTabsItemSecondary,
+    MDTabsItemText,
 )
-
-from examples.common_app import CommonApp
 
 KV = """
 MDScreen:
@@ -30,16 +29,16 @@ MDScreen:
         MDTabsPrimary:
             id: primary_tabs
             MDDivider:
-    
+
             MDTabsCarousel:
                 id: primary_related_content_container
                 size_hint_y: None
                 height: dp(140)
-    
+
         MDTabsSecondary:
             id: secondary_tabs
             MDDivider:
-    
+
             MDTabsCarousel:
                 id: secondary_related_content_container
                 size_hint_y: None

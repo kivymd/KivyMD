@@ -135,7 +135,7 @@ import os
 
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import BooleanProperty, OptionProperty, ObjectProperty
+from kivy.properties import BooleanProperty, ObjectProperty, OptionProperty
 from kivy.uix.behaviors import ButtonBehavior
 
 from kivymd import uix_path

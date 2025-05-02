@@ -398,20 +398,20 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
-    StringProperty,
-    OptionProperty,
     ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.theming import ThemableBehavior
 from kivymd import uix_path
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    RectangularRippleBehavior,
-    DeclarativeBehavior,
     BackgroundColorBehavior,
+    DeclarativeBehavior,
+    RectangularRippleBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout

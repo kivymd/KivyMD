@@ -2,8 +2,9 @@ import datetime
 
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import BooleanProperty, StringProperty
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.pickers import (
@@ -11,8 +12,6 @@ from kivymd.uix.pickers import (
     MDModalDatePicker,
     MDModalInputDatePicker,
 )
-
-from examples.common_app import CommonApp
 
 KV = """
 <SelectedItem>
@@ -52,15 +51,15 @@ MDScreen:
             id: field
             mode: "outlined"
             on_focus: app.open_date_picker(self.focus)
-    
+
             MDTextFieldHintText:
                 id: field_hint
                 text: "Modal data picker"
-    
+
             MDTextFieldHelperText:
                 text: "MM/DD/YYYY"
                 mode: "persistent"
-    
+
             MDTextFieldTrailingIcon:
                 icon: "calendar"
 

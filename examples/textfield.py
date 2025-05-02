@@ -1,16 +1,15 @@
 from kivy.lang import Builder
 
+from examples.common_app import KV, CommonApp
+from kivymd.app import MDApp
 from kivymd.uix.textfield import (
     MDTextField,
     MDTextFieldHelperText,
     MDTextFieldHintText,
     MDTextFieldLeadingIcon,
-    MDTextFieldTrailingIcon,
     MDTextFieldMaxLengthText,
+    MDTextFieldTrailingIcon,
 )
-from kivymd.app import MDApp
-
-from examples.common_app import CommonApp, KV
 
 
 class Example(MDApp, CommonApp):

@@ -1,4 +1,4 @@
-from .progressindicator import (
+from .progressindicator import (  # NOQA F401
     MDCircularProgressIndicator,
     MDLinearProgressIndicator,
-)  # NOQA F401
+)

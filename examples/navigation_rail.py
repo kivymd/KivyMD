@@ -1,10 +1,9 @@
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.navigationrail import MDNavigationRailItem
-
-from examples.common_app import CommonApp
 
 KV = """
 <CommonNavigationRailItem>

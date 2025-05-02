@@ -834,6 +834,7 @@ class MDLabel(
                 self.__class__, (MDCheckbox, MDIcon, MDTooltipPlain)
             ):
                 self.canvas.remove_group("Background_instruction")
+                self.canvas.before.clear()
 
                 # FIXME: IndexError
                 # try:

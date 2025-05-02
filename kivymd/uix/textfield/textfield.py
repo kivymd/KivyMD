@@ -1222,6 +1222,7 @@ class MDTextField(
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.bind(text=self.set_text)
+        self.bind(_lines=self.adjust_height)
         self.theme_cls.bind(
             primary_palette=self.update_colors,
             theme_style=self.update_colors,
@@ -1325,6 +1326,16 @@ class MDTextField(
                 self.y - dp(18),
             )
 
+    def adjust_height(self, *args) -> None:
+        """Adjusts the height of the text field in multiline mode."""
+
+        if self.multiline:
+            line_height = self.line_height
+            line_count = max(1, len(self._lines))
+            padding_top, padding_bottom = self.padding[1] + dp(18), self.padding[3]
+            new_height = line_height * line_count + padding_top + padding_bottom
+            self.height = max(new_height, dp(56))
+
     def set_text(self, instance, text: str) -> None:
         """Fired when text is entered into a text field."""
 
@@ -1351,6 +1362,9 @@ class MDTextField(
                 self.text and not self.focus
             ):
                 self.on_focus(instance, False)
+
+            if self.multiline:
+                self.adjust_height()
 
         set_text()
 

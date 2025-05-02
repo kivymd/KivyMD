@@ -354,10 +354,23 @@
                 self._leading_icon.texture_size[0] + dp(28) + self._hint_x \
                 ), \
 
+                ( \
                 self.y + self.height \
                 + (self._hint_text_label.texture_size[1] / 2) \
                 - (self.height / 2) \
                 - self._hint_y  \
+                ) \
+                if not self.multiline else \
+                ( \
+                self.top - self._hint_text_label.texture_size[1] + dp(8) \
+                if self.text else \
+                ( \
+                self.y + self.height \
+                + (self._hint_text_label.texture_size[1] / 2) \
+                - (self.height / 2) \
+                - self._hint_y  \
+                ) \
+                ) \
                 ) \
                 if self._hint_text_label else (0, 0)
 
@@ -381,7 +394,7 @@
         )
     multiline: False
     size_hint_y: None
-    height: dp(56) if not self.multiline else (dp(10) + self.minimum_height)
+    height: dp(56) # if not self.multiline else (dp(10) + self.minimum_height)
 
 
 <BaseTextFieldIcon>

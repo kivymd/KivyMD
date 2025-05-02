@@ -453,7 +453,11 @@ class MDNavigationRailItemIcon(RectangularRippleBehavior, MDIcon):
             "navigation-rail-rounded-rectangle"
         )[0]
 
-        with self.canvas.after if self.ripple_canvas_after else self.canvas.before:
+        with (
+            self.canvas.after
+            if self.ripple_canvas_after
+            else self.canvas.before
+        ):
             if hasattr(self, "radius"):
                 self.radius = [
                     canvas_rectangle.radius[0][0],
@@ -676,9 +680,11 @@ class MDNavigationRail(
                         if self.type == "selected":
                             Animation(
                                 scale_value_y=1 if widget.active else 0,
-                                height=widget_item.texture_size[1]
-                                if widget.active
-                                else 0,
+                                height=(
+                                    widget_item.texture_size[1]
+                                    if widget.active
+                                    else 0
+                                ),
                                 d=0.2,
                             ).start(widget_item)
                     if isinstance(widget_item, MDNavigationRailItemIcon):
@@ -686,9 +692,11 @@ class MDNavigationRail(
                         widget_item._alpha = 1 if widget.active else 0
                         widget_item._selected_region_width = 0
                         Animation(
-                            _selected_region_width=widget_item.width + dp(32)
-                            if widget.active
-                            else 0,
+                            _selected_region_width=(
+                                widget_item.width + dp(32)
+                                if widget.active
+                                else 0
+                            ),
                             d=0.2,
                         ).start(widget_item)
             else:
@@ -755,11 +763,16 @@ class MDNavigationRail(
             elif self.menu_button and not self.fab_button:
                 anchor_button = self.menu_button
 
-            self.ids.box_items.y = (
-                anchor_button.y
-                - (len(self.ids.box_items.children) * dp(56))
-                - dp(56)
-            )
+            if anchor_button:
+                self.ids.box_items.y = (
+                    anchor_button.y
+                    - (len(self.ids.box_items.children) * dp(56))
+                    - dp(56)
+                )
+            else:
+                self.ids.box_items.y = self.height - (
+                    len(self.ids.box_items.children) * dp(48)
+                )
 
         if self.anchor == "center":
             self.ids.box_items.pos_hint = {"center_y": 0.5}

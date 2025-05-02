@@ -154,7 +154,7 @@ class MotionDropDownMenuBehavior(MotionBase):
         )
         anim &= Animation(
             _scale_x=1,
-            duration=self.show_duration - 0.3,
+            duration=max(self.show_duration - 0.3, 0.0),
             transition="out_quad",
         )
         anim.start(self)

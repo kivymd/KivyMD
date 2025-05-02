@@ -1831,6 +1831,7 @@ class MDTextField(
             return has_error
         if (
             self._max_length_label
+            and self._max_length_label.max_text_length is not None
             and len(self.text) > self._max_length_label.max_text_length
         ):
             has_error = True

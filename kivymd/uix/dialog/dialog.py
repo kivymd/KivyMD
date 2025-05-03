@@ -531,6 +531,9 @@ class MDDialog(MDCard, MotionDialogBehavior):
         else:
             return super().add_widget(widget)
 
+    def set_properties_widget(self) -> None:
+        """Fired `on_release/on_press/on_enter/on_leave` events."""
+
     def open(self) -> None:
         """Show the dialog."""
 

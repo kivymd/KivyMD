@@ -1,7 +1,7 @@
 import os
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from time import time
 
@@ -33,7 +33,7 @@ def update_version_info():
 
     filename = os.path.join(os.path.dirname(__file__), "kivymd", "_version.py")
     epoch = int(os.environ.get("SOURCE_DATE_EPOCH", time()))
-    date = datetime.utcfromtimestamp(epoch).strftime("%Y-%m-%d")
+    date = datetime.fromtimestamp(epoch, timezone.utc).strftime("%Y-%m-%d")
     try:
         git_revision = (
             subprocess.check_output(["git", "rev-parse", "HEAD"])

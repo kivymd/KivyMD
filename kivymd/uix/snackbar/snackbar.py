@@ -274,16 +274,16 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
-    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import MotionShackBehavior, DeclarativeBehavior
-from kivymd.uix.button import MDButton, MDIconButton, MDButtonText
+from kivymd.uix.behaviors import DeclarativeBehavior, MotionShackBehavior
+from kivymd.uix.button import MDButton, MDButtonText, MDIconButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 

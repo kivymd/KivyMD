@@ -39,7 +39,7 @@ MDScreen:
 
             MDListItemTertiaryText:
                 text: "Tertiary text"
-                
+
         MDListItem:
             id: item3
 

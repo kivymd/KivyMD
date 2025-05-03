@@ -307,10 +307,10 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     NumericProperty,
     ObjectProperty,
     StringProperty,
-    BooleanProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 

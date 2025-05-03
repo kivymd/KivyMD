@@ -1,15 +1,14 @@
 from kivy.lang import Builder
 from kivy.metrics import dp
 
+from examples.common_app import KV, CommonApp
+from kivymd.app import MDApp
 from kivymd.uix.navigationbar import (
     MDNavigationBar,
     MDNavigationItem,
-    MDNavigationItemLabel,
     MDNavigationItemIcon,
+    MDNavigationItemLabel,
 )
-from kivymd.app import MDApp
-
-from examples.common_app import CommonApp, KV
 
 
 class Example(MDApp, CommonApp):

@@ -363,10 +363,10 @@ from kivy.metrics import dp
 from kivy.properties import (
     BoundedNumericProperty,
     ColorProperty,
+    DictProperty,
     ListProperty,
     NumericProperty,
     VariableListProperty,
-    DictProperty,
 )
 from kivy.uix.widget import Widget
 

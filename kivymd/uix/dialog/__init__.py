@@ -1,8 +1,8 @@
-from .dialog import (
+from .dialog import (  # NOQA F401
     MDDialog,
-    MDDialogIcon,
-    MDDialogHeadlineText,
-    MDDialogSupportingText,
-    MDDialogContentContainer,
     MDDialogButtonContainer,
-)  # NOQA F401
+    MDDialogContentContainer,
+    MDDialogHeadlineText,
+    MDDialogIcon,
+    MDDialogSupportingText,
+)

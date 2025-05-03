@@ -1,14 +1,14 @@
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
+
+from examples.common_app import KV, CommonApp
+from kivymd.app import MDApp
+from kivymd.dynamic_color import DynamicColor
 from kivymd.uix.boxlayout import MDBoxLayout
 
-from kivymd.app import MDApp
-
-from kivymd.dynamic_color import DynamicColor
-from examples.common_app import CommonApp, KV
-
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import Clipboard kivy.core.clipboard.Clipboard
 
 <DynamicColorInfo>:
@@ -40,25 +40,28 @@ Builder.load_string("""
             id:main_view
             adaptive_height:True
             spacing:dp(20)
-""")
+"""
+)
+
 
 class Container(MDBoxLayout):
     pass
 
+
 class DynamicColorInfo(BoxLayout):
     pass
 
-class Example(MDApp, CommonApp):
 
+class Example(MDApp, CommonApp):
     def build(self):
         self.theme_cls.dynamic_color = True
         self.theme_cls.path_to_wallpaper = "path_to_some_image.png"
-        self.theme_cls.on_colors = lambda : Clock.schedule_once(self.refresh)
+        self.theme_cls.on_colors = lambda: Clock.schedule_once(self.refresh)
         return Builder.load_string(KV)
 
     def on_start(self):
         parent_widget = self.root.ids.widget_box.parent.parent
-        parent_widget.clear_widgets() 
+        parent_widget.clear_widgets()
         self.container = Container()
         parent_widget.add_widget(self.container)
         self.container.ids.main_view.clear_widgets()
@@ -72,9 +75,10 @@ class Example(MDApp, CommonApp):
             self.container.ids.main_view.add_widget(widget)
 
         Clock.schedule_once(self.refresh)
-    
+
     def refresh(self, *arg):
         for widget in self.container.ids.main_view.children:
-            widget.color = getattr(self.theme_cls, widget.name) 
+            widget.color = getattr(self.theme_cls, widget.name)
+
 
 Example().run()

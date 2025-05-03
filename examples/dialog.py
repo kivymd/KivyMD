@@ -5,11 +5,11 @@ from kivymd.app import MDApp
 from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.dialog import (
     MDDialog,
-    MDDialogIcon,
-    MDDialogHeadlineText,
-    MDDialogSupportingText,
     MDDialogButtonContainer,
     MDDialogContentContainer,
+    MDDialogHeadlineText,
+    MDDialogIcon,
+    MDDialogSupportingText,
 )
 from kivymd.uix.divider import MDDivider
 from kivymd.uix.list import (

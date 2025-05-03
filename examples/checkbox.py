@@ -1,9 +1,8 @@
 from kivy.lang import Builder
 
-from kivymd.uix.selectioncontrol import MDCheckbox
+from examples.common_app import KV, CommonApp
 from kivymd.app import MDApp
-
-from examples.common_app import CommonApp, KV
+from kivymd.uix.selectioncontrol import MDCheckbox
 
 
 class Example(MDApp, CommonApp):

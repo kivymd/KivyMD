@@ -1,8 +1,8 @@
 from kivy.clock import Clock
 
-from kivymd.uix.slider import MDSlider, MDSliderHandle, MDSliderValueLabel
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.slider import MDSlider, MDSliderHandle, MDSliderValueLabel
 
 len_callbacks = 0
 

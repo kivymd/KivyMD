@@ -570,14 +570,13 @@ from kivy.core.clipboard import Clipboard
 from kivy.core.window import Window
 from kivy.graphics import Color, SmoothRoundedRectangle
 from kivy.lang import Builder
-
 from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     ObjectProperty,
+    OptionProperty,
     StringProperty,
     VariableListProperty,
-    OptionProperty,
 )
 from kivy.uix.label import Label
 
@@ -585,12 +584,11 @@ from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     DeclarativeBehavior,
     TouchBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
-
 
 with open(
     os.path.join(uix_path, "label", "label.kv"), encoding="utf-8"

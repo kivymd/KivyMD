@@ -7580,9 +7580,9 @@ if __name__ == "__main__":
     from kivy.lang import Builder
     from kivy.properties import StringProperty
 
-    from kivymd.uix.screen import MDScreen
     from kivymd.app import MDApp
     from kivymd.uix.list import MDListItem
+    from kivymd.uix.screen import MDScreen
 
     Builder.load_string(
         """

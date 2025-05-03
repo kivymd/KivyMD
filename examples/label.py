@@ -1,9 +1,8 @@
 from kivy.lang import Builder
 
-from kivymd.font_definitions import theme_font_styles
-from kivymd.app import MDApp
-
 from examples.common_app import CommonApp
+from kivymd.app import MDApp
+from kivymd.font_definitions import theme_font_styles
 
 KV = """
 MDScreen:

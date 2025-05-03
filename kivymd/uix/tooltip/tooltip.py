@@ -184,25 +184,25 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     BoundedNumericProperty,
     NumericProperty,
-    BooleanProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
-from kivymd.uix.button import MDButton
-from kivymd.uix.label import MDLabel
 from kivymd import uix_path
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    TouchBehavior,
-    ScaleBehavior,
-    DeclarativeBehavior,
     BackgroundColorBehavior,
     CommonElevationBehavior,
+    DeclarativeBehavior,
+    ScaleBehavior,
+    TouchBehavior,
 )
+from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
+from kivymd.uix.button import MDButton
+from kivymd.uix.label import MDLabel
 
 with open(
     os.path.join(uix_path, "tooltip", "tooltip.kv"), encoding="utf-8"
@@ -228,7 +228,7 @@ class MDTooltip(TouchBehavior):
     tooltip_display_delay = BoundedNumericProperty(0, min=0, max=4)
     """
     Tooltip display delay.
-    
+
     .. note:: This property only works on desktop.
 
     :attr:`tooltip_display_delay` is an :class:`~kivy.properties.BoundedNumericProperty`

@@ -1,18 +1,16 @@
 import asynckivy
-
+from faker import Faker  # pip install Faker
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
+from kivy.properties import BooleanProperty, ObjectProperty, StringProperty
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
+from kivymd.app import MDApp
 from kivymd.uix.appbar import MDActionBottomAppBarButton
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.app import MDApp
-
-from faker import Faker  # pip install Faker
 
 KV = """
 #:import MDFabBottomAppBarButton kivymd.uix.appbar.MDFabBottomAppBarButton

@@ -336,13 +336,13 @@ import os
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics import (
-    StencilPush,
-    RoundedRectangle,
-    StencilUse,
     Color,
     Ellipse,
-    StencilUnUse,
+    RoundedRectangle,
     StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
 )
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -350,9 +350,9 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -361,10 +361,10 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    ScaleBehavior,
-    DeclarativeBehavior,
     BackgroundColorBehavior,
+    DeclarativeBehavior,
     RectangularRippleBehavior,
+    ScaleBehavior,
 )
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.button import MDFabButton, MDIconButton

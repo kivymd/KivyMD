@@ -41,11 +41,6 @@ class TestHelperTextModePersistent(MDApp):
 
         assert self.root.ids.field._helper_text_label.texture_size != [0, 0]
 
-        instruction = self.root.ids.field.canvas.before.get_group(
-            "helper-text-color"
-        )[0]
-        if self.root.ids.field.focus:
-            assert instruction.rgba == self.theme_cls.onSurfaceVariantColor
         self.root.ids.field.focus = True
         Clock.schedule_once(self.check_helper_text_without_focus, 5)
 

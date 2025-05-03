@@ -422,7 +422,7 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
     )
     """
     It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files
-    by option. By default, sort by name. 
+    by option. By default, sort by name.
     Available options are: `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
 
     :attr:`sort_by` is an :class:`~kivy.properties.OptionProperty`

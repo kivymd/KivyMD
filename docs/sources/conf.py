@@ -50,7 +50,7 @@ html_theme_options = {
     "navigation_depth": 2,
     "collapse_navigation": False,
     "titles_only": True,
-    "announcement": '''<h6>KivyMD Library Sponsors:</h6>
+    "announcement": """<h6>KivyMD Library Sponsors:</h6>
 <p>
     <a href="https://github.com/PeterSurda" target="_blank">
         <img width="25" src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/peter.png" alt="Peter Šurda">
@@ -63,7 +63,7 @@ html_theme_options = {
         Best Route Planner - Route Optimization Software
     </a>
 </p>
-''',
+""",
 }
 
 # Pygments style.

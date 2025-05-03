@@ -1,7 +1,7 @@
-from .chip import (
+from .chip import (  # NOQA F401
     MDChip,
-    MDChipText,
-    MDChipLeadingIcon,
-    MDChipTrailingIcon,
     MDChipLeadingAvatar,
-)  # NOQA F401
+    MDChipLeadingIcon,
+    MDChipText,
+    MDChipTrailingIcon,
+)

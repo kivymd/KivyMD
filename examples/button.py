@@ -1,19 +1,18 @@
 from kivy.clock import Clock
 from kivy.lang import Builder
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.button import (
-    MDIconButton,
     MDButton,
-    MDFabButton,
-    MDButtonText,
     MDButtonIcon,
+    MDButtonText,
     MDExtendedFabButton,
     MDExtendedFabButtonIcon,
     MDExtendedFabButtonText,
+    MDFabButton,
+    MDIconButton,
 )
-
-from examples.common_app import CommonApp
 
 KV = """
 MDScreen:

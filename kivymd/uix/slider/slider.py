@@ -62,25 +62,25 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    ColorProperty,
     ListProperty,
-    VariableListProperty,
-    StringProperty,
     NumericProperty,
     ObjectProperty,
-    ColorProperty,
+    StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.slider import Slider
 from kivy.uix.widget import Widget
 
-from kivymd.uix.label import MDLabel
-from kivymd.uix.behaviors import (
-    ScaleBehavior,
-    DeclarativeBehavior,
-    BackgroundColorBehavior,
-)
-from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    ScaleBehavior,
+)
+from kivymd.uix.behaviors.focus_behavior import FocusBehavior
+from kivymd.uix.label import MDLabel
 
 with open(
     os.path.join(uix_path, "slider", "slider.kv"), encoding="utf-8"

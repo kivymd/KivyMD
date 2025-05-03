@@ -1,8 +1,8 @@
 from kivy.clock import Clock
 
-from kivymd.uix.selectioncontrol import MDSwitch
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
+from kivymd.uix.selectioncontrol import MDSwitch
 
 len_callbacks = 0
 

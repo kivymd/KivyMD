@@ -2,6 +2,6 @@
 from .navigationbar import (
     MDNavigationBar,
     MDNavigationItem,
-    MDNavigationItemLabel,
     MDNavigationItemIcon,
+    MDNavigationItemLabel,
 )

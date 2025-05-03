@@ -11,7 +11,7 @@ application :
 
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import NumericProperty, StringProperty, OptionProperty
+from kivy.properties import NumericProperty, OptionProperty, StringProperty
 from kivy.uix.label import Label
 
 Builder.load_string(

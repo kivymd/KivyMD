@@ -54,8 +54,8 @@ import os
 
 from kivy.lang import Builder
 
-from kivymd.uix.label import MDLabel
 from kivymd import uix_path
+from kivymd.uix.label import MDLabel
 
 with open(
     os.path.join(uix_path, "badge", "badge.kv"), encoding="utf-8"

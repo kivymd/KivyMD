@@ -526,11 +526,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
     VariableListProperty,
-    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -539,10 +539,10 @@ from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout

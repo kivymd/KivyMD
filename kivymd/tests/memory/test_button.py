@@ -1,7 +1,7 @@
 from kivy.clock import Clock
 
 from kivymd.app import MDApp
-from kivymd.uix.button import MDButton, MDButtonText, MDButtonIcon
+from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
 from kivymd.uix.screen import MDScreen
 
 len_callbacks = 0

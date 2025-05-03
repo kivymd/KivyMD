@@ -44,7 +44,7 @@ class TestDisabledTextColorSwitchTheme(MDApp):
             "max-length-color",
         ]:
             group = self.root.ids.field.canvas.before.get_group(group_name)[0]
-            assert (group.rgba, self.theme_cls.disabledTextColor[:-1] + [0.60])
+            assert group.rgba, self.theme_cls.disabledTextColor[:-1] + [0.60]
 
         group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
         assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]

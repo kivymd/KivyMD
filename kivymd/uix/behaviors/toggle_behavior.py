@@ -131,7 +131,7 @@ from kivy import Logger
 from kivy.properties import BooleanProperty, ColorProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
-from kivymd.uix.button import MDButton, MDIconButton, MDFabButton, BaseButton
+from kivymd.uix.button import BaseButton, MDButton, MDFabButton, MDIconButton
 
 
 class MDToggleButtonBehavior(ToggleButtonBehavior):

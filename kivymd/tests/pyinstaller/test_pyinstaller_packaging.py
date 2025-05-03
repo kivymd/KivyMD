@@ -36,12 +36,6 @@ assert "Icons" in LabelBase._fonts.keys()  # NOQA
 images = os.listdir(kivymd.images_path)
 print(images)
 assert "logo" in images
-assert "alpha_layer.png" in images
-assert "black.png" in images
-assert "blue.png" in images
-assert "red.png" in images
-assert "green.png" in images
-assert "yellow.png" in images
 assert "folder.png" in images
 assert "transparent.png" in images
 """

@@ -2,8 +2,8 @@
 from .navigationrail import (
     MDNavigationRail,
     MDNavigationRailFabButton,
+    MDNavigationRailItem,
     MDNavigationRailItemIcon,
     MDNavigationRailItemLabel,
-    MDNavigationRailItem,
     MDNavigationRailMenuButton,
 )

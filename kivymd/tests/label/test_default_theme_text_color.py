@@ -1,8 +1,8 @@
+import asynckivy
+
 from kivymd.app import MDApp
 from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
-
-import asynckivy
 
 
 class TestDefaultThemeTextColor(MDApp):

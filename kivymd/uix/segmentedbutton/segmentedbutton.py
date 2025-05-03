@@ -701,7 +701,7 @@ class MDSegmentedButton(MDBoxLayout):
             widget._segmented_button = self
             widget.bind(on_release=self.mark_item)
             self.ids.container.add_widget(widget)
-            self.adjust_segment_radius()
+            Clock.schedule_once(self.adjust_segment_radius, 0.2)
         elif isinstance(widget, MDSegmentedButtonContainer):
             return super().add_widget(widget)
 
@@ -713,7 +713,7 @@ class MDSegmentedButton(MDBoxLayout):
                 ):
                     self._set_size_hint_min_x(child, sign=-1)
             self.ids.container.remove_widget(widget)
-            self.adjust_segment_radius()
+            Clock.schedule_once(self.adjust_segment_radius, 0.2)
         elif isinstance(widget, MDSegmentedButtonContainer):
             return super().remove_widget(widget)
 

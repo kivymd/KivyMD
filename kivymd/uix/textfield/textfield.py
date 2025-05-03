@@ -1264,6 +1264,23 @@ class MDTextField(
         leading/trailing icons/hint/helper/max length text.
         """
 
+        def update_helper_text_texture(*args):
+            helper_text_rectangle = self.canvas.before.get_group(
+                "helper-text-rectangle"
+            )[0]
+            helper_text_rectangle.texture = self._helper_text_label.texture
+            helper_text_rectangle.size = self._helper_text_label.texture_size
+            helper_text_rectangle.pos = (
+                self.x
+                + (
+                    dp(16)
+                    if self.mode == "filled"
+                    else (0 if self.mode == "filled" else dp(12))
+                ),
+                self.y + dp(-18),
+            )
+            self._helper_text_label.texture_update()
+
         def update_hint_text_rectangle(*args):
             hint_text_rectangle = self.canvas.after.get_group(
                 "hint-text-rectangle"
@@ -1277,6 +1294,8 @@ class MDTextField(
             a = Animation(color=color, d=0)
             if texture is self._hint_text_label:
                 a.bind(on_complete=update_hint_text_rectangle)
+            elif texture is self._helper_text_label:
+                update_helper_text_texture()
             a.start(texture)
 
     def set_pos_hint_text(self, y: float, x: float) -> None:
@@ -1332,7 +1351,10 @@ class MDTextField(
         if self.multiline:
             line_height = self.line_height
             line_count = max(1, len(self._lines))
-            padding_top, padding_bottom = self.padding[1] + dp(18), self.padding[3]
+            padding_top, padding_bottom = (
+                self.padding[1] + dp(18),
+                self.padding[3],
+            )
             new_height = line_height * line_count + padding_top + padding_bottom
             self.height = max(new_height, dp(56))
 
@@ -1383,13 +1405,16 @@ class MDTextField(
                         self._trailing_icon,
                         self.canvas.before.get_group("trailing-icons-color")[0],
                         (
-                            self.theme_cls.onSurfaceVariantColor
-                            if self._trailing_icon.theme_icon_color == "Primary"
-                            or not self._trailing_icon.icon_color_focus
-                            else self._trailing_icon.icon_color_focus
-                        )
-                        if not self.error
-                        else self._get_error_color(),
+                            (
+                                self.theme_cls.onSurfaceVariantColor
+                                if self._trailing_icon.theme_icon_color
+                                == "Primary"
+                                or not self._trailing_icon.icon_color_focus
+                                else self._trailing_icon.icon_color_focus
+                            )
+                            if not self.error
+                            else self._get_error_color()
+                        ),
                     )
                 )
             if self._leading_icon:
@@ -1397,10 +1422,12 @@ class MDTextField(
                     lambda x: self.set_texture_color(
                         self._leading_icon,
                         self.canvas.before.get_group("leading-icons-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if self._leading_icon.theme_icon_color == "Primary"
-                        or not self._leading_icon.icon_color_focus
-                        else self._leading_icon.icon_color_focus,
+                        (
+                            self.theme_cls.onSurfaceVariantColor
+                            if self._leading_icon.theme_icon_color == "Primary"
+                            or not self._leading_icon.icon_color_focus
+                            else self._leading_icon.icon_color_focus
+                        ),
                     )
                 )
             if self._max_length_label and not self.error:
@@ -1408,9 +1435,11 @@ class MDTextField(
                     lambda x: self.set_texture_color(
                         self._max_length_label,
                         self.canvas.before.get_group("max-length-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if not self._max_length_label.text_color_focus
-                        else self._max_length_label.text_color_focus,
+                        (
+                            self.theme_cls.onSurfaceVariantColor
+                            if not self._max_length_label.text_color_focus
+                            else self._max_length_label.text_color_focus
+                        ),
                     )
                 )
 
@@ -1423,12 +1452,14 @@ class MDTextField(
                         self._helper_text_label,
                         self.canvas.before.get_group("helper-text-color")[0],
                         (
-                            self.theme_cls.onSurfaceVariantColor
-                            if not self._helper_text_label.text_color_focus
-                            else self._helper_text_label.text_color_focus
-                        )
-                        if not self.error
-                        else self._get_error_color(),
+                            (
+                                self.theme_cls.onSurfaceVariantColor
+                                if not self._helper_text_label.text_color_focus
+                                else self._helper_text_label.text_color_focus
+                            )
+                            if not self.error
+                            else self._get_error_color()
+                        ),
                     )
                 )
             if (
@@ -1449,36 +1480,40 @@ class MDTextField(
                         self._hint_text_label,
                         self.canvas.after.get_group("hint-text-color")[0],
                         (
-                            self.theme_cls.primaryColor
-                            if not self._hint_text_label.text_color_focus
-                            else self._hint_text_label.text_color_focus
-                        )
-                        if not self.error
-                        else self._get_error_color(),
+                            (
+                                self.theme_cls.primaryColor
+                                if not self._hint_text_label.text_color_focus
+                                else self._hint_text_label.text_color_focus
+                            )
+                            if not self.error
+                            else self._get_error_color()
+                        ),
                     )
                 )
                 self.set_pos_hint_text(
                     0 if self.mode != "outlined" else dp(-14),
                     (
-                        -(
+                        (
+                            -(
+                                (
+                                    self._leading_icon.texture_size[0]
+                                    if self._leading_icon
+                                    else 0
+                                )
+                                + dp(12)
+                            )
+                            if self._leading_icon
+                            else 0
+                        )
+                        if self.mode == "outlined"
+                        else -(
                             (
                                 self._leading_icon.texture_size[0]
                                 if self._leading_icon
                                 else 0
                             )
-                            + dp(12)
+                            - dp(24)
                         )
-                        if self._leading_icon
-                        else 0
-                    )
-                    if self.mode == "outlined"
-                    else -(
-                        (
-                            self._leading_icon.texture_size[0]
-                            if self._leading_icon
-                            else 0
-                        )
-                        - dp(24)
                     ),
                 )
                 self._hint_text_label.font_size = theme_font_styles[
@@ -1501,10 +1536,12 @@ class MDTextField(
                     lambda x: self.set_texture_color(
                         self._leading_icon,
                         self.canvas.before.get_group("leading-icons-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if self._leading_icon.theme_icon_color == "Primary"
-                        or not self._leading_icon.icon_color_normal
-                        else self._leading_icon.icon_color_normal,
+                        (
+                            self.theme_cls.onSurfaceVariantColor
+                            if self._leading_icon.theme_icon_color == "Primary"
+                            or not self._leading_icon.icon_color_normal
+                            else self._leading_icon.icon_color_normal
+                        ),
                     )
                 )
             if self._trailing_icon:
@@ -1513,13 +1550,16 @@ class MDTextField(
                         self._trailing_icon,
                         self.canvas.before.get_group("trailing-icons-color")[0],
                         (
-                            self.theme_cls.onSurfaceVariantColor
-                            if self._trailing_icon.theme_icon_color == "Primary"
-                            or not self._trailing_icon.icon_color_normal
-                            else self._trailing_icon.icon_color_normal
-                        )
-                        if not self.error
-                        else self._get_error_color(),
+                            (
+                                self.theme_cls.onSurfaceVariantColor
+                                if self._trailing_icon.theme_icon_color
+                                == "Primary"
+                                or not self._trailing_icon.icon_color_normal
+                                else self._trailing_icon.icon_color_normal
+                            )
+                            if not self.error
+                            else self._get_error_color()
+                        ),
                     )
                 )
             if self._max_length_label and not self.error:
@@ -1527,9 +1567,11 @@ class MDTextField(
                     lambda x: self.set_texture_color(
                         self._max_length_label,
                         self.canvas.before.get_group("max-length-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if not self._max_length_label.text_color_normal
-                        else self._max_length_label.text_color_normal,
+                        (
+                            self.theme_cls.onSurfaceVariantColor
+                            if not self._max_length_label.text_color_normal
+                            else self._max_length_label.text_color_normal
+                        ),
                     )
                 )
             if (
@@ -1552,12 +1594,14 @@ class MDTextField(
                         self._helper_text_label,
                         self.canvas.before.get_group("helper-text-color")[0],
                         (
-                            self.theme_cls.onSurfaceVariantColor
-                            if not self._helper_text_label.text_color_normal
-                            else self._helper_text_label.text_color_normal
-                        )
-                        if not self.error
-                        else self._get_error_color(),
+                            (
+                                self.theme_cls.onSurfaceVariantColor
+                                if not self._helper_text_label.text_color_normal
+                                else self._helper_text_label.text_color_normal
+                            )
+                            if not self.error
+                            else self._get_error_color()
+                        ),
                     )
                 )
 
@@ -1585,25 +1629,27 @@ class MDTextField(
                     self.set_pos_hint_text(
                         0 if self.mode != "outlined" else dp(-14),
                         (
-                            -(
+                            (
+                                -(
+                                    (
+                                        self._leading_icon.texture_size[0]
+                                        if self._leading_icon
+                                        else 0
+                                    )
+                                    + dp(12)
+                                )
+                                if self._leading_icon
+                                else 0
+                            )
+                            if self.mode == "outlined"
+                            else -(
                                 (
                                     self._leading_icon.texture_size[0]
                                     if self._leading_icon
                                     else 0
                                 )
-                                + dp(12)
+                                - dp(24)
                             )
-                            if self._leading_icon
-                            else 0
-                        )
-                        if self.mode == "outlined"
-                        else -(
-                            (
-                                self._leading_icon.texture_size[0]
-                                if self._leading_icon
-                                else 0
-                            )
-                            - dp(24)
                         ),
                     )
 
@@ -1613,12 +1659,14 @@ class MDTextField(
                         self._hint_text_label,
                         self.canvas.after.get_group("hint-text-color")[0],
                         (
-                            self.theme_cls.onSurfaceVariantColor
-                            if not self._hint_text_label.text_color_normal
-                            else self._hint_text_label.text_color_normal
-                        )
-                        if not self.error
-                        else self._get_error_color(),
+                            (
+                                self.theme_cls.onSurfaceVariantColor
+                                if not self._hint_text_label.text_color_normal
+                                else self._hint_text_label.text_color_normal
+                            )
+                            if not self.error
+                            else self._get_error_color()
+                        ),
                     ),
                 )
 
@@ -1709,49 +1757,65 @@ class MDTextField(
             schedule_set_texture_color(
                 self._max_length_label,
                 max_length_label_group[0],
-                self._max_length_label.color[:-1] + [1]
-                if not self.error
-                else error_color,
+                (
+                    self._max_length_label.color[:-1] + [1]
+                    if not self.error
+                    else error_color
+                ),
             )
         if self._helper_text_label:
             schedule_set_texture_color(
                 self._helper_text_label,
                 helper_text_label_group[0],
-                on_surface_variant_color
-                if not self._helper_text_label.text_color_focus
-                else self._helper_text_label.text_color_focus
-                if not self.error
-                else error_color,
+                (
+                    on_surface_variant_color
+                    if not self._helper_text_label.text_color_focus
+                    else (
+                        self._helper_text_label.text_color_focus
+                        if not self.error
+                        else error_color
+                    )
+                ),
             )
-        if self._hint_text_label:   
+        if self._hint_text_label:
             schedule_set_texture_color(
                 self._hint_text_label,
                 hint_text_label_group[0],
-                on_surface_variant_color
-                if not self._hint_text_label.text_color_normal
-                else self._hint_text_label.text_color_normal
-                if not self.error
-                else error_color,
+                (
+                    on_surface_variant_color
+                    if not self._hint_text_label.text_color_normal
+                    else (
+                        self._hint_text_label.text_color_normal
+                        if not self.error
+                        else error_color
+                    )
+                ),
             )
         if self._leading_icon:
             schedule_set_texture_color(
                 self._leading_icon,
                 leading_icon_group[0],
-                on_surface_variant_color
-                if self._leading_icon.theme_icon_color == "Primary"
-                or not self._leading_icon.icon_color_normal
-                else self._leading_icon.icon_color_normal,
+                (
+                    on_surface_variant_color
+                    if self._leading_icon.theme_icon_color == "Primary"
+                    or not self._leading_icon.icon_color_normal
+                    else self._leading_icon.icon_color_normal
+                ),
             )
         if self._trailing_icon:
             schedule_set_texture_color(
                 self._trailing_icon,
                 trailing_icon_group[0],
-                on_surface_variant_color
-                if self._trailing_icon.theme_icon_color == "Primary"
-                or not self._trailing_icon.icon_color_normal
-                else self._trailing_icon.icon_color_normal
-                if not self.error
-                else error_color,
+                (
+                    on_surface_variant_color
+                    if self._trailing_icon.theme_icon_color == "Primary"
+                    or not self._trailing_icon.icon_color_normal
+                    else (
+                        self._trailing_icon.icon_color_normal
+                        if not self.error
+                        else error_color
+                    )
+                ),
             )
 
     def _set_disabled_colors(self):

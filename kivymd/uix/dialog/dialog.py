@@ -504,16 +504,22 @@ class MDDialog(MDCard, MotionDialogBehavior):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.opacity = 0
+        self.update_width()
         Window.bind(on_resize=self.update_width)
 
     def update_width(self, *args) -> None:
-        self.size_hint_max_x = max(
-            self.width_offset,
-            min(
-                dp(560) if DEVICE_TYPE != "mobile" else dp(280),
-                Window.width - self.width_offset,
-            ),
-        )
+        """Fired when the application window is resized."""
+
+        side_padding = dp(24)
+        ideal_width = dp(560)
+        min_width = dp(240)
+        max_width = Window.width - side_padding * 2
+
+        if max_width < min_width:
+            self.width = min_width
+            return
+
+        self.width = min(ideal_width, max_width)
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDDialogIcon):

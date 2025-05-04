@@ -2,19 +2,18 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.widget import Widget
 
+from examples.common_app import CommonApp
+from kivymd.app import MDApp
 from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.snackbar import (
     MDSnackbar,
-    MDSnackbarSupportingText,
-    MDSnackbarButtonContainer,
     MDSnackbarActionButton,
     MDSnackbarActionButtonText,
+    MDSnackbarButtonContainer,
     MDSnackbarCloseButton,
+    MDSnackbarSupportingText,
     MDSnackbarText,
 )
-from kivymd.app import MDApp
-
-from examples.common_app import CommonApp
 
 KV = """
 MDScreen:
@@ -39,8 +38,7 @@ class Example(MDApp, CommonApp):
     def build(self):
         return Builder.load_string(KV)
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
     def on_start(self):
         data = {

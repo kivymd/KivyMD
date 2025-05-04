@@ -87,23 +87,25 @@ Adds new transitions to the :class:`~kivy.animation.AnimationTransition` class:
                 ).start(widget)
             self._inverse = not self._inverse
             Clock.schedule_once(self.run_animation, 3.1)
-    
+
     MotionApp().run()
 
-.. image:: https://github.com/kivymd/KivyMD/assets/68729523/21c847b0-284a-4796-b704-e4a2531fbb1b 
+.. image:: https://github.com/kivymd/KivyMD/assets/68729523/21c847b0-284a-4796-b704-e4a2531fbb1b
     :align: center
 """
 
 import math
 import sys
+
 import kivy.animation
 
 float_epsilon = 8.3446500e-7
 
 if sys.version_info < (3, 11):
-    cbrt = lambda number: (abs(number) ** (1/3)) * (-1 if number < 0 else 1)
+    cbrt = lambda number: (abs(number) ** (1 / 3)) * (-1 if number < 0 else 1)
 else:
     cbrt = math.cbrt
+
 
 class CubicBezier:
     """Ported from Android source code"""
@@ -210,11 +212,12 @@ class CubicBezier:
 
 class MDAnimationTransition(kivy.animation.AnimationTransition):
     """KivyMD's equivalent of kivy's `AnimationTransition`"""
-    
+
     easing_standard = CubicBezier(0.4, 0.0, 0.2, 1.0).t
     easing_decelerated = CubicBezier(0.0, 0.0, 0.2, 1.0).t
     easing_accelerated = CubicBezier(0.4, 0.0, 1.0, 1.0).t
     easing_linear = CubicBezier(0.0, 0.0, 1.0, 1.0).t
+
 
 # TODO: add `easing_emphasized` here
 # it's defination is

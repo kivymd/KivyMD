@@ -2,8 +2,8 @@
 from .textfield import (
     MDTextField,
     MDTextFieldHelperText,
-    MDTextFieldMaxLengthText,
     MDTextFieldHintText,
     MDTextFieldLeadingIcon,
+    MDTextFieldMaxLengthText,
     MDTextFieldTrailingIcon,
 )

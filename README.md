@@ -91,7 +91,8 @@ requirements = python3,
     materialyoucolor,
     exceptiongroup,
     asyncgui,
-    asynckivy
+    asynckivy,
+    android
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).

@@ -8,27 +8,66 @@ with some widget properties. For example:
 StackLayout
 -----------
 
-.. code-block:: kv
+.. tabs::
 
-    StackLayout:
-        size_hint_y: None
-        height: self.minimum_height
+    .. tab:: KV
 
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        .. code-block:: kv
+
+            StackLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.stacklayout import StackLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = StackLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDStackLayout
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDStackLayout:
-        adaptive_height: True
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDStackLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.stacklayout import MDStackLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDStackLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 
 Available options are:
 ----------------------
@@ -92,7 +131,7 @@ from kivy.uix.stacklayout import StackLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 
 
 class MDStackLayout(

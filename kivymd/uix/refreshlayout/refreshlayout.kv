@@ -1,0 +1,27 @@
+#:import Window kivy.core.window.Window
+
+
+<RefreshSpinner>
+
+    AnchorLayout:
+        id: body_spinner
+        size_hint: None, None
+        size: dp(46), dp(46)
+        y: Window.height
+        pos_hint: {'center_x': .5}
+        anchor_x: 'center'
+        anchor_y: 'center'
+
+        canvas:
+            Clear
+            Color:
+                rgba: root.circle_color
+            Ellipse:
+                pos: self.pos
+                size: self.size
+
+        MDCircularProgressIndicator:
+            id: spinner
+            size_hint: None, None
+            size: dp(30), dp(30)
+            color: root.spinner_color

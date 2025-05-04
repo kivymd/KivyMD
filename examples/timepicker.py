@@ -1,17 +1,16 @@
 import time
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import BooleanProperty, StringProperty
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.pickers import (
+    MDTimePickerDialHorizontal,
     MDTimePickerDialVertical,
     MDTimePickerInput,
-    MDTimePickerDialHorizontal,
 )
-
-from examples.common_app import CommonApp
 
 KV = """
 <SelectedItem>
@@ -114,8 +113,7 @@ class SelectedItem(MDBoxLayout):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_active")
 
-    def on_active(self, *args):
-        ...
+    def on_active(self, *args): ...
 
 
 class Example(MDApp, CommonApp):
@@ -170,8 +168,7 @@ class Example(MDApp, CommonApp):
             )
             self.time_picker.open()
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

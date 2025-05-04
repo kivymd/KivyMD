@@ -8,27 +8,66 @@ Simplifies working with some widget properties. For example:
 RecycleGridLayout
 -----------------
 
-.. code-block:: kv
+.. tabs::
 
-    RecycleGridLayout:
-        size_hint_y: None
-        height: self.minimum_height
+    .. tab:: KV
 
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        .. code-block:: kv
+
+            RecycleGridLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.recyclegridlayout import RecycleGridLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = RecycleGridLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDRecycleGridLayout
 -------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDRecycleGridLayout:
-        adaptive_height: True
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDRecycleGridLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.recyclegridlayout import MDRecycleGridLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDRecycleGridLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 
 Available options are:
 ----------------------
@@ -86,11 +125,13 @@ Equivalent
     size: self.minimum_size
 """
 
+__all__ = ("MDRecycleGridLayout",)
+
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 
 
 class MDRecycleGridLayout(

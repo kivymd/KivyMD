@@ -1,8 +1,7 @@
 from kivy.lang import Builder
 
-from kivymd.app import MDApp
-
 from examples.common_app import CommonApp
+from kivymd.app import MDApp
 
 KV = """
 MDScreen:
@@ -71,8 +70,7 @@ class Example(MDApp, CommonApp):
         sheet.drawer_type = drawer_type
         sheet.set_state("toggle")
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

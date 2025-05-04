@@ -8,27 +8,66 @@ with some widget properties. For example:
 GridLayout
 ----------
 
-.. code-block::
+.. tabs::
 
-    GridLayout:
-        size_hint_y: None
-        height: self.minimum_height
+    .. tab:: KV
 
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        .. code-block:: kv
+
+            GridLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.gridlayout import GridLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = GridLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDGridLayout
 ------------
 
-.. code-block::
+.. tabs::
 
-    MDGridLayout:
-        adaptive_height: True
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDGridLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.gridlayout import MDGridLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDGridLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 
 Available options are:
 ----------------------
@@ -86,11 +125,13 @@ Equivalent
     size: self.minimum_size
 """
 
+__all__ = ("MDGridLayout",)
+
 from kivy.uix.gridlayout import GridLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 
 
 class MDGridLayout(

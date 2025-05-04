@@ -29,11 +29,13 @@ Usage
     KV = '''
     MDScreen:
 
-        MDRaisedButton:
+        MDButton:
             id: button
-            text: "Press me"
             pos_hint: {"center_x": .5, "center_y": .5}
             on_release: app.menu_open()
+
+            MDButtonText:
+                text: "Press me"
     '''
 
 
@@ -236,11 +238,13 @@ Header
 
     MDScreen:
 
-        MDRaisedButton:
+        MDButton:
             id: button
-            text: "PRESS ME"
             pos_hint: {"center_x": .5, "center_y": .5}
             on_release: app.menu.open()
+
+            MDButtonText:
+                text: "Press me"
     '''
 
 
@@ -294,16 +298,29 @@ for both the righthand and lefthand menus.
 
     from kivymd.app import MDApp
     from kivymd.uix.menu import MDDropdownMenu
-    from kivymd.uix.snackbar import Snackbar
+    from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 
     KV = '''
     MDBoxLayout:
         orientation: "vertical"
 
         MDTopAppBar:
-            title: "MDTopAppBar"
-            left_action_items: [["menu", lambda x: app.callback(x)]]
-            right_action_items: [["dots-vertical", lambda x: app.callback(x)]]
+
+            MDTopAppBarLeadingButtonContainer:
+
+                MDActionTopAppBarButton:
+                    icon: "menu"
+                    on_release: app.callback(self)
+
+            MDTopAppBarTitle:
+                text: "MDTopAppBar"
+                pos_hint: {"center_x": .5}
+
+            MDTopAppBarTrailingButtonContainer:
+
+                MDActionTopAppBarButton:
+                    icon: "dots-vertical"
+                    on_release: app.callback(self)
 
         MDLabel:
             text: "Content"
@@ -330,7 +347,14 @@ for both the righthand and lefthand menus.
 
         def menu_callback(self, text_item):
             self.menu.dismiss()
-            Snackbar(text=text_item).open()
+            MDSnackbar(
+                MDSnackbarText(
+                    text=text_item,
+                ),
+                y=dp(24),
+                pos_hint={"center_x": 0.5},
+                size_hint_x=0.5,
+            ).open()
 
 
     Test().run()
@@ -366,8 +390,10 @@ Bottom position
             pos_hint: {'center_x': .5, 'center_y': .6}
             size_hint_x: None
             width: "200dp"
-            hint_text: "Password"
             on_focus: if self.focus: app.menu.open()
+
+            MDTextFieldHintText:
+                text: "Password"
     '''
 
 
@@ -425,7 +451,7 @@ Center position
     '''
 
 
-    class Example(MDApp, CommonApp):
+    class Example(MDApp):
         drop_item_menu: MDDropdownMenu = None
 
         def open_drop_item_menu(self, item):
@@ -603,6 +629,53 @@ API break
 
 
     Test().run()
+
+2.0.0 version
+-------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+    from kivy.metrics import dp
+
+    from kivymd.app import MDApp
+    from kivymd.uix.menu import MDDropdownMenu
+
+    KV = '''
+    MDScreen:
+
+        MDButton:
+            id: button
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.menu_open()
+
+            MDButtonText:
+                text: "Press me"
+    '''
+
+
+    class Test(MDApp):
+        def menu_open(self):
+            menu_items = [
+                {
+                    "text": f"Item {i}",
+                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                } for i in range(5)
+            ]
+            MDDropdownMenu(
+                caller=self.root.ids.button, items=menu_items
+            ).open()
+
+        def menu_callback(self, text_item):
+            print(text_item)
+
+        def build(self):
+            self.theme_cls.primary_palette = "Orange"
+            self.theme_cls.theme_style = "Dark"
+            return Builder.load_string(KV)
+
+
+    Test().run()
 """
 
 from __future__ import annotations
@@ -623,7 +696,6 @@ import os
 
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -632,13 +704,14 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    VariableListProperty,
     StringProperty,
+    VariableListProperty,
 )
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.recycleview import RecycleView
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import StencilBehavior, RectangularRippleBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior, StencilBehavior
 from kivymd.uix.behaviors.motion_behavior import MotionDropDownMenuBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
@@ -1064,7 +1137,7 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     _tar_x = 0
     _tar_y = 0
 
-    __events__ = ("on_dismiss", )
+    __events__ = ("on_dismiss",)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1197,12 +1270,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
                 )
             elif self.position == "bottom":
                 self.pos = (
-                    (self._start_coords[0] - self.width / 2)
-                    if not self.hor_growth
-                    else (
-                        (self._start_coords[0] - self.width)
-                        if self.hor_growth == "left"
-                        else (self._start_coords[0])
+                    (
+                        (self._start_coords[0] - self.width / 2)
+                        if not self.hor_growth
+                        else (
+                            (self._start_coords[0] - self.width)
+                            if self.hor_growth == "left"
+                            else (self._start_coords[0])
+                        )
                     ),
                     self._start_coords[1]
                     - (
@@ -1213,12 +1288,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
                 )
             elif self.position == "top":
                 self.pos = (
-                    (self._start_coords[0] - self.width / 2)
-                    if not self.hor_growth
-                    else (
-                        (self._start_coords[0] - self.width)
-                        if self.hor_growth == "left"
-                        else (self._start_coords[0])
+                    (
+                        (self._start_coords[0] - self.width / 2)
+                        if not self.hor_growth
+                        else (
+                            (self._start_coords[0] - self.width)
+                            if self.hor_growth == "left"
+                            else (self._start_coords[0])
+                        )
                     ),
                     self._start_coords[1]
                     + self.caller.height / 2

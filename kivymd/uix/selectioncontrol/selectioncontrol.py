@@ -269,7 +269,7 @@ from kivy.properties import (
     ListProperty,
     StringProperty,
 )
-from kivy.uix.behaviors import ToggleButtonBehavior
+from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
 
 from kivymd import uix_path
 from kivymd.uix.behaviors import CircularRippleBehavior, ScaleBehavior
@@ -467,9 +467,11 @@ class MDCheckbox(
             self.icon = (
                 self.radio_icon_down
                 if self.group and self.group not in ["root", "child"]
-                else self.checkbox_icon_down
-                if self.group != "root"
-                else "minus-box"
+                else (
+                    self.checkbox_icon_down
+                    if self.group != "root"
+                    else "minus-box"
+                )
             )
         else:
             self.icon = (
@@ -542,11 +544,22 @@ class ThumbIcon(MDIcon):
     Implements icon for the :class:`~Thumb` widget.
 
     .. versionadded:: 1.0.0
+
+    For more information, see in the :class:`~kivymd.uix.label.MDIcon`
+    class documentation.
     """
 
 
-class Thumb(CircularRippleBehavior, MDFloatLayout):
-    """Implements a thumb for the :class:`~MDSwitch` widget."""
+class Thumb(CircularRippleBehavior, ButtonBehavior, MDFloatLayout):
+    """
+    Implements a thumb for the :class:`~MDSwitch` widget.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.state_layer_behavior.CircularRippleBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout`
+    classes documentation.
+    """
 
     def _set_ellipse(self, instance, value):
         self.ellipse.size = (self._ripple_rad, self._ripple_rad)
@@ -562,12 +575,13 @@ class Thumb(CircularRippleBehavior, MDFloatLayout):
         )
 
 
-class MDSwitch(StateLayerBehavior, MDFloatLayout):
+class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
     """
     Switch class.
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.uix.floatlayout.MDFloatLayout`
     classes documentation.
     """
@@ -799,6 +813,8 @@ class MDSwitch(StateLayerBehavior, MDFloatLayout):
 
     _thumb_pos = ListProperty([0, 0])
     _line_color = ColorProperty(None)
+
+    __events__ = ("on_press", "on_release")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

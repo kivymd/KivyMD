@@ -177,7 +177,6 @@ API break
                 [...]
 """
 
-
 __all__ = ("MDSliverAppbar", "MDSliverAppbarHeader", "MDSliverAppbarContent")
 
 import os
@@ -189,15 +188,15 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     NumericProperty,
-    VariableListProperty,
     ObjectProperty,
+    VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.appbar import MDTopAppBar
+from kivymd.uix.boxlayout import MDBoxLayout
 
 with open(
     os.path.join(uix_path, "sliverappbar", "sliverappbar.kv"), encoding="utf-8"
@@ -335,7 +334,7 @@ class MDSliverAppbar(ThemableBehavior, BoxLayout):
     _last_scroll_y_pos = 0.0
     _appbar = ObjectProperty()
 
-    __events__ = ("on_scroll_content", )
+    __events__ = ("on_scroll_content",)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

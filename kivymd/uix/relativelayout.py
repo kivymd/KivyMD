@@ -8,25 +8,121 @@ Simplifies working with some widget properties. For example:
 RelativeLayout
 --------------
 
-.. code-block:: kv
+.. tabs::
 
-    RelativeLayout:
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            RoundedRectangle:
-                pos: (0, 0)
-                size: self.size
-                radius: [25, ]
+    .. tab:: KV
+
+        .. code-block:: kv
+
+            RelativeLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.relativelayout import RelativeLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = RelativeLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDRelativeLayout
 ----------------
 
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDRelativeLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.relativelayout import MDRelativeLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDRelativeLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
+Available options are:
+----------------------
+
+- adaptive_height_
+- adaptive_width_
+- adaptive_size_
+
+.. adaptive_height:
+
+adaptive_height
+---------------
+
 .. code-block:: kv
 
-    MDRelativeLayout:
-        radius: [25, ]
-        md_bg_color: app.theme_cls.primaryColor
+    adaptive_height: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_y: None
+    height: self.minimum_height
+
+.. adaptive_width:
+
+adaptive_width
+--------------
+
+.. code-block:: kv
+
+    adaptive_width: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_x: None
+    height: self.minimum_width
+
+.. adaptive_size:
+
+adaptive_size
+-------------
+
+.. code-block:: kv
+
+    adaptive_size: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint: None, None
+    size: self.minimum_size
 """
 
 __all__ = ("MDRelativeLayout",)
@@ -35,7 +131,7 @@ from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 
 
 class MDRelativeLayout(

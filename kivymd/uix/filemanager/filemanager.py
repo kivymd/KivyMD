@@ -422,7 +422,7 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
     )
     """
     It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files
-    by option. By default, sort by name. 
+    by option. By default, sort by name.
     Available options are: `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
 
     :attr:`sort_by` is an :class:`~kivy.properties.OptionProperty`
@@ -591,9 +591,11 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
                         "icon": icon,
                         "dir_or_file_name": name,
                         "events_callback": self.select_dir_or_file,
-                        "icon_color": self.theme_cls.primaryColor
-                        if not self.icon_color
-                        else self.icon_color,
+                        "icon_color": (
+                            self.theme_cls.primaryColor
+                            if not self.icon_color
+                            else self.icon_color
+                        ),
                         "_selected": False,
                     }
                 )
@@ -608,9 +610,11 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
                         "icon": "file-outline",
                         "dir_or_file_name": os.path.split(name)[1],
                         "events_callback": self.select_dir_or_file,
-                        "icon_color": self.theme_cls.primaryColor
-                        if not self.icon_color
-                        else self.icon_color,
+                        "icon_color": (
+                            self.theme_cls.primaryColor
+                            if not self.icon_color
+                            else self.icon_color
+                        ),
                         "_selected": False,
                     }
                 )
@@ -796,9 +800,11 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
             self.selection_button = MDFabButton(
                 on_release=self.select_directory_on_press_button,
                 theme_bg_color="Custom",
-                md_bg_color=self.theme_cls.primaryColor
-                if not self.background_color_selection_button
-                else self.background_color_selection_button,
+                md_bg_color=(
+                    self.theme_cls.primaryColor
+                    if not self.background_color_selection_button
+                    else self.background_color_selection_button
+                ),
                 icon=self.icon_selection_button,
                 pos_hint={"right": 0.99},
                 y=dp(12),

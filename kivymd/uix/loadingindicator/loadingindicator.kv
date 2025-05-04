@@ -1,0 +1,18 @@
+<MDLoadingIndicator>:
+    active_indicator_color: app.theme_cls.primaryColor
+    container_color: app.theme_cls.secondaryContainerColor
+    MaterialShape:
+        id: material_shape
+        shape: root.shape
+        fill_color: root.active_indicator_color
+        size_hint: None, None
+        size: [root.shape_size] * 2
+        padding: 0.2085 * root.shape_size
+        damping: 0.45
+        canvas.before:
+            Color:
+                rgba: root.container_color 
+            Ellipse:
+                size: self.size
+                pos: self.pos
+

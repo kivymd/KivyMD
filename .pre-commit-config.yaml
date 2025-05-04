@@ -13,13 +13,13 @@ repos:
 
   # Sort imports
   - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
+    rev: 6.0.1
     hooks:
       - id: isort
         additional_dependencies: ["toml"]
 
   # Lint Python
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
+    rev: 7.2.0
     hooks:
       - id: flake8

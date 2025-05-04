@@ -525,8 +525,8 @@ from kivy.vector import Vector
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    CommonElevationBehavior,
     BackgroundColorBehavior,
+    CommonElevationBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionTimePickerBehavior
 from kivymd.uix.circularlayout import MDCircularLayout
@@ -694,26 +694,44 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
             am_pm=self._set_current_time,
         )
         Clock.schedule_once(
-            lambda x: self.set_time(
-                datetime.time(hour=int(self.hour), minute=int(self.minute))
-            )
+                lambda x: self._set_time_init()
         )  # default time
+
+    def _set_time_init(self):
+        """Sets time dialog to current hour/minute/am_pm values at init"""
+
+        if int(self.hour) > 12:
+            self.am_pm = 'pm'
+            self.hour = str(int(self.hour) - 12)
+        elif int(self.hour) == 0: 
+            self.am_pm = 'am'
+            self.hour = '12'
+
+        self._set_time_input(self.hour, self.minute)
+        self._set_dial_time(self.hour, self.minute)
+        self._set_am_pm(self.am_pm)
+        self._set_current_time()
 
     def set_time(self, time_obj: datetime.time) -> None:
         """Manually set time dialog with the specified time."""
-
+         
         hour = time_obj.hour
         minute = time_obj.minute
-
-        if hour > 12:
-            hour -= 12
-            mode = "pm"
+        
+        self._set_time_input(hour, minute)
+        
+        if hour < 12:
+            mode = 'am'
         else:
-            mode = "am"
+            mode = 'pm'
+        
+        if hour == 0:
+            hour = 12
+        elif hour > 12:
+            hour -= 12
 
         hour = str(hour)
         minute = str(minute)
-        self._set_time_input(hour, minute)
         self._set_dial_time(hour, minute)
         self._set_am_pm(mode)
         self._set_current_time()
@@ -941,7 +959,7 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
 
     _centers_pos = ListProperty()
 
-    __events__ = ("on_selector_change", )
+    __events__ = ("on_selector_change",)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1012,8 +1030,7 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
             touch.ungrab(self)
             return True
 
-    def on_selector_change(self, *args):
-        ...
+    def on_selector_change(self, *args): ...
 
     def _update_labels(self, animate=True, *args):
         """
@@ -1221,8 +1238,7 @@ class MDTimePickerInputContainer(BoxLayout):
         minute = self._minute.text.strip()
         return [hour, minute]
 
-    def on_time_input(self, *args) -> None:
-        ...
+    def on_time_input(self, *args) -> None: ...
 
     def on_minute_select(self, *args) -> None:
         pass
@@ -1245,7 +1261,7 @@ class MDTimePickerInputTextField(MDTextField):
     hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
     minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
 
-    __events__ = ("on_select", )
+    __events__ = ("on_select",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -686,7 +686,8 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty, DictProperty,
+    ObjectProperty,
+    DictProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
@@ -896,6 +897,10 @@ class BaseButton(
 
         self._on_release(args)
 
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y) and not self.disabled:
+            return super().on_touch_down(touch)
+
 
 class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
     """
@@ -1037,6 +1042,18 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
                         self.elevation_level = 1
                         self.shadow_softness = 0
 
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the `disabled` value changes."""
+
+        for element in (
+            getattr(self, "_button_text", None),
+            getattr(self, "_button_icon", None),
+        ):
+            if element:
+                element.disabled = value
+
+        super().on_disabled(instance, value)
+
 
 class MDButtonText(MDLabel):
     """
@@ -1159,9 +1176,7 @@ class MDFabButton(
             )
 
         if not self.disabled:
-            if (
-                self._state == self.state_hover and self.focus_behavior
-            ):
+            if self._state == self.state_hover and self.focus_behavior:
                 self.elevation_level = 1
                 self.shadow_softness = 0
             elif self._state == self.state_press:

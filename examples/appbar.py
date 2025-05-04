@@ -1,8 +1,7 @@
 from kivy.lang import Builder
 
-from kivymd.app import MDApp
-
 from examples.common_app import CommonApp
+from kivymd.app import MDApp
 
 KV = """
 MDScreen:
@@ -24,54 +23,54 @@ MDScreen:
         MDTopAppBar:
             id: appbar
             type: "small"
-    
+
             MDTopAppBarLeadingButtonContainer:
-    
+
                 MDActionTopAppBarButton:
                     icon: "arrow-left"
-    
+
             MDTopAppBarTitle:
                 text: "AppBar small"
-    
+
             MDTopAppBarTrailingButtonContainer:
-    
+
                 MDActionTopAppBarButton:
                     icon: "attachment"
-    
+
                 MDActionTopAppBarButton:
                     icon: "calendar"
-    
+
                 MDActionTopAppBarButton:
                     icon: "dots-vertical"
 
         MDTopAppBar:
             id: appbar_custom
             type: "small"
-    
+
             MDTopAppBarLeadingButtonContainer:
-    
+
                 MDActionTopAppBarButton:
                     icon: "arrow-left"
                     theme_icon_color: "Custom"
                     icon_color: "green"
-    
+
             MDTopAppBarTitle:
                 text: "AppBar small"
                 theme_text_color: "Custom"
                 text_color: "green"
-    
+
             MDTopAppBarTrailingButtonContainer:
-    
+
                 MDActionTopAppBarButton:
                     icon: "attachment"
                     theme_icon_color: "Custom"
                     icon_color: "green"
-    
+
                 MDActionTopAppBarButton:
                     icon: "calendar"
                     theme_icon_color: "Custom"
                     icon_color: "green"
-    
+
                 MDActionTopAppBarButton:
                     icon: "dots-vertical"
                     theme_icon_color: "Custom"

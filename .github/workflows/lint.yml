@@ -15,13 +15,15 @@ on:
 jobs:
 
   # Lint job. Runs pre-commit, fails if there are changed files
+  # os, python version and architecture does not matter here
+  # [${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
   lint:
-    name: Check pre-commit [${{ matrix.python-version }} | ${{ matrix.os }} ${{ matrix.architecture }}]
+    name: Check pre-commit 
     strategy:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.10']
+        python-version: ['3.13']
         architecture: [x64]
     runs-on: ${{ matrix.os }}
     env:

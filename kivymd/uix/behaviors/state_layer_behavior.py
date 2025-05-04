@@ -13,8 +13,7 @@ from kivy import platform
 from kivy.lang import Builder
 from kivy.properties import ColorProperty, NumericProperty
 
-from kivymd.uix.behaviors.focus_behavior import FocusBehavior
-
+from kivymd.uix.behaviors.focus_behavior import StateFocusBehavior
 
 Builder.load_string(
     """
@@ -36,7 +35,7 @@ Builder.load_string(
 #  `on_enter` and `on_leave` and `pressed`).
 
 
-class StateLayerBehavior(FocusBehavior):
+class StateLayerBehavior(StateFocusBehavior):
     state_layer_color = ColorProperty([0, 0, 0, 0])
     """
     The color of the layer state.
@@ -48,7 +47,7 @@ class StateLayerBehavior(FocusBehavior):
     state_hover = NumericProperty(0.08)
     """
     The transparency level of the layer as a percentage when hovering.
-    
+
     :attr:`state_hover` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.08`.
     """
@@ -222,19 +221,19 @@ class StateLayerBehavior(FocusBehavior):
     def on_disabled(self, instance, value) -> None:
         """Fired when the `disabled` value changes."""
 
-        from kivymd.uix.card import MDCard
         from kivymd.uix.button import (
-            MDIconButton,
             MDButton,
-            MDFabButton,
             MDExtendedFabButton,
+            MDFabButton,
+            MDIconButton,
         )
+        from kivymd.uix.card import MDCard
+        from kivymd.uix.list import BaseListItem
         from kivymd.uix.segmentedbutton import MDSegmentedButtonItem
         from kivymd.uix.segmentedbutton.segmentedbutton import (
             MDSegmentButtonSelectedIcon,
         )
         from kivymd.uix.selectioncontrol import MDSwitch
-        from kivymd.uix.list import BaseListItem
         from kivymd.uix.textfield import MDTextField
 
         if value and not self._is_already_disabled:
@@ -393,21 +392,21 @@ class StateLayerBehavior(FocusBehavior):
     #  ignored. For example, for the `MDSwitch` widget, the color of the status
     #  of the `Thumb` element and the color of the icon are ignored.
     def _get_target_color(self):
-        from kivymd.uix.card import MDCard
         from kivymd.uix.button import (
-            MDIconButton,
             MDButton,
-            MDFabButton,
             MDExtendedFabButton,
+            MDFabButton,
+            MDIconButton,
         )
+        from kivymd.uix.card import MDCard
+        from kivymd.uix.chip import MDChip
+        from kivymd.uix.list import BaseListItem
+        from kivymd.uix.navigationdrawer import MDNavigationDrawerItem
         from kivymd.uix.segmentedbutton.segmentedbutton import (
             MDSegmentedButtonContainer,
         )
-        from kivymd.uix.chip import MDChip
-        from kivymd.uix.selectioncontrol import MDSwitch, MDCheckbox
-        from kivymd.uix.list import BaseListItem
+        from kivymd.uix.selectioncontrol import MDCheckbox, MDSwitch
         from kivymd.uix.textfield import MDTextField
-        from kivymd.uix.navigationdrawer import MDNavigationDrawerItem
 
         target_color = None
 
@@ -477,21 +476,21 @@ class StateLayerBehavior(FocusBehavior):
         return target_color
 
     def _set_state_layer_color(self):
-        from kivymd.uix.card import MDCard
         from kivymd.uix.button import (
-            MDIconButton,
             MDButton,
-            MDFabButton,
             MDExtendedFabButton,
+            MDFabButton,
+            MDIconButton,
         )
+        from kivymd.uix.card import MDCard
+        from kivymd.uix.chip import MDChip
+        from kivymd.uix.list import BaseListItem
         from kivymd.uix.segmentedbutton.segmentedbutton import (
             MDSegmentedButtonContainer,
         )
-        from kivymd.uix.chip import MDChip
-        from kivymd.uix.selectioncontrol import MDSwitch, MDCheckbox
-        from kivymd.uix.list import BaseListItem
-        from kivymd.uix.textfield import MDTextField
+        from kivymd.uix.selectioncontrol import MDCheckbox, MDSwitch
         from kivymd.uix.tab.tab import MDTabsItemBase
+        from kivymd.uix.textfield import MDTextField
 
         target_color = self._get_target_color()
         if (

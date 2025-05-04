@@ -24,14 +24,14 @@ class TestBgColorAfterChangedTheme(MDApp):
         assert self.root.ids.button.md_bg_color == [
             1.0,
             0.9411764705882353,
-            0.9294117647058824,
+            0.9333333333333333,
             1,
         ]
         assert self.root.ids.button_text.text_color == [
-            0.7568627450980392,
-            0.0,
-            0.0,
-            1,
+            0.5647058823529412,
+            0.29411764705882354,
+            0.25098039215686274,
+            1.0,
         ]
         self.stop()
 

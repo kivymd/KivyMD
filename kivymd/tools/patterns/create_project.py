@@ -791,37 +791,53 @@ def create_main_with_hotreload() -> None:
     ) as main_file:
         main_code = main_file.read()
         main_code = main_code.format(
-            "\nfrom kivy.properties import StringProperty\n"
-            if use_localization == "yes"
-            else "",
-            "\nfrom Model.database import DataBase"
-            if name_database != "no"
-            else "",
-            "\nfrom libs.translation import Translation\n"
-            if use_localization == "yes"
-            else "",
+            (
+                "\nfrom kivy.properties import StringProperty\n"
+                if use_localization == "yes"
+                else ""
+            ),
+            (
+                "\nfrom Model.database import DataBase"
+                if name_database != "no"
+                else ""
+            ),
+            (
+                "\nfrom libs.translation import Translation\n"
+                if use_localization == "yes"
+                else ""
+            ),
             project_name,
-            '\n    lang = StringProperty("en")\n'
-            if use_localization == "yes"
-            else "",
-            "\n        self.base = DataBase()\n"
-            if name_database != "no"
-            else "",
-            "\n        self.translation = Translation(\n"
-            '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
-            "\n        )" % project_name
-            if use_localization == "yes"
-            else "",
+            (
+                '\n    lang = StringProperty("en")\n'
+                if use_localization == "yes"
+                else ""
+            ),
+            (
+                "\n        self.base = DataBase()\n"
+                if name_database != "no"
+                else ""
+            ),
+            (
+                "\n        self.translation = Translation(\n"
+                '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
+                "\n        )" % project_name
+                if use_localization == "yes"
+                else ""
+            ),
             "self.database" if name_database != "no" else "",
-            "\n\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
-            "        self.translation.switch_lang(lang_value)\n"
-            if use_localization == "yes"
-            else "",
-            "\n    def switch_lang(self) -> None:\n"
-            '        """Switch lang."""\n\n'
-            '        self.lang = "ru" if self.lang == "en" else "en"'
-            if use_localization == "yes"
-            else "",
+            (
+                "\n\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
+                "        self.translation.switch_lang(lang_value)\n"
+                if use_localization == "yes"
+                else ""
+            ),
+            (
+                "\n    def switch_lang(self) -> None:\n"
+                '        """Switch lang."""\n\n'
+                '        self.lang = "ru" if self.lang == "en" else "en"'
+                if use_localization == "yes"
+                else ""
+            ),
             project_name,
         )
         with open(
@@ -832,35 +848,49 @@ def create_main_with_hotreload() -> None:
 
 def create_main() -> None:
     main_code = temp_main.format(
-        "\nfrom kivy.properties import StringProperty\n"
-        if use_localization == "yes"
-        else "",
-        "\nfrom libs.translation import Translation"
-        if use_localization == "yes"
-        else "",
-        "from Model.database import DataBase\n"
-        if name_database != "no"
-        else "",
+        (
+            "\nfrom kivy.properties import StringProperty\n"
+            if use_localization == "yes"
+            else ""
+        ),
+        (
+            "\nfrom libs.translation import Translation"
+            if use_localization == "yes"
+            else ""
+        ),
+        (
+            "from Model.database import DataBase\n"
+            if name_database != "no"
+            else ""
+        ),
         project_name,
-        '\n    lang = StringProperty("en")\n'
-        if use_localization == "yes"
-        else "",
-        "\n        self.translation = Translation(\n"
-        '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
-        "\n        )" % project_name
-        if use_localization == "yes"
-        else "",
+        (
+            '\n    lang = StringProperty("en")\n'
+            if use_localization == "yes"
+            else ""
+        ),
+        (
+            "\n        self.translation = Translation(\n"
+            '            self.lang, "%s", os.path.join(self.directory, "data", "locales")'
+            "\n        )" % project_name
+            if use_localization == "yes"
+            else ""
+        ),
         "self.database = DataBase()\n" if name_database != "no" else "",
         "self.database" if name_database != "no" else "",
-        "\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
-        "        self.translation.switch_lang(lang_value)\n"
-        if use_localization == "yes"
-        else "",
-        "\n    def switch_lang(self) -> None:\n"
-        '        """Switch lang."""\n\n'
-        '        self.lang = "ru" if self.lang == "en" else "en"\n'
-        if use_localization == "yes"
-        else "",
+        (
+            "\n    def on_lang(self, instance_app, lang_value: str) -> None:\n"
+            "        self.translation.switch_lang(lang_value)\n"
+            if use_localization == "yes"
+            else ""
+        ),
+        (
+            "\n    def switch_lang(self) -> None:\n"
+            '        """Switch lang."""\n\n'
+            '        self.lang = "ru" if self.lang == "en" else "en"\n'
+            if use_localization == "yes"
+            else ""
+        ),
         project_name,
     )
     with open(
@@ -917,19 +947,23 @@ def create_controller(
     code_controller = temp_code_controller.format(
         name_screen=name_screen,
         module_name=module_name,
-        import_module=""
-        f"import importlib\n\n"
-        f"import View.{name_screen}.{module_name}\n\n"
-        f"# We have to manually reload the view module in order to apply the\n"
-        f"# changes made to the code on a subsequent hot reload.\n"
-        f"# If you no longer need a hot reload, you can delete this instruction.\n"
-        f"importlib.reload(View.{name_screen}.{module_name})\n\n"
-        if use_hotreload == "yes"
-        else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View",
+        import_module=(
+            ""
+            f"import importlib\n\n"
+            f"import View.{name_screen}.{module_name}\n\n"
+            f"# We have to manually reload the view module in order to apply the\n"
+            f"# changes made to the code on a subsequent hot reload.\n"
+            f"# If you no longer need a hot reload, you can delete this instruction.\n"
+            f"importlib.reload(View.{name_screen}.{module_name})\n\n"
+            if use_hotreload == "yes"
+            else f"\nfrom View.{name_screen}.{module_name} import {name_screen}View"
+        ),
         name_view=name_view,
-        get_view=f"View.{name_screen}.{module_name}"
-        if use_hotreload == "yes"
-        else f"{name_screen}View",
+        get_view=(
+            f"View.{name_screen}.{module_name}"
+            if use_hotreload == "yes"
+            else f"{name_screen}View"
+        ),
     )
 
     path_to_controller = os.path.join(path_to_project, "Controller")

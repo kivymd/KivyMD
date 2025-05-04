@@ -1171,7 +1171,9 @@ class MDBottomAppBar(
         """Fired when the root screen is resized."""
 
         if self._fab_bottom_app_bar_button:
-            self._fab_bottom_app_bar_button.x = Window.width - (dp(56) + dp(16))
+            self._fab_bottom_app_bar_button.x = self.parent.width - (
+                dp(56) + dp(16)
+            )
 
     def on_action_items(self, instance, value: list) -> None:
         """

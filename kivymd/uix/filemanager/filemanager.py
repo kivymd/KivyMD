@@ -468,12 +468,10 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
     _window_manager = None
     _window_manager_open = False
 
+    __events__ = ("on_pre_open", "on_open", "on_pre_dismiss", "on_dismiss")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_pre_open")
-        self.register_event_type("on_open")
-        self.register_event_type("on_pre_dismiss")
-        self.register_event_type("on_dismiss")
         Clock.schedule_once(self._create_selection_button)
 
         if self.preview:

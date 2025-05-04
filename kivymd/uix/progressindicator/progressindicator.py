@@ -534,6 +534,8 @@ class MDCircularProgressIndicator(ThemableBehavior, Widget):
     _angle_end = NumericProperty(0)
     _palette = []
 
+    __events__ = ("on_determinate_complete", )
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._alpha_anim_in = Animation(_alpha=1, duration=0.8, t="out_quad")
@@ -542,7 +544,6 @@ class MDCircularProgressIndicator(ThemableBehavior, Widget):
             on_complete=self._reset,
             on_progress=self._on_determinate_progress,
         )
-        self.register_event_type("on_determinate_complete")
         Clock.schedule_once(self.check_determinate)
 
     def on__rotation_angle(self, *args):

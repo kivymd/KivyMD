@@ -335,9 +335,10 @@ class MDSliverAppbar(ThemableBehavior, BoxLayout):
     _last_scroll_y_pos = 0.0
     _appbar = ObjectProperty()
 
+    __events__ = ("on_scroll_content", )
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_scroll_content")
 
     def on_hide_appbar(self, instance, value) -> None:
         """Fired when the `hide_appbar` value changes."""

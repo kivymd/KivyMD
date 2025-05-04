@@ -287,13 +287,6 @@ class MDSwiper(ScrollView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_swipe")
-        self.register_event_type("on_pre_swipe")
-        self.register_event_type("on_overswipe_right")
-        self.register_event_type("on_overswipe_left")
-        self.register_event_type("on_swipe_left")
-        self.register_event_type("on_swipe_right")
-
         self.effect_cls = _ScrollViewHardStop
 
     def add_widget(self, widget, index=0):

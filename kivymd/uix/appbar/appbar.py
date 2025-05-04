@@ -1007,10 +1007,10 @@ class MDBottomAppBar(
     _fab_bottom_app_bar_button = None
     _action_overflow_button = None
 
+    __events__ = ("on_show_bar", "on_hide_bar")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_show_bar")
-        self.register_event_type("on_hide_bar")
 
     def button_centering_animation(
         self,

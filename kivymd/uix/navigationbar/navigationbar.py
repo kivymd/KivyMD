@@ -580,8 +580,9 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
     and defaults to `False`.
     """
 
+    __events__ = ("on_switch_tabs", )
+
     def __init__(self, *args, **kwargs):
-        self.register_event_type("on_switch_tabs")
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_status_bar_color)
 

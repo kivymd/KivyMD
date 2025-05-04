@@ -1064,6 +1064,8 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     _tar_x = 0
     _tar_y = 0
 
+    __events__ = ("on_dismiss", )
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Window.bind(
@@ -1071,7 +1073,6 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
             on_maximize=self._remove_menu,
             on_restore=self._remove_menu,
         )
-        self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
         self.target_height = 0
 

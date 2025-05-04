@@ -1244,10 +1244,10 @@ class MDExtendedFabButton(
     _icon = ObjectProperty()
     _label = ObjectProperty()
 
+    __events__ = ("on_collapse", "on_expand")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_collapse")
-        self.register_event_type("on_expand")
         Clock.schedule_once(self._set_text_pos, 0.5)
 
     def add_widget(self, widget, *args, **kwargs):

@@ -943,10 +943,10 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
     _current_related_content = None  # Carousel slide (related content) object
     _do_releasing = True
 
+    __events__ = ("on_tab_switch", "on_slide_progress")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_tab_switch")
-        self.register_event_type("on_slide_progress")
         Clock.schedule_once(self._check_panel_height)
         Clock.schedule_once(self._set_slides_attributes)
 

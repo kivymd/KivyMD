@@ -499,12 +499,10 @@ class MDDialog(MDCard, MotionDialogBehavior):
     _scrim = ObjectProperty()  # kivymd.uix.dialog.dialog.MDDialogScrim object
     _is_open = False  # is the dialog currently open or closed.
 
+    __events__ = ("on_open", "on_pre_open", "on_dismiss", "on_pre_dismiss")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_pre_open")
-        self.register_event_type("on_dismiss")
-        self.register_event_type("on_pre_dismiss")
         self.opacity = 0
         Window.bind(on_resize=self.update_width)
 

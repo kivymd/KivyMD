@@ -395,10 +395,10 @@ class MDSnackbar(MotionShackBehavior, MDCard):
     and defaults to `None`.
     """
 
+    __events__ = ("on_open", "on_dismiss")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_dismiss")
         self.opacity = 0
 
     def dismiss(self, *args) -> None:

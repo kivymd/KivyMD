@@ -235,10 +235,10 @@ class MDSmartTile(MDRelativeLayout):
     _overlay_container = ObjectProperty()
     _image = ObjectProperty()
 
+    __events__ = ("on_release", "on_press")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_release")
-        self.register_event_type("on_press")
 
     def on_release(self, *args):
         """

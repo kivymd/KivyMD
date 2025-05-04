@@ -142,9 +142,9 @@ class HoverBehavior:
     and defaults to  `True`.
     """
 
+    __events__ = ("on_enter", "on_leave")
+
     def __init__(self, *args, **kwargs):
-        self.register_event_type("on_enter")
-        self.register_event_type("on_leave")
         Window.bind(mouse_pos=self.on_mouse_update)
         super().__init__(*args, **kwargs)
 

@@ -425,10 +425,10 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
     _allow_add_content = False
     _panel_is_process_opening = False
 
+    __events__ = ("on_open", "on_close")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_close")
 
     def on_open(self, *args) -> None:
         """Fired when a panel is opened."""

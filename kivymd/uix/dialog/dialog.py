@@ -439,7 +439,7 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDDialog(MDCard, MotionDialogBehavior,):
+class MDDialog(MDCard, MotionDialogBehavior):
     """
     Dialog class.
 

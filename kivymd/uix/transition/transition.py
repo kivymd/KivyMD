@@ -366,7 +366,7 @@ class MDSharedAxisTransition(MDTransitionBase):
     )
     """ 
     Custom material design animation transition.
-    
+
     :attr:`switch_animation` is a :class:`~kivy.properties.OptionProperty` and
     defaults to `"easing_decelerated"`.
     """

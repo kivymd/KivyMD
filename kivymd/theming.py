@@ -774,8 +774,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
         self,
         color="blue",  # Google default
     ) -> None:
-        if not color:
+        if not self.primary_palette:
             color = "blue"
+        else:
+            color = self.primary_palette
 
         color = get_color_from_hex(hex_colormap[color.lower()])
         color = Hct.from_int(argb_from_rgba_01(color))

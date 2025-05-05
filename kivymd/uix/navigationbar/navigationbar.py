@@ -587,7 +587,11 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
         Clock.schedule_once(self.set_status_bar_color)
 
     def get_active_item(self) -> MDNavigationItem | None:
-        """Returns the currently active item in the navigation bar."""
+        """
+        Returns the currently active item in the navigation bar.
+
+        .. versionadded:: 2.0.0
+        """
 
         return next((child for child in self.children if child.active), None)
 

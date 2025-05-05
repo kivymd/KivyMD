@@ -1264,38 +1264,21 @@ class MDTextField(
         leading/trailing icons/hint/helper/max length text.
         """
 
-        def update_helper_text_texture(*args):
-            helper_text_rectangle = self.canvas.before.get_group(
-                "helper-text-rectangle"
-            )[0]
-            helper_text_rectangle.texture = self._helper_text_label.texture
-            helper_text_rectangle.size = self._helper_text_label.texture_size
-            helper_text_rectangle.pos = (
-                self.x
-                + (
-                    dp(16)
-                    if self.mode == "filled"
-                    else (0 if self.mode == "filled" else dp(12))
-                ),
-                self.y + dp(-18),
-            )
-            self._helper_text_label.texture_update()
-
-        def update_leading_icon_texture(*args):
-            leading_icon_rectangle = self.canvas.before.get_group(
-                "leading-icon-rectangle"
-            )[0]
-            leading_icon_rectangle.texture = self._leading_icon.texture
-            leading_icon_rectangle.size = self._leading_icon.texture_size
-            self._leading_icon.texture_update()
-
-        def update_trailing_icon_texture(*args):
-            trailing_icon_rectangle = self.canvas.before.get_group(
-                "trailing-icon-rectangle"
-            )[0]
-            trailing_icon_rectangle.texture = self._trailing_icon.texture
-            trailing_icon_rectangle.size = self._trailing_icon.texture_size
-            self._trailing_icon.texture_update()
+        def update_texture(grop_name, instance):
+            rectangle = self.canvas.before.get_group(grop_name)[0]
+            rectangle.texture = instance.texture
+            rectangle.size = instance.texture_size
+            if instance is self._helper_text_label:
+                rectangle.pos = (
+                    self.x
+                    + (
+                        dp(16)
+                        if self.mode == "filled"
+                        else (0 if self.mode == "filled" else dp(12))
+                    ),
+                    self.y + dp(-18),
+                )
+            instance.texture_update()
 
         def update_hint_text_rectangle(*args):
             hint_text_rectangle = self.canvas.after.get_group(
@@ -1311,11 +1294,11 @@ class MDTextField(
             if texture is self._hint_text_label:
                 a.bind(on_complete=update_hint_text_rectangle)
             elif texture is self._helper_text_label:
-                update_helper_text_texture()
+                update_texture("helper-text-rectangle", self._helper_text_label)
             elif texture is self._leading_icon:
-                update_leading_icon_texture()
+                update_texture("leading-icon-rectangle", self._leading_icon)
             elif texture is self._trailing_icon:
-                update_trailing_icon_texture()
+                update_texture("trailing-icon-rectangle", self._trailing_icon)
             a.start(texture)
 
     def set_pos_hint_text(self, y: float, x: float) -> None:

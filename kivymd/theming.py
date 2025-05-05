@@ -722,7 +722,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
             attr = getattr(MaterialDynamicColors, color_name)
             if hasattr(attr, "get_hct"):
                 color_value = rgba(attr.get_hct(scheme).to_rgba())
-                exec(f"self.{color_name}Color = {color_value}")
+                setattr(self, f"{color_name}Color", color_value)
 
         self.disabledTextColor = self._get_disabled_hint_text_color()
         if self.on_colors:

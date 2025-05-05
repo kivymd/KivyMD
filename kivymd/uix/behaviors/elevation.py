@@ -37,12 +37,16 @@ For example, let's create a button with a rectangular elevation effect:
 
 
             MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
                 # With elevation effect
                 ElevationWidget:
                     pos_hint: {"center_x": .5, "center_y": .6}
-                    elevation: 4
+                    theme_elevation_level: "Custom"
+                    elevation_level: 4
+                    theme_shadow_offset: "Custom"
                     shadow_offset: 0, -6
+                    theme_shadow_softness: "Custom"
                     shadow_softness: 4
 
                 # Without elevation effect
@@ -103,13 +107,17 @@ For example, let's create a button with a rectangular elevation effect:
                         MDScreen(
                             ElevationWidget(
                                 pos_hint={"center_x": .5, "center_y": .6},
-                                elevation=4,
+                                theme_elevation_level="Custom",
+                                theme_shadow_softness="Custom",
+                                theme_shadow_softness="Custom",
                                 shadow_softness=4,
+                                elevation_level=4,
                                 shadow_offset=(0, -6),
                             ),
                             ElevationWidget(
                                 pos_hint={"center_x": .5, "center_y": .4},
                             ),
+                            md_bg_color=self.theme_cls.backgroundColor,
                         )
                     )
 
@@ -156,16 +164,20 @@ Similarly, create a circular button:
                     pos_hint: {"center_x": .5, "center_y": .5}
                     size: root.size
                     pos: root.pos
+                    theme_font_size: "Custom"
                     font_size: root.size[0] * .6
                     theme_text_color: "Custom"
                     text_color: "white"
 
 
             MDScreen:
+                 md_bg_color: self.theme_cls.backgroundColor
 
                 CircularElevationButton:
                     pos_hint: {"center_x": .5, "center_y": .6}
-                    elevation: 4
+                    theme_elevation_level: "Custom"
+                    theme_shadow_softness: "Custom"
+                    elevation_level: 4
                     shadow_softness: 4
             '''
 
@@ -222,6 +234,7 @@ Similarly, create a circular button:
                             size=self.size,
                             theme_text_color="Custom",
                             text_color="white",
+                            theme_font_size="Custom",
                             font_size=self.size[0] * 0.6,
                         )
                     )
@@ -233,9 +246,12 @@ Similarly, create a circular button:
                         MDScreen(
                             CircularElevationButton(
                                 pos_hint={"center_x": .5, "center_y": .5},
-                                elevation=4,
+                                theme_elevation_level="Custom",
+                                elevation_level=4,
+                                theme_shadow_softness="Custom",
                                 shadow_softness=4,
-                            )
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
                         )
                     )
 
@@ -468,15 +484,19 @@ class CommonElevationBehavior(Widget):
         from kivymd.app import MDApp
 
         KV = '''
-        MDScreen:
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDCard:
-                radius: dp(12), dp(46), dp(12), dp(46)
-                size_hint: .5, .3
-                pos_hint: {"center_x": .5, "center_y": .5}
-                elevation: 2
-                shadow_softness: 4
-                shadow_offset: (2, -2)
+                MDCard:
+                    radius: dp(12), dp(46), dp(12), dp(46)
+                    size_hint: .5, .3
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    theme_elevation_level: "Custom"
+                    elevation_level: 2
+                    theme_shadow_softness: "Custom"
+                    shadow_softness: 4
+                    theme_shadow_offset: "Custom"
+                    shadow_offset: (2, -2)
         '''
 
 
@@ -514,15 +534,20 @@ class CommonElevationBehavior(Widget):
 
 
         MDScreen:
+            md_bg_color: self.theme_cls.backgroundColor
 
             ElevationWidget:
                 pos_hint: {"center_x": .5, "center_y": .6}
-                elevation: 6
+                theme_elevation_level: "Custom"
+                elevation_level: 5
+                theme_shadow_softness: "Custom"
                 shadow_softness: 6
 
             ElevationWidget:
                 pos_hint: {"center_x": .5, "center_y": .4}
-                elevation: 6
+                theme_elevation_level: "Custom"
+                elevation_level: 5
+                theme_shadow_softness: "Custom"
                 shadow_softness: 12
         '''
 
@@ -567,12 +592,16 @@ class CommonElevationBehavior(Widget):
 
 
         MDScreen:
+            md_bg_color: self.theme_cls.backgroundColor
 
             ElevationWidget:
                 pos_hint: {"center_x": .5, "center_y": .5}
-                elevation: 6
+                theme_elevation_level: "Custom"
+                elevation_level: 5
                 shadow_radius: dp(6)
+                theme_shadow_softness: "Custom"
                 shadow_softness: 12
+                theme_shadow_offset: "Custom"
                 shadow_offset: -12, -12
         '''
 
@@ -701,10 +730,6 @@ class CommonElevationBehavior(Widget):
     and defaults to `(0, 0, 1)`.
     """
 
-    # _elevation = 0
     _elevation_level = 0
     _shadow_softness = 0
     _shadow_color = (0, 0, 0, 0)
-
-    # def on_elevation(self, instance, value) -> None:
-    #     self._elevation = value

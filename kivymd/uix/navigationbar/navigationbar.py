@@ -580,7 +580,7 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
     and defaults to `False`.
     """
 
-    __events__ = ("on_switch_tabs", )
+    __events__ = ("on_switch_tabs",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -600,12 +600,16 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
                 self.dispatch(
                     "on_switch_tabs",
                     widget,
-                    widget.ids.icon_container.children[0].icon
-                    if len(widget.ids.icon_container.children)
-                    else "",
-                    widget.ids.label_container.children[0].text
-                    if len(widget.ids.label_container.children)
-                    else "",
+                    (
+                        widget.ids.icon_container.children[0].icon
+                        if len(widget.ids.icon_container.children)
+                        else ""
+                    ),
+                    (
+                        widget.ids.label_container.children[0].text
+                        if len(widget.ids.label_container.children)
+                        else ""
+                    ),
                 )
             else:
                 widget.active = False

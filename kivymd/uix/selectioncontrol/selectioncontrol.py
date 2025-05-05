@@ -467,9 +467,11 @@ class MDCheckbox(
             self.icon = (
                 self.radio_icon_down
                 if self.group and self.group not in ["root", "child"]
-                else self.checkbox_icon_down
-                if self.group != "root"
-                else "minus-box"
+                else (
+                    self.checkbox_icon_down
+                    if self.group != "root"
+                    else "minus-box"
+                )
             )
         else:
             self.icon = (

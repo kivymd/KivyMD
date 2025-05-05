@@ -799,7 +799,7 @@ class MDCardSwipe(MDRelativeLayout):
     _to_closed = True
     _distance = 0
 
-    __events__ = ("on_swipe_complete", )
+    __events__ = ("on_swipe_complete",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

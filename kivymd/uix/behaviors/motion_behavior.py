@@ -257,9 +257,11 @@ class MotionExtendedFabButtonBehavior(MotionBase):
         if self._label:
             self._anim_opacity = Animation(
                 opacity=value,
-                d=self.show_duration * 16.666666666666668 / 100
-                if value
-                else self.show_duration * 1.6666666666666667 / 100,
+                d=(
+                    self.show_duration * 16.666666666666668 / 100
+                    if value
+                    else self.show_duration * 1.6666666666666667 / 100
+                ),
             )
             self._anim_opacity.bind(
                 on_complete=lambda *x: setattr(self, "_anim_opacity", None)

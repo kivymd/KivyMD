@@ -213,7 +213,9 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDLinearProgressIndicator(DeclarativeBehavior, ThemableBehavior, ProgressBar):
+class MDLinearProgressIndicator(
+    DeclarativeBehavior, ThemableBehavior, ProgressBar
+):
     """
     Implementation of the linear progress indicator.
 
@@ -534,7 +536,7 @@ class MDCircularProgressIndicator(ThemableBehavior, Widget):
     _angle_end = NumericProperty(0)
     _palette = []
 
-    __events__ = ("on_determinate_complete", )
+    __events__ = ("on_determinate_complete",)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

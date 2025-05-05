@@ -15,6 +15,7 @@ import re
 
 import autoapi
 import sphinx
+
 # import unidecode
 from autoapi.directives import NestedParse
 from autoapi.extension import LOGGER

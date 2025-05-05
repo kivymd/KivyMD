@@ -982,51 +982,63 @@ class MDChip(
 
             self.padding = {
                 "input": (
-                    "12dp"
-                    if not self.ids.leading_icon_container.children
-                    else (
-                        "5dp"
-                        if not self.ids.leading_icon_container.children[
-                            0
-                        ].source
-                        else "16dp"
+                    (
+                        "12dp"
+                        if not self.ids.leading_icon_container.children
+                        else (
+                            "5dp"
+                            if not self.ids.leading_icon_container.children[
+                                0
+                            ].source
+                            else "16dp"
+                        )
                     ),
                     0,
                     "4dp",
                     0,
                 ),
                 "assist": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                 ),
                 "suggestion": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                     "16dp",
                     0,
                 ),
                 "filter": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else (
-                        "8dp"
-                        if not self.ids.leading_icon_container.children[
-                            0
-                        ].source
-                        else "4dp"
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else (
+                            "8dp"
+                            if not self.ids.leading_icon_container.children[
+                                0
+                            ].source
+                            else "4dp"
+                        )
                     ),
                     0,
-                    "16dp"
-                    if not self.ids.trailing_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.trailing_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                 ),
             }[value]
@@ -1051,14 +1063,16 @@ class MDChip(
             self.set_chip_bg_color(
                 self.selected_color
                 if self.selected_color
-                else {
-                    "filter": self.theme_cls.surfaceContainerLowColor,
-                    "suggestion": self.theme_cls.surfaceContainerLowColor,
-                    "input": self.theme_cls.surfaceContainerLowColor,
-                    "assist": self.theme_cls.surfaceContainerLowColor,
-                }[self.type]
-                if self.theme_bg_color == "Primary"
-                else self.md_bg_color
+                else (
+                    {
+                        "filter": self.theme_cls.surfaceContainerLowColor,
+                        "suggestion": self.theme_cls.surfaceContainerLowColor,
+                        "input": self.theme_cls.surfaceContainerLowColor,
+                        "assist": self.theme_cls.surfaceContainerLowColor,
+                    }[self.type]
+                    if self.theme_bg_color == "Primary"
+                    else self.md_bg_color
+                )
             )
         else:
             if (

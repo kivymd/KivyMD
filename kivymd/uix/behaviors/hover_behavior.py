@@ -156,9 +156,11 @@ class HoverBehavior:
         # Is the pointer in the same position as the widget?
         # If not - then issue an on_exit event if needed.
         if not self.collide_point(
-            *self.to_widget(*pos)
-            if not isinstance(self, RelativeLayout)
-            else (pos[0], pos[1])
+            *(
+                self.to_widget(*pos)
+                if not isinstance(self, RelativeLayout)
+                else (pos[0], pos[1])
+            )
         ):
             self.hovering = False
             self.enter_point = None

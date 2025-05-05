@@ -91,8 +91,7 @@ class Example(MDApp, CommonApp):
         self.theme_cls.primary_palette = "Olive"
         return Builder.load_string(KV)
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

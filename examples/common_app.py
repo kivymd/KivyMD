@@ -74,7 +74,7 @@ class CommonApp:
 
     def switch_palette(self, selected_palette):
         self.theme_cls.primary_palette = selected_palette
-    
+
     def switch_theme(self):
         self.theme_cls.switch_theme()
 
@@ -105,14 +105,16 @@ class CommonApp:
             menu_items.append(
                 {
                     "text": scheme_name,
-                    "on_release": lambda x=scheme_name: self.update_scheme_name(x),
+                    "on_release": lambda x=scheme_name: self.update_scheme_name(
+                        x
+                    ),
                 }
             )
         MDDropdownMenu(
             caller=instance_from_menu,
             items=menu_items,
         ).open()
-    
+
     def update_scheme_name(self, scheme_name):
         self.theme_cls.dynamic_scheme_name = scheme_name
 

@@ -237,7 +237,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     :attr:`dynamic_color` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
-    
+
     dynamic_scheme_name = OptionProperty("TONAL_SPOT", options=SCHEMES.keys())
     """
     Name of the dynamic scheme. Availabe schemes `TONAL_SPOT`, `SPRITZ`
@@ -640,7 +640,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
 
     _size_current_wallpaper = NumericProperty(0)
-    _dark_mode = lambda self : False if self.theme_style == "Light" else True
+    _dark_mode = lambda self: False if self.theme_style == "Light" else True
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -663,7 +663,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 fallback_wallpaper_path=self.path_to_wallpaper,
                 fallback_scheme_name=self.dynamic_scheme_name,
                 message_logger=Logger.info,
-                logger_head="KivyMD"
+                logger_head="KivyMD",
             )
             if system_scheme:
                 self._set_color_names(system_scheme)
@@ -700,11 +700,11 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     def _set_application_scheme(
         self,
-        color = "blue", # Google default
+        color="blue",  # Google default
     ) -> None:
         if not color:
             color = "blue"
-        
+
         color = get_color_from_hex(hex_colormap[color.lower()])
         color = Hct.from_int(argb_from_rgba_01(color))
         color = DislikeAnalyzer.fix_if_disliked(color).to_int()

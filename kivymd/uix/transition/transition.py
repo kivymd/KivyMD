@@ -442,7 +442,9 @@ class MDSharedAxisTransition(MDTransitionBase):
 
     def on_progress(self, progress):
         # This code could be simplyfied with setattr, but it's slow
-        progress = getattr(MDAnimationTransition, self.switch_animation)(progress)
+        progress = getattr(MDAnimationTransition, self.switch_animation)(
+            progress
+        )
         progress_i = progress - 1
         progress_d = progress * 2
         # First half.

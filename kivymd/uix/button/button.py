@@ -686,7 +686,8 @@ from kivy.properties import (
     NumericProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty, DictProperty,
+    ObjectProperty,
+    DictProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
@@ -1159,9 +1160,7 @@ class MDFabButton(
             )
 
         if not self.disabled:
-            if (
-                self._state == self.state_hover and self.focus_behavior
-            ):
+            if self._state == self.state_hover and self.focus_behavior:
                 self.elevation_level = 1
                 self.shadow_softness = 0
             elif self._state == self.state_press:

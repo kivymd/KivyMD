@@ -941,7 +941,7 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
 
     _centers_pos = ListProperty()
 
-    __events__ = ("on_selector_change", )
+    __events__ = ("on_selector_change",)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1012,8 +1012,7 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
             touch.ungrab(self)
             return True
 
-    def on_selector_change(self, *args):
-        ...
+    def on_selector_change(self, *args): ...
 
     def _update_labels(self, animate=True, *args):
         """
@@ -1221,8 +1220,7 @@ class MDTimePickerInputContainer(BoxLayout):
         minute = self._minute.text.strip()
         return [hour, minute]
 
-    def on_time_input(self, *args) -> None:
-        ...
+    def on_time_input(self, *args) -> None: ...
 
     def on_minute_select(self, *args) -> None:
         pass
@@ -1245,7 +1243,7 @@ class MDTimePickerInputTextField(MDTextField):
     hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
     minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
 
-    __events__ = ("on_select", )
+    __events__ = ("on_select",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

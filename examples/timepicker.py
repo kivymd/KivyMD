@@ -114,8 +114,7 @@ class SelectedItem(MDBoxLayout):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_active")
 
-    def on_active(self, *args):
-        ...
+    def on_active(self, *args): ...
 
 
 class Example(MDApp, CommonApp):
@@ -170,8 +169,7 @@ class Example(MDApp, CommonApp):
             )
             self.time_picker.open()
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

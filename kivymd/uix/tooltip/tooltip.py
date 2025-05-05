@@ -423,8 +423,7 @@ class MDTooltip(TouchBehavior):
         self.remove_tooltip()
         # self._tooltip = None
 
-    def _on_release(self, *args):
-        ...
+    def _on_release(self, *args): ...
 
 
 class MDTooltipPlain(MDLabel, ScaleBehavior):
@@ -475,14 +474,11 @@ class MDTooltipRichActionButton(MDButton):
     # Override methods.
     # Their functionality is not needed in this class.
 
-    def _set_state_layer_color(self) -> None:
-        ...
+    def _set_state_layer_color(self) -> None: ...
 
-    def on_enter(self) -> None:
-        ...
+    def on_enter(self) -> None: ...
 
-    def on_leave(self) -> None:
-        ...
+    def on_leave(self) -> None: ...
 
 
 class MDTooltipRich(

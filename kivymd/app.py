@@ -136,7 +136,7 @@ class MDApp(App, FpsMonitoring):
     def _run_prepare(self):
         self.theme_cls.bind(
             theme_style=self.theme_cls.update_theme_colors,
-            primary_palette=self.theme_cls.set_colors
+            primary_palette=self.theme_cls.set_colors,
         )
         self.theme_cls.set_colors()
         super()._run_prepare()

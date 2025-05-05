@@ -1064,7 +1064,7 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     _tar_x = 0
     _tar_y = 0
 
-    __events__ = ("on_dismiss", )
+    __events__ = ("on_dismiss",)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1197,12 +1197,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
                 )
             elif self.position == "bottom":
                 self.pos = (
-                    (self._start_coords[0] - self.width / 2)
-                    if not self.hor_growth
-                    else (
-                        (self._start_coords[0] - self.width)
-                        if self.hor_growth == "left"
-                        else (self._start_coords[0])
+                    (
+                        (self._start_coords[0] - self.width / 2)
+                        if not self.hor_growth
+                        else (
+                            (self._start_coords[0] - self.width)
+                            if self.hor_growth == "left"
+                            else (self._start_coords[0])
+                        )
                     ),
                     self._start_coords[1]
                     - (
@@ -1213,12 +1215,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
                 )
             elif self.position == "top":
                 self.pos = (
-                    (self._start_coords[0] - self.width / 2)
-                    if not self.hor_growth
-                    else (
-                        (self._start_coords[0] - self.width)
-                        if self.hor_growth == "left"
-                        else (self._start_coords[0])
+                    (
+                        (self._start_coords[0] - self.width / 2)
+                        if not self.hor_growth
+                        else (
+                            (self._start_coords[0] - self.width)
+                            if self.hor_growth == "left"
+                            else (self._start_coords[0])
+                        )
                     ),
                     self._start_coords[1]
                     + self.caller.height / 2

@@ -71,8 +71,7 @@ class Example(MDApp, CommonApp):
         sheet.drawer_type = drawer_type
         sheet.set_state("toggle")
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

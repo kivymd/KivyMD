@@ -1808,11 +1808,9 @@ class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self._check_range, 0.1)
 
-    def generate_list_widgets_days(self) -> None:
-        ...
+    def generate_list_widgets_days(self) -> None: ...
 
-    def update_calendar(self, *args) -> None:
-        ...
+    def update_calendar(self, *args) -> None: ...
 
     def set_input_date(self, input_date: str) -> None:
         split_date = [d for d in input_date.split("/") if d]
@@ -1907,11 +1905,13 @@ class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
                 id="fffffff",
                 date_picker=self,
                 date_format=self.date_format,
-                text=self.max_date.strftime(
-                    self._date_format_strftime[self.date_format]
-                )
-                if self.max_date
-                else "",
+                text=(
+                    self.max_date.strftime(
+                        self._date_format_strftime[self.date_format]
+                    )
+                    if self.max_date
+                    else ""
+                ),
             )
             input_date_container.add_widget(field_end)
 

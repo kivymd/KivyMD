@@ -94,7 +94,7 @@ class Example(MDApp, CommonApp):
                     MDListItemSupportingText(
                         text=str(info[info_item][0]),
                     ),
-                    pos_hint={"center_x": .5, "center_y": .5},
+                    pos_hint={"center_x": 0.5, "center_y": 0.5},
                 )
             )
 

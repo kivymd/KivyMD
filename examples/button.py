@@ -286,9 +286,9 @@ class Example(MDApp, CommonApp):
                     ),
                     style=style,
                     theme_bg_color="Custom",
-                    theme_line_color="Custom"
-                    if style == "outlined"
-                    else "Primary",
+                    theme_line_color=(
+                        "Custom" if style == "outlined" else "Primary"
+                    ),
                     md_bg_color={
                         "filled": "brown",
                         "tonal": "brown",

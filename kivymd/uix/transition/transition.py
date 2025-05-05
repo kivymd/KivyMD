@@ -374,7 +374,7 @@ class MDSharedAxisTransition(MDTransitionBase):
     slide_distance = NumericProperty(dp(15))
     """
     Distance to which it slides left, right, bottom or up depending on axis.
-    
+
     :attr:`slide_distance` is a :class:`~kivy.properties.NumericProperty` and
     defaults to `dp(15)`.
     """

@@ -1281,6 +1281,22 @@ class MDTextField(
             )
             self._helper_text_label.texture_update()
 
+        def update_leading_icon_texture(*args):
+            leading_icon_rectangle = self.canvas.before.get_group(
+                "leading-icon-rectangle"
+            )[0]
+            leading_icon_rectangle.texture = self._leading_icon.texture
+            leading_icon_rectangle.size = self._leading_icon.texture_size
+            self._leading_icon.texture_update()
+
+        def update_trailing_icon_texture(*args):
+            trailing_icon_rectangle = self.canvas.before.get_group(
+                "trailing-icon-rectangle"
+            )[0]
+            trailing_icon_rectangle.texture = self._trailing_icon.texture
+            trailing_icon_rectangle.size = self._trailing_icon.texture_size
+            self._trailing_icon.texture_update()
+
         def update_hint_text_rectangle(*args):
             hint_text_rectangle = self.canvas.after.get_group(
                 "hint-text-rectangle"
@@ -1296,6 +1312,10 @@ class MDTextField(
                 a.bind(on_complete=update_hint_text_rectangle)
             elif texture is self._helper_text_label:
                 update_helper_text_texture()
+            elif texture is self._leading_icon:
+                update_leading_icon_texture()
+            elif texture is self._trailing_icon:
+                update_trailing_icon_texture()
             a.start(texture)
 
     def set_pos_hint_text(self, y: float, x: float) -> None:

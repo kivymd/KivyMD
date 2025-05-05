@@ -345,7 +345,7 @@ class MDExpansionPanelContent(
 
     def add_widget(self, widget, index=0, canvas=None):
         Clock.schedule_once(
-            lambda x: self._panel._update_original_content_height(widget, self)
+            lambda x: self._panel._update_original_content_height(widget)
         )
         return super().add_widget(widget)
 
@@ -538,5 +538,5 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
         self._original_content_height = self._content.height - dp(88)
         self._content.height = 0
 
-    def _update_original_content_height(self, widget, ddd):
+    def _update_original_content_height(self, widget):
         self._original_content_height = self._content.height

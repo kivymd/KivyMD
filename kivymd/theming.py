@@ -37,7 +37,7 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty,
+    StringProperty, ListProperty,
 )
 from kivy import platform
 from kivy.utils import get_color_from_hex, rgba, hex_colormap
@@ -637,6 +637,78 @@ class ThemeManager(EventDispatcher, DynamicColor):
     A Helper function called when colors are changed.
 
     :attr: `on_colors` defaults to `None`.
+    """
+
+    def _get_dynamic_color_names(self):
+        return [
+            attr for attr in dir(self) if attr.endswith("Color")
+        ]
+
+    dynamic_color_names = AliasProperty(_get_dynamic_color_names)
+    """
+    List of material design dynamic color palette names:
+
+        • backgroundColor
+        • disabledTextColor
+        • errorColor
+        • errorContainerColor
+        • inverseOnSurfaceColor
+        • inversePrimaryColor
+        • inverseSurfaceColor
+        • neutral_paletteKeyColorColor
+        • neutral_variant_paletteKeyColorColor
+        • onBackgroundColor
+        • onErrorColor
+        • onErrorContainerColor
+        • onPrimaryColor
+        • onPrimaryContainerColor
+        • onPrimaryFixedColor
+        • onPrimaryFixedVariantColor
+        • onSecondaryColor
+        • onSecondaryContainerColor
+        • onSecondaryFixedColor
+        • onSecondaryFixedVariantColor
+        • onSurfaceColor
+        • onSurfaceLightColor
+        • onSurfaceVariantColor
+        • onTertiaryColor
+        • onTertiaryContainerColor
+        • onTertiaryFixedColor
+        • onTertiaryFixedVariantColor
+        • outlineColor
+        • outlineVariantColor
+        • primaryColor
+        • primaryContainerColor
+        • primaryFixedColor
+        • primaryFixedDimColor
+        • primary_paletteKeyColorColor
+        • rippleColor
+        • scrimColor
+        • secondaryColor
+        • secondaryContainerColor
+        • secondaryFixedColor
+        • secondaryFixedDimColor
+        • secondary_paletteKeyColorColor
+        • shadowColor
+        • surfaceBrightColor
+        • surfaceColor
+        • surfaceContainerColor
+        • surfaceContainerHighColor
+        • surfaceContainerHighestColor
+        • surfaceContainerLowColor
+        • surfaceContainerLowestColor
+        • surfaceDimColor
+        • surfaceTintColor
+        • surfaceVariantColor
+        • tertiaryColor
+        • tertiaryContainerColor
+        • tertiaryFixedColor
+        • tertiaryFixedDimColor
+        • tertiary_paletteKeyColorColor
+        • transparentColor
+
+    :attr:`dynamic_color_names` is an :class:`~kivy.properties.AliasProperty`
+    and for internal usage only.
     """
 
     _size_current_wallpaper = NumericProperty(0)

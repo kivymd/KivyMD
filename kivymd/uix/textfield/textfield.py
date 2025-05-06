@@ -1602,7 +1602,10 @@ class MDTextField(
                 self._set_texture_max_length_color(text_color_focus=False)
             if (
                 self._helper_text_label
-                and self._helper_text_label.mode == "on_focus"
+                and self._helper_text_label.mode in ["on_focus", "on_error"]
+                and (
+                    self._helper_text_label.mode == "on_focus" or not self.error
+                )
             ):
                 Clock.schedule_once(
                     lambda x: self.set_texture_color(

@@ -809,6 +809,7 @@ class BaseButton(
     ButtonBehavior,
     ThemableBehavior,
     StateLayerBehavior,
+
 ):
     """
     Base button class.
@@ -896,6 +897,10 @@ class BaseButton(
         """
 
         self._on_release(args)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y) and not self.disabled:
+            return super().on_touch_down(touch)
 
 
 class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):

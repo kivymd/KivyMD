@@ -809,7 +809,6 @@ class BaseButton(
     ButtonBehavior,
     ThemableBehavior,
     StateLayerBehavior,
-
 ):
     """
     Base button class.
@@ -1046,10 +1045,12 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
     def on_disabled(self, instance, value) -> None:
         """Fired when the `disabled` value changes."""
 
-        if self._button_text:
-            self._button_text.disabled = value
-        if self._button_icon:
-            self._button_icon.disabled = value
+        for element in (
+            getattr(self, "_button_text", None),
+            getattr(self, "_button_icon", None),
+        ):
+            if element:
+                element.disabled = value
 
         super().on_disabled(instance, value)
 

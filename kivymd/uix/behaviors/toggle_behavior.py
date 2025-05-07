@@ -129,9 +129,10 @@ __all__ = ("MDToggleButtonBehavior",)
 
 from kivy import Logger
 from kivy.properties import BooleanProperty, ColorProperty
+from kivy.clock import Clock
 from kivy.uix.behaviors import ToggleButtonBehavior
 
-from kivymd.uix.button import MDButton, MDIconButton, MDFabButton, BaseButton
+from kivymd.uix.button import MDButton, MDIconButton, MDFabButton
 
 
 class MDToggleButtonBehavior(ToggleButtonBehavior):
@@ -159,88 +160,190 @@ class MDToggleButtonBehavior(ToggleButtonBehavior):
     and is defaults to `None`.
     """
 
-    font_color_down = ColorProperty([1, 1, 1, 1])
+    font_color_down = ColorProperty(None)
     """
     Color of the font's button in ``rgba`` format for the 'down' state.
 
     :attr:`font_color_down` is a :class:`~kivy.properties.ColorProperty`
-    and is defaults to `[1, 1, 1, 1]`.
+    and is defaults to `None`.
     """
+
+    _origin_md_bg_color = None
+    _origin_icon_color = None
+    _origin_text_color = None
 
     __is_filled = BooleanProperty(False)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        classinfo = (MDButton, MDIconButton, MDFabButton)
-        # Do the object inherited from the "supported" buttons?
-        if not issubclass(self.__class__, classinfo):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.classinfo = (MDButton, MDIconButton, MDFabButton)
+        Clock.schedule_once(self._set_custom_theme_properties)
+        Clock.schedule_once(self.set_properties, 0.1)
+
+    def set_properties(self, *args):
+        if not issubclass(self.__class__, self.classinfo):
             raise ValueError(
-                f"Class {self.__class__} must be inherited from one of the "
-                f"classes in the list {classinfo}"
+                f"{self.__class__} must inherit from one of {self.classinfo}"
             )
+
+        self._set_origin_color_properties()
+
+        color_map = self._get_color_map()
+        color_key = (
+            self.style if not isinstance(self, MDFabButton) else self.color_map
+        )
+        self.md_bg_color = self.background_normal or (
+            getattr(self, "md_bg_color", None)
+            if not isinstance(self, MDFabButton)
+            else color_map[color_key]
+        )
+        self.background_down = (
+            self.background_down or self.theme_cls.primaryColor
+        )
+        self.font_color_normal = self.font_color_normal or (
+            color_map.get(color_key, self.theme_cls.primaryColor)
+            if not isinstance(self, MDFabButton)
+            else {
+                "surface": self.theme_cls.onPrimaryContainerColor,
+                "secondary": self.theme_cls.onSecondaryContainerColor,
+                "tertiary": self.theme_cls.onTertiaryContainerColor,
+            }[self.color_map]
+        )
+        self._set_text_and_icon_colors(self.font_color_normal)
+        self.fbind("state", self._update_colors)
+
+    def _get_color_map(self):
+        """
+        Returns a dictionary mapping button styles to their corresponding
+        default colors.
+
+        The returned color map depends on the type of the button:
+        - For MDButton, returns a map based on Material Design button styles
+          (elevated, filled, tonal, outlined, text).
+        - For MDIconButton, returns a map for icon button styles
+          (standard, outlined, tonal, filled).
+        - For other cases (fallback), returns a general-purpose color map
+          based on surface-level roles (surface, secondary, tertiary).
+        """
+
+        if isinstance(self, MDButton):
+            return {
+                "elevated": self.theme_cls.primaryColor,
+                "filled": self.theme_cls.onPrimaryColor,
+                "tonal": self.theme_cls.onSecondaryContainerColor,
+                "outlined": self.theme_cls.primaryColor,
+                "text": self.theme_cls.primaryColor,
+            }
+        elif isinstance(self, MDIconButton):
+            return {
+                "standard": self.theme_cls.transparentColor,
+                "outlined": self.theme_cls.transparentColor,
+                "tonal": self.theme_cls.secondaryContainerColor,
+                "filled": self.theme_cls.primaryColor,
+            }
+        return {
+            "surface": self.theme_cls.surfaceColor,
+            "secondary": self.theme_cls.secondaryColor,
+            "tertiary": self.theme_cls.tertiaryColor,
+        }
+
+    def _set_origin_color_properties(self):
+        """
+        Store original background, icon, and text colors for later restoration.
+        """
+
+        self._origin_md_bg_color = (
+            getattr(self, "md_bg_color", None)
+            if not isinstance(self, MDFabButton)
+            else self._get_color_map()[self.color_map]
+        )
+        fallback = self.font_color_normal
+        if isinstance(self, MDFabButton):
+            self._origin_icon_color = fallback or self.icon_color
+            self._origin_text_color = fallback or self.icon_color
         else:
-            print(666, self.md_bg_color)
-            # self.theme_bg_color = "Custom"
-        if (
-            not self.background_normal
-        ):  # This means that if the value == [] or None will return True.
-            # If the object inherits from buttons with background:
-            if isinstance(self, BaseButton):
-                print(111)
-                self.__is_filled = True
-                self.background_normal = (
-                    "yellow"  # self.theme_cls.primary_color
+            if hasattr(self, "_button_icon") and self._button_icon:
+                self._origin_icon_color = (
+                    fallback or self._button_icon.icon_color
                 )
-            # If not background_normal must be the same as the inherited one.
-            else:
-                print(222)
-                self.background_normal = (
-                    self.md_bg_color[:] if self.md_bg_color else (0, 0, 0, 0)
+            if hasattr(self, "_button_text") and self._button_text:
+                self._origin_text_color = (
+                    fallback or self._button_text.text_color
                 )
-        # If no background_down is setter.
+
+    def _set_custom_theme_properties(self, *args):
+        """
+        Replace any 'Primary' theme values with 'Custom' to allow overrides.
+        """
+
+        for attr in ("theme_bg_color", "theme_icon_color"):
+            if getattr(self, attr, None) == "Primary":
+                setattr(self, attr, "Custom")
         if (
-            not self.background_down
-        ):  # This means that if the value == [] or None will return True.
-            self.background_down = (
-                self.theme_cls.primary_dark
-            )  # get the primary_color dark from theme_cls
-        if not self.font_color_normal:
-            self.font_color_normal = self.theme_cls.primary_color
-        # Alternative to bind the function to the property.
-        # self.bind(state=self._update_bg)
-        self.fbind("state", self._update_bg)
+            hasattr(self, "_button_text")
+            and self._button_text
+            and self._button_text.theme_text_color == "Primary"
+        ):
+            self._button_text.theme_text_color = "Custom"
+        if (
+            hasattr(self, "_button_icon")
+            and self._button_icon
+            and self._button_icon.theme_icon_color == "Primary"
+        ):
+            self._button_icon.theme_icon_color = "Custom"
 
-    def _update_bg(self, instance, value):
-        """Updates the color of the background."""
-
-        if self.theme_bg_color == "Primary":
-            self.theme_bg_color = "Custom"
-        if self.theme_icon_color == "Primary":
-            self.theme_icon_color = "Custom"
+    def _update_colors(self, instance, value):
+        """Update background and font/icon colors based on button state."""
 
         if value == "down":
+            self.md_bg_color = (
+                self.background_down or self.theme_cls.primaryColor
+            )
+            color = (
+                self.font_color_down or self.theme_cls.surfaceContainerHighColor
+            )
+            self._set_text_and_icon_colors(color)
             if isinstance(self, MDIconButton):
-                self.md_bg_color = self.theme_cls.primaryColor
                 self.icon_color = self.theme_cls.onPrimaryColor
-
-            # if (
-            #     self.__is_filled is False
-            # ):
-            #     self.text_color = self.font_color_down
+            if isinstance(self, MDFabButton):
+                self.icon_color = color
             if self.group:
                 self._release_group(self)
         else:
+            self.md_bg_color = (
+                self.background_normal
+                or self._origin_md_bg_color
+                or self._get_default_style_color()
+            )
             if isinstance(self, MDIconButton):
-                self.md_bg_color = self.theme_cls.surfaceContainerHighestColor
-                self.icon_color = self.theme_cls.primaryColor
+                self.icon_color = (
+                    self._origin_icon_color or self.theme_cls.primaryColor
+                )
+            self._set_text_and_icon_colors(
+                self._origin_text_color, self._origin_icon_color
+            )
 
-            # if (
-            #     self.__is_filled is False
-            # ):
-            #     self.text_color = self.font_color_normal
+    def _set_text_and_icon_colors(self, text_color=None, icon_color=None):
+        """Set text and icon colors if components exist."""
 
-        # if issubclass(self.__class__, ButtonContentsIconText):
-        #     self.icon_color = self.text_color
+        if isinstance(self, MDFabButton):
+            self.icon_color = text_color
+        else:
+            if hasattr(self, "_button_text") and self._button_text:
+                self._button_text.text_color = text_color
+            if hasattr(self, "_button_icon") and self._button_icon:
+                self._button_icon.icon_color = icon_color or text_color
+
+    def _get_default_style_color(self):
+        """Return default background color based on button style."""
+
+        return {
+            "elevated": self.theme_cls.surfaceContainerLowColor,
+            "filled": self.theme_cls.primaryColor,
+            "tonal": self.theme_cls.secondaryContainerColor,
+            "outlined": self.theme_cls.transparentColor,
+            "text": self.theme_cls.transparentColor,
+        }.get(self.style, self.theme_cls.surfaceColor)
 
 
 class MDToggleButton(MDToggleButtonBehavior):

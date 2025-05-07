@@ -1043,6 +1043,16 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
                         self.elevation_level = 1
                         self.shadow_softness = 0
 
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the `disabled` value changes."""
+
+        if self._button_text:
+            self._button_text.disabled = value
+        if self._button_icon:
+            self._button_icon.disabled = value
+
+        super().on_disabled(instance, value)
+
 
 class MDButtonText(MDLabel):
     """

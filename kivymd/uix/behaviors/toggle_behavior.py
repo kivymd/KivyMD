@@ -9,7 +9,7 @@ example:
 
 .. code-block:: python
 
-    class MyToggleButtonWidget(MDFlatButton, MDToggleButton):
+    class MyToggleButtonWidget(MDButton, MDToggleButton):
         # [...]
         pass
 
@@ -24,7 +24,7 @@ example:
 
             from kivymd.app import MDApp
             from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
-            from kivymd.uix.button import MDFlatButton
+            from kivymd.uix.button import MDButton
 
             KV = '''
             MDScreen:
@@ -35,23 +35,30 @@ example:
                     pos_hint: {"center_x": .5, "center_y": .5}
 
                     MyToggleButton:
-                        text: "Show ads"
                         group: "x"
 
-                    MyToggleButton:
-                        text: "Do not show ads"
-                        group: "x"
+                        MDButtonText:
+                            text: "Show ads"
 
                     MyToggleButton:
-                        text: "Does not matter"
                         group: "x"
+
+                        MDButtonText:
+                            text: "Do not show ads"
+
+                    MyToggleButton:
+                        group: "x"
+
+                        MDButtonIcon:
+                            icon: "pencil"
+
+                        MDButtonText:
+                            text: "Does not matter"
             '''
 
 
-            class MyToggleButton(MDFlatButton, MDToggleButton):
-                def __init__(self, *args, **kwargs):
-                    super().__init__(*args, **kwargs)
-                    self.background_down = self.theme_cls.primary_color
+            class MyToggleButton(MDButton, MDToggleButton):
+                ...
 
 
             class Test(MDApp):
@@ -70,14 +77,12 @@ example:
             from kivymd.app import MDApp
             from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
             from kivymd.uix.boxlayout import MDBoxLayout
-            from kivymd.uix.button import MDFlatButton
+            from kivymd.uix.button import MDButton, MDButtonText, MDButtonIcon
             from kivymd.uix.screen import MDScreen
 
 
-            class MyToggleButton(MDFlatButton, MDToggleButton):
-                def __init__(self, *args, **kwargs):
-                    super().__init__(*args, **kwargs)
-                    self.background_down = self.theme_cls.primary_color
+            class MyToggleButton(MDButton, MDToggleButton):
+                ...
 
 
             class Test(MDApp):
@@ -88,15 +93,24 @@ example:
                         MDScreen(
                             MDBoxLayout(
                                 MyToggleButton(
-                                    text="Show ads",
+                                    MDButtonText(
+                                        text="Show ads",
+                                    ),
+                                group="x",
+                                ),
+                                MyToggleButton(
+                                    MDButtonIcon(
+                                        icon="pencil",
+                                    ),
+                                    MDButtonText(
+                                        text="Do not show ads",
+                                    ),
                                     group="x",
                                 ),
                                 MyToggleButton(
-                                    text="Do not show ads",
-                                    group="x",
-                                ),
-                                MyToggleButton(
-                                    text="Does not matter",
+                                    MDButtonText(
+                                        text="Does not matter",
+                                    ),
                                     group="x",
                                 ),
                                 adaptive_size=True,

@@ -145,85 +145,90 @@ class HoverBehavior:
     __events__ = ("on_enter", "on_leave")
 
     def __init__(self, *args, **kwargs):
+        # Bind mouse position updates globally.
         Window.bind(mouse_pos=self.on_mouse_update)
         super().__init__(*args, **kwargs)
 
+    def is_mouse_inside_widget(self, pos):
+        """
+        Check if the mouse is within the widget boundaries in window
+        coordinates.
+        """
+
+        x, y = self.to_window(*self.pos)
+        return (
+            x <= pos[0] <= x + self.width and
+            y <= pos[1] <= y + self.height
+        )
+
     def on_mouse_update(self, *args):
-        #  If the Widget currently has no parent, do nothing.
+        """
+        Main handler for mouse movement — determines whether mouse has entered
+        or exited.
+        """
+
         if not self.get_root_window():
             return
+
         pos = args[1]
-        # Is the pointer in the same position as the widget?
-        # If not - then issue an on_exit event if needed.
-        if not self.collide_point(
-            *(
-                self.to_widget(*pos)
-                if not isinstance(self, RelativeLayout)
-                else (pos[0], pos[1])
-            )
-        ):
-            self.hovering = False
-            self.enter_point = None
-            if self.hover_visible:
-                self.hover_visible = False
-                self.dispatch("on_leave")
+
+        # Check if mouse is within widget.
+        if not self.is_mouse_inside_widget(pos):
+            # If previously hovering — fire leave event.
+            if self.hovering:
+                self.hovering = False
+                self.enter_point = None
+                if self.hover_visible:
+                    self.hover_visible = False
+                    self.dispatch("on_leave")
             return
 
-        # The pointer is in the same position as the widget.
+        # Already hovering — nothing new to do.
         if self.hovering:
-            # Nothing to do here. Not - this does not handle the case where
-            # a popup comes over an existing hover event.
-            # This seems reasonable.
             return
 
-        # Otherwise - set the hovering attribute
+        # Mouse just entered the widget area.
         self.hovering = True
-
-        # We need to traverse the tree to see if the Widget is visible.
-        # This is a two stage process - first go up the tree to the root.
-        # Window. At each stage - check that the Widget is actually visible.
-        # Second - at the root Window check that there is not another branch
-        # covering the Widget.
         self.hover_visible = True
 
+        # Optional: Check if the widget is actually visible in hierarchy.
         if self.detect_visible:
-            widget: Widget = self
+            widget = self
             while True:
-                # Walk up the Widget tree from the target Widget.
                 parent = widget.parent
+                if not parent:
+                    break
                 try:
-                    # See if the mouse point collides with the parent
-                    # using both local and global coordinates to cover absolute
-                    # and relative layouts.
-                    pinside = parent.collide_point(
-                        *parent.to_widget(*pos)
-                    ) or parent.collide_point(*pos)
+                    # Convert parent position to window coordinates and check
+                    # overlap.
+                    parent_x, parent_y = parent.to_window(*parent.pos)
+                    if not (
+                        parent_x <= pos[0] <= parent_x + parent.width and
+                        parent_y <= pos[1] <= parent_y + parent.height
+                    ):
+                        self.hover_visible = False
+                        break
                 except Exception:
-                    # The collide_point will error when you reach the root
-                    # Window.
                     break
-                if not pinside:
-                    self.hover_visible = False
-                    break
-                # Iterate upwards.
                 widget = parent
 
-            #  parent = root window
-            #  widget = first Widget on the current branch
-            children = parent.children
-            for child in children:
-                # For each top level widget - check if is current branch.
-                # If it is - then break.
-                # If not then - since we start at 0 - this widget is visible.
-                # Check to see if it should take the hover.
-                if child == widget:
-                    # This means that the current widget is visible.
-                    break
-                if child.collide_point(*pos):
-                    # This means that the current widget is covered by a modal
-                    # or popup.
-                    self.hover_visible = False
-                    break
+            # Additionally, check if widget is covered by a sibling
+            # (e.g., modal).
+            parent = widget.parent
+            if parent:
+                for child in parent.children:
+                    if child == widget:
+                        break
+                    if isinstance(child, Widget):
+                        cx, cy = child.to_window(*child.pos)
+                        if (
+                            cx <= pos[0] <= cx + child.width and
+                            cy <= pos[1] <= cy + child.height
+                        ):
+                            self.hover_visible = False
+                            break
+
+        # Fire enter event if visible.
         if self.hover_visible:
             self.enter_point = pos
             self.dispatch("on_enter")

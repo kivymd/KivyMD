@@ -114,7 +114,7 @@
                 self.x + \
                 ( \
                 ( \
-                0 if self.mode != "outlined" else dp(12) \
+                dp(12) if self.mode != "outlined" else dp(12) \
                 ) \
                 if self.mode != "filled" else \
                 ( \

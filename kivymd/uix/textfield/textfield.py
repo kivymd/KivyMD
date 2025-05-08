@@ -1376,7 +1376,7 @@ class MDTextField(
         return (
             self.x
             + (
-                0
+                dp(12)
                 if self.mode != "outlined"
                 else (
                     dp(12)

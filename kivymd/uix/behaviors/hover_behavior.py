@@ -93,7 +93,7 @@ __all__ = ("HoverBehavior",)
 
 from kivy.core.window import Window
 from kivy.properties import BooleanProperty, ObjectProperty
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.logger import Logger
 from kivy.uix.widget import Widget
 
 
@@ -134,9 +134,12 @@ class HoverBehavior:
     and defaults to `None`.
     """
 
-    detect_visible = BooleanProperty(True)
+    detect_visible = BooleanProperty(True, deprecated=True)
     """
     Should this widget perform the visibility check?
+
+    .. deprecated:: 2.0.0
+        Use :attr:`allow_hover` instead.
 
     :attr:`detect_visible` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to  `True`.
@@ -171,6 +174,14 @@ class HoverBehavior:
             y <= pos[1] <= y + self.height
         )
 
+    def on_detect_visible(self, instance, value):
+        Logger.warning(
+            "KivyMD: "
+            "The `detect_visible` attribute is deprecated. "
+            "Use the `allow_hover` attribute instead."
+        )
+        self.allow_hover = value
+
     def on_mouse_update(self, *args):
         """
         Main handler for mouse movement — determines whether mouse has entered
@@ -201,8 +212,8 @@ class HoverBehavior:
         self.hovering = True
         self.hover_visible = True
 
-        # Optional: Check if the widget is actually visible in hierarchy.
-        if self.detect_visible:
+        # Optional: check if the widget is actually visible in hierarchy.
+        if self.allow_hover:
             widget = self
             while True:
                 parent = widget.parent

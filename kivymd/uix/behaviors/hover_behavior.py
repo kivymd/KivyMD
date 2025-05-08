@@ -142,6 +142,16 @@ class HoverBehavior:
     and defaults to  `True`.
     """
 
+    allow_hover = BooleanProperty(True)
+    """
+    Whether to use hover behavior.
+
+    .. versionadded:: 2.0.0
+
+    :attr:`allow_hover` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to  `True`.
+    """
+
     __events__ = ("on_enter", "on_leave")
 
     def __init__(self, *args, **kwargs):
@@ -167,7 +177,7 @@ class HoverBehavior:
         or exited.
         """
 
-        if not self.get_root_window():
+        if not self.allow_hover or not self.get_root_window():
             return
 
         pos = args[1]

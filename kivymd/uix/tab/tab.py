@@ -649,6 +649,16 @@ class MDTabsCarousel(Carousel):
                 self._offset += touch.dy
         return True
 
+    def add_widget(self, widget, *args, **kwargs):
+        super().add_widget(widget, *args, **kwargs)
+        if hasattr(self, "_tabs") and self._tabs:
+            index = len(self.slides) - 1
+            tabs_items = self._tabs.ids.container.children[::-1]
+            if index < len(tabs_items):
+                tab_item = tabs_items[index]
+                tab_item._tab_content = widget
+                widget.tab_item = tab_item
+
 
 class MDTabsScrollView(BackgroundColorBehavior, ScrollView):
     """
@@ -948,7 +958,6 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self._check_panel_height)
-        Clock.schedule_once(self._set_slides_attributes)
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDTabsCarousel):
@@ -965,6 +974,7 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
             widget._tabs = self
             widget.bind(on_release=self.set_active_item)
             self.ids.container.add_widget(widget)
+            Clock.schedule_once(lambda x: self.recalculate_tab_widths(), 0)
         else:
             return super().add_widget(widget)
 
@@ -1242,6 +1252,26 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
                 )
             )
 
+    def recalculate_tab_widths(self) -> None:
+        """
+        Recalculates and updates the width of each tab in the tab bar.
+
+        This method ensures that all tabs are evenly distributed across the
+        available horizontal space when `allow_stretch` is enabled. It is
+        automatically called after a new tab is added.
+
+        If no tabs are present, the method exits without making changes.
+        """
+
+        number_tabs = len(self.ids.container.children)
+        if number_tabs == 0:
+            return
+
+        width = self.width
+        if self.allow_stretch:
+            for tab in self.ids.container.children:
+                tab.width = width / number_tabs
+
     def _switch_tab(
         self, instance: MDTabsItem = None, text: str = "", icon: str = ""
     ):
@@ -1287,15 +1317,6 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
             switch_by("text", text)
         elif icon:
             switch_by("icon", icon)
-
-    def _set_slides_attributes(self, *args):
-        if self._tabs_carousel:
-            tabs_item_list = self.ids.container.children.copy()
-            tabs_item_list.reverse()
-
-            for i, tab_item in enumerate(tabs_item_list):
-                setattr(tab_item, "_tab_content", self._tabs_carousel.slides[i])
-                setattr(self._tabs_carousel.slides[i], "tab_item", tab_item)
 
     def _get_tab_item_text_icon_object(
         self, get_type="text"

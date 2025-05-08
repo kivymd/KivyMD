@@ -901,6 +901,15 @@ class BaseButton(
         if self.collide_point(touch.x, touch.y) and not self.disabled:
             return super().on_touch_down(touch)
 
+    def finish_ripple(self):
+        def reset_state(*args):
+            self.dispatch("on_leave")
+            self.hovering = False
+            self.hover_visible = False
+
+        super().finish_ripple()
+        Clock.schedule_once(reset_state, 0.2)
+
 
 class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
     """

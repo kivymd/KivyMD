@@ -10,23 +10,66 @@ with some widget properties. For example:
 AnchorLayout
 ------------
 
-.. code-block:: kv
+.. tabs::
 
-    AnchorLayout:
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    .. tab:: KV
+
+        .. code-block:: kv
+
+            AnchorLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.anchorlayout import AnchorLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = AnchorLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDAnchorLayout
 --------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDAnchorLayout:
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDAnchorLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.anchorlayout import MDAnchorLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDAnchorLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 """
 
 __all__ = ("MDAnchorLayout",)

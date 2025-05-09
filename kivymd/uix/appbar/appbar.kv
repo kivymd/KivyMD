@@ -1,13 +1,13 @@
 <MDTopAppBarLeadingButtonContainer>
     size_hint_x: None
     width: self.minimum_width
-    padding: "8dp", 0, "16dp", 0
+    padding: "8dp", 0, 0, 0
 
 
 <MDTopAppBarTrailingButtonContainer>
     size_hint_x: None
     width: self.minimum_width
-    padding: "16dp", 0, "16dp", 0
+    padding: 0, 0, "8dp", 0
     spacing: "4dp"
 
 
@@ -20,13 +20,10 @@
 
 
 <MDTopAppBarTitle>
-    padding:
-        [
-        self._appbar._left_padding if self._appbar else 0,
-        0,
-        self._appbar._right_padding if self._appbar else 0,
-        0,
-        ]
+    text_size: self.size
+    halign: "left"
+    valign: "center"
+    padding: 0, "5dp", 0, 0
     font_style:
         { \
         "small": "Title", \
@@ -39,20 +36,8 @@
         "medium": "small", \
         "large": "medium", \
         }[self._appbar.type if self._appbar else "large"]
-    adaptive_width:
-        ( \
-        True \
-        if self._appbar.type == "small" else \
-        False \
-        ) \
-        if self._appbar else True
-    size_hint_x:
-        ( \
-        None \
-        if self._appbar.type == "small" else \
-        1 \
-        ) \
-        if self._appbar else None
+    adaptive_width: True
+    size_hint_x: 1
 
 
 <MDTopAppBar>
@@ -82,9 +67,17 @@
     BoxLayout:
         id: root_box
 
+        BoxLayout:
+            id: text_box
+            padding: "16dp", 0, "16dp", 0
+
     BoxLayout:
         id: title_box
         padding: "16dp", 0, "16dp", 0
+        size_hint:
+            (0, 0) \
+            if self.parent.type == "small" else \
+            (1, 1)
 
 
 <MDFabBottomAppBarButton>

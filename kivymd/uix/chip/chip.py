@@ -322,6 +322,7 @@ Example of filtering
                             text=tag,
                         ),
                         type="filter",
+                        selected_color="green",
                         theme_bg_color="Custom",
                         md_bg_color="#303A29",
                     )
@@ -433,6 +434,7 @@ Tap a chip to select it. Multiple chips can be selected or unselected:
                             text=tag,
                         ),
                         type="filter",
+                        selected_color="green",
                         theme_bg_color="Custom",
                         md_bg_color="#303A29",
                         active=True,
@@ -513,6 +515,7 @@ menus:
                         text=tag,
                     ),
                     type="filter",
+                    selected_color="green",
                     theme_bg_color="Custom",
                     md_bg_color="#303A29",
 

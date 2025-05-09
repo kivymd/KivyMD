@@ -23,9 +23,6 @@ has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
 the material properties of your application.
 """
 
-import os.path
-from timeit import default_timer
-
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.core.window import Window
@@ -37,7 +34,7 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty, ListProperty,
+    StringProperty
 )
 from kivy import platform
 from kivy.utils import get_color_from_hex, rgba, hex_colormap

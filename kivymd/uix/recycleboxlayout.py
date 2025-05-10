@@ -8,27 +8,66 @@ Simplifies working with some widget properties. For example:
 RecycleBoxLayout
 ----------------
 
-.. code-block:: kv
+.. tabs::
 
-    RecycleBoxLayout:
-        size_hint_y: None
-        height: self.minimum_height
+    .. tab:: KV
 
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        .. code-block:: kv
+
+            RecycleBoxLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.recycleboxlayout import RecycleBoxLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = RecycleBoxLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDRecycleBoxLayout
 ------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDRecycleBoxLayout:
-        adaptive_height: True
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDRecycleBoxLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDRecycleBoxLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 
 Available options are:
 ----------------------

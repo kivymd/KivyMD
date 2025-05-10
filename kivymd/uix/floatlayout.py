@@ -8,25 +8,66 @@ with some widget properties. For example:
 FloatLayout
 -----------
 
-.. code-block:: kv
+.. tabs::
 
-    FloatLayout:
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
-                radius: [25, 0, 0, 0]
+    .. tab:: KV
+
+        .. code-block:: kv
+
+            FloatLayout:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.floatlayout import FloatLayout
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = FloatLayout()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDFloatLayout
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDFloatLayout:
-        radius: [25, 0, 0, 0]
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDFloatLayout:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDFloatLayout(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 
 .. Warning:: For a :class:`~kivy.uix.floatlayout.FloatLayout`, the
     ``minimum_size`` attributes are always 0, so you cannot use

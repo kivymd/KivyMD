@@ -11,24 +11,66 @@ simplifies working with some widget properties. For example:
 ScrollView
 ----------
 
-.. code-block:: kv
+.. tabs::
 
-    ScrollView:
+    .. tab:: KV
 
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            Rectangle:
-                pos: self.pos
-                size: self.size
+        .. code-block:: kv
+
+            ScrollView:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.scrollview import ScrollView
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = ScrollView()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDScrollView
 ------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDScrollView:
-        md_bg_color: app.theme_cls.primaryColor
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDScrollView:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.scrollview import MDScrollView
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDScrollView(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
 
 The stretching effect
 ---------------------
@@ -163,6 +205,8 @@ class StretchOverScrollStencil(ScrollEffect):
     Stretches the view on overscroll and absorbs
     velocity at start and end to convert to stretch.
 
+    .. versionadded:: 2.0.0
+
     .. note:: This effect only works with
         :class:`kivymd.uix.scrollview.MDScrollView`.
 
@@ -190,9 +234,6 @@ class StretchOverScrollStencil(ScrollEffect):
 
     scale_axis = "y"  # axis of effect
     last_touch_pos = None  # used to calculate distance
-
-    def clamp(self, value, min_val=0, max_val=0):
-        return min(max(value, min_val), max_val)
 
     def __init__(self, *arg, **kwargs):
         super().__init__(*arg, **kwargs)

@@ -125,6 +125,8 @@ Equivalent
     size: self.minimum_size
 """
 
+__all__ = ("MDRecycleGridLayout",)
+
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 
 from kivymd.theming import ThemableBehavior

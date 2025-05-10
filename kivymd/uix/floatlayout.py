@@ -72,7 +72,64 @@ MDFloatLayout
 .. Warning:: For a :class:`~kivy.uix.floatlayout.FloatLayout`, the
     ``minimum_size`` attributes are always 0, so you cannot use
     ``adaptive_size`` and related options.
+
+Available options are:
+----------------------
+
+- adaptive_height_
+- adaptive_width_
+- adaptive_size_
+
+.. adaptive_height:
+
+adaptive_height
+---------------
+
+.. code-block:: kv
+
+    adaptive_height: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_y: None
+    height: self.minimum_height
+
+.. adaptive_width:
+
+adaptive_width
+--------------
+
+.. code-block:: kv
+
+    adaptive_width: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_x: None
+    height: self.minimum_width
+
+.. adaptive_size:
+
+adaptive_size
+-------------
+
+.. code-block:: kv
+
+    adaptive_size: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint: None, None
+    size: self.minimum_size
 """
+
+__all__ = ("MDFloatLayout",)
 
 from kivy.uix.floatlayout import FloatLayout
 

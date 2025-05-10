@@ -125,6 +125,8 @@ Equivalent
     size: self.minimum_size
 """
 
+__all__ = ("MDGridLayout",)
+
 from kivy.uix.gridlayout import GridLayout
 
 from kivymd.theming import ThemableBehavior

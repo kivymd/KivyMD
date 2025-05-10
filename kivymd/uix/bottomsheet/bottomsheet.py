@@ -295,6 +295,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.navigationdrawer import MDNavigationDrawer
@@ -337,14 +338,15 @@ class MDBottomSheetDragHandleTitle(MDLabel):
     """
 
 
-class MDBottomSheetDragHandle(BoxLayout):
+class MDBottomSheetDragHandle(DeclarativeBehavior, BoxLayout):
     """
     Implements a container that can place the header of the bottom sheet
     and the close button. Also implements the event of dragging the
     bottom sheet on the parent screen.
 
     For more information, see in the
-    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
 
     .. versionadded:: 1.2.0
     """

@@ -45,6 +45,8 @@ RelativeLayout
 MDRelativeLayout
 ----------------
 
+.. tabs::
+
     .. tab:: Imperative python style with KV
 
         .. code-block:: kv

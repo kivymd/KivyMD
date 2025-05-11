@@ -239,6 +239,9 @@ class StretchOverScrollStencil(ScrollEffect):
         super().__init__(*arg, **kwargs)
         self.friction = self.scroll_friction
 
+    def clamp(self, value, min_val=0, max_val=0):
+        return min(max(value, min_val), max_val)
+
     def is_top_or_bottom(self):
         return getattr(self.scroll_view, "scroll_" + self.scale_axis) in [1, 0]
 

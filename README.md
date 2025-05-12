@@ -284,7 +284,7 @@ and get your logo on our Readme with a link to your website.
 
 | Peter Šurda | Route4Me Route Planner |
 :-------------------------:|:-------------------------:
-<a href="https://opencollective.com/peter-surda"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1-1.png" title="Peter Šurda"></a> |  <a href="https://www.youtube.com/watch?v=P-ylDDm4TJM"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1-2.png" title="Route4Me Route Planner"></a>
+<a href="https://opencollective.com/peter-surda"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1-1.png" title="Peter Šurda"></a> |  <a href="https://opencollective.com/route4me"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1-2.png" title="Route4Me Route Planner"></a>
 <!-- FIXME: sponsors are not displayed -->
 
 <a href="https://route4me.com" target="_blank" style="display: inline-block; text-align: center;">

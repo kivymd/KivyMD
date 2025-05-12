@@ -1,10 +1,9 @@
 from kivy.lang import Builder
 from kivy.properties import VariableListProperty
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.imagelist import MDSmartTile
-
-from examples.common_app import CommonApp
 
 KV = """
 <SmartTile>

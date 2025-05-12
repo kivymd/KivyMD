@@ -87,15 +87,16 @@ Adds new transitions to the :class:`~kivy.animation.AnimationTransition` class:
                 ).start(widget)
             self._inverse = not self._inverse
             Clock.schedule_once(self.run_animation, 3.1)
-    
+
     MotionApp().run()
 
-.. image:: https://github.com/kivymd/KivyMD/assets/68729523/21c847b0-284a-4796-b704-e4a2531fbb1b 
+.. image:: https://github.com/kivymd/KivyMD/assets/68729523/21c847b0-284a-4796-b704-e4a2531fbb1b
     :align: center
 """
 
 import math
 import sys
+
 import kivy.animation
 
 float_epsilon = 8.3446500e-7

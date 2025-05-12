@@ -682,6 +682,7 @@ __all__ = (
 
 import os
 
+import asynckivy
 from kivy import Logger
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -690,12 +691,12 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -705,18 +706,16 @@ from kivy.uix.widget import Widget
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RotateBehavior,
     ScaleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFabButton, MDIconButton
 from kivymd.uix.controllers import WindowController
 from kivymd.uix.label import MDLabel
 from kivymd.utils.set_bars_colors import set_bars_colors
-
-import asynckivy
 
 with open(
     os.path.join(uix_path, "appbar", "appbar.kv"), encoding="utf-8"
@@ -735,7 +734,7 @@ class BaseTopAppBarButtonContainer(DeclarativeBehavior, BoxLayout):
         return super().add_widget(widget)
 
     def _check_icon_color(self, widget):
-        if widget.theme_icon_color == "Primary" and widget.icon_color == None:
+        if widget.theme_icon_color == "Primary" and widget.icon_color is None:
             widget.theme_icon_color = "Custom"
             widget.icon_color = widget.theme_cls.onSurfaceColor
 
@@ -1014,7 +1013,6 @@ class MDTopAppBar(
             and self._leading_button_container
         ):
             if self.type == "small":
-
                 self._right_padding = (
                     self.width
                     - (

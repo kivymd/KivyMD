@@ -1,17 +1,16 @@
 import time
 
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import BooleanProperty, StringProperty
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.pickers import (
+    MDTimePickerDialHorizontal,
     MDTimePickerDialVertical,
     MDTimePickerInput,
-    MDTimePickerDialHorizontal,
 )
-
-from examples.common_app import CommonApp
 
 KV = """
 <SelectedItem>

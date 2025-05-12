@@ -1,8 +1,8 @@
-from .tooltip import (
+from .tooltip import (  # NOQA F401
     MDTooltip,
     MDTooltipPlain,
     MDTooltipRich,
-    MDTooltipRichSubhead,
     MDTooltipRichActionButton,
+    MDTooltipRichSubhead,
     MDTooltipRichSupportingText,
-)  # NOQA F401
+)

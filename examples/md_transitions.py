@@ -1,9 +1,9 @@
-from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.uix.boxlayout import BoxLayout
 from kivy.clock import Clock
+from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ListProperty
+from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.app import MDApp
 
@@ -44,7 +44,6 @@ MDGridLayout:
 
 
 class MotionApp(MDApp):
-
     def build(self):
         return Builder.load_string(UI)
 

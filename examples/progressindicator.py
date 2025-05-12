@@ -1,12 +1,11 @@
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.properties import StringProperty, BooleanProperty
-
-from kivymd.app import MDApp
-from kivymd.uix.boxlayout import MDBoxLayout
+from kivy.properties import BooleanProperty, StringProperty
 
 from examples.common_app import CommonApp
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
 
 KV = """
 <SelectedItem>
@@ -64,7 +63,7 @@ MDScreen:
         MDButton:
             pos_hint: {'center_x': .5}
             on_release: app.run_stop_demo()
-    
+
             MDButtonText:
                 id: button_text
                 text: "Run demo"

@@ -683,26 +683,26 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     ColorProperty,
+    DictProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty,
-    DictProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.label import MDIcon, MDLabel
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionExtendedFabButtonBehavior
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "button", "button.kv"), encoding="utf-8"

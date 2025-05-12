@@ -529,12 +529,12 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager
 
+from kivymd import uix_path
 from kivymd.uix.appbar import MDTopAppBar
 from kivymd.uix.behaviors import DeclarativeBehavior
-from kivymd.uix.label import MDLabel
-from kivymd import uix_path
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDLabel
 from kivymd.uix.list import (
     MDListItem,
     MDListItemLeadingIcon,

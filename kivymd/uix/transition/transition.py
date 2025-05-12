@@ -38,11 +38,13 @@ __all__ = (
 
 from kivy import Logger
 from kivy.animation import Animation, AnimationTransition
+from kivy.graphics import PopMatrix, PushMatrix, Scale
+from kivy.metrics import dp
 from kivy.properties import (
-    DictProperty,
-    OptionProperty,
-    NumericProperty,
     BooleanProperty,
+    DictProperty,
+    NumericProperty,
+    OptionProperty,
 )
 from kivy.uix.screenmanager import (
     ScreenManagerException,
@@ -50,13 +52,10 @@ from kivy.uix.screenmanager import (
     SwapTransition,
     TransitionBase,
 )
-from kivy.graphics import PopMatrix, PushMatrix, Scale
-from kivy.animation import Animation, AnimationTransition
-from kivy.metrics import dp
 
+from kivymd.animation import MDAnimationTransition
 from kivymd.uix.hero import MDHeroFrom, MDHeroTo
 from kivymd.uix.screenmanager import MDScreenManager
-from kivymd.animation import MDAnimationTransition
 
 
 class MDTransitionBase(TransitionBase):
@@ -318,9 +317,9 @@ class MDSharedAxisTransition(MDTransitionBase):
     """
 
     transition_axis = OptionProperty("x", options=["x", "y", "z"])
-    """ 
+    """
     Axis of the transition. Available values "x", "y", and "z".
-    
+
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/transition_axis.gif
         :align: center
 
@@ -338,15 +337,15 @@ class MDSharedAxisTransition(MDTransitionBase):
 
         * - Name
           - value
-        * - small_1 
+        * - small_1
           - 0.075
-        * - small_2 
+        * - small_2
           - 0.15
         * - medium_1
           - 0.2
         * - medium_2
           - 0.25
-        * - large_1 
+        * - large_1
           - 0.3
         * - large_2
           - 0.35
@@ -364,7 +363,7 @@ class MDSharedAxisTransition(MDTransitionBase):
             "easing_linear",
         ],
     )
-    """ 
+    """
     Custom material design animation transition.
 
     :attr:`switch_animation` is a :class:`~kivy.properties.OptionProperty` and

@@ -260,7 +260,7 @@ from kivy.uix.textinput import TextInput
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior, ThemeManager
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.label import MDIcon, MDLabel
 
@@ -521,7 +521,7 @@ class BaseTextFieldLabel(MDLabel):
 
         MDTextField:
             mode: "filled"
-    
+
             MDTextFieldHintText:
                 text: "Hint text color normal"
                 text_color_normal: "brown"
@@ -716,12 +716,12 @@ class BaseTextFieldIcon(MDIcon):
 
         MDTextField:
             mode: "filled"
-    
+
             MDTextFieldLeadingIcon:
                 icon: "phone"
                 theme_icon_color: "Custom"
                 icon_color_normal: "lightgreen"
-    
+
             MDTextFieldHintText:
                 text: "Leading icon color normal"
 
@@ -748,12 +748,12 @@ class BaseTextFieldIcon(MDIcon):
 
         MDTextField:
             mode: "filled"
-    
+
             MDTextFieldLeadingIcon:
                 icon: "phone"
                 theme_icon_color: "Custom"
                 icon_color_focus: "lightgreen"
-    
+
             MDTextFieldHintText:
                 text: "Leading icon color focus"
 
@@ -958,7 +958,7 @@ class MDTextField(
             mode: "filled"
             theme_line_color: "Custom"
             line_color_normal: "green"
-    
+
             MDTextFieldHelperText:
                 text: "Line color normal"
                 mode: "persistent"
@@ -980,7 +980,7 @@ class MDTextField(
             mode: "filled"
             theme_line_color: "Custom"
             line_color_focus: "green"
-    
+
             MDTextFieldHelperText:
                 text: "Line color focus"
                 mode: "persistent"
@@ -1003,7 +1003,7 @@ class MDTextField(
             mode: "filled"
             theme_bg_color: "Custom"
             fill_color_normal: 0, 1, 0, .2
-    
+
             MDTextFieldHelperText:
                 text: "Fill color normal"
                 mode: "persistent"
@@ -1026,7 +1026,7 @@ class MDTextField(
             mode: "filled"
             theme_bg_color: "Custom"
             fill_color_focus: 0, 1, 0, .2
-    
+
             MDTextFieldHelperText:
                 text: "Fill color focus"
                 mode: "persistent"
@@ -1050,7 +1050,7 @@ class MDTextField(
             mode: "filled"
             max_height: "200dp"
             multiline: True
-    
+
             MDTextFieldHelperText:
                 text: "multiline=True"
                 mode: "persistent"
@@ -1087,10 +1087,10 @@ class MDTextField(
         MDTextField:
             mode: "filled"
             validator: "email"
-    
+
             MDTextFieldHintText:
                 text: "Email"
-    
+
             MDTextFieldHelperText:
                 text: "user@gmail.com"
                 mode: "persistent"
@@ -1993,6 +1993,7 @@ class MDTextField(
             return has_error
         if (
             self._max_length_label
+            and self._max_length_label.max_text_length is not None
             and len(self.text) > self._max_length_label.max_text_length
         ):
             has_error = True

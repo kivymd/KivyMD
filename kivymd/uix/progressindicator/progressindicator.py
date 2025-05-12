@@ -195,9 +195,9 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
-    VariableListProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.widget import Widget

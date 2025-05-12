@@ -390,14 +390,14 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.label import MDLabel, MDIcon
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd import uix_path
 from kivymd.uix.behaviors import (
-    DeclarativeBehavior,
     CommonElevationBehavior,
+    DeclarativeBehavior,
     RectangularRippleBehavior,
 )
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.utils.set_bars_colors import set_bars_colors
 
 with open(

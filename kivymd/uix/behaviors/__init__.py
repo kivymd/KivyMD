@@ -10,12 +10,12 @@ from .backgroundcolor_behavior import BackgroundColorBehavior
 # flake8: NOQA
 from .declarative_behavior import DeclarativeBehavior
 from .elevation import CommonElevationBehavior
+from .magic_behavior import MagicBehavior
 from .motion_behavior import (
     MotionDialogBehavior,
-    MotionShackBehavior,
     MotionDropDownMenuBehavior,
+    MotionShackBehavior,
 )
-from .magic_behavior import MagicBehavior
 from .ripple_behavior import CircularRippleBehavior, RectangularRippleBehavior
 from .rotate_behavior import RotateBehavior
 from .scale_behavior import ScaleBehavior

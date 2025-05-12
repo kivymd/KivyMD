@@ -4,12 +4,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.behaviors import ButtonBehavior
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import RotateBehavior
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.list import MDListItemTrailingIcon
-
-from examples.common_app import CommonApp
 
 KV = """
 <ExpansionPanelItem>

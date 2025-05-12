@@ -1,12 +1,11 @@
-from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.boxlayout import MDBoxLayout
 
+from examples.common_app import KV, CommonApp
 from kivymd.app import MDApp
-
 from kivymd.dynamic_color import DynamicColor
-from examples.common_app import CommonApp, KV
+from kivymd.uix.boxlayout import MDBoxLayout
 
 Builder.load_string(
     """
@@ -54,7 +53,6 @@ class DynamicColorInfo(BoxLayout):
 
 
 class Example(MDApp, CommonApp):
-
     def build(self):
         self.theme_cls.dynamic_color = True
         self.theme_cls.path_to_wallpaper = "path_to_some_image.png"

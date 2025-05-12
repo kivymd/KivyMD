@@ -27,7 +27,8 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import StringProperty, NumericProperty, ObjectProperty
+from kivy.properties import NumericProperty, ObjectProperty, StringProperty
+
 from kivymd.uix.behaviors.scale_behavior import ScaleBehavior
 
 

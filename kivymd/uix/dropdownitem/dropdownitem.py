@@ -128,14 +128,14 @@ import os
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ObjectProperty, ListProperty
+from kivy.properties import ListProperty, ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.uix.label import MDLabel
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.label import MDLabel
 
 with open(
     os.path.join(uix_path, "dropdownitem", "dropdownitem.kv"), encoding="utf-8"

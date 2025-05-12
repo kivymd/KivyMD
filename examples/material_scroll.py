@@ -1,23 +1,21 @@
 import os
 import sys
 
-from kivy.core.window import Window
 from kivy import __version__ as kv__version__
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
-
-from kivymd.app import MDApp
-from kivymd import __version__
-from kivymd.uix.list import (
-    MDListItem,
-    MDListItemHeadlineText,
-    MDListItemSupportingText,
-    MDListItemLeadingIcon,
-)
-
 from materialyoucolor import __version__ as mc__version__
 
 from examples.common_app import CommonApp
+from kivymd import __version__
+from kivymd.app import MDApp
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemHeadlineText,
+    MDListItemLeadingIcon,
+    MDListItemSupportingText,
+)
 
 MAIN_KV = """
 MDScreen:
@@ -32,7 +30,7 @@ MDScreen:
             adaptive_height: True
 
             MDBoxLayout:
-                adaptive_height: True 
+                adaptive_height: True
 
                 MDLabel:
                     theme_font_size: "Custom"

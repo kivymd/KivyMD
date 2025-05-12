@@ -133,7 +133,7 @@ from kivy.uix.recycleview import RecycleView
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 
 
 class MDRecycleView(

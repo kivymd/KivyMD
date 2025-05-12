@@ -696,7 +696,6 @@ import os
 
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -705,13 +704,14 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    VariableListProperty,
     StringProperty,
+    VariableListProperty,
 )
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.recycleview import RecycleView
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import StencilBehavior, RectangularRippleBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior, StencilBehavior
 from kivymd.uix.behaviors.motion_behavior import MotionDropDownMenuBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard

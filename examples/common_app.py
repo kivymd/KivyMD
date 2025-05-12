@@ -1,6 +1,6 @@
 from kivy.utils import hex_colormap
-
 from materialyoucolor.utils.platform_utils import SCHEMES
+
 from kivymd.uix.menu import MDDropdownMenu
 
 KV = """
@@ -16,28 +16,28 @@ MDScreen:
         MDIconButton:
             on_release: app.open_menu(self)
             icon: "menu"
-    
+
         ScrollView:
-    
+
             MDBoxLayout:
                 orientation: "vertical"
                 padding: "32dp", 0, "32dp", "32dp"
                 spacing: "24dp"
                 adaptive_height: True
-        
+
                 MDLabel:
                     adaptive_height: True
                     text: "Standard widget"
-        
+
                 MDBoxLayout:
                     id: widget_box
                     adaptive_height: True
                     spacing: "24dp"
-        
+
                 Widget:
                     size_hint_y: None
                     height: "12dp"
-        
+
                 MDLabel:
                     adaptive_height: True
                     text: "Custom widget"

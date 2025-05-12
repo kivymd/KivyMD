@@ -33,29 +33,62 @@ They can also be used to imply nested parent/child relationships.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/divider-horizontal-desc.png
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDDivider:
-            size_hint_x: .5
-            pos_hint: {'center_x': .5, 'center_y': .5}
-    '''
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDDivider:
+                    size_hint_x: .5
+                    theme_divider_color: "Custom"
+                    color: self.theme_cls.onBackgroundColor
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDDivider(
+                                size_hint_x=0.5,
+                                pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                                theme_divider_color="Custom",
+                                color=self.theme_cls.onBackgroundColor,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/divider-horizontal.png
     :align: center
@@ -71,11 +104,24 @@ separating paragraph text from video or imagery media.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/divider-vertical-desc.png
     :align: center
 
-.. code-block:: kv
+.. tabs::
 
-    MDDivider:
-        size_hint_y: .5
-        orientation: "vertical"
+    .. tab:: Declarative style with KV
+
+        .. code-block:: kv
+
+            MDDivider:
+                size_hint_y: .5
+                orientation: "vertical"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDDivider(
+                orientation="vertical",
+                size_hint_y=0.5,
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/divider-vertical.png
     :align: center

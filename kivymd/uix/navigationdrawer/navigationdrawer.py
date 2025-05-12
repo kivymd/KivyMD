@@ -1114,10 +1114,10 @@ class MDNavigationDrawer(MDCard):
     and defaults to `2`.
     """
 
+    __events__ = ("on_open", "on_close")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_close")
         self.bind(
             open_progress=self.update_status,
             status=self.update_status,

@@ -897,6 +897,19 @@ class BaseButton(
 
         self._on_release(args)
 
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y) and not self.disabled:
+            return super().on_touch_down(touch)
+
+    def finish_ripple(self):
+        def reset_state(*args):
+            self.dispatch("on_leave")
+            self.hovering = False
+            self.hover_visible = False
+
+        super().finish_ripple()
+        Clock.schedule_once(reset_state, 0.2)
+
 
 class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
     """
@@ -1037,6 +1050,18 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
                     if self.style == "elevated":
                         self.elevation_level = 1
                         self.shadow_softness = 0
+
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the `disabled` value changes."""
+
+        for element in (
+            getattr(self, "_button_text", None),
+            getattr(self, "_button_icon", None),
+        ):
+            if element:
+                element.disabled = value
+
+        super().on_disabled(instance, value)
 
 
 class MDButtonText(MDLabel):
@@ -1243,10 +1268,10 @@ class MDExtendedFabButton(
     _icon = ObjectProperty()
     _label = ObjectProperty()
 
+    __events__ = ("on_collapse", "on_expand")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_collapse")
-        self.register_event_type("on_expand")
         Clock.schedule_once(self._set_text_pos, 0.5)
 
     def add_widget(self, widget, *args, **kwargs):

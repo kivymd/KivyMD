@@ -580,13 +580,18 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
     and defaults to `False`.
     """
 
+    __events__ = ("on_switch_tabs",)
+
     def __init__(self, *args, **kwargs):
-        self.register_event_type("on_switch_tabs")
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_status_bar_color)
 
     def get_active_item(self) -> MDNavigationItem | None:
-        """Returns the currently active item in the navigation bar."""
+        """
+        Returns the currently active item in the navigation bar.
+
+        .. versionadded:: 2.0.0
+        """
 
         return next((child for child in self.children if child.active), None)
 
@@ -599,12 +604,16 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
                 self.dispatch(
                     "on_switch_tabs",
                     widget,
-                    widget.ids.icon_container.children[0].icon
-                    if len(widget.ids.icon_container.children)
-                    else "",
-                    widget.ids.label_container.children[0].text
-                    if len(widget.ids.label_container.children)
-                    else "",
+                    (
+                        widget.ids.icon_container.children[0].icon
+                        if len(widget.ids.icon_container.children)
+                        else ""
+                    ),
+                    (
+                        widget.ids.label_container.children[0].text
+                        if len(widget.ids.label_container.children)
+                        else ""
+                    ),
                 )
             else:
                 widget.active = False

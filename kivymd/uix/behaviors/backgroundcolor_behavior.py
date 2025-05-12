@@ -34,7 +34,11 @@ Builder.load_string(
         Color:
             group: "backgroundcolor-behavior-bg-color"
             rgba: self._md_bg_color
-        SmoothRoundedRectangle:
+        # FIXME: Using RoundedRectangle instead of SmoothRoundedRectangle
+        #  fixes the issue https://github.com/kivymd/KivyMD/issues/1635
+        #  But in this case we lose smoothing.
+        RoundedRectangle:
+        # SmoothRoundedRectangle:
             group: "Background_instruction"
             size: self.size
             pos: self.pos if not isinstance(self, RelativeLayout) else (0, 0)

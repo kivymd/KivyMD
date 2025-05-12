@@ -733,11 +733,10 @@ class MDLabel(
 
     _canvas_bg = ObjectProperty(allownone=True)
 
+    __events__ = ("on_copy", "on_selection", "on_cancel_selection")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_copy")
-        self.register_event_type("on_selection")
-        self.register_event_type("on_cancel_selection")
 
     def do_selection(self) -> None:
         if not self.is_selected:
@@ -832,6 +831,7 @@ class MDLabel(
                 self.__class__, (MDCheckbox, MDIcon, MDTooltipPlain)
             ):
                 self.canvas.remove_group("Background_instruction")
+                self.canvas.before.clear()
 
                 # FIXME: IndexError
                 # try:

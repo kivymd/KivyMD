@@ -83,6 +83,7 @@
         Color:
             group: "helper-text-color"
         Rectangle:
+            group: "helper-text-rectangle"
             texture:
                 self._helper_text_label.texture \
                 if self._helper_text_label else \
@@ -100,6 +101,7 @@
         Color:
             group: "leading-icons-color"
         Rectangle:
+            group: "leading-icon-rectangle"
             texture:
                 self._leading_icon.texture if self._leading_icon else None
             size:
@@ -112,7 +114,7 @@
                 self.x + \
                 ( \
                 ( \
-                0 if self.mode != "outlined" else dp(12) \
+                dp(12) if self.mode != "outlined" else dp(12) \
                 ) \
                 if self.mode != "filled" else \
                 ( \
@@ -129,6 +131,7 @@
         Color:
             group: "trailing-icons-color"
         Rectangle:
+            group: "trailing-icon-rectangle"
             texture:
                 self._trailing_icon.texture if self._trailing_icon else None
             size:

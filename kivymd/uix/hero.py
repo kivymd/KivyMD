@@ -631,10 +631,10 @@ class MDHeroFrom(MDBoxLayout):
     and defaults to `''`.
     """
 
+    __events__ = ("on_transform_in", "on_transform_out")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_transform_in")
-        self.register_event_type("on_transform_out")
 
     def on_transform_in(self, *args):
         """Fired when the hero flies from screen **A** to screen **B**."""

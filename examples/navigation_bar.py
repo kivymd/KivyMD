@@ -21,8 +21,7 @@ class Example(MDApp, CommonApp):
         item: MDNavigationItem,
         item_icon: str,
         item_text: str,
-    ):
-        ...
+    ): ...
 
     def on_start(self):
         self.root.ids.widget_box.height = dp(80)

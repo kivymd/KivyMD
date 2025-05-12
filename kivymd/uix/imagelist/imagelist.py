@@ -168,6 +168,18 @@ class MDSmartTileImage(RectangularRippleBehavior, ButtonBehavior, FitImage):
     _smart_tile = ObjectProperty()
     _overlay_container = ObjectProperty()
 
+    def on_touch_down(self, touch):
+        if (
+            self.collide_point(touch.x, touch.y)
+            and self._overlay_container._touch_on_container
+        ):
+            return False
+        elif (
+            self.collide_point(touch.x, touch.y)
+            and not self._overlay_container._touch_on_container
+        ):
+            return super().on_touch_down(touch)
+
 
 class MDSmartTileOverlayContainer(MDBoxLayout):
     """
@@ -182,7 +194,25 @@ class MDSmartTileOverlayContainer(MDBoxLayout):
     :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
     """
 
+    # If True, a touch event has occurred on one of the container's widgets.
+    _touch_on_container = BooleanProperty(False)
+    # kivymd.uix.imagelist.imagelist.MDSmartTile object.
     _smart_tile = ObjectProperty()
+
+    def add_widget(self, widget, *args, **kwargs):
+        widget.bind(
+            on_touch_down=self._child_on_touch_down,
+            on_touch_up=self._child_on_touch_up,
+        )
+        return super().add_widget(widget, *args, **kwargs)
+
+    def _child_on_touch_down(self, instance, touch):
+        if self.collide_point(touch.x, touch.y):
+            self._touch_on_container = True
+
+    def _child_on_touch_up(self, instance, touch):
+        if self.collide_point(touch.x, touch.y):
+            self._touch_on_container = False
 
 
 class MDSmartTile(MDRelativeLayout):
@@ -231,14 +261,15 @@ class MDSmartTile(MDRelativeLayout):
     and defaults to `True`.
     """
 
-    _no_ripple_effect = BooleanProperty(False)
+    ripple_effect = BooleanProperty(False)
+
     _overlay_container = ObjectProperty()
     _image = ObjectProperty()
 
+    __events__ = ("on_release", "on_press")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_release")
-        self.register_event_type("on_press")
 
     def on_release(self, *args):
         """
@@ -250,6 +281,9 @@ class MDSmartTile(MDRelativeLayout):
         """Fired when the button is pressed."""
 
     def add_widget(self, widget, *args, **kwargs):
+        def set_ripple_effect(_widget):
+            _widget.ripple_effect = self.ripple_effect
+
         def set_overlay_container(_widget):
             _widget._overlay_container = self._overlay_container
 
@@ -260,6 +294,8 @@ class MDSmartTile(MDRelativeLayout):
         elif isinstance(widget, MDSmartTileImage):
             self._image = widget
             widget._smart_tile = self
+
             widget._overlay_container = self._overlay_container
             Clock.schedule_once(lambda x: set_overlay_container(widget), 0.5)
+            Clock.schedule_once(lambda x: set_ripple_effect(widget), 0.5)
             return super().add_widget(widget, *args, **kwargs)

@@ -673,6 +673,19 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
     _time_input = ObjectProperty()
     _am_pm_selector = ObjectProperty()
 
+    __events__ = (
+        "on_dismiss",
+        "on_cancel",
+        "on_ok",
+        "on_edit",
+        "on_hour_select",
+        "on_minute_select",
+        "on_am_pm",
+        "on_selector_hour",
+        "on_selector_minute",
+        "on_time_input",
+    )
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
@@ -680,16 +693,6 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
             minute=self._set_current_time,
             am_pm=self._set_current_time,
         )
-        self.register_event_type("on_dismiss")
-        self.register_event_type("on_cancel")
-        self.register_event_type("on_ok")
-        self.register_event_type("on_edit")
-        self.register_event_type("on_hour_select")
-        self.register_event_type("on_minute_select")
-        self.register_event_type("on_am_pm")
-        self.register_event_type("on_selector_hour")
-        self.register_event_type("on_selector_minute")
-        self.register_event_type("on_time_input")
         Clock.schedule_once(
             lambda x: self.set_time(
                 datetime.time(hour=int(self.hour), minute=int(self.minute))
@@ -938,6 +941,8 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
 
     _centers_pos = ListProperty()
 
+    __events__ = ("on_selector_change",)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bind(
@@ -946,7 +951,6 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
             selected_minute=self.update_time,
         )
         Clock.schedule_once(lambda x: self._update_labels(animate=False))
-        self.register_event_type("on_selector_change")
 
     def do_layout(self, *largs, **kwargs):
         self.update_time()
@@ -1008,8 +1012,7 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
             touch.ungrab(self)
             return True
 
-    def on_selector_change(self, *args):
-        ...
+    def on_selector_change(self, *args): ...
 
     def _update_labels(self, animate=True, *args):
         """
@@ -1202,11 +1205,10 @@ class MDTimePickerInputContainer(BoxLayout):
     _hour = ObjectProperty()
     _minute = ObjectProperty()
 
+    __events__ = ("on_time_input", "on_hour_select", "on_minute_select")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_time_input")
-        self.register_event_type("on_hour_select")
-        self.register_event_type("on_minute_select")
 
     def set_time(self, time_list) -> None:
         hour, minute = time_list
@@ -1218,8 +1220,7 @@ class MDTimePickerInputContainer(BoxLayout):
         minute = self._minute.text.strip()
         return [hour, minute]
 
-    def on_time_input(self, *args) -> None:
-        ...
+    def on_time_input(self, *args) -> None: ...
 
     def on_minute_select(self, *args) -> None:
         pass
@@ -1242,9 +1243,10 @@ class MDTimePickerInputTextField(MDTextField):
     hour_regx = "^[0-9]$|^0[1-9]$|^1[0-2]$"
     minute_regx = "^[0-9]$|^0[0-9]$|^[1-5][0-9]$"
 
+    __events__ = ("on_select",)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_select")
         Clock.schedule_once(self._override_properties, 0)
 
     def validate_time(self, text) -> None | re.Match:

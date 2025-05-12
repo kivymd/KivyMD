@@ -341,6 +341,14 @@ class MDExpansionPanelContent(
     classes documentation.
     """
 
+    _panel = ObjectProperty()  # MDExpansionPanel object
+
+    def add_widget(self, widget, index=0, canvas=None):
+        Clock.schedule_once(
+            lambda x: self._panel._update_original_content_height(widget)
+        )
+        return super().add_widget(widget)
+
 
 class MDExpansionPanelHeader(DeclarativeBehavior, BoxLayout):
     """
@@ -425,10 +433,10 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
     _allow_add_content = False
     _panel_is_process_opening = False
 
+    __events__ = ("on_open", "on_close")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_close")
 
     def on_open(self, *args) -> None:
         """Fired when a panel is opened."""
@@ -517,13 +525,18 @@ class MDExpansionPanel(DeclarativeBehavior, BoxLayout):
             and not self._allow_add_content
         ):
             self._content = widget
+            widget._panel = self
             Clock.schedule_once(self._set_content_height, 0.8)
         elif (
             isinstance(widget, MDExpansionPanelContent)
             and self._allow_add_content
         ):
+            widget._panel = self
             return super().add_widget(widget)
 
     def _set_content_height(self, *args):
         self._original_content_height = self._content.height - dp(88)
         self._content.height = 0
+
+    def _update_original_content_height(self, widget):
+        self._original_content_height = self._content.height

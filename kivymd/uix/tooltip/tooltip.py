@@ -265,10 +265,10 @@ class MDTooltip(TouchBehavior):
 
     _tooltip = None
 
+    __events__ = ("on_open", "on_dismiss")
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_dismiss")
 
     def delete_clock(self, widget, touch, *args):
         if self.collide_point(touch.x, touch.y) and touch.grab_current:
@@ -423,8 +423,7 @@ class MDTooltip(TouchBehavior):
         self.remove_tooltip()
         # self._tooltip = None
 
-    def _on_release(self, *args):
-        ...
+    def _on_release(self, *args): ...
 
 
 class MDTooltipPlain(MDLabel, ScaleBehavior):
@@ -475,14 +474,11 @@ class MDTooltipRichActionButton(MDButton):
     # Override methods.
     # Their functionality is not needed in this class.
 
-    def _set_state_layer_color(self) -> None:
-        ...
+    def _set_state_layer_color(self) -> None: ...
 
-    def on_enter(self) -> None:
-        ...
+    def on_enter(self) -> None: ...
 
-    def on_leave(self) -> None:
-        ...
+    def on_leave(self) -> None: ...
 
 
 class MDTooltipRich(

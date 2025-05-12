@@ -1,12 +1,12 @@
 """
-Components/Widget
-=================
+Components/MDRecycleBoxLayout
+=============================
 
-:class:`~kivy.uix.widget.Widget` class equivalent. Simplifies working
-with some widget properties. For example:
+:class:`~kivy.uix.recycleboxlayout.MDRecycleBoxLayout` class equivalent.
+Simplifies working with some widget properties. For example:
 
-Widget
-------
+RecycleBoxLayout
+----------------
 
 .. tabs::
 
@@ -14,7 +14,7 @@ Widget
 
         .. code-block:: kv
 
-            Widget:
+            RecycleBoxLayout:
                 canvas:
                     Color:
                         rgba: app.theme_cls.primaryColor
@@ -26,24 +26,24 @@ Widget
 
         .. code-block:: python
 
-            from kivy.uix.widget import Widget
+            from kivy.uix.recycleboxlayout import RecycleBoxLayout
             from kivy.graphics import Color, Rectangle
             from kivy.app import App
 
             class MyApp(App):
                 def build(self):
-                    widget = Widget()
+                    layout = RecycleBoxLayout()
 
-                    with widget.canvas:
+                    with layout.canvas:
                         Color(*self.theme_cls.primary_color)
                         self.rect = Rectangle(pos=layout.pos, size=layout.size)
 
-                    return widget
+                    return layout
 
             MyApp().run()
 
-MDWidget
---------
+MDRecycleBoxLayout
+------------------
 
 .. tabs::
 
@@ -51,19 +51,19 @@ MDWidget
 
         .. code-block:: kv
 
-            MDWidget:
+            MDRecycleBoxLayout:
                 md_bg_color: app.theme_cls.primaryColor
 
     .. tab:: Declarative python style
 
         .. code-block:: python
 
-            from kivymd.uix.widget import MDWidget
+            from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
             from kivymd.app import MDApp
 
             class MyApp(App):
                 def build(self):
-                    return MDWidget(
+                    return MDRecycleBoxLayout(
                         md_bg_color=self.theme_cls.primaryColor
                     )
 
@@ -106,7 +106,7 @@ Equivalent
 .. code-block:: kv
 
     size_hint_x: None
-    height: self.minimum_width
+    width: self.minimum_width
 
 .. adaptive_size:
 
@@ -125,32 +125,30 @@ Equivalent
     size: self.minimum_size
 """
 
-__all__ = ("MDWidget",)
+__all__ = ("MDRecycleBoxLayout",)
 
-from kivy.uix.widget import Widget
+from kivy.uix.recycleboxlayout import RecycleBoxLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
 
 
-class MDWidget(
+class MDRecycleBoxLayout(
     DeclarativeBehavior,
     ThemableBehavior,
     BackgroundColorBehavior,
+    RecycleBoxLayout,
     MDAdaptiveWidget,
-    Widget,
 ):
     """
-    Widget class.
+    Recycle box layout class.
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
-    :class:`~kivymd.uix.MDAdaptiveWidget` and
-    :class:`~kivy.uix.widget.Widget` and
+    :class:`~kivy.uix.recycleboxlayout.RecycleBoxLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
     classes documentation.
-
-    .. versionadded:: 1.0.0
     """

@@ -87,14 +87,12 @@ MDScreen:
 """
 
 
-class ExpansionPanelItem(MDExpansionPanel):
-    ...
+class ExpansionPanelItem(MDExpansionPanel): ...
 
 
 class TrailingPressedIconButton(
     ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
-):
-    ...
+): ...
 
 
 class Example(MDApp, CommonApp):
@@ -110,22 +108,23 @@ class Example(MDApp, CommonApp):
         self.theme_cls.theme_style = "Dark"
         return Builder.load_string(KV)
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
     def tap_expansion_chevron(
         self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton
     ):
         Animation(
-            padding=[0, dp(12), 0, dp(12)]
-            if not panel.is_open
-            else [0, 0, 0, 0],
+            padding=(
+                [0, dp(12), 0, dp(12)] if not panel.is_open else [0, 0, 0, 0]
+            ),
             d=0.2,
         ).start(panel)
         panel.open() if not panel.is_open else panel.close()
-        panel.set_chevron_down(
-            chevron
-        ) if not panel.is_open else panel.set_chevron_up(chevron)
+        (
+            panel.set_chevron_down(chevron)
+            if not panel.is_open
+            else panel.set_chevron_up(chevron)
+        )
 
 
 Example().run()

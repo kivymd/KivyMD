@@ -99,8 +99,7 @@ class SelectedItem(MDBoxLayout):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_active")
 
-    def on_active(self, *args):
-        ...
+    def on_active(self, *args): ...
 
 
 class Example(MDApp, CommonApp):
@@ -154,8 +153,7 @@ class Example(MDApp, CommonApp):
                 linear_indicator_horizontal.type = type_indicator
                 linear_indicator_vertical.type = type_indicator
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

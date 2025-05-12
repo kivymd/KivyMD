@@ -9,35 +9,82 @@ MDCircularLayout
 
 .. rubric:: Usage
 
-.. code-block::
+.. tabs::
 
-    from kivy.lang.builder import Builder
-    from kivy.uix.label import Label
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
+            from kivy.lang.builder import Builder
 
-        MDCircularLayout:
-            id: container
-            pos_hint: {"center_x": .5, "center_y": .5}
-            row_spacing: min(self.size) * 0.1
-    '''
+            from kivymd.app import MDApp
+            from kivymd.uix.label import MDLabel
 
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for x in range(1, 49):
-                self.root.ids.container.add_widget(Label(text=f"{x}")
+                MDCircularLayout:
+                    id: container
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    row_spacing: min(self.size) * 0.1
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
-.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout-dark.png
+                def on_start(self):
+                    for x in range(1, 49):
+                        self.root.ids.container.add_widget(
+                            MDLabel(text=f"{x}", adaptive_size=True)
+                        )
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.circularlayout import MDCircularLayout
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.screen = MDScreen(
+                        MDCircularLayout(
+                            id="container",
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor
+                    )
+                    return self.screen
+
+                def on_start(self):
+                    def on_start(*args):
+                        container.row_spacing = min(container.size) * 0.1
+
+                    container = self.screen.get_ids().container
+                    for x in range(1, 49):
+                        self.screen.get_ids().container.add_widget(
+                            MDLabel(text=f"{x}", adaptive_size=True)
+                        )
+
+                    Clock.schedule_once(on_start)
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-layout.png
     :align: center
 """
 
@@ -48,8 +95,19 @@ from math import atan2, cos, degrees, radians, sin
 from kivy.properties import BooleanProperty, NumericProperty
 from kivy.uix.floatlayout import FloatLayout
 
+from kivymd.uix.behaviors import DeclarativeBehavior
 
-class MDCircularLayout(FloatLayout):
+
+class MDCircularLayout(DeclarativeBehavior, FloatLayout):
+    """
+    Circular layout class.
+
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
+    """
+
     degree_spacing = NumericProperty(30)
     """
     The space between children in degree.
@@ -108,8 +166,8 @@ class MDCircularLayout(FloatLayout):
     and defaults to `True`.
     """
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.bind(
             row_spacing=self._update_layout,
         )
@@ -180,25 +238,32 @@ class MDCircularLayout(FloatLayout):
 
 if __name__ == "__main__":
     from kivy.lang.builder import Builder
-    from kivy.uix.label import Label
 
     from kivymd.app import MDApp
+    from kivymd.uix.label import MDLabel
 
-    KV = """
-MDScreen:
+    KV = '''
+    MDScreen:
+        md_bg_color: self.theme_cls.backgroundColor
 
-    MDCircularLayout:
-        id: container
-        pos_hint: {"center_x": .5, "center_y": .5}
-        row_spacing: min(self.size) * 0.1
-    """
+        MDCircularLayout:
+            id: container
+            pos_hint: {"center_x": .5, "center_y": .5}
+            row_spacing: min(self.size) * 0.1
+    '''
+
 
     class Example(MDApp):
         def build(self):
+            self.theme_cls.theme_style = "Dark"
             return Builder.load_string(KV)
 
         def on_start(self):
             for x in range(1, 49):
-                self.root.ids.container.add_widget(Label(text=f"{x}"))
+                self.root.ids.container.add_widget(
+                    MDLabel(text=f"{x}", adaptive_size=True)
+                )
+
 
     Example().run()
+

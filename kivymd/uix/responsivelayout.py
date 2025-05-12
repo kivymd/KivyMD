@@ -153,9 +153,10 @@ class MDResponsiveLayout(EventDispatcher, WindowController):
 
     _current_device_type = ""
 
+    __events__ = ("on_change_screen_type",)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_change_screen_type")
 
     def on_change_screen_type(self, *args):
         """Called when the screen type changes."""

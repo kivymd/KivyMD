@@ -335,6 +335,8 @@ If you need to switch to a screen that does not contain heroes, set the
 Example
 -------
 
+.. tabs::
+
     .. tab:: Declarative python style with KV
 
         .. code-block:: python

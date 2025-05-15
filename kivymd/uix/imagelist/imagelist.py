@@ -268,8 +268,8 @@ class MDSmartTile(MDRelativeLayout):
 
     __events__ = ("on_release", "on_press")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def on_release(self, *args):
         """

@@ -615,7 +615,7 @@ class MDListItem(BaseListItem, BoxLayout):
         elif isinstance(
             widget, (MDListItemLeadingIcon, MDListItemLeadingAvatar)
         ):
-            if not self.ids.leading_container.children:
+            if self.ids and not self.ids.leading_container.children:
                 widget._list_item = self
                 self.ids.leading_container.add_widget(widget)
                 Clock.schedule_once(
@@ -633,7 +633,7 @@ class MDListItem(BaseListItem, BoxLayout):
                 MDListItemTrailingSupportingText,
             ),
         ):
-            if not self.ids.trailing_container.children:
+            if self.ids and not self.ids.trailing_container.children:
                 self.ids.trailing_container.add_widget(widget)
                 Clock.schedule_once(
                     lambda x: self._set_with_container(

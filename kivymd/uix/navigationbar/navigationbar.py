@@ -14,19 +14,41 @@ Components/Navigation bar
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    <Root>
+    .. tab:: Declarative KV style
 
-        MDNavigationBar:
+        .. code-block:: kv
 
-            MDNavigationItem:
+            <Root>
 
-                MDNavigationItemIcon:
+                MDNavigationBar:
 
-                MDNavigationItemLabel:
+                    MDNavigationItem:
 
-            [...]
+                        MDNavigationItemIcon:
+
+                        MDNavigationItemLabel:
+
+                    [...]
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            Root(
+                MDNavigationBar(
+                    MDNavigationItem(
+                        MDNavigationItemIcon(
+                            ...
+                        ),
+                        MDNavigationItemLabel(
+                            ...
+                        ),
+                    ),
+                    ...
+                ),
+            )
 
 Anatomy
 =======

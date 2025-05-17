@@ -20,19 +20,50 @@ Components/List
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDListItem:
+    .. tab:: Declarative KV style
 
-        MDListItemLeadingIcon:  # MDListItemLeadingAvatar
+        .. code-block:: python
 
-        MDListItemHeadlineText:
+            MDListItem:
 
-        MDListItemSupportingText:
+                MDListItemLeadingIcon:  # MDListItemLeadingAvatar
 
-        MDListItemTertiaryText:
+                MDListItemHeadlineText:
 
-        MDListItemTrailingIcon:  # MDListItemTrailingCheckbox
+                MDListItemSupportingText:
+
+                MDListItemTertiaryText:
+
+                MDListItemTrailingIcon:  # MDListItemTrailingCheckbox
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDListItem(
+
+                MDListItemLeadingIcon(
+                   ...
+                ),  # MDListItemLeadingAvatar
+
+                MDListItemHeadlineText(
+                    ...
+                ),
+
+                MDListItemSupportingText(
+                    ...
+                ),
+
+                MDListItemTertiaryText(
+                    ...
+                ),
+
+                MDListItemTrailingIcon(
+                    ...
+                ),  # MDListItemTrailingCheckbox
+            )
 
 Anatomy
 -------

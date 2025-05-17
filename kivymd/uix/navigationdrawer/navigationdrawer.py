@@ -21,23 +21,51 @@ should look like this:
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    Root:
+    .. tab:: Declarative Python style with KV
 
-        MDNavigationLayout:
+        .. code-block:: kv
 
-            MDScreenManager:
+            Root:
 
-                Screen_1:
+                MDNavigationLayout:
 
-                Screen_2:
+                    MDScreenManager:
 
-            MDNavigationDrawer:
+                        Screen_1:
 
-                # This custom rule should implement what will be displayed in
-                # your MDNavigationDrawer.
-                ContentNavigationDrawer:
+                        Screen_2:
+
+                    MDNavigationDrawer:
+
+                        # This custom rule should implement what will be displayed in
+                        # your MDNavigationDrawer.
+                        ContentNavigationDrawer:
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            Root(
+                MDNavigationLayout(
+                    MDScreenManager(
+                        Screen_1(
+                            ...
+                        ),
+                        Screen_2(
+                            ...
+                        ),
+                    ),
+                    MDNavigationDrawer(
+                        # This custom rule should implement what will be displayed in
+                        # your MDNavigationDrawer.
+                        ContentNavigationDrawer(
+                            ...
+                        )
+                    )
+                )
+            )
 
 A simple example
 ----------------
@@ -181,18 +209,38 @@ Anatomy
 Item anatomy
 ------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationDrawerItem:
+    .. tab:: Declarative Python style with KV
 
-        MDNavigationDrawerItemLeadingIcon:
-            icon: "account"
+        .. code-block:: kv
 
-        MDNavigationDrawerItemText:
-            text: "Inbox"
+            MDNavigationDrawerItem:
 
-        MDNavigationDrawerItemTrailingText:
-            text: "24"
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: "account"
+
+                MDNavigationDrawerItemText:
+                    text: "Inbox"
+
+                MDNavigationDrawerItemTrailingText:
+                    text: "24"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDNavigationDrawerItem(
+                MDNavigationDrawerItemLeadingIcon(
+                    icon="account"
+                ),
+                MDNavigationDrawerItemText(
+                    text="Inbox"
+                ),
+                MDNavigationDrawerItemTrailingText(
+                    text="24"
+                ),
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-item-anatomy.png
     :align: center
@@ -340,156 +388,327 @@ API break
 2.2.0 version
 -------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty, ColorProperty
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.boxlayout import MDBoxLayout
-    from kivymd.uix.navigationdrawer import (
-        MDNavigationDrawerItem, MDNavigationDrawerItemTrailingText
-    )
+        .. code-block:: python
 
-    KV = '''
-    <DrawerItem>
-        active_indicator_color: "#e7e4c0"
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty, ColorProperty
 
-        MDNavigationDrawerItemLeadingIcon:
-            icon: root.icon
-            theme_icon_color: "Custom"
-            icon_color: "#4a4939"
-
-        MDNavigationDrawerItemText:
-            text: root.text
-            theme_text_color: "Custom"
-            text_color: "#4a4939"
-
-
-    <DrawerLabel>
-        adaptive_height: True
-        padding: "18dp", 0, 0, "12dp"
-
-        MDNavigationDrawerItemLeadingIcon:
-            icon: root.icon
-            theme_icon_color: "Custom"
-            icon_color: "#4a4939"
-            pos_hint: {"center_y": .5}
-
-        MDNavigationDrawerLabel:
-            text: root.text
-            theme_text_color: "Custom"
-            text_color: "#4a4939"
-            pos_hint: {"center_y": .5}
-            padding: "6dp", 0, "16dp", 0
-            theme_line_height: "Custom"
-            line_height: 0
-
-
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
-
-        MDNavigationLayout:
-
-            MDScreenManager:
-
-                MDScreen:
-
-                    MDButton:
-                        pos_hint: {"center_x": .5, "center_y": .5}
-                        on_release: nav_drawer.set_state("toggle")
-
-                        MDButtonText:
-                            text: "Open Drawer"
-
-            MDNavigationDrawer:
-                id: nav_drawer
-                radius: 0, dp(16), dp(16), 0
-
-                MDNavigationDrawerMenu:
-
-                    MDNavigationDrawerHeader:
-                        orientation: "vertical"
-                        padding: 0, 0, 0, "12dp"
-                        adaptive_height: True
-
-                        MDLabel:
-                            text: "Header title"
-                            theme_text_color: "Custom"
-                            theme_line_height: "Custom"
-                            line_height: 0
-                            text_color: "#4a4939"
-                            adaptive_height: True
-                            padding_x: "16dp"
-                            font_style: "Display"
-                            role: "small"
-
-                        MDLabel:
-                            text: "Header text"
-                            padding_x: "18dp"
-                            adaptive_height: True
-                            font_style: "Title"
-                            role: "large"
-
-                    MDNavigationDrawerDivider:
-
-                    DrawerItem:
-                        icon: "gmail"
-                        text: "Inbox"
-                        trailing_text: "+99"
-                        trailing_text_color: "#4a4939"
-
-                    DrawerItem:
-                        icon: "send"
-                        text: "Outbox"
-
-                    MDNavigationDrawerDivider:
-
-                    MDNavigationDrawerLabel:
-                        text: "Labels"
-                        padding_y: "12dp"
-
-                    DrawerLabel:
-                        icon: "information-outline"
-                        text: "Label"
-
-                    DrawerLabel:
-                        icon: "information-outline"
-                        text: "Label"
-    '''
-
-
-    class DrawerLabel(MDBoxLayout):
-        icon = StringProperty()
-        text = StringProperty()
-
-
-    class DrawerItem(MDNavigationDrawerItem):
-        icon = StringProperty()
-        text = StringProperty()
-        trailing_text = StringProperty()
-        trailing_text_color = ColorProperty()
-
-        _trailing_text_obj = None
-
-        def on_trailing_text(self, instance, value):
-            self._trailing_text_obj = MDNavigationDrawerItemTrailingText(
-                text=value,
-                theme_text_color="Custom",
-                text_color=self.trailing_text_color,
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.navigationdrawer import (
+                MDNavigationDrawerItem, MDNavigationDrawerItemTrailingText
             )
-            self.add_widget(self._trailing_text_obj)
 
-        def on_trailing_text_color(self, instance, value):
-            self._trailing_text_obj.text_color = value
+            KV = '''
+            <DrawerItem>
+                active_indicator_color: "#e7e4c0"
+
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: root.icon
+                    theme_icon_color: "Custom"
+                    icon_color: "#4a4939"
+
+                MDNavigationDrawerItemText:
+                    text: root.text
+                    theme_text_color: "Custom"
+                    text_color: "#4a4939"
 
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            <DrawerLabel>
+                adaptive_height: True
+                padding: "18dp", 0, 0, "12dp"
+
+                MDNavigationDrawerItemLeadingIcon:
+                    icon: root.icon
+                    theme_icon_color: "Custom"
+                    icon_color: "#4a4939"
+                    pos_hint: {"center_y": .5}
+
+                MDNavigationDrawerLabel:
+                    text: root.text
+                    theme_text_color: "Custom"
+                    text_color: "#4a4939"
+                    pos_hint: {"center_y": .5}
+                    padding: "6dp", 0, "16dp", 0
+                    theme_line_height: "Custom"
+                    line_height: 0
 
 
-    Example().run()
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDNavigationLayout:
+
+                    MDScreenManager:
+
+                        MDScreen:
+
+                            MDButton:
+                                pos_hint: {"center_x": .5, "center_y": .5}
+                                on_release: nav_drawer.set_state("toggle")
+
+                                MDButtonText:
+                                    text: "Open Drawer"
+
+                    MDNavigationDrawer:
+                        id: nav_drawer
+                        radius: 0, dp(16), dp(16), 0
+
+                        MDNavigationDrawerMenu:
+
+                            MDNavigationDrawerHeader:
+                                orientation: "vertical"
+                                padding: 0, 0, 0, "12dp"
+                                adaptive_height: True
+
+                                MDLabel:
+                                    text: "Header title"
+                                    theme_text_color: "Custom"
+                                    theme_line_height: "Custom"
+                                    line_height: 0
+                                    text_color: "#4a4939"
+                                    adaptive_height: True
+                                    padding_x: "16dp"
+                                    font_style: "Display"
+                                    role: "small"
+
+                                MDLabel:
+                                    text: "Header text"
+                                    padding_x: "18dp"
+                                    adaptive_height: True
+                                    font_style: "Title"
+                                    role: "large"
+
+                            MDNavigationDrawerDivider:
+
+                            DrawerItem:
+                                icon: "gmail"
+                                text: "Inbox"
+                                trailing_text: "+99"
+                                trailing_text_color: "#4a4939"
+
+                            DrawerItem:
+                                icon: "send"
+                                text: "Outbox"
+
+                            MDNavigationDrawerDivider:
+
+                            MDNavigationDrawerLabel:
+                                text: "Labels"
+                                padding_y: "12dp"
+
+                            DrawerLabel:
+                                icon: "information-outline"
+                                text: "Label"
+
+                            DrawerLabel:
+                                icon: "information-outline"
+                                text: "Label"
+            '''
+
+
+            class DrawerLabel(MDBoxLayout):
+                icon = StringProperty()
+                text = StringProperty()
+
+
+            class DrawerItem(MDNavigationDrawerItem):
+                icon = StringProperty()
+                text = StringProperty()
+                trailing_text = StringProperty()
+                trailing_text_color = ColorProperty()
+
+                _trailing_text_obj = None
+
+                def on_trailing_text(self, instance, value):
+                    self._trailing_text_obj = MDNavigationDrawerItemTrailingText(
+                        text=value,
+                        theme_text_color="Custom",
+                        text_color=self.trailing_text_color,
+                    )
+                    self.add_widget(self._trailing_text_obj)
+
+                def on_trailing_text_color(self, instance, value):
+                    self._trailing_text_obj.text_color = value
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+            from kivy.properties import StringProperty, ColorProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.navigationdrawer import (
+                MDNavigationDrawerItem,
+                MDNavigationDrawerItemTrailingText,
+                MDNavigationLayout,
+                MDNavigationDrawer,
+                MDNavigationDrawerMenu,
+                MDNavigationDrawerHeader,
+                MDNavigationDrawerDivider,
+                MDNavigationDrawerLabel, MDNavigationDrawerItemLeadingIcon,
+                MDNavigationDrawerItemText,
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class DrawerLabel(MDBoxLayout):
+                icon = StringProperty()
+                text = StringProperty()
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.widgets = [
+                        MDNavigationDrawerItemLeadingIcon(
+                            icon=self.icon,
+                            theme_icon_color="Custom",
+                            icon_color="#4a4939",
+                            pos_hint={"center_y": .5},
+                        ),
+                        MDNavigationDrawerLabel(
+                            text=self.text,
+                            theme_text_color="Custom",
+                            text_color="#4a4939",
+                            pos_hint={"center_y": .5},
+                            padding=("6dp", 0, "16dp", 0),
+                            theme_line_height="Custom",
+                            line_height=0,
+                        )
+                    ]
+
+
+            class DrawerItem(MDNavigationDrawerItem):
+                icon = StringProperty()
+                text = StringProperty()
+                trailing_text = StringProperty()
+                trailing_text_color = ColorProperty()
+
+                _trailing_text_obj = None
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.widgets = [
+                        MDNavigationDrawerItemLeadingIcon(
+                            icon=self.icon,
+                            theme_icon_color="Custom",
+                            icon_color="#4a4939",
+                        ),
+                        MDNavigationDrawerItemText(
+                            text=self.text,
+                            theme_text_color="Custom",
+                            text_color="#4a4939",
+                            id="DDD"
+                        )
+                    ]
+
+                def on_trailing_text(self, instance, value):
+                    self._trailing_text_obj = MDNavigationDrawerItemTrailingText(
+                        text=value,
+                        theme_text_color="Custom",
+                        text_color=self.trailing_text_color,
+                    )
+                    self.add_widget(self._trailing_text_obj)
+
+                def on_trailing_text_color(self, instance, value):
+                    self._trailing_text_obj.text_color = value
+
+
+            class Example(MDApp):
+                def open_drawer(self, *args):
+                    self.root.get_ids().nav_drawer.set_state("toggle")
+
+                def build(self):
+                    return (
+                        MDScreen(
+                            MDNavigationLayout(
+                                MDScreenManager(
+                                    MDScreen(
+                                        MDButton(
+                                            MDButtonText(
+                                                text="Open Drawer"
+                                            ),
+                                            pos_hint={"center_x": .5, "center_y": .5},
+                                            on_release=self.open_drawer,
+                                        )
+                                    )
+                                ),
+                                MDNavigationDrawer(
+                                    MDNavigationDrawerMenu(
+                                        MDNavigationDrawerHeader(
+                                            MDLabel(
+                                                text="Header title",
+                                                theme_text_color="Custom",
+                                                theme_line_height="Custom",
+                                                line_height=0,
+                                                text_color="#4a4939",
+                                                adaptive_height=True,
+                                                padding_x="16dp",
+                                                font_style="Display",
+                                                role="small",
+                                            ),
+                                            MDLabel(
+                                                text="Header text",
+                                                padding_x="18dp",
+                                                adaptive_height=True,
+                                                font_style="Title",
+                                                role="large",
+                                            ),
+                                            orientation="vertical",
+                                            padding=(0, 0, 0, "12dp"),
+                                            adaptive_height=True,
+                                        ),
+                                        MDNavigationDrawerDivider(),
+                                        DrawerItem(
+                                            icon="gmail",
+                                            text="Inbox",
+                                            trailing_text="+99",
+                                            trailing_text_color="#4a4939",
+                                        ),
+                                        DrawerItem(
+                                            icon="send",
+                                            text="Outbox",
+                                        ),
+                                        MDNavigationDrawerDivider(),
+                                        MDNavigationDrawerLabel(
+                                            text="Labels",
+                                            padding_y="12dp",
+                                        ),
+                                        DrawerLabel(
+                                            icon="information-outline",
+                                            text="Label",
+                                        ),
+                                        DrawerLabel(
+                                            icon="information-outline",
+                                            text="Label",
+                                        ),
+                                    ),
+                                    id="nav_drawer",
+                                    radius=(0, dp(16), dp(16), 0),
+                                )
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 """
 
 __all__ = (
@@ -530,6 +749,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager
 
 from kivymd import uix_path
+from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.appbar import MDTopAppBar
 from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
@@ -689,7 +909,7 @@ class MDNavigationDrawerDivider(BoxLayout):
     """
 
 
-class MDNavigationDrawerHeader(DeclarativeBehavior, BoxLayout):
+class MDNavigationDrawerHeader(DeclarativeBehavior, MDAdaptiveWidget, BoxLayout):
     """
     Implements a header class.
 

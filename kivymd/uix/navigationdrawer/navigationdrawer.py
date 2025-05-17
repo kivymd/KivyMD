@@ -562,7 +562,8 @@ API break
                 MDNavigationDrawerMenu,
                 MDNavigationDrawerHeader,
                 MDNavigationDrawerDivider,
-                MDNavigationDrawerLabel, MDNavigationDrawerItemLeadingIcon,
+                MDNavigationDrawerLabel,
+                MDNavigationDrawerItemLeadingIcon,
                 MDNavigationDrawerItemText,
             )
             from kivymd.uix.screen import MDScreen

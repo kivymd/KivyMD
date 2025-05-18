@@ -371,11 +371,19 @@ class MDScrollView(DeclarativeBehavior, BackgroundColorBehavior, ScrollView):
         super().on_touch_down(touch)
 
     def on_touch_move(self, touch):
-        self.effect_x.convert_overscroll(touch)
-        self.effect_y.convert_overscroll(touch)
+        try:
+            self.effect_x.convert_overscroll(touch)
+            self.effect_y.convert_overscroll(touch)
+        except AttributeError:
+            pass
+
         super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        self.effect_x.reset_scale()
-        self.effect_y.reset_scale()
+        try:
+            self.effect_x.reset_scale()
+            self.effect_y.reset_scale()
+        except AttributeError:
+            pass
+
         super().on_touch_up(touch)

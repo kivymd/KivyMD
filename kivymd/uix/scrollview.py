@@ -75,112 +75,224 @@ MDScrollView
 The stretching effect
 ---------------------
 
-.. code-block:: python
+.. tabs::
 
-    import os
-    import sys
+    .. tab:: Declarative Python style with KV
 
-    from kivy.core.window import Window
-    from kivy import __version__ as kv__version__
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+        .. code-block:: python
 
-    from kivymd.app import MDApp
-    from kivymd import __version__
-    from kivymd.uix.list import (
-        MDListItem,
-        MDListItemHeadlineText,
-        MDListItemSupportingText,
-        MDListItemLeadingIcon,
-    )
+            import os
+            import sys
 
-    from materialyoucolor import __version__ as mc__version__
+            from kivy.core.window import Window
+            from kivy import __version__ as kv__version__
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-    from examples.common_app import CommonApp
+            from kivymd.app import MDApp
+            from kivymd import __version__
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemHeadlineText,
+                MDListItemSupportingText,
+                MDListItemLeadingIcon,
+            )
 
-    MAIN_KV = '''
-    MDScreen:
-        md_bg_color: app.theme_cls.backgroundColor
+            from materialyoucolor import __version__ as mc__version__
 
-        MDScrollView:
-            do_scroll_x: False
 
-            MDBoxLayout:
-                id: main_scroll
-                orientation: "vertical"
-                adaptive_height: True
+            MAIN_KV = '''
+            MDScreen:
+                md_bg_color: app.theme_cls.backgroundColor
 
-                MDBoxLayout:
-                    adaptive_height: True
+                MDScrollView:
+                    do_scroll_x: False
 
-                    MDLabel:
-                        theme_font_size: "Custom"
-                        text: "OS Info"
-                        font_size: "55sp"
+                    MDBoxLayout:
+                        id: main_scroll
+                        orientation: "vertical"
                         adaptive_height: True
-                        padding: "10dp", "20dp", 0, 0
 
-                    MDIconButton:
-                        icon: "menu"
-                        on_release: app.open_menu(self)
-                        pos_hint: {"center_y": .5}
-    '''
+                        MDBoxLayout:
+                            adaptive_height: True
+
+                            MDLabel:
+                                theme_font_size: "Custom"
+                                text: "OS Info"
+                                font_size: "55sp"
+                                adaptive_height: True
+                                padding: "10dp", "20dp", 0, 0
+
+                            MDIconButton:
+                                icon: "menu"
+                                pos_hint: {"center_y": .5}
+            '''
 
 
-    class Example(MDApp, CommonApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(MAIN_KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(MAIN_KV)
 
-        def on_start(self):
-            info = {
-                "Name": [
-                    os.name,
-                    (
-                        "microsoft"
-                        if os.name == "nt"
-                        else ("linux" if os.uname()[0] != "Darwin" else "apple")
-                    ),
-                ],
-                "Architecture": [os.uname().machine, "memory"],
-                "Hostname": [os.uname().nodename, "account"],
-                "Python Version": ["v" + sys.version, "language-python"],
-                "Kivy Version": ["v" + kv__version__, "alpha-k-circle-outline"],
-                "KivyMD Version": ["v" + __version__, "material-design"],
-                "MaterialYouColor Version": ["v" + mc__version__, "invert-colors"],
-                "Pillow Version": ["Unknown", "image"],
-                "Working Directory": [os.getcwd(), "folder"],
-                "Home Directory": [os.path.expanduser("~"), "folder-account"],
-                "Environment Variables": [os.environ, "code-json"],
-            }
+                def on_start(self):
+                    info = {
+                        "Name": [
+                            os.name,
+                            (
+                                "microsoft"
+                                if os.name == "nt"
+                                else ("linux" if os.uname()[0] != "Darwin" else "apple")
+                            ),
+                        ],
+                        "Architecture": [os.uname().machine, "memory"],
+                        "Hostname": [os.uname().nodename, "account"],
+                        "Python Version": ["v" + sys.version, "language-python"],
+                        "Kivy Version": ["v" + kv__version__, "alpha-k-circle-outline"],
+                        "KivyMD Version": ["v" + __version__, "material-design"],
+                        "MaterialYouColor Version": ["v" + mc__version__, "invert-colors"],
+                        "Pillow Version": ["Unknown", "image"],
+                        "Working Directory": [os.getcwd(), "folder"],
+                        "Home Directory": [os.path.expanduser("~"), "folder-account"],
+                        "Environment Variables": [os.environ, "code-json"],
+                    }
 
-            try:
-                from PIL import __version__ as pil__version_
+                    try:
+                        from PIL import __version__ as pil__version_
 
-                info["Pillow Version"] = ["v" + pil__version_, "image"]
-            except Exception:
-                pass
+                        info["Pillow Version"] = ["v" + pil__version_, "image"]
+                    except Exception:
+                        pass
 
-            for info_item in info:
-                self.root.ids.main_scroll.add_widget(
-                    MDListItem(
-                        MDListItemLeadingIcon(
-                            icon=info[info_item][1],
-                        ),
-                        MDListItemHeadlineText(
-                            text=info_item,
-                        ),
-                        MDListItemSupportingText(
-                            text=str(info[info_item][0]),
-                        ),
-                        pos_hint={"center_x": .5, "center_y": .5},
+                    for info_item in info:
+                        self.root.ids.main_scroll.add_widget(
+                            MDListItem(
+                                MDListItemLeadingIcon(
+                                    icon=info[info_item][1],
+                                ),
+                                MDListItemHeadlineText(
+                                    text=info_item,
+                                ),
+                                MDListItemSupportingText(
+                                    text=str(info[info_item][0]),
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                            )
+                        )
+
+                    Window.size = [dp(350), dp(600)]
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            import os
+            import sys
+
+            from kivy.core.window import Window
+            from kivy import __version__ as kv__version__
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd import __version__
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemHeadlineText,
+                MDListItemSupportingText,
+                MDListItemLeadingIcon,
+            )
+
+            from materialyoucolor import __version__ as mc__version__
+
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.scrollview import MDScrollView
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDScrollView(
+                                MDBoxLayout(
+                                    MDBoxLayout(
+                                        MDLabel(
+                                            theme_font_size="Custom",
+                                            text="OS Info",
+                                            font_size="55sp",
+                                            adaptive_height=True,
+                                            padding=("10dp", "20dp", 0, 0),
+                                        ),
+                                        MDIconButton(
+                                            icon="menu",
+                                            pos_hint={"center_y": .5},
+                                        ),
+                                        adaptive_height=True
+                                    ),
+                                    id="main_scroll",
+                                    orientation="vertical",
+                                    adaptive_height=True,
+                                ),
+                                do_scroll_x=False
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
                     )
-                )
 
-            Window.size = [dp(350), dp(600)]
+                def on_start(self):
+                    info = {
+                        "Name": [
+                            os.name,
+                            (
+                                "microsoft"
+                                if os.name == "nt"
+                                else ("linux" if os.uname()[0] != "Darwin" else "apple")
+                            ),
+                        ],
+                        "Architecture": [os.uname().machine, "memory"],
+                        "Hostname": [os.uname().nodename, "account"],
+                        "Python Version": ["v" + sys.version, "language-python"],
+                        "Kivy Version": ["v" + kv__version__, "alpha-k-circle-outline"],
+                        "KivyMD Version": ["v" + __version__, "material-design"],
+                        "MaterialYouColor Version": ["v" + mc__version__, "invert-colors"],
+                        "Pillow Version": ["Unknown", "image"],
+                        "Working Directory": [os.getcwd(), "folder"],
+                        "Home Directory": [os.path.expanduser("~"), "folder-account"],
+                        "Environment Variables": [os.environ, "code-json"],
+                    }
+
+                    try:
+                        from PIL import __version__ as pil__version_
+
+                        info["Pillow Version"] = ["v" + pil__version_, "image"]
+                    except Exception:
+                        pass
+
+                    for info_item in info:
+                        self.root.get_ids().main_scroll.add_widget(
+                            MDListItem(
+                                MDListItemLeadingIcon(
+                                    icon=info[info_item][1],
+                                ),
+                                MDListItemHeadlineText(
+                                    text=info_item,
+                                ),
+                                MDListItemSupportingText(
+                                    text=str(info[info_item][0]),
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                            )
+                        )
+
+                    Window.size = [dp(350), dp(600)]
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/stretch_over_scroll_stencil.gif
     :align: center

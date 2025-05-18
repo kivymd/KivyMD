@@ -22,7 +22,7 @@ Example
 
 .. tabs::
 
-    .. tab:: Declarative KV style
+    .. tab:: Declarative Python style with KV
 
         .. code-block:: python
 
@@ -82,7 +82,7 @@ Example
 
             Example().run()
 
-    .. tab:: Declarative python style
+    .. tab:: Declarative Python style
 
         .. code-block:: python
 
@@ -155,27 +155,52 @@ Example
 Anatomy
 -------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationRail:
+    .. tab:: Declarative KV style
 
-        # Optional.
-        MDNavigationRailMenuButton:
-            icon: "menu"
+        .. code-block:: kv
 
-        # Optional.
-        MDNavigationRailFabButton:
-            icon: "home"
+            MDNavigationRail:
 
-        MDNavigationRailItem
+                # Optional.
+                MDNavigationRailMenuButton:
+                    icon: "menu"
 
-            MDNavigationRailItemIcon:
-                icon: icon
+                # Optional.
+                MDNavigationRailFabButton:
+                    icon: "home"
 
-            MDNavigationRailItemLabel:
-                text: text
+                MDNavigationRailItem
 
-        [...]
+                    MDNavigationRailItemIcon:
+                        icon: icon
+
+                    MDNavigationRailItemLabel:
+                        text: text
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDNavigationRail(
+                # Optional.
+                MDNavigationRailMenuButton(
+                    icon="menu"
+                ),
+                # Optional.
+                MDNavigationRailFabButton(
+                    icon="home"
+                ),
+                MDNavigationRailItem(
+                    MDNavigationRailItemIcon(
+                        icon=icon
+                    ),
+                    MDNavigationRailItemLabel(
+                        text=text
+                    ),
+                )
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy.png
     :align: center
@@ -183,15 +208,32 @@ Anatomy
 Anatomy item
 ------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationRailItem
+    .. tab:: Declarative KV style
 
-        MDNavigationRailItemIcon:
-            icon: icon
+        .. code-block:: kv
 
-        MDNavigationRailItemLabel:
-            text: text
+            MDNavigationRailItem
+
+                MDNavigationRailItemIcon:
+                    icon: icon
+
+                MDNavigationRailItemLabel:
+                    text: text
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDNavigationRailItem(
+                MDNavigationRailItemIcon(
+                    icon=icon
+                ),
+                MDNavigationRailItemLabel(
+                    text=text
+                ),
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy-item.png
     :align: center
@@ -296,30 +338,55 @@ API break
             icon: icon
             text: text
 
-        [...]
-
 2.2.0 version
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationRail:
+    .. tab:: Declarative KV style
 
-        MDNavigationRailMenuButton:
-            icon: "menu"
+        .. code-block:: kv
 
-        MDNavigationRailFabButton:
-            icon: "home"
+            MDNavigationRail:
 
-        MDNavigationRailItem
+                # Optional.
+                MDNavigationRailMenuButton:
+                    icon: "menu"
 
-            MDNavigationRailItemIcon:
-                icon: icon
+                # Optional.
+                MDNavigationRailFabButton:
+                    icon: "home"
 
-            MDNavigationRailItemLabel:
-                text: text
+                MDNavigationRailItem
 
-        [...]
+                    MDNavigationRailItemIcon:
+                        icon: icon
+
+                    MDNavigationRailItemLabel:
+                        text: text
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDNavigationRail(
+                # Optional.
+                MDNavigationRailMenuButton(
+                    icon="menu"
+                ),
+                # Optional.
+                MDNavigationRailFabButton(
+                    icon="home"
+                ),
+                MDNavigationRailItem(
+                    MDNavigationRailItemIcon(
+                        icon=icon
+                    ),
+                    MDNavigationRailItemLabel(
+                        text=text
+                    ),
+                )
+            )
 """
 
 __all__ = (

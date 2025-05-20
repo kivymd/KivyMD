@@ -627,7 +627,8 @@ API break
                     MDSegmentButtonLabel(
                         ...
                     ),
-                )
+                ),
+                on_active=lambda x: func(*args)
             )
 """
 

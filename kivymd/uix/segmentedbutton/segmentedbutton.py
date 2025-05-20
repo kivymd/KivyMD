@@ -46,33 +46,68 @@ it represents.
 Use with text and icon
 ----------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDSegmentedButton:
+    .. tab:: Declarative KV style
 
-        MDSegmentedButtonItem:
+        .. code-block:: kv
 
-            MDSegmentButtonIcon:
-                icon: "language-python"
+            MDSegmentedButton:
 
-            MDSegmentButtonLabel:
-                text: "Python"
+                MDSegmentedButtonItem:
 
-        MDSegmentedButtonItem:
+                    MDSegmentButtonIcon:
+                        icon: "language-python"
 
-            MDSegmentButtonIcon:
-                icon: "language-javascript"
+                    MDSegmentButtonLabel:
+                        text: "Python"
 
-            MDSegmentButtonLabel:
-                text: "Java-Script"
+                MDSegmentedButtonItem:
 
-        MDSegmentedButtonItem:
+                    MDSegmentButtonIcon:
+                        icon: "language-javascript"
 
-            MDSegmentButtonIcon:
-                icon: "language-swift"
+                    MDSegmentButtonLabel:
+                        text: "Java-Script"
 
-            MDSegmentButtonLabel:
-                text: "Swift"
+                MDSegmentedButtonItem:
+
+                    MDSegmentButtonIcon:
+                        icon: "language-swift"
+
+                    MDSegmentButtonLabel:
+                        text: "Swift"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDSegmentedButton(
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        icon="language-python"
+                    ),
+                    MDSegmentButtonLabel(
+                        text="Python"
+                    ),
+                ),
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        icon="language-javascript"
+                    ),
+                    MDSegmentButtonLabel(
+                        text="Java-Script"
+                    ),
+                ),
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        icon="language-swift"
+                    ),
+                    MDSegmentButtonLabel(
+                        text="Swift"
+                    )
+                )
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-use-with-text-and-icon.gif
     :align: center
@@ -80,24 +115,50 @@ Use with text and icon
 Use without text with an icon
 -----------------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDSegmentedButton:
+    .. tab:: Declarative KV style
 
-        MDSegmentedButtonItem:
+        .. code-block:: kv
 
-            MDSegmentButtonIcon:
-                icon: "language-python"
+            MDSegmentedButton:
 
-        MDSegmentedButtonItem:
+                MDSegmentedButtonItem:
 
-            MDSegmentButtonIcon:
-                icon: "language-javascript"
+                    MDSegmentButtonIcon:
+                        icon: "language-python"
 
-        MDSegmentedButtonItem:
+                MDSegmentedButtonItem:
 
-            MDSegmentButtonIcon:
-                icon: "language-swift"
+                    MDSegmentButtonIcon:
+                        icon: "language-javascript"
+
+                MDSegmentedButtonItem:
+
+                    MDSegmentButtonIcon:
+                        icon: "language-swift"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDSegmentedButton(
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        icon="language-python"
+                    ),
+                ),
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        icon="language-javascript"
+                    ),
+                ),
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        icon="language-swift"
+                    ),
+                )
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-use-without-text-with-an-icon.gif
     :align: center
@@ -105,24 +166,50 @@ Use without text with an icon
 Use only text
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDSegmentedButton:
+    .. tab:: Declarative KV style
 
-        MDSegmentedButtonItem:
+        .. code-block:: kv
 
-            MDSegmentButtonLabel:
-                text: "Python"
+            MDSegmentedButton:
 
-        MDSegmentedButtonItem:
+                MDSegmentedButtonItem:
 
-            MDSegmentButtonLabel:
-                text: "Java-Script"
+                    MDSegmentButtonLabel:
+                        text: "Python"
 
-        MDSegmentedButtonItem:
+                MDSegmentedButtonItem:
 
-            MDSegmentButtonLabel:
-                text: "Swift"
+                    MDSegmentButtonLabel:
+                        text: "Java-Script"
+
+                MDSegmentedButtonItem:
+
+                    MDSegmentButtonLabel:
+                        text: "Swift"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDSegmentedButton(
+                MDSegmentedButtonItem(
+                    MDSegmentButtonLabel(
+                        text="Python"
+                    ),
+                ),
+                MDSegmentedButtonItem(
+                    MDSegmentButtonLabel(
+                        text="Java-Script"
+                    ),
+                ),
+                MDSegmentedButtonItem(
+                    MDSegmentButtonLabel(
+                        text="Swift"
+                    ),
+                )
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-use-only-text.gif
     :align: center
@@ -153,10 +240,9 @@ applied to the height. Each step down in density removes 4dp from the height.
 
 .. code-block:: python
 
-    from kivy.lang import Builder
-
     from kivymd.uix.label import MDLabel
     from kivymd.uix.boxlayout import MDBoxLayout
+    from kivymd.uix.screen import MDScreen
     from kivymd.uix.segmentedbutton import (
         MDSegmentedButton,
         MDSegmentedButtonItem,
@@ -164,24 +250,13 @@ applied to the height. Each step down in density removes 4dp from the height.
     )
     from kivymd.app import MDApp
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
 
-        MDBoxLayout:
-            id: box
-            orientation: "vertical"
-            size_hint_x: .7
-            adaptive_height: True
-            spacing: "24dp"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
-
-
-    class Example(MDApp):
-        def on_start(self):
+    class MyBox(MDBoxLayout):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            widgets = []
             for segment_type in ["large", "normal", "medium", "small"]:
-                self.root.ids.box.add_widget(
+                widgets.append(
                     MDBoxLayout(
                         MDLabel(
                             text=f"Type '{segment_type}'",
@@ -213,9 +288,23 @@ applied to the height. Each step down in density removes 4dp from the height.
                         adaptive_height=True,
                     )
                 )
+            self.widgets = widgets
 
+
+    class Example(MDApp):
         def build(self):
-            return Builder.load_string(KV)
+            return (
+                MDScreen(
+                    MyBox(
+                        orientation="vertical",
+                        size_hint_x=.7,
+                        adaptive_height=True,
+                        spacing="24dp",
+                        pos_hint={"center_x": .5, "center_y": .5},
+                    ),
+                    md_bg_color=self.theme_cls.backgroundColor
+                )
+            )
 
 
     Example().run()
@@ -223,124 +312,270 @@ applied to the height. Each step down in density removes 4dp from the height.
 A practical example
 -------------------
 
-.. code-block:: python
+.. tabs::
 
-    import os
+    .. tab:: Declarative Python style with KV
 
-    from faker import Faker
+        .. code-block:: python
 
-    from kivy.clock import Clock
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+            import os
 
-    from kivymd.app import MDApp
-    from kivymd.uix.boxlayout import MDBoxLayout
+            from kivy.clock import Clock
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-    import asynckivy
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
 
-    KV = '''
-    <UserCard>
-        adaptive_height: True
-        radius: 16
+            import asynckivy
+            from faker import Faker
 
-        MDListItem:
-            radius: 16
-            theme_bg_color: "Custom"
-            md_bg_color: self.theme_cls.secondaryContainerColor
-
-            MDListItemLeadingAvatar:
-                source: root.album
-
-            MDListItemHeadlineText:
-                text: root.name
-
-            MDListItemSupportingText:
-                text: root.path_to_file
-
-
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
-
-        MDBoxLayout:
-            orientation: "vertical"
-            padding: "12dp"
-            spacing: "12dp"
-
-            MDLabel:
+            KV = '''
+            <UserCard>
                 adaptive_height: True
-                text: "Your downloads"
-                theme_font_style: "Custom"
-                font_style: "Display"
-                role: "small"
+                radius: dp(16)
 
-            MDSegmentedButton:
-                size_hint_x: 1
+                MDListItem:
+                    radius: dp(16)
+                    theme_bg_color: "Custom"
+                    md_bg_color: self.theme_cls.secondaryContainerColor
 
-                MDSegmentedButtonItem:
-                    on_active: app.generate_card()
+                    MDListItemLeadingAvatar:
+                        source: root.album
 
-                    MDSegmentButtonLabel:
-                        text: "Songs"
-                        active: True
+                    MDListItemHeadlineText:
+                        text: root.name
 
-                MDSegmentedButtonItem:
-                    on_active: app.generate_card()
-
-                    MDSegmentButtonLabel:
-                        text: "Albums"
-
-                MDSegmentedButtonItem:
-                    on_active: app.generate_card()
-
-                    MDSegmentButtonLabel:
-                        text: "Podcasts"
-
-            RecycleView:
-                id: card_list
-                viewclass: "UserCard"
-                bar_width: 0
-
-                RecycleBoxLayout:
-                    orientation: 'vertical'
-                    spacing: "16dp"
-                    padding: "16dp"
-                    default_size: None, dp(72)
-                    default_size_hint: 1, None
-                    size_hint_y: None
-                    height: self.minimum_height
-    '''
+                    MDListItemSupportingText:
+                        text: root.path_to_file
 
 
-    class UserCard(MDBoxLayout):
-        name = StringProperty()
-        path_to_file = StringProperty()
-        album = StringProperty()
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    padding: "12dp"
+                    spacing: "12dp"
+
+                    MDLabel:
+                        adaptive_height: True
+                        text: "Your downloads"
+                        font_style: "Display"
+                        role: "small"
+
+                    MDSegmentedButton:
+                        size_hint_x: 1
+
+                        MDSegmentedButtonItem:
+                            active: True
+                            on_active: app.generate_card()
+
+                            MDSegmentButtonLabel:
+                                text: "Songs"
+
+                        MDSegmentedButtonItem:
+                            on_active: app.generate_card()
+
+                            MDSegmentButtonLabel:
+                                text: "Albums"
+
+                        MDSegmentedButtonItem:
+                            on_active: app.generate_card()
+
+                            MDSegmentButtonLabel:
+                                text: "Podcasts"
+
+                    RecycleView:
+                        id: card_list
+                        viewclass: "UserCard"
+                        bar_width: 0
+
+                        RecycleBoxLayout:
+                            orientation: 'vertical'
+                            spacing: "16dp"
+                            padding: "16dp"
+                            default_size: None, dp(72)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
+            class UserCard(MDBoxLayout):
+                name = StringProperty()
+                path_to_file = StringProperty()
+                album = StringProperty()
 
-        def generate_card(self):
-            async def generate_card():
-                for i in range(10):
-                    await asynckivy.sleep(0)
-                    self.root.ids.card_list.data.append(
-                        {
-                            "name": fake.name(),
-                            "path_to_file": f"{os.path.splitext(fake.file_path())[0]}.mp3",
-                            "album": fake.image_url(),
-                        }
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def generate_card(self):
+                    async def generate_card():
+                        for i in range(10):
+                            await asynckivy.sleep(0)
+                            self.root.ids.card_list.data.append(
+                                {
+                                    "name": fake.name(),
+                                    "path_to_file": f"{os.path.splitext(fake.file_path())[0]}.mp3",
+                                    "album": fake.image_url(),
+                                }
+                            )
+
+                    fake = Faker()
+                    self.root.ids.card_list.data = []
+                    Clock.schedule_once(lambda x: asynckivy.start(generate_card()))
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            import os
+
+            from kivy.clock import Clock
+            from kivy.properties import StringProperty
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemLeadingAvatar,
+                MDListItemHeadlineText,
+                MDListItemSupportingText,
+            )
+            from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
+            from kivymd.uix.recycleview import MDRecycleView
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.segmentedbutton import (
+                MDSegmentedButton, MDSegmentedButtonItem, MDSegmentButtonLabel
+            )
+
+            import asynckivy
+            from faker import Faker
+
+
+            class UserCard(MDBoxLayout):
+                name = StringProperty()
+                path_to_file = StringProperty()
+                album = StringProperty()
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.adaptive_height = True
+                    self.radius = dp(16)
+                    Clock.schedule_once(self.post_init)
+
+                def post_init(self, *args):
+                    self.widgets = [
+                        MDListItem(
+                            MDListItemLeadingAvatar(
+                                source=self.album
+                            ),
+                            MDListItemHeadlineText(
+                                text=self.name
+                            ),
+                            MDListItemSupportingText(
+                                text=self.path_to_file
+                            ),
+                        )
+                    ]
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDBoxLayout(
+                                MDLabel(
+                                    adaptive_height=True,
+                                    text="Your downloads",
+                                    font_style="Display",
+                                    role="small",
+                                ),
+                                MDSegmentedButton(
+                                    MDSegmentedButtonItem(
+                                        MDSegmentButtonLabel(
+                                            text="Songs"
+                                        ),
+                                        id="first_segment",
+                                        on_active=Clock.schedule_once(
+                                            lambda x: self.generate_card()
+                                        ),
+                                        on_release=Clock.schedule_once(
+                                            lambda x: self.generate_card()
+                                        )
+                                    ),
+                                    MDSegmentedButtonItem(
+                                        MDSegmentButtonLabel(
+                                            text="Albums"
+                                        ),
+                                        on_release=Clock.schedule_once(
+                                            lambda x: self.generate_card()
+                                        )
+                                    ),
+                                    MDSegmentedButtonItem(
+                                        MDSegmentButtonLabel(
+                                            text="Podcasts"
+                                        ),
+                                        on_release=Clock.schedule_once(
+                                            lambda x: self.generate_card()
+                                        )
+                                    ),
+                                    size_hint_x=1
+                                ),
+                                MDRecycleView(
+                                    MDRecycleBoxLayout(
+                                        orientation='vertical',
+                                        spacing="16dp",
+                                        padding="16dp",
+                                        default_size=(None, dp(72)),
+                                        default_size_hint=(1, None),
+                                        adaptive_height=True,
+                                    ),
+                                    id="card_list",
+                                    bar_width=0,
+                                ),
+                                orientation="vertical",
+                                padding="12dp",
+                                spacing="12dp",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
                     )
 
-            fake = Faker()
-            self.root.ids.card_list.data = []
-            Clock.schedule_once(lambda x: asynckivy.start(generate_card()))
+                def on_start(self):
+                    self.root.get_ids().card_list.viewclass = "UserCard"
+                    self.root.get_ids().first_segment.dispatch("on_release")
+
+                def generate_card(self):
+                    async def generate_card():
+                        for i in range(10):
+                            await asynckivy.sleep(0)
+                            self.root.get_ids().card_list.data.append(
+                                {
+                                    "name": fake.name(),
+                                    "path_to_file": f"{os.path.splitext(fake.file_path())[0]}.mp3",
+                                    "album": fake.image_url(),
+                                }
+                            )
+
+                    fake = Faker()
+                    self.root.get_ids().card_list.data = []
+                    Clock.schedule_once(lambda x: asynckivy.start(generate_card()))
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/segmented-button-practical-example.gif
     :align: center
@@ -363,19 +598,37 @@ API break
 2.0.0 version
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDSegmentedButton:
+    .. tab:: Declarative KV style
 
-        MDSegmentedButtonItem:
-            on_active: func(*args)
+        .. code-block:: kv
 
-            MDSegmentButtonIcon:
-                icon: ...
+            MDSegmentedButton:
 
-            MDSegmentButtonLabel:
-                text: ...
+                MDSegmentedButtonItem:
+                    on_active: func(*args)
 
+                    MDSegmentButtonIcon:
+                        icon: ...
+
+                    MDSegmentButtonLabel:
+                        text: ...
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDSegmentedButton(
+                MDSegmentedButtonItem(
+                    MDSegmentButtonIcon(
+                        ...
+                    ),
+                    MDSegmentButtonLabel(
+                        ...
+                    ),
+                )
+            )
 """
 
 from __future__ import annotations
